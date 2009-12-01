@@ -53,7 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _gif->ImageCount;
 }
 
--(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)index options:(CFDictionaryRef)options {
    return nil;
 }
 

@@ -21,18 +21,21 @@ typedef enum {
 } O2ColorRenderingIntent;
 
 typedef enum {
-   O2ColorSpaceDeviceGray,
-   O2ColorSpaceDeviceRGB,
-   O2ColorSpaceDeviceCMYK,
-   O2ColorSpacePlatformRGB, // The platform color space, e.g. System colors
-   O2ColorSpaceIndexed
-} O2ColorSpaceType;
+   kO2ColorSpaceModelMonochrome,
+   kO2ColorSpaceModelRGB,
+   kO2ColorSpaceModelCMYK,
+   kO2ColorSpaceModelLab,
+   kO2ColorSpaceModelDeviceN,
+   kO2ColorSpaceModelIndexed,
+   kO2ColorSpaceModelPattern,
+   kO2ColorSpaceModelPlatformRGB, // get rid of this, the platform color space, e.g. System colors
+} O2ColorSpaceModel;
 
 @interface O2ColorSpace : NSObject <NSCopying> {
-   O2ColorSpaceType _type;
+   O2ColorSpaceModel _type;
 }
 
--(O2ColorSpaceType)type;
+-(O2ColorSpaceModel)type;
 
 O2ColorSpaceRef O2ColorSpaceRetain(O2ColorSpaceRef self);
 void            O2ColorSpaceRelease(O2ColorSpaceRef self);
@@ -42,6 +45,8 @@ O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void);
 
 size_t          O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self);
+
+O2ColorSpaceModel O2ColorSpaceGetModel(O2ColorSpaceRef self);
 
 -initWithPlatformRGB;
 

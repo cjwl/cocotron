@@ -61,7 +61,7 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    _bitmapInfo=kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Little;
    _data=NSZoneMalloc(NULL,_bytesPerRow*_pixelsHigh);
    _context=CGBitmapContextCreate(_data,_pixelsWide,_pixelsHigh,_bitsPerComponent,_bytesPerRow,_colorSpace,_bitmapInfo);
-   
+   NSLog(@"%s %d",__FILE__,__LINE__);
    _fillColor=createCGColor(0,0,1,1);
    _strokeColor=createCGColor(1,0,0,1);
    _pathDrawingMode=kCGPathStroke;
@@ -81,6 +81,7 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    _dashPhase=100;
    _dashLengthsCount=0;
    _dashLengths=NSZoneMalloc([self zone],sizeof(float)*4);
+   NSLog(@"%s %d",__FILE__,__LINE__);
    
    CGDataProviderRef provider=CGDataProviderCreateWithFilename("/Library/Fonts/Times New Roman.ttf");
    
@@ -98,13 +99,31 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    NSData   *data=[NSData dataWithContentsOfFile:path];
    CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
    _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
+   NSLog(@"%s %d",__FILE__,__LINE__);
+   [(id)source release];
+   NSMutableData *tiff=[NSMutableData data];
+   CGImageDestinationRef destination=CGImageDestinationCreateWithData((CFMutableDataRef)tiff,(CFStringRef)@"public.tiff",1,NULL);
+   CGImageDestinationAddImage(destination,_resamplingImage,NULL);
+ #if 0
+   CGImageDestinationFinalize(destination);
+   NSLog(@"%s %d",__FILE__,__LINE__);
+   
+#ifdef ONYX2D
+   [tiff writeToFile:@"/tmp/o2.tiff" atomically:YES];
+#else
+   [tiff writeToFile:@"/tmp/cg.tiff" atomically:YES];
+#endif
+   #endif
+
+   NSLog(@"%s %d",__FILE__,__LINE__);
+
 #if 0
    if(![_resamplingImage isKindOfClass:NSClassFromString(@"O2Image")])
     NSLog(@"IMAGE data=%@",CGDataProviderCopyData(CGImageGetDataProvider(_resamplingImage)));
 #endif
    if(_resamplingImage==nil)
     NSLog(@"no image! path=%@ %d",path,[data length]);
-   [(id)source release];
+   NSLog(@"%s %d",__FILE__,__LINE__);
    return self;
 }
 

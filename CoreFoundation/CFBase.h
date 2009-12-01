@@ -90,7 +90,7 @@ typedef int CFInteger;
 typedef int SInt32;
 typedef signed char SInt8;
 
-typedef const void *CFTypeRef;
+typedef void *CFTypeRef;
 typedef CFUInteger CFTypeID;
 typedef CFUInteger CFHashCode;
 typedef char       Boolean;

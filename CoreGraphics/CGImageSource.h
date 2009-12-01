@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "CoreGraphicsExport.h"
 #import <CoreFoundation/CFDictionary.h>
 
-typedef struct O2ImageSource *CGImageSourceRef;
+typedef struct _O2ImageSource *CGImageSourceRef;
 
 #import "CGImage.h"
 
@@ -17,5 +17,3 @@ COREGRAPHICS_EXPORT CGImageSourceRef CGImageSourceCreateWithData(CFDataRef data,
 
 COREGRAPHICS_EXPORT CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,CFDictionaryRef options);
 COREGRAPHICS_EXPORT CFDictionaryRef CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,CFDictionaryRef options);
-
-COREGRAPHICS_EXPORT void CGImageSourceRelease(CGImageSourceRef self);

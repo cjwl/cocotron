@@ -7,6 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import "O2Image.h"
+
+typedef struct _O2ImageSource *O2ImageSourceRef;
 
 @class NSData,NSDictionary,NSURL,O2Image,O2DataProvider;
 
@@ -18,9 +21,9 @@ extern NSString *kO2ImagePropertyDPIHeight;
    NSDictionary   *_options;
 }
 
-+(O2ImageSource *)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options;
-+(O2ImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options;
-+(O2ImageSource *)newImageSourceWitURL:(NSURL *)url options:(NSDictionary *)options;
++(O2ImageSourceRef)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(CFDictionaryRef)options;
++(O2ImageSourceRef)newImageSourceWithData:(CFDataRef)data options:(CFDictionaryRef)options;
++(O2ImageSourceRef)newImageSourceWitURL:(NSURL *)url options:(CFDictionaryRef)options;
 
 +(BOOL)isPresentInDataProvider:(O2DataProvider *)provider;
 
@@ -28,7 +31,9 @@ extern NSString *kO2ImagePropertyDPIHeight;
 
 -(unsigned)count;
 
--(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options;
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
+-(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)index options:(CFDictionaryRef)options;
+-(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options;
+
+O2ImageRef O2ImageSourceCreateImageAtIndex(O2ImageSourceRef self,size_t index,CFDictionaryRef options);
 
 @end

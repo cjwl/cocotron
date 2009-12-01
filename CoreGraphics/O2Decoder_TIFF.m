@@ -6,10 +6,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "NSTIFFReader.h"
+#import "O2Decoder_TIFF.h"
 #import "NSTIFFImageFileDirectory.h"
 
-@implementation NSTIFFReader
+@implementation O2Decoder_TIFF
 
 -(BOOL)tracingEnabled {
    return [[NSUserDefaults standardUserDefaults] boolForKey:@"NSTIFFTracingEnabled"];
@@ -263,7 +263,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
    }
 
-   return [NSString stringWithCString:(char *)ascii length:count-1];
+   return [[[NSString alloc] initWithBytes:ascii length:count-1 encoding:NSISOLatin1StringEncoding] autorelease];
 }
 
 -(unsigned)expectUnsigned16OrUnsigned32 {
@@ -279,7 +279,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else if(type==NSTIFFTypeLONG)
     result=[self nextUnsigned32];
    else
-    NSLog(@"TIFF parse error, expecting unsigned16 or unsinged32, got %d",type);
+    NSLog(@"TIFF parse error, expecting unsigned16 or unsigned32, got %d",type);
 
    return result;
 }

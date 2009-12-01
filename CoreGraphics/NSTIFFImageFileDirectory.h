@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSTIFFReader;
+@class O2Decoder_TIFF;
 
 @interface NSTIFFImageFileDirectory : NSObject {
   NSString            *_artist;
@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   unsigned             _predictor;
 }
 
--initWithTIFFReader:(NSTIFFReader *)reader;
+-initWithTIFFReader:(O2Decoder_TIFF *)reader;
 
 -(int)imageLength;
 -(int)imageWidth;

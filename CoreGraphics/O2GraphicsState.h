@@ -19,8 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2AffineTransform   _textTransform;
    
    NSMutableArray     *_clipPhases;
-   O2Color            *_strokeColor;
-   O2Color            *_fillColor;
+   O2ColorRef _strokeColor;
+   O2ColorRef _fillColor;
    O2FontRef           _font;
    O2Float             _pointSize;
    BOOL                _fontIsDirty;
@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InterpolationQuality _interpolationQuality;
    O2Size              _shadowOffset;
    float               _shadowBlur;
-   O2Color            *_shadowColor;
+   O2ColorRef _shadowColor;
    void               *_shadowKernel;
    BOOL                _shouldAntialias;
    
@@ -78,11 +78,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addEvenOddClipToPath:(O2Path *)path;
 -(void)addClipToMask:(O2Image *)image inRect:(O2Rect)rect;
 
--(O2Color *)strokeColor;
--(O2Color *)fillColor;
+-(O2ColorRef )strokeColor;
+-(O2ColorRef )fillColor;
 
--(void)setStrokeColor:(O2Color *)color;
--(void)setFillColor:(O2Color *)color;
+-(void)setStrokeColor:(O2ColorRef )color;
+-(void)setFillColor:(O2ColorRef )color;
 
 -(void)setPatternPhase:(O2Size)phase;
 -(void)setStrokePattern:(O2Pattern *)pattern components:(const float *)components;
@@ -116,7 +116,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(O2InterpolationQuality)quality;
 
--(void)setShadowOffset:(O2Size)offset blur:(float)blur color:(O2Color *)color;
+-(void)setShadowOffset:(O2Size)offset blur:(float)blur color:(O2ColorRef )color;
 -(void)setShadowOffset:(O2Size)offset blur:(float)blur;
 
 -(void)setShouldAntialias:(BOOL)flag;

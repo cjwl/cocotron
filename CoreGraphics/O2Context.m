@@ -178,16 +178,16 @@ static inline O2GState *currentState(O2Context *self){
 -(void)endTransparencyLayer {
 }
 
--(O2Color *)strokeColor {
+-(O2ColorRef )strokeColor {
    return [currentState(self) strokeColor];
 }
 
--(O2Color *)fillColor {
+-(O2ColorRef )fillColor {
    return [currentState(self) fillColor];
 }
 
 -(void)setStrokeAlpha:(O2Float)alpha {
-   O2Color *color=O2ColorCreateCopyWithAlpha([self strokeColor],alpha);
+   O2ColorRef color=O2ColorCreateCopyWithAlpha([self strokeColor],alpha);
    O2ContextSetStrokeColorWithColor(self,color);
    O2ColorRelease(color);
 }
@@ -209,7 +209,7 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(void)setFillAlpha:(O2Float)alpha {
-   O2Color *color=O2ColorCreateCopyWithAlpha([self fillColor],alpha);
+   O2ColorRef color=O2ColorCreateCopyWithAlpha([self fillColor],alpha);
    O2ContextSetFillColorWithColor(self,color);
    O2ColorRelease(color);
 }
@@ -335,11 +335,12 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 O2ContextRef O2ContextRetain(O2ContextRef self) {
-   return [self retain];
+   return (self!=NULL)?(O2ContextRef)CFRetain(self):NULL;
 }
 
 void O2ContextRelease(O2ContextRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
 }
 
 // context state
@@ -617,7 +618,7 @@ void O2ContextSetStrokeColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) 
     components[i]=0;
    components[i]=1;
 
-   O2Color *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetStrokeColorWithColor(self,color);
    
@@ -632,7 +633,7 @@ void O2ContextSetFillColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) {
     components[i]=0;
    components[i]=1;
 
-   O2Color *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
 
    O2ContextSetFillColorWithColor(self,color);
    
@@ -641,7 +642,7 @@ void O2ContextSetFillColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) {
 
 void O2ContextSetStrokeColor(O2ContextRef self,const O2Float *components) {
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace([self strokeColor]);
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetStrokeColorWithColor(self,color);
    
@@ -655,7 +656,7 @@ void O2ContextSetStrokeColorWithColor(O2ContextRef self,O2ColorRef color) {
 void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha) {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceGray();
    O2Float         components[2]={gray,alpha};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetStrokeColorWithColor(self,color);
    
@@ -666,7 +667,7 @@ void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha) {
 void O2ContextSetRGBStrokeColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha) {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Float         components[4]={r,g,b,alpha};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetStrokeColorWithColor(self,color);
    
@@ -677,7 +678,7 @@ void O2ContextSetRGBStrokeColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,
 void O2ContextSetCMYKStrokeColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha) {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceCMYK();
    O2Float         components[5]={c,m,y,k,alpha};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetStrokeColorWithColor(self,color);
    
@@ -693,7 +694,7 @@ void O2ContextSetCalibratedGrayStrokeColor(O2ContextRef self,O2Float gray,O2Floa
 
 void O2ContextSetFillColor(O2ContextRef self,const O2Float *components) {
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace([self fillColor]);
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetFillColorWithColor(self,color);
    
@@ -707,7 +708,7 @@ void O2ContextSetFillColorWithColor(O2ContextRef self,O2ColorRef color) {
 void O2ContextSetGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha) {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceGray();
    O2Float         components[2]={gray,alpha};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetFillColorWithColor(self,color);
    
@@ -718,7 +719,7 @@ void O2ContextSetGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha) {
 void O2ContextSetRGBFillColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha) {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Float         components[4]={r,g,b,alpha};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetFillColorWithColor(self,color);
    
@@ -729,7 +730,7 @@ void O2ContextSetRGBFillColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2
 void O2ContextSetCMYKFillColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha) {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceCMYK();
    O2Float         components[5]={c,m,y,k,alpha};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetFillColorWithColor(self,color);
    

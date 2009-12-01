@@ -1,4 +1,5 @@
 #import "O2DataConsumer.h"
+#import "O2Exceptions.h"
 
 @implementation O2DataConsumer
 
@@ -16,12 +17,27 @@
    return _data;
 }
 
-O2DataConsumerRef O2DataConsumerCreateWithCFData(NSMutableData *data) {
-   return [[O2DataConsumer alloc] initWithMutableData:data];
+O2DataConsumerRef O2DataConsumerCreateWithCFData(CFMutableDataRef data) {
+   return [[O2DataConsumer alloc] initWithMutableData:(NSMutableData *)data];
+}
+
+O2DataConsumerRef O2DataConsumerCreateWithURL(CFURLRef url) {
+   O2UnimplementedFunction();
+   return NULL;
+}
+
+O2DataConsumerRef O2DataConsumerRetain(O2DataConsumerRef self) {
+   return (self!=NULL)?(O2DataConsumerRef)CFRetain(self):NULL;
 }
 
 void O2DataConsumerRelease(O2DataConsumerRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
+}
+
+size_t O2DataConsumerPutBytes(O2DataConsumerRef self,const void *buffer,size_t count) {
+   [self->_data appendBytes:buffer length:count];
+   return count;
 }
 
 @end

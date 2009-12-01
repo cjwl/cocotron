@@ -493,13 +493,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)TIFFRepresentation {
-   NSUnimplementedMethod();
-   return nil;
+   return [self TIFFRepresentationUsingCompression:NSTIFFCompressionNone factor:0.0];
 }
 
 -(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor {
-   NSUnimplementedMethod();
-   return nil;
+   NSMutableArray *bitmaps=[NSMutableArray array];
+   
+   for(NSImageRep *check in _representations){
+    if([check isKindOfClass:[NSBitmapImageRep class]])
+     [bitmaps addObject:check];
+    else {
+     NSSize size=[check size];
+     NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
+     
+     [self lockFocusOnRepresentation:image];
+     [check draw];
+     [self unlockFocus];
+     
+     [bitmaps addObject:image];
+    }
+    
+   }
+   
+   return [NSBitmapImageRep TIFFRepresentationOfImageRepsInArray:bitmaps usingCompression:compression factor:factor];
 }
 
 -(void)lockFocus {

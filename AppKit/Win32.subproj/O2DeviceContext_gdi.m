@@ -47,13 +47,13 @@ COLORREF COLORREFFromColor(O2Color *color){
    
    switch([colorSpace type]){
 
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
      
-    case O2ColorSpaceDeviceRGB:
+    case kO2ColorSpaceModelRGB:
      return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
      
-    case O2ColorSpaceDeviceCMYK:{
+    case kO2ColorSpaceModelCMYK:{
       float rgba[4];
       
       CMYKAToRGBA(components,rgba);
@@ -61,7 +61,7 @@ COLORREF COLORREFFromColor(O2Color *color){
      }
      break;
      
-     case O2ColorSpacePlatformRGB:
+     case kO2ColorSpaceModelPlatformRGB:
      return RGB(components[0]*255,components[1]*255,components[2]*255);
           
     default:

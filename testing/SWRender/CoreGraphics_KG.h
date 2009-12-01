@@ -6,12 +6,15 @@
 #import "O2ColorSpace.h"
 #import "O2Image.h"
 #import "O2ImageSource.h"
+#import "O2ImageDestination.h"
 #import "O2DataProvider.h"
 #import "O2PDFDocument.h"
 #import "O2PDFPage.h"
 #import "O2Function.h"
 #import "O2Shading.h"
 #import "O2Font.h"
+
+#define ONYX2D
 
 #define CGFloat O2Float
 #define CGRect O2Rect
@@ -27,6 +30,7 @@
 #define CGAffineTransformMakeTranslation O2AffineTransformMakeTranslation
 #define CGAffineTransformTranslate O2AffineTransformTranslate
 #define CGAffineTransformConcat O2AffineTransformConcat
+#undef CGPointApplyAffineTransform
 #define CGPointApplyAffineTransform O2PointApplyAffineTransform
 #define CGFunctionCallbacks O2FunctionCallbacks
 
@@ -37,7 +41,7 @@
 #define CGMutablePathRef O2MutablePathRef
 #define CGDataProviderRef O2DataProviderRef
 #define CGImageRef O2ImageRef
-#define CGImageSourceRef O2ImageSource *
+#define CGImageSourceRef O2ImageSourceRef
 #define CGPDFDocumentRef O2PDFDocument *
 #define CGPDFPageRef O2PDFPage *
 #define CGFunctionRef O2FunctionRef
@@ -252,6 +256,12 @@
 #define CGDataProviderCreateWithData O2DataProviderCreateWithData 
 #define CGDataProviderCreateWithCFData O2DataProviderCreateWithCFData
 #define CGDataProviderCreateWithURL O2DataProviderCreateWithURL
+
+#define CGImageDestinationRef O2ImageDestinationRef
+#define CGImageDestinationCreateWithData O2ImageDestinationCreateWithData
+#define CGImageDestinationAddImage O2ImageDestinationAddImage
+#define CGImageDestinationFinalize O2ImageDestinationFinalize
+
 // image source
 
 #define CGImageSourceCreateWithData(data,opts) \

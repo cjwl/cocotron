@@ -13,7 +13,7 @@
 }
 
 -(O2Glyph)glyphWithGlyphName:(NSString *)name {
-   return (O2Glyph)NSMapGet(_nameToGlyph,name);
+   return (O2Glyph)(int)NSMapGet(_nameToGlyph,name);
 }
 
 @end

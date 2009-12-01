@@ -40,11 +40,6 @@ typedef unsigned char stbi_uc;
 // this is not threadsafe
 static char *failure_reason;
 
-static char *stbi_failure_reason(void)
-{
-   return failure_reason;
-}
-
 static int e(char *str)
 {
    failure_reason = str;
@@ -1091,7 +1086,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    return 1;
 }
 
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options {
    int            width=0,height=0;
    int            comp;
 

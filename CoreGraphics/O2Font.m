@@ -335,11 +335,12 @@ O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider) {
 }
 
 O2FontRef O2FontRetain(O2FontRef self) {
-   return [self retain];
+   return (self!=NULL)?(O2FontRef)CFRetain(self):NULL;
 }
 
 void      O2FontRelease(O2FontRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
 }
 
 

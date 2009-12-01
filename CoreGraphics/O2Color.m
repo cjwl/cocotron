@@ -113,11 +113,12 @@ O2ColorRef O2ColorCreateCopyWithAlpha(O2ColorRef self,O2Float alpha) {
 }
 
 O2ColorRef O2ColorRetain(O2ColorRef self) {
-   return [self retain];
+   return (self!=NULL)?(O2ColorRef)CFRetain(self):NULL;
 }
 
 void O2ColorRelease(O2ColorRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
 }
 
 O2ColorSpaceRef O2ColorGetColorSpace(O2ColorRef self) {

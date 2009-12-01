@@ -538,7 +538,6 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    int            width,height;
    int            comp;
    unsigned char *pixels=stbi_png_load_from_memory([_png bytes],[_png length],&width,&height,&comp,STBI_rgb_alpha);
-   int            npixels=width*height;
    int            bitsPerPixel=32;
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;

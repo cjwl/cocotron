@@ -93,9 +93,15 @@ enum {
  NSTIFFTagPredictor_none=1,
  NSTIFFTagPredictor_horizontal=2,
  NSTIFFTagPredictor_floatingPoint=3,
+ 
+ NSTIFFPhotometricInterpretationWhiteIsZero=0,
+ NSTIFFPhotometricInterpretationBlackIsZero=1,
+ NSTIFFPhotometricInterpretationRGB=2,
+ NSTIFFPhotometricInterpretationPalette=3,
+ NSTIFFPhotometricInterpretationTransparencyMask=3,
 };
 
-@interface NSTIFFReader : NSObject {
+@interface O2Decoder_TIFF : NSObject {
   NSData              *_data;
   const unsigned char *_bytes;
   unsigned             _length,_position;

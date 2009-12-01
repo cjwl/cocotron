@@ -118,7 +118,7 @@ static inline BOOL O2PDFByteBufferAddOctal(O2PDFByteBuffer *buffer,char octal){
 }
 
 static void debugTracev(const char *bytes,unsigned length,O2PDFInteger position,NSString *format,va_list arguments) {
-   NSString *dump=[NSString stringWithCString:bytes+position length:MIN(80,(length-position))];
+   NSString *dump=[[[NSString alloc] initWithBytes:bytes+position length:MIN(80,(length-position)) encoding:NSISOLatin1StringEncoding] autorelease];
    
    NSLogv(format,arguments);
    NSLog(@"position=%d,dump=[%@]",position,dump);

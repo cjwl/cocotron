@@ -40,13 +40,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSData *)TIFFRepresentationOfImageRepsInArray:(NSArray *)array {
-   NSUnimplementedMethod();
-   return nil;
+   return [self TIFFRepresentationOfImageRepsInArray:array usingCompression:NSTIFFCompressionNone factor:0.0];
 }
 
 +(NSData *)TIFFRepresentationOfImageRepsInArray:(NSArray *)array usingCompression:(NSTIFFCompression)compression factor:(float)factor {
-   NSUnimplementedMethod();
-   return nil;
+   NSMutableData        *result=[NSMutableData data];
+   CGImageDestinationRef dest=CGImageDestinationCreateWithData((CFMutableDataRef)result,(CFStringRef)@"public.tiff",[array count],NULL);
+   
+   for(NSBitmapImageRep *bitmap in array){
+    CGImageDestinationAddImage(dest,[bitmap CGImage],NULL);
+   }
+
+   CGImageDestinationFinalize(dest);
+   CFRelease(dest);
+   
+   return result;
 }
 
 +(NSData *)representationOfImageRepsInArray:(NSArray *)array usingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties {
@@ -216,7 +224,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [bitmapData release];
    
    CFRelease(properties);
-   CGImageSourceRelease(imageSource);
+   CFRelease(imageSource);
    return self;
 }
 

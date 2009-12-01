@@ -310,7 +310,7 @@ static BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerComponent
 static BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
 
    switch([[(O2ColorSpace_indexed *)colorSpace baseColorSpace] type]){
-    case O2ColorSpaceDeviceRGB:
+    case kO2ColorSpaceModelRGB:
      self->_read_lRGBA8888_PRE=O2ImageRead_I8_to_RGBA8888;
      return YES;
    }
@@ -328,13 +328,13 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
     bitmapInfo|=kO2BitmapByteOrder32Big;
    
    switch([colorSpace type]){
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      break;
-    case O2ColorSpaceDeviceRGB:
+    case kO2ColorSpaceModelRGB:
      return initFunctionsForRGBColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      return initFunctionsForCMYKColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
-    case O2ColorSpaceIndexed:
+    case kO2ColorSpaceModelIndexed:
      return initFunctionsForIndexedColorSpace(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
    }
    
@@ -543,11 +543,12 @@ O2ImageRef O2ImageCreateWithMaskingColors(O2ImageRef self,const O2Float *compone
 }
 
 O2ImageRef O2ImageRetain(O2ImageRef self) {
-   return [self retain];
+   return (self!=NULL)?(O2ImageRef)CFRetain(self):NULL;
 }
 
 void O2ImageRelease(O2ImageRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
 }
 
 BOOL O2ImageIsMask(O2ImageRef self) {

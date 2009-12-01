@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2DataConsumer.h"
 
 CGDataConsumerRef CGDataConsumerCreateWithCFData(CFMutableDataRef data) {
-   return O2DataConsumerCreateWithCFData((NSMutableData *)data);
+   return O2DataConsumerCreateWithCFData(data);
 }
 
 void CGDataConsumerRelease(CGDataConsumerRef self){

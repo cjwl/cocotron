@@ -200,7 +200,7 @@ static BOOL _isAvailable=NO;
    _vpheight=MIN(O2ImageGetHeight(_surface),O2RectGetMaxY(rect))-_vpy;
 }
 
-static O2Paint *paintFromColor(O2Color *color){
+static O2Paint *paintFromColor(O2ColorRef color){
    size_t    count=O2ColorGetNumberOfComponents(color);
    const float *components=O2ColorGetComponents(color);
 

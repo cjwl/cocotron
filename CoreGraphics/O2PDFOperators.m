@@ -692,7 +692,7 @@ void O2PDF_render_S(O2PDFScanner *scanner,void *info) {
 // setcolor, Set color for stroking operations
 void O2PDF_render_SC(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
-   O2Color      *color=[context strokeColor];
+   O2ColorRef color=[context strokeColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
@@ -711,7 +711,7 @@ void O2PDF_render_SC(O2PDFScanner *scanner,void *info) {
 // setcolor, Set color for nonstroking operations
 void O2PDF_render_sc(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
-   O2Color      *color=[context fillColor];
+   O2ColorRef color=[context fillColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
@@ -730,7 +730,7 @@ void O2PDF_render_sc(O2PDFScanner *scanner,void *info) {
 // setcolor, Set color for stroking operations, ICCBased and special color spaces
 void O2PDF_render_SCN(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
-   O2Color      *color=[context strokeColor];
+   O2ColorRef color=[context strokeColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
@@ -749,7 +749,7 @@ void O2PDF_render_SCN(O2PDFScanner *scanner,void *info) {
 // setcolor, Set color for nonstroking operations, ICCBased and special color spaces
 void O2PDF_render_scn(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
-   O2Color      *color=[context fillColor];
+   O2ColorRef color=[context fillColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;

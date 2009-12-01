@@ -18,6 +18,8 @@
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
 		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
+		FE37A1A910B10F6A001955F9 /* O2ImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FE37A1A610B10F6A001955F9 /* O2ImageDestination.m */; };
+		FE37A1AA10B10F6A001955F9 /* O2Encoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE37A1A810B10F6A001955F9 /* O2Encoder_TIFF.m */; };
 		FE3C83B6108759100018252A /* O2Geometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C83B5108759100018252A /* O2Geometry.m */; };
 		FE3C83C9108759A50018252A /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C83C8108759A50018252A /* O2AffineTransform.m */; };
 		FE452BCE101F412D00585DFE /* O2ImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452BCD101F412D00585DFE /* O2ImageSource_GIF.m */; };
@@ -28,8 +30,9 @@
 		FE45ED400DC2374E00F49290 /* O2ImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED3A0DC2374E00F49290 /* O2ImageSource_PNG.m */; };
 		FE45ED410DC2374E00F49290 /* O2ImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED3C0DC2374E00F49290 /* O2ImageSource_TIFF.m */; };
 		FE45ED460DC2376700F49290 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */; };
-		FE45ED470DC2376700F49290 /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED450DC2376700F49290 /* NSTIFFReader.m */; };
+		FE45ED470DC2376700F49290 /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED450DC2376700F49290 /* O2Decoder_TIFF.m */; };
 		FE45EE650DC254C700F49290 /* overlay.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE640DC254C700F49290 /* overlay.jpg */; };
+		FE4B80CB10B4ECFA0045407A /* O2DataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4B80CA10B4ECFA0045407A /* O2DataConsumer.m */; };
 		FE4F4CC10E10397000A5A5F8 /* O2ColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CB80E10397000A5A5F8 /* O2ColorSpace+PDF.m */; };
 		FE4F4CC30E10397000A5A5F8 /* O2Function+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CBC0E10397000A5A5F8 /* O2Function+PDF.m */; };
 		FE4F4CC40E10397000A5A5F8 /* O2Image+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CBE0E10397000A5A5F8 /* O2Image+PDF.m */; };
@@ -125,6 +128,10 @@
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
 		FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics_KG.h; sourceTree = "<group>"; };
 		FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosTemplate.m; sourceTree = "<group>"; };
+		FE37A1A510B10F6A001955F9 /* O2ImageDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ImageDestination.h; sourceTree = "<group>"; };
+		FE37A1A610B10F6A001955F9 /* O2ImageDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageDestination.m; sourceTree = "<group>"; };
+		FE37A1A710B10F6A001955F9 /* O2Encoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_TIFF.h; sourceTree = "<group>"; };
+		FE37A1A810B10F6A001955F9 /* O2Encoder_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_TIFF.m; sourceTree = "<group>"; };
 		FE3C8387108758940018252A /* O2Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Geometry.h; sourceTree = "<group>"; };
 		FE3C83B5108759100018252A /* O2Geometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Geometry.m; sourceTree = "<group>"; };
 		FE3C83C7108759A50018252A /* O2AffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2AffineTransform.h; sourceTree = "<group>"; };
@@ -145,9 +152,11 @@
 		FE45ED3C0DC2374E00F49290 /* O2ImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageSource_TIFF.m; sourceTree = "<group>"; };
 		FE45ED420DC2376700F49290 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
 		FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
-		FE45ED440DC2376700F49290 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFReader.h; sourceTree = "<group>"; };
-		FE45ED450DC2376700F49290 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFReader.m; sourceTree = "<group>"; };
+		FE45ED440DC2376700F49290 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Decoder_TIFF.h; sourceTree = "<group>"; };
+		FE45ED450DC2376700F49290 /* O2Decoder_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Decoder_TIFF.m; sourceTree = "<group>"; };
 		FE45EE640DC254C700F49290 /* overlay.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = overlay.jpg; sourceTree = "<group>"; };
+		FE4B80C910B4ECFA0045407A /* O2DataConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2DataConsumer.h; sourceTree = "<group>"; };
+		FE4B80CA10B4ECFA0045407A /* O2DataConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2DataConsumer.m; sourceTree = "<group>"; };
 		FE4F4CB70E10397000A5A5F8 /* O2ColorSpace+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O2ColorSpace+PDF.h"; sourceTree = "<group>"; };
 		FE4F4CB80E10397000A5A5F8 /* O2ColorSpace+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2ColorSpace+PDF.m"; sourceTree = "<group>"; };
 		FE4F4CBB0E10397000A5A5F8 /* O2Function+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O2Function+PDF.h"; sourceTree = "<group>"; };
@@ -368,24 +377,28 @@
 			children = (
 				FE452BCF101F414700585DFE /* gif_lib.h */,
 				FE452BD0101F414700585DFE /* gif_lib.m */,
-				FE452BCC101F412D00585DFE /* O2ImageSource_GIF.h */,
-				FE452BCD101F412D00585DFE /* O2ImageSource_GIF.m */,
-				FE8CA8EB10181DD500F78535 /* O2LZW.h */,
-				FE8CA8EC10181DD500F78535 /* O2LZW.m */,
 				FE45ED420DC2376700F49290 /* NSTIFFImageFileDirectory.h */,
 				FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */,
-				FE45ED440DC2376700F49290 /* NSTIFFReader.h */,
-				FE45ED450DC2376700F49290 /* NSTIFFReader.m */,
+				FE45ED440DC2376700F49290 /* O2Decoder_TIFF.h */,
+				FE45ED450DC2376700F49290 /* O2Decoder_TIFF.m */,
+				FE37A1A710B10F6A001955F9 /* O2Encoder_TIFF.h */,
+				FE37A1A810B10F6A001955F9 /* O2Encoder_TIFF.m */,
+				FE37A1A510B10F6A001955F9 /* O2ImageDestination.h */,
+				FE37A1A610B10F6A001955F9 /* O2ImageDestination.m */,
 				FE45ED330DC2374E00F49290 /* O2ImageSource.h */,
 				FE45ED340DC2374E00F49290 /* O2ImageSource.m */,
 				FE45ED350DC2374E00F49290 /* O2ImageSource_BMP.h */,
 				FE45ED360DC2374E00F49290 /* O2ImageSource_BMP.m */,
+				FE452BCC101F412D00585DFE /* O2ImageSource_GIF.h */,
+				FE452BCD101F412D00585DFE /* O2ImageSource_GIF.m */,
 				FE45ED370DC2374E00F49290 /* O2ImageSource_JPEG.h */,
 				FE45ED380DC2374E00F49290 /* O2ImageSource_JPEG.m */,
 				FE45ED390DC2374E00F49290 /* O2ImageSource_PNG.h */,
 				FE45ED3A0DC2374E00F49290 /* O2ImageSource_PNG.m */,
 				FE45ED3B0DC2374E00F49290 /* O2ImageSource_TIFF.h */,
 				FE45ED3C0DC2374E00F49290 /* O2ImageSource_TIFF.m */,
+				FE8CA8EB10181DD500F78535 /* O2LZW.h */,
+				FE8CA8EC10181DD500F78535 /* O2LZW.m */,
 			);
 			name = CoreGraphics;
 			path = ../../CoreGraphics;
@@ -394,6 +407,8 @@
 		FE6EDCC70DB78E3C005503A1 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE4B80C910B4ECFA0045407A /* O2DataConsumer.h */,
+				FE4B80CA10B4ECFA0045407A /* O2DataConsumer.m */,
 				FE3C83C7108759A50018252A /* O2AffineTransform.h */,
 				FE3C83C8108759A50018252A /* O2AffineTransform.m */,
 				FE3C83B5108759100018252A /* O2Geometry.m */,
@@ -633,7 +648,7 @@
 				FE45ED400DC2374E00F49290 /* O2ImageSource_PNG.m in Sources */,
 				FE45ED410DC2374E00F49290 /* O2ImageSource_TIFF.m in Sources */,
 				FE45ED460DC2376700F49290 /* NSTIFFImageFileDirectory.m in Sources */,
-				FE45ED470DC2376700F49290 /* NSTIFFReader.m in Sources */,
+				FE45ED470DC2376700F49290 /* O2Decoder_TIFF.m in Sources */,
 				FEBF55B90DCA0DE500CE5A1C /* O2Paint.m in Sources */,
 				FEBF575B0DCA60CD00CE5A1C /* O2Paint_image.m in Sources */,
 				FEBF59190DCC063400CE5A1C /* O2Paint_pattern.m in Sources */,
@@ -653,6 +668,9 @@
 				FE619A32107A56A100807E7E /* O2Font_CG.m in Sources */,
 				FE3C83B6108759100018252A /* O2Geometry.m in Sources */,
 				FE3C83C9108759A50018252A /* O2AffineTransform.m in Sources */,
+				FE37A1A910B10F6A001955F9 /* O2ImageDestination.m in Sources */,
+				FE37A1AA10B10F6A001955F9 /* O2Encoder_TIFF.m in Sources */,
+				FE4B80CB10B4ECFA0045407A /* O2DataConsumer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

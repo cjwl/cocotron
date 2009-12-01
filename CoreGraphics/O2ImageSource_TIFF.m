@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "O2ImageSource_TIFF.h"
-#import "NSTIFFReader.h"
+#import "O2Decoder_TIFF.h"
 #import "NSTIFFImageFileDirectory.h"
 #import "O2DataProvider.h"
 #import "O2ColorSpace.h"
@@ -44,7 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithDataProvider:provider options:options];
    
    NSData *data=O2DataProviderCopyData(provider);
-   _reader=[[NSTIFFReader alloc] initWithData:data];
+   _reader=[[O2Decoder_TIFF alloc] initWithData:data];
    [data release];
    
    if(_reader==nil){
@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[_reader imageFileDirectory] count];
 }
 
--(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)index options:(CFDictionaryRef)options {
    NSArray *entries=[_reader imageFileDirectory];
    
    if([entries count]<=index)
@@ -71,11 +71,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
    
-   return [[directory properties] copy];
+   return (CFDictionaryRef)[[directory properties] copy];
 }
 
 
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options {
    NSArray *entries=[_reader imageFileDirectory];
    
    if([entries count]<=index)

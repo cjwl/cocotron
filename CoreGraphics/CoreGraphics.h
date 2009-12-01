@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGFunction.h>
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGImage.h>
+#import <CoreGraphics/CGImageDestination.h>
 #import <CoreGraphics/CGImageSource.h>
 #import <CoreGraphics/CGImageProperties.h>
 #import <CoreGraphics/CGLayer.h>

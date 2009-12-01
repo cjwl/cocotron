@@ -14,9 +14,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSString *kO2ImagePropertyDPIWidth=@"kCGImagePropertyDPIWidth";
 NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
 
+@interface _O2ImageSource : O2ImageSource
+@end
+
 @implementation O2ImageSource
 
-+(O2ImageSource *)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
++(O2ImageSourceRef)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(CFDictionaryRef)options {
    NSString *classes[]={
     @"O2ImageSource_PNG",
     @"O2ImageSource_TIFF",
@@ -32,24 +35,24 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
    
     if([cls isPresentInDataProvider:provider]){
      [provider rewind];
-     return [[cls alloc] initWithDataProvider:provider options:options];
+     return [[cls alloc] initWithDataProvider:provider options:(NSDictionary *)options];
     }
    }
        
    return nil;
 }
 
-+(O2ImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options {
-   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:data];
-   O2ImageSource  *result=[self newImageSourceWithDataProvider:provider options:options];
-   [provider release];
++(O2ImageSourceRef)newImageSourceWithData:(CFDataRef)data options:(CFDictionaryRef)options {
+   O2DataProviderRef provider=[[O2DataProvider alloc] initWithData:(NSData *)data];
+   O2ImageSourceRef result=[self newImageSourceWithDataProvider:provider options:options];
+   O2DataProviderRelease(provider);
    return result;
 }
 
-+(O2ImageSource *)newImageSourceWitURL:(NSURL *)url options:(NSDictionary *)options {
-   O2DataProvider *provider=[[O2DataProvider alloc] initWithURL:url];
-   O2ImageSource  *result=[self newImageSourceWithDataProvider:provider options:options];
-   [provider release];
++(O2ImageSourceRef)newImageSourceWitURL:(NSURL *)url options:(CFDictionaryRef)options {
+   O2DataProviderRef provider=[[O2DataProvider alloc] initWithURL:url];
+   O2ImageSourceRef result=[self newImageSourceWithDataProvider:provider options:options];
+   O2DataProviderRelease(provider);
    return result;
 }
 
@@ -68,13 +71,17 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
    return 0;
 }
 
--(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)index options:(CFDictionaryRef)options {
    return nil;
 }
 
--(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2Image *)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options {
   O2InvalidAbstractInvocation();
   return nil;
+}
+
+O2ImageRef O2ImageSourceCreateImageAtIndex(O2ImageSourceRef self,size_t index,CFDictionaryRef options) {
+   return [self createImageAtIndex:index options:options];
 }
 
 @end

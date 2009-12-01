@@ -70,11 +70,12 @@ O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString) {
 }
 
 O2DataProviderRef O2DataProviderRetain(O2DataProviderRef self) {
-   return [self retain];
+   return (self!=NULL)?(O2DataProviderRef)CFRetain(self):NULL;
 }
 
 void O2DataProviderRelease(O2DataProviderRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
 }
 
 NSData *O2DataProviderCopyData(O2DataProviderRef self) {

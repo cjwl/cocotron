@@ -389,7 +389,7 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
 
 -(void)drawInUserSpace:(O2AffineTransform)matrix axialShading:(O2ShadingRef)shading {
    O2ColorSpaceRef colorSpace=[shading colorSpace];
-   O2ColorSpaceType colorSpaceType=[colorSpace type];
+   O2ColorSpaceModel colorSpaceType=[colorSpace type];
    O2Function   *function=[shading function];
    const float  *domain=[function domain];
    const float  *range=[function range];
@@ -427,16 +427,16 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
 
    switch(colorSpaceType){
 
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case O2ColorSpaceDeviceRGB:
-    case O2ColorSpacePlatformRGB:
+    case kO2ColorSpaceModelRGB:
+    case kO2ColorSpaceModelPlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      
@@ -716,7 +716,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
     - does not factor color sampling rate, generates multiple bands for same color
  */
    O2ColorSpaceRef colorSpace=[shading colorSpace];
-   O2ColorSpaceType colorSpaceType=[colorSpace type];
+   O2ColorSpaceModel colorSpaceType=[colorSpace type];
    O2Function   *function=[shading function];
    const float  *domain=[function domain];
    const float  *range=[function range];
@@ -735,16 +735,16 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
    switch(colorSpaceType){
 
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case O2ColorSpaceDeviceRGB:
-    case O2ColorSpacePlatformRGB:
+    case kO2ColorSpaceModelRGB:
+    case kO2ColorSpaceModelPlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      

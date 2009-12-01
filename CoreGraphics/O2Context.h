@@ -118,8 +118,8 @@ typedef int O2TextDrawingMode;
 -(void)beginTransparencyLayerWithInfo:(NSDictionary *)unused;
 -(void)endTransparencyLayer;
 
--(O2Color *)strokeColor;
--(O2Color *)fillColor;
+-(O2ColorRef )strokeColor;
+-(O2ColorRef )fillColor;
    
 -(void)setStrokeAlpha:(O2Float)alpha;
 -(void)setGrayStrokeColor:(O2Float)gray;

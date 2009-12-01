@@ -427,7 +427,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
        break;
        
       case 32:
-       if([colorSpace type]==O2ColorSpaceDeviceRGB){
+       if([colorSpace type]==kO2ColorSpaceModelRGB){
 
         switch(bitmapInfo&kO2BitmapAlphaInfoMask){
          case kO2ImageAlphaNone:
@@ -472,7 +472,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
           break;
         }
        }
-       else if([colorSpace type]==O2ColorSpaceDeviceCMYK){
+       else if([colorSpace type]==kO2ColorSpaceModelCMYK){
         switch(bitmapInfo&kO2BitmapByteOrderMask){
          case kO2BitmapByteOrderDefault:
          case kO2BitmapByteOrder16Little:

@@ -8,26 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "O2ColorSpace.h"
 #import <Foundation/NSString.h>
+#import <CoreFoundation/CFBase.h>
 
 @implementation O2ColorSpace
 
 -initWithDeviceGray {
-   _type=O2ColorSpaceDeviceGray;
+   _type=kO2ColorSpaceModelMonochrome;
    return self;
 }
 
 -initWithDeviceRGB {
-   _type=O2ColorSpaceDeviceRGB;
+   _type=kO2ColorSpaceModelRGB;
    return self;
 }
 
 -initWithDeviceCMYK {
-   _type=O2ColorSpaceDeviceCMYK;
+   _type=kO2ColorSpaceModelCMYK;
    return self;
 }
 
 -initWithPlatformRGB {
-   _type=O2ColorSpacePlatformRGB;
+   _type=kO2ColorSpaceModelPlatformRGB;
    return self;
 }
 
@@ -35,16 +36,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
--(O2ColorSpaceType)type {
+-(O2ColorSpaceModel)type {
    return _type;
 }
 
 O2ColorSpaceRef O2ColorSpaceRetain(O2ColorSpaceRef self) {
-   return [self retain];
+   return (self!=NULL)?(O2ColorSpaceRef)CFRetain(self):NULL;
 }
 
 void O2ColorSpaceRelease(O2ColorSpaceRef self) {
-   [self release];
+   if(self!=NULL)
+    CFRelease(self);
 }
 
 O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void) {
@@ -61,14 +63,14 @@ O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void) {
 
 size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
    switch(self->_type){
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      return 1;
-    case O2ColorSpaceDeviceRGB: 
-    case O2ColorSpacePlatformRGB:
+    case kO2ColorSpaceModelRGB: 
+    case kO2ColorSpaceModelPlatformRGB:
      return 3;
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      return 4;
-    case O2ColorSpaceIndexed:
+    case kO2ColorSpaceModelIndexed:
      return 1;
     default:
      return 0;
@@ -92,7 +94,7 @@ size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
 -initWithColorSpace:(O2ColorSpaceRef)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes  {
    int i,max=O2ColorSpaceGetNumberOfComponents(baseColorSpace)*(hival+1);
   
-   _type=O2ColorSpaceIndexed;
+   _type=kO2ColorSpaceModelIndexed;
    _base=[baseColorSpace retain];
    _hival=hival;
    _bytes=NSZoneMalloc(NSDefaultMallocZone(),max);

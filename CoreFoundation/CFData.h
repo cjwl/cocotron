@@ -7,8 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 
-typedef struct __NSMutableData *CFDataRef;
-typedef struct __NSMutableData *CFMutableDataRef;
+typedef struct __CFMutableData *CFDataRef;
+typedef struct __CFMutableData *CFMutableDataRef;
 
 #import <CoreFoundation/CFBase.h>
 
@@ -27,7 +27,7 @@ COREFOUNDATION_EXPORT void           CFDataGetBytes(CFDataRef self,CFRange range
 
 COREFOUNDATION_EXPORT CFMutableDataRef CFDataCreateMutable(CFAllocatorRef allocator,CFIndex capacity);
 
-COREFOUNDATION_EXPORT CFMutableDataRef CFDataCreateMutableCopy(CFAllocatorRef allocator,CFIndex capacity,CFDataRef self);
+COREFOUNDATION_EXPORT CFMutableDataRef CFDataCreateMutableCopy(CFAllocatorRef allocator,CFIndex capacity,CFDataRef other);
 
 COREFOUNDATION_EXPORT uint8_t         *CFDataGetMutableBytePtr(CFMutableDataRef self);
 

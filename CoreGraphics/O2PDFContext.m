@@ -282,7 +282,7 @@ static inline O2GState *currentState(O2Context *self){
     [resources setObjectForKey:categoryName value:category];
    }
    
-   NSString *key=[NSString stringWithCString:categoryName];
+   NSString *key=[NSString stringWithCString:categoryName encoding:NSISOLatin1StringEncoding];
    NSNumber *next=[_categoryToNext objectForKey:key];
    
    next=[NSNumber numberWithInt:(next==nil)?0:[next intValue]+1];
@@ -359,16 +359,16 @@ static inline O2GState *currentState(O2Context *self){
    
    switch([O2ColorGetColorSpace(gState->_strokeColor) type]){
    
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      [self contentWithFormat:@"%f G ",components[0]];
      break;
      
-    case O2ColorSpaceDeviceRGB:
-    case O2ColorSpacePlatformRGB:
+    case kO2ColorSpaceModelRGB:
+    case kO2ColorSpaceModelPlatformRGB:
      [self contentWithFormat:@"%f %f %f RG ",components[0],components[1],components[2]];
      break;
      
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      [self contentWithFormat:@"%f %f %f %f K ",components[0],components[1],components[2],components[3]];
      break;
    }
@@ -379,16 +379,16 @@ static inline O2GState *currentState(O2Context *self){
    
    switch([O2ColorGetColorSpace(gState->_fillColor) type]){
    
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      [self contentWithFormat:@"%f g ",components[0]];
      break;
      
-    case O2ColorSpaceDeviceRGB:
-    case O2ColorSpacePlatformRGB:
+    case kO2ColorSpaceModelRGB:
+    case kO2ColorSpaceModelPlatformRGB:
      [self contentWithFormat:@"%f %f %f rg ",components[0],components[1],components[2]];
      break;
      
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      [self contentWithFormat:@"%f %f %f %f k ",components[0],components[1],components[2],components[3]];
      break;
    }

@@ -176,21 +176,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [phase release];
 }
 
--(O2Color *)strokeColor {
+-(O2ColorRef )strokeColor {
    return _strokeColor;
 }
 
--(O2Color *)fillColor {
+-(O2ColorRef )fillColor {
    return _fillColor;
 }
 
--(void)setStrokeColor:(O2Color *)color {
+-(void)setStrokeColor:(O2ColorRef )color {
    [color retain];
    [_strokeColor release];
    _strokeColor=color;
 }
 
--(void)setFillColor:(O2Color *)color {
+-(void)setFillColor:(O2ColorRef )color {
    [color retain];
    [_fillColor release];
    _fillColor=color;
@@ -270,7 +270,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(O2TextEncoding)encoding {
-   O2Font *font=O2FontCreateWithFontName([NSString stringWithCString:name]);
+   O2Font *font=O2FontCreateWithFontName([NSString stringWithCString:name encoding:NSUTF8StringEncoding]);
    
    if(font!=nil){
     [_font release];
@@ -337,7 +337,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _interpolationQuality=quality;
 }
 
--(void)setShadowOffset:(O2Size)offset blur:(float)blur color:(O2Color *)color {
+-(void)setShadowOffset:(O2Size)offset blur:(float)blur color:(O2ColorRef )color {
    _shadowOffset=offset;
    _shadowBlur=blur;
    [color retain];
@@ -350,7 +350,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setShadowOffset:(O2Size)offset blur:(float)blur {
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    float         components[4]={0,0,0,1.0/3.0};
-   O2Color      *color=O2ColorCreate(colorSpace,components);
+   O2ColorRef color=O2ColorCreate(colorSpace,components);
 
    [self setShadowOffset:offset blur:blur color:color];
    [color release];

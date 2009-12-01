@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "O2ImageSource.h"
 
-@class NSTIFFReader;
+@class O2Decoder_TIFF;
 
 @interface O2ImageSource_TIFF : O2ImageSource {
-   NSTIFFReader *_reader;
+   O2Decoder_TIFF *_reader;
 }
 
 

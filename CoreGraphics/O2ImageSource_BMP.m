@@ -430,7 +430,6 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    int            width,height;
    int            comp;
    unsigned char *pixels=stbi_bmp_load_from_memory([_bmp bytes],[_bmp length],&width,&height,&comp,STBI_rgb_alpha);
-   int            npixels=width*height;
    int            bitsPerPixel=32;
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;

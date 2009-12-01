@@ -14,16 +14,16 @@
    
    switch(_type){
    
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      name=[O2PDFObject_Name pdfObjectWithCString:"DeviceGray"];
      break;
      
-    case O2ColorSpaceDeviceRGB:
-    case O2ColorSpacePlatformRGB:  // wrong
+    case kO2ColorSpaceModelRGB:
+    case kO2ColorSpaceModelPlatformRGB:  // wrong
      name=[O2PDFObject_Name pdfObjectWithCString:"DeviceRGB"];
      break;
 
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      name=[O2PDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
      break;
 

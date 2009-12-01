@@ -109,7 +109,7 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
     else
      diff[i]=(d1!=d2)?ABS(d1-d2):00;
   }
-  CGDataProviderRef provider=CGDataProviderCreateWithCFData(diffData);
+  CGDataProviderRef provider=CGDataProviderCreateWithCFData((CFDataRef)diffData);
    CGImageRef diffImage=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),
      [_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
    [_diffView setImageRef:diffImage];
@@ -121,7 +121,6 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
 }
 
 -(void)awakeFromNib {
-   [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
 
   [self setNeedsDisplay];
 }
@@ -311,6 +310,11 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
    [self setNeedsDisplay];
    }
    
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification *)note {
+
+   [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {

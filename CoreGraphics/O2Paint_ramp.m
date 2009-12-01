@@ -65,23 +65,23 @@ static inline void CMYKAToRGBA(float *input,float *output){
    
    O2Function      *function=[shading function];
    O2ColorSpace    *colorSpace=[shading colorSpace];
-   O2ColorSpaceType colorSpaceType=[colorSpace type];
+   O2ColorSpaceModel colorSpaceType=[colorSpace type];
    float            output[O2ColorSpaceGetNumberOfComponents(colorSpace)+1];
    void           (*outputToRGBA)(float *,float *);
    float            rgba[4];
 
    switch(colorSpaceType){
 
-    case O2ColorSpaceDeviceGray:
+    case kO2ColorSpaceModelMonochrome:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case O2ColorSpaceDeviceRGB:
-    case O2ColorSpacePlatformRGB:
+    case kO2ColorSpaceModelRGB:
+    case kO2ColorSpaceModelPlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case O2ColorSpaceDeviceCMYK:
+    case kO2ColorSpaceModelCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      

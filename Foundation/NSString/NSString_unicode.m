@@ -30,16 +30,15 @@ NSString *NSString_unicodeNew(NSZone *zone,
 
 NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength)
 {
-    if(length*2+1 > maxLength) {
+    if((length+1)*2 > maxLength) {
         cString[0]='\0';
         return 0;
     }
     
-    NSUInteger ucByteLen = length*sizeof(unichar) + 1;
+    NSUInteger ucByteLen = length*sizeof(unichar);
     memcpy(cString, characters, ucByteLen);
     *((unichar *)(cString + ucByteLen)) = 0;
     return ucByteLen;
-    
 }
 
 char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger *resultLength, NSZone *zone,BOOL zeroTerminate) {
