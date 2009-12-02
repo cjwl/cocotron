@@ -33,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int                    _clickCount;
    DWORD                  _lastTickCount;
    LPARAM                 _lastPosition;
+   NSPoint                _pastLocation;
 }
 
 +(Win32Display *)currentDisplay;

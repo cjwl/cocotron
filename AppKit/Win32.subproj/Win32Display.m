@@ -102,6 +102,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 
     _cursorDisplayCount=1;
     _cursorCache=[NSMutableDictionary new];
+	_pastLocation = NSMakePoint(FLT_MAX, FLT_MAX);
    }
    return self;
 }
@@ -556,18 +557,17 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postMouseMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
 	NSEvent *event;
-	static NSPoint pastloc = {FLT_MAX, FLT_MAX};
 
-	if (((type == NSLeftMouseDragged) || (type == NSRightMouseDragged)) && (pastloc.x != FLT_MAX))
-		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:location.x - pastloc.x deltaY:-(location.y - pastloc.y)];
+	if (((type == NSLeftMouseDragged) || (type == NSRightMouseDragged)) && (_pastLocation.x != FLT_MAX))
+		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:location.x - _pastLocation.x deltaY:-(location.y - _pastLocation.y)];
 	else
 		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:0.0 deltaY:0.0];
 	
 	if ((type == NSLeftMouseDragged) || (type == NSRightMouseDragged))
-		pastloc = location;
+		_pastLocation = location;
 	
 	if ((type == NSLeftMouseUp) || (type == NSRightMouseUp))
-		pastloc = NSMakePoint(FLT_MAX, FLT_MAX);
+		_pastLocation = NSMakePoint(FLT_MAX, FLT_MAX);
 	
 	[self postEvent:event atStart:NO];
 	
