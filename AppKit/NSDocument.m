@@ -1064,9 +1064,14 @@ forSaveOperation:(NSSaveOperationType)operation
 }
 
 -(BOOL)writeToFile:(NSString *)path ofType:(NSString *)type {
-   NSData *data=[self dataRepresentationOfType:type];
-
-   return [data writeToFile:path atomically:YES];
+	NSData *data;
+	
+	if ([self _isSelectorOverridden:@selector(dataRepresentationOfType:)])
+		data = [self dataRepresentationOfType:type];
+	else
+		data = [self dataOfType:type error:NULL];
+	
+	return [data writeToFile:path atomically:YES];
 }
 
 -(BOOL)writeToFile:(NSString *)path ofType:(NSString *)type originalFile:(NSString *)original saveOperation:(NSSaveOperationType)operation {

@@ -399,13 +399,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)TIFFRepresentation {
-   NSUnimplementedMethod();
-   return nil;
+   return [self TIFFRepresentationUsingCompression:NSTIFFCompressionNone factor:0.0];
 }
 
 -(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor {
-   NSUnimplementedMethod();
-   return nil;
+   return [[self class] TIFFRepresentationOfImageRepsInArray:[NSArray arrayWithObject:self]
+											usingCompression:compression 
+													  factor:factor];
 }
 
 -(CGImageRef)createCGImage {
