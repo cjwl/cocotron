@@ -238,8 +238,12 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
 
 NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 1-366
     NSInteger year = NSYearFromTimeInterval(interval);
-
-    return numberOfDaysInCommonEraOfDayMonthAndYear(31, 12, year) - NSDayOfCommonEraFromTimeInterval(interval);
+    NSInteger result;
+    
+    result = NSDayOfCommonEraFromTimeInterval(interval) - numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year) + 1;
+    if(result == 0) { result = 366; };
+    
+    return result;
 }
 
 NSInteger NSMonthFromTimeInterval(NSTimeInterval interval){ // 1-12

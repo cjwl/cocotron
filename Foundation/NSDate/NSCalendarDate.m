@@ -180,26 +180,77 @@ second, 0);
     return NSDayOfCommonEraFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
-// Needs to be verified, lame implementation
 -(void)years:(NSInteger *)yearsp months:(NSInteger *)monthsp days:(NSInteger *)daysp
   hours:(NSInteger *)hoursp minutes:(NSInteger *)minutesp seconds:(NSInteger *)secondsp
   sinceDate:(NSCalendarDate *)since {
-   NSTimeInterval delta=[self timeIntervalSinceReferenceDate]-[since timeIntervalSinceReferenceDate];
-
-   if(yearsp!=NULL) {
-    *yearsp = NSYearFromTimeInterval(delta);
-    (*yearsp)-=2000;
-   }
-   if(monthsp!=NULL)
-    *monthsp = NSMonthFromTimeInterval(delta);
-   if(daysp!=NULL)
-    *daysp = NSDayOfMonthFromTimeInterval(delta);
-   if(hoursp!=NULL)
-    *hoursp = NS24HourFromTimeInterval(delta);
-   if(minutesp!=NULL)
-    *minutesp = NSMinuteFromTimeInterval(delta);
-   if(secondsp!=NULL)
-    *secondsp = NSSecondFromTimeInterval(delta);
+    NSTimeInterval delta;
+    BOOL inverted = NO;
+    NSInteger carry = 0;
+    
+    if ([self timeIntervalSinceReferenceDate] > [since timeIntervalSinceReferenceDate]) {
+        delta = [self timeIntervalSinceReferenceDate]-[since timeIntervalSinceReferenceDate];
+    }
+    else {
+        delta = [since timeIntervalSinceReferenceDate]-[self timeIntervalSinceReferenceDate];
+        inverted  = YES;
+    }
+    carry = NSYearFromTimeInterval(delta);
+    (carry)-=2001;
+    if(inverted)
+        carry *= -1;
+    if (yearsp!=NULL) {
+        *yearsp = carry;
+        carry = 0;
+    }    
+    
+    carry = (NSMonthFromTimeInterval(delta) -1) * (inverted ? -1 : 1) + carry * 12;
+    if (monthsp!=NULL) {
+        *monthsp = carry;
+    }   
+    if(inverted) {
+        carry = (NSDayOfCommonEraFromTimeInterval([[since dateByAddingYears:yearsp!=NULL?*yearsp:0 months:monthsp!=NULL?*monthsp:0 days:0 hours:0 minutes:0 seconds:0] timeIntervalSinceReferenceDate]) - NSDayOfCommonEraFromTimeInterval([self timeIntervalSinceReferenceDate]) - 1) * -1;        
+    }
+    else
+    {
+        carry = NSDayOfCommonEraFromTimeInterval([[self dateByAddingYears:yearsp!=NULL?*yearsp*-1:0 months:monthsp!=NULL?*monthsp*-1:0 days:0 hours:0 minutes:0 seconds:0] timeIntervalSinceReferenceDate]) - NSDayOfCommonEraFromTimeInterval([since timeIntervalSinceReferenceDate]) -1;        
+    }
+    
+    if (daysp!=NULL) {
+        *daysp = carry;
+        carry = 0;
+    }
+    
+    if (inverted) {
+        carry = carry * 24 - NS24HourFromTimeInterval(delta);
+    }
+    else {
+        carry = carry * 24 + NS24HourFromTimeInterval(delta);
+    }
+    
+    if (hoursp!=NULL) {
+        *hoursp = carry;
+        carry = 0;
+    }
+    
+    if(inverted) {
+        carry = carry * 60 - NSMinuteFromTimeInterval(delta);
+    }
+    else {
+        carry = carry * 60 + NSMinuteFromTimeInterval(delta);
+    }
+    if (minutesp!=NULL) {
+        *minutesp = carry;
+        carry = 0;   
+    }
+    
+    if (secondsp!=NULL) {
+            if(inverted) {
+                *secondsp = carry * 60 - NSSecondFromTimeInterval(delta);
+            }
+            else {
+                *secondsp = carry * 60 + NSSecondFromTimeInterval(delta);
+            }
+    }
 }
 
 // Might be a little off with daylight savings, etc., needs to be verified
