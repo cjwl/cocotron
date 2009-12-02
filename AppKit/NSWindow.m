@@ -2384,7 +2384,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
         toolTipWindowChange=YES;
        }
        else
-        [[check owner] mouseExited:[NSEvent mouseEventWithType:NSMouseExited location:point modifierFlags:0 window:self clickCount:0]];
+		   [[check owner] mouseExited:[NSEvent mouseEventWithType:NSMouseExited location:point modifierFlags:0 window:self clickCount:0 deltaX:0.0 deltaY:0.0]];
 
        [check setMouseInside:NO];
       }
@@ -2409,7 +2409,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
         toolTipWindowChange=YES;
        }
        else
-        [[check owner] mouseEntered:[NSEvent mouseEventWithType:NSMouseEntered location:point modifierFlags:0 window:self clickCount:0]];
+        [[check owner] mouseEntered:[NSEvent mouseEventWithType:NSMouseEntered location:point modifierFlags:0 window:self clickCount:0 deltaX:0.0 deltaY:0.0]];
 
        [check setMouseInside:YES];
       }

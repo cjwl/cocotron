@@ -555,11 +555,23 @@ The values should be upgraded to something which is more generic to implement, p
 }
 
 -(BOOL)postMouseMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
-   NSEvent *event;
+	NSEvent *event;
+	static NSPoint pastloc = {FLT_MAX, FLT_MAX};
 
-   event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount];
-   [self postEvent:event atStart:NO];
-   return YES;
+	if (((type == NSLeftMouseDragged) || (type == NSRightMouseDragged)) && (pastloc.x != FLT_MAX))
+		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:location.x - pastloc.x deltaY:-(location.y - pastloc.y)];
+	else
+		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:0.0 deltaY:0.0];
+	
+	if ((type == NSLeftMouseDragged) || (type == NSRightMouseDragged))
+		pastloc = location;
+	
+	if ((type == NSLeftMouseUp) || (type == NSRightMouseUp))
+		pastloc = NSMakePoint(FLT_MAX, FLT_MAX);
+	
+	[self postEvent:event atStart:NO];
+	
+	return YES;
 }
 
 -(BOOL)postScrollWheelMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
