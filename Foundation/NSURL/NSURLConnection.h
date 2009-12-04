@@ -7,12 +7,15 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSURLRequest,NSData,NSURLResponse,NSError,NSURLAuthenticationChallenge,NSCachedURLResponse,NSURLProtocol;
+@class NSInputStream,NSOutputStream,NSRunLoop,NSURLRequest,NSData,NSURLResponse,NSError,NSMutableArray,NSURLAuthenticationChallenge,NSCachedURLResponse,NSURLProtocol;
 
 @interface NSURLConnection : NSObject {
    NSURLRequest  *_request;
    NSURLProtocol *_protocol;
    id             _delegate;
+   NSMutableArray *_modes;
+   NSInputStream  *_inputStream;
+   NSOutputStream *_outputStream;
 }
 
 +(BOOL)canHandleRequest:(NSURLRequest *)request;
@@ -25,6 +28,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)start;
 -(void)cancel;
+
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
 @end
 

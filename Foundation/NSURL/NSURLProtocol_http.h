@@ -12,9 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSInputStream,NSOutputStream,NSMutableData,NSMutableDictionary;
 
 @interface NSURLProtocol_http : NSURLProtocol {
-   NSInputStream  *_inputStream;
-   NSOutputStream *_outputStream;
-
 // parsing state
    NSMutableData *_data;
    const uint8_t *_bytes;

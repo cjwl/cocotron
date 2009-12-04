@@ -307,37 +307,13 @@ NSLog(@"parse error %d",__LINE__);
 }
 
 -(void)startLoading {
-   NSURL    *url=[_request URL];
-   NSString *hostName=[url host];
-   NSNumber *portNumber=[url port];
-//	NSLog(@"startloading");
-	sentrequest=NO;
-   
-   if(portNumber==nil)
-    portNumber=[NSNumber numberWithInt:80];
-    
-   NSHost *host=[NSHost hostWithName:hostName];
-   
-   [NSStream getStreamsToHost:host port:[portNumber intValue] inputStream:&_inputStream outputStream:&_outputStream];
-   [_inputStream setDelegate:self];
-   [_outputStream setDelegate:self];
-	
-   [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-   [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[_inputStream retain];
-	[_outputStream retain];
-	[_inputStream open];
-	[_outputStream open];
-//	NSLog(@"input stream %@",_inputStream);
-
    _data=[NSMutableData new];
    _range=NSMakeRange(0,0);
    _headers=[NSMutableDictionary new];
 }
 
 -(void)stopLoading {
-   [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-   [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+
 }
 
 -(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
@@ -400,9 +376,9 @@ NSLog(@"parse error %d",__LINE__);
 }
 
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
-   if(stream==_inputStream)
+   if([stream isKindOfClass:[NSInputStream class]])
     [self inputStream:(NSInputStream *)stream handleEvent:streamEvent];
-   else if(stream==_outputStream)
+   else if([stream isKindOfClass:[NSOutputStream class]])
     [self outputStream:(NSOutputStream *)stream handleEvent:streamEvent];
 }
 
@@ -414,6 +390,7 @@ NSLog(@"parse error %d",__LINE__);
 	_request=[request retain];
 	_response=[response retain];
 	_client=[(id)client retain];
+	sentrequest=NO;
 	return self;
 }
 

@@ -34,10 +34,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isRunning;
 }
 
--(void)receiveAllData
+-(void)receiveAllDataInMode:(NSString *)mode
 {
 	while (  [self isRunning] ) {
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+		[[NSRunLoop currentRunLoop] runMode:mode beforeDate:[NSDate distantFuture]];
 //		NSLog(@"loop did run");
 	}
 	NSLog(@"done %d",_isRunning);

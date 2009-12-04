@@ -11,6 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSRunLoop.h>
+#import <Foundation/NSStream.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSHost.h>
+#import <Foundation/NSURL.h>
 #import "NSURLConnectionState.h"
 
 @interface NSURLProtocol(private)
@@ -45,10 +50,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSURLConnectionState *state=[[NSURLConnectionState alloc] init];
 	NSLog(@"state: %@",state);
    NSURLConnection      *connection=[[self alloc] initWithRequest:request delegate:state];
+   NSString *mode=@"NSURLConnectionRequestMode";
    
+    [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    
 	NSLog(@"will receive data");
-	[state receiveAllData];
+	[state receiveAllDataInMode:mode];
+    [connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
 	NSLog(@"did receive data");
+
+
+    [connection cancel];
+    [connection release];
+    
    if(errorp!=NULL)
     *errorp=[state error];
    if(responsep!=NULL)
@@ -66,6 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    Class cls=[isa _URLProtocolClassForRequest:request];
    _protocol=[[cls alloc] initWithRequest:_request cachedResponse:nil client:self];
    _delegate=delegate;
+   _modes=[[NSMutableArray arrayWithObject:NSDefaultRunLoopMode] retain];
    if(startLoading)
     [self start];
    return self;
@@ -79,18 +94,62 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_request release];
    [_protocol release];
    _delegate=nil;
+   [_modes release];
+   [_inputStream release];
+   [_outputStream release];
    [super dealloc];
 }
 
 -(void)start {
+   NSURL    *url=[_request URL];
+   NSString *hostName=[url host];
+   NSNumber *portNumber=[url port];
+//	NSLog(@"startloading");
+   
+   if(portNumber==nil)
+    portNumber=[NSNumber numberWithInt:80];
+    
+   NSHost *host=[NSHost hostWithName:hostName];
+   
+   [NSStream getStreamsToHost:host port:[portNumber intValue] inputStream:&_inputStream outputStream:&_outputStream];
+   [_inputStream setDelegate:_protocol];
+   [_outputStream setDelegate:_protocol];
+	
+   for(NSString *mode in _modes){
+    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+   }
+    
+	[_inputStream retain];
+	[_outputStream retain];
+	[_inputStream open];
+	[_outputStream open];
+//	NSLog(@"input stream %@",_inputStream);
+
 	NSLog(@"start -> startLoading");
    [_protocol startLoading];
 }
 
 -(void)cancel {
    [_protocol stopLoading];
+   
+   [_inputStream setDelegate:nil];
+   [_outputStream setDelegate:nil];
+   for(NSString *mode in _modes){
+    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+   }
 }
 
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   [_inputStream scheduleInRunLoop:runLoop forMode:mode];
+   [_outputStream scheduleInRunLoop:runLoop forMode:mode];
+}
+
+-(void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   [_inputStream removeFromRunLoop:runLoop forMode:mode];
+   [_outputStream removeFromRunLoop:runLoop forMode:mode];
+}
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect {
    [_delegate connection:self willSendRequest:request redirectResponse:redirect];
