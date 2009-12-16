@@ -10,6 +10,14 @@
 		FE4B804510B483A50045407A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
 		FE4B804610B483A50045407A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
 		FE4B804710B483A60045407A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
+		FE5A888010C6F2F5005E348A /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920B0FFB217F007AECF1 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5A888110C6F2F5005E348A /* CoreTextExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920C0FFB217F007AECF1 /* CoreTextExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5A888210C6F2F5005E348A /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920D0FFB217F007AECF1 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5A888310C6F2F5005E348A /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920F0FFB217F007AECF1 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5A888610C6F2F5005E348A /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF920E0FFB217F007AECF1 /* CTFont.m */; };
+		FE5A888710C6F2F5005E348A /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF92100FFB217F007AECF1 /* KTFont.m */; };
+		FE5A888910C6F2F5005E348A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE5A888A10C6F2F5005E348A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
 		FECF92110FFB217F007AECF1 /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920B0FFB217F007AECF1 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92120FFB217F007AECF1 /* CoreTextExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920C0FFB217F007AECF1 /* CoreTextExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92130FFB217F007AECF1 /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920D0FFB217F007AECF1 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,6 +42,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		FE5A888B10C6F2F5005E348A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		FECF92600FFB2B8F007AECF1 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
@@ -53,6 +69,20 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE5A884810C6F286005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A884510C6F286005E348A /* CoreGraphics.framework */;
+			remoteInfo = "CoreGraphics-Darwin-i386 copy";
+		};
+		FE5A889310C6F33D005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5A877910C6F286005E348A /* CoreGraphics-FreeBSD-i386 */;
+			remoteInfo = "CoreGraphics-FreeBSD-i386";
+		};
 		FECF92710FFB2BA7007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
@@ -101,6 +131,7 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreText.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreText.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE5A888E10C6F2F5005E348A /* CoreText.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreText.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FECF920B0FFB217F007AECF1 /* CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreText.h; sourceTree = "<group>"; };
 		FECF920C0FFB217F007AECF1 /* CoreTextExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextExport.h; sourceTree = "<group>"; };
 		FECF920D0FFB217F007AECF1 /* CTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFont.h; sourceTree = "<group>"; };
@@ -120,6 +151,15 @@
 			files = (
 				FECF92870FFB2C32007AECF1 /* Foundation.framework in Frameworks */,
 				FE4B804510B483A50045407A /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE5A888810C6F2F5005E348A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A888910C6F2F5005E348A /* Foundation.framework in Frameworks */,
+				FE5A888A10C6F2F5005E348A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +190,7 @@
 				8DC2EF5B0486A6940098B216 /* CoreText.framework */,
 				FECF923F0FFB29FF007AECF1 /* CoreText.framework */,
 				FECF924F0FFB2A0D007AECF1 /* CoreText.framework */,
+				FE5A888E10C6F2F5005E348A /* CoreText.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -226,6 +267,7 @@
 				FECF92720FFB2BA7007AECF1 /* CoreGraphics.framework */,
 				FECF92740FFB2BA7007AECF1 /* CoreGraphics.framework */,
 				FECF92760FFB2BA7007AECF1 /* CoreGraphics.framework */,
+				FE5A884910C6F286005E348A /* CoreGraphics.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,6 +283,17 @@
 				FECF92120FFB217F007AECF1 /* CoreTextExport.h in Headers */,
 				FECF92130FFB217F007AECF1 /* CTFont.h in Headers */,
 				FECF92150FFB217F007AECF1 /* KTFont.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE5A887F10C6F2F5005E348A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A888010C6F2F5005E348A /* CoreText.h in Headers */,
+				FE5A888110C6F2F5005E348A /* CoreTextExport.h in Headers */,
+				FE5A888210C6F2F5005E348A /* CTFont.h in Headers */,
+				FE5A888310C6F2F5005E348A /* KTFont.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +341,27 @@
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreText;
 			productReference = 8DC2EF5B0486A6940098B216 /* CoreText.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE5A887C10C6F2F5005E348A /* CoreText-FreeBSD-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE5A888C10C6F2F5005E348A /* Build configuration list for PBXNativeTarget "CoreText-FreeBSD-i386" */;
+			buildPhases = (
+				FE5A887F10C6F2F5005E348A /* Headers */,
+				FE5A888410C6F2F5005E348A /* Resources */,
+				FE5A888510C6F2F5005E348A /* Sources */,
+				FE5A888810C6F2F5005E348A /* Frameworks */,
+			);
+			buildRules = (
+				FE5A888B10C6F2F5005E348A /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE5A889410C6F33D005E348A /* PBXTargetDependency */,
+			);
+			name = "CoreText-FreeBSD-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreText;
+			productReference = FE5A888E10C6F2F5005E348A /* CoreText.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FECF92310FFB29FF007AECF1 /* CoreText-Linux-i386 */ = {
@@ -353,11 +427,19 @@
 				8DC2EF4F0486A6940098B216 /* CoreText-Windows-i386 */,
 				FECF92310FFB29FF007AECF1 /* CoreText-Linux-i386 */,
 				FECF92410FFB2A0D007AECF1 /* CoreText-Darwin-i386 */,
+				FE5A887C10C6F2F5005E348A /* CoreText-FreeBSD-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FE5A884910C6F286005E348A /* CoreGraphics.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreGraphics.framework;
+			remoteRef = FE5A884810C6F286005E348A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FECF92720FFB2BA7007AECF1 /* CoreGraphics.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -383,6 +465,13 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE5A888410C6F2F5005E348A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -415,6 +504,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE5A888510C6F2F5005E348A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A888610C6F2F5005E348A /* CTFont.m in Sources */,
+				FE5A888710C6F2F5005E348A /* KTFont.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FECF92390FFB29FF007AECF1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -436,6 +534,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FE5A889410C6F33D005E348A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-FreeBSD-i386";
+			targetProxy = FE5A889310C6F33D005E348A /* PBXContainerItemProxy */;
+		};
 		FECF92780FFB2BB0007AECF1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreGraphics-Windows-i386";
@@ -497,6 +600,43 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+			};
+			name = Release;
+		};
+		FE5A888D10C6F2F5005E348A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .so;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DCORETEXT_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lm",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CoreText;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreText/FreeBSD;
 			};
 			name = Release;
 		};
@@ -590,6 +730,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE5A888C10C6F2F5005E348A /* Build configuration list for PBXNativeTarget "CoreText-FreeBSD-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE5A888D10C6F2F5005E348A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

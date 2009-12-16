@@ -20,10 +20,6 @@ static inline O2GState *currentState(O2Context *self){
    return [self->_stateStack lastObject];
 }
 
-static inline BOOL transformIsFlipped(O2AffineTransform matrix){
-   return (matrix.d<0)?YES:NO;
-}
-
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
    if([[self surface] isKindOfClass:[O2Surface_DIBSection class]])
@@ -101,17 +97,6 @@ static inline BOOL transformIsFlipped(O2AffineTransform matrix){
       
    currentState(self)->_textTransform.tx+=total;
    currentState(self)->_textTransform.ty+=0;
-}
-
--(void)showText:(const char *)text length:(unsigned)length {
-   O2Glyph *encoding=[currentState(self) glyphTableForTextEncoding];
-   O2Glyph  glyphs[length];
-   int      i;
-   
-   for(i=0;i<length;i++)
-    glyphs[i]=encoding[(uint8_t)text[i]];
-    
-   [self showGlyphs:glyphs count:length];
 }
 
 @end

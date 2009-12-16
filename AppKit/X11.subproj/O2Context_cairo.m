@@ -6,7 +6,7 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/CairoContext.h>
+#import "O2Context_cairo.h"
 #import <AppKit/X11Display.h>
 #import <CoreGraphics/O2MutablePath.h>
 #import <CoreGraphics/O2Color.h>
@@ -15,86 +15,65 @@
 #import <AppKit/TTFFont.h>
 #import <CoreGraphics/O2ColorSpace.h>
 #import <CoreGraphics/O2Surface.h>
-#import <AppKit/CairoCacheImage.h>
 #import <Foundation/NSException.h>
 #import <cairo/cairo-ft.h>
+#import <cairo/cairo.h>
+#import "O2FontState_cairo.h"
+#import "O2Surface_cairo.h"
+#import "O2Context_builtin_FT.h"
 
-@implementation TTFFont (CairoFont) 
--(void)releasePlatformFont {
-   cairo_font_face_destroy(_platformFont);
-}
-
--(cairo_font_face_t*)cairoFont {
-   if(!_platformFont) {
-      _platformFont=(void*)cairo_ft_font_face_create_for_ft_face([self face], NULL);
-   }
-   return (cairo_font_face_t *)_platformFont;
-}
-@end
-
-
-
-@implementation CairoContext
+@implementation O2Context_cairo
 
 static inline O2GState *currentState(O2Context *self){        
    return [self->_stateStack lastObject];
 }
 
++(BOOL)canInitWithWindow:(CGWindow *)window {
+   return YES;
+}
 
--(id)initWithWindow:(X11Window*)w
-{
-   NSRect frame=[w frame];
++(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary {
+   NSString *name=[deviceDictionary objectForKey:@"O2Context"];
+   
+   if(name==nil || [name isEqual:@"cairo"])
+    return YES;
+    
+   return NO;
+}
+
+-initWithSize:(O2Size)size window:(CGWindow *)cgWindow {
+   X11Window *window=(X11Window *)cgWindow;
+   O2Rect frame=[window frame];
 
    O2GState  *initialState=[[[O2GState alloc] initWithDeviceTransform:O2AffineTransformIdentity] autorelease];
    
-   if(self=[super initWithGraphicsState:initialState])
-   {
+   if(self=[super initWithGraphicsState:initialState]){
       Display *dpy=[(X11Display*)[NSDisplay currentDisplay] display];
-      _surface = cairo_xlib_surface_create(dpy, [w drawable], [w visual], frame.size.width, frame.size.height);
-      [self setSize:NSMakeSize(frame.size.width, frame.size.height)];
+      _surface = cairo_xlib_surface_create(dpy, [window drawable], [window visual], frame.size.width, frame.size.height);
+     _context = cairo_create(_surface);
    }
    return self;
 }
 
--(id)initWithSize:(NSSize)size
-{
+-initWithSize:(O2Size)size context:(O2Context *)context {
    O2GState  *initialState=[[[O2GState alloc] initWithDeviceTransform:O2AffineTransformIdentity] autorelease];
    
-   if(self=[super initWithGraphicsState:initialState])
-   {
+   if(self=[super initWithGraphicsState:initialState]){
       _surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
       _context = cairo_create(_surface);
    }
    return self;
 }
 
--(void)dealloc
-{
+-(void)dealloc {
    cairo_surface_destroy(_surface);
    cairo_destroy(_context);
    [super dealloc];
 }
 
--(void)setSize:(NSSize)size
-{
-   if(_context)
-      cairo_destroy(_context);
-
-   switch(cairo_surface_get_type(_surface))
-   {
-      case CAIRO_SURFACE_TYPE_XLIB:
-         cairo_xlib_surface_set_size(_surface, size.width, size.height);
-         break;
-      case CAIRO_SURFACE_TYPE_IMAGE:
-         cairo_surface_destroy(_surface);
-         _surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
-      default:
-         ;
-   }
-   _dirtyRect=NSMakeRect(0, 0, size.width, size.height);
-   _context = cairo_create(_surface);
+-(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
+   return [[O2Surface_cairo alloc] initWithWidth:width height:height compatibleWithContext:self];
 }
-
 
 -(void)deviceClipReset {
    cairo_reset_clip(_context);  
@@ -102,8 +81,8 @@ static inline O2GState *currentState(O2Context *self){
 
 -(void)setCurrentColor:(O2Color*)color
 {
-   float *c=[color components];
-   int count=[color numberOfComponents];
+   const float *c=O2ColorGetComponents(color);
+   int count=O2ColorGetNumberOfComponents(color);
 
 	switch(count)
    {
@@ -201,10 +180,10 @@ static inline O2GState *currentState(O2Context *self){
 
 -(void)setCurrentPath:(O2Path*)path
 {
-	unsigned             opCount=[path numberOfElements];
-	const unsigned char *operators=[path elements];
-	unsigned             pointCount=[path numberOfPoints];
-	const NSPoint       *points=[path points];
+	unsigned             opCount=O2PathNumberOfElements(path);
+	const unsigned char *operators=O2PathElements(path);
+	unsigned             pointCount=O2PathNumberOfPoints(path);
+	const NSPoint       *points=O2PathPoints(path);
 	unsigned             i,pointIndex;
 	cairo_identity_matrix(_context);
 	cairo_new_path(_context);
@@ -264,7 +243,7 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 
--(void)drawPath:(CGPathDrawingMode)mode
+-(void)drawPath:(O2PathDrawingMode)mode
 {
 	[self setCurrentPath:(O2Path*)_path];
    
@@ -308,15 +287,25 @@ static inline O2GState *currentState(O2Context *self){
 			cairo_stroke_preserve(_context);
 			break;
 	}
-   
-   {
-      double x,y,x2,y2;
-      cairo_stroke_extents(_context, &x, &y, &x2, &y2);
-      _dirtyRect=NSUnionRect(_dirtyRect, NSMakeRect(x, y, x2-x, y2-y));
-   }
-      
+         
    cairo_new_path(_context);
-   [_path reset];
+   O2PathReset(_path);
+}
+
+-(BOOL)resizeWithNewSize:(O2Size)size {
+
+   switch(cairo_surface_get_type(_surface)){
+   
+    case CAIRO_SURFACE_TYPE_XLIB:
+  //   if(_context!=NULL)
+    //  cairo_destroy(_context);
+     cairo_xlib_surface_set_size(_surface, size.width, size.height);
+    // _context = cairo_create(_surface);
+     return YES;
+         
+    default:
+     return NO;
+   }
 }
 
 -(NSSize)size {
@@ -331,26 +320,6 @@ static inline O2GState *currentState(O2Context *self){
    }
 }
 
--(O2Image *)createImage {
-   NSSize size=[self size];
-   cairo_surface_t* img=cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
-   
-   cairo_t *ctx=cairo_create(img);
-   
-   cairo_set_source_surface(ctx, _surface, 0, 0);
-   cairo_set_operator(ctx, CAIRO_OPERATOR_SOURCE);
-   cairo_paint(ctx);
-   
-   cairo_destroy(ctx);
-   
-   id ret=[[CairoCacheImage alloc] initWithSurface:img];
-
-   [ret setSize:size];
-   
-   cairo_surface_destroy(img);
-   return ret;
-}
-
 -(void)drawShading:(O2Shading *)shading {
    if([shading isAxial]) {
       cairo_pattern_t *pat;
@@ -362,63 +331,42 @@ static inline O2GState *currentState(O2Context *self){
    }
 }
 
--(void)drawImage:(id)image inRect:(CGRect)rect {
-   BOOL shouldFreeImage=NO;
-   cairo_surface_t *img=NULL;
-   O2argb8u *data=NULL;
+-(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
+   cairo_surface_t *surface=NULL;
    
-   if([image respondsToSelector:@selector(_cairoSurface)])
-	{
-		img=[image _cairoSurface];
-	}
-	else
-	{
-      NSAssert([image isKindOfClass:[O2Image class]], nil);
-      O2Image *ki=image;
-      int w=[ki width], h=[ki height], i, j;
-      data=calloc(sizeof(O2argb8u), w*h);
-      
-      for(i=0; i<h; i++) {
-         ki->_read_lRGBA8888_PRE(ki, 0, i, &data[w*i], w);
-      }
-      
-      
-      shouldFreeImage=YES;
-		img=cairo_image_surface_create_for_data((unsigned char*)data,
-                                              CAIRO_FORMAT_ARGB32,
-                                              w,
-                                              h,
-                                              w*sizeof(O2argb8u));
-	}
+   if([image isKindOfClass:[O2Surface_cairo class]])
+    surface=cairo_surface_reference([(O2Surface_cairo *)image cairo_surface]);
+   else {
+    int width=O2ImageGetWidth(image);
+    int height=O2ImageGetHeight(image);
+    
+    surface=cairo_image_surface_create(CAIRO_FORMAT_ARGB32,width,height);
+
+    unsigned char *data=cairo_image_surface_get_data(surface);
+    int            bytesPerRow=cairo_image_surface_get_stride(surface);
+    int i;
+    
+    for(i=0; i<height; i++) {
+     image->_read_lRGBA8888_PRE(image, 0, i, (O2argb8u *)(data+i*bytesPerRow), width);
+    }
+   }
    
-   NSAssert(img, nil);
    cairo_identity_matrix(_context);
    [self appendFlip];
    [self appendCTM];
    
-   
    cairo_new_path(_context);
    
    cairo_translate(_context, rect.origin.x, rect.origin.y);
-	cairo_rectangle(_context,
-                   0, 0, rect.size.width, rect.size.height);  
+   cairo_rectangle(_context,0, 0, rect.size.width, rect.size.height);  
    
    cairo_clip(_context);
 
-	cairo_set_source_surface(_context, img, 0.0, 0.0);
+   cairo_set_source_surface(_context,surface, 0.0, 0.0);
 
-	cairo_paint(_context);
+   cairo_paint(_context);
    
-   {
-      double x,y,x2,y2;
-      cairo_clip_extents(_context, &x, &y, &x2, &y2);
-      _dirtyRect=NSUnionRect(_dirtyRect, NSMakeRect(x, y, x2-x, y2-y));
-   }
-   
-   if(shouldFreeImage) {
-      cairo_surface_destroy(img);
-      free(data);
-   }
+   cairo_surface_destroy(surface);
 }
 
 -(void)establishFontStateInDeviceIfDirty {
@@ -427,10 +375,8 @@ static inline O2GState *currentState(O2Context *self){
    if(gState->_fontIsDirty){
     [gState clearFontIsDirty];
 
-    O2Font *cgFont=[gState font];
-    KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[gState pointSize]];
-    NSString    *name=[fontState name];
-    CGFloat      pointSize=[fontState pointSize];
+    O2Font_FT *cgFont=(O2Font_FT *)[gState font];
+    KTFont *fontState=[[O2FontState_cairo alloc] initWithFreeTypeFont:cgFont size:[gState pointSize]];
    
     [gState setFontState:fontState];
     [fontState release];
@@ -438,28 +384,29 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+-(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
    [self establishFontStateInDeviceIfDirty];
    
-   TTFFont *fontState=(TTFFont*)[currentState(self) fontState];
-   int i;
-   cairo_glyph_t *cg=alloca(sizeof(cairo_glyph_t)*count);
-   BOOL nominal;
+   O2GState          *gState=currentState(self);
+   O2Font            *font=[gState font];
+   O2FontState_cairo *fontState=[gState fontState];
+   cairo_font_face_t *face=[fontState cairo_font_face];
+   cairo_glyph_t     *cg=alloca(sizeof(cairo_glyph_t)*count);
+   int                i,advances[count];
+   O2Float            unitsPerEm=O2FontGetUnitsPerEm(font);
+   
+   O2FontGetGlyphAdvances(font,glyphs,count,advances);
 
    float x=0, y=0;
-   for(i=0; i<count; i++)
-   {
-      NSPoint pos=[fontState positionOfGlyph:glyphs[i] precededByGlyph:CGNullGlyph isNominal:&nominal];
-      
-      cg[i].x=x;
-      cg[i].y=y+pos.y;
-      cg[i].index=glyphs[i];
-      x+=pos.x;
+   for(i=0; i<count; i++){      
+    cg[i].x=x;
+    cg[i].y=y;
+    cg[i].index=glyphs[i];
+    x+=((CGFloat)advances[i]/(CGFloat)unitsPerEm)*gState->_pointSize;
    }
    
-   cairo_font_face_t *face=[[currentState(self) fontState] cairoFont];
    cairo_set_font_face(_context, face);
-   cairo_set_font_size(_context, [fontState pointSize]);
+   cairo_set_font_size(_context, gState->_pointSize);
    
    cairo_identity_matrix(_context);
 
@@ -474,25 +421,11 @@ static inline O2GState *currentState(O2Context *self){
    
 }
 
--(void)showText:(const char *)text length:(unsigned)length {
-   [self establishFontStateInDeviceIfDirty];
-
-   unichar unicode[length];
-   CGGlyph glyphs[length];
-   int     i;
-   
-   id str=[NSString stringWithUTF8String:text];
-   [str getCharacters:unicode range:NSMakeRange(0, length)]; 
-    
-   [(KTFont*)[currentState(self) fontState] getGlyphs:glyphs forCharacters:unicode length:length];
-   [self showGlyphs:glyphs count:length];
-}
-
 -(void)flush {
    cairo_surface_flush(_surface);
 }
 
--(cairo_surface_t*)_cairoSurface {
+-(cairo_surface_t *)cairo_surface {
    return _surface;
 }
 
@@ -525,41 +458,34 @@ cairo_status_t writeToData(void		  *closure,
    return ret;   
 }
 
--(void)addToDirtyRect:(NSRect)rect {
-   _dirtyRect=NSUnionRect(_dirtyRect, rect);
-}
-
--(NSRect)dirtyRect; {
-   return _dirtyRect;
-}
-
--(void)resetDirtyRect; {
-   _dirtyRect=NSZeroRect;
-}
-
--(void)copyFromBackingContext:(CairoContext*)other
-{
-   NSRect clip=[other dirtyRect];
+-(void)drawBackingContext:(O2Context *)other size:(NSSize)size {
+   cairo_surface_t *otherSurface=NULL;
    
-   if(NSIsEmptyRect(clip))
+   if([other isKindOfClass:[O2Context_cairo class]])
+    otherSurface=[(O2Context_cairo *)other cairo_surface];
+   else if([other isKindOfClass:[O2Context_builtin_FT class]]){
+    O2Surface *surface=[(O2Context_builtin_FT *)other surface];
+    
+    if([surface isKindOfClass:[O2Surface_cairo class]])
+     otherSurface=[(O2Surface_cairo *)surface cairo_surface];
+   }
+   
+   if(otherSurface==NULL){
+    NSLog(@"unable to draw backing context %@",other);
+    return;
+   }
+      
+   if(size.width==0 || size.height==0)
       return;
    
    cairo_identity_matrix(_context);
    cairo_reset_clip(_context);
+
+   cairo_rectangle(_context,0,0,size.width,size.height);
+   cairo_set_source_surface(_context, otherSurface, 0, 0);
    
-   
-   O2AffineTransform matrix={1, 0, 0, -1, 0, [self size].height};
-   clip.origin=O2PointApplyAffineTransform(clip.origin,matrix);
-   clip.origin.y-=clip.size.height;
-   
-   
-   cairo_new_path(_context);
-   cairo_rectangle(_context, clip.origin.x, clip.origin.y, clip.size.width, clip.size.height);
-   cairo_clip(_context);
-   cairo_set_source_surface (_context, [other _cairoSurface], 0, 0);
-   
-	cairo_paint(_context);
-   [other resetDirtyRect];
+   cairo_paint(_context);
+   cairo_surface_flush(_surface);
 }
 
 @end

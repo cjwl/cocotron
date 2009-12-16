@@ -16,7 +16,11 @@
 #import <AppKit/NSImage.h>
 #import <AppKit/TTFFont.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/O2Font_FT.h>
+#import <AppKit/NSFontManager.h>
+#import <AppKit/NSFontTypeface.h>
 #import <fcntl.h>
+#import <fontconfig.h>
 
 @implementation NSDisplay(X11)
 
@@ -166,11 +170,83 @@ static int errorHandler(Display* display,
 }
 
 -(NSSet *)allFontFamilyNames {
-   return [TTFFont allFontFamilyNames];
+   int i;
+   FcPattern *pat=FcPatternCreate();
+   FcObjectSet *props=FcObjectSetBuild(FC_FAMILY, NULL);
+   
+   FcFontSet *set = FcFontList (O2FontSharedFontConfig(), pat, props);
+   NSMutableSet* ret=[NSMutableSet set];
+   
+   for(i = 0; i < set->nfont; i++)
+   {
+      FcChar8 *family;
+      if (FcPatternGetString (set->fonts[i], FC_FAMILY, 0, &family) == FcResultMatch) {
+         [ret addObject:[NSString stringWithUTF8String:(char*)family]];
+      }
+   }
+   
+   FcPatternDestroy(pat);
+   FcObjectSetDestroy(props);
+   FcFontSetDestroy(set);
+   return ret;
 }
 
--(NSArray *)fontTypefacesForFamilyName:(NSString *)name {
-   return [TTFFont fontTypefacesForFamilyName:name];
+-(NSArray *)fontTypefacesForFamilyName:(NSString *)familyName {
+   int i;
+   FcPattern *pat=FcPatternCreate();
+   FcPatternAddString(pat, FC_FAMILY, (unsigned char*)[familyName UTF8String]);
+   FcObjectSet *props=FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_SLANT, FC_WIDTH, FC_WEIGHT, NULL);
+
+   FcFontSet *set = FcFontList (O2FontSharedFontConfig(), pat, props);
+   NSMutableArray* ret=[NSMutableArray array];
+   
+   for(i = 0; i < set->nfont; i++)
+   {
+      FcChar8 *typeface;
+      FcPattern *p=set->fonts[i];
+      if (FcPatternGetString (p, FC_STYLE, 0, &typeface) == FcResultMatch) {
+         NSString* traitName=[NSString stringWithUTF8String:(char*)typeface];
+         FcChar8* pattern=FcNameUnparse(p);
+         NSString* name=[NSString stringWithUTF8String:(char*)pattern];
+         FcStrFree(pattern);
+         
+         NSFontTraitMask traits=0;
+         int slant, width, weight;
+         
+         FcPatternGetInteger(p, FC_SLANT, FC_SLANT_ROMAN, &slant);
+         FcPatternGetInteger(p, FC_WIDTH, FC_WIDTH_NORMAL, &width);
+         FcPatternGetInteger(p, FC_WEIGHT, FC_WEIGHT_REGULAR, &weight);
+
+         switch(slant) {
+            case FC_SLANT_OBLIQUE:
+            case FC_SLANT_ITALIC:
+               traits|=NSItalicFontMask;
+               break;
+            default:
+               traits|=NSUnitalicFontMask;
+               break;
+         }
+         
+         if(weight<=FC_WEIGHT_LIGHT)
+            traits|=NSUnboldFontMask;
+         else if(weight>=FC_WEIGHT_SEMIBOLD)
+            traits|=NSBoldFontMask;
+         
+         if(width<=FC_WIDTH_SEMICONDENSED)
+            traits|=NSNarrowFontMask;
+         else if(width>=FC_WIDTH_SEMIEXPANDED)
+            traits|=NSExpandedFontMask;
+         
+         NSFontTypeface *face=[[NSFontTypeface alloc] initWithName:name traitName:traitName traits:traits];
+         [ret addObject:face];
+         [face release];
+      }
+   }
+   
+   FcPatternDestroy(pat);
+   FcObjectSetDestroy(props);
+   FcFontSetDestroy(set);
+   return ret;
 }
 
 -(float)scrollerWidth {
@@ -248,6 +324,7 @@ static int errorHandler(Display* display,
    
    while(numEvents=XEventsQueued(_display, QueuedAfterFlush)) {
       XNextEvent(_display, &e);
+      
       id window=[self windowForID:e.xany.window];
       [window handleEvent:&e fromDisplay:self];
       [windowsUsed addObject:window];

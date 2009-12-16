@@ -111,7 +111,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // NSCustomColorSpace NSColorSpace
        NSUInteger    length;
        const uint8_t *rgb=[keyed decodeBytesForKey:@"NSRGB" returnedLength:&length];
-       NSString   *string=[NSString stringWithCString:rgb length:length];
+       NSString   *string=[[[NSString alloc] initWithBytes:rgb length:length encoding:NSUTF8StringEncoding] autorelease];
        NSArray    *components=[string componentsSeparatedByString:@" "];
        float       values[4]={0,0,0,1};
        int         i,count=[components count];
@@ -126,7 +126,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      case 2:{
        NSUInteger    length;
        const uint8_t *rgb=[keyed decodeBytesForKey:@"NSRGB" returnedLength:&length];
-       NSString   *string=[NSString stringWithCString:rgb length:length];
+       NSString   *string=[[[NSString alloc] initWithBytes:rgb length:length encoding:NSUTF8StringEncoding] autorelease];
        NSArray    *components=[string componentsSeparatedByString:@" "];
        float       values[4]={0,0,0,1};
        int         i,count=[components count];
@@ -141,7 +141,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      case 3:{
        NSUInteger    length;
        const uint8_t *white=[keyed decodeBytesForKey:@"NSWhite" returnedLength:&length];
-       NSString   *string=[NSString stringWithCString:white length:length-1];
+       NSString   *string=[[[NSString alloc] initWithBytes:white length:length encoding:NSUTF8StringEncoding] autorelease];
        NSArray    *components=[string componentsSeparatedByString:@" "];
        float       values[2]={0,1};
        int         i,count=[components count];
@@ -156,7 +156,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      case 4:{
        NSUInteger    length;
        const uint8_t *white=[keyed decodeBytesForKey:@"NSWhite" returnedLength:&length];
-       NSString   *string=[NSString stringWithCString:white length:length];
+       NSString   *string=[[[NSString alloc] initWithBytes:white length:length encoding:NSUTF8StringEncoding] autorelease];
        NSArray    *components=[string componentsSeparatedByString:@" "];
        float       values[2]={0,1};
        int         i,count=[components count];
@@ -173,7 +173,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // NSCustomColorSpace NSColorSpace
        NSUInteger    length;
        const uint8_t *cmyk=[keyed decodeBytesForKey:@"NSCMYK" returnedLength:&length];
-       NSString   *string=[NSString stringWithCString:cmyk length:length];
+       NSString   *string=[[[NSString alloc] initWithBytes:cmyk length:length-1 encoding:NSUTF8StringEncoding] autorelease];
        NSArray    *components=[string componentsSeparatedByString:@" "];
        float       values[5]={0,0,0,0,1};
        int         i,count=[components count];

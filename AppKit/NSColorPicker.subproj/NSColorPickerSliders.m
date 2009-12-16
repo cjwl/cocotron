@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSColorPickerSliders
 
--initWithPickerMask:(int)mask colorPanel:(NSColorPanel *)colorPanel {
+-initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel {
     [super initWithPickerMask:mask colorPanel:colorPanel];
 
     NSSize size=[_grayscaleConstantsMatrix cellSize];

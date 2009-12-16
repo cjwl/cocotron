@@ -13,8 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSColorPickerColorList
 
-- (id)initWithPickerMask:(int)mask colorPanel:(NSColorPanel *)colorPanel
-{
+-initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel {
     NSEnumerator *colorListsEnumerator = [[NSColorList availableColorLists] objectEnumerator];
     NSColorList *colorList;
 

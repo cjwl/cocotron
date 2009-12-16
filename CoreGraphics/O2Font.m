@@ -399,8 +399,10 @@ BOOL O2FontGetGlyphAdvances(O2FontRef self,const O2Glyph *glyphs,size_t count,in
     
     if(glyph<self->_numberOfGlyphs)
      advances[i]=self->_advances[glyph];
-    else
+    else {
+     NSLog(@"unknown glyph %d",glyph);
      advances[i]=0;
+    }
    }
    return YES;
 }

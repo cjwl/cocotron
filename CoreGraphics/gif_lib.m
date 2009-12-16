@@ -73,7 +73,7 @@ static char GifVersionPrefix[GIF_STAMP_LEN + 1] = GIF87_STAMP;
 
 GifFileType *DGifOpen(NSInputStream *stream) {
 
-    unsigned char Buf[GIF_STAMP_LEN + 1];
+    uint8_t Buf[GIF_STAMP_LEN + 1];
     GifFileType *GifFile;
 
     GifFile = malloc(sizeof(GifFileType));
@@ -98,7 +98,7 @@ GifFileType *DGifOpen(NSInputStream *stream) {
     /* The GIF Version number is ignored at this time. Maybe we should do
      * something more useful with it. */
     Buf[GIF_STAMP_LEN] = 0;
-    if (strncmp(GIF_STAMP, Buf, GIF_VERSION_POS) != 0) {
+    if (strncmp(GIF_STAMP, (char *)Buf, GIF_VERSION_POS) != 0) {
         GifFile->GifError = D_GIF_ERR_NOT_GIF_FILE;
         free((char *)GifFile);
         return NULL;

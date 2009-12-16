@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSMenuView.h>
+#import <AppKit/NSToolbarView.h>
 
 // FIX, the border stuff should probably be moved into a sheet background view or somesuch
 

@@ -11,11 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef struct O2Font *CGFontRef;
 
-#ifndef WIN32
-typedef uint32_t CGGlyph;
-#else
-typedef unsigned short CGGlyph;
-#endif
+typedef uint16_t CGGlyph;
 
 COREGRAPHICS_EXPORT CGFontRef CGFontCreateWithFontName(CFStringRef name);
 COREGRAPHICS_EXPORT CGFontRef CGFontRetain(CGFontRef self);

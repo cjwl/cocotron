@@ -31,6 +31,10 @@ NSUInteger NSPageSize(void)
 
 NSUInteger NSRealMemoryAvailable(void) 
 {
-	return (NSUInteger)sysconf(_SC_AVPHYS_PAGES)
-		* (NSUInteger)sysconf(_SC_PAGESIZE);
+#ifdef FREEBSD
+// FIXME:
+   return 0;
+#else
+   return (NSUInteger)sysconf(_SC_AVPHYS_PAGES) * (NSUInteger)sysconf(_SC_PAGESIZE);
+#endif
 }

@@ -10,6 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class O2Context,CGEvent;
 
+typedef enum {
+   CGSBackingStoreRetained=0,
+   CGSBackingStoreNonretained=1,
+   CGSBackingStoreBuffered=2
+} CGSBackingStoreType;
+
 @interface CGWindow : NSObject
 
 -(void)setDelegate:delegate;

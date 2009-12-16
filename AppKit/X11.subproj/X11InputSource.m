@@ -12,6 +12,7 @@
 #import <AppKit/X11Display.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRunloop.h>
+#import <Foundation/NSSocket_bsd.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/X11AsyncInputSource.h>
 #import <X11/Xlib.h>

@@ -27,6 +27,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <sys/param.h>
 #import <limits.h>
 #endif
+#ifdef BSD
+#import <sys/sysctl.h>
+#endif
 
 static OBJCArray *OBJCObjectFileImageArray(void) {
    static OBJCArray *objectFileImageArray=NULL;
@@ -116,11 +119,33 @@ extern int _NSGetExecutablePath(char *path,uint32_t *capacity);
 #elif defined(BSD)
 
 int _NSGetExecutablePath(char *path,uint32_t *capacity) {
-   if((*capacity=readlink("/proc/curproc/file", path, *capacity))<0){
+#if defined(FREEBSD)
+   int mib[4];
+   
+   mib[0] = CTL_KERN;
+   mib[1] = KERN_PROC;
+   mib[2] = KERN_PROC_PATHNAME;
+   mib[3] = -1;
+
+   size_t cb = *capacity;
+
+   if(sysctl(mib, 4, path, &cb, NULL, 0)<0){
     *capacity=0;
     return -1;
    }
-    
+   *capacity=strlen(path);
+
+   return 0;
+#else
+   int length;
+   
+   if((length=readlink("/proc/curproc/file", path, 1024))<0){
+    *capacity=0;
+    return -1;
+   }
+   *capacity=length;
+
+#endif   
    return 0;
 }
 

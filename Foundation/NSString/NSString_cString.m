@@ -136,6 +136,7 @@ NSString *NSString_anyCStringNewWithBytes(NSStringEncoding encoding, NSZone *zon
             }
             else {
                 //we cannot use the macro :-(, because we will get into an infinite loop
+                NSCLog("encoding %d",encoding);
                 NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);
             
             }
@@ -158,6 +159,7 @@ NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone
             }
             else {
                 //we cannot use the macro :-(, because we will get into an infinite loop
+                NSCLog("encoding %d",encoding);
                 NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);
             }
             
@@ -184,6 +186,7 @@ NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar
             }
             else {
                 //we cannot use the macro :-(, because we will get into an infinite loop
+                NSCLog("encoding %d",encoding);
                 NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);                
             }         
             //assuming NextSTEP

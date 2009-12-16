@@ -1,2 +1,2 @@
-static void OpenGL(){
+void OpenGL(){
 }

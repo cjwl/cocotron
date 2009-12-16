@@ -12,7 +12,7 @@
 #import <AppKit/X11Display.h>
 #import <AppKit/NSRaise.h>
 #import <X11/Xutil.h>
-#import <AppKit/CairoContext.h>
+#import "O2Context_cairo.h"
 #import <Foundation/NSException.h>
 
 @implementation X11Window
@@ -26,8 +26,7 @@
       XVisualInfo match={0};
       Display *dpy=[(X11Display*)[NSDisplay currentDisplay] display];
    
-      XVisualInfo *info=XGetVisualInfo(dpy,
-                                       0, &match, &visuals_matched);
+      XVisualInfo *info=XGetVisualInfo(dpy,0, &match, &visuals_matched);
       
       for(i=0; i<visuals_matched; i++) {
          if(info[i].depth == 32 &&
@@ -46,51 +45,46 @@
 }
 
 
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
-{
-   if(self=[super init])
-	{
-      _deviceDictionary=[NSMutableDictionary new];
-      _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
-      int s = DefaultScreen(_dpy);
-      _frame=[self transformFrame:frame];
-      if(isPanel && styleMask&NSDocModalWindowMask)
-         styleMask=NSBorderlessWindowMask;
+-initWithFrame:(O2Rect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType {
+   _backingType=backingType;
+   _deviceDictionary=[NSMutableDictionary new];
+   _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
+   int s = DefaultScreen(_dpy);
+   _frame=[self transformFrame:frame];
+   if(isPanel && styleMask&NSDocModalWindowMask)
+    styleMask=NSBorderlessWindowMask;
       
-      XSetWindowAttributes xattr;
-      unsigned long xattr_mask;
-      xattr.override_redirect = styleMask == NSBorderlessWindowMask ? True : False;
-      xattr_mask = CWOverrideRedirect;
+   XSetWindowAttributes xattr;
+   unsigned long xattr_mask;
+   xattr.override_redirect = styleMask == NSBorderlessWindowMask ? True : False;
+   xattr_mask = CWOverrideRedirect;
       
-      _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy),
+   _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy),
                               _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height,
                               0, CopyFromParent, InputOutput, 
                               CopyFromParent,
                               xattr_mask, &xattr);
 
-      XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
-      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask | SubstructureRedirectMask );
+   XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
+    ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask | SubstructureRedirectMask );
 
-      Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
-      XSetWMProtocols(_dpy, _window, &atm , 1);
+   Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
+   XSetWMProtocols(_dpy, _window, &atm , 1);
       
-      XSetWindowBackgroundPixmap(_dpy, _window, None);
+   XSetWindowBackgroundPixmap(_dpy, _window, None);
       
-      [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
-      [self sizeChanged];
+   [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
       
-      if(styleMask == NSBorderlessWindowMask)
-      {
-         [isa removeDecorationForWindow:_window onDisplay:_dpy];
-      }
-   }
+   if(styleMask == NSBorderlessWindowMask){
+     [isa removeDecorationForWindow:_window onDisplay:_dpy];
+    }
    return self;
 }
 
 -(void)dealloc {
    [self invalidate];
    [_backingContext release];
-   [_cgContext release];
+   [_context release];
    [_deviceDictionary release];   
    [super dealloc];
 }
@@ -115,15 +109,10 @@
                     sizeof (hints) / sizeof (long));
 }
 
--(void)ensureMapped
-{
-   if(!_mapped)
-   {
-      [_cgContext release];
-      
+-(void)ensureMapped {
+   if(!_mapped){      
       XMapWindow(_dpy, _window);
       _mapped=YES;
-      _cgContext = [[CairoContext alloc] initWithWindow:self];
    }
 }
 
@@ -138,8 +127,8 @@
 
 -(void)invalidate {
    _delegate=nil;
-   [_cgContext release];
-   _cgContext=nil;
+   [_context release];
+   _context=nil;
 
    if(_window) {
       [(X11Display*)[NSDisplay currentDisplay] setWindow:nil forID:_window];
@@ -148,16 +137,50 @@
    }
 }
 
+-(O2Context *)createCGContextIfNeeded {
+   if(_context==nil)
+    _context=[O2Context createContextWithSize:_frame.size window:self];
 
--(O2Context *)cgContext {
-   if(!_backingContext)
-   {
-      _backingContext=[[CairoContext alloc] initWithSize:_frame.size];
+   return _context;
+}
+
+-(O2Context *)createBackingCGContextIfNeeded {
+   if(_backingContext==nil){
+    _backingContext=[O2Context createBackingContextWithSize:_frame.size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
    }
    
    return _backingContext;
 }
 
+-(O2Context *)cgContext {
+   switch(_backingType){
+
+    case CGSBackingStoreRetained:
+    case CGSBackingStoreNonretained:
+    default:
+     return [self createCGContextIfNeeded];
+
+    case CGSBackingStoreBuffered:
+     return [self createBackingCGContextIfNeeded];
+   }
+   return nil;
+}
+
+-(void)invalidateContextsWithNewSize:(NSSize)size forceRebuild:(BOOL)forceRebuild {
+   if(!NSEqualSizes(_frame.size,size) || forceRebuild){
+    _frame.size=size;
+    if(![_context resizeWithNewSize:size]){
+     [_context release];
+     _context=nil;
+    }
+    [_backingContext release];
+    _backingContext=nil;
+   }  
+}
+
+-(void)invalidateContextsWithNewSize:(NSSize)size {
+   [self invalidateContextsWithNewSize:size forceRebuild:NO];
+}
 
 -(void)setTitle:(NSString *)title {
    XTextProperty prop;
@@ -166,30 +189,24 @@
    XSetWMName(_dpy, _window, &prop);
 }
 
--(void)setFrame:(NSRect)frame {
+-(void)setFrame:(O2Rect)frame {
    frame=[self transformFrame:frame];
    XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
-   [_cgContext setSize:[self frame].size];
-   [_backingContext setSize:[self frame].size];
- }
+   [self invalidateContextsWithNewSize:frame.size];
+}
 
-
--(void)showWindowForAppActivation:(NSRect)frame {
+-(void)showWindowForAppActivation:(O2Rect)frame {
    NSUnimplementedMethod();
 }
 
--(void)hideWindowForAppDeactivation:(NSRect)frame {
+-(void)hideWindowForAppDeactivation:(O2Rect)frame {
    NSUnimplementedMethod();
 }
-
 
 -(void)hideWindow {
    XUnmapWindow(_dpy, _window);
    _mapped=NO;
-   [_cgContext release];
-   _cgContext=nil;
 }
-
 
 -(void)placeAboveWindow:(X11Window *)other {
    [self ensureMapped];
@@ -239,7 +256,22 @@
 
 
 -(void)flushBuffer {
-   [_cgContext copyFromBackingContext:_backingContext];
+
+    switch(_backingType){
+
+     case CGSBackingStoreRetained:
+     case CGSBackingStoreNonretained:
+      O2ContextFlush(_context);
+      break;
+ 
+     case CGSBackingStoreBuffered:
+      if(_backingContext!=nil){
+       O2ContextFlush(_backingContext);
+       [_context drawBackingContext:_backingContext size:_frame.size];
+       O2ContextFlush(_context);
+      }
+      break;
+    }
 }
 
 
@@ -249,7 +281,7 @@
 }
 
 
--(NSRect)frame
+-(O2Rect)frame
 {
    return [self transformFrame:_frame];
 }
@@ -273,7 +305,7 @@ static int ignoreBadWindow(Display* display,
       int x, y;
       unsigned int w, h, d, b, nchild;
       Window* children;
-      NSRect rect=NSZeroRect;
+      O2Rect rect=NSZeroRect;
       // recursively get geometry to get absolute position
       BOOL success=YES;
       while(window && success) {
@@ -290,37 +322,26 @@ static int ignoreBadWindow(Display* display,
          window=parent;
       };
       
-      _frame=rect;
-      [self sizeChanged];
+     [self invalidateContextsWithNewSize:rect.size];
    }
    @finally {
       XSetErrorHandler(previousHandler);
    }
 }
 
--(void)sizeChanged
-{
-   [_cgContext setSize:_frame.size];
-   [_backingContext setSize:_frame.size];
-}
-
--(Visual*)visual
-{
+-(Visual*)visual {
    return DefaultVisual(_dpy, DefaultScreen(_dpy));
 }
 
--(Drawable)drawable
-{
+-(Drawable)drawable {
    return _window;
 }
 
--(void)addEntriesToDeviceDictionary:(NSDictionary *)entries 
-{
+-(void)addEntriesToDeviceDictionary:(NSDictionary *)entries  {
    [_deviceDictionary addEntriesFromDictionary:entries];
 }
 
--(NSRect)transformFrame:(NSRect)frame
-{
+-(O2Rect)transformFrame:(O2Rect)frame {
    return NSMakeRect(frame.origin.x, DisplayHeight(_dpy, DefaultScreen(_dpy)) - frame.origin.y - frame.size.height, fmax(frame.size.width, 1.0), fmax(frame.size.height, 1.0));
 }
 
@@ -347,6 +368,7 @@ static int ignoreBadWindow(Display* display,
    static NSTimeInterval lastClickTimeStamp=0.0;
    static int clickCount=0;
 
+
    switch(ev->type) {
       case DestroyNotify:
       {
@@ -363,10 +385,10 @@ static int ignoreBadWindow(Display* display,
       }
       case Expose:
       {
-         NSRect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
+         O2Rect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
          rect.origin.y=_frame.size.height-rect.origin.y-rect.size.height;
         // rect=NSInsetRect(rect, -10, -10);
-         [_backingContext addToDirtyRect:rect];
+   //      [_backingContext addToDirtyRect:rect];
          if(ev->xexpose.count==0)
             [self flushBuffer]; 
          break;
@@ -383,6 +405,7 @@ static int ignoreBadWindow(Display* display,
          lastClickTimeStamp=now;
          
          NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         
          id event=[NSEvent mouseEventWithType:NSLeftMouseDown
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
@@ -392,8 +415,9 @@ static int ignoreBadWindow(Display* display,
          break;
       }
       case ButtonRelease:
-      {
+     {
          NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+
          id event=[NSEvent mouseEventWithType:NSLeftMouseUp
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xbutton.state]

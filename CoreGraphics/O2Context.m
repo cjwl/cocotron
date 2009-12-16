@@ -30,6 +30,8 @@ static NSMutableArray *possibleContextClasses=nil;
     [possibleContextClasses addObject:@"O2Context_gdi"];
     [possibleContextClasses addObject:@"O2Context_builtin"];
     [possibleContextClasses addObject:@"O2Context_builtin_gdi"];
+    [possibleContextClasses addObject:@"O2Context_cairo"];
+    [possibleContextClasses addObject:@"O2Context_builtin_FT"];
     
     NSArray *allPaths=[[NSBundle bundleForClass:self] pathsForResourcesOfType:@"cgContext" inDirectory:nil];
     int      i,count=[allPaths count];
@@ -65,7 +67,7 @@ static NSMutableArray *possibleContextClasses=nil;
    
    while(--count>=0){
     Class check=[array objectAtIndex:count];
-    
+        
     if([check canInitWithWindow:window]){
      O2Context *result=[[check alloc] initWithSize:size window:window];
      
@@ -239,7 +241,14 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   O2InvalidAbstractInvocation();
+   O2Glyph *encoding=[currentState(self) glyphTableForTextEncoding];
+   O2Glyph  glyphs[length];
+   int      i;
+   
+   for(i=0;i<length;i++)
+    glyphs[i]=encoding[(uint8_t)text[i]];
+    
+   [self showGlyphs:glyphs count:length];
 }
 
 -(void)drawShading:(O2Shading *)shading {
@@ -260,6 +269,10 @@ static inline O2GState *currentState(O2Context *self){
 
 -(void)synchronize {
    // do nothing
+}
+
+-(BOOL)resizeWithNewSize:(O2Size)size {
+   return NO;
 }
 
 -(void)beginPage:(const O2Rect *)mediaBox {

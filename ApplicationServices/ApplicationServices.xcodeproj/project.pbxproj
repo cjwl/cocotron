@@ -10,6 +10,7 @@
 		C889771E0EA0C0CD00D0A0A2 /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8A2E2730F07E9B70054397C /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5A889D10C6F34A005E348A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -32,6 +33,14 @@
 		FE01AAEA0C5D9BF900AEA51A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FE5A88A110C6F34A005E348A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -60,6 +69,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
 			remoteInfo = "Foundation-Linux-ppc";
+		};
+		FE5A886110C6F2A4005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEC11BB10FD4B86500082282 /* CoreGraphics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A884510C6F286005E348A /* CoreGraphics.framework */;
+			remoteInfo = "CoreGraphics-FreeBSD-i386";
+		};
+		FE5A886D10C6F2A4005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F /* Foundation.framework */;
+			remoteInfo = "Foundation-FreeBSD-i386";
+		};
+		FE5A889110C6F2F5005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A888E10C6F2F5005E348A /* CoreText.framework */;
+			remoteInfo = "CoreText-Linux-i386 copy";
+		};
+		FE5A88A910C6F35F005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5A887C10C6F2F5005E348A /* CoreText-FreeBSD-i386 */;
+			remoteInfo = "CoreText-FreeBSD-i386";
 		};
 		FE5C3A8010633B9300710AEF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -183,6 +220,7 @@
 		C8A2E2900F07E9B70054397C /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
+		FE5A88A410C6F34A005E348A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEC11BB10FD4B86500082282 /* CoreGraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreGraphics.xcodeproj; path = ../CoreGraphics/CoreGraphics.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreText.xcodeproj; path = ../CoreText/CoreText.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -210,6 +248,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE5A88A010C6F34A005E348A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -219,6 +264,7 @@
 				FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */,
 				C88977390EA0C0CD00D0A0A2 /* ApplicationServices.framework */,
 				C8A2E2900F07E9B70054397C /* ApplicationServices.framework */,
+				FE5A88A410C6F34A005E348A /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -284,6 +330,7 @@
 				FEC11BB60FD4B86500082282 /* CoreGraphics.framework */,
 				FEA316590FD5669200F480D4 /* CoreGraphics.framework */,
 				FEA3165B0FD5669200F480D4 /* CoreGraphics.framework */,
+				FE5A886210C6F2A4005E348A /* CoreGraphics.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -299,6 +346,7 @@
 				FE65207C0FBE3D6300464BFD /* Foundation.framework */,
 				FE13630F0FE72ECD00DE15FA /* Foundation.framework */,
 				FE5C3A8110633B9300710AEF /* Foundation.framework */,
+				FE5A886E10C6F2A4005E348A /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -309,6 +357,7 @@
 				FECF921F0FFB222D007AECF1 /* CoreText.framework */,
 				FECF92540FFB2A2B007AECF1 /* CoreText.framework */,
 				FECF92560FFB2A2B007AECF1 /* CoreText.framework */,
+				FE5A889210C6F2F5005E348A /* CoreText.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -337,6 +386,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE5A889C10C6F34A005E348A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A889D10C6F34A005E348A /* ApplicationServices.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +465,27 @@
 			productReference = FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		FE5A889910C6F34A005E348A /* ApplicationServices-FreeBSD-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE5A88A210C6F34A005E348A /* Build configuration list for PBXNativeTarget "ApplicationServices-FreeBSD-i386" */;
+			buildPhases = (
+				FE5A889C10C6F34A005E348A /* Headers */,
+				FE5A889E10C6F34A005E348A /* Resources */,
+				FE5A889F10C6F34A005E348A /* Sources */,
+				FE5A88A010C6F34A005E348A /* Frameworks */,
+			);
+			buildRules = (
+				FE5A88A110C6F34A005E348A /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE5A88AA10C6F35F005E348A /* PBXTargetDependency */,
+			);
+			name = "ApplicationServices-FreeBSD-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = ApplicationServices;
+			productReference = FE5A88A410C6F34A005E348A /* ApplicationServices.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -438,6 +516,7 @@
 				FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */,
 				C889771C0EA0C0CD00D0A0A2 /* ApplicationServices-Linux-i386 */,
 				C8A2E2710F07E9B70054397C /* ApplicationServices-Darwin-i386 */,
+				FE5A889910C6F34A005E348A /* ApplicationServices-FreeBSD-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -448,6 +527,27 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE13630E0FE72ECD00DE15FA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE5A886210C6F2A4005E348A /* CoreGraphics.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreGraphics.framework;
+			remoteRef = FE5A886110C6F2A4005E348A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE5A886E10C6F2A4005E348A /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE5A886D10C6F2A4005E348A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE5A889210C6F2F5005E348A /* CoreText.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreText.framework;
+			remoteRef = FE5A889110C6F2F5005E348A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE5C3A8110633B9300710AEF /* Foundation.framework */ = {
@@ -565,6 +665,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE5A889E10C6F34A005E348A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -589,6 +696,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE5A889F10C6F34A005E348A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -601,6 +715,11 @@
 			isa = PBXTargetDependency;
 			name = "CoreGraphics-Darwin-i386";
 			targetProxy = FE0D38DB10ADE87F0003382F /* PBXContainerItemProxy */;
+		};
+		FE5A88AA10C6F35F005E348A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreText-FreeBSD-i386";
+			targetProxy = FE5A88A910C6F35F005E348A /* PBXContainerItemProxy */;
 		};
 		FEC11BB80FD4B88800082282 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -703,6 +822,29 @@
 			};
 			name = Release;
 		};
+		FE5A88A310C6F34A005E348A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .so;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = ApplicationServices;
+				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/FreeBSD/i386;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -734,6 +876,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FE01AAEC0C5D9BF900AEA51A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE5A88A210C6F34A005E348A /* Build configuration list for PBXNativeTarget "ApplicationServices-FreeBSD-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE5A88A310C6F34A005E348A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

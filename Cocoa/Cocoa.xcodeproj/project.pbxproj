@@ -15,6 +15,10 @@
 		FE01AB1A0C5D9C3400AEA51A /* Cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */; };
 		FE01AB1C0C5D9C3400AEA51A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE01AB1D0C5D9C3400AEA51A /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
+		FE5A873410C6F1E8005E348A /* Cocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF3B23A0B35C74700A76FD1 /* Cocoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5A873710C6F1E8005E348A /* Cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */; };
+		FE5A873910C6F1E8005E348A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE5A873A10C6F1E8005E348A /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
 		FECC1DCC108D025D00BD4A91 /* Cocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF3B23A0B35C74700A76FD1 /* Cocoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECC1DCF108D025D00BD4A91 /* Cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */; };
 		FECC1DD1108D025D00BD4A91 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
@@ -25,6 +29,14 @@
 		FE01AB1E0C5D9C3400AEA51A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FE5A873B10C6F1E8005E348A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -104,12 +116,33 @@
 			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
 			remoteInfo = "AppKit-MacOS-i386";
 		};
+		FE5A88AC10C6F369005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A88A410C6F34A005E348A;
+			remoteInfo = "ApplicationServices-FreeBSD-i386";
+		};
+		FE5A8CB710C828A5005E348A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A8BE310C6F50E005E348A;
+			remoteInfo = "AppKit-FreeBSD-i386";
+		};
 		FECC1DD9108D027000BD4A91 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C889741E0EA0BF3100D0A0A2 /* AppKit-Linux-i386 */;
+			remoteGlobalIDString = C889741E0EA0BF3100D0A0A2;
 			remoteInfo = "AppKit-Linux-i386";
+		};
+		FEE044C210C99F84000BCEB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5A88D610C6F50E005E348A;
+			remoteInfo = "AppKit-FreeBSD-i386";
 		};
 		FEF80ABD0C5D9F3000FF7CA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -134,9 +167,9 @@
 		C8E0BFAA0F0E6B0E00677729 /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE01AB210C5D9C3400AEA51A /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE5A873F10C6F1E8005E348A /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7135460B36427F006C9493 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FECC1DD6108D025D00BD4A91 /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FECC1DD7108D025D00BD4A91 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FEF3B23A0B35C74700A76FD1 /* Cocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cocoa.h; sourceTree = "<group>"; };
 		FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cocoa.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,6 +193,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE5A873810C6F1E8005E348A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A873910C6F1E8005E348A /* Foundation.framework in Frameworks */,
+				FE5A873A10C6F1E8005E348A /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FECC1DD0108D025D00BD4A91 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,6 +220,7 @@
 				FE01AB210C5D9C3400AEA51A /* Cocoa.framework */,
 				C8E0BFAA0F0E6B0E00677729 /* Cocoa.framework */,
 				FECC1DD6108D025D00BD4A91 /* Cocoa.framework */,
+				FE5A873F10C6F1E8005E348A /* Cocoa.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
-				FECC1DD7108D025D00BD4A91 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -252,6 +294,7 @@
 				FE01AB280C5D9C3500AEA51A /* ApplicationServices.framework */,
 				C8724AC30EC706C200DBDDAD /* ApplicationServices.framework */,
 				C8E0BF970F0E6AF300677729 /* ApplicationServices.framework */,
+				FE5A88AD10C6F369005E348A /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -263,6 +306,7 @@
 				C8724AC00EC706C200DBDDAD /* AppKit.framework */,
 				C8E0BF930F0E6AF300677729 /* AppKit.framework */,
 				FE1362640FE7167F00DE15FA /* AppKit.framework */,
+				FE5A8CB810C828A5005E348A /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -283,6 +327,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE01AB170C5D9C3400AEA51A /* Cocoa.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE5A873310C6F1E8005E348A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A873410C6F1E8005E348A /* Cocoa.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +392,27 @@
 			productReference = FE01AB210C5D9C3400AEA51A /* Cocoa.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		FE5A873010C6F1E8005E348A /* Cocoa-FreeBSD-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE5A873C10C6F1E8005E348A /* Build configuration list for PBXNativeTarget "Cocoa-FreeBSD-i386" */;
+			buildPhases = (
+				FE5A873310C6F1E8005E348A /* Headers */,
+				FE5A873510C6F1E8005E348A /* Resources */,
+				FE5A873610C6F1E8005E348A /* Sources */,
+				FE5A873810C6F1E8005E348A /* Frameworks */,
+			);
+			buildRules = (
+				FE5A873B10C6F1E8005E348A /* PBXBuildRule */,
+			);
+			dependencies = (
+				FEE044C310C99F84000BCEB8 /* PBXTargetDependency */,
+			);
+			name = "Cocoa-FreeBSD-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = Cocoa;
+			productReference = FE5A873F10C6F1E8005E348A /* Cocoa.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		FECC1DC6108D025D00BD4A91 /* Cocoa-Linux-i386 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FECC1DD3108D025D00BD4A91 /* Build configuration list for PBXNativeTarget "Cocoa-Linux-i386" */;
@@ -387,6 +460,7 @@
 				FE01AB110C5D9C3400AEA51A /* Cocoa-Windows-i386 */,
 				C8E0BF990F0E6B0E00677729 /* Cocoa-Darwin-i386 */,
 				FECC1DC6108D025D00BD4A91 /* Cocoa-Linux-i386 */,
+				FE5A873010C6F1E8005E348A /* Cocoa-FreeBSD-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -441,6 +515,20 @@
 			remoteRef = FE1362630FE7167F00DE15FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FE5A88AD10C6F369005E348A /* ApplicationServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ApplicationServices.framework;
+			remoteRef = FE5A88AC10C6F369005E348A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE5A8CB810C828A5005E348A /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE5A8CB710C828A5005E348A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -452,6 +540,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FE01AB180C5D9C3400AEA51A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE5A873510C6F1E8005E348A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -484,6 +579,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE5A873610C6F1E8005E348A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5A873710C6F1E8005E348A /* Cocoa.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FECC1DCE108D025D00BD4A91 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -509,6 +612,11 @@
 			isa = PBXTargetDependency;
 			name = "AppKit-Linux-i386";
 			targetProxy = FECC1DD9108D027000BD4A91 /* PBXContainerItemProxy */;
+		};
+		FEE044C310C99F84000BCEB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppKit-FreeBSD-i386";
+			targetProxy = FEE044C210C99F84000BCEB8 /* PBXContainerItemProxy */;
 		};
 		FEF80ABE0C5D9F3000FF7CA5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -641,6 +749,69 @@
 			};
 			name = Release;
 		};
+		FE5A873D10C6F1E8005E348A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .so;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/FreeBSD/i386/include,
+					/Developer/Cocotron/1.0/FreeBSD/i386/include/freetype2,
+					/Developer/Cocotron/1.0/FreeBSD/i386/include/cairo,
+					/Developer/Cocotron/1.0/FreeBSD/i386/include/fontconfig,
+					/Developer/Cocotron/1.0/FreeBSD/i386/include,
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/lib;
+				OTHER_CFLAGS = (
+					"-DCOCOA_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lX11",
+					"-lcairo",
+					"-lfreetype",
+					"-lfontconfig",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Cocoa;
+				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/FreeBSD/i386;
+			};
+			name = Release;
+		};
+		FE5A873E10C6F1E8005E348A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .so;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DCOCOA_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Cocoa;
+				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/FreeBSD/i386;
+			};
+			name = Debug;
+		};
 		FECC1DD4108D025D00BD4A91 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -715,6 +886,15 @@
 			buildConfigurations = (
 				FE01AB200C5D9C3400AEA51A /* Release */,
 				7E2EFA4F0DF995A500A40193 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE5A873C10C6F1E8005E348A /* Build configuration list for PBXNativeTarget "Cocoa-FreeBSD-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE5A873D10C6F1E8005E348A /* Release */,
+				FE5A873E10C6F1E8005E348A /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

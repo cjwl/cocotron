@@ -19,16 +19,9 @@ typedef int ptrdiff_t;
 
 @class NSSet;
 
-@interface TTFFont : NSObject {
-   FT_Face _face; 
-   float _size;
-   id _name;
-   void *_platformFont;
-}
-+(NSSet*)allFontFamilyNames;
-+(NSArray *)fontTypefacesForFamilyName:(NSString *)name;
+@interface TTFFont : KTFont 
+
 -(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
--(float)pointSize;
--(FT_Face)face;
+
 @end

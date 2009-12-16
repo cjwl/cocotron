@@ -349,16 +349,6 @@ static inline O2GState *currentState(O2Context *self){
    currentState(self)->_textTransform.ty+=0;
 }
 
--(void)showText:(const char *)text length:(unsigned)length {
-   O2Glyph *encoding=[currentState(self) glyphTableForTextEncoding];
-   O2Glyph  glyphs[length];
-   int      i;
-   
-   for(i=0;i<length;i++)
-    glyphs[i]=encoding[(uint8_t)text[i]];
-    
-   [self showGlyphs:glyphs count:length];
-}
 
 // The problem is that the GDI gradient fill is a linear/stitched filler and the
 // Mac one is a sampling one. So to preserve color variation we stitch together a lot of samples
@@ -1060,7 +1050,7 @@ static void zeroBytes(void *bytes,int size){
 }
 #endif
 
--(void)drawImage:(O2Image *)image inRect:(NSRect)rect {
+-(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
    O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
    O2GState *gState=currentState(self);
    O2ClipPhase     *phase=[[gState clipPhases] lastObject];

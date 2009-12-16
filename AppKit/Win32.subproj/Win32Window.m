@@ -144,7 +144,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return rect;
 }
 
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(Win32BackingStoreType)backingType {
+-initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
    _styleMask=styleMask;
    _isPanel=isPanel;
    _isLayered=NO;
@@ -169,7 +169,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _backingType=backingType;
 
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSAllWindowsRetained"])
-    _backingType=Win32BackingStoreRetained;
+    _backingType=CGSBackingStoreRetained;
 
    _backingContext=nil;
 
@@ -231,12 +231,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(O2Context *)cgContext {
    switch(_backingType){
 
-    case Win32BackingStoreRetained:
-    case Win32BackingStoreNonretained:
+    case CGSBackingStoreRetained:
+    case CGSBackingStoreNonretained:
     default:
      return [self createCGContextIfNeeded];
 
-    case Win32BackingStoreBuffered:
+    case CGSBackingStoreBuffered:
      return [self createBackingCGContextIfNeeded];
    }
 }
@@ -356,11 +356,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else {
     switch(_backingType){
 
-     case Win32BackingStoreRetained:
-     case Win32BackingStoreNonretained:
+     case CGSBackingStoreRetained:
+     case CGSBackingStoreNonretained:
       break;
  
-     case Win32BackingStoreBuffered:
+     case CGSBackingStoreBuffered:
       if(_backingContext!=nil)
        [_cgContext drawBackingContext:_backingContext size:_size];
       break;
@@ -438,11 +438,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     switch(_backingType){
 
-     case Win32BackingStoreRetained:
-     case Win32BackingStoreNonretained:
+     case CGSBackingStoreRetained:
+     case CGSBackingStoreNonretained:
       break;
 
-     case Win32BackingStoreBuffered:
+     case CGSBackingStoreBuffered:
       [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
       break;
     }
@@ -468,14 +468,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     switch(_backingType){
 
-     case Win32BackingStoreRetained:
-     case Win32BackingStoreNonretained:
+     case CGSBackingStoreRetained:
+     case CGSBackingStoreNonretained:
       BeginPaint([self windowHandle],&paintStruct);
       [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
       EndPaint([self windowHandle],&paintStruct);
       break;
 
-     case Win32BackingStoreBuffered:
+     case CGSBackingStoreBuffered:
       BeginPaint([self windowHandle],&paintStruct);
       [self flushBuffer];
       EndPaint([self windowHandle],&paintStruct);

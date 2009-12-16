@@ -6,24 +6,15 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+#import <Foundation/NSPlatform_bsd.h>
+#import <Foundation/NSString.h>
+#import <AppKit/X11AsyncInputSourceSet.h>
+#import <Foundation/NSArray.h>
 
-#import <CoreGraphics/O2Context.h>
-#import <cairo.h>
-#import <X11/Xlib.h>
-#import <cairo-xlib.h>
-#import <AppKit/X11Window.h>
+@implementation NSPlatform_bsd(GTKAppKit)
 
-@interface CairoContext : O2Context {
-   NSRect _dirtyRect;
-   cairo_surface_t *_surface;
-   cairo_t *_context;
+-(id)asynchronousInputSourceSets {
+   return [NSArray arrayWithObject:[[X11AsyncInputSourceSet new] autorelease]];
 }
--(id)initWithWindow:(X11Window*)w;
--(id)initWithSize:(NSSize)s;
--(void)setSize:(NSSize)size;
--(NSSize)size;
--(NSRect)dirtyRect;
--(void)resetDirtyRect;
--(void)addToDirtyRect:(NSRect)rect;
--(void)copyFromBackingContext:(CairoContext*)other;
+
 @end

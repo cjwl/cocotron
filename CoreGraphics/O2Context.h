@@ -142,6 +142,7 @@ typedef int O2TextDrawingMode;
    
 -(void)flush;
 -(void)synchronize;
+-(BOOL)resizeWithNewSize:(O2Size)size;
 
 -(void)beginPage:(const O2Rect *)mediaBox;
 -(void)endPage;

@@ -7,28 +7,30 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/CGWindow.h>
+#import <CoreGraphics/O2Geometry.h>
 #import <X11/Xlib.h>
 
-@class CairoContext, X11Display;
+@class O2Context_cairo, X11Display;
 
 @interface X11Window : CGWindow {
    id _delegate;
    Window _window;
    Display *_dpy;
-   CairoContext *_backingContext;
-   CairoContext *_cgContext;
+   CGSBackingStoreType  _backingType;
+   O2Context *_backingContext;
+   O2Context *_context;
    NSMutableDictionary *_deviceDictionary;
-   NSRect _frame;
+   O2Rect _frame;
    BOOL _mapped;
 }
 +(void)removeDecorationForWindow:(Window)w onDisplay:(Display*)dpy;
 -initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
--(NSRect)frame;
+-(O2Rect)frame;
 -(Visual*)visual;
 -(Drawable)drawable;
 -(NSPoint)transformPoint:(NSPoint)pos;
--(NSRect)transformFrame:(NSRect)frame;
--(void)sizeChanged;
+-(O2Rect)transformFrame:(O2Rect)frame;
+
 -(void)frameChanged;
 -(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display;
 @end

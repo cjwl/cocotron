@@ -27,6 +27,6 @@ static inline const O2PatternCallbacks *O2PatternCallbacksFromCG(const CGPattern
    return (const O2PatternCallbacks *)callbacks;
 }
 
-static inline const O2PathApplierFunction O2PathApplierFunctionFromCG(const CGPathApplierFunction function){
-   return (const O2PathApplierFunction)function;
+static inline O2PathApplierFunction O2PathApplierFunctionFromCG(const CGPathApplierFunction function){
+   return (O2PathApplierFunction)function;
 }

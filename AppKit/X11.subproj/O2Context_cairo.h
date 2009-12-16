@@ -6,44 +6,19 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/CairoCacheImage.h>
-#import <Foundation/NSString.h>
 
-@implementation CairoCacheImage
--(id)initWithSurface:(cairo_surface_t*)surf
-{
-   if(self=[super init])
-   {
-      _surface=surf;
-      cairo_surface_reference(_surface);
-   }
-   return self;
+#import <CoreGraphics/O2Context.h>
+#import <cairo.h>
+#import <X11/Xlib.h>
+#import <cairo-xlib.h>
+#import <AppKit/X11Window.h>
+
+@interface O2Context_cairo : O2Context {
+   cairo_t *_context;
+   cairo_surface_t *_surface;
 }
 
--(void)dealloc {
-   cairo_surface_destroy(_surface);
-   [super dealloc];  
-}
+-(NSSize)size;
 
--(float)width
-{
-   return _size.width;
-}
-
--(float)height
-{
-   return _size.height;
-}
-
--(cairo_surface_t*)_cairoSurface
-{
-   return _surface;  
-}
-
--(id)description
-{
-   return [NSString stringWithFormat:@"%@: %p, (%fx%f)", [super description], _surface, _size.width, _size.height];
-}
-
-@synthesize size=_size;
+-(void)drawBackingContext:(O2Context *)other size:(NSSize)size;
 @end

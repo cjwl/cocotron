@@ -13,18 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSEvent;
 
-typedef enum {
-   Win32BackingStoreRetained=0,
-   Win32BackingStoreNonretained=1,
-   Win32BackingStoreBuffered=2
-} Win32BackingStoreType;
 
 @interface Win32Window : CGWindow {
    HWND                   _handle;
    NSSize                 _size;
    O2Context             *_cgContext;
 
-   Win32BackingStoreType  _backingType;
+   CGSBackingStoreType  _backingType;
    O2Context             *_backingContext;
 
    BOOL                  _isLayered;
@@ -38,7 +33,7 @@ typedef enum {
    NSMutableDictionary  *_deviceDictionary;
 }
 
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(Win32BackingStoreType)backingType;
+-initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
 
 -(void)setDelegate:delegate;
 -delegate;
