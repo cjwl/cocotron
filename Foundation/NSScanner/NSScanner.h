@@ -39,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)scanDouble:(double *)valuep;
 -(BOOL)scanDecimal:(NSDecimal *)valuep;
 -(BOOL)scanHexInt:(unsigned *)valuep;
+-(BOOL)scanHexLongLong:(unsigned long long *)valuep;
 
 -(BOOL)scanString:(NSString *)string intoString:(NSString **)stringp;
 -(BOOL)scanUpToString:(NSString *)string intoString:(NSString **)stringp;

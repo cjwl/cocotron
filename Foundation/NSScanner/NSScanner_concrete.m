@@ -389,6 +389,107 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(BOOL)scanHexLongLong:(unsigned long long *)valuep {
+   enum {
+		STATE_SPACE,
+		STATE_ZERO,
+		STATE_HEX,
+   } state=STATE_SPACE;
+   unsigned long long value=0;
+   BOOL     hasValue=NO;
+   BOOL     overflow=NO;
+   
+   for(;_location<[_string length];_location++){
+		unichar unicode=[_string characterAtIndex:_location];
+		
+		switch(state){
+				
+			case STATE_SPACE:
+				if([_skipSet characterIsMember:unicode])
+					state=STATE_SPACE;
+				else if(unicode == '0'){
+					state=STATE_ZERO;
+					hasValue=YES;
+				}
+				else if(unicode>='1' && unicode<='9'){
+					value=value*16+(unicode-'0');
+					state=STATE_HEX;
+					hasValue=YES;
+				}
+				else if(unicode>='a' && unicode<='f'){
+					value=value*16+(unicode-'a')+10;
+					state=STATE_HEX;
+					hasValue=YES;
+				}
+				else if(unicode>='A' && unicode<='F'){
+					value=value*16+(unicode-'A')+10;
+					state=STATE_HEX;
+					hasValue=YES;
+				}
+				else
+					return NO;
+				break;
+				
+			case STATE_ZERO:
+				state=STATE_HEX;
+				if(unicode=='x' || unicode=='X')
+					break;
+				// fallthrough
+			case STATE_HEX:
+				if(unicode>='0' && unicode<='9'){
+					if(!overflow){
+						unsigned check=value*16+(unicode-'0');
+						if(check>=value)
+							value=check;
+						else {
+							value=-1;
+							overflow=YES;
+						}
+					}
+				}
+				else if(unicode>='a' && unicode<='f'){
+					if(!overflow){
+						unsigned check=value*16+(unicode-'a')+10;
+						if(check>=value)
+							value=check;
+						else {
+							value=-1;
+							overflow=YES;
+						}
+					}
+				}
+				else if(unicode>='A' && unicode<='F'){
+					if(!overflow){
+						unsigned check=value*16+(unicode-'A')+10;
+						
+						if(check>=value)
+							value=check;
+						else {
+							value=-1;
+							overflow=YES;
+						}
+					}
+				}
+				else {
+					if(valuep!=NULL)
+						*valuep=value;
+					
+					return YES;
+				}
+				break;
+		}
+   }
+   
+   if(hasValue){
+		if(valuep!=NULL)
+			*valuep=value;
+		
+		return YES;
+   }
+	
+   return NO;
+}
+
 
 -(BOOL)scanString:(NSString *)string intoString:(NSString **)stringp {
     NSInteger length=[_string length];

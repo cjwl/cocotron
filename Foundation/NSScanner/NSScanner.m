@@ -131,6 +131,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
+-(BOOL)scanHexLongLong:(unsigned long long *)value {
+	NSInvalidAbstractInvocation();
+	return NO;
+}
 
 -(BOOL)scanString:(NSString *)string intoString:(NSString **)stringp {
     NSInvalidAbstractInvocation();
