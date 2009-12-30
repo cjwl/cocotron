@@ -150,7 +150,7 @@ static NSFont **_fontCache=NULL;
 }
 
 +(NSFont *)toolTipsFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+   return [NSFont fontWithName:@"Tahoma" size:(size==0)?10.0:size];
 }
 
 +(NSFont *)userFontOfSize:(float)size {

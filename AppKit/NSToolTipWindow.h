@@ -13,9 +13,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Hmm. I assume that we're going to only have 1 tool tip active per application with this implementation/
 
-@interface NSToolTipWindow : NSPanel
+@interface NSToolTipWindow : NSWindow
 {
     NSTextField *_textField;
+
+@private
+    BOOL _sizeAdjusted;
 }
 
 + (NSToolTipWindow *)sharedToolTipWindow;
