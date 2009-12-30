@@ -1,10 +1,12 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <AppKit/NSDocumentController.h>
 #import <AppKit/NSDocument.h>
 #import <AppKit/NSOpenPanel.h>
@@ -31,8 +33,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static NSDocumentController *shared=nil;
 
 +sharedDocumentController {
-   if(shared==nil)
+   if(shared==nil){
     shared = [[NSDocumentController alloc] init];
+    [shared _updateRecentDocumentsMenu];
+   }
 
    return shared;
 }
@@ -438,10 +442,9 @@ static NSDocumentController *shared=nil;
    NSFileManager  *fileManager = [NSFileManager defaultManager];
    NSMutableArray *paths=[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"NSRecentDocumentPaths"]];
    int             i,count=[paths count];
-   BOOL            isDir;
 
    for (i=count-1;i>=0;i--)
-    if (![fileManager fileExistsAtPath:[paths objectAtIndex:i] isDirectory:&isDir] || isDir)
+    if (![fileManager fileExistsAtPath:[paths objectAtIndex:i]])
      [paths removeObjectAtIndex:i];
 
    if ([paths count]!=count)
@@ -475,11 +478,11 @@ static NSDocumentController *shared=nil;
    }
 }
 
-
 -(void)_updateRecentDocumentsMenu {
-   NSMenu  *menu=[[NSApp mainMenu] _menuWithName:@"_NSRecentDocumentsMenu"];
-   NSArray *array=[self _recentDocumentPaths];
-   int      count=[array count];
+   NSMenu         *menu=[[NSApp mainMenu] _menuWithName:@"_NSRecentDocumentsMenu"];
+   NSArray        *array=[self _recentDocumentPaths];
+   int             i,j,count=[array count];
+   NSMutableArray *lastPathArray=[[NSMutableArray alloc] init];
  
    [self _removeAllRecentDocumentsFromMenu:menu];
    
@@ -493,13 +496,30 @@ static NSDocumentController *shared=nil;
       [menu insertItem:[NSMenuItem separatorItem] atIndex:0];
     }
    }
+
+   // Shorten entries to the last path component, but not for then-duplicates.
+   for(i=0;i<count;i++){
+    NSString *lastPath=[(NSString *)[array objectAtIndex:i] lastPathComponent];
+    NSInteger occurences=0;
+
+    for(j=0;j<count;j++){
+     if([[(NSString *)[array objectAtIndex:j] lastPathComponent] isEqualToString:lastPath])
+      occurences++;
+    }
+    if(occurences>1)
+     [lastPathArray addObject:[array objectAtIndex:i]];
+    else
+     [lastPathArray addObject:lastPath];
+   }
+
    while(--count>=0){
-    NSString   *path=[array objectAtIndex:count];
+    NSString   *path=[lastPathArray objectAtIndex:count];
     NSMenuItem *item=[[[NSMenuItem alloc] initWithTitle:path action:@selector(_openRecentDocument:) keyEquivalent:nil] autorelease];
     
     [item setTag:count];
     [menu insertItem:item atIndex:0];
    }
+   [lastPathArray release];
 }
 
 -(NSArray *)recentDocumentURLs {
