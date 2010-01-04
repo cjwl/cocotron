@@ -110,7 +110,8 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 
 @protocol NSControlTextEditingDelegate <NSObject>
 
-@optional
+// FIXME: this causes a compiler fault with ObjC++, fix compiler
+//@optional
 -(BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
 
 @end
