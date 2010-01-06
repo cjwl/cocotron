@@ -1374,6 +1374,27 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return aRect;
 }
 
+-(BOOL)wantsLayer {
+   return _wantsLayer;
+}
+
+-(CALayer *)layer {
+   return _layer;
+}
+
+-(CALayer *)makeBackingLayer {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setWantsLayer:(BOOL)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setLayer:(CALayer *)value {
+   NSUnimplementedMethod();
+}
+
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%lx] frame: %@>", [self class], self, NSStringFromRect(_frame)];
 }

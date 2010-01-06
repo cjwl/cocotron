@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class NSWindow, NSMenu, NSCursor, NSPasteboard, NSImage, NSScrollView, NSTrackingArea;
+@class NSWindow, NSMenu, NSCursor, NSPasteboard, NSImage, NSScrollView, NSTrackingArea, CALayer;
 
 typedef int NSTrackingRectTag;
 typedef int NSToolTipTag;
@@ -64,6 +64,9 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
    CGAffineTransform _transformToWindow;
    NSRect            _visibleRect;
    NSFocusRingType   _focusRingType;
+   
+   BOOL     _wantsLayer;
+   CALayer *_layer;
 }
 
 +(NSView *)focusView;
@@ -236,6 +239,14 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(NSSize)convertSizeToBase:(NSSize)aSize;
 -(NSRect)convertRectFromBase:(NSRect)aRect;
 -(NSRect)convertRectToBase:(NSRect)aRect;
+
+// layer
+-(BOOL)wantsLayer;
+-(CALayer *)layer;
+-(CALayer *)makeBackingLayer;
+
+-(void)setWantsLayer:(BOOL)value;
+-(void)setLayer:(CALayer *)value;
 
 // private,move
 -(NSArray *)_draggedTypes;
