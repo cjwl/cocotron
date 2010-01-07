@@ -26,8 +26,9 @@ typedef enum {
    NSTrackingAssumeInside            =(1<<8),
    NSTrackingInVisibleRect           =(1<<9),
    NSTrackingEnabledDuringMouseDrag  =(1<<10),
-} NSTrackingAreaOptions;
+};
 
+typedef NSUInteger NSTrackingAreaOptions;
 
 @interface NSTrackingArea : NSObject {
    NSRect                 _rect;
