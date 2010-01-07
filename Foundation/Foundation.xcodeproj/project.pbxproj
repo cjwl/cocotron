@@ -4372,6 +4372,15 @@
 		FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
+		FE75E2E810F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2E910F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2EA10F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2EB10F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2EC10F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2ED10F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2EE10F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2EF10F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
+		FE75E2F010F6442F000419C4 /* bonjour.m in Sources */ = {isa = PBXBuildFile; fileRef = FE75E2E710F6442F000419C4 /* bonjour.m */; };
 		FE7691660FD46C0200F61898 /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
 		FE7691670FD46C0200F61898 /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
 		FE7691680FD46C0400F61898 /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
@@ -7058,6 +7067,7 @@
 		FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSortDescriptor.m; sourceTree = "<group>"; };
 		FE7478700BAC5EB600829F4F /* NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer.h; sourceTree = "<group>"; };
 		FE7478710BAC5EB600829F4F /* NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer.m; sourceTree = "<group>"; };
+		FE75E2E710F6442F000419C4 /* bonjour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bonjour.m; sourceTree = "<group>"; };
 		FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFileHandle_stream.h; sourceTree = "<group>"; };
 		FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFileHandle_stream.m; sourceTree = "<group>"; };
 		FE8693D20FE0108E00F89733 /* CFArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFArray.m; sourceTree = "<group>"; };
@@ -8414,6 +8424,7 @@
 		FE74780A0BAC591800829F4F /* NSNetService */ = {
 			isa = PBXGroup;
 			children = (
+				FE75E2E710F6442F000419C4 /* bonjour.m */,
 				FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */,
 				FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */,
 				FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */,
@@ -12406,6 +12417,7 @@
 				15D921AC105E918000171406 /* NSPointerFunctions.m in Sources */,
 				15D921AD105E918000171406 /* NSString_defaultEncoding_posix.m in Sources */,
 				151B5CC4105EA25E009092D5 /* objc_msg_sendv-Disabled.m in Sources */,
+				FE75E2EF10F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12759,6 +12771,7 @@
 				FE463E53102CD5B800B265D6 /* NSGarbageCollector.m in Sources */,
 				FE463E71102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E73102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
+				FE75E2EE10F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13113,6 +13126,7 @@
 				FE463E61102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E63102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014231042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */,
+				FE75E2EA10F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13468,6 +13482,7 @@
 				FE463E5D102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E5F102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014241042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */,
+				FE75E2E910F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13827,6 +13842,7 @@
 				FE463E59102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E5B102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE60142A1042FD6B008A7357 /* NSString_defaultEncoding_windows.m in Sources */,
+				FE75E2E810F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14182,6 +14198,7 @@
 				FE5A86DA10C6EF41005E348A /* NSMemoryFunctions_bsd.m in Sources */,
 				FE5A86DC10C6EF42005E348A /* NSPlatform_bsd.m in Sources */,
 				FE5A86DE10C6EF43005E348A /* NSTask_bsd.m in Sources */,
+				FE75E2F010F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14540,6 +14557,7 @@
 				FE6014281042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
 				1A27C0051090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0631090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
+				FE75E2ED10F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14899,6 +14917,7 @@
 				FE6014261042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
 				1A27C0031090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0611090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
+				FE75E2EB10F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15258,6 +15277,7 @@
 				FE6014271042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
 				1A27C0041090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0621090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
+				FE75E2EC10F6442F000419C4 /* bonjour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
