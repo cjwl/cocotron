@@ -71,7 +71,7 @@ NSString *NSNetServicesErrorDomain = @"NSNetServicesErrorDomain";
                    ttl: (uint32_t) ttl;
 @end
 
-static void ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const char *txtRecord,void *context){
+static void ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const unsigned char *txtRecord,void *context){
    [(NSNetService *) context resolverCallback: sdRef flags: flags interface: interfaceIndex error: errorCode fullname: fullname target: hosttarget port: port length: txtLen record: txtRecord];
 }
 
@@ -127,11 +127,11 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 
 
 - (void) executeWithError: (bonjour_DNSServiceErrorType) err {  
-   if( kDNSServiceErr_NoError != err ) {
+   if( bonjour_kDNSServiceErr_NoError != err ) {
     if(_isPublishing )
-     [self _didNotPublish: CreateError(self, err)];
+     [self _didNotPublish: bonjour_CreateError(self, err)];
     else
-     [self _didNotResolve: CreateError(self, err)];
+     [self _didNotResolve: bonjour_CreateError(self, err)];
 
     return;
    }
@@ -173,7 +173,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
     
    [_inputSource invalidate];
     
-   [self _didNotResolve: CreateError(self, NSNetServicesTimeoutError)];
+   [self _didNotResolve: bonjour_CreateError(self, NSNetServicesTimeoutError)];
 }
 
 - (void) resolverCallback: (bonjour_DNSServiceRef) sdRef
@@ -189,10 +189,10 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    if(_netService==NULL)
     return;
 
-   if( kDNSServiceErr_NoError != errorCode ){
+   if( bonjour_kDNSServiceErr_NoError != errorCode ){
     [self _invalidate];
       
-    [self _didNotResolve: CreateError(self, errorCode)];
+    [self _didNotResolve: bonjour_CreateError(self, errorCode)];
     return;
    }
 
@@ -223,13 +223,13 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
                                         flags,
                                         interfaceIndex,
                                         hosttarget,
-                                        kDNSServiceType_ANY,
-                                        kDNSServiceClass_IN,
+                                        bonjour_kDNSServiceType_ANY,
+                                        bonjour_kDNSServiceClass_IN,
                                         QueryCallback,
                                         self);
       
       // No error? Then create a new timer
-   if( kDNSServiceErr_NoError == errorCode ){
+   if( bonjour_kDNSServiceErr_NoError == errorCode ){
 // FIXME: implement ?
    }
   
@@ -249,12 +249,12 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
     
     switch( rrtype ){
     
-      case kDNSServiceType_A:		// AF_INET
+      case bonjour_kDNSServiceType_A:		// AF_INET
         data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,4,_port);
         break;
       
-      case kDNSServiceType_AAAA:	// AF_INET6
-      case kDNSServiceType_A6:		// deprecates AAAA
+      case bonjour_kDNSServiceType_AAAA:	// AF_INET6
+      case bonjour_kDNSServiceType_A6:		// deprecates AAAA
         data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,16,_port);
         break;
       
@@ -290,38 +290,38 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    if(_netService==NULL)
     return;
     
-   if(errorCode!=kDNSServiceErr_NoError){
+   if(errorCode!=bonjour_kDNSServiceErr_NoError){
       [self _invalidate];
       
-      [self _didNotResolve: CreateError(self, errorCode)];
+      [self _didNotResolve: bonjour_CreateError(self, errorCode)];
             
       return;
     }
     
     switch( rrtype ){
     
-      case kDNSServiceType_A:		// 1 -- AF_INET
+      case bonjour_kDNSServiceType_A:		// 1 -- AF_INET
         [self addAddress: rdata length: rdlen type: rrtype interface: interfaceIndex];
         break;
       
-      case kDNSServiceType_NS:
-      case kDNSServiceType_MD:
-      case kDNSServiceType_MF:
-      case kDNSServiceType_CNAME:	// 5
-      case kDNSServiceType_SOA:
-      case kDNSServiceType_MB:
-      case kDNSServiceType_MG:
-      case kDNSServiceType_MR:
-      case kDNSServiceType_NULL:	// 10
-      case kDNSServiceType_WKS:
-      case kDNSServiceType_PTR:
-      case kDNSServiceType_HINFO:
-      case kDNSServiceType_MINFO:
-      case kDNSServiceType_MX:		// 15
+      case bonjour_kDNSServiceType_NS:
+      case bonjour_kDNSServiceType_MD:
+      case bonjour_kDNSServiceType_MF:
+      case bonjour_kDNSServiceType_CNAME:	// 5
+      case bonjour_kDNSServiceType_SOA:
+      case bonjour_kDNSServiceType_MB:
+      case bonjour_kDNSServiceType_MG:
+      case bonjour_kDNSServiceType_MR:
+      case bonjour_kDNSServiceType_NULL:	// 10
+      case bonjour_kDNSServiceType_WKS:
+      case bonjour_kDNSServiceType_PTR:
+      case bonjour_kDNSServiceType_HINFO:
+      case bonjour_kDNSServiceType_MINFO:
+      case bonjour_kDNSServiceType_MX:		// 15
         // not handled (yet)
         break;
       
-      case kDNSServiceType_TXT:
+      case bonjour_kDNSServiceType_TXT:
         {
           NSData *data = [NSData dataWithBytes: rdata length: rdlen];
           
@@ -332,56 +332,56 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
         }
         break;
       
-      case kDNSServiceType_RP:
-      case kDNSServiceType_AFSDB:
-      case kDNSServiceType_X25:
-      case kDNSServiceType_ISDN:	// 20
-      case kDNSServiceType_RT:
-      case kDNSServiceType_NSAP:
-      case kDNSServiceType_NSAP_PTR:
-      case kDNSServiceType_SIG:
-      case kDNSServiceType_KEY:		// 25
-      case kDNSServiceType_PX:
-      case kDNSServiceType_GPOS:
+      case bonjour_kDNSServiceType_RP:
+      case bonjour_kDNSServiceType_AFSDB:
+      case bonjour_kDNSServiceType_X25:
+      case bonjour_kDNSServiceType_ISDN:	// 20
+      case bonjour_kDNSServiceType_RT:
+      case bonjour_kDNSServiceType_NSAP:
+      case bonjour_kDNSServiceType_NSAP_PTR:
+      case bonjour_kDNSServiceType_SIG:
+      case bonjour_kDNSServiceType_KEY:		// 25
+      case bonjour_kDNSServiceType_PX:
+      case bonjour_kDNSServiceType_GPOS:
         // not handled (yet)
         break;
       
-      case kDNSServiceType_AAAA:	// 28 -- AF_INET6
+      case bonjour_kDNSServiceType_AAAA:	// 28 -- AF_INET6
         [self addAddress: rdata length: rdlen type: rrtype interface: interfaceIndex];
         break;
       
-      case kDNSServiceType_LOC:
-      case kDNSServiceType_NXT:		// 30
-      case kDNSServiceType_EID:
-      case kDNSServiceType_NIMLOC:
-      case kDNSServiceType_SRV:
-      case kDNSServiceType_ATMA:
-      case kDNSServiceType_NAPTR:	// 35
-      case kDNSServiceType_KX:
-      case kDNSServiceType_CERT:
+      case bonjour_kDNSServiceType_LOC:
+      case bonjour_kDNSServiceType_NXT:		// 30
+      case bonjour_kDNSServiceType_EID:
+      case bonjour_kDNSServiceType_NIMLOC:
+      case bonjour_kDNSServiceType_SRV:
+      case bonjour_kDNSServiceType_ATMA:
+      case bonjour_kDNSServiceType_NAPTR:	// 35
+      case bonjour_kDNSServiceType_KX:
+      case bonjour_kDNSServiceType_CERT:
         // not handled (yet)
         break;
       
-      case kDNSServiceType_A6:		// 38 -- AF_INET6, deprecates AAAA
+      case bonjour_kDNSServiceType_A6:		// 38 -- AF_INET6, deprecates AAAA
         [self addAddress: rdata length: rdlen type: rrtype interface: interfaceIndex];
         break;
       
-      case kDNSServiceType_DNAME:
-      case kDNSServiceType_SINK:	// 40
-      case kDNSServiceType_OPT:
+      case bonjour_kDNSServiceType_DNAME:
+      case bonjour_kDNSServiceType_SINK:	// 40
+      case bonjour_kDNSServiceType_OPT:
         // not handled (yet)
         break;
       
-      case kDNSServiceType_TKEY:	// 249
-      case kDNSServiceType_TSIG:	// 250
-      case kDNSServiceType_IXFR:
-      case kDNSServiceType_AXFR:
-      case kDNSServiceType_MAILB:
-      case kDNSServiceType_MAILA:
+      case bonjour_kDNSServiceType_TKEY:	// 249
+      case bonjour_kDNSServiceType_TSIG:	// 250
+      case bonjour_kDNSServiceType_IXFR:
+      case bonjour_kDNSServiceType_AXFR:
+      case bonjour_kDNSServiceType_MAILB:
+      case bonjour_kDNSServiceType_MAILA:
         // not handled (yet)
         break;
       
-      case kDNSServiceType_ANY:
+      case bonjour_kDNSServiceType_ANY:
         LOG(@"Oops, got the wildcard match...");
         break;
       
@@ -402,10 +402,10 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    if( _netService==NULL)
     return;
     
-   if(errorCode!=kDNSServiceErr_NoError){
+   if(errorCode!=bonjour_kDNSServiceErr_NoError){
     [self _invalidate];
       
-    [self _didNotPublish: CreateError(self, errorCode)];
+    [self _didNotPublish: bonjour_CreateError(self, errorCode)];
     return;
    }
     
@@ -418,11 +418,11 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
     
     bonjour_DNSServiceErrorType err= bonjour_DNSServiceProcessResult(_netService);
     
-    if( kDNSServiceErr_NoError != err ){		
+    if( bonjour_kDNSServiceErr_NoError != err ){		
 		if(  _isPublishing )
-			[self _didNotPublish: CreateError(self, err)];
+			[self _didNotPublish: bonjour_CreateError(self, err)];
 		else
-			[self _didNotResolve: CreateError(self, err)];
+			[self _didNotResolve: bonjour_CreateError(self, err)];
 	}
    }
 }
@@ -440,14 +440,14 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    bonjour_TXTRecordRef txt;
    char keyCString[256];
       
-   bonjour_bonjour_TXTRecordCreate(&txt, 0, NULL);
+   bonjour_TXTRecordCreate(&txt, 0, NULL);
       
    for(i=0 ; i < count; i++ ){
     id key=[keys objectAtIndex:i];
     id value=[txtDictionary objectForKey:key];
     NSInteger length = 0;
     size_t used = 0;
-    bonjour_DNSServiceErrorType err = kDNSServiceErr_Unknown;
+    bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_Unknown;
         
     if( ! [key isKindOfClass: [NSString class]] ){
      LOG(@"%@ is not a string", key);
@@ -491,7 +491,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
           break;
         }
         
-        if( err != kDNSServiceErr_NoError )
+        if( err != bonjour_kDNSServiceErr_NoError )
         {
           LOG(@"error creating data type");
           break;
@@ -544,14 +544,14 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
         const void
           *value = NULL;
         bonjour_DNSServiceErrorType
-          err = kDNSServiceErr_NoError;
+          err = bonjour_kDNSServiceErr_NoError;
         
         err = bonjour_TXTRecordGetItemAtIndex(len, txt, i,
                                       sizeof keyCString, keyCString,
                                       &valLen, &value);
         
         // only if we can get the keyCString and value...
-        if( kDNSServiceErr_NoError == err )
+        if( bonjour_kDNSServiceErr_NoError == err )
         {
           NSString *str = [NSString stringWithUTF8String: keyCString];
           NSData
@@ -629,7 +629,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
         
     _netService = NULL;
     _delegate = nil;
-    
+	_inputSource = nil;
     return self;
 }
 
@@ -655,7 +655,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 }
 
 -(void)publishWithOptions:(NSNetServiceOptions)options {
-   bonjour_DNSServiceErrorType err = kDNSServiceErr_NoError;
+   bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
    bonjour_DNSServiceFlags flags = 0;
   
    // cannot -publish on a service that's init'd for resolving
@@ -671,15 +671,17 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
      [_resolverTimeout invalidate];
      [_resolverTimeout release];
      _resolverTimeout = nil;
-    }
-      
+    } 
+ 
     err = bonjour_DNSServiceRegister((bonjour_DNSServiceRef *) &_netService,
                                flags, _interfaceIndex,
                                [[_info objectForKey: @"Name"] UTF8String],
                                [[_info objectForKey: @"Type"] UTF8String],
                                [[_info objectForKey: @"Domain"] UTF8String],
                                NULL, htons(_port), 0, NULL,
-                               RegistrationCallback, self);
+												 RegistrationCallback,
+												 self);
+		//NSLog(@"test %@", err);
    }
   
    [self executeWithError: err];
@@ -694,7 +696,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 }
 
 - (void) resolveWithTimeout: (NSTimeInterval) timeout {
-   bonjour_DNSServiceErrorType err = kDNSServiceErr_NoError;
+   bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
    bonjour_DNSServiceFlags flags = 0;
 
       // cannot -resolve on a service that's init'd for publishing
@@ -717,9 +719,9 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
                               [[_info objectForKey: @"Name"] UTF8String],
                               [[_info objectForKey: @"Type"] UTF8String],
                               [[_info objectForKey: @"Domain"] UTF8String],
-                              ResolverCallback, self);
+                              (bonjour_DNSServiceResolveReply)ResolverCallback, self);
                               
-      if(err==kDNSServiceErr_NoError){        
+      if(err==bonjour_kDNSServiceErr_NoError){        
         _resolverTimeout=[[NSTimer scheduledTimerWithTimeInterval: timeout
                                     target: self
                                   selector: @selector(stopResolving:)
@@ -744,7 +746,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    if(_isMonitoring)
     return;
     
-   bonjour_DNSServiceErrorType err = kDNSServiceErr_NoError;
+   bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
     
    if( ! _delegate )
     err = NSNetServicesInvalidError;
@@ -754,15 +756,15 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
     NSString *fullname = [NSString stringWithFormat: @"%@.%@%@", [self name], [self type], [self domain]];
       
     err = bonjour_DNSServiceQueryRecord((bonjour_DNSServiceRef *) &_netService,
-                                  kDNSServiceFlagsLongLivedQuery,
+                                  bonjour_kDNSServiceFlagsLongLivedQuery,
                                   0,
                                   [fullname UTF8String],
-                                  kDNSServiceType_TXT,
-                                  kDNSServiceClass_IN,
+                                  bonjour_kDNSServiceType_TXT,
+                                  bonjour_kDNSServiceClass_IN,
                                   QueryCallback,
                                   self);
       
-    if( kDNSServiceErr_NoError == err ){
+    if( bonjour_kDNSServiceErr_NoError == err ){
      NSSocket *socket=[[NSSocket alloc] initWithFileDescriptor:bonjour_DNSServiceRefSockFD(_netService)];
       
      _inputSource=[[NSSelectInputSource alloc] initWithSocket:socket];
@@ -821,6 +823,11 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 
 -(NSString *)type {
     return [_info objectForKey: @"Type"];
+}
+
+-(int) port
+{
+	return _port;
 }
 
 - (NSString *) protocolSpecificInformation {
@@ -885,7 +892,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
     if( _isPublishing )
     {
       bonjour_DNSServiceErrorType
-        err = kDNSServiceErr_NoError;
+        err = bonjour_kDNSServiceErr_NoError;
       
       // Set the value, or remove it if empty
       if( recordData )
@@ -1027,7 +1034,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
 
 - (void) executeWithError: (bonjour_DNSServiceErrorType) err
 {  
-    if( kDNSServiceErr_NoError == err )
+    if( bonjour_kDNSServiceErr_NoError == err )
     {
      [self _willSearch];
            
@@ -1043,7 +1050,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
     }
     else // notify the delegate of the error
     {
-      [self _didNotSearch: CreateError(self, err)];
+      [self _didNotSearch: bonjour_CreateError(self, err)];
     }
 }
 
@@ -1058,7 +1065,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
     err = bonjour_DNSServiceEnumerateDomains((bonjour_DNSServiceRef *)&_netServiceBrowser,
                                        aFlag,
                                        _interfaceIndex,
-                                       EnumerationCallback,
+                                       (bonjour_DNSServiceDomainEnumReply)EnumerationCallback,
                                        self);
    }
   
@@ -1076,23 +1083,23 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
    if( errorCode ){
     [self invalidate];
       
-    [self _didNotSearch: CreateError(self, errorCode)];
+    [self _didNotSearch: bonjour_CreateError(self, errorCode)];
     return;
    }
       
    if(replyDomain==NULL)
     return;
 
-   BOOL more = (flags & kDNSServiceFlagsMoreComing)?YES:NO;
+   BOOL more = (flags & bonjour_kDNSServiceFlagsMoreComing)?YES:NO;
         
    _interfaceIndex = interfaceIndex;
         
-   if( flags & kDNSServiceFlagsAdd ){
+   if( flags & bonjour_kDNSServiceFlagsAdd ){
     LOG(@"Found domain <%s>", replyDomain);
           
     [self _didFindDomain: [NSString stringWithUTF8String: replyDomain] moreComing: more];
    }
-   else { // kDNSServiceFlagsRemove
+   else { // bonjour_kDNSServiceFlagsRemove
     LOG(@"Removed domain <%s>", replyDomain);
           
     [self _didRemoveDomain: [NSString stringWithUTF8String: replyDomain] moreComing: more];
@@ -1111,14 +1118,14 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
    if( _netServiceBrowser==NULL)
     return;
    
-   if(errorCode!=kDNSServiceErr_NoError){
+   if(errorCode!=bonjour_kDNSServiceErr_NoError){
     [self invalidate];
             
-    [self _didNotSearch: CreateError(self, errorCode)];
+    [self _didNotSearch: bonjour_CreateError(self, errorCode)];
     return;
    }
 
-   BOOL          more = (flags & kDNSServiceFlagsMoreComing)?YES:NO;
+   BOOL          more = (flags & bonjour_kDNSServiceFlagsMoreComing)?YES:NO;
    NSString     *domain=[NSString stringWithUTF8String: replyDomain];
    NSString     *type=[NSString stringWithUTF8String: replyType];
    NSString     *name=[NSString stringWithUTF8String: replyName];
@@ -1127,7 +1134,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
       
    _interfaceIndex = interfaceIndex;
       
-   if( flags & kDNSServiceFlagsAdd ){
+   if( flags & bonjour_kDNSServiceFlagsAdd ){
     service = [[NSNetService alloc] initWithDomain: domain type: type name: name];
         
     if( service ){
@@ -1143,7 +1150,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
      LOG(@"WARNING: Could not create an NSNetService for <%s>", replyName);
     }
    }
-   else { // kDNSServiceFlagsRemove
+   else { // bonjour_kDNSServiceFlagsRemove
     service = [_services objectForKey: key];
         
     if( service ){
@@ -1162,8 +1169,8 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
    if(selectEvent&NSSelectReadEvent){
     bonjour_DNSServiceErrorType err = bonjour_DNSServiceProcessResult(_netServiceBrowser);
 	
-    if( kDNSServiceErr_NoError != err ){
-     [self _didNotSearch: CreateError(self, err)];
+    if( bonjour_kDNSServiceErr_NoError != err ){
+     [self _didNotSearch: bonjour_CreateError(self, err)];
     }
    }
 }
@@ -1179,21 +1186,21 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
 // Search for all visible domains. This method is deprecated.
 
 - (void) searchForAllDomains {
-  [self searchForDomain: kDNSServiceFlagsBrowseDomains|kDNSServiceFlagsRegistrationDomains];
+  [self searchForDomain: bonjour_kDNSServiceFlagsBrowseDomains|bonjour_kDNSServiceFlagsRegistrationDomains];
 }
 
 - (void) searchForBrowsableDomains {
-  [self searchForDomain: kDNSServiceFlagsBrowseDomains];
+  [self searchForDomain: bonjour_kDNSServiceFlagsBrowseDomains];
 }
 
 // Search for all registration domains. These domains can be used to register a service.
 
 - (void) searchForRegistrationDomains {
-  [self searchForDomain: kDNSServiceFlagsRegistrationDomains];
+  [self searchForDomain: bonjour_kDNSServiceFlagsRegistrationDomains];
 }
 
 - (void) searchForServicesOfType: (NSString *) serviceType inDomain: (NSString *) domainName {
-   bonjour_DNSServiceErrorType err = kDNSServiceErr_NoError;
+   bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
   
    if( ! _delegate )
     err = NSNetServicesInvalidError;
@@ -1205,7 +1212,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
                              _interfaceIndex,
                              [serviceType UTF8String],
                              [domainName UTF8String],
-                             BrowserCallback,
+                             (bonjour_DNSServiceBrowseReply)BrowserCallback,
                              self);
    }
   

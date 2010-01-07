@@ -96,6 +96,7 @@ FOUNDATION_EXPORT NSString *NSNetServicesErrorDomain;
 - (NSString *) hostName;
 - (NSString *) name;
 - (NSString *) type;
+- (int) port;
 
 - (NSString *) protocolSpecificInformation;
 - (void) setProtocolSpecificInformation: (NSString *) specificInformation;
