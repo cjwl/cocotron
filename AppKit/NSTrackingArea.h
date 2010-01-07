@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSView;
 
-typedef enum {
+enum {
    NSTrackingMouseEnteredAndExited   =(1<<0),
    NSTrackingMouseMoved              =(1<<1),
    NSTrackingCursorUpdate            =(1<<2),
