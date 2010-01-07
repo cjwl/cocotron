@@ -380,15 +380,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSPoint)mouseLocationOutsideOfEventStream {
    POINT   winPoint;
-   NSPoint point;
 
    GetCursorPos(&winPoint);
 
-   point.x=winPoint.x;
-   point.y=winPoint.y;
-   point.y=[self primaryScreenHeight]-point.y;
-
-   return point;
+   return [self convertPOINTLToBase:winPoint];
 }
 
 -(void)adjustEventLocation:(NSPoint *)location {

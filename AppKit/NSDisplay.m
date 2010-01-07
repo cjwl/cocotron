@@ -213,4 +213,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSMakePoint(0,0);
 }
 
+-(NSUInteger)currentModifierFlags {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
 @end

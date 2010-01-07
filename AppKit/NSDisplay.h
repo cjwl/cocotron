@@ -64,5 +64,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)openPanel:(NSOpenPanel *)openPanel runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
 
 -(NSPoint)mouseLocation;
+-(NSUInteger)currentModifierFlags;
 
 @end

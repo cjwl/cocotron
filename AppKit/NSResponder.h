@@ -43,6 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)keyUp:(NSEvent *)event;
 -(void)keyDown:(NSEvent *)event;
 
+-(void)cursorUpdate:(NSEvent *)event;
 -(void)scrollWheel:(NSEvent *)event;
 
 -(void)mouseUp:(NSEvent *)event;

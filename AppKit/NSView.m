@@ -1,5 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
-                 2009 Markus Hitter <mah@jump-ing.de>
+                 2009-2010 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -12,8 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSCursor.h>
-#import <AppKit/NSTrackingArea.h>
 #import <AppKit/NSCursorRect.h>
+#import <AppKit/NSTrackingArea.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSScrollView.h>
 #import <AppKit/NSClipView.h>
@@ -45,6 +45,11 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
 }
 
 +(NSMenu *)defaultMenu {
+   return nil;
+}
+
++(NSFocusRingType)defaultFocusRingType {
+   NSUnimplementedMethod();
    return nil;
 }
 
@@ -85,8 +90,7 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
     _invalidRect=_bounds;
-    _defaultToolTipTag=-1;
-    _trackingAreas=[NSMutableArray new];
+    _trackingAreas=[[NSMutableArray alloc] init];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -113,8 +117,7 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
    _autoresizingMask=NSViewNotSizable;
    _tag=-1;
    _invalidRect=_bounds;
-   _defaultToolTipTag=-1;
-   _trackingAreas=[NSMutableArray new];
+   _trackingAreas=[[NSMutableArray alloc] init];
    
    _validTransforms=NO;
    _transformFromWindow=CGAffineTransformIdentity;
@@ -141,7 +144,7 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
 -(void)invalidateTransform {
    _validTransforms=NO;
    [_subviews makeObjectsPerformSelector:_cmd];
-   [[self window] invalidateCursorRectsForView:self];
+   [self updateTrackingAreas];
 }
 
 -(CGAffineTransform)createTransformToWindow {
@@ -202,13 +205,45 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _transformToWindow;
 }
 
-
 -(NSRect)frame {
    return _frame;
 }
 
+-(CGFloat)frameRotation {
+   NSUnimplementedMethod();
+   return 0.;
+}
+
+-(CGFloat)frameCenterRotation {
+   NSUnimplementedMethod();
+   return 0.;
+}
+
 -(NSRect)bounds {
    return _bounds;
+}
+
+-(CGFloat)boundsRotation {
+   NSUnimplementedMethod();
+   return 0.;
+}
+
+-(BOOL)isRotatedFromBase {
+   NSUnimplementedMethod();
+   return NO;
+}
+  
+-(BOOL)isRotatedOrScaledFromBase {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)translateOriginToPoint:(NSPoint)point {
+   NSUnimplementedMethod();
+}
+
+-(void)rotateByAngle:(CGFloat)angle {
+   NSUnimplementedMethod();
 }
 
 -(BOOL)postsFrameChangedNotifications {
@@ -217,6 +252,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(BOOL)postsBoundsChangedNotifications {
    return _postsNotificationOnBoundsChange;
+}
+
+-(void)scaleUnitSquareToSize:(NSSize)size {
+   NSUnimplementedMethod();
 }
 
 -(NSWindow *)window {
@@ -240,6 +279,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return NO;
 }
 
+-(NSView *)ancestorSharedWithView:(NSView *)view {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(NSScrollView *)enclosingScrollView {
    id result=[self superview];
 
@@ -248,6 +292,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
      return result;
 
    return nil;
+}
+
+-(NSRect)adjustScroll:(NSRect)toRect {
+   NSUnimplementedMethod();
+   return NSZeroRect;
 }
 
 -(NSArray *)subviews {
@@ -278,6 +327,15 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return NO;
 }
 
+-(CGFloat)alphaValue {
+   NSUnimplementedMethod();
+   return 0.;
+}
+
+-(void)setAlphaValue:(CGFloat)alpha {
+   NSUnimplementedMethod();
+}
+
 -(int)gState {
    return 0;
 }
@@ -289,6 +347,20 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    buildTransformsIfNeeded(self);
 
    return _visibleRect;
+}
+
+-(BOOL)wantsDefaultClipping {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSBitmapImageRep *)bitmapImageRepForCachingDisplayInRect:(NSRect)rect {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)cacheDisplayInRect:(NSRect)rect toBitmapImageRep:(NSBitmapImageRep *)imageRep {
+   NSUnimplementedMethod();
 }
 
 -(BOOL)isHidden {
@@ -321,8 +393,21 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    }
 }
 
+-(void)viewDidHide {
+   NSUnimplementedMethod();
+}
+
+-(void)viewDidUnhide {
+   NSUnimplementedMethod();
+}
+
 -(BOOL)canBecomeKeyView {
    return [self acceptsFirstResponder] && ![self isHiddenOrHasHiddenAncestor];
+}
+
+-(BOOL)needsPanelToBecomeKey {
+   NSUnimplementedMethod();
+   return NO;
 }
 
 -(NSView *)nextKeyView {
@@ -374,9 +459,27 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return result;
 }
 
-- (NSString *)toolTip
-{
-    return _toolTip;
+-(NSMenuItem *)enclosingMenuItem {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSString *)toolTip {
+   NSUInteger i,count=[_trackingAreas count];
+   NSString *toolTip=nil;
+
+   // In case there's more than one ToolTip the behavior
+   // is undocumented. Return the first one.
+   for(i=0;i<count;i++){
+    NSTrackingArea *area=[_trackingAreas objectAtIndex:i];
+
+    if([area _isToolTip]==YES){
+     toolTip=[area owner];
+     break;
+    }
+   }
+
+   return toolTip;
 }
 
 -viewWithTag:(int)tag {
@@ -418,6 +521,29 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    }
 }
 
+// Exactly the same as above, but hidden from overrides. Not elegant.
+-(NSView *)_hiddenHitTest:(NSPoint)point {
+   if(_isHidden)
+    return nil;
+
+   point=[self convertPoint:point fromView:[self superview]];
+
+   if(!NSMouseInRect(point,[self visibleRect],[self isFlipped]))
+    return nil;
+   else {
+    NSArray *subviews=[self subviews];
+    int      count=[subviews count];
+
+    while(--count>=0){ // front to back
+     NSView *check=[subviews objectAtIndex:count];
+     NSView *hit=[check _hiddenHitTest:point];
+
+     if(hit!=nil)
+      return hit;
+    }
+    return self;
+   }
+}
 
 -(NSPoint)convertPoint:(NSPoint)point fromView:(NSView *)viewOrNil {
    NSView           *fromView=(viewOrNil!=nil)?viewOrNil:[[self window] _backgroundView];
@@ -500,6 +626,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)setFrame:(NSRect)frame {
    NSSize oldSize=_bounds.size;
 
+   // includes [window _updateTrackingRects]
    [self invalidateTransform];
 
    _frame=frame;
@@ -523,6 +650,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    frame.origin=origin;
    [self setFrame:frame];
+}
+
+-(void)setFrameRotation:(CGFloat)angle {
+   NSUnimplementedMethod();
+}
+
+-(void)setFrameCenterRotation:(CGFloat)angle {
+   NSUnimplementedMethod();
 }
 
 -(void)setBounds:(NSRect)bounds {
@@ -549,6 +684,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self setBounds:bounds];
 }
 
+-(void)setBoundsRotation:(CGFloat)angle {
+   NSUnimplementedMethod();
+}
+
 -(void)setPostsFrameChangedNotifications:(BOOL)flag {
    _postsNotificationOnFrameChange=flag;
 }
@@ -562,20 +701,12 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    _window=window;
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
+   [self updateTrackingAreas];
 }
 
 -(void)_setSuperview:superview {
    _superview=superview;
    [self setNextResponder:superview];
-}
-
--(void)_setupToolTipRectIfNeeded {
-    if(_window != nil && [self toolTip] != nil) {
-        if (_defaultToolTipTag > 0)
-            [self removeToolTip:_defaultToolTipTag];
-        
-        _defaultToolTipTag = [self addToolTipRect:[self bounds] owner:self userData:nil];
-    }
 }
 
 -(void)_insertSubview:(NSView *)view atIndex:(unsigned)index {
@@ -600,8 +731,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    [self invalidateTransform]; // subview may affect transform (e.g. clipview)
 
-   [view _setupToolTipRectIfNeeded];
    [self setNeedsDisplayInRect:[view frame]];
+   [self updateTrackingAreas]; // Cocoa obviously omits this for CursorRects and TrackingRects.
 }
 
 -(void)addSubview:(NSView *)view {
@@ -626,6 +757,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [oldView removeFromSuperview];
    [self _insertSubview:newView atIndex:index];
    [oldView release];
+}
+
+-(void)setSubviews:(NSArray *)newSubviews {
+   NSUnimplementedMethod();
+}
+
+-(void)sortSubviewsUsingFunction:(NSComparisonResult (*)(id, id, void *))compareFunction context:(void *)context {
+   NSUnimplementedMethod();
+}
+
+-(void)didAddSubview:(NSView *)subview {
+   NSUnimplementedMethod();
+}
+
+-(void)willRemoveSubview:(NSView *)subview {
+   NSUnimplementedMethod();
 }
 
 -(void)setAutoresizesSubviews:(BOOL)flag {
@@ -654,48 +801,138 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [_nextKeyView _setPreviousKeyView:self];
 }
 
-- (void)setToolTip:(NSString *)string
-{
-    [_toolTip release];
-    _toolTip = [string retain];
-    
-    [self _setupToolTipRectIfNeeded];
+-(BOOL)acceptsFirstMouse:(NSEvent *)event {
+   NSUnimplementedMethod();
+   return NO;
 }
 
-- (NSToolTipTag)addToolTipRect:(NSRect)rect owner:object userData:(void *)userData
-{
-    if ([self window] == nil)
-        [NSException raise:NSInvalidArgumentException format:@"%@ cannot add tool tip rect before view is added to view hierarchy", NSStringFromSelector(_cmd)];
-    
-    return [[self window] _addTrackingRect:rect view:self flipped:[self isFlipped] owner:object userData:userData assumeInside:NO isToolTip:YES];
+-(BOOL)acceptsTouchEvents {
+   NSUnimplementedMethod();
+   return NO;
 }
 
-- (void)removeToolTip:(NSToolTipTag)tag
-{
-    [self removeTrackingRect:tag];
+-(void)setAcceptsTouchEvents:(BOOL)accepts {
+   NSUnimplementedMethod();
 }
 
-- (void)removeAllToolTips
-{
-    [[self window] _removeAllToolTips];
+-(BOOL)wantsRestingTouches {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)setWantsRestingTouches:(BOOL)wants {
+   NSUnimplementedMethod();
+}
+ 
+-(void)setToolTip:(NSString *)string {
+   [self removeAllToolTips];
+   if(string!=nil && ![string isEqualToString:@""])
+    [self addToolTipRect:[self bounds] owner:string userData:NULL];
+}
+
+-(NSToolTipTag)addToolTipRect:(NSRect)rect owner:object userData:(void *)userData {
+   NSTrackingArea *area=nil;
+
+   // Send the unspecified pointer userData as NSDictionary
+   // pointer userInfo. This matches NSEvent's documentation.
+   area=[[NSTrackingArea alloc] _initWithRect:rect options:0 owner:object userInfo:userData isToolTip:YES isLegacy:NO];
+   [_trackingAreas addObject:area];
+   [area release];
+
+   [self updateTrackingAreas];
+
+   return area;
+}
+
+-(void)removeToolTip:(NSToolTipTag)tag {
+   [self removeTrackingArea:tag];
+}
+
+-(void)removeAllToolTips {
+   NSInteger count=[_trackingAreas count];
+
+   while(--count>=0){
+    if([[_trackingAreas objectAtIndex:count] _isToolTip]==YES)
+     [_trackingAreas removeObjectAtIndex:count];
+   }
+
+   [self updateTrackingAreas];
 }
 
 -(void)addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor {
-   [[self window] _addCursorRect:rect cursor:cursor view:self];
+   NSCursorRect *cursorRect=[[NSCursorRect alloc] initWithCursor:cursor];
+   NSTrackingArea *area=nil;
+
+   area=[[NSTrackingArea alloc] _initWithRect:rect options:NSTrackingCursorUpdate|NSTrackingActiveInKeyWindow owner:cursorRect userInfo:nil isToolTip:NO isLegacy:YES];
+   [_trackingAreas addObject:area];
+   [area release];
+   [cursorRect release];
+
+   [self updateTrackingAreas];
 }
 
 -(void)removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor {
-   [[self window] _removeCursorRect:rect cursor:cursor view:self];
+   NSInteger count=[_trackingAreas count];
+
+   while(--count>=0){
+    NSTrackingArea *area=[_trackingAreas objectAtIndex:count];
+    NSObject *candidate=[area owner];
+
+    if([area _isLegacy]==YES &&
+       [candidate isKindOfClass:[NSCursorRect class]]==YES &&
+       [(NSCursorRect *)candidate cursor]==cursor){
+     [_trackingAreas removeObjectAtIndex:count];
+     break;
+    }
+   }
+
+   [self updateTrackingAreas];
 }
 
 -(void)discardCursorRects {
-   [[self window] _discardCursorRectsForView:self];
+   NSInteger count=[_trackingAreas count];
+
+   while(--count>=0){
+    NSTrackingArea *area=[_trackingAreas objectAtIndex:count];
+
+    if([area _isLegacy]==YES &&
+       [area options]&NSTrackingCursorUpdate){
+     [_trackingAreas removeObjectAtIndex:count];
+    }
+   }
 
    [[self subviews] makeObjectsPerformSelector:_cmd];
+
+   [self updateTrackingAreas];
 }
 
 -(void)resetCursorRects {
    // do nothing
+}
+
+-(void)_collectTrackingAreasForWindowInto:(NSMutableArray *)collector {
+   if(_isHidden==NO){
+    NSArray    *subviews=[self subviews];
+    NSUInteger  i,count;
+
+    count=[_trackingAreas count];
+    for(i=0;i<count;i++){
+     NSTrackingArea *area=[_trackingAreas objectAtIndex:i];
+     NSRect          rectOfInterest;
+
+     rectOfInterest=NSIntersectionRect([area rect], [self bounds]);
+     if(rectOfInterest.size.width>0. && rectOfInterest.size.height>0.){
+      [area _setView:self];
+      [area _setRectInWindow:[self convertRect:rectOfInterest toView:nil]];
+      [collector addObject:[_trackingAreas objectAtIndex:i]];
+     }
+    }
+
+    // Collect subviews' areas _after_ collecting our own.
+    count=[subviews count];
+    for(i=0;i<count;i++)
+     [(NSView *)[subviews objectAtIndex:i] _collectTrackingAreasForWindowInto:collector];
+   }
 }
 
 -(NSArray *)trackingAreas {
@@ -704,23 +941,43 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)addTrackingArea:(NSTrackingArea *)trackingArea {
    [_trackingAreas addObject:trackingArea];
+   [self updateTrackingAreas];
 }
 
 -(void)removeTrackingArea:(NSTrackingArea *)trackingArea {
    [_trackingAreas removeObjectIdenticalTo:trackingArea];
+   [self updateTrackingAreas];
 }
 
 -(void)updateTrackingAreas {
+   [[self window] _updateTrackingAreas];
 }
 
 -(NSTrackingRectTag)addTrackingRect:(NSRect)rect owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside {
-   rect=[self convertRect:rect toView:nil];
+   NSTrackingAreaOptions options=NSTrackingMouseEnteredAndExited|NSTrackingActiveAlways;
+   NSTrackingArea *area=nil;
 
-   return [[self window] _addTrackingRect:rect view:self flipped:[self isFlipped] owner:owner userData:userData assumeInside:assumeInside isToolTip:NO];
+   if(assumeInside==YES)
+    options|=NSTrackingAssumeInside;
+
+   // Send the unspecified pointer userData as NSDictionary
+   // pointer userInfo. This obviously matches Apple Cocoa's behaviour.
+   area=[[NSTrackingArea alloc] _initWithRect:rect options:options owner:owner userInfo:userData isToolTip:NO isLegacy:NO];
+   [_trackingAreas addObject:area];
+   [area release];
+
+   [self updateTrackingAreas];
+
+   return area;
 }
 
 -(void)removeTrackingRect:(NSTrackingRectTag)tag {
-   [[self window] _removeTrackingRect:tag];
+   [self removeTrackingArea:tag];
+}
+
+-(NSTextInputContext *)inputContext {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(void)registerForDraggedTypes:(NSArray *)types {
@@ -730,6 +987,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)unregisterDraggedTypes {
    [_draggedTypes release];
    _draggedTypes=nil;
+}
+
+-(NSArray *)registeredDraggedTypes {
+   return _draggedTypes;
 }
 
 -(void)_deepResignFirstResponder {
@@ -752,21 +1013,35 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)removeFromSuperviewWithoutNeedingDisplay {
    NSView *removeFrom=_superview;
-
-   [self discardCursorRects];
-   [[self window] _discardTrackingRectsForView:self toolTipsOnly:NO];
+   NSWindow *window=[self window];
 
    [self _deepResignFirstResponder];
    [self _setSuperview:nil];
    [self _setWindow:nil];
 
    [removeFrom _removeViewWithoutDisplay:self];
-}
-
--(void)viewWillMoveToWindow:(NSWindow *)window {
+   [window _updateTrackingAreas];
 }
 
 -(void)viewWillMoveToSuperview:(NSView *)view {
+   // Intentionally empty.
+}
+
+-(void)viewDidMoveToSuperview {
+   NSUnimplementedMethod();
+}
+
+-(void)viewWillMoveToWindow:(NSWindow *)window {
+   // Intentionally empty.
+}
+
+-(void)viewDidMoveToWindow {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)shouldDelayWindowOrderingForEvent:(NSEvent *)event {
+   NSUnimplementedMethod();
+   return NO;
 }
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -853,6 +1128,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _inLiveResize;
 }
 
+-(BOOL)preservesContentDuringLiveResize {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSRect)rectPreservedDuringLiveResize {
+   NSUnimplementedMethod();
+   return NSZeroRect;
+}
+
 -(void)viewWillStartLiveResize {
    _inLiveResize=YES;
    [_subviews makeObjectsPerformSelector:_cmd];
@@ -861,6 +1146,20 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)viewDidEndLiveResize {
    _inLiveResize=NO;
    [_subviews makeObjectsPerformSelector:_cmd];
+}
+
+-(BOOL)enterFullScreenMode:(NSScreen *)screen withOptions:(NSDictionary *)options {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)isInFullScreenMode {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)exitFullScreenModeWithOptions:(NSDictionary *)options {
+   NSUnimplementedMethod();
 }
 
 -(NSClipView *)_enclosingClipView {
@@ -947,8 +1246,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     return NO;
 }
 
+-(void)scrollClipView:(NSClipView *)clipView toPoint:(NSPoint)newOrigin {
+   NSUnimplementedMethod();
+}
+
 -(BOOL)mouse:(NSPoint)point inRect:(NSRect)rect {
    return NSMouseInRect(point, rect, [self isFlipped]);
+}
+
+-(void)reflectScrolledClipView:(NSClipView *)view {
+   NSUnimplementedMethod();
 }
 
 -(void)allocateGState {
@@ -963,8 +1270,92 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    // do nothing
 }
 
+-(void)renewGState {
+   // do nothing
+}
+
+-(BOOL)wantsLayer {
+   return _wantsLayer;
+}
+
+-(CALayer *)layer {
+   return _layer;
+}
+
+-(CALayer *)makeBackingLayer {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setWantsLayer:(BOOL)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setLayer:(CALayer *)value {
+   NSUnimplementedMethod();
+}
+
+
+-(NSViewLayerContentsPlacement)layerContentsPlacement {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setLayerContentsPlacement:(NSViewLayerContentsPlacement)newPlacement {
+   NSUnimplementedMethod();
+}
+
+-(NSViewLayerContentsRedrawPolicy)layerContentsRedrawPolicy {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setLayerContentsRedrawPolicy:(NSViewLayerContentsRedrawPolicy)newPolicy {
+   NSUnimplementedMethod();
+}
+
+-(NSArray *)backgroundFilters {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setBackgroundFilters:(NSArray *)filters {
+   NSUnimplementedMethod();
+}
+
+-(NSArray *)contentFilters {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setContentFilters:(NSArray *)filters {
+   NSUnimplementedMethod();
+}
+
+-(CIFilter *)compositingFilter {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setCompositingFilter:(CIFilter *)filter {
+   NSUnimplementedMethod();
+}
+
+-(NSShadow *)shadow {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setShadow:(NSShadow *)shadow {
+   NSUnimplementedMethod();
+}
+
 -(BOOL)needsDisplay {
    return !NSIsEmptyRect(_invalidRect);
+}
+
+-(void)setNeedsDisplay:(BOOL)flag {
+   [self setNeedsDisplayInRect:[self bounds]];
 }
 
 -(void)setNeedsDisplayInRect:(NSRect)rect {
@@ -975,12 +1366,29 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [[self window] setViewsNeedDisplay:YES];
 }
 
--(void)setNeedsDisplay:(BOOL)flag {
-   [self setNeedsDisplayInRect:[self bounds]];
+-(void)setKeyboardFocusRingNeedsDisplayInRect:(NSRect)rect {
+   NSUnimplementedMethod();
+}
+
+-(void)translateRectsNeedingDisplayInRect:(NSRect)rect by:(NSSize)delta {
+   NSUnimplementedMethod();
 }
 
 -(BOOL)canDraw {
    return _window!=nil && ![self isHiddenOrHasHiddenAncestor];
+}
+
+-(BOOL)canDrawConcurrently {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)viewWillDraw {
+   NSUnimplementedMethod();
+}
+
+-(void)setCanDrawConcurrently:(BOOL)canDraw {
+   NSUnimplementedMethod();
 }
 
 -(void)lockFocus {
@@ -1011,6 +1419,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return NO;
 }
 
+-(BOOL)lockFocusIfCanDrawInContext:(NSGraphicsContext *)context {
+   NSUnimplementedMethod();
+   return NO;
+}
+
 -(void)unlockFocus {
    NSGraphicsContext *context=[[self window] graphicsContext];
 
@@ -1021,6 +1434,24 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [NSCurrentFocusStack() removeLastObject];
     [NSGraphicsContext restoreGraphicsState];
    }
+}
+
+-(BOOL)needsToDrawRect:(NSRect)rect {
+   NSUnimplementedMethod();
+   return YES;
+}
+
+-(void)getRectsBeingDrawn:(const NSRect **)rects count:(NSInteger *)count {
+   NSUnimplementedMethod();
+}
+
+-(void)getRectsExposedDuringLiveResize:(NSRect)rects count:(NSInteger *)count {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)shouldDrawColor {
+   NSUnimplementedMethod();
+   return YES;
 }
 
 -(NSView *)opaqueAncestor {
@@ -1133,6 +1564,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [[self window] flushWindow];
 }
 
+-(void)displayRectIgnoringOpacity:(NSRect)rect inContext:(NSGraphicsContext *)context {
+   NSUnimplementedMethod();
+}
+
 -(void)drawRect:(NSRect)rect {
    // do nothing
 }
@@ -1151,6 +1586,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     NSCopyBits([self gState],rect,point);
     [self unlockFocus];
    }
+}
+
+-(BOOL)mouseDownCanMoveWindow {
+   NSUnimplementedMethod();
+   return NO;
 }
 
 -(void)print:sender {
@@ -1196,6 +1636,30 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    CGContextEndPage(graphicsPort);
    [NSCurrentFocusStack() removeLastObject];
 }
+
+-(NSAttributedString *)pageHeader {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSAttributedString *)pageFooter {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSString *)printJobTitle {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)drawSheetBorderWithSize:(NSSize)size {
+   NSUnimplementedMethod();
+}
+
+-(void)drawPageBorderWithSize:(NSSize)size {
+   NSUnimplementedMethod();
+}
+
 
 -(float)widthAdjustLimit {
    return 0.5;
@@ -1302,6 +1766,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return NO;
 }
 
+-(BOOL)performMnemonic:(NSString *)string {
+   NSUnimplementedMethod();
+   return NO;
+}
+
 -(void)setMenu:(NSMenu *)menu {
    menu=[menu copy];
    [_menu release];
@@ -1342,12 +1811,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _draggedTypes;
 }
 
-- (NSString *)view:(NSView *)view stringForToolTip:(NSToolTipTag)tag point:(NSPoint)point userData:(void *)data
-{
-    if (view == self && tag == _defaultToolTipTag)
-        return [self toolTip];
-    
-    return nil;
+- (BOOL)dragPromisedFilesOfTypes:(NSArray *)types fromRect:(NSRect)rect source:(id)source slideBack:(BOOL)slideBack event:(NSEvent *)event {
+   NSUnimplementedMethod();
+   return NO;
 }
 
 -(NSPoint)convertPointFromBase:(NSPoint)aPoint; {
@@ -1374,26 +1840,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return aRect;
 }
 
--(BOOL)wantsLayer {
-   return _wantsLayer;
-}
-
--(CALayer *)layer {
-   return _layer;
-}
-
--(CALayer *)makeBackingLayer {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--(void)setWantsLayer:(BOOL)value {
+-(void)showDefinitionForAttributedString:(NSAttributedString *)string atPoint:(NSPoint)origin {
    NSUnimplementedMethod();
 }
 
--(void)setLayer:(CALayer *)value {
-   NSUnimplementedMethod();
-}
+// Blocks aren't supported by the compiler yet.
+//-(void)showDefinitionForAttributedString:(NSAttributedString *)string range:(NSRange)range options:(NSDictionary *)options baselineOriginProvider:(NSPoint (^)(NSRange adjustedRange))originProvider {
+//   NSUnimplementedMethod();
+//}
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%lx] frame: %@>", [self class], self, NSStringFromRect(_frame)];

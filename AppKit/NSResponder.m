@@ -65,20 +65,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)interpretKeyEvents:(NSArray *)events {
-   int i,count=[events count];
+   int i,icount=[events count];
 
-   for(i=0;i<count;i++){
+   for(i=0;i<icount;i++){
     NSEvent      *event=[events objectAtIndex:i];
     NSString     *string=[event charactersIgnoringModifiers];
     NSKeyboardBinding *keyBinding=[[NSKeyboardBindingManager defaultKeyBindingManager] keyBindingWithString:string modifierFlags:[event modifierFlags]];
     NSArray      *selectorNames=[keyBinding selectorNames];
 
     if(selectorNames!=nil){
-     int i = 0, count = [selectorNames count];
+     int j = 0, jcount = [selectorNames count];
 
-     for (i = 0; i < count; ++i) {
-      //  NSLog(@"doing %@ for %@", [selectorNames objectAtIndex:i], keyBinding);
-      [self doCommandBySelector:NSSelectorFromString([selectorNames objectAtIndex:i])];
+     for (j = 0; j < jcount; ++j) {
+      //  NSLog(@"doing %@ for %@", [selectorNames objectAtIndex:j], keyBinding);
+      [self doCommandBySelector:NSSelectorFromString([selectorNames objectAtIndex:j])];
      }
     }
     else if([self respondsToSelector:@selector(insertText:)]){
@@ -86,19 +86,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  
      if([string length]>0){ // FIX THIS IN APPKIT shouldnt get 0 length 
 
-      unsigned i,length=[string length];
+      unsigned j,length=[string length];
       unichar  buffer[length];
 
       [string getCharacters:buffer];
-      for(i=0;i<length;i++){
-       unichar check=buffer[i];
+      for(j=0;j<length;j++){
+       unichar check=buffer[j];
 
        if(check>=NSUpArrowFunctionKey)
         check=' ';
        else if(check<' ')
         check=' ';
 
-       buffer[i]=check;
+       buffer[j]=check;
       }
       string=[NSString stringWithCharacters:buffer length:length];
       [self insertText:string];
@@ -203,6 +203,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)keyDown:(NSEvent *)event {
+   [_nextResponder performSelector:_cmd withObject:event];
+}
+
+-(void)cursorUpdate:(NSEvent *)event {
    [_nextResponder performSelector:_cmd withObject:event];
 }
 

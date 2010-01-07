@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSWindowBackgroundView.h>
+#import <AppKit/NSTrackingArea.h>
 
 // Note: This file contains a few minor adjustments to get it pixel-accurate on Win32.
 //       Those occurences are marked with "Should...".
@@ -46,9 +47,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_backgroundView setBorderType:NSLineBorder];
     [[self contentView] addSubview:_textField];
 
+    _trackingArea = nil;
     _sizeAdjusted = NO;
 
     return self;
+}
+
+- (NSString *)toolTip
+{
+    return [_textField stringValue];
 }
 
 - (void)setToolTip:(NSString *)toolTip
@@ -57,23 +64,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _sizeAdjusted = NO;
 }
 
-- (NSString *)toolTip
-{
-    return [_textField stringValue];
+- (NSTrackingArea *)_trackingArea {
+    return _trackingArea;
 }
 
-- (void)setLocationOnScreen:(NSPoint)location
-{
-    NSRect frame = [self frame];
-    
-    frame.origin = location;
-    
-    [self setFrame:frame display:NO];
-}
-
-- (NSPoint)locationOnScreen
-{
-    return [self frame].origin;
+- (void)_setTrackingArea:(NSTrackingArea *)trackingArea {
+    _trackingArea=trackingArea;
 }
 
 // NSWindow override.
@@ -84,7 +80,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         NSRect windowFrame = [self frame];
 
         messageSize = [[NSScreen mainScreen] visibleFrame].size;
-        messageSize.width /= 4;
+        if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSToolTipAutoWrappingDisabled"]==NO)
+         messageSize.width /= 4.;
+        else
+         messageSize.width = NSStringDrawerLargeDimension;
 
         messageSize=[[NSStringDrawer sharedStringDrawer] sizeOfString:[_textField stringValue] withAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont toolTipsFontOfSize:0.], NSFontAttributeName, nil] inSize:messageSize];
         messageSize.width += TEXTFIELD_MARGIN * 2;
@@ -94,6 +93,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         [_textField setBoundsSize:messageSize];
         [_textField setFrameSize:messageSize];
 
+        windowFrame.origin = [NSEvent mouseLocation];
+        windowFrame.origin.x += 10.;
+        windowFrame.origin.y += 10.;
         windowFrame.size = messageSize;
         windowFrame.size.height -= 1.; // Shouldn't be neccessary.
         [self setFrame:windowFrame display:YES];

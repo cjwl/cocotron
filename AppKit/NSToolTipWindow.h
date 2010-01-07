@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPanel.h>
 #import <Foundation/NSGeometry.h>
 
-@class NSString, NSTextField;
+@class NSString, NSTextField, NSTrackingArea;
 
 // Hmm. I assume that we're going to only have 1 tool tip active per application with this implementation/
 
@@ -18,15 +18,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSTextField *_textField;
 
 @private
+    // Needed by NSWindow, weak reference.
+    NSTrackingArea *_trackingArea;
+
     BOOL _sizeAdjusted;
 }
 
 + (NSToolTipWindow *)sharedToolTipWindow;
 
-- (void)setToolTip:(NSString *)toolTip;
 - (NSString *)toolTip;
+- (void)setToolTip:(NSString *)toolTip;
 
-- (void)setLocationOnScreen:(NSPoint)location;
-- (NSPoint)locationOnScreen;
+// Private
+- (NSTrackingArea *)_trackingArea;
+- (void)_setTrackingArea:(NSTrackingArea *)trackingArea;
 
 @end

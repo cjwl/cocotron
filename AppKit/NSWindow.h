@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2010 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,11 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+// Reviewed for API completeness against 10.6.
+
 #import <AppKit/NSResponder.h>
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSView.h>
 
-@class NSView, NSEvent, NSColor, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton,NSButtonCell, NSDrawer, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSWindowBackgroundView,NSWindowController, NSMenuItem;
+@class NSView, NSEvent, NSColor, NSColorSpace, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton, NSButtonCell, NSDrawer, NSDockTile, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSWindowBackgroundView, NSWindowController, NSMenuItem;
 
 enum {
    NSBorderlessWindowMask=0x00,
@@ -34,6 +37,38 @@ typedef enum {
    NSWindowToolbarButton,
    NSWindowDocumentIconButton,
 } NSWindowButton;
+
+enum {
+   NSWindowNumberListAllApplications=0x01,
+   NSWindowNumberListAllSpaces=0x10
+};
+typedef NSUInteger NSWindowNumberListOptions;
+
+enum {
+   NSWindowBackingLocationDefault=0x00,
+   NSWindowBackingLocationVideoMemory=0x01,
+   NSWindowBackingLocationMainMemory=0x02
+};
+typedef NSUInteger NSWindowBackingLocation;
+
+enum {
+   NSWindowCollectionBehaviorDefault=0x00,
+   NSWindowCollectionBehaviorCanJoinAllSpaces=0x01,
+   NSWindowCollectionBehaviorMoveToActiveSpace=0x02,
+   NSWindowCollectionBehaviorManaged=0x04,
+   NSWindowCollectionBehaviorTransient=0x08,
+   NSWindowCollectionBehaviorStationary=0x10,
+   NSWindowCollectionBehaviorParticipatesInCycle=0x20,
+   NSWindowCollectionBehaviorIgnoresCycle=0x40
+};
+typedef NSUInteger NSWindowCollectionBehavior;
+
+enum {
+   NSWindowSharingNone=0x00,
+   NSWindowSharingReadOnly=0x01,
+   NSWindowSharingReadWrite=0x02
+};
+typedef NSUInteger NSWindowSharingType;
 
 typedef int NSSelectionDirection;
 
@@ -83,10 +118,7 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
    NSTextView  *_fieldEditor;
    NSArray     *_draggedTypes;
 
-   NSMutableArray   *_cursorRects;
-   NSHashTable      *_invalidatedCursorRectViews;
-   NSMutableArray   *_trackingRects;
-   NSTrackingRectTag _nextTrackingRectTag;
+   NSMutableArray   *_trackingAreas;
 
    NSSheetContext   *_sheetContext;
 
@@ -155,29 +187,38 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask;
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask;
-
 +(float)minFrameWidthWithTitle:(NSString *)title styleMask:(unsigned)styleMask;
-
++(NSInteger)windowNumberAtPoint:(NSPoint)point belowWindowWithWindowNumber:(NSInteger)window;
++(NSArray *)windowNumbersWithOptions:(NSWindowNumberListOptions)options;
 +(void)removeFrameUsingName:(NSString *)name;
 
 +(NSButton *)standardWindowButton:(NSWindowButton)button forStyleMask:(unsigned)styleMask;
++(void)menuChanged:(NSMenu *)menu;
 
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask backing:(unsigned)backing defer:(BOOL)defer;
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask backing:(unsigned)backing defer:(BOOL)defer screen:(NSScreen *)screen;
+-(NSWindow *)initWithWindowRef:(void *)carbonRef;
 
 -(NSGraphicsContext *)graphicsContext;
 -(NSDictionary *)deviceDescription;
+-(void *)windowRef;
+-(BOOL)allowsConcurrentViewDrawing;
+-(void)setAllowsConcurrentViewDrawing:(BOOL)allows;
 
--contentView;
--delegate;
+-(NSView *)contentView;
+-(id)delegate;
 
 -(NSString *)title;
 -(NSString *)representedFilename;
+-(NSURL *)representedURL;
 
 -(int)level;
 -(NSRect)frame;
 -(unsigned)styleMask;
 -(NSBackingStoreType)backingType;
+-(NSWindowBackingLocation)preferredBackingLocation;
+-(void)setPreferredBackingLocation:(NSWindowBackingLocation)location;
+-(NSWindowBackingLocation)backingLocation;
 
 -(NSSize)minSize;
 -(NSSize)maxSize;
@@ -188,6 +229,8 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(BOOL)isOpaque;
 -(BOOL)hasDynamicDepthLimit;
 -(BOOL)isReleasedWhenClosed;
+-(BOOL)preventsApplicationTerminationWhenModal;
+-(void)setPreventsApplicationTerminationWhenModal:(BOOL)prevents;
 -(BOOL)hidesOnDeactivate;
 -(BOOL)worksWhenModal;
 -(BOOL)isSheet;
@@ -208,8 +251,13 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(BOOL)displaysWhenScreenProfileChanges;
 -(BOOL)isMovableByWindowBackground;
 -(BOOL)allowsToolTipsWhenApplicationIsInactive;
+
+-(BOOL)autorecalculatesContentBorderThicknessForEdge:(NSRectEdge)edge;
+-(CGFloat)contentBorderThicknessForEdge:(NSRectEdge)edge;
+
 -(NSImage *)miniwindowImage;
 -(NSString *)miniwindowTitle;
+-(NSDockTile *)dockTile;
 -(NSColor *)backgroundColor;
 -(float)alphaValue;
 -(NSWindowDepth)depthLimit;
@@ -225,10 +273,13 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(void)setContentSize:(NSSize)contentSize;
 -(void)setFrameOrigin:(NSPoint)point;
 -(void)setFrameTopLeftPoint:(NSPoint)point;
+-(void)setStyleMask:(NSUInteger)styleMask;
 -(void)setMinSize:(NSSize)size;
 -(void)setMaxSize:(NSSize)size;
 -(void)setContentMinSize:(NSSize)value;
 -(void)setContentMaxSize:(NSSize)value;
+-(void)setContentBorderThickness:(CGFloat)thickness forEdge:(NSRectEdge)edge;
+-(void)setMovable:(BOOL)movable;
 
 -(void)setBackingType:(NSBackingStoreType)value;
 -(void)setDynamicDepthLimit:(BOOL)value;
@@ -238,6 +289,7 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(void)setAcceptsMouseMovedEvents:(BOOL)flag;
 -(void)setExcludedFromWindowsMenu:(BOOL)value;
 -(void)setAutodisplay:(BOOL)value;
+-(void)setAutorecalculatesContentBorderThickness:(BOOL)automatic forEdge:(NSRectEdge)edge;
 -(void)setTitle:(NSString *)title;
 -(void)setTitleWithRepresentedFilename:(NSString *)filename;
 -(void)setContentView:(NSView *)view;
@@ -257,11 +309,14 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(void)setAspectRatio:(NSSize)value;
 -(void)setAutorecalculatesKeyViewLoop:(BOOL)value;
 -(void)setCanHide:(BOOL)value;
+-(void)setCanBecomeVisibleWithoutLogin:(BOOL)flag;
+-(void)setCollectionBehavior:(NSWindowCollectionBehavior)behavior;
 -(void)setLevel:(int)value;
 -(void)setOpaque:(BOOL)value;
 -(void)setParentWindow:(NSWindow *)value;
 -(void)setPreservesContentDuringLiveResize:(BOOL)value;
 -(void)setRepresentedFilename:(NSString *)value;
+-(void)setRepresentedURL:(NSURL *)newURL;
 -(void)setResizeIncrements:(NSSize)value;
 -(void)setShowsResizeIndicator:(BOOL)value;
 -(void)setShowsToolbarButton:(BOOL)value;
@@ -293,6 +348,11 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(int)gState;
 -(NSScreen *)screen;
 -(NSScreen *)deepestScreen;
+-(NSColorSpace *)colorSpace;
+-(void)setColorSpace:(NSColorSpace *)newColorSpace;
+-(BOOL)isOnActiveSpace;
+-(NSWindowSharingType)sharingType;
+-(void)setSharingType:(NSWindowSharingType)type;
 
 -(BOOL)isDocumentEdited;
 -(BOOL)isZoomed;
@@ -300,8 +360,12 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(BOOL)isKeyWindow;
 -(BOOL)isMainWindow;
 -(BOOL)isMiniaturized;
+-(BOOL)isMovable;
+-(BOOL)inLiveResize;
 -(BOOL)canBecomeKeyWindow;
 -(BOOL)canBecomeMainWindow;
+-(BOOL)canBecomeVisibleWithoutLogin;
+-(NSWindowCollectionBehavior)collectionBehavior;
 
 -(NSPoint)convertBaseToScreen:(NSPoint)point;
 -(NSPoint)convertScreenToBase:(NSPoint)point;
@@ -380,6 +444,7 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 -(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart;
 
 -(BOOL)tryToPerform:(SEL)selector with:object;
+-(void)keyDown:(NSEvent *)event;
 
 -(NSPoint)cascadeTopLeftFromPoint:(NSPoint)topLeftPoint;
 

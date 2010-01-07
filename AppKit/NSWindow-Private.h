@@ -33,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSWindowAnimationContext *)_animationContext;
 -(void)_hideMenuViewIfNeeded;
 -(void)_showMenuViewIfNeeded;
+-(void)_updateTrackingAreas;
 
 -(void)undo:sender;
 -(void)redo:sender;

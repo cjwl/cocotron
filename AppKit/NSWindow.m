@@ -28,7 +28,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDraggingManager.h>
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSTextView.h>
-#import <AppKit/NSCursorRect.h>
 #import <AppKit/NSTrackingArea.h>
 #import <AppKit/NSToolbar.h>
 #import <AppKit/NSWindowAnimationContext.h>
@@ -86,6 +85,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return 0;
 }
 
++(NSInteger)windowNumberAtPoint:(NSPoint)point belowWindowWithWindowNumber:(NSInteger)window {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(NSArray *)windowNumbersWithOptions:(NSWindowNumberListOptions)options {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 +(void)removeFrameUsingName:(NSString *)name {
    NSUnimplementedMethod();
 }
@@ -93,6 +102,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 +(NSButton *)standardWindowButton:(NSWindowButton)button forStyleMask:(unsigned)styleMask {
    NSUnimplementedMethod();
    return nil;
+}
+
++(void)menuChanged:(NSMenu *)menu {
+   NSUnimplementedMethod();
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -148,12 +161,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _fieldEditor=nil;
    _draggedTypes=nil;
 
-   _cursorRects=[NSMutableArray new];
-   _invalidatedCursorRectViews=
-              NSCreateHashTable(NSNonOwnedPointerHashCallBacks,0);
-
-   _trackingRects=[NSMutableArray new];
-   _nextTrackingRectTag=1;
+   _trackingAreas=nil;
+   _allowsToolTipsWhenApplicationIsInactive=NO;
 
    _sheetContext=nil;
 
@@ -192,6 +201,11 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return [self initWithContentRect:contentRect styleMask:styleMask backing:backing defer:defer];
 }
 
+-(NSWindow *)initWithWindowRef:(void *)carbonRef {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(void)dealloc {
    [[NSNotificationCenter defaultCenter] removeObserver:self];
    
@@ -206,9 +220,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [_backgroundColor release];
    [_fieldEditor release];
    [_draggedTypes release];
-   [_cursorRects release];
-   NSFreeHashTable(_invalidatedCursorRectViews);
-   [_trackingRects release];
+   [_trackingAreas release];
    [_autosaveFrameName release];
    [_platformWindow invalidate];
    [_platformWindow release];
@@ -252,7 +264,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return [[self platformWindow] cgContext];
 }
 
--(void)_setStyleMask:(unsigned)mask
+-(void)setStyleMask:(unsigned)mask
 {
     if (_platformWindow == nil)
         _styleMask = mask;
@@ -282,11 +294,25 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     nil];
 }
 
--contentView {
+-(void *)windowRef {
+   NSUnimplementedMethod();
+   return NULL;
+}
+
+-(BOOL)allowsConcurrentViewDrawing {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)setAllowsConcurrentViewDrawing:(BOOL)allows {
+   NSUnimplementedMethod();
+}
+
+-(NSView *)contentView {
    return _contentView;
 }
 
--delegate {
+-(id)delegate {
    return _delegate;
 }
 
@@ -296,6 +322,11 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(NSString *)representedFilename {
    return _representedFilename;
+}
+
+-(NSURL *)representedURL {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(int)level {
@@ -312,6 +343,20 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(NSBackingStoreType)backingType {
    return _backingType;
+}
+
+-(NSWindowBackingLocation)preferredBackingLocation {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)setPreferredBackingLocation:(NSWindowBackingLocation)location {
+   NSUnimplementedMethod();
+}
+
+-(NSWindowBackingLocation)backingLocation {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSSize)minSize {
@@ -344,6 +389,15 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(BOOL)isReleasedWhenClosed {
    return _releaseWhenClosed;
+}
+
+-(BOOL)preventsApplicationTerminationWhenModal {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)setPreventsApplicationTerminationWhenModal:(BOOL)prevents {
+   NSUnimplementedMethod();
 }
 
 -(BOOL)hidesOnDeactivate {
@@ -434,6 +488,11 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _miniwindowTitle;
 }
 
+-(NSDockTile *)dockTile {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(NSColor *)backgroundColor {
    return _backgroundColor;
 }
@@ -517,7 +576,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     NSRect   frame=_frame;
     NSArray *screens=[NSScreen screens];
     int      i,count=[screens count];
-    NSRect   virtual=NSZeroRect;
     BOOL     changed=NO;
 
     BOOL     tooFarLeft=YES,tooFarRight=YES,tooFarUp=YES,tooFarDown=YES;
@@ -616,7 +674,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [_backgroundView setFrameSize:_frame.size];
    [[self platformWindow] setFrame:_frame];
 
-   [self resetCursorRects];
+   [self _updateTrackingAreas];
 
    if(display)
     [self display];
@@ -737,6 +795,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    NSUnimplementedMethod();
 }
 
+-(void)setContentBorderThickness:(CGFloat)thickness forEdge:(NSRectEdge)edge {
+   NSUnimplementedMethod();
+}
+
+-(void)setMovable:(BOOL)movable {
+   NSUnimplementedMethod();
+}
+
 -(void)setBackingType:(NSBackingStoreType)value {
    _backingType=value;
    NSUnimplementedMethod();
@@ -768,6 +834,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(void)setAutodisplay:(BOOL)value {
    _isAutodisplay=value;
+}
+
+-(void)setAutorecalculatesContentBorderThickness:(BOOL)automatic forEdge:(NSRectEdge)edge {
+   NSUnimplementedMethod();
 }
 
 -(void)setTitle:(NSString *)title {
@@ -930,6 +1000,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _canHide=value;
 }
 
+-(void)setCanBecomeVisibleWithoutLogin:(BOOL)flag {
+   NSUnimplementedMethod();
+}
+
+-(void)setCollectionBehavior:(NSWindowCollectionBehavior)behavior {
+   NSUnimplementedMethod();
+}
+
 -(void)setLevel:(int)value {
    _level=value;
    NSUnimplementedMethod();
@@ -951,6 +1029,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    value=[value copy];
    [_representedFilename release];
    _representedFilename=value;
+}
+
+-(void)setRepresentedURL:(NSURL *)newURL {
+   NSUnimplementedMethod();
 }
 
 -(void)setResizeIncrements:(NSSize)value {
@@ -985,6 +1067,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(void)setAllowsToolTipsWhenApplicationIsInactive:(BOOL)value {
    _allowsToolTipsWhenApplicationIsInactive=value;
+}
+
+-(BOOL)autorecalculatesContentBorderThicknessForEdge:(NSRectEdge)edge {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(CGFloat)contentBorderThicknessForEdge:(NSRectEdge)edge {
+   NSUnimplementedMethod();
+   return 0.;
 }
 
 -(NSString *)_autosaveFrameKeyWithName:(NSString *)name {
@@ -1104,6 +1196,29 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return 0;
 }
 
+-(NSColorSpace *)colorSpace {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setColorSpace:(NSColorSpace *)newColorSpace {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)isOnActiveSpace {
+   NSUnimplementedMethod();
+   return YES;
+}
+
+-(NSWindowSharingType)sharingType {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)setSharingType:(NSWindowSharingType)type {
+   NSUnimplementedMethod();
+}
+
 -(BOOL)isDocumentEdited {
    return _isDocumentEdited;
 }
@@ -1129,12 +1244,32 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return [_platformWindow isMiniaturized];
 }
 
+-(BOOL)isMovable {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)inLiveResize {
+   NSUnimplementedMethod();
+   return NO;
+}
+
 -(BOOL)canBecomeKeyWindow {
    return YES;
 }
 
 -(BOOL)canBecomeMainWindow {
    return YES;
+}
+
+-(BOOL)canBecomeVisibleWithoutLogin {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSWindowCollectionBehavior)collectionBehavior {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSPoint)convertBaseToScreen:(NSPoint)point {
@@ -1226,7 +1361,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(void)makeKeyWindow {
    [[self platformWindow] makeKey];
-    [self makeFirstResponder:[self initialFirstResponder]];
+   [self makeFirstResponder:[self initialFirstResponder]];
 }
 
 -(void)makeMainWindow {
@@ -1303,7 +1438,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return 0;
 }
 
-
 - (void)disableKeyEquivalentForDefaultButtonCell {
     _defaultButtonCellKeyEquivalentDisabled = YES;
 }
@@ -1373,24 +1507,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     [self flushWindow];
 }
 
--(void)resetInvalidatedCursorRectsInView:(NSView *)view {
-   if(NSCountHashTable(_invalidatedCursorRectViews)>0){
-    NSArray *subviews=[view subviews];
-    int      i,count=[subviews count];
- 
-    for(i=0;i<count;i++)
-     [self resetInvalidatedCursorRectsInView:[subviews objectAtIndex:i]];
-
-    if(NSHashGet(_invalidatedCursorRectViews,view)!=NULL)
-     [view resetCursorRects];
-   }
-}
-
--(void)resetInvalidatedCursorRects {
-   [self resetInvalidatedCursorRectsInView:_backgroundView];
-   NSResetHashTable(_invalidatedCursorRectViews);
-}
-
 -(void)displayIfNeeded {
    if([self isVisible] && ![self isMiniaturized] && [self viewsNeedDisplay]){
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
@@ -1399,7 +1515,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     [self enableFlushWindow];
     [self flushWindowIfNeeded];
     [self setViewsNeedDisplay:NO];
-    [self resetInvalidatedCursorRects];
     [pool release];
    }
 }
@@ -1439,34 +1554,85 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(void)disableCursorRects {
    _cursorRectsDisabled++;
+   if(_cursorRectsDisabled==1)
+    [self _updateTrackingAreas];
 }
 
 -(void)enableCursorRects {
    _cursorRectsDisabled--;
+   if(_cursorRectsDisabled==0)
+    [self _updateTrackingAreas];
 }
 
 -(void)discardCursorRects {
-   [_cursorRects removeAllObjects];
+   [[self _backgroundView] discardCursorRects];
+   [self _updateTrackingAreas];
 }
 
--(void)resetCursorRectsInView:(NSView *)view {
+// Apple docs say: "sends -resetCursorRects to every NSView object in the [...] hierarchy",
+// and it means that. No [[self _backgroundView] resetCursorRects] and trusting in
+// recursion through the view hierarchy.
+-(void)_resetCursorRectsInView:(NSView *)view {
    NSArray *subviews=[view subviews];
    int      i,count=[subviews count];
 
    for(i=0;i<count;i++)
-    [self resetCursorRectsInView:[subviews objectAtIndex:i]];
+    [self _resetCursorRectsInView:[subviews objectAtIndex:i]];
 
    [view resetCursorRects];
 }
 
 -(void)resetCursorRects {
    [self discardCursorRects];
-   [self resetCursorRectsInView: _backgroundView];
+   [self _resetCursorRectsInView:_backgroundView];
+   [self _updateTrackingAreas];
 }
 
 -(void)invalidateCursorRectsForView:(NSView *)view {
    [view discardCursorRects];
-   NSHashInsert(_invalidatedCursorRectViews,view);
+   [view resetCursorRects];
+   [self _updateTrackingAreas];
+}
+
+// This shall be received in case of
+// - -[NSWindows areCursorRectsEnabled] changes
+// - -[NSApplication isActive] changes
+// - the number or TrackingAreas has changed
+// - a property of one of the TrackingAreas has changed
+// - a frame of this window or one the relevant views has changed.
+-(void)_updateTrackingAreas {
+   // Rebuild it on demand.
+   [_trackingAreas release];
+   _trackingAreas=nil;
+}
+
+// Never send this directly, except you actually need _trackingAreas.
+-(void)_resetTrackingAreas {
+   if(_trackingAreas==nil){
+    NSInteger count;
+    BOOL toolTipsAllowed=[[NSApplication sharedApplication] isActive] ||
+                         [self allowsToolTipsWhenApplicationIsInactive];
+
+    _trackingAreas=[[NSMutableArray alloc] init];
+    [[self _backgroundView] _collectTrackingAreasForWindowInto:_trackingAreas];
+    
+    count=[_trackingAreas count];
+    while(--count>=0){
+     NSTrackingArea *area=[_trackingAreas objectAtIndex:count];
+
+     if((_cursorRectsDisabled>0 && [area options]&NSTrackingCursorUpdate) ||
+        ([area _isToolTip] && !toolTipsAllowed))
+      [_trackingAreas removeObjectAtIndex:count];
+    }
+
+    if(!toolTipsAllowed){
+     // We have to do this here as Area handling won't even recignize ToolTips now.
+     NSToolTipWindow *toolTipWindow=[NSToolTipWindow sharedToolTipWindow];
+
+     [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
+     [toolTipWindow orderOut:nil];
+    }
+   }
 }
 
 -(void)close {   
@@ -1911,74 +2077,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
         [(NSControl *)[_defaultButtonCell controlView] performClick:nil];
 }
 
-
--(void)_addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view {
-   NSCursorRect *cursorRect=[NSCursorRect cursorRectWithRect:rect flipped:[view isFlipped] cursor:cursor view:view];
-   [_cursorRects addObject:cursorRect];
-}
-
--(void)_removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view {
-   int count=[_cursorRects count];
-
-   while(--count>=0){
-    NSCursorRect *check=[_cursorRects objectAtIndex:count];
-
-    if(([check view]==view) && ([check cursor]==cursor) & NSEqualRects([check rect],rect))
-     [_cursorRects removeObjectAtIndex:count];
-   }
-}
-
--(void)_discardCursorRectsForView:(NSView *)view {
-   int count=[_cursorRects count];
-
-   while(--count>=0){
-    NSCursorRect *check=[_cursorRects objectAtIndex:count];
-
-    if([check view]==view)
-     [_cursorRects removeObjectAtIndex:count];
-   }
-}
-
--(NSTrackingRectTag)_addTrackingRect:(NSRect)rect view:(NSView *)view flipped:(BOOL)flipped owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside isToolTip:(BOOL)isToolTip {
-   NSTrackingArea *tracking=[[[NSTrackingArea alloc] initWithRect:rect view:view flipped:flipped owner:owner userData:userData assumeInside:assumeInside isToolTip:isToolTip] autorelease];
-
-   [tracking setTag:_nextTrackingRectTag++];
-   [_trackingRects addObject:tracking];
-
-   return [tracking tag];
-}
-
--(void)_removeTrackingRect:(NSTrackingRectTag)tag {
-   int count=[_trackingRects count];
-
-   while(--count>=0){
-    if([[_trackingRects objectAtIndex:count] tag]==tag)
-     [_trackingRects removeObjectAtIndex:count];
-   }
-}
-
--(void)_discardTrackingRectsForView:(NSView *)view toolTipsOnly:(BOOL)toolTipsOnly {
-    int count=[_trackingRects count];
-    
-    while(--count>=0) {
-        NSTrackingArea *trackingRect = [_trackingRects objectAtIndex:count];
-        
-        if (toolTipsOnly == YES && [trackingRect isToolTip] == NO)
-            continue;
-        
-        if ([trackingRect view] == view)
-            [_trackingRects removeObjectAtIndex:count];
-    }
-}
-
--(void)_removeAllToolTips {
-    int count=[_trackingRects count];
-    
-    while(--count>=0)
-        if([[_trackingRects objectAtIndex:count] isToolTip])
-            [_trackingRects removeObjectAtIndex:count];
-}
-
 -(void)_showForActivation {
    if(_hiddenForDeactivate){
     _hiddenForDeactivate=NO;
@@ -2000,9 +2098,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 		[[self platformWindow] hideWindowForAppDeactivation:_frame];
 	}
 }
-
-
-
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {
    return [_backgroundView performKeyEquivalent:event];
@@ -2144,10 +2239,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)_attachSheetContextOrderFrontAndAnimate:(NSSheetContext *)sheetContext {
-    NSWindow *sheet = [sheetContext sheet];
-    NSRect sheetFrame;
+   NSWindow *sheet = [sheetContext sheet];
+   NSRect sheetFrame;
 
-    [_sheetContext autorelease];
+   [_sheetContext autorelease];
    _sheetContext=[sheetContext retain];
 
    [self _setSheetOrigin];
@@ -2338,94 +2433,149 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(BOOL)platformWindowSetCursorEvent:(CGWindow *)window {
-   BOOL didSetCursor=NO;
+   NSPoint     mousePoint={-1,-1};
+   NSView     *mouseView=nil;
+   BOOL        cursorIsSet=NO;
+   BOOL        raiseToolTipWindow=NO;
+   NSUInteger  i,count;
 
-   if(_sheetContext!=nil)
-    return NO;
+   mousePoint=[self mouseLocationOutsideOfEventStream];
 
-   if([self areCursorRectsEnabled]){
-    NSPoint point=[self mouseLocationOutsideOfEventStream];
-    BOOL    isFlipped=[_backgroundView isFlipped];
+   // This collects only the active ones.
+   [self _resetTrackingAreas];
 
-    point=[_backgroundView convertPoint:point fromView:nil];
+   count=[_trackingAreas count];
+   for(i=0;i<count;i++){
+    NSTrackingArea *area=[_trackingAreas objectAtIndex:i];
+    BOOL mouseWasInside=[area _mouseInside];
+    BOOL mouseIsInside=NSPointInRect(mousePoint,[area _rectInWindow]);
+    id owner=[area owner];
 
-    if(NSMouseInRect(point,[_backgroundView frame],isFlipped)){
-     int i,count;
+    if([area _isToolTip]==YES){
      NSToolTipWindow *toolTipWindow=[NSToolTipWindow sharedToolTipWindow];
-     NSInteger toolTipWindowVisible=0;
-     BOOL toolTipWindowChange=NO;
 
-     count=[_cursorRects count];
-     for(i=0;i<count;i++){
-      NSCursorRect *check=[_cursorRects objectAtIndex:i];
-      NSView *checkView=[check view];
-      NSRect localRect=[_backgroundView convertRect:[check rect] fromView:checkView];
+     if([self isKeyWindow]==NO || [self _sheetContext]!=nil)
+      mouseIsInside=NO;
 
-      if(![checkView isHidden] && NSMouseInRect(point,localRect,isFlipped)){
-       [[check cursor] set];
-       didSetCursor=YES;
-       break;
-      }
+     if(mouseWasInside==YES && mouseIsInside==NO && [toolTipWindow _trackingArea]==area){
+      [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
+      [toolTipWindow orderOut:nil];
      }
+     if(mouseWasInside==NO && mouseIsInside==YES){ // AllowsToolTipsWhenApplicationIsInactive
+                                                   // is handled when rebuilding areas.
+      [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
+      [toolTipWindow orderOut:nil];
 
-     count=[_trackingRects count];
-     if([toolTipWindow isVisible]==YES)
-      toolTipWindowVisible=1;
-     for(i=0;i<count;i++){
-      NSTrackingArea *check=[_trackingRects objectAtIndex:i];
-      NSView *checkView=[check view];
-      NSRect localRect=[_backgroundView convertRect:[check rect] fromView:checkView];
+      if([owner respondsToSelector:@selector(view:stringForToolTip:point:userData:)]==YES)
+       [toolTipWindow setToolTip:[owner view:[area _view] stringForToolTip:area point:mousePoint userData:[area userInfo]]];
+      else
+       [toolTipWindow setToolTip:[owner description]];
+      // This gives us some protection when ToolTip areas overlap:
+      [toolTipWindow _setTrackingArea:area];
 
-      if([check mouseInside] &&
-         ([checkView isHidden] || !NSMouseInRect(point,localRect,isFlipped))){
-       // mouseExited
-       if([check isToolTip]){
-        toolTipWindowVisible--;
-        toolTipWindowChange=YES;
-       }
-       else
-		   [[check owner] mouseExited:[NSEvent mouseEventWithType:NSMouseExited location:point modifierFlags:0 window:self clickCount:0 deltaX:0.0 deltaY:0.0]];
-
-       [check setMouseInside:NO];
-      }
-      else if(![check mouseInside] && ![checkView isHidden] &&
-              NSMouseInRect(point,localRect,isFlipped)){
-       // mouseEntered
-       if([check isToolTip]){
-        NSString *toolTip;
-
-        NSPoint locationOnScreen=NSMakePoint(NSMaxX([checkView bounds]) + 5.0, NSMinY([checkView bounds]) - 5.0);
-        locationOnScreen=[checkView convertPoint:locationOnScreen toView:nil];
-        locationOnScreen=[[checkView window] convertBaseToScreen:locationOnScreen];
-
-        if ([[check owner] respondsToSelector:@selector(view:stringForToolTip:point:userData:)])
-         toolTip = [[check owner] view:checkView stringForToolTip:[check tag] point:point userData:[check userData]];
-        else
-         toolTip = [[check owner] description];
-
-        [toolTipWindow setToolTip:toolTip];
-        [toolTipWindow setLocationOnScreen:locationOnScreen];
-        toolTipWindowVisible++;
-        toolTipWindowChange=YES;
-       }
-       else
-        [[check owner] mouseEntered:[NSEvent mouseEventWithType:NSMouseEntered location:point modifierFlags:0 window:self clickCount:0 deltaX:0.0 deltaY:0.0]];
-
-       [check setMouseInside:YES];
-      }
-     }
-
-     if(toolTipWindowChange){
-      if(toolTipWindowVisible>=0 && ![toolTipWindow isVisible])
-       [toolTipWindow performSelector:@selector(orderFront:) withObject:nil afterDelay:0.5];
-      else if(toolTipWindowVisible<=0){
-       [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
-       [toolTipWindow orderOut:nil];
-      }
+      raiseToolTipWindow=YES;
      }
     }
+    else{ // not ToolTip
+     NSTrackingAreaOptions options=[area options];
+
+     // Options by view activation.
+     if(options&NSTrackingActiveAlways){
+     }
+     else if(options&NSTrackingActiveInActiveApp && [NSApp isActive]==NO){
+      mouseIsInside=NO;
+     }
+     else if(options&NSTrackingActiveInKeyWindow &&
+             ([self isKeyWindow]==NO || [self _sheetContext]!=nil)){
+      mouseIsInside=NO;
+     }
+     else if(options&NSTrackingActiveWhenFirstResponder && [area _view]!=[self firstResponder]){
+      mouseIsInside=NO;
+     }
+     if(options&NSTrackingInVisibleRect){
+      if(mouseView==nil) // lazy initialisation
+       mouseView=[_backgroundView _hiddenHitTest:mousePoint];
+      if(mouseView!=[area _view])
+       mouseIsInside=NO;
+     }
+     if(options&NSTrackingEnabledDuringMouseDrag){
+      NSLog(@"NSTrackingEnabledDuringMouseDrag handling unimplemented.");
+     }
+
+     // Send appropriate events.
+     if(options&NSTrackingMouseEnteredAndExited &&
+        mouseWasInside==NO && mouseIsInside==YES &&
+        [owner respondsToSelector:@selector(mouseEntered:)]==YES){
+      NSEvent *event=[NSEvent enterExitEventWithType:NSMouseEntered
+                                            location:mousePoint
+                                       modifierFlags:[NSEvent modifierFlags]
+                                           timestamp:[NSDate timeIntervalSinceReferenceDate]
+                                        windowNumber:(int)self
+                                             context:[self graphicsContext]
+                                         eventNumber:0 // NSEvent currently ignores this.
+                                      trackingNumber:(NSInteger)area
+                                            userData:[area userInfo]];
+      [owner mouseEntered:event];
+     }
+     if(options&NSTrackingMouseEnteredAndExited &&
+        mouseWasInside==YES && mouseIsInside==NO &&
+        [owner respondsToSelector:@selector(mouseExited:)]==YES){
+      NSEvent *event=[NSEvent enterExitEventWithType:NSMouseExited
+                                            location:mousePoint
+                                       modifierFlags:[NSEvent modifierFlags]
+                                           timestamp:[NSDate timeIntervalSinceReferenceDate]
+                                        windowNumber:(int)self
+                                             context:[self graphicsContext]
+                                         eventNumber:0 // NSEvent currently ignores this.
+                                      trackingNumber:(NSInteger)area
+                                            userData:[area userInfo]];
+      [owner mouseExited:event];
+     }
+     if(options&NSTrackingMouseMoved &&
+        [self acceptsMouseMovedEvents]==YES &&
+        [owner respondsToSelector:@selector(mouseMoved:)]==YES){
+      NSEvent *event=[NSEvent mouseEventWithType:NSMouseMoved
+                                        location:mousePoint
+                                   modifierFlags:[NSEvent modifierFlags]
+                                       timestamp:[NSDate timeIntervalSinceReferenceDate]
+                                    windowNumber:(int)self
+                                         context:[self graphicsContext]
+                                     eventNumber:0 // NSEvent currently ignores this.
+                                      clickCount:0
+                                        pressure:0.];
+      [owner mouseMoved:event];
+     }
+     if(options&NSTrackingCursorUpdate &&
+        mouseWasInside==NO && mouseIsInside==YES &&
+        !(options&NSTrackingActiveAlways) && // documented
+        [owner respondsToSelector:@selector(cursorUpdate:)]==YES){
+      NSEvent *event=[NSEvent enterExitEventWithType:NSCursorUpdate
+                                            location:mousePoint
+                                       modifierFlags:[NSEvent modifierFlags]
+                                           timestamp:[NSDate timeIntervalSinceReferenceDate]
+                                        windowNumber:(int)self
+                                             context:[self graphicsContext]
+                                         eventNumber:0 // NSEvent currently ignores this.
+                                      trackingNumber:(NSInteger)area
+                                            userData:[area userInfo]];
+      [owner cursorUpdate:event];
+     }
+     if(options&NSTrackingCursorUpdate && mouseIsInside==YES)
+      cursorIsSet=YES;
+    } // (not) ToolTip
+
+    [area _setMouseInside:mouseIsInside];
    }
-   return didSetCursor;
+   
+   if(raiseToolTipWindow==YES){
+    NSTimeInterval delay=((NSTimeInterval)[[NSUserDefaults standardUserDefaults] integerForKey:@"NSInitialToolTipDelay"])/1000.;
+
+    if(delay<=0.)
+     delay=2.;
+    [[NSToolTipWindow sharedToolTipWindow] performSelector:@selector(orderFront:) withObject:nil afterDelay:delay];
+   }
+
+   return cursorIsSet;
 }
 
 -(NSUndoManager *)undoManager {

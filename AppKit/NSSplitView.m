@@ -251,9 +251,8 @@ NSString *NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillResizeSub
    int i,count=[_subviews count];
 
    for(i=0;i<count-1;i++){
-    NSRect rect=[self dividerRectAtIndex:i];
-	if ([self dividerThickness] > 0)
-		[self drawDividerInRect:rect];
+    if ([self dividerThickness] > 0)
+     [self drawDividerInRect:[self dividerRectAtIndex:i]];
    }
 }
 
@@ -393,7 +392,7 @@ static float constrainTo(float value,float min,float max){
 // FIX
 // The cursor is activated one pixel past NSMaxY(rect) if we don't do
 // this, not sure where the problem is. 
-    rect=NSInsetRect(rect,1,1);
+    rect.origin.y-=1.;
 
     [self addCursorRect:rect cursor:cursor];
    }
