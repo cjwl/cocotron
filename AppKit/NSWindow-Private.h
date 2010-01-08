@@ -28,7 +28,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_attachDrawer:(NSDrawer *)drawer;
 -(void)_detachDrawer:(NSDrawer *)drawer;
 -(NSView *)_backgroundView;
--(void)_setStyleMask:(unsigned)mask;
 -(void)_animateWithContext:(NSWindowAnimationContext *)context;
 -(NSWindowAnimationContext *)_animationContext;
 -(void)_hideMenuViewIfNeeded;

@@ -760,7 +760,7 @@ id NSApp=nil;
 // Hmmmm, is this correct? 
 
     if ([sheet styleMask] != NSDocModalWindowMask)
-        [sheet _setStyleMask:NSDocModalWindowMask];
+        [sheet setStyleMask:NSDocModalWindowMask];
 
    [window _attachSheetContextOrderFrontAndAnimate:context];
    while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])

@@ -269,7 +269,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     if (_platformWindow == nil)
         _styleMask = mask;
     else
-        [NSException raise:NSInternalInconsistencyException format:@"-[NSWindow _setStyleMask:] platformWindow already created, cannot change style mask"];
+        [NSException raise:NSInternalInconsistencyException format:@"-[NSWindow setStyleMask:] platformWindow already created, cannot change style mask"];
 }
 
 -(void)postNotificationName:(NSString *)name {

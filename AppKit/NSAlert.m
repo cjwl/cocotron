@@ -429,7 +429,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)beginSheetModalForWindow:(NSWindow *)window modalDelegate:delegate didEndSelector:(SEL)selector contextInfo:(void *)info {
-   [_window _setStyleMask:NSDocModalWindowMask];
+   [_window setStyleMask:NSDocModalWindowMask];
    [self layoutIfNeeded];
    [_window setDefaultButtonCell:[[_buttons objectAtIndex:0] cell]];
    _sheetDelegate=delegate;
@@ -440,7 +440,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSInteger)runModal {
-   [_window _setStyleMask:NSTitledWindowMask];
+   [_window setStyleMask:NSTitledWindowMask];
    [self layoutIfNeeded];
    [_window setDefaultButtonCell:[[_buttons objectAtIndex:0] cell]];
    return [NSApp runModalForWindow:_window];
