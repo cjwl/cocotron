@@ -7,14 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECA819810EBB231003472F1 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECA819910EBB231003472F1 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECA819A10EBB231003472F1 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECA819B10EBB231003472F1 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECA819C10EBB231003472F1 /* CARenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38BEA10E12BAB00A2A651 /* CARenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECA819D10EBB231003472F1 /* CABase.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38C8D10E13FCC00A2A651 /* CABase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38BEB10E12BAB00A2A651 /* CARenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38BEA10E12BAB00A2A651 /* CARenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C4510E13E1000A2A651 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C4610E13E1000A2A651 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C4710E13E1000A2A651 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C4810E13E1000A2A651 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C4910E13E1000A2A651 /* CARenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38BEA10E12BAB00A2A651 /* CARenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C8E10E13FCC00A2A651 /* CABase.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38C8D10E13FCC00A2A651 /* CABase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED38C8F10E13FCC00A2A651 /* CABase.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38C8D10E13FCC00A2A651 /* CABase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF88C2E100CC45B00B15FD7 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF88C2F100CC45B00B15FD7 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF88C30100CC45B00B15FD7 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEF88C38100CC62500B15FD7 /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF88C35100CC62400B15FD7 /* CAAnimation.m */; };
-		FEF88C39100CC62500B15FD7 /* CALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF88C36100CC62400B15FD7 /* CALayer.m */; };
-		FEF88C3A100CC62500B15FD7 /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF88C37100CC62400B15FD7 /* CATransform3D.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -26,9 +36,53 @@
 			outputFiles = (
 			);
 		};
+		FECA819E10EBB231003472F1 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FED38C4A10E13E1000A2A651 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE293C5D10D984D10031C1DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A884510C6F286005E348A;
+			remoteInfo = "CoreGraphics-FreeBSD-i386";
+		};
+		FECA81AD10EBB2AC003472F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "CoreGraphics-Windows-i386";
+		};
+		FED38C7810E13ED400A2A651 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE6F7BDB0FD55FA300C3244F;
+			remoteInfo = "CoreGraphics-Darwin-i386";
+		};
+		FED38C9210E13FDC00A2A651 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5A877910C6F286005E348A;
+			remoteInfo = "CoreGraphics-FreeBSD-i386";
+		};
 		FEF88C23100CC41C00B15FD7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
@@ -58,6 +112,12 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
+		FEC3ED7710E1270C00511C18 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARenderer.m; sourceTree = "<group>"; };
+		FECA81A110EBB231003472F1 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FECA81A210EBB232003472F1 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
+		FED38BEA10E12BAB00A2A651 /* CARenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARenderer.h; sourceTree = "<group>"; };
+		FED38C4D10E13E1000A2A651 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FED38C8D10E13FCC00A2A651 /* CABase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABase.h; sourceTree = "<group>"; };
 		FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreGraphics.xcodeproj; path = ../CoreGraphics/CoreGraphics.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAnimation.h; sourceTree = "<group>"; };
 		FEF88C2C100CC45B00B15FD7 /* CALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CALayer.h; sourceTree = "<group>"; };
@@ -67,21 +127,13 @@
 		FEF88C37100CC62400B15FD7 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransform3D.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		8DC2EF560486A6940098B216 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* QuartzCore.framework */,
+				FED38C4D10E13E1000A2A651 /* QuartzCore.framework */,
+				FECA81A110EBB231003472F1 /* QuartzCore.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +141,9 @@
 		0867D691FE84028FC02AAC07 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FED38C8D10E13FCC00A2A651 /* CABase.h */,
+				FED38BEA10E12BAB00A2A651 /* CARenderer.h */,
+				FEC3ED7710E1270C00511C18 /* CARenderer.m */,
 				FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */,
 				FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */,
 				FEF88C35100CC62400B15FD7 /* CAAnimation.m */,
@@ -120,6 +175,7 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+				FECA81A210EBB232003472F1 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -159,6 +215,7 @@
 				FEF88C24100CC41C00B15FD7 /* CoreGraphics.framework */,
 				FEF88C26100CC41C00B15FD7 /* CoreGraphics.framework */,
 				FEF88C28100CC41C00B15FD7 /* CoreGraphics.framework */,
+				FE293C5E10D984D10031C1DC /* CoreGraphics.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,30 +231,92 @@
 				FEF88C2F100CC45B00B15FD7 /* CALayer.h in Headers */,
 				FEF88C30100CC45B00B15FD7 /* CATransform3D.h in Headers */,
 				FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */,
+				FED38BEB10E12BAB00A2A651 /* CARenderer.h in Headers */,
+				FED38C8E10E13FCC00A2A651 /* CABase.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FECA819710EBB231003472F1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FECA819810EBB231003472F1 /* CAAnimation.h in Headers */,
+				FECA819910EBB231003472F1 /* CALayer.h in Headers */,
+				FECA819A10EBB231003472F1 /* CATransform3D.h in Headers */,
+				FECA819B10EBB231003472F1 /* QuartzCore.h in Headers */,
+				FECA819C10EBB231003472F1 /* CARenderer.h in Headers */,
+				FECA819D10EBB231003472F1 /* CABase.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FED38C4410E13E1000A2A651 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FED38C4510E13E1000A2A651 /* CAAnimation.h in Headers */,
+				FED38C4610E13E1000A2A651 /* CALayer.h in Headers */,
+				FED38C4710E13E1000A2A651 /* CATransform3D.h in Headers */,
+				FED38C4810E13E1000A2A651 /* QuartzCore.h in Headers */,
+				FED38C4910E13E1000A2A651 /* CARenderer.h in Headers */,
+				FED38C8F10E13FCC00A2A651 /* CABase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8DC2EF4F0486A6940098B216 /* QuartzCore-Windows-i386 */ = {
+		8DC2EF4F0486A6940098B216 /* QuartzCore-FreeBSD-i386 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-Windows-i386" */;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-FreeBSD-i386" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
-				8DC2EF520486A6940098B216 /* Resources */,
-				8DC2EF540486A6940098B216 /* Sources */,
-				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
 				FE4477E01039F3E700ECD6A6 /* PBXBuildRule */,
 			);
 			dependencies = (
+				FED38C9310E13FDC00A2A651 /* PBXTargetDependency */,
+			);
+			name = "QuartzCore-FreeBSD-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = QuartzCore;
+			productReference = 8DC2EF5B0486A6940098B216 /* QuartzCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FECA819410EBB231003472F1 /* QuartzCore-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FECA819F10EBB231003472F1 /* Build configuration list for PBXNativeTarget "QuartzCore-Windows-i386" */;
+			buildPhases = (
+				FECA819710EBB231003472F1 /* Headers */,
+			);
+			buildRules = (
+				FECA819E10EBB231003472F1 /* PBXBuildRule */,
+			);
+			dependencies = (
+				FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */,
 			);
 			name = "QuartzCore-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = QuartzCore;
-			productReference = 8DC2EF5B0486A6940098B216 /* QuartzCore.framework */;
+			productReference = FECA81A110EBB231003472F1 /* QuartzCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FED38C4310E13E1000A2A651 /* QuartzCore-Darwin-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FED38C4B10E13E1000A2A651 /* Build configuration list for PBXNativeTarget "QuartzCore-Darwin-i386" */;
+			buildPhases = (
+				FED38C4410E13E1000A2A651 /* Headers */,
+			);
+			buildRules = (
+				FED38C4A10E13E1000A2A651 /* PBXBuildRule */,
+			);
+			dependencies = (
+				FED38C7910E13ED400A2A651 /* PBXTargetDependency */,
+			);
+			name = "QuartzCore-Darwin-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = QuartzCore;
+			productReference = FED38C4D10E13E1000A2A651 /* QuartzCore.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -219,12 +338,21 @@
 			);
 			projectRoot = "";
 			targets = (
-				8DC2EF4F0486A6940098B216 /* QuartzCore-Windows-i386 */,
+				8DC2EF4F0486A6940098B216 /* QuartzCore-FreeBSD-i386 */,
+				FED38C4310E13E1000A2A651 /* QuartzCore-Darwin-i386 */,
+				FECA819410EBB231003472F1 /* QuartzCore-Windows-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FE293C5E10D984D10031C1DC /* CoreGraphics.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreGraphics.framework;
+			remoteRef = FE293C5D10D984D10031C1DC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FEF88C24100CC41C00B15FD7 /* CoreGraphics.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -248,29 +376,23 @@
 		};
 /* End PBXReferenceProxy section */
 
-/* Begin PBXResourcesBuildPhase section */
-		8DC2EF520486A6940098B216 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+/* Begin PBXTargetDependency section */
+		FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-Windows-i386";
+			targetProxy = FECA81AD10EBB2AC003472F1 /* PBXContainerItemProxy */;
 		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		8DC2EF540486A6940098B216 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FEF88C38100CC62500B15FD7 /* CAAnimation.m in Sources */,
-				FEF88C39100CC62500B15FD7 /* CALayer.m in Sources */,
-				FEF88C3A100CC62500B15FD7 /* CATransform3D.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+		FED38C7910E13ED400A2A651 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-Darwin-i386";
+			targetProxy = FED38C7810E13ED400A2A651 /* PBXContainerItemProxy */;
 		};
-/* End PBXSourcesBuildPhase section */
+		FED38C9310E13FDC00A2A651 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-FreeBSD-i386";
+			targetProxy = FED38C9210E13FDC00A2A651 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
@@ -291,7 +413,43 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DQUARTZCORE_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = QuartzCore;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/QuartzCore/FreeBSD;
+			};
+			name = Release;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		FECA81A010EBB231003472F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -308,14 +466,7 @@
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lgdi32",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0x20000000",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/QuartzCore.framework/libQuartzCore.a",
-				);
+				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -323,16 +474,41 @@
 			};
 			name = Release;
 		};
-		1DEB91B308733DA50010E9CD /* Release */ = {
+		FED38C4C10E13E1000A2A651 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DQUARTZCORE_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = QuartzCore;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/QuartzCore/Darwin;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-Windows-i386" */ = {
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-FreeBSD-i386" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91AF08733DA50010E9CD /* Release */,
@@ -344,6 +520,22 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FECA819F10EBB231003472F1 /* Build configuration list for PBXNativeTarget "QuartzCore-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FECA81A010EBB231003472F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FED38C4B10E13E1000A2A651 /* Build configuration list for PBXNativeTarget "QuartzCore-Darwin-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FED38C4C10E13E1000A2A651 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

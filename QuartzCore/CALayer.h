@@ -3,51 +3,59 @@
 #import <ApplicationServices/ApplicationServices.h>
 #import <QuartzCore/CATransform3D.h>
 
-@class CIFilter;
+enum {
+   kCALayerNotSizable   = 0x00,
+   kCALayerMinXMargin   = 0x01,
+   kCALayerWidthSizable = 0x02,
+   kCALayerMaxXMargin   = 0x04,
+   kCALayerMinYMargin   = 0x08,
+   kCALayerHeightSizable= 0x10,
+   kCALayerMaxYMargin   = 0x20,
+};
 
 @interface CALayer : NSObject {
+   CALayer      *_superLayer;
+   NSMutableArray *_sublayers;
+   id            _delegate;
+   CGRect        _frame;
+   CGRect        _bounds;
+   float         _opacity;
+   BOOL          _opaque;
+   id            _contents;
+   CATransform3D _transform;
+   CATransform3D _sublayerTransform;
+   BOOL          _needsDisplay;
 }
 
-@property(copy) NSDictionary *actions;
-@property CGPoint anchorPoint;
-@property unsigned int autoresizingMask;
-@property CGColorRef backgroundColor;
-@property(copy) NSArray *backgroundFilters;
-@property CGColorRef borderColor;
-@property CGFloat borderWidth;
-@property CGRect bounds;
-@property(retain) CIFilter *compositingFilter;
-@property NSArray *constraints;
-@property(retain) id contents;
-@property(copy) NSStrng *contentsGravity;
-@property CGRect contentsRect;
-@property CGFloat cornerRadius;
-@property(assign) id delegate;
-@property BOOL doubleSided;
-@property unsigned int edgeAntialiasingMask;
-@property(copy) NSArray *filters;
-@property CGRect frame;
-@property BOOL hidden;
-@property(retain) id layoutManager;
-@property(copy) NSString *magnificationFilter;
-@property(retain) CALayer *mask;
-@property BOOL masksToBounds;
-@property(copy) NSString *minifiactionFilter;
-@property(copy) NSString *name;
-@property BOOL needsDisplayOnBoundsChange;
-@property float opacity;
-@property BOOL opaque;
-@property CGPoint position;
-@property CGColorRef shadowColor;
-@property CGSize shadowOffset;
-@property float shadowOpacity;
-@property CGFloat shadowRadius;
-@property(copy) NSDictionary *style;
-@property(copy) NSArray *sublayers;
-@property CATransform3D sublayerTransform;
++layer;
+
 @property(readonly) CALayer *superLayer;
-@property CATransform3D transform;
-@property(readonly) CGRect visibleRect;
-@property CGFloat zPosition;
+@property(copy) NSArray *sublayers;
+@property(assign) id delegate;
+@property(assign) CGRect frame;
+@property(assign) CGRect bounds;
+@property(assign) float opacity;
+@property(assign) BOOL opaque;
+@property(retain) id contents;
+@property(assign) CATransform3D transform;
+@property(assign) CATransform3D sublayerTransform;
+
+-init;
+
+-(void)addSublayer:(CALayer *)layer;
+-(void)display;
+-(void)displayIfNeeded;
+-(void)drawInContext:(CGContextRef)context;
+-(BOOL)needsDisplay;
+-(void)removeFromSuperlayer;
+-(void)setNeedsDisplay;
+-(void)setNeedsDisplayInRect:(CGRect)rect;
+
+@end
+
+@interface NSObject(CALayerDelegate)
+
+-(void)displayLayer:(CALayer *)layer;
+-(void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context;
 
 @end
