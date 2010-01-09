@@ -42,6 +42,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initFlippedWithDeviceHeight:(O2Float)height {
+   O2AffineTransform flip={1,0,0,-1,0,height};
+   
+   return [self initWithDeviceTransform:flip];
+}
+
+-initFlippedWithDeviceHeight:(O2Float)height concat:(O2AffineTransform)concat {
+   O2AffineTransform flip={1,0,0,-1,0,height};
+
+   return [self initWithDeviceTransform:O2AffineTransformConcat(flip,concat)];
+}
+
 -init {
    return [self initWithDeviceTransform:O2AffineTransformIdentity];
 }

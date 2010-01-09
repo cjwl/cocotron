@@ -53,6 +53,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithDeviceTransform:(O2AffineTransform)deviceTransform;
+-initFlippedWithDeviceHeight:(O2Float)height;
+-initFlippedWithDeviceHeight:(O2Float)height concat:(O2AffineTransform)concat;
 -init;
 
 -(O2AffineTransform)userSpaceToDeviceSpaceTransform;
