@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/CGWindow.h>
 #import <AppKit/NSDragging.h>
+#import <OpenGL/OpenGL.h>
 
 #import <windows.h>
 
@@ -21,8 +22,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    CGSBackingStoreType  _backingType;
    O2Context             *_backingContext;
+   CGLContextObj          _cglContext;
 
    BOOL                  _isLayered;
+   BOOL                  _isOpenGL;
    BOOL                  _ignoreMinMaxMessage;
    BOOL                  _sentBeginSizing;
 

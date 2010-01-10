@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7AA0ED10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE7AA0EE10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE7AA0EF10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FECA819810EBB231003472F1 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819910EBB231003472F1 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819A10EBB231003472F1 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -112,9 +115,10 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
+		FE7AA0EB10F97A2A00FEDD9C /* CABackingRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABackingRenderer.m; sourceTree = "<group>"; };
+		FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABackingRenderer.h; sourceTree = "<group>"; };
 		FEC3ED7710E1270C00511C18 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARenderer.m; sourceTree = "<group>"; };
 		FECA81A110EBB231003472F1 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FECA81A210EBB232003472F1 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FED38BEA10E12BAB00A2A651 /* CARenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARenderer.h; sourceTree = "<group>"; };
 		FED38C4D10E13E1000A2A651 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED38C8D10E13FCC00A2A651 /* CABase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABase.h; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 		0867D691FE84028FC02AAC07 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */,
+				FE7AA0EB10F97A2A00FEDD9C /* CABackingRenderer.m */,
 				FED38C8D10E13FCC00A2A651 /* CABase.h */,
 				FED38BEA10E12BAB00A2A651 /* CARenderer.h */,
 				FEC3ED7710E1270C00511C18 /* CARenderer.m */,
@@ -175,7 +181,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				FECA81A210EBB232003472F1 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 				FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */,
 				FED38BEB10E12BAB00A2A651 /* CARenderer.h in Headers */,
 				FED38C8E10E13FCC00A2A651 /* CABase.h in Headers */,
+				FE7AA0ED10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +252,7 @@
 				FECA819B10EBB231003472F1 /* QuartzCore.h in Headers */,
 				FECA819C10EBB231003472F1 /* CARenderer.h in Headers */,
 				FECA819D10EBB231003472F1 /* CABase.h in Headers */,
+				FE7AA0EF10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +266,7 @@
 				FED38C4810E13E1000A2A651 /* QuartzCore.h in Headers */,
 				FED38C4910E13E1000A2A651 /* CARenderer.h in Headers */,
 				FED38C8F10E13FCC00A2A651 /* CABase.h in Headers */,
+				FE7AA0EE10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,16 +11,18 @@
 #import "X11Window.h"
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSApplication.h>
-#import <AppKit/X11InputSource.h>
+#import <Foundation/NSSelectInputSource.h>
+#import <Foundation/NSSocket_bsd.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
-#import <AppKit/TTFFont.h>
+#import <AppKit/KTFont_FT.h>
 #import <AppKit/NSRaise.h>
 #import <AppKit/O2Font_FT.h>
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSFontTypeface.h>
 #import <fcntl.h>
 #import <fontconfig.h>
+#import <X11/Xutil.h>
 
 @implementation NSDisplay(X11)
 
@@ -32,37 +34,47 @@
 
 @implementation X11Display
 
-static int errorHandler(Display* display,
-                        XErrorEvent* errorEvent) {
+static int errorHandler(Display *display,XErrorEvent *errorEvent) {
    return [(X11Display*)[X11Display currentDisplay] handleError:errorEvent];
 }
 
--(id)init
-{
-   if(self=[super init])
-   {
-      _display=XOpenDisplay(NULL);
-      if(!_display)
-         _display=XOpenDisplay(":0");
-
-      if(!_display) {
-         [self release];
-         return nil;
-      }
+-init {
+   if(self=[super init]){
+   
+    _display=XOpenDisplay(NULL);
+    
+    if(_display==NULL){
+     _display=XOpenDisplay(":0");
+    }
+    
+    if(_display==NULL) {
+     [self dealloc];
+     return nil;
+    }
+        
+    if(NSDebugEnabled)
+     XSynchronize(_display, True);
+     
+    XSetErrorHandler(errorHandler);
       
-      if(NSDebugEnabled)
-         XSynchronize(_display, True);
-      XSetErrorHandler(errorHandler);
-      _windowsByID=[NSMutableDictionary new];
-      [self performSelector:@selector(setupEventHandling) withObject:nil afterDelay:0.0];
+    _fileDescriptor=ConnectionNumber(_display);
+    _inputSource=[[NSSelectInputSource socketInputSourceWithSocket:[NSSocket_bsd socketWithDescriptor:_fileDescriptor]] retain];
+    [_inputSource setDelegate:self];
+    [_inputSource setSelectEventMask:NSSelectReadEvent];
+      
+    _windowsByID=[NSMutableDictionary new];
+
+    lastFocusedWindow=nil;
+    lastClickTimeStamp=0.0;
+    clickCount=0;
    }
    return self;
 }
 
--(void)dealloc
-{
+-(void)dealloc {
    if(_display)
-      XCloseDisplay(_display);
+    XCloseDisplay(_display);
+    
    [_windowsByID release];
    [super dealloc];
 }
@@ -71,14 +83,11 @@ static int errorHandler(Display* display,
 	return [[[X11Window alloc] initWithFrame:frame styleMask:styleMask isPanel:NO backingType:backingType] autorelease];
 }
 
-
 -(CGWindow *)panelWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType {
 	return [[[X11Window alloc] initWithFrame:frame styleMask:styleMask isPanel:YES backingType:backingType] autorelease];
 }
 
-
--(Display*)display
-{
+-(Display *)display {
    return _display;
 }
 
@@ -300,41 +309,275 @@ static int errorHandler(Display* display,
    return [_windowsByID objectForKey:[NSNumber numberWithUnsignedLong:i]];
 }
 
--(void)setupEventHandling {
-   [X11InputSource addInputSourceWithDisplay:self];
+-(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
+   NSEvent *result;
+   
+   [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:mode];
+   result=[super nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
+   [[NSRunLoop currentRunLoop] removeInputSource:_inputSource forMode:mode];
+   
+   return result;
 }
 
--(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue;
-{
-   [self processX11Event];
-   return [super nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
-}
-
--(BOOL)processX11Event {
-   XEvent e;
-   int i;
-   int numEvents;
-   BOOL ret=NO;
-   int connectionNumber=ConnectionNumber(_display);
-   int flags=fcntl(connectionNumber, F_GETFL);
-   flags&=~O_NONBLOCK;
-   fcntl(connectionNumber, F_SETFL, flags | O_NONBLOCK);
-   
-   NSMutableSet *windowsUsed=[NSMutableSet set];
-   
-   while(numEvents=XEventsQueued(_display, QueuedAfterFlush)) {
-      XNextEvent(_display, &e);
-      
-      id window=[self windowForID:e.xany.window];
-      [window handleEvent:&e fromDisplay:self];
-      [windowsUsed addObject:window];
-      ret=YES;
-   }
-   
-   fcntl(connectionNumber, F_SETFL, flags & ~O_NONBLOCK);
-
-
+-(unsigned int)modifierFlagsForState:(unsigned int)state {
+   unsigned int ret=0;
+   if(state & ShiftMask)
+      ret|=NSShiftKeyMask;
+   if(state & ControlMask)
+      ret|=NSControlKeyMask;
+   if(state & Mod2Mask)
+      ret|=NSCommandKeyMask;
+   // TODO: alt doesn't work; might want to track key presses/releases instead
    return ret;
+}
+
+-(void)postXEvent:(XEvent *)ev {
+   id window=[self windowForID:ev->xany.window];
+   id delegate=[window delegate];
+   
+   switch(ev->type) {
+    case KeyPress:
+    case KeyRelease:;
+     unsigned int modifierFlags=[self modifierFlagsForState:ev->xkey.state];
+     char buf[4]={0};
+     
+     XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
+     id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+     NSPoint pos=[window transformPoint:NSMakePoint(ev->xkey.x, ev->xkey.y)];
+         
+     id strIg=[str lowercaseString];
+     if(ev->xkey.state) {
+      ev->xkey.state=0;
+      XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
+      strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+     }
+      
+     id event=[NSEvent keyEventWithType:ev->type == KeyPress ? NSKeyDown : NSKeyUp location:pos
+                              modifierFlags:modifierFlags
+                                  timestamp:0.0 
+                               windowNumber:(NSInteger)delegate
+                                    context:nil
+                                 characters:str 
+                charactersIgnoringModifiers:strIg
+                                  isARepeat:NO
+                                    keyCode:ev->xkey.keycode];
+         
+     [self postEvent:event atStart:NO];
+         
+     [str release];
+     break;
+
+    case ButtonPress:;
+     NSTimeInterval now=[[NSDate date] timeIntervalSinceReferenceDate];
+     
+     if(now-lastClickTimeStamp<[self doubleClickInterval]) {
+      clickCount++;
+     }
+     else {
+      clickCount=1;  
+     }
+     lastClickTimeStamp=now;
+         
+     NSPoint pos=[window transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         
+     id event=[NSEvent mouseEventWithType:NSLeftMouseDown
+                                  location:pos
+                             modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
+                                    window:delegate
+                                clickCount:clickCount deltaX:0.0 deltaY:0.0];
+     [self postEvent:event atStart:NO];
+     break;
+
+    case ButtonRelease:;
+     NSPoint pos=[window transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+
+     id event=[NSEvent mouseEventWithType:NSLeftMouseUp
+                                  location:pos
+                             modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
+                                    window:delegate
+                                clickCount:clickCount deltaX:0.0 deltaY:0.0];
+     [self postEvent:event atStart:NO];
+     break;
+
+    case MotionNotify:;
+     NSPoint pos=[window transformPoint:NSMakePoint(ev->xmotion.x, ev->xmotion.y)];
+     NSEventType type=NSMouseMoved;
+         
+     if(ev->xmotion.state&Button1Mask) {
+      type=NSLeftMouseDragged;
+     }
+     else if (ev->xmotion.state&Button2Mask) {
+      type=NSRightMouseDragged;
+     }
+         
+     if(type==NSMouseMoved && ![delegate acceptsMouseMovedEvents])
+      break;
+         
+     id event=[NSEvent mouseEventWithType:type
+                                  location:pos
+                             modifierFlags:[self modifierFlagsForState:ev->xmotion.state]
+                                    window:delegate
+                                clickCount:1 deltaX:0.0 deltaY:0.0];
+      [self postEvent:event atStart:NO];
+      [self discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:event];
+      break;
+
+    case EnterNotify:
+     NSLog(@"EnterNotify");
+     break;
+     
+    case LeaveNotify:
+     NSLog(@"LeaveNotify");
+     break;
+
+    case FocusIn:
+     if([delegate attachedSheet]) {
+      [[delegate attachedSheet] makeKeyAndOrderFront:delegate];
+      break;
+     }
+     if(lastFocusedWindow) {
+      [lastFocusedWindow platformWindowDeactivated:window checkForAppDeactivation:NO];
+      lastFocusedWindow=nil;  
+     }
+     [delegate platformWindowActivated:window];
+     lastFocusedWindow=delegate;
+     break;
+     
+    case FocusOut:
+     [delegate platformWindowDeactivated:window checkForAppDeactivation:NO];
+     lastFocusedWindow=nil;
+     break;
+         
+    case KeymapNotify:
+     NSLog(@"KeymapNotify");
+     break;
+
+    case Expose:;
+     O2Rect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
+     
+     rect.origin.y=[window frame].size.height-rect.origin.y-rect.size.height;
+     // rect=NSInsetRect(rect, -10, -10);
+     // [_backingContext addToDirtyRect:rect];
+     if(ev->xexpose.count==0)
+      [window flushBuffer]; 
+     break;
+
+    case GraphicsExpose:
+     NSLog(@"GraphicsExpose");
+     break;
+     
+    case NoExpose:
+     NSLog(@"NoExpose");
+     break;
+     
+    case VisibilityNotify:
+     NSLog(@"VisibilityNotify");
+     break;
+     
+    case CreateNotify:
+     NSLog(@"CreateNotify");
+     break;
+
+    case DestroyNotify:;
+     // we should never get this message before the WM_DELETE_WINDOW ClientNotify
+     // so normally, window should be nil here.
+     [window invalidate];
+     break;
+
+    case UnmapNotify:
+     NSLog(@"UnmapNotify");
+     break;
+
+    case MapNotify:
+     NSLog(@"MapNotify");
+     break;
+
+    case MapRequest:
+     NSLog(@"MapRequest");
+     break;
+
+    case ReparentNotify:
+     NSLog(@"ReparentNotify");
+     break;
+
+    case ConfigureNotify:
+     [window frameChanged];
+     [delegate platformWindow:window frameChanged:[window transformFrame:[window frame]] didSize:YES];
+     break;
+
+    case ConfigureRequest:
+     NSLog(@"ConfigureRequest");
+     break;
+
+    case GravityNotify:
+     NSLog(@"GravityNotify");
+     break;
+
+    case ResizeRequest:
+     NSLog(@"ResizeRequest");
+     break;
+
+    case CirculateNotify:
+     NSLog(@"CirculateNotify");
+     break;
+
+    case CirculateRequest:
+     NSLog(@"CirculateRequest");
+     break;
+
+    case PropertyNotify:
+     NSLog(@"PropertyNotify");
+     break;
+
+    case SelectionClear:
+     NSLog(@"SelectionClear");
+     break;
+
+    case SelectionRequest:
+     NSLog(@"SelectionRequest");
+     break;
+
+    case SelectionNotify:
+     NSLog(@"SelectionNotify");
+     break;
+
+    case ColormapNotify:
+     NSLog(@"ColormapNotify");
+     break;
+
+    case ClientMessage:
+     if(ev->xclient.format=32 && ev->xclient.data.l[0]==XInternAtom(_display, "WM_DELETE_WINDOW", False))
+      [delegate platformWindowWillClose:window];
+     break;
+
+    case MappingNotify:
+     NSLog(@"MappingNotify");
+     break;
+
+    case GenericEvent:
+     NSLog(@"GenericEvent");
+     break;
+
+    default:
+     NSLog(@"Unknown X11 event type %i", ev->type);
+     break;
+   }
+
+}
+
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
+   int numEvents;
+   
+   while((numEvents=XPending(_display))>0) {
+    XEvent e;
+    int    error;
+    
+    if((error=XNextEvent(_display, &e))!=0)
+     NSLog(@"XNextEvent returned %d",error);
+    else
+     [self postXEvent:&e];
+     
+   }
 }
 
 -(int)handleError:(XErrorEvent*)errorEvent {

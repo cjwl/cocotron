@@ -12,11 +12,14 @@
 #import <AppKit/X11Display.h>
 #import <AppKit/NSRaise.h>
 #import <X11/Xutil.h>
-#import "O2Context_cairo.h"
 #import <Foundation/NSException.h>
+#import <CoreGraphics/O2Context.h>
+#import <CoreGraphics/O2Surface.h>
+#import <QuartzCore/CARenderer.h>
+
+CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,XVisualInfo *vis,Window window,CGLContextObj *resultp);
 
 @implementation X11Window
-
 
 +(Visual*)visual {
    static Visual* ret=NULL;
@@ -48,35 +51,60 @@
 -initWithFrame:(O2Rect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType {
    _backingType=backingType;
    _deviceDictionary=[NSMutableDictionary new];
-   _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
-   int s = DefaultScreen(_dpy);
+   _display=[(X11Display*)[NSDisplay currentDisplay] display];
+   int s = DefaultScreen(_display);
    _frame=[self transformFrame:frame];
    if(isPanel && styleMask&NSDocModalWindowMask)
     styleMask=NSBorderlessWindowMask;
       
+   GLint att[] = {
+    GLX_RGBA,
+    GLX_DOUBLEBUFFER,
+    GLX_RED_SIZE, 4,                                         
+    GLX_GREEN_SIZE, 4,                                                 
+    GLX_BLUE_SIZE, 4,                                                  
+    GLX_DEPTH_SIZE, 4,                                                
+    None
+   };
+      
+      int screen = DefaultScreen(_display);
+      
+      if((_visualInfo=glXChooseVisual(_display,screen,att))==NULL){
+       NSLog(@"glXChooseVisual failed at %s %d",__FILE__,__LINE__);
+      }
+
+      Colormap cmap = XCreateColormap(_display, RootWindow(_display, _visualInfo->screen), _visualInfo->visual, AllocNone);
+
+      if(cmap<0){
+       NSLog(@"XCreateColormap failed");
+       [self dealloc];
+       return nil;
+      }
+
    XSetWindowAttributes xattr;
    unsigned long xattr_mask;
    xattr.override_redirect = styleMask == NSBorderlessWindowMask ? True : False;
-   xattr_mask = CWOverrideRedirect;
-      
-   _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy),
+   xattr_mask = CWOverrideRedirect|CWColormap;
+      xattr.colormap=cmap;
+
+   _window = XCreateWindow(_display, DefaultRootWindow(_display),
                               _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height,
-                              0, CopyFromParent, InputOutput, 
-                              CopyFromParent,
+                              0, (_visualInfo==NULL)?CopyFromParent:_visualInfo->depth, InputOutput, 
+                              (_visualInfo==NULL)?CopyFromParent:_visualInfo->visual,
                               xattr_mask, &xattr);
 
-   XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
+   XSelectInput(_display, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
     ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask | SubstructureRedirectMask );
 
-   Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
-   XSetWMProtocols(_dpy, _window, &atm , 1);
+   Atom atm=XInternAtom(_display, "WM_DELETE_WINDOW", False);
+   XSetWMProtocols(_display, _window, &atm , 1);
       
-   XSetWindowBackgroundPixmap(_dpy, _window, None);
+   XSetWindowBackgroundPixmap(_display, _window, None);
       
    [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
       
    if(styleMask == NSBorderlessWindowMask){
-     [isa removeDecorationForWindow:_window onDisplay:_dpy];
+     [isa removeDecorationForWindow:_window onDisplay:_display];
     }
    return self;
 }
@@ -111,7 +139,7 @@
 
 -(void)ensureMapped {
    if(!_mapped){      
-      XMapWindow(_dpy, _window);
+      XMapWindow(_display, _window);
       _mapped=YES;
    }
 }
@@ -132,7 +160,7 @@
 
    if(_window) {
       [(X11Display*)[NSDisplay currentDisplay] setWindow:nil forID:_window];
-      XDestroyWindow(_dpy, _window);
+      XDestroyWindow(_display, _window);
       _window=0;
    }
 }
@@ -186,12 +214,12 @@
    XTextProperty prop;
    const char* text=[title cString];
    XStringListToTextProperty((char**)&text, 1, &prop);
-   XSetWMName(_dpy, _window, &prop);
+   XSetWMName(_display, _window, &prop);
 }
 
 -(void)setFrame:(O2Rect)frame {
    frame=[self transformFrame:frame];
-   XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+   XMoveResizeWindow(_display, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
    [self invalidateContextsWithNewSize:frame.size];
 }
 
@@ -204,7 +232,7 @@
 }
 
 -(void)hideWindow {
-   XUnmapWindow(_dpy, _window);
+   XUnmapWindow(_display, _window);
    _mapped=NO;
 }
 
@@ -212,11 +240,11 @@
    [self ensureMapped];
 
    if(!other) {
-      XRaiseWindow(_dpy, _window);
+      XRaiseWindow(_display, _window);
    }
    else {
       Window w[2]={_window, other->_window};
-      XRestackWindows(_dpy, w, 1);
+      XRestackWindows(_display, w, 1);
    }
 }
 
@@ -224,17 +252,17 @@
    [self ensureMapped];
 
    if(!other) {
-      XLowerWindow(_dpy, _window);
+      XLowerWindow(_display, _window);
    }
    else {
       Window w[2]={other->_window, _window};
-      XRestackWindows(_dpy, w, 1);
+      XRestackWindows(_display, w, 1);
    }
 }
 
 -(void)makeKey {
    [self ensureMapped];
-   XRaiseWindow(_dpy, _window);
+   XRaiseWindow(_display, _window);
 }
 
 -(void)captureEvents {
@@ -254,6 +282,46 @@
    return NO;
 }
 
+-(CGLContextObj)createCGLContextObjIfNeeded {
+   if(_cglContext==NULL){
+    CGLError error;
+
+    if((error=CGLCreateContext(NULL,_display,_visualInfo,_window,&_cglContext))!=kCGLNoError)
+     NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
+   }
+   
+   return _cglContext;
+}
+
+-(void)openGLFlushBuffer {
+   CGLError error;
+   
+   [self createCGLContextObjIfNeeded];
+   
+   if((error=CGLSetCurrentContext(_cglContext))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
+
+   O2Surface *surface=[_backingContext surface];
+   size_t width=O2ImageGetWidth(surface);
+   size_t height=O2ImageGetHeight(surface);
+
+// prepare
+    glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+
+// reshape
+   glViewport(0,0,width,height);
+   glMatrixMode(GL_PROJECTION);                      
+   glLoadIdentity();
+   glOrtho (0, width, 0, height, -1, 1);
+
+   CARenderer *renderer=[CARenderer rendererWithCGLContext:_cglContext options:nil];
+
+   [renderer renderWithSurface:surface];
+   
+   glFlush();
+   glXSwapBuffers(_display, _window);
+}
 
 -(void)flushBuffer {
 
@@ -267,8 +335,13 @@
      case CGSBackingStoreBuffered:
       if(_backingContext!=nil){
        O2ContextFlush(_backingContext);
-       [_context drawBackingContext:_backingContext size:_frame.size];
-       O2ContextFlush(_context);
+
+       if(1)
+        [self openGLFlushBuffer];
+       else {
+        [_context drawBackingContext:_backingContext size:_frame.size];
+        O2ContextFlush(_context);
+       }
       }
       break;
     }
@@ -309,8 +382,8 @@ static int ignoreBadWindow(Display* display,
       // recursively get geometry to get absolute position
       BOOL success=YES;
       while(window && success) {
-         XGetGeometry(_dpy, window, &root, &x, &y, &w, &h, &b, &d);
-         success = XQueryTree(_dpy, window, &root, &parent, &children, &nchild);
+         XGetGeometry(_display, window, &root, &x, &y, &w, &h, &b, &d);
+         success = XQueryTree(_display, window, &root, &parent, &children, &nchild);
          if(children)
             XFree(children);
          
@@ -330,7 +403,7 @@ static int ignoreBadWindow(Display* display,
 }
 
 -(Visual*)visual {
-   return DefaultVisual(_dpy, DefaultScreen(_dpy));
+   return DefaultVisual(_display, DefaultScreen(_display));
 }
 
 -(Drawable)drawable {
@@ -342,175 +415,12 @@ static int ignoreBadWindow(Display* display,
 }
 
 -(O2Rect)transformFrame:(O2Rect)frame {
-   return NSMakeRect(frame.origin.x, DisplayHeight(_dpy, DefaultScreen(_dpy)) - frame.origin.y - frame.size.height, fmax(frame.size.width, 1.0), fmax(frame.size.height, 1.0));
+   return NSMakeRect(frame.origin.x, DisplayHeight(_display, DefaultScreen(_display)) - frame.origin.y - frame.size.height, fmax(frame.size.width, 1.0), fmax(frame.size.height, 1.0));
 }
 
 -(NSPoint)transformPoint:(NSPoint)pos;
 {
    return NSMakePoint(pos.x, _frame.size.height-pos.y);
-}
-
--(unsigned int)modifierFlagsForState:(unsigned int)state {
-   unsigned int ret=0;
-   if(state & ShiftMask)
-      ret|=NSShiftKeyMask;
-   if(state & ControlMask)
-      ret|=NSControlKeyMask;
-   if(state & Mod2Mask)
-      ret|=NSCommandKeyMask;
-   // TODO: alt doesn't work; might want to track key presses/releases instead
-   return ret;
-}
-
-
--(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display {
-   static id lastFocusedWindow=nil;
-   static NSTimeInterval lastClickTimeStamp=0.0;
-   static int clickCount=0;
-
-
-   switch(ev->type) {
-      case DestroyNotify:
-      {
-         // we should never get this message before the WM_DELETE_WINDOW ClientNotify
-         // so normally, window should be nil here.
-         [self invalidate];
-         break;
-      }
-      case ConfigureNotify:
-      {
-         [self frameChanged];
-         [_delegate platformWindow:self frameChanged:[self transformFrame:_frame] didSize:YES];
-         break;
-      }
-      case Expose:
-      {
-         O2Rect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
-         rect.origin.y=_frame.size.height-rect.origin.y-rect.size.height;
-        // rect=NSInsetRect(rect, -10, -10);
-   //      [_backingContext addToDirtyRect:rect];
-         if(ev->xexpose.count==0)
-            [self flushBuffer]; 
-         break;
-      }
-      case ButtonPress:
-      {
-         NSTimeInterval now=[[NSDate date] timeIntervalSinceReferenceDate];
-         if(now-lastClickTimeStamp<[display doubleClickInterval]) {
-            clickCount++;
-         }
-         else {
-            clickCount=1;  
-         }
-         lastClickTimeStamp=now;
-         
-         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
-         
-         id event=[NSEvent mouseEventWithType:NSLeftMouseDown
-                                  location:pos
-                             modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
-                                    window:_delegate
-                                clickCount:clickCount];
-         [display postEvent:event atStart:NO];
-         break;
-      }
-      case ButtonRelease:
-     {
-         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
-
-         id event=[NSEvent mouseEventWithType:NSLeftMouseUp
-                                  location:pos
-                             modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
-                                    window:_delegate
-                                clickCount:clickCount];
-         [display postEvent:event atStart:NO];
-         break;
-      }
-      case MotionNotify:
-      {
-         NSPoint pos=[self transformPoint:NSMakePoint(ev->xmotion.x, ev->xmotion.y)];
-         NSEventType type=NSMouseMoved;
-         
-         if(ev->xmotion.state&Button1Mask) {
-            type=NSLeftMouseDragged;
-         }
-         else if (ev->xmotion.state&Button2Mask) {
-            type=NSRightMouseDragged;
-         }
-         
-         if(type==NSMouseMoved &&
-            ![_delegate acceptsMouseMovedEvents])
-            break;
-         
-         id event=[NSEvent mouseEventWithType:type
-                                  location:pos
-                             modifierFlags:[self modifierFlagsForState:ev->xmotion.state]
-                                    window:_delegate
-                                clickCount:1];
-         [display postEvent:event atStart:NO];
-         [display discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:event];
-         break;
-      }
-      case ClientMessage:
-      {
-         if(ev->xclient.format=32 &&
-            ev->xclient.data.l[0]==XInternAtom(_dpy, "WM_DELETE_WINDOW", False))
-            [_delegate platformWindowWillClose:self];
-         break;
-      }
-      case KeyRelease:
-      case KeyPress:
-      {
-         unsigned int modifierFlags=[self modifierFlagsForState:ev->xkey.state];
-         char buf[4]={0};
-         XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
-         id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
-         NSPoint pos=[self transformPoint:NSMakePoint(ev->xkey.x, ev->xkey.y)];
-         
-         id strIg=[str lowercaseString];
-         if(ev->xkey.state) {
-            ev->xkey.state=0;
-            XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
-            strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
-         }
-      
-         id event=[NSEvent keyEventWithType:ev->type == KeyPress ? NSKeyDown : NSKeyUp
-                                   location:pos
-                              modifierFlags:modifierFlags
-                                  timestamp:0.0 
-                               windowNumber:(NSInteger)_delegate
-                                    context:nil
-                                 characters:str 
-                charactersIgnoringModifiers:strIg
-                                  isARepeat:NO
-                                    keyCode:ev->xkey.keycode];
-         
-         [display postEvent:event atStart:NO];
-         
-         [str release];
-         break;
-      }
-      case FocusIn:
-         if([_delegate attachedSheet]) {
-            [[_delegate attachedSheet] makeKeyAndOrderFront:_delegate];
-            break;
-         }
-         if(lastFocusedWindow) {
-            [lastFocusedWindow platformWindowDeactivated:self checkForAppDeactivation:NO];
-            lastFocusedWindow=nil;  
-         }
-         [_delegate platformWindowActivated:self];
-         lastFocusedWindow=_delegate;
-         break;
-      case FocusOut:
-         [_delegate platformWindowDeactivated:self checkForAppDeactivation:NO];
-         lastFocusedWindow=nil;
-         break;
-         
-      default:
-         NSLog(@"type %i", ev->type);
-         break;
-   }
 }
 
 

@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface O2Context_gdi : O2Context {
    O2DeviceContext_gdi *_deviceContext;
+   O2Surface           *_surface;
    HDC  _dc;
    BOOL _isAdvanced;
    Win32Font *_gdiFont;

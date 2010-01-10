@@ -13,14 +13,10 @@
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
-#include <GL/gl.h>
+#import <OpenGL/OpenGL.h>
 #include <GL/glx.h>
-//#include <GL/glu.h>
 
-void CGLDestroyContext(void *glContext)
-{
-   glXDestroyContext([(X11Display*)[NSDisplay currentDisplay] display], glContext);
-}
+CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,XVisualInfo *vis,Window window,CGLContextObj *resultp);
 
 @implementation NSOpenGLDrawable(X11)
 
@@ -34,32 +30,58 @@ void CGLDestroyContext(void *glContext)
 
 -initWithPixelFormat:(NSOpenGLPixelFormat *)pixelFormat view:(NSView *)view {
    if(self = [super init]) {
+   
       _format=[pixelFormat retain];
-      _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
+      _display=[(X11Display*)[NSDisplay currentDisplay] display];
       
-      GLint                   att[] = {
-         GLX_RGBA,
-         GLX_DEPTH_SIZE, 15,
-         None
+      GLint att[] = {
+       GLX_RGBA,
+       GLX_DOUBLEBUFFER,
+       GLX_RED_SIZE, 4,                                         
+       GLX_GREEN_SIZE, 4,                                                 
+       GLX_BLUE_SIZE, 4,                                                  
+       GLX_DEPTH_SIZE, 4,                                                
+       None
       };
-      _vi = glXChooseVisual(_dpy, 0, att);
       
-      if(!_vi) {
-         [self release];
-         return nil;
+      int screen = DefaultScreen(_display);
+      
+      if((_visualInfo=glXChooseVisual(_display,screen,att))==NULL){
+       NSLog(@"glXChooseVisual failed");
+       [self dealloc];
+       return nil;;
       }
       
-      Colormap cmap = XCreateColormap(_dpy, DefaultRootWindow(_dpy), _vi->visual, AllocNone);
+      Colormap cmap = XCreateColormap(_display, RootWindow(_display, _visualInfo->screen), _visualInfo->visual, AllocNone);
 
-      XSetWindowAttributes xattr;
-      xattr.colormap=cmap;
-      xattr.event_mask = ExposureMask | KeyPressMask;
-      _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy), 0, 0, 100, 100, 0, _vi->depth, InputOutput, _vi->visual, CWColormap | CWEventMask, &xattr);
-      XSetWindowBackgroundPixmap(_dpy, _window, None);
-      [X11Window removeDecorationForWindow:_window onDisplay:_dpy];
+      if(cmap<0){
+       NSLog(@"XCreateColormap failed");
+       [self dealloc];
+       return nil;
+      }
       
-      [self updateWithView:view];
-      XMapWindow(_dpy, _window);
+      XSetWindowAttributes xattr;
+      
+      bzero(&xattr,sizeof(xattr));
+      
+      xattr.colormap=cmap;
+      xattr.border_pixel = 0;                                                           
+      xattr.event_mask = ExposureMask | KeyPressMask | ButtonPressMask | StructureNotifyMask;
+                                            
+      NSRect frame=[view frame];
+    
+       Window parent=[(X11Window*)[[view window] platformWindow] drawable];
+       
+       if(parent==0)
+        parent=RootWindow(_display, _visualInfo->screen);
+        
+      _window = XCreateWindow(_display,parent, frame.origin.x, frame.origin.y, frame.size.width,frame.size.height, 0, _visualInfo->depth, InputOutput, _visualInfo->visual, CWBorderPixel | CWColormap | CWEventMask, &xattr);
+      
+      
+     // XSetWindowBackgroundPixmap(_display, _window, None);
+     // [X11Window removeDecorationForWindow:_window onDisplay:_display];
+      
+      XMapWindow(_display, _window);
 
    }
    return self;
@@ -67,25 +89,26 @@ void CGLDestroyContext(void *glContext)
 
 -(void)dealloc {
    if(_window)
-      XDestroyWindow(_dpy, _window);
+      XDestroyWindow(_display, _window);
    [_format release];
    [super dealloc];
 }
 
--(void *)createGLContext {
-   GLXContext glc;
+-(CGLContextObj)createGLContext {
+   CGLContextObj result=NULL;
+   CGLError error;
 
-   if(!_vi)
-      return NULL;
-   glc = glXCreateContext(_dpy, _vi, NULL, GL_TRUE);
+   if((error=CGLCreateContext(NULL,_display,_visualInfo,_window,&result))!=kCGLNoError)
+    NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
 
-   return glc;
+   return result;
 }
 
 -(void)invalidate {
 }
 
 -(void)updateWithView:(NSView *)view {
+
    NSRect frame=[view frame];
    frame=[[view superview] convertRect:frame toView:nil];
 
@@ -94,20 +117,30 @@ void CGLDestroyContext(void *glContext)
    
    frame.origin.y=wndFrame.size.height-(frame.origin.y+frame.size.height);
    
-   XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+   XMoveResizeWindow(_display, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
    Window viewWindow=[(X11Window*)[[view window] platformWindow] drawable];
    if(_lastParent!=viewWindow) {
-      XReparentWindow(_dpy, _window, viewWindow, frame.origin.x, frame.origin.y);
+      XReparentWindow(_display, _window, viewWindow, frame.origin.x, frame.origin.y);
       _lastParent=viewWindow;
    }
 }
 
--(void)makeCurrentWithGLContext:(void *)glContext {
-   glXMakeCurrent(_dpy, _window, (GLXContext)glContext);
+-(void)makeCurrentWithGLContext:(CGLContextObj)glContext {
+   CGLError error;
+   
+   if((error=CGLSetCurrentContext(glContext))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
+}
+
+-(void)clearCurrentWithGLContext:(CGLContextObj)glContext {   
+   CGLError error;
+   
+   if((error=CGLSetCurrentContext(NULL))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
 }
 
 -(void)swapBuffers {
-   glXSwapBuffers(_dpy, _window);
+   glXSwapBuffers(_display, _window);
 }
 
 @end

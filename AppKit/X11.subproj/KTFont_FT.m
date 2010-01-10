@@ -6,20 +6,20 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "TTFFont.h"
+#import "KTFont_FT.h"
 #import <AppKit/KTFont.h>
 #import <AppKit/NSRaise.h>
 #import "O2Font_FT.h"
 #import <AppKit/NSFontTypeface.h>
 
-@implementation KTFont(TTFFont)
+@implementation KTFont(KTFont_FT)
 +(id)allocWithZone:(NSZone*)zone
 {
-   return NSAllocateObject([TTFFont class], 0, NULL);
+   return NSAllocateObject([KTFont_FT class], 0, NULL);
 }
 @end
 
-@implementation TTFFont
+@implementation KTFont_FT
 
 
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {

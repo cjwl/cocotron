@@ -1,4 +1,5 @@
 #import <Foundation/NSObject.h>
+#import <OpenGL/OpenGL.h>
 
 @class NSOpenGLPixelFormat,NSView;
 
@@ -6,12 +7,12 @@
 
 -initWithPixelFormat:(NSOpenGLPixelFormat *)pixelFormat view:(NSView *)view;
 
--(void *)createGLContext;
+-(CGLContextObj)createGLContext;
 
 -(void)invalidate;
 -(void)updateWithView:(NSView *)view;
--(void)makeCurrentWithGLContext:(void *)glContext;
--(void)clearCurrentWithGLContext:(void *)glContext;
+-(void)makeCurrentWithGLContext:(CGLContextObj)glContext;
+-(void)clearCurrentWithGLContext:(CGLContextObj)glContext;
 -(void)swapBuffers;
 
 @end

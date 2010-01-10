@@ -194,11 +194,15 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    return _dc;
 }
 
--(void *)createGLContext {
+-(CGLContextObj)createGLContext {
    CGLContextObj result=NULL;
-   
-   CGLCreateContext(NULL,(void *)[self dc],&result);
-   
+   CGLError error;
+  
+   CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,HDC dc,CGLContextObj *resultp);
+ 
+   if((error=CGLCreateContext(NULL,[self dc],&result))!=kCGLNoError)
+    NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
+
    return result;
 }
 

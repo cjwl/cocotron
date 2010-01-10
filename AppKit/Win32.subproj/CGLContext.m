@@ -37,9 +37,7 @@ CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
    return kCGLNoError;
 }
 
-CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj other,CGLContextObj *resultp) {
-// FIXME: yes, this is bogus
-   HDC           dc=(HDC)other;
+CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,HDC dc,CGLContextObj *resultp) {
    CGLContextObj result=NSZoneMalloc(NULL,sizeof(struct _CGLContextObj));
    
    InitializeCriticalSection(&(result->lock));

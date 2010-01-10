@@ -12,7 +12,7 @@
 #import <CoreGraphics/O2Color.h>
 #import <Foundation/NSException.h>
 #import <CoreGraphics/O2GraphicsState.h>
-#import <AppKit/TTFFont.h>
+#import <AppKit/KTFont_FT.h>
 #import <CoreGraphics/O2ColorSpace.h>
 #import <CoreGraphics/O2Surface.h>
 #import <Foundation/NSException.h>

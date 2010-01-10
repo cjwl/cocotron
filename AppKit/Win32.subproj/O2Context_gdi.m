@@ -8,7 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2Context_gdi.h"
 #import "Win32Window.h"
 #import "Win32DeviceContextPrinter.h"
-#import "O2DeviceContext_gdi_ddb.h"
 #import "O2DeviceContext_gdiDIBSection.h"
 #import "O2Surface_DIBSection.h"
 #import "Win32DeviceContextWindow.h"
@@ -119,21 +118,20 @@ static inline O2GState *currentState(O2Context *self){
 -initWithHWND:(HWND)handle {
    O2DeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
    NSSize                  size=[deviceContext pixelSize];
-   O2AffineTransform       flip={1,0,0,-1,0,size.height};
-   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
+   O2GState        *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
 
-   return [self initWithGraphicsState:initialState deviceContext:deviceContext];
+   return [self initWithGraphicsState:gState deviceContext:deviceContext];
 }
 
 -initWithPrinterDC:(HDC)printer auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    O2DeviceContext_gdi    *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:printer] autorelease];
    NSSize                  pointSize=[deviceContext pointSize];
    NSSize                  pixelsPerInch=[deviceContext pixelsPerInch];
-   O2AffineTransform       flip={1,0,0,-1,0, pointSize.height};
-   O2AffineTransform       scale=O2AffineTransformConcat(flip,O2AffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0));
-   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:scale] autorelease];
+
+   O2AffineTransform       scale=O2AffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0);
+   O2GState              *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:pointSize.height concat:scale] autorelease];
       
-   if([self initWithGraphicsState:initialState deviceContext:deviceContext]==nil)
+   if([self initWithGraphicsState:gState deviceContext:deviceContext]==nil)
     return nil;
    
    NSString *title=[auxiliaryInfo objectForKey:kO2PDFContextTitle];
@@ -147,22 +145,23 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -initWithSize:(NSSize)size window:(CGWindow *)window {
+   O2GState        *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
    HWND                    handle=[(Win32Window *)window windowHandle];
    O2DeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
-   O2AffineTransform       flip={1,0,0,-1,0,size.height};
-   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
-   return [self initWithGraphicsState:initialState deviceContext:deviceContext];
+   return [self initWithGraphicsState:gState deviceContext:deviceContext];
 }
 
 -initWithSize:(NSSize)size context:(O2Context *)otherX {
-   O2Context_gdi          *other=(O2Context_gdi *)otherX;
- //  O2DeviceContext_gdi    *deviceContext=[[[O2DeviceContext_gdi_ddb alloc] initWithSize:size deviceContext:[other deviceContext]] autorelease];
-   O2DeviceContext_gdi    *deviceContext=[[[O2DeviceContext_gdiDIBSection alloc] initWithWidth:size.width height:size.height deviceContext:[other deviceContext]] autorelease];
-   O2AffineTransform       flip={1,0,0,-1,0,size.height};
-   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
+   O2GState         *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
+   O2Context_gdi    *other=(O2Context_gdi *)otherX;
+   O2Surface_DIBSection *surface=[[O2Surface_DIBSection alloc] initWithWidth:size.width height:size.height compatibleWithDeviceContext:[other deviceContext]];
 
-   return [self initWithGraphicsState:initialState deviceContext:deviceContext];
+   self=[self initWithGraphicsState:gState deviceContext:[surface deviceContext]];
+   
+   _surface=surface;
+   
+   return self;
 }
 
 -(void)dealloc {
@@ -189,6 +188,10 @@ static inline O2GState *currentState(O2Context *self){
 
 -(HFONT)fontHandle {
    return [_gdiFont fontHandle];
+}
+
+-(O2Surface *)surface {
+   return _surface;
 }
 
 -(O2DeviceContext_gdi *)deviceContext {

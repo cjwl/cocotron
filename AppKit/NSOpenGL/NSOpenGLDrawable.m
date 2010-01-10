@@ -6,7 +6,7 @@
    return self;
 }
 
--(void *)createGLContext {
+-(CGLContextObj)createGLContext {
    return NULL;
 }
 
@@ -16,10 +16,10 @@
 -(void)updateWithView:(NSView *)view {
 }
 
--(void)makeCurrentWithGLContext:(void *)glContext {
+-(void)makeCurrentWithGLContext:(CGLContextObj)glContext {
 }
 
--(void)clearCurrentWithGLContext:(void *)glContext {
+-(void)clearCurrentWithGLContext:(CGLContextObj)glContext {
 }
 
 -(void)swapBuffers {

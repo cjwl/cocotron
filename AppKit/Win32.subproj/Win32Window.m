@@ -13,12 +13,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
 #import <CoreGraphics/O2Context.h>
+#import <CoreGraphics/O2Surface.h>
 #import <AppKit/O2Context_gdi.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
+#import <QuartzCore/CABackingRenderer.h>
 
 @implementation Win32Window
 
@@ -148,21 +150,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _styleMask=styleMask;
    _isPanel=isPanel;
    _isLayered=NO;
+   _isOpenGL=NO;
+   
+   DWORD  style=[self win32Style];
+   DWORD  extendStyle=[self win32ExtendedStyle];
+   NSRect win32Frame=[self win32FrameForRect:frame];
+   const char *className=[self win32ClassName];
 
-   {
-    DWORD  style=[self win32Style];
-    DWORD  extendStyle=[self win32ExtendedStyle];
-    NSRect win32Frame=[self win32FrameForRect:frame];
-    const char *className=[self win32ClassName];
-
-    _handle=CreateWindowEx(extendStyle,className,"", style,
-      win32Frame.origin.x, win32Frame.origin.y,
-      win32Frame.size.width, win32Frame.size.height,
-      NULL,NULL, GetModuleHandle (NULL),NULL);
-   }
+   _handle=CreateWindowEx(extendStyle,className,"", style,
+     win32Frame.origin.x, win32Frame.origin.y,
+     win32Frame.size.width, win32Frame.size.height,
+     NULL,NULL, GetModuleHandle (NULL),NULL);
 
    SetProp(_handle,"self",self);
 
+   if(_isOpenGL){
+    PIXELFORMATDESCRIPTOR pfd;
+   
+    memset(&pfd,0,sizeof(pfd));
+   
+    pfd.nSize=sizeof(PIXELFORMATDESCRIPTOR);
+    pfd.nVersion=1;
+    pfd.dwFlags=PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER|PFD_GENERIC_ACCELERATED|PFD_DRAW_TO_WINDOW;
+    pfd.iPixelType=PFD_TYPE_RGBA;
+    pfd.cColorBits=24;
+    pfd.cAlphaBits=8;
+    pfd.iLayerType=PFD_MAIN_PLANE;
+
+    HDC dc=GetDC(_handle);
+    int pfIndex=ChoosePixelFormat(dc,&pfd); 
+ 
+    if(!SetPixelFormat(dc,pfIndex,&pfd))
+     NSLog(@"SetPixelFormat failed at %s %d",__FILE__,__LINE__);
+
+    ReleaseDC(_handle,dc);
+   }
+   
    _size=frame.size;
    _cgContext=nil;
 
@@ -341,7 +364,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return IsIconic(_handle);
 }
 
+-(CGLContextObj)createCGLContextObjIfNeeded {
+   if(_cglContext==NULL){
+    CGLError error;
+    HDC dc=GetDC(_handle);
+    
+    CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,HDC dc,CGLContextObj *resultp);
+ 
+    if((error=CGLCreateContext(NULL,dc,&_cglContext))!=kCGLNoError)
+     NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
+    
+    ReleaseDC(_handle,dc);
+   }
+   
+   return _cglContext;
+}
+
+-(BOOL)openGLFlushBuffer {
+   CGLError error;
+   O2Surface *surface=[_backingContext surface];
+   
+   if(surface==nil){
+    NSLog(@"no surface on %@",_backingContext);
+    return NO;
+   }
+    
+   [self createCGLContextObjIfNeeded];
+       
+   CABackingRenderer *renderer=(CABackingRenderer *)[NSClassFromString(@"CABackingRenderer") rendererWithCGLContext:_cglContext options:nil];
+   
+   if(renderer==nil)
+    return NO;
+    
+   [renderer renderWithSurface:surface];
+   
+   HDC dc=GetDC(_handle);
+   SwapBuffers(dc);
+   ReleaseDC(_handle,dc);
+   
+   return YES;
+}
+
 -(void)flushBuffer {
+   if(_isOpenGL){
+    if([self openGLFlushBuffer])
+     return;
+   }
+   
    if(_isLayered){
     BLENDFUNCTION blend = {0,0,0,0};
     blend.BlendOp = AC_SRC_OVER;

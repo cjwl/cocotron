@@ -9,16 +9,21 @@
 #import <AppKit/CGWindow.h>
 #import <CoreGraphics/O2Geometry.h>
 #import <X11/Xlib.h>
+#import <GL/glx.h>
+#import <OpenGL/OpenGL.h>
 
 @class O2Context_cairo, X11Display;
 
 @interface X11Window : CGWindow {
-   id _delegate;
-   Window _window;
-   Display *_dpy;
+   Display *_display;
+   XVisualInfo *_visualInfo;
+   Window   _window;
+   id       _delegate;
    CGSBackingStoreType  _backingType;
-   O2Context *_backingContext;
-   O2Context *_context;
+   O2Context    *_backingContext;
+   O2Context    *_context;
+   CGLContextObj _cglContext;
+   
    NSMutableDictionary *_deviceDictionary;
    O2Rect _frame;
    BOOL _mapped;
@@ -32,5 +37,5 @@
 -(O2Rect)transformFrame:(O2Rect)frame;
 
 -(void)frameChanged;
--(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display;
+
 @end

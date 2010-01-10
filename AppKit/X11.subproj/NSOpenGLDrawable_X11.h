@@ -12,16 +12,15 @@
 #include <X11/Xlib.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
-//#include <GL/glu.h>
 
 @class NSView,NSOpenGLPixelFormat;
 
 @interface NSOpenGLDrawable_X11 : NSOpenGLDrawable {
    NSOpenGLPixelFormat *_format;
-   Display *_dpy;
-   XVisualInfo *_vi;
-   Window _window;
-   Window _lastParent;
+   Display             *_display;
+   XVisualInfo         *_visualInfo;
+   Window               _window;
+   Window               _lastParent;
 }
 
 @end

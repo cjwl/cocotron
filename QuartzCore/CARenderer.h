@@ -15,6 +15,5 @@
 +(CARenderer *)rendererWithCGLContext:(void *)cglContext options:(NSDictionary *)options;
 
 -(void)render;
--(void)renderWithSurface:(O2Surface *)surface;
 
 @end
