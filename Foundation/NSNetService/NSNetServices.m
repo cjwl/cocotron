@@ -71,15 +71,15 @@ NSString *NSNetServicesErrorDomain = @"NSNetServicesErrorDomain";
                    ttl: (uint32_t) ttl;
 @end
 
-static void ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const unsigned char *txtRecord,void *context){
+static void BONJOUR_CALL ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const unsigned char *txtRecord,void *context){
    [(NSNetService *) context resolverCallback: sdRef flags: flags interface: interfaceIndex error: errorCode fullname: fullname target: hosttarget port: port length: txtLen record: txtRecord];
 }
 
-static void RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,bonjour_DNSServiceErrorType errorCode,const char *name,const char *regtype,const char *domain,void *context){
+static void BONJOUR_CALL RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,bonjour_DNSServiceErrorType errorCode,const char *name,const char *regtype,const char *domain,void *context){
    [(NSNetService *) context registerCallback: sdRef flags: flags error: errorCode name: name type: regtype domain: domain];
 }
 
-static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,uint16_t rrtype,uint16_t rrclass,uint16_t rdlen,const void *rdata,uint32_t ttl,void *context){
+static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,uint16_t rrtype,uint16_t rrclass,uint16_t rdlen,const void *rdata,uint32_t ttl,void *context){
    [(NSNetService *) context queryCallback: sdRef flags: flags interface: interfaceIndex error: errorCode fullname: fullname type: rrtype class: rrclass length: rdlen data: rdata ttl: ttl];
 }
 
@@ -719,7 +719,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
                               [[_info objectForKey: @"Name"] UTF8String],
                               [[_info objectForKey: @"Type"] UTF8String],
                               [[_info objectForKey: @"Domain"] UTF8String],
-                              (bonjour_DNSServiceResolveReply)ResolverCallback, self);
+                              ResolverCallback, self);
                               
       if(err==bonjour_kDNSServiceErr_NoError){        
         _resolverTimeout=[[NSTimer scheduledTimerWithTimeInterval: timeout
@@ -924,8 +924,9 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 }
 
 - (BOOL) getInputStream: (NSInputStream **) inputStream outputStream: (NSOutputStream **) outputStream {  
-
-   [NSStream getStreamsToHost: [_info objectForKey: @"Host"] port:_port inputStream: inputStream outputStream: outputStream];
+   NSHost *host=[NSHost hostWithName:[_info objectForKey: @"Host"]];
+   
+   [NSStream getStreamsToHost: host port:_port inputStream: inputStream outputStream: outputStream];
     
    return ((*inputStream!=nil) && (*outputStream!=nil))?YES:NO;
 }
@@ -939,11 +940,11 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 -(void)browseCallback: (bonjour_DNSServiceRef) sdRef flags: (bonjour_DNSServiceFlags) flags interface: (uint32_t) interfaceIndex error: (bonjour_DNSServiceErrorType) errorCode name: (const char *) replyName type: (const char *) replyType domain: (const char *) replyDomain;
 @end
 
-static void EnumerationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType  errorCode,const char *replyDomain,void *context) {
+static void BONJOUR_CALL EnumerationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType  errorCode,const char *replyDomain,void *context) {
   [(id) context enumCallback: sdRef flags: flags interface: interfaceIndex error: errorCode domain: replyDomain];
 }
 
-static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *replyName,const char *replyType,const char *replyDomain,void *context){
+static void BONJOUR_CALL BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *replyName,const char *replyType,const char *replyDomain,void *context){
   [(id) context browseCallback: sdRef flags: flags interface: interfaceIndex error: errorCode name: replyName type: replyType domain: replyDomain];
 }
 
@@ -1065,7 +1066,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
     err = bonjour_DNSServiceEnumerateDomains((bonjour_DNSServiceRef *)&_netServiceBrowser,
                                        aFlag,
                                        _interfaceIndex,
-                                       (bonjour_DNSServiceDomainEnumReply)EnumerationCallback,
+                                       EnumerationCallback,
                                        self);
    }
   
@@ -1212,7 +1213,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
                              _interfaceIndex,
                              [serviceType UTF8String],
                              [domainName UTF8String],
-                             (bonjour_DNSServiceBrowseReply)BrowserCallback,
+                             BrowserCallback,
                              self);
    }
   
