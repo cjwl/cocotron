@@ -306,7 +306,6 @@ static Class _fontPanelFactory;
     return [NSFont fontWithName:[newface name] size:[font pointSize]];
 
    NSLog(@"%s failed, %@ %d",sel_getName(_cmd),[font fontName],addTraits);
-   NSUnimplementedMethod();
    return font;
 }
 
