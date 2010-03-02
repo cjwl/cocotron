@@ -16,6 +16,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
+- (void)skipDescendants;
+{
+	[self skipDescendents];
+}
+
 -(NSDictionary *)directoryAttributes {
    return nil;
 }

@@ -109,4 +109,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return lastFileAttributes;
 }
 
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len
+{
+	++state->state;
+	state->itemsPtr = stackbuf;
+	state->mutationsPtr = (unsigned long *)self;
+	
+	id next = [self nextObject];
+	if (nil == next) return 0;
+
+	stackbuf[0] = next;
+	return 1;
+}
+
 @end
