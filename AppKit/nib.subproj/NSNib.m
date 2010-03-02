@@ -18,8 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSNibHelpConnector.h"
 #import "NSCustomObject.h"
 
-NSString *NSNibOwner=@"NSOwner";
-NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
+NSString * const NSNibOwner=@"NSOwner";
+NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 
 @implementation NSNib
 

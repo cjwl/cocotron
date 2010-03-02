@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSError,NSMutableSet,NSDate;
 
-FOUNDATION_EXPORT NSString *NSSelectSetOutputNotification;
+FOUNDATION_EXPORT NSString * const NSSelectSetOutputNotification;
 
 @interface NSSelectSet : NSObject <NSCopying> {
    NSMutableSet *_readSet;

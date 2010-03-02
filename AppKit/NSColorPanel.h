@@ -37,7 +37,7 @@ enum {
 
 typedef NSInteger NSColorPanelMode;
 
-APPKIT_EXPORT NSString *NSColorPanelColorDidChangeNotification;
+APPKIT_EXPORT NSString * const NSColorPanelColorDidChangeNotification;
 
 @interface NSColorPanel : NSPanel {
     NSButton *setColorButton;

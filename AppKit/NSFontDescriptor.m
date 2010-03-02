@@ -11,15 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSFontNameAttribute=@"NSFontNameAttribute";
-NSString *NSFontFamilyAttribute=@"NSFontFamilyAttribute";
-NSString *NSFontSizeAttribute=@"NSFontSizeAttribute";
-NSString *NSFontMatrixAttribute=@"NSFontMatrixAttribute";
-NSString *NSFontCharacterSetAttribute=@"NSFontCharacterSetAttribute";
-NSString *NSFontTraitsAttribute=@"NSFontTraitsAttribute";
-NSString *NSFontFaceAttribute=@"NSFontFaceAttribute";
-NSString *NSFontFixedAdvanceAttribute=@"NSFontFixedAdvanceAttribute";
-NSString *NSFontVisibleNameAttribute=@"NSFontVisibleNameAttribute";
+NSString * const NSFontNameAttribute=@"NSFontNameAttribute";
+NSString * const NSFontFamilyAttribute=@"NSFontFamilyAttribute";
+NSString * const NSFontSizeAttribute=@"NSFontSizeAttribute";
+NSString * const NSFontMatrixAttribute=@"NSFontMatrixAttribute";
+NSString * const NSFontCharacterSetAttribute=@"NSFontCharacterSetAttribute";
+NSString * const NSFontTraitsAttribute=@"NSFontTraitsAttribute";
+NSString * const NSFontFaceAttribute=@"NSFontFaceAttribute";
+NSString * const NSFontFixedAdvanceAttribute=@"NSFontFixedAdvanceAttribute";
+NSString * const NSFontVisibleNameAttribute=@"NSFontVisibleNameAttribute";
 
 @implementation NSFontDescriptor : NSObject
 

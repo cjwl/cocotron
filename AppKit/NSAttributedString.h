@@ -12,28 +12,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSFont,NSColor,NSParagraphStyle,NSTextAttachment,NSFileWrapper,NSTextList,NSTextBlock,NSTextTable;
 
-APPKIT_EXPORT NSString *NSFontAttributeName; 
-APPKIT_EXPORT NSString *NSParagraphStyleAttributeName;
-APPKIT_EXPORT NSString *NSForegroundColorAttributeName;
-APPKIT_EXPORT NSString *NSBackgroundColorAttributeName;
-APPKIT_EXPORT NSString *NSUnderlineStyleAttributeName;
-APPKIT_EXPORT NSString *NSUnderlineColorAttributeName;
-APPKIT_EXPORT NSString *NSAttachmentAttributeName;
-APPKIT_EXPORT NSString *NSKernAttributeName;
-APPKIT_EXPORT NSString *NSLigatureAttributeName;
-APPKIT_EXPORT NSString *NSStrikethroughStyleAttributeName;
-APPKIT_EXPORT NSString *NSStrikethroughColorAttributeName;
-APPKIT_EXPORT NSString *NSObliquenessAttributeName;
-APPKIT_EXPORT NSString *NSStrokeWidthAttributeName;
-APPKIT_EXPORT NSString *NSStrokeColorAttributeName;
-APPKIT_EXPORT NSString *NSBaselineOffsetAttributeName;
-APPKIT_EXPORT NSString *NSSuperscriptAttributeName;
-APPKIT_EXPORT NSString *NSLinkAttributeName;
-APPKIT_EXPORT NSString *NSShadowAttributeName;
-APPKIT_EXPORT NSString *NSExpansionAttributeName;
-APPKIT_EXPORT NSString *NSCursorAttributeName;
-APPKIT_EXPORT NSString *NSToolTipAttributeName;
-APPKIT_EXPORT NSString *NSBackgroundColorDocumentAttribute;
+APPKIT_EXPORT NSString * const NSFontAttributeName; 
+APPKIT_EXPORT NSString * const NSParagraphStyleAttributeName;
+APPKIT_EXPORT NSString * const NSForegroundColorAttributeName;
+APPKIT_EXPORT NSString * const NSBackgroundColorAttributeName;
+APPKIT_EXPORT NSString * const NSUnderlineStyleAttributeName;
+APPKIT_EXPORT NSString * const NSUnderlineColorAttributeName;
+APPKIT_EXPORT NSString * const NSAttachmentAttributeName;
+APPKIT_EXPORT NSString * const NSKernAttributeName;
+APPKIT_EXPORT NSString * const NSLigatureAttributeName;
+APPKIT_EXPORT NSString * const NSStrikethroughStyleAttributeName;
+APPKIT_EXPORT NSString * const NSStrikethroughColorAttributeName;
+APPKIT_EXPORT NSString * const NSObliquenessAttributeName;
+APPKIT_EXPORT NSString * const NSStrokeWidthAttributeName;
+APPKIT_EXPORT NSString * const NSStrokeColorAttributeName;
+APPKIT_EXPORT NSString * const NSBaselineOffsetAttributeName;
+APPKIT_EXPORT NSString * const NSSuperscriptAttributeName;
+APPKIT_EXPORT NSString * const NSLinkAttributeName;
+APPKIT_EXPORT NSString * const NSShadowAttributeName;
+APPKIT_EXPORT NSString * const NSExpansionAttributeName;
+APPKIT_EXPORT NSString * const NSCursorAttributeName;
+APPKIT_EXPORT NSString * const NSToolTipAttributeName;
+APPKIT_EXPORT NSString * const NSBackgroundColorDocumentAttribute;
 
 enum {
    NSUnderlineStyleNone,

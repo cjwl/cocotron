@@ -16,8 +16,8 @@ enum {
    NSTextStorageEditedAttributes=0x02,
 };
 
-APPKIT_EXPORT NSString *NSTextStorageWillProcessEditingNotification;
-APPKIT_EXPORT NSString *NSTextStorageDidProcessEditingNotification;
+APPKIT_EXPORT NSString * const NSTextStorageWillProcessEditingNotification;
+APPKIT_EXPORT NSString * const NSTextStorageDidProcessEditingNotification;
 
 @interface NSTextStorage : NSMutableAttributedString <NSCoding> {
    id              _delegate;

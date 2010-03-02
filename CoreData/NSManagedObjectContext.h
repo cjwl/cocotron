@@ -91,4 +91,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-COREDATA_EXPORT NSString *NSManagedObjectContextDidSaveNotification;
+COREDATA_EXPORT NSString * const NSManagedObjectContextDidSaveNotification;

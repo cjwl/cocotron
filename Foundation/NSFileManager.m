@@ -16,31 +16,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSPathUtilities.h>
 
-NSString *NSFileType = @"NSFileType";
-NSString *NSFileTypeRegular = @"NSFileTypeRegular";
-NSString *NSFileTypeDirectory = @"NSFileTypeDirectory";
-NSString *NSFileTypeSymbolicLink = @"NSFileTypeSymbolicLink";
-NSString *NSFileTypeCharacterSpecial = @"NSFileTypeCharacterSpecial";
-NSString *NSFileTypeBlockSpecial = @"NSFileTypeBlockSpecial";
-NSString *NSFileTypeFIFO = @"NSFileTypeFIFO";
-NSString *NSFileTypeSocket = @"NSFileTypeSocket";
-NSString *NSFileTypeUnknown = @"NSFileTypeUnknown";
+NSString * const NSFileType = @"NSFileType";
+NSString * const NSFileTypeRegular = @"NSFileTypeRegular";
+NSString * const NSFileTypeDirectory = @"NSFileTypeDirectory";
+NSString * const NSFileTypeSymbolicLink = @"NSFileTypeSymbolicLink";
+NSString * const NSFileTypeCharacterSpecial = @"NSFileTypeCharacterSpecial";
+NSString * const NSFileTypeBlockSpecial = @"NSFileTypeBlockSpecial";
+NSString * const NSFileTypeFIFO = @"NSFileTypeFIFO";
+NSString * const NSFileTypeSocket = @"NSFileTypeSocket";
+NSString * const NSFileTypeUnknown = @"NSFileTypeUnknown";
 
-NSString *NSFileSize = @"NSFileSize";
-NSString *NSFileModificationDate = @"NSFileModificationDate";
-NSString *NSFileOwnerAccountName = @"NSFileOwnerAccountName";
-NSString *NSFileGroupOwnerAccountName = @"NSFileGroupOwnerAccountName";
+NSString * const NSFileSize = @"NSFileSize";
+NSString * const NSFileModificationDate = @"NSFileModificationDate";
+NSString * const NSFileOwnerAccountName = @"NSFileOwnerAccountName";
+NSString * const NSFileGroupOwnerAccountName = @"NSFileGroupOwnerAccountName";
 
-NSString *NSFileReferenceCount = @"NSFileReferenceCount";
-NSString *NSFileIdentifier = @"NSFileIdentifier";
-NSString *NSFileDeviceIdentifier = @"NSFileDeviceIdentifier";
-NSString *NSFilePosixPermissions = @"NSFilePosixPermissions";
-NSString *NSFileHFSCreatorCode = @"NSFileHFSCreatorCode";
-NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
+NSString * const NSFileReferenceCount = @"NSFileReferenceCount";
+NSString * const NSFileIdentifier = @"NSFileIdentifier";
+NSString * const NSFileDeviceIdentifier = @"NSFileDeviceIdentifier";
+NSString * const NSFilePosixPermissions = @"NSFilePosixPermissions";
+NSString * const NSFileHFSCreatorCode = @"NSFileHFSCreatorCode";
+NSString * const NSFileHFSTypeCode = @"NSFileHFSTypeCode";
 
-NSString *NSFileSystemNumber=@"NSFileSystemNumber";
-NSString *NSFileSystemSize=@"NSFileSystemSize";
-NSString *NSFileSystemFreeSize=@"NSFileSystemFreeSize";
+NSString * const NSFileSystemNumber=@"NSFileSystemNumber";
+NSString * const NSFileSystemSize=@"NSFileSystemSize";
+NSString * const NSFileSystemFreeSize=@"NSFileSystemFreeSize";
 
 @implementation NSFileManager
 

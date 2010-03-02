@@ -29,9 +29,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObject+BindingSupport.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
-NSString *NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";
-NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
+NSString * const NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
+NSString * const NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";
+NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
 
 @interface NSView(NSView_forward)
 -(CGAffineTransform)transformFromWindow;

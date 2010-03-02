@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSText.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSTextDidBeginEditingNotification=@"NSTextDidBeginEditingNotification";
-NSString *NSTextDidEndEditingNotification=@"NSTextDidEndEditingNotification";
-NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
+NSString * const NSTextDidBeginEditingNotification=@"NSTextDidBeginEditingNotification";
+NSString * const NSTextDidEndEditingNotification=@"NSTextDidEndEditingNotification";
+NSString * const NSTextDidChangeNotification=@"NSTextDidChangeNotification";
 
 @implementation NSText
 

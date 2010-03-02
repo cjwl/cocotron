@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColorPickerSliders.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSColorPanelColorDidChangeNotification=@"NSColorPanelColorDidChangeNotification";
+NSString * const NSColorPanelColorDidChangeNotification=@"NSColorPanelColorDidChangeNotification";
 
 @implementation NSColorPanel
 

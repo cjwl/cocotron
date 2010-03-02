@@ -54,21 +54,21 @@ APPKIT_EXPORT const float NSDarkGray;
 APPKIT_EXPORT const float NSLightGray;
 APPKIT_EXPORT const float NSWhite;
 
-APPKIT_EXPORT NSString *NSDeviceBlackColorSpace;
-APPKIT_EXPORT NSString *NSDeviceWhiteColorSpace;
-APPKIT_EXPORT NSString *NSDeviceRGBColorSpace;
-APPKIT_EXPORT NSString *NSDeviceCMYKColorSpace;
-APPKIT_EXPORT NSString *NSCalibratedBlackColorSpace;
-APPKIT_EXPORT NSString *NSCalibratedWhiteColorSpace;
-APPKIT_EXPORT NSString *NSCalibratedRGBColorSpace;
-APPKIT_EXPORT NSString *NSNamedColorSpace;
+APPKIT_EXPORT NSString * const NSDeviceBlackColorSpace;
+APPKIT_EXPORT NSString * const NSDeviceWhiteColorSpace;
+APPKIT_EXPORT NSString * const NSDeviceRGBColorSpace;
+APPKIT_EXPORT NSString * const NSDeviceCMYKColorSpace;
+APPKIT_EXPORT NSString * const NSCalibratedBlackColorSpace;
+APPKIT_EXPORT NSString * const NSCalibratedWhiteColorSpace;
+APPKIT_EXPORT NSString * const NSCalibratedRGBColorSpace;
+APPKIT_EXPORT NSString * const NSNamedColorSpace;
 
-APPKIT_EXPORT NSString *NSDeviceIsScreen;
-APPKIT_EXPORT NSString *NSDeviceIsPrinter;
-APPKIT_EXPORT NSString *NSDeviceSize;
-APPKIT_EXPORT NSString *NSDeviceResolution;
-APPKIT_EXPORT NSString *NSDeviceColorSpaceName;
-APPKIT_EXPORT NSString *NSDeviceBitsPerSample;
+APPKIT_EXPORT NSString * const NSDeviceIsScreen;
+APPKIT_EXPORT NSString * const NSDeviceIsPrinter;
+APPKIT_EXPORT NSString * const NSDeviceSize;
+APPKIT_EXPORT NSString * const NSDeviceResolution;
+APPKIT_EXPORT NSString * const NSDeviceColorSpaceName;
+APPKIT_EXPORT NSString * const NSDeviceBitsPerSample;
 
 APPKIT_EXPORT void NSRectClipList(const NSRect *rects,int count);
 APPKIT_EXPORT void NSRectClip(NSRect rect);

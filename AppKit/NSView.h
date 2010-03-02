@@ -61,9 +61,9 @@ enum {
 };
 typedef NSInteger NSViewLayerContentsRedrawPolicy;
 
-APPKIT_EXPORT NSString *NSViewFrameDidChangeNotification;
-APPKIT_EXPORT NSString *NSViewBoundsDidChangeNotification;
-APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
+APPKIT_EXPORT NSString * const NSViewFrameDidChangeNotification;
+APPKIT_EXPORT NSString * const NSViewBoundsDidChangeNotification;
+APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
 
 @interface NSView : NSResponder {
    NSRect          _frame;

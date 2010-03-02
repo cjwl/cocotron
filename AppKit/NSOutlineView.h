@@ -12,16 +12,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTableColumn, NSCell;
 
-APPKIT_EXPORT NSString *NSOutlineViewItemWillExpandNotification;
-APPKIT_EXPORT NSString *NSOutlineViewItemDidExpandNotification;
-APPKIT_EXPORT NSString *NSOutlineViewItemWillCollapseNotification;
-APPKIT_EXPORT NSString *NSOutlineViewItemDidCollapseNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewItemWillExpandNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewItemDidExpandNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewItemWillCollapseNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewItemDidCollapseNotification;
 
-APPKIT_EXPORT NSString *NSOutlineViewColumnDidMoveNotification;	
-APPKIT_EXPORT NSString *NSOutlineViewColumnDidResizeNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewColumnDidMoveNotification;	
+APPKIT_EXPORT NSString * const NSOutlineViewColumnDidResizeNotification;
 
-APPKIT_EXPORT NSString *NSOutlineViewSelectionDidChangeNotification;
-APPKIT_EXPORT NSString *NSOutlineViewSelectionIsChangingNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewSelectionDidChangeNotification;
+APPKIT_EXPORT NSString * const NSOutlineViewSelectionIsChangingNotification;
 
 @interface NSOutlineView : NSTableView {
     NSTableColumn *_outlineTableColumn;

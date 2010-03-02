@@ -1,4 +1,4 @@
-#import "NSPathCell.h"
+#import <AppKit/NSPathCell.h>
 
 #import <AppKit/NSPathComponentCell.h>
 #import <AppKit/AppKit.h>

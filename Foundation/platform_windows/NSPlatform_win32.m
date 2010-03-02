@@ -155,12 +155,12 @@ static NSString *processName(){
    return result;
 }
 
-NSString *NSPlatformExecutableDirectory=@"Windows";
-NSString *NSPlatformResourceNameSuffix=@"windows";
+NSString * const NSPlatformExecutableDirectory=@"Windows";
+NSString * const NSPlatformResourceNameSuffix=@"windows";
 
-NSString *NSPlatformExecutableFileExtension=@"exe";
-NSString *NSPlatformLoadableObjectFileExtension=@"dll";
-NSString *NSPlatformLoadableObjectFilePrefix=@"";
+NSString * const NSPlatformExecutableFileExtension=@"exe";
+NSString * const NSPlatformLoadableObjectFileExtension=@"dll";
+NSString * const NSPlatformLoadableObjectFilePrefix=@"";
 
 -(NSArray *)arguments {
    NSMutableArray *result=[NSMutableArray array];

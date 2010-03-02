@@ -20,8 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSelectInputSource.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
-NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
+NSString * const NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
+NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 
 @implementation NSRunLoop
 

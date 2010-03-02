@@ -9,22 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSDictionary;
 
-FOUNDATION_EXPORT NSString *NSLocaleCountryCode;
-FOUNDATION_EXPORT NSString *NSLocaleLanguageCode;
-FOUNDATION_EXPORT NSString *NSLocaleVariantCode;
-FOUNDATION_EXPORT NSString *NSLocaleIdentifier;
+FOUNDATION_EXPORT NSString * const NSLocaleCountryCode;
+FOUNDATION_EXPORT NSString * const NSLocaleLanguageCode;
+FOUNDATION_EXPORT NSString * const NSLocaleVariantCode;
+FOUNDATION_EXPORT NSString * const NSLocaleIdentifier;
 
-FOUNDATION_EXPORT NSString *NSLocaleGroupingSeparator;
-FOUNDATION_EXPORT NSString *NSLocaleDecimalSeparator;
-FOUNDATION_EXPORT NSString *NSLocaleCalendar;
-FOUNDATION_EXPORT NSString *NSLocaleCurrencyCode;
-FOUNDATION_EXPORT NSString *NSLocaleCurrencySymbol;
-FOUNDATION_EXPORT NSString *NSLocaleUsesMetricSystem;
-FOUNDATION_EXPORT NSString *NSLocaleMeasurementSystem;
+FOUNDATION_EXPORT NSString * const NSLocaleGroupingSeparator;
+FOUNDATION_EXPORT NSString * const NSLocaleDecimalSeparator;
+FOUNDATION_EXPORT NSString * const NSLocaleCalendar;
+FOUNDATION_EXPORT NSString * const NSLocaleCurrencyCode;
+FOUNDATION_EXPORT NSString * const NSLocaleCurrencySymbol;
+FOUNDATION_EXPORT NSString * const NSLocaleUsesMetricSystem;
+FOUNDATION_EXPORT NSString * const NSLocaleMeasurementSystem;
 
-FOUNDATION_EXPORT NSString *NSLocaleScriptCode;
-FOUNDATION_EXPORT NSString *NSLocaleExemplarCharacterSet;
-FOUNDATION_EXPORT NSString *NSLocaleCollationIdentifier;
+FOUNDATION_EXPORT NSString * const NSLocaleScriptCode;
+FOUNDATION_EXPORT NSString * const NSLocaleExemplarCharacterSet;
+FOUNDATION_EXPORT NSString * const NSLocaleCollationIdentifier;
 
 @interface NSLocale : NSObject <NSCoding,NSCopying> {
    NSDictionary *_locale;

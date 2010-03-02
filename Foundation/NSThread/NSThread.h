@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSMutableDictionary,NSAutoreleasePool,NSLock;
 
-FOUNDATION_EXPORT NSString *NSDidBecomeSingleThreadedNotification;
-FOUNDATION_EXPORT NSString *NSWillBecomeMultiThreadedNotification;
-FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
+FOUNDATION_EXPORT NSString * const NSDidBecomeSingleThreadedNotification;
+FOUNDATION_EXPORT NSString * const NSWillBecomeMultiThreadedNotification;
+FOUNDATION_EXPORT NSString * const NSThreadWillExitNotification;
 
 @interface NSThread : NSObject {
    NSMutableDictionary *_dictionary;

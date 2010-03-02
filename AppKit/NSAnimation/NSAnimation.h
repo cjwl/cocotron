@@ -26,7 +26,7 @@ typedef enum {
 
 typedef float NSAnimationProgress;
 
-APPKIT_EXPORT NSString *NSAnimationProgressMarkNotification;
+APPKIT_EXPORT NSString * const NSAnimationProgressMarkNotification;
 
 @interface NSAnimation : NSObject {
    NSTimeInterval          _duration;

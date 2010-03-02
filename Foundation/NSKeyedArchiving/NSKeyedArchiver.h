@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSMutableArray,NSMutableData,NSMutableDictionary;
 
-FOUNDATION_EXPORT NSString *NSInvalidArchiveOperationException;
+FOUNDATION_EXPORT NSString * const NSInvalidArchiveOperationException;
 
 @interface NSKeyedArchiver : NSCoder {
    NSMutableData       *_data;

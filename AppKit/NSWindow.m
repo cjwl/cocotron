@@ -35,24 +35,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSWindowDidBecomeKeyNotification=@"NSWindowDidBecomeKeyNotification";
-NSString *NSWindowDidResignKeyNotification=@"NSWindowDidResignKeyNotification";
-NSString *NSWindowDidBecomeMainNotification=@"NSWindowDidBecomeMainNotification";
-NSString *NSWindowDidResignMainNotification=@"NSWindowDidResignMainNotification";
-NSString *NSWindowWillMiniaturizeNotification=@"NSWindowWillMiniaturizeNotification";
-NSString *NSWindowDidMiniaturizeNotification=@"NSWindowDidMiniaturizeNotification";
-NSString *NSWindowDidDeminiaturizeNotification=@"NSWindowDidDeminiaturizeNotification";
-NSString *NSWindowDidMoveNotification=@"NSWindowDidMoveNotification";
-NSString *NSWindowDidResizeNotification=@"NSWindowDidResizeNotification";
-NSString *NSWindowDidUpdateNotification=@"NSWindowDidUpdateNotification";
-NSString *NSWindowWillCloseNotification=@"NSWindowWillCloseNotification";
-NSString *NSWindowWillMoveNotification=@"NSWindowWillMoveNotification";
-NSString *NSWindowWillStartLiveResizeNotification=@"NSWindowWillStartLiveResizeNotification";
-NSString *NSWindowDidEndLiveResizeNotification=@"NSWindowDidEndLiveResizeNotification";
+NSString * const NSWindowDidBecomeKeyNotification=@"NSWindowDidBecomeKeyNotification";
+NSString * const NSWindowDidResignKeyNotification=@"NSWindowDidResignKeyNotification";
+NSString * const NSWindowDidBecomeMainNotification=@"NSWindowDidBecomeMainNotification";
+NSString * const NSWindowDidResignMainNotification=@"NSWindowDidResignMainNotification";
+NSString * const NSWindowWillMiniaturizeNotification=@"NSWindowWillMiniaturizeNotification";
+NSString * const NSWindowDidMiniaturizeNotification=@"NSWindowDidMiniaturizeNotification";
+NSString * const NSWindowDidDeminiaturizeNotification=@"NSWindowDidDeminiaturizeNotification";
+NSString * const NSWindowDidMoveNotification=@"NSWindowDidMoveNotification";
+NSString * const NSWindowDidResizeNotification=@"NSWindowDidResizeNotification";
+NSString * const NSWindowDidUpdateNotification=@"NSWindowDidUpdateNotification";
+NSString * const NSWindowWillCloseNotification=@"NSWindowWillCloseNotification";
+NSString * const NSWindowWillMoveNotification=@"NSWindowWillMoveNotification";
+NSString * const NSWindowWillStartLiveResizeNotification=@"NSWindowWillStartLiveResizeNotification";
+NSString * const NSWindowDidEndLiveResizeNotification=@"NSWindowDidEndLiveResizeNotification";
 
-NSString *NSWindowWillAnimateNotification=@"NSWindowWillAnimateNotification";
-NSString *NSWindowAnimatingNotification=@"NSWindowAnimatingNotification";
-NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
+NSString * const NSWindowWillAnimateNotification=@"NSWindowWillAnimateNotification";
+NSString * const NSWindowAnimatingNotification=@"NSWindowAnimatingNotification";
+NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 
 @interface NSToolbar (NSToolbar_privateForWindow)

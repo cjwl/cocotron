@@ -19,9 +19,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSConditionLock.h>
 #import <Foundation/objc_debugHelpers.h>
 
-NSString *NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
-NSString *NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
-NSString *NSThreadWillExitNotification=@"NSThreadWillExitNotification";
+NSString * const NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
+NSString * const NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
+NSString * const NSThreadWillExitNotification=@"NSThreadWillExitNotification";
 
 @implementation NSThread
 

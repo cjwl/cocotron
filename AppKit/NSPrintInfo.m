@@ -13,29 +13,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-NSString *NSPrintPrinter=@"NSPrintPrinter";	
-NSString *NSPrintPrinterName=@"NSPrintPrinterName"; 
-NSString *NSPrintJobDisposition=@"NSPrintJobDisposition"; 
-NSString *NSPrintDetailedErrorReporting=@"NSPrintDetailedErrorReporting"; 
+NSString * const NSPrintPrinter=@"NSPrintPrinter";	
+NSString * const NSPrintPrinterName=@"NSPrintPrinterName"; 
+NSString * const NSPrintJobDisposition=@"NSPrintJobDisposition"; 
+NSString * const NSPrintDetailedErrorReporting=@"NSPrintDetailedErrorReporting"; 
 
-NSString *NSPrintCopies=@"NSPrintCopies"; 
-NSString *NSPrintAllPages=@"NSPrintAllPages"; 
-NSString *NSPrintFirstPage=@"NSPrintFirstPage"; 
-NSString *NSPrintLastPage=@"NSPrintLastPage"; 
+NSString * const NSPrintCopies=@"NSPrintCopies"; 
+NSString * const NSPrintAllPages=@"NSPrintAllPages"; 
+NSString * const NSPrintFirstPage=@"NSPrintFirstPage"; 
+NSString * const NSPrintLastPage=@"NSPrintLastPage"; 
 
-NSString *NSPrintPaperName=@"NSPrintPaperName"; 
-NSString *NSPrintPaperSize=@"NSPrintPaperSize"; 
-NSString *NSPrintOrientation=@"NSPrintOrientation"; 
+NSString * const NSPrintPaperName=@"NSPrintPaperName"; 
+NSString * const NSPrintPaperSize=@"NSPrintPaperSize"; 
+NSString * const NSPrintOrientation=@"NSPrintOrientation"; 
 
-NSString *NSPrintHorizontalPagination=@"NSPrintHorizontalPagination"; 
-NSString *NSPrintVerticalPagination=@"NSPrintVerticalPagination"; 
+NSString * const NSPrintHorizontalPagination=@"NSPrintHorizontalPagination"; 
+NSString * const NSPrintVerticalPagination=@"NSPrintVerticalPagination"; 
 
-NSString *NSPrintTopMargin=@"NSPrintTopMargin"; 
-NSString *NSPrintBottomMargin=@"NSPrintBottomMargin"; 
-NSString *NSPrintLeftMargin=@"NSPrintLeftMargin"; 
-NSString *NSPrintRightMargin=@"NSPrintRightMargin"; 
-NSString *NSPrintHorizontallyCentered=@"NSPrintHorizontallyCentered"; 
-NSString *NSPrintVerticallyCentered=@"NSPrintVerticallyCentered"; 
+NSString * const NSPrintTopMargin=@"NSPrintTopMargin"; 
+NSString * const NSPrintBottomMargin=@"NSPrintBottomMargin"; 
+NSString * const NSPrintLeftMargin=@"NSPrintLeftMargin"; 
+NSString * const NSPrintRightMargin=@"NSPrintRightMargin"; 
+NSString * const NSPrintHorizontallyCentered=@"NSPrintHorizontallyCentered"; 
+NSString * const NSPrintVerticallyCentered=@"NSPrintVerticallyCentered"; 
 
 @implementation NSPrintInfo
 

@@ -11,15 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSArray;
 
-FOUNDATION_EXPORT NSString *NSGenericException;
-FOUNDATION_EXPORT NSString *NSInvalidArgumentException;
-FOUNDATION_EXPORT NSString *NSRangeException;
+FOUNDATION_EXPORT NSString * const NSGenericException;
+FOUNDATION_EXPORT NSString * const NSInvalidArgumentException;
+FOUNDATION_EXPORT NSString * const NSRangeException;
 
-FOUNDATION_EXPORT NSString *NSInternalInconsistencyException;
-FOUNDATION_EXPORT NSString *NSMallocException;
+FOUNDATION_EXPORT NSString * const NSInternalInconsistencyException;
+FOUNDATION_EXPORT NSString * const NSMallocException;
 
-FOUNDATION_EXPORT NSString *NSParseErrorException;
-FOUNDATION_EXPORT NSString *NSInconsistentArchiveException;
+FOUNDATION_EXPORT NSString * const NSParseErrorException;
+FOUNDATION_EXPORT NSString * const NSInconsistentArchiveException;
 
 @interface NSException:NSObject <NSCoding,NSCopying> {
     NSString		*_name;

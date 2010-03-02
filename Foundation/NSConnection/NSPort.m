@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPort.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSPortDidBecomeInvalidNotification=@"NSPortDidBecomeInvalidNotification";
+NSString * const NSPortDidBecomeInvalidNotification=@"NSPortDidBecomeInvalidNotification";
 
 @implementation NSPort
 

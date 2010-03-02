@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSToolbar;
 
-APPKIT_EXPORT NSString *NSToolbarItemIdentifierPboardType;
+APPKIT_EXPORT NSString * const NSToolbarItemIdentifierPboardType;
 
 @interface NSToolbarCustomizationView : NSView {
     NSToolbar *_toolbar;

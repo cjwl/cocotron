@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTimer,NSDate,NSMutableArray,NSInputSource,NSPort,NSPipe;
 
-FOUNDATION_EXPORT NSString *NSDefaultRunLoopMode;
-FOUNDATION_EXPORT NSString *NSRunLoopCommonModes;
+FOUNDATION_EXPORT NSString * const NSDefaultRunLoopMode;
+FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
 
 @interface NSRunLoop : NSObject {
    NSMapTable      *_modes;

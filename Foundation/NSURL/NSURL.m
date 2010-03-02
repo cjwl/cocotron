@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSURLFileScheme=@"file";
+NSString * const NSURLFileScheme=@"file";
 
 /* RFC 1808, no IPV6
 

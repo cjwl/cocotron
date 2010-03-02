@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableSet.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSSelectSetOutputNotification=@"NSSelectSetOutputNotification";
+NSString * const NSSelectSetOutputNotification=@"NSSelectSetOutputNotification";
 
 @implementation NSSelectSet
 

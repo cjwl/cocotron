@@ -10,26 +10,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSColorPboardType=@"NSColorPboardType";
-NSString *NSFileContentsPboardType=@"NSFileContentsPboardType";
-NSString *NSFilenamesPboardType=@"NSFilenamesPboardType";
-NSString *NSFontPboardType=@"NSFontPboardType";
-NSString *NSPDFPboardType=@"NSPDFPboardType";
-NSString *NSPICTPboardType=@"NSPICTPboardType";
-NSString *NSPostScriptPboardType=@"NSPostScriptPboardType";
-NSString *NSRTFDPboardType=@"NSRTFDPboardType";
-NSString *NSRTFPboardType=@"NSRTFPboardType";
-NSString *NSRulerPboardType=@"NSRulerPboardType";
-NSString *NSStringPboardType=@"NSStringPboardType";
-NSString *NSTabularTextPboardType=@"NSTabularTextPboardType";
-NSString *NSTIFFPboardType=@"NSTIFFPboardType";
-NSString *NSURLPboardType=@"NSURLPboardType";
+NSString * const NSColorPboardType=@"NSColorPboardType";
+NSString * const NSFileContentsPboardType=@"NSFileContentsPboardType";
+NSString * const NSFilenamesPboardType=@"NSFilenamesPboardType";
+NSString * const NSFontPboardType=@"NSFontPboardType";
+NSString * const NSPDFPboardType=@"NSPDFPboardType";
+NSString * const NSPICTPboardType=@"NSPICTPboardType";
+NSString * const NSPostScriptPboardType=@"NSPostScriptPboardType";
+NSString * const NSRTFDPboardType=@"NSRTFDPboardType";
+NSString * const NSRTFPboardType=@"NSRTFPboardType";
+NSString * const NSRulerPboardType=@"NSRulerPboardType";
+NSString * const NSStringPboardType=@"NSStringPboardType";
+NSString * const NSTabularTextPboardType=@"NSTabularTextPboardType";
+NSString * const NSTIFFPboardType=@"NSTIFFPboardType";
+NSString * const NSURLPboardType=@"NSURLPboardType";
 
-NSString *NSDragPboard=@"NSDragPboard";
-NSString *NSFindPboard=@"NSFindPboard";
-NSString *NSFontPboard=@"NSFontPboard";
-NSString *NSGeneralPboard=@"NSGeneralPboard";
-NSString *NSRulerPboard=@"NSRulerPboard";
+NSString * const NSDragPboard=@"NSDragPboard";
+NSString * const NSFindPboard=@"NSFindPboard";
+NSString * const NSFontPboard=@"NSFontPboard";
+NSString * const NSGeneralPboard=@"NSGeneralPboard";
+NSString * const NSRulerPboard=@"NSRulerPboard";
 
 @implementation NSPasteboard
 

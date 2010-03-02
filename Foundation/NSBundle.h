@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSDictionary,NSString,NSError;
 
-FOUNDATION_EXPORT NSString *NSBundleDidLoadNotification;
-FOUNDATION_EXPORT NSString *NSLoadedClasses;	
+FOUNDATION_EXPORT NSString * const NSBundleDidLoadNotification;
+FOUNDATION_EXPORT NSString * const NSLoadedClasses;	
 
 @interface NSBundle : NSObject {
    NSString     *_path;

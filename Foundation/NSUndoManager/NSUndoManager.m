@@ -21,13 +21,13 @@ enum _NSUndoManagerState {
     NSUndoManagerRedoing
 };
 
-NSString *NSUndoManagerCheckpointNotification=@"NSUndoManagerCheckpointNotification";
-NSString *NSUndoManagerDidOpenUndoGroupNotification=@"NSUndoManagerDidOpenUndoGroupNotification";
-NSString *NSUndoManagerWillCloseUndoGroupNotification=@"NSUndoManagerWillCloseUndoGroupNotification";
-NSString *NSUndoManagerWillUndoChangeNotification=@"NSUndoManagerWillUndoChangeNotification";
-NSString *NSUndoManagerDidUndoChangeNotification=@"NSUndoManagerDidUndoChangeNotification";
-NSString *NSUndoManagerWillRedoChangeNotification=@"NSUndoManagerWillRedoChangeNotification";
-NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNotification";
+NSString * const NSUndoManagerCheckpointNotification=@"NSUndoManagerCheckpointNotification";
+NSString * const NSUndoManagerDidOpenUndoGroupNotification=@"NSUndoManagerDidOpenUndoGroupNotification";
+NSString * const NSUndoManagerWillCloseUndoGroupNotification=@"NSUndoManagerWillCloseUndoGroupNotification";
+NSString * const NSUndoManagerWillUndoChangeNotification=@"NSUndoManagerWillUndoChangeNotification";
+NSString * const NSUndoManagerDidUndoChangeNotification=@"NSUndoManagerDidUndoChangeNotification";
+NSString * const NSUndoManagerWillRedoChangeNotification=@"NSUndoManagerWillRedoChangeNotification";
+NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNotification";
 
 @implementation NSUndoManager
 

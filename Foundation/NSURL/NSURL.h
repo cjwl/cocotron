@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSURLHandle,NSNumber,NSData;
 
-FOUNDATION_EXPORT NSString *NSURLFileScheme;
+FOUNDATION_EXPORT NSString * const NSURLFileScheme;
 
 @interface NSURL : NSObject <NSCopying, NSCoding> {
    NSURL    *_baseURL;

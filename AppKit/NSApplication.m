@@ -30,28 +30,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <objc/message.h>
 
-NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
-NSString *NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
+NSString * const NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
+NSString * const NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
 
-NSString *NSApplicationWillFinishLaunchingNotification=@"NSApplicationWillFinishLaunchingNotification";
-NSString *NSApplicationDidFinishLaunchingNotification=@"NSApplicationDidFinishLaunchingNotification";
+NSString * const NSApplicationWillFinishLaunchingNotification=@"NSApplicationWillFinishLaunchingNotification";
+NSString * const NSApplicationDidFinishLaunchingNotification=@"NSApplicationDidFinishLaunchingNotification";
 
-NSString *NSApplicationWillBecomeActiveNotification=@"NSApplicationWillBecomeActiveNotification";
-NSString *NSApplicationDidBecomeActiveNotification=@"NSApplicationDidBecomeActiveNotification";
-NSString *NSApplicationWillResignActiveNotification=@"NSApplicationWillResignActiveNotification";
-NSString *NSApplicationDidResignActiveNotification=@"NSApplicationDidResignActiveNotification";
+NSString * const NSApplicationWillBecomeActiveNotification=@"NSApplicationWillBecomeActiveNotification";
+NSString * const NSApplicationDidBecomeActiveNotification=@"NSApplicationDidBecomeActiveNotification";
+NSString * const NSApplicationWillResignActiveNotification=@"NSApplicationWillResignActiveNotification";
+NSString * const NSApplicationDidResignActiveNotification=@"NSApplicationDidResignActiveNotification";
 
-NSString *NSApplicationWillUpdateNotification=@"NSApplicationWillUpdateNotification";
-NSString *NSApplicationDidUpdateNotification=@"NSApplicationDidUpdateNotification";
+NSString * const NSApplicationWillUpdateNotification=@"NSApplicationWillUpdateNotification";
+NSString * const NSApplicationDidUpdateNotification=@"NSApplicationDidUpdateNotification";
 
-NSString *NSApplicationWillHideNotification=@"NSApplicationWillHideNotification";
-NSString *NSApplicationDidHideNotification=@"NSApplicationDidHideNotification";
-NSString *NSApplicationWillUnhideNotification=@"NSApplicationWillUnhideNotification";
-NSString *NSApplicationDidUnhideNotification=@"NSApplicationDidUnhideNotification";
+NSString * const NSApplicationWillHideNotification=@"NSApplicationWillHideNotification";
+NSString * const NSApplicationDidHideNotification=@"NSApplicationDidHideNotification";
+NSString * const NSApplicationWillUnhideNotification=@"NSApplicationWillUnhideNotification";
+NSString * const NSApplicationDidUnhideNotification=@"NSApplicationDidUnhideNotification";
 
-NSString *NSApplicationWillTerminateNotification=@"NSApplicationWillTerminateNotification";
+NSString * const NSApplicationWillTerminateNotification=@"NSApplicationWillTerminateNotification";
 
-NSString *NSApplicationDidChangeScreenParametersNotification=@"NSApplicationDidChangeScreenParametersNotification";
+NSString * const NSApplicationDidChangeScreenParametersNotification=@"NSApplicationDidChangeScreenParametersNotification";
 
 @interface NSDocumentController(forward) 
 -(void)_updateRecentDocumentsMenu; 

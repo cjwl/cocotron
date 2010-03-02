@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray;
 
-FOUNDATION_EXPORT NSString *NSClassDescriptionNeededForClassNotification;
+FOUNDATION_EXPORT NSString * const NSClassDescriptionNeededForClassNotification;
 
 @interface NSClassDescription : NSObject {
 

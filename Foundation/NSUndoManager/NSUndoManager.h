@@ -14,16 +14,16 @@ enum {
  NSUndoCloseGroupingRunLoopOrdering=350000,
 };
 
-FOUNDATION_EXPORT NSString *NSUndoManagerCheckpointNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerCheckpointNotification;
 
-FOUNDATION_EXPORT NSString *NSUndoManagerDidOpenUndoGroupNotification;
-FOUNDATION_EXPORT NSString *NSUndoManagerWillCloseUndoGroupNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerDidOpenUndoGroupNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerWillCloseUndoGroupNotification;
 
-FOUNDATION_EXPORT NSString *NSUndoManagerWillUndoChangeNotification;
-FOUNDATION_EXPORT NSString *NSUndoManagerDidUndoChangeNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerWillUndoChangeNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerDidUndoChangeNotification;
 
-FOUNDATION_EXPORT NSString *NSUndoManagerWillRedoChangeNotification;
-FOUNDATION_EXPORT NSString *NSUndoManagerDidRedoChangeNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerWillRedoChangeNotification;
+FOUNDATION_EXPORT NSString * const NSUndoManagerDidRedoChangeNotification;
 
 
 @interface NSUndoManager : NSObject {

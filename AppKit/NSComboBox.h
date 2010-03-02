@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSTextField.h>
 
-APPKIT_EXPORT NSString *NSComboBoxSelectionDidChangeNotification;
-APPKIT_EXPORT NSString *NSComboBoxSelectionIsChangingNotification;
-APPKIT_EXPORT NSString *NSComboBoxWillDismissNotification;
-APPKIT_EXPORT NSString *NSComboBoxWillPopUpNotification;
+APPKIT_EXPORT NSString * const NSComboBoxSelectionDidChangeNotification;
+APPKIT_EXPORT NSString * const NSComboBoxSelectionIsChangingNotification;
+APPKIT_EXPORT NSString * const NSComboBoxWillDismissNotification;
+APPKIT_EXPORT NSString * const NSComboBoxWillPopUpNotification;
 
 @interface NSComboBox : NSTextField
 

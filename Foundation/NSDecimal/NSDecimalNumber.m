@@ -10,10 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSDecimalNumberDivideByZeroException=@"NSDecimalNumberDivideByZeroException";
-NSString *NSDecimalNumberUnderflowException=@"NSDecimalNumberUnderflowException";
-NSString *NSDecimalNumberOverflowException=@"NSDecimalNumberOverflowException";
-NSString *NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessException";
+NSString * const NSDecimalNumberDivideByZeroException=@"NSDecimalNumberDivideByZeroException";
+NSString * const NSDecimalNumberUnderflowException=@"NSDecimalNumberUnderflowException";
+NSString * const NSDecimalNumberOverflowException=@"NSDecimalNumberOverflowException";
+NSString * const NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessException";
 
 @implementation NSDecimalNumber
 

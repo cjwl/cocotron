@@ -13,8 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSString,NSAttributedString;
 
-APPKIT_EXPORT NSString *NSContextHelpModeDidActivateNotification;
-APPKIT_EXPORT NSString *NSContextHelpModeDidDeactivateNotification;
+APPKIT_EXPORT NSString * const NSContextHelpModeDidActivateNotification;
+APPKIT_EXPORT NSString * const NSContextHelpModeDidDeactivateNotification;
 
 @interface NSHelpManager : NSObject {
    NSMapTable *_objectToText;

@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <AppKit/AppKitExport.h>
 
-APPKIT_EXPORT NSString *NSNoSelectionMarker;
-APPKIT_EXPORT NSString *NSMultipleValuesMarker;
-APPKIT_EXPORT NSString *NSNotApplicableMarker;
+APPKIT_EXPORT id NSNoSelectionMarker;
+APPKIT_EXPORT id NSMultipleValuesMarker;
+APPKIT_EXPORT id NSNotApplicableMarker;
 
 APPKIT_EXPORT BOOL NSIsControllerMarker(id object);
 

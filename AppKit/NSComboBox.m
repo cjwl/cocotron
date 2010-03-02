@@ -12,10 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSTextView.h>
 
-NSString *NSComboBoxSelectionDidChangeNotification=@"NSComboBoxSelectionDidChangeNotification";
-NSString *NSComboBoxSelectionIsChangingNotification=@"NSComboBoxSelectionIsChangingNotification";
-NSString *NSComboBoxWillDismissNotification=@"NSComboBoxWillDismissNotification";
-NSString *NSComboBoxWillPopUpNotification=@"NSComboBoxWillPopUpNotification";
+NSString * const NSComboBoxSelectionDidChangeNotification=@"NSComboBoxSelectionDidChangeNotification";
+NSString * const NSComboBoxSelectionIsChangingNotification=@"NSComboBoxSelectionIsChangingNotification";
+NSString * const NSComboBoxWillDismissNotification=@"NSComboBoxWillDismissNotification";
+NSString * const NSComboBoxWillPopUpNotification=@"NSComboBoxWillPopUpNotification";
 
 @implementation NSComboBox
 

@@ -19,10 +19,10 @@ typedef enum {
    NSDrawerClosingState
 } NSDrawerState;
 
-APPKIT_EXPORT NSString *NSDrawerWillOpenNotification;
-APPKIT_EXPORT NSString *NSDrawerDidOpenNotification;
-APPKIT_EXPORT NSString *NSDrawerWillCloseNotification;
-APPKIT_EXPORT NSString *NSDrawerDidCloseNotification;
+APPKIT_EXPORT NSString * const NSDrawerWillOpenNotification;
+APPKIT_EXPORT NSString * const NSDrawerDidOpenNotification;
+APPKIT_EXPORT NSString * const NSDrawerWillCloseNotification;
+APPKIT_EXPORT NSString * const NSDrawerDidCloseNotification;
 
 @interface NSDrawer : NSResponder {
     NSSize _contentSize;

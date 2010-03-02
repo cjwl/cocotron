@@ -12,32 +12,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData,NSDate,NSError;
 
-FOUNDATION_EXPORT NSString *NSFileType;
-FOUNDATION_EXPORT NSString    *NSFileTypeRegular;
-FOUNDATION_EXPORT NSString    *NSFileTypeDirectory;
-FOUNDATION_EXPORT NSString    *NSFileTypeSymbolicLink;
+FOUNDATION_EXPORT NSString * const NSFileType;
+FOUNDATION_EXPORT NSString * const NSFileTypeRegular;
+FOUNDATION_EXPORT NSString * const NSFileTypeDirectory;
+FOUNDATION_EXPORT NSString * const NSFileTypeSymbolicLink;
 
-FOUNDATION_EXPORT NSString    *NSFileTypeCharacterSpecial;
-FOUNDATION_EXPORT NSString    *NSFileTypeBlockSpecial;
-FOUNDATION_EXPORT NSString    *NSFileTypeFIFO;
+FOUNDATION_EXPORT NSString * const NSFileTypeCharacterSpecial;
+FOUNDATION_EXPORT NSString * const NSFileTypeBlockSpecial;
+FOUNDATION_EXPORT NSString * const NSFileTypeFIFO;
 
-FOUNDATION_EXPORT NSString    *NSFileTypeSocket;
+FOUNDATION_EXPORT NSString * const NSFileTypeSocket;
 
-FOUNDATION_EXPORT NSString    *NSFileTypeUnknown;
+FOUNDATION_EXPORT NSString * const NSFileTypeUnknown;
 
-FOUNDATION_EXPORT NSString *NSFileSize;
-FOUNDATION_EXPORT NSString *NSFileModificationDate;
-FOUNDATION_EXPORT NSString *NSFileOwnerAccountName;
-FOUNDATION_EXPORT NSString *NSFileGroupOwnerAccountName;
+FOUNDATION_EXPORT NSString * const NSFileSize;
+FOUNDATION_EXPORT NSString * const NSFileModificationDate;
+FOUNDATION_EXPORT NSString * const NSFileOwnerAccountName;
+FOUNDATION_EXPORT NSString * const NSFileGroupOwnerAccountName;
 
-FOUNDATION_EXPORT NSString *NSFilePosixPermissions;
-FOUNDATION_EXPORT NSString *NSFileReferenceCount;
-FOUNDATION_EXPORT NSString *NSFileIdentifier;
-FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
+FOUNDATION_EXPORT NSString * const NSFilePosixPermissions;
+FOUNDATION_EXPORT NSString * const NSFileReferenceCount;
+FOUNDATION_EXPORT NSString * const NSFileIdentifier;
+FOUNDATION_EXPORT NSString * const NSFileDeviceIdentifier;
 
-FOUNDATION_EXPORT NSString *NSFileSystemNumber;
-FOUNDATION_EXPORT NSString *NSFileSystemSize;
-FOUNDATION_EXPORT NSString *NSFileSystemFreeSize;
+FOUNDATION_EXPORT NSString * const NSFileSystemNumber;
+FOUNDATION_EXPORT NSString * const NSFileSystemSize;
+FOUNDATION_EXPORT NSString * const NSFileSystemFreeSize;
 
 @interface NSFileManager : NSObject
 

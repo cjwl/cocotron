@@ -20,21 +20,21 @@ static NSDictionary *defaultBindingOptions;
 #pragma mark -
 #pragma mark Binding Option Keys
 
-NSString* NSObservedObjectKey=@"NSObservedObject";
-NSString* NSObservedKeyPathKey=@"NSObservedKeyPath";
-NSString* NSOptionsKey=@"NSOptions";
+NSString * const NSObservedObjectKey=@"NSObservedObject";
+NSString * const NSObservedKeyPathKey=@"NSObservedKeyPath";
+NSString * const NSOptionsKey=@"NSOptions";
 
-NSString *NSNullPlaceholderBindingOption=@"NSNullPlaceholder";
-NSString *NSNoSelectionPlaceholderBindingOption=@"NSNoSelectionPlaceholder";
-NSString *NSMultipleValuesPlaceholderBindingOption=@"NSMultipleValuesPlaceholder";
-NSString *NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
-NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
-NSString *NSAllowsEditingMultipleValuesSelectionBindingOption=@"NSAllowsEditingMultipleValuesSelection";
-NSString *NSValueTransformerNameBindingOption=@"NSValueTransformerName";
-NSString *NSValueTransformerBindingOption=@"NSValueTransformerBinding";
-NSString *NSConditionallySetsEnabledBindingOption=@"NSConditionallySetsEnabled";
-NSString *NSConditionallySetsEditableBindingOption=@"NSConditionallySetsEditable";
-NSString *NSContinuouslyUpdatesValueBindingOption=@"NSContinuouslyUpdatesValue";
+NSString * const NSNullPlaceholderBindingOption=@"NSNullPlaceholder";
+NSString * const NSNoSelectionPlaceholderBindingOption=@"NSNoSelectionPlaceholder";
+NSString * const NSMultipleValuesPlaceholderBindingOption=@"NSMultipleValuesPlaceholder";
+NSString * const NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
+NSString * const NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
+NSString * const NSAllowsEditingMultipleValuesSelectionBindingOption=@"NSAllowsEditingMultipleValuesSelection";
+NSString * const NSValueTransformerNameBindingOption=@"NSValueTransformerName";
+NSString * const NSValueTransformerBindingOption=@"NSValueTransformerBinding";
+NSString * const NSConditionallySetsEnabledBindingOption=@"NSConditionallySetsEnabled";
+NSString * const NSConditionallySetsEditableBindingOption=@"NSConditionallySetsEditable";
+NSString * const NSContinuouslyUpdatesValueBindingOption=@"NSContinuouslyUpdatesValue";
 
 @implementation NSObject (BindingSupport)
 

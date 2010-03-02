@@ -20,13 +20,13 @@ enum {
    NSToolbarItemVisibilityPriorityUser     = 2000
 };
 
-APPKIT_EXPORT NSString *NSToolbarCustomizeToolbarItemIdentifier;
-APPKIT_EXPORT NSString *NSToolbarFlexibleSpaceItemIdentifier;
-APPKIT_EXPORT NSString *NSToolbarPrintItemIdentifier;
-APPKIT_EXPORT NSString *NSToolbarSeparatorItemIdentifier;
-APPKIT_EXPORT NSString *NSToolbarShowColorsItemIdentifier;
-APPKIT_EXPORT NSString *NSToolbarShowFontsItemIdentifier;
-APPKIT_EXPORT NSString *NSToolbarSpaceItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarCustomizeToolbarItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarFlexibleSpaceItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarPrintItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarSeparatorItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarShowColorsItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarShowFontsItemIdentifier;
+APPKIT_EXPORT NSString * const NSToolbarSpaceItemIdentifier;
 
 @interface NSToolbarItem : NSObject <NSCopying,NSValidatedUserInterfaceItem> {
    NSString   *_itemIdentifier;

@@ -9,23 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSArray;
 
-FOUNDATION_EXPORT NSString *NSPOSIXErrorDomain;
-FOUNDATION_EXPORT NSString *NSOSStatusErrorDomain;
+FOUNDATION_EXPORT NSString * const NSPOSIXErrorDomain;
+FOUNDATION_EXPORT NSString * const NSOSStatusErrorDomain;
 // temporary until we can map it
-FOUNDATION_EXPORT NSString *NSWINSOCKErrorDomain;
-FOUNDATION_EXPORT NSString *NSCocoaErrorDomain;
+FOUNDATION_EXPORT NSString * const NSWINSOCKErrorDomain;
+FOUNDATION_EXPORT NSString * const NSCocoaErrorDomain;
 
-FOUNDATION_EXPORT NSString *NSUnderlyingErrorKey;
-FOUNDATION_EXPORT NSString *NSLocalizedDescriptionKey;
-FOUNDATION_EXPORT NSString *NSLocalizedFailureReasonErrorKey;
-FOUNDATION_EXPORT NSString *NSLocalizedRecoveryOptionsErrorKey;
-FOUNDATION_EXPORT NSString *NSLocalizedRecoverySuggestionErrorKey;
-FOUNDATION_EXPORT NSString *NSRecoveryAttempterErrorKey;
+FOUNDATION_EXPORT NSString * const NSUnderlyingErrorKey;
+FOUNDATION_EXPORT NSString * const NSLocalizedDescriptionKey;
+FOUNDATION_EXPORT NSString * const NSLocalizedFailureReasonErrorKey;
+FOUNDATION_EXPORT NSString * const NSLocalizedRecoveryOptionsErrorKey;
+FOUNDATION_EXPORT NSString * const NSLocalizedRecoverySuggestionErrorKey;
+FOUNDATION_EXPORT NSString * const NSRecoveryAttempterErrorKey;
 
-FOUNDATION_EXPORT NSString *NSStringEncodingErrorKey;
-FOUNDATION_EXPORT NSString *NSFilePathErrorKey;
-FOUNDATION_EXPORT NSString *NSErrorFailingURLStringKey;
-FOUNDATION_EXPORT NSString *NSURLErrorKey;
+FOUNDATION_EXPORT NSString * const NSStringEncodingErrorKey;
+FOUNDATION_EXPORT NSString * const NSFilePathErrorKey;
+FOUNDATION_EXPORT NSString * const NSErrorFailingURLStringKey;
+FOUNDATION_EXPORT NSString * const NSURLErrorKey;
 
 @interface NSError : NSObject <NSCoding,NSCopying> {
    NSString     *_domain;

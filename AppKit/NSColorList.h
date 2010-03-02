@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSColor;
 
-APPKIT_EXPORT NSString *NSColorListDidChangeNotification;
+APPKIT_EXPORT NSString * const NSColorListDidChangeNotification;
 
 @interface NSColorList : NSObject {
    NSMutableArray *_keys;

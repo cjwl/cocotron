@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef NSInteger NSTimeZoneNameStyle;
 
-FOUNDATION_EXPORT NSString *NSSystemTimeZoneDidChangeNotification;
+FOUNDATION_EXPORT NSString * const NSSystemTimeZoneDidChangeNotification;
 
 @interface NSTimeZone : NSObject <NSCoding,NSCopying>
 

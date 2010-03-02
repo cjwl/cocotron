@@ -30,8 +30,8 @@ typedef enum {
  NSStreamEventEndEncountered=0x10,
 } NSStreamEvent;
 
-FOUNDATION_EXPORT NSString *NSStreamDataWrittenToMemoryStreamKey;
-FOUNDATION_EXPORT NSString *NSStreamFileCurrentOffsetKey;
+FOUNDATION_EXPORT NSString * const NSStreamDataWrittenToMemoryStreamKey;
+FOUNDATION_EXPORT NSString * const NSStreamFileCurrentOffsetKey;
 
 @interface NSStream : NSObject
 

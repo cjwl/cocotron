@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNotification.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSClassDescriptionNeededForClassNotification=@"NSClassDescriptionNeededForClassNotification";
+NSString * const NSClassDescriptionNeededForClassNotification=@"NSClassDescriptionNeededForClassNotification";
 
 @implementation NSClassDescription
 

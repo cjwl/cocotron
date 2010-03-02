@@ -1,4 +1,4 @@
-#import "NSPathControl.h"
+#import <AppKit/NSPathControl.h>
 
 #import "AppKit/NSRaise.h"
 

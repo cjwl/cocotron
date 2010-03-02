@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSPortNameServer,NSPort,NSRunLoop,NSDistantObject,NSMutableArray,NSMutableDictionary;
 
-FOUNDATION_EXPORT NSString *NSConnectionReplyMode;
+FOUNDATION_EXPORT NSString * const NSConnectionReplyMode;
 
 @interface NSConnection : NSObject {
    NSPort *_receivePort;

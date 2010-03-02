@@ -20,21 +20,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPersistantDomain.h>
 #import <Foundation/NSRaiseException.h>
 
-NSString *NSGlobalDomain=@"NSGlobalDomain";
-NSString *NSArgumentDomain=@"NSArgumentDomain";
-NSString *NSRegistrationDomain=@"NSRegistrationDomain";
+NSString * const NSGlobalDomain=@"NSGlobalDomain";
+NSString * const NSArgumentDomain=@"NSArgumentDomain";
+NSString * const NSRegistrationDomain=@"NSRegistrationDomain";
 
-NSString *NSMonthNameArray=@"NSMonthNameArray";
-NSString *NSWeekDayNameArray=@"NSWeekDayNameArray";
-NSString *NSTimeFormatString=@"NSTimeFormatString";
-NSString *NSDateFormatString=@"NSDateFormatString";
-NSString *NSAMPMDesignation=@"NSAMPMDesignation";
-NSString *NSTimeDateFormatString=@"NSTimeDateFormatString";
+NSString * const NSMonthNameArray=@"NSMonthNameArray";
+NSString * const NSWeekDayNameArray=@"NSWeekDayNameArray";
+NSString * const NSTimeFormatString=@"NSTimeFormatString";
+NSString * const NSDateFormatString=@"NSDateFormatString";
+NSString * const NSAMPMDesignation=@"NSAMPMDesignation";
+NSString * const NSTimeDateFormatString=@"NSTimeDateFormatString";
 
-NSString *NSShortWeekDayNameArray=@"NSShortWeekDayNameArray";
-NSString *NSShortMonthNameArray=@"NSShortMonthNameArray";
+NSString * const NSShortWeekDayNameArray=@"NSShortWeekDayNameArray";
+NSString * const NSShortMonthNameArray=@"NSShortMonthNameArray";
 
-NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotification";
+NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotification";
 
 @implementation NSUserDefaults
 

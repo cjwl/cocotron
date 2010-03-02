@@ -45,8 +45,8 @@ typedef enum {
    NSFindPanelActionSelectAllInSelection
 } NSFindPanelAction;
 
-APPKIT_EXPORT NSString *NSTextViewDidChangeSelectionNotification;
-APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
+APPKIT_EXPORT NSString * const NSTextViewDidChangeSelectionNotification;
+APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
 
 @interface NSTextView : NSText <NSTextInput> {
    NSTextStorage   *_textStorage;

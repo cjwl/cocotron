@@ -20,21 +20,21 @@ const float NSDarkGray=0.333;
 const float NSLightGray=0.667;
 const float NSWhite=1.0;
 
-NSString *NSDeviceBlackColorSpace=@"NSDeviceBlackColorSpace";
-NSString *NSDeviceWhiteColorSpace=@"NSDeviceWhiteColorSpace";
-NSString *NSDeviceRGBColorSpace=@"NSDeviceRGBColorSpace";
-NSString *NSDeviceCMYKColorSpace=@"NSDeviceCMYKColorSpace";
-NSString *NSCalibratedBlackColorSpace=@"NSCalibratedBlackColorSpace";
-NSString *NSCalibratedWhiteColorSpace=@"NSCalibratedWhiteColorSpace";
-NSString *NSCalibratedRGBColorSpace=@"NSCalibratedRGBColorSpace";
-NSString *NSNamedColorSpace=@"NSNamedColorSpace";
+NSString * const NSDeviceBlackColorSpace=@"NSDeviceBlackColorSpace";
+NSString * const NSDeviceWhiteColorSpace=@"NSDeviceWhiteColorSpace";
+NSString * const NSDeviceRGBColorSpace=@"NSDeviceRGBColorSpace";
+NSString * const NSDeviceCMYKColorSpace=@"NSDeviceCMYKColorSpace";
+NSString * const NSCalibratedBlackColorSpace=@"NSCalibratedBlackColorSpace";
+NSString * const NSCalibratedWhiteColorSpace=@"NSCalibratedWhiteColorSpace";
+NSString * const NSCalibratedRGBColorSpace=@"NSCalibratedRGBColorSpace";
+NSString * const NSNamedColorSpace=@"NSNamedColorSpace";
 
-NSString *NSDeviceIsScreen=@"NSDeviceIsScreen";
-NSString *NSDeviceIsPrinter=@"NSDeviceIsPrinter";
-NSString *NSDeviceSize=@"NSDeviceSize";
-NSString *NSDeviceResolution=@"NSDeviceResolution";
-NSString *NSDeviceColorSpaceName=@"NSDeviceColorSpaceName";
-NSString *NSDeviceBitsPerSample=@"NSDeviceBitsPerSample";
+NSString * const NSDeviceIsScreen=@"NSDeviceIsScreen";
+NSString * const NSDeviceIsPrinter=@"NSDeviceIsPrinter";
+NSString * const NSDeviceSize=@"NSDeviceSize";
+NSString * const NSDeviceResolution=@"NSDeviceResolution";
+NSString * const NSDeviceColorSpaceName=@"NSDeviceColorSpaceName";
+NSString * const NSDeviceBitsPerSample=@"NSDeviceBitsPerSample";
 
 static inline CGBlendMode blendModeForCompositeOp(NSCompositingOperation op){
    static CGBlendMode table[]={

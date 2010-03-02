@@ -20,16 +20,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSOutlineViewItemWillExpandNotification=@"NSOutlineViewItemWillExpandNotification";
-NSString *NSOutlineViewItemDidExpandNotification=@"NSOutlineViewItemDidExpandNotification";
-NSString *NSOutlineViewItemWillCollapseNotification=@"NSOutlineViewItemWillCollapseNotification";
-NSString *NSOutlineViewItemDidCollapseNotification=@"NSOutlineViewItemDidCollapseNotification";
+NSString * const NSOutlineViewItemWillExpandNotification=@"NSOutlineViewItemWillExpandNotification";
+NSString * const NSOutlineViewItemDidExpandNotification=@"NSOutlineViewItemDidExpandNotification";
+NSString * const NSOutlineViewItemWillCollapseNotification=@"NSOutlineViewItemWillCollapseNotification";
+NSString * const NSOutlineViewItemDidCollapseNotification=@"NSOutlineViewItemDidCollapseNotification";
 
-NSString *NSOutlineViewColumnDidMoveNotification=@"NSOutlineViewColumnDidMoveNotification";
-NSString *NSOutlineViewColumnDidResizeNotification=@"NSOutlineViewColumnDidResizeNotification";
+NSString * const NSOutlineViewColumnDidMoveNotification=@"NSOutlineViewColumnDidMoveNotification";
+NSString * const NSOutlineViewColumnDidResizeNotification=@"NSOutlineViewColumnDidResizeNotification";
 
-NSString *NSOutlineViewSelectionDidChangeNotification=@"NSOutlineViewSelectionDidChangeNotification";
-NSString *NSOutlineViewSelectionIsChangingNotification=@"NSOutlineViewSelectionIsChangingNotification";
+NSString * const NSOutlineViewSelectionDidChangeNotification=@"NSOutlineViewSelectionDidChangeNotification";
+NSString * const NSOutlineViewSelectionIsChangingNotification=@"NSOutlineViewSelectionIsChangingNotification";
 
 // We probably don't want this public, but NSOutlineView needs it, and it would prove invaluable to
 // other subclasses of NSTableView.

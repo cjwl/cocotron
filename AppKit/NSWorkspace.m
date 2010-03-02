@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWorkspace.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSWorkspaceWillPowerOffNotification=@"NSWorkspaceWillPowerOffNotification";
+NSString * const NSWorkspaceWillPowerOffNotification=@"NSWorkspaceWillPowerOffNotification";
 
 @implementation NSWorkspace
 

@@ -9,26 +9,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
-APPKIT_EXPORT NSString *NSColorPboardType;
-APPKIT_EXPORT NSString *NSFileContentsPboardType;
-APPKIT_EXPORT NSString *NSFilenamesPboardType;
-APPKIT_EXPORT NSString *NSFontPboardType;
-APPKIT_EXPORT NSString *NSPDFPboardType;
-APPKIT_EXPORT NSString *NSPICTPboardType;
-APPKIT_EXPORT NSString *NSPostScriptPboardType;
-APPKIT_EXPORT NSString *NSRTFDPboardType;
-APPKIT_EXPORT NSString *NSRTFPboardType;
-APPKIT_EXPORT NSString *NSRulerPboardType;
-APPKIT_EXPORT NSString *NSStringPboardType;
-APPKIT_EXPORT NSString *NSTabularTextPboardType;
-APPKIT_EXPORT NSString *NSTIFFPboardType;
-APPKIT_EXPORT NSString *NSURLPboardType;
+APPKIT_EXPORT NSString * const NSColorPboardType;
+APPKIT_EXPORT NSString * const NSFileContentsPboardType;
+APPKIT_EXPORT NSString * const NSFilenamesPboardType;
+APPKIT_EXPORT NSString * const NSFontPboardType;
+APPKIT_EXPORT NSString * const NSPDFPboardType;
+APPKIT_EXPORT NSString * const NSPICTPboardType;
+APPKIT_EXPORT NSString * const NSPostScriptPboardType;
+APPKIT_EXPORT NSString * const NSRTFDPboardType;
+APPKIT_EXPORT NSString * const NSRTFPboardType;
+APPKIT_EXPORT NSString * const NSRulerPboardType;
+APPKIT_EXPORT NSString * const NSStringPboardType;
+APPKIT_EXPORT NSString * const NSTabularTextPboardType;
+APPKIT_EXPORT NSString * const NSTIFFPboardType;
+APPKIT_EXPORT NSString * const NSURLPboardType;
 
-APPKIT_EXPORT NSString *NSDragPboard;
-APPKIT_EXPORT NSString *NSFindPboard;
-APPKIT_EXPORT NSString *NSFontPboard;
-APPKIT_EXPORT NSString *NSGeneralPboard;
-APPKIT_EXPORT NSString *NSRulerPboard;
+APPKIT_EXPORT NSString * const NSDragPboard;
+APPKIT_EXPORT NSString * const NSFindPboard;
+APPKIT_EXPORT NSString * const NSFontPboard;
+APPKIT_EXPORT NSString * const NSGeneralPboard;
+APPKIT_EXPORT NSString * const NSRulerPboard;
 
 @interface NSPasteboard : NSObject
 

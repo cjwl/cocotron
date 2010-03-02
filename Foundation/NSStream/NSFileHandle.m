@@ -12,17 +12,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket.h>
 #import "NSFileHandle_stream.h"
 
-NSString *NSFileHandleConnectionAcceptedNotification = @"NSFileHandleConnectionAcceptedNotification";
-NSString *NSFileHandleDataAvailableNotification = @"NSFileHandleDataAvailableNotification";
-NSString *NSFileHandleReadCompletionNotification = @"NSFileHandleReadCompletionNotification";
-NSString *NSFileHandleReadToEndOfFileCompletionNotification = @"NSFileHandleReadToEndOfFileCompletionNotification";
+NSString * const NSFileHandleConnectionAcceptedNotification = @"NSFileHandleConnectionAcceptedNotification";
+NSString * const NSFileHandleDataAvailableNotification = @"NSFileHandleDataAvailableNotification";
+NSString * const NSFileHandleReadCompletionNotification = @"NSFileHandleReadCompletionNotification";
+NSString * const NSFileHandleReadToEndOfFileCompletionNotification = @"NSFileHandleReadToEndOfFileCompletionNotification";
 
-NSString *NSFileHandleNotificationDataItem = @"NSFileHandleNotificationDataItem";
-NSString *NSFileHandleNotificationFileHandleItem = @"NSFileHandleNotificationFileHandleItem";
+NSString * const NSFileHandleNotificationDataItem = @"NSFileHandleNotificationDataItem";
+NSString * const NSFileHandleNotificationFileHandleItem = @"NSFileHandleNotificationFileHandleItem";
 
-NSString *NSFileHandleNotificationMonitorModes = @"NSFileHandleNotificationMonitorModes";
+NSString * const NSFileHandleNotificationMonitorModes = @"NSFileHandleNotificationMonitorModes";
 
-NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
+NSString * const NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 @interface NSFileHandle(ImplementedInPlatform)
 +(Class)concreteSubclass;

@@ -10,17 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData,NSArray;
 
-FOUNDATION_EXPORT NSString *NSFileHandleConnectionAcceptedNotification;
-FOUNDATION_EXPORT NSString *NSFileHandleDataAvailableNotification;
-FOUNDATION_EXPORT NSString *NSFileHandleReadCompletionNotification;
-FOUNDATION_EXPORT NSString *NSFileHandleReadToEndOfFileCompletionNotification;
+FOUNDATION_EXPORT NSString * const NSFileHandleConnectionAcceptedNotification;
+FOUNDATION_EXPORT NSString * const NSFileHandleDataAvailableNotification;
+FOUNDATION_EXPORT NSString * const NSFileHandleReadCompletionNotification;
+FOUNDATION_EXPORT NSString * const NSFileHandleReadToEndOfFileCompletionNotification;
 
-FOUNDATION_EXPORT NSString *NSFileHandleNotificationDataItem;
-FOUNDATION_EXPORT NSString *NSFileHandleNotificationFileHandleItem;
+FOUNDATION_EXPORT NSString * const NSFileHandleNotificationDataItem;
+FOUNDATION_EXPORT NSString * const NSFileHandleNotificationFileHandleItem;
 
-FOUNDATION_EXPORT NSString *NSFileHandleNotificationMonitorModes;
+FOUNDATION_EXPORT NSString * const NSFileHandleNotificationMonitorModes;
 
-FOUNDATION_EXPORT NSString *NSFileHandleOperationException;
+FOUNDATION_EXPORT NSString * const NSFileHandleOperationException;
 
 @interface NSFileHandle : NSObject
 

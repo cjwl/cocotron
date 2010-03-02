@@ -10,15 +10,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSAffineTransform,NSArray,NSSet;
 
-APPKIT_EXPORT NSString *NSFontNameAttribute;
-APPKIT_EXPORT NSString *NSFontFamilyAttribute;
-APPKIT_EXPORT NSString *NSFontSizeAttribute;
-APPKIT_EXPORT NSString *NSFontMatrixAttribute;
-APPKIT_EXPORT NSString *NSFontCharacterSetAttribute;
-APPKIT_EXPORT NSString *NSFontTraitsAttribute;
-APPKIT_EXPORT NSString *NSFontFaceAttribute;
-APPKIT_EXPORT NSString *NSFontFixedAdvanceAttribute;
-APPKIT_EXPORT NSString *NSFontVisibleNameAttribute;
+APPKIT_EXPORT NSString * const NSFontNameAttribute;
+APPKIT_EXPORT NSString * const NSFontFamilyAttribute;
+APPKIT_EXPORT NSString * const NSFontSizeAttribute;
+APPKIT_EXPORT NSString * const NSFontMatrixAttribute;
+APPKIT_EXPORT NSString * const NSFontCharacterSetAttribute;
+APPKIT_EXPORT NSString * const NSFontTraitsAttribute;
+APPKIT_EXPORT NSString * const NSFontFaceAttribute;
+APPKIT_EXPORT NSString * const NSFontFixedAdvanceAttribute;
+APPKIT_EXPORT NSString * const NSFontVisibleNameAttribute;
 
 typedef unsigned NSFontSymbolicTraits;
 

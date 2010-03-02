@@ -72,20 +72,20 @@ typedef NSUInteger NSWindowSharingType;
 
 typedef int NSSelectionDirection;
 
-APPKIT_EXPORT NSString *NSWindowDidBecomeKeyNotification;
-APPKIT_EXPORT NSString *NSWindowDidResignKeyNotification;
-APPKIT_EXPORT NSString *NSWindowDidBecomeMainNotification;
-APPKIT_EXPORT NSString *NSWindowDidResignMainNotification;
-APPKIT_EXPORT NSString *NSWindowWillMiniaturizeNotification;
-APPKIT_EXPORT NSString *NSWindowDidMiniaturizeNotification;
-APPKIT_EXPORT NSString *NSWindowDidDeminiaturizeNotification;
-APPKIT_EXPORT NSString *NSWindowWillMoveNotification;
-APPKIT_EXPORT NSString *NSWindowDidMoveNotification;
-APPKIT_EXPORT NSString *NSWindowDidResizeNotification;
-APPKIT_EXPORT NSString *NSWindowDidUpdateNotification;
-APPKIT_EXPORT NSString *NSWindowWillCloseNotification;
-APPKIT_EXPORT NSString *NSWindowWillStartLiveResizeNotification;
-APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
+APPKIT_EXPORT NSString * const NSWindowDidBecomeKeyNotification;
+APPKIT_EXPORT NSString * const NSWindowDidResignKeyNotification;
+APPKIT_EXPORT NSString * const NSWindowDidBecomeMainNotification;
+APPKIT_EXPORT NSString * const NSWindowDidResignMainNotification;
+APPKIT_EXPORT NSString * const NSWindowWillMiniaturizeNotification;
+APPKIT_EXPORT NSString * const NSWindowDidMiniaturizeNotification;
+APPKIT_EXPORT NSString * const NSWindowDidDeminiaturizeNotification;
+APPKIT_EXPORT NSString * const NSWindowWillMoveNotification;
+APPKIT_EXPORT NSString * const NSWindowDidMoveNotification;
+APPKIT_EXPORT NSString * const NSWindowDidResizeNotification;
+APPKIT_EXPORT NSString * const NSWindowDidUpdateNotification;
+APPKIT_EXPORT NSString * const NSWindowWillCloseNotification;
+APPKIT_EXPORT NSString * const NSWindowWillStartLiveResizeNotification;
+APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 
 @interface NSWindow : NSResponder {
    NSRect             _frame;
@@ -512,6 +512,6 @@ APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 @end
 
 //private
-APPKIT_EXPORT NSString *NSWindowWillAnimateNotification;
-APPKIT_EXPORT NSString *NSWindowAnimatingNotification;
-APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
+APPKIT_EXPORT NSString * const NSWindowWillAnimateNotification;
+APPKIT_EXPORT NSString * const NSWindowAnimatingNotification;
+APPKIT_EXPORT NSString * const NSWindowDidAnimateNotification;

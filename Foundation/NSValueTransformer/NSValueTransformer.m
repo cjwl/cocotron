@@ -14,10 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSValueTransformer_NegateBoolean.h"
 #import "NSValueTransformer_UnarchiveFromData.h"
 
-NSString *NSIsNilTransformerName=@"NSIsNilTransformerName";
-NSString *NSIsNotNilTransformerName=@"NSIsNotNilTransformerName";
-NSString *NSNegateBooleanTransformerName=@"NSNegateBooleanTransformerName";
-NSString *NSUnarchiveFromDataTransformerName=@"NSUnarchiveFromDataTransformerName";
+NSString * const NSIsNilTransformerName=@"NSIsNilTransformerName";
+NSString * const NSIsNotNilTransformerName=@"NSIsNotNilTransformerName";
+NSString * const NSNegateBooleanTransformerName=@"NSNegateBooleanTransformerName";
+NSString * const NSUnarchiveFromDataTransformerName=@"NSUnarchiveFromDataTransformerName";
 
 @implementation NSValueTransformer
 

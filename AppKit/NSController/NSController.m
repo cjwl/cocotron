@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSControllerMarker.h>
 
-NSString *NSNoSelectionMarker=@"NSNoSelectionMarker";
-NSString *NSMultipleValuesMarker=@"NSMultipleValuesMarker";
-NSString *NSNotApplicableMarker=@"NSNotApplicableMarker";
+id NSNoSelectionMarker=@"NSNoSelectionMarker";
+id NSMultipleValuesMarker=@"NSMultipleValuesMarker";
+id NSNotApplicableMarker=@"NSNotApplicableMarker";
 
 BOOL NSIsControllerMarker(id object)
 {

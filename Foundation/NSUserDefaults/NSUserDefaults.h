@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSData,NSMutableDictionary,NSDictionary,NSMutableArray;
 
-FOUNDATION_EXPORT NSString *NSGlobalDomain;
-FOUNDATION_EXPORT NSString *NSArgumentDomain;
-FOUNDATION_EXPORT NSString *NSRegistrationDomain;
+FOUNDATION_EXPORT NSString * const NSGlobalDomain;
+FOUNDATION_EXPORT NSString * const NSArgumentDomain;
+FOUNDATION_EXPORT NSString * const NSRegistrationDomain;
 
-FOUNDATION_EXPORT NSString *NSMonthNameArray;
-FOUNDATION_EXPORT NSString *NSWeekDayNameArray;
-FOUNDATION_EXPORT NSString *NSTimeFormatString;
-FOUNDATION_EXPORT NSString *NSDateFormatString;
-FOUNDATION_EXPORT NSString *NSAMPMDesignation;
+FOUNDATION_EXPORT NSString * const NSMonthNameArray;
+FOUNDATION_EXPORT NSString * const NSWeekDayNameArray;
+FOUNDATION_EXPORT NSString * const NSTimeFormatString;
+FOUNDATION_EXPORT NSString * const NSDateFormatString;
+FOUNDATION_EXPORT NSString * const NSAMPMDesignation;
 
-FOUNDATION_EXPORT NSString *NSTimeDateFormatString;
+FOUNDATION_EXPORT NSString * const NSTimeDateFormatString;
 
-FOUNDATION_EXPORT NSString *NSShortWeekDayNameArray;
-FOUNDATION_EXPORT NSString *NSShortMonthNameArray;
+FOUNDATION_EXPORT NSString * const NSShortWeekDayNameArray;
+FOUNDATION_EXPORT NSString * const NSShortMonthNameArray;
 
-FOUNDATION_EXPORT NSString *NSUserDefaultsDidChangeNotification;
+FOUNDATION_EXPORT NSString * const NSUserDefaultsDidChangeNotification;
 
 @interface NSUserDefaults : NSObject {
    NSMutableDictionary *_domains;

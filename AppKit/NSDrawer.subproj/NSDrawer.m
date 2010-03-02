@@ -14,10 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDrawerWindow.h>
 #import <Foundation/NSKeyedArchiver.h>
 
-NSString *NSDrawerWillOpenNotification = @"NSDrawerWillOpenNotification";
-NSString *NSDrawerDidOpenNotification = @"NSDrawerDidOpenNotification";
-NSString *NSDrawerWillCloseNotification = @"NSDrawerWillCloseNotification";
-NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
+NSString * const NSDrawerWillOpenNotification = @"NSDrawerWillOpenNotification";
+NSString * const NSDrawerDidOpenNotification = @"NSDrawerDidOpenNotification";
+NSString * const NSDrawerWillCloseNotification = @"NSDrawerWillCloseNotification";
+NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 
 @implementation NSDrawer
 

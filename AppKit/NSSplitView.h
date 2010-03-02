@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 
-APPKIT_EXPORT NSString *NSSplitViewDidResizeSubviewsNotification;
-APPKIT_EXPORT NSString *NSSplitViewWillResizeSubviewsNotification;
+APPKIT_EXPORT NSString * const NSSplitViewDidResizeSubviewsNotification;
+APPKIT_EXPORT NSString * const NSSplitViewWillResizeSubviewsNotification;
 
 @interface NSSplitView : NSView {
    id   _delegate;

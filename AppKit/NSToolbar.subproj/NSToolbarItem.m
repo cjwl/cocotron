@@ -18,13 +18,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSAttributedString.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSToolbarCustomizeToolbarItemIdentifier=@"NSToolbarCustomizeToolbarItem";
-NSString *NSToolbarFlexibleSpaceItemIdentifier=@"NSToolbarFlexibleSpaceItem";
-NSString *NSToolbarPrintItemIdentifier=@"NSToolbarPrintItem";
-NSString *NSToolbarSeparatorItemIdentifier=@"NSToolbarSeparatorItem";
-NSString *NSToolbarShowColorsItemIdentifier=@"NSToolbarShowColorsItem";
-NSString *NSToolbarShowFontsItemIdentifier=@"NSToolbarShowFontsItem";
-NSString *NSToolbarSpaceItemIdentifier=@"NSToolbarSpaceItem";
+NSString * const NSToolbarCustomizeToolbarItemIdentifier=@"NSToolbarCustomizeToolbarItem";
+NSString * const NSToolbarFlexibleSpaceItemIdentifier=@"NSToolbarFlexibleSpaceItem";
+NSString * const NSToolbarPrintItemIdentifier=@"NSToolbarPrintItem";
+NSString * const NSToolbarSeparatorItemIdentifier=@"NSToolbarSeparatorItem";
+NSString * const NSToolbarShowColorsItemIdentifier=@"NSToolbarShowColorsItem";
+NSString * const NSToolbarShowFontsItemIdentifier=@"NSToolbarShowFontsItem";
+NSString * const NSToolbarSpaceItemIdentifier=@"NSToolbarSpaceItem";
 
 extern NSSize _NSToolbarSizeRegular;
 extern NSSize _NSToolbarSizeSmall;

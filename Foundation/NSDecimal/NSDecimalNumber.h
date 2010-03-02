@@ -9,10 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSDecimal.h>
 
-FOUNDATION_EXPORT NSString *NSDecimalNumberDivideByZeroException;
-FOUNDATION_EXPORT NSString *NSDecimalNumberUnderflowException;
-FOUNDATION_EXPORT NSString *NSDecimalNumberOverflowException;
-FOUNDATION_EXPORT NSString *NSDecimalNumberExactnessException;
+FOUNDATION_EXPORT NSString * const NSDecimalNumberDivideByZeroException;
+FOUNDATION_EXPORT NSString * const NSDecimalNumberUnderflowException;
+FOUNDATION_EXPORT NSString * const NSDecimalNumberOverflowException;
+FOUNDATION_EXPORT NSString * const NSDecimalNumberExactnessException;
 
 @protocol NSDecimalNumberBehaviors
 @end

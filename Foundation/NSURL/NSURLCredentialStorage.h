@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSURLCredential,NSURLProtectionSpace;
 
-FOUNDATION_EXPORT NSString *NSURLCredentialStorageChangedNotification;
+FOUNDATION_EXPORT NSString * const NSURLCredentialStorageChangedNotification;
 
 @interface NSURLCredentialStorage : NSObject {
 }

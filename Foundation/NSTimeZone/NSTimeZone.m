@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSPlatform.h>
 
-NSString *NSSystemTimeZoneDidChangeNotification=@"NSSystemTimeZoneDidChangeNotification";
+NSString * const NSSystemTimeZoneDidChangeNotification=@"NSSystemTimeZoneDidChangeNotification";
 
 static NSTimeZone *_systemTimeZone=nil;
 static NSTimeZone *_defaultTimeZone=nil;

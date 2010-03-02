@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSURL,NSBundle,NSDictionary,NSArray,NSData,NSMutableArray;
 
-APPKIT_EXPORT NSString *NSNibOwner;
-APPKIT_EXPORT NSString *NSNibTopLevelObjects;
+APPKIT_EXPORT NSString * const NSNibOwner;
+APPKIT_EXPORT NSString * const NSNibTopLevelObjects;
 
 @interface NSNib : NSObject {
    NSData *_data;

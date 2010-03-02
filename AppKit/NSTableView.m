@@ -14,10 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSKeyValueBinding/NSKVOBinder.h"
 #import <AppKit/NSRaise.h>
 
-NSString *NSTableViewSelectionIsChangingNotification=@"NSTableViewSelectionIsChangingNotification";
-NSString *NSTableViewSelectionDidChangeNotification=@"NSTableViewSelectionDidChangeNotification";
-NSString *NSTableViewColumnDidMoveNotification=@"NSTableViewColumnDidMoveNotification";
-NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNotification";
+NSString * const NSTableViewSelectionIsChangingNotification=@"NSTableViewSelectionIsChangingNotification";
+NSString * const NSTableViewSelectionDidChangeNotification=@"NSTableViewSelectionDidChangeNotification";
+NSString * const NSTableViewColumnDidMoveNotification=@"NSTableViewColumnDidMoveNotification";
+NSString * const NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNotification";
 
 const int NSTableViewDefaultRowHeight=16.;
 

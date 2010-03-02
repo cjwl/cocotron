@@ -14,28 +14,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRichTextReader.h>
 #import <AppKit/NSRaise.h>
 
-NSString *NSFontAttributeName=@"NSFontAttributeName"; 
-NSString *NSParagraphStyleAttributeName=@"NSParagraphStyleAttributeName";
-NSString *NSForegroundColorAttributeName=@"NSForegroundColorAttributeName";
-NSString *NSBackgroundColorAttributeName=@"NSBackgroundColorAttributeName";
-NSString *NSUnderlineStyleAttributeName=@"NSUnderlineStyleAttributeName";
-NSString *NSUnderlineColorAttributeName=@"NSUnderlineColorAttributeName";
-NSString *NSAttachmentAttributeName=@"NSAttachmentAttributeName";
-NSString *NSKernAttributeName=@"NSKernAttributeName";
-NSString *NSLigatureAttributeName=@"NSLigatureAttributeName";
-NSString *NSStrikethroughStyleAttributeName=@"NSStrikethroughStyleAttributeName";
-NSString *NSStrikethroughColorAttributeName=@"NSStrikethroughColorAttributeName";
-NSString *NSObliquenessAttributeName=@"NSObliquenessAttributeName";
-NSString *NSStrokeWidthAttributeName=@"NSStrokeWidthAttributeName";
-NSString *NSStrokeColorAttributeName=@"NSStrokeColorAttributeName";
-NSString *NSBaselineOffsetAttributeName=@"NSBaselineOffsetAttributeName";
-NSString *NSSuperscriptAttributeName=@"NSSuperscriptAttributeName";
-NSString *NSLinkAttributeName=@"NSLinkAttributeName";
-NSString *NSShadowAttributeName=@"NSShadowAttributeName";
-NSString *NSExpansionAttributeName=@"NSExpansionAttributeName";
-NSString *NSCursorAttributeName=@"NSCursorAttributeName";
-NSString *NSToolTipAttributeName=@"NSToolTipAttributeName";
-NSString *NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribute";
+NSString * const NSFontAttributeName=@"NSFontAttributeName"; 
+NSString * const NSParagraphStyleAttributeName=@"NSParagraphStyleAttributeName";
+NSString * const NSForegroundColorAttributeName=@"NSForegroundColorAttributeName";
+NSString * const NSBackgroundColorAttributeName=@"NSBackgroundColorAttributeName";
+NSString * const NSUnderlineStyleAttributeName=@"NSUnderlineStyleAttributeName";
+NSString * const NSUnderlineColorAttributeName=@"NSUnderlineColorAttributeName";
+NSString * const NSAttachmentAttributeName=@"NSAttachmentAttributeName";
+NSString * const NSKernAttributeName=@"NSKernAttributeName";
+NSString * const NSLigatureAttributeName=@"NSLigatureAttributeName";
+NSString * const NSStrikethroughStyleAttributeName=@"NSStrikethroughStyleAttributeName";
+NSString * const NSStrikethroughColorAttributeName=@"NSStrikethroughColorAttributeName";
+NSString * const NSObliquenessAttributeName=@"NSObliquenessAttributeName";
+NSString * const NSStrokeWidthAttributeName=@"NSStrokeWidthAttributeName";
+NSString * const NSStrokeColorAttributeName=@"NSStrokeColorAttributeName";
+NSString * const NSBaselineOffsetAttributeName=@"NSBaselineOffsetAttributeName";
+NSString * const NSSuperscriptAttributeName=@"NSSuperscriptAttributeName";
+NSString * const NSLinkAttributeName=@"NSLinkAttributeName";
+NSString * const NSShadowAttributeName=@"NSShadowAttributeName";
+NSString * const NSExpansionAttributeName=@"NSExpansionAttributeName";
+NSString * const NSCursorAttributeName=@"NSCursorAttributeName";
+NSString * const NSToolTipAttributeName=@"NSToolTipAttributeName";
+NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribute";
 
 @implementation NSAttributedString(NSAttributedString_AppKit)
 

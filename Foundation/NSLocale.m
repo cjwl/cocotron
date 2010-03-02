@@ -9,22 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
 
-NSString *NSLocaleCountryCode=@"NSLocaleCountryCode";
-NSString *NSLocaleLanguageCode=@"NSLocaleLanguageCode";
-NSString *NSLocaleVariantCode=@"NSLocaleVariantCode";
-NSString *NSLocaleIdentifier=@"NSLocaleIdentifier";
+NSString * const NSLocaleCountryCode=@"NSLocaleCountryCode";
+NSString * const NSLocaleLanguageCode=@"NSLocaleLanguageCode";
+NSString * const NSLocaleVariantCode=@"NSLocaleVariantCode";
+NSString * const NSLocaleIdentifier=@"NSLocaleIdentifier";
 
-NSString *NSLocaleGroupingSeparator=@"NSLocaleGroupingSeparator";
-NSString *NSLocaleDecimalSeparator=@"NSLocaleDecimalSeparator";
-NSString *NSLocaleCalendar=@"NSLocaleCalendar";
-NSString *NSLocaleCurrencyCode=@"NSLocaleCurrencyCode";
-NSString *NSLocaleCurrencySymbol=@"NSLocaleCurrencySymbol";
-NSString *NSLocaleUsesMetricSystem=@"NSLocaleUsesMetricSystem";
-NSString *NSLocaleMeasurementSystem=@"NSLocaleMeasurementSystem";
+NSString * const NSLocaleGroupingSeparator=@"NSLocaleGroupingSeparator";
+NSString * const NSLocaleDecimalSeparator=@"NSLocaleDecimalSeparator";
+NSString * const NSLocaleCalendar=@"NSLocaleCalendar";
+NSString * const NSLocaleCurrencyCode=@"NSLocaleCurrencyCode";
+NSString * const NSLocaleCurrencySymbol=@"NSLocaleCurrencySymbol";
+NSString * const NSLocaleUsesMetricSystem=@"NSLocaleUsesMetricSystem";
+NSString * const NSLocaleMeasurementSystem=@"NSLocaleMeasurementSystem";
 
-NSString *NSLocaleScriptCode=@"NSLocaleScriptCode";
-NSString *NSLocaleExemplarCharacterSet=@"NSLocaleExemplarCharacterSet";
-NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
+NSString * const NSLocaleScriptCode=@"NSLocaleScriptCode";
+NSString * const NSLocaleExemplarCharacterSet=@"NSLocaleExemplarCharacterSet";
+NSString * const NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
 
 @implementation NSLocale
 

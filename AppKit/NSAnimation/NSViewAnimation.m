@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 
-NSString *NSViewAnimationStartFrameKey=@"NSViewAnimationStartFrameKey";
-NSString *NSViewAnimationEndFrameKey=@"NSViewAnimationEndFrameKey";
-NSString *NSViewAnimationTargetKey=@"NSViewAnimationTargetKey";
-NSString *NSViewAnimationEffectKey=@"NSViewAnimationEffectKey";
+NSString * const NSViewAnimationStartFrameKey=@"NSViewAnimationStartFrameKey";
+NSString * const NSViewAnimationEndFrameKey=@"NSViewAnimationEndFrameKey";
+NSString * const NSViewAnimationTargetKey=@"NSViewAnimationTargetKey";
+NSString * const NSViewAnimationEffectKey=@"NSViewAnimationEffectKey";
 
-NSString *NSViewAnimationFadeInEffect=@"NSViewAnimationFadeInEffect";
-NSString *NSViewAnimationFadeOutEffect=@"NSViewAnimationFadeOutEffect";
+NSString * const NSViewAnimationFadeInEffect=@"NSViewAnimationFadeInEffect";
+NSString * const NSViewAnimationFadeOutEffect=@"NSViewAnimationFadeOutEffect";
 
 @implementation NSViewAnimation
 

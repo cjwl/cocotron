@@ -39,8 +39,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSTextViewSharedData.h"
 #import <AppKit/NSRaise.h>
 
-NSString *NSTextViewDidChangeSelectionNotification=@"NSTextViewDidChangeSelectionNotification";
-NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
+NSString * const NSTextViewDidChangeSelectionNotification=@"NSTextViewDidChangeSelectionNotification";
+NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 @interface NSLayoutManager(NSLayoutManager_visualKeyboardMovement)
 - (NSRange)_softLineRangeForCharacterAtIndex:(unsigned)location;

@@ -31,8 +31,8 @@ enum {
 
 typedef NSUInteger NSNetServiceOptions;
 
-FOUNDATION_EXPORT NSString *NSNetServicesErrorCode;
-FOUNDATION_EXPORT NSString *NSNetServicesErrorDomain;
+FOUNDATION_EXPORT NSString * const NSNetServicesErrorCode;
+FOUNDATION_EXPORT NSString * const NSNetServicesErrorDomain;
 
 @interface NSNetService : NSObject {
   @private

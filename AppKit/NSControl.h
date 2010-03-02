@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSCell,NSFont,NSText,NSTextView;
 
-APPKIT_EXPORT NSString *NSControlTextDidBeginEditingNotification;
-APPKIT_EXPORT NSString *NSControlTextDidChangeNotification;
-APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
+APPKIT_EXPORT NSString * const NSControlTextDidBeginEditingNotification;
+APPKIT_EXPORT NSString * const NSControlTextDidChangeNotification;
+APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 
 @interface NSControl : NSView {
    id      _cell;

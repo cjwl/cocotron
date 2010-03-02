@@ -19,29 +19,29 @@ typedef enum {
    NSLandscapeOrientation,
 } NSPrintingOrientation;
 
-APPKIT_EXPORT NSString *NSPrintPrinter;	
-APPKIT_EXPORT NSString *NSPrintPrinterName; 
-APPKIT_EXPORT NSString *NSPrintJobDisposition; 
-APPKIT_EXPORT NSString *NSPrintDetailedErrorReporting; 
+APPKIT_EXPORT NSString * const NSPrintPrinter;	
+APPKIT_EXPORT NSString * const NSPrintPrinterName; 
+APPKIT_EXPORT NSString * const NSPrintJobDisposition; 
+APPKIT_EXPORT NSString * const NSPrintDetailedErrorReporting; 
 
-APPKIT_EXPORT NSString *NSPrintCopies; 
-APPKIT_EXPORT NSString *NSPrintAllPages; 
-APPKIT_EXPORT NSString *NSPrintFirstPage; 
-APPKIT_EXPORT NSString *NSPrintLastPage; 
+APPKIT_EXPORT NSString * const NSPrintCopies; 
+APPKIT_EXPORT NSString * const NSPrintAllPages; 
+APPKIT_EXPORT NSString * const NSPrintFirstPage; 
+APPKIT_EXPORT NSString * const NSPrintLastPage; 
 
-APPKIT_EXPORT NSString *NSPrintPaperName; 
-APPKIT_EXPORT NSString *NSPrintPaperSize; 
-APPKIT_EXPORT NSString *NSPrintOrientation; 
+APPKIT_EXPORT NSString * const NSPrintPaperName; 
+APPKIT_EXPORT NSString * const NSPrintPaperSize; 
+APPKIT_EXPORT NSString * const NSPrintOrientation; 
 
-APPKIT_EXPORT NSString *NSPrintHorizontalPagination; 
-APPKIT_EXPORT NSString *NSPrintVerticalPagination; 
+APPKIT_EXPORT NSString * const NSPrintHorizontalPagination; 
+APPKIT_EXPORT NSString * const NSPrintVerticalPagination; 
 
-APPKIT_EXPORT NSString *NSPrintTopMargin; 
-APPKIT_EXPORT NSString *NSPrintBottomMargin; 
-APPKIT_EXPORT NSString *NSPrintLeftMargin; 
-APPKIT_EXPORT NSString *NSPrintRightMargin; 
-APPKIT_EXPORT NSString *NSPrintHorizontallyCentered; 
-APPKIT_EXPORT NSString *NSPrintVerticallyCentered; 
+APPKIT_EXPORT NSString * const NSPrintTopMargin; 
+APPKIT_EXPORT NSString * const NSPrintBottomMargin; 
+APPKIT_EXPORT NSString * const NSPrintLeftMargin; 
+APPKIT_EXPORT NSString * const NSPrintRightMargin; 
+APPKIT_EXPORT NSString * const NSPrintHorizontallyCentered; 
+APPKIT_EXPORT NSString * const NSPrintVerticallyCentered; 
 
 @interface NSPrintInfo : NSObject <NSCopying> {
    NSMutableDictionary *_attributes;

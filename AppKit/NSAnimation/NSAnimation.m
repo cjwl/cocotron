@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSValue.h>
 
-NSString *NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotification";
+NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotification";
 
 @implementation NSAnimation
 

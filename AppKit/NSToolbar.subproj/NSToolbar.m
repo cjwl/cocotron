@@ -23,11 +23,11 @@ NSSize _NSToolbarSizeSmall = { 32, 32 };
 NSSize _NSToolbarIconSizeRegular = { 32, 32 };
 NSSize _NSToolbarIconSizeSmall = { 24, 24 };
 
-NSString *NSToolbarWillAddItemNotification = @"NSToolbarWillAddItemNotification";
-NSString *NSToolbarDidRemoveItemNotification = @"NSToolbarDidRemoveItemNotification";
+NSString * const NSToolbarWillAddItemNotification = @"NSToolbarWillAddItemNotification";
+NSString * const NSToolbarDidRemoveItemNotification = @"NSToolbarDidRemoveItemNotification";
 
 // private inter-toolbar notification
-NSString *NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppearanceNotification";
+NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppearanceNotification";
 
 @interface NSWindow(NSToolbarPrivate)
 -(void)_toolbarSizeDidChangeFromOldHeight:(CGFloat)oldHeight;

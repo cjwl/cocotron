@@ -24,8 +24,8 @@ typedef enum {
    NSToolbarDisplayModeLabelOnly 
 } NSToolbarDisplayMode;
 
-APPKIT_EXPORT NSString *NSToolbarWillAddItemNotification; 
-APPKIT_EXPORT NSString *NSToolbarDidRemoveItemNotification;
+APPKIT_EXPORT NSString * const NSToolbarWillAddItemNotification; 
+APPKIT_EXPORT NSString * const NSToolbarDidRemoveItemNotification;
 
 @interface NSToolbar : NSObject {
    NSString       *_identifier;

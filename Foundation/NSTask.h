@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSDictionary;
 
-FOUNDATION_EXPORT NSString *NSTaskDidTerminateNotification;
+FOUNDATION_EXPORT NSString * const NSTaskDidTerminateNotification;
 
 @interface NSTask : NSObject {
   NSString *launchPath;

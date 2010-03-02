@@ -12,8 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSAttributedString.h>
 #import <Foundation/NSKeyedArchiver.h>
 
-NSString *NSTextStorageWillProcessEditingNotification=@"NSTextStorageWillProcessEditingNotification";
-NSString *NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidProcessEditingNotification";
+NSString * const NSTextStorageWillProcessEditingNotification=@"NSTextStorageWillProcessEditingNotification";
+NSString * const NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidProcessEditingNotification";
 
 @implementation NSTextStorage
 

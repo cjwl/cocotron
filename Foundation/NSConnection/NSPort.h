@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSPortMessage,NSRunLoop,NSConnection,NSDate,NSMutableArray,NSData;
 
-FOUNDATION_EXPORT NSString *NSPortDidBecomeInvalidNotification;
+FOUNDATION_EXPORT NSString * const NSPortDidBecomeInvalidNotification;
 
 @interface NSPort : NSObject
 

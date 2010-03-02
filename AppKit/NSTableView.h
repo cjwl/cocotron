@@ -37,10 +37,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTableHeaderView, NSTableColumn;
 
-APPKIT_EXPORT NSString *NSTableViewSelectionIsChangingNotification;
-APPKIT_EXPORT NSString *NSTableViewSelectionDidChangeNotification;
-APPKIT_EXPORT NSString *NSTableViewColumnDidMoveNotification;		
-APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
+APPKIT_EXPORT NSString * const NSTableViewSelectionIsChangingNotification;
+APPKIT_EXPORT NSString * const NSTableViewSelectionDidChangeNotification;
+APPKIT_EXPORT NSString * const NSTableViewColumnDidMoveNotification;		
+APPKIT_EXPORT NSString * const NSTableViewColumnDidResizeNotification;
 
 enum {
    NSTableViewGridNone,

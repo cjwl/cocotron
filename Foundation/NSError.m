@@ -11,17 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSBundle.h>
 
-NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
-NSString *NSOSStatusErrorDomain=@"NSOSStatusErrorDomain";
-NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
-NSString *NSCocoaErrorDomain=@"NSCocoaErrorDomain";
+NSString * const NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
+NSString * const NSOSStatusErrorDomain=@"NSOSStatusErrorDomain";
+NSString * const NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
+NSString * const NSCocoaErrorDomain=@"NSCocoaErrorDomain";
 
-NSString *NSUnderlyingErrorKey=@"NSUnderlyingErrorKey";
-NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
-NSString *NSLocalizedFailureReasonErrorKey=@"NSLocalizedFailureReasonErrorKey";
-NSString *NSLocalizedRecoveryOptionsErrorKey=@"NSLocalizedRecoveryOptionsErrorKey";
-NSString *NSLocalizedRecoverySuggestionErrorKey=@"NSLocalizedRecoverySuggestionErrorKey";
-NSString *NSRecoveryAttempterErrorKey=@"NSRecoveryAttempterErrorKey";
+NSString * const NSUnderlyingErrorKey=@"NSUnderlyingErrorKey";
+NSString * const NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
+NSString * const NSLocalizedFailureReasonErrorKey=@"NSLocalizedFailureReasonErrorKey";
+NSString * const NSLocalizedRecoveryOptionsErrorKey=@"NSLocalizedRecoveryOptionsErrorKey";
+NSString * const NSLocalizedRecoverySuggestionErrorKey=@"NSLocalizedRecoverySuggestionErrorKey";
+NSString * const NSRecoveryAttempterErrorKey=@"NSRecoveryAttempterErrorKey";
 
 @implementation NSError
 

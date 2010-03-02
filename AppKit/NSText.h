@@ -51,9 +51,9 @@ typedef enum {
    NSWritingDirectionRightToLeft,
 } NSWritingDirection;
 
-APPKIT_EXPORT NSString *NSTextDidBeginEditingNotification;
-APPKIT_EXPORT NSString *NSTextDidEndEditingNotification;
-APPKIT_EXPORT NSString *NSTextDidChangeNotification;
+APPKIT_EXPORT NSString * const NSTextDidBeginEditingNotification;
+APPKIT_EXPORT NSString * const NSTextDidEndEditingNotification;
+APPKIT_EXPORT NSString * const NSTextDidChangeNotification;
 
 @interface NSText : NSView
 

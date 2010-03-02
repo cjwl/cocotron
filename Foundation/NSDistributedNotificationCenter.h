@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef int NSNotificationSuspensionBehavior;
 
-FOUNDATION_EXPORT NSString *NSLocalNotificationCenterType;
+FOUNDATION_EXPORT NSString * const NSLocalNotificationCenterType;
 
 @interface NSDistributedNotificationCenter : NSNotificationCenter
 

@@ -16,15 +16,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObjCRuntime.h>
 #import <stdio.h>
 
-NSString *NSGenericException=@"NSGenericException";
-NSString *NSInvalidArgumentException=@"NSInvalidArgumentException";
-NSString *NSRangeException=@"NSRangeException";
+NSString * const NSGenericException=@"NSGenericException";
+NSString * const NSInvalidArgumentException=@"NSInvalidArgumentException";
+NSString * const NSRangeException=@"NSRangeException";
 
-NSString *NSInternalInconsistencyException=@"NSInternalInconsistencyException";
-NSString *NSMallocException=@"NSMallocException";
+NSString * const NSInternalInconsistencyException=@"NSInternalInconsistencyException";
+NSString * const NSMallocException=@"NSMallocException";
 
-NSString *NSParseErrorException=@"NSParseErrorException";
-NSString *NSInconsistentArchiveException=@"NSInconsistentArchiveException";
+NSString * const NSParseErrorException=@"NSParseErrorException";
+NSString * const NSInconsistentArchiveException=@"NSInconsistentArchiveException";
 
 @implementation NSException
 

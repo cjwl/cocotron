@@ -12,28 +12,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSWindow,NSImage,NSMenu, NSPasteboard, NSDisplay;
 
-APPKIT_EXPORT NSString *NSModalPanelRunLoopMode;
-APPKIT_EXPORT NSString *NSEventTrackingRunLoopMode;
+APPKIT_EXPORT NSString * const NSModalPanelRunLoopMode;
+APPKIT_EXPORT NSString * const NSEventTrackingRunLoopMode;
 
-APPKIT_EXPORT NSString *NSApplicationWillFinishLaunchingNotification;
-APPKIT_EXPORT NSString *NSApplicationDidFinishLaunchingNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillFinishLaunchingNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidFinishLaunchingNotification;
 
-APPKIT_EXPORT NSString *NSApplicationWillBecomeActiveNotification;
-APPKIT_EXPORT NSString *NSApplicationDidBecomeActiveNotification;
-APPKIT_EXPORT NSString *NSApplicationWillResignActiveNotification;
-APPKIT_EXPORT NSString *NSApplicationDidResignActiveNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillBecomeActiveNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidBecomeActiveNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillResignActiveNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidResignActiveNotification;
 
-APPKIT_EXPORT NSString *NSApplicationWillUpdateNotification;
-APPKIT_EXPORT NSString *NSApplicationDidUpdateNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillUpdateNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidUpdateNotification;
 
-APPKIT_EXPORT NSString *NSApplicationWillHideNotification;
-APPKIT_EXPORT NSString *NSApplicationDidHideNotification;
-APPKIT_EXPORT NSString *NSApplicationWillUnhideNotification;
-APPKIT_EXPORT NSString *NSApplicationDidUnhideNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillHideNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidHideNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillUnhideNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidUnhideNotification;
 
-APPKIT_EXPORT NSString *NSApplicationWillTerminateNotification;
+APPKIT_EXPORT NSString * const NSApplicationWillTerminateNotification;
 
-APPKIT_EXPORT NSString *NSApplicationDidChangeScreenParametersNotification;
+APPKIT_EXPORT NSString * const NSApplicationDidChangeScreenParametersNotification;
 
 APPKIT_EXPORT id NSApp;
 
