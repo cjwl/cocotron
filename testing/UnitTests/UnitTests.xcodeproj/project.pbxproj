@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26BD3B2B111EEE2F000F56AE /* URLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BD3B2A111EEE2F000F56AE /* URLTest.m */; };
+		26BD3B2C111EEE2F000F56AE /* URLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BD3B2A111EEE2F000F56AE /* URLTest.m */; };
+		26BD3B2D111EEE2F000F56AE /* URLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BD3B2A111EEE2F000F56AE /* URLTest.m */; };
+		26BD3B2E111EEE2F000F56AE /* URLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BD3B2A111EEE2F000F56AE /* URLTest.m */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
@@ -124,6 +128,20 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		26BD3B22111EEDE2000F56AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA3164C0FD5667D00F480D4 /* AppKit.framework */;
+			remoteInfo = "AppKit-MacOS-i386";
+		};
+		26BD3B24111EEDE2000F56AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A8BE310C6F50E005E348A /* AppKit.framework */;
+			remoteInfo = "AppKit-FreeBSD-i386";
+		};
 		C88257E90F42D7E7002ED1DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
@@ -158,6 +176,8 @@
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		26BD3B29111EEE2F000F56AE /* URLTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLTest.h; sourceTree = "<group>"; };
+		26BD3B2A111EEE2F000F56AE /* URLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLTest.m; sourceTree = "<group>"; };
 		32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTests_Prefix.pch; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -305,6 +325,8 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				26BD3B29111EEE2F000F56AE /* URLTest.h */,
+				26BD3B2A111EEE2F000F56AE /* URLTest.m */,
 				998CA8470E6C3741009B2664 /* FileHandle.h */,
 				998CA8480E6C3741009B2664 /* FileHandle.m */,
 				C8C8027F0DB51FEF0089C0D7 /* KVC.h */,
@@ -420,6 +442,8 @@
 				C88257EA0F42D7E7002ED1DA /* AppKit.framework */,
 				C88257EC0F42D7E7002ED1DA /* AppKit.framework */,
 				C88257EE0F42D7E7002ED1DA /* AppKit.framework */,
+				26BD3B23111EEDE2000F56AE /* AppKit.framework */,
+				26BD3B25111EEDE2000F56AE /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -542,6 +566,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		26BD3B23111EEDE2000F56AE /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = 26BD3B22111EEDE2000F56AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		26BD3B25111EEDE2000F56AE /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = 26BD3B24111EEDE2000F56AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C88257EA0F42D7E7002ED1DA /* AppKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -694,6 +732,7 @@
 				C8DA2EC30F408EAB006E73E9 /* Predicate.m in Sources */,
 				C88255870F419397002ED1DA /* ObservableArray.m in Sources */,
 				C8E2B7AD0F48C69000C070F5 /* ObjectController.m in Sources */,
+				26BD3B2B111EEE2F000F56AE /* URLTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +747,7 @@
 				C8E2B8360F48CEAA00C070F5 /* TableViewTest.m in Sources */,
 				C8E2B8370F48CEB100C070F5 /* TextFieldBindings.m in Sources */,
 				C8E2B8380F48CEB100C070F5 /* ObservableArray.m in Sources */,
+				26BD3B2C111EEE2F000F56AE /* URLTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +765,7 @@
 				C8DA2EC60F408EAB006E73E9 /* Predicate.m in Sources */,
 				C88255880F419397002ED1DA /* ObservableArray.m in Sources */,
 				C8E2B7AE0F48C69000C070F5 /* ObjectController.m in Sources */,
+				26BD3B2D111EEE2F000F56AE /* URLTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,6 +786,7 @@
 				C8DA2EC40F408EAB006E73E9 /* Predicate.m in Sources */,
 				C88255850F419397002ED1DA /* ObservableArray.m in Sources */,
 				C8E2B7AC0F48C69000C070F5 /* ObjectController.m in Sources */,
+				26BD3B2E111EEE2F000F56AE /* URLTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
