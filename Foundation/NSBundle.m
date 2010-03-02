@@ -435,11 +435,19 @@ static NSMapTable *pathToObject=NULL;
 -(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)directory {
    NSString *file,*path;
 
-   file=[[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix] stringByAppendingPathExtension:type];
+   if(type && [type length]!=0)
+    file=[[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix] stringByAppendingPathExtension:type];
+   else
+    file=[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix];
+
    if((path=[self pathForResourceFile:file inDirectory:directory])!=nil)
     return path;
 
-   file=[name stringByAppendingPathExtension:type];
+   if(type && [type length]!=0)
+    file=[name stringByAppendingPathExtension:type];
+   else
+	file=name;
+
    path=[self pathForResourceFile:file inDirectory:directory];
 
    return path;
