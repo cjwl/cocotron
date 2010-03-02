@@ -18,6 +18,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPopUpButtonCell
 
+-init {
+   self = [super init];
+   _pullsDown = NO;
+   _menu = [[[NSMenu alloc] init] retain];
+   _arrowPosition = NSPopUpArrowAtCenter;
+   _preferredEdge = NSMaxYEdge;
+   return self;
+}
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
 }
@@ -59,7 +68,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super initTextCell:string];
     _menu = [[NSMenu alloc] initWithTitle:string];
     [_menu addItemWithTitle:string action:[self action] keyEquivalent:@""];
-        
+    _arrowPosition = NSPopUpArrowAtCenter;
+    _preferredEdge = NSMaxYEdge;
+
     [self setPullsDown:pullDown];
     
     return self;
