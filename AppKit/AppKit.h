@@ -85,6 +85,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSPasteboard.h>
+#import <AppKit/NSPathCell.h>
+#import <AppKit/NSPathComponentCell.h>
+#import <AppKit/NSPathControl.h>
 #import <AppKit/NSPDFImageRep.h>
 #import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSPopUpButtonCell.h>
