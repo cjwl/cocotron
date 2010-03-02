@@ -133,6 +133,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      sign=-1;
      hasSign=YES;
     }
+    else if(!hasSign && unicode=='+'){
+     sign=1;
+     hasSign=YES;
+    }
     else if(unicode>='0' && unicode<='9'){
      if(!hasOverflow){
       int c=unicode-'0';
