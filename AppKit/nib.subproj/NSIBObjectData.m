@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNibConnector.h>
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSNib.h>
+#import <AppKit/NSMenu.h>
 
 @interface NSKeyedUnarchiver(private)
 -(void)replaceObject:object withObject:replacement;
@@ -24,6 +25,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSNib(private)
 -(NSDictionary *)externalNameTable;
+@end
+
+@interface NSMenu(private)
+-(NSString *)_name;
 @end
 
 @implementation NSIBObjectData
@@ -112,10 +117,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i,count=[_namesValues count];
    
    for(i=0;i<count;i++){
-    NSString *check=[_namesValues objectAtIndex:i];
+    id check=[_namesKeys objectAtIndex:i];
     
-    if([check isEqual:@"MainMenu"])
-     return [_namesKeys objectAtIndex:i];
+    if([check isKindOfClass:[NSMenu class]])
+     if([[check _name] isEqual:@"_NSMainMenu"])
+      return check;
    }
    return nil;
 }

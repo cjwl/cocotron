@@ -22,6 +22,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSSelectInputSource.h>
 #import <Foundation/NSSocket.h>
+#import <Foundation/NSHost.h>
 
 #ifdef WIN32
 #import <winsock2.h> // for ntohs
