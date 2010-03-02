@@ -332,6 +332,8 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
 }
 
 -(void)postXEvent:(XEvent *)ev {
+   id event=nil;
+   NSEventType type;
    id window=[self windowForID:ev->xany.window];
    id delegate=[window delegate];
    
@@ -378,9 +380,9 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
      }
      lastClickTimeStamp=now;
          
-     NSPoint pos=[window transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+     pos=[window transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
          
-     id event=[NSEvent mouseEventWithType:NSLeftMouseDown
+     event=[NSEvent mouseEventWithType:NSLeftMouseDown
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
                                     window:delegate
@@ -389,9 +391,9 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
      break;
 
     case ButtonRelease:;
-     NSPoint pos=[window transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+     pos=[window transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
 
-     id event=[NSEvent mouseEventWithType:NSLeftMouseUp
+     event=[NSEvent mouseEventWithType:NSLeftMouseUp
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
                                     window:delegate
@@ -400,8 +402,8 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
      break;
 
     case MotionNotify:;
-     NSPoint pos=[window transformPoint:NSMakePoint(ev->xmotion.x, ev->xmotion.y)];
-     NSEventType type=NSMouseMoved;
+     pos=[window transformPoint:NSMakePoint(ev->xmotion.x, ev->xmotion.y)];
+     type=NSMouseMoved;
          
      if(ev->xmotion.state&Button1Mask) {
       type=NSLeftMouseDragged;
@@ -413,7 +415,7 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
      if(type==NSMouseMoved && ![delegate acceptsMouseMovedEvents])
       break;
          
-     id event=[NSEvent mouseEventWithType:type
+     event=[NSEvent mouseEventWithType:type
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xmotion.state]
                                     window:delegate
