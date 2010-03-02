@@ -331,6 +331,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(NSString *)_name {
+   return _name;
+}
+
 -(NSMenu *)_menuWithName:(NSString *)name {
    if([_name isEqual:name])
     return self;
