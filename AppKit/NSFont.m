@@ -169,11 +169,38 @@ static NSFont **_fontCache=NULL;
    NSUnimplementedMethod();
 }
 
--(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+-(NSString *)_translateToNibFontName:(NSString *)name {
+   if([name isEqual:@"Arial"])
+    return @"Helvetica";
+   if([name isEqual:@"Arial Bold"])
+    return @"Helvetica-Bold";
+   if([name isEqual:@"Arial Italic"])
+    return @"Helvetica-Oblique";
+   if([name isEqual:@"Arial Bold Italic"])
+    return @"Helvetica-BoldOblique";
+
+   if([name isEqual:@"Times New Roman"])
+    return @"Times-Roman";
+   if([name isEqual:@"Courier New"])
+    return @"Courier";
+
+   if([name isEqual:@"Symbol"])
+    return name;
+
+   return name;
 }
 
--(NSString *)_translateNibFontName:(NSString *)name {
+-(void)encodeWithCoder:(NSCoder *)coder {
+   if([coder allowsKeyedCoding]){
+     [coder encodeObject:[self _translateToNibFontName:_name] forKey:@"NSName"];
+     [coder encodeFloat:_pointSize forKey:@"NSSize"];
+   }
+   else {
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not encodeWithCoder:%@",isa,[coder class]];
+   }
+}
+
+-(NSString *)_translateFromNibFontName:(NSString *)name {
 
    if([name isEqual:@"Helvetica"])
     return @"Arial";
@@ -200,7 +227,7 @@ static NSFont **_fontCache=NULL;
 -initWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
-    NSString          *name=[self _translateNibFontName:[keyed decodeObjectForKey:@"NSName"]];
+    NSString          *name=[self _translateFromNibFontName:[keyed decodeObjectForKey:@"NSName"]];
     float              size=[keyed decodeFloatForKey:@"NSSize"];
     // int                flags=[keyed decodeIntForKey:@"NSfFlags"]; // ?
     
