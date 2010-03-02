@@ -38,6 +38,8 @@ NSStringEncoding defaultEncoding()
 					if(strcmp(secondpart, "UTF-8") == 0 || strcmp(secondpart, "UTF8") == 0)
 					{
 						defaultEncoding = NSUTF8StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}
 					else if(strcmp(secondpart, "ISO8859-1") == 0 || strcmp(secondpart, "ISO88591") == 0)
 					{
@@ -46,18 +48,26 @@ NSStringEncoding defaultEncoding()
 					else if(strcmp(secondpart, "ISO8859-2") == 0 || strcmp(secondpart, "ISO88592") == 0)
 					{
 						defaultEncoding = NSISOLatin2StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}
 					else if(strcmp(secondpart, "EUCJP") == 0)
 					{
 						defaultEncoding = NSJapaneseEUCStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}
                     else if(strcmp(secondpart, "CP1250") == 0)
 					{
 						defaultEncoding = NSWindowsCP1250StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}
 					else if(strcmp(secondpart, "CP1251") == 0)
 					{
 						defaultEncoding = NSWindowsCP1251StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}
                     else if(strcmp(secondpart, "CP1252") == 0)
 					{
@@ -66,10 +76,14 @@ NSStringEncoding defaultEncoding()
                     else if(strcmp(secondpart, "CP1253") == 0)
 					{
 						defaultEncoding = NSWindowsCP1253StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}
                     else if(strcmp(secondpart, "CP1254") == 0)
 					{
 						defaultEncoding = NSWindowsCP1254StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					}					
                     
                     //TODO: add more encodings

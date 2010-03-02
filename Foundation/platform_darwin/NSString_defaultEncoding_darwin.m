@@ -41,6 +41,8 @@ NSStringEncoding defaultEncoding()
 			switch(enc) {
 				case 0:
 					defaultEncoding = NSMacOSRomanStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;
 				case 0x0500:
 					defaultEncoding = NSWindowsCP1252StringEncoding;
@@ -50,6 +52,8 @@ NSStringEncoding defaultEncoding()
 					break;
 				case 0x0202:
 					defaultEncoding = NSISOLatin2StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;
 				case 0x0B01:
 					defaultEncoding = NSNEXTSTEPStringEncoding;
@@ -59,26 +63,41 @@ NSStringEncoding defaultEncoding()
 					break;
 				case 0x0100:
 					defaultEncoding = NSUnicodeStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;
 				case 0x08000100:
 					defaultEncoding = NSUTF8StringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;	
 				case 0x0BFF:
 					defaultEncoding = NSNonLossyASCIIStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;	
 				case 0x0A01:	
 					defaultEncoding = NSShiftJISStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;
 				case 0x0920:
 					defaultEncoding = NSJapaneseEUCStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 					break;					
 				default:
 					defaultEncoding = NSMacOSRomanStringEncoding;					
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
+                   break;
 		}
 		
         }
         if(defaultEncoding == -1) {
 			defaultEncoding = NSMacOSRomanStringEncoding;
+// FIXME: use until the right encoding is implemented
+defaultEncoding = NSISOLatin1StringEncoding;
 		}
 	}
 	

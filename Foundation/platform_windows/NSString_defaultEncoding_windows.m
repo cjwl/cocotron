@@ -9,6 +9,7 @@
 
 #import <Foundation/NSString_defaultEncoding.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSRaiseException.h>
 #import <windows.h>
 
 NSStringEncoding defaultEncoding()
@@ -19,50 +20,75 @@ NSStringEncoding defaultEncoding()
 	switch(codepage)
 	{
 		case 1250:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
             return NSWindowsCP1250StringEncoding;
 			
 		case 1251:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
             return NSWindowsCP1251StringEncoding;
             
 		case 1252:
             return NSWindowsCP1252StringEncoding;	
             
 		case 1253:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
             return NSWindowsCP1253StringEncoding;
             
 		case 1254:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
             return NSWindowsCP1254StringEncoding;		
             
 		case 50220:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
             return NSISO2022JPStringEncoding;
             
 		case 10000:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSMacOSRomanStringEncoding;
             
 		case 12000:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSUTF32LittleEndianStringEncoding;
             
 		case 12001:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSUTF32BigEndianStringEncoding;
             
 		case 20127:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSASCIIStringEncoding;
             
 		case 20932:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSJapaneseEUCStringEncoding;
             
 		case 65001:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSUTF8StringEncoding;
             
 		case 28591:
 			return NSISOLatin1StringEncoding;
             
 		case 28592:
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 			return NSISOLatin2StringEncoding;
 			
 		default:
-            [NSException raise:NSInternalInconsistencyException
-						format:@"defaultCStringEncoding() failed with codepage=%d", codepage];
+            NSCLog("Unknown codepage=%d",codepage); 
+// FIXME: use until the right encoding is implemented
+            return NSWindowsCP1252StringEncoding;
 	}
     
 }
