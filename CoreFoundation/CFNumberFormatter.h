@@ -24,6 +24,23 @@ enum {
    kCFNumberFormatterParseIntegersOnly= 1
 };
 
+typedef enum {
+   kCFNumberFormatterRoundCeiling = 0,
+   kCFNumberFormatterRoundFloor = 1,
+   kCFNumberFormatterRoundDown = 2,
+   kCFNumberFormatterRoundUp = 3,
+   kCFNumberFormatterRoundHalfEven = 4,
+   kCFNumberFormatterRoundHalfDown = 5,
+   kCFNumberFormatterRoundHalfUp = 6
+} CFNumberFormatterRoundingMode;
+
+enum {
+   kCFNumberFormatterPadBeforePrefix = 0,
+   kCFNumberFormatterPadAfterPrefix = 1,
+   kCFNumberFormatterPadBeforeSuffix = 2,
+   kCFNumberFormatterPadAfterSuffix = 3
+};
+
 COREFOUNDATION_EXPORT const CFStringRef kCFNumberFormatterCurrencyCode;
 COREFOUNDATION_EXPORT const CFStringRef kCFNumberFormatterDecimalSeparator;
 COREFOUNDATION_EXPORT const CFStringRef kCFNumberFormatterCurrencyDecimalSeparator;
