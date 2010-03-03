@@ -8,26 +8,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
-#import <ApplicationServices/ApplicationServices.h>
 
 @class NSColor, NSMutableArray, NSArray, NSColorSpace, NSBezierPath;
 
-typedef enum
-{
-	NSGradientDrawsBeforeStartingLocation = (1 << 0),
-	NSGradientDrawsAfterEndingLocation = (1 << 1)
+typedef enum {
+   NSGradientDrawsBeforeStartingLocation=(1 << 0),
+   NSGradientDrawsAfterEndingLocation=(1 << 1),
 } NSGradientDrawingOptions;
 
-@interface NSGradient : NSObject
-{
-	NSMutableArray *_colors;
-	NSMutableArray *_stops;
+@interface NSGradient : NSObject {
+   NSColorSpace *_colorSpace;
+   NSInteger  _numberOfColors;
+   NSInteger  _numberOfComponents;
+   CGFloat  **_components;
+   CGFloat   *_locations;
 }
 
+-initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace;
 -initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor;
 -initWithColors:(NSArray *)colors;
--initWithColorsAndLocations:(NSColor *)firstColor, ...;
--initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace;
+-initWithColorsAndLocations:(NSColor *)firstColor,...;
 
 - (void)drawFromPoint:(NSPoint)startingPoint toPoint:(NSPoint)endingPoint options:(NSGradientDrawingOptions)options;
 - (void)drawFromCenter:(NSPoint)startCenter radius:(CGFloat)startRadius toCenter:(NSPoint)endCenter radius:(CGFloat)endRadius options:(NSGradientDrawingOptions)options;
@@ -39,7 +39,9 @@ typedef enum
 - (void)drawInBezierPath:(NSBezierPath *)path relativeCenterPosition:(NSPoint)center;
 
 - (NSColorSpace *)colorSpace;
-- (int)numberOfColorStops;
+- (NSInteger)numberOfColorStops;
 - (void)getColor:(NSColor **)color location:(CGFloat *)location atIndex:(NSInteger)index;
+
+- (NSColor *)interpolatedColorAtLocation:(CGFloat)location;
 
 @end

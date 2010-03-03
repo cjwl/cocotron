@@ -9,147 +9,133 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSGradient.h"
 #import <AppKit/NSBezierPath.h>
 #import <AppKit/NSColor.h>
+#import <AppKit/NSColorSpace.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSRaise.h>
 
-void _NSGradientInterpolator(void *info, float const *inData, float *outData)
-{
-	NSGradient *gradient = (NSGradient *)info;
-	int stepCount = [gradient numberOfColorStops];
-	
-	CGFloat prevPoint = 0, nextPoint = 1;
-	NSColor *prevColor = nil, *nextColor = nil;
-	
-	int i;
-	for (i = 0; i < stepCount; i++)
-	{
-		prevPoint = nextPoint;
-		prevColor = nextColor;
-		
-		[gradient getColor:&nextColor location:&nextPoint atIndex:i];
-		
-		if (nextPoint > inData[0])
-			break;
-	}
-	
-	NSColor *outColor;
-	if (!prevColor || nextPoint < inData[0])
-	{
-		outColor = nextColor;
-	}
-	else
-	{
-		CGFloat fraction = (inData[0] - prevPoint) / nextPoint;
-		outColor = [prevColor blendedColorWithFraction:fraction ofColor:nextColor];
-	}
-
-	outData[0] = [outColor redComponent];
-	outData[1] = [outColor greenComponent];
-	outData[2] = [outColor blueComponent];
-	outData[3] = [outColor alphaComponent];
-}
-
-
 @implementation NSGradient
 
-- (void)dealloc
-{
-	[_colors release];
-	[_stops release];
-	
-	[super dealloc];
+static void evaluate(void *info,float const *input,float *output) {
+   NSGradient *self=(NSGradient *)info;
+   CGFloat   **components=self->_components;
+   CGFloat    *locations=self->_locations;
+   NSInteger   startIndex,endIndex;
+   
+   for(endIndex=0;endIndex<self->_numberOfColors;endIndex++)
+    if(locations[endIndex]>=input[0])
+     break;
+
+   if(endIndex==0)     
+    startIndex=endIndex;
+   else if(endIndex>=self->_numberOfColors)
+    startIndex=endIndex=self->_numberOfColors-1;
+   else
+    startIndex=endIndex-1;
+   
+   NSInteger i;
+   CGFloat   x=(locations[endIndex]-locations[startIndex])*(input[0]-locations[startIndex]);
+   for(i=0;i<self->_numberOfComponents;i++){
+    output[i]=components[startIndex][i]+x*(components[endIndex][i]-components[startIndex][i]);
+   }
 }
 
-#pragma mark Initialization
 
-- (id)initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor
-{
-	return [self initWithColors:[NSArray arrayWithObjects:startingColor, endingColor, nil]];
+-initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor {
+   NSArray *colors=[NSArray arrayWithObjects:startingColor,endingColor,nil];
+   CGFloat  locations[2]={0.0,1.0};
+   
+   return [self initWithColors:colors atLocations:locations colorSpace:[NSColorSpace deviceRGBColorSpace]];
 }
 
-- (id)initWithColors:(NSArray *)colors
-{
-	self = [super init];
-	if (!self)
-		return nil;
-		
-	_colors = [colors retain];
-	
-	int colorCount = [colors count];
-	_stops = [[NSMutableArray alloc] initWithCapacity:colorCount];
-	
-	int i;
-	for (i = 0; i < colorCount; i++)
-	{
-		CGFloat stop = i / (CGFloat)1.0 * (colorCount - 1);
-		[_stops addObject:[NSNumber numberWithFloat:stop]];
-	}
-	
-	return self;
+-initWithColors:(NSArray *)colors {
+   NSInteger count=[colors count];
+   CGFloat   locations[count];
+   NSInteger i;
+   
+   for (i = 0; i < count; i++)
+    locations[i]=i/(1.0*(count-1));
+
+   return [self initWithColors:colors atLocations:locations colorSpace:[NSColorSpace deviceRGBColorSpace]];
 }
 
-- (id)initWithColorsAndLocations:(NSColor *)firstColor, ...
-{
-	self = [super init];
-	if (!self)
-		return nil;
-	
-	_colors = [[NSMutableArray alloc] init];
-	_stops = [[NSMutableArray alloc] init];
-	
-	va_list ap;
-	va_start(ap, firstColor);
-	BOOL first = YES;
-	
-	while (1)
-	{
-		NSColor *color;
-		if (first)
-		{
-			color = firstColor;
-			first = NO;
-		}
-		else
-		{
-			color = va_arg(ap, NSColor *);
-		}
-		
-		if (!color)
-			break;
-		
-		CGFloat stop = (CGFloat)va_arg(ap, double);
-		
-		[_colors addObject:color];
-		[_stops addObject:[NSNumber numberWithFloat:stop]];
-	}
-	
-	va_end(ap);
-	
-	return self;
+-initWithColorsAndLocations:(NSColor *)firstColor,... {
+   NSMutableArray *colors=[NSMutableArray array];
+   CGFloat         locations[256]; // FIXME: seems reasonable for now
+   NSInteger       i;
+   
+   va_list arguments;
+    
+   va_start(arguments,firstColor);
+   
+   NSColor *color=firstColor;
+   for(i=0;color!=nil && i<256;i++){    
+    [colors addObject:color];
+    locations[i]=va_arg(arguments,double);
+    color=va_arg(arguments,NSColor *);
+   }
+   
+   va_end(arguments);
+   
+   return [self initWithColors:colors atLocations:locations colorSpace:[NSColorSpace deviceRGBColorSpace]];
 }
 
 -initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace {
-	NSUnimplementedMethod();
-	return nil;
+   _colorSpace=[[NSColorSpace deviceRGBColorSpace] retain];
+   _numberOfColors=[colors count];
+   _numberOfComponents=4;
+   _components=NSZoneMalloc(NULL,sizeof(CGFloat *)*_numberOfColors);
+   _locations=NSZoneMalloc(NULL,sizeof(CGFloat)*_numberOfColors);
+   
+   NSInteger i;
+   
+   for(i=0;i<_numberOfColors;i++){
+    NSColor *color=[colors objectAtIndex:i];
+    
+    color=[color colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+    _components[i]=NSZoneMalloc(NULL,sizeof(CGFloat)*_numberOfComponents);
+    [color getComponents:_components[i]];
+    
+    _locations[i]=locations[i];
+   }
+   
+   return self;
 }
 
-#pragma mark Primitive Drawing Methods
-
-- (void)drawFromPoint:(NSPoint)startingPoint toPoint:(NSPoint)endingPoint options:(NSGradientDrawingOptions)options
-{
-	NSUnimplementedMethod();
+-(void)dealloc {
+   NSInteger i;
+   
+   [_colorSpace release];
+   
+   for(i=0;i<_numberOfColors;i++)
+    NSZoneFree(NULL,_components[i]);
+    
+   NSZoneFree(NULL,_components);
+   NSZoneFree(NULL,_locations);
+	
+   [super dealloc];
 }
 
-- (void)drawFromCenter:(NSPoint)startCenter radius:(CGFloat)startRadius toCenter:(NSPoint)endCenter radius:(CGFloat)endRadius options:(NSGradientDrawingOptions)options
-{
-	NSUnimplementedMethod();
+
+-(void)drawFromPoint:(NSPoint)startingPoint toPoint:(NSPoint)endingPoint options:(NSGradientDrawingOptions)options {
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGFunctionCallbacks callbacks = { 0, evaluate, NULL }; 
+   CGFunctionRef function = CGFunctionCreate(self, 1, NULL, _numberOfComponents, NULL, &callbacks);
+   CGColorSpaceRef colorSpace = [_colorSpace CGColorSpace];
+   CGShadingRef shading = CGShadingCreateAxial(colorSpace, startingPoint, endingPoint, function, NO, NO);
+   
+   CGContextDrawShading(context,shading);
+   
+   CGFunctionRelease(function);
+   CGShadingRelease(shading);
 }
 
-#pragma mark Drawing Linear Gradients
+- (void)drawFromCenter:(NSPoint)startCenter radius:(CGFloat)startRadius toCenter:(NSPoint)endCenter radius:(CGFloat)endRadius options:(NSGradientDrawingOptions)options {
+	NSUnimplementedMethod();
+}
 
 - (void)drawInRect:(NSRect)rect angle:(CGFloat)angle
 {
-	if ([_colors count] < 2 || 0 == rect.size.width)
+	if (_numberOfColors < 2 || 0 == rect.size.width)
 		return;
 
 	CGPoint start; //start coordinate of gradient
@@ -184,27 +170,18 @@ void _NSGradientInterpolator(void *info, float const *inData, float *outData)
 	CGFloat radAngle = angle / 180 * M_PI; //Angle in radians
 	//The trig for this is difficult to describe without an illustration, so I'm attaching an illustration
 	//to Cocotron issue number 438 along with this patch
-	CGFloat distanceToEnd = cos(atan2(tanSize.y,tanSize.x) - radAngle) * 
-		sqrt(rect.size.width * rect.size.width + rect.size.height * rect.size.height);
+	CGFloat distanceToEnd = cos(atan2(tanSize.y,tanSize.x) - radAngle) * sqrt(rect.size.width * rect.size.width + rect.size.height * rect.size.height);
 	end = CGPointMake(cos(radAngle) * distanceToEnd + start.x, sin(radAngle) * distanceToEnd + start.y);
 		
-	CGFunctionCallbacks callbacks = { 0, &_NSGradientInterpolator, NULL }; 
-	CGFunctionRef function = CGFunctionCreate(self, 1, NULL, 4, NULL, &callbacks);
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGShadingRef shading = CGShadingCreateAxial(colorSpace, start, end, function, NO, NO);
-	CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+	CGContextRef context =[[NSGraphicsContext currentContext] graphicsPort];
 	CGContextSaveGState(context);
 	CGContextClipToRect(context, rect);
-	CGContextDrawShading(context, shading);
+    [self drawFromPoint:start toPoint:end options:NSGradientDrawsBeforeStartingLocation|NSGradientDrawsAfterEndingLocation];
 	CGContextRestoreGState(context);
 	
-	CGFunctionRelease(function);
-	CGColorSpaceRelease(colorSpace);
-	CGShadingRelease(shading);
 }
 
-- (void)drawInBezierPath:(NSBezierPath *)path angle:(CGFloat)angle
-{
+-(void)drawInBezierPath:(NSBezierPath *)path angle:(CGFloat)angle {
    NSRect rect=[path bounds];
    [NSGraphicsContext saveGraphicsState];
 
@@ -214,35 +191,37 @@ void _NSGradientInterpolator(void *info, float const *inData, float *outData)
    [NSGraphicsContext restoreGraphicsState];
 }
 
-#pragma mark Drawing Radial Gradients
-
-- (void)drawInRect:(NSRect)rect relativeCenterPosition:(NSPoint)center
-{
+-(void)drawInRect:(NSRect)rect relativeCenterPosition:(NSPoint)center {
 	NSUnimplementedMethod();
 }
 
-- (void)drawInBezierPath:(NSBezierPath *)path relativeCenterPosition:(NSPoint)center
-{
+-(void)drawInBezierPath:(NSBezierPath *)path relativeCenterPosition:(NSPoint)center {
 	NSUnimplementedMethod();
 }
 
-#pragma mark Getting Gradient Properties
-
-- (NSColorSpace *)colorSpace
-{
-	NSUnimplementedMethod();
-	return nil;
+- (NSColorSpace *)colorSpace {
+	return _colorSpace;
 }
 
-- (int)numberOfColorStops
-{
-	return [_colors count];
+- (NSInteger)numberOfColorStops {
+	return _numberOfColors;
 }
 
-- (void)getColor:(NSColor **)color location:(CGFloat *)location atIndex:(NSInteger)index
-{
-	if (location) *location = [[_stops objectAtIndex:index] floatValue];
-	if (color)    *color = [[[_colors objectAtIndex:index] retain] autorelease];
+-(void)getColor:(NSColor **)color location:(CGFloat *)location atIndex:(NSInteger)index {
+   if (location)
+    *location=_locations[index];
+    
+   if (color)
+    *color=[NSColor colorWithCalibratedRed:_components[index][0] green:_components[index][1] blue:_components[index][2] alpha:_components[index][3]];
+}
+
+-(NSColor *)interpolatedColorAtLocation:(CGFloat)location {
+   float input[1]={location};
+   float output[4];
+   
+   evaluate(self,input,output);
+
+   return [NSColor colorWithCalibratedRed:output[0] green:output[1] blue:output[2] alpha:output[3]];
 }
 
 @end
