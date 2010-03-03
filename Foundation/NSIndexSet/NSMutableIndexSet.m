@@ -194,7 +194,63 @@ static void removeRangeAtPosition(NSRange *ranges,NSUInteger length,NSUInteger p
 }
 
 -(void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta {
-   NSUnimplementedMethod();
+
+   if(delta<0){
+    delta=-delta;
+    NSInteger pos=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,index-delta);
+    
+    if(pos==NSNotFound)
+     return; // raise?
+     
+    NSInteger count=_length;
+    
+    while(--count>=pos){
+     if(_ranges[count].location>=index) // if above index just move it down
+      _ranges[count].location-=delta;
+     else if(NSMaxRange(_ranges[count])<=index-delta) // below area, ignore
+      ;
+     else if(_ranges[count].length>delta){ // if below, shorten
+      if(NSMaxRange(_ranges[count])-index>=delta) // if deletion entirely inside
+       _ranges[count].length-=delta;
+      else
+       _ranges[count].length=NSMaxRange(_ranges[count])-(index-delta);
+     }
+     else { // if below and shorter than the delta, remove
+       NSInteger i;
+        
+       _length--;
+       for(i=count;i<_length;i++)
+        _ranges[i]=_ranges[i+1];
+     }
+    }
+    
+   }
+   else {
+    NSInteger pos=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,index);
+        
+    if(pos==NSNotFound)
+     return; // raise?
+    
+    // if index is inside a range, split it
+    if(_ranges[pos].location<index && index<NSMaxRange(_ranges[pos])){
+     NSRange below=_ranges[pos];
+     
+     below.length=index-below.location;
+     _ranges[pos].length=NSMaxRange(_ranges[pos])-index;
+     _ranges[pos].location=index;
+     
+     [self _insertRange:below position:pos];
+    }
+    
+    // move all ranges at or above index by delta
+    NSInteger count=_length;
+
+    while(--count>=pos){
+     if(_ranges[count].location>=index)
+      _ranges[count].location+=delta;
+    }
+   }
+
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
