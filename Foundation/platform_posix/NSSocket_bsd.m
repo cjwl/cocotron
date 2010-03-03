@@ -229,6 +229,6 @@ static inline void byteZero(void *vsrc,size_t size){
 @end
 
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,int port,int interface) {   
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface) {   
    return nil;
 }

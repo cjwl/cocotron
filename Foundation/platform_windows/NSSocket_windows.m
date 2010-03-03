@@ -10,6 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSHost.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSData.h>
+
+#undef WINVER
+#define WINVER 0x501
+#import <ws2tcpip.h>
 
 // The treatment of SOCKET's as int's is lame, there should probably be a little more formality on the [fF]ileDescriptor methods (typedef int/SOCKET NSFileDescriptor?)
 // What would be nice is enough API in NSFileHandle/NSStream to never need the fd
@@ -259,61 +264,41 @@ static inline void byteZero(void *vsrc,size_t size){
 
 @end
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,int port,int interface) {
-#if 0
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface) {
    if(length==4){ // IPV4
-      char rdb[100]; // should be more than enough
-
-          struct sockaddr_in
-            ip4;
+          struct sockaddr_in ip4;
+                    
+          size_t ip4Length = sizeof (struct sockaddr_in);
           
-    memset(rdb, 0, sizeof rdb);
-         // oogly
-          sprintf(rdb, "%d.%d.%d.%d", rd[0], rd[1], rd[2], rd[3]);
-          LOG(@"Found IPv4 <%s>", rdb);
+          memset(&ip4, 0, ip4Length);
           
-          length = sizeof (struct sockaddr_in);
-          memset(&ip4, 0, length);
-          
-          inet_pton(AF_INET, rdb, &ip4.sin_addr);
+          ip4.sin_addr.s_addr=*(uint32_t *)address;
           ip4.sin_family = AF_INET;
-          ip4.sin_port = htons(service->port);
+          ip4.sin_port = port;
           
-          address = (struct sockaddr *) &ip4;
-   }
+          return [NSData dataWithBytes:&ip4 length:ip4Length];
+    }
    
-   if(length==16){ // IPV6
-#if defined( AF_INET6 )
-      char rdb[INET6_ADDRSTRLEN];
+   return nil;
 
-          struct sockaddr_in6
-            ip6;
+   if(length==16){ // IPV6
+          struct sockaddr_in6 ip6;
+                    
+          size_t ip6Length = sizeof (struct sockaddr_in6);
           
-    memset(rdb, 0, sizeof rdb);
-          // Even more oogly
-          sprintf(rdb, "%x%x:%x%x:%x%x:%x%x:%x%x:%x%x:%x%x:%x%x",
-                       rd[0], rd[1], rd[2], rd[3],
-                       rd[4], rd[5], rd[6], rd[7],
-                       rd[8], rd[9], rd[10], rd[11],
-                       rd[12], rd[13], rd[14], rd[15]);
-          LOG(@"Found IPv6 <%s>", rdb);
-          
-          length = sizeof (struct sockaddr_in6);
-          memset(&ip6, 0, length);
-          
-          inet_pton(AF_INET6, rdb, &ip6.sin6_addr);
-#if ! defined( NOT_HAVE_SA_LEN )
+          memset(&ip6, 0, ip6Length);
+          memcpy(&ip6.sin6_addr,address,16);
+
+#ifdef SIN6_LEN
           ip6.sin6_len = sizeof ip6;
 #endif
           ip6.sin6_family = AF_INET6;
-          ip6.sin6_port = htons(service->port);
+          ip6.sin6_port = port;
           ip6.sin6_flowinfo = 0;
-          ip6.sin6_scope_id = interfaceIndex;
+          ip6.sin6_scope_id = interface;
           
-          address = (struct sockaddr *) &ip6;
-#endif
+          return [NSData dataWithBytes:&ip6 length:ip6Length];
    }
-#endif
 
    return nil;
 }
