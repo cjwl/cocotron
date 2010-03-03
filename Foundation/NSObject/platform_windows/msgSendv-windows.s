@@ -3,8 +3,6 @@
 _objc_msg_sendv:
 	pushl	%ebp
 	movl	%esp, %ebp
-	pushl   %edx
-	pushl   %ecx
 	pushl	12(%ebp)
 	pushl   8(%ebp)
 	call	_objc_msg_lookup
@@ -20,8 +18,6 @@ done:
 	pushl 12(%ebp) # push _cmd
 	pushl 8(%ebp)  # push self
 	call *%eax
-	popl %ecx
-	popl %edx
 	leave
 	ret
     .section .drectve
