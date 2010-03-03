@@ -13,6 +13,7 @@ FOUNDATION_EXPORT NSString * const NSIsNilTransformerName;
 FOUNDATION_EXPORT NSString * const NSIsNotNilTransformerName;
 FOUNDATION_EXPORT NSString * const NSNegateBooleanTransformerName;
 FOUNDATION_EXPORT NSString * const NSUnarchiveFromDataTransformerName;
+FOUNDATION_EXPORT NSString * const NSKeyedUnarchiveFromDataTransformerName;
 
 @interface NSValueTransformer : NSObject
 
