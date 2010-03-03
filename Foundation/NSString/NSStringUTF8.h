@@ -14,4 +14,6 @@ unichar *NSUTF8ToUnicode(const char *utf8,NSUInteger length,
 char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,
   BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 
+NSUInteger NSConvertUTF8toUTF16(const unsigned char *utf8,NSUInteger utf8Length,unichar *utf16);
+
 BOOL NSUTF8IsASCII(const char *utf8,NSUInteger length);
