@@ -16,26 +16,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSMethodSignature
 
--initWithTypes:(const char *)types {
+-initWithTypes:(const char *)typesCString {
    const char *next,*last;
-   NSUInteger    size,align;
+   NSUInteger  size,align;
    BOOL        first=YES;
-
-    // not guaranteed that types is static
-   _typesCString=NSZoneMalloc(NULL,strlen(types)+1);
-   strcpy(_typesCString,types);
+   size_t      typesCStringLength=strlen(typesCString);
+   char       *types[typesCStringLength]; // at most strlen arguments
+   
+    // not guaranteed that typesCString is static
+   _typesCString=NSZoneMalloc(NULL,typesCStringLength+1);
+   strcpy(_typesCString,typesCString);
    next=last=_typesCString;
-   _returnType=nil;
-   _types=[[NSMutableArray allocWithZone:NULL] init];
+   _returnType=NULL;
+   _numberOfArguments=0;
 
    while((next=NSGetSizeAndAlignment(next,&size,&align))!=last){
-    NSString *string=[NSString stringWithCString:last length:next-last];
+    NSUInteger length=next-last;
+    char      *nextCString=NSZoneMalloc(NULL,length+1);
+    
+    strncpy(nextCString,last,length);
+    nextCString[length]='\0';
 
     if(first)
-     _returnType=[string copy];
-    else
-     [_types addObject:string];
-
+     _returnType=nextCString;
+    else {
+     types[_numberOfArguments]=nextCString;
+     _numberOfArguments++;
+    }
+    
     first=NO;
 
     while((*next>='0' && *next<='9') || *next=='+' || *next=='-' || *next=='?')
@@ -46,25 +54,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     last=next;
    }
-
+   
+   if(_numberOfArguments){  
+    _types=NSZoneMalloc(NULL,_numberOfArguments*sizeof(char *));
+    
+    NSInteger i;
+    
+    for(i=0;i<_numberOfArguments;i++)
+     _types[i]=types[i];
+   }
+   
    return self;
 }
 
 -(void)dealloc {
    NSZoneFree(NULL,_typesCString);
-   [_returnType release];
-   [_types release];
-	if([self respondsToSelector:@selector(_deallocateClosure)])
-		[self performSelector:@selector(_deallocateClosure)];
+   
+   if(_returnType!=NULL)
+    NSZoneFree(NULL,_returnType);
+   
+   NSInteger i;
+   if(_types!=NULL){
+    for(i=0;i<_numberOfArguments;i++)
+     NSZoneFree(NULL,_types[i]);
+    NSZoneFree(NULL,_types);
+   }
+   
+   NSDeallocateObject(self);
+   return;
    [super dealloc];
 }
 
-+(NSMethodSignature *)signatureWithObjCTypes:(const char *)types {
-   return [[[NSMethodSignature allocWithZone:NULL] initWithTypes:types] autorelease];
++(NSMethodSignature *)signatureWithObjCTypes:(const char *)typesCString {
+   return [[[NSMethodSignature allocWithZone:NULL] initWithTypes:typesCString] autorelease];
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"<NSMethodSignature: -(%@)%@>",_returnType,_types];
+   return [NSString stringWithFormat:@"<NSMethodSignature: -(%s)%s>",_returnType,_typesCString];
 }
 
 -(NSUInteger)hash {
@@ -85,19 +111,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isOneway {
-   return [_returnType hasPrefix:@"V"];
+   return (_returnType!=NULL && _returnType[0]=='V');
 }
 
 -(NSUInteger)frameLength {
    NSUInteger result=0;
-   NSInteger      i,count=[self numberOfArguments];
+   NSInteger  i;
 
-   for(i=0;i<count;i++){
+   for(i=0;i<_numberOfArguments;i++){
     NSUInteger align;
     NSUInteger naturalSize;
     NSUInteger promotedSize;
 
-    NSGetSizeAndAlignment([self getArgumentTypeAtIndex:i],&naturalSize,&align);
+    NSGetSizeAndAlignment(_types[i],&naturalSize,&align);
     promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
     result+=promotedSize;
@@ -108,21 +134,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSUInteger)methodReturnLength {
    NSUInteger size,align;
 
-   NSGetSizeAndAlignment([_returnType cString],&size,&align);
+   NSGetSizeAndAlignment(_returnType,&size,&align);
 
    return size;
 }
 
 -(const char *)methodReturnType {
-   return [_returnType cString];
+   return _returnType;
 }
 
 -(NSUInteger)numberOfArguments {
-   return [_types count];
+   return _numberOfArguments;
 }
 
 -(const char *)getArgumentTypeAtIndex:(NSUInteger)index {
-   return [[_types objectAtIndex:index] cString];
+   if(index>=_numberOfArguments){
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) is beyond number of arguments (%d)",index,_numberOfArguments];
+    return NULL;
+   }
+   
+   return _types[index];
 }
 
 @end

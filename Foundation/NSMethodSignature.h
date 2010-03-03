@@ -11,9 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSString,NSMutableArray;
 
 @interface NSMethodSignature : NSObject {
-   char           *_typesCString;
-   NSString       *_returnType;
-   NSMutableArray *_types;
+   char       *_typesCString;
+   char  *_returnType;
+   NSUInteger   _numberOfArguments;
+   char **_types;
+
 	void* _closure;
 	void* _closureInfo;
 }
