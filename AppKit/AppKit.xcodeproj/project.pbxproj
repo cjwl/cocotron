@@ -2143,7 +2143,7 @@
 		FE463EDF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
 		FE463EE0102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
 		FE463EE1102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
-		FE463EE2102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463EE2102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EE3102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
 		FE463EE4102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EE5102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
@@ -2159,7 +2159,7 @@
 		FE463EEF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
 		FE463EF0102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
 		FE463EF1102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
-		FE463EF2102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463EF2102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EF3102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
 		FE463EF4102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EF5102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
@@ -2175,7 +2175,7 @@
 		FE463EFF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
 		FE463F00102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
 		FE463F01102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
-		FE463F02102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463F02102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463F03102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
 		FE463F04102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463F05102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
@@ -2191,7 +2191,7 @@
 		FE463F0F102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
 		FE463F10102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
 		FE463F11102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
-		FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463F13102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
 		FE49B9A71030C49300ADCC6C /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE49B9A81030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
@@ -2571,7 +2571,7 @@
 		FE5A8A4A10C6F50E005E348A /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; };
 		FE5A8A4B10C6F50E005E348A /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; };
 		FE5A8A4C10C6F50E005E348A /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
-		FE5A8A4D10C6F50E005E348A /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE5A8A4D10C6F50E005E348A /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A4E10C6F50E005E348A /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A4F10C6F50E005E348A /* NSOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4478071039F64E00ECD6A6 /* NSOpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A5010C6F50E005E348A /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; settings = {ATTRIBUTES = (Private, ); }; };
