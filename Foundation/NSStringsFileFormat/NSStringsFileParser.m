@@ -24,47 +24,13 @@ static inline unsigned short PickWord(unsigned short w){
  return w;
 }
 
-// this routine is applicable for conversion of utf32 to utf8 
-// as well as of utf16 to utf8 in the BMP range U+0000 through U+FFFF
-static int UnicodeToUTF8(unsigned utf32, uint8_t *utf8)
-{
-	if (utf32 < 0x80)
-   {
-	   *utf8 = utf32;
-      return 1;
-   }
-	else if (utf32 < 0x800)
-   {
-	   *utf8++ = 0xC0 | (utf32 >> 6);
-      *utf8   = 0x80 | (utf32 & 0x3F);
-      return 2;
-	}
-	else if (utf32 < 0x10000)
-   {
-      *utf8++ = 0xE0 | ((utf32 >> 12) & 0x0F);
-      *utf8++ = 0x80 | ((utf32 >> 6) & 0x3F);
-      *utf8   = 0x80 | (utf32 & 0x3F);
-      return 3;
-	}
-	else if (utf32 < 0x110000)
-   {
-      *utf8++ = 0xF0 | ((utf32 >> 18) & 0x07);
-      *utf8++ = 0x80 | ((utf32 >> 12) & 0x3F);
-      *utf8++ = 0x80 | ((utf32 >> 6) & 0x3F);
-      *utf8   = 0x80 | (utf32 & 0x3F);
-      return 4;
-	}
-   else
-      return 0;
-}
-
-static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
+static NSArray *error(NSArray *array,unichar *buffer,NSString *fmt,...) {
    va_list list;
    va_start(list,fmt);
 
    [array release];
-   if(strBuf!=NULL)
-    NSZoneFree(NSZoneFromPointer(strBuf),strBuf);
+   if(buffer!=NULL)
+    NSZoneFree(NSZoneFromPointer(buffer),buffer);
 
    NSLogv(fmt,list);
    va_end(list);
@@ -74,9 +40,10 @@ static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
 
 static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
    NSMutableArray *array=[[NSMutableArray allocWithZone:NULL] initWithCapacity:1024];
-   unsigned index,c,strSize=0,strMax=2048;
-   char *strBuf=NSZoneMalloc(NSDefaultMallocZone(),strMax);
-
+   NSInteger  index;
+   NSUInteger bufferCount=0,bufferCapacity=2048;
+   unichar   *buffer=NSZoneMalloc(NSDefaultMallocZone(),bufferCapacity*sizeof(unichar));
+   
    enum {
     STATE_WHITESPACE,
     STATE_COMMENT_SLASH,
@@ -114,19 +81,20 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
    if(mapUC(unicode[(length>>=1)-1])==0x0A)
     length--;
    for(;index<length;index++){
-    c=mapUC(unicode[index]);
+    unichar code=mapUC(unicode[index]);
+         
     switch(state){
 
      case STATE_WHITESPACE:
-      if(c=='/')
+      if(code=='/')
        state=STATE_COMMENT_SLASH;
-      else if(c=='='){
+      else if(code=='='){
        if(expect==EXPECT_EQUAL_SEMI)
         expect=EXPECT_VAL;
        else
-        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
+        return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
       }
-      else if(c==';'){
+      else if(code==';'){
        if(expect==EXPECT_SEMI)
         expect=EXPECT_KEY;
        else if(expect==EXPECT_EQUAL_SEMI){
@@ -134,57 +102,57 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
         [array addObject:[array lastObject]];
        }
        else
-        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
+        return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
       }
-      else if(c=='\"'){
+      else if(code=='\"'){
        if(expect!=EXPECT_KEY && expect!=EXPECT_VAL)
-        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
+        return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
 
-       strSize=0;
+       bufferCount=0;
        state=STATE_STRING;
       }
-      else if(c>' '){
+      else if(code>' '){
        if(expect!=EXPECT_KEY)
-        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
+        return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
 
-       strBuf[0]=c;
-       strSize=1;
+       buffer[0]=code;
+       bufferCount=1;
        state=STATE_STRING_KEY;
       }
       break;
 
      case STATE_COMMENT_SLASH:
-      if(c=='*')
+      if(code=='*')
        state=STATE_COMMENT;
       else
-       return error(array,strBuf,@"unexpected character %02X '%c',after /",c,c);
+       return error(array,buffer,@"unexpected character %02X '%C',after /",code,code);
       break;
 
      case STATE_COMMENT:
-      if(c=='*')
+      if(code=='*')
        state=STATE_COMMENT_STAR;
       break;
 
      case STATE_COMMENT_STAR:
-      if(c=='/')
+      if(code=='/')
        state=STATE_WHITESPACE;
-      else if(c!='*')
+      else if(code!='*')
        state=STATE_COMMENT;
       break;
 
      case STATE_STRING_KEY:
-      switch(c){
+      switch(code){
        case '\"':
-        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
+        return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
        case '=':
          index-=2;
        case ' ':
-         c='\"';
+         code='\"';
       }
      case STATE_STRING:
-      if(c=='\"'){
-       strBuf[strSize]='\0';
-       NSString *string=[[NSString allocWithZone:NULL] initWithUTF8String:strBuf];
+      if(code=='\"'){
+       NSString *string=[[NSString allocWithZone:NULL] initWithCharacters:buffer length:bufferCount];
+
        [array addObject:string];
        [string release];
        state=STATE_WHITESPACE;
@@ -194,65 +162,65 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
         expect=EXPECT_SEMI;
       }
       else{
-       if(strSize>=strMax){
-        strMax*=2;
-        strBuf=NSZoneRealloc(NSZoneFromPointer(strBuf),strBuf,strMax);
+       if(bufferCount>=bufferCapacity){
+        bufferCapacity*=2;
+        buffer=NSZoneRealloc(NSZoneFromPointer(buffer),buffer,bufferCapacity*sizeof(unichar));
        }
-       if(c=='\\')
+       if(code=='\\')
         state=STATE_STRING_SLASH;
-       else
-        strSize+=UnicodeToUTF8(c,(uint8_t *)&strBuf[strSize]);
+       else 
+        buffer[bufferCount++]=code;
       }
       break;
 
      case STATE_STRING_SLASH:
-      switch(c){
-       case 'a': strBuf[strSize++]='\a'; state=STATE_STRING; break;
-       case 'b': strBuf[strSize++]='\b'; state=STATE_STRING; break;
-       case 'f': strBuf[strSize++]='\f'; state=STATE_STRING; break;
-       case 'n': strBuf[strSize++]='\n'; state=STATE_STRING; break;
-       case 'r': strBuf[strSize++]='\r'; state=STATE_STRING; break;
-       case 't': strBuf[strSize++]='\t'; state=STATE_STRING; break;
-       case 'v': strBuf[strSize++]='\v'; state=STATE_STRING; break;
+      switch(code){
+       case 'a': buffer[bufferCount++]='\a'; state=STATE_STRING; break;
+       case 'b': buffer[bufferCount++]='\b'; state=STATE_STRING; break;
+       case 'f': buffer[bufferCount++]='\f'; state=STATE_STRING; break;
+       case 'n': buffer[bufferCount++]='\n'; state=STATE_STRING; break;
+       case 'r': buffer[bufferCount++]='\r'; state=STATE_STRING; break;
+       case 't': buffer[bufferCount++]='\t'; state=STATE_STRING; break;
+       case 'v': buffer[bufferCount++]='\v'; state=STATE_STRING; break;
        case '0': case '1': case '2': case '3':
        case '4': case '5': case '6': case '7':
-        strBuf[strSize++]=c-'0';
+        buffer[bufferCount++]=code-'0';
         state=STATE_STRING_SLASH_X00;
         break;
 
        default:
-        strBuf[strSize++]=c;
+        buffer[bufferCount++]=code;
         state=STATE_STRING; 
         break;
       }
       break;
 
      case STATE_STRING_SLASH_X00:
-      if(c<'0' || c>'7'){
+      if(code<'0' || code>'7'){
        state=STATE_STRING;
        index--;
       }
       else{
        state=STATE_STRING_SLASH_XX0;
-       strBuf[strSize-1]*=8;
-       strBuf[strSize-1]+=c-'0';
+       buffer[bufferCount-1]*=8;
+       buffer[bufferCount-1]+=code-'0';
       }
       break;
 
      case STATE_STRING_SLASH_XX0:
       state=STATE_STRING;
-      if(c<'0' || c>'7')
+      if(code<'0' || code>'7')
        index--;
       else{
-       strBuf[strSize-1]*=8;
-       strBuf[strSize-1]+=c-'0';
+       buffer[bufferCount-1]*=8;
+       buffer[bufferCount-1]+=code-'0';
       }
       break;
 
     }
    }
 
-   NSZoneFree(NSZoneFromPointer(strBuf),strBuf);
+   NSZoneFree(NSZoneFromPointer(buffer),buffer);
 
    if(state!=STATE_WHITESPACE)
     return error(array,NULL,@"unexpected EOF\n");
