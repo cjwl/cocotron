@@ -26,8 +26,6 @@ static BOOL bonjourNotPresent() {
 }
 
 static FARPROC bonjour_function(const char *name) {
-   NSLog(@"bonjour_function(%s)",name);
-   
    if(bonjourNotPresent())
     return NULL;
    else {

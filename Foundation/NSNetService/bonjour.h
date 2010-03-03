@@ -10,8 +10,8 @@
 // Indirection layer which avoids hard dependancy on Bonjour LIB and SDK with good fallback behavior
 // All types and constants must match dns_sd.h
 
-typedef void                      *bonjour_DNSServiceRef;
-typedef void                      *bonjour_DNSRecordRef;
+typedef struct bonjour_DNSService *bonjour_DNSServiceRef;
+typedef struct bonjour_DNSRecord  *bonjour_DNSRecordRef;
 typedef struct  { uint64_t _[2]; } bonjour_TXTRecordRef;
 typedef uint32_t                   bonjour_DNSServiceFlags;
 typedef int32_t                    bonjour_DNSServiceErrorType;

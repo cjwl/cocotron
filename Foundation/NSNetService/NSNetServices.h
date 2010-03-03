@@ -1,6 +1,6 @@
-/* Copyright (c) 2006 Chris B. Vetter
+/* Copyright(c)2006 Chris B. Vetter
   
- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  
@@ -35,93 +35,80 @@ FOUNDATION_EXPORT NSString * const NSNetServicesErrorCode;
 FOUNDATION_EXPORT NSString * const NSNetServicesErrorDomain;
 
 @interface NSNetService : NSObject {
-  @private
-  void		          * _netService;
-  NSSelectInputSource *_inputSource;
-  id		           _delegate;
-
-  void                *_netServiceMonitor;
-  NSSelectInputSource *_monitorInputSource;
+  NSString *_domain;
+  NSString *_type;
+  NSString *_name;
+  uint16_t  _port;
+  id        _delegate;
   
-  NSTimer		*_resolverTimeout;	
+  NSString       *_host;
+  NSMutableArray *_addresses;
+  NSData         *_txtRecord;
   
-      NSMutableDictionary	*_info;
-    // The service's information, keys are
-    // - Domain (string)
-    // - Name (string)
-    // - Type (string)
-    // - Host (string)
-    // - Addresses (mutable array)
-    // - TXT (data)
+  struct bonjour_DNSService *_netService;
+  NSSelectInputSource       *_inputSource;
   
-  int _interfaceIndex;	// should also be in 'info'
-  int _port;
+  NSTimer		            *_resolverTimeout;	
+    
+  int  _interfaceIndex;
   
-  
-  BOOL			 _isPublishing,		// true if publishing service
-                         _isMonitoring;		// true if monitoring
+  BOOL			 _isPublishing,	_isMonitoring;
 }
 
-+ (NSData *) dataFromTXTRecordDictionary: (NSDictionary *) txtDictionary;
-+ (NSDictionary *) dictionaryFromTXTRecordData: (NSData *) txtData;
++(NSData *)dataFromTXTRecordDictionary:(NSDictionary *)txtDictionary;
++(NSDictionary *)dictionaryFromTXTRecordData:(NSData *)txtData;
 
-- (id) initWithDomain: (NSString *) domain
-                 type: (NSString *) type
-                 name: (NSString *) name;
-- (id) initWithDomain: (NSString *) domain
-                 type: (NSString *) type
-                 name: (NSString *) name
-                 port: (int) port;
+-initWithDomain:(NSString *)domain type:(NSString *)type name:(NSString *)name;
+-initWithDomain:(NSString *)domain type:(NSString *)type name:(NSString *)name port:(int)port;
 
-- (void) removeFromRunLoop: (NSRunLoop *) runLoop
-                   forMode: (NSString *) mode;
-- (void) scheduleInRunLoop: (NSRunLoop *) runLoop
-                   forMode: (NSString *) mode;
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
-- (void)publishWithOptions:(NSNetServiceOptions)options;
+-(void)publishWithOptions:(NSNetServiceOptions)options;
+-(void)publish;
 
-- (void) publish;
-- (void) resolve;
-- (void) resolveWithTimeout: (NSTimeInterval) timeout;
-- (void) stop;
+-(void)resolve;
+-(void)resolveWithTimeout:(NSTimeInterval)timeout;
 
-- (void) startMonitoring;
-- (void) stopMonitoring;
+-(void)stop;
 
-- (id) delegate;
-- (void) setDelegate: (id) delegate;
+-(void)startMonitoring;
+-(void)stopMonitoring;
 
-- (NSArray *) addresses;
-- (NSString *) domain;
-- (NSString *) hostName;
-- (NSString *) name;
-- (NSString *) type;
-- (int) port;
+-delegate;
+-(void)setDelegate:delegate;
 
-- (NSString *) protocolSpecificInformation;
-- (void) setProtocolSpecificInformation: (NSString *) specificInformation;
+-(NSArray *)addresses;
+-(NSString *)domain;
+-(NSString *)hostName;
+-(NSString *)name;
+-(NSString *)type;
+-(int)port;
 
-- (NSData *) TXTRecordData;
-- (BOOL) setTXTRecordData: (NSData *) recordData;
+-(NSString *)protocolSpecificInformation;
+-(void)setProtocolSpecificInformation:(NSString *)specificInformation;
 
-- (BOOL) getInputStream: (NSInputStream **) inputStream
-           outputStream: (NSOutputStream **) outputStream;
+-(NSData *)TXTRecordData;
+-(BOOL)setTXTRecordData:(NSData *)recordData;
+
+-(BOOL)getInputStream:(NSInputStream **)inputStream
+           outputStream:(NSOutputStream **)outputStream;
 
 @end
 
-@interface NSObject (NSNetServiceDelegateMethods)
+@interface NSObject(NSNetServiceDelegateMethods)
 
-- (void) netServiceWillPublish: (NSNetService *) sender;
-- (void) netServiceDidPublish: (NSNetService *) sender;
-- (void) netService: (NSNetService *) sender
-      didNotPublish: (NSDictionary *) errorDict;
-- (void) netServiceWillResolve: (NSNetService *) sender;
-- (void) netServiceDidResolveAddress: (NSNetService *) sender;
-- (void) netService: (NSNetService *) sender
-      didNotResolve: (NSDictionary *) errorDict;
-- (void) netServiceDidStop: (NSNetService *) sender;
-- (void)      netService: (NSNetService *) sender
-  didUpdateTXTRecordData: (NSData *) data;
+-(void)netServiceWillPublish:(NSNetService *)sender;
+-(void)netServiceDidPublish:(NSNetService *)sender;
+-(void)netService:(NSNetService *)sender
+      didNotPublish:(NSDictionary *)errorDict;
+-(void)netServiceWillResolve:(NSNetService *)sender;
+-(void)netServiceDidResolveAddress:(NSNetService *)sender;
+-(void)netService:(NSNetService *)sender
+      didNotResolve:(NSDictionary *)errorDict;
+-(void)netServiceDidStop:(NSNetService *)sender;
+-(void)      netService:(NSNetService *)sender
+  didUpdateTXTRecordData:(NSData *)data;
 
 @end
 
@@ -131,7 +118,7 @@ FOUNDATION_EXPORT NSString * const NSNetServicesErrorDomain;
 
 @interface NSNetServiceBrowser : NSObject {
   @private
-  void		          *_netServiceBrowser;
+  struct bonjour_DNSService *_netServiceBrowser;
   NSSelectInputSource *_inputSource;
   id                   _delegate;
   
@@ -165,7 +152,7 @@ FOUNDATION_EXPORT NSString * const NSNetServicesErrorDomain;
 
 -(void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser;
 -(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorDict;
--(void)netServiceBrowserDidStopSearch: (NSNetServiceBrowser *)netServiceBrowser;
+-(void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser;
 -(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing;
 -(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didRemoveDomain:(NSString *)domainString moreComing:(BOOL)moreComing;
 -(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindService:(NSNetService *)netService moreComing:(BOOL)moreComing;

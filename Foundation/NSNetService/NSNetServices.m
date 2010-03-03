@@ -1,5 +1,6 @@
 /* Copyright (c) 2006 Chris B. Vetter
-   Copyright (c) 2008 Dirk Theisen, Christopher J. W. Lloyd
+   Copyright (c) 2008 Dirk Theisen
+   Copyright (c) 2008,2010 Christopher J. W. Lloyd
 
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  
@@ -23,6 +24,7 @@
 #import <Foundation/NSSelectInputSource.h>
 #import <Foundation/NSSocket.h>
 #import <Foundation/NSHost.h>
+#import <Foundation/NSDebug.h>
 
 #ifdef WIN32
 #import <winsock2.h> // for ntohs
@@ -31,112 +33,54 @@
 #endif
 #import <string.h>
 
-// debugging stuff and laziness on my part
-#if defined( VERBOSE )
-#  define LOG( f, args... )	NSDebugLLog(@"NSNetServices", f, ##args )
-#else
-#  define LOG( f, args... )
-#endif /* DEBUG */
-
 #import "bonjour.h"
 
 NSString * const NSNetServicesErrorCode = @"NSNetServicesErrorCode";
 NSString * const NSNetServicesErrorDomain = @"NSNetServicesErrorDomain";
 
-
-@interface NSNetService(forward)
-- (void) resolverCallback: (bonjour_DNSServiceRef) sdRef
-                    flags: (bonjour_DNSServiceFlags) flags
-                interface: (uint32_t) interfaceIndex
-                    error: (bonjour_DNSServiceErrorType) errorCode
-                 fullname: (const char *) fullname
-                   target: (const char *) hosttarget
-                     port: (uint16_t) port
-                   length: (uint16_t) txtLen
-                   record: (const char *) txtRecord;
-- (void) registerCallback: (bonjour_DNSServiceRef) sdRef
-                    flags: (bonjour_DNSServiceFlags) flags
-                    error: (bonjour_DNSServiceErrorType) errorCode
-                     name: (const char *) name
-                     type: (const char *) regtype
-                   domain: (const char *) domain;
-- (void) queryCallback: (bonjour_DNSServiceRef) sdRef
-                 flags: (bonjour_DNSServiceFlags) flags
-             interface: (uint32_t) interfaceIndex
-                 error: (bonjour_DNSServiceErrorType) errorCode
-              fullname: (const char *) fullname
-                  type: (uint16_t) rrtype
-                 class: (uint16_t) rrclass
-                length: (uint16_t) rdlen
-                  data: (const void *) rdata
-                   ttl: (uint32_t) ttl;
-@end
-
-static void BONJOUR_CALL ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const unsigned char *txtRecord,void *context){
-   [(NSNetService *) context resolverCallback: sdRef flags: flags interface: interfaceIndex error: errorCode fullname: fullname target: hosttarget port: port length: txtLen record: txtRecord];
-}
-
-static void BONJOUR_CALL RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,bonjour_DNSServiceErrorType errorCode,const char *name,const char *regtype,const char *domain,void *context){
-   [(NSNetService *) context registerCallback: sdRef flags: flags error: errorCode name: name type: regtype domain: domain];
-}
-
-static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,uint16_t rrtype,uint16_t rrclass,uint16_t rdlen,const void *rdata,uint32_t ttl,void *context){
-   [(NSNetService *) context queryCallback: sdRef flags: flags interface: interfaceIndex error: errorCode fullname: fullname type: rrtype class: rrclass length: rdlen data: rdata ttl: ttl];
-}
-
 @implementation NSNetService
 
 -(void)_willPublish {
-  if( [_delegate respondsToSelector:@selector(netServiceWillPublish:)] )
-    [_delegate netServiceWillPublish: self];
+  if([_delegate respondsToSelector:@selector(netServiceWillPublish:)])
+    [_delegate netServiceWillPublish:self];
 }
 
 -(void)_didPublish {
-  if( [_delegate respondsToSelector:@selector(netServiceDidPublish:)])
-    [_delegate netServiceDidPublish: self];
+  if([_delegate respondsToSelector:@selector(netServiceDidPublish:)])
+    [_delegate netServiceDidPublish:self];
 }
 
--(void)_didNotPublish: (NSDictionary *) errorDict {
-  if( [_delegate respondsToSelector:@selector(netService:didNotPublish:)])
-    [_delegate netService: self didNotPublish: errorDict];
+-(void)_didNotPublish:(NSDictionary *) errorDict {
+  if([_delegate respondsToSelector:@selector(netService:didNotPublish:)])
+    [_delegate netService:self didNotPublish:errorDict];
 }
 
 -(void)_willResolve {
-  if( [_delegate respondsToSelector:@selector(netServiceWillResolve:)])
-   [_delegate netServiceWillResolve: self];
+  if([_delegate respondsToSelector:@selector(netServiceWillResolve:)])
+   [_delegate netServiceWillResolve:self];
 }
 
 -(void)_didResolveAddress {
-  if( [_delegate respondsToSelector:@selector(netServiceDidResolveAddress:)])
-   [_delegate netServiceDidResolveAddress: self];
+  if([_delegate respondsToSelector:@selector(netServiceDidResolveAddress:)])
+   [_delegate netServiceDidResolveAddress:self];
 }
 
--(void)_didNotResolve: (NSDictionary *) errorDict {
-  if( [_delegate respondsToSelector:@selector(netService:didNotResolve:)])
-   [_delegate netService: self didNotResolve: errorDict];
+-(void)_didNotResolve:(NSDictionary *) errorDict {
+  if([_delegate respondsToSelector:@selector(netService:didNotResolve:)])
+   [_delegate netService:self didNotResolve:errorDict];
 }
 
 -(void)_netServiceDidStop {
-  if( [_delegate respondsToSelector:@selector(netServiceDidStop:)])
-   [_delegate netServiceDidStop: self];  
+  if([_delegate respondsToSelector:@selector(netServiceDidStop:)])
+   [_delegate netServiceDidStop:self];  
 }
 
--(void)_didUpdateTXTRecordData: (NSData *) data {
-  if( [_delegate respondsToSelector:@selector(netService:didUpdateTXTRecordData:)])
-   [_delegate   netService: self didUpdateTXTRecordData: data];
+-(void)_didUpdateTXTRecordData:(NSData *)data {
+  if([_delegate respondsToSelector:@selector(netService:didUpdateTXTRecordData:)])
+   [_delegate   netService:self didUpdateTXTRecordData:data];
 }
 
-
-- (void) executeWithError: (bonjour_DNSServiceErrorType) err {  
-   if( bonjour_kDNSServiceErr_NoError != err ) {
-    if(_isPublishing )
-     [self _didNotPublish: bonjour_CreateError(self, err)];
-    else
-     [self _didNotResolve: bonjour_CreateError(self, err)];
-
-    return;
-   }
-
+-(void)beginAsynchronousNetService {  
    NSSocket *socket=[[NSSocket alloc] initWithFileDescriptor:bonjour_DNSServiceRefSockFD(_netService)];
       
    _inputSource=[[NSSelectInputSource alloc] initWithSocket:socket];
@@ -146,155 +90,63 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
    [_inputSource setSelectEventMask:NSSelectReadEvent];
       
    [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:NSDefaultRunLoopMode];
-
-   if(_isPublishing )
-    [self _willPublish];
-   else
-    [self _willResolve];      
 }
 
-- (void) _invalidate {  
+-(void)_invalidateNetService {  
    [_inputSource invalidate];
    [_inputSource release];
    _inputSource=nil;   
     
-    if( _netService ){
-      bonjour_DNSServiceRefDeallocate(_netService);
-      _netService = NULL;
-    }
-    
-    [_info removeAllObjects];
-  
+   if( _netService!=NULL ){
+    bonjour_DNSServiceRefDeallocate(_netService);
+    _netService = NULL;
+   }
 }
 
-- (void) stopResolving: (NSTimer *) timer {  
+-(void)stopResolving:(NSTimer *) timer {
+   [self _invalidateNetService];
+   
    [_resolverTimeout invalidate];
    [_resolverTimeout release];
    _resolverTimeout=nil;
     
-   [_inputSource invalidate];
-    
-   [self _didNotResolve: bonjour_CreateError(self, NSNetServicesTimeoutError)];
+   [self _didNotResolve:bonjour_CreateError(self,NSNetServicesTimeoutError)];
 }
 
-- (void) resolverCallback: (bonjour_DNSServiceRef) sdRef
-                    flags: (bonjour_DNSServiceFlags) flags
-                interface: (uint32_t) interfaceIndex
-                    error: (bonjour_DNSServiceErrorType) errorCode
-                 fullname: (const char *) fullname
-                   target: (const char *) hosttarget
-                     port: (uint16_t) port
-                   length: (uint16_t) txtLen
-                   record: (const char *) txtRecord
-{  
-   if(_netService==NULL)
-    return;
-
-   if( bonjour_kDNSServiceErr_NoError != errorCode ){
-    [self _invalidate];
-      
-    [self _didNotResolve: bonjour_CreateError(self, errorCode)];
-    return;
-   }
-
-      // Add the port
-   _port = ntohs(port);
-      
-      // Remove the old entries
-   [_info removeObjectForKey: @"TXT"];
-   [_info removeObjectForKey: @"Host"];
-
-   if( txtRecord!=NULL ){
-    NSData *txt = [[NSData alloc] initWithBytes: txtRecord length: txtLen];
-    [_info setObject: txt forKey: @"TXT"];
-    [txt release];
-   }
-      
-   if( hosttarget!=NULL ) {
-    NSString *target = [[NSString alloc] initWithUTF8String: hosttarget];
-    [_info setObject: target forKey: @"Host"];
-    [target release];
-   }
-      
-      // Add the interface so all subsequent queries are on the same interface
-   _interfaceIndex = interfaceIndex;
+-(void)addAddress:(const void *)rdata length:(uint16_t)rdlen type:(uint16_t) rrtype interfaceIndex:(uint32_t)interface {  
+   NSData *data=nil;
             
-      // Prepare query for A and/or AAAA record
-   errorCode = bonjour_DNSServiceQueryRecord((bonjour_DNSServiceRef *) &_netService,
-                                        flags,
-                                        interfaceIndex,
-                                        hosttarget,
-                                        bonjour_kDNSServiceType_ANY,
-                                        bonjour_kDNSServiceClass_IN,
-                                        QueryCallback,
-                                        self);
+   switch(rrtype){
+    
+    case bonjour_kDNSServiceType_A:		// ipv4      
+     data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,4,htons(_port),interface);
+     break;
       
-      // No error? Then create a new timer
-   if( bonjour_kDNSServiceErr_NoError == errorCode ){
-// FIXME: implement ?
+    case bonjour_kDNSServiceType_AAAA:	// ipv6
+    case bonjour_kDNSServiceType_A6:  // deprecates AAAA
+     data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,16,htons(_port),interface);
+     break;
    }
-  
+
+   if(data!=nil)
+    [_addresses addObject:data];
 }
 
-- (void) addAddress: (const void *) rdata
-             length: (uint16_t) rdlen
-               type: (uint16_t) rrtype
-          interface: (uint32_t) interfaceIndex
-{  
-    NSMutableArray      *addresses = [_info objectForKey: @"Addresses"];
-    NSData              *data = nil;
-        
-    if( nil == addresses ){
-      addresses = [NSMutableArray array];
-    }
-    
-    switch( rrtype ){
-    
-      case bonjour_kDNSServiceType_A:		// AF_INET
-        data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,4,_port);
-        break;
-      
-      case bonjour_kDNSServiceType_AAAA:	// AF_INET6
-      case bonjour_kDNSServiceType_A6:		// deprecates AAAA
-        data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,16,_port);
-        break;
-      
-      default:
-        LOG(@"Unkown type of length <%d>", rdlen);
-        break;
-    }
-    
-    if( data!=nil ){
-      [addresses addObject: data];
-      [_info setObject: addresses forKey: @"Addresses"];
-      
-      [self _didResolveAddress];
-      
-      [_resolverTimeout invalidate];
-      [_resolverTimeout release];
-      _resolverTimeout = nil;
-    }
-}
-
-- (void) queryCallback: (bonjour_DNSServiceRef) sdRef
-                 flags: (bonjour_DNSServiceFlags) flags
-             interface: (uint32_t) interfaceIndex
-                 error: (bonjour_DNSServiceErrorType) errorCode
-              fullname: (const char *) fullname
-                  type: (uint16_t) rrtype
-                 class: (uint16_t) rrclass
-                length: (uint16_t) rdlen
-                  data: (const void *) rdata
-                   ttl: (uint32_t) ttl
-{  
-  
-   if(_netService==NULL)
-    return;
-    
+- (void) queryCallback:(bonjour_DNSServiceRef) sdRef
+                 flags:(bonjour_DNSServiceFlags) flags
+             interface:(uint32_t) interfaceIndex
+                 error:(bonjour_DNSServiceErrorType) errorCode
+              fullname:(const char *) fullname
+                  type:(uint16_t) rrtype
+                 class:(uint16_t) rrclass
+                length:(uint16_t) rdlen
+                  data:(const void *) rdata
+                   ttl:(uint32_t) ttl
+{      
    if(errorCode!=bonjour_kDNSServiceErr_NoError){
-      [self _invalidate];
+      [self _invalidateNetService];
       
-      [self _didNotResolve: bonjour_CreateError(self, errorCode)];
+      [self _didNotResolve:bonjour_CreateError(self, errorCode)];
             
       return;
     }
@@ -302,7 +154,7 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
     switch( rrtype ){
     
       case bonjour_kDNSServiceType_A:		// 1 -- AF_INET
-        [self addAddress: rdata length: rdlen type: rrtype interface: interfaceIndex];
+        [self addAddress:rdata length:rdlen type:rrtype interfaceIndex:interfaceIndex];
         break;
       
       case bonjour_kDNSServiceType_NS:
@@ -323,14 +175,10 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         break;
       
       case bonjour_kDNSServiceType_TXT:
-        {
-          NSData *data = [NSData dataWithBytes: rdata length: rdlen];
-          
-          [_info setObject: data forKey: @"TXT"];
-          
-          [self _didUpdateTXTRecordData: data];
-        
-        }
+        [_txtRecord release];
+        _txtRecord=[[NSData alloc] initWithBytes:rdata length:rdlen];
+                    
+        [self _didUpdateTXTRecordData:_txtRecord];
         break;
       
       case bonjour_kDNSServiceType_RP:
@@ -348,7 +196,7 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         break;
       
       case bonjour_kDNSServiceType_AAAA:	// 28 -- AF_INET6
-        [self addAddress: rdata length: rdlen type: rrtype interface: interfaceIndex];
+        [self addAddress:rdata length:rdlen type:rrtype interfaceIndex:interfaceIndex];
         break;
       
       case bonjour_kDNSServiceType_LOC:
@@ -364,7 +212,7 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         break;
       
       case bonjour_kDNSServiceType_A6:		// 38 -- AF_INET6, deprecates AAAA
-        [self addAddress: rdata length: rdlen type: rrtype interface: interfaceIndex];
+        [self addAddress:rdata length:rdlen type:rrtype interfaceIndex:interfaceIndex];
         break;
       
       case bonjour_kDNSServiceType_DNAME:
@@ -383,56 +231,130 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         break;
       
       case bonjour_kDNSServiceType_ANY:
-        LOG(@"Oops, got the wildcard match...");
         break;
       
       default:
-        LOG(@"Don't know how to handle rrtype <%d>", rrtype);
+        if(NSDebugEnabled)
+         NSLog(@"-[%@ %s] Don't know how to handle rrtype <%d>",isa,_cmd,rrtype);
         break;
     }
   
+   if(!(flags&bonjour_kDNSServiceFlagsMoreComing)){
+      
+    [self _invalidateNetService];
+     
+    [_resolverTimeout invalidate];
+    [_resolverTimeout release];
+    _resolverTimeout = nil;
+    
+    if([_addresses count]>0)
+     [self _didResolveAddress];
+    else
+     [self _didNotResolve:bonjour_CreateError(self, NSNetServicesNotFoundError)];
+   }
 }
 
-- (void) registerCallback: (bonjour_DNSServiceRef) sdRef
-                    flags: (bonjour_DNSServiceFlags) flags
-                    error: (bonjour_DNSServiceErrorType) errorCode
-                     name: (const char *) name
-                     type: (const char *) regtype
-                   domain: (const char *) domain
+static BONJOUR_CALL void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,uint16_t rrtype,uint16_t rrclass,uint16_t rdlen,const void *rdata,uint32_t ttl,void *context){
+   [(NSNetService *) context queryCallback:sdRef flags:flags interface:interfaceIndex error:errorCode fullname:fullname type:rrtype class:rrclass length:rdlen data:rdata ttl:ttl];
+}
+
+- (void) resolverCallback:(bonjour_DNSServiceRef) sdRef
+                    flags:(bonjour_DNSServiceFlags) flags
+                interface:(uint32_t) interfaceIndex
+                    error:(bonjour_DNSServiceErrorType) errorCode
+                 fullname:(const char *) fullname
+                   target:(const char *) hosttarget
+                     port:(uint16_t) port
+                   length:(uint16_t) txtLen
+                   record:(const char *) txtRecord
 {  
-   if( _netService==NULL)
-    return;
-    
    if(errorCode!=bonjour_kDNSServiceErr_NoError){
-    [self _invalidate];
+    [self _invalidateNetService];
+    [self _didNotResolve:bonjour_CreateError(self, errorCode)];
+    return;
+   }
+
+   _port = ntohs(port);
       
-    [self _didNotPublish: bonjour_CreateError(self, errorCode)];
+   [_txtRecord release];
+   _txtRecord=nil;
+   [_host release];
+   _host=nil;
+
+   if( txtRecord!=NULL )
+    _txtRecord = [[NSData alloc] initWithBytes:txtRecord length:txtLen];
+      
+   if( hosttarget!=NULL )
+    _host=[[NSString alloc] initWithUTF8String:hosttarget];
+      
+      // Add the interface so all subsequent queries are on the same interface
+   _interfaceIndex = interfaceIndex;
+
+   [_inputSource invalidate];
+   [_inputSource release];
+   _inputSource=nil;     
+
+   bonjour_DNSServiceRefDeallocate(_netService);
+   _netService = NULL;
+
+   // Prepare query for A and/or AAAA record
+   errorCode = bonjour_DNSServiceQueryRecord(&_netService,0,_interfaceIndex,[_host UTF8String],bonjour_kDNSServiceType_ANY,bonjour_kDNSServiceClass_IN,QueryCallback,self);
+                                        
+   if( bonjour_kDNSServiceErr_NoError != errorCode){
+    [self _invalidateNetService];
+      
+    [self _didNotResolve:bonjour_CreateError(self, errorCode)];
+    return;
+   }
+
+   [self beginAsynchronousNetService];
+}
+
+static BONJOUR_CALL void ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const unsigned char *txtRecord,void *context){
+   [(NSNetService *) context resolverCallback:sdRef flags:flags interface:interfaceIndex error:errorCode fullname:fullname target:hosttarget port:port length:txtLen record:txtRecord];
+}
+
+- (void) registerCallback:(bonjour_DNSServiceRef) sdRef
+                    flags:(bonjour_DNSServiceFlags) flags
+                    error:(bonjour_DNSServiceErrorType) errorCode
+                     name:(const char *) name
+                     type:(const char *) regtype
+                   domain:(const char *) domain
+{      
+   if(errorCode!=bonjour_kDNSServiceErr_NoError){
+    [self _invalidateNetService];
+      
+    [self _didNotPublish:bonjour_CreateError(self, errorCode)];
     return;
    }
     
    [self _didPublish];
 }
 
+static BONJOUR_CALL void RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,bonjour_DNSServiceErrorType errorCode,const char *name,const char *regtype,const char *domain,void *context){
+   [(NSNetService *) context registerCallback:sdRef flags:flags error:errorCode name:name type:regtype domain:domain];
+}
+
+
 -(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
 	
    if(selectEvent&NSSelectReadEvent){
-    
     bonjour_DNSServiceErrorType err= bonjour_DNSServiceProcessResult(_netService);
     
-    if( bonjour_kDNSServiceErr_NoError != err ){		
+    if( err!=bonjour_kDNSServiceErr_NoError ){		
 		if(  _isPublishing )
-			[self _didNotPublish: bonjour_CreateError(self, err)];
+			[self _didNotPublish:bonjour_CreateError(self, err)];
 		else
-			[self _didNotResolve: bonjour_CreateError(self, err)];
+			[self _didNotResolve:bonjour_CreateError(self, err)];
 	}
    }
 }
 
-+ (NSData *) dataFromTXTRecordDictionary: (NSDictionary *) txtDictionary {
++ (NSData *) dataFromTXTRecordDictionary:(NSDictionary *) txtDictionary {
    NSUInteger i,count = [txtDictionary count];
   
    if( count==0){
-    LOG(@"Dictionary seems empty");
+    NSLog(@"Dictionary seems empty");
     return nil;
    }
    
@@ -450,68 +372,65 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
     size_t used = 0;
     bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_Unknown;
         
-    if( ! [key isKindOfClass: [NSString class]] ){
-     LOG(@"%@ is not a string", key);
+    if( ! [key isKindOfClass:[NSString class]]){
+     NSLog(@"%@ is not a string", key);
      break;
     }
         
     length = [key length];
-    [key getCString: keyCString maxLength: sizeof keyCString];
+    [key getCString:keyCString maxLength:sizeof keyCString];
     used = strlen(keyCString);
         
     if( ! length || (used >= sizeof keyCString) ){
-     LOG(@"incorrect length %d - %d - %d", length, used, sizeof keyCString);
+     NSLog(@"incorrect length %d - %d - %d", length, used, sizeof keyCString);
      break;
     }
         
     strcat(keyCString, "\0");
         
-    if( [value isKindOfClass: [NSString class]] ){
+    if([value isKindOfClass:[NSString class]]){
       char cString[256];
           
           length = [value length];
-          [value getCString: cString maxLength: sizeof cString];
+          [value getCString:cString maxLength:sizeof cString];
           used = strlen(cString);
           
           if( used >= sizeof cString ){
-            LOG(@"incorrect length %d - %d - %d", length, used, sizeof cString);
+            NSLog(@"incorrect length %d - %d - %d", length, used, sizeof cString);
             break;
           }
           
           err = bonjour_TXTRecordSetValue(&txt,(const char *) keyCString,used,cString);
         }
-        else if( [value isKindOfClass: [NSData class]] && [value length] < 256){
+        else if([value isKindOfClass:[NSData class]] && [value length] < 256){
           err = bonjour_TXTRecordSetValue(&txt,(const char *) keyCString,[value length],[value bytes]);
           
         }
-        else if( value == [NSNull null] ){
+        else if( value == [NSNull null]){
           err = bonjour_TXTRecordSetValue(&txt,(const char *) keyCString,0,NULL);
         }
         else {
-          LOG(@"unknown value type");
+          NSLog(@"unknown value type");
           break;
         }
         
         if( err != bonjour_kDNSServiceErr_NoError )
         {
-          LOG(@"error creating data type");
+          NSLog(@"error creating data type");
           break;
         }
       }
       
-   NSData *result=(i<count)?nil:[NSData dataWithBytes: bonjour_TXTRecordGetBytesPtr(&txt) length: bonjour_TXTRecordGetLength(&txt)];
+   NSData *result=(i<count)?nil:[NSData dataWithBytes:bonjour_TXTRecordGetBytesPtr(&txt) length:bonjour_TXTRecordGetLength(&txt)];
       
    bonjour_TXTRecordDeallocate(&txt);
       
    return result;
 }
 
-+ (NSDictionary *) dictionaryFromTXTRecordData: (NSData *) txtData
-{
-  NSMutableDictionary
-    *result = nil;
-  NSInteger
-    len = 0;
++ (NSDictionary *) dictionaryFromTXTRecordData:(NSData *) txtData {
+   NSMutableDictionary *result = nil;
+  NSInteger len = 0;
   const void
     *txt = 0;
   
@@ -531,7 +450,7 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
     
     // get number of keys
     count = bonjour_TXTRecordGetCount(len, txt);
-    result = [NSMutableDictionary dictionaryWithCapacity: 1];
+    result = [NSMutableDictionary dictionaryWithCapacity:1];
     
     if( result )
     {
@@ -554,41 +473,41 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         // only if we can get the keyCString and value...
         if( bonjour_kDNSServiceErr_NoError == err )
         {
-          NSString *str = [NSString stringWithUTF8String: keyCString];
+          NSString *str = [NSString stringWithUTF8String:keyCString];
           NSData
             *data = nil;
                     
           if( value ){
-           data = [NSData dataWithBytes: value length: valLen];
+           data = [NSData dataWithBytes:value length:valLen];
           }
           // only add if keyCString and value were created and keyCString doesn't exist yet
-          if( data && str && [str length] && ! [result objectForKey: str] )
+          if( data && str && [str length] && ! [result objectForKey:str])
           {
-            [result setObject: data
-					   forKey: str];
+            [result setObject:data
+					   forKey:str];
           }
           // I'm not exactly sure what to do if there is a keyCString WITHOUT a value
           // Theoretically '<6>foobar' should be identical to '<7>foobar='
           // i.e. the value would be [NSNull null]
           else
           {
-            [result setObject: [NSNull null] forKey: str];
+           [result setObject:[NSNull null] forKey:str];
           }
         }
         else
         {
-          LOG(@"Couldn't get TXTRecord item");
+          NSLog(@"Couldn't get TXTRecord item");
         }
       }
     }
     else
     {
-      LOG(@"Couldn't create dictionary");
+      NSLog(@"Couldn't create dictionary");
     }
   }
   else
   {
-    LOG(@"Incorrect length %d", len);
+    NSLog(@"Incorrect length %d", len);
   }
   
 }
@@ -600,71 +519,60 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
 }
 
 
--initWithDomain: (NSString *) domain type: (NSString *) type name: (NSString *) name {
-   return [self initWithDomain: domain type: type name: name port: -1]; // -1 to indicate resolution, not publish
+-initWithDomain:(NSString *) domain type:(NSString *) type name:(NSString *) name {
+   return [self initWithDomain:domain type:type name:name port:-1]; // -1 to indicate resolution, not publish
 }
 
-/** <init />
- * Initializes the receiver for service publication. Use this method to create
- * an object if you intend to -publish a service.
- *
- */
+-initWithDomain:(NSString *) domain type:(NSString *) type name:(NSString *) name port:(int) port {
+   _domain=[domain copy];
+   _type=[type copy];
+   _name=[name copy];
+   _port = port;
+   _delegate=nil;
 
-- (id) initWithDomain: (NSString *) domain
-                 type: (NSString *) type
-                 name: (NSString *) name
-                 port: (int) port
-{
-   [super init];
-   _resolverTimeout = nil;
+   _host=nil;
+   _addresses=[[NSMutableArray alloc] init];
+   _interfaceIndex = 0;
     
-    _info = [[NSMutableDictionary alloc] init];
-    [_info setObject: domain forKey: @"Domain"];
-    [_info setObject: name forKey: @"Name"];
-    [_info setObject: type forKey: @"Type"];
-    
-    _interfaceIndex = 0;
-    _port = port;
-    
-    _isPublishing = ( -1 == port ) ? NO : YES;
+   _isPublishing = ( port==-1  ) ? NO :YES;
         
-    _netService = NULL;
-    _delegate = nil;
-	_inputSource = nil;
-    return self;
+   _netService = NULL;
+   _inputSource = nil;
+   _resolverTimeout = nil;
+   return self;
 }
 
 - (void) dealloc {
    [self stopMonitoring];
-   [self _invalidate];
-      
-   [_info release];
-   _info = nil;
-      
+   [self _invalidateNetService];
+   [_domain release];
+   [_type release];
+   [_name release];
+   [_host release];
+   [_addresses release];
+         
    _delegate = nil;
-  [super dealloc];
+   [super dealloc];
 }
 
 
-- (void) scheduleInRunLoop: (NSRunLoop *) runLoop forMode: (NSString *) mode {  
+- (void) scheduleInRunLoop:(NSRunLoop *) runLoop forMode:(NSString *) mode {  
    [runLoop addInputSource:_inputSource forMode:mode];
 }
 
-- (void) removeFromRunLoop: (NSRunLoop *) runLoop forMode: (NSString *) mode {  
+- (void) removeFromRunLoop:(NSRunLoop *) runLoop forMode:(NSString *) mode {  
    [runLoop removeInputSource:_inputSource forMode:mode];
-  
 }
 
 -(void)publishWithOptions:(NSNetServiceOptions)options {
    bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
    bonjour_DNSServiceFlags flags = 0;
   
-   // cannot -publish on a service that's init'd for resolving
+// FIXME:these checks seem contrived, check real behavior
    if( NO == _isPublishing )
     err = NSNetServicesBadArgumentError;
    else if( ! _delegate )
     err = NSNetServicesInvalidError;
-      
    else if( _inputSource!=nil )
     err = NSNetServicesActivityInProgress;
    else {      
@@ -674,18 +582,17 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
      _resolverTimeout = nil;
     } 
  
-    err = bonjour_DNSServiceRegister((bonjour_DNSServiceRef *) &_netService,
-                               flags, _interfaceIndex,
-                               [[_info objectForKey: @"Name"] UTF8String],
-                               [[_info objectForKey: @"Type"] UTF8String],
-                               [[_info objectForKey: @"Domain"] UTF8String],
-                               NULL, htons(_port), 0, NULL,
-												 RegistrationCallback,
-												 self);
-		//NSLog(@"test %@", err);
+    err = bonjour_DNSServiceRegister(&_netService,flags, _interfaceIndex,[_name UTF8String],[_type UTF8String],[_domain UTF8String],NULL, htons(_port), 0, NULL,RegistrationCallback,self);
    }
-  
-   [self executeWithError: err];
+   
+   if( err!=bonjour_kDNSServiceErr_NoError ) {
+    [self _didNotPublish:bonjour_CreateError(self, err)];
+    return;
+   }
+
+   [self beginAsynchronousNetService];
+
+   [self _willPublish];
 }
 
 -(void)publish {
@@ -693,21 +600,25 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
 }
 
 -(void)resolve {
-   [self resolveWithTimeout: 5];
+   [self resolveWithTimeout:5];
 }
 
-- (void) resolveWithTimeout: (NSTimeInterval) timeout {
+- (void) resolveWithTimeout:(NSTimeInterval) timeout {
    bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
    bonjour_DNSServiceFlags flags = 0;
 
-      // cannot -resolve on a service that's init'd for publishing
-   if(_isPublishing )
+   [_addresses removeAllObjects];
+
+// FIXME:these checks seem contrived, check real behavior
+   if(_isPublishing ){
     err = NSNetServicesBadArgumentError;
-      
-   else if( ! _delegate )
+   }
+   else if( ! _delegate ){
     err = NSNetServicesInvalidError;
-   else if( _inputSource )
+   }
+   else if( _inputSource ){
     err = NSNetServicesActivityInProgress;
+   }
    else  {
     if( _resolverTimeout ){
         [_resolverTimeout invalidate];
@@ -715,27 +626,28 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         _resolverTimeout = nil;
       }
 
-      err = bonjour_DNSServiceResolve((bonjour_DNSServiceRef *) &_netService,
-                              flags, _interfaceIndex,
-                              [[_info objectForKey: @"Name"] UTF8String],
-                              [[_info objectForKey: @"Type"] UTF8String],
-                              [[_info objectForKey: @"Domain"] UTF8String],
-                              ResolverCallback, self);
+      err = bonjour_DNSServiceResolve( &_netService,flags, _interfaceIndex,[_name UTF8String],[_type UTF8String],[_domain UTF8String],ResolverCallback, self);
                               
       if(err==bonjour_kDNSServiceErr_NoError){        
-        _resolverTimeout=[[NSTimer scheduledTimerWithTimeInterval: timeout
-                                    target: self
-                                  selector: @selector(stopResolving:)
-                                  userInfo: nil
-                                   repeats: NO] retain];
+        _resolverTimeout=[[NSTimer scheduledTimerWithTimeInterval:timeout
+                                    target:self
+                                  selector:@selector(stopResolving:)
+                                  userInfo:nil
+                                   repeats:NO] retain];
       }
    }
    
-   [self executeWithError: err];
+   if( err!=bonjour_kDNSServiceErr_NoError ) {
+    [self _didNotResolve:bonjour_CreateError(self, err)];
+    return;
+   }
+
+   [self beginAsynchronousNetService];
+   [self _willResolve];      
 }
 
 -(void)stop {  
-   [self _invalidate];
+   [self _invalidateNetService];
     
    [self _netServiceDidStop];
 }
@@ -754,9 +666,9 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
    else if( _inputSource!=nil )
     err = NSNetServicesActivityInProgress;
    else {
-    NSString *fullname = [NSString stringWithFormat: @"%@.%@%@", [self name], [self type], [self domain]];
+    NSString *fullname = [NSString stringWithFormat:@"%@.%@%@", [self name], [self type], [self domain]];
       
-    err = bonjour_DNSServiceQueryRecord((bonjour_DNSServiceRef *) &_netService,
+    err = bonjour_DNSServiceQueryRecord( &_netService,
                                   bonjour_kDNSServiceFlagsLongLivedQuery,
                                   0,
                                   [fullname UTF8String],
@@ -774,7 +686,7 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
      [_inputSource setSelectEventMask:NSSelectReadEvent];
       
      [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:NSDefaultRunLoopMode];
-      _isMonitoring = YES;
+     _isMonitoring = YES;
      }
         
     }
@@ -786,14 +698,7 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
    if(!_isMonitoring)
     return;
     
-   [_inputSource invalidate];
-   [_inputSource release];
-   _inputSource=nil;
- 
-   if( _netService ){
-    bonjour_DNSServiceRefDeallocate(_netService);
-    _netService = NULL;
-   }
+   [self _invalidateNetService];
         
    _isMonitoring = NO;
 }
@@ -802,28 +707,28 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
   return _delegate;
 }
 
--(void)setDelegate: (id) delegate {
+-(void)setDelegate:(id) delegate {
     _delegate = delegate;
 }
 
 -(NSArray *)addresses {
-  return [_info objectForKey: @"Addresses"];
+  return _addresses;
 }
 
 -(NSString *)domain {
-  return [_info objectForKey: @"Domain"];
+  return _domain;
 }
 
 -(NSString *)hostName {
-  return [_info objectForKey: @"Host"];
+  return _host;
 }
 
 -(NSString *)name {
-   return [_info objectForKey: @"Name"];
+   return _name;
 }
 
 -(NSString *)type {
-    return [_info objectForKey: @"Type"];
+    return _type;
 }
 
 -(int) port
@@ -842,49 +747,49 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
     NSEnumerator *keys = [dictionary keyEnumerator];
     id key = nil;
       
-    array = [NSMutableArray arrayWithCapacity: [dictionary count]];
+    array = [NSMutableArray arrayWithCapacity:[dictionary count]];
       
     while( (key = [keys nextObject])!=nil ) {
-     id value = [dictionary objectForKey: key];
+     id value = [dictionary objectForKey:key];
         
-     if( value !=  [NSNull null] ){
-      [array addObject: [NSString stringWithFormat: @"%@=%@", key,
-                              [NSString stringWithCString: [value bytes] 
-                                                   length: [value length]]]];
+     if( value !=  [NSNull null]){
+      [array addObject:[NSString stringWithFormat:@"%@=%@", key,
+                              [NSString stringWithCString:[value bytes] 
+                                                   length:[value length]]]];
      }
-     else if( [key length] ) {
-      [array addObject: [NSString stringWithFormat: @"%@", key]];
+     else if([key length]) {
+      [array addObject:[NSString stringWithFormat:@"%@", key]];
      }
     }
    }
   
-   return ( [array count] ? [array componentsJoinedByString: @"\001"] :  (NSString *)nil );
+   return ([array count] ? [array componentsJoinedByString:@"\001"] : (NSString *)nil );
 }
 
-- (void) setProtocolSpecificInformation: (NSString *) specificInformation {  
+- (void) setProtocolSpecificInformation:(NSString *) specificInformation {  
   // Again, the following may not be entirely correct...
 
-   NSArray   *array  = [specificInformation componentsSeparatedByString: @"\001"];
+   NSArray   *array  = [specificInformation componentsSeparatedByString:@"\001"];
    NSUInteger i,count=[array count];
    
    if(count>0){
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity: count];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:count];
    
     for(i=0;i<count;i++){
      NSArray *parts = [[array objectAtIndex:i] componentsSeparatedByString:@"="];
         
-     [dictionary setObject: [[parts objectAtIndex: 1] dataUsingEncoding: NSUTF8StringEncoding] forKey: [parts objectAtIndex: 0]];
+     [dictionary setObject:[[parts objectAtIndex:1] dataUsingEncoding:NSUTF8StringEncoding] forKey:[parts objectAtIndex:0]];
     }
    
-    [self setTXTRecordData:[NSNetService dataFromTXTRecordDictionary: dictionary]];
+    [self setTXTRecordData:[NSNetService dataFromTXTRecordDictionary:dictionary]];
    }
 }
 
 - (NSData *) TXTRecordData {  
-  return [_info objectForKey: @"TXT"];
+  return _txtRecord;
 }
 
-- (BOOL) setTXTRecordData: (NSData *) recordData
+- (BOOL) setTXTRecordData:(NSData *) recordData
 {
   BOOL
     result = NO;
@@ -896,15 +801,9 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
         err = bonjour_kDNSServiceErr_NoError;
       
       // Set the value, or remove it if empty
-      if( recordData )
-      {
-        [_info setObject: recordData forKey: @"TXT"];
-      }
-      else
-      {
-        [_info removeObjectForKey: @"TXT"];
-      }
-      
+      recordData=[recordData copy];
+      [_txtRecord release];
+      _txtRecord=recordData;
       // Assume it worked
       result = YES;
       
@@ -912,8 +811,8 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
       err = bonjour_DNSServiceUpdateRecord(_netService,
                                    NULL,
                                    0,
-                                   recordData ? [recordData length] : 0,
-                                   recordData ? [recordData bytes] : NULL,
+                                   recordData ? [recordData length] :0,
+                                   recordData ? [recordData bytes] :NULL,
                                    0);
       if( err )
       {
@@ -924,10 +823,10 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
    return result;
 }
 
-- (BOOL) getInputStream: (NSInputStream **) inputStream outputStream: (NSOutputStream **) outputStream {  
-   NSHost *host=[NSHost hostWithName:[_info objectForKey: @"Host"]];
+- (BOOL) getInputStream:(NSInputStream **) inputStream outputStream:(NSOutputStream **) outputStream {  
+   NSHost *host=[NSHost hostWithName:_host];
    
-   [NSStream getStreamsToHost: host port:_port inputStream: inputStream outputStream: outputStream];
+   [NSStream getStreamsToHost:host port:_port inputStream:inputStream outputStream:outputStream];
     
    return ((*inputStream!=nil) && (*outputStream!=nil))?YES:NO;
 }
@@ -936,17 +835,17 @@ static void BONJOUR_CALL QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
 
 
 @interface NSNetServiceBrowser(forward)
--(void)enumCallback: (bonjour_DNSServiceRef) sdRef flags: (bonjour_DNSServiceFlags) flags interface: (uint32_t) interfaceIndex error: (bonjour_DNSServiceErrorType) errorCode domain: (const char *) replyDomain;
+-(void)enumCallback:(bonjour_DNSServiceRef) sdRef flags:(bonjour_DNSServiceFlags) flags interface:(uint32_t) interfaceIndex error:(bonjour_DNSServiceErrorType) errorCode domain:(const char *) replyDomain;
 
--(void)browseCallback: (bonjour_DNSServiceRef) sdRef flags: (bonjour_DNSServiceFlags) flags interface: (uint32_t) interfaceIndex error: (bonjour_DNSServiceErrorType) errorCode name: (const char *) replyName type: (const char *) replyType domain: (const char *) replyDomain;
+-(void)browseCallback:(bonjour_DNSServiceRef) sdRef flags:(bonjour_DNSServiceFlags) flags interface:(uint32_t) interfaceIndex error:(bonjour_DNSServiceErrorType) errorCode name:(const char *) replyName type:(const char *) replyType domain:(const char *) replyDomain;
 @end
 
-static void BONJOUR_CALL EnumerationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType  errorCode,const char *replyDomain,void *context) {
-  [(id) context enumCallback: sdRef flags: flags interface: interfaceIndex error: errorCode domain: replyDomain];
+static BONJOUR_CALL void EnumerationCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType  errorCode,const char *replyDomain,void *context) {
+  [(id) context enumCallback:sdRef flags:flags interface:interfaceIndex error:errorCode domain:replyDomain];
 }
 
-static void BONJOUR_CALL BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *replyName,const char *replyType,const char *replyDomain,void *context){
-  [(id) context browseCallback: sdRef flags: flags interface: interfaceIndex error: errorCode name: replyName type: replyType domain: replyDomain];
+static BONJOUR_CALL void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *replyName,const char *replyType,const char *replyDomain,void *context){
+  [(id) context browseCallback:sdRef flags:flags interface:interfaceIndex error:errorCode name:replyName type:replyType domain:replyDomain];
 }
 
 @implementation NSNetServiceBrowser
@@ -995,51 +894,50 @@ static void BONJOUR_CALL BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNS
 }
 
 -(void)_willSearch {
-   if( [_delegate respondsToSelector:@selector(netServiceBrowserWillSearch:)])
-    [_delegate netServiceBrowserWillSearch: self];
+   if([_delegate respondsToSelector:@selector(netServiceBrowserWillSearch:)])
+    [_delegate netServiceBrowserWillSearch:self];
 }
 
--(void)_didNotSearch: (NSDictionary *) errorDict {
-  if( [_delegate respondsToSelector:@selector(netServiceBrowser:didNotSearch:)])
-    [_delegate netServiceBrowser: self didNotSearch: errorDict];
+-(void)_didNotSearch:(NSDictionary *) errorDict {
+  if([_delegate respondsToSelector:@selector(netServiceBrowser:didNotSearch:)])
+    [_delegate netServiceBrowser:self didNotSearch:errorDict];
 }
 
 - (void)_didStopSearch {
-  if( [_delegate respondsToSelector:@selector(netServiceBrowserDidStopSearch:)])
-    [_delegate netServiceBrowserDidStopSearch: self];  
+  if([_delegate respondsToSelector:@selector(netServiceBrowserDidStopSearch:)])
+    [_delegate netServiceBrowserDidStopSearch:self];  
 }
 
-- (void)_didFindDomain: (NSString *) domainString moreComing: (BOOL) moreComing {
+- (void)_didFindDomain:(NSString *) domainString moreComing:(BOOL) moreComing {
   
-  if( [_delegate respondsToSelector:@selector(netServiceBrowser:didFindDomain:moreComing:)])
-    [_delegate netServiceBrowser: self didFindDomain: domainString moreComing: moreComing];
+  if([_delegate respondsToSelector:@selector(netServiceBrowser:didFindDomain:moreComing:)])
+    [_delegate netServiceBrowser:self didFindDomain:domainString moreComing:moreComing];
 }
 
-- (void)_didRemoveDomain: (NSString *) domainString moreComing: (BOOL) moreComing {
+- (void)_didRemoveDomain:(NSString *) domainString moreComing:(BOOL) moreComing {
   
-  if( [_delegate respondsToSelector:@selector(netServiceBrowser:didRemoveDomain:moreComing:) ])
-    [_delegate netServiceBrowser: self didRemoveDomain: domainString moreComing: moreComing];
-  
-}
-
-- (void)_didFindService: (NSNetService *) aService moreComing: (BOOL) moreComing {
-  if( [_delegate respondsToSelector:@selector(netServiceBrowser:didFindService:moreComing:)])
-    [_delegate netServiceBrowser: self didFindService: aService moreComing: moreComing];
+  if([_delegate respondsToSelector:@selector(netServiceBrowser:didRemoveDomain:moreComing:) ])
+    [_delegate netServiceBrowser:self didRemoveDomain:domainString moreComing:moreComing];
   
 }
 
-- (void)_didRemoveService: (NSNetService *) aService
-                moreComing: (BOOL) moreComing {
-  if( [_delegate respondsToSelector:@selector(netServiceBrowser:didRemoveService:moreComing:)])
-    [_delegate netServiceBrowser: self didRemoveService: aService moreComing: moreComing];
+- (void)_didFindService:(NSNetService *) aService moreComing:(BOOL) moreComing {
+  if([_delegate respondsToSelector:@selector(netServiceBrowser:didFindService:moreComing:)])
+    [_delegate netServiceBrowser:self didFindService:aService moreComing:moreComing];
+  
 }
 
-- (void) executeWithError: (bonjour_DNSServiceErrorType) err
+- (void)_didRemoveService:(NSNetService *) aService
+                moreComing:(BOOL) moreComing {
+  if([_delegate respondsToSelector:@selector(netServiceBrowser:didRemoveService:moreComing:)])
+    [_delegate netServiceBrowser:self didRemoveService:aService moreComing:moreComing];
+}
+
+- (void) executeWithError:(bonjour_DNSServiceErrorType) err
 {  
     if( bonjour_kDNSServiceErr_NoError == err )
     {
      [self _willSearch];
-           
       NSSocket *socket=[[NSSocket alloc] initWithFileDescriptor:bonjour_DNSServiceRefSockFD(_netServiceBrowser)];
       
       _inputSource=[[NSSelectInputSource alloc] initWithSocket:socket];
@@ -1052,11 +950,11 @@ static void BONJOUR_CALL BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNS
     }
     else // notify the delegate of the error
     {
-      [self _didNotSearch: bonjour_CreateError(self, err)];
+      [self _didNotSearch:bonjour_CreateError(self, err)];
     }
 }
 
-- (void) searchForDomain: (int) aFlag {
+- (void) searchForDomain:(int) flags {
    bonjour_DNSServiceErrorType err;
   
    if( ! _delegate )
@@ -1064,31 +962,25 @@ static void BONJOUR_CALL BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNS
    else if( _inputSource )
     err = NSNetServicesActivityInProgress;
    else {
-    err = bonjour_DNSServiceEnumerateDomains((bonjour_DNSServiceRef *)&_netServiceBrowser,
-                                       aFlag,
-                                       _interfaceIndex,
-                                       EnumerationCallback,
-                                       self);
+    err = bonjour_DNSServiceEnumerateDomains(&_netServiceBrowser,flags,_interfaceIndex,EnumerationCallback,self);
    }
   
-   [self executeWithError: err];
+   [self executeWithError:err];
 }
 
-- (void) enumCallback: (bonjour_DNSServiceRef) sdRef
-                flags: (bonjour_DNSServiceFlags) flags
-            interface: (uint32_t) interfaceIndex
-                error: (bonjour_DNSServiceErrorType) errorCode
-               domain: (const char *) replyDomain {  
-   if( _netServiceBrowser==NULL)
-    return;
+- (void) enumCallback:(bonjour_DNSServiceRef) sdRef
+                flags:(bonjour_DNSServiceFlags) flags
+            interface:(uint32_t) interfaceIndex
+                error:(bonjour_DNSServiceErrorType) errorCode
+               domain:(const char *) replyDomain {  
 
    if( errorCode ){
     [self invalidate];
       
-    [self _didNotSearch: bonjour_CreateError(self, errorCode)];
+    [self _didNotSearch:bonjour_CreateError(self, errorCode)];
     return;
    }
-      
+         
    if(replyDomain==NULL)
     return;
 
@@ -1096,129 +988,111 @@ static void BONJOUR_CALL BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNS
         
    _interfaceIndex = interfaceIndex;
         
-   if( flags & bonjour_kDNSServiceFlagsAdd ){
-    LOG(@"Found domain <%s>", replyDomain);
-          
-    [self _didFindDomain: [NSString stringWithUTF8String: replyDomain] moreComing: more];
+   if( flags & bonjour_kDNSServiceFlagsAdd ){          
+    [self _didFindDomain:[NSString stringWithUTF8String:replyDomain] moreComing:more];
    }
-   else { // bonjour_kDNSServiceFlagsRemove
-    LOG(@"Removed domain <%s>", replyDomain);
-          
-    [self _didRemoveDomain: [NSString stringWithUTF8String: replyDomain] moreComing: more];
+   else { // bonjour_kDNSServiceFlagsRemove          
+    [self _didRemoveDomain:[NSString stringWithUTF8String:replyDomain] moreComing:more];
    }
 }
 
-- (void) browseCallback: (bonjour_DNSServiceRef) sdRef
-                  flags: (bonjour_DNSServiceFlags) flags
-              interface: (uint32_t) interfaceIndex
-                  error: (bonjour_DNSServiceErrorType) errorCode
-                   name: (const char *) replyName
-                   type: (const char *) replyType
-                 domain: (const char *) replyDomain
-{
-    
-   if( _netServiceBrowser==NULL)
-    return;
-   
+- (void) browseCallback:(bonjour_DNSServiceRef) sdRef
+                  flags:(bonjour_DNSServiceFlags) flags
+              interface:(uint32_t) interfaceIndex
+                  error:(bonjour_DNSServiceErrorType) errorCode
+                   name:(const char *) replyName
+                   type:(const char *) replyType
+                 domain:(const char *) replyDomain {   
    if(errorCode!=bonjour_kDNSServiceErr_NoError){
     [self invalidate];
             
-    [self _didNotSearch: bonjour_CreateError(self, errorCode)];
+    [self _didNotSearch:bonjour_CreateError(self, errorCode)];
     return;
    }
 
    BOOL          more = (flags & bonjour_kDNSServiceFlagsMoreComing)?YES:NO;
-   NSString     *domain=[NSString stringWithUTF8String: replyDomain];
-   NSString     *type=[NSString stringWithUTF8String: replyType];
-   NSString     *name=[NSString stringWithUTF8String: replyName];
-   NSString     *key=[NSString stringWithFormat: @"%@%@%@", name, type, domain];
+   NSString     *domain=[NSString stringWithUTF8String:replyDomain];
+   NSString     *type=[NSString stringWithUTF8String:replyType];
+   NSString     *name=[NSString stringWithUTF8String:replyName];
+   NSString     *key=[NSString stringWithFormat:@"%@%@%@", name, type, domain];
    NSNetService *service = nil;
       
    _interfaceIndex = interfaceIndex;
       
    if( flags & bonjour_kDNSServiceFlagsAdd ){
-    service = [[NSNetService alloc] initWithDomain: domain type: type name: name];
-        
-    if( service ){
-     LOG(@"Found service <%s>", replyName);
-          
-     [_services setObject: service forKey: key];
+    service = [[NSNetService alloc] initWithDomain:domain type:type name:name];
+    
+    if( service ){          
+     [_services setObject:service forKey:key];
           
      [service autorelease];
 
-     [self _didFindService: service moreComing: more];
+     [self _didFindService:service moreComing:more];
     }
     else {
-     LOG(@"WARNING: Could not create an NSNetService for <%s>", replyName);
+     NSLog(@"WARNING:Could not create an NSNetService for <%s>", replyName);
     }
    }
    else { // bonjour_kDNSServiceFlagsRemove
-    service = [_services objectForKey: key];
+    service = [_services objectForKey:key];
         
-    if( service ){
-     LOG(@"Removed service <%@>", [service name]);
-          
-     [self _didRemoveService: service moreComing: more];
+    if( service ){          
+     [self _didRemoveService:service moreComing:more];
     }
     else {
-     LOG(@"WARNING: Could not find <%@> in list", key);
+     NSLog(@"WARNING:Could not find <%@> in list", key);
     }
    }  
 }
 
 -(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
-	
    if(selectEvent&NSSelectReadEvent){
+
     bonjour_DNSServiceErrorType err = bonjour_DNSServiceProcessResult(_netServiceBrowser);
 	
-    if( bonjour_kDNSServiceErr_NoError != err ){
-     [self _didNotSearch: bonjour_CreateError(self, err)];
+    if( err!=bonjour_kDNSServiceErr_NoError ){
+     [self _didNotSearch:bonjour_CreateError(self, err)];
     }
    }
 }
 
-- (void) scheduleInRunLoop: (NSRunLoop *) runLoop forMode: (NSString *) mode {  
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {  
    [runLoop addInputSource:_inputSource forMode:mode];
 }
 
-- (void) removeFromRunLoop: (NSRunLoop *) runLoop forMode: (NSString *) mode {  
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {  
    [runLoop removeInputSource:_inputSource forMode:mode];
 }
 
-// Search for all visible domains. This method is deprecated.
 
-- (void) searchForAllDomains {
-  [self searchForDomain: bonjour_kDNSServiceFlagsBrowseDomains|bonjour_kDNSServiceFlagsRegistrationDomains];
+-(void)searchForAllDomains {
+// Search for all visible domains. This method is deprecated in 10.4
+
+   [self searchForDomain:bonjour_kDNSServiceFlagsBrowseDomains|bonjour_kDNSServiceFlagsRegistrationDomains];
 }
 
-- (void) searchForBrowsableDomains {
-  [self searchForDomain: bonjour_kDNSServiceFlagsBrowseDomains];
+-(void)searchForBrowsableDomains {
+   [self searchForDomain:bonjour_kDNSServiceFlagsBrowseDomains];
 }
 
 // Search for all registration domains. These domains can be used to register a service.
 
-- (void) searchForRegistrationDomains {
-  [self searchForDomain: bonjour_kDNSServiceFlagsRegistrationDomains];
+-(void)searchForRegistrationDomains {
+   [self searchForDomain:bonjour_kDNSServiceFlagsRegistrationDomains];
 }
 
-- (void) searchForServicesOfType: (NSString *) serviceType inDomain: (NSString *) domainName {
+- (void) searchForServicesOfType:(NSString *) serviceType inDomain:(NSString *) domainName {
    bonjour_DNSServiceErrorType err = bonjour_kDNSServiceErr_NoError;
-  
+
    if( ! _delegate )
     err = NSNetServicesInvalidError;
    else if( _inputSource )
     err = NSNetServicesActivityInProgress;
    else {
-    err = bonjour_DNSServiceBrowse((bonjour_DNSServiceRef *) &_netServiceBrowser,
-                             0,
-                             _interfaceIndex,
-                             [serviceType UTF8String],
-                             [domainName UTF8String],
-                             BrowserCallback,
-                             self);
+    err = bonjour_DNSServiceBrowse( &_netServiceBrowser,0,_interfaceIndex,[serviceType UTF8String],[domainName UTF8String],BrowserCallback,self);
    }
   
-   [self executeWithError: err];
+   [self executeWithError:err];
 }
 
 -(void) stop {  

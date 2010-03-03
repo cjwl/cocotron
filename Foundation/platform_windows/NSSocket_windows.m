@@ -259,7 +259,7 @@ static inline void byteZero(void *vsrc,size_t size){
 
 @end
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,int port) {
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,int port,int interface) {
 #if 0
    if(length==4){ // IPV4
       char rdb[100]; // should be more than enough
