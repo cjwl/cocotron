@@ -46,7 +46,7 @@ objc_skip_type_qualifier (const char* type)
 }
 
 const char * 
-objc_skip_type_specifier (const char *type)
+objc_skip_type_specifier (const char *type,BOOL skipDigits)
 {
 	NSCAssert(type != NULL, NULL);
 	
@@ -99,7 +99,7 @@ objc_skip_type_specifier (const char *type)
 			/* skip digits, typespec and closing ']' */
 			
 			while (isdigit (*++type));
-			type = objc_skip_type_specifier (type);
+			type = objc_skip_type_specifier (type,skipDigits);
 			NSCAssert (type == NULL || *type == _C_ARY_E, nil);
 			if (type) type++;
 			break;
@@ -117,7 +117,7 @@ objc_skip_type_specifier (const char *type)
 						return NULL;
 					}
 				}
-				type = objc_skip_type_specifier (type);
+				type = objc_skip_type_specifier (type,skipDigits);
 			}
 			if (type) type++;
 			break;
@@ -135,7 +135,7 @@ objc_skip_type_specifier (const char *type)
 						return NULL;
 					}
 				}
-				type = objc_skip_type_specifier (type); 
+				type = objc_skip_type_specifier (type,skipDigits); 
 			}
 			if (type) type++;
 			break;
@@ -149,7 +149,7 @@ objc_skip_type_specifier (const char *type)
       case _C_ONEWAY:
 			
 			/* Just skip the following typespec */
-			type = objc_skip_type_specifier (type+1);
+			type = objc_skip_type_specifier (type+1,skipDigits);
 			break;
 			
 			
@@ -157,12 +157,15 @@ objc_skip_type_specifier (const char *type)
 			NSLog(@"objc_skip_type_specifier: Unhandled type '%#x' %s", *type, type); 
 			return NULL;
 	}
-	
+
+   if(skipDigits){
 	/* The compiler inserts a number after the actual signature, 
 	 * this number may or may not be usefull depending on the compiler
 	 * version. We never use it.
 	 */
-	while (type && *type && isdigit(*type)) type++;
+	 while (type && *type && isdigit(*type)) type++;
+    }
+
 	return type;
 }
 
@@ -275,7 +278,7 @@ objc_alignof_type (const char *type)
 						align = objc_alignof_type(type);
 						have_align = 1;
 					}
-					type = objc_skip_type_specifier(type);
+					type = objc_skip_type_specifier(type,YES);
 				}
 				if (type == NULL) return -1;
 				return align;
@@ -298,7 +301,7 @@ objc_alignof_type (const char *type)
 				size_t item_align = objc_alignof_type(type);
 				if (item_align == -1) return -1;
 				maxalign = MAX (maxalign, item_align);
-				type = objc_skip_type_specifier (type);
+				type = objc_skip_type_specifier (type,YES);
 			}
 			return maxalign;
 		}
@@ -414,7 +417,7 @@ objc_sizeof_type (const char *type)
 				itemSize = objc_sizeof_type (type); 
 				if (itemSize == -1) return -1;
 				acc_size += itemSize;
-				type = objc_skip_type_specifier (type);
+				type = objc_skip_type_specifier (type,YES);
 			}
 			if (max_align) {
 				acc_size = ROUND(acc_size, max_align);
@@ -436,7 +439,7 @@ objc_sizeof_type (const char *type)
 				itemSize = objc_sizeof_type (type);
 				if (itemSize == -1) return -1;
 				max_size = MAX (max_size, itemSize);
-				type = objc_skip_type_specifier (type);
+				type = objc_skip_type_specifier (type,YES);
 			}
 			return max_size;
 		}

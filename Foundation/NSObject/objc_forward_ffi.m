@@ -65,7 +65,7 @@ num_struct_fields(const char* argtype)
 	
 	argtype++;
 	while (*argtype != _C_STRUCT_E) {
-		argtype = objc_skip_type_specifier(argtype);
+		argtype = objc_skip_type_specifier(argtype,YES);
 		if (argtype == NULL) [NSException raise:NSInternalInconsistencyException format:@"exception while encoding type"];
 		res ++;
 	}
@@ -145,7 +145,7 @@ struct_to_ffi_type(const char* argtype)
 			type->elements[field_count] = 
 			signature_to_ffi_type(curtype);
 			field_count++;
-			curtype = objc_skip_type_specifier(curtype);
+			curtype = objc_skip_type_specifier(curtype,YES);
 		}
 	}
 	type->elements[field_count] = NULL;
@@ -356,11 +356,11 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 	ffi_cif* cif=[_signature _callingInfo];
 	NSAssert(numArgs>=2, @"invocation must have target and selector");
 	const char *type=[_signature _realTypes];
-	type=objc_skip_type_specifier(type);
+	type=objc_skip_type_specifier(type,YES);
 	for(i=0; i<numArgs; i++)
 	{
 		arguments[i]=_argumentFrame+_argumentOffsets[i];
-		type=objc_skip_type_specifier(type);
+		type=objc_skip_type_specifier(type,YES);
 	}
 
 	IMP imp=objc_msg_lookup(target, [self selector]);

@@ -10,4 +10,4 @@
 
 size_t objc_sizeof_type (const char *type);
 size_t objc_alignof_type (const char *type);
-const char *objc_skip_type_specifier (const char *type);
+const char *objc_skip_type_specifier (const char *type,BOOL skipDigits);
