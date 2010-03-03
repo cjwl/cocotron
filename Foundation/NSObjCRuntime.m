@@ -47,7 +47,7 @@ static void NSLogFormat(NSString *format,...) {
 }
 
 static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOOL withSyslogBanner) {
-   NSString *message = [[NSString alloc] initWithBytes:string length:length encoding:NSUTF8StringEncoding];
+   NSString *message = [[NSString allocWithZone:NULL] initWithBytes:string length:length encoding:NSUTF8StringEncoding];
    if (withSyslogBanner)
    {
       NSString *date=[[NSDate date]
@@ -113,7 +113,7 @@ const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *
 
 	*size=objc_sizeof_type(type);
 	*alignment=objc_alignof_type(type);
-	return objc_skip_type_specifier(type);
+	return objc_skip_type_specifier(type,NO);
 }
 
 SEL NSSelectorFromString(NSString *selectorName) {   
