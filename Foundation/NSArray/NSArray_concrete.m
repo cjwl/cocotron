@@ -92,21 +92,32 @@ NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
 -(NSUInteger)count { return _count; }
 
 -objectAtIndex:(NSUInteger)index {
-   if(index>=_count)
-    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
-     index,_count);
-
+   if(index>=_count){
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,_count);
+    return nil;
+   }
+   
    return _objects[index];
+}
+
+-lastObject {
+   if(_count==0)
+    return nil;
+
+   return _objects[_count-1];
 }
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
-	NSInteger numObjects=MIN([self count] - state->extra[0], length);
-	state->mutationsPtr=(unsigned long*)&_objects;
-	state->itemsPtr=&_objects[state->extra[0]];
-	state->extra[0]+=numObjects;
+   if(state->state>=_count)
+    return 0;
+   
+   state->itemsPtr=_objects;
+   state->state=_count;
+   
+   state->mutationsPtr=(unsigned long*)self;
 	
-	return numObjects;
+   return _count;
 }
 
 @end

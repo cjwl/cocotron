@@ -115,39 +115,44 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
    [super dealloc];
 }
 
--(NSUInteger)count { return _count; }
+-(NSUInteger)count {
+   return _count;
+}
 
 -objectAtIndex:(NSUInteger)index {
    if(index>=_count){
-    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
-     index,[self count]);
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,[self count]);
+    return nil;
    }
 
    return _objects[index];
 }
 
 -(void)addObject:object {
-   if(object==nil)
+   if(object==nil){
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
-
+    return;
+   }
+   
    [object retain];
 
    _count++;
    if(_count>_capacity){
     _capacity=_count*2;
-    _objects=NSZoneRealloc(NSZoneFromPointer(_objects),
-      _objects,sizeof(id)*_capacity);
+    _objects=NSZoneRealloc(NSZoneFromPointer(_objects),_objects,sizeof(id)*_capacity);
    }
    _objects[_count-1]=object;
 }
 
 -(void)replaceObjectAtIndex:(NSUInteger)index withObject:object {
-   if(object==nil)
+   if(object==nil){
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
-
+    return;
+   }
+   
    if(index>=_count){
-    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
-     index,[self count]);
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,[self count]);
+    return;
    }
 
    [object retain];
@@ -162,24 +167,17 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
    return _objects[_count-1];
 }
 
--(void)removeLastObject {
-   if(_count==0){
-    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
-     1,[self count]);
-   }
-
-   [self removeObjectAtIndex:_count-1];
-}
-
 -(void)insertObject:object atIndex:(NSUInteger)index {
    NSInteger c;
 
-   if(object==nil)
+   if(object==nil){
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
-
+    return;
+   }
+   
    if(index>_count){
-    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
-     index,[self count]);
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,[self count]);
+    return;
    }
 
    _count++;
@@ -196,26 +194,50 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
    _objects[index]=[object retain];
 }
 
--(void)removeObjectAtIndex:(NSUInteger)index {
+static void removeObjectAtIndex(NSMutableArray_concrete *self,NSUInteger index) {
    NSUInteger i;
    id object;
 
-   if(index>=_count){
-    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
-     index,[self count]);
-   }
-
-   object=_objects[index];
-   _count--;
-   for(i=index;i<_count;i++)
-    _objects[i]=_objects[i+1];
+   object=self->_objects[index];
+   self->_count--;
+   for(i=index;i<self->_count;i++)
+    self->_objects[i]=self->_objects[i+1];
 
    [object release];
 
-   if(_capacity>_count*2){
-    _capacity=_count;
-    _objects=NSZoneRealloc(NSZoneFromPointer(_objects),
-      _objects,sizeof(id)*_capacity);
+   if(self->_capacity>self->_count*2){
+    self->_capacity=self->_count;
+    self->_objects=NSZoneRealloc(NSZoneFromPointer(self->_objects),self->_objects,sizeof(id)*self->_capacity);
+   }
+}
+
+-(void)removeObjectAtIndex:(NSUInteger)index {
+   if(index>=_count){
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,[self count]);
+   }
+
+  removeObjectAtIndex(self,index);
+}
+
+-(void)removeLastObject {
+   if(_count==0){
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",1,[self count]);
+    return;
+   }
+
+   removeObjectAtIndex(self,_count-1);
+}
+
+-(void)removeAllObjects {
+   NSUInteger i;
+   
+   for(i=0;i<_count;i++)
+    [_objects[i] release];
+    
+   _count=0;
+   if(self->_capacity>8){
+    self->_capacity=8;
+    self->_objects=NSZoneRealloc(NSZoneFromPointer(self->_objects),self->_objects,sizeof(id)*self->_capacity);
    }
 }
 
@@ -289,12 +311,15 @@ static inline NSUInteger indexOfObject(NSMutableArray_concrete *self,id object){
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
-	NSInteger numObjects=MIN([self count] - state->extra[0], length);
-	state->mutationsPtr=(unsigned long*)&_objects;
-	state->itemsPtr=&_objects[state->extra[0]];
-	state->extra[0]+=numObjects;
+   if(state->state>=_count)
+    return 0;
+   
+   state->itemsPtr=_objects;
+   state->state=_count;
+   
+   state->mutationsPtr=(unsigned long*)self;
 	
-	return numObjects;
+   return _count;
 }
 
 @end
