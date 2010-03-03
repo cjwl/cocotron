@@ -199,17 +199,17 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(void)deviceClipReset {
-   [_deviceContext clipReset];
+   O2DeviceContextClipReset_gdi(_dc);
 }
 
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
    O2GState *state=currentState(self);
-   [_deviceContext clipToNonZeroPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   O2DeviceContextClipToNonZeroPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
 }
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
    O2GState *state=currentState(self);
-   [_deviceContext clipToEvenOddPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
 }
 
 -(void)deviceClipToMask:(O2Image *)mask inRect:(NSRect)rect {
@@ -230,7 +230,7 @@ static inline O2GState *currentState(O2Context *self){
    if(!SetWorldTransform(_dc,&userToDevice))
     NSLog(@"ModifyWorldTransform failed");
 
-   [_deviceContext establishDeviceSpacePath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform)];
+   O2DeviceContextEstablishDeviceSpacePath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform));
       
    {
     HBRUSH fillBrush=CreateSolidBrush(COLORREFFromColor(fillColor));
@@ -317,9 +317,9 @@ static inline O2GState *currentState(O2Context *self){
    O2GState *gState=currentState(self);
    
    if(gState->_fontIsDirty){
-    [gState clearFontIsDirty];
+    O2GStateClearFontIsDirty(gState);
     [_gdiFont release];
-    _gdiFont=[(O2Font_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
+    _gdiFont=[(O2Font_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:O2GStatePointSize(gState)];
    }
 }
 
@@ -331,7 +331,7 @@ static inline O2GState *currentState(O2Context *self){
    
    [self establishFontStateInDeviceIfDirty];
 
-   SetTextColor(_dc,COLORREFFromColor([self fillColor]));
+   SetTextColor(_dc,COLORREFFromColor(O2ContextFillColor(self)));
 
    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 
@@ -381,7 +381,7 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
 #endif
 
 -(void)drawInUserSpace:(O2AffineTransform)matrix axialShading:(O2ShadingRef)shading {
-   O2ColorSpaceRef colorSpace=[shading colorSpace];
+   O2ColorSpaceRef colorSpace=O2ShadingColorSpace(shading);
    O2ColorSpaceModel colorSpaceType=[colorSpace type];
    O2Function   *function=[shading function];
    const float  *domain=[function domain];
@@ -425,7 +425,6 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
      break;
      
     case kO2ColorSpaceModelRGB:
-    case kO2ColorSpaceModelPlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
@@ -708,7 +707,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
     - does not factor resolution/scaling can cause banding
     - does not factor color sampling rate, generates multiple bands for same color
  */
-   O2ColorSpaceRef colorSpace=[shading colorSpace];
+   O2ColorSpaceRef colorSpace=O2ShadingColorSpace(shading);
    O2ColorSpaceModel colorSpaceType=[colorSpace type];
    O2Function   *function=[shading function];
    const float  *domain=[function domain];
@@ -733,7 +732,6 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
      break;
      
     case kO2ColorSpaceModelRGB:
-    case kO2ColorSpaceModelPlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
@@ -1056,7 +1054,7 @@ static void zeroBytes(void *bytes,int size){
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
    O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
    O2GState *gState=currentState(self);
-   O2ClipPhase     *phase=[[gState clipPhases] lastObject];
+   O2ClipPhase     *phase=[O2GStateClipPhases(gState) lastObject];
    
 /* The NSImage drawing methods which take a fraction use a 1x1 alpha mask to set the fraction.
    We don't do alpha masks yet but the rough fraction code already existed so we check for this
@@ -1064,8 +1062,8 @@ static void zeroBytes(void *bytes,int size){
  */
    float fraction=1.0;
 
-   if(phase!=nil && [phase phaseType]==O2ClipPhaseMask){
-    O2Image *mask=[phase object];
+   if(phase!=nil && O2ClipPhasePhaseType(phase)==O2ClipPhaseMask){
+    O2Image *mask=O2ClipPhaseObject(phase);
     
     if(O2ImageGetWidth(mask)==1 && O2ImageGetHeight(mask)==1){
      uint8_t byte=255;

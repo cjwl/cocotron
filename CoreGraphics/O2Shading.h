@@ -32,7 +32,7 @@ typedef O2Shading *O2ShadingRef;
 
 -initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint startRadius:(float)startRadius endPoint:(O2Point)endPoint endRadius:(float)endRadius function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
--(O2ColorSpaceRef)colorSpace;
+O2ColorSpaceRef O2ShadingColorSpace(O2Shading *self);
 
 -(O2Point)startPoint;
 -(O2Point)endPoint;

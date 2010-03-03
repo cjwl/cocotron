@@ -52,7 +52,7 @@ static BOOL _isAvailable=NO;
 }
 
 +(BOOL)canInitBitmap {
-   return _isAvailable;
+   return YES;
 }
 
 +(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary {
@@ -122,17 +122,22 @@ static BOOL _isAvailable=NO;
    [_clipContext release];
    [_paint release];
    
-   int i;
-   for(i=0;i<_edgeCount;i++)
-    NSZoneFree(NULL,_edges[i]);
+   if(_edges!=NULL){
+    int i;
+    for(i=0;i<_edgeCount;i++)
+     NSZoneFree(NULL,_edges[i]);
 
-   NSZoneFree(NULL,_edges);
-   NSZoneFree(NULL,_sortCache);
-   
-   free(_winding);
-   free(_increase);
-   
-   NSZoneFree(NULL,samplesX);
+    NSZoneFree(NULL,_edges);
+   }
+   if(_sortCache!=NULL)
+    NSZoneFree(NULL,_sortCache);
+
+   if(_winding!=NULL) 
+    free(_winding);
+   if(_increase!=NULL)
+    free(_increase);
+   if(samplesX!=NULL)
+    NSZoneFree(NULL,samplesX);
    
    [super dealloc];
 }
@@ -146,7 +151,7 @@ static BOOL _isAvailable=NO;
    [self reallocateForSurface];
    O2RasterizerSetViewport(self,0,0,O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
    O2AffineTransform flip={1,0,0,-1,0,O2ImageGetHeight(_surface)};
-   [currentState(self) setDeviceSpaceCTM:flip];
+   O2GStateSetDeviceSpaceCTM(currentState(self),flip);
 }
 
 -(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
@@ -181,12 +186,16 @@ static BOOL _isAvailable=NO;
    O2LayerRelease(layer);
 }
 
--(void)deviceClipReset {
-   O2RasterizerSetViewport(self,0,0,O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
+void O2ContextDeviceClipReset_builtin(O2Context_builtin *self){
+   O2RasterizerSetViewport(self,0,0,O2ImageGetWidth(self->_surface),O2ImageGetHeight(self->_surface));
 }
 
--(void)deviceClipToNonZeroPath:(O2Path *)path {
-   O2MutablePath *copy=[path mutableCopy];
+-(void)deviceClipReset {
+   O2ContextDeviceClipReset_builtin(self);
+}
+
+static void O2ContextClipViewportToPath(O2Context_builtin *self,O2Path *path) {
+   O2MutablePath *copy=O2PathCreateMutableCopy(path);
     
    O2PathApplyTransform(copy,O2AffineTransformInvert(currentState(self)->_userSpaceTransform));
    O2PathApplyTransform(copy,currentState(self)->_deviceSpaceTransform);
@@ -194,22 +203,66 @@ static BOOL _isAvailable=NO;
    
    [copy release];
 
-   _vpx=MAX(rect.origin.x,0);
-   _vpwidth=MIN(O2ImageGetWidth(_surface),O2RectGetMaxX(rect))-_vpx;
-   _vpy=MAX(rect.origin.y,0);
-   _vpheight=MIN(O2ImageGetHeight(_surface),O2RectGetMaxY(rect))-_vpy;
+   O2Rect viewport=O2RectMake(self->_vpx,self->_vpy,self->_vpwidth,self->_vpheight);
+   
+   viewport=O2RectIntersection(viewport,rect);
+   
+   self->_vpx=viewport.origin.x;
+   self->_vpy=viewport.origin.y;
+   self->_vpwidth=viewport.size.width;
+   self->_vpheight=viewport.size.height;
 }
 
-static O2Paint *paintFromColor(O2ColorRef color){
-   size_t    count=O2ColorGetNumberOfComponents(color);
-   const float *components=O2ColorGetComponents(color);
+void O2ContextDeviceClipToNonZeroPath_builtin(O2Context_builtin *self,O2Path *path){
+   O2ContextClipViewportToPath(self,path);
+}
 
-   if(count==2)
-    return [[O2Paint_color alloc] initWithGray:components[0]  alpha:components[1]];
-   if(count==4)
-    return [[O2Paint_color alloc] initWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
+void O2ContextDeviceClipToEvenOddPath_builtin(O2Context_builtin *self,O2Path *path){
+   O2ContextClipViewportToPath(self,path);
+}
+
+-(void)deviceClipToNonZeroPath:(O2Path *)path {
+   O2ContextDeviceClipToNonZeroPath_builtin(self,path);
+}
+
+-(void)deviceClipToEvenOddPath:(O2Path *)path {
+   O2ContextDeviceClipToEvenOddPath_builtin(self,path);
+}
+
+-(void)deviceClipToMask:(O2Image *)mask inRect:(O2Rect)rect {
+//   O2InvalidAbstractInvocation();
+}
+
+static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
+   O2PatternRef pattern=O2ColorGetPattern(color);
+   
+   if(pattern!=NULL){
+    O2Size           size=[pattern bounds].size;
+    O2Surface       *surface=[self createSurfaceWithWidth:size.width height:size.height];
+    O2BitmapContext *context=[[self->isa alloc] initWithSurface:surface flipped:NO];
+
+    O2ContextClearRect(context,O2RectMake(0,0,size.width,size.height));
+// do save/restore? probably pointless
+    [pattern drawInContext:context];
     
-   return [[O2Paint_color alloc] initWithGray:0 alpha:1];
+    O2Paint *result=[[O2Paint_image alloc] initWithImage:surface mode:VG_DRAW_IMAGE_NORMAL paint:nil interpolationQuality:kO2InterpolationNone];
+    
+    O2ContextRelease(context);
+    [surface release];
+
+    return result;
+   }
+   else {
+    size_t    count=O2ColorGetNumberOfComponents(color);
+    const float *components=O2ColorGetComponents(color);
+
+    if(count==2)
+     return [[O2Paint_color alloc] initWithGray:components[0]  alpha:components[1]];
+    if(count==4)
+     return [[O2Paint_color alloc] initWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
+    
+    return [[O2Paint_color alloc] initWithGray:0 alpha:1];
+   }
 }
 
 -(void)drawPath:(O2PathDrawingMode)drawingMode {
@@ -227,7 +280,7 @@ static O2Paint *paintFromColor(O2ColorRef color){
    VGPath *vgPath=[[VGPath alloc] initWithKGPath:_path];
 
    if(drawingMode!=kO2PathStroke){
-    O2Paint *paint=paintFromColor(gState->_fillColor);
+    O2Paint *paint=paintFromColor(self,gState->_fillColor);
     O2DContextSetPaint(self,paint);
     [paint release];
     
@@ -245,7 +298,7 @@ static O2Paint *paintFromColor(O2ColorRef color){
 
    if(drawingMode>=kO2PathStroke){
     if(gState->_lineWidth > 0.0f){
-     O2Paint *paint=paintFromColor(gState->_strokeColor);
+     O2Paint *paint=paintFromColor(self,gState->_strokeColor);
      O2DContextSetPaint(self,paint);
      [paint release];
      
@@ -336,7 +389,7 @@ static O2Paint *paintFromColor(O2ColorRef color){
 
    O2RasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-   O2Paint *paint=paintFromColor(gState->_fillColor);
+   O2Paint *paint=paintFromColor(self,gState->_fillColor);
    O2InterpolationQuality iq;
    if(gState->_interpolationQuality==kO2InterpolationDefault)
     iq=kO2InterpolationLow;
@@ -374,14 +427,6 @@ static O2Paint *paintFromColor(O2ColorRef color){
    O2ImageRef image=O2LayerGetSurface(layer);
    
    [self drawImage:image inRect:rect];
-}
-
--(void)deviceClipToEvenOddPath:(O2Path *)path {
-//   O2InvalidAbstractInvocation();
-}
-
--(void)deviceClipToMask:(O2Image *)mask inRect:(O2Rect)rect {
-//   O2InvalidAbstractInvocation();
 }
 
 void O2RasterizerSetViewport(O2Context_builtin *self,int x,int y,int width,int height) {
@@ -1006,9 +1051,16 @@ void O2DContextFillEdgesOnSurface(O2Context_builtin *self,O2Surface *surface,O2I
      if(totalActiveVerticalEdgesFullCoverage==totalActiveEdges){
       CoverageNode *node;
       
-      for(node=currentCoverage;node!=NULL;node=node->next)
+      for(node=currentCoverage;node!=NULL;node=node->next){
+#if 0
+       if(node->scanx<self->_vpx || node->scanx+node->length>xlimit || scany>=ylimit || scany<self->_vpy){
+        NSLog(@"drawing out of viewport, node %d %d %d",node->scanx,scany,node->length);
+        NSLog(@"viewport=%d %d %d %d",self->_vpx,self->_vpy,self->_vpwidth,self->_vpheight);
+        NSLog(@"xlimit=%d,ylimit=%d",xlimit,ylimit);
+        }
+#endif
        self->_writeCoverageFunction(surface,mask,paint,node->scanx,scany,node->coverage,node->length,self->_blendFunction);
-       
+      }
       continue;
      }
     }
@@ -1192,9 +1244,16 @@ void O2DContextFillEdgesOnSurface(O2Context_builtin *self,O2Surface *surface,O2I
      increase=advance;
     }
     
-    for(node=currentCoverage;node!=NULL;node=node->next)
+    for(node=currentCoverage;node!=NULL;node=node->next){
+#if 0
+       if(node->scanx<self->_vpx || node->scanx+node->length>xlimit || scany>=ylimit || scany<self->_vpy){
+        NSLog(@"drawing out of viewport, node %d %d %d",node->scanx,scany,node->length);
+        NSLog(@"viewport=%d %d %d %d",self->_vpx,self->_vpy,self->_vpwidth,self->_vpheight);
+        NSLog(@"xlimit=%d,ylimit=%d",xlimit,ylimit);
+        }
+#endif
      self->_writeCoverageFunction(surface,mask,paint,node->scanx,scany,node->coverage,node->length,self->_blendFunction);
-
+    }
    }
       
    for(;activeRoot!=NULL;activeRoot=activeRoot->next)

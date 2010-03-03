@@ -18,6 +18,16 @@ typedef enum {
    kCGRenderingIntentPerceptual,
 } CGColorRenderingIntent;
 
+typedef enum {
+   kCGColorSpaceModelMonochrome,
+   kCGColorSpaceModelRGB,
+   kCGColorSpaceModelCMYK,
+   kCGColorSpaceModelLab,
+   kCGColorSpaceModelDeviceN,
+   kCGColorSpaceModelIndexed,
+   kCGColorSpaceModelPattern,
+} CGColorSpaceModel;
+
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceRetain(CGColorSpaceRef colorSpace);
 COREGRAPHICS_EXPORT void CGColorSpaceRelease(CGColorSpaceRef colorSpace);
 
@@ -25,4 +35,5 @@ COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceRGB();
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceGray();
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceCMYK();
 
+COREGRAPHICS_EXPORT CGColorSpaceModel CGColorSpaceGetModel(CGColorSpaceRef self);
 COREGRAPHICS_EXPORT size_t CGColorSpaceGetNumberOfComponents(CGColorSpaceRef self);

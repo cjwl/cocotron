@@ -21,11 +21,13 @@ static inline void CMYKAToRGBA(const float *input,float *output){
 }
 
 static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
+#if 0
+// Do not use this, it's expensive, build a table for the byte components if needed
 // lame gamma adjustment so that non-system colors appear similar to those on a Mac
 
    const float assumedGamma=1.3;
    const float displayGamma=2.2;
-
+   float gammaAdjustment=assumedGamma/displayGamma
    r=pow(r,assumedGamma/displayGamma);
    if(r>1.0)
     r=1.0;
@@ -37,6 +39,7 @@ static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
    b=pow(b,assumedGamma/displayGamma);
    if(b>1.0)
     b=1.0;
+#endif
     
    return RGB(r*255,g*255,b*255);
 }
@@ -51,7 +54,10 @@ COLORREF COLORREFFromColor(O2Color *color){
      return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
      
     case kO2ColorSpaceModelRGB:
-     return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
+     if(O2ColorSpaceIsPlatformRGB)
+      return RGB(components[0]*255,components[1]*255,components[2]*255);
+     else
+      return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
      
     case kO2ColorSpaceModelCMYK:{
       float rgba[4];
@@ -60,10 +66,7 @@ COLORREF COLORREFFromColor(O2Color *color){
       return gammaAdjustedRGBFromComponents(rgba[0],rgba[1],rgba[2]);
      }
      break;
-     
-     case kO2ColorSpaceModelPlatformRGB:
-     return RGB(components[0]*255,components[1]*255,components[2]*255);
-          
+               
     default:
      NSLog(@"GDI context can't translate from colorspace %@",colorSpace);
      return RGB(0,0,0);
@@ -99,14 +102,14 @@ static inline int float2int(float coord){
    return floorf(coord);
 }
 
--(void)establishDeviceSpacePath:(O2Path *)path withTransform:(O2AffineTransform)xform {
+void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc,O2Path *path,O2AffineTransform xform) {
    unsigned             opCount=O2PathNumberOfElements(path);
    const unsigned char *elements=O2PathElements(path);
    unsigned             pointCount=O2PathNumberOfPoints(path);
    const NSPoint       *points=O2PathPoints(path);
    unsigned             i,pointIndex;
        
-   BeginPath(_dc);
+   BeginPath(dc);
    
    pointIndex=0;
    for(i=0;i<opCount;i++){
@@ -115,14 +118,14 @@ static inline int float2int(float coord){
      case kO2PathElementMoveToPoint:{
        NSPoint point=O2PointApplyAffineTransform(points[pointIndex++],xform);
         
-       MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
+       MoveToEx(dc,float2int(point.x),float2int(point.y),NULL);
       }
       break;
        
      case kO2PathElementAddLineToPoint:{
        NSPoint point=O2PointApplyAffineTransform(points[pointIndex++],xform);
         
-       LineTo(_dc,float2int(point.x),float2int(point.y));
+       LineTo(dc,float2int(point.x),float2int(point.y));
       }
       break;
 
@@ -136,7 +139,7 @@ static inline int float2int(float coord){
         { float2int(end.x), float2int(end.y) },
        };
         
-       PolyBezierTo(_dc,points,3);
+       PolyBezierTo(dc,points,3);
       }
       break;
 
@@ -151,49 +154,49 @@ static inline int float2int(float coord){
         { float2int(end.x), float2int(end.y) },
        };
         
-       PolyBezierTo(_dc,points,3);
+       PolyBezierTo(dc,points,3);
       }
       break;
 
      case kO2PathElementCloseSubpath:
-      CloseFigure(_dc);
+      CloseFigure(dc);
       break;
     }
    }
-   EndPath(_dc);
+   EndPath(dc);
 }
 
--(void)clipReset {
-   HRGN _clipRegion=CreateRectRgn(0,0,GetDeviceCaps(_dc,HORZRES),GetDeviceCaps(_dc,VERTRES));
-   SelectClipRgn(_dc,_clipRegion);
-   DeleteObject(_clipRegion);
+void O2DeviceContextClipReset_gdi(HDC dc) {
+   HRGN region=CreateRectRgn(0,0,GetDeviceCaps(dc,HORZRES),GetDeviceCaps(dc,VERTRES));
+   SelectClipRgn(dc,region);
+   DeleteObject(region);
 }
 
--(void)clipToPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM evenOdd:(BOOL)evenOdd {
+void O2DeviceContextClipToPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM,BOOL evenOdd){
    XFORM current;
    XFORM userToDevice={deviceXFORM.a,deviceXFORM.b,deviceXFORM.c,deviceXFORM.d,deviceXFORM.tx,deviceXFORM.ty};
 
-   if(!GetWorldTransform(_dc,&current))
+   if(!GetWorldTransform(dc,&current))
     NSLog(@"GetWorldTransform failed");
 
-   if(!SetWorldTransform(_dc,&userToDevice))
+   if(!SetWorldTransform(dc,&userToDevice))
     NSLog(@"ModifyWorldTransform failed");
 
-   [self establishDeviceSpacePath:path withTransform:xform];
-   SetPolyFillMode(_dc,evenOdd?ALTERNATE:WINDING);
-   if(!SelectClipPath(_dc,RGN_AND))
+   O2DeviceContextEstablishDeviceSpacePath_gdi(dc,path,xform);
+   SetPolyFillMode(dc,evenOdd?ALTERNATE:WINDING);
+   if(!SelectClipPath(dc,RGN_AND))
     NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),O2PathNumberOfElements(path));
 
-   if(!SetWorldTransform(_dc,&current))
+   if(!SetWorldTransform(dc,&current))
     NSLog(@"SetWorldTransform failed");
 }
 
--(void)clipToNonZeroPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM {
-   [self clipToPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM evenOdd:NO];
+void O2DeviceContextClipToNonZeroPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM){
+   O2DeviceContextClipToPath_gdi(dc,path,xform,deviceXFORM,NO);
 }
 
--(void)clipToEvenOddPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM {
-   [self clipToPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM evenOdd:YES];
+void O2DeviceContextClipToEvenOddPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM){
+   O2DeviceContextClipToPath_gdi(dc,path,xform,deviceXFORM,YES);
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)name {

@@ -52,3 +52,12 @@ static inline bool CGRectContainsPoint(CGRect rect,CGPoint point) {
 static inline bool CGPointEqualToPoint(CGPoint a,CGPoint b){
    return ((a.x==b.x) && (a.y==b.y))?TRUE:FALSE;
 }
+
+static inline CGRect CGRectInset(CGRect rect,CGFloat dx,CGFloat dy) {
+   rect.origin.x+=dx;
+   rect.origin.y+=dy;
+   rect.size.width-=dx*2;
+   rect.size.height-=dy*2;
+   return rect;
+}
+

@@ -30,6 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
+-(void)setStyleMask:(unsigned)mask {
+   O2InvalidAbstractInvocation();
+}
+
 -(void)setTitle:(NSString *)title {
    O2InvalidAbstractInvocation();
 }
@@ -38,6 +42,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+-(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow {
+   O2InvalidAbstractInvocation();
+}
+
+-(void)sheetOrderOutToFrame:(NSRect)frame {
+   O2InvalidAbstractInvocation();
+}
 
 -(void)showWindowForAppActivation:(NSRect)frame {
    O2InvalidAbstractInvocation();

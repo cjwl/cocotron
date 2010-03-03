@@ -24,10 +24,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(Win32DeviceContextWindow *)windowDeviceContext;
 
--(void)establishDeviceSpacePath:(O2Path *)path withTransform:(O2AffineTransform)xform;
--(void)clipReset;
--(void)clipToNonZeroPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM;
--(void)clipToEvenOddPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM;
+void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc,O2Path *path,O2AffineTransform xform);
+void O2DeviceContextClipReset_gdi(HDC dc);
+void O2DeviceContextClipToNonZeroPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM);
+void O2DeviceContextClipToEvenOddPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM);
 
 -(void)beginPrintingWithDocumentName:(NSString *)name;
 -(void)endPrinting;

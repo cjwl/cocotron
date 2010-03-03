@@ -64,7 +64,7 @@ static inline void CMYKAToRGBA(float *input,float *output){
    _extendEnd=[shading extendEnd];
    
    O2Function      *function=[shading function];
-   O2ColorSpace    *colorSpace=[shading colorSpace];
+   O2ColorSpace    *colorSpace=O2ShadingColorSpace(shading);
    O2ColorSpaceModel colorSpaceType=[colorSpace type];
    float            output[O2ColorSpaceGetNumberOfComponents(colorSpace)+1];
    void           (*outputToRGBA)(float *,float *);
@@ -77,7 +77,6 @@ static inline void CMYKAToRGBA(float *input,float *output){
      break;
      
     case kO2ColorSpaceModelRGB:
-    case kO2ColorSpaceModelPlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      

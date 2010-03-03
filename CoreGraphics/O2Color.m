@@ -24,15 +24,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace components:(const O2Float *)components {
+O2ColorRef O2ColorInitWithColorSpace(O2ColorRef self,O2ColorSpaceRef colorSpace,const O2Float *components) {
    int i;
    
-   _colorSpace=[colorSpace retain];
-   _pattern=nil;
-   _numberOfComponents=O2ColorSpaceGetNumberOfComponents(_colorSpace)+1;
-   _components=NSZoneMalloc([self zone],sizeof(O2Float)*_numberOfComponents);
-   for(i=0;i<_numberOfComponents;i++)
-    _components[i]=components[i];
+   self->_colorSpace=[colorSpace retain];
+   self->_pattern=nil;
+   self->_numberOfComponents=O2ColorSpaceGetNumberOfComponents(self->_colorSpace)+1;
+   self->_components=NSZoneMalloc([self zone],sizeof(O2Float)*self->_numberOfComponents);
+   for(i=0;i<self->_numberOfComponents;i++)
+    self->_components[i]=components[i];
     
    return self;
 }
@@ -40,7 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDeviceGray:(O2Float)gray alpha:(O2Float)alpha {
    O2Float components[2]={gray,alpha};
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceGray();
-   [self initWithColorSpace:colorSpace components:components];
+   O2ColorInitWithColorSpace(self,colorSpace,components);
    [colorSpace release];
    return self;
 }
@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDeviceRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha {
    O2Float components[4]={red,green,blue,alpha};
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
-   [self initWithColorSpace:colorSpace components:components];
+   O2ColorInitWithColorSpace(self,colorSpace,components);
    [colorSpace release];
    return self;
 }
@@ -56,13 +56,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDeviceCyan:(O2Float)cyan magenta:(O2Float)magenta yellow:(O2Float)yellow black:(O2Float)black alpha:(O2Float)alpha {
    O2Float components[5]={cyan,magenta,yellow,black,alpha};
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceCMYK();
-   [self initWithColorSpace:colorSpace components:components];
+   O2ColorInitWithColorSpace(self,colorSpace,components);
    [colorSpace release];
    return self;
 }
 
 O2ColorRef O2ColorCreate(O2ColorSpaceRef colorSpace,const O2Float *components) {
-   return [[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   return O2ColorInitWithColorSpace([O2Color alloc],colorSpace,components);
 }
 
 O2ColorRef O2ColorCreateGenericGray(O2Float gray,O2Float a) {
@@ -85,7 +85,7 @@ O2ColorRef O2ColorCreateWithPattern(O2ColorSpaceRef colorSpace,O2PatternRef patt
    O2ColorSpaceRef gray=O2ColorSpaceCreateDeviceGray();
    O2Float       components[2]={0,1};
    
-   [self initWithColorSpace:gray components:components];
+   O2ColorInitWithColorSpace(self,gray,components);
    [gray release];
    return self;
 }
@@ -109,7 +109,7 @@ O2ColorRef O2ColorCreateCopyWithAlpha(O2ColorRef self,O2Float alpha) {
     components[i]=self->_components[i];
    components[i]=alpha;
       
-   return [[self->isa alloc] initWithColorSpace:self->_colorSpace components:components];
+   return O2ColorInitWithColorSpace([self->isa alloc],self->_colorSpace,components);
 }
 
 O2ColorRef O2ColorRetain(O2ColorRef self) {

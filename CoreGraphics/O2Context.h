@@ -119,7 +119,7 @@ typedef int O2TextDrawingMode;
 -(void)endTransparencyLayer;
 
 -(O2ColorRef )strokeColor;
--(O2ColorRef )fillColor;
+O2ColorRef O2ContextFillColor(O2ContextRef self);
    
 -(void)setStrokeAlpha:(O2Float)alpha;
 -(void)setGrayStrokeColor:(O2Float)gray;

@@ -4,52 +4,57 @@
 O2TIFFEncoderRef O2TIFFEncoderCreate(O2DataConsumerRef consumer) {
    O2TIFFEncoderRef self=NSZoneCalloc(NULL,1,sizeof(struct O2TIFFEncoder));
    self->_bigEndian=YES;
-   self->_bufferOffset=0;
-   self->_bufferPosition=0;
-   self->_position=0;
-   self->_buffer=NULL;
-   self->_consumer=CFRetain(consumer);
+   self->_consumerOffset=0;
+   self->_consumerPosition=0;
+   self->_bufferCapacity=0;
+   self->_bufferCount=0;
+   self->_mutableBytes=NULL;
+   self->_consumer=(id)CFRetain(consumer);
    return self;
 }
 
 void O2TIFFEncoderDealloc(O2TIFFEncoderRef self) {
-   if(self->_buffer!=NULL)
-    CFRelease(self->_buffer);
+   if(self->_mutableBytes!=NULL)
+    NSZoneFree(NULL,self->_mutableBytes);
    if(self->_consumer!=NULL)
     CFRelease(self->_consumer);
    NSZoneFree(NULL,self);
 }
 
 static void beginBuffering(O2TIFFEncoderRef self){
-   self->_buffer=CFDataCreateMutable(NULL,0);
-   self->_bufferPosition=0;
+   self->_bufferCapacity=256;
+   self->_bufferCount=0;
+   self->_mutableBytes=NSZoneMalloc(NULL,self->_bufferCapacity);
 }
 
 static void endBuffering(O2TIFFEncoderRef self){
-   O2DataConsumerPutBytes(self->_consumer,self->_mutablesBytes,self->_bufferPosition);
-   CFRelease(self->_buffer);
-   self->_buffer=NULL;
-   self->_bufferOffset+=self->_bufferPosition;
+   O2DataConsumerPutBytes(self->_consumer,self->_mutableBytes,self->_bufferCount);
+   
+   NSZoneFree(NULL,self->_mutableBytes);
+   self->_mutableBytes=NULL;
+   self->_consumerOffset+=self->_bufferCount;
 }
 
 static uint32_t currentPosition(O2TIFFEncoderRef self){
-   return self->_position;
+   return self->_consumerPosition;
 }
 
 static uint32_t setPosition(O2TIFFEncoderRef self,uint32_t value){
-   uint32_t result=self->_position;
+   uint32_t result=self->_consumerPosition;
    
-   self->_position=value;
-   self->_bufferPosition=value-self->_bufferOffset;
+   self->_consumerPosition=value;
+   self->_bufferCount=value-self->_consumerOffset;
    
    return result;
 }
 
 static void ensureByteCount(O2TIFFEncoderRef self,size_t count){   
-   if(self->_bufferPosition+count>CFDataGetLength(self->_buffer))
-    CFDataSetLength(self->_buffer,self->_bufferPosition+count);
-
-   self->_mutablesBytes=CFDataGetMutableBytePtr(self->_buffer);
+   if(self->_bufferCount+count>self->_bufferCapacity){
+    while(self->_bufferCount+count>self->_bufferCapacity)
+     self->_bufferCapacity*=2;
+    
+    self->_mutableBytes=NSZoneRealloc(NULL,self->_mutableBytes,self->_bufferCapacity);
+   }
 }
 
 static void putBytes(O2TIFFEncoderRef self,uint8_t *values,uint32_t count){
@@ -57,8 +62,8 @@ static void putBytes(O2TIFFEncoderRef self,uint8_t *values,uint32_t count){
    
    ensureByteCount(self,count);
 
-   for(i=0;i<count;i++,self->_bufferPosition++,self->_position++)
-    self->_mutablesBytes[self->_bufferPosition]=values[i];
+   for(i=0;i<count;i++,self->_bufferCount++,self->_consumerPosition++)
+    self->_mutableBytes[self->_bufferCount]=values[i];
 
 }
 
@@ -169,7 +174,7 @@ static void encodeArrayOfUnsigned8(O2TIFFEncoderRef self,uint8_t *values,uint32_
     putUnsigned8(self,values[1]);
    }
    else {
-    uint32_t offset=self->_position+4;
+    uint32_t offset=self->_consumerPosition+4;
     
     putUnsigned32(self,offset);
     
@@ -288,7 +293,8 @@ void O2TIFFEncoderWriteImage(O2TIFFEncoderRef self,O2ImageRef image,CFDictionary
   size_t          imageWidth=O2ImageGetWidth(image);
   size_t          imageHeight=O2ImageGetHeight(image);
   O2ImageAlphaInfo imageAlphaInfo=O2ImageGetAlphaInfo(image);
-  bool            imageHasAlpha=NO && (imageAlphaInfo==kO2ImageAlphaPremultipliedLast ||
+// FIX, needs to premultiply
+  bool            imageHasAlpha=(imageAlphaInfo==kO2ImageAlphaPremultipliedLast ||
                                  imageAlphaInfo==kO2ImageAlphaPremultipliedFirst ||
                                  imageAlphaInfo==kO2ImageAlphaLast ||
                                  imageAlphaInfo==kO2ImageAlphaFirst);
@@ -321,7 +327,7 @@ void O2TIFFEncoderWriteImage(O2TIFFEncoderRef self,O2ImageRef image,CFDictionary
 
   putUnsigned32(self,currentPosition(self)+4);
 
-  putUnsigned16(self,12);
+  putUnsigned16(self,imageHasAlpha?13:12);
   putUnsigned16(self,NSTIFFTagImageWidth);
   encodeUnsigned16OrUnsigned32(self,imageWidth);
   putUnsigned16(self,NSTIFFTagImageLength);
@@ -330,6 +336,10 @@ void O2TIFFEncoderWriteImage(O2TIFFEncoderRef self,O2ImageRef image,CFDictionary
   uint32_t bpsPosition=reserveArrayOfUnsigned16(self);
   putUnsigned16(self,NSTIFFTagCompression);
   encodeUnsigned16(self,NSTIFFCompression_none);
+  if(imageHasAlpha){
+   putUnsigned16(self,NSTIFFTagExtraSamples);
+   encodeUnsigned16(self,NSTIFFExtraSamples_associatedAlpha);
+  }
   putUnsigned16(self,NSTIFFTagPhotometricInterpretation);
   encodeUnsigned16(self,NSTIFFPhotometricInterpretationRGB);
   putUnsigned16(self,NSTIFFTagStripOffsets);

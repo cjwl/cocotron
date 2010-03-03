@@ -56,3 +56,9 @@ static inline BOOL O2RectContainsPoint(O2Rect rect,O2Point point) {
 static inline BOOL O2PointEqualToPoint(O2Point a,O2Point b){
    return ((a.x==b.x) && (a.y==b.y))?YES:NO;
 }
+
+static inline O2Rect O2RectIntersection(O2Rect rect0,O2Rect rect1) {
+// FIX: embed code
+   return NSIntersectionRect(rect0,rect1);
+}
+

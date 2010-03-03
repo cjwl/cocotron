@@ -19,7 +19,6 @@
      break;
      
     case kO2ColorSpaceModelRGB:
-    case kO2ColorSpaceModelPlatformRGB:  // wrong
      name=[O2PDFObject_Name pdfObjectWithCString:"DeviceRGB"];
      break;
 

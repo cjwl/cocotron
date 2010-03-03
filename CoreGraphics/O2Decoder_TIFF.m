@@ -19,35 +19,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _position;
 }
 
--(void)seekToOffset:(unsigned)offset {
-   if(offset>=_length)
-    [NSException raise:NSInvalidArgumentException format:@"Attempt to seek past end of TIFF, length=%d,offset=%d",_length,offset];
+static void seekToOffset(O2Decoder_TIFF *self,unsigned offset) {
+   if(offset>=self->_length)
+    [NSException raise:NSInvalidArgumentException format:@"Attempt to seek past end of TIFF, length=%d,offset=%d",self->_length,offset];
 
-   _position=offset;
+   self->_position=offset;
 }
 
--(unsigned)currentThenSeekToOffset:(unsigned)offset {
-   unsigned result=[self currentOffset];
+-(void)seekToOffset:(unsigned)offset {
+   seekToOffset(self,offset);
+}
 
-   [self seekToOffset:offset];
+static unsigned currentThenSeekToOffset(O2Decoder_TIFF *self,unsigned offset) {
+   unsigned result=self->_position;
+
+   seekToOffset(self,offset);
 
    return result;
 }
 
--(unsigned char)nextUnsigned8 {
-   if(_position<_length)
-    return _bytes[_position++];
+static uint8_t nextUnsigned8(O2Decoder_TIFF *self) {
+   if(self->_position<self->_length)
+    return self->_bytes[self->_position++];
 
-   [NSException raise:NSInvalidArgumentException format:@"Attempt to read past end of TIFF, length=%d",_length];
+   [NSException raise:NSInvalidArgumentException format:@"Attempt to read past end of TIFF, length=%d",self->_length];
    return 0;
 }
 
--(unsigned)nextUnsigned16 {
-   unsigned result;
-   unsigned byte0=[self nextUnsigned8];
-   unsigned byte1=[self nextUnsigned8];
+-(unsigned char)nextUnsigned8 {
+   return nextUnsigned8(self);
+}
 
-   if(_bigEndian){
+static unsigned nextUnsigned16(O2Decoder_TIFF *self) {
+   unsigned result;
+   unsigned byte0=nextUnsigned8(self);
+   unsigned byte1=nextUnsigned8(self);
+
+   if(self->_bigEndian){
     result=byte0;
     result<<=8;
     result|=byte1;
@@ -61,14 +69,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(unsigned)nextUnsigned32 {
-   unsigned result;
-   unsigned byte0=[self nextUnsigned8];
-   unsigned byte1=[self nextUnsigned8];
-   unsigned byte2=[self nextUnsigned8];
-   unsigned byte3=[self nextUnsigned8];
+unsigned O2DecoderNextUnsigned16_TIFF(O2Decoder_TIFF *self) {
+   return nextUnsigned16(self);
+}
 
-   if(_bigEndian){
+static unsigned nextUnsigned32(O2Decoder_TIFF *self) {
+   unsigned result;
+   unsigned byte0=nextUnsigned8(self);
+   unsigned byte1=nextUnsigned8(self);
+   unsigned byte2=nextUnsigned8(self);
+   unsigned byte3=nextUnsigned8(self);
+
+   if(self->_bigEndian){
     result=byte0;
     result<<=8;
     result|=byte1;
@@ -90,43 +102,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(unsigned)nextUnsigned8AtOffset:(unsigned *)offset {
+-(unsigned)nextUnsigned32 {
+   return nextUnsigned32(self);
+}
+
+static unsigned nextUnsigned8AtOffset(O2Decoder_TIFF *self,unsigned *offset) {
    unsigned result;
-   unsigned save=[self currentThenSeekToOffset:*offset];
+   unsigned save=currentThenSeekToOffset(self,*offset);
 
-   result=[self nextUnsigned8];
+   result=nextUnsigned8(self);
 
-   *offset=[self currentThenSeekToOffset:save];
+   *offset=currentThenSeekToOffset(self,save);
 
    return result;
 }
 
--(unsigned)nextUnsigned16AtOffset:(unsigned *)offset {
+static unsigned nextUnsigned16AtOffset(O2Decoder_TIFF *self,unsigned *offset) {
    unsigned result;
-   unsigned save=[self currentThenSeekToOffset:*offset];
+   unsigned save=currentThenSeekToOffset(self,*offset);
 
-   result=[self nextUnsigned16];
+   result=nextUnsigned16(self);
 
-   *offset=[self currentThenSeekToOffset:save];
+   *offset=currentThenSeekToOffset(self,save);
 
    return result;
 }
 
--(unsigned)nextUnsigned32AtOffset:(unsigned *)offset {
+static unsigned nextUnsigned32AtOffset(O2Decoder_TIFF *self,unsigned *offset) {
    unsigned result;
-   unsigned save=[self currentThenSeekToOffset:*offset];
+   unsigned save=currentThenSeekToOffset(self,*offset);
 
-   result=[self nextUnsigned32];
+   result=nextUnsigned32(self);
 
-   *offset=[self currentThenSeekToOffset:save];
+   *offset=currentThenSeekToOffset(self,save);
 
    return result;
 }
 
 -(unsigned)expectUnsigned16 {
    unsigned result=0;
-   unsigned type=[self nextUnsigned16];
-   unsigned numberOfValues=[self nextUnsigned32];
+   unsigned type=nextUnsigned16(self);
+   unsigned numberOfValues=nextUnsigned32(self);
 
    if(numberOfValues!=1){
     NSLog(@"TIFF parse error, expecting 1 value, got %d,type=%d",numberOfValues,type);
@@ -134,7 +150,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(type==NSTIFFTypeSHORT)
-    result=[self nextUnsigned16];
+    result=nextUnsigned16(self);
    else
     NSLog(@"TIFF parse error, expecting unsigned16 got %d",type);
 
@@ -143,8 +159,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)expectUnsigned32 {
    unsigned result=0;
-   unsigned type=[self nextUnsigned16];
-   unsigned numberOfValues=[self nextUnsigned32];
+   unsigned type=nextUnsigned16(self);
+   unsigned numberOfValues=nextUnsigned32(self);
 
    if(numberOfValues!=1){
     NSLog(@"TIFF parse error, expecting 1 value, got %d,type=%d",numberOfValues,type);
@@ -152,7 +168,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(type==NSTIFFTypeLONG)
-    result=[self nextUnsigned32];
+    result=nextUnsigned32(self);
    else
     NSLog(@"TIFF parse error, expecting unsigned16 or unsinged32, got %d",type);
 
@@ -160,9 +176,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(double)expectRational {
-   unsigned type=[self nextUnsigned16];
-   unsigned numberOfValues=[self nextUnsigned32];
-   unsigned offset=[self nextUnsigned32];
+   unsigned type=nextUnsigned16(self);
+   unsigned numberOfValues=nextUnsigned32(self);
+   unsigned offset=nextUnsigned32(self);
    double numerator,denominator;
 
    if(type!=NSTIFFTypeRATIONAL){
@@ -175,71 +191,71 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return 0;
    }
 
-   numerator=[self nextUnsigned32AtOffset:&offset];
-   denominator=[self nextUnsigned32AtOffset:&offset];
+   numerator=nextUnsigned32AtOffset(self,&offset);
+   denominator=nextUnsigned32AtOffset(self,&offset);
 
    return numerator/denominator;
 }
 
 -(void)_decodeArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp {
-   unsigned       numberOfValues=[self nextUnsigned32];
+   unsigned       numberOfValues=nextUnsigned32(self);
    unsigned char *values;
 
    values=NSZoneMalloc([self zone],numberOfValues*sizeof(unsigned));
 
    if(numberOfValues==1)
-    values[0]=[self nextUnsigned8];
+    values[0]=nextUnsigned8(self);
    else if(numberOfValues==2){
-    values[0]=[self nextUnsigned8];
-    values[1]=[self nextUnsigned8];
+    values[0]=nextUnsigned8(self);
+    values[1]=nextUnsigned8(self);
    }
    else {
-    unsigned i,offset=[self nextUnsigned32];
+    unsigned i,offset=nextUnsigned32(self);
 
     for(i=0;i<numberOfValues;i++)
-     values[i]=[self nextUnsigned8AtOffset:&offset];
+     values[i]=nextUnsigned8AtOffset(self,&offset);
    }
 
    *countp=numberOfValues;
    *valuesp=values; 
 }
 
--(void)_decodeArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp {
-   unsigned  numberOfValues=[self nextUnsigned32];
+static void _decodeArrayOfUnsigned16(O2Decoder_TIFF *self,unsigned **valuesp,unsigned *countp) {
+   unsigned  numberOfValues=nextUnsigned32(self);
    unsigned *values;
 
    values=NSZoneMalloc([self zone],numberOfValues*sizeof(unsigned));
 
    if(numberOfValues==1)
-    values[0]=[self nextUnsigned16];
+    values[0]=nextUnsigned16(self);
    else if(numberOfValues==2){
-    values[0]=[self nextUnsigned16];
-    values[1]=[self nextUnsigned16];
+    values[0]=nextUnsigned16(self);
+    values[1]=nextUnsigned16(self);
    }
    else {
-    unsigned i,offset=[self nextUnsigned32];
+    unsigned i,offset=nextUnsigned32(self);
 
     for(i=0;i<numberOfValues;i++)
-     values[i]=[self nextUnsigned16AtOffset:&offset];
+     values[i]=nextUnsigned16AtOffset(self,&offset);
    }
 
    *countp=numberOfValues;
    *valuesp=values; 
 }
 
--(void)_decodeArrayOfUnsigned32:(unsigned **)valuesp count:(unsigned *)countp {
-   unsigned  numberOfValues=[self nextUnsigned32];
+static void _decodeArrayOfUnsigned32(O2Decoder_TIFF *self,unsigned **valuesp,unsigned *countp) {
+   unsigned  numberOfValues=nextUnsigned32(self);
    unsigned *values;
 
    values=NSZoneMalloc([self zone],numberOfValues*sizeof(unsigned));
 
    if(numberOfValues==1)
-    values[0]=[self nextUnsigned32];
+    values[0]=nextUnsigned32(self);
    else {
-    unsigned i,offset=[self nextUnsigned32];
+    unsigned i,offset=nextUnsigned32(self);
 
     for(i=0;i<numberOfValues;i++)
-     values[i]=[self nextUnsigned32AtOffset:&offset];
+     values[i]=nextUnsigned32AtOffset(self,&offset);
    }
 
    *countp=numberOfValues;
@@ -247,7 +263,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)expectASCII {
-   unsigned       type=[self nextUnsigned16];
+   unsigned       type=nextUnsigned16(self);
    unsigned       count;
    unsigned char *ascii;
 
@@ -268,16 +284,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)expectUnsigned16OrUnsigned32 {
    unsigned result=0;
-   unsigned type=[self nextUnsigned16];
-   unsigned numberOfValues=[self nextUnsigned32];
+   unsigned type=nextUnsigned16(self);
+   unsigned numberOfValues=nextUnsigned32(self);
 
    if(numberOfValues!=1)
     NSLog(@"TIFF parse error, expecting 1 value, got %d,type=%d",numberOfValues,type);
 
    if(type==NSTIFFTypeSHORT)
-    result=[self nextUnsigned16];
+    result=nextUnsigned16(self);
    else if(type==NSTIFFTypeLONG)
-    result=[self nextUnsigned32];
+    result=nextUnsigned32(self);
    else
     NSLog(@"TIFF parse error, expecting unsigned16 or unsigned32, got %d",type);
 
@@ -285,7 +301,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp {
-   unsigned type=[self nextUnsigned16];
+   unsigned type=nextUnsigned16(self);
 
    if(type!=NSTIFFTypeBYTE){
     NSLog(@"TIFF parse error, expecting unsigned8");
@@ -296,23 +312,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp {
-   unsigned type=[self nextUnsigned16];
+   unsigned type=nextUnsigned16(self);
 
    if(type!=NSTIFFTypeSHORT){
     NSLog(@"TIFF parse error, expecting unsigned16");
     return;
    }
 
-   [self _decodeArrayOfUnsigned16:valuesp count:countp];
+   _decodeArrayOfUnsigned16(self,valuesp,countp);
 }
 
 -(void)expectArrayOfUnsigned16OrUnsigned32:(unsigned **)valuesp count:(unsigned *)countp {
-   unsigned type=[self nextUnsigned16];
+   unsigned type=nextUnsigned16(self);
 
    if(type==NSTIFFTypeSHORT)
-    [self _decodeArrayOfUnsigned16:valuesp count:countp];
+    _decodeArrayOfUnsigned16(self,valuesp,countp);
    else if(type==NSTIFFTypeLONG)
-    [self _decodeArrayOfUnsigned32:valuesp count:countp];
+    _decodeArrayOfUnsigned32(self,valuesp,countp);
    else
     NSLog(@"TIFF parse error, expecting unsigned16");
 }
@@ -320,21 +336,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(unsigned)parseImageFileDirectoryAtOffset:(unsigned)offset {
    NSTIFFImageFileDirectory *imageFileDirectory;
 
-   [self seekToOffset:offset];
+   seekToOffset(self,offset);
 
    imageFileDirectory=[[[NSTIFFImageFileDirectory alloc] initWithTIFFReader:self] autorelease];
 
    [_directory addObject:imageFileDirectory];
 
-   return [self nextUnsigned32];
+   return nextUnsigned32(self);
 }
 
 -(BOOL)parseImageFileHeader {
    BOOL result=YES;
 
    NS_DURING
-    unsigned char byte0=[self nextUnsigned8];
-    unsigned char byte1=[self nextUnsigned8];
+    unsigned char byte0=nextUnsigned8(self);
+    unsigned char byte1=nextUnsigned8(self);
     unsigned      fortyTwo;
     unsigned      nextEntryOffset;
 
@@ -347,8 +363,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return NO;
     }
 
-    fortyTwo=[self nextUnsigned16];
-    nextEntryOffset=[self nextUnsigned32];
+    fortyTwo=nextUnsigned16(self);
+    nextEntryOffset=nextUnsigned32(self);
 
     if(fortyTwo!=42){
      NSLog(@"FortyTwo does not equal 42, got %d",fortyTwo);

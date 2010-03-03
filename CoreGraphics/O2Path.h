@@ -30,7 +30,7 @@ typedef struct {
 
 typedef void(*O2PathApplierFunction)(void *info,const O2PathElement *element);
 
-@interface O2Path : NSObject <NSCopying,NSMutableCopying> {
+@interface O2Path : NSObject <NSCopying> {
    unsigned       _numberOfElements;
    unsigned char *_elements;
    unsigned       _numberOfPoints;
@@ -40,7 +40,7 @@ typedef void(*O2PathApplierFunction)(void *info,const O2PathElement *element);
 -initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(O2Point *)points numberOfPoints:(unsigned)numberOfPoints;
 
 // internal
-
+id O2PathInitWithOperators(O2Path *self,unsigned char *elements,unsigned numberOfElements,O2Point *points,unsigned numberOfPoints);
 unsigned             O2PathNumberOfElements(O2PathRef self);
 const unsigned char *O2PathElements(O2PathRef self);
 unsigned             O2PathNumberOfPoints(O2PathRef self);

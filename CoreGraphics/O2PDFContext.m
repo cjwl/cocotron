@@ -299,7 +299,7 @@ static inline O2GState *currentState(O2Context *self){
    const unsigned char *elements=O2PathElements(path);
    const O2Point       *points=O2PathPoints(path);
    int                  pi=0;
-   O2AffineTransform    invertUserSpaceTransform=O2AffineTransformInvert([currentState(self) userSpaceTransform]);
+   O2AffineTransform    invertUserSpaceTransform=O2AffineTransformInvert(O2GStateUserSpaceTransform(currentState(self)));
    
    for(i=0;i<numberOfElements;i++){
     switch(elements[i]){
@@ -364,7 +364,6 @@ static inline O2GState *currentState(O2Context *self){
      break;
      
     case kO2ColorSpaceModelRGB:
-    case kO2ColorSpaceModelPlatformRGB:
      [self contentWithFormat:@"%f %f %f RG ",components[0],components[1],components[2]];
      break;
      
@@ -384,7 +383,6 @@ static inline O2GState *currentState(O2Context *self){
      break;
      
     case kO2ColorSpaceModelRGB:
-    case kO2ColorSpaceModelPlatformRGB:
      [self contentWithFormat:@"%f %f %f rg ",components[0],components[1],components[2]];
      break;
      
@@ -435,20 +433,20 @@ static inline O2GState *currentState(O2Context *self){
    O2AffineTransform matrix=gState->_userSpaceTransform;
    [self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-   NSArray *clipPhases=gState->_clipPhases;
+   NSArray *clipPhases=O2GStateClipPhases(gState);
    
    for(O2ClipPhase *phase in clipPhases){
-    switch([phase phaseType]){
+    switch(O2ClipPhasePhaseType(phase)){
     
      case O2ClipPhaseNonZeroPath:{
-       O2Path *path=[phase object];
+       O2Path *path=O2ClipPhaseObject(phase);
        [self emitPath:path];
        [self contentWithString:@"W "];
       }
       break;
       
      case O2ClipPhaseEOPath:{
-       O2Path *path=[phase object];
+       O2Path *path=O2ClipPhaseObject(phase);
        [self emitPath:path];
        [self contentWithString:@"W* "];
       }
@@ -519,10 +517,10 @@ static inline O2GState *currentState(O2Context *self){
    [self contentWithString:@"BT "];
    
    O2GState *state=currentState(self);
-   O2PDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:[state pointSize]];
+   O2PDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:O2GStatePointSize(state)];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
-   [self contentWithFormat:@"%@ %g Tf ",name,[currentState(self) pointSize]];
+   [self contentWithFormat:@"%@ %g Tf ",name,O2GStatePointSize(currentState(self))];
 
    O2AffineTransform matrix=O2ContextGetTextMatrix(self);
    [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];

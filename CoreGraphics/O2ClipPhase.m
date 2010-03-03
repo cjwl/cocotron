@@ -2,9 +2,9 @@
 
 @implementation O2ClipPhase
 
--initWithNonZeroPath:(O2Path *)path {
-   _type=O2ClipPhaseNonZeroPath;
-   _object=[path copy];
+O2ClipPhase *O2ClipPhaseInitWithNonZeroPath(O2ClipPhase *self,O2Path *path){
+   self->_type=O2ClipPhaseNonZeroPath;
+   self->_object=[path copy];
    return self;
 }
 
@@ -27,12 +27,12 @@
    [super dealloc];
 }
 
--(O2ClipPhaseType)phaseType {
-   return _type;
+O2ClipPhaseType O2ClipPhasePhaseType(O2ClipPhase *self) {
+   return self->_type;
 }
 
--object {
-   return _object;
+id O2ClipPhaseObject(O2ClipPhase *self) {
+   return self->_object;
 }
 
 @end

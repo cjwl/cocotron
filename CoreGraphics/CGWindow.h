@@ -25,8 +25,12 @@ typedef enum {
 
 -(O2Context *)cgContext;
 
+-(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;
+
+-(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow;
+-(void)sheetOrderOutToFrame:(NSRect)frame;
 
 -(void)showWindowForAppActivation:(NSRect)frame;
 -(void)hideWindowForAppDeactivation:(NSRect)frame;
@@ -76,5 +80,7 @@ typedef enum {
 -(BOOL)platformWindowIgnoreModalMessages:(CGWindow *)window;
 
 -(BOOL)platformWindowSetCursorEvent:(CGWindow *)window;
+
+-(void)platformWindowDidInvalidateCGContext:(CGWindow *)window;
 
 @end

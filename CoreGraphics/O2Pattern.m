@@ -22,4 +22,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(void)dealloc {
+   if(_info!=NULL && _callbacks.releaseInfo!=NULL)
+    _callbacks.releaseInfo(_info);
+   [super dealloc];
+}
+
+-(CGRect)bounds {
+   return _bounds;
+}
+
+-(void)drawInContext:(O2ContextRef)context {
+   if(_callbacks.drawPattern!=NULL)
+    _callbacks.drawPattern(_info,context);
+}
+
 @end

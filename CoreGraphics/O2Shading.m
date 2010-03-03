@@ -47,8 +47,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(O2ColorSpaceRef)colorSpace {
-   return _colorSpace;
+O2ColorSpaceRef O2ShadingColorSpace(O2Shading *self) {
+   return self->_colorSpace;
 }
 
 -(O2Point)startPoint {

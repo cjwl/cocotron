@@ -10,11 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2Decoder_TIFF.h"
 #import "O2ImageSource.h"
 #import "O2LZW.h"
+#import <Foundation/NSDebug.h>
 
 @implementation NSTIFFImageFileDirectory
 
 -initWithTIFFReader:(O2Decoder_TIFF *)reader {
-   unsigned i,numberOfEntries=[reader nextUnsigned16];
+   unsigned i,numberOfEntries=O2DecoderNextUnsigned16_TIFF(reader);
 
    _xPosition=0;
    _xResolution=72.0;
@@ -23,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    for(i=0;i<numberOfEntries;i++){
     unsigned offset=[reader currentOffset];
-    unsigned tag=[reader nextUnsigned16];
+    unsigned tag=O2DecoderNextUnsigned16_TIFF(reader);
 
     switch(tag){
 
@@ -215,7 +216,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
 
      default:
-      if([reader tracingEnabled])
+      if(NSDebugEnabled)
        NSLog(@"TIFF trace: unknown tag=%d",tag);
       break;
 

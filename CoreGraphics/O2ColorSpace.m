@@ -14,21 +14,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithDeviceGray {
    _type=kO2ColorSpaceModelMonochrome;
+   _isPlatformRGB=NO;
    return self;
 }
 
 -initWithDeviceRGB {
    _type=kO2ColorSpaceModelRGB;
+   _isPlatformRGB=NO;
    return self;
 }
 
 -initWithDeviceCMYK {
    _type=kO2ColorSpaceModelCMYK;
+   _isPlatformRGB=NO;
    return self;
 }
 
 -initWithPlatformRGB {
-   _type=kO2ColorSpaceModelPlatformRGB;
+   _type=kO2ColorSpaceModelRGB;
+   _isPlatformRGB=NO;
    return self;
 }
 
@@ -54,11 +58,22 @@ O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void) {
 }
 
 O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void) {
-   return [[O2ColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef self=[O2ColorSpace allocWithZone:NULL];
+   self->_type=kO2ColorSpaceModelRGB;
+   self->_isPlatformRGB=NO;
+   return self;
 }
 
 O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void) {
    return [[O2ColorSpace alloc] initWithDeviceCMYK];
+}
+
+O2ColorSpaceRef O2ColorSpaceCreatePlatformRGB(void) {
+   return [[O2ColorSpace alloc] initWithPlatformRGB];
+}
+
+BOOL O2ColorSpaceIsPlatformRGB(O2ColorSpaceRef self) {
+   return self->_isPlatformRGB;
 }
 
 size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
@@ -66,7 +81,6 @@ size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
     case kO2ColorSpaceModelMonochrome:
      return 1;
     case kO2ColorSpaceModelRGB: 
-    case kO2ColorSpaceModelPlatformRGB:
      return 3;
     case kO2ColorSpaceModelCMYK:
      return 4;
@@ -75,6 +89,10 @@ size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
     default:
      return 0;
    }
+}
+
+O2ColorSpaceModel O2ColorSpaceGetModel(O2ColorSpaceRef self) {
+   return self->_type;
 }
 
 -(BOOL)isEqualToColorSpace:(O2ColorSpaceRef)other {

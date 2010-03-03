@@ -13,17 +13,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation O2Path
 
 -initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(O2Point *)points numberOfPoints:(unsigned)numberOfPoints {
+   return O2PathInitWithOperators(self,elements,numberOfElements,points,numberOfPoints);
+}
+
+id O2PathInitWithOperators(O2Path *self,unsigned char *elements,unsigned numberOfElements,O2Point *points,unsigned numberOfPoints) {
    int i;
    
-   _numberOfElements=numberOfElements;
-   _elements=NSZoneMalloc(NULL,(_numberOfElements==0)?1:_numberOfElements);
-   for(i=0;i<_numberOfElements;i++)
-    _elements[i]=elements[i];
+   self->_numberOfElements=numberOfElements;
+   self->_elements=NSZoneMalloc(NULL,(self->_numberOfElements==0)?1:self->_numberOfElements);
+   for(i=0;i<self->_numberOfElements;i++)
+    self->_elements[i]=elements[i];
 
-   _numberOfPoints=numberOfPoints;
-   _points=NSZoneMalloc(NULL,(_numberOfPoints==0?1:_numberOfPoints)*sizeof(O2Point));
-   for(i=0;i<_numberOfPoints;i++)
-    _points[i]=points[i];
+   self->_numberOfPoints=numberOfPoints;
+   self->_points=NSZoneMalloc(NULL,(self->_numberOfPoints==0?1:self->_numberOfPoints)*sizeof(O2Point));
+   for(i=0;i<self->_numberOfPoints;i++)
+    self->_points[i]=points[i];
     
    return self;
 }
@@ -55,12 +59,8 @@ O2PathRef O2PathCreateCopy(O2PathRef self) {
    return [self copyWithZone:NULL];
 }
 
--mutableCopyWithZone:(NSZone *)zone {
-   return [[O2MutablePath allocWithZone:zone] initWithOperators:_elements numberOfElements:_numberOfElements points:_points numberOfPoints:_numberOfPoints];
-}
-
 O2MutablePathRef O2PathCreateMutableCopy(O2PathRef self) {
-   return [self mutableCopyWithZone:NULL];
+   return [[O2MutablePath allocWithZone:NULL] initWithOperators:self->_elements numberOfElements:self->_numberOfElements points:self->_points numberOfPoints:self->_numberOfPoints];
 }
 
 unsigned O2PathNumberOfElements(O2PathRef self) {

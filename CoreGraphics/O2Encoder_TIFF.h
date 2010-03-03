@@ -5,11 +5,11 @@
 
 typedef struct O2TIFFEncoder {
    bool              _bigEndian;
-   size_t            _bufferOffset;
-   size_t            _bufferPosition;
-   size_t            _position;
-   CFMutableDataRef  _buffer;
-   uint8_t          *_mutablesBytes;
+   size_t            _consumerOffset;
+   size_t            _consumerPosition;
+   size_t            _bufferCapacity;
+   size_t            _bufferCount;
+   uint8_t          *_mutableBytes;
    CFIndex           _length;
    O2DataConsumerRef _consumer;
 } *O2TIFFEncoderRef;

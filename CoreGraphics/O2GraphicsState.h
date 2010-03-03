@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class O2Image,O2ColorSpace,O2Color,O2Pattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font;
 
-@interface O2GState : NSObject <NSCopying> {
+@interface O2GState : NSObject {
 @public
    O2AffineTransform   _deviceSpaceTransform;
    O2AffineTransform   _userSpaceTransform;
@@ -57,8 +57,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initFlippedWithDeviceHeight:(O2Float)height concat:(O2AffineTransform)concat;
 -init;
 
+O2GState *O2GStateCopyWithZone(O2GState *self,NSZone *zone);
+
 -(O2AffineTransform)userSpaceToDeviceSpaceTransform;
--(O2AffineTransform)userSpaceTransform;
+O2AffineTransform O2GStateUserSpaceTransform(O2GState *self);
 -(O2Rect)clipBoundingBox;
 -(O2AffineTransform)textMatrix;
 -(O2InterpolationQuality)interpolationQuality;
@@ -70,50 +72,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(O2Rect)convertRectToDeviceSpace:(O2Rect)rect;
 -(O2Rect)convertRectToUserSpace:(O2Rect)rect;
 
--(void)setDeviceSpaceCTM:(O2AffineTransform)transform;
--(void)setUserSpaceCTM:(O2AffineTransform)transform;
--(void)concatCTM:(O2AffineTransform)transform;
+void O2GStateSetDeviceSpaceCTM(O2GState *self,O2AffineTransform transform);
+void O2GStateSetUserSpaceCTM(O2GState *self,O2AffineTransform transform);
+void O2GStateConcatCTM(O2GState *self,O2AffineTransform transform);
 
--(NSArray *)clipPhases;
+NSArray *O2GStateClipPhases(O2GState *self);
 -(void)removeAllClipPhases;
--(void)addClipToPath:(O2Path *)path;
+void O2GStateAddClipToPath(O2GState *self,O2Path *path);
 -(void)addEvenOddClipToPath:(O2Path *)path;
 -(void)addClipToMask:(O2Image *)image inRect:(O2Rect)rect;
 
--(O2ColorRef )strokeColor;
--(O2ColorRef )fillColor;
+O2ColorRef O2GStateStrokeColor(O2GState *self);
+O2ColorRef O2GStateFillColor(O2GState *self);
 
--(void)setStrokeColor:(O2ColorRef )color;
--(void)setFillColor:(O2ColorRef )color;
+void O2GStateSetStrokeColor(O2GState *self,O2ColorRef color);
+void O2GStateSetFillColor(O2GState *self,O2ColorRef color);
 
 -(void)setPatternPhase:(O2Size)phase;
 -(void)setStrokePattern:(O2Pattern *)pattern components:(const float *)components;
 -(void)setFillPattern:(O2Pattern *)pattern components:(const float *)components;
 
--(void)setTextMatrix:(O2AffineTransform)transform;
--(void)setTextPosition:(float)x:(float)y;
+void O2GStateSetTextMatrix(O2GState *self,O2AffineTransform transform);
+void O2GStateSetTextPosition(O2GState *self,float x,float y);
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
 -(O2Font *)font;
--(O2Float)pointSize;
+O2Float O2GStatePointSize(O2GState *self);
+
 -(O2TextEncoding)textEncoding;
 -(O2Glyph *)glyphTableForTextEncoding;
--(void)clearFontIsDirty;
+void O2GStateClearFontIsDirty(O2GState *self);
 -(id)fontState;
 -(void)setFontState:(id)fontState;
--(void)setFont:(O2Font *)font;
--(void)setFontSize:(float)size;
+void O2GStateSetFont(O2GState *self,O2Font *font);
+void O2GStateSetFontSize(O2GState *self,float size);
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(O2TextEncoding)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
--(void)setLineWidth:(float)width;
--(void)setLineCap:(int)lineCap;
--(void)setLineJoin:(int)lineJoin;
--(void)setMiterLimit:(float)limit;
--(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count;
+void O2GStateSetLineWidth(O2GState *self,float width);
+void O2GStateSetLineCap(O2GState *self,int lineCap);
+void O2GStateSetLineJoin(O2GState *self,int lineJoin);
+void O2GStateSetMiterLimit(O2GState *self,float limit);
+void O2GStateSetLineDash(O2GState *self,float phase,const float *lengths,unsigned count);
 
 -(void)setRenderingIntent:(O2ColorRenderingIntent)intent;
--(void)setBlendMode:(O2BlendMode)mode;
+void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode);
 
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(O2InterpolationQuality)quality;

@@ -22,6 +22,9 @@ static inline O2GState *currentState(O2Context *self){
 
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
+   /* FIX: we need to also override initWithBytes:... and create an O2Surface_DIBSection for the pixel format.
+      Right now we just ignore GDI stuff if we get a surface which can't handle it.
+    */
    if([[self surface] isKindOfClass:[O2Surface_DIBSection class]])
     _dc=[[(O2Surface_DIBSection *)[self surface] deviceContext] dc];
    _gdiFont=nil;
@@ -38,47 +41,48 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(O2DeviceContext_gdi *)deviceContext {
+   if(_dc==NULL)
+    return nil;
+    
    return [(O2Surface_DIBSection *)[self surface] deviceContext];
 }
 
 -(void)deviceClipReset {
-   [super deviceClipReset];
-   [[self deviceContext] clipReset];
+   O2ContextDeviceClipReset_builtin(self);
+   if(_dc!=NULL)
+    O2DeviceContextClipReset_gdi(_dc);
 }
 
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
-   [super deviceClipToNonZeroPath:path];
+   O2ContextDeviceClipToNonZeroPath_builtin(self,path);
 
    O2GState *state=currentState(self);
-   [[self deviceContext] clipToNonZeroPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   
+   if(_dc!=NULL)
+    O2DeviceContextClipToNonZeroPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
 }
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
-   [super deviceClipToEvenOddPath:path];
-
-   O2GState *state=currentState(self);
-   [[self deviceContext] clipToEvenOddPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
-}
-
--(void)establishFontStateInDeviceIfDirty {
-   O2GState *gState=currentState(self);
+   O2ContextDeviceClipToEvenOddPath_builtin(self,path);
    
-   if(gState->_fontIsDirty){
-    [gState clearFontIsDirty];
-    [_gdiFont release];
-    _gdiFont=[(O2Font_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
-   }
+   O2GState *state=currentState(self);
+   if(_dc!=NULL)
+    O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
 }
 
 -(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
-   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
    O2GState  *gState=currentState(self);
+   O2AffineTransform transformToDevice=gState->_deviceSpaceTransform;
    O2AffineTransform Trm=O2AffineTransformConcat(gState->_textTransform,transformToDevice);
    NSPoint           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
-   [self establishFontStateInDeviceIfDirty];
+   if(gState->_fontIsDirty){
+    O2GStateClearFontIsDirty(gState);
+    [_gdiFont release];
+    _gdiFont=[(O2Font_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:O2GStatePointSize(gState)];
+   }
    
-   SetTextColor(_dc,COLORREFFromColor([self fillColor]));
+   SetTextColor(_dc,COLORREFFromColor(O2ContextFillColor(self)));
 
    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 

@@ -28,11 +28,11 @@ typedef enum {
    kO2ColorSpaceModelDeviceN,
    kO2ColorSpaceModelIndexed,
    kO2ColorSpaceModelPattern,
-   kO2ColorSpaceModelPlatformRGB, // get rid of this, the platform color space, e.g. System colors
 } O2ColorSpaceModel;
 
 @interface O2ColorSpace : NSObject <NSCopying> {
    O2ColorSpaceModel _type;
+   BOOL              _isPlatformRGB;
 }
 
 -(O2ColorSpaceModel)type;
@@ -43,6 +43,9 @@ void            O2ColorSpaceRelease(O2ColorSpaceRef self);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void);
+
+O2ColorSpaceRef O2ColorSpaceCreatePlatformRGB(void);
+BOOL            O2ColorSpaceIsPlatformRGB(O2ColorSpaceRef self);
 
 size_t          O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self);
 

@@ -116,12 +116,10 @@ enum {
 
 -(NSArray *)imageFileDirectory;
 
--(BOOL)tracingEnabled;
-
 -(unsigned)currentOffset;
 -(void)seekToOffset:(unsigned)offset;
 
--(unsigned)nextUnsigned16;
+unsigned O2DecoderNextUnsigned16_TIFF(O2Decoder_TIFF *self);
 -(unsigned)nextUnsigned32;
 -(unsigned)expectUnsigned16;
 -(unsigned)expectUnsigned32;

@@ -60,36 +60,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_clipPhases release];
-   [_strokeColor release];
-   [_fillColor release];
+   O2ColorRelease(_strokeColor);
+   O2ColorRelease(_fillColor);
    [_font release];
    [_fontState release];
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
-   [_shadowColor release];
+   O2ColorRelease(_shadowColor);
    O2GaussianKernelRelease(_shadowKernel);
+   NSDeallocateObject(self);
+   return;
    [super dealloc];
 }
 
--copyWithZone:(NSZone *)zone {
+O2GState *O2GStateCopyWithZone(O2GState *self,NSZone *zone) {
    O2GState *copy=NSCopyObject(self,0,zone);
 
-   copy->_clipPhases=[[NSMutableArray alloc] initWithArray:_clipPhases];
-   copy->_strokeColor=O2ColorCreateCopy(_strokeColor);
-   copy->_fillColor=O2ColorCreateCopy(_fillColor);
-   copy->_font=[_font retain];
-   copy->_fontState=[_fontState retain];
-   if(_dashLengths!=NULL){
+   copy->_clipPhases=[[NSMutableArray alloc] initWithArray:self->_clipPhases];
+   copy->_strokeColor=O2ColorCreateCopy(self->_strokeColor);
+   copy->_fillColor=O2ColorCreateCopy(self->_fillColor);
+   copy->_font=[self->_font retain];
+   copy->_fontState=[self->_fontState retain];
+   if(self->_dashLengths!=NULL){
     int i;
     
-    copy->_dashLengths=NSZoneMalloc(zone,sizeof(float)*_dashLengthsCount);
-    for(i=0;i<_dashLengthsCount;i++)
-     copy->_dashLengths[i]=_dashLengths[i];
+    copy->_dashLengths=NSZoneMalloc(zone,sizeof(float)*self->_dashLengthsCount);
+    for(i=0;i<self->_dashLengthsCount;i++)
+     copy->_dashLengths[i]=self->_dashLengths[i];
    }
     
-   copy->_shadowColor=O2ColorCreateCopy(_shadowColor);
+   copy->_shadowColor=O2ColorCreateCopy(self->_shadowColor);
    
-   copy->_shadowKernel=O2GaussianKernelRetain(_shadowKernel);
+   copy->_shadowKernel=O2GaussianKernelRetain(self->_shadowKernel);
    
    return copy;
 }
@@ -98,8 +100,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _deviceSpaceTransform;
 }
 
--(O2AffineTransform)userSpaceTransform {
-   return _userSpaceTransform;
+O2AffineTransform O2GStateUserSpaceTransform(O2GState *self) {
+   return self->_userSpaceTransform;
 }
 
 -(O2Rect)clipBoundingBox {
@@ -146,31 +148,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return O2RectZero;
 }
 
--(void)setDeviceSpaceCTM:(O2AffineTransform)transform {
-   _deviceSpaceTransform=transform;
+void O2GStateSetDeviceSpaceCTM(O2GState *self,O2AffineTransform transform){
+   self->_deviceSpaceTransform=transform;
 }
 
--(void)setUserSpaceCTM:(O2AffineTransform)transform {
-   _userSpaceTransform=transform;
+void O2GStateSetUserSpaceCTM(O2GState *self,O2AffineTransform transform) {
+   self->_userSpaceTransform=transform;
 }
 
--(void)concatCTM:(O2AffineTransform)transform {
-   _deviceSpaceTransform=O2AffineTransformConcat(transform,_deviceSpaceTransform);
-   _userSpaceTransform=O2AffineTransformConcat(transform,_userSpaceTransform);
+void O2GStateConcatCTM(O2GState *self,O2AffineTransform transform) {
+   self->_deviceSpaceTransform=O2AffineTransformConcat(transform,self->_deviceSpaceTransform);
+   self->_userSpaceTransform=O2AffineTransformConcat(transform,self->_userSpaceTransform);
 }
 
--(NSArray *)clipPhases {
-   return _clipPhases;
+NSArray *O2GStateClipPhases(O2GState *self){
+   return self->_clipPhases;
 }
 
 -(void)removeAllClipPhases {
    [_clipPhases removeAllObjects];
 }
 
--(void)addClipToPath:(O2Path *)path {
-   O2ClipPhase *phase=[[O2ClipPhase alloc] initWithNonZeroPath:path];
+void O2GStateAddClipToPath(O2GState *self,O2Path *path) {
+   O2ClipPhase *phase=O2ClipPhaseInitWithNonZeroPath([O2ClipPhase allocWithZone:NULL],path);
    
-   [_clipPhases addObject:phase];
+   [self->_clipPhases addObject:phase];
    [phase release];
 }
 
@@ -188,24 +190,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [phase release];
 }
 
--(O2ColorRef )strokeColor {
-   return _strokeColor;
+O2ColorRef O2GStateStrokeColor(O2GState *self){
+   return self->_strokeColor;
 }
 
--(O2ColorRef )fillColor {
-   return _fillColor;
+O2ColorRef O2GStateFillColor(O2GState *self){
+   return self->_fillColor;
 }
 
--(void)setStrokeColor:(O2ColorRef )color {
+void O2GStateSetStrokeColor(O2GState *self,O2ColorRef color) {
    [color retain];
-   [_strokeColor release];
-   _strokeColor=color;
+   [self->_strokeColor release];
+   self->_strokeColor=color;
 }
 
--(void)setFillColor:(O2ColorRef )color {
+void O2GStateSetFillColor(O2GState *self,O2ColorRef color) {
    [color retain];
-   [_fillColor release];
-   _fillColor=color;
+   [self->_fillColor release];
+   self->_fillColor=color;
 }
 
 -(void)setPatternPhase:(O2Size)phase {
@@ -218,13 +220,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFillPattern:(O2Pattern *)pattern components:(const float *)components {
 }
 
--(void)setTextMatrix:(O2AffineTransform)transform {
-   _textTransform=transform;
+void O2GStateSetTextMatrix(O2GState *self,O2AffineTransform transform) {
+   self->_textTransform=transform;
 }
 
--(void)setTextPosition:(float)x:(float)y {
-   _textTransform.tx=x;
-   _textTransform.ty=y;
+void O2GStateSetTextPosition(O2GState *self,float x,float y) {
+   self->_textTransform.tx=x;
+   self->_textTransform.ty=y;
 }
 
 -(void)setCharacterSpacing:(float)spacing {
@@ -239,8 +241,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _font;
 }
 
--(O2Float)pointSize {
-   return _pointSize;
+O2Float O2GStatePointSize(O2GState *self) {
+   return self->_pointSize;
 }
 
 -(O2TextEncoding)textEncoding {
@@ -251,8 +253,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_font glyphTableForEncoding:_textEncoding];
 }
 
--(void)clearFontIsDirty {
-   _fontIsDirty=NO;
+void O2GStateClearFontIsDirty(O2GState *self){
+   self->_fontIsDirty=NO;
 }
 
 -(id)fontState {
@@ -265,19 +267,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _fontState=fontState;
 }
 
--(void)setFont:(O2Font *)font {
-   if(font!=_font){
+void O2GStateSetFont(O2GState *self,O2Font *font) {
+   if(font!=self->_font){
     font=[font retain];
-    [_font release];
-    _font=font;
-    _fontIsDirty=YES;
+    [self->_font release];
+    self->_font=font;
+    self->_fontIsDirty=YES;
    }
 }
 
--(void)setFontSize:(float)size {
-   if(_pointSize!=size){
-    _pointSize=size;
-    _fontIsDirty=YES;
+void O2GStateSetFontSize(O2GState *self,float size) {
+   if(self->_pointSize!=size){
+    self->_pointSize=size;
+    self->_fontIsDirty=YES;
    }
 }
 
@@ -299,37 +301,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _fontIsDirty=YES;
 }
 
--(void)setLineWidth:(float)width {
-   _lineWidth=width;
+void O2GStateSetLineWidth(O2GState *self,float width){
+   self->_lineWidth=width;
 }
 
--(void)setLineCap:(int)lineCap {
-   _lineCap=lineCap;
+void O2GStateSetLineCap(O2GState *self,int lineCap){
+   self->_lineCap=lineCap;
 }
 
--(void)setLineJoin:(int)lineJoin {
-   _lineJoin=lineJoin;
+void O2GStateSetLineJoin(O2GState *self,int lineJoin) {
+   self->_lineJoin=lineJoin;
 }
 
--(void)setMiterLimit:(float)limit {
-   _miterLimit=limit;
+void O2GStateSetMiterLimit(O2GState *self,float limit) {
+   self->_miterLimit=limit;
 }
 
--(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count {
-   _dashPhase=phase;
-   _dashLengthsCount=count;
+void O2GStateSetLineDash(O2GState *self,float phase,const float *lengths,unsigned count){
+   self->_dashPhase=phase;
+   self->_dashLengthsCount=count;
    
-   if(_dashLengths!=NULL)
-    NSZoneFree(NULL,_dashLengths);
+   if(self->_dashLengths!=NULL)
+    NSZoneFree(NULL,self->_dashLengths);
     
    if(lengths==NULL || count==0)
-    _dashLengths=NULL;
+    self->_dashLengths=NULL;
    else {
     int i;
     
-    _dashLengths=NSZoneMalloc(NULL,sizeof(float)*count);
+    self->_dashLengths=NSZoneMalloc(NULL,sizeof(float)*count);
     for(i=0;i<count;i++)
-     _dashLengths[i]=lengths[i];
+     self->_dashLengths[i]=lengths[i];
    }
 }
 
@@ -337,8 +339,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _renderingIntent=intent;
 }
 
--(void)setBlendMode:(O2BlendMode)mode {
-   _blendMode=mode;
+void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode){
+   self->_blendMode=mode;
 }
 
 -(void)setFlatness:(float)flatness {
