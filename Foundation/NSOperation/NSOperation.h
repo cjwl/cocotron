@@ -10,38 +10,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 #import <Foundation/NSObject.h>
+@class NSArray;
+@class NSMutableArray;
 
+enum {
+	NSOperationQueuePriorityVeryLow = -8,
+	NSOperationQueuePriorityLow = -4,
+	NSOperationQueuePriorityNormal = 0,
+	NSOperationQueuePriorityHigh = 4,
+	NSOperationQueuePriorityVeryHigh = 8
+};
+typedef NSInteger NSOperationQueuePriority;
 
 @interface NSOperation : NSObject
 {
+	NSOperationQueuePriority priority;
+	NSMutableArray *dependencies;
+	
+	int executing : 1;
+	int cancelled : 1;
+	int finished : 1;
 }
+
+- (void)start;
 
 // abstract, override this to create a concrete subclass, don't call super
-- (void)run;
+- (void)main;
+
+- (NSArray *)dependencies;
+- (void)addDependency:(NSOperation *)operation;
+- (void)removeDependency:(NSOperation *)operation;
+
+- (NSOperationQueuePriority)queuePriority;
+- (void)setQueuePriority:(NSOperationQueuePriority)priority;
+
+- (BOOL)isCancelled;
+- (void)cancel;
+
+- (BOOL)isConcurrent;
+- (BOOL)isExecuting;
+- (BOOL)isFinished;
+- (BOOL)isReady;
 
 @end
 
-@interface NSSelectorOperation : NSOperation
+extern NSString * const NSInvocationOperationVoidResultException;
+extern NSString * const NSInvocationOperationCancelledException;
+
+
+@interface NSInvocationOperation : NSOperation
 {
-	id	_obj;
-	SEL	_sel;
-	id	_arg;
-	
-	id	_result;
+	NSInvocation *invocation;
 }
 
-- (id)initWithTarget: (id)obj selector: (SEL)sel object: (id)arg;
+- (id)initWithInvocation:(NSInvocation *)inv;
+- (id)initWithTarget:(id)target selector:(SEL)sel object:(id)arg;
+
+- (NSInvocation *)invocation;
 
 - (id)result;
-
-@end
-
-@class NSLatchTrigger;
-@interface NSWaitableSelectorOperation : NSSelectorOperation
-{
-	NSLatchTrigger*	_trigger;
-}
-
-- (void)waitUntilDone;
 
 @end

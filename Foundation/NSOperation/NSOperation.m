@@ -11,94 +11,172 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import "NSOperation.h"
-#import <Foundation/NSString.h>
-#import <Foundation/NSMethodSignature.h>
 #import "NSLatchTrigger.h"
 
+#import <Foundation/NSString.h>
+#import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSMutableArray.h>
+#import <Foundation/NSRaise.h>
+#import <Foundation/NSKeyValueObserving.h>
+#import <Foundation/NSInvocation.h>
 
 @implementation NSOperation
 
-- (void)run
+
+- (void)main
 {
 	NSLog( @"NSOperation is an abstract class, implement -[%@ %@]", [self class], NSStringFromSelector( _cmd ) );
 	[self doesNotRecognizeSelector: _cmd];
 }
 
-@end
-
-@implementation NSSelectorOperation
-
-- (id)initWithTarget: (id)obj selector: (SEL)sel object: (id)arg
+- (NSArray *)dependencies;
 {
-	if( (self = [super init]) )
-	{
-		_obj = [obj retain];
-		_sel = sel;
-		_arg = [arg retain];
-	}
-	return self;
+	return dependencies;
 }
 
-- (void)dealloc
+- (void)addDependency:(NSOperation *)operation;
 {
-	[_obj release];
-	[_arg release];
-	[_result release];
+	if (nil == dependencies) {
+		dependencies = [[NSMutableArray alloc] init];
+	}
+	[dependencies addObject: operation];
+}
+
+- (void)removeDependency:(NSOperation *)operation;
+{
+	if (nil != dependencies) {
+		[dependencies removeObject: operation];
+	}
+}
+
+- (NSOperationQueuePriority)queuePriority;
+{
+	return priority;
+}
+
+- (void)setQueuePriority:(NSOperationQueuePriority)newPriority;
+{
+	priority = newPriority;
+}
+
+- (BOOL)isCancelled;
+{
+	return cancelled;
+}
+
+- (void)cancel;
+{
+	[self willChangeValueForKey: @"isCancelled"];
+	cancelled = 1;
+	[self didChangeValueForKey: @"isCancelled"];
+}
+
+- (BOOL)isConcurrent;
+{
+	return NO;
+}
+
+- (BOOL)isExecuting;
+{
+	return executing;
+}
+
+- (BOOL)isFinished;
+{
+	return finished;
+}
+
+- (BOOL)isReady;
+{
+	for (NSOperation *op in dependencies) {
+		if (![op isFinished]) return NO;
+	}
+	return YES;
+}
+
+- (void) start;
+{
+	if (!executing && !finished) {
+		if (!cancelled) {
+			[self willChangeValueForKey: @"isExecuting"];
+			executing = 1;
+			[self didChangeValueForKey: @"isExecuting"];
+			
+			[self main];
+		}
+		
+		[self willChangeValueForKey: @"isExecuting"];
+		[self willChangeValueForKey: @"isFinished"];
+		executing = 0;
+		finished = 1;
+		[self didChangeValueForKey: @"isFinished"];
+		[self didChangeValueForKey: @"isExecuting"];
+	}
+}
+
+- (void) dealloc;
+{
+	[dependencies release], dependencies = 0;
 	
 	[super dealloc];
 }
 
-- (NSString *)description
-{
-	return [NSString stringWithFormat: @"<%@:%p: %@ %@ %@>", [self class], self, _obj, NSStringFromSelector( _sel ), _arg];
-}
-
-- (void)run
-{
-	NSMethodSignature *sig = [_obj methodSignatureForSelector: _sel];
-    IMP                imp=[_obj instanceMethodForSelector:_sel];
-    
-	if( [sig methodReturnType][0] == '@' )
-		_result = [imp( _obj, _sel, _arg ) retain];
-	else
-		imp( _obj, _sel, _arg );
-}
-
-- (id)result
-{
-	return _result;
-}
-
 @end
 
-@implementation NSWaitableSelectorOperation
+NSString * const NSInvocationOperationVoidResultException = @"NSInvocationOperationVoidResultException";
+NSString * const NSInvocationOperationCancelledException = @"NSInvocationOperationCancelledException";
 
-- (id)initWithTarget: (id)obj selector: (SEL)sel object: (id)arg
+
+@implementation NSInvocationOperation
+
+- (id)initWithInvocation:(NSInvocation *)inv;
 {
-	if( (self = [super initWithTarget: obj selector: sel object: arg]) )
-	{
-		_trigger = [[NSLatchTrigger alloc] init];
-	}
+	if (nil == [super init]) return nil;
+	invocation = [inv retain];
 	return self;
+}
+
+- (id)initWithTarget:(id)target selector:(SEL)sel object:(id)arg;
+{
+	NSMethodSignature *signature = [target methodSignatureForSelector: sel];
+	NSInvocation *inv = [NSInvocation invocationWithMethodSignature: signature];
+	[inv setTarget: target];
+	[inv setSelector: sel];
+	[inv setArgument: &arg atIndex:2];
+	
+	return [self initWithInvocation: inv];
+}
+
+- (NSInvocation *)invocation;
+{
+	return invocation;
+}
+
+- (id)result;
+{
+	if ([self isCancelled]) [NSException raise: NSInvocationOperationCancelledException format: @"" ];
+
+	id result = 0;
+	if ([[invocation methodSignature] methodReturnLength] != sizeof( result )) [NSException raise: NSInvocationOperationVoidResultException format: @""];
+	
+	[invocation getReturnValue: &result];
+	return result;
 }
 
 - (void)dealloc
 {
-	[_trigger release];
+	[invocation release], invocation = nil;
 	
 	[super dealloc];
 }
 
-- (void)run
+- (void) main;
 {
-	[super run];
-	[_trigger signal];
-}
-
-- (void)waitUntilDone
-{
-	[_trigger wait];
+	[invocation invoke];
 }
 
 @end
+
+
+
 

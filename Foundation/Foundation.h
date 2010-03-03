@@ -102,6 +102,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumberFormatter.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSObject.h>
+#import <Foundation/NSOperation.h>
+#import <Foundation/NSOperationQueue.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSPipe.h>
 #import <Foundation/NSPortCoder.h>

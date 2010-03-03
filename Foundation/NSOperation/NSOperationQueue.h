@@ -14,15 +14,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSOperation;
 @class NSOperationQueueImpl;
+@class NSArray;
+
+enum {
+	NSOperationQueueDefaultMaxConcurrentOperationCount = -1
+};
+
 
 @interface NSOperationQueue : NSObject
 {
-	NSOperationQueueImpl*	_impl;
+	NSOperationQueueImpl *_impl;
+	NSString *_name;
 }
 
 - (id)init;
 
 - (void)addOperation: (NSOperation *)op;
-- (void)addHighPriorityOperation: (NSOperation *)op;
+
+- (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
+
+- (void)cancelAllOperations;
+
+- (NSInteger)maxConcurrentOperationCount;
+- (void)setMaxConcurrentOperationCount:(NSInteger)count;
+
+- (NSString *)name;
+- (void)setName:(NSString *)newName;
+
+- (NSArray *)operations;
+
+- (BOOL)isSuspended;
+- (void)setSuspended:(BOOL)suspend;
+
+- (void)waitUntilAllOperationsAreFinished;
 
 @end

@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSAtomicList.h"
 #import "NSLatchTrigger.h"
+#import <Foundation/NSRaise.h>
 
 
 @interface NSOperationQueueImpl : NSObject
@@ -109,7 +110,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	
 	if( op )
-		[op run];
+		[op start];
 	
 	return op != nil;
 }
@@ -178,12 +179,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)addOperation: (NSOperation *)op
 {
-	[_impl addOperation: op];
+	if ([op queuePriority] > NSOperationQueuePriorityNormal) [_impl addHighPriorityOperation: op];
+	else [_impl addOperation: op];
 }
 
-- (void)addHighPriorityOperation: (NSOperation *)op
+- (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
 {
-	[_impl addHighPriorityOperation: op];
+	NSUnimplementedMethod();
+}
+
+- (void)cancelAllOperations;
+{
+	NSUnimplementedMethod();
+}
+
+- (NSInteger)maxConcurrentOperationCount;
+{
+	NSUnimplementedMethod();
+	return NSOperationQueueDefaultMaxConcurrentOperationCount;
+}
+
+- (void)setMaxConcurrentOperationCount:(NSInteger)count;
+{
+	NSUnimplementedMethod();
+}
+
+- (NSString *)name;
+{
+	return [[_name retain] autorelease];
+}
+
+- (void)setName:(NSString *)newName;
+{
+	if (_name != newName) {
+		[_name release];
+		_name = [newName copy];
+	}
+}
+
+- (NSArray *)operations;
+{
+	NSUnimplementedMethod();
+	return nil;
+}
+
+- (BOOL)isSuspended;
+{
+	NSUnimplementedMethod();
+	return NO;
+}
+
+- (void)setSuspended:(BOOL)suspend;
+{
+	NSUnimplementedMethod();
+}
+
+- (void)waitUntilAllOperationsAreFinished;
+{
+	NSUnimplementedMethod();
 }
 
 @end
