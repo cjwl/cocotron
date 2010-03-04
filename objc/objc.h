@@ -23,5 +23,6 @@ typedef signed char  BOOL;
 #define Nil  0
 #define nil  0
 
+OBJC_EXPORT const char *sel_getName(SEL selector);
 
 
