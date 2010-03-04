@@ -2121,13 +2121,13 @@
 		FE463D74102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
 		FE463D75102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D76102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
-		FE463D85102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D85102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D86102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
-		FE463D87102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D87102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D88102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
-		FE463D89102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D89102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D8A102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
-		FE463D8B102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D8B102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D8C102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
 		FE463ED4102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463ED5102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
@@ -2563,7 +2563,7 @@
 		FE5A8A4210C6F50E005E348A /* NSCellUndoManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6D918A101381F600BA6BAD /* NSCellUndoManager.h */; };
 		FE5A8A4310C6F50E005E348A /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
 		FE5A8A4410C6F50E005E348A /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5A8A4510C6F50E005E348A /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE5A8A4510C6F50E005E348A /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A4610C6F50E005E348A /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A4710C6F50E005E348A /* NSPathComponentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A4810C6F50E005E348A /* NSPathControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC8102D0F9C00B265D6 /* NSPathControl.h */; settings = {ATTRIBUTES = (Public, ); }; };

@@ -234,6 +234,17 @@ static NSString *NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingOb
 }
 
 
+-(int)_selectedTag {
+   return [[_cell selectedItem] tag];
+}
+
+-(void)_setSelectedTag:(int)tag {
+   int index = [_cell indexOfItemWithTag:tag];
+   
+   if (index >= 0)
+    [_cell selectItemAtIndex:index];
+}
+
 
 -(NSUInteger)_selectedIndex
 {

@@ -84,22 +84,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSize imageSize=[[self _imageValue] size];
       
    switch(_imageScaling){
-    case NSScaleProportionally:{
-      float xscale=frame.size.width/imageSize.width;
-      float yscale=frame.size.height/imageSize.height;
-      float scale=MIN(xscale,yscale);
+    case NSImageScaleProportionallyDown:{
+     float xscale=frame.size.width/imageSize.width;
+     float yscale=frame.size.height/imageSize.height;
+     float scale=MIN(1.0,MIN(xscale,yscale));
       
-      imageSize.width*=scale;
-      imageSize.height*=scale;
+     imageSize.width*=scale;
+     imageSize.height*=scale;
       
-      return imageSize;
+     return imageSize;
      }
      
-    case NSScaleToFit:
+    case NSImageScaleAxesIndependently:
      return frame.size;
-    
+     
+    case NSImageScaleProportionallyUpOrDown:{
+     float xscale=frame.size.width/imageSize.width;
+     float yscale=frame.size.height/imageSize.height;
+     float scale=MIN(xscale,yscale);
+      
+     imageSize.width*=scale;
+     imageSize.height*=scale;
+      
+     return imageSize;
+     }
+     
     default:
-    case NSScaleNone:
+    case NSImageScaleNone:
      return imageSize;
    }
    

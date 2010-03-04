@@ -21,12 +21,6 @@ typedef enum {
 } NSImageAlignment;
 
 typedef enum {
-   NSScaleProportionally,
-   NSScaleToFit,
-   NSScaleNone
-} NSImageScaling;
-
-typedef enum {
    NSImageFrameNone,
    NSImageFramePhoto,
    NSImageFrameGrayBezel,

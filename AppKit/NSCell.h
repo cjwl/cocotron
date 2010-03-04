@@ -39,6 +39,19 @@ typedef enum {
 } NSCellImagePosition;
 
 typedef enum {
+   NSImageScaleProportionallyDown = 0,
+   NSImageScaleAxesIndependently,
+   NSImageScaleNone,
+   NSImageScaleProportionallyUpOrDown,
+   
+// deprecated
+   NSScaleProportionally=NSImageScaleProportionallyDown,
+   NSScaleToFit=NSImageScaleAxesIndependently,
+   NSScaleNone=NSImageScaleNone,
+} NSImageScaling;
+
+
+typedef enum {
    NSMixedState=-1,
    NSOffState=0,
    NSOnState=1,
@@ -122,6 +135,7 @@ typedef NSUInteger NSControlTint;
 -(NSControlSize)controlSize;
 -(NSFocusRingType)focusRingType;
 
+-(void)setControlView:(NSView *)view;
 -(void)setType:(NSCellType)type;
 
 -(void)setState:(int)value;
