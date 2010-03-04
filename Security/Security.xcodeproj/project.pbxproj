@@ -1,0 +1,322 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		FE3C420D1129AB3B0099DAB8 /* SecKeychainCursor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C420B1129AB3B0099DAB8 /* SecKeychainCursor.h */; };
+		FE3C420E1129AB3B0099DAB8 /* SecKeychainCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C420C1129AB3B0099DAB8 /* SecKeychainCursor.m */; };
+		FE9C1C191125B9CD002DA20B /* SecBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1C181125B9CD002DA20B /* SecBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE9C1C2A1125BC26002DA20B /* Security.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1C291125BC26002DA20B /* Security.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE9C1C351125BC3E002DA20B /* SecBase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1C341125BC3E002DA20B /* SecBase.m */; };
+		FE9C1C6E1125BE5E002DA20B /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1C6D1125BE5E002DA20B /* dllmain.m */; };
+		FE9C1CA21125BF39002DA20B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE9C1DEC1125DF57002DA20B /* SecKeychainItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1DEA1125DF57002DA20B /* SecKeychainItem.h */; };
+		FE9C1DED1125DF57002DA20B /* SecKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1DEB1125DF57002DA20B /* SecKeychainItem.m */; };
+		FE9C1DF21125DF66002DA20B /* SecKeychainSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1DF01125DF66002DA20B /* SecKeychainSearch.h */; };
+		FE9C1DF31125DF66002DA20B /* SecKeychainSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1DF11125DF66002DA20B /* SecKeychainSearch.m */; };
+		FE9C1DF81125DF71002DA20B /* SecAccess.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1DF61125DF71002DA20B /* SecAccess.h */; };
+		FE9C1DF91125DF71002DA20B /* SecAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1DF71125DF71002DA20B /* SecAccess.m */; };
+		FE9C1E001125DF9F002DA20B /* SecKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1DFE1125DF9F002DA20B /* SecKeychain.h */; };
+		FE9C1E011125DF9F002DA20B /* SecKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1DFF1125DF9F002DA20B /* SecKeychain.m */; };
+		FE9C1E061125DFAD002DA20B /* SecTrustedApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1E041125DFAD002DA20B /* SecTrustedApplication.h */; };
+		FE9C1E071125DFAD002DA20B /* SecTrustedApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1E051125DFAD002DA20B /* SecTrustedApplication.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE9C1C141125B8B7002DA20B /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* Security.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Security.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE3C420B1129AB3B0099DAB8 /* SecKeychainCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecKeychainCursor.h; sourceTree = "<group>"; };
+		FE3C420C1129AB3B0099DAB8 /* SecKeychainCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecKeychainCursor.m; sourceTree = "<group>"; };
+		FE9C1C181125B9CD002DA20B /* SecBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecBase.h; sourceTree = "<group>"; };
+		FE9C1C291125BC26002DA20B /* Security.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Security.h; sourceTree = "<group>"; };
+		FE9C1C341125BC3E002DA20B /* SecBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecBase.m; sourceTree = "<group>"; };
+		FE9C1C6D1125BE5E002DA20B /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = dllmain.m; path = ../Foundation/platform_windows/dllmain.m; sourceTree = SOURCE_ROOT; };
+		FE9C1DEA1125DF57002DA20B /* SecKeychainItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecKeychainItem.h; sourceTree = "<group>"; };
+		FE9C1DEB1125DF57002DA20B /* SecKeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecKeychainItem.m; sourceTree = "<group>"; };
+		FE9C1DF01125DF66002DA20B /* SecKeychainSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecKeychainSearch.h; sourceTree = "<group>"; };
+		FE9C1DF11125DF66002DA20B /* SecKeychainSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecKeychainSearch.m; sourceTree = "<group>"; };
+		FE9C1DF61125DF71002DA20B /* SecAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecAccess.h; sourceTree = "<group>"; };
+		FE9C1DF71125DF71002DA20B /* SecAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecAccess.m; sourceTree = "<group>"; };
+		FE9C1DFE1125DF9F002DA20B /* SecKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecKeychain.h; sourceTree = "<group>"; };
+		FE9C1DFF1125DF9F002DA20B /* SecKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecKeychain.m; sourceTree = "<group>"; };
+		FE9C1E041125DFAD002DA20B /* SecTrustedApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecTrustedApplication.h; sourceTree = "<group>"; };
+		FE9C1E051125DFAD002DA20B /* SecTrustedApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecTrustedApplication.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE9C1CA21125BF39002DA20B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* Security.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				FE3C420B1129AB3B0099DAB8 /* SecKeychainCursor.h */,
+				FE3C420C1129AB3B0099DAB8 /* SecKeychainCursor.m */,
+				FE9C1C6D1125BE5E002DA20B /* dllmain.m */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				FE9C1DF61125DF71002DA20B /* SecAccess.h */,
+				FE9C1DF71125DF71002DA20B /* SecAccess.m */,
+				FE9C1C181125B9CD002DA20B /* SecBase.h */,
+				FE9C1C341125BC3E002DA20B /* SecBase.m */,
+				FE9C1DFE1125DF9F002DA20B /* SecKeychain.h */,
+				FE9C1DFF1125DF9F002DA20B /* SecKeychain.m */,
+				FE9C1DEA1125DF57002DA20B /* SecKeychainItem.h */,
+				FE9C1DEB1125DF57002DA20B /* SecKeychainItem.m */,
+				FE9C1DF01125DF66002DA20B /* SecKeychainSearch.h */,
+				FE9C1DF11125DF66002DA20B /* SecKeychainSearch.m */,
+				FE9C1E041125DFAD002DA20B /* SecTrustedApplication.h */,
+				FE9C1E051125DFAD002DA20B /* SecTrustedApplication.m */,
+				FE9C1C291125BC26002DA20B /* Security.h */,
+			);
+			name = Security;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE9C1C191125B9CD002DA20B /* SecBase.h in Headers */,
+				FE9C1C2A1125BC26002DA20B /* Security.h in Headers */,
+				FE9C1DEC1125DF57002DA20B /* SecKeychainItem.h in Headers */,
+				FE9C1DF21125DF66002DA20B /* SecKeychainSearch.h in Headers */,
+				FE9C1DF81125DF71002DA20B /* SecAccess.h in Headers */,
+				FE9C1E001125DF9F002DA20B /* SecKeychain.h in Headers */,
+				FE9C1E061125DFAD002DA20B /* SecTrustedApplication.h in Headers */,
+				FE3C420D1129AB3B0099DAB8 /* SecKeychainCursor.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* Security-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Security-Windows-i386" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+				FE9C1C141125B8B7002DA20B /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "Security-Windows-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = Security;
+			productReference = 8DC2EF5B0486A6940098B216 /* Security.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Security" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* Security */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* Security-Windows-i386 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE9C1C351125BC3E002DA20B /* SecBase.m in Sources */,
+				FE9C1C6E1125BE5E002DA20B /* dllmain.m in Sources */,
+				FE9C1DED1125DF57002DA20B /* SecKeychainItem.m in Sources */,
+				FE9C1DF31125DF66002DA20B /* SecKeychainSearch.m in Sources */,
+				FE9C1DF91125DF71002DA20B /* SecAccess.m in Sources */,
+				FE9C1E011125DF9F002DA20B /* SecKeychain.m in Sources */,
+				FE9C1E071125DFAD002DA20B /* SecTrustedApplication.m in Sources */,
+				FE3C420E1129AB3B0099DAB8 /* SecKeychainCursor.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1667FE841158C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DWINVER=0x500",
+					"-DSECURITY_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-march=i686",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lrpcrt4",
+					"-lcrypt32",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--image-base=0x10000000",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Security;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/Security/Windows;
+				WARNING_CFLAGS = "-Wno-multichar";
+			};
+			name = Release;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Security-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Security" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
