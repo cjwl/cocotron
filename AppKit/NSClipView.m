@@ -26,7 +26,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
+    unsigned           flags=[keyed decodeIntForKey:@"NScvFlags"];
     
+    _drawsBackground=(flags&0x04)?YES:NO;
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBGColor"] retain];
     _docView=[[keyed decodeObjectForKey:@"NSDocView"] retain];
     
@@ -44,6 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
    _backgroundColor=[[NSColor controlBackgroundColor] retain];
+   _drawsBackground=YES;
    return self;
 }
 
@@ -167,7 +170,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isOpaque {
-   return YES;
+   return _drawsBackground;
 }
 
 -(BOOL)isFlipped {
@@ -180,11 +183,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSRect frame=[_docView frame];
     NSRect intersection=NSIntersectionRect(bounds,frame);
 
+    // if the docview completely fills the clip view, don't draw the background
     if(NSEqualRects(bounds,intersection))
      return;
    }
-   [_backgroundColor setFill];
-   NSRectFill(rect);
+
+   if([self drawsBackground]){
+    [_backgroundColor setFill];
+    NSRectFill(rect);
+   }
+
 }
 
 -(BOOL)autoscroll:(NSEvent *)event {

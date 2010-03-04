@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSScroller   *_horizontalScroller;
    NSRulerView  *_horizontalRuler;
    NSRulerView  *_verticalRuler;
+   NSColor      *_backgroundColor;
    float         _verticalLineScroll;
    float         _verticalPageScroll;
    float         _horizontalLineScroll;
@@ -30,6 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL          _hasVerticalRuler;
    BOOL          _rulersVisible;
    BOOL          _scrollsDynamically;
+   BOOL          _autohidesScrollers;
    NSCursor     *_documentCursor;
 }
 
@@ -64,6 +66,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(float)lineScroll;
 -(float)pageScroll;
 -(BOOL)scrollsDynamically;
+-(BOOL)autohidesScrollers;
+
 -(NSCursor *)documentCursor;
 
 -(void)setDocumentView:(NSView *)view;
@@ -86,6 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setPageScroll:(float)value;
 -(void)setScrollsDynamically:(BOOL)flag;
 -(void)setDocumentCursor:(NSCursor *)cursor;
+-(void)setAutohidesScrollers:(BOOL)value;
 
 -(void)tile;
 -(void)reflectScrolledClipView:(NSClipView *)clipView;

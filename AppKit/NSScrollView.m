@@ -107,9 +107,10 @@ static Class _rulerViewClass = nil;
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     unsigned           flags=[keyed decodeIntForKey:@"NSsFlags"];
     
-    _drawsBackground=YES; // FIXME: this is in the nib
+    _drawsBackground=NO; // FIXME: this is in the nib
     _hasVerticalScroller=(flags&0x10)?YES:NO;
     _hasHorizontalScroller=(flags&0x20)?YES:NO;
+    _autohidesScrollers=(flags&0x200)?YES:NO;
     _borderType=flags&0x03;
     _clipView=[[keyed decodeObjectForKey:@"NSContentView"] retain];
     _verticalScroller=[[keyed decodeObjectForKey:@"NSVScroller"] retain];
@@ -118,10 +119,9 @@ static Class _rulerViewClass = nil;
     [_verticalScroller setAction:@selector(_verticalScroll:)];
     [_horizontalScroller setTarget:self];
     [_horizontalScroller setAction:@selector(_horizontalScroll:)];
-    
     _headerClipView=[[keyed decodeObjectForKey:@"NSHeaderClipView"] retain];
     _cornerView=[[keyed decodeObjectForKey:@"NSCornerView"] retain];
-    
+    _backgroundColor=[[NSColor controlBackgroundColor] copy];
     // scroll amounts in NSScrollAmts
     _verticalLineScroll=1.0;
     _verticalPageScroll=10.0;
@@ -337,8 +337,9 @@ static Class _rulerViewClass = nil;
 
    _hasVerticalScroller=NO;
    _hasHorizontalScroller=NO;
-
+   _drawsBackground=YES;
    _borderType=NSNoBorder;
+   _backgroundColor=[[NSColor controlBackgroundColor] copy];
 
    [self setLineScroll:1.0];
    [self setPageScroll:10.0];		//entirely arbitrary
@@ -357,11 +358,12 @@ static Class _rulerViewClass = nil;
    [_cornerView release];
    [_horizontalRuler release];
    [_verticalRuler release];
+   [_backgroundColor release];
    [super dealloc];
 }
 
 -(BOOL)isOpaque {
-   return YES;
+   return _drawsBackground;
 }
 
 -(BOOL)isFlipped {
@@ -433,7 +435,7 @@ static Class _rulerViewClass = nil;
 }
 
 -(BOOL)drawsBackground {
-   return _drawsBackground;
+   return [_clipView drawsBackground];
 }
 
 -(NSColor *)backgroundColor {
@@ -511,6 +513,10 @@ static Class _rulerViewClass = nil;
 
 -(BOOL)scrollsDynamically {
     return _scrollsDynamically;
+}
+
+-(BOOL)autohidesScrollers {
+   return _autohidesScrollers;
 }
 
 -(NSCursor *)documentCursor {
@@ -656,6 +662,11 @@ static Class _rulerViewClass = nil;
     [_clipView addCursorRect:[_clipView bounds] cursor:_documentCursor];
 }
 
+-(void)setAutohidesScrollers:(BOOL)value {
+   _autohidesScrollers=value;
+// FIXME: tile or hide/show scrollers?
+}
+
 -(void)tile {
    NSRect frame;
 
@@ -704,7 +715,9 @@ static Class _rulerViewClass = nil;
 
     if(docView==nil){
      [_verticalScroller setEnabled:NO];
+     [_verticalScroller setHidden:_autohidesScrollers];
      [_horizontalScroller setEnabled:NO];
+     [_horizontalScroller setHidden:_autohidesScrollers];
     }
     else {
      NSRect docRect=[docView frame];
@@ -712,8 +725,10 @@ static Class _rulerViewClass = nil;
      float  heightDiff=docRect.size.height-clipRect.size.height;
      float  widthDiff=docRect.size.width-clipRect.size.width;
 
-     if(heightDiff<=0)
+     if(heightDiff<=0){
       [_verticalScroller setEnabled:NO];
+      [_verticalScroller setHidden:_autohidesScrollers];
+     }
      else {
       float  value=(heightDiff<=0)?0:(clipRect.origin.y-docRect.origin.y)/heightDiff;
 
@@ -721,18 +736,20 @@ static Class _rulerViewClass = nil;
        value=1.0-value;
 
       [_verticalScroller setEnabled:YES];
-      [_verticalScroller setFloatValue:value
-           knobProportion:clipRect.size.height/docRect.size.height];
+      [_verticalScroller setHidden:NO];
+      [_verticalScroller setFloatValue:value knobProportion:clipRect.size.height/docRect.size.height];
      }
 
-     if(widthDiff<=0)
+     if(widthDiff<=0){
       [_horizontalScroller setEnabled:NO];
+      [_horizontalScroller setHidden:_autohidesScrollers];
+     }
      else {
       float value=(widthDiff<=0)?0:(clipRect.origin.x-docRect.origin.x)/widthDiff;
 
       [_horizontalScroller setEnabled:YES];
-      [_horizontalScroller setFloatValue:value
-          knobProportion:clipRect.size.width/docRect.size.width];
+      [_horizontalScroller setHidden:NO];
+      [_horizontalScroller setFloatValue:value knobProportion:clipRect.size.width/docRect.size.width];
      }
     }
 
@@ -748,15 +765,16 @@ static Class _rulerViewClass = nil;
 
 -(void)drawRect:(NSRect)rect {
 
+   if(_drawsBackground){
+    [[self backgroundColor] setFill];
+    NSRectFill(rect);
+   }
+   
    switch(_borderType){
     case NSNoBorder:
-     [[[self window] backgroundColor] set];
-     NSRectFill(rect);
      break;
 
     case NSLineBorder:
-     [[[self window] backgroundColor] set];
-     NSRectFill(rect);
      [[NSColor blackColor] set];
      NSFrameRect(_bounds);
      break;
