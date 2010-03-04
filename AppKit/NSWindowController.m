@@ -98,7 +98,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)_windowWillClose:(NSNotification *)note {
    [_window setWindowController:nil];
-   [_window release];
+// NSWindowController properly releases a window which does and does not have release when closed set without over-releasing
+   if(![_window isReleasedWhenClosed])
+    [_window release];
    _window=nil;
    
   if (_document){
