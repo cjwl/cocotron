@@ -66,6 +66,6 @@ id objc_getProperty (id self, SEL _cmd, size_t offset, BOOL isAtomic)
 	void *buffer=(void*)self+offset;
 	id value=*(id*)buffer;
 	
-	return [[value retain] autorelease];
+	return value;
 }
 

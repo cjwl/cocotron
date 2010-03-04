@@ -9,8 +9,14 @@ SEL method_getName(Method method){
 }
 
 unsigned method_getNumberOfArguments(Method method){
-   // UNIMPLEMENTED
-   return 0;
+   unsigned    result=2;
+   const char *name=sel_getName(method->method_name);
+   
+   for(;*name!='\0';name++)
+    if(*name==':')
+     result++;
+     
+   return result;
 }
 
 void method_getReturnType(Method method,char *type,size_t typeCapacity){
