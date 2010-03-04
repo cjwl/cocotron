@@ -332,12 +332,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [controller setDocument:self];
 }
 
--(void)removeWindowController:(NSWindowController *)controller 
-{
-  BOOL shouldCloseDocument = [controller shouldCloseDocument];
-  [_windowControllers removeObjectIdenticalTo:controller];
-  if (shouldCloseDocument || [_windowControllers count] == 0)
-     [self close];
+-(void)removeWindowController:(NSWindowController *)controller  {
+   [controller setDocument:nil];
+   [_windowControllers removeObjectIdenticalTo:controller];
 }
 
 -(NSString *)displayName 

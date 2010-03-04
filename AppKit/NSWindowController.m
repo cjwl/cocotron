@@ -16,9 +16,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSWindowController
 
+
 -initWithWindow:(NSWindow *)window {
    _window=[window retain];
    [_window setWindowController:self];
+
+   if(_window!=nil)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
+
    _nibPath=nil;
    _owner=nil;
    _document=nil;
@@ -74,23 +79,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setWindow:(NSWindow *)window {
-   NSNotificationCenter * nc = [NSNotificationCenter defaultCenter];
+   NSNotificationCenter *center=[NSNotificationCenter defaultCenter];
+   
    [_window setWindowController:nil];
+   
    if (_window)
-      [nc removeObserver:self name:NSWindowWillCloseNotification object:_window];
+    [center removeObserver:self name:NSWindowWillCloseNotification object:_window];
+    
    window=[window retain];
    [_window release];
    _window=window;
+   
    [_window setWindowController:self];
+   
    if (_window)
-      [nc addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
+    [center addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
 }
 
--(void)_windowWillClose:(NSNotification *)note
-{
-  // Callback for NSWindowWillCloseNotification
-  if (_document)
+-(void)_windowWillClose:(NSNotification *)note {
+   [_window release];
+   _window=nil;
+   
+  if (_document){
+   [[self retain] autorelease];
+
+   if([self shouldCloseDocument] || [[_document windowControllers] count]==1)
+    [_document close];
+   else {
     [_document removeWindowController:self];
+   }
+  }
 }
 
 -(BOOL)isWindowLoaded {
