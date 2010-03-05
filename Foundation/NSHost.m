@@ -64,8 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)names {
-   NSUnimplementedMethod();
-   return 0;
+   return [NSArray arrayWithObject:_name];
 }
 
 -(NSString *)name {

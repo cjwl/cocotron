@@ -7,11 +7,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObjCRuntime.h>
-#import <Foundation/NSZone.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSEnumerator.h>
 
-@class NSArray;
-
-typedef struct NSMapTable NSMapTable;
+@class NSArray,NSMapTable;
 
 typedef struct {
    NSMapTable        *table;
@@ -33,6 +32,26 @@ typedef struct {
    void       (*release)(NSMapTable *table,void *);
    NSString  *(*describe)(NSMapTable *table, const void *);
 } NSMapTableValueCallBacks;
+
+@interface NSMapTable : NSObject {
+   NSMapTableKeyCallBacks   *keyCallBacks;
+   NSMapTableValueCallBacks *valueCallBacks;
+   NSUInteger             count;
+   NSUInteger             nBuckets;
+   struct _NSMapNode  **buckets;
+}
+
++mapTableWithWeakToStrongObjects;
++mapTableWithStrongToStrongObjects;
+
+-objectForKey:key;
+-(void)removeObjectForKey:key;
+-(void)setObject:object forKey:key;
+
+-(void)removeAllObjects;
+-(NSEnumerator *)keyEnumerator;
+
+@end
 
 FOUNDATION_EXPORT const void *NSNotAnIntMapKey;
 FOUNDATION_EXPORT const void *NSNotAPointerMapKey;

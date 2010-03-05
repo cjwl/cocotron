@@ -781,7 +781,8 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    NSColor    *selectedColor=[[textView selectedTextAttributes] objectForKey:NSForegroundColorAttributeName];
    
    NSTextContainer *container=[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:&glyphRange];
-   BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
+   NSGraphicsContext *context=[NSGraphicsContext currentContext];
+   BOOL             isFlipped=[context isFlipped];
    float            usedHeight=[self usedRectForTextContainer:container].size.height;
 
    if(selectedColor==nil)
@@ -822,15 +823,15 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
       else {
        NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
        NSFont       *font=NSFontAttributeInDictionary(attributes);
-       NSMultibyteGlyphPacking packing=[font glyphPacking];
+       NSMultibyteGlyphPacking packing=NSNativeShortGlyphPacking;
        NSGlyph       glyphs[range.length];
        unsigned      glyphsLength;
        char          packedGlyphs[range.length];
        int           packedGlyphsLength;
 
-       glyphsLength=[self getGlyphs:glyphs range:range];
+      glyphsLength=[self getGlyphs:glyphs range:range];
 
-       [font set];
+       [font setInContext:context];
 
        if(intersectRange.length>0){
         NSGlyph  previousGlyph=NSNullGlyph;
@@ -849,21 +850,21 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
           glyph=NSNullGlyph;
           
          if(location==intersectRange.location && location>range.location){
-          [color set];
+          [color setFill];
 
           start=0;
           length=location-range.location;
           showGlyphs=YES;
          }
          else if(location==NSMaxRange(intersectRange)){
-          [selectedColor set];
+          [selectedColor setFill];
 
           start=intersectRange.location-range.location;
           length=intersectRange.length;
           showGlyphs=YES;
          }
          else if(location==limit){
-          [color set];
+          [color setFill];
 
           start=NSMaxRange(intersectRange)-range.location;
           length=NSMaxRange(range)-NSMaxRange(intersectRange);
@@ -884,7 +885,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
         }
        }
        else {
-        [color set];
+        [color setFill];
         packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs,glyphsLength,packing,packedGlyphs);
         [self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
        }

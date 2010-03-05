@@ -41,6 +41,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _frame;
 }
 
+-(CGFloat)userSpaceScaleFactor {
+   return 1.0;
+}
+
 -(id)description {
    return [NSString stringWithFormat:@"< %@ - frame %@, visible %@ >", [super description], NSStringFromRect(_frame), NSStringFromRect(_visibleFrame)];
 }

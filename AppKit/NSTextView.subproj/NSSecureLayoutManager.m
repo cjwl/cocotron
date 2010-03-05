@@ -25,10 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int           i;
 
    for(i=0;i<characterRange.length;i++)
-    if(_echosBullets)
-     buffer[i]='*';
-    else
-     buffer[i]=' ';
+    buffer[i]=_echosBullets?0x2022:' '; // unicode bullet
 
    return [font getGlyphs:glyphs forCharacters:buffer length:characterRange.length];
 }

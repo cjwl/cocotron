@@ -59,12 +59,80 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 } 
 
--(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device {
+-(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpaceName device:(NSDictionary *)device {
+   CGColorSpaceRef   colorSpace=CGColorGetColorSpace(_colorRef);
+   CGColorSpaceModel model=CGColorSpaceGetModel(colorSpace);
+   
+   if([colorSpaceName isEqualToString:NSDeviceBlackColorSpace])
+    return nil;
+   if([colorSpaceName isEqualToString:NSDeviceWhiteColorSpace])
+    return nil;
+    
+   if([colorSpaceName isEqualToString:NSDeviceRGBColorSpace]){
+    if(model==kCGColorSpaceModelRGB)
+     return self;
+     
+    return nil;
+   }
+   
+   if([colorSpaceName isEqualToString:NSDeviceCMYKColorSpace]){
+    return nil;
+   }
+
+   if([colorSpaceName isEqualToString:NSCalibratedBlackColorSpace])
+    return nil;
+   if([colorSpaceName isEqualToString:NSCalibratedWhiteColorSpace])
+    return nil;
+   if([colorSpaceName isEqualToString:NSCalibratedRGBColorSpace]){
+    if(model==kCGColorSpaceModelRGB)
+     return self;
+     
+    return nil;
+   }
+    
    return nil;
 }
 
 -(NSString *)colorSpaceName {
+   CGColorSpaceRef   colorSpace=CGColorGetColorSpace(_colorRef);
+   CGColorSpaceModel model=CGColorSpaceGetModel(colorSpace);
+
+   switch(model){
+   
+    case kCGColorSpaceModelMonochrome:
+     return NSDeviceWhiteColorSpace;
+     
+    case kCGColorSpaceModelRGB:
+     return NSCalibratedRGBColorSpace;
+     
+    case kCGColorSpaceModelCMYK:
+     return NSDeviceCMYKColorSpace;
+     
+    default:
+     return nil;
+   }
+   
    return nil;
+}
+
+-(void)getRed:(float *)red green:(float *)green blue:(float *)blue alpha:(float *)alpha {
+   CGColorSpaceRef   colorSpace=CGColorGetColorSpace(_colorRef);
+   CGColorSpaceModel model=CGColorSpaceGetModel(colorSpace);
+   const CGFloat    *components=CGColorGetComponents(_colorRef);
+   
+   if(model!=kCGColorSpaceModelRGB){
+    NSLog(@"-[%@ %s] failed",isa,_cmd);
+    return;
+   }
+   
+   if(red!=NULL)
+    *red = components[0];
+   if(green!=NULL)
+    *green = components[1];
+   if(blue!=NULL)
+    *blue = components[2];
+   if(alpha!=NULL)
+    *alpha = components[3];
 }
 
 -(CGColorRef)createCGColorRef {

@@ -1,12 +1,10 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSTextTab.h>
 #import <Foundation/NSKeyedArchiver.h>
@@ -77,25 +75,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithParagraphStyle:(NSParagraphStyle *)other {
-   _writingDirection=[other baseWritingDirection];
-   _paragraphSpacing=[other paragraphSpacing];
-   _paragraphSpacingBefore=[other paragraphSpacingBefore];
-   _textBlocks=[[other textBlocks] copy];
-   _textLists=[[other textLists] copy];
-   _headerLevel=[other headerLevel];
-   _firstLineHeadIndent=[other firstLineHeadIndent];
-   _headIndent=[other headIndent];
-   _tailIndent=[other tailIndent];
-   _alignment=[other alignment];
-   _lineBreakMode=[other lineBreakMode];
-   _minimumLineHeight=[other minimumLineHeight];
-   _maximumLineHeight=[other maximumLineHeight];
-   _lineHeightMultiple=[other lineHeightMultiple];
-   _lineSpacing=[other lineSpacing];
-   _defaultTabInterval=[other defaultTabInterval];
-   _tabStops=[[other tabStops] copy];
-   _hyphenationFactor=[other hyphenationFactor];
-   _tighteningFactorForTruncation=[other tighteningFactorForTruncation];
+   _writingDirection=other->_writingDirection;
+   _paragraphSpacing=other->_paragraphSpacing;
+   _paragraphSpacingBefore=other->_paragraphSpacingBefore;
+   _textBlocks=[other->_textBlocks copy];
+   _textLists=[other->_textLists copy];
+   _headerLevel=other->_headerLevel;
+   _firstLineHeadIndent=other->_firstLineHeadIndent;
+   _headIndent=other->_headIndent;
+   _tailIndent=other->_tailIndent;
+   _alignment=other->_alignment;
+   _lineBreakMode=other->_lineBreakMode;
+   _minimumLineHeight=other->_minimumLineHeight;
+   _maximumLineHeight=other->_maximumLineHeight;
+   _lineHeightMultiple=other->_lineHeightMultiple;
+   _lineSpacing=other->_lineSpacing;
+   _defaultTabInterval=other->_defaultTabInterval;
+   _tabStops=[other->_tabStops copy];
+   _hyphenationFactor=other->_hyphenationFactor;
+   _tighteningFactorForTruncation=other->_tighteningFactorForTruncation;
    return self;
 }
 

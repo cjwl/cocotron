@@ -139,7 +139,7 @@ static inline O2GState *currentState(O2Context *self){
 -(void)synchronizeFontCTM
 {
 	O2AffineTransform ctm=[currentState(self) textMatrix];
-    O2Float size=[currentState(self) pointSize];
+    O2Float size=O2GStatePointSize(currentState(self));
 
 	ctm = O2AffineTransformScale(ctm, size, -size);
 	
@@ -257,20 +257,20 @@ static inline O2GState *currentState(O2Context *self){
 			break;
 			
 		case kCGPathFill:	
-         [self setCurrentColor:[self fillColor]];
+         [self setCurrentColor:O2ContextFillColor(self)];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_WINDING);
 			cairo_fill_preserve(_context);
 			break;
 			
 		case kCGPathEOFill:
-         [self setCurrentColor:[self fillColor]];
+         [self setCurrentColor:O2ContextFillColor(self)];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_EVEN_ODD);
 			cairo_fill_preserve(_context);
 			break;
 			
 			
 		case kCGPathFillStroke:
-         [self setCurrentColor:[self fillColor]];
+         [self setCurrentColor:O2ContextFillColor(self)];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_WINDING);
 			cairo_fill_preserve(_context);
          [self setCurrentColor:[self strokeColor]];
@@ -279,7 +279,7 @@ static inline O2GState *currentState(O2Context *self){
 			break;
 			
 		case kCGPathEOFillStroke:
-         [self setCurrentColor:[self fillColor]];
+         [self setCurrentColor:O2ContextFillColor(self)];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_EVEN_ODD);
 			cairo_fill_preserve(_context);
          [self setCurrentColor:[self strokeColor]];
@@ -373,10 +373,10 @@ static inline O2GState *currentState(O2Context *self){
    O2GState *gState=currentState(self);
    
    if(gState->_fontIsDirty){
-    [gState clearFontIsDirty];
+    O2GStateClearFontIsDirty(gState);
 
     O2Font_FT *cgFont=(O2Font_FT *)[gState font];
-    KTFont *fontState=[[O2FontState_cairo alloc] initWithFreeTypeFont:cgFont size:[gState pointSize]];
+    KTFont *fontState=[[O2FontState_cairo alloc] initWithFreeTypeFont:cgFont size:O2GStatePointSize(gState)];
    
     [gState setFontState:fontState];
     [fontState release];
@@ -414,7 +414,7 @@ static inline O2GState *currentState(O2Context *self){
 
    [self appendCTM];
    [self synchronizeFontCTM];
-   [self setCurrentColor:[self fillColor]];
+   [self setCurrentColor:O2ContextFillColor(self)];
    cairo_move_to(_context, 0, 0);
    
    cairo_show_glyphs(_context, cg, count);

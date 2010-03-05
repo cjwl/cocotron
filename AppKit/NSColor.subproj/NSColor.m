@@ -13,7 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor_rgbDevice.h>
 #import <AppKit/NSColor_cmykDevice.h>
 #import <AppKit/NSColor_catalog.h>
+#import <AppKit/NSColor_CGColor.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSImage.h>
 
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSGraphicsContext.h>
@@ -461,10 +463,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
-+(NSColor *)colorWithPatternImage:(NSImage *)image
-{
-   NSUnimplementedMethod();
-   return [self lightGrayColor];
+static void drawPattern(void *info,CGContextRef cgContext){
+   NSImage *image=(NSImage *)info;
+   NSSize   size=[image size];
+   NSGraphicsContext *context=[NSGraphicsContext graphicsContextWithGraphicsPort:cgContext flipped:NO];
+   
+   [NSGraphicsContext saveGraphicsState];
+   [NSGraphicsContext setCurrentContext:context];
+   [image drawInRect:NSMakeRect(0,0,size.width,size.height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+   [NSGraphicsContext restoreGraphicsState];
+}
+
+static void releasePatternInfo(void *info){
+   [(NSImage *)info release];
+}
+
++(NSColor *)colorWithPatternImage:(NSImage *)image {
+   NSSize       size=[image size];
+   CGPatternCallbacks callbacks={0,drawPattern,releasePatternInfo};
+   [image retain];
+   CGPatternRef    pattern=CGPatternCreate(image,CGRectMake(0,0,size.width,size.height),CGAffineTransformIdentity,size.width,size.height,kCGPatternTilingNoDistortion,YES,&callbacks);
+   CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
+   CGFloat         components[4]={1,1,1,1};
+   CGColorRef      cgColor=CGColorCreateWithPattern(colorSpace,pattern,components);
+   
+   NSColor *result=[[[NSColor_CGColor alloc] initWithColorRef:cgColor] autorelease];
+   
+   CGColorRelease(cgColor);
+   CGColorSpaceRelease(colorSpace);
+   CGPatternRelease(pattern);
+   
+   return result;
 }
 
 -(NSString *)colorSpaceName {

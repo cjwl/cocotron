@@ -161,8 +161,8 @@ void NSDivideRect(NSRect rect,NSRect *slice,NSRect *remainder,CGFloat amount,NSR
 
 
 BOOL NSContainsRect(NSRect rect0,NSRect rect1) {
-  return ((NSMinX(rect0) < NSMinX(rect1)) && (NSMinY(rect0) < NSMinY(rect1)) &&
-          (NSMaxX(rect0) > NSMaxX(rect1)) && (NSMaxY(rect0) > NSMaxY(rect1)))?YES:NO;
+  return ((NSMinX(rect0) <=NSMinX(rect1)) && (NSMinY(rect0) <=NSMinY(rect1)) &&
+          (NSMaxX(rect0) >=NSMaxX(rect1)) && (NSMaxY(rect0) >=NSMaxY(rect1)))?YES:NO;
 }
 
 BOOL NSIntersectsRect(NSRect rect0,NSRect rect1) {

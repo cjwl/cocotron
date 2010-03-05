@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef int NSCalendarUnit;
 
+FOUNDATION_EXPORT NSString *NSGregorianCalendar;
+
 @interface NSCalendar : NSObject <NSCopying> {
    NSString   *_identifier;
    NSUInteger    _firstWeekday;

@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSDateFormatter.h>
+
+NSString *NSGregorianCalendar=@"NSGregorianCalendar";
 
 @implementation NSCalendar 
 
@@ -25,8 +28,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCalendarIdentifier:(NSString *)identifier {
    _identifier=[identifier copy];
-   NSUnimplementedMethod();
+   _timeZone=[[NSTimeZone defaultTimeZone] copy];
    return self;
+}
+
+-(void)dealloc {
+   [_identifier release];
+   [_timeZone release];
+   [super dealloc];
 }
 
 -(NSString *)calendarIdentifier {
@@ -105,8 +114,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDate *)dateFromComponents:(NSDateComponents *)components {
-   NSUnimplementedMethod();
-   return nil;
+   NSInteger year=0;
+   NSInteger month=0;
+   NSInteger day=0;
+   NSInteger hour=0;
+   NSInteger minute=0;
+   NSInteger second=0;
+   NSInteger milliseconds=0;
+   NSInteger check;
+
+// FIXME: doesn't handle all components
+   
+   if((check=[components year])!=NSUndefinedDateComponent)
+    year=check;
+   if((check=[components month])!=NSUndefinedDateComponent)
+    month=check;
+   if((check=[components day])!=NSUndefinedDateComponent)
+    day=check;
+   if((check=[components hour])!=NSUndefinedDateComponent)
+    hour=check;
+   if((check=[components minute])!=NSUndefinedDateComponent)
+    minute=check;
+   if((check=[components second])!=NSUndefinedDateComponent)
+    second=check;
+    
+   NSTimeInterval interval=NSTimeIntervalWithComponents(year,month,day,hour,minute,second,milliseconds);
+
+   return [NSDate dateWithTimeIntervalSinceReferenceDate:interval];
 }
 
 @end

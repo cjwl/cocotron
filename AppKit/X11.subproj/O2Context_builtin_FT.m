@@ -29,7 +29,7 @@ static inline O2GState *currentState(O2Context *self){
    O2GState *gState=currentState(self);
    
    if(gState->_fontIsDirty){
-    [gState clearFontIsDirty];
+    O2GStateClearFontIsDirty(gState);
    }
 }
 

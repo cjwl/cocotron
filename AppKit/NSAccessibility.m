@@ -1,0 +1,339 @@
+#import <Foundation/NSString.h>
+#import <AppKit/AppKitExport.h>
+
+NSString *NSAccessibilityChildrenAttribute=@"NSAccessibilityChildrenAttribute";
+NSString *NSAccessibilityContentsAttribute=@"NSAccessibilityContentsAttribute";
+NSString *NSAccessibilityDescriptionAttribute=@"NSAccessibilityDescriptionAttribute";
+NSString *NSAccessibilityEnabledAttribute=@"NSAccessibilityEnabledAttribute";
+NSString *NSAccessibilityFocusedAttribute=@"NSAccessibilityFocusedAttribute";
+NSString *NSAccessibilityHelpAttribute=@"NSAccessibilityHelpAttribute";
+NSString *NSAccessibilityMaxValueAttribute=@"NSAccessibilityMaxValueAttribute";
+NSString *NSAccessibilityMinValueAttribute=@"NSAccessibilityMinValueAttribute";
+NSString *NSAccessibilityParentAttribute=@"NSAccessibilityParentAttribute";
+NSString *NSAccessibilityPositionAttribute=@"NSAccessibilityPositionAttribute";
+NSString *NSAccessibilityRoleAttribute=@"NSAccessibilityRoleAttribute";
+NSString *NSAccessibilityRoleDescriptionAttribute=@"NSAccessibilityRoleDescriptionAttribute";
+NSString *NSAccessibilitySelectedChildrenAttribute=@"NSAccessibilitySelectedChildrenAttribute";
+NSString *NSAccessibilityShownMenuAttribute=@"NSAccessibilityShownMenuAttribute";
+NSString *NSAccessibilitySizeAttribute=@"NSAccessibilitySizeAttribute";
+NSString *NSAccessibilitySubroleAttribute=@"NSAccessibilitySubroleAttribute";
+NSString *NSAccessibilityTitleAttribute=@"NSAccessibilityTitleAttribute";
+NSString *NSAccessibilityTopLevelUIElementAttribute=@"NSAccessibilityTopLevelUIElementAttribute";
+NSString *NSAccessibilityValueAttribute=@"NSAccessibilityValueAttribute";
+NSString *NSAccessibilityValueDescriptionAttribute=@"NSAccessibilityValueDescriptionAttribute";
+NSString *NSAccessibilityVisibleChildrenAttribute=@"NSAccessibilityVisibleChildrenAttribute";
+NSString *NSAccessibilityWindowAttribute=@"NSAccessibilityWindowAttribute";
+
+NSString *NSAccessibilityInsertionPointLineNumberAttribute=@"NSAccessibilityInsertionPointLineNumberAttribute";
+NSString *NSAccessibilityNumberOfCharactersAttribute=@"NSAccessibilityNumberOfCharactersAttribute";
+NSString *NSAccessibilitySelectedTextAttribute=@"NSAccessibilitySelectedTextAttribute";
+NSString *NSAccessibilitySelectedTextRangeAttribute=@"NSAccessibilitySelectedTextRangeAttribute";
+NSString *NSAccessibilitySelectedTextRangesAttribute=@"NSAccessibilitySelectedTextRangesAttribute";
+NSString *NSAccessibilitySharedCharacterRangeAttribute=@"NSAccessibilitySharedCharacterRangeAttribute";
+NSString *NSAccessibilitySharedTextUIElementsAttribute=@"NSAccessibilitySharedTextUIElementsAttribute";
+NSString *NSAccessibilityVisibleCharacterRangeAttribute=@"NSAccessibilityVisibleCharacterRangeAttribute";
+
+NSString *NSAccessibilityAttributedStringForRangeParameterizedAttribute=@"NSAccessibilityAttributedStringForRangeParameterizedAttribute";
+NSString *NSAccessibilityBoundsForRangeParameterizedAttribute=@"NSAccessibilityBoundsForRangeParameterizedAttribute";
+NSString *NSAccessibilityLineForIndexParameterizedAttribute=@"NSAccessibilityLineForIndexParameterizedAttribute";
+NSString *NSAccessibilityRTFForRangeParameterizedAttribute=@"NSAccessibilityRTFForRangeParameterizedAttribute";
+NSString *NSAccessibilityRangeForIndexParameterizedAttribute=@"NSAccessibilityRangeForIndexParameterizedAttribute";
+NSString *NSAccessibilityRangeForLineParameterizedAttribute=@"NSAccessibilityRangeForLineParameterizedAttribute";
+NSString *NSAccessibilityRangeForPositionParameterizedAttribute=@"NSAccessibilityRangeForPositionParameterizedAttribute";
+NSString *NSAccessibilityStringForRangeParameterizedAttribute=@"NSAccessibilityStringForRangeParameterizedAttribute";
+NSString *NSAccessibilityStyleRangeForIndexParameterizedAttribute=@"NSAccessibilityStyleRangeForIndexParameterizedAttribute";
+
+NSString *NSAccessibilityAttachmentTextAttribute=@"NSAccessibilityAttachmentTextAttribute";
+NSString *NSAccessibilityBackgroundColorTextAttribute=@"NSAccessibilityBackgroundColorTextAttribute";
+NSString *NSAccessibilityFontFamilyKey=@"NSAccessibilityFontFamilyKey";
+NSString *NSAccessibilityFontNameKey=@"NSAccessibilityFontNameKey";
+NSString *NSAccessibilityFontSizeKey=@"NSAccessibilityFontSizeKey";
+NSString *NSAccessibilityFontTextAttribute=@"NSAccessibilityFontTextAttribute";
+NSString *NSAccessibilityForegroundColorTextAttribute=@"NSAccessibilityForegroundColorTextAttribute";
+NSString *NSAccessibilityLinkTextAttribute=@"NSAccessibilityLinkTextAttribute";
+NSString *NSAccessibilityMisspelledTextAttribute=@"NSAccessibilityMisspelledTextAttribute";
+NSString *NSAccessibilityShadowTextAttribute=@"NSAccessibilityShadowTextAttribute";
+NSString *NSAccessibilityStrikethroughColorTextAttribute=@"NSAccessibilityStrikethroughColorTextAttribute";
+NSString *NSAccessibilityStrikethroughTextAttribute=@"NSAccessibilityStrikethroughTextAttribute";
+NSString *NSAccessibilitySuperscriptTextAttribute=@"NSAccessibilitySuperscriptTextAttribute";
+NSString *NSAccessibilityUnderlineColorTextAttribute=@"NSAccessibilityUnderlineColorTextAttribute";
+NSString *NSAccessibilityUnderlineTextAttribute=@"NSAccessibilityUnderlineTextAttribute";
+NSString *NSAccessibilityVisibleNameKey=@"NSAccessibilityVisibleNameKey";
+
+NSString *NSAccessibilityCancelButtonAttribute=@"NSAccessibilityCancelButtonAttribute";
+NSString *NSAccessibilityCloseButtonAttribute=@"NSAccessibilityCloseButtonAttribute";
+NSString *NSAccessibilityDefaultButtonAttribute=@"NSAccessibilityDefaultButtonAttribute";
+NSString *NSAccessibilityGrowAreaAttribute=@"NSAccessibilityGrowAreaAttribute";
+NSString *NSAccessibilityMainAttribute=@"NSAccessibilityMainAttribute";
+NSString *NSAccessibilityMinimizeButtonAttribute=@"NSAccessibilityMinimizeButtonAttribute";
+NSString *NSAccessibilityMinimizedAttribute=@"NSAccessibilityMinimizedAttribute";
+NSString *NSAccessibilityModalAttribute=@"NSAccessibilityModalAttribute";
+NSString *NSAccessibilityProxyAttribute=@"NSAccessibilityProxyAttribute";
+NSString *NSAccessibilityToolbarButtonAttribute=@"NSAccessibilityToolbarButtonAttribute";
+NSString *NSAccessibilityZoomButtonAttribute=@"NSAccessibilityZoomButtonAttribute";
+
+NSString *NSAccessibilityHorizontalOrientationValue=@"NSAccessibilityHorizontalOrientationValue";
+NSString *NSAccessibilityVerticalOrientationValue=@"NSAccessibilityVerticalOrientationValue";
+NSString *NSAccessibilityUnknownOrientationValue=@"NSAccessibilityUnknownOrientationValue";
+
+NSString *NSAccessibilityClearButtonAttribute=@"NSAccessibilityClearButtonAttribute";
+NSString *NSAccessibilityColumnTitlesAttribute=@"NSAccessibilityColumnTitlesAttribute";
+NSString *NSAccessibilityFocusedUIElementAttribute=@"NSAccessibilityFocusedUIElementAttribute";
+NSString *NSAccessibilityFocusedWindowAttribute=@"NSAccessibilityFocusedWindowAttribute";
+NSString *NSAccessibilityFrontmostAttribute=@"NSAccessibilityFrontmostAttribute";
+NSString *NSAccessibilityHiddenAttribute=@"NSAccessibilityHiddenAttribute";
+NSString *NSAccessibilityMainWindowAttribute=@"NSAccessibilityMainWindowAttribute";
+NSString *NSAccessibilityMenuBarAttribute=@"NSAccessibilityMenuBarAttribute";
+NSString *NSAccessibilityOrientationAttribute=@"NSAccessibilityOrientationAttribute";
+NSString *NSAccessibilitySearchButtonAttribute=@"NSAccessibilitySearchButtonAttribute";
+NSString *NSAccessibilitySearchMenuAttribute=@"NSAccessibilitySearchMenuAttribute";
+NSString *NSAccessibilityWindowsAttribute=@"NSAccessibilityWindowsAttribute";
+
+NSString *NSAccessibilityColumnCountAttribute=@"NSAccessibilityColumnCountAttribute";
+NSString *NSAccessibilityOrderedByRowAttribute=@"NSAccessibilityOrderedByRowAttribute";
+NSString *NSAccessibilityRowCountAttribute=@"NSAccessibilityRowCountAttribute";
+
+NSString *NSAccessibilityColumnHeaderUIElementsAttribute=@"NSAccessibilityColumnHeaderUIElementsAttribute";
+NSString *NSAccessibilityColumnsAttribute=@"NSAccessibilityColumnsAttribute";
+NSString *NSAccessibilityRowHeaderUIElementsAttribute=@"NSAccessibilityRowHeaderUIElementsAttribute";
+NSString *NSAccessibilityRowsAttribute=@"NSAccessibilityRowsAttribute";
+NSString *NSAccessibilitySelectedColumnsAttribute=@"NSAccessibilitySelectedColumnsAttribute";
+NSString *NSAccessibilitySelectedRowsAttribute=@"NSAccessibilitySelectedRowsAttribute";
+NSString *NSAccessibilitySortDirectionAttribute=@"NSAccessibilitySortDirectionAttribute";
+NSString *NSAccessibilityVisibleColumnsAttribute=@"NSAccessibilityVisibleColumnsAttribute";
+NSString *NSAccessibilityVisibleRowsAttribute=@"NSAccessibilityVisibleRowsAttribute";
+
+NSString *NSAccessibilityDisclosedByRowAttribute=@"NSAccessibilityDisclosedByRowAttribute";
+NSString *NSAccessibilityDisclosedRowsAttribute=@"NSAccessibilityDisclosedRowsAttribute";
+NSString *NSAccessibilityDisclosingAttribute=@"NSAccessibilityDisclosingAttribute";
+NSString *NSAccessibilityDisclosureLevelAttribute=@"NSAccessibilityDisclosureLevelAttribute";
+
+NSString *NSAccessibilitySelectedCellsAttribute=@"NSAccessibilitySelectedCellsAttribute";
+NSString *NSAccessibilityVisibleCellsAttribute=@"NSAccessibilityVisibleCellsAttribute";
+
+NSString *NSAccessibilityCellForColumnAndRowParameterizedAttribute=@"NSAccessibilityCellForColumnAndRowParameterizedAttribute";
+
+NSString *NSAccessibilityRowIndexRangeAttribute=@"NSAccessibilityRowIndexRangeAttribute";
+NSString *NSAccessibilityColumnIndexRangeAttribute=@"NSAccessibilityColumnIndexRangeAttribute";
+
+NSString *NSAccessibilityAscendingSortDirectionValue=@"NSAccessibilityAscendingSortDirectionValue";
+NSString *NSAccessibilityDescendingSortDirectionValue=@"NSAccessibilityDescendingSortDirectionValue";
+NSString *NSAccessibilityUnknownSortDirectionValue=@"NSAccessibilityUnknownSortDirectionValue";
+
+NSString *NSAccessibilityHorizontalUnitsAttribute=@"NSAccessibilityHorizontalUnitsAttribute";
+NSString *NSAccessibilityVerticalUnitsAttribute=@"NSAccessibilityVerticalUnitsAttribute";
+NSString *NSAccessibilityHorizontalUnitDescriptionAttribute=@"NSAccessibilityHorizontalUnitDescriptionAttribute";
+NSString *NSAccessibilityVerticalUnitDescriptionAttribute=@"NSAccessibilityVerticalUnitDescriptionAttribute";
+
+NSString *NSAccessibilityLayoutPointForScreenPointParameterizedAttribute=@"NSAccessibilityLayoutPointForScreenPointParameterizedAttribute";
+NSString *NSAccessibilityLayoutSizeForScreenSizeParameterizedAttribute=@"NSAccessibilityLayoutSizeForScreenSizeParameterizedAttribute";
+NSString *NSAccessibilityScreenPointForLayoutPointParameterizedAttribute=@"NSAccessibilityScreenPointForLayoutPointParameterizedAttribute";
+NSString *NSAccessibilityScreenSizeForLayoutSizeParameterizedAttribute=@"NSAccessibilityScreenSizeForLayoutSizeParameterizedAttribute";
+
+NSString *NSAccessibilityHandlesAttribute=@"NSAccessibilityHandlesAttribute";
+
+NSString *NSAccessibilityAllowedValuesAttribute=@"NSAccessibilityAllowedValuesAttribute";
+NSString *NSAccessibilityLabelUIElementsAttribute=@"NSAccessibilityLabelUIElementsAttribute";
+NSString *NSAccessibilityLabelValueAttribute=@"NSAccessibilityLabelValueAttribute";
+
+NSString *NSAccessibilityMatteContentUIElementAttribute=@"NSAccessibilityMatteContentUIElementAttribute";
+NSString *NSAccessibilityMatteHoleAttribute=@"NSAccessibilityMatteHoleAttribute";
+
+NSString *NSAccessibilityMarkerGroupUIElementAttribute=@"NSAccessibilityMarkerGroupUIElementAttribute";
+NSString *NSAccessibilityMarkerTypeAttribute=@"NSAccessibilityMarkerTypeAttribute";
+NSString *NSAccessibilityMarkerTypeDescriptionAttribute=@"NSAccessibilityMarkerTypeDescriptionAttribute";
+NSString *NSAccessibilityMarkerUIElementsAttribute=@"NSAccessibilityMarkerUIElementsAttribute";
+NSString *NSAccessibilityMarkerValuesAttribute=@"NSAccessibilityMarkerValuesAttribute";
+NSString *NSAccessibilityUnitDescriptionAttribute=@"NSAccessibilityUnitDescriptionAttribute";
+NSString *NSAccessibilityUnitsAttribute=@"NSAccessibilityUnitsAttribute";
+
+NSString *NSAccessibilityCenterTabStopMarkerTypeValue=@"NSAccessibilityCenterTabStopMarkerTypeValue";
+NSString *NSAccessibilityDecimalTabStopMarkerTypeValue=@"NSAccessibilityDecimalTabStopMarkerTypeValue";
+NSString *NSAccessibilityFirstLineIndentMarkerTypeValue=@"NSAccessibilityFirstLineIndentMarkerTypeValue";
+NSString *NSAccessibilityHeadIndentMarkerTypeValue=@"NSAccessibilityHeadIndentMarkerTypeValue";
+NSString *NSAccessibilityLeftTabStopMarkerTypeValue=@"NSAccessibilityLeftTabStopMarkerTypeValue";
+NSString *NSAccessibilityRightTabStopMarkerTypeValue=@"NSAccessibilityRightTabStopMarkerTypeValue";
+NSString *NSAccessibilityTailIndentMarkerTypeValue=@"NSAccessibilityTailIndentMarkerTypeValue";
+NSString *NSAccessibilityUnknownMarkerTypeValue=@"NSAccessibilityUnknownMarkerTypeValue";
+
+NSString *NSAccessibilityCentimetersUnitValue=@"NSAccessibilityCentimetersUnitValue";
+NSString *NSAccessibilityInchesUnitValue=@"NSAccessibilityInchesUnitValue";
+NSString *NSAccessibilityPicasUnitValue=@"NSAccessibilityPicasUnitValue";
+NSString *NSAccessibilityPointsUnitValue=@"NSAccessibilityPointsUnitValue";
+NSString *NSAccessibilityUnknownUnitValue=@"NSAccessibilityUnknownUnitValue";
+
+NSString *NSAccessibilityLinkedUIElementsAttribute=@"NSAccessibilityLinkedUIElementsAttribute";
+NSString *NSAccessibilityServesAsTitleForUIElementsAttribute=@"NSAccessibilityServesAsTitleForUIElementsAttribute";
+NSString *NSAccessibilityTitleUIElementAttribute=@"NSAccessibilityTitleUIElementAttribute";
+
+NSString *NSAccessibilityDecrementButtonAttribute=@"NSAccessibilityDecrementButtonAttribute";
+NSString *NSAccessibilityDocumentAttribute=@"NSAccessibilityDocumentAttribute";
+NSString *NSAccessibilityEditedAttribute=@"NSAccessibilityEditedAttribute";
+NSString *NSAccessibilityExpandedAttribute=@"NSAccessibilityExpandedAttribute";
+NSString *NSAccessibilityFilenameAttribute=@"NSAccessibilityFilenameAttribute";
+NSString *NSAccessibilityHeaderAttribute=@"NSAccessibilityHeaderAttribute";
+NSString *NSAccessibilityHorizontalScrollBarAttribute=@"NSAccessibilityHorizontalScrollBarAttribute";
+NSString *NSAccessibilityIncrementButtonAttribute=@"NSAccessibilityIncrementButtonAttribute";
+NSString *NSAccessibilityIndexAttribute=@"NSAccessibilityIndexAttribute";
+NSString *NSAccessibilityNextContentsAttribute=@"NSAccessibilityNextContentsAttribute";
+NSString *NSAccessibilityOverflowButtonAttribute=@"NSAccessibilityOverflowButtonAttribute";
+NSString *NSAccessibilityPreviousContentsAttribute=@"NSAccessibilityPreviousContentsAttribute";
+NSString *NSAccessibilitySelectedAttribute=@"NSAccessibilitySelectedAttribute";
+NSString *NSAccessibilitySplittersAttribute=@"NSAccessibilitySplittersAttribute";
+NSString *NSAccessibilityTabsAttribute=@"NSAccessibilityTabsAttribute";
+NSString *NSAccessibilityURLAttribute=@"NSAccessibilityURLAttribute";
+NSString *NSAccessibilityVerticalScrollBarAttribute=@"NSAccessibilityVerticalScrollBarAttribute";
+NSString *NSAccessibilityWarningValueAttribute=@"NSAccessibilityWarningValueAttribute";
+NSString *NSAccessibilityCriticalValueAttribute=@"NSAccessibilityCriticalValueAttribute";
+NSString *NSAccessibilityPlaceholderValueAttribute=@"NSAccessibilityPlaceholderValueAttribute";
+
+NSString *NSAccessibilityApplicationRole=@"NSAccessibilityApplicationRole";
+NSString *NSAccessibilityBrowserRole=@"NSAccessibilityBrowserRole";
+NSString *NSAccessibilityBusyIndicatorRole=@"NSAccessibilityBusyIndicatorRole";
+NSString *NSAccessibilityButtonRole=@"NSAccessibilityButtonRole";
+NSString *NSAccessibilityCellRole=@"NSAccessibilityCellRole";
+NSString *NSAccessibilityCheckBoxRole=@"NSAccessibilityCheckBoxRole";
+NSString *NSAccessibilityColorWellRole=@"NSAccessibilityColorWellRole";
+NSString *NSAccessibilityColumnRole=@"NSAccessibilityColumnRole";
+NSString *NSAccessibilityComboBoxRole=@"NSAccessibilityComboBoxRole";
+NSString *NSAccessibilityDisclosureTriangleRole=@"NSAccessibilityDisclosureTriangleRole";
+NSString *NSAccessibilityDrawerRole=@"NSAccessibilityDrawerRole";
+NSString *NSAccessibilityGridRole=@"NSAccessibilityGridRole";
+NSString *NSAccessibilityGroupRole=@"NSAccessibilityGroupRole";
+NSString *NSAccessibilityGrowAreaRole=@"NSAccessibilityGrowAreaRole";
+NSString *NSAccessibilityHandleRole=@"NSAccessibilityHandleRole";
+NSString *NSAccessibilityHelpTagRole=@"NSAccessibilityHelpTagRole";
+NSString *NSAccessibilityImageRole=@"NSAccessibilityImageRole";
+NSString *NSAccessibilityIncrementorRole=@"NSAccessibilityIncrementorRole";
+NSString *NSAccessibilityLayoutAreaRole=@"NSAccessibilityLayoutAreaRole";
+NSString *NSAccessibilityLayoutItemRole=@"NSAccessibilityLayoutItemRole";
+NSString *NSAccessibilityLinkRole=@"NSAccessibilityLinkRole";
+NSString *NSAccessibilityListRole=@"NSAccessibilityListRole";
+NSString *NSAccessibilityMatteRole=@"NSAccessibilityMatteRole";
+NSString *NSAccessibilityMenuBarRole=@"NSAccessibilityMenuBarRole";
+NSString *NSAccessibilityMenuButtonRole=@"NSAccessibilityMenuButtonRole";
+NSString *NSAccessibilityMenuItemRole=@"NSAccessibilityMenuItemRole";
+NSString *NSAccessibilityMenuRole=@"NSAccessibilityMenuRole";
+NSString *NSAccessibilityOutlineRole=@"NSAccessibilityOutlineRole";
+NSString *NSAccessibilityPopUpButtonRole=@"NSAccessibilityPopUpButtonRole";
+NSString *NSAccessibilityProgressIndicatorRole=@"NSAccessibilityProgressIndicatorRole";
+NSString *NSAccessibilityRadioButtonRole=@"NSAccessibilityRadioButtonRole";
+NSString *NSAccessibilityRadioGroupRole=@"NSAccessibilityRadioGroupRole";
+NSString *NSAccessibilityRelevanceIndicatorRole=@"NSAccessibilityRelevanceIndicatorRole";
+NSString *NSAccessibilityRowRole=@"NSAccessibilityRowRole";
+NSString *NSAccessibilityRulerMarkerRole=@"NSAccessibilityRulerMarkerRole";
+NSString *NSAccessibilityRulerRole=@"NSAccessibilityRulerRole";
+NSString *NSAccessibilityScrollAreaRole=@"NSAccessibilityScrollAreaRole";
+NSString *NSAccessibilityScrollBarRole=@"NSAccessibilityScrollBarRole";
+NSString *NSAccessibilitySheetRole=@"NSAccessibilitySheetRole";
+NSString *NSAccessibilitySliderRole=@"NSAccessibilitySliderRole";
+NSString *NSAccessibilitySortButtonRole=@"NSAccessibilitySortButtonRole";
+NSString *NSAccessibilitySplitGroupRole=@"NSAccessibilitySplitGroupRole";
+NSString *NSAccessibilitySplitterRole=@"NSAccessibilitySplitterRole";
+NSString *NSAccessibilityStaticTextRole=@"NSAccessibilityStaticTextRole";
+NSString *NSAccessibilitySystemWideRole=@"NSAccessibilitySystemWideRole";
+NSString *NSAccessibilityTabGroupRole=@"NSAccessibilityTabGroupRole";
+NSString *NSAccessibilityTableRole=@"NSAccessibilityTableRole";
+NSString *NSAccessibilityTextAreaRole=@"NSAccessibilityTextAreaRole";
+NSString *NSAccessibilityTextFieldRole=@"NSAccessibilityTextFieldRole";
+NSString *NSAccessibilityToolbarRole=@"NSAccessibilityToolbarRole";
+NSString *NSAccessibilityUnknownRole=@"NSAccessibilityUnknownRole";
+NSString *NSAccessibilityValueIndicatorRole=@"NSAccessibilityValueIndicatorRole";
+NSString *NSAccessibilityWindowRole=@"NSAccessibilityWindowRole";
+
+NSString *NSAccessibilityCloseButtonSubrole=@"NSAccessibilityCloseButtonSubrole";
+NSString *NSAccessibilityDecrementArrowSubrole=@"NSAccessibilityDecrementArrowSubrole";
+NSString *NSAccessibilityDecrementPageSubrole=@"NSAccessibilityDecrementPageSubrole";
+NSString *NSAccessibilityDialogSubrole=@"NSAccessibilityDialogSubrole";
+NSString *NSAccessibilityFloatingWindowSubrole=@"NSAccessibilityFloatingWindowSubrole";
+NSString *NSAccessibilityIncrementArrowSubrole=@"NSAccessibilityIncrementArrowSubrole";
+NSString *NSAccessibilityIncrementPageSubrole=@"NSAccessibilityIncrementPageSubrole";
+NSString *NSAccessibilityMinimizeButtonSubrole=@"NSAccessibilityMinimizeButtonSubrole";
+NSString *NSAccessibilityOutlineRowSubrole=@"NSAccessibilityOutlineRowSubrole";
+NSString *NSAccessibilitySearchFieldSubrole=@"NSAccessibilitySearchFieldSubrole";
+NSString *NSAccessibilitySecureTextFieldSubrole=@"NSAccessibilitySecureTextFieldSubrole";
+NSString *NSAccessibilityStandardWindowSubrole=@"NSAccessibilityStandardWindowSubrole";
+NSString *NSAccessibilitySystemDialogSubrole=@"NSAccessibilitySystemDialogSubrole";
+NSString *NSAccessibilitySystemFloatingWindowSubrole=@"NSAccessibilitySystemFloatingWindowSubrole";
+NSString *NSAccessibilityTableRowSubrole=@"NSAccessibilityTableRowSubrole";
+NSString *NSAccessibilityTextAttachmentSubrole=@"NSAccessibilityTextAttachmentSubrole";
+NSString *NSAccessibilityTextLinkSubrole=@"NSAccessibilityTextLinkSubrole";
+NSString *NSAccessibilityTimelineSubrole=@"NSAccessibilityTimelineSubrole";
+NSString *NSAccessibilityToolbarButtonSubrole=@"NSAccessibilityToolbarButtonSubrole";
+NSString *NSAccessibilityUnknownSubrole=@"NSAccessibilityUnknownSubrole";
+NSString *NSAccessibilityZoomButtonSubrole=@"NSAccessibilityZoomButtonSubrole";
+NSString *NSAccessibilitySortButtonSubrole=@"NSAccessibilitySortButtonSubrole";
+NSString *NSAccessibilityRatingIndicatorSubrole=@"NSAccessibilityRatingIndicatorSubrole";
+NSString *NSAccessibilityContentListSubrole=@"NSAccessibilityContentListSubrole";
+NSString *NSAccessibilityDefinitionListSubrole=@"NSAccessibilityDefinitionListSubrole";
+
+
+NSString *NSAccessibilityCancelAction=@"NSAccessibilityCancelAction";
+NSString *NSAccessibilityConfirmAction=@"NSAccessibilityConfirmAction";
+NSString *NSAccessibilityDecrementAction=@"NSAccessibilityDecrementAction";
+NSString *NSAccessibilityDeleteAction=@"NSAccessibilityDeleteAction";
+NSString *NSAccessibilityIncrementAction=@"NSAccessibilityIncrementAction";
+NSString *NSAccessibilityPickAction=@"NSAccessibilityPickAction";
+NSString *NSAccessibilityPressAction=@"NSAccessibilityPressAction";
+NSString *NSAccessibilityRaiseAction=@"NSAccessibilityRaiseAction";
+NSString *NSAccessibilityShowMenuAction=@"NSAccessibilityShowMenuAction";
+
+NSString *NSAccessibilityMainWindowChangedNotification=@"NSAccessibilityMainWindowChangedNotification";
+NSString *NSAccessibilityFocusedWindowChangedNotification=@"NSAccessibilityFocusedWindowChangedNotification";
+NSString *NSAccessibilityFocusedUIElementChangedNotification=@"NSAccessibilityFocusedUIElementChangedNotification";
+
+NSString *NSAccessibilityWindowCreatedNotification=@"NSAccessibilityWindowCreatedNotification";
+NSString *NSAccessibilityWindowDeminiaturizedNotification=@"NSAccessibilityWindowDeminiaturizedNotification";
+NSString *NSAccessibilityWindowMiniaturizedNotification=@"NSAccessibilityWindowMiniaturizedNotification";
+NSString *NSAccessibilityWindowMovedNotification=@"NSAccessibilityWindowMovedNotification";
+NSString *NSAccessibilityWindowResizedNotification=@"NSAccessibilityWindowResizedNotification";
+
+NSString *NSAccessibilityApplicationActivatedNotification=@"NSAccessibilityApplicationActivatedNotification";
+NSString *NSAccessibilityApplicationDeactivatedNotification=@"NSAccessibilityApplicationDeactivatedNotification";
+NSString *NSAccessibilityApplicationHiddenNotification=@"NSAccessibilityApplicationHiddenNotification";
+NSString *NSAccessibilityApplicationShownNotification=@"NSAccessibilityApplicationShownNotification";
+
+NSString *NSAccessibilityDrawerCreatedNotification=@"NSAccessibilityDrawerCreatedNotification";
+NSString *NSAccessibilitySheetCreatedNotification=@"NSAccessibilitySheetCreatedNotification";
+
+NSString *NSAccessibilityCreatedNotification=@"NSAccessibilityCreatedNotification";
+NSString *NSAccessibilityMovedNotification=@"NSAccessibilityMovedNotification";
+NSString *NSAccessibilityResizedNotification=@"NSAccessibilityResizedNotification";
+NSString *NSAccessibilityTitleChangedNotification=@"NSAccessibilityTitleChangedNotification";
+NSString *NSAccessibilityUIElementDestroyedNotification=@"NSAccessibilityUIElementDestroyedNotification";
+NSString *NSAccessibilityValueChangedNotification=@"NSAccessibilityValueChangedNotification";
+
+NSString *NSAccessibilityHelpTagCreatedNotification=@"NSAccessibilityHelpTagCreatedNotification";
+NSString *NSAccessibilityRowCountChangedNotification=@"NSAccessibilityRowCountChangedNotification";
+NSString *NSAccessibilitySelectedChildrenChangedNotification=@"NSAccessibilitySelectedChildrenChangedNotification";
+NSString *NSAccessibilitySelectedColumnsChangedNotification=@"NSAccessibilitySelectedColumnsChangedNotification";
+NSString *NSAccessibilitySelectedRowsChangedNotification=@"NSAccessibilitySelectedRowsChangedNotification";
+NSString *NSAccessibilitySelectedTextChangedNotification=@"NSAccessibilitySelectedTextChangedNotification";
+NSString *NSAccessibilityRowExpandedNotification=@"NSAccessibilityRowExpandedNotification";
+NSString *NSAccessibilityRowCollapsedNotification=@"NSAccessibilityRowCollapsedNotification";
+NSString *NSAccessibilitySelectedCellsChangedNotification=@"NSAccessibilitySelectedCellsChangedNotification";
+NSString *NSAccessibilityUnitsChangedNotification=@"NSAccessibilityUnitsChangedNotification";
+NSString *NSAccessibilitySelectedChildrenMovedNotification=@"NSAccessibilitySelectedChildrenMovedNotification";
+
+NSString *NSAccessibilityErrorCodeExceptionInfo=@"NSAccessibilityErrorCodeExceptionInfo";
+
+void NSAccessibilityPostNotification (
+   id element,
+   NSString *notification
+) {
+}
+
+
+NSString * NSAccessibilityRoleDescription (
+   NSString *role,
+   NSString *subrole
+) {
+   return nil;
+}
+
+
+id NSAccessibilityUnignoredAncestor (
+   id element
+) {
+   return nil;
+}
