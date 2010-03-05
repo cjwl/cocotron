@@ -16,7 +16,7 @@ CFTypeID CFDataGetTypeID(void){
 }
 
 CFDataRef CFDataCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length){
-   return [[NSData alloc] initWithBytes:bytes length:length];
+   return [[NSData allocWithZone:NULL] initWithBytes:bytes length:length];
 }
 
 CFDataRef CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesAllocator){
@@ -43,7 +43,7 @@ void CFDataGetBytes(CFDataRef self,CFRange range,uint8_t *bytes){
 // mutable
 
 CFMutableDataRef CFDataCreateMutable(CFAllocatorRef allocator,CFIndex capacity){
-   return [[NSMutableData alloc] initWithCapacity:capacity];
+   return [[NSMutableData allocWithZone:NULL] initWithCapacity:capacity];
 }
 
 CFMutableDataRef CFDataCreateMutableCopy(CFAllocatorRef allocator,CFIndex capacity,CFDataRef other){

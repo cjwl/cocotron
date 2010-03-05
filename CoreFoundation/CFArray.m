@@ -3,8 +3,149 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCFTypeID.h>
 #import <Foundation/NSArray_concrete.h>
+#import <Foundation/NSRaiseException.h>
+
+static const void *defaultRetain(CFAllocatorRef allocator,const void *value) {
+   return value;
+}
+
+static void defaultRelease(CFAllocatorRef allocator,const void *value) {
+}
+
+static CFStringRef defaultCopyDescription(const void *value) {
+   return (CFStringRef)@"**UNIMPLEMENTED CFArray defaultCopyDescription";
+}
+
+static Boolean defaultEqual(const void *value,const void *other) {
+   return (value==other)?TRUE:FALSE;
+}
+
+@interface __CFArray : NSMutableArray {
+   CFArrayCallBacks _callBacks;
+   CFIndex _count;
+   CFIndex _capacity;
+   void  **_values;
+}
+
+-initWithCallBacks:(const CFArrayCallBacks *)callBacks;
+
+@end
+
+@implementation __CFArray : NSMutableArray
+
+-initWithCallBacks:(const CFArrayCallBacks *)callBacks {
+   _callBacks.version=(callBacks!=NULL)?callBacks->version:0;
+   _callBacks.retain=(callBacks!=NULL && callBacks->retain!=NULL)?callBacks->retain:defaultRetain;
+   _callBacks.release=(callBacks!=NULL && callBacks->release!=NULL)?callBacks->release:defaultRelease;
+   _callBacks.copyDescription=(callBacks!=NULL && callBacks->copyDescription!=NULL)?callBacks->copyDescription:defaultCopyDescription;
+   _callBacks.equal=(callBacks!=NULL && callBacks->equal!=NULL)?callBacks->equal:defaultEqual;
+   _count=0;
+   _capacity=4;
+   _values=NSZoneMalloc(NULL,sizeof(void *)*_capacity);
+   return self;
+}
+
+-(void)dealloc {
+   CFIndex count=_count;
+   
+   while(--count>=0)
+    _callBacks.release(NULL,_values[count]);
+    
+   NSZoneFree(NULL,_values);
+   
+   NSDeallocateObject(self);
+   return;
+   [super dealloc];
+}
+
+-(NSUInteger)count {
+   return _count;
+}
+
+-objectAtIndex:(NSUInteger)index {
+   if(index>=_count){
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,_count);
+    return nil;
+   }
+
+   return _values[index];
+}
+
+-(void)addObject:object {
+   object=(id)_callBacks.retain(NULL,object);
+
+   _count++;
+   if(_count>_capacity){
+    _capacity=_count*2;
+    _values=NSZoneRealloc(NULL,_values,sizeof(void *)*_capacity);
+   }
+   _values[_count-1]=object;
+}
+
+-(void)insertObject:object atIndex:(NSUInteger)index {
+   NSInteger c;
+
+   if(index>_count){
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,_count);
+    return;
+   }
+
+   _count++;
+   if(_count>_capacity){
+    _capacity=_count*2;
+    _values=NSZoneRealloc(NULL,_values,sizeof(void *)*_capacity);
+   }
+
+   if(_count>1)
+    for(c=_count-1;c>index && c>0;c--)
+     _values[c]=_values[c-1];
+
+   _values[index]=(id)_callBacks.retain(NULL,object);
+}
+
+-(void)removeObjectAtIndex:(NSUInteger)index {
+   NSUInteger i;
+   id object;
+
+   if(index>=_count){
+    NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,_count);
+    return;
+   }
+
+   object=_values[index];
+   _count--;
+   for(i=index;i<_count;i++)
+    _values[i]=_values[i+1];
+
+   _callBacks.release(NULL,object);
+
+   if(_capacity>_count*2){
+    _capacity=_count;
+    _values=NSZoneRealloc(NULL,_values,sizeof(void *)*_capacity);
+   }
+}
+
+@end
+
+static const void *cfArrayRetain(CFAllocatorRef allocator,const void *value) {
+   return CFRetain(value);
+}
+
+static  void cfArrayRelease(CFAllocatorRef allocator,const void *value) {
+  CFRelease(value);
+}
+
+static  CFStringRef cfArrayCopyDescription(const void *value) {
+   return CFCopyDescription(value);
+}
+
+static  Boolean cfArrayEqual(const void *value,const void *other) {
+   return CFEqual(value,other);
+}
+
 
 const CFArrayCallBacks kCFTypeArrayCallBacks={
+ 0,cfArrayRetain,cfArrayRelease,cfArrayCopyDescription,cfArrayEqual
 };
 
 #define nsrange(r) NSMakeRange(r.location,r.length)
@@ -91,8 +232,8 @@ CFIndex CFArrayBSearchValues(CFArrayRef self,CFRange range,const void *value,CFC
 
 // mutable
 
-CFMutableArrayRef CFArrayCreateMutable(CFAllocatorRef allocator,CFIndex capacity,const CFArrayCallBacks *callbacks) {
-	return (CFMutableArrayRef)[NSMutableArray new];
+CFMutableArrayRef CFArrayCreateMutable(CFAllocatorRef allocator,CFIndex capacity,const CFArrayCallBacks *callBacks) {
+   return [[__CFArray allocWithZone:NULL] initWithCallBacks:callBacks];
 }
 
 

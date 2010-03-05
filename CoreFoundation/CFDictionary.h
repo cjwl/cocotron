@@ -6,8 +6,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-typedef struct __NSMutableDictionary *CFDictionaryRef;
-typedef struct __NSMutableDictionary *CFMutableDictionaryRef;
+typedef const struct __CFDictionary *CFDictionaryRef;
+typedef struct __CFDictionary *CFMutableDictionaryRef;
 
 #import <CoreFoundation/CFBase.h>
 #import <CoreFoundation/CFString.h>
@@ -36,6 +36,10 @@ typedef struct  {
 } CFDictionaryValueCallBacks;
 
 typedef void        (*CFDictionaryApplierFunction)(const void *key,const void *value,void *context);
+
+COREFOUNDATION_EXPORT const CFDictionaryKeyCallBacks kCFCopyStringDictionaryKeyCallBacks;
+COREFOUNDATION_EXPORT const CFDictionaryKeyCallBacks kCFTypeDictionaryKeyCallBacks;
+COREFOUNDATION_EXPORT const CFDictionaryValueCallBacks kCFTypeDictionaryValueCallBacks;
 
 COREFOUNDATION_EXPORT CFTypeID        CFDictionaryGetTypeID(void);
 COREFOUNDATION_EXPORT CFDictionaryRef CFDictionaryCreate(CFAllocatorRef allocator,const void **keys,const void **values,CFIndex count,const CFDictionaryKeyCallBacks *keyCallbacks,const CFDictionaryValueCallBacks *valueCallbacks);

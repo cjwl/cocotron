@@ -10,6 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 typedef struct __NSDateFormatter *CFDateFormatterRef;
 
+enum {
+   kCFDateFormatterNoStyle = 0,
+   kCFDateFormatterShortStyle = 1,
+   kCFDateFormatterMediumStyle = 2,
+   kCFDateFormatterLongStyle = 3,
+   kCFDateFormatterFullStyle = 4
+};
+
 typedef CFIndex CFDateFormatterStyle;
 
 COREFOUNDATION_EXPORT CFTypeID             CFDateFormatterGetTypeID(void);

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 #import <CoreFoundation/CFBase.h>
 
-typedef struct __CFBoolean *CFBooleanRef;
+typedef const struct __CFBoolean *CFBooleanRef;
 
 COREFOUNDATION_EXPORT const CFBooleanRef kCFBooleanTrue;
 COREFOUNDATION_EXPORT const CFBooleanRef kCFBooleanFalse;
@@ -17,7 +17,7 @@ COREFOUNDATION_EXPORT CFTypeID           CFBooleanGetTypeID(void);
 
 COREFOUNDATION_EXPORT Boolean CFBooleanGetValue(CFBooleanRef boolean);
 
-typedef struct __NSNumber *CFNumberRef;
+typedef const struct __NSNumber *CFNumberRef;
 
 typedef enum {
    kCFNumberSInt8Type    =1,

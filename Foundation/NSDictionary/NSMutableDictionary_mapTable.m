@@ -14,55 +14,279 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSRaiseException.h>
 
-@implementation NSMutableDictionary_mapTable
+typedef struct _NSDictNode {
+   struct _NSDictNode *next;
+   void *key;
+   void *value;
+} NSDictNode;
+
+typedef struct {
+   NSUInteger           _nBuckets;
+   struct _NSDictNode **_buckets;
+   NSInteger            _i;
+   struct _NSDictNode  *_j;
+} CFDictionaryEnumerator;
+
+@interface NSEnumerator_CFDictionaryKeys : NSEnumerator {
+@public
+   CFDictionaryEnumerator _state;
+}
+
+-initWithState:(CFDictionaryEnumerator)state;
+-nextObject;
+
+@end
+
+NSEnumerator *NSEnumerator_dictionaryKeysNew(NSMapTable *table);
+
+@implementation NSEnumerator_CFDictionaryKeys
+
+-initWithState:(CFDictionaryEnumerator)state {
+   _state=state;
+   return self;
+}
+
+BOOL NSNextDictionaryEnumeratorPair(CFDictionaryEnumerator *state,void **key,void **value){
+
+   if(state->_j==NULL)
+    return NO;
+
+   *key=state->_j->key;
+   *value=state->_j->value;
+
+   if((state->_j=state->_j->next)!=NULL)
+    return YES;
+
+   for(state->_i++;state->_i<state->_nBuckets;state->_i++)
+    if((state->_j=state->_buckets[state->_i])!=NULL)
+     return YES;
+
+   state->_j=NULL;
+
+   return YES;
+}
+
+-nextObject {
+   void *key,*val;
+   return NSNextDictionaryEnumeratorPair(&_state,&key,&val)?key:nil;
+}
+
+@end
+
+@implementation NSMutableDictionary_CF
+
+const void *objectRetainCallBack(CFAllocatorRef allocator,const void *value) {
+   return CFRetain(value);
+}
+
+const void *objectCopyCallBack(CFAllocatorRef allocator,const void *value) {
+   return [(id <NSCopying>)value copyWithZone:NULL];
+}
+
+static void objectReleaseCallBack(CFAllocatorRef allocator,const void *value) {
+   CFRelease(value);
+}
+
+static CFDictionaryKeyCallBacks objectKeyCallBacks={
+ 0,objectCopyCallBack,objectReleaseCallBack,CFCopyDescription,CFEqual,CFHash,
+};
+
+static CFDictionaryValueCallBacks objectValueCallbacks={
+ 0,objectRetainCallBack,objectReleaseCallBack,CFCopyDescription,CFEqual
+};
+
+const void *defaultRetainCallBack(CFAllocatorRef allocator,const void *value) {
+   return value;
+}
+
+static void defaultReleaseCallBack(CFAllocatorRef allocator,const void *value) {
+}
+
+static CFHashCode defaultHashCallBack(const void *value) {
+   return (CFHashCode)value>>4;
+}
+
+static Boolean defaultEqualCallBack(const void *value,const void *other) {
+   return (value==other)?TRUE:FALSE;
+}
+
+static CFStringRef defaultCopyDescription(const void *value) {
+   return (CFStringRef)@"[ UNIMPLEMENTED dictionary value ]";
+}
 
 -(NSUInteger)count {
-   return NSCountMapTable(_table);
+   return _count;
 }
 
 -objectForKey:key {
-   id object=NSMapGet(_table,key);
+   NSUInteger i=_keyCallBacks.hash(key)%_nBuckets;
+   NSDictNode *j;
 
-   return object;
+   for(j=_buckets[i];j!=NULL;j=j->next)
+    if(_keyCallBacks.equal(j->key,key))
+     return j->value;
+
+   return NULL;
+}
+
+static CFDictionaryEnumerator keyEnumeratorState(NSMutableDictionary_CF *self){
+  CFDictionaryEnumerator state;
+  
+   state._nBuckets=self->_nBuckets;
+   state._buckets=self->_buckets;
+   for(state._i=0;state._i<state._nBuckets;state._i++)
+    if(state._buckets[state._i]!=NULL)
+     break;
+   state._j=(state._i<state._nBuckets)?state._buckets[state._i]:NULL;
+   return state;
 }
 
 -(NSEnumerator *)keyEnumerator {
-   return NSAutorelease(NSEnumerator_dictionaryKeysNew(_table));
+   return [[[NSEnumerator_CFDictionaryKeys allocWithZone:NULL] initWithState:keyEnumeratorState(self)] autorelease];
 }
 
-static inline void setObjectForKey(NSMutableDictionary_mapTable *self,id object,id key){
+static void NSDictInsert(NSMutableDictionary_CF *self,const void *key,const void *value){
+   NSZone    *zone;
+   NSUInteger   hash=self->_keyCallBacks.hash(key);
+   NSUInteger        i=hash%self->_nBuckets;
+   NSDictNode *j;
+
+   for(j=self->_buckets[i];j!=NULL;j=j->next)
+    if(self->_keyCallBacks.equal(j->key,key)){
+     void *oldKey=j->key;
+     void *oldValue=j->value;
+
+     self->_keyCallBacks.retain(NULL,key);
+     self->_valueCallBacks.retain(NULL,value);
+     j->key=(void *)key;
+     j->value=(void *)value;
+     self->_keyCallBacks.release(NULL,oldKey);
+     self->_valueCallBacks.release(NULL,oldValue);
+
+     return;
+    }
+
+   zone=NSZoneFromPointer(self);
+
+   if(self->_count>=self->_nBuckets){
+    NSUInteger         nBuckets=self->_nBuckets;
+    NSDictNode **buckets=self->_buckets,*next;
+
+    self->_nBuckets=nBuckets*2;
+    self->_buckets=NSZoneCalloc(zone,self->_nBuckets,sizeof(NSDictNode *));
+
+    for(i=0;i<nBuckets;i++)
+     for(j=buckets[i];j!=NULL;j=next){
+      NSUInteger newi=self->_keyCallBacks.hash(j->key)%self->_nBuckets;
+
+      next=j->next;
+      j->next=self->_buckets[newi];
+      self->_buckets[newi]=j;
+     }
+    NSZoneFree(zone,buckets);
+    i=hash%self->_nBuckets;
+   }
+
+   self->_keyCallBacks.retain(NULL,key);
+   self->_valueCallBacks.retain(NULL,value);
+   j=NSZoneMalloc(zone,sizeof(NSDictNode));
+   j->key=(void *)key;
+   j->value=(void *)value;
+   j->next=self->_buckets[i];
+   self->_buckets[i]=j;
+   self->_count++;
+}
+
+static inline void setValueForKey(NSMutableDictionary_CF *self,const void *value,const void *key){
+   key=self->_keyCallBacks.retain(NULL,key);
+   NSDictInsert(self,key,value);
+   self->_keyCallBacks.release(NULL,key);
+}
+
+static inline void setObjectForKey(NSMutableDictionary_CF *self,id object,id key){
    if (key==nil)
     NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert object with nil key");
    else if(object==nil)
     NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert nil object for key %@", key);
 
-
-   key=[key copy];
-   NSMapInsert(self->_table,key,object);
-   [key release];
+   setValueForKey(self,object,key);
 }
 
 -(void)setObject:object forKey:key {
    setObjectForKey(self,object,key);
 }
 
+static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
+   NSUInteger i=self->_keyCallBacks.hash(key)%self->_nBuckets;
+   NSDictNode *j=self->_buckets[i],*prev=j;
+
+   for(;j!=NULL;j=j->next){
+    if(self->_keyCallBacks.equal(j->key,key)){
+     if(prev==j)
+      self->_buckets[i]=j->next;
+     else
+      prev->next=j->next;
+     self->_keyCallBacks.release(NULL,j->key);
+     self->_valueCallBacks.release(NULL,j->value);
+     NSZoneFree(NSZoneFromPointer(j),j);
+     self->_count--;
+     return;
+    }
+    prev=j;
+   }
+}
+
 -(void)removeObjectForKey:key {
-   NSMapRemove(_table,key);
+   NSDictRemove(self,key);
 }
 
 -init {
    return [self initWithObjects:NULL forKeys:NULL count:0];
 }
 
--initWithCapacity:(NSUInteger)capacity {
-   _table=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,
-     NSObjectMapValueCallBacks,capacity,NULL);
+-initWithKeys:(const void **)keys values:(const void **)values count:(NSUInteger)count keyCallBacks:(const CFDictionaryKeyCallBacks *)keyCallBacks valueCallBacks:(const CFDictionaryValueCallBacks *)valueCallBacks {
+
+   _keyCallBacks.hash=(keyCallBacks->hash!=NULL)?keyCallBacks->hash:defaultHashCallBack;
+   _keyCallBacks.equal=(keyCallBacks->equal!=NULL)?keyCallBacks->equal:defaultEqualCallBack;
+   _keyCallBacks.retain=(keyCallBacks->retain!=NULL)?keyCallBacks->retain:defaultRetainCallBack;
+   _keyCallBacks.release=(keyCallBacks->release!=NULL)?keyCallBacks->release:defaultReleaseCallBack;
+   _keyCallBacks.copyDescription=(keyCallBacks->copyDescription!=NULL)?keyCallBacks->copyDescription:defaultCopyDescription;
+
+   _valueCallBacks.retain=(valueCallBacks->retain!=NULL)?valueCallBacks->retain:defaultRetainCallBack;
+   _valueCallBacks.release=(valueCallBacks->release!=NULL)?valueCallBacks->release:defaultReleaseCallBack;
+   _valueCallBacks.copyDescription=(valueCallBacks->copyDescription!=NULL)?valueCallBacks->copyDescription:defaultCopyDescription;
+
+   _count=0;
+   _nBuckets=4;
+   _buckets=NSZoneCalloc(NULL,_nBuckets,sizeof(NSDictNode *));
+   
+   NSInteger i;
+   
+   for(i=0;i<count;i++)
+    setValueForKey(self,values[i],keys[i]);
+
    return self;
 }
 
+
+-initWithCapacity:(NSUInteger)capacity {
+   return [self initWithKeys:NULL values:NULL count:0 keyCallBacks:&objectKeyCallBacks valueCallBacks:&objectValueCallbacks];
+}
+
 -(void)dealloc {
-   if(_table!=NULL)
-    NSFreeMapTable(_table);
+   NSZone *zone=NSZoneFromPointer(self);
+   NSUInteger i;
+   NSDictNode *j,*next;
+
+   for(i=0;i<_nBuckets;i++){
+    for(j=self->_buckets[i];j!=NULL;j=next){
+     _keyCallBacks.release(NULL,j->key);
+     _valueCallBacks.release(NULL,j->value);
+     next=j->next;
+     NSZoneFree(zone,j);
+    }
+   }
+   NSZoneFree(zone,self->_buckets);
    NSDeallocateObject(self);
    return;
    [super dealloc];
@@ -74,6 +298,28 @@ static inline void setObjectForKey(NSMutableDictionary_mapTable *self,id object,
 
    while((key=[keyEnum nextObject])!=nil)
     setObjectForKey(self,[dictionary objectForKey:key],key);
+}
+
+static NSMutableDictionary_CF *mutableCopyWithZone(NSMutableDictionary_CF *self,NSZone *zone){
+   void **keys=__builtin_alloca(sizeof(void *)*self->_count);
+   void **values=__builtin_alloca(sizeof(void *)*self->_count);
+   NSInteger i;
+   
+   CFDictionaryEnumerator state=keyEnumeratorState(self);
+   
+   for(i=0;i<self->_count;i++)
+    NSNextDictionaryEnumeratorPair(&state,&(keys[i]),&(values[i]));
+ 
+   return [[self->isa alloc] initWithKeys:(const void **)keys values:(const void **)values count:self->_count keyCallBacks:&(self->_keyCallBacks) valueCallBacks:&(self->_valueCallBacks)];
+
+}
+
+-mutableCopy {
+   return mutableCopyWithZone(self,NULL);
+}
+
+-mutableCopyWithZone:(NSZone *)zone {
+   return mutableCopyWithZone(self,NULL);
 }
 
 @end

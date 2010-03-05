@@ -8,14 +8,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSMapTable.h>
+#import <CoreFoundation/CFDictionary.h>
 
-@interface NSMutableDictionary_mapTable : NSMutableDictionary {
-   NSMapTable *_table;
+@interface NSMutableDictionary_CF : NSMutableDictionary {
+   CFDictionaryKeyCallBacks   _keyCallBacks;
+   CFDictionaryValueCallBacks _valueCallBacks;
+   NSUInteger                 _count;
+   NSUInteger                 _nBuckets;
+   struct _NSDictNode       **_buckets;
 }
 
+-initWithKeys:(const void **)keys values:(const void **)values count:(NSUInteger)count keyCallBacks:(const CFDictionaryKeyCallBacks *)keyCallBacks valueCallBacks:(const CFDictionaryValueCallBacks *)valueCallBacks;
+
 -(NSUInteger)count;
--objectForKey:aKey;
+-objectForKey:key;
 -(NSEnumerator *)keyEnumerator;
 
 @end

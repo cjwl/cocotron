@@ -6,8 +6,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-typedef struct __NSMutableString *CFStringRef;
-typedef struct __NSMutableString *CFMutableStringRef;
+typedef const struct __CFString *CFStringRef;
+typedef struct __CFString *CFMutableStringRef;
 
 #import <CoreFoundation/CFBase.h>
 #import <CoreFoundation/CFArray.h>
@@ -68,7 +68,8 @@ COREFOUNDATION_EXPORT CFIndex CFStringGetMaximumSizeForEncoding(CFIndex length,C
 #ifdef __OBJC__
 #define CFSTR(s) (CFStringRef)(@s)
 #else
-#define CFSTR(s) CFStringMakeConstant(const char *s);
+COREFOUNDATION_EXPORT CFStringRef CFStringMakeConstant(const char *cString);
+#define CFSTR(s) CFStringMakeConstant(s)
 #endif
 
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator);

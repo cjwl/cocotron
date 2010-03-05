@@ -53,8 +53,12 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
  
 #ifdef __LP64__
 typedef double CGFloat;
+#define CGFLOAT_MIN DBL_MIN
+#define CGFLOAT_MAX DBL_MAX
 #else
 typedef float CGFloat;
+#define CGFLOAT_MIN FLT_MIN
+#define CGFLOAT_MAX FLT_MAX
 #endif
 
 typedef struct CGPoint {
@@ -87,10 +91,11 @@ typedef double Float64;
 
 typedef unsigned CFUInteger;
 typedef int CFInteger;
-typedef int SInt32;
+typedef int32_t SInt32;
+typedef uint32_t UInt32;
 typedef signed char SInt8;
 
-typedef void *CFTypeRef;
+typedef const void *CFTypeRef;
 typedef CFUInteger CFTypeID;
 typedef CFUInteger CFHashCode;
 typedef char       Boolean;
