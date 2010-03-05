@@ -602,7 +602,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		frame.origin.x    =  5 - _controlSize;
 		frame.origin.y    = flipped ? _controlSize*2 - 3 : 7 - _controlSize*2;
 	}   
-	
+    else if(_bezelStyle==NSRegularSquareBezelStyle){
+
+    }
+    
 	return frame;
 }
 
@@ -619,6 +622,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    switch(_bezelStyle){
    
     case NSDisclosureBezelStyle:
+     break;
+    
+    case NSRegularSquareBezelStyle:
+     if([self isBordered]){
+      BOOL  highlighted=(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted]);
+      float topGray=highlighted?0.8:0.9;
+      float bottomGray=highlighted?0.7:0.8;
+      
+      NSRect top=frame,bottom=frame;
+      top.size.height=floor(frame.size.height/2);
+      bottom.size.height=ceil(frame.size.height/2);
+      if([controlView isFlipped])
+       bottom.origin.y+=top.size.height;
+      else
+       top.origin.y+=bottom.size.height;
+      
+      [[NSColor colorWithCalibratedWhite:topGray alpha:1] set];
+      NSRectFill(top);
+      [[NSColor colorWithCalibratedWhite:bottomGray alpha:1] set];
+      NSRectFill(bottom);
+      [[NSColor lightGrayColor] set];
+      NSFrameRectWithWidth(frame,1);
+     }
      break;
      
     default:
