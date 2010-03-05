@@ -525,30 +525,37 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if(NSIsEmptyRect(rect))
     return;
 
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+   
+   CGContextSaveGState(context);
+   CGContextClipToRect(context,rect);
+   
+   NSLayoutManager *layoutManager=[self layoutManager];
+   NSPoint          origin=[self textContainerOrigin];
+
+   NSRange          glyphRange;
+   NSRect           glyphRect=rect;
+   
+   [_backgroundColor setFill];
+   NSRectFill(rect);
+
+   glyphRect.origin.x-=_textContainerInset.width;
+   glyphRect.origin.y-=_textContainerInset.height;
+
+   if(NSIntersectsRect(glyphRect,[[self layoutManager] extraLineFragmentRect])){
+    glyphRange.location=[layoutManager numberOfGlyphs]-1;
+    glyphRange.length=1;
+   }
+   else {
+    glyphRange=[layoutManager glyphRangeForBoundingRect:glyphRect inTextContainer:[self textContainer]];
+   }
+   [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:origin];
+   [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:origin];
+
    if(turnedOn)
     [[self graphicsStyle] drawTextViewInsertionPointInRect:rect color:color];
-   else {
-    NSLayoutManager *layoutManager=[self layoutManager];
-    NSPoint          origin=[self textContainerOrigin];
 
-    NSRange          glyphRange;
-
-    [_backgroundColor setFill];
-    NSRectFill(rect);
-
-    rect.origin.x-=_textContainerInset.width;
-    rect.origin.y-=_textContainerInset.height;
-
-    if(NSIntersectsRect(rect,[[self layoutManager] extraLineFragmentRect])){
-     glyphRange.location=[layoutManager numberOfGlyphs]-1;
-     glyphRange.length=1;
-    }
-    else {
-     glyphRange=[layoutManager glyphRangeForBoundingRect:rect inTextContainer:[self textContainer]];
-    }
-    [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:origin];
-    [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:origin];
-   }
+   CGContextRestoreGState(context);
 }
 
 -(NSRect)_viewRectForCharacterRange:(NSRange)range {
