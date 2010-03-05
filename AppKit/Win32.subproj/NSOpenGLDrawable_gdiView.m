@@ -75,7 +75,7 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
     windowClass.lpszClassName="NSWin32OpenGLWindow";
     windowClass.hIcon=NULL;
     if(RegisterClass(&windowClass)==0)
-     NSLog(@"RegisterClass failed %d %s",__LINE__,__FILE__);
+     NSLog(@"RegisterClass failed %s %d",__FILE__,__LINE__);
    }
 }
 

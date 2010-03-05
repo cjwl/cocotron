@@ -98,6 +98,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setKeyEquivalent:(NSString *)value {
    [_cell setKeyEquivalent:value];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setKeyEquivalentModifierMask:(NSUInteger)value {

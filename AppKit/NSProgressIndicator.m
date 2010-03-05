@@ -69,21 +69,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_invalidateTimer {
-   [self willChangeValueForKey:@"animate"];
-    [_animationTimer invalidate];
-    [_animationTimer release];
-    _animationTimer=nil;
-   [self didChangeValueForKey:@"animate"];
+   if(_animationTimer!=nil){
+    [self willChangeValueForKey:@"animate"];
+     [_animationTimer invalidate];
+     [_animationTimer release];
+     _animationTimer=nil;
+    [self didChangeValueForKey:@"animate"];
+   }
 }
 
 -(void)_buildTimer {
-   [self willChangeValueForKey:@"animate"];
+   if(_animationTimer==nil){
+    [self willChangeValueForKey:@"animate"];
     _animationTimer = [[NSTimer scheduledTimerWithTimeInterval:_animationDelay
                                                         target:self
                                                       selector:@selector(animate:)
                                                       userInfo:nil
                                                        repeats:YES] retain];
-   [self didChangeValueForKey:@"animate"];
+    [self didChangeValueForKey:@"animate"];
+   }
 }
 
 -(void)dealloc {
@@ -96,14 +100,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return YES;
 }
 
-void evaluate(void *info,const float *in, float *output) {
-   float                x=in[0];
-   float                _C0[4]={1,1,1,0};
-   float                _C1[4]={0,0,1,0};
-   int                  i;
-      
-    for(i=0;i<4;i++)
-     output[i]=_C0[i]+x*(_C1[i]-_C0[i]);
+-(void)drawIndeterminateCircular {
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+   int     i,numberOfRays=12;
+   int     offset=roundf(_animationValue*(numberOfRays-1));
+   NSRect bounds=[self bounds];
+   CGPoint center=CGPointMake(bounds.origin.x+bounds.size.width/2,bounds.origin.y+bounds.size.height/2);
+   CGFloat angle=0;//MI_PI*2.0/4.0;
+   CGFloat arc=M_PI*2.0/numberOfRays;
+   CGFloat minAxis=MIN(bounds.size.width,bounds.size.height);
+   CGFloat lineWidth=minAxis/numberOfRays/2;
+   
+   lineWidth+=lineWidth*0.50;
+   CGContextSaveGState(context);
+   CGContextSetLineWidth(context,lineWidth);
+   CGContextSetLineCap(context,kCGLineCapRound);
+   for(i=0;i<numberOfRays;i++){
+    CGFloat startGray=0;
+    CGFloat endGray=0.90;
+    int     place=(i-offset<0)?numberOfRays+(i-offset):i-offset;
+    CGFloat gray=startGray+((endGray-startGray)/numberOfRays)*place;
+    CGAffineTransform rotate=CGAffineTransformMakeRotation(angle+arc*i);
+    CGPoint ray;
+    
+    CGContextSetGrayStrokeColor(context,gray,1.0);
+    ray.x=0;
+    ray.y=minAxis/2-lineWidth;
+    ray=CGPointApplyAffineTransform(ray,rotate);
+    CGContextMoveToPoint(context,center.x+ray.x,center.y+ray.y);
+
+    ray.x=0;
+    ray.y=minAxis/4;
+    ray=CGPointApplyAffineTransform(ray,rotate);
+    CGContextAddLineToPoint(context,center.x+ray.x,center.y+ray.y);
+    CGContextStrokePath(context);
+   }
+   CGContextRestoreGState(context);
 }
 
 -(void)drawRect:(NSRect)clipRect {
@@ -118,38 +150,7 @@ void evaluate(void *info,const float *in, float *output) {
     }
    }
    else {
-    CGFunctionRef function;
-    CGShadingRef  shading;
-    float         domain[2]={0,1};
-    float         range[8]={0,1,0,1,0,1,0,1};
-    CGFunctionCallbacks callbacks={0,evaluate,NULL};
-
-    CGContextRef graphicsPort=NSCurrentGraphicsPort();
-    CGContextSaveGState(graphicsPort);
-    CGContextBeginPath(graphicsPort);
-    CGContextAddEllipseInRect(graphicsPort,[self bounds]);
-    CGContextClip(graphicsPort);
-
-    CGContextTranslateCTM(graphicsPort,[self bounds].size.width/2,[self bounds].size.height/2);
-    CGContextRotateCTM(graphicsPort,M_PI*(_animationValue*360.0)/180.0);
-
-    function=CGFunctionCreate(self,1,domain,4,range,&callbacks);
-    
-    float radius=[self bounds].size.width/2;
-    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
-    shading=CGShadingCreateRadial(CGColorSpaceCreateDeviceRGB(),CGPointMake(0,0),1,
-       CGPointMake(radius *2,radius*2),radius,function,YES,NO);
-    CGColorSpaceRelease(colorSpace);
-    CGContextDrawShading(graphicsPort,shading);
-    CGContextRotateCTM(graphicsPort,M_PI*(120)/180.0);
-    CGContextDrawShading(graphicsPort,shading);
-    CGContextRotateCTM(graphicsPort,M_PI*(120)/180.0);
-    CGContextDrawShading(graphicsPort,shading);
-   
-    CGFunctionRelease(function);
-    CGShadingRelease(shading);
-
-    CGContextRestoreGState(graphicsPort);
+    [self drawIndeterminateCircular];
    }   
 }
 
@@ -221,6 +222,8 @@ void evaluate(void *info,const float *in, float *output) {
 
 -(void)setUsesThreadedAnimation:(BOOL)value {
    _usesThreadedAnimation=value;
+   if(_usesThreadedAnimation)
+    NSUnimplementedMethod();
 }
 
 -(void)setMinValue:(double)value {
@@ -268,9 +271,6 @@ void evaluate(void *info,const float *in, float *output) {
 
 -(void)startAnimation:sender {
    if (!_isIndeterminate)
-    [NSException raise:NSInternalInconsistencyException format:@"startAnimation: called on determinate NSProgressIndicator"];
-
-   if(_animationTimer!=nil)
     return;
    
    [self _buildTimer];
@@ -278,7 +278,7 @@ void evaluate(void *info,const float *in, float *output) {
 
 -(void)stopAnimation:sender {
    if (!_isIndeterminate)
-    [NSException raise:NSInternalInconsistencyException format:@"stopAnimation: called on determinate NSProgressIndicator"];
+    return;
 
    [self _invalidateTimer];
 }
@@ -296,27 +296,24 @@ void evaluate(void *info,const float *in, float *output) {
 
 
 @implementation NSProgressIndicator (Bindings)
--(BOOL)_animate
-{
+
+-(BOOL)_animate {
    return _animationTimer!=nil;
 }
 
--(void)_setAnimate:(BOOL)animate
-{
-   if(animate)
-   {
-      [self startAnimation:nil];
+-(void)_setAnimate:(BOOL)animate {
+   if(animate){
+    [self startAnimation:nil];
    }
-   else
-   {
-      [self stopAnimation:nil];
+   else {
+    [self stopAnimation:nil];
    }
 }
 
--(id)_replacementKeyPathForBinding:(id)binding
-{
+-_replacementKeyPathForBinding:(id)binding {
 	if([binding isEqual:@"value"])
       return @"doubleValue";
    return [super _replacementKeyPathForBinding:binding];
 }
+
 @end

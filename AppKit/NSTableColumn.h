@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSTableView *_tableView;
    NSCell      *_headerCell;
    NSCell      *_dataCell;
+   NSString    *_headerToolTip;
    float        _width;
    float        _minWidth;
    float        _maxWidth;
@@ -29,6 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSTableView *)tableView;
 -(NSCell *)headerCell;
 -(NSCell *)dataCell;
+-(NSString *)headerToolTip;
 
 -(float)width;
 -(float)minWidth;
@@ -40,6 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTableView:(NSTableView *)tableView;
 -(void)setHeaderCell:(NSCell *)cell;
 -(void)setDataCell:(NSCell *)cell;
+-(void)setHeaderToolTip:(NSString *)value;
 
 -(void)setWidth:(float)width;
 -(void)setMinWidth:(float)width;
