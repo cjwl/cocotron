@@ -102,7 +102,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSAttributedString *)attributedSubstringFromRange:(NSRange)range {
-   NSMutableAttributedString *result=[[[NSMutableAttributedString alloc] init] autorelease];
+   NSMutableAttributedString *result=[[[NSMutableAttributedString allocWithZone:NULL] init] autorelease];
    NSUInteger  location=range.location;
    NSUInteger  limit=NSMaxRange(range);
 

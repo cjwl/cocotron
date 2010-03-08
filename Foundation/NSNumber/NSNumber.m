@@ -519,12 +519,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringValue {
-   return [self descriptionWithLocale:nil];
+   return [self description];
 }
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
    NSInvalidAbstractInvocation();
-   return nil;
+   return [NSString stringWithFormat:@"<%@ %p>",isa,self];
 }
 
 -(NSString *)description {

@@ -65,7 +65,7 @@ NSNumber *NSNumber_longLongNew(NSZone *zone,long long value) {
 }
 
 -(float)floatValue {
-   return (float)_value;
+   return _value;
 }
 
 -(double)doubleValue {
@@ -85,7 +85,7 @@ NSNumber *NSNumber_longLongNew(NSZone *zone,long long value) {
 }
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
-   return NSStringWithFormatAndLocale(@"%li",locale,_value);
+   return NSStringWithFormatAndLocale(@"%qi",locale,_value);
 }
 
 @end

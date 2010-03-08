@@ -31,8 +31,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 
 
 @implementation NSObject (KeyValueCoding)
-#pragma mark -
-#pragma mark Private helper methods
+
 -(void)_demangleTypeEncoding:(const char*)type to:(char*)cleanType
 {
 	while(*type)
@@ -83,9 +82,14 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 			return [NSNumber numberWithChar:*(char*)value];
 		case 'C':
 			return [NSNumber numberWithUnsignedChar:*(unsigned char*)value];
+		case 'q':
+			return [NSNumber numberWithLongLong:*(long long*)value];
+		case 'Q':
+			return [NSNumber numberWithUnsignedLongLong:*(unsigned long long*)value];
 		default:
 // FIX #warning some wrapping types unimplemented
-			return [NSString stringWithFormat:@"FIXME: wrap value of type %s unimplemented for get", type];	
+            [NSException raise:NSInvalidArgumentException format:@"FIXME: wrap value of type %s unimplemented for get", type];
+            return nil;
 	}
 }
 
@@ -138,10 +142,17 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		case 'C':
 			*(unsigned char*)buffer = [value unsignedCharValue];
 			return YES;
-
+            
+        case 'q':
+            *(long long*)buffer = [value longLongValue];
+            return YES;
+            
+        case 'Q':
+            *(unsigned long long*)buffer = [value unsignedLongLongValue];
+            return YES;
 		default:
 // FIX #warning some wrapping types unimplemented
-			NSLog(@"FIXME: wrap value of type %s unimplemented for set", type);
+            [NSException raise:NSInvalidArgumentException format:@"FIXME: wrap value of type %s unimplemented for set", type];
 			return NO;
 	}
 }
@@ -198,26 +209,27 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 #pragma mark -
 #pragma mark Primary methods
 
--(id)valueForKey:(NSString*)key
-{
-	if(!key)
-		return [self valueForUndefinedKey:nil];
-	SEL sel=NSSelectorFromString(key);
+-valueForKey:(NSString*)key {
+   if(!key)
+    return [self valueForUndefinedKey:nil];
+        
+   const char *keyCString=[key cString];
+   SEL         sel=sel_getUid(keyCString);
+
 	// FIXME: getKey, _getKey, isKey, _isKey are missing
 	
-	if([self respondsToSelector:sel])
-	{
-		return [self _wrapReturnValueForSelector:sel];
-	}
-	else
-	{
-		char *keyname=__builtin_alloca(strlen([key cString])+5);
-		strcpy(keyname, [key cString]);
-		char *selname=__builtin_alloca(strlen(keyname)+5);
+   if([self respondsToSelector:sel])
+    return [self _wrapReturnValueForSelector:sel];
+
+   size_t keyCStringLength=strlen(keyCString);
+   char  *selBuffer=__builtin_alloca(keyCStringLength+5);
+
+   char *keyname=__builtin_alloca(keyCStringLength+1);
+   strcpy(keyname,keyCString);
 		
 #define TRY_FORMAT( format ) \
-sprintf(selname, format, keyname); \
-sel = sel_getUid(selname); \
+sprintf(selBuffer, format, keyname); \
+sel = sel_getUid(selBuffer); \
 if([self respondsToSelector:sel]) \
 { \
 return [self _wrapReturnValueForSelector:sel]; \
@@ -229,19 +241,21 @@ return [self _wrapReturnValueForSelector:sel]; \
 //		TRY_FORMAT("get%s");
 //		TRY_FORMAT("_get%s");
 #undef TRY_FORMAT
-	}
-	
-	if([isa accessInstanceVariablesDirectly])
-	{
-		sel=NSSelectorFromString([NSString stringWithFormat:@"_%@", key]);
+
+	if([isa accessInstanceVariablesDirectly]){
+        sprintf(selBuffer,"_%s",keyCString);
+		sel=sel_getUid(selBuffer);
+        
 		if([self respondsToSelector:sel])
 		{
 			return [self _wrapReturnValueForSelector:sel];
 		}
 		
-		Ivar ivar = class_getInstanceVariable(isa, [[NSString stringWithFormat:@"_%@", key] cString]);
+
+		Ivar ivar = class_getInstanceVariable(isa,selBuffer);
 		if(!ivar)
-			ivar = class_getInstanceVariable(isa, [[NSString stringWithFormat:@"%@", key] cString]);
+			ivar = class_getInstanceVariable(isa, keyCString);
+           
 		if(ivar)
 		{
 			return [self _wrapValue:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
@@ -252,10 +266,19 @@ return [self _wrapReturnValueForSelector:sel]; \
 	return [self valueForUndefinedKey:key];
 }
 
-- (void)setValue:(id)value forKey:(NSString *)key
-{
-	NSString* ukey = [NSString stringWithFormat:@"%@%@", [[key substringToIndex:1] uppercaseString], [key substringFromIndex:1]];
-	SEL sel = NSSelectorFromString([NSString stringWithFormat:@"set%@:", ukey]);
+-(void)setValue:(id)value forKey:(NSString *)key {
+    NSUInteger cStringLength=[key length];
+    char keyCString[cStringLength+1];
+    char uppercaseKeyCString[cStringLength+1];
+    char check[cStringLength+10]; // needs to accomodate key and set/_set: stuff
+    
+    [key getCString:keyCString];
+    strcpy(uppercaseKeyCString,keyCString);
+    uppercaseKeyCString[0]=toupper(uppercaseKeyCString[0]);
+    
+    strcpy(check,"set");strcat(check,uppercaseKeyCString);strcat(check,":");
+    
+	SEL sel = sel_getUid(check);
 	if([self respondsToSelector:sel])
 	{
 		return [self _setValue:value withSelector:sel fromKey:key];
@@ -263,19 +286,28 @@ return [self _wrapReturnValueForSelector:sel]; \
 
 	if([isa accessInstanceVariablesDirectly])
 	{
-		sel = NSSelectorFromString([NSString stringWithFormat:@"_set%@:", ukey]);
+       // FIXME: doc.s don't mention _set, is that true?
+       strcpy(check,"_set");strcat(check,uppercaseKeyCString);strcat(check,":");
+	   sel = sel_getUid(check);
+
 		if([self respondsToSelector:sel])
 		{
 			return [self _setValue:value withSelector:sel fromKey:key];
 		}
 
-		Ivar ivar = class_getInstanceVariable(isa, [[NSString stringWithFormat:@"_%@", key] cString]);
-		if(!ivar)
-			ivar = class_getInstanceVariable(isa, [[NSString stringWithFormat:@"_is%@", ukey] cString]);
-		if(!ivar)
-			ivar = class_getInstanceVariable(isa, [[NSString stringWithFormat:@"%@", key] cString]);
-		if(!ivar)
-			ivar = class_getInstanceVariable(isa, [[NSString stringWithFormat:@"is%@", ukey] cString]);
+        strcpy(check,"_");strcat(check,keyCString);
+		Ivar ivar = class_getInstanceVariable(isa, check);
+		if(!ivar){
+            strcpy(check,"_is");strcat(check,uppercaseKeyCString);
+			ivar = class_getInstanceVariable(isa, check);
+         }
+		if(!ivar){
+			ivar = class_getInstanceVariable(isa, keyCString);
+        }
+		if(!ivar){
+            strcpy(check,"is");strcat(check,uppercaseKeyCString);
+			ivar = class_getInstanceVariable(isa, check);
+         }
 
 		if(ivar)
 		{
@@ -292,7 +324,6 @@ return [self _wrapReturnValueForSelector:sel]; \
 			return;
 		}
 	}
-
 	[self setValue:value forUndefinedKey:key];	
 }
 
@@ -314,56 +345,42 @@ return [self _wrapReturnValueForSelector:sel]; \
 	return YES;
 }
 
-
-#pragma mark -
-#pragma mark Secondary methods
-+(BOOL)accessInstanceVariablesDirectly
-{
-	return YES;
++(BOOL)accessInstanceVariablesDirectly {
+   return YES;
 }
 
-- (id)valueForUndefinedKey:(NSString *)key
-{
-	[NSException raise:NSUndefinedKeyException
-				format:@"%@: trying to get undefined key %@", [self className], key];
-	return nil;
+-valueForUndefinedKey:(NSString *)key {
+   [NSException raise:NSUndefinedKeyException format:@"%@: trying to get undefined key %@", [self className], key];
+   return nil;
 }
 
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key
-{
-	[NSException raise:NSUndefinedKeyException
-				format:@"%@: trying to set undefined key %@", [self className], key];
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key {
+   [NSException raise:NSUndefinedKeyException format:@"%@: trying to set undefined key %@", [self className], key];
 }
 
--(void)setNilValueForKey:(id)key
-{
-	[NSException raise:@"NSInvalidArgumentException" 
-				format:@"%@: trying to set nil value for key %@", [self className], key];
+-(void)setNilValueForKey:key {
+   [NSException raise:@"NSInvalidArgumentException"  format:@"%@: trying to set nil value for key %@", [self className], key];
 }
 
--(id)valueForKeyPath:(NSString*)keyPath
-{
-	NSString* firstPart, *rest;
-	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
-	if(rest)
-		return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
-	else
-		return [self valueForKey:firstPart];
+-valueForKeyPath:(NSString*)keyPath {
+   NSString* firstPart, *rest;
+   [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+   
+   if(rest)
+    return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
+   else
+    return [self valueForKey:firstPart];
 }
 
-- (void)setValue:(id)value forKeyPath:(NSString *)keyPath
-{
-	NSString* firstPart, *rest;
-	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+-(void)setValue:(id)value forKeyPath:(NSString *)keyPath {
+   NSString* firstPart, *rest;
+   [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
 
-	if(rest)
-		[[self valueForKey:firstPart] setValue:value
-									forKeyPath:rest];
-	else
-	{
-		[self setValue:value 
-				forKey:firstPart];
-	}
+   if(rest)
+    [[self valueForKey:firstPart] setValue:value forKeyPath:rest];
+   else {
+    [self setValue:value  forKey:firstPart];
+   }
 }
 
 - (BOOL)validateValue:(id *)ioValue forKeyPath:(NSString *)keyPath error:(NSError **)outError
@@ -414,7 +431,6 @@ return [self _wrapReturnValueForSelector:sel]; \
 	{
 		[self setValue:[aDictionary objectForKey:key] forKey:key];
 	}
-	NSLog(@"Done");
 }
 
 -(id)mutableArrayValueForKey:(id)key
