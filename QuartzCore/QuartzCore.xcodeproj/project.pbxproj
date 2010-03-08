@@ -7,10 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE0FB9AD10F9814400EBA597 /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9AE10F9814400EBA597 /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9BA10F9815300EBA597 /* CIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B010F9815300EBA597 /* CIColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9BB10F9815300EBA597 /* CIContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B210F9815300EBA597 /* CIContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9BC10F9815300EBA597 /* CIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B410F9815300EBA597 /* CIFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9BD10F9815300EBA597 /* CIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B610F9815300EBA597 /* CIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9BE10F9815300EBA597 /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9BF10F9815300EBA597 /* CIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B010F9815300EBA597 /* CIColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C010F9815300EBA597 /* CIContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B210F9815300EBA597 /* CIContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C110F9815300EBA597 /* CIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B410F9815300EBA597 /* CIFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C210F9815300EBA597 /* CIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B610F9815300EBA597 /* CIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C310F9815300EBA597 /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C410F9815300EBA597 /* CIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B010F9815300EBA597 /* CIColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C510F9815300EBA597 /* CIContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B210F9815300EBA597 /* CIContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C610F9815300EBA597 /* CIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B410F9815300EBA597 /* CIFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C710F9815300EBA597 /* CIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B610F9815300EBA597 /* CIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE0FB9C810F9815300EBA597 /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE255FF210F10397005CE23E /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7AA0ED10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE7AA0EE10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE7AA0EF10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA3F2131133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA3F2141133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA3F2151133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FECA819810EBB231003472F1 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819910EBB231003472F1 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819A10EBB231003472F1 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -114,9 +135,21 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0FB9B010F9815300EBA597 /* CIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIColor.h; sourceTree = "<group>"; };
+		FE0FB9B110F9815300EBA597 /* CIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIColor.m; sourceTree = "<group>"; };
+		FE0FB9B210F9815300EBA597 /* CIContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIContext.h; sourceTree = "<group>"; };
+		FE0FB9B310F9815300EBA597 /* CIContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIContext.m; sourceTree = "<group>"; };
+		FE0FB9B410F9815300EBA597 /* CIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIFilter.h; sourceTree = "<group>"; };
+		FE0FB9B510F9815300EBA597 /* CIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIFilter.m; sourceTree = "<group>"; };
+		FE0FB9B610F9815300EBA597 /* CIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIImage.h; sourceTree = "<group>"; };
+		FE0FB9B710F9815300EBA597 /* CIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIImage.m; sourceTree = "<group>"; };
+		FE0FB9B810F9815300EBA597 /* CIVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIVector.h; sourceTree = "<group>"; };
+		FE0FB9B910F9815300EBA597 /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIVector.m; sourceTree = "<group>"; };
+		FE255FEF10F10397005CE23E /* CoreImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreImage.h; sourceTree = "<group>"; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
 		FE7AA0EB10F97A2A00FEDD9C /* CABackingRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABackingRenderer.m; sourceTree = "<group>"; };
 		FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABackingRenderer.h; sourceTree = "<group>"; };
+		FEA3F2121133089500690AA2 /* CIAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIAffineTransform.h; sourceTree = "<group>"; };
 		FEC3ED7710E1270C00511C18 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARenderer.m; sourceTree = "<group>"; };
 		FECA81A110EBB231003472F1 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED38BEA10E12BAB00A2A651 /* CARenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARenderer.h; sourceTree = "<group>"; };
@@ -130,6 +163,30 @@
 		FEF88C36100CC62400B15FD7 /* CALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CALayer.m; sourceTree = "<group>"; };
 		FEF88C37100CC62400B15FD7 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransform3D.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FE2BFAEE10FB6D5300D3E136 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFAFA10FB6D7E00D3E136 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFAFE10FB6D9600D3E136 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
@@ -145,6 +202,18 @@
 		0867D691FE84028FC02AAC07 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FEA3F2121133089500690AA2 /* CIAffineTransform.h */,
+				FE0FB9B010F9815300EBA597 /* CIColor.h */,
+				FE0FB9B110F9815300EBA597 /* CIColor.m */,
+				FE0FB9B210F9815300EBA597 /* CIContext.h */,
+				FE0FB9B310F9815300EBA597 /* CIContext.m */,
+				FE0FB9B410F9815300EBA597 /* CIFilter.h */,
+				FE0FB9B510F9815300EBA597 /* CIFilter.m */,
+				FE0FB9B610F9815300EBA597 /* CIImage.h */,
+				FE0FB9B710F9815300EBA597 /* CIImage.m */,
+				FE0FB9B810F9815300EBA597 /* CIVector.h */,
+				FE0FB9B910F9815300EBA597 /* CIVector.m */,
+				FE255FEF10F10397005CE23E /* CoreImage.h */,
 				FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */,
 				FE7AA0EB10F97A2A00FEDD9C /* CABackingRenderer.m */,
 				FED38C8D10E13FCC00A2A651 /* CABase.h */,
@@ -236,9 +305,16 @@
 				FEF88C2F100CC45B00B15FD7 /* CALayer.h in Headers */,
 				FEF88C30100CC45B00B15FD7 /* CATransform3D.h in Headers */,
 				FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */,
+				FE255FF210F10397005CE23E /* CoreImage.h in Headers */,
 				FED38BEB10E12BAB00A2A651 /* CARenderer.h in Headers */,
 				FED38C8E10E13FCC00A2A651 /* CABase.h in Headers */,
 				FE7AA0ED10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
+				FE0FB9BA10F9815300EBA597 /* CIColor.h in Headers */,
+				FE0FB9BB10F9815300EBA597 /* CIContext.h in Headers */,
+				FE0FB9BC10F9815300EBA597 /* CIFilter.h in Headers */,
+				FE0FB9BD10F9815300EBA597 /* CIImage.h in Headers */,
+				FE0FB9BE10F9815300EBA597 /* CIVector.h in Headers */,
+				FEA3F2131133089500690AA2 /* CIAffineTransform.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +329,13 @@
 				FECA819C10EBB231003472F1 /* CARenderer.h in Headers */,
 				FECA819D10EBB231003472F1 /* CABase.h in Headers */,
 				FE7AA0EF10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
+				FE0FB9AE10F9814400EBA597 /* CoreImage.h in Headers */,
+				FE0FB9C410F9815300EBA597 /* CIColor.h in Headers */,
+				FE0FB9C510F9815300EBA597 /* CIContext.h in Headers */,
+				FE0FB9C610F9815300EBA597 /* CIFilter.h in Headers */,
+				FE0FB9C710F9815300EBA597 /* CIImage.h in Headers */,
+				FE0FB9C810F9815300EBA597 /* CIVector.h in Headers */,
+				FEA3F2151133089500690AA2 /* CIAffineTransform.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +350,13 @@
 				FED38C4910E13E1000A2A651 /* CARenderer.h in Headers */,
 				FED38C8F10E13FCC00A2A651 /* CABase.h in Headers */,
 				FE7AA0EE10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
+				FE0FB9AD10F9814400EBA597 /* CoreImage.h in Headers */,
+				FE0FB9BF10F9815300EBA597 /* CIColor.h in Headers */,
+				FE0FB9C010F9815300EBA597 /* CIContext.h in Headers */,
+				FE0FB9C110F9815300EBA597 /* CIFilter.h in Headers */,
+				FE0FB9C210F9815300EBA597 /* CIImage.h in Headers */,
+				FE0FB9C310F9815300EBA597 /* CIVector.h in Headers */,
+				FEA3F2141133089500690AA2 /* CIAffineTransform.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +368,9 @@
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-FreeBSD-i386" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
+				FE2BFB1310FB6DCE00D3E136 /* Sources */,
+				FE2BFB1410FB6DCE00D3E136 /* Resources */,
+				FE2BFAFA10FB6D7E00D3E136 /* Frameworks */,
 			);
 			buildRules = (
 				FE4477E01039F3E700ECD6A6 /* PBXBuildRule */,
@@ -296,6 +389,9 @@
 			buildConfigurationList = FECA819F10EBB231003472F1 /* Build configuration list for PBXNativeTarget "QuartzCore-Windows-i386" */;
 			buildPhases = (
 				FECA819710EBB231003472F1 /* Headers */,
+				FE2BFB1710FB6DCE00D3E136 /* Sources */,
+				FE2BFB1810FB6DCE00D3E136 /* Resources */,
+				FE2BFAEE10FB6D5300D3E136 /* Frameworks */,
 			);
 			buildRules = (
 				FECA819E10EBB231003472F1 /* PBXBuildRule */,
@@ -314,6 +410,9 @@
 			buildConfigurationList = FED38C4B10E13E1000A2A651 /* Build configuration list for PBXNativeTarget "QuartzCore-Darwin-i386" */;
 			buildPhases = (
 				FED38C4410E13E1000A2A651 /* Headers */,
+				FE2BFB1510FB6DCE00D3E136 /* Sources */,
+				FE2BFB1610FB6DCE00D3E136 /* Resources */,
+				FE2BFAFE10FB6D9600D3E136 /* Frameworks */,
 			);
 			buildRules = (
 				FED38C4A10E13E1000A2A651 /* PBXBuildRule */,
@@ -383,6 +482,54 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FE2BFB1410FB6DCE00D3E136 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1610FB6DCE00D3E136 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1810FB6DCE00D3E136 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE2BFB1310FB6DCE00D3E136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1510FB6DCE00D3E136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1710FB6DCE00D3E136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */ = {
@@ -458,7 +605,9 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -466,6 +615,7 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
@@ -474,7 +624,16 @@
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-opengl32",
+					"-lgdi32",
+					"-luser32",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--image-base=0x20000000",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME)a",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;

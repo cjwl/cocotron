@@ -31,14 +31,14 @@ enum {
 
 @property(readonly) CALayer *superLayer;
 @property(copy) NSArray *sublayers;
-@property(assign) id delegate;
-@property(assign) CGRect frame;
-@property(assign) CGRect bounds;
-@property(assign) float opacity;
-@property(assign) BOOL opaque;
+@property id delegate;
+@property CGRect frame;
+@property CGRect bounds;
+@property float opacity;
+@property BOOL opaque;
 @property(retain) id contents;
-@property(assign) CATransform3D transform;
-@property(assign) CATransform3D sublayerTransform;
+@property CATransform3D transform;
+@property CATransform3D sublayerTransform;
 
 -init;
 
