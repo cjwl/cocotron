@@ -53,8 +53,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	while((obj=[en nextObject]))
 	{
 		id val=[obj valueForKey:key];
-		if(!val)
+		if(!val){
 			val=[NSNull null];
+        }
 		[array addObject:val];
 	}
 	return array;
@@ -74,8 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		 salary of the array's elements.
 		*/
 		NSString *operator, *parameter;
-		[[keyPath substringFromIndex:1] _KVC_partBeforeDot:&operator
-												  afterDot:&parameter];
+		[[keyPath substringFromIndex:1] _KVC_partBeforeDot:&operator afterDot:&parameter];
 
 		// find operator selector (e.g. _kvo_operator_avg: for @avg)
 		SEL operatorSelector=NSSelectorFromString([NSString stringWithFormat:@"_kvo_operator_%@:", operator]);
@@ -90,16 +90,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	 Otherwise, valueForKeyPath behaves similarly to valueForKey and produces a
 	 new NSArray whose elements correspond to the results of invoking 
 	 valueForKeyPath on each element of this array.
-	 */	NSMutableArray *array=[NSMutableArray array];
+	 */
+    NSMutableArray *array=[NSMutableArray array];
+
 	id en=[self objectEnumerator];
 	id obj;
 	while((obj=[en nextObject]))
 	{
 		id val=[obj valueForKeyPath:keyPath];
-		if(!val)
+		if(val==nil)
 			val=[NSNull null];
+
 		[array addObject:val];
 	}
+
 	return array;
 }
 

@@ -21,7 +21,7 @@ NSString * const NSViewAnimationFadeOutEffect=@"NSViewAnimationFadeOutEffect";
 
 -initWithViewAnimations:(NSArray *)animations {
    [super initWithDuration:1.0 animationCurve:NSAnimationEaseInOut];
-   _animations=nil;
+   _animations=[animations retain];
    return self;
 }
 

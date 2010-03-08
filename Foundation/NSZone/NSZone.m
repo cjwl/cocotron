@@ -144,11 +144,12 @@ static inline void XXHashRemove(RefCountTable *table,RefCountBucket *remove) {
 }
 
 static inline RefCountTable *refTable(void) {
-   static RefCountTable *table=NULL;
+   static RefCountTable *refCountTable=NULL;
 
-   if(table==NULL)
-    table=CreateRefCountTable();
-   return table;
+   if(refCountTable==NULL)
+    refCountTable=CreateRefCountTable();
+    
+   return refCountTable;
 }
 
 void NSIncrementExtraRefCount(id object) {

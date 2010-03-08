@@ -34,7 +34,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
    static NSDate *staticInstance=nil;
    if(!staticInstance)
       staticInstance=[[self allocWithZone:NULL] 
-                      initWithTimeIntervalSinceReferenceDate:-(2010.0L*365*24*60*60)];
+                      initWithTimeIntervalSinceReferenceDate:-(2010.0L*365.0*24.0*60.0*60.0)];
    return staticInstance;
 }
 
@@ -42,7 +42,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
    static NSDate *staticInstance=nil;
    if(!staticInstance)
       staticInstance=[[self allocWithZone:NULL] 
-                       initWithTimeIntervalSinceReferenceDate:2010.0L*365*24*60*60];
+                       initWithTimeIntervalSinceReferenceDate:2010.0L*365.0*24.0*60.0*60.0];
    return staticInstance;
 }
 

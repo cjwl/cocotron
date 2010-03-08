@@ -8,11 +8,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSFormatter.h>
 #import <Foundation/NSDate.h>
+#import <CoreFoundation/CFDateFormatter.h>
+
+typedef enum {
+   NSDateFormatterBehaviorDefault = 0,
+   NSDateFormatterBehavior10_0    = 1000,
+   NSDateFormatterBehavior10_4    = 1040,
+} NSDateFormatterBehavior;
+
+typedef enum {
+   NSDateFormatterNoStyle     = kCFDateFormatterNoStyle,
+   NSDateFormatterShortStyle  = kCFDateFormatterShortStyle,
+   NSDateFormatterMediumStyle = kCFDateFormatterMediumStyle,
+   NSDateFormatterLongStyle   = kCFDateFormatterLongStyle,
+   NSDateFormatterFullStyle   = kCFDateFormatterFullStyle
+} NSDateFormatterStyle;
 
 @interface NSDateFormatter : NSFormatter {
-    NSString *_dateFormat;
-    BOOL _allowsNaturalLanguage;
-    NSDictionary *_locale;
+   NSDateFormatterBehavior _behavior;
+   NSDateFormatterStyle    _dateStyle;
+   NSDateFormatterStyle    _timeStyle;
+   NSString *_dateFormat10_0;
+   NSString *_dateFormat;
+   BOOL _allowsNaturalLanguage;
+   NSDictionary *_locale;
 }
 
 -initWithDateFormat:(NSString *)format allowNaturalLanguage:(BOOL)flag; // shouldn't this be "allows" ?

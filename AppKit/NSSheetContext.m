@@ -11,6 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSSheetContext
 
 -initWithSheet:(NSWindow *)sheet modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo frame:(NSRect)frame {
+   if(sheet==nil)
+    [NSException raise:NSInvalidArgumentException format:@"sheet==nil"];
+    
    _sheet=[sheet retain];
    _modalDelegate=modalDelegate;
    _didEndSelector=didEndSelector;

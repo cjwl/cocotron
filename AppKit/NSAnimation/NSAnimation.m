@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSTimer.h>
 
 NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotification";
 
@@ -107,8 +108,7 @@ NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNo
 }
 
 -(BOOL)isAnimating {
-   NSUnimplementedMethod();
-   return NO;
+   return _isAnimating;
 } 
 
 -(NSArray *)runLoopModesForAnimating {
@@ -127,12 +127,31 @@ NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNo
    NSUnimplementedMethod();
 }
 
+// This isn't correct, we're just faking start/stop/end behavior w/o any real animation
+-(void)timer:(NSTimer *)timer {
+   if([_delegate respondsToSelector:@selector(animationDidEnd:)])
+    [_delegate performSelector:@selector(animationDidEnd:) withObject:self];
+
+   _isAnimating=NO;
+   _timer=nil;
+   [self autorelease];
+}
+
 -(void)startAnimation {
-   NSUnimplementedMethod();
+   if(!_isAnimating){
+    [self retain];
+    _isAnimating=YES;
+    _timer=[NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(timer:) userInfo:nil repeats:NO];
+   }
 }
 
 -(void)stopAnimation {
-   NSUnimplementedMethod();
+   if(_isAnimating){
+    _isAnimating=NO;
+    [_timer invalidate];
+    _timer=nil;
+    [self autorelease];
+   }
 }
 
 -(void)startWhenAnimation:(NSAnimation *)animation reachesProgress:(NSAnimationProgress)progress {

@@ -47,3 +47,12 @@ COREFOUNDATION_EXPORT uint64_t CFSwapInt64HostToBig(uint64_t value);
 COREFOUNDATION_EXPORT uint64_t CFSwapInt64HostToLittle(uint64_t value);
 COREFOUNDATION_EXPORT uint64_t CFSwapInt64LittleToHost(uint64_t value);
 
+COREFOUNDATION_EXPORT uint16_t OSReadBigInt16(const void *ptr,size_t offset);
+COREFOUNDATION_EXPORT uint32_t OSReadBigInt32(const void *ptr,size_t offset);
+COREFOUNDATION_EXPORT void OSWriteBigInt16(void *ptr,size_t offset,uint16_t value);
+COREFOUNDATION_EXPORT void OSWriteBigInt32(void *ptr,size_t offset,uint32_t value);
+COREFOUNDATION_EXPORT uint32_t OSSwapInt32(uint32_t value);
+COREFOUNDATION_EXPORT uint64_t OSSwapInt64(uint64_t valueX);
+COREFOUNDATION_EXPORT uint64_t OSSwapBigToHostInt64(uint64_t value);
+COREFOUNDATION_EXPORT uint32_t OSSwapHostToBigInt32(uint32_t value);
+COREFOUNDATION_EXPORT uint64_t OSSwapHostToBigInt64(uint64_t value);

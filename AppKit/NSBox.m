@@ -218,11 +218,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(BOOL)isOpaque {
-   return YES;
-}
-
-
 -(void)drawRect:(NSRect)rect {
    NSRect              grooveRect=_bounds;
    NSRect              titleRect=[self titleRect];
@@ -259,8 +254,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
    }
 
-   [[NSColor controlColor] setFill];
-   NSRectFill(rect);
+//   [[NSColor controlColor] setFill];
+  // NSRectFill(rect);
 
    switch(_borderType){
     case NSNoBorder:
@@ -280,15 +275,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(drawTitle){
+#if 0
     [[NSColor windowBackgroundColor] setFill];
     titleRect.origin.x-=TEXTGAP;
     titleRect.size.width+=TEXTGAP*2;
     NSRectFill(titleRect);
+#endif
     titleRect.origin.x+=TEXTGAP;
     titleRect.size.width-=TEXTGAP*2;
 
 	// Ask the cell to draw itself now
 	// TODO: Should we be doing some sort of clipping setup here?
+    [_titleCell setControlView:self];
     [_titleCell drawWithFrame: titleRect inView: self];
    }
 }

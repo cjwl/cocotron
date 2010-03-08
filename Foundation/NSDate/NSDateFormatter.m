@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSCalendar.h>
+#import <Foundation/NSNumber.h>
 
 @implementation NSDateFormatter
 
@@ -27,7 +28,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithDateFormat:(NSString *)format allowNaturalLanguage:(BOOL)flag locale:(NSDictionary *)locale {
     [super init];
-    _dateFormat = [format retain];
+    _behavior=NSDateFormatterBehavior10_0;
+    _dateFormat10_0 = [format copy];
+    _dateFormat = [format copy];
     _allowsNaturalLanguage = flag;
     _locale = [locale retain];
 
@@ -35,6 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+    [_dateFormat10_0 release];
     [_dateFormat release];
     [_locale release];
 
@@ -45,9 +49,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithCoder:coder];
    
    if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
-    /* attributes in key NS.attributes
-        "formatBehavior" is key in attributes
-     */
+    NSDictionary *attributes=[coder decodeObjectForKey:@"NS.attributes"];
+     
+    _dateFormat10_0=[[attributes objectForKey:@"dateFormat_10_0"] copy];
+    _behavior=[[attributes objectForKey:@"formatterBehavior"] intValue];
+    _dateStyle=[[attributes objectForKey:@"dateStyle"] intValue];
+    _timeStyle=[[attributes objectForKey:@"timeStyle"] intValue];
     _dateFormat=[[coder decodeObjectForKey:@"NS.format"] retain];
     _allowsNaturalLanguage=[coder decodeBoolForKey:@"NS.natural"];
    }
@@ -95,19 +102,13 @@ NSWeekDayNameArray];
 }
 
 -(NSString *)stringForObjectValue:(id)object {
-    if ([object isKindOfClass:[NSDate class]]) {
-        NSTimeZone *zone;
-
-        if ([object isKindOfClass:[NSCalendarDate class]]) 
-            zone = [object timeZone];
-        else 
-            zone = [NSTimeZone defaultTimeZone];
-
-        // will adjust time zone
-        return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat, _locale, zone);
-    }
+   
+   if([object isKindOfClass:[NSDate class]])
+    return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [NSTimeZone defaultTimeZone]);
+   if([object isKindOfClass:[NSCalendarDate class]]) 
+    return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [object timeZone]);
     
-    return nil;
+   return nil;
 }
 
 -(NSAttributedString *)attributedStringForObjectValue:(id)object
@@ -120,7 +121,7 @@ NSWeekDayNameArray];
 }
 
 -(BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error {
-    *object = NSCalendarDateWithStringDateFormatLocale(string, _dateFormat, _locale);
+    *object = NSCalendarDateWithStringDateFormatLocale(string, _dateFormat10_0, _locale);
     if (*object == nil) {
 // FIX localization
        if(error!=NULL)

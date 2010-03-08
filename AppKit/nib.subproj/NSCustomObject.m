@@ -69,4 +69,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 #endif
 
+-(NSString *)description {
+   return [NSString stringWithFormat:@"<%@:%p:class name=%@>",isa,self,_className];
+}
+
 @end

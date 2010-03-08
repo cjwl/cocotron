@@ -188,6 +188,10 @@ static NSTimer *_periodicTimer=nil;
    return 0;
 }
 
+-(void *)userData {
+   [NSException raise:NSInternalInconsistencyException format:@"No userData in %@",[self class]];
+   return 0;
+}
 
 
 @end

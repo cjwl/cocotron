@@ -23,15 +23,15 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 @implementation NSInvocation
 
 -(void)buildFrame {
-   NSInteger      i,count=[_signature numberOfArguments];
+   NSInteger  i,count=[_signature numberOfArguments];
    NSUInteger align;
 
    NSGetSizeAndAlignment([_signature methodReturnType],&_returnSize,&align);
-   _returnValue=NSZoneCalloc([self zone],MAX(_returnSize, sizeof(long)),1);
+   _returnValue=NSZoneCalloc(NULL,MAX(_returnSize, sizeof(long)),1);
 
    _argumentFrameSize=0;
-   _argumentSizes=NSZoneCalloc([self zone],count,sizeof(NSUInteger));
-   _argumentOffsets=NSZoneCalloc([self zone],count,sizeof(NSUInteger));
+   _argumentSizes=NSZoneCalloc(NULL,count,sizeof(NSUInteger));
+   _argumentOffsets=NSZoneCalloc(NULL,count,sizeof(NSUInteger));
 
    for(i=0;i<count;i++){
     NSUInteger naturalSize;
@@ -48,23 +48,22 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 }
 
 -initWithMethodSignature:(NSMethodSignature *)signature {
-	if(!signature)
-	{
-		[NSException raise:NSInvalidArgumentException
-					format:@"nil signature in NSInvocation creation"];		
-	}
+   if(signature==nil){
+    [self dealloc];
+    [NSException raise:NSInvalidArgumentException format:@"nil signature in NSInvocation creation"];
+    return nil;	
+   }
 	
    _signature=[signature retain];
 
    [self buildFrame];
 
-   _argumentFrame=NSZoneCalloc([self zone],_argumentFrameSize,1);
+   _argumentFrame=NSZoneCalloc(NULL,_argumentFrameSize,1);
 
    return self;
 }
 
--initWithMethodSignature:(NSMethodSignature *)signature
-   arguments:(void *)arguments {
+-initWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments {
    unsigned       i;
    uint8_t *stackFrame=arguments;
 
@@ -96,7 +95,7 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
                     char *ptr;
 
                     [self getArgument:&ptr atIndex:i];
-                    NSZoneFree([self zone], ptr);
+                    NSZoneFree(NULL, ptr);
                     break;
                 }
 
@@ -106,10 +105,10 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
         }
     }
 
-   NSZoneFree([self zone],_returnValue);
-   NSZoneFree([self zone],_argumentSizes);
-   NSZoneFree([self zone],_argumentOffsets);
-   NSZoneFree([self zone],_argumentFrame);
+   NSZoneFree(NULL,_returnValue);
+   NSZoneFree(NULL,_argumentSizes);
+   NSZoneFree(NULL,_argumentOffsets);
+   NSZoneFree(NULL,_argumentFrame);
    [_signature release];
    NSDeallocateObject(self);
    return;
@@ -135,7 +134,7 @@ static void *bufferForType(void *buffer,const char *type){
 
    [self buildFrame];
 
-   _argumentFrame=NSZoneCalloc([self zone],_argumentFrameSize,1);
+   _argumentFrame=NSZoneCalloc(NULL,_argumentFrameSize,1);
 
    if([_signature methodReturnLength]>0){
     type=[_signature methodReturnType];
@@ -183,8 +182,7 @@ static void *bufferForType(void *buffer,const char *type){
    return [[[self allocWithZone:NULL] initWithMethodSignature:signature] autorelease];
 }
 
-+(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature
-   arguments:(void *)arguments {
++(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments {
    return [[[self allocWithZone:NULL] initWithMethodSignature:signature arguments:arguments] autorelease];
 }
 
@@ -275,7 +273,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 
                     [self getArgument:&ptr atIndex:i];
                     length = strlen(ptr);
-                    copy = NSZoneCalloc([self zone], length+1, 1);
+                    copy = NSZoneCalloc(NULL, length+1, 1);
                     byteCopy(ptr, copy, length);
                     [self setArgument:&copy atIndex:i];
                     break;
@@ -368,7 +366,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
       int (*function)()=msgSendv;
       int value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
 
-      [self setReturnValue:&value];
+     [self setReturnValue:&value];
      }
      break;
 
@@ -400,7 +398,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
     case 'v':{
       void (*function)()=msgSendv;
 
-      function(target,[self selector],_argumentFrameSize,_argumentFrame);
+     function(target,[self selector],_argumentFrameSize,_argumentFrame);
      }
      break;
 

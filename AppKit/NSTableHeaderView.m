@@ -101,6 +101,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
         columnRect.size.width = [column width] + spacing.width;
         [[column headerCell] setHighlighted:[_tableView isColumnSelected:[[_tableView tableColumns] indexOfObject:column]]];
+        [[column headerCell] setControlView:self];
         [[column headerCell] drawWithFrame:columnRect inView:self];        
         columnRect.origin.x += [column width] + spacing.width;
     }

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSMutableArray,NSArray;
+@class NSMutableArray,NSArray,NSTimer;
 
 typedef enum {
    NSAnimationEaseInOut,
@@ -37,6 +37,8 @@ APPKIT_EXPORT NSString * const NSAnimationProgressMarkNotification;
    NSMutableArray         *_progressMarks;
    float                   _currentValue;
    NSArray                *_runLoopModes;
+   BOOL                    _isAnimating;
+   NSTimer                *_timer;
 }
 
 -initWithDuration:(NSTimeInterval)duration animationCurve:(NSAnimationCurve)curve;

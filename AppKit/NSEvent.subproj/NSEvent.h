@@ -189,6 +189,7 @@ enum {
 -(short)subtype;
 -(NSInteger)data1;
 -(NSInteger)data2;
+-(void *)userData;
 
 @end
 

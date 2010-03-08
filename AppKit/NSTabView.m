@@ -301,7 +301,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _selectedItem;
 }
 
--(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
+-(void)setFrame:(NSRect)frame {
+/* A tab view will autoresize the selected view regardless of whether autoresizesSubviews is enabled
+   We do it here because resizeSubviewsWithOldSize: won't be called if autoresizesSubviews is off. */
+
+   [super setFrame:frame];
    if(_selectedItem!=nil)
     [[_selectedItem view] setFrame:[self contentRect]];
 }
@@ -315,6 +319,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             [self addSubview:itemView];
             [itemView setFrame:[self contentRect]];
         }
+     [self setNeedsDisplay:YES];
     }
 }
 
@@ -335,6 +340,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
              [self addSubview:[item view]];
              [[item view] setFrame:[self contentRect]];
             }
+           [self setNeedsDisplay:YES];
             _selectedItem=item;
 
             if ([item initialFirstResponder])

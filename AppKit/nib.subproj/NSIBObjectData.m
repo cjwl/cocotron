@@ -61,9 +61,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      else if([nibObject isKindOfClass:[NSCustomObject class]]){
       id replacement=[nibObject createCustomInstance];
       
-      [keyed replaceObject:nibObject withObject:replacement];
-      [namedObjects replaceObjectAtIndex:i withObject:replacement];
-      [replacement release];
+      if(replacement==nil)
+       NSLog(@"Custom instance creation failed for %@",nibObject);
+      else {
+       [keyed replaceObject:nibObject withObject:replacement];
+       [namedObjects replaceObjectAtIndex:i withObject:replacement];
+       [replacement release];
+      }
      }
     }
     _namesKeys=namedObjects;

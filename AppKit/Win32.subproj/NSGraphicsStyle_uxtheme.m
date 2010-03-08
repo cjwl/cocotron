@@ -5,8 +5,8 @@
 #import <AppKit/NSColor.h>
 #import "Win32DeviceContextWindow.h"
 
-#undef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
+#undef WINVER
+#define WINVER 0x0501
 #import <uxtheme.h>
 #import <tmschema.h>
 
@@ -259,11 +259,13 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
    [super drawButtonImage:image inRect:rect enabled:enabled mixed:mixed];
 }
 
+#if 0
 // these menu ones don't appear to work
 -(void)drawMenuSeparatorInRect:(NSRect)rect {
    if(![self drawPartId:MP_SEPARATOR stateId:MS_NORMAL uxthClassId:uxthMENU inRect:rect])
     [super drawMenuSeparatorInRect:rect];
 }
+#endif
 
 -(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected {
    NSSize size=[self sizeOfMenuBranchArrow];

@@ -690,6 +690,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSCell *cell=[self cellAtRow:row column:column];
      NSRect  cellFrame=[self cellFrameAtRow:row column:column];
 
+     [cell setControlView:self];
      [cell setState:NSOffState];
      [cell setHighlighted:NO];
      [cell drawWithFrame:cellFrame inView:self];
@@ -842,6 +843,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([self getRow:&row column:&column ofCell:cell]){
     NSRect frame=[self cellFrameAtRow:row column:column];
     [self lockFocus];
+    [cell setControlView:self];
     [cell drawWithFrame:frame inView:self];
     [self unlockFocus];
     [[self window] flushWindow];
@@ -864,6 +866,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
      if(NSIntersectsRect(frame,rect)){
       NSCell *cell=[self cellAtRow:row column:col];
+      [cell setControlView:self];
       [cell drawWithFrame:frame inView:self];
      }
     } 
@@ -1041,6 +1044,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         [self _setSelectedIndexFromCell:cell];
 
         //[self setNeedsDisplay:YES];
+        [cell setControlView:self];
         [cell drawWithFrame:cellFrame inView:self];
        }
       }

@@ -89,6 +89,7 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -(BOOL)instantiateNibWithExternalNameTable:(NSDictionary *)nameTable {
+   NSAutoreleasePool *pool=[NSAutoreleasePool new];
    _nameTable=[nameTable retain];
     NSKeyedUnarchiver *unarchiver=[[[NSKeyedUnarchiver alloc] initForReadingWithData:_data] autorelease];
     NSIBObjectData    *objectData;
@@ -149,6 +150,8 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     
     [_nameTable release];
     _nameTable=nil;
+
+    [pool release];
 
     return (objectData!=nil);
 }
