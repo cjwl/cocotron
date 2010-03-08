@@ -21,10 +21,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_window!=nil)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
 
+   _nibName=nil;
    _nibPath=nil;
-   _owner=nil;
+   _owner=self;
    _document=nil;
-   _nibPathIsName=NO;
    _shouldCloseDocument=NO;
    _shouldCascadeWindows=YES;
    _windowFrameAutosaveName=nil;
@@ -37,18 +37,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithWindowNibName:(NSString *)nibName owner:owner {
    [self initWithWindow:nil];
-   _nibPath=[nibName copy];
-   _nibPathIsName=YES;
+   _nibName=[nibName copy];
+   _nibPath=nil;
    _owner=owner;
    return self;
 }
 
 -initWithWindowNibPath:(NSString *)nibPath owner:owner {
    [self initWithWindow:nil];
+   _nibName=[[[nibPath lastPathComponent] stringByDeletingPathExtension] copy];
    _nibPath=[nibPath copy];
-   _nibPathIsName=NO;
    _owner=owner;
    return self;
+}
+
+-init {
+   return [self initWithWindow:nil];
 }
 
 -(void)dealloc {
@@ -56,6 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_window setWindowController:nil];
    [_window release];
    _window=nil;
+   [_nibName release];
    [_nibPath release];
    [_windowFrameAutosaveName release];
    [_topLevelObjects release];
@@ -63,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSWindow *)window {
-   if(_window==nil && _nibPath!=nil){
+   if(_window==nil && [self windowNibPath]!=nil){
     [self windowWillLoad];
     [_document windowControllerWillLoadNib:self];
 
@@ -119,18 +124,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)loadWindow {
-   static       NSPoint cascadeTopLeftSavedPoint={0.0, 0.0};
-   NSString     *path=[self windowNibPath];
-   NSDictionary *nameTable;
+   if(![self isWindowLoaded]){
+    static       NSPoint cascadeTopLeftSavedPoint={0.0, 0.0};
+    NSString     *path=[self windowNibPath];
+    NSDictionary *nameTable;
    
-   _topLevelObjects = [[NSMutableArray alloc] init];
-   nameTable=[NSDictionary dictionaryWithObjectsAndKeys:_owner, NSNibOwner, _topLevelObjects, NSNibTopLevelObjects, nil];
+    _topLevelObjects = [[NSMutableArray alloc] init];
+    nameTable=[NSDictionary dictionaryWithObjectsAndKeys:_owner, NSNibOwner, _topLevelObjects, NSNibTopLevelObjects, nil];
 
-   NSAssert2([NSBundle loadNibFile:path externalNameTable:nameTable withZone:NULL], @"%s: unable to load nib from file '%@'", __PRETTY_FUNCTION__, path);
-   [self synchronizeWindowTitleWithDocumentName];
+    if(![NSBundle loadNibFile:path externalNameTable:nameTable withZone:NULL]){
+     NSLog(@"%s: unable to load nib from file '%@'", __PRETTY_FUNCTION__, path);
+    }
+
+    [self synchronizeWindowTitleWithDocumentName];
    
-   if (_shouldCascadeWindows)
-      cascadeTopLeftSavedPoint=[_window cascadeTopLeftFromPoint:cascadeTopLeftSavedPoint];   
+    if (_shouldCascadeWindows)
+       cascadeTopLeftSavedPoint=[_window cascadeTopLeftFromPoint:cascadeTopLeftSavedPoint];
+   }
 }
 
 -(void)windowWillLoad {
@@ -175,18 +185,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)windowNibName {
-   if(_nibPathIsName)
-    return _nibPath;
-   else {
-    return [[_nibPath lastPathComponent] stringByDeletingPathExtension];
-   }
+   return _nibName;
 }
 
 -(NSString *)windowNibPath {
-   if(!_nibPathIsName)
+   if(_nibPath!=nil)
     return _nibPath;
    else {
-    NSString *name=_nibPath;
+    NSString *name=[self windowNibName];
     NSBundle *bundle=[NSBundle bundleForClass:[_owner class]];
     NSString *path=[bundle pathForResource:name ofType:@"nib"];
 

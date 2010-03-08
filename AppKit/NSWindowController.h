@@ -12,10 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSWindowController : NSResponder {
    NSWindow   *_window;
+   NSString   *_nibName;
    NSString   *_nibPath;
    id          _owner;
    NSDocument *_document;
-   BOOL        _nibPathIsName;
    BOOL        _shouldCloseDocument;
    BOOL        _shouldCascadeWindows;
    NSString   *_windowFrameAutosaveName;
