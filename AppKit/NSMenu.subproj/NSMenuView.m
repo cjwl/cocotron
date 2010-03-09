@@ -29,8 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setSelectedItemIndex:(unsigned)itemIndex {
    _selectedItemIndex=itemIndex;
-   [self display];
-   [[self window] flushWindow];
+   [self setNeedsDisplay:YES];
 }
 
 -(NSArray *)itemArray {
@@ -191,8 +190,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    _selectedItemIndex=NSNotFound;
    [[self window] setAcceptsMouseMovedEvents:oldAcceptsMouseMovedEvents];
-   [self display];
-   [[self window] flushWindow];
+   [self setNeedsDisplay:YES];
 
    return ([item isEnabled] && ![item hasSubmenu])?item:(NSMenuItem *)nil;
 }

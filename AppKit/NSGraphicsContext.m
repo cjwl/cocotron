@@ -9,7 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSCachedImageRep.h>
 #import <AppKit/NSBitmapImageRep-Private.h>
+#import <AppKit/NSRaise.h>
 #import <ApplicationServices/ApplicationServices.h>
+#import <QuartzCore/CIContext.h>
 
 @class NSColor;
 
@@ -20,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _focusStack=[NSMutableArray new];
    _isDrawingToScreen=YES;
    _isFlipped=NO;
-   _window=[window retain];
+   _deviceDescription=[[window deviceDescription] copy];
    return self;
 }
 
@@ -29,6 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _focusStack=[NSMutableArray new];
    _isDrawingToScreen=NO;
    _isFlipped=flipped;
+   _deviceDescription=[[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:NSDeviceIsScreen] copy];
    return self;
 }
 
@@ -51,14 +54,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _focusStack=[NSMutableArray new];
    _isDrawingToScreen=YES;
    _isFlipped=NO;
+   _deviceDescription=[[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSDeviceIsScreen] copy];
    return self;
 }
 
 -(void)dealloc {
    if(_graphicsPort!=NULL)
     CGContextRelease(_graphicsPort);
+   [_ciContext release];
    [_focusStack release];
-   [_window release];
+   [_deviceDescription release];
    [super dealloc];
 }
 
@@ -74,7 +79,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithBitmapImageRep:imageRep] autorelease];
 }
 
-+(NSMutableArray *)_contextStack {
+static NSMutableArray *_contextStack() {
    NSMutableDictionary *shared=[NSCurrentThread() sharedDictionary];
    NSMutableArray      *stack=[shared objectForKey:@"NSGraphicsContext.stack"];
 
@@ -87,7 +92,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 static NSGraphicsContext *_currentContext() {
-   return NSThreadSharedInstanceDoNotCreate(@"NSGraphicsContext");
+   NSMutableDictionary *shared=[NSCurrentThread() sharedDictionary];
+   return [shared objectForKey:@"NSGraphicsContext"];
 }
 
 CGContextRef NSCurrentGraphicsPort() {
@@ -114,22 +120,30 @@ NSMutableArray *NSCurrentFocusStack() {
 }
 
 +(void)setCurrentContext:(NSGraphicsContext *)context {
-   [NSCurrentThread() setSharedObject:context forClassName:@"NSGraphicsContext"];
+   NSMutableDictionary *shared=[NSCurrentThread() sharedDictionary];
+
+   if(context==nil)
+    [shared removeObjectForKey:@"NSGraphicsContext"];
+   else
+    [shared setObject:context forKey:@"NSGraphicsContext"];
 }
 
 +(void)saveGraphicsState {
    NSGraphicsContext *current=_currentContext();
 
-   if(current!=nil)
-    [[self _contextStack] addObject:current];
+   if(current!=nil) {
+    [_contextStack() addObject:current];
+    [current saveGraphicsState];
+   }
 }
 
 +(void)restoreGraphicsState {
-   NSGraphicsContext *current=[[self _contextStack] lastObject];
+   NSGraphicsContext *current=[_contextStack() lastObject];
 
    if(current!=nil){
     [self setCurrentContext:current];
-    [[self _contextStack] removeLastObject];
+    [_contextStack() removeLastObject];
+    [current restoreGraphicsState];
    }
 }
 
@@ -193,12 +207,19 @@ NSMutableArray *NSCurrentFocusStack() {
    CGContextSetBlendMode(_graphicsPort,blendMode[value]);
 }
 
+-(CIContext *)CIContext {
+   if(_ciContext==nil)
+    ;//_ciContext=[[CIContext contextWithCGContext:_graphicsPort options:nil] retain];
+
+   return _ciContext;
+}
+
 -(void)saveGraphicsState {
-   [isa saveGraphicsState];
+   CGContextSaveGState(_graphicsPort);
 }
 
 -(void)restoreGraphicsState {
-   [isa restoreGraphicsState];
+   CGContextRestoreGState(_graphicsPort);
 }
 
 -(void)flushGraphics {
@@ -206,14 +227,7 @@ NSMutableArray *NSCurrentFocusStack() {
 }
 
 -(NSDictionary *)deviceDescription {
-   if(_window!=nil)
-    return [_window deviceDescription];
-   else if([self isDrawingToScreen]){
-    return [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSDeviceIsScreen];
-   }
-   else {
-    return [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSDeviceIsPrinter];
-   }
+   return _deviceDescription;
 }
 
 @end

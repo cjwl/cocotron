@@ -7,9 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSKeyedUnarchiver.h>
+#import <CoreFoundation/CFByteOrder.h>
 #import <math.h>
 
 @implementation NSAffineTransform
+
+static NSAffineTransformStruct identity={1,0,0,1,0,0};
 
 static inline NSAffineTransformStruct multiplyStruct(NSAffineTransformStruct start, NSAffineTransformStruct append){
    NSAffineTransformStruct result;
@@ -43,12 +47,7 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -init {
-   _matrix.m11=1;
-   _matrix.m12=0;
-   _matrix.m21=0;
-   _matrix.m22=1;
-   _matrix.tX=0;
-   _matrix.tY=0;
+   _matrix=identity;
    return self;
 }
 
@@ -57,7 +56,25 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
+    
+    NSUInteger    length;
+    const uint8_t *bytes=[keyed decodeBytesForKey:@"NSTransformStruct" returnedLength:&length];
+    
+    if(length!=24)
+     _matrix=identity;
+    else {
+     CFSwappedFloat32 *words=(CFSwappedFloat32 *)bytes;
+     
+     _matrix.m11=CFConvertFloat32SwappedToHost(words[0]);
+     _matrix.m12=CFConvertFloat32SwappedToHost(words[1]);
+     _matrix.m21=CFConvertFloat32SwappedToHost(words[2]);
+     _matrix.m22=CFConvertFloat32SwappedToHost(words[3]);
+     _matrix.tX=CFConvertFloat32SwappedToHost(words[4]);
+     _matrix.tY=CFConvertFloat32SwappedToHost(words[5]);
+    }
+   }
    return self;
 }
 

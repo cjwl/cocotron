@@ -41,13 +41,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-typedef enum {
- NSLibraryDirectory,
-} NSSearchPathDirectory;
+enum {
+   NSLibraryDirectory=5,
+};
 
-typedef enum {
- NSSystemDomainMask
-} NSSearchPathDomainMask;
+typedef NSUInteger NSSearchPathDirectory;
+
+enum {
+   NSUserDomainMask   = 0x0001,
+   NSLocalDomainMask  = 0x0002,
+   NSNetworkDomainMask= 0x0004,
+   NSSystemDomainMask = 0x0008,
+   NSAllDomainsMask   = 0xffff,
+};
+
+typedef NSUInteger NSSearchPathDomainMask;
 
 FOUNDATION_EXPORT NSArray  *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory d,NSSearchPathDomainMask mask,BOOL expand);
 

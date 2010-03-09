@@ -133,6 +133,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return [_cell refusesFirstResponder];
 }
 
+-(id)formatter {
+   return [_cell formatter];
+}
+
 -objectValue {
    return [[self selectedCell] objectValue];
 }
@@ -186,6 +190,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(void)setImage:(NSImage *)image {
    [[self cell] setImage:image];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setAlignment:(NSTextAlignment)alignment {
@@ -230,6 +235,11 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(void)setRefusesFirstResponder:(BOOL)flag {
    [_cell setRefusesFirstResponder:flag];
+}
+
+-(void)setFormatter:(NSFormatter *)formatter {
+   [_cell setFormatter:formatter];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setObjectValue:(id <NSCopying>)object {
@@ -289,8 +299,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
 }
 
 -(void)drawCell:(NSCell *)cell {
-    if (_cell == cell)
+    if (_cell == cell){
+        [_cell setControlView:self];
         [_cell drawWithFrame:_bounds inView:self];
+    }
 }
 
 -(void)drawCellInside:(NSCell *)cell {
@@ -419,6 +431,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 }
 
 -(void)drawRect:(NSRect)rect {
+   [_cell setControlView:self];
    [_cell drawWithFrame:_bounds inView:self];
 }
 
@@ -449,8 +462,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
     }
 
     [[self window] flushWindow];
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|
-                          NSLeftMouseDraggedMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
    }while([event type]!=NSLeftMouseUp);
 
    [self unlockFocus];

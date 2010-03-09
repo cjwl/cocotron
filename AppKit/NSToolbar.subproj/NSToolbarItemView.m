@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSColor.h>
+#import <AppKit/NSGraphicsContext.h>
 
 @interface NSToolbarItem(private)
 -(void)drawInRect:(NSRect)bounds highlighted:(BOOL)highlighted;
@@ -47,7 +49,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[self subviews] lastObject];
 }
 
+typedef struct {
+ CGFloat _C0[4];
+ CGFloat _C1[4];
+} gradientColors;
+
+static void evaluate(void *info,const float *in, float *output) {
+   float         x=in[0];
+   gradientColors *colors=info;
+   int           i;
+   
+    for(i=0;i<4;i++)
+     output[i]=colors->_C0[i]+x*(colors->_C1[i]-colors->_C0[i]);
+}
+
 -(void)drawRect:(NSRect)rect {
+   if([[_toolbarItem itemIdentifier] isEqual:[[_toolbarItem toolbar] selectedItemIdentifier]]){
+    CGContextRef  cgContext=[[NSGraphicsContext currentContext] graphicsPort];
+    float         domain[2]={0,1};
+    float         range[8]={0,1,0,1,0,1,0,1};
+    CGFunctionCallbacks callbacks={0,evaluate,NULL};
+    gradientColors colors;
+    NSColor *startColor=[NSColor blackColor];
+    NSColor *endColor=[NSColor lightGrayColor];
+    
+    colors._C0[0]=0.5;
+    colors._C0[1]=0.5;
+    colors._C0[2]=0.5;
+    colors._C0[3]=0.5;
+    colors._C1[0]=0.8;
+    colors._C1[1]=0.8;
+    colors._C1[2]=0.8;
+    colors._C1[3]=0;
+    
+    CGFunctionRef function=CGFunctionCreate(&colors,1,domain,4,range,&callbacks);
+    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
+    CGShadingRef  shading;
+    CGRect bounds=[self bounds];
+        
+    shading=CGShadingCreateAxial(colorSpace,bounds.origin,CGPointMake(bounds.origin.x,bounds.origin.y+NSHeight(bounds)/2),function,NO,NO);
+    CGContextDrawShading(cgContext,shading);
+    CGShadingRelease(shading);
+    
+    CGFunctionRelease(function);
+    CGColorSpaceRelease(colorSpace);
+   }
    [_toolbarItem drawInRect:[self bounds] highlighted:_isHighlighted];  
 }
 

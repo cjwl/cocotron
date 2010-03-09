@@ -223,7 +223,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
    [NSException raise:@"" format:@"Unexpected character %c in %@, position=%d",code,state,position];
 }
 
--(void)tokenize {
+-(BOOL)tokenize {
 
    while(NSMaxRange(_range)<_length){
     uint8_t code=_bytes[NSMaxRange(_range)];
@@ -265,6 +265,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       }
       else {
        [self unexpectedIn:@"Reference"];
+       return NO;
       }
       break;
 
@@ -280,6 +281,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       }
       else {
        [self unexpectedIn:@"CharRef"];
+       return NO;
       }
       break;
 
@@ -301,8 +303,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
        _state=STATE_content;
        rangeAction=advanceLocationToNext;
       }
-      else
+      else{
        [self unexpectedIn:@"hexadecimal CharRef"];
+       return NO;
+      }
       break;
 
      case STATE_CharRef_decimal:
@@ -315,8 +319,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
        _state=STATE_content;
        rangeAction=advanceLocationToNext;
       }
-      else
+      else {
        [self unexpectedIn:@"decimal CharRef"];
+       return NO;
+      }
       break;
 
      case STATE_EntityRef_Name:
@@ -327,8 +333,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
        _state=STATE_content;
        rangeAction=advanceLocationToNext;
       }
-      else
+      else {
        [self unexpectedIn:@"EntityRef Name"];
+       return NO;
+      }
       break;
 
      case STATE_Tag:
@@ -359,6 +367,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       }
       else {
        [self unexpectedIn:@"Tag"];
+       return NO;
       }
       break;
       
@@ -408,8 +417,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
        _state=STATE_content;
        rangeAction=advanceLocationToNext;
       }
-      else
+      else {
        [self unexpectedIn:@"ETag"];
+       return NO;
+      }
       break;
 
      case STATE_Attributes:
@@ -433,8 +444,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
        _state=STATE_content;
        rangeAction=advanceLocationToNext;
       }
-      else
+      else {
        [self unexpectedIn:@"EmptyElementTag"];
+       return NO;
+      }
       break;
 
      case STATE_Attribute_Name:
@@ -472,8 +485,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
        _state=STATE_Attribute_Value_SingleQuote;
        rangeAction=advanceLocationToNext;
       }
-      else
+      else {
        [self unexpectedIn:@"Attribute Value"];
+       return NO;
+      }
       break;
 
      case STATE_Attribute_Value_DoubleQuote:
@@ -509,13 +524,15 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       break;
     }
    }
+   return YES;
 }
 
 +(NSOldXMLDocument *)documentWithContentsOfFile:(NSString *)path {
    NSOldXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
    NSOldXMLDocument *document;
 
-   [reader tokenize];
+   if(![reader tokenize])
+    return nil;
 
    document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];
@@ -529,7 +546,8 @@ static inline BOOL codeIsNameContinue(uint8_t code){
    NSOldXMLReader   *reader=[[self alloc] initWithData:data];
    NSOldXMLDocument *document;
 
-   [reader tokenize];
+   if(![reader tokenize])
+    return nil;
 
    document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];

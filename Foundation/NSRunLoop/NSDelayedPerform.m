@@ -33,6 +33,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isEqualToPerform:(NSDelayedPerform *)other {
    if(_object!=other->_object)
     return NO;
+   
+   if(_selector==NULL || other->_selector==NULL)
+    return YES;
+    
    if(_selector!=other->_selector)
     return NO;
    if(_argument!=other->_argument)

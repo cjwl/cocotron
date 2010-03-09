@@ -39,6 +39,7 @@ APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 -(BOOL)isBezeled;
 -(BOOL)isContinuous;
 -(BOOL)refusesFirstResponder;
+-(id)formatter;
 
 -objectValue;
 -(NSString *)stringValue;

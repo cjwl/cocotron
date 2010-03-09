@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithData:(NSData *)data;
 -initWithContentsOfFile:(NSString *)path;
 
--(void)tokenize;
+-(BOOL)tokenize;
 
 +(NSOldXMLDocument *)documentWithContentsOfFile:(NSString *)path;
 +(NSOldXMLDocument *)documentWithData:(NSData *)data;

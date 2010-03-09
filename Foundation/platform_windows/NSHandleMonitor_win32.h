@@ -17,6 +17,7 @@ enum {
    void    *_handle;
    id       _delegate;
    NSUInteger _currentActivity;
+   BOOL _isValid;
 }
 
 +(NSHandleMonitor_win32 *)handleMonitorWithHandle:(void *)handle;

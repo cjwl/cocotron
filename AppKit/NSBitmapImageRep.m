@@ -213,18 +213,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bitmapPlanes[0]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
    
    CGDataProviderRef    provider=CGImageGetDataProvider(cgImage);
-// FIXME: inefficient
-   NSData              *bitmapData=(NSData *)CGDataProviderCopyData(provider);
-   const unsigned char *bytes=[bitmapData bytes];
+// FIXME: inefficient but there is no API to get mutable bytes out of an image or image source
+   CFDataRef            bitmapData=CGDataProviderCopyData(provider);
+   const unsigned char *bytes=CFDataGetBytePtr(bitmapData);
    int                  i,length=_bytesPerRow*_pixelsHigh;
    
    for(i=0;i<length;i++)
     _bitmapPlanes[0][i]=bytes[i];
    
-   [bitmapData release];
+   CFRelease(bitmapData);
    
    CFRelease(properties);
    CFRelease(imageSource);
+   CGImageRelease(cgImage);
+   
    return self;
 }
 

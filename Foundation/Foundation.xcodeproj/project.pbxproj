@@ -4869,6 +4869,15 @@
 		FEC1CFE20F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC1CFE30F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC1CFE40F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC79E3C1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E3D1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E3E1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E3F1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E401146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E411146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E421146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E431146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
+		FEC79E441146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
 		FEC9F6AE0E2F98EA0034932A /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		FEC9F6AF0E2F98EA0034932A /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		FEC9F6B00E2F98EA0034932A /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
@@ -7217,6 +7226,7 @@
 		FEBF53670F926025005DC684 /* objc_protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_protocol.h; sourceTree = "<group>"; };
 		FEBF545A0F93AE8A005DC684 /* objc_property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_property.m; sourceTree = "<group>"; };
 		FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationErrors.h; sourceTree = "<group>"; };
+		FEC79E3B1146C47D0070B596 /* CFByteOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFByteOrder.m; sourceTree = "<group>"; };
 		FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtocol_http.h; sourceTree = "<group>"; };
 		FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtocol_http.m; sourceTree = "<group>"; };
 		FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionState.h; sourceTree = "<group>"; };
@@ -8330,6 +8340,7 @@
 		FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				FEC79E3B1146C47D0070B596 /* CFByteOrder.m */,
 				1A8A694E1091EF0200DC5A01 /* NSCFTypeID.h */,
 				FE8693D20FE0108E00F89733 /* CFArray.m */,
 				FE8693D30FE0108E00F89733 /* CFAttributedString.m */,
@@ -12418,6 +12429,7 @@
 				15D921AD105E918000171406 /* NSString_defaultEncoding_posix.m in Sources */,
 				151B5CC4105EA25E009092D5 /* objc_msg_sendv-Disabled.m in Sources */,
 				FE75E2EF10F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E431146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12772,6 +12784,7 @@
 				FE463E71102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E73102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE75E2EE10F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E421146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13127,6 +13140,7 @@
 				FE463E63102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014231042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */,
 				FE75E2EA10F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E3E1146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13483,6 +13497,7 @@
 				FE463E5F102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014241042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */,
 				FE75E2E910F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E3D1146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13843,6 +13858,7 @@
 				FE463E5B102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE60142A1042FD6B008A7357 /* NSString_defaultEncoding_windows.m in Sources */,
 				FE75E2E810F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E3C1146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14199,6 +14215,7 @@
 				FE5A86DC10C6EF42005E348A /* NSPlatform_bsd.m in Sources */,
 				FE5A86DE10C6EF43005E348A /* NSTask_bsd.m in Sources */,
 				FE75E2F010F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E441146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14558,6 +14575,7 @@
 				1A27C0051090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0631090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
 				FE75E2ED10F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E411146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14918,6 +14936,7 @@
 				1A27C0031090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0611090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
 				FE75E2EB10F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E3F1146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15278,6 +15297,7 @@
 				1A27C0041090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0621090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
 				FE75E2EC10F6442F000419C4 /* bonjour.m in Sources */,
+				FEC79E401146C47D0070B596 /* CFByteOrder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15838,7 +15858,7 @@
 					"-lffi",
 					"-B,dynamic",
 					"-shared",
-					"-lwsock32",
+					"-lws2_32",
 					"-Wl,--export-all-symbols",
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",

@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <string.h>
 #import <objc/message.h>
 
-id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
+id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 
 @interface NSInvocation (FFICalling)
 -(void)_ffiInvokeWithTarget:target;
@@ -326,7 +326,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 	}
 	
    const char *returnType=[_signature methodReturnType];
-   void *msgSendv=objc_msg_sendv;
+   void *msgSendv=objc_msgSendv;
 
    switch(returnType[0]){
     case 'r':

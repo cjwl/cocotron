@@ -46,6 +46,7 @@ APPKIT_EXPORT NSString * const NSToolbarDidRemoveItemNotification;
    BOOL _visible;
    BOOL _allowsUserCustomization;
    BOOL _isLoadingConfiguration;
+   BOOL _loadDefaultItems;
 }
 
 -initWithIdentifier:(NSString *)identifier;

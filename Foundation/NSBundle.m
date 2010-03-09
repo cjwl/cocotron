@@ -187,6 +187,7 @@ static NSMapTable *pathToObject=NULL;
    [_resourcePath retain];
    
    _infoDictionary=nil;
+   _localizedTables=nil;
    _isLoaded=NO;
 
    NSMapInsert(pathToObject,path,self);
@@ -233,10 +234,14 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSDictionary *)infoDictionary {
    if(_infoDictionary==nil){
-    NSString *path=[self pathForResource:@"Info" ofType:@"plist" inDirectory:[_path stringByAppendingPathComponent:@"Contents"]];
+    
+    NSString *path=[[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info"] stringByAppendingPathExtension:@"plist"];
+    
+    if(![[NSFileManager defaultManager] fileExistsAtPath:path])
+     path=nil;
     
     if(path==nil)
-     path=[self pathForResource:@"Info" ofType:@"plist" inDirectory:[_path stringByAppendingPathComponent:@"Resources"]];
+     path=[self pathForResource:@"Info" ofType:@"plist" inDirectory:@"Resources"];
 
     _infoDictionary=[[NSDictionary allocWithZone:NULL] initWithContentsOfFile:path];
 
@@ -420,13 +425,21 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSString *)pathForResourceFile:(NSString *)file inDirectory:(NSString *)directory {
    NSArray  *lookIn=[self lookInDirectories];
-   NSInteger       i,count=[lookIn count];
-
+   NSInteger i,count=[lookIn count];
+    
    for(i=0;i<count;i++){
-    NSString *path=[[directory stringByAppendingPathComponent:[lookIn objectAtIndex:i]] stringByAppendingPathComponent:file];
+    NSString *path=[_resourcePath stringByAppendingPathComponent:[lookIn objectAtIndex:i]];
 
-    if([[NSFileManager defaultManager] fileExistsAtPath:path])
+    if(directory!=nil)
+     path=[path stringByAppendingPathComponent:directory];
+    
+    path=[path stringByAppendingPathComponent:file];
+
+    BOOL value=[[NSFileManager defaultManager] fileExistsAtPath:path];
+
+    if(value){
      return path;
+    }
    }
    
    return nil;
@@ -459,21 +472,29 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type {
-   return [self pathForResource:name ofType:type inDirectory:_resourcePath];
+   NSString *result=[self pathForResource:name ofType:type inDirectory:nil];
+
+   return result;
 }
 
 -(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path {
-	id fullPath=[[self resourcePath] stringByAppendingPathComponent:path];
-	id allFiles=[[NSFileManager defaultManager] directoryContentsAtPath:fullPath];
-	int i;
-	id ret=[NSMutableArray array];
-	for(i=0; i<[allFiles count]; i++)
-	{
-		id filename=[fullPath stringByAppendingPathComponent:[allFiles objectAtIndex:i]];
-		if(type==nil || [[filename pathExtension] isEqualToString:type])
-			[ret addObject:filename];
+	NSMutableArray *result=[NSMutableArray array];
+ 	NSString       *fullPath=[self resourcePath];
+    
+    if(path!=nil)
+ 	 fullPath=[fullPath stringByAppendingPathComponent:path];
+    
+	NSArray  *allFiles=[[NSFileManager defaultManager] directoryContentsAtPath:fullPath];
+	NSInteger i,count=[allFiles count];
+    
+	for(i=0;i<count;i++){
+     NSString *check=[allFiles objectAtIndex:i];
+     
+     if(type==nil || [[check pathExtension] isEqualToString:type])
+      [result addObject:[fullPath stringByAppendingPathComponent:check]];
 	}
-   return ret;
+    
+   return result;
 }
 
 -(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
@@ -483,25 +504,38 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)table {
    NSString     *result;
-   NSString     *path;
-   NSString     *contents=nil;
-   NSDictionary *dictionary=nil;
-
+   NSDictionary *dictionary;
+   
    if([table length]==0)
     table=@"Localizable";
 
-   if((path=[self pathForResource:table ofType:@"strings"])!=nil)
-    if((contents=[NSString stringWithContentsOfFile:path])!=nil){
-     NS_DURING
-      dictionary=[contents propertyListFromStringsFileFormat];
-     NS_HANDLER
-      dictionary=nil;
-     NS_ENDHANDLER
-    }
+   dictionary=[_localizedTables objectForKey:table];
+
+   if(dictionary==nil){
+    NSString     *path;
+    NSString     *contents=nil;
+
+    if(_localizedTables==nil)
+     _localizedTables=[[NSMutableDictionary alloc] init];
+     
+    if((path=[self pathForResource:table ofType:@"strings"])!=nil)
+     if((contents=[NSString stringWithContentsOfFile:path])!=nil){
+      NS_DURING
+       dictionary=[contents propertyListFromStringsFileFormat];
+      NS_HANDLER
+       dictionary=nil;
+      NS_ENDHANDLER
+     }
+
+    if(dictionary==nil)
+     dictionary=[NSDictionary dictionary];
+     
+    [_localizedTables setObject:dictionary forKey:table];
+   }
 
    if((result=[dictionary objectForKey:key])==nil)
     result=(value!=nil)?value:key;
-
+   
    return result;
 }
 

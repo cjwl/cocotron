@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSDictionary,NSString,NSError;
+@class NSArray,NSDictionary,NSString,NSError,NSMutableDictionary;
 
 FOUNDATION_EXPORT NSString * const NSBundleDidLoadNotification;
 FOUNDATION_EXPORT NSString * const NSLoadedClasses;	
@@ -19,6 +19,7 @@ FOUNDATION_EXPORT NSString * const NSLoadedClasses;
    NSDictionary *_infoDictionary;
    NSString     *_executablePath;
    NSArray      *_lookInDirectories;
+   NSMutableDictionary *_localizedTables;
    BOOL          _isLoaded;
 }
 

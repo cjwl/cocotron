@@ -956,14 +956,61 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(BOOL)boolValue {
-   NSUnimplementedMethod();
-   return 0;
+   NSUInteger i,length=[self length];
+   unichar buffer[length];
+   
+   if(length==0)
+    return NO;
+
+   [self getCharacters:buffer];
+   NSCharacterSet *set=[NSCharacterSet whitespaceCharacterSet];
+   
+   for(i=0;i<length;i++)
+    if(![set characterIsMember:buffer[i]])
+     break;
+   
+   if(i==length)
+    return NO;
+   
+   if(buffer[i]=='Y' || buffer[i]=='y' || buffer[i]=='T' || buffer[i]=='t')
+    return YES;
+   
+   if(buffer[i]=='-' || buffer[i]=='+')
+    i++;
+
+   for(;i<length;i++)
+    if(buffer[i]!='0')
+     break;
+   
+   if(i==length)
+    return NO;
+   
+   if(buffer[i]>='1' && buffer[i]<='9')
+    return YES;
+   
+   return NO;
 }
 
 -(int)intValue {
+   long long llvalue=[self longLongValue];
+   
+   if(llvalue>INT_MAX)
+    llvalue=INT_MAX;
+   if(llvalue<INT_MIN)
+    llvalue=INT_MIN;
+   
+   return llvalue;
+}
+
+-(NSInteger)integerValue {
+   return [self intValue];
+}
+
+-(long long)longLongValue {
    NSUInteger pos,length=[self length];
-   unichar  unicode[length];
-   int      sign=1,value=0;
+   unichar    unicode[length];
+   int        sign=1;
+   long long  value=0;
 
    [self getCharacters:unicode];
 
@@ -992,16 +1039,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    }
 
    return sign*value;
-}
-
--(NSInteger)integerValue {
-   NSUnimplementedMethod();
-   return 0;
-}
-
--(long long)longLongValue {
-   NSUnimplementedMethod();
-   return 0;
 }
 
 -(float)floatValue {

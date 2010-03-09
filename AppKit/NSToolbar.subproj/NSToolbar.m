@@ -67,13 +67,13 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
 }
 
 -initWithIdentifier:(NSString *)identifier {
-   _identifier=[identifier retain];
+   _identifier=[identifier copy];
    _delegate=nil;
    _items=[[NSMutableArray alloc] init];
    _selectedItemIdentifier=nil;
-   _allowedItems=nil;
-   _defaultItems=nil;
-   _selectableItems=nil;
+   _allowedItems=[[NSMutableArray alloc] init];
+   _defaultItems=[[NSMutableArray alloc] init];
+   _selectableItems=[[NSMutableArray alloc] init];
    _identifiedItems=[[NSMutableDictionary alloc] init];
    _window=nil;   
    _view=[[NSToolbarView alloc] init];
@@ -85,6 +85,7 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
    _visible=YES;
    _allowsUserCustomization=YES;
    _isLoadingConfiguration=NO;
+   _loadDefaultItems=YES;
    
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarChangedAppearance:) name:NSToolbarChangeAppearanceNotification object:nil];
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarWillAddItem:) name:NSToolbarWillAddItemNotification object:nil];
@@ -203,15 +204,37 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
     return dictionary;
 }
 
+static BOOL isStandardItemIdentifier(NSString *identifier){
+   if([identifier isEqualToString:NSToolbarCustomizeToolbarItemIdentifier])
+    return YES;
+   if([identifier isEqualToString:NSToolbarFlexibleSpaceItemIdentifier])
+    return YES;
+   if([identifier isEqualToString:NSToolbarPrintItemIdentifier])
+    return YES;
+   if([identifier isEqualToString:NSToolbarSeparatorItemIdentifier])
+    return YES;
+   if([identifier isEqualToString:NSToolbarShowColorsItemIdentifier])
+    return YES;
+   if([identifier isEqualToString:NSToolbarShowFontsItemIdentifier])
+    return YES;
+   if([identifier isEqualToString:NSToolbarSpaceItemIdentifier])
+    return YES;
+
+   return NO;
+}
+
 -(NSToolbarItem *)_itemForItemIdentifier:(NSString *)identifier willBeInsertedIntoToolbar:(BOOL)intoToolbar {
    NSToolbarItem *item=[_identifiedItems objectForKey:identifier];
    
    if(item==nil){
+    // The delegate does not get toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar: for the standard items
+    BOOL standardItem=isStandardItemIdentifier(identifier);
     
-    if(_delegate==nil)
+    if(_delegate==nil || standardItem)
      item=[[[NSToolbarItem alloc] initWithItemIdentifier:identifier] autorelease];
-    else
+    else {
      item=[_delegate toolbar:self itemForItemIdentifier:identifier willBeInsertedIntoToolbar:intoToolbar];
+    }
     
     if(item!=nil){
      [_identifiedItems setObject:item forKey:identifier];
@@ -304,6 +327,32 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
     [self saveConfiguration];
 }
 
+-(NSArray *)_defaultToolbarItems {
+   NSArray *result=nil;
+
+   if([_delegate respondsToSelector:@selector(toolbarDefaultItemIdentifiers:)])
+    result=[self _itemsWithIdentifiers:[_delegate toolbarDefaultItemIdentifiers:self]];
+
+   if(result==nil)
+    result=_defaultItems;
+    
+   return result;
+}
+
+-(void)loadDefaultItemsIfNeeded {
+   if(_loadDefaultItems){
+    _loadDefaultItems=NO;
+    
+    NSArray *items=[self _defaultToolbarItems];
+
+    while([_items count])
+     [self _removeItemAtIndex:0];
+ 
+    for(NSToolbarItem *item in items)
+     [self _insertItem:item atIndex:[_items count]];
+   }
+}
+
 -(void)toolbarChangedAppearance:(NSNotification *)note {
    NSToolbar *toolbar=[note object];
 
@@ -315,10 +364,12 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
    
    _sizeMode=[toolbar sizeMode];
    _displayMode=[toolbar displayMode];
+
    [_window _toolbarSizeDidChangeFromOldHeight:[self visibleHeight]];
 }
 
 -(void)layoutFrameSizeWithWidth:(CGFloat)width {
+   [self loadDefaultItemsIfNeeded];
    [_view layoutViewsWithWidth:width setFrame:YES];
 }
 
@@ -405,7 +456,8 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
 -(void)setSelectedItemIdentifier:(NSString *)identifier {
    identifier=[identifier copy];
    [_selectedItemIdentifier release];
-   _selectedItemIdentifier=[identifier retain];
+   _selectedItemIdentifier=identifier;
+   [_view setNeedsDisplay:YES];
 }
 
 -(void)validateVisibleItems {
@@ -452,18 +504,6 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
    return result;
 }
 
--(NSArray *)_defaultToolbarItems {
-   NSArray *result=nil;
-
-   if([_delegate respondsToSelector:@selector(toolbarDefaultItemIdentifiers:)])
-    result=[self _itemsWithIdentifiers:[_delegate toolbarDefaultItemIdentifiers:self]];
-
-   if(result==nil)
-    result=_defaultItems;
-    
-   return result;
-}
-
 -initWithCoder:(NSCoder *)coder {
    if(![coder allowsKeyedCoding])
       NSUnimplementedMethod();
@@ -487,7 +527,7 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
       _visible=YES;
       _allowsUserCustomization=[coder decodeBoolForKey:@"NSToolbarAllowsUserCustomization"];
       _isLoadingConfiguration=NO;
-
+      _loadDefaultItems=NO;
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarChangedAppearance:) name:NSToolbarChangeAppearanceNotification object:nil];
       /*
        NSToolbarPrefersToBeShown = 1;

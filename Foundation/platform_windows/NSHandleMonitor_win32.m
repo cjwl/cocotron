@@ -19,11 +19,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithHandle:(void *)handle {
    _handle=handle;
+   _isValid=YES;
    return self;
 }
 
 -(void *)handle {
    return _handle;
+}
+
+-(BOOL)isValid {
+   return _isValid;
+}
+
+-(void)invalidate {
+   _isValid=NO;
 }
 
 -(void)setDelegate:delegate {

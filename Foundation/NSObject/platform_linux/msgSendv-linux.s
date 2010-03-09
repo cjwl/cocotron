@@ -1,11 +1,9 @@
 # Original - Christopher Lloyd <cjwl@objc.net>
-.globl objc_msg_sendv
-	.type	objc_msg_sendv, @function
-objc_msg_sendv:
+.globl objc_msgSendv
+	.type	objc_msgSendv, @function
+objc_msgSendv:
 	pushl	%ebp
 	movl	%esp, %ebp
-	pushl   %edx
-	pushl   %ecx
 	pushl	12(%ebp)
 	pushl   8(%ebp)
 	call	objc_msg_lookup
@@ -21,9 +19,7 @@ done:
 	pushl 12(%ebp) # push _cmd
 	pushl 8(%ebp)  # push self
 	call *%eax
-	popl %ecx
-	popl %edx
 	leave
 	ret
-	.size	objc_msg_sendv, .-objc_msg_sendv
+	.size	objc_msgSendv, .-objc_msgSendv
 	.ident	"GCC: (GNU) 3.3.2"

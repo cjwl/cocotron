@@ -34,6 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isVertical=(_bounds.size.width<_bounds.size.height)?YES:NO;
     _floatValue=0;
     _knobProportion=0;
+    [self checkSpaceForParts];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -372,9 +373,7 @@ static inline float roundFloat(float value){
     NSPoint point;
     float   delta;
 
-    [[self window] flushWindow];
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|
-                          NSLeftMouseDraggedMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
 
     point=[self convertPoint:[event locationInWindow] fromView:nil];
 
@@ -420,7 +419,6 @@ static inline float roundFloat(float value){
        if (NSMouseInRect(point,rect,[self isFlipped]))
            [self sendAction:_action to:_target];
 
-       [[self window] flushWindow];
        event=[[self window] nextEventMatchingMask:NSPeriodicMask|NSLeftMouseUpMask|NSLeftMouseDraggedMask];
    }while([event type]!=NSLeftMouseUp);
 
@@ -465,7 +463,6 @@ static inline float roundFloat(float value){
         [self sendAction:_action to:_target];
     }
 
-    [[self window] flushWindow];
     event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
 
    }while([event type]!=NSLeftMouseUp);
