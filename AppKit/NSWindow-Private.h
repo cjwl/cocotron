@@ -30,9 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSView *)_backgroundView;
 -(void)_hideMenuViewIfNeeded;
 -(void)_showMenuViewIfNeeded;
+-(void)_updateTrackingAreas;
 -(void)_invalidateTrackingAreas;
 -(void)_setFrameAutosaveNameNoIO:(NSString *)name;
-
+- (NSWindowAnimationContext *)_animationContext;
 -(void)undo:sender;
 -(void)redo:sender;
 -(BOOL)validateMenuItem:(NSMenuItem *)item;
