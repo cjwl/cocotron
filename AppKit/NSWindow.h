@@ -173,6 +173,8 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    NSString *_autosaveFrameName;
 
    CGWindow *_platformWindow;
+   NSGraphicsContext *_graphicsContext;
+   
    NSUndoManager *_undoManager;
    NSView *_initialFirstResponder;
    NSButtonCell *_defaultButtonCell;

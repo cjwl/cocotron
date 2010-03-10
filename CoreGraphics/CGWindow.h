@@ -74,7 +74,7 @@ typedef enum {
 
 -(void)platformWindowDeminiaturized:(CGWindow *)window;
 -(void)platformWindowMiniaturized:(CGWindow *)window;
--(void)platformWindowActivated:(CGWindow *)window;
+-(void)platformWindowActivated:(CGWindow *)window displayIfNeeded:(BOOL)displayIfNeeded;
 -(void)platformWindowDeactivated:(CGWindow *)window checkForAppDeactivation:(BOOL)checkForApp;
 
 -(BOOL)platformWindowIgnoreModalMessages:(CGWindow *)window;

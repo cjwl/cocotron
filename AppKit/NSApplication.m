@@ -22,10 +22,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSImageView.h>
 #import <AppKit/NSSheetContext.h>
-#import <AppKit/NSWindowAnimationContext.h>
 #import <AppKit/NSSystemInfoPanel.h>
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSWorkspace.h>
+#import <AppKit/NSDockTile.h>
 #import <AppKit/CGWindow.h>
 #import <AppKit/NSRaise.h>
 #import <objc/message.h>
@@ -59,6 +59,10 @@ NSString * const NSApplicationDidChangeScreenParametersNotification=@"NSApplicat
 
 @interface NSMenu(private)
 -(NSMenu *)_menuWithName:(NSString *)name;
+@end
+
+@interface NSDockTile(private)
+-initWithOwner:owner;
 @end
 
 @implementation NSApplication
@@ -129,6 +133,7 @@ id NSApp=nil;
    _orderedDocuments=[NSMutableArray new];
    _mainMenu=nil;
       
+   _dockTile=[[NSDockTile alloc] initWithOwner:self];
    _modalStack=[NSMutableArray new];
       
    [self _showSplashImage];
@@ -757,15 +762,7 @@ id NSApp=nil;
 -(void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)window modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo {
     NSSheetContext *context=[NSSheetContext sheetContextWithSheet:sheet modalDelegate:modalDelegate didEndSelector:didEndSelector contextInfo:contextInfo frame:[sheet frame]];
 
-// Hmmmm, is this correct? 
-
-    if ([sheet styleMask] != NSDocModalWindowMask)
-        [sheet setStyleMask:NSDocModalWindowMask];
-
    [window _attachSheetContextOrderFrontAndAnimate:context];
-   while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
-    if([[sheet _animationContext] stepCount]<=0)
-     break;
 }
 
 -(void)endSheet:(NSWindow *)sheet returnCode:(int)returnCode {
@@ -780,9 +777,6 @@ id NSApp=nil;
      [[context retain] autorelease];
 
      [check _detachSheetContextAnimateAndOrderOut];
-     while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
-      if([[sheet _animationContext] stepCount]<=0)
-       break;
 
      function=[[context modalDelegate] methodForSelector:[context didEndSelector]];
      
@@ -1019,6 +1013,10 @@ standardAboutPanel] retain];
    [alert setInformativeText:[NSString stringWithFormat:@"Help isn't available for %@.", processName]];
    [alert runModal];
    [alert release];
+}
+
+-(NSDockTile *)dockTile {
+   return _dockTile;
 }
 
 - (void)doCommandBySelector:(SEL)selector {

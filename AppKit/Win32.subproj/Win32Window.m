@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#undef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
 
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Event.h>
@@ -35,53 +33,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return rect;
 }
 
--(DWORD)win32ExtendedStyle {
+static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL isLayered) {
    DWORD result=0;
 
-   if(_styleMask==NSBorderlessWindowMask)
+   if(styleMask==NSBorderlessWindowMask)
     result=WS_EX_TOOLWINDOW;
    else
     result=WS_EX_ACCEPTFILES;
 
-   if(_styleMask&NSUtilityWindowMask)
+   if(styleMask&(NSUtilityWindowMask|NSDocModalWindowMask))
     result|=WS_EX_TOOLWINDOW;
 
-   if(_isPanel)
+   if(isPanel)
     result|=WS_EX_NOACTIVATE;
     
-   if(_isLayered)
+   if(isLayered)
     result|=/*CS_DROPSHADOW|*/WS_EX_LAYERED;
 
    return result/*|0x80000*/ ;
 }
 
--(DWORD)win32Style {
+static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel) {
    DWORD result=WS_CLIPCHILDREN|WS_CLIPSIBLINGS;
 
-   if(_styleMask==NSBorderlessWindowMask)
+   if(styleMask==NSBorderlessWindowMask)
     result|=WS_POPUP;
-   else if(_styleMask==NSDocModalWindowMask)
+   else if(styleMask==NSDocModalWindowMask)
     result|=WS_POPUP;
-   else if(_styleMask==NSDrawerWindowMask)
+   else if(styleMask==NSDrawerWindowMask)
     result|=WS_THICKFRAME|WS_POPUP; 
    else {
     result|=WS_OVERLAPPED;
 
-    if(_styleMask&NSTitledWindowMask)
+    if(styleMask&NSTitledWindowMask)
      result|=WS_CAPTION;
-    if(_styleMask&NSClosableWindowMask)
+    if(styleMask&NSClosableWindowMask)
      result|=WS_CAPTION;
 
-    if(_styleMask&NSMiniaturizableWindowMask && !_isPanel){
+    if(styleMask&NSMiniaturizableWindowMask && !isPanel){
      result|=WS_MINIMIZEBOX;
-     if(_styleMask&NSResizableWindowMask)
+     if(styleMask&NSResizableWindowMask)
       result|=WS_MAXIMIZEBOX;
     }
 
-    if(_styleMask&NSResizableWindowMask)
+    if(styleMask&NSResizableWindowMask)
      result|=WS_THICKFRAME;
 
-    if(_isPanel){
+    if(isPanel){
      result|=WS_CAPTION;// without CAPTION it puts space for a menu (???)
     }
 
@@ -91,16 +89,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(const char *)win32ClassName {
-   if(_styleMask==NSBorderlessWindowMask)
+static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
+   if(styleMask==NSBorderlessWindowMask)
     return "NSWin32PopUpWindow";
    else
     return "NSWin32StandardWindow";
 }
 
 -(RECT)win32FrameRECTFromContentRECT:(RECT)rect {
-   DWORD style=[self win32Style];
-   DWORD exStyle=[self win32ExtendedStyle];
+   DWORD style=Win32StyleForStyleMask(_styleMask,_isPanel);
+   DWORD exStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,_isLayered);
 
    AdjustWindowRectEx(&rect,style,NO,exStyle);
 
@@ -127,8 +125,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(RECT)win32ContentRECTFromFrameRECT:(RECT)rect {
-   DWORD  style=[self win32Style];
-   DWORD  exStyle=[self win32ExtendedStyle];
+   DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel);
+   DWORD  exStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,_isLayered);
    RECT   delta;
 
    delta.top=0;
@@ -146,16 +144,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return rect;
 }
 
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
-   _styleMask=styleMask;
-   _isPanel=isPanel;
-   _isLayered=NO;
-   _isOpenGL=NO;
-   
-   DWORD  style=[self win32Style];
-   DWORD  extendStyle=[self win32ExtendedStyle];
-   NSRect win32Frame=[self win32FrameForRect:frame];
-   const char *className=[self win32ClassName];
+-(void)createWindowHandle {
+   DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel);
+   DWORD  extendStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,_isLayered);
+   NSRect win32Frame=[self win32FrameForRect:_frame];
+   const char *className=Win32ClassNameForStyleMask(_styleMask);
 
    _handle=CreateWindowEx(extendStyle,className,"", style,
      win32Frame.origin.x, win32Frame.origin.y,
@@ -163,6 +156,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NULL,NULL, GetModuleHandle (NULL),NULL);
 
    SetProp(_handle,"self",self);
+}
+
+-(void)destroyWindowHandle {
+   SetProp(_handle,"self",nil);
+   DestroyWindow(_handle);
+   _handle=NULL;
+}
+
+-initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
+   _styleMask=styleMask;
+   _isPanel=isPanel;
+   _isLayered=(_styleMask&(NSDocModalWindowMask|NSBorderlessWindowMask))?YES:NO;
+   _isOpenGL=NO;
+   _frame=frame;
+   
+   [self createWindowHandle];
 
    if(_isOpenGL){
     PIXELFORMATDESCRIPTOR pfd;
@@ -211,9 +220,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)invalidate {
    _delegate=nil;
-   SetProp(_handle,"self",nil);
-   DestroyWindow(_handle);
-   _handle=NULL;
+   [self destroyWindowHandle];
    [_cgContext release];
    _cgContext=nil;
    [_backingContext release];
@@ -271,6 +278,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _cgContext=nil;
     [_backingContext release];
     _backingContext=nil;
+    [_delegate platformWindowDidInvalidateCGContext:self];
    }  
 }
 
@@ -278,20 +286,74 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self invalidateContextsWithNewSize:size forceRebuild:NO];
 }
 
+-(void)setStyleMask:(unsigned)mask {
+   _styleMask=mask;
+   _isLayered=(_styleMask&(NSDocModalWindowMask|NSBorderlessWindowMask))?YES:NO;
+   [self destroyWindowHandle];
+   [self createWindowHandle];
+}
 
 -(void)setTitle:(NSString *)title {
    SetWindowTextW(_handle,(const unichar *)[title cStringUsingEncoding:NSUnicodeStringEncoding]);
 }
 
 -(void)setFrame:(NSRect)frame {
-   NSRect moveTo=[self win32FrameForRect:frame];
+   _frame=frame;
+   
+   NSRect moveTo=[self win32FrameForRect:_frame];
 
    _ignoreMinMaxMessage=YES;
-   MoveWindow([self windowHandle], moveTo.origin.x, moveTo.origin.y,
+   MoveWindow(_handle, moveTo.origin.x, moveTo.origin.y,
     moveTo.size.width, moveTo.size.height,YES);
    _ignoreMinMaxMessage=NO;
 
    [self invalidateContextsWithNewSize:frame.size];
+}
+
+-(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow {
+   NSRect moveTo=[self win32FrameForRect:_frame];
+   POINT origin={moveTo.origin.x,moveTo.origin.y};
+   SIZE sizeWnd = {_size.width, 1};
+   POINT ptSrc = {0, 0};
+
+   UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
+   _disableDisplay=YES;
+   SetWindowPos(_handle,[(Win32Window *)aboveWindow windowHandle],0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);
+   _disableDisplay=NO;
+
+   int i;
+   int interval=(_size.height/400.0)*100;
+   int chunk=_size.height/(interval/2);
+   
+   if(chunk<1)
+    chunk=1;
+    
+   for(i=0;i<_size.height;i+=chunk){
+    sizeWnd = (SIZE){_size.width, i};
+    ptSrc = (POINT){0, _size.height-i};
+    UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
+    Sleep(1);
+   }
+   UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
+}
+
+-(void)sheetOrderOutToFrame:(NSRect)frame {
+   int i;
+   int interval=(_size.height/400.0)*100;
+   int chunk=_size.height/(interval/2);
+   
+   if(chunk<1)
+    chunk=1;
+    
+   for(i=0;i<_size.height;i+=chunk){
+   SIZE sizeWnd = {_size.width, _size.height-i};
+   POINT ptSrc = {0, i};
+    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
+    Sleep(1);
+   }
+   SIZE sizeWnd = {_size.width, 0};
+   POINT ptSrc = {0, i};
+   UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
 }
 
 -(void)showWindowForAppActivation:(NSRect)frame {
@@ -302,24 +364,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self hideWindow];
 }
 
--(void)hideWindow {
-   if(_isLayered)
-    AnimateWindow([self windowHandle],200,0x10000); // AW_HIDE
-   
-   ShowWindow([self windowHandle],SW_HIDE);
+-(void)hideWindow {   
+   ShowWindow(_handle,SW_HIDE);
 }
 
 -(void)showWindowWithoutActivation {
-   ShowWindow([self windowHandle],SW_SHOWNOACTIVATE);
+   ShowWindow(_handle,SW_SHOWNOACTIVATE);
 }
 
 -(void)bringToTop {
    if(_styleMask==NSBorderlessWindowMask){
-    SetWindowPos([self windowHandle],HWND_TOPMOST,0,0,0,0,
+    SetWindowPos(_handle,HWND_TOPMOST,0,0,0,0,
       SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    }
    else {
-    SetWindowPos([self windowHandle],HWND_TOP,0,0,0,0,
+    SetWindowPos(_handle,HWND_TOP,0,0,0,0,
       SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    }
 }
@@ -330,8 +389,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(otherHandle==NULL)
     otherHandle=(_styleMask==NSBorderlessWindowMask)?HWND_TOPMOST:HWND_TOP;
 
-   SetWindowPos([self windowHandle],otherHandle,0,0,0,0,
-      SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+   SetWindowPos(_handle,otherHandle,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
 }
 
 -(void)placeBelowWindow:(Win32Window *)other {
@@ -340,24 +398,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(before==NULL)
     before=HWND_BOTTOM;
 
-   SetWindowPos([self windowHandle],before,0,0,0,0,
-      SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+   SetWindowPos(_handle,before,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
 }
 
 -(void)makeKey {
-   SetActiveWindow([self windowHandle]);
+   SetActiveWindow(_handle);
 }
 
 -(void)captureEvents {
-   SetCapture([self windowHandle]);
+   SetCapture(_handle);
 }
 
 -(void)miniaturize {
-    ShowWindow([self windowHandle],SW_MINIMIZE);
+    ShowWindow(_handle,SW_MINIMIZE);
 }
 
 -(void)deminiaturize {
-    ShowWindow([self windowHandle],SW_RESTORE);
+    ShowWindow(_handle,SW_RESTORE);
 }
 
 -(BOOL)isMiniaturized {
@@ -420,7 +477,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     SIZE sizeWnd = {_size.width, _size.height};
     POINT ptSrc = {0, 0};
 
-    UpdateLayeredWindow([self windowHandle], NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_ALPHA);
+  //  UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_ALPHA);
+    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_OPAQUE);
    }
    else {
     switch(_backingType){
@@ -522,27 +580,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
--(int)WM_PAINT_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+-(int)WM_PAINT_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
    PAINTSTRUCT paintStruct;
    RECT        updateRECT;
 //   NSRect      displayRect;
 
-   if(GetUpdateRect([self windowHandle],&updateRECT,NO)){
+   if(GetUpdateRect(_handle,&updateRECT,NO)){
 // The update rect is usually empty
 
     switch(_backingType){
 
      case CGSBackingStoreRetained:
      case CGSBackingStoreNonretained:
-      BeginPaint([self windowHandle],&paintStruct);
+      BeginPaint(_handle,&paintStruct);
       [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
-      EndPaint([self windowHandle],&paintStruct);
+      EndPaint(_handle,&paintStruct);
       break;
 
      case CGSBackingStoreBuffered:
-      BeginPaint([self windowHandle],&paintStruct);
+      BeginPaint(_handle,&paintStruct);
       [self flushBuffer];
-      EndPaint([self windowHandle],&paintStruct);
+      EndPaint(_handle,&paintStruct);
       break;
     }
    }
@@ -565,8 +623,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
    else {
-    if(LOWORD(wParam))
-     [_delegate platformWindowActivated:self];
+    if(LOWORD(wParam)){
+     [_delegate platformWindowActivated:self displayIfNeeded:!_disableDisplay];
+    }
     else
      [_delegate platformWindowDeactivated:self checkForAppDeactivation:(lParam==0)];
    }
@@ -690,6 +749,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [[Win32Display currentDisplay] invalidateSystemColors];
      [_delegate platformWindowStyleChanged:self];
      return 0;
+ //   case WM_ERASEBKGND: return 1;
 
 #if 0
 // doesn't seem to work

@@ -9,13 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGWindow.h>
 #import <AppKit/NSDragging.h>
 #import <OpenGL/OpenGL.h>
-
+#undef WINVER
+#define WINVER 0x501 // XP drop shadow constants
 #import <windows.h>
 
 @class NSEvent;
 
 
 @interface Win32Window : CGWindow {
+   NSRect                 _frame;
    HWND                   _handle;
    NSSize                 _size;
    O2Context             *_cgContext;
@@ -28,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                  _isOpenGL;
    BOOL                  _ignoreMinMaxMessage;
    BOOL                  _sentBeginSizing;
-
+   BOOL                  _disableDisplay;
    unsigned              _styleMask;
    BOOL                  _isPanel;
 
@@ -45,6 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(HWND)windowHandle;
 
+-(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;
 

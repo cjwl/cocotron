@@ -26,10 +26,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
--(void)platformWindowActivated:(CGWindow *)window {
+-(void)platformWindowActivated:(CGWindow *)window displayIfNeeded:(BOOL)displayIfNeeded {
     [_drawer drawerWindowDidActivate:self];
     
-    [super platformWindowActivated:window];
+    [super platformWindowActivated:window displayIfNeeded:displayIfNeeded];
 }
 
 // constrain resize size.

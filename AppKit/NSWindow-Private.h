@@ -28,11 +28,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_attachDrawer:(NSDrawer *)drawer;
 -(void)_detachDrawer:(NSDrawer *)drawer;
 -(NSView *)_backgroundView;
--(void)_animateWithContext:(NSWindowAnimationContext *)context;
--(NSWindowAnimationContext *)_animationContext;
 -(void)_hideMenuViewIfNeeded;
 -(void)_showMenuViewIfNeeded;
--(void)_updateTrackingAreas;
+-(void)_invalidateTrackingAreas;
+-(void)_setFrameAutosaveNameNoIO:(NSString *)name;
 
 -(void)undo:sender;
 -(void)redo:sender;

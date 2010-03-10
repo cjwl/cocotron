@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSGraphics.h>
 
-@class NSWindow,NSImage,NSMenu, NSPasteboard, NSDisplay;
+@class NSWindow,NSImage,NSMenu, NSPasteboard, NSDisplay,NSDockTile;
 
 APPKIT_EXPORT NSString * const NSModalPanelRunLoopMode;
 APPKIT_EXPORT NSString * const NSEventTrackingRunLoopMode;
@@ -83,6 +83,7 @@ typedef enum {
    BOOL	    _isHidden;
    BOOL            _windowsNeedUpdate;
    NSEvent        *_currentEvent;
+   NSDockTile     *_dockTile;
 
    NSMutableArray *_modalStack;
    NSMutableArray *_orderedDocuments;
@@ -195,6 +196,9 @@ typedef enum {
 -(void)orderFrontStandardAboutPanelWithOptions:(NSDictionary *)options;
 -(void)activateContextHelpMode:sender;
 -(void)showHelp:sender;
+
+-(NSDockTile *)dockTile;
+
 
 // private
 -(void)_addWindow:(NSWindow *)window;

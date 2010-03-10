@@ -4610,6 +4610,15 @@
 		FE8694CB0FE0108E00F89733 /* CFUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8693F30FE0108E00F89733 /* CFUUID.m */; };
 		FE8694CC0FE0108E00F89733 /* CFXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8693F40FE0108E00F89733 /* CFXMLNode.m */; };
 		FE8694CD0FE0108E00F89733 /* CFXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8693F50FE0108E00F89733 /* CFXMLParser.m */; };
+		FE86D408114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D409114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D40A114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D40B114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D40C114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D40D114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D40E114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D40F114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		FE86D410114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
 		FE88A4950F8A7E050081CFC1 /* objc_ivar.m in Sources */ = {isa = PBXBuildFile; fileRef = FE88A4940F8A7E050081CFC1 /* objc_ivar.m */; };
 		FE88A4960F8A7E050081CFC1 /* objc_ivar.m in Sources */ = {isa = PBXBuildFile; fileRef = FE88A4940F8A7E050081CFC1 /* objc_ivar.m */; };
 		FE88A4970F8A7E050081CFC1 /* objc_ivar.m in Sources */ = {isa = PBXBuildFile; fileRef = FE88A4940F8A7E050081CFC1 /* objc_ivar.m */; };
@@ -7115,6 +7124,7 @@
 		FE8693F30FE0108E00F89733 /* CFUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFUUID.m; sourceTree = "<group>"; };
 		FE8693F40FE0108E00F89733 /* CFXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFXMLNode.m; sourceTree = "<group>"; };
 		FE8693F50FE0108E00F89733 /* CFXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFXMLParser.m; sourceTree = "<group>"; };
+		FE86D407114743AC0010FE05 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = English; path = English.lproj/NSStringEncodingNames.plist; sourceTree = "<group>"; };
 		FE88A4940F8A7E050081CFC1 /* objc_ivar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_ivar.m; sourceTree = "<group>"; };
 		FE88A49E0F8A7E9A0081CFC1 /* objc_method.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_method.m; sourceTree = "<group>"; };
 		FE88A4D50F8A9DE00081CFC1 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
@@ -7889,6 +7899,7 @@
 		6E28033E0974799000EC542B /* NSString */ = {
 			isa = PBXGroup;
 			children = (
+				FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */,
 				FE60143A1042FDD2008A7357 /* NSString_defaultEncoding.h */,
 				FE452E80102097EF00585DFE /* NSString_macOSRoman.h */,
 				FE452E81102097EF00585DFE /* NSString_macOSRoman.m */,
@@ -11927,6 +11938,7 @@
 				15D921B8105E918000171406 /* NSTimeZoneRegions.plist in Resources */,
 				15D921B9105E918000171406 /* NSUserDefaults.plist in Resources */,
 				15D921BA105E918000171406 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D40F114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11945,6 +11957,7 @@
 				28D487A20FE04E7100DC03EF /* NSTimeZoneRegions.plist in Resources */,
 				28D487A30FE04E7100DC03EF /* NSUserDefaults.plist in Resources */,
 				FE1CF95D10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D40E114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11963,6 +11976,7 @@
 				6E4D93220A2642BD003D335C /* NSTimeZoneRegions.plist in Resources */,
 				6E4D93230A2642BD003D335C /* NSUserDefaults.plist in Resources */,
 				FE1CF95910233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D40A114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11981,6 +11995,7 @@
 				6EA04A6D09E57D5F0067589C /* NSTimeZoneRegions.plist in Resources */,
 				6EA04A6E09E57D5F0067589C /* NSUserDefaults.plist in Resources */,
 				FE1CF95810233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D409114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11999,6 +12014,7 @@
 				FE01A7E60C5D9B6900AEA51A /* NSTimeZoneRegions.plist in Resources */,
 				FE01A7E70C5D9B6900AEA51A /* NSUserDefaults.plist in Resources */,
 				FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D408114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12017,6 +12033,7 @@
 				FE30A2F710C6ED6F00A1BF7F /* NSTimeZoneRegions.plist in Resources */,
 				FE30A2F810C6ED6F00A1BF7F /* NSUserDefaults.plist in Resources */,
 				FE30A2F910C6ED6F00A1BF7F /* illegalCharacterSet.bitmap in Resources */,
+				FE86D410114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12035,6 +12052,7 @@
 				FE651A820FBC844C00464BFD /* NSTimeZoneRegions.plist in Resources */,
 				FE651A830FBC844C00464BFD /* NSUserDefaults.plist in Resources */,
 				FE1CF95C10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D40D114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12053,6 +12071,7 @@
 				FED70A650C3B3D2C000CBE5B /* NSTimeZoneRegions.plist in Resources */,
 				FED70A660C3B3D2C000CBE5B /* NSUserDefaults.plist in Resources */,
 				FE1CF95A10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D40B114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12071,6 +12090,7 @@
 				FED70FB10C3C09C7000CBE5B /* NSTimeZoneRegions.plist in Resources */,
 				FED70FB20C3C09C7000CBE5B /* NSUserDefaults.plist in Resources */,
 				FE1CF95B10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
+				FE86D40C114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15418,6 +15438,14 @@
 				6E280B2C09747F4900EC542B /* English */,
 			);
 			name = NSUserDefaults.plist;
+			sourceTree = "<group>";
+		};
+		FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE86D407114743AC0010FE05 /* English */,
+			);
+			name = NSStringEncodingNames.plist;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

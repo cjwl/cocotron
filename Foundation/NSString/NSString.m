@@ -53,6 +53,7 @@ freeWhenDone:(BOOL)freeWhenDone;
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSRaiseException.h>
+#import <Foundation/NSBundle.h>
 #import <limits.h>
 #import <string.h>
 
@@ -261,8 +262,20 @@ int __CFConstantStringClassReference[1];
 }
 
 +(NSString *)localizedNameOfStringEncoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return 0;
+   NSString *result=[NSString stringWithFormat:@"0x%08X",encoding];
+   NSString *path=[[NSBundle bundleForClass:self] pathForResource:@"NSStringEncodingNames" ofType:@"plist"];
+   
+   if(path!=nil){
+    NSDictionary *plist=[[NSDictionary alloc] initWithContentsOfFile:path];
+    NSString     *check=[plist objectForKey:result];
+    
+    if(check!=nil)
+     result=[[check retain] autorelease];
+     
+    [plist release];
+   }
+   
+   return result;
 }
 
 +stringWithCharacters:(const unichar *)unicode length:(NSUInteger)length {

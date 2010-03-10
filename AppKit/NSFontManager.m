@@ -171,7 +171,24 @@ static Class _fontPanelFactory;
    return 0;
 }
 
--(NSFont *)fontWithFamily:(NSString *)family traits:(NSFontTraitMask)traits weight:(int)weight size:(float)size {
+-(NSFont *)fontWithFamily:(NSString *)familyName traits:(NSFontTraitMask)traits weight:(int)weight size:(float)size {
+#if 0
+   NSFontFamily *family=[NSFontFamily fontFamilyWithName:familyName];
+   NSArray      *typefaces=[family typefaces];
+   int           i,count=[typefaces count];
+   NSString     *fontName=nil; 
+   
+   for(i=0;i<count;i++){
+    NSFontTypeface *typeface=[typefaces objectAtIndex:i];
+    NSFontTraitMask checkTraits=[typeface traits];
+    
+    if(((traits&NSItalicFontMask)==(checkTraits&NSItalicFontMask)) &&
+        ((traits&NSBoldFontMask)==(checkTraits&NSBoldFontMask))
+   }
+   
+   if(fontName!=nil)
+    return [NSFont fontWithName:fontName size:size];
+#endif
    NSUnimplementedMethod();
    return nil;
 }
