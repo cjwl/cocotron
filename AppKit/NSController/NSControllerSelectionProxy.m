@@ -164,7 +164,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
    int idx=[_observationProxies indexOfObject:proxy];
    if(idx==NSNotFound) {
-      NSLog(@"%@ not found in %@", proxy, _observationProxies);
    }
 
    [proxy release];

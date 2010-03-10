@@ -15,7 +15,7 @@
    void* _context;
    NSKeyValueObservingOptions _options;
 }
--(id)initWithKeyPath:(id)keyPath observer:(id)observer object:(id)object;
+-initWithKeyPath:(NSString *)keyPath observer:(id)observer object:(id)object;
 -(id)observer;
 -(id)keyPath;
 -(void)setNotifyObject:(BOOL)val;

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSObjectController.h>
 
-@class NSPredicate,NSIndexSet;
+@class NSPredicate,NSIndexSet,NSMutableIndexSet;
 
 @interface NSArrayController : NSObjectController {
 	struct
@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		long selectsInsertedObjects:1;
 		long alwaysUsesMultipleValuesMarker:1;
 	} _flags;
-	id _selectionIndexes;
+	NSMutableIndexSet *_selectionIndexes;
 	id _sortDescriptors;
 	id _filterPredicate;
 	id _arrangedObjects;

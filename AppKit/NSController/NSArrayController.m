@@ -112,9 +112,9 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 
 -(void)setContent:(id)value
 {
-   if(![value isKindOfClass:[NSArray class]])
-      value=[NSArray arrayWithObject:value];
-   
+   if(value!=nil && ![value isKindOfClass:[NSArray class]])
+       value=[NSArray arrayWithObject:value];
+    
 	id oldSelection=nil; 
 	id oldSelectionIndexes=[[[self selectionIndexes] copy] autorelease];
 	if([self preservesSelection])
@@ -147,16 +147,19 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 }
 
 - (id)contentArray {
-    return [self content];
+    id result=[self content];
+    return result;
 }
 
--(NSArray*)arrangeObjects:(NSArray*)objects
-{
+-(NSArray*)arrangeObjects:(NSArray*)objects {
 	id sortedObjects=objects;
+    
 	if([self filterPredicate])
 		sortedObjects=[sortedObjects filteredArrayUsingPredicate:[self filterPredicate]];
+        
 	if([self sortDescriptors])
 		sortedObjects=[sortedObjects sortedArrayUsingDescriptors:[self sortDescriptors]];
+        
 	return sortedObjects;
 }
 
@@ -166,15 +169,11 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 }
 
 - (void)_setArrangedObjects:(id)value {
-    if (_arrangedObjects != value) 
-    {
-       [_arrangedObjects release];
-       _arrangedObjects = [[_NSObservableArray alloc] initWithArray:value];
-    }
+   [_arrangedObjects autorelease];
+   _arrangedObjects = [[_NSObservableArray alloc] initWithArray:value];
 }
 
--(id)arrangedObjects
-{
+-arrangedObjects {
 	return _arrangedObjects;
 }
 
@@ -221,23 +220,24 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 }
 
 - (NSIndexSet *)selectionIndexes {
-    return [[_selectionIndexes retain] autorelease];
+    return _selectionIndexes;
 }
 
 - (BOOL)setSelectionIndexes:(NSIndexSet *)value {
-	if(![value count] && _flags.avoidsEmptySelection && [[self arrangedObjects] count])
-		value=[NSIndexSet indexSetWithIndex:0];
+
+	if(_flags.avoidsEmptySelection && [value count]==0 && [[self arrangedObjects] count])
+      value=[NSIndexSet indexSetWithIndex:0];
 	
-	value=[[value mutableCopy] autorelease];
-	[(NSMutableIndexSet *)value removeIndexesInRange:NSMakeRange([[self arrangedObjects] count]+1, NSNotFound)];
+    NSMutableIndexSet *mutableValue=[[value mutableCopy] autorelease];
+    
+	[mutableValue removeIndexesInRange:NSMakeRange([[self arrangedObjects] count]+1, NSNotFound)];
 	
-	// use isEqualToIndexSet: ?	
-    if (_selectionIndexes != value) {
+    if (![_selectionIndexes isEqualToIndexSet: mutableValue]) {
 		[self willChangeValueForKey:@"selectionIndexes"];
        [self _selectionWillChange];
        
         [_selectionIndexes release];
-        _selectionIndexes = [value copy];
+        _selectionIndexes = [mutableValue retain];
        [self _selectionDidChange];
        
 		[self didChangeValueForKey:@"selectionIndexes"];
@@ -319,9 +319,6 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	}
 }
 
-#pragma mark -
-#pragma mark NSSet support
-
 -(id)_contentSet
 {
    return [NSSet setWithArray:_content];
@@ -332,13 +329,8 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
    [self setContent:[set allObjects]];
 }
 
-#pragma mark -
-#pragma mark Add/Remove
-
-- (void)addObject:(id)object
-{
-	if(![self canAdd])
-		return;
+- (void)addObject:(id)object {
+// Don't check canAdd here as this can be used programmatically to add objects
    
    [self willChangeValueForKey:@"content"];
    [_content addObject:object];
@@ -347,39 +339,44 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
    if(_flags.clearsFilterPredicateOnInsertion)
       [self setFilterPredicate:nil];
    
-   if([_filterPredicate evaluateWithObject:object])
-   {
-      [self willChangeValueForKey:@"selectionIndexes"];
+   if([self filterPredicate]==nil || [_filterPredicate evaluateWithObject:object]){
+     // FIXME: this should probably use arrangeObjects: to get subclass behavior
+      [self willChangeValueForKey:@"arrangedObjects"];
       NSUInteger pos=[_arrangedObjects _insertObject:object inArraySortedByDescriptors:_sortDescriptors];
+      [self didChangeValueForKey:@"arrangedObjects"];
+
+      [self willChangeValueForKey:@"selectionIndexes"];
       [_selectionIndexes shiftIndexesStartingAtIndex:pos by:1];
       [self didChangeValueForKey:@"selectionIndexes"];
    }
 }
 
 
-- (void)removeObject:(id)object
-{
-	if(![self canRemove])
-		return;	
+-(void)removeObject:(id)object {
+// Don't check canremove/editable here as this can be used programmatically to remove objects
    
    [self willChangeValueForKey:@"content"];
    [_content removeObject:object];
    [self didChangeValueForKey:@"content"];
    
-   if([_filterPredicate evaluateWithObject:object])
-   {
+   if([self filterPredicate]==nil || [_filterPredicate evaluateWithObject:object]){
+     // FIXME: this should probably use arrangeObjects: to get subclass behavior
+      [self willChangeValueForKey:@"arrangedObjects"];
       NSUInteger pos=[_arrangedObjects indexOfObject:object];
-      [self willChangeValueForKey:@"selectionIndexes"];
       [_arrangedObjects removeObject:object];
+      [self didChangeValueForKey:@"arrangedObjects"];
+
+      [self willChangeValueForKey:@"selectionIndexes"];
       [_selectionIndexes shiftIndexesStartingAtIndex:pos by:-1];
       [self didChangeValueForKey:@"selectionIndexes"];
    }
 }
 
--(void)add:(id)sender
-{
+-(void)add:(id)sender {
+
 	if(![self canAdd])
 		return;
+        
 	[self insert:sender];
 }
 
@@ -387,6 +384,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 {
 	if(![self canInsert])
 		return;
+        
 	id toAdd=nil;
 	if([self automaticallyPreparesContent])
 		toAdd=[[self newObject] autorelease];
@@ -395,22 +393,21 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	[self addObject:toAdd];
 }
 
--(void)remove:(id)sender
-{
+-(void)remove:(id)sender {
+   if(![self canRemove])
+    return;
+    
    [self removeObjects:[[self contentArray] objectsAtIndexes:[self selectionIndexes]]];
 }
 
--(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet*)indexes
-{
-   // FIXME: this should remove no matter what canRemove returns
-	[self removeObjects:[[self contentArray] objectsAtIndexes:indexes]];
+-(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet*)indexes {
+   [self removeObjects:[[self contentArray] objectsAtIndexes:indexes]];
 }
 
 
-- (void)addObjects:(NSArray *)objects
-{
-	if(![self canAdd])
-		return;
+- (void)addObjects:(NSArray *)objects {
+// Don't check canAdd/editable here as this can be used programmatically to add objects
+
 	id contentArray=[[[self contentArray] mutableCopy] autorelease];
 	int count=[objects count];
 	int i;
@@ -420,10 +417,8 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 }
 
 
-- (void)removeObjects:(NSArray *)objects
-{
-	if(![self canRemove])
-		return;	
+- (void)removeObjects:(NSArray *)objects {
+// Don't check canRemove here as this can be used programmatically to remove objects
 
 	id contentArray=[[[self contentArray] mutableCopy] autorelease];
 	int count=[objects count];

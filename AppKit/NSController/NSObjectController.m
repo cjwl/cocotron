@@ -20,30 +20,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 @implementation NSObjectController
-+(void)initialize
-{
-	[self setKeys:[NSArray arrayWithObjects:@"editable", nil]
-triggerChangeNotificationsForDependentKey:@"canAdd"];
-	[self setKeys:[NSArray arrayWithObjects:@"editable", nil]
-triggerChangeNotificationsForDependentKey:@"canInsert"];
-	[self setKeys:[NSArray arrayWithObjects:@"editable", @"selection", nil]
-triggerChangeNotificationsForDependentKey:@"canRemove"];
-   [self setKeys:[NSArray arrayWithObjects:@"content", nil]
-triggerChangeNotificationsForDependentKey:@"contentObject"];
-
++(void)initialize {
+   [self setKeys:[NSArray arrayWithObjects:@"editable", nil] triggerChangeNotificationsForDependentKey:@"canAdd"];
+   [self setKeys:[NSArray arrayWithObjects:@"editable", nil] triggerChangeNotificationsForDependentKey:@"canInsert"];
+   [self setKeys:[NSArray arrayWithObjects:@"editable", @"selection", nil] triggerChangeNotificationsForDependentKey:@"canRemove"];
+   [self setKeys:[NSArray arrayWithObjects:@"content", nil] triggerChangeNotificationsForDependentKey:@"contentObject"];
 }
 
--(id)initWithCoder:(NSCoder*)coder
-{
-	if((self=[super init]))
-	{
-		_objectClassName=[[coder decodeObjectForKey:@"NSObjectClassName"] retain];
-		_editable = [coder decodeBoolForKey:@"NSEditable"];
-		_automaticallyPreparesContent = [coder decodeBoolForKey:@"NSAutomaticallyPreparesContent"];
-      _observedKeys=[[NSCountedSet alloc] init];
-      _selection=[[NSControllerSelectionProxy alloc] initWithController:self];
-	}
-	return self;
+-initWithCoder:(NSCoder*)coder {
+   if((self=[super init])) {
+   
+    _objectClassName=[[coder decodeObjectForKey:@"NSObjectClassName"] copy];
+    if(_objectClassName==nil)
+     _objectClassName=@"NSMutableDictionary";
+     
+    _editable = [coder decodeBoolForKey:@"NSEditable"];
+    _automaticallyPreparesContent = [coder decodeBoolForKey:@"NSAutomaticallyPreparesContent"];
+     
+    _observedKeys=[[NSCountedSet alloc] init];
+    _selection=[[NSControllerSelectionProxy alloc] initWithController:self];
+   }
+   return self;
 }
 
 - (id)content {
@@ -73,7 +70,8 @@ triggerChangeNotificationsForDependentKey:@"contentObject"];
 
 -(NSArray *)selectedObjects
 {
-	return [NSArray arrayWithObject:_content];
+	NSArray *result=[NSArray arrayWithObject:_content];
+    return result;
 }
 
 -(id)selection

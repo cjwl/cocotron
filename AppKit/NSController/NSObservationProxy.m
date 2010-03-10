@@ -1,46 +1,58 @@
+/* Copyright (c) 2007 Johannes Fortmann
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSObservationProxy.h"
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
-#import "NSStringKVCFunctions.h"
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSIndexSet.h>
 
-@implementation _NSObservationProxy 
--(id)initWithKeyPath:(id)keyPath observer:(id)observer object:(id)object
-{
-	if((self=[super init]))
+void NSStringKVCSplitOnDot(NSString *self,NSString **before,NSString **after){
+	NSRange range=[self rangeOfString:@"."];
+	if(range.location!=NSNotFound)
 	{
-		_keyPath=[keyPath retain];
-		_observer=observer;
-		_object=object;
+		*before=[self substringToIndex:range.location];
+		*after=[self substringFromIndex:range.location+1];
 	}
+	else
+	{
+		*before=self;
+		*after=nil;
+	}
+}
+
+@implementation _NSObservationProxy 
+
+-initWithKeyPath:(NSString *)keyPath observer:(id)observer object:(id)object {
+   _keyPath=[keyPath retain];
+   _observer=observer;
+   _object=object;
 	return self;
 }
 
--(void)dealloc
-{
-	[_keyPath release];
-	[super dealloc];
+-(void)dealloc {
+   [_keyPath release];
+   [super dealloc];
 }
 
--(id)observer
-{
+-observer {
 	return _observer;
 }
 
--(id)keyPath
-{
-	return _keyPath;
+-keyPath {
+   return _keyPath;
 }
 
--(void*)context
-{
+-(void *)context {
    return _context;
 }
 
--(NSKeyValueObservingOptions)options
-{
+-(NSKeyValueObservingOptions)options {
    return _options;
 }
 
@@ -60,76 +72,54 @@
 	return NO;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath 
-                      ofObject:(id)object 
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-   if(_notifyObject)
-   {
-      [_object observeValueForKeyPath:_keyPath
-                             ofObject:_object
-                               change:change
-                              context:_context];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+   if(_notifyObject) {
+    [_object observeValueForKeyPath:_keyPath ofObject:_object change:change context:_context];
    }
 
-	[_observer observeValueForKeyPath:_keyPath
-                            ofObject:_object
-                              change:change
-                             context:_context];
+   [_observer observeValueForKeyPath:_keyPath ofObject:_object change:change context:_context];
 }
 
--(NSString*)description
-{
+-(NSString *)description {
 	return [NSString stringWithFormat:@"observation proxy for %@ on key path %@", _observer, _keyPath];
 }
 @end
 
 @implementation _NSObservableArray 
 
--(id)objectAtIndex:(NSUInteger)idx
-{
-	return [_array objectAtIndex:idx];
+-objectAtIndex:(NSUInteger)idx {
+   return [_array objectAtIndex:idx];
 }
 
--(NSUInteger)count
-{
+-(NSUInteger)count {
 	return [_array count];
 }
 
--(id)init {
+-init {
    return [self initWithObjects:NULL count:0];
 }
 
--initWithObjects:(id *)objects count:(NSUInteger)count;
-{
-	if((self=[super init]))
-	{
-		_array=[[NSMutableArray alloc] initWithObjects:objects count:count];
-		_observationProxies=[NSMutableArray new];
-	}
+-initWithObjects:(id *)objects count:(NSUInteger)count {
+   _array=[[NSMutableArray alloc] initWithObjects:objects count:count];
+   _observationProxies=[NSMutableArray new];
 	return self;
 }
 
--(void)dealloc
-{
-	if([_observationProxies count]>0)
-		[NSException raise:NSInvalidArgumentException
-                  format:@"_NSObservableArray still being observed by %@ on %@",
-       [[_observationProxies objectAtIndex:0] observer],
-       [[_observationProxies objectAtIndex:0] keyPath]];
-	[_observationProxies release];
-	[_array release];
+-(void)dealloc {
+   if([_observationProxies count]>0)
+    [NSException raise:NSInvalidArgumentException format:@"_NSObservableArray still being observed by %@ on %@",
+       [[_observationProxies objectAtIndex:0] observer],[[_observationProxies objectAtIndex:0] keyPath]];
+       
+   [_observationProxies release];
+   [_array release];
    [_roi release];
-	[super dealloc];
+   [super dealloc];
 }
 
--(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
-{
+-(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context {
    // init the proxy
-   _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath
-                                                                  observer:observer
-                                                                    object:self];
+   _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
+   
    proxy->_options=options;
    proxy->_context=context;
    [_observationProxies addObject:proxy];
@@ -149,10 +139,7 @@
 		NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
       
       // observe ourselves
-      [super addObserver:observer
-              forKeyPath:keyPath
-                 options:options
-                 context:context];      
+      [super addObserver:observer forKeyPath:keyPath options:options context:context];      
 
       // if there's anything the operator depends on, observe _all_ objects for that path
       keyPath=rest;
@@ -161,20 +148,13 @@
 
    // add observer proxy for all relevant indexes
    if([_array count] && keyPath) {
-      [_array addObserver:proxy
-       toObjectsAtIndexes:idxs
-               forKeyPath:keyPath
-                  options:options
-                  context:context];
+    [_array addObserver:proxy toObjectsAtIndexes:idxs forKeyPath:keyPath options:options context:context];
    }
 }
 
--(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
-{
+-(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath {
    // find the proxy again
-   _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath
-                                                                  observer:observer
-                                                                    object:self];
+   _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
    int idx=[_observationProxies indexOfObject:proxy];
    [proxy release];
    proxy=[[[_observationProxies objectAtIndex:idx] retain] autorelease];
@@ -194,17 +174,14 @@
 		NSString* firstPart, *rest;
 		NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
 
-      [super removeObserver:observer
-              forKeyPath:keyPath];      
+      [super removeObserver:observer forKeyPath:keyPath];      
 
       // remove dependent key path from all children
       keyPath=rest;
       idxs=[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])];
 	}
    if([_array count] && keyPath) {
-      [_array removeObserver:proxy
-        fromObjectsAtIndexes:idxs
-                  forKeyPath:keyPath];
+      [_array removeObserver:proxy fromObjectsAtIndexes:idxs forKeyPath:keyPath];
    }
 }
 
@@ -263,14 +240,13 @@
          NSString* firstPart, *rest;
 		 NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
          
-         if(rest)
-            [obj removeObserver:proxy
-                     forKeyPath:rest];
+         if(rest) {
+            [obj removeObserver:proxy forKeyPath:rest];
+         }
       }
       else {
          if(!_roi || [_roi containsIndex:idx]) {
-            [obj removeObserver:proxy
-                     forKeyPath:keyPath];
+            [obj removeObserver:proxy forKeyPath:keyPath];
          }
       }
    }
@@ -288,13 +264,11 @@
    }   
 }
 
--(void)addObject:(id)obj
-{
+-(void)addObject:(id)obj {
    [self insertObject:obj atIndex:[self count]];
 }
 
--(void)removeLastObject
-{
+-(void)removeLastObject {
    [self removeObjectAtIndex:[self count]-1];
 }
 
@@ -311,8 +285,7 @@
 		 NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
          
          if(rest) {
-            [old removeObserver:proxy
-                     forKeyPath:[proxy keyPath]];
+            [old removeObserver:proxy forKeyPath:[proxy keyPath]];
 
             [obj addObserver:proxy
                   forKeyPath:rest
@@ -322,8 +295,7 @@
       }
       else {
          if(!_roi || [_roi containsIndex:idx]) {
-            [old removeObserver:proxy
-                     forKeyPath:[proxy keyPath]];
+            [old removeObserver:proxy forKeyPath:[proxy keyPath]];
             
             [obj addObserver:proxy
                   forKeyPath:[proxy keyPath]
