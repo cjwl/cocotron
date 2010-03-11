@@ -11,10 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSColor_CGColor : NSColor {
    CGColorRef _colorRef;
+   NSString  *_colorSpaceName;
 }
 
--initWithColorRef:(CGColorRef)colorRef;
+-initWithColorRef:(CGColorRef)colorRef spaceName:(NSString *)spaceName;
 
-+(NSColor *)colorWithColorRef:(CGColorRef)colorRef;
++(NSColor *)colorWithColorRef:(CGColorRef)colorRef spaceName:(NSString *)spaceName;
++(NSColor *)colorWithGray:(float)gray alpha:(float)alpha spaceName:(NSString *)spaceName;
++(NSColor *)colorWithCyan:(float)cyan magenta:(float)magenta yellow:(float)yellow black:(float)black alpha:(float)alpha spaceName:(NSString *)spaceName;
++(NSColor *)colorWithRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha spaceName:(NSString *)spaceName;
++(NSColor *)colorWithHue:(float)hue saturation:(float)saturation brightness:(float)brightness alpha:(float)alpha spaceName:(NSString *)spaceName;
 
 @end

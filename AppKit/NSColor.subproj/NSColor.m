@@ -6,12 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/NSColor-Private.h>
-#import <AppKit/NSColor_whiteCalibrated.h>
-#import <AppKit/NSColor_rgbCalibrated.h>
-#import <AppKit/NSColor_whiteDevice.h>
-#import <AppKit/NSColor_rgbDevice.h>
-#import <AppKit/NSColor_cmykDevice.h>
+#import <AppKit/NSColor.h>
 #import <AppKit/NSColor_catalog.h>
 #import <AppKit/NSColor_CGColor.h>
 #import <AppKit/NSRaise.h>
@@ -370,7 +365,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSColor *)blackColor {
-   return [NSColor_whiteCalibrated blackColor];
+   return [NSColor colorWithCalibratedWhite:0 alpha:1.0];
 }
 
 +(NSColor *)blueColor {
@@ -386,11 +381,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSColor *)darkGrayColor {
-   return [NSColor_whiteCalibrated darkGrayColor];
+   return [NSColor colorWithCalibratedWhite:1.0/3.0 alpha:1.0];
 }
 
 +(NSColor *)grayColor {
-   return [NSColor_whiteCalibrated grayColor];
+   return [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
 }
 
 +(NSColor *)greenColor {
@@ -398,7 +393,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSColor *)lightGrayColor {
-   return [NSColor_whiteCalibrated lightGrayColor];
+   return [NSColor colorWithCalibratedWhite:2.0/3.0 alpha:1.0];
 }
 
 +(NSColor *)magentaColor {
@@ -418,7 +413,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSColor *)whiteColor {
-   return [NSColor_whiteCalibrated whiteColor];
+   return [NSColor colorWithCalibratedWhite:1 alpha:1.0];
 }
 
 +(NSColor *)yellowColor {
@@ -426,31 +421,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSColor *)colorWithDeviceWhite:(CGFloat)white alpha:(CGFloat)alpha {
-   return [NSColor_whiteDevice colorWithGray:white alpha:alpha];
+   return [NSColor_CGColor colorWithGray:white alpha:alpha spaceName:NSDeviceWhiteColorSpace];
 }
 
 +(NSColor *)colorWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
-   return [NSColor_rgbDevice colorWithRed:red green:green blue:blue alpha:alpha];
+   return [NSColor_CGColor colorWithRed:red green:green blue:blue alpha:alpha spaceName:NSDeviceRGBColorSpace];
 }
 
 +(NSColor *)colorWithDeviceHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha {
-   return [NSColor_rgbDevice colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
+   return [NSColor_CGColor colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha spaceName:NSDeviceRGBColorSpace];
 }
 
 +(NSColor *)colorWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha {
-   return [NSColor_cmykDevice colorWithCyan:cyan magenta:magenta yellow:yellow black:black alpha:alpha];
+   return [NSColor_CGColor colorWithCyan:cyan magenta:magenta yellow:yellow black:black alpha:alpha spaceName:NSDeviceCMYKColorSpace];
 }
 
 +(NSColor *)colorWithCalibratedWhite:(CGFloat)white alpha:(CGFloat)alpha {
-   return [NSColor_whiteCalibrated colorWithGray:white alpha:alpha];
+   return [NSColor_CGColor colorWithGray:white alpha:alpha spaceName:NSCalibratedWhiteColorSpace];
 }
 
 +(NSColor *)colorWithCalibratedRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
-   return [NSColor_rgbCalibrated colorWithRed:red green:green blue:blue alpha:alpha];
+   return [NSColor_CGColor colorWithRed:red green:green blue:blue alpha:alpha spaceName:NSCalibratedRGBColorSpace];
 }
 
 +(NSColor *)colorWithCalibratedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha {
-   return [NSColor_rgbCalibrated colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
+   return [NSColor_CGColor colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha spaceName:NSCalibratedRGBColorSpace];
 }
 
 +(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName {
@@ -487,7 +482,7 @@ static void releasePatternInfo(void *info){
    CGFloat         components[4]={1,1,1,1};
    CGColorRef      cgColor=CGColorCreateWithPattern(colorSpace,pattern,components);
    
-   NSColor *result=[[[NSColor_CGColor alloc] initWithColorRef:cgColor] autorelease];
+   NSColor *result=[[[NSColor_CGColor alloc] initWithColorRef:cgColor spaceName:NSPatternColorSpace] autorelease];
    
    CGColorRelease(cgColor);
    CGColorSpaceRelease(colorSpace);
@@ -502,21 +497,12 @@ static void releasePatternInfo(void *info){
 }
 
 -(NSInteger)numberOfComponents {
-   CGColorRef colorRef=[self createCGColorRef]; 
-   NSInteger result=CGColorGetNumberOfComponents(colorRef);
-   CGColorRelease(colorRef);
-   return result;
+   NSInvalidAbstractInvocation();
+   return 0;
 }
 
 -(void)getComponents:(CGFloat *)components {
-   CGColorRef colorRef=[self createCGColorRef];
-   NSInteger  i,count=CGColorGetNumberOfComponents(colorRef);
-   const CGFloat *comps=CGColorGetComponents(colorRef);
-   
-   for(i=0;i<count;i++)
-    components[i]=comps[i];
-    
-   CGColorRelease(colorRef);
+   NSInvalidAbstractInvocation();
 }
 
 -(void)getWhite:(float *)white alpha:(float *)alpha {

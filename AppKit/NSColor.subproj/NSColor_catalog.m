@@ -9,7 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor_catalog.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSDisplay.h>
-#import <AppKit/NSColor-Private.h>
+
+@interface NSColor(NSAppKitPrivate)
+-(CGColorRef)CGColorRef;
+@end
 
 @implementation NSColor_catalog
 
@@ -80,8 +83,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(CGColorRef)createCGColorRef {
-   return [[[NSDisplay currentDisplay] colorWithName:_colorName] createCGColorRef];
+-(CGColorRef)CGColorRef {
+   return [[[NSDisplay currentDisplay] colorWithName:_colorName] CGColorRef];
 }
 
 -(void)setFill {

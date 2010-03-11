@@ -28,6 +28,7 @@ NSString * const NSCalibratedBlackColorSpace=@"NSCalibratedBlackColorSpace";
 NSString * const NSCalibratedWhiteColorSpace=@"NSCalibratedWhiteColorSpace";
 NSString * const NSCalibratedRGBColorSpace=@"NSCalibratedRGBColorSpace";
 NSString * const NSNamedColorSpace=@"NSNamedColorSpace";
+NSString * const NSPatternColorSpace=@"NSPatternColorSpace";
 
 NSString * const NSDeviceIsScreen=@"NSDeviceIsScreen";
 NSString * const NSDeviceIsPrinter=@"NSDeviceIsPrinter";

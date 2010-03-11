@@ -7,10 +7,14 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSShadow.h>
-#import <AppKit/NSColor-Private.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSColor.h>
+
+@interface NSColor(NSAppKitPrivate)
+-(CGColorRef)CGColorRef;
+@end
 
 @implementation NSShadow
 
@@ -71,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)set {
    CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
-   CGColorRef   color=[_color createCGColorRef];
+   CGColorRef   color=[_color CGColorRef];
    
    CGContextSetShadowWithColor(context,_offset,_blurRadius,color);
 

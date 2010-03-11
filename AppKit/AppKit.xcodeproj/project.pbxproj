@@ -154,11 +154,6 @@
 		C88974950EA0BF3100D0A0A2 /* NSNibLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55350976075300DA0954 /* NSNibLoading.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974960EA0BF3100D0A0A2 /* NSNibHelpConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974970EA0BF3100D0A0A2 /* NSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55540976075300DA0954 /* NSColor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C88974980EA0BF3100D0A0A2 /* NSColor_rgbCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88974990EA0BF3100D0A0A2 /* NSColor_whiteCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C889749A0EA0BF3100D0A0A2 /* NSColor_cmykDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C889749B0EA0BF3100D0A0A2 /* NSColor_rgbDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C889749C0EA0BF3100D0A0A2 /* NSColor_whiteDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889749D0EA0BF3100D0A0A2 /* NSColor_catalog.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55600976075300DA0954 /* NSColor_catalog.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889749E0EA0BF3100D0A0A2 /* conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55620976075300DA0954 /* conversions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889749F0EA0BF3100D0A0A2 /* NSTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B557F0976075300DA0954 /* NSTextView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -367,7 +362,6 @@
 		C88975740EA0BF3100D0A0A2 /* O2Image+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* O2Image+PDF.h */; };
 		C88975750EA0BF3100D0A0A2 /* O2Shading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9D0E13EB8E003502ED /* O2Shading+PDF.h */; };
 		C88975760EA0BF3100D0A0A2 /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */; };
-		C88975770EA0BF3100D0A0A2 /* NSColor-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF35E260E6DC186000BD639 /* NSColor-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975780EA0BF3100D0A0A2 /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975790EA0BF3100D0A0A2 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889757A0EA0BF3100D0A0A2 /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -482,11 +476,6 @@
 		C88975E90EA0BF3100D0A0A2 /* NSNibLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551E0976075300DA0954 /* NSNibLoading.m */; settings = {ATTRIBUTES = (); }; };
 		C88975EA0EA0BF3100D0A0A2 /* NSNibHelpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55260976075300DA0954 /* NSNibHelpConnector.m */; settings = {ATTRIBUTES = (); }; };
 		C88975EB0EA0BF3100D0A0A2 /* NSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55450976075300DA0954 /* NSColor.m */; settings = {ATTRIBUTES = (); }; };
-		C88975EC0EA0BF3100D0A0A2 /* NSColor_rgbCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		C88975ED0EA0BF3100D0A0A2 /* NSColor_whiteCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		C88975EE0EA0BF3100D0A0A2 /* NSColor_cmykDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */; settings = {ATTRIBUTES = (); }; };
-		C88975EF0EA0BF3100D0A0A2 /* NSColor_rgbDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */; settings = {ATTRIBUTES = (); }; };
-		C88975F00EA0BF3100D0A0A2 /* NSColor_whiteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */; settings = {ATTRIBUTES = (); }; };
 		C88975F10EA0BF3100D0A0A2 /* NSColor_catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55510976075300DA0954 /* NSColor_catalog.m */; settings = {ATTRIBUTES = (); }; };
 		C88975F20EA0BF3100D0A0A2 /* NSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556A0976075300DA0954 /* NSTextView.m */; settings = {ATTRIBUTES = (); }; };
 		C88975F30EA0BF3100D0A0A2 /* NSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556C0976075300DA0954 /* NSTextContainer.m */; settings = {ATTRIBUTES = (); }; };
@@ -827,11 +816,6 @@
 		C8A2E3160F07EA1F0054397C /* NSNibLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55350976075300DA0954 /* NSNibLoading.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3170F07EA1F0054397C /* NSNibHelpConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3180F07EA1F0054397C /* NSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55540976075300DA0954 /* NSColor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C8A2E3190F07EA1F0054397C /* NSColor_rgbCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E31A0F07EA1F0054397C /* NSColor_whiteCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E31B0F07EA1F0054397C /* NSColor_cmykDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E31C0F07EA1F0054397C /* NSColor_rgbDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E31D0F07EA1F0054397C /* NSColor_whiteDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E31E0F07EA1F0054397C /* NSColor_catalog.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55600976075300DA0954 /* NSColor_catalog.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E31F0F07EA1F0054397C /* conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55620976075300DA0954 /* conversions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3200F07EA1F0054397C /* NSTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B557F0976075300DA0954 /* NSTextView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -1040,7 +1024,6 @@
 		C8A2E3F50F07EA1F0054397C /* O2Image+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* O2Image+PDF.h */; };
 		C8A2E3F60F07EA1F0054397C /* O2Shading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9D0E13EB8E003502ED /* O2Shading+PDF.h */; };
 		C8A2E3F70F07EA1F0054397C /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */; };
-		C8A2E3F80F07EA1F0054397C /* NSColor-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF35E260E6DC186000BD639 /* NSColor-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3F90F07EA1F0054397C /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3FA0F07EA1F0054397C /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		C8A2E3FB0F07EA1F0054397C /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1161,11 +1144,6 @@
 		C8A2E4720F07EA1F0054397C /* NSNibLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551E0976075300DA0954 /* NSNibLoading.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4730F07EA1F0054397C /* NSNibHelpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55260976075300DA0954 /* NSNibHelpConnector.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4740F07EA1F0054397C /* NSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55450976075300DA0954 /* NSColor.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4750F07EA1F0054397C /* NSColor_rgbCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4760F07EA1F0054397C /* NSColor_whiteCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4770F07EA1F0054397C /* NSColor_cmykDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4780F07EA1F0054397C /* NSColor_rgbDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4790F07EA1F0054397C /* NSColor_whiteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E47A0F07EA1F0054397C /* NSColor_catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55510976075300DA0954 /* NSColor_catalog.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E47B0F07EA1F0054397C /* NSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556A0976075300DA0954 /* NSTextView.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E47C0F07EA1F0054397C /* NSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556C0976075300DA0954 /* NSTextContainer.m */; settings = {ATTRIBUTES = (); }; };
@@ -1532,11 +1510,6 @@
 		FE01A87C0C5D9BCB00AEA51A /* NSNibLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55350976075300DA0954 /* NSNibLoading.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A87D0C5D9BCB00AEA51A /* NSNibHelpConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A87E0C5D9BCB00AEA51A /* NSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55540976075300DA0954 /* NSColor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A87F0C5D9BCB00AEA51A /* NSColor_rgbCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8800C5D9BCB00AEA51A /* NSColor_whiteCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8810C5D9BCB00AEA51A /* NSColor_cmykDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8820C5D9BCB00AEA51A /* NSColor_rgbDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8830C5D9BCB00AEA51A /* NSColor_whiteDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8840C5D9BCB00AEA51A /* NSColor_catalog.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55600976075300DA0954 /* NSColor_catalog.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8850C5D9BCB00AEA51A /* conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55620976075300DA0954 /* conversions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8860C5D9BCB00AEA51A /* NSTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B557F0976075300DA0954 /* NSTextView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -1821,11 +1794,6 @@
 		FE01A9BF0C5D9BCB00AEA51A /* NSNibLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551E0976075300DA0954 /* NSNibLoading.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9C00C5D9BCB00AEA51A /* NSNibHelpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55260976075300DA0954 /* NSNibHelpConnector.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9C10C5D9BCB00AEA51A /* NSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55450976075300DA0954 /* NSColor.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9C20C5D9BCB00AEA51A /* NSColor_rgbCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9C30C5D9BCB00AEA51A /* NSColor_whiteCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9C40C5D9BCB00AEA51A /* NSColor_cmykDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9C50C5D9BCB00AEA51A /* NSColor_rgbDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9C60C5D9BCB00AEA51A /* NSColor_whiteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9C70C5D9BCB00AEA51A /* NSColor_catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55510976075300DA0954 /* NSColor_catalog.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9C80C5D9BCB00AEA51A /* NSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556A0976075300DA0954 /* NSTextView.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9C90C5D9BCB00AEA51A /* NSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556C0976075300DA0954 /* NSTextContainer.m */; settings = {ATTRIBUTES = (); }; };
@@ -2322,11 +2290,6 @@
 		FE5A894C10C6F50E005E348A /* NSNibLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55350976075300DA0954 /* NSNibLoading.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A894D10C6F50E005E348A /* NSNibHelpConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A894E10C6F50E005E348A /* NSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55540976075300DA0954 /* NSColor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE5A894F10C6F50E005E348A /* NSColor_rgbCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A895010C6F50E005E348A /* NSColor_whiteCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A895110C6F50E005E348A /* NSColor_cmykDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A895210C6F50E005E348A /* NSColor_rgbDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A895310C6F50E005E348A /* NSColor_whiteDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A895410C6F50E005E348A /* NSColor_catalog.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55600976075300DA0954 /* NSColor_catalog.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A895510C6F50E005E348A /* conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55620976075300DA0954 /* conversions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A895610C6F50E005E348A /* NSTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B557F0976075300DA0954 /* NSTextView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -2535,7 +2498,6 @@
 		FE5A8A2210C6F50E005E348A /* O2Image+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* O2Image+PDF.h */; };
 		FE5A8A2310C6F50E005E348A /* O2Shading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9D0E13EB8E003502ED /* O2Shading+PDF.h */; };
 		FE5A8A2410C6F50E005E348A /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */; };
-		FE5A8A2510C6F50E005E348A /* NSColor-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF35E260E6DC186000BD639 /* NSColor-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A2610C6F50E005E348A /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A2710C6F50E005E348A /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A2810C6F50E005E348A /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2690,11 +2652,6 @@
 		FE5A8AC210C6F50E005E348A /* NSNibLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551E0976075300DA0954 /* NSNibLoading.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AC310C6F50E005E348A /* NSNibHelpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55260976075300DA0954 /* NSNibHelpConnector.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AC410C6F50E005E348A /* NSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55450976075300DA0954 /* NSColor.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AC510C6F50E005E348A /* NSColor_rgbCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AC610C6F50E005E348A /* NSColor_whiteCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AC710C6F50E005E348A /* NSColor_cmykDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AC810C6F50E005E348A /* NSColor_rgbDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AC910C6F50E005E348A /* NSColor_whiteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8ACA10C6F50E005E348A /* NSColor_catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55510976075300DA0954 /* NSColor_catalog.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8ACB10C6F50E005E348A /* NSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556A0976075300DA0954 /* NSTextView.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8ACC10C6F50E005E348A /* NSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556C0976075300DA0954 /* NSTextContainer.m */; settings = {ATTRIBUTES = (); }; };
@@ -3179,11 +3136,6 @@
 		FEA313EA0FD5667D00F480D4 /* NSNibLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55350976075300DA0954 /* NSNibLoading.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313EB0FD5667D00F480D4 /* NSNibHelpConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA313EC0FD5667D00F480D4 /* NSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55540976075300DA0954 /* NSColor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FEA313ED0FD5667D00F480D4 /* NSColor_rgbCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEA313EE0FD5667D00F480D4 /* NSColor_whiteCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEA313EF0FD5667D00F480D4 /* NSColor_cmykDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEA313F00FD5667D00F480D4 /* NSColor_rgbDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEA313F10FD5667D00F480D4 /* NSColor_whiteDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA313F20FD5667D00F480D4 /* NSColor_catalog.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55600976075300DA0954 /* NSColor_catalog.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA313F30FD5667D00F480D4 /* conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55620976075300DA0954 /* conversions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA313F40FD5667D00F480D4 /* NSTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B557F0976075300DA0954 /* NSTextView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -3326,7 +3278,6 @@
 		FEA314BE0FD5667D00F480D4 /* NSColor_CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE08C3210DDF299800B3169A /* NSColor_CGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314BF0FD5667D00F480D4 /* O2Surface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */; };
 		FEA314C50FD5667D00F480D4 /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */; };
-		FEA314C60FD5667D00F480D4 /* NSColor-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF35E260E6DC186000BD639 /* NSColor-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314C70FD5667D00F480D4 /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314C80FD5667D00F480D4 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		FEA314C90FD5667D00F480D4 /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3446,11 +3397,6 @@
 		FEA315460FD5667D00F480D4 /* NSNibLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551E0976075300DA0954 /* NSNibLoading.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315470FD5667D00F480D4 /* NSNibHelpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55260976075300DA0954 /* NSNibHelpConnector.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315480FD5667D00F480D4 /* NSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55450976075300DA0954 /* NSColor.m */; settings = {ATTRIBUTES = (); }; };
-		FEA315490FD5667D00F480D4 /* NSColor_rgbCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		FEA3154A0FD5667D00F480D4 /* NSColor_whiteCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */; settings = {ATTRIBUTES = (); }; };
-		FEA3154B0FD5667D00F480D4 /* NSColor_cmykDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */; settings = {ATTRIBUTES = (); }; };
-		FEA3154C0FD5667D00F480D4 /* NSColor_rgbDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */; settings = {ATTRIBUTES = (); }; };
-		FEA3154D0FD5667D00F480D4 /* NSColor_whiteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */; settings = {ATTRIBUTES = (); }; };
 		FEA3154E0FD5667D00F480D4 /* NSColor_catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55510976075300DA0954 /* NSColor_catalog.m */; settings = {ATTRIBUTES = (); }; };
 		FEA3154F0FD5667D00F480D4 /* NSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556A0976075300DA0954 /* NSTextView.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315500FD5667D00F480D4 /* NSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556C0976075300DA0954 /* NSTextContainer.m */; settings = {ATTRIBUTES = (); }; };
@@ -3676,7 +3622,6 @@
 		FEF088A110C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
 		FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */; };
-		FEF35E270E6DC186000BD639 /* NSColor-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF35E260E6DC186000BD639 /* NSColor-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF4684310895C9800B45195 /* CGConversions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF4684210895C9800B45195 /* CGConversions.h */; };
 		FEF4684410895C9800B45195 /* CGConversions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF4684210895C9800B45195 /* CGConversions.h */; };
 		FEF4684510895C9800B45195 /* CGConversions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF4684210895C9800B45195 /* CGConversions.h */; };
@@ -4212,18 +4157,8 @@
 		6E2B55350976075300DA0954 /* NSNibLoading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSNibLoading.h; sourceTree = "<group>"; };
 		6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSNibHelpConnector.h; sourceTree = "<group>"; };
 		6E2B55450976075300DA0954 /* NSColor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor.m; sourceTree = "<group>"; };
-		6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor_rgbCalibrated.m; sourceTree = "<group>"; };
-		6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor_whiteCalibrated.m; sourceTree = "<group>"; };
-		6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor_cmykDevice.m; sourceTree = "<group>"; };
-		6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor_rgbDevice.m; sourceTree = "<group>"; };
-		6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor_whiteDevice.m; sourceTree = "<group>"; };
 		6E2B55510976075300DA0954 /* NSColor_catalog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColor_catalog.m; sourceTree = "<group>"; };
 		6E2B55540976075300DA0954 /* NSColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor.h; sourceTree = "<group>"; };
-		6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor_rgbCalibrated.h; sourceTree = "<group>"; };
-		6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor_whiteCalibrated.h; sourceTree = "<group>"; };
-		6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor_cmykDevice.h; sourceTree = "<group>"; };
-		6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor_rgbDevice.h; sourceTree = "<group>"; };
-		6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor_whiteDevice.h; sourceTree = "<group>"; };
 		6E2B55600976075300DA0954 /* NSColor_catalog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColor_catalog.h; sourceTree = "<group>"; };
 		6E2B55620976075300DA0954 /* conversions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = conversions.h; sourceTree = "<group>"; };
 		6E2B556A0976075300DA0954 /* NSTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSTextView.m; sourceTree = "<group>"; };
@@ -4777,7 +4712,6 @@
 		FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_gdiView.m; sourceTree = "<group>"; };
 		FEF33BFF0B93543C00DC0B6F /* O2MutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2MutablePath.h; sourceTree = "<group>"; };
 		FEF33C000B93543C00DC0B6F /* O2MutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2MutablePath.m; sourceTree = "<group>"; };
-		FEF35E260E6DC186000BD639 /* NSColor-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor-Private.h"; sourceTree = "<group>"; };
 		FEF4684210895C9800B45195 /* CGConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGConversions.h; sourceTree = "<group>"; };
 		FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Surface_DIBSection.h; sourceTree = "<group>"; };
 		FEF9CAE80E133FF2003502ED /* O2Surface_DIBSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Surface_DIBSection.m; sourceTree = "<group>"; };
@@ -5268,22 +5202,11 @@
 		6E2B55430976075300DA0954 /* NSColor */ = {
 			isa = PBXGroup;
 			children = (
-				FEF35E260E6DC186000BD639 /* NSColor-Private.h */,
 				FE08C3210DDF299800B3169A /* NSColor_CGColor.h */,
 				FE08C3220DDF299800B3169A /* NSColor_CGColor.m */,
 				6E2B55620976075300DA0954 /* conversions.h */,
 				6E2B55540976075300DA0954 /* NSColor.h */,
 				6E2B55450976075300DA0954 /* NSColor.m */,
-				6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */,
-				6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */,
-				6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */,
-				6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */,
-				6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */,
-				6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */,
-				6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */,
-				6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */,
-				6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */,
-				6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */,
 				6E2B55600976075300DA0954 /* NSColor_catalog.h */,
 				6E2B55510976075300DA0954 /* NSColor_catalog.m */,
 			);
@@ -6152,11 +6075,6 @@
 				C88974950EA0BF3100D0A0A2 /* NSNibLoading.h in Headers */,
 				C88974960EA0BF3100D0A0A2 /* NSNibHelpConnector.h in Headers */,
 				C88974970EA0BF3100D0A0A2 /* NSColor.h in Headers */,
-				C88974980EA0BF3100D0A0A2 /* NSColor_rgbCalibrated.h in Headers */,
-				C88974990EA0BF3100D0A0A2 /* NSColor_whiteCalibrated.h in Headers */,
-				C889749A0EA0BF3100D0A0A2 /* NSColor_cmykDevice.h in Headers */,
-				C889749B0EA0BF3100D0A0A2 /* NSColor_rgbDevice.h in Headers */,
-				C889749C0EA0BF3100D0A0A2 /* NSColor_whiteDevice.h in Headers */,
 				C889749D0EA0BF3100D0A0A2 /* NSColor_catalog.h in Headers */,
 				C889749E0EA0BF3100D0A0A2 /* conversions.h in Headers */,
 				C889749F0EA0BF3100D0A0A2 /* NSTextView.h in Headers */,
@@ -6365,7 +6283,6 @@
 				C88975740EA0BF3100D0A0A2 /* O2Image+PDF.h in Headers */,
 				C88975750EA0BF3100D0A0A2 /* O2Shading+PDF.h in Headers */,
 				C88975760EA0BF3100D0A0A2 /* O2Context_builtin_gdi.h in Headers */,
-				C88975770EA0BF3100D0A0A2 /* NSColor-Private.h in Headers */,
 				C88975780EA0BF3100D0A0A2 /* NSBitmapImageRep-Private.h in Headers */,
 				C88975790EA0BF3100D0A0A2 /* NSObservationProxy.h in Headers */,
 				C889757A0EA0BF3100D0A0A2 /* NSGradient.h in Headers */,
@@ -6537,11 +6454,6 @@
 				C8A2E3160F07EA1F0054397C /* NSNibLoading.h in Headers */,
 				C8A2E3170F07EA1F0054397C /* NSNibHelpConnector.h in Headers */,
 				C8A2E3180F07EA1F0054397C /* NSColor.h in Headers */,
-				C8A2E3190F07EA1F0054397C /* NSColor_rgbCalibrated.h in Headers */,
-				C8A2E31A0F07EA1F0054397C /* NSColor_whiteCalibrated.h in Headers */,
-				C8A2E31B0F07EA1F0054397C /* NSColor_cmykDevice.h in Headers */,
-				C8A2E31C0F07EA1F0054397C /* NSColor_rgbDevice.h in Headers */,
-				C8A2E31D0F07EA1F0054397C /* NSColor_whiteDevice.h in Headers */,
 				C8A2E31E0F07EA1F0054397C /* NSColor_catalog.h in Headers */,
 				C8A2E31F0F07EA1F0054397C /* conversions.h in Headers */,
 				C8A2E3200F07EA1F0054397C /* NSTextView.h in Headers */,
@@ -6750,7 +6662,6 @@
 				C8A2E3F50F07EA1F0054397C /* O2Image+PDF.h in Headers */,
 				C8A2E3F60F07EA1F0054397C /* O2Shading+PDF.h in Headers */,
 				C8A2E3F70F07EA1F0054397C /* O2Context_builtin_gdi.h in Headers */,
-				C8A2E3F80F07EA1F0054397C /* NSColor-Private.h in Headers */,
 				C8A2E3F90F07EA1F0054397C /* NSBitmapImageRep-Private.h in Headers */,
 				C8A2E3FA0F07EA1F0054397C /* NSObservationProxy.h in Headers */,
 				C8A2E3FB0F07EA1F0054397C /* NSGradient.h in Headers */,
@@ -6921,11 +6832,6 @@
 				FE01A87C0C5D9BCB00AEA51A /* NSNibLoading.h in Headers */,
 				FE01A87D0C5D9BCB00AEA51A /* NSNibHelpConnector.h in Headers */,
 				FE01A87E0C5D9BCB00AEA51A /* NSColor.h in Headers */,
-				FE01A87F0C5D9BCB00AEA51A /* NSColor_rgbCalibrated.h in Headers */,
-				FE01A8800C5D9BCB00AEA51A /* NSColor_whiteCalibrated.h in Headers */,
-				FE01A8810C5D9BCB00AEA51A /* NSColor_cmykDevice.h in Headers */,
-				FE01A8820C5D9BCB00AEA51A /* NSColor_rgbDevice.h in Headers */,
-				FE01A8830C5D9BCB00AEA51A /* NSColor_whiteDevice.h in Headers */,
 				FE01A8840C5D9BCB00AEA51A /* NSColor_catalog.h in Headers */,
 				FE01A8850C5D9BCB00AEA51A /* conversions.h in Headers */,
 				FE01A8860C5D9BCB00AEA51A /* NSTextView.h in Headers */,
@@ -7134,7 +7040,6 @@
 				FEF9CBC20E13EB8E003502ED /* O2Image+PDF.h in Headers */,
 				FEF9CBC40E13EB8E003502ED /* O2Shading+PDF.h in Headers */,
 				FEF9CCC30E1416C4003502ED /* O2Context_builtin_gdi.h in Headers */,
-				FEF35E270E6DC186000BD639 /* NSColor-Private.h in Headers */,
 				FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */,
 				C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */,
 				365710650E81A10E008FE1BE /* NSGradient.h in Headers */,
@@ -7298,11 +7203,6 @@
 				FE5A894C10C6F50E005E348A /* NSNibLoading.h in Headers */,
 				FE5A894D10C6F50E005E348A /* NSNibHelpConnector.h in Headers */,
 				FE5A894E10C6F50E005E348A /* NSColor.h in Headers */,
-				FE5A894F10C6F50E005E348A /* NSColor_rgbCalibrated.h in Headers */,
-				FE5A895010C6F50E005E348A /* NSColor_whiteCalibrated.h in Headers */,
-				FE5A895110C6F50E005E348A /* NSColor_cmykDevice.h in Headers */,
-				FE5A895210C6F50E005E348A /* NSColor_rgbDevice.h in Headers */,
-				FE5A895310C6F50E005E348A /* NSColor_whiteDevice.h in Headers */,
 				FE5A895410C6F50E005E348A /* NSColor_catalog.h in Headers */,
 				FE5A895510C6F50E005E348A /* conversions.h in Headers */,
 				FE5A895610C6F50E005E348A /* NSTextView.h in Headers */,
@@ -7511,7 +7411,6 @@
 				FE5A8A2210C6F50E005E348A /* O2Image+PDF.h in Headers */,
 				FE5A8A2310C6F50E005E348A /* O2Shading+PDF.h in Headers */,
 				FE5A8A2410C6F50E005E348A /* O2Context_builtin_gdi.h in Headers */,
-				FE5A8A2510C6F50E005E348A /* NSColor-Private.h in Headers */,
 				FE5A8A2610C6F50E005E348A /* NSBitmapImageRep-Private.h in Headers */,
 				FE5A8A2710C6F50E005E348A /* NSObservationProxy.h in Headers */,
 				FE5A8A2810C6F50E005E348A /* NSGradient.h in Headers */,
@@ -7684,11 +7583,6 @@
 				FEA313EA0FD5667D00F480D4 /* NSNibLoading.h in Headers */,
 				FEA313EB0FD5667D00F480D4 /* NSNibHelpConnector.h in Headers */,
 				FEA313EC0FD5667D00F480D4 /* NSColor.h in Headers */,
-				FEA313ED0FD5667D00F480D4 /* NSColor_rgbCalibrated.h in Headers */,
-				FEA313EE0FD5667D00F480D4 /* NSColor_whiteCalibrated.h in Headers */,
-				FEA313EF0FD5667D00F480D4 /* NSColor_cmykDevice.h in Headers */,
-				FEA313F00FD5667D00F480D4 /* NSColor_rgbDevice.h in Headers */,
-				FEA313F10FD5667D00F480D4 /* NSColor_whiteDevice.h in Headers */,
 				FEA313F20FD5667D00F480D4 /* NSColor_catalog.h in Headers */,
 				FEA313F30FD5667D00F480D4 /* conversions.h in Headers */,
 				FEA313F40FD5667D00F480D4 /* NSTextView.h in Headers */,
@@ -7831,7 +7725,6 @@
 				FEA314BE0FD5667D00F480D4 /* NSColor_CGColor.h in Headers */,
 				FEA314BF0FD5667D00F480D4 /* O2Surface_DIBSection.h in Headers */,
 				FEA314C50FD5667D00F480D4 /* O2Context_builtin_gdi.h in Headers */,
-				FEA314C60FD5667D00F480D4 /* NSColor-Private.h in Headers */,
 				FEA314C70FD5667D00F480D4 /* NSBitmapImageRep-Private.h in Headers */,
 				FEA314C80FD5667D00F480D4 /* NSObservationProxy.h in Headers */,
 				FEA314C90FD5667D00F480D4 /* NSGradient.h in Headers */,
@@ -8564,11 +8457,6 @@
 				C88975E90EA0BF3100D0A0A2 /* NSNibLoading.m in Sources */,
 				C88975EA0EA0BF3100D0A0A2 /* NSNibHelpConnector.m in Sources */,
 				C88975EB0EA0BF3100D0A0A2 /* NSColor.m in Sources */,
-				C88975EC0EA0BF3100D0A0A2 /* NSColor_rgbCalibrated.m in Sources */,
-				C88975ED0EA0BF3100D0A0A2 /* NSColor_whiteCalibrated.m in Sources */,
-				C88975EE0EA0BF3100D0A0A2 /* NSColor_cmykDevice.m in Sources */,
-				C88975EF0EA0BF3100D0A0A2 /* NSColor_rgbDevice.m in Sources */,
-				C88975F00EA0BF3100D0A0A2 /* NSColor_whiteDevice.m in Sources */,
 				C88975F10EA0BF3100D0A0A2 /* NSColor_catalog.m in Sources */,
 				C88975F20EA0BF3100D0A0A2 /* NSTextView.m in Sources */,
 				C88975F30EA0BF3100D0A0A2 /* NSTextContainer.m in Sources */,
@@ -8921,11 +8809,6 @@
 				C8A2E4720F07EA1F0054397C /* NSNibLoading.m in Sources */,
 				C8A2E4730F07EA1F0054397C /* NSNibHelpConnector.m in Sources */,
 				C8A2E4740F07EA1F0054397C /* NSColor.m in Sources */,
-				C8A2E4750F07EA1F0054397C /* NSColor_rgbCalibrated.m in Sources */,
-				C8A2E4760F07EA1F0054397C /* NSColor_whiteCalibrated.m in Sources */,
-				C8A2E4770F07EA1F0054397C /* NSColor_cmykDevice.m in Sources */,
-				C8A2E4780F07EA1F0054397C /* NSColor_rgbDevice.m in Sources */,
-				C8A2E4790F07EA1F0054397C /* NSColor_whiteDevice.m in Sources */,
 				C8A2E47A0F07EA1F0054397C /* NSColor_catalog.m in Sources */,
 				C8A2E47B0F07EA1F0054397C /* NSTextView.m in Sources */,
 				C8A2E47C0F07EA1F0054397C /* NSTextContainer.m in Sources */,
@@ -9277,11 +9160,6 @@
 				FE01A9BF0C5D9BCB00AEA51A /* NSNibLoading.m in Sources */,
 				FE01A9C00C5D9BCB00AEA51A /* NSNibHelpConnector.m in Sources */,
 				FE01A9C10C5D9BCB00AEA51A /* NSColor.m in Sources */,
-				FE01A9C20C5D9BCB00AEA51A /* NSColor_rgbCalibrated.m in Sources */,
-				FE01A9C30C5D9BCB00AEA51A /* NSColor_whiteCalibrated.m in Sources */,
-				FE01A9C40C5D9BCB00AEA51A /* NSColor_cmykDevice.m in Sources */,
-				FE01A9C50C5D9BCB00AEA51A /* NSColor_rgbDevice.m in Sources */,
-				FE01A9C60C5D9BCB00AEA51A /* NSColor_whiteDevice.m in Sources */,
 				FE01A9C70C5D9BCB00AEA51A /* NSColor_catalog.m in Sources */,
 				FE01A9C80C5D9BCB00AEA51A /* NSTextView.m in Sources */,
 				FE01A9C90C5D9BCB00AEA51A /* NSTextContainer.m in Sources */,
@@ -9661,11 +9539,6 @@
 				FE5A8AC210C6F50E005E348A /* NSNibLoading.m in Sources */,
 				FE5A8AC310C6F50E005E348A /* NSNibHelpConnector.m in Sources */,
 				FE5A8AC410C6F50E005E348A /* NSColor.m in Sources */,
-				FE5A8AC510C6F50E005E348A /* NSColor_rgbCalibrated.m in Sources */,
-				FE5A8AC610C6F50E005E348A /* NSColor_whiteCalibrated.m in Sources */,
-				FE5A8AC710C6F50E005E348A /* NSColor_cmykDevice.m in Sources */,
-				FE5A8AC810C6F50E005E348A /* NSColor_rgbDevice.m in Sources */,
-				FE5A8AC910C6F50E005E348A /* NSColor_whiteDevice.m in Sources */,
 				FE5A8ACA10C6F50E005E348A /* NSColor_catalog.m in Sources */,
 				FE5A8ACB10C6F50E005E348A /* NSTextView.m in Sources */,
 				FE5A8ACC10C6F50E005E348A /* NSTextContainer.m in Sources */,
@@ -10019,11 +9892,6 @@
 				FEA315460FD5667D00F480D4 /* NSNibLoading.m in Sources */,
 				FEA315470FD5667D00F480D4 /* NSNibHelpConnector.m in Sources */,
 				FEA315480FD5667D00F480D4 /* NSColor.m in Sources */,
-				FEA315490FD5667D00F480D4 /* NSColor_rgbCalibrated.m in Sources */,
-				FEA3154A0FD5667D00F480D4 /* NSColor_whiteCalibrated.m in Sources */,
-				FEA3154B0FD5667D00F480D4 /* NSColor_cmykDevice.m in Sources */,
-				FEA3154C0FD5667D00F480D4 /* NSColor_rgbDevice.m in Sources */,
-				FEA3154D0FD5667D00F480D4 /* NSColor_whiteDevice.m in Sources */,
 				FEA3154E0FD5667D00F480D4 /* NSColor_catalog.m in Sources */,
 				FEA3154F0FD5667D00F480D4 /* NSTextView.m in Sources */,
 				FEA315500FD5667D00F480D4 /* NSTextContainer.m in Sources */,

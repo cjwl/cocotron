@@ -45,6 +45,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self addSubview:view];
 }
 
+-(void)setFrame:(NSRect)frame {
+   [super setFrame:frame];
+
+   NSRect bounds=[self bounds];
+   CGFloat labelHeight=0;
+   NSRect viewRect;
+   viewRect.origin.y=bounds.origin.y+labelHeight;
+   viewRect.origin.x=bounds.origin.x;
+			
+   viewRect.size.width = bounds.size.width;
+   viewRect.size.height = bounds.size.height - labelHeight;
+			
+   [[_toolbarItem view] setFrame: viewRect];
+}
+
 -(NSView *)view {
    return [[self subviews] lastObject];
 }

@@ -251,7 +251,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
     
     colorRef=CGColorCreate(colorSpace,components);
 
-    color=[NSColor_CGColor colorWithColorRef:colorRef];
+    color=[NSColor_CGColor colorWithColorRef:colorRef spaceName:NSDeviceRGBColorSpace];
     CGColorRelease(colorRef);
     [_nameToColor setObject:color forKey:table[i].name];
    }

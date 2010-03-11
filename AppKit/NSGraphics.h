@@ -62,6 +62,7 @@ APPKIT_EXPORT NSString * const NSCalibratedBlackColorSpace;
 APPKIT_EXPORT NSString * const NSCalibratedWhiteColorSpace;
 APPKIT_EXPORT NSString * const NSCalibratedRGBColorSpace;
 APPKIT_EXPORT NSString * const NSNamedColorSpace;
+APPKIT_EXPORT NSString * const NSPatternColorSpace;
 
 APPKIT_EXPORT NSString * const NSDeviceIsScreen;
 APPKIT_EXPORT NSString * const NSDeviceIsPrinter;
