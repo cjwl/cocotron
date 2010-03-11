@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isSelected=[decoder decodeBoolForKey:@"NSSegmentItemSelected"];
    _tag=[decoder decodeIntForKey:@"NSSegmentItemTag"];
    _width=[decoder decodeFloatForKey:@"NSSegmentItemWidth"];
-   return [super init];
+   return self;
 }
 
 -(id)description {
