@@ -401,6 +401,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
 }
 
+-(NSImageRep *)_bestUncachedFallbackCachedRepresentationForDevice:(NSDictionary *)device {
+   int i,count=[_representations count];
+
+   for(i=0;i<count;i++){
+    NSImageRep *check=[_representations objectAtIndex:i];
+      
+    if(![check isKindOfClass:[NSCachedImageRep class]]){
+     return check;
+    }
+   }
+   
+   for(i=0;i<count;i++){
+    NSImageRep *check=[_representations objectAtIndex:i];
+      
+    if([check isKindOfClass:[NSCachedImageRep class]]){
+     return check;
+    }
+   }
+   
+   return nil;   
+}
+
 -(NSImageRep *)bestRepresentationForDevice:(NSDictionary *)device {
    if(device==nil)    
     device=[[NSGraphicsContext currentContext] deviceDescription];
@@ -523,7 +545,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)lockFocusOnRepresentation:(NSImageRep *)representation {
-   NSGraphicsContext *context;
+   NSGraphicsContext *context=nil;
    CGContextRef       graphicsPort;
 
    if(representation==nil){
@@ -549,15 +571,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     context=[NSGraphicsContext graphicsContextWithWindow:[(NSCachedImageRep *)representation window]];
    else if([representation isKindOfClass:[NSBitmapImageRep class]])
     context=[NSGraphicsContext graphicsContextWithBitmapImageRep:(NSBitmapImageRep *)representation];
-   else
+   
+   if(context==nil){
     [NSException raise:NSInvalidArgumentException format:@"NSImageRep %@ can not be lockFocus'd"]; 
-    
+    return;
+   }
+   
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:context];
 
    graphicsPort=NSCurrentGraphicsPort();
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,NSMakeRect(0,0,[representation size].width,[representation size].height));
+   
+   if([self isFlipped]){
+    CGAffineTransform flip={1,0,0,-1,0,[self size].height};
+     
+    CGContextConcatCTM(graphicsPort,flip);
+   }
+
 }
 
 -(void)unlockFocus {
@@ -579,7 +611,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self compositeToPoint:point fromRect:rect operation:operation fraction:1.0];
 }
 
--(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation fraction:(float)fraction {
+-(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
+#if 1
+   /* Compositing is a blitting operation. We simulate it using the draw operation.
+   
+      Compositing does not honor all aspects of the CTM, e.g. it will keep an image upright regardless of the orientation of CTM.
+      To deal with that we use a negative height in a flipped coordinate system.
+      There are probably other cases which are not right here.
+    */
+    
+   NSSize size=[self size];
+   NSRect rect=NSMakeRect(point.x,point.y,size.width,size.height);
+
+   NSGraphicsContext *graphicsContext=[NSGraphicsContext currentContext];
+   CGContextRef context=[graphicsContext graphicsPort];
+   
+   CGContextSaveGState(context);   
+   if([[NSGraphicsContext currentContext] isFlipped]){
+    rect.size.height=-rect.size.height;
+   }
+   
+   [self drawInRect:rect fromRect:source operation:operation fraction:fraction];
+   CGContextRestoreGState(context);   
+#else
    CGContextRef context=NSCurrentGraphicsPort();
    
    CGContextSaveGState(context);
@@ -588,22 +642,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
    CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
    
-   CGContextClipToMask(context,rect,mask);
+//   CGContextClipToMask(context,rect,mask);
    CGImageRelease(mask);
    CGDataProviderRelease(provider);
    
    [[self bestRepresentationForDevice:nil] drawAtPoint:point];
    CGContextRestoreGState(context);
+#endif
 }
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation {
    [self compositeToPoint:point operation:operation fraction:1.0];
 }
 
--(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(float)fraction {
-   NSSize size=[self size];
-   
-   [self compositeToPoint:point fromRect:NSMakeRect(0,0,size.width,size.height) operation:operation fraction:1.0];
+-(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(float)fraction {   
+   [self compositeToPoint:point fromRect:NSZeroRect operation:operation fraction:1.0];
 }
 
 -(void)dissolveToPoint:(NSPoint)point fraction:(float)fraction {
@@ -621,32 +674,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
-   // FIXME: source rect, operation unimplemented
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:rect.size depth:0 separate:YES alpha:YES];
-   NSImageRep       *uncached=[self _bestUncachedRepresentationForDevice:nil];
-
-   [self lockFocusOnRepresentation:cached];
-   [uncached drawInRect:NSMakeRect(0,0,rect.size.width,rect.size.height)];
-   [self unlockFocus];
-
-   CGContextRef context=NSCurrentGraphicsPort();
-	
-   CGContextSaveGState(context);
-// fraction is accomplished with a 1x1 alpha mask
-   uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
-   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
-   CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
+   NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil];
+   NSImageRep        *drawRep=nil;
+   CGContextRef       context;
    
-   CGContextClipToMask(context,rect,mask);
-   CGImageRelease(mask);
-   CGDataProviderRelease(provider);
+   if(NSIsEmptyRect(source)){
+    if([any isKindOfClass:[NSCachedImageRep class]])
+     drawRep=[any retain];
+    else if([any isKindOfClass:[NSBitmapImageRep class]])
+     drawRep=[any retain];
+   }
+    
+   if(drawRep==nil) {
+    NSImageRep       *uncached=any;
+    NSSize            uncachedSize=[uncached size];
+    BOOL              useSourceRect=NSIsEmptyRect(source)?NO:YES;
+    NSSize            cachedSize=useSourceRect?source.size:uncachedSize;
+    NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:cachedSize depth:0 separate:YES alpha:YES];
 
-   [cached drawAtPoint:rect.origin];
+    [self lockFocusOnRepresentation:cached];
+   
+    if(useSourceRect){
+     context=NSCurrentGraphicsPort();
+     CGContextTranslateCTM(context,-source.origin.x,-source.origin.y);
+    }
+   
+    [uncached drawInRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
+    [self unlockFocus];
+    
+    drawRep=cached;
+   }
+   
+   context=NSCurrentGraphicsPort();
+   
+   CGContextSaveGState(context);
+   
+   if(fraction!=1.0){
+// fraction is accomplished with a 1x1 alpha mask
+// FIXME: could use a float format image to completely preserve fraction
+    uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
+    CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
+    CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
+   
+    CGContextClipToMask(context,rect,mask);
+    CGImageRelease(mask);
+    CGDataProviderRelease(provider);
+   }
+   
+   [[NSGraphicsContext currentContext] setCompositingOperation:operation];
+   
+   [drawRep drawInRect:rect];
    
    CGContextRestoreGState(context);
 
-   [cached release];
+   [drawRep release];
    [pool release];
 }
 
