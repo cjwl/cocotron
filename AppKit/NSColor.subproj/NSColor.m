@@ -18,12 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 #import <Foundation/NSKeyedArchiver.h>
 
-#import <AppKit/NSDisplay.h>
-
-@interface NSDisplay(revelation)
--(void) _addSystemColor: (NSColor *) color forName: (NSString *) name;
-@end
-
 @interface NSColor(private)
 -(NSString *)catalogName;
 -(NSString *)colorName;
@@ -187,19 +181,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        NSString *colorName=[keyed decodeObjectForKey:@"NSColorName"];
        NSColor  *color=[keyed decodeObjectForKey:@"NSColor"];
        
-       if([catalogName isEqualToString: @"System"]) {
-	   NSDisplay *display = [NSDisplay currentDisplay];
-	   result = [display colorWithName: colorName];
-	   if(!result) {
-	       result = color;
-	       [display _addSystemColor: result forName: colorName];
-	   }
-       } else {
-	   result = [NSColor colorWithCatalogName: catalogName colorName: colorName];
-	   if(!result) {
-	       result=color;
-	   }
-       }
+       result=[NSColor_catalog colorWithCatalogName: catalogName colorName: colorName color:color];
       }
       break;
 

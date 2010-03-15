@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #import <CoreFoundation/CFBase.h>
 #import <CoreFoundation/CFDate.h>
 
-typedef struct __NSRunLoop         *CFRunLoopRef;
+typedef struct __CFRunLoop         *CFRunLoopRef;
 typedef struct __NSTimer           *CFRunLoopTimerRef;
 typedef struct __NSInputSource   *CFRunLoopSourceRef;
 typedef struct CFRunLoopObserver *CFRunLoopObserverRef;

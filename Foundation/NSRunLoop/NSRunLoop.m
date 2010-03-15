@@ -20,8 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSelectInputSource.h>
 #import <Foundation/NSRaise.h>
 
-NSString * const NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
-NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
+NSString * const NSDefaultRunLoopMode=@"kCFRunLoopDefaultMode";
+NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 
 @implementation NSRunLoop
 
@@ -37,7 +37,10 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    NSInputSource *parentDeath;
 
    _modes=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0,[self zone]);
+   _commonModes=[[NSMutableArray alloc] init];
+   [_commonModes addObject:NSDefaultRunLoopMode];
    _currentMode=NSDefaultRunLoopMode;
+   _continue=[[NSMutableArray alloc] init];
    _orderedPerforms=[NSMutableArray new];
 
    if((parentDeath=[[NSPlatform currentPlatform] parentDeathInputSource])!=nil)
@@ -49,6 +52,8 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 -(void)dealloc {
 	NSFreeMapTable(_modes);
 	[_currentMode release];
+    [_commonModes release];
+    [_continue release];
 	[_orderedPerforms release];
 	[super dealloc];
 }
@@ -57,16 +62,32 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    NSRunLoopState *state=NSMapGet(_modes,mode);
 
    if(state==nil){
-      state=[[NSRunLoopState new] autorelease];
-      NSMapInsert(_modes,mode,state);
+    state=[[NSRunLoopState new] autorelease];
+    NSMapInsert(_modes,mode,state);
    }
 
    return state;
 }
 
+-(NSArray *)statesForMode:(NSString *)mode {
+   NSMutableArray *result=[NSMutableArray array];
+   
+   if([mode isEqualToString:NSRunLoopCommonModes]){
+    for(NSString *common in _commonModes)
+     [result addObject:[self stateForMode:common]];
+   }
+   else {
+    [result addObject:[self stateForMode:mode]];
+   }
+   
+   return result;
+}
+
+
 -(BOOL)_orderedPerforms {
   BOOL didPerform=NO;
   id performs=nil;
+
   @synchronized(_orderedPerforms)
   {
     performs=[_orderedPerforms copy];
@@ -92,7 +113,7 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
       // be careful the lock on _orderedPerforms is not held while we fire the perform
       // TODO: right now, all modes are common modes
 
-      if([check fireInMode:_currentMode] || [check fireInMode:NSRunLoopCommonModes]){
+      if([check fireInMode:_currentMode]){
         didPerform=YES;
       }
       else{
@@ -127,7 +148,7 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    
    if([self _orderedPerforms])
       [self _wakeUp];
-   if([state fireTimers])
+   if([state fireFirstTimer])
       [self _wakeUp];
    [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
@@ -160,8 +181,8 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 -(BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)date {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    NSDate            *limitDate=[self limitDateForMode:mode];
-   
-   if(limitDate!=nil){
+
+  if(limitDate!=nil){
     limitDate=[limitDate earlierDate:date];
     [self acceptInputForMode:mode beforeDate:limitDate];
    }
@@ -173,7 +194,7 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 
 -(void)runUntilDate:(NSDate *)date {
    while([self runMode:NSDefaultRunLoopMode beforeDate:date])
-    if([date timeIntervalSinceNow]<0)
+    if([date timeIntervalSinceNow]<=0)
      break;
 }
 
@@ -198,19 +219,41 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 }
 
 -(void)addInputSource:(NSInputSource *)source forMode:(NSString *)mode {
-   [[self stateForMode:mode] addInputSource:source];
+   NSArray *modeStates=[self statesForMode:mode];
+   
+   for(NSRunLoopState *state in modeStates)
+    [state addInputSource:source];
+
 }
 
 -(void)removeInputSource:(NSInputSource *)source forMode:(NSString *)mode {
-   [[self stateForMode:mode] removeInputSource:source];
+   NSArray *modeStates=[self statesForMode:mode];
+   
+   for(NSRunLoopState *state in modeStates)
+    [state removeInputSource:source];
 }
 
 -(void)addTimer:(NSTimer *)timer forMode:(NSString *)mode {
-   [[self stateForMode:mode] addTimer:timer];
+   NSArray *modeStates=[self statesForMode:mode];
+   
+   for(NSRunLoopState *state in modeStates)
+    [state addTimer:timer];
+}
+
+-(NSArray *)resolveCommonModes:(NSArray *)modes {
+   NSMutableArray *result=[NSMutableArray array];
+   
+   for(NSString *check in modes)
+    if([check isEqualToString:NSRunLoopCommonModes])
+     [result addObjectsFromArray:_commonModes];
+    else
+     [result addObject:check];
+     
+   return result;
 }
 
 -(void)performSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes {
-   NSOrderedPerform *perform=[NSOrderedPerform orderedPerformWithSelector:selector target:target argument:argument order:order modes:modes];
+   NSOrderedPerform *perform=[NSOrderedPerform orderedPerformWithSelector:selector target:target argument:argument order:order modes:[self resolveCommonModes:modes]];
 	@synchronized(_orderedPerforms)
 	{
 		NSInteger count=[_orderedPerforms count];
@@ -241,6 +284,19 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 	}
 }
 
+-(void)cancelPerformSelectorsWithTarget:target {
+	@synchronized(_orderedPerforms)
+	{
+		NSInteger count=[_orderedPerforms count];
+
+		while(--count>=0){
+			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
+			
+			if([check target]==target)
+				[_orderedPerforms removeObjectAtIndex:count];
+		}
+	}
+}
 
 
 @end
@@ -249,8 +305,13 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 
 +(void)cancelPreviousPerformRequestsWithTarget:target
        selector:(SEL)selector object:argument {
-   NSDelayedPerform *delayed=[NSDelayedPerform delayedPerformWithObject:target selector:selector
-     argument:argument];
+   NSDelayedPerform *delayed=[NSDelayedPerform delayedPerformWithObject:target selector:selector argument:argument];
+
+   [[NSRunLoop currentRunLoop] invalidateTimerWithDelayedPerform:delayed];
+}
+
++(void)cancelPreviousPerformRequestsWithTarget:target {
+   NSDelayedPerform *delayed=[NSDelayedPerform delayedPerformWithObject:target selector:NULL argument:nil];
 
    [[NSRunLoop currentRunLoop] invalidateTimerWithDelayedPerform:delayed];
 }
@@ -277,9 +338,6 @@ NSString * const NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    [[self class] object:self performSelector:selector withObject:argument
       afterDelay:delay];
 }
-
-
-
 
 @end
 

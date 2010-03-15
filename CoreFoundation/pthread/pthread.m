@@ -62,7 +62,7 @@ int pthread_setspecific(pthread_key_t key, const void *value) {
 }
 
 int pthread_key_create(pthread_key_t *key,void (*destructor)(void*)) {
-#warning implement destructor
+// FIXME: implement destructor
    if((*key=TlsAlloc())==TLS_OUT_OF_INDEXES)
     return EAGAIN;
     

@@ -133,7 +133,7 @@
 		C88974800EA0BF3100D0A0A2 /* NSTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B60976075300DA0954 /* NSTextAttachment.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974810EA0BF3100D0A0A2 /* NSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B80976075300DA0954 /* NSTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974820EA0BF3100D0A0A2 /* NSTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C88974830EA0BF3100D0A0A2 /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C88974830EA0BF3100D0A0A2 /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C88974840EA0BF3100D0A0A2 /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974850EA0BF3100D0A0A2 /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974860EA0BF3100D0A0A2 /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
@@ -795,7 +795,7 @@
 		C8A2E3010F07EA1F0054397C /* NSTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B60976075300DA0954 /* NSTextAttachment.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3020F07EA1F0054397C /* NSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B80976075300DA0954 /* NSTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3030F07EA1F0054397C /* NSTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C8A2E3040F07EA1F0054397C /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8A2E3040F07EA1F0054397C /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8A2E3050F07EA1F0054397C /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3060F07EA1F0054397C /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3070F07EA1F0054397C /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
@@ -1489,7 +1489,7 @@
 		FE01A8670C5D9BCB00AEA51A /* NSTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B60976075300DA0954 /* NSTextAttachment.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8680C5D9BCB00AEA51A /* NSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B80976075300DA0954 /* NSTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8690C5D9BCB00AEA51A /* NSTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A86A0C5D9BCB00AEA51A /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A86A0C5D9BCB00AEA51A /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A86B0C5D9BCB00AEA51A /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A86C0C5D9BCB00AEA51A /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A86D0C5D9BCB00AEA51A /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
@@ -2269,7 +2269,7 @@
 		FE5A893710C6F50E005E348A /* NSTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B60976075300DA0954 /* NSTextAttachment.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A893810C6F50E005E348A /* NSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B80976075300DA0954 /* NSTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A893910C6F50E005E348A /* NSTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE5A893A10C6F50E005E348A /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5A893A10C6F50E005E348A /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A893B10C6F50E005E348A /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A893C10C6F50E005E348A /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A893D10C6F50E005E348A /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
@@ -3115,7 +3115,7 @@
 		FEA313D50FD5667D00F480D4 /* NSTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B60976075300DA0954 /* NSTextAttachment.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313D60FD5667D00F480D4 /* NSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B80976075300DA0954 /* NSTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313D70FD5667D00F480D4 /* NSTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FEA313D80FD5667D00F480D4 /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA313D80FD5667D00F480D4 /* NSTrackingArea.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingArea.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA313D90FD5667D00F480D4 /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313DA0FD5667D00F480D4 /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313DB0FD5667D00F480D4 /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };

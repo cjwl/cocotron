@@ -2,9 +2,9 @@
 #import <Foundation/NSSocket.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSRaiseException.h>
-#import <pthread.h>
 
 #ifdef OPENSSL_ENABLED
+#import <pthread.h>
 #import <openssl/err.h>
 
 @implementation CFSSLHandler(openssl)
@@ -15,11 +15,8 @@
 
 @end
 
-#endif
-
 @implementation CFSSLHandler_openssl
 
-#ifdef OPENSSL_ENABLED
 
 
 static pthread_mutex_t  initLock=PTHREAD_MUTEX_INITIALIZER;
@@ -310,6 +307,7 @@ static threadid_func(CRYPTO_THREADID *id){
     }
 }
 
-#endif
 
 @end
+
+#endif

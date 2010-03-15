@@ -56,25 +56,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[_asyncInputSourceSets objectAtIndex:i] changingIntoMode:mode];
 }
 
--(BOOL)fireTimers {
-   NSMutableArray *fire=[NSMutableArray array];
-   NSDate         *now=[NSDate date];
-   NSInteger             count=[_timers count];
-   BOOL            didFireTimer=NO;
-   
-   while(--count>=0){
-    NSTimer *timer=[_timers objectAtIndex:count];
-
-    if(![timer isValid])
-     [_timers removeObjectAtIndex:count];
-    else if([now compare:[timer fireDate]]!=NSOrderedAscending) {
-     [fire addObject:timer];
-       didFireTimer=YES;
+-(BOOL)fireFirstTimer {
+   NSDate   *now=[NSDate date];
+   NSInteger i,count=[_timers count];
+   NSTimer  *fireTimer=nil;
+      
+   for(i=0;i<count;i++){
+    NSTimer *check=[_timers objectAtIndex:i];
+    
+    if([check isValid] && [now compare:[check fireDate]]!=NSOrderedAscending) {
+     fireTimer=[check retain];
+     [_timers removeObjectAtIndex:i];
+     break;
     }
    }
-
-   [fire makeObjectsPerformSelector:@selector(fire)];
-   return didFireTimer;
+   
+   if(fireTimer!=nil){
+    [fireTimer fire];
+    [_timers addObject:fireTimer];
+    [fireTimer release];
+   }
+      
+   count=[_timers count];
+   while(--count>=0)
+    if(![[_timers objectAtIndex:count] isValid])
+     [_timers removeObjectAtIndex:count];
+     
+   return (fireTimer!=nil)?YES:NO;
 }
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
@@ -87,10 +95,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     if(![timer isValid])
      [_timers removeObjectAtIndex:count];
-    else if(limit==nil)
-     limit=[timer fireDate];
-    else
-     limit=[limit earlierDate:[timer fireDate]];
+    else {
+     if(limit==nil){
+      limit=[timer fireDate];
+     }
+     else{
+      limit=[limit earlierDate:[timer fireDate]];
+     }
+    }
    }
    
    if(limit==nil){
@@ -132,9 +144,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSTimer          *timer=[_timers objectAtIndex:count];
     NSDelayedPerform *check=[timer userInfo];
 
-    if([check isKindOfClass:[NSDelayedPerform class]])
+    if([check isKindOfClass:[NSDelayedPerform class]]){
      if([check isEqualToPerform:delayed])
       [timer invalidate];
+    }
    }
 }
 

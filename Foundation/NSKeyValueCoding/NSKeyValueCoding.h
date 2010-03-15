@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary, NSArray, NSError;
 
-FOUNDATION_EXPORT NSString *const NSUndefinedKeyException;
+FOUNDATION_EXPORT NSString * const NSUndefinedKeyException;
 
 @interface NSObject (KeyValueCoding)
 +(BOOL)accessInstanceVariablesDirectly;

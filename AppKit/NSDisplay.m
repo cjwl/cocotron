@@ -219,3 +219,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+void NSColorSetCatalogColor(NSString *catalogName,NSString *colorName,NSColor *color){
+   [[NSDisplay currentDisplay] _addSystemColor:color forName: colorName];
+}
+
+NSColor *NSColorGetCatalogColor(NSString *catalogName,NSString *colorName){
+   return [[NSDisplay currentDisplay] colorWithName:colorName];
+}

@@ -1,9 +1,9 @@
 #import <CFNetwork/CFHost.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSRunLoop.h>
-#import <Foundation/NSHandleMonitor_win32.h>
 #import <Foundation/NSDebug.h>
 #ifdef WINDOWS
+#import <Foundation/NSHandleMonitor_win32.h>
 #undef WINVER
 #define WINVER 0x501
 #import <windows.h>

@@ -90,12 +90,12 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
     return [self hostName];
 }
 
-NSString *NSPlatformExecutableDirectory=@"Linux";
-NSString *NSPlatformResourceNameSuffix=@"linux";
+NSString * const NSPlatformExecutableDirectory=@"Linux";
+NSString * const NSPlatformResourceNameSuffix=@"linux";
 
-NSString *NSPlatformExecutableFileExtension=@"";
-NSString *NSPlatformLoadableObjectFileExtension=@"so";
-NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
+NSString * const NSPlatformExecutableFileExtension=@"";
+NSString * const NSPlatformLoadableObjectFileExtension=@"so";
+NSString * const NSPlatformLoadableObjectFilePrefix=@"lib";
 
 -(Class)taskClass {
    return [NSTask_linux class];

@@ -16,7 +16,9 @@ FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
 
 @interface NSRunLoop : NSObject {
    NSMapTable      *_modes;
+   NSMutableArray  *_commonModes;
    NSString        *_currentMode;
+   NSMutableArray  *_continue;
    NSMutableArray  *_orderedPerforms;
 }
 
@@ -42,6 +44,7 @@ FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
 -(void)performSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
 
 -(void)cancelPerformSelector:(SEL)selector target:target argument:argument;
+-(void)cancelPerformSelectorsWithTarget:target;
 
 @end
 
@@ -50,8 +53,8 @@ FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
 -(void)performSelector:(SEL)selector withObject:object
   afterDelay:(NSTimeInterval)delay;
 
-+(void)cancelPreviousPerformRequestsWithTarget:target selector:(SEL)selector
-  object:object;
++(void)cancelPreviousPerformRequestsWithTarget:target selector:(SEL)selector object:object;
++(void)cancelPreviousPerformRequestsWithTarget:target;
 
 @end
 

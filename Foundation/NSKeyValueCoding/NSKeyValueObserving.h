@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 @class NSDictionary,NSSet;
 
-FOUNDATION_EXPORT NSString *const NSKeyValueChangeKindKey;
-FOUNDATION_EXPORT NSString *const NSKeyValueChangeNewKey;
-FOUNDATION_EXPORT NSString *const NSKeyValueChangeOldKey;
-FOUNDATION_EXPORT NSString *const NSKeyValueChangeIndexesKey;
-FOUNDATION_EXPORT NSString *const NSKeyValueChangeNotificationIsPriorKey;
+FOUNDATION_EXPORT NSString * const NSKeyValueChangeKindKey;
+FOUNDATION_EXPORT NSString * const NSKeyValueChangeNewKey;
+FOUNDATION_EXPORT NSString * const NSKeyValueChangeOldKey;
+FOUNDATION_EXPORT NSString * const NSKeyValueChangeIndexesKey;
+FOUNDATION_EXPORT NSString * const NSKeyValueChangeNotificationIsPriorKey;
 
 
 enum {

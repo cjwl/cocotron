@@ -8,23 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSString+KVCAdditions.h"
 
-
 @implementation NSString (KVCPrivateAdditions)
--(id)_KVC_setterKeyNameFromSelectorName
-{
-	NSString* keyName=[self substringWithRange:NSMakeRange(3, [self length]-4)];
-	return [NSString stringWithFormat:@"%@%@", [[keyName substringToIndex:1] lowercaseString], [keyName substringFromIndex:1]]; 
-}
 
--(BOOL)_KVC_setterKeyName:(NSString**)ret forSelectorNameStartingWith:(id)start endingWith:(id)end;
+-(BOOL)_KVC_isSetterForSelectorNameStartingWith:(NSString *)start endingWith:(NSString *)end;
 {
-	*ret=nil;
 	if([self hasPrefix:start] && [self hasSuffix:end])
 	{
 		NSString* keyName=[self substringWithRange:NSMakeRange([start length], [self length]-[end length]-[start length])];
       if(![keyName length])
          return NO;
-		*ret = [NSString stringWithFormat:@"%@%@", [[keyName substringToIndex:1] lowercaseString], [keyName substringFromIndex:1]]; 
+
 		return YES;
 	}
 	return NO;

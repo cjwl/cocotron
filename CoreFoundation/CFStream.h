@@ -6,9 +6,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-typedef struct __NSStream       *CFStreamRef;
-typedef struct __NSInputStream  *CFReadStreamRef;
-typedef struct __NSOutputStream *CFWriteStreamRef;
+typedef struct __CFStream       *CFStreamRef;
+typedef struct __CFReadStream  *CFReadStreamRef;
+typedef struct __CFWriteStream *CFWriteStreamRef;
 
 #import <CoreFoundation/CFBase.h>
 #import <CoreFoundation/CFRunLoop.h>
@@ -16,6 +16,7 @@ typedef struct __NSOutputStream *CFWriteStreamRef;
 #import <CoreFoundation/CFURL.h>
 #import <CoreFoundation/CFError.h>
 
+// These values must match NSStream
 typedef enum {
    kCFStreamEventNone             =0,
    kCFStreamEventOpenCompleted    =(1<<0),

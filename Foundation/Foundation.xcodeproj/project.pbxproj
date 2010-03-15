@@ -2854,6 +2854,34 @@
 		FE1CF95B10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
 		FE1CF95C10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
 		FE1CF95D10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE2569E910F2F9C7005CE23E /* CFHost.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E610F2F9C7005CE23E /* CFHost.m */; };
+		FE2569EA10F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569EB10F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569ED10F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569EE10F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569F010F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569F110F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569F310F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569F410F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569F610F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569F710F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569F910F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569FA10F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569FC10F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE2569FD10F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE2569FF10F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE256A0010F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE256A0210F2F9C7005CE23E /* CFNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E710F2F9C7005CE23E /* CFNetServices.m */; };
+		FE256A0310F2F9C7005CE23E /* CFSocketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2569E810F2F9C7005CE23E /* CFSocketStream.m */; };
+		FE256A8310F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8410F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8510F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8610F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8710F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8810F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8910F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8A10F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
+		FE256A8B10F387DA005CE23E /* CFDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE256A8210F387DA005CE23E /* CFDate.m */; };
 		FE2705C60C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */; };
 		FE2705C70C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */; };
 		FE30A05510C6ED6F00A1BF7F /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3551,6 +3579,24 @@
 		FE35D66F0B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */; };
 		FE35D6700B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */; };
 		FE35D6710B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */; };
+		FE3C473E112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C473F112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C4740112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C4741112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C4742112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C4743112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C4744112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C4745112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C4746112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C4747112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C4748112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C4749112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C474A112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C474B112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C474C112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C474D112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
+		FE3C474E112AF7FC0099DAB8 /* CFUID.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C473C112AF7FC0099DAB8 /* CFUID.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3C474F112AF7FC0099DAB8 /* CFUID.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C473D112AF7FC0099DAB8 /* CFUID.m */; };
 		FE3F7D9C0BE63BBE007E9363 /* NSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE3F7D9D0BE63BBE007E9363 /* NSDateComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */; };
 		FE3F7D9E0BE63BBE007E9363 /* NSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3694,6 +3740,15 @@
 		FE53BE7C0BA9ED490050277F /* NSXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE520BA9ED490050277F /* NSXMLNode.m */; };
 		FE53BE7F0BA9ED490050277F /* NSXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE550BA9ED490050277F /* NSXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE53BE800BA9ED490050277F /* NSXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE560BA9ED490050277F /* NSXMLParser.m */; };
+		FE55AD1A1119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD1B1119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD1C1119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD1D1119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD1E1119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD1F1119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD201119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD211119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
+		FE55AD221119D86900A777AB /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE55AD191119D86900A777AB /* CFByteOrder.m */; };
 		FE5A86DA10C6EF41005E348A /* NSMemoryFunctions_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */; };
 		FE5A86DB10C6EF41005E348A /* NSPlatform_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A86DC10C6EF42005E348A /* NSPlatform_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */; };
@@ -4326,6 +4381,24 @@
 		FE651A820FBC844C00464BFD /* NSTimeZoneRegions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B309747EA400EC542B /* NSTimeZoneRegions.plist */; };
 		FE651A830FBC844C00464BFD /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
 		FE651BB00FBC92F700464BFD /* objc_msgSend-darwin-i386.s in Sources */ = {isa = PBXBuildFile; fileRef = FED70C8E0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s */; };
+		FE65B3001107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B3011107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B3021107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B3031107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B3041107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B3051107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B3061107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B3071107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B3081107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B3091107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B30A1107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B30B1107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B30C1107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B30D1107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B30E1107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B30F1107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE65B3101107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
+		FE65B3111107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
 		FE6DC2590BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6DC25A0BA902710082AC66 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC2560BA902710082AC66 /* NSAffineTransform.m */; };
 		FE6DC25B0BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -4394,6 +4467,25 @@
 		FE7FE5C80D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
 		FE7FE5C90D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
 		FE7FE5CA0D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
+		FE828F0B110DEB540008AFA2 /* pthread.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F0A110DEB540008AFA2 /* pthread.m */; };
+		FE828F39110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F3A110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F3B110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F3C110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F3D110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F3E110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F3F110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F40110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F41110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F42110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F43110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F44110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F45110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F46110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F47110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F48110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
+		FE828F49110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */; };
+		FE828F4A110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */; };
 		FE8693F60FE0108E00F89733 /* CFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8693D20FE0108E00F89733 /* CFArray.m */; };
 		FE8693F70FE0108E00F89733 /* CFAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8693D30FE0108E00F89733 /* CFAttributedString.m */; };
 		FE8693F80FE0108E00F89733 /* CFBag.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8693D40FE0108E00F89733 /* CFBag.m */; };
@@ -4648,6 +4740,42 @@
 		FE8C914B0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
 		FE8C914C0FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8C914D0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE9C1B8C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1B8D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1B8F1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1B901125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1B911125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1B931125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1B941125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1B951125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1B971125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1B981125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1B991125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1B9B1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1B9C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1B9D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1B9F1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1BA01125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1BA11125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1BA31125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1BA41125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1BA51125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1BA71125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1BA81125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1BA91125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1BAB1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
+		FE9C1BAC1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
+		FE9C1BAD1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
+		FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE9C1BAF1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
 		FE9D95440C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
 		FE9D95450C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */; };
 		FE9D95460C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */; };
@@ -4878,15 +5006,6 @@
 		FEC1CFE20F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC1CFE30F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC1CFE40F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEC79E3C1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E3D1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E3E1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E3F1146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E401146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E411146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E421146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E431146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
-		FEC79E441146C47D0070B596 /* CFByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC79E3B1146C47D0070B596 /* CFByteOrder.m */; };
 		FEC9F6AE0E2F98EA0034932A /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		FEC9F6AF0E2F98EA0034932A /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		FEC9F6B00E2F98EA0034932A /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
@@ -6331,6 +6450,13 @@
 			remoteGlobalIDString = FE01A57F0C5D9B3100AEA51A;
 			remoteInfo = "objc-Windows-i386";
 		};
+		FE2569DF10F2F91C005CE23E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "CFNetwork-Windows-i386";
+		};
 		FE50C5D90D85891000CD1896 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -6379,6 +6505,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = FE651A9D0FBC84DD00464BFD;
 			remoteInfo = "objc-Darwin-i386 copy";
+		};
+		FEA752F6114EB30B00AF634E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA752F3114EB30B00AF634E;
+			remoteInfo = "CFNetwork-Windows-i386 copy";
 		};
 		FEA828AA109B74B200C7A732 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6994,6 +7127,11 @@
 		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwarding.h; sourceTree = "<group>"; };
 		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forwarding.m; sourceTree = "<group>"; };
 		FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegalCharacterSet.bitmap; path = NSCharacterSet/illegalCharacterSet.bitmap; sourceTree = "<group>"; };
+		FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE2569E610F2F9C7005CE23E /* CFHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFHost.m; sourceTree = "<group>"; };
+		FE2569E710F2F9C7005CE23E /* CFNetServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFNetServices.m; sourceTree = "<group>"; };
+		FE2569E810F2F9C7005CE23E /* CFSocketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSocketStream.m; sourceTree = "<group>"; };
+		FE256A8210F387DA005CE23E /* CFDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFDate.m; sourceTree = "<group>"; };
 		FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = OBJCInitializeProcess_Darwin.m; sourceTree = "<group>"; };
 		FE30A2FF10C6ED6F00A1BF7F /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE35CAEC0B4AB85800FE7AB3 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
@@ -7013,6 +7151,8 @@
 		FE35D6480B52A3E400FE7AB3 /* NSSelectSet_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSelectSet_bsd.m; path = platform_posix/NSSelectSet_bsd.m; sourceTree = "<group>"; };
 		FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocket_bsd.h; path = platform_posix/NSSocket_bsd.h; sourceTree = "<group>"; };
 		FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocket_bsd.m; path = platform_posix/NSSocket_bsd.m; sourceTree = "<group>"; };
+		FE3C473C112AF7FC0099DAB8 /* CFUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFUID.h; sourceTree = "<group>"; };
+		FE3C473D112AF7FC0099DAB8 /* CFUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFUID.m; sourceTree = "<group>"; };
 		FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSDateComponents.h; path = NSDate/NSDateComponents.h; sourceTree = "<group>"; };
 		FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSDateComponents.m; path = NSDate/NSDateComponents.m; sourceTree = "<group>"; };
 		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
@@ -7052,6 +7192,7 @@
 		FE53BE520BA9ED490050277F /* NSXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLNode.m; sourceTree = "<group>"; };
 		FE53BE550BA9ED490050277F /* NSXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLParser.h; sourceTree = "<group>"; };
 		FE53BE560BA9ED490050277F /* NSXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLParser.m; sourceTree = "<group>"; };
+		FE55AD191119D86900A777AB /* CFByteOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFByteOrder.m; sourceTree = "<group>"; };
 		FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMemoryFunctions_bsd.m; sourceTree = "<group>"; };
 		FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPlatform_bsd.h; sourceTree = "<group>"; };
 		FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_bsd.m; sourceTree = "<group>"; };
@@ -7062,6 +7203,8 @@
 		FE6014291042FD6B008A7357 /* NSString_defaultEncoding_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_defaultEncoding_windows.m; sourceTree = "<group>"; };
 		FE60143A1042FDD2008A7357 /* NSString_defaultEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_defaultEncoding.h; sourceTree = "<group>"; };
 		FE651A870FBC844C00464BFD /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE65B2FE1107690500439F46 /* NSObservationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationInfo.h; sourceTree = "<group>"; };
+		FE65B2FF1107690500439F46 /* NSObservationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObservationInfo.m; sourceTree = "<group>"; };
 		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE74776D0BAC4E9000829F4F /* NSDecimal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimal.h; sourceTree = "<group>"; };
@@ -7088,6 +7231,9 @@
 		FE75E2E710F6442F000419C4 /* bonjour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bonjour.m; sourceTree = "<group>"; };
 		FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFileHandle_stream.h; sourceTree = "<group>"; };
 		FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFileHandle_stream.m; sourceTree = "<group>"; };
+		FE828F0A110DEB540008AFA2 /* pthread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pthread.m; path = pthread/pthread.m; sourceTree = "<group>"; };
+		FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKVOInfoPerObject.h; sourceTree = "<group>"; };
+		FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKVOInfoPerObject.m; sourceTree = "<group>"; };
 		FE8693D20FE0108E00F89733 /* CFArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFArray.m; sourceTree = "<group>"; };
 		FE8693D30FE0108E00F89733 /* CFAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFAttributedString.m; sourceTree = "<group>"; };
 		FE8693D40FE0108E00F89733 /* CFBag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFBag.m; sourceTree = "<group>"; };
@@ -7130,6 +7276,10 @@
 		FE88A4D50F8A9DE00081CFC1 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
 		FE8C913E0FFD1E430027C889 /* NSString_win1252.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_win1252.h; sourceTree = "<group>"; };
 		FE8C913F0FFD1E430027C889 /* NSString_win1252.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_win1252.m; sourceTree = "<group>"; };
+		FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSSLHandler_openssl.h; sourceTree = "<group>"; };
+		FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSSLHandler_openssl.m; sourceTree = "<group>"; };
+		FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSSLHandler.h; sourceTree = "<group>"; };
+		FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSSLHandler.m; sourceTree = "<group>"; };
 		FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNil.h; sourceTree = "<group>"; };
 		FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_IsNil.m; sourceTree = "<group>"; };
 		FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNotNil.h; sourceTree = "<group>"; };
@@ -7236,7 +7386,6 @@
 		FEBF53670F926025005DC684 /* objc_protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_protocol.h; sourceTree = "<group>"; };
 		FEBF545A0F93AE8A005DC684 /* objc_property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_property.m; sourceTree = "<group>"; };
 		FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationErrors.h; sourceTree = "<group>"; };
-		FEC79E3B1146C47D0070B596 /* CFByteOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFByteOrder.m; sourceTree = "<group>"; };
 		FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtocol_http.h; sourceTree = "<group>"; };
 		FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtocol_http.m; sourceTree = "<group>"; };
 		FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionState.h; sourceTree = "<group>"; };
@@ -7380,6 +7529,8 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FE2569E410F2F936005CE23E /* CFNetwork */,
+				FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */,
 				FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */,
 				151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */,
 				FE463E54102CD5C700B265D6 /* NSPointerArray.h */,
@@ -7396,8 +7547,8 @@
 				FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */,
 				FE6DC2550BA902710082AC66 /* NSAffineTransform.h */,
 				FE6DC2560BA902710082AC66 /* NSAffineTransform.m */,
-				6E28030D0974787200EC542B /* NSArchiver.h */,
 				6E28030E0974787200EC542B /* NSArchiver.m */,
+				6E28030D0974787200EC542B /* NSArchiver.h */,
 				6E280310097478A700EC542B /* NSArray */,
 				FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */,
 				FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */,
@@ -7777,6 +7928,8 @@
 		6E2803390974795700EC542B /* NSPropertyList */ = {
 			isa = PBXGroup;
 			children = (
+				FE3C473C112AF7FC0099DAB8 /* CFUID.h */,
+				FE3C473D112AF7FC0099DAB8 /* CFUID.m */,
 				FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */,
 				FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */,
 				FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */,
@@ -7860,6 +8013,10 @@
 		6E28033D0974797500EC542B /* NSStream */ = {
 			isa = PBXGroup;
 			children = (
+				FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */,
+				FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */,
+				FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */,
+				FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */,
 				FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */,
 				FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */,
 				6E2805FF09747D5800EC542B /* NSFileHandle.h */,
@@ -8324,6 +8481,26 @@
 			path = platform_darwin;
 			sourceTree = "<group>";
 		};
+		FE2569DC10F2F91C005CE23E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE2569E010F2F91C005CE23E /* CFNetwork.framework */,
+				FEA752F7114EB30B00AF634E /* CFNetwork.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE2569E410F2F936005CE23E /* CFNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				FE2569E610F2F9C7005CE23E /* CFHost.m */,
+				FE2569E710F2F9C7005CE23E /* CFNetServices.m */,
+				FE2569E810F2F9C7005CE23E /* CFSocketStream.m */,
+			);
+			name = CFNetwork;
+			path = ../CFNetwork;
+			sourceTree = "<group>";
+		};
 		FE3B5D350FF3A6CF005E7605 /* platform_solaris */ = {
 			isa = PBXGroup;
 			children = (
@@ -8351,7 +8528,9 @@
 		FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				FEC79E3B1146C47D0070B596 /* CFByteOrder.m */,
+				FE55AD191119D86900A777AB /* CFByteOrder.m */,
+				FE828F0A110DEB540008AFA2 /* pthread.m */,
+				FE256A8210F387DA005CE23E /* CFDate.m */,
 				1A8A694E1091EF0200DC5A01 /* NSCFTypeID.h */,
 				FE8693D20FE0108E00F89733 /* CFArray.m */,
 				FE8693D30FE0108E00F89733 /* CFAttributedString.m */,
@@ -8503,6 +8682,10 @@
 		FEB6CC800B4A1C7A004FADF2 /* NSKeyValueCoding */ = {
 			isa = PBXGroup;
 			children = (
+				FE828F37110DFA1C0008AFA2 /* NSKVOInfoPerObject.h */,
+				FE828F38110DFA1C0008AFA2 /* NSKVOInfoPerObject.m */,
+				FE65B2FE1107690500439F46 /* NSObservationInfo.h */,
+				FE65B2FF1107690500439F46 /* NSObservationInfo.m */,
 				FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */,
 				FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */,
 				FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */,
@@ -8987,6 +9170,11 @@
 				1A27BFFE1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFFF1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69561091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B30E1107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F47110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1BA81125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C474C112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9309,6 +9497,11 @@
 				1A27C0001090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27C0011090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69551091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B30C1107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F45110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1BA41125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C474A112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9631,6 +9824,11 @@
 				1A27BFF81090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFF91090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69521091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B3041107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F3D110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1B941125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C4742112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9953,6 +10151,11 @@
 				1A27BFFA1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFFB1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69531091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B3021107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F3B110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1B901125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C4740112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10279,6 +10482,11 @@
 				1A27BFFC1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFFD1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69541091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B3001107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F39110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1B8C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C473E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10601,6 +10809,11 @@
 				FE30A18F10C6ED6F00A1BF7F /* NSCFTypeID.h in Headers */,
 				FE5A86DB10C6EF41005E348A /* NSPlatform_bsd.h in Headers */,
 				FE5A86DD10C6EF43005E348A /* NSTask_bsd.h in Headers */,
+				FE65B3101107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F49110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1BAC1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C474E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10924,6 +11137,11 @@
 				1A27BFF61090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFF71090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69511091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B30A1107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F43110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1BA01125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C4748112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11247,6 +11465,11 @@
 				1A27BFF21090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFF31090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A694F1091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B3061107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F3F110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1B981125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C4744112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11570,6 +11793,11 @@
 				1A27BFF41090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
 				1A27BFF51090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69501091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
+				FE65B3081107690500439F46 /* NSObservationInfo.h in Headers */,
+				FE828F41110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
+				FE9C1B9C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
+				FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */,
+				FE3C4746112AF7FC0099DAB8 /* CFUID.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11790,6 +12018,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = FE2569DC10F2F91C005CE23E /* Products */;
+					ProjectRef = FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */;
+				},
+				{
 					ProductGroup = FEA828A4109B74B200C7A732 /* Products */;
 					ProjectRef = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
 				},
@@ -11829,6 +12061,13 @@
 			remoteRef = 28D485000FE04DDD00DC03EF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FE2569E010F2F91C005CE23E /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = FE2569DF10F2F91C005CE23E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE5A868E10C6EDDC005E348A /* objc.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -11848,6 +12087,13 @@
 			fileType = wrapper.framework;
 			path = objc.framework;
 			remoteRef = FE651AA00FBC84DD00464BFD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEA752F7114EB30B00AF634E /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = FEA752F6114EB30B00AF634E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FEA828AB109B74B200C7A732 /* CoreFoundation.framework */ = {
@@ -12448,8 +12694,16 @@
 				15D921AC105E918000171406 /* NSPointerFunctions.m in Sources */,
 				15D921AD105E918000171406 /* NSString_defaultEncoding_posix.m in Sources */,
 				151B5CC4105EA25E009092D5 /* objc_msg_sendv-Disabled.m in Sources */,
+				FE2569FF10F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE256A0010F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8A10F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2EF10F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E431146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B30F1107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F48110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD211119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1BA91125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1BAB1125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C474D112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12803,8 +13057,16 @@
 				FE463E53102CD5B800B265D6 /* NSGarbageCollector.m in Sources */,
 				FE463E71102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E73102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
+				FE2569FC10F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569FD10F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8910F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2EE10F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E421146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B30D1107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F46110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD201119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1BA51125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1BA71125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C474B112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13159,8 +13421,16 @@
 				FE463E61102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E63102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014231042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */,
+				FE2569F010F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569F110F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8510F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2EA10F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E3E1146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B3051107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F3E110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD1C1119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1B951125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1B971125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C4743112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13516,8 +13786,16 @@
 				FE463E5D102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E5F102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014241042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */,
+				FE2569ED10F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569EE10F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8410F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2E910F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E3D1146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B3031107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F3C110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD1B1119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1B911125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1B931125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C4741112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13877,8 +14155,18 @@
 				FE463E59102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E5B102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE60142A1042FD6B008A7357 /* NSString_defaultEncoding_windows.m in Sources */,
+				FE2569E910F2F9C7005CE23E /* CFHost.m in Sources */,
+				FE2569EA10F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569EB10F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8310F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2E810F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E3C1146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B3011107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F0B110DEB540008AFA2 /* pthread.m in Sources */,
+				FE828F3A110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD1A1119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1B8D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1B8F1125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C473F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14234,8 +14522,16 @@
 				FE5A86DA10C6EF41005E348A /* NSMemoryFunctions_bsd.m in Sources */,
 				FE5A86DC10C6EF42005E348A /* NSPlatform_bsd.m in Sources */,
 				FE5A86DE10C6EF43005E348A /* NSTask_bsd.m in Sources */,
+				FE256A0210F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE256A0310F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8B10F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2F010F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E441146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B3111107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F4A110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD221119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1BAD1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1BAF1125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C474F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14594,8 +14890,16 @@
 				FE6014281042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
 				1A27C0051090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0631090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
+				FE2569F910F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569FA10F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8810F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2ED10F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E411146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B30B1107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F44110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD1F1119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1BA11125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1BA31125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C4749112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14955,8 +15259,16 @@
 				FE6014261042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
 				1A27C0031090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0611090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
+				FE2569F310F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569F410F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8610F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2EB10F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E3F1146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B3071107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F40110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD1D1119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1B991125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1B9B1125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C4745112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15316,8 +15628,16 @@
 				FE6014271042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
 				1A27C0041090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0621090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
+				FE2569F610F2F9C7005CE23E /* CFNetServices.m in Sources */,
+				FE2569F710F2F9C7005CE23E /* CFSocketStream.m in Sources */,
+				FE256A8710F387DA005CE23E /* CFDate.m in Sources */,
 				FE75E2EC10F6442F000419C4 /* bonjour.m in Sources */,
-				FEC79E401146C47D0070B596 /* CFByteOrder.m in Sources */,
+				FE65B3091107690500439F46 /* NSObservationInfo.m in Sources */,
+				FE828F42110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
+				FE55AD1E1119D86900A777AB /* CFByteOrder.m in Sources */,
+				FE9C1B9D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
+				FE9C1B9F1125A649002DA20B /* CFSSLHandler.m in Sources */,
+				FE3C4747112AF7FC0099DAB8 /* CFUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15591,7 +15911,10 @@
 		6E2801BB09746B8900EC542B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD=1";
+				OTHER_CFLAGS = (
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
+				);
 			};
 			name = Release;
 		};
@@ -15850,7 +16173,10 @@
 		7E891F1C0D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD=1";
+				OTHER_CFLAGS = (
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
+				);
 			};
 			name = Debug;
 		};
@@ -15871,6 +16197,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_UNROLL_LOOPS = NO;
+				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;

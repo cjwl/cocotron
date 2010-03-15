@@ -301,15 +301,12 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
 
 -(BOOL)boolForKey:(NSString *)defaultName {
-   NSString *string=[self objectForKey:defaultName];
+   id object=[self objectForKey:defaultName];
 
-   if(![string isKindOfClass:objc_lookUpClass("NSString")])
-    return NO;
-
-   if([string caseInsensitiveCompare:@"YES"]==NSOrderedSame)
-    return YES;
-
-   return [string intValue];
+   if([object isKindOfClass:[NSNumber class]] || [object isKindOfClass:[NSString class]])
+    return [object boolValue];
+   
+   return NO;
 }
 
 -(NSInteger)integerForKey:(NSString *)defaultName {

@@ -8,23 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSColor_catalog.h>
 #import <AppKit/NSGraphics.h>
-#import <AppKit/NSDisplay.h>
 
 @interface NSColor(NSAppKitPrivate)
 -(CGColorRef)CGColorRef;
 @end
 
+void NSColorSetCatalogColor(NSString *catalogName,NSString *colorName,NSColor *color);
+NSColor *NSColorGetCatalogColor(NSString *catalogName,NSString *colorName);
+
 @implementation NSColor_catalog
 
--initWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName {
+-initWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName color:(NSColor *)color {
    _catalogName=[catalogName copy];
    _colorName=[colorName copy];
+   _color=[color copy];
    return self;
 }
 
 -(void)dealloc {
    [_colorName release];
    [_catalogName release];
+   [_color release];
    NSDeallocateObject(self);
    return;
    [super dealloc];
@@ -49,14 +53,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
-- (NSString *)description
-{
+-(NSString *)description {
     return [NSString stringWithFormat:@"<%@ catalogName: %@ colorName: %@>",
         [[self class] description], _catalogName, _colorName];
 }
 
 +(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName {
-   return [[[self alloc] initWithCatalogName:catalogName colorName:colorName] autorelease];
+   return [[[self alloc] initWithCatalogName:catalogName colorName:colorName color:nil] autorelease];
+}
+
++(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName color:(NSColor *)color {
+   if(NSColorGetCatalogColor(catalogName,colorName)==nil)
+    NSColorSetCatalogColor(catalogName,colorName,color);
+   
+   return [[[self alloc] initWithCatalogName:catalogName colorName:colorName color:color] autorelease];
 }
 
 -(NSString *)colorSpaceName {
@@ -72,37 +82,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device {
- NSColor *result;
+   NSColor *result;
 
-    if ([colorSpace isEqualToString:[self colorSpaceName]])
-        return self;
+   if ([colorSpace isEqualToString:[self colorSpaceName]])
+    return self;
 
-    result=[[[NSDisplay currentDisplay] colorWithName:_colorName] colorUsingColorSpaceName:colorSpace device:device];
+   result=[NSColorGetCatalogColor(_catalogName,_colorName) colorUsingColorSpaceName:colorSpace device:device];
+   
    if(result==nil)
     NSLog(@"result ==nil %@ %@",_colorName,colorSpace);
+    
    return result;
 }
 
 -(CGColorRef)CGColorRef {
-   return [[[NSDisplay currentDisplay] colorWithName:_colorName] CGColorRef];
+   return [NSColorGetCatalogColor(_catalogName,_colorName) CGColorRef];
 }
 
 -(void)setFill {
-    NSColor *color=[[NSDisplay currentDisplay] colorWithName:_colorName];
+   NSColor *color=NSColorGetCatalogColor(_catalogName,_colorName);
     
-    if(color==nil)
-        [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
+   if(color==nil)
+    [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
     
-    [color setFill];
+   [color setFill];
 }
 
 -(void)setStroke {
-    NSColor *color=[[NSDisplay currentDisplay] colorWithName:_colorName];
+   NSColor *color=NSColorGetCatalogColor(_catalogName,_colorName);
     
-    if(color==nil)
-        [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
+   if(color==nil)
+    [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
     
-    [color setStroke];
+   [color setStroke];
 }
 
 @end

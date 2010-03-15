@@ -10,6 +10,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSString (KVCAdditions)
 -(void)_KVC_partBeforeDot:(NSString**)before afterDot:(NSString**)after;
--(id)_KVC_setterKeyNameFromSelectorName;
--(BOOL)_KVC_setterKeyName:(NSString**)keyName forSelectorNameStartingWith:(id)start endingWith:(id)end;
+-(BOOL)_KVC_isSetterForSelectorNameStartingWith:(NSString *)start endingWith:(NSString *)end;
 @end
