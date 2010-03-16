@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSObject+BindingSupport.h>
+#import <CoreGraphics/O2Context.h>
 #import <AppKit/NSRaise.h>
 
 NSString * const NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
@@ -36,6 +37,7 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
 @interface NSView(NSView_forward)
 -(CGAffineTransform)transformFromWindow;
 -(CGAffineTransform)transformToWindow;
+-(void)_trackingAreasChanged;
 @end
 
 @implementation NSView
@@ -82,7 +84,6 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
      _autoresizesSubviews=(vFlags&0x100)?YES:NO;
     else
      _autoresizesSubviews=YES;
-
     _isHidden=(vFlags&0x80000000)?YES:NO;
     _tag=-1;
     if([keyed containsValueForKey:@"NSTag"])
@@ -91,6 +92,8 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
     _invalidRect=_bounds;
     _trackingAreas=[[NSMutableArray alloc] init];
+    _wantsLayer=[keyed decodeBoolForKey:@"NSViewIsLayerTreeHost"];
+    _contentFilters=[[keyed decodeObjectForKey:@"NSViewContentFilters"] retain];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -137,29 +140,27 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
    [_draggedTypes release];
    [_trackingAreas release];
    [self _unbindAllBindings];
+   [_contentFilters release];
 
    [super dealloc];
 }
 
--(void)invalidateTransform {
-   _validTransforms=NO;
-   [_subviews makeObjectsPerformSelector:_cmd];
-   [self updateTrackingAreas];
+static void invalidateTransform(NSView *self){
+   self->_validTransforms=NO;
+   self->_validTrackingAreas=NO;
+   
+   for(NSView *check in self->_subviews)
+    invalidateTransform(check);
 }
 
--(CGAffineTransform)createTransformToWindow {
-   CGAffineTransform result;
-   NSRect            bounds=[self bounds];
-   NSRect            frame=[self frame];
+static CGAffineTransform concatViewTransform(CGAffineTransform result,NSView *view,NSView *superview,BOOL doFrame,BOOL flip){
+   NSRect bounds=[view bounds];
+   NSRect frame=[view frame];
 
-   if([self superview]==nil)
-    result=CGAffineTransformIdentity;
-   else
-    result=[[self superview] transformToWindow];
-
+   if(doFrame)
    result=CGAffineTransformTranslate(result,frame.origin.x,frame.origin.y);
 
-   if([self isFlipped]!=[[self superview] isFlipped]){
+   if(flip){
     CGAffineTransform flip=CGAffineTransformMake(1,0,0,-1,0,bounds.size.height);
 
     result=CGAffineTransformConcat(flip,result);
@@ -169,7 +170,30 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
    return result;
 }
 
+-(CGAffineTransform)createTransformToWindow {
+   CGAffineTransform result;
+   NSView *superview=[self superview];
+   BOOL    doFrame=YES;
+   BOOL    flip;
+   
+   if(superview==nil){
+    result=CGAffineTransformIdentity;
+    flip=[self isFlipped];
+   }
+   else {
+    result=[superview transformToWindow];
+    flip=([self isFlipped]!=[superview isFlipped]);
+   }
+
+   result=concatViewTransform(result,self,superview,doFrame,flip);
+   
+   return result;
+}
+
 -(NSRect)calculateVisibleRect {
+   if([self isHiddenOrHasHiddenAncestor])
+    return NSZeroRect;
+    
    if([self superview]==nil)
     return [self bounds];
    else {
@@ -204,6 +228,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    return _transformToWindow;
 }
+
 
 -(NSRect)frame {
    return _frame;
@@ -300,7 +325,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSArray *)subviews {
-   return [[_subviews copy] autorelease];
+   return _subviews;
 }
 
 -(BOOL)autoresizesSubviews {
@@ -341,9 +366,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSRect)visibleRect {
-   if ([self isHiddenOrHasHiddenAncestor])
-    return NSZeroRect;
-   
    buildTransformsIfNeeded(self);
 
    return _visibleRect;
@@ -371,10 +393,12 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _isHidden || [_superview isHiddenOrHasHiddenAncestor];
 }
 
--(void)setHidden:(BOOL)flag
-{
+-(void)setHidden:(BOOL)flag {
+   flag=flag?YES:NO;
+
    if (_isHidden != flag)
    {
+    invalidateTransform(self);
       if ((_isHidden = flag))
       {
          id view=[_window firstResponder];
@@ -389,7 +413,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
             }
       }
 
-      [self setNeedsDisplay:YES];
+      [[self superview] setNeedsDisplay:YES];
    }
 }
 
@@ -521,30 +545,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    }
 }
 
-// Exactly the same as above, but hidden from overrides. Not elegant.
--(NSView *)_hiddenHitTest:(NSPoint)point {
-   if(_isHidden)
-    return nil;
-
-   point=[self convertPoint:point fromView:[self superview]];
-
-   if(!NSMouseInRect(point,[self visibleRect],[self isFlipped]))
-    return nil;
-   else {
-    NSArray *subviews=[self subviews];
-    int      count=[subviews count];
-
-    while(--count>=0){ // front to back
-     NSView *check=[subviews objectAtIndex:count];
-     NSView *hit=[check _hiddenHitTest:point];
-
-     if(hit!=nil)
-      return hit;
-    }
-    return self;
-   }
-}
-
 -(NSPoint)convertPoint:(NSPoint)point fromView:(NSView *)viewOrNil {
    NSView           *fromView=(viewOrNil!=nil)?viewOrNil:[[self window] _backgroundView];
    CGAffineTransform toWindow=[fromView transformToWindow];
@@ -624,15 +624,21 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 
 -(void)setFrame:(NSRect)frame {
-   NSSize oldSize=_bounds.size;
+   // Cocoa does not post the notification if the frames are equal
+   // Possible that resizeSubviewsWithOldSize is not called if the sizes are equal
+   if(NSEqualRects(_frame,frame))
+    return;
 
-   // includes [window _updateTrackingRects]
-   [self invalidateTransform];
+   NSSize oldSize=_bounds.size;
 
    _frame=frame;
    _bounds.size=frame.size;
-   if(_autoresizesSubviews)
+   if(_autoresizesSubviews){
     [self resizeSubviewsWithOldSize:oldSize];
+   }
+
+   
+   invalidateTransform(self);
 
    if(_postsNotificationOnFrameChange)
     [[NSNotificationCenter defaultCenter] postNotificationName:NSViewFrameDidChangeNotification object:self];
@@ -662,7 +668,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)setBounds:(NSRect)bounds {
     _bounds=bounds;
-    [self invalidateTransform];
+   invalidateTransform(self);
 
    if(_postsNotificationOnBoundsChange)
     [[NSNotificationCenter defaultCenter] postNotificationName:NSViewBoundsDidChangeNotification object:self];
@@ -701,7 +707,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    _window=window;
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
-   [self updateTrackingAreas];
+   _validTrackingAreas=NO;
+
+   [self viewDidMoveToWindow];
 }
 
 -(void)_setSuperview:superview {
@@ -729,10 +737,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [_subviews insertObject:view atIndex:index];
    [view release];
 
-   [self invalidateTransform]; // subview may affect transform (e.g. clipview)
+   invalidateTransform(view);
 
    [self setNeedsDisplayInRect:[view frame]];
-   [self updateTrackingAreas]; // Cocoa obviously omits this for CursorRects and TrackingRects.
 }
 
 -(void)addSubview:(NSView *)view {
@@ -833,13 +840,13 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSToolTipTag)addToolTipRect:(NSRect)rect owner:object userData:(void *)userData {
    NSTrackingArea *area=nil;
 
-   // Send the unspecified pointer userData as NSDictionary
-   // pointer userInfo. This matches NSEvent's documentation.
-   area=[[NSTrackingArea alloc] _initWithRect:rect options:0 owner:object userInfo:userData isToolTip:YES isLegacy:NO];
+   // NSTrackingArea retains userInfo, but userData is not guaranteed to be an
+   // object. We box it in an NSValue while in the tracking area
+   area=[[NSTrackingArea alloc] _initWithRect:rect options:0 owner:object userData:userData retainUserData:NO isToolTip:YES isLegacy:NO];
    [_trackingAreas addObject:area];
    [area release];
 
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 
    return area;
 }
@@ -856,19 +863,19 @@ static inline void buildTransformsIfNeeded(NSView *self) {
      [_trackingAreas removeObjectAtIndex:count];
    }
 
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(void)addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor {
    NSCursorRect *cursorRect=[[NSCursorRect alloc] initWithCursor:cursor];
    NSTrackingArea *area=nil;
 
-   area=[[NSTrackingArea alloc] _initWithRect:rect options:NSTrackingCursorUpdate|NSTrackingActiveInKeyWindow owner:cursorRect userInfo:nil isToolTip:NO isLegacy:YES];
+   area=[[NSTrackingArea alloc] _initWithRect:rect options:NSTrackingCursorUpdate|NSTrackingActiveInKeyWindow owner:cursorRect userData:NULL retainUserData:NO isToolTip:NO isLegacy:YES];
    [_trackingAreas addObject:area];
    [area release];
    [cursorRect release];
 
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(void)removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor {
@@ -886,7 +893,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     }
    }
 
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(void)discardCursorRects {
@@ -903,7 +910,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    [[self subviews] makeObjectsPerformSelector:_cmd];
 
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(void)resetCursorRects {
@@ -912,22 +919,31 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)_collectTrackingAreasForWindowInto:(NSMutableArray *)collector {
    if(_isHidden==NO){
-    NSArray    *subviews=[self subviews];
     NSUInteger  i,count;
 
+    if(!_validTrackingAreas){
+     [_trackingAreas removeAllObjects];
+     [self updateTrackingAreas];
+     _validTrackingAreas=YES;
+    }
+    
     count=[_trackingAreas count];
     for(i=0;i<count;i++){
      NSTrackingArea *area=[_trackingAreas objectAtIndex:i];
      NSRect          rectOfInterest;
 
      rectOfInterest=NSIntersectionRect([area rect], [self bounds]);
+
      if(rectOfInterest.size.width>0. && rectOfInterest.size.height>0.){
       [area _setView:self];
+
       [area _setRectInWindow:[self convertRect:rectOfInterest toView:nil]];
+
       [collector addObject:[_trackingAreas objectAtIndex:i]];
      }
     }
 
+    NSArray *subviews=[self subviews];
     // Collect subviews' areas _after_ collecting our own.
     count=[subviews count];
     for(i=0;i<count;i++)
@@ -939,18 +955,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _trackingAreas;
 }
 
+-(void)_trackingAreasChanged {
+   [[self window] _invalidateTrackingAreas];
+}
+
 -(void)addTrackingArea:(NSTrackingArea *)trackingArea {
    [_trackingAreas addObject:trackingArea];
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(void)removeTrackingArea:(NSTrackingArea *)trackingArea {
    [_trackingAreas removeObjectIdenticalTo:trackingArea];
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(void)updateTrackingAreas {
-   [[self window] _updateTrackingAreas];
+   [self _trackingAreasChanged];
 }
 
 -(NSTrackingRectTag)addTrackingRect:(NSRect)rect owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside {
@@ -960,13 +980,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    if(assumeInside==YES)
     options|=NSTrackingAssumeInside;
 
-   // Send the unspecified pointer userData as NSDictionary
-   // pointer userInfo. This obviously matches Apple Cocoa's behaviour.
-   area=[[NSTrackingArea alloc] _initWithRect:rect options:options owner:owner userInfo:userData isToolTip:NO isLegacy:NO];
+   area=[[NSTrackingArea alloc] _initWithRect:rect options:options owner:owner userData:NULL retainUserData:NO isToolTip:NO isLegacy:NO];
    [_trackingAreas addObject:area];
    [area release];
 
-   [self updateTrackingAreas];
+   [self _trackingAreasChanged];
 
    return area;
 }
@@ -1020,7 +1038,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self _setWindow:nil];
 
    [removeFrom _removeViewWithoutDisplay:self];
-   [window _updateTrackingAreas];
+   [window _invalidateTrackingAreas];
 }
 
 -(void)viewWillMoveToSuperview:(NSView *)view {
@@ -1036,7 +1054,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)viewDidMoveToWindow {
-   NSUnimplementedMethod();
+   // Default implementation does nothing
 }
 
 -(BOOL)shouldDelayWindowOrderingForEvent:(NSEvent *)event {
@@ -1288,7 +1306,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setWantsLayer:(BOOL)value {
-   NSUnimplementedMethod();
+   _wantsLayer=value;
 }
 
 -(void)setLayer:(CALayer *)value {

@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaiseException.h>
 #import <Foundation/NSURLConnection.h>
 #import <Foundation/NSURLRequest.h>
+#import <Foundation/NSCFTypeID.h>
 
 @implementation NSData
 
@@ -73,7 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if (options&NSMappedRead)
     bytes=[[NSPlatform currentPlatform] mapContentsOfFile:path length:&length];
    else
-    bytes=[[NSPlatform currentPlatform] contentsOfFile:path length:&length];
+    bytes=NSPlatformContentsOfFile(path,&length);
   
    if(bytes==NULL){
     // TODO: Should fill NSError here.
@@ -295,6 +296,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    cString[pos++]='>';
 
    return string;
+}
+
+- (unsigned) _cfTypeID {
+   return kNSCFTypeData;
 }
 
 @end

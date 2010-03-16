@@ -220,7 +220,12 @@ static NSFont **_fontCache=NULL;
 
    if([name isEqual:@"Symbol"])
     return name;
+   if([name isEqual:@"LucidaGrande"])
+    return @"Lucida Sans Regular";
 
+   if([name isEqual:@"HelveticaNeue-CondensedBold"])
+    return @"Helvetica Neue Condensed Bold";
+    
    return name;
 }
 

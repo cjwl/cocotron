@@ -107,11 +107,6 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)length {
-   NSInvalidAbstractInvocation();
-   return NULL;
-}
-
 -(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length {
    NSInvalidAbstractInvocation();
    return NULL;

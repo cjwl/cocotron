@@ -36,6 +36,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <poll.h>
 #include <pthread.h>
 
+BOOL NSCurrentLocaleIsMetric(){
+   return NO;
+}
+
 @implementation NSPlatform_posix
 
 -(Class)taskClass {
@@ -188,7 +192,7 @@ void NSPlatformLogString(NSString *string) {
     fprintf(stderr, "%s\n", [string UTF8String]);
 }
 
--(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)lengthp {
+void *NSPlatformContentsOfFile(NSString *path,NSUInteger *length) {
     int fd = open([path fileSystemRepresentation], O_RDONLY);
     char *buf;
     off_t pos, total = 0;

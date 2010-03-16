@@ -10,7 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSHost.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSRaise.h>
 #import <Foundation/NSData.h>
+#import <Foundation/CFSSLHandler.h>
 
 #undef WINVER
 #define WINVER 0x501
@@ -88,6 +90,11 @@ static inline void byteZero(void *vsrc,size_t size){
    }
    
    return [self initWithSocketHandle:handle];
+}
+
+-(void)dealloc {
+   [_sslHandler release];
+   [super dealloc];
 }
 
 -(void)closeAndDealloc {
@@ -208,6 +215,7 @@ static inline void byteZero(void *vsrc,size_t size){
       if((error=[self setOperationWouldBlock:YES])!=nil)
        return error;
      }
+
      *immediate=YES;
      return nil;
     }
@@ -242,11 +250,21 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
-   return recv(_handle,(void *)buffer,length,0);
+   NSInteger result;
+   
+  //NSCLog("recv(%d) ... ",length);
+   result=recv(_handle,(void *)buffer,length,0);
+  // NSCLog("recv Done = %d",result);
+   return result;
 }
 
 -(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
-   return send(_handle,(void *)buffer,length,0);
+   NSInteger result;
+   
+   //NSCLog("send(%d) ... ",length);
+   result=send(_handle,(void *)buffer,length,0);
+   //NSCLog("send Done = %d",result);
+   return result;
 }
 
 -(NSSocket *)acceptWithError:(NSError **)errorp {
@@ -260,6 +278,20 @@ static inline void byteZero(void *vsrc,size_t size){
     *errorp=error;
     
    return (error!=nil)?nil:[[[NSSocket_windows alloc] initWithSocketHandle:newSocket] autorelease];
+}
+
+-(CFSSLHandler *)sslHandler {
+   return _sslHandler;
+}
+
+-(BOOL)setSSLProperties:(CFDictionaryRef )sslProperties {
+   if(_sslHandler==nil){
+    _sslHandler=[[CFSSLHandler alloc] initWithProperties:sslProperties];
+   }
+   else {
+    // FIXME: what do we do if different properties are set
+   }
+   return YES;
 }
 
 @end

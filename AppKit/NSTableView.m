@@ -65,18 +65,9 @@ const int NSTableViewDefaultRowHeight=16.;
     // its content, sortDescriptors and selectedIndexes bindings established
     if([[self _allUsedBinders] count]==0)
     {
-        [self bind:@"content" 
-          toObject:destination 
-       withKeyPath:@"arrangedObjects"
-           options:nil];
-        [self bind:@"sortDescriptors" 
-          toObject:destination 
-       withKeyPath:@"sortDescriptors"
-           options:nil];
-        [self bind:@"selectionIndexes" 
-          toObject:destination 
-       withKeyPath:@"selectionIndexes"
-           options:nil];
+        [self bind:@"content"  toObject:destination  withKeyPath:@"arrangedObjects" options:nil];
+        [self bind:@"sortDescriptors"  toObject:destination  withKeyPath:@"sortDescriptors" options:nil];
+        [self bind:@"selectionIndexes"  toObject:destination  withKeyPath:@"selectionIndexes" options:nil];
     }
 }
 
@@ -280,8 +271,10 @@ const int NSTableViewDefaultRowHeight=16.;
     if(binding)
      _numberOfRows=[binding numberOfRows];
 
-    if (_numberOfRows < 0)
-     if (_dataSource!=nil)
+    if (_numberOfRows < 0){
+     if (_dataSource==nil)
+      _numberOfRows=0;
+     else {
       if ([_dataSource respondsToSelector:@selector(numberOfRowsInTableView:)]==YES)
        _numberOfRows=[_dataSource numberOfRowsInTableView:self];
       else {
@@ -289,8 +282,8 @@ const int NSTableViewDefaultRowHeight=16.;
        NSLog(@"data source %@ does not respond to numberOfRowsInTableView:", _dataSource);
        _numberOfRows=0;
       }
-     else
-      _numberOfRows=0;
+   }
+    }
    }
    
    return _numberOfRows;
@@ -649,9 +642,9 @@ respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)]==YES)
 	
 	id binder = [tableColumn _binderForBinding:@"value"];
 	id vals = [[binder destination] valueForKeyPath:[binder valueForKey:@"keyPath"]];
-	if (vals != nil)
+	if (vals != nil){
 		return [vals objectAtIndex:row];
-	
+	}
 	// Apple AppKit only logs here, so we do the same.
 	NSLog(@"data source %@ does not respond to tableView:objectValueForTableColumn:row:", 
 _dataSource);
@@ -712,6 +705,8 @@ _dataSource);
    if ([editingCell isKindOfClass:[NSTextFieldCell class]])
    {
       _editingCell = editingCell;
+      [_editingCell setControlView:self];
+      
       [_editingCell setDrawsBackground:YES];
       [_editingCell setBackgroundColor:_backgroundColor];
       [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
@@ -757,7 +752,14 @@ _dataSource);
 }
 
 - (NSIndexSet *)selectedRowIndexes {
-    return [[_selectedRowIndexes retain] autorelease];
+    return _selectedRowIndexes;
+}
+
+// Use this so that KVO/Bindings notifications work automatically
+-(void)_setSelectedRowIndexes:(NSIndexSet *)value {
+   value=[value copy];
+   [_selectedRowIndexes release];
+   _selectedRowIndexes = value;
 }
 
 // That's the setter for _selectedRowIndexes.
@@ -783,10 +785,10 @@ _dataSource);
    if (extend) {
     NSMutableIndexSet * mutableIndexes = [[NSMutableIndexSet alloc] initWithIndexSet:_selectedRowIndexes];
     [mutableIndexes addIndexes:indexes];
-    newIndexes = [[NSIndexSet alloc] initWithIndexSet:mutableIndexes];
+    newIndexes = [[[NSIndexSet alloc] initWithIndexSet:mutableIndexes] autorelease];
     [mutableIndexes release];     
    } else
-    newIndexes = [indexes retain];
+    newIndexes = indexes;
 
    // Find the changed rows and mark them for redraw.
    i = [_selectedRowIndexes firstIndex];
@@ -815,8 +817,7 @@ _dataSource);
       // NSLog(@"NSTableView row %d for redraw.", i);
      }
 
-   [_selectedRowIndexes autorelease];
-   _selectedRowIndexes = newIndexes;
+   [self _setSelectedRowIndexes:newIndexes];
 
    if (changed)
     [self noteSelectionDidChange];
@@ -1057,6 +1058,8 @@ _dataSource);
 - (NSCell *)preparedCellAtColumn:(NSInteger)columnNumber row:(NSInteger)row {
    NSTableColumn *column = [_tableColumns objectAtIndex:columnNumber];
    NSCell *dataCell = [column dataCellForRow:row];
+
+   [dataCell setControlView:self];
    [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
    
    if ([dataCell respondsToSelector:@selector(setTextColor:)]) {
@@ -1078,10 +1081,10 @@ _dataSource);
     NSInteger numberOfRows=[self numberOfRows];
 
     if (row < 0 || row >= numberOfRows)
-        [NSException raise:NSInvalidArgumentException
-                    format:@"invalid row in drawRow:clipRect:"];
+        [NSException raise:NSInvalidArgumentException format:@"invalid row in drawRow:clipRect:"];
 
     while (drawThisColumn < NSMaxRange(visibleColumns)) {
+
        if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
           NSCell *dataCell=[self preparedCellAtColumn:drawThisColumn row:row];
           NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
@@ -1360,6 +1363,7 @@ _dataSource);
       visibleRows = [self rowsInRect:clipRect];
       if(visibleRows.length > 0){
          drawThisRow = visibleRows.location;
+
 // FIX: Always drawing entire rows is inefficient.
 //      Should draw visible cells, only.
          while (drawThisRow < NSMaxRange(visibleRows) && drawThisRow<numberOfRows)
@@ -1371,6 +1375,7 @@ _dataSource);
    {
       [_backgroundColor setFill];
       NSRectFill(_editingBorder);
+      [_editingCell setControlView:self];
       [_editingCell drawWithFrame:_editingFrame inView:self];
       if ([_editingCell focusRingType] != NSFocusRingTypeNone)
       {
@@ -1450,6 +1455,7 @@ _dataSource);
 
     NSTableColumn *clickedColumnObject = [_tableColumns objectAtIndex:_clickedColumn];
     NSCell *clickedCell = [clickedColumnObject dataCellForRow:_clickedRow];
+    [clickedCell setControlView:self];
     if ([clickedCell isKindOfClass:[NSButtonCell class]])
     {
        [clickedCell setObjectValue:[self dataSourceObjectValueForTableColumn:clickedColumnObject row:_clickedRow]];
@@ -1606,7 +1612,9 @@ _dataSource);
     for (i = 0; i < numberOfRows; ++i) {
         NSCell *dataCell = [column dataCellForRow:i];
         
+        [dataCell setControlView:self];
         [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:i]];
+
         width = [[dataCell attributedStringValue] size].width;
         if (width > minWidth)
             minWidth = width;

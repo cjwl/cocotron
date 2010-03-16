@@ -328,17 +328,11 @@ int bonjour_ConvertError(int errorCode){
 }
 
 NSDictionary *bonjour_CreateError(id sender,int errorCode){
-  NSMutableDictionary
-    *dictionary = nil;
-  int
-    error = 0;
-  
+  NSMutableDictionary *dictionary = nil;
+  int error = 0;
   
   dictionary = [NSMutableDictionary dictionary];
   error = bonjour_ConvertError(errorCode);
-  
-  if(NSDebugEnabled)
-   NSLog(@"%@ says error <%d> - <%d>", [sender description], errorCode, error);
   
   [dictionary setObject: [NSNumber numberWithInt: error]
                  forKey: NSNetServicesErrorCode];

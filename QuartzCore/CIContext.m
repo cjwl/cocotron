@@ -90,8 +90,7 @@ static void evaluate(void *info,const float *in, float *output) {
     CIImage   *inputImage=[filter valueForKey:@"inputImage"];
     NSNumber  *inputRadius=[filter valueForKey:@"inputRadius"];
     CGImageRef cgImage=[inputImage CGImage];
-
-#warning implement blur
+// FIXME: implement
 
     if(cgImage!=NULL)
      CGContextDrawImage(_cgContext,inRect,cgImage);

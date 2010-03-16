@@ -1,12 +1,10 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <Foundation/NSString.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSNumber.h>
@@ -17,30 +15,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCharacterSet.h>
-
-/*
-comparison of our output:
-Aug 10 14:40:19 formatters[12633] nil object: *nil*
-Aug 10 14:40:19 formatters[12633] 365.25: $365
-Aug 10 14:40:19 formatters[12633] 0: 0.000
-Aug 10 14:40:19 formatters[12633] -38128.7575: ($38128)
-Aug 10 14:40:19 formatters[12633] 1.0: $1
-Aug 10 14:40:19 formatters[12633] 0.11111: $0
-
-..with apple's
-
-Aug 10 14:40:35 formatters[12645] nil object: (null)
-Aug 10 14:40:35 formatters[12645] 365.25: $365
-Aug 10 14:40:35 formatters[12645] 0: 0.000
-Aug 10 14:40:35 formatters[12645] -38128.7575: ($38129)
-Aug 10 14:40:35 formatters[12645] 1.0: $1
-Aug 10 14:40:35 formatters[12645] 0.11111: $
-
-.. the notable differences are rounding and the last line,
- where 0.11111 becomes an empty string
- (that doesn't seem right to me)...
-
- */
+#import <Foundation/NSLocale.h>
+#import <Foundation/NSStringFormatter.h>
+#import <Foundation/NSString_unicodePtr.h>
 
 #define NSNumberFormatterThousandSeparator 	','
 #define NSNumberFormatterDecimalSeparator 	'.'
@@ -50,16 +27,24 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 
 @implementation NSNumberFormatter
 
+static NSNumberFormatterBehavior _defaultFormatterBehavior=NSNumberFormatterBehavior10_4;
+
 +(NSNumberFormatterBehavior)defaultFormatterBehavior {
-   NSUnimplementedMethod();
-   return 0;
-}
-+(void)setDefaultFormatterBehavior:(NSNumberFormatterBehavior)value {
-   NSUnimplementedMethod();
+   return _defaultFormatterBehavior;
 }
 
--(id)init {
++(void)setDefaultFormatterBehavior:(NSNumberFormatterBehavior)value {
+   if(value==NSNumberFormatterBehaviorDefault)
+    _defaultFormatterBehavior=NSNumberFormatterBehavior10_4;
+   else
+    _defaultFormatterBehavior=value;
+}
+
+-init {
    [super init];
+   _behavior=_defaultFormatterBehavior;
+   _numberStyle=NSNumberFormatterNoStyle;
+   
    _thousandSeparator = @",";
    _decimalSeparator = @".";
    _attributedStringForNil=[[NSAttributedString allocWithZone:NULL] initWithString:@"(null)"];
@@ -70,75 +55,244 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    return self;
 }
 
--(id)initWithCoder:(NSCoder*)coder
-{
-	if((self=[super initWithCoder:coder]))
-	{
-		// FIX: decode & set other values
-		/*NS.allowsfloats = 1;
-		NS.attributes = {
-			CF$UID = 196;
-		};
-		NS.decimal = {
-			CF$UID = 70;
-		};
-		NS.hasthousands = 1;
-		NS.localized = 0;
-		NS.max = {
-			CF$UID = 68;
-		};
-		NS.min = {
-			CF$UID = 68;
-		};
-		NS.nan = {
-			CF$UID = 200;
-		};
-		NS.negativeattrs = {
-			CF$UID = 0;
-		};
-		NS.negativeformat = {
-			CF$UID = 58;
-		};
-		NS.nil = {
-			CF$UID = 199;
-		};
-		NS.positiveattrs = {
-			CF$UID = 0;
-		};
-		NS.positiveformat = {
-			CF$UID = 57;
-		};
-		NS.rounding = {
-			CF$UID = 0;
-		};
-		NS.thousand = {
-			CF$UID = 71;
-		};
-		NS.zero = {
-			CF$UID = 198;
-		};		 
-		 */
-		[self setPositiveFormat:[coder decodeObjectForKey:@"NS.positiveformat"]];
-		[self setNegativeFormat:[coder decodeObjectForKey:@"NS.negativeformat"]];
+// FIXME: doesnt do everything
+
+static void extractFormat(NSString *format,NSString **prefix,NSString **suffix,NSUInteger *numberOfFractionDigits,NSUInteger *groupingSizep,NSUInteger *secondaryGroupingSizep) {
+    NSInteger i,length=[format length],prefixLength=0,suffixLength=0,groupingSize=0,secondaryGroupingSize=0;
+    unichar   buffer[length];
+    unichar   prefixBuffer[length],suffixBuffer[length];
+    BOOL      addToGrouping=NO;
+    
+    enum {
+     STATE_PREFIX,
+     STATE_FIRST_HASH,
+     STATE_FIRST_PERIOD,
+     STATE_FIRST_ZERO,
+     STATE_FIRST_COMMA,
+     STATE_SUFFIX,
+    } state=STATE_PREFIX;
+    
+    if(numberOfFractionDigits!=NULL)
+     *numberOfFractionDigits=0;
+    
+    [format getCharacters:buffer];
+    
+    for(i=0;i<length;i++){
+     unichar code=buffer[i];
+     
+     switch(state){
+     
+      case STATE_PREFIX:
+       if(code=='#')
+        state=STATE_FIRST_HASH;
+       else if(code=='.')
+        state=STATE_FIRST_PERIOD;
+       else if(code=='0')
+        state=STATE_FIRST_ZERO;
+       else if(code==','){
+        state=STATE_FIRST_COMMA;
+        addToGrouping=YES;
 	}
+       else {
+        prefixBuffer[prefixLength++]=code;
+       }
+       break;
+       
+      case STATE_FIRST_PERIOD:
+       if(numberOfFractionDigits!=NULL)
+        *numberOfFractionDigits++;
+      case STATE_FIRST_HASH:
+      case STATE_FIRST_ZERO:
+      case STATE_FIRST_COMMA:
+       if(code=='#'){
+        if(addToGrouping)
+         groupingSize++;
+       }
+       else if(code=='.'){
+        addToGrouping=NO;
+       }
+       else if(code=='0'){
+        if(addToGrouping)
+         groupingSize++;
+       }
+       else if(code==','){
+        if(addToGrouping){
+         secondaryGroupingSize=groupingSize;
+         groupingSize=0;
+        }
+        addToGrouping=YES;
+       }
+       else {
+        suffixBuffer[suffixLength++]=code;
+        state=STATE_SUFFIX;
+       }
+       break;
+      
+      case STATE_SUFFIX:
+       suffixBuffer[suffixLength++]=code;
+       break;
+     }
+     
+    }
+   
+   if(groupingSizep!=NULL)
+    *groupingSizep=groupingSize;
+   if(secondaryGroupingSizep!=NULL)
+    *secondaryGroupingSizep=secondaryGroupingSize;
+    
+    if(prefixLength>0)
+     *prefix=[[NSString allocWithZone:NULL] initWithCharacters:prefixBuffer length:prefixLength];
+     
+    if(suffixLength>0)
+     *suffix=[[NSString allocWithZone:NULL] initWithCharacters:suffixBuffer length:suffixLength];    
+}
+
+-(void)extractFromPositiveFormat {
+   if([_positiveFormat length]){
+   
+    [_positivePrefix release];
+    _positivePrefix=nil;
+    [_positiveSuffix release];
+    _positiveSuffix=nil;
+    
+    extractFormat(_positiveFormat,&_positivePrefix,&_positiveSuffix,&_maximumFractionDigits,&_groupingSize,&_secondaryGroupingSize);
+   }
+}
+-(void)extractFromNegativeFormat {
+   if([_negativeFormat length]){
+   
+    [_negativePrefix release];
+    _negativePrefix=nil;
+    [_negativeSuffix release];
+    _negativeSuffix=nil;
+    
+    extractFormat(_negativeFormat,&_negativePrefix,&_negativeSuffix,NULL,NULL,NULL);
+   }
+}
+
+-initWithCoder:(NSCoder*)coder {
+   [super initWithCoder:coder];
+   
+   if([coder allowsKeyedCoding]){
+    NSDictionary *attributes=[coder decodeObjectForKey:@"NS.attributes"];
+    id check;
+
+    if((check=[attributes objectForKey:@"formatterBehavior"])!=nil)
+     _behavior=[check integerValue];
+    if((check=[attributes objectForKey:@"numberStyle"])!=nil)
+     _numberStyle=[check integerValue];
+    if((check=[attributes objectForKey:@"formatWidth"])!=nil)
+     _formatWidth=[check integerValue];
+    _locale=[[attributes objectForKey:@"locale"] copy];
+    _multiplier=[[attributes objectForKey:@"multiplier"] copy];
+    if((check=[attributes objectForKey:@"allowsFloats"])!=nil)
+     _allowsFloats=[check boolValue];
+    if((check=[attributes objectForKey:@"alwaysShowsDecimalSeparator"])!=nil)
+     _alwaysShowsDecimalSeparator=[check boolValue];
+    if((check=[attributes objectForKey:@"lenient"])!=nil)
+     _isLenient=[check boolValue];
+    _isPartialStringValidationEnabled=NO; // not editable in IB
+    if((check=[attributes objectForKey:@"generatesDecimalNumbers"])!=nil)
+     _generatesDecimalNumbers=[check boolValue];
+    if((check=[attributes objectForKey:@"usesGroupingSeparator"])!=nil)
+     _usesGroupingSeparator=[check boolValue];
+    _usesSignificantDigits=NO; // not editable in IB
+
+    if((check=[attributes objectForKey:@"minimumIntegerDigits"])!=nil)
+     _minimumIntegerDigits=[check integerValue];
+    if((check=[attributes objectForKey:@"minimumFractionDigits"])!=nil)
+     _minimumFractionDigits=[check integerValue];
+    _minimumSignificantDigits=0;
+
+    if((check=[attributes objectForKey:@"maximumIntegerDigits"])!=nil)
+     _maximumIntegerDigits=[check integerValue];
+    if((check=[attributes objectForKey:@"maximumFractionDigits"])!=nil){
+     _customMaximumFractionDigits=YES;
+     _maximumFractionDigits=[check integerValue];
+    }
+    _maximumSignificantDigits=0;
+
+    _minimum=[[attributes objectForKey:@"minimum"] copy];
+    _maximum=[[attributes objectForKey:@"maximum"] copy];
+
+     _nilSymbol=[[attributes objectForKey:@"nilSymbol"] copy];
+     _notANumberSymbol=[[attributes objectForKey:@"notANumberSymbol"] copy];
+     _zeroSymbol=[[attributes objectForKey:@"zeroSymbol"] copy];
+    _plusSign=[[attributes objectForKey:@"plusSign"] copy];
+    _minusSign=[[attributes objectForKey:@"minusSign"] copy];
+
+    _negativePrefix=[[attributes objectForKey:@"negativePrefix"] copy];
+    _negativeSuffix=[[attributes objectForKey:@"negativeSuffix"] copy];
+    _positivePrefix=[[attributes objectForKey:@"positivePrefix"] copy];
+    _positiveSuffix=[[attributes objectForKey:@"positiveSuffix"] copy];
+    _negativeInfinitySymbol=[[attributes objectForKey:@"negativeInfinitySymbol"] copy];
+    _positiveInfinitySymbol=[[attributes objectForKey:@"positiveInfinitySymbol"] copy];
+
+    _decimalSeparator=[[attributes objectForKey:@"decimalSeparator"] copy];
+    _exponentSymbol=[[attributes objectForKey:@"exponentSymbol"] copy];
+    _currencyCode=[[attributes objectForKey:@"currencyCode"] copy];
+    _currencySymbol=[[attributes objectForKey:@"currencySymbol"] copy];
+    _internationalCurrencySymbol=[[attributes objectForKey:@"internationalCurrencySymbol"] copy];
+    _currencyDecimalSeparator=[[attributes objectForKey:@"currencyDecimalSeparator"] copy];
+    _currencyGroupingSeparator=[[attributes objectForKey:@"currencyGroupingSeparator"] copy];
+    _groupingSeparator=[[attributes objectForKey:@"groupingSeparator"] copy];
+    _groupingSize=[[attributes objectForKey:@"groupingSize"] integerValue];
+    _secondaryGroupingSize=[[attributes objectForKey:@"secondaryGroupingSize"] integerValue];
+    _paddingCharacter=[[attributes objectForKey:@"paddingCharacter"] copy];
+    _paddingPosition=[[attributes objectForKey:@"paddingPosition"] integerValue];
+
+    _percentSymbol=[[attributes objectForKey:@"percentSymbol"] copy];
+    _perMillSymbol=[[attributes objectForKey:@"perMillSymbol"] copy];
+    _roundingIncrement=[[attributes objectForKey:@"roundingIncrement"] copy];
+    _roundingMode=[[attributes objectForKey:@"roundingMode"] integerValue];
+    
+    _positiveFormat=[[attributes objectForKey:@"positiveFormat"] copy];
+    _negativeFormat=[[attributes objectForKey:@"negativeFormat"] copy];
+
+    [self extractFromPositiveFormat];
+    [self extractFromNegativeFormat];
+    
+    _textAttributesForPositiveValues=nil;
+    _textAttributesForNegativeValues=nil;
+    _textAttributesForNegativeInfinity=nil;
+    _textAttributesForNil=nil;
+    _textAttributesForNotANumber=nil;
+    _textAttributesForPositiveInfinity=nil;
+    _textAttributesForZero=nil;
+
+// 10.0, these need to be stored separately
+#if 0
+    _nilSymbol=[[coder decodeObjectForKey:@"NS.nil"] copy];
+    _zeroSymbol=[[coder decodeObjectForKey:@"NS.zero"] copy];
+    
+    _positiveFormat=[[coder decodeObjectForKey:@"NS.positiveformat"] copy];
+    _negativeFormat=[[coder decodeObjectForKey:@"NS.negativeformat"] copy];
+    _textAttributesForPositiveValues=[[coder decodeObjectForKey:@"NS.positiveattrs"] copy]
+    _textAttributesForNegativeValues=[[coder decodeObjectForKey:@"NS.negativeattrs"] copy]
+
+    _decimalSeparator=[[coder decodeObjectForKey:@"NS.decimal"] copy];
+    _thousandSeparator=[[coder decodeObjectForKey:@"NS.thousand"] copy];
+    _hasThousandSeparators=[coder decodeBoolForKey:@"NS.hasthousands"];
+    _allowsFloats=[coder decodeBoolForKey:@"NS.allowsfloats"];
+    _localizesFormat=[coder decodeBoolForKey:@"NS.localized"];
+#endif
+   }
+   
 	return self;
 }
 
 -(void)dealloc {
    [_negativeFormat release];
    [_positiveFormat release];
-   [_negativeAttributes release];
-   [_positiveAttributes release];
    [super dealloc];
 }
 
 -(NSNumberFormatterBehavior)formatterBehavior {
-   NSUnimplementedMethod();
-   return 0;
+   return _behavior;
 }
+
 -(NSNumberFormatterStyle)numberStyle {
-   NSUnimplementedMethod();
-   return 0;
+   return _numberStyle;
 }
 
 -(NSString *)format {
@@ -146,16 +300,21 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 }
 
 -(NSUInteger)formatWidth {
-   NSUnimplementedMethod();
-   return 0;
+   return _formatWidth;
 }
+
 -(NSLocale *)locale {
-   NSUnimplementedMethod();
-   return 0;
+   return _locale;
 }
+
 -(NSNumber *)multiplier {
-   NSUnimplementedMethod();
-   return 0;
+   if(_multiplier==nil){
+   
+    if(_numberStyle==NSNumberFormatterPercentStyle)
+     return [NSNumber numberWithInt:100];
+}
+
+   return _multiplier;
 }
 
 -(BOOL)allowsFloats {
@@ -166,113 +325,143 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    return _localizesFormat;
 }
 
-
 -(BOOL)hasThousandSeparators {
    return _hasThousandSeparators;
 }
 
 -(BOOL)alwaysShowsDecimalSeparator {
-   NSUnimplementedMethod();
-   return 0;
+   return _alwaysShowsDecimalSeparator;
 }
+
 -(BOOL)isLenient {
-   NSUnimplementedMethod();
-   return 0;
+   return _isLenient;
 }
+
 -(BOOL)isPartialStringValidationEnabled {
-   NSUnimplementedMethod();
-   return 0;
+   return _isPartialStringValidationEnabled;
 }
+
 -(BOOL)generatesDecimalNumbers {
-   NSUnimplementedMethod();
-   return 0;
+   return _generatesDecimalNumbers;
 }
+
 -(BOOL)usesGroupingSeparator {
-   NSUnimplementedMethod();
+   return _usesGroupingSeparator;
+}
+
+-(BOOL)usesSignificantDigits {
+   return _usesSignificantDigits;
+}
+
+-(NSUInteger)minimumIntegerDigits {
+   return _minimumIntegerDigits;
+}
+
+-(NSUInteger)minimumFractionDigits {
+   return _minimumFractionDigits;
+}
+
+-(NSUInteger)minimumSignificantDigits {
+   return _minimumSignificantDigits;
+}
+
+-(NSUInteger)maximumIntegerDigits {
+   return _maximumIntegerDigits;
+}
+
+-(NSUInteger)maximumFractionDigits {
+   if(_customMaximumFractionDigits)
+    return _maximumFractionDigits;
+   
+   if(_numberStyle==NSNumberFormatterDecimalStyle)
+    return 3;
+   
    return 0;
 }
--(BOOL)usesSignificantDigits {
-   NSUnimplementedMethod();
-   return 0;
+
+-(NSUInteger)maximumSignificantDigits {
+   return _maximumSignificantDigits;
 }
 
 -(NSNumber *)minimum {
-   NSUnimplementedMethod();
-   return 0;
-}
--(NSUInteger)minimumIntegerDigits {
-   NSUnimplementedMethod();
-   return 0;
-}
--(NSUInteger)minimumFractionDigits {
-   NSUnimplementedMethod();
-   return 0;
-}
--(NSUInteger)minimumSignificantDigits {
-   NSUnimplementedMethod();
-   return 0;
+   return _minimum;
 }
 
 -(NSNumber *)maximum {
-   NSUnimplementedMethod();
-   return 0;
-}
--(NSUInteger)maximumIntegerDigits {
-   NSUnimplementedMethod();
-   return 0;
-}
--(NSUInteger)maximumFractionDigits {
-   NSUnimplementedMethod();
-   return 0;
-}
--(NSUInteger)maximumSignificantDigits {
-   NSUnimplementedMethod();
-   return 0;
+   return _maximum;
 }
 
 -(NSString *)nilSymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _nilSymbol;
 }
+
 -(NSString *)notANumberSymbol {
-   NSUnimplementedMethod();
-   return 0;
+   if(_notANumberSymbol==nil)
+    return @"NaN";
+    
+   return _notANumberSymbol;
 }
+
 -(NSString *)zeroSymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _zeroSymbol;
 }
+
 -(NSString *)plusSign {
-   NSUnimplementedMethod();
-   return 0;
+   return _plusSign;
 }
+
 -(NSString *)minusSign {
-   NSUnimplementedMethod();
-   return 0;
+   return _minusSign;
 }
+
 -(NSString *)negativePrefix {
-   NSUnimplementedMethod();
-   return 0;
+   if(_negativePrefix==nil)
+    return @"";
+    
+   return _negativePrefix;
 }
+
 -(NSString *)negativeSuffix {
-   NSUnimplementedMethod();
-   return 0;
+// Suffixes return the percent symbol if specified
+
+   if(_negativeSuffix==nil){
+   
+    if(_numberStyle==NSNumberFormatterPercentStyle)
+     return [self percentSymbol];
+     
+    return @"";
 }
+   
+   return _negativeSuffix;
+}
+
 -(NSString *)positivePrefix {
-   NSUnimplementedMethod();
-   return 0;
+   if(_positivePrefix==nil)
+    return @"";
+    
+   return _positivePrefix;
 }
+
 -(NSString *)positiveSuffix {
-   NSUnimplementedMethod();
-   return 0;
+// Suffixes return the percent symbol if specified
+
+   if(_positiveSuffix==nil){
+   
+    if(_numberStyle==NSNumberFormatterPercentStyle)
+     return [self percentSymbol];
+     
+    return @"";
 }
+    
+   return _positiveSuffix;
+}
+
 -(NSString *)negativeInfinitySymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _negativeInfinitySymbol;
 }
+
 -(NSString *)positiveInfinitySymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _positiveInfinitySymbol;
 }
 
 -(NSString *)thousandSeparator {
@@ -284,68 +473,79 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 }
 
 -(NSString *)exponentSymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _exponentSymbol;
 }
+
 -(NSString *)currencyCode {
-   NSUnimplementedMethod();
-   return 0;
+   return _currencyCode;
 }
+
 -(NSString *)currencySymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _currencySymbol;
 }
+
 -(NSString *)internationalCurrencySymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _internationalCurrencySymbol;
 }
+
 -(NSString *)currencyDecimalSeparator {
-   NSUnimplementedMethod();
-   return 0;
+   return _currencyDecimalSeparator;
 }
+
 -(NSString *)currencyGroupingSeparator {
-   NSUnimplementedMethod();
-   return 0;
+   return _currencyGroupingSeparator;
 }
+
 -(NSString *)groupingSeparator {
-   NSUnimplementedMethod();
-   return 0;
+   if(_groupingSeparator==nil){
+    NSString *check=[_locale objectForKey:NSLocaleGroupingSeparator];
+    
+    if(check!=nil)
+     return check;
+     
+    return @",";
 }
+   
+   return _groupingSeparator;
+}
+
 -(NSUInteger)groupingSize {
-   NSUnimplementedMethod();
-   return 0;
+   return _groupingSize;
 }
+
 -(NSUInteger)secondaryGroupingSize {
-   NSUnimplementedMethod();
-   return 0;
+   return _secondaryGroupingSize;
 }
+
 -(NSString *)paddingCharacter {
-   NSUnimplementedMethod();
-   return 0;
+   return _paddingCharacter;
 }
+
 -(NSNumberFormatterPadPosition)paddingPosition {
-   NSUnimplementedMethod();
-   return 0;
+   return _paddingPosition;
 }
+
 -(NSString *)percentSymbol {
-   NSUnimplementedMethod();
-   return 0;
+   if(_percentSymbol==nil)
+    return @"%";
+    
+   return _percentSymbol;
 }
+
 -(NSString *)perMillSymbol {
-   NSUnimplementedMethod();
-   return 0;
+   return _perMillSymbol;
 }
+
 -(NSDecimalNumberHandler *)roundingBehavior {
-   NSUnimplementedMethod();
-   return 0;
+   return _roundingBehavior;
 }
+
 -(NSNumber *)roundingIncrement {
-   NSUnimplementedMethod();
-   return 0;
+   return _roundingIncrement;
 }
+
 -(NSNumberFormatterRoundingMode)roundingMode {
-   NSUnimplementedMethod();
-   return 0;
+   return _roundingMode;
 }
 
 -(NSString *)positiveFormat {
@@ -357,11 +557,11 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 }
 
 -(NSDictionary *)textAttributesForPositiveValues {
-   return _positiveAttributes;
+   return _textAttributesForPositiveValues;
 }
 
 -(NSDictionary *)textAttributesForNegativeValues {
-   return _negativeAttributes;
+   return _textAttributesForNegativeValues;
 }
 
 -(NSAttributedString *)attributedStringForNil {
@@ -377,27 +577,27 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 }
 
 -(NSDictionary *)textAttributesForNegativeInfinity {
-   NSUnimplementedMethod();
-   return 0;
+   return _textAttributesForNegativeInfinity;
 }
+
 -(NSDictionary *)textAttributesForNil {
-   NSUnimplementedMethod();
-   return 0;
+   return _textAttributesForNil;
 }
+
 -(NSDictionary *)textAttributesForNotANumber {
-   NSUnimplementedMethod();
-   return 0;
+   return _textAttributesForNotANumber;
 }
+
 -(NSDictionary *)textAttributesForPositiveInfinity {
-   NSUnimplementedMethod();
-   return 0;
+   return _textAttributesForPositiveInfinity;
 }
+
 -(NSDictionary *)textAttributesForZero {
-   NSUnimplementedMethod();
-   return 0;
+   return _textAttributesForZero;
 }
 
 -(void)setFormat:(NSString *)format {
+// This is 10.0 behavior only, probably broken anyway
    NSArray *formatStrings = [format componentsSeparatedByString:@";"];
 
    _positiveFormat = [[formatStrings objectAtIndex:0] retain];
@@ -426,174 +626,287 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 }
 
 -(void)setCurrencyCode:(NSString *)value {
-   NSUnimplementedMethod();
+   value=[value copy];
+   [_currencyCode release];
+   _currencyCode=value;
 }
 
 -(void)setCurrencyDecimalSeparator:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setCurrencyGroupingSeparator:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setCurrencySymbol:(NSString *)value {
-   NSUnimplementedMethod();
+   value=[value copy];
+   [_currencyDecimalSeparator release];
+   _currencyDecimalSeparator=value;
 }
 
--(void)setDecimalSeparator:(NSString *)separator {
+-(void)setCurrencyGroupingSeparator:(NSString *)value {
+   value=[value copy];
+   [_currencyGroupingSeparator release];
+   _currencyGroupingSeparator=value;
+}
+
+-(void)setCurrencySymbol:(NSString *)value {
+   value=[value copy];
+   [_currencySymbol release];
+   _currencySymbol=value;
+}
+
+-(void)setDecimalSeparator:(NSString *)value {
+   value=[value copy];
    [_decimalSeparator release];
-   _decimalSeparator = [separator retain];
+   _decimalSeparator=value;
 }
 
 -(void)setExponentSymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setFormatterBehavior:(NSNumberFormatterBehavior)value {
-   NSUnimplementedMethod();
-}
--(void)setFormatWidth:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setGeneratesDecimalNumbers:(BOOL)value {
-   NSUnimplementedMethod();
-}
--(void)setGroupingSeparator:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setGroupingSize:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setInternationalCurrencySymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setLenient:(BOOL)value {
-   NSUnimplementedMethod();
-}
--(void)setLocale:(NSLocale *)value {
-   NSUnimplementedMethod();
-}
--(void)setMaximum:(NSNumber *)value {
-   NSUnimplementedMethod();
-}
--(void)setMaximumFractionDigits:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setMaximumIntegerDigits:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setMaximumSignificantDigits:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setMinimum:(NSNumber *)value {
-   NSUnimplementedMethod();
-}
--(void)setMinimumFractionDigits:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setMinimumIntegerDigits:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setMinimumSignificantDigits:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setMinusSign:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setMultiplier:(NSNumber *)value {
-   NSUnimplementedMethod();
-}
--(void)setNegativeInfinitySymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setNegativePrefix:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setNegativeSuffix:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setNilSymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setNotANumberSymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setNumberStyle:(NSNumberFormatterStyle)value {
-   NSUnimplementedMethod();
-}
--(void)setPaddingCharacter:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setPaddingPosition:(NSNumberFormatterPadPosition)value {
-   NSUnimplementedMethod();
-}
--(void)setPartialStringValidationEnabled:(BOOL)value {
-   NSUnimplementedMethod();
-}
--(void)setPercentSymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setPerMillSymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setPlusSign:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setPositiveInfinitySymbol:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setPositivePrefix:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setPositiveSuffix:(NSString *)value {
-   NSUnimplementedMethod();
-}
--(void)setRoundingBehavior:(NSDecimalNumberHandler *)value {
-   NSUnimplementedMethod();
-}
--(void)setRoundingIncrement:(NSNumber *)value {
-   NSUnimplementedMethod();
-}
--(void)setRoundingMode:(NSNumberFormatterRoundingMode)value {
-   NSUnimplementedMethod();
-}
--(void)setSecondaryGroupingSize:(NSUInteger)value {
-   NSUnimplementedMethod();
-}
--(void)setTextAttributesForNegativeInfinity:(NSDictionary *)value {
-   NSUnimplementedMethod();
-}
--(void)setTextAttributesForNil:(NSDictionary *)value {
-   NSUnimplementedMethod();
-}
--(void)setTextAttributesForNotANumber:(NSDictionary *)value {
-   NSUnimplementedMethod();
-}
--(void)setTextAttributesForPositiveInfinity:(NSDictionary *)value {
-   NSUnimplementedMethod();
+   value=[value copy];
+   [_exponentSymbol release];
+   _exponentSymbol=value;
 }
 
--(void)setTextAttributesForPositiveValues:(NSDictionary *)attributes {
-   [_positiveAttributes release];
-   _positiveAttributes = [attributes retain];
+-(void)setFormatterBehavior:(NSNumberFormatterBehavior)value {
+   _behavior=value;
+}
+
+-(void)setFormatWidth:(NSUInteger)value {
+   _formatWidth=value;
+}
+
+-(void)setGeneratesDecimalNumbers:(BOOL)value {
+   _generatesDecimalNumbers=value;
+}
+
+-(void)setGroupingSeparator:(NSString *)value {
+   value=[value copy];
+   [_groupingSeparator release];
+   _groupingSeparator=value;
+}
+
+-(void)setGroupingSize:(NSUInteger)value {
+   _groupingSize=value;
+}
+
+-(void)setInternationalCurrencySymbol:(NSString *)value {
+   value=[value copy];
+   [_internationalCurrencySymbol release];
+   _internationalCurrencySymbol=value;
+}
+
+-(void)setLenient:(BOOL)value {
+   _isLenient=value;
+}
+
+-(void)setLocale:(NSLocale *)value {
+   value=[value copy];
+   [_locale release];
+   _locale=value;
+}
+
+-(void)setMaximumFractionDigits:(NSUInteger)value {
+   _customMaximumFractionDigits=YES;
+   _maximumFractionDigits=value;
+}
+
+-(void)setMaximumIntegerDigits:(NSUInteger)value {
+   _maximumIntegerDigits=value;
+}
+
+-(void)setMaximumSignificantDigits:(NSUInteger)value {
+   _maximumSignificantDigits=value;
+}
+
+-(void)setMinimum:(NSNumber *)value {
+   value=[value copy];
+   [_minimum release];
+   _minimum=value;
+}
+
+-(void)setMaximum:(NSNumber *)value {
+   value=[value copy];
+   [_maximum release];
+   _maximum=value;
+}
+
+-(void)setMinimumFractionDigits:(NSUInteger)value {
+   _minimumFractionDigits=value;
+}
+
+-(void)setMinimumIntegerDigits:(NSUInteger)value {
+   _minimumIntegerDigits=value;
+}
+
+-(void)setMinimumSignificantDigits:(NSUInteger)value {
+   _minimumSignificantDigits=value;
+}
+
+-(void)setMinusSign:(NSString *)value {
+   value=[value copy];
+   [_minusSign release];
+   _minusSign=value;
+}
+
+-(void)setMultiplier:(NSNumber *)value {
+   value=[value copy];
+   [_multiplier release];
+   _multiplier=value;
+}
+
+-(void)setNegativeInfinitySymbol:(NSString *)value {
+   value=[value copy];
+   [_negativeInfinitySymbol release];
+   _negativeInfinitySymbol=value;
+}
+
+-(void)setNegativePrefix:(NSString *)value {
+   value=[value copy];
+   [_negativePrefix release];
+   _negativePrefix=value;
+}
+
+-(void)setNegativeSuffix:(NSString *)value {
+   value=[value copy];
+   [_negativeSuffix release];
+   _negativeSuffix=value;
+}
+
+-(void)setNilSymbol:(NSString *)value {
+   value=[value copy];
+   [_nilSymbol release];
+   _nilSymbol=value;
+}
+
+-(void)setNotANumberSymbol:(NSString *)value {
+   value=[value copy];
+   [_notANumberSymbol release];
+   _notANumberSymbol=value;
+}
+
+-(void)setNumberStyle:(NSNumberFormatterStyle)value {
+   _numberStyle=value;
+}
+
+-(void)setPaddingCharacter:(NSString *)value {
+   value=[value copy];
+   [_paddingCharacter release];
+   _paddingCharacter=value;
+}
+
+-(void)setPaddingPosition:(NSNumberFormatterPadPosition)value {
+   _paddingPosition=value;
+}
+
+-(void)setPartialStringValidationEnabled:(BOOL)value {
+   _isPartialStringValidationEnabled=value;
+}
+
+-(void)setPercentSymbol:(NSString *)value {
+   value=[value copy];
+   [_percentSymbol release];
+   _percentSymbol=value;
+}
+
+-(void)setPerMillSymbol:(NSString *)value {
+   value=[value copy];
+   [_perMillSymbol release];
+   _perMillSymbol=value;
+}
+
+-(void)setPlusSign:(NSString *)value {
+   value=[value copy];
+   [_plusSign release];
+   _plusSign=value;
+}
+
+-(void)setPositiveInfinitySymbol:(NSString *)value {
+   value=[value copy];
+   [_positiveInfinitySymbol release];
+   _positiveInfinitySymbol=value;
+}
+
+-(void)setPositivePrefix:(NSString *)value {
+   value=[value copy];
+   [_positivePrefix release];
+   _positivePrefix=value;
+}
+
+-(void)setPositiveSuffix:(NSString *)value {
+   value=[value copy];
+   [_positiveSuffix release];
+   _positiveSuffix=value;
+}
+
+-(void)setRoundingBehavior:(NSDecimalNumberHandler *)value {
+   value=[value retain];
+   [_roundingBehavior release];
+   _roundingBehavior=value;
+}
+
+-(void)setRoundingIncrement:(NSNumber *)value {
+   value=[value copy];
+   [_roundingIncrement release];
+   _roundingIncrement=value;
+}
+
+-(void)setRoundingMode:(NSNumberFormatterRoundingMode)value {
+   _roundingMode=value;
+}
+
+-(void)setSecondaryGroupingSize:(NSUInteger)value {
+   _secondaryGroupingSize=value;
+}
+
+-(void)setTextAttributesForNegativeInfinity:(NSDictionary *)value {
+   value=[value copy];
+   [_textAttributesForNegativeInfinity release];
+   _textAttributesForNegativeInfinity=value;
+}
+
+-(void)setTextAttributesForNil:(NSDictionary *)value {
+   value=[value copy];
+   [_textAttributesForNil release];
+   _textAttributesForNil=value;
+}
+
+-(void)setTextAttributesForNotANumber:(NSDictionary *)value {
+   value=[value copy];
+   [_textAttributesForNotANumber release];
+   _textAttributesForNotANumber=value;
+}
+
+-(void)setTextAttributesForPositiveInfinity:(NSDictionary *)value {
+   value=[value copy];
+   [_textAttributesForPositiveInfinity release];
+   _textAttributesForPositiveInfinity=value;
+}
+
+-(void)setTextAttributesForPositiveValues:(NSDictionary *)value {
+   value=[value copy];
+   [_textAttributesForPositiveValues release];
+   _textAttributesForPositiveValues=value;
 }
 
 -(void)setTextAttributesForZero:(NSDictionary *)value {
-   NSUnimplementedMethod();
+   value=[value copy];
+   [_textAttributesForZero release];
+   _textAttributesForZero=value;
 }
 
--(void)setThousandSeparator:(NSString *)separator {
+-(void)setThousandSeparator:(NSString *)value {
+   value=[value copy];
    [_thousandSeparator release];
-   _thousandSeparator = [separator retain];
+   _thousandSeparator=value;
    [self setHasThousandSeparators:YES];
 }
 
 -(void)setUsesGroupingSeparator:(BOOL)value {
-   NSUnimplementedMethod();
+   _usesGroupingSeparator=value;
 }
+
 -(void)setUsesSignificantDigits:(BOOL)value {
-   NSUnimplementedMethod();
+   _usesSignificantDigits=value;
 }
+
 -(void)setZeroSymbol:(NSString *)value {
-   NSUnimplementedMethod();
+   value=[value copy];
+   [_zeroSymbol release];
+   _zeroSymbol=value;
 }
 
 -(void)setHasThousandSeparators:(BOOL)value {
@@ -601,43 +914,242 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 }
 
 -(void)setAlwaysShowsDecimalSeparator:(BOOL)value {
-   NSUnimplementedMethod();
+   _alwaysShowsDecimalSeparator=value;
 }
 
--(void)setPositiveFormat:(NSString *)format {
+-(void)setPositiveFormat:(NSString *)value {
+   value=[value copy];
    [_positiveFormat release];
-   _positiveFormat = [format retain];
+   _positiveFormat=value;
+// FIXME: generate formatting values from string
 }
 
--(void)setNegativeFormat:(NSString *)format {
+-(void)setNegativeFormat:(NSString *)value {
+   value=[value copy];
    [_negativeFormat release];
-   _negativeFormat = [format retain];
+   _negativeFormat=value;
+// FIXME: generate formatting values from string
 }
 
--(void)setTextAttributesForNegativeValues:(NSDictionary *)attributes {
-   [_negativeAttributes release];
-   _negativeAttributes = [attributes retain];
+-(void)setTextAttributesForNegativeValues:(NSDictionary *)value {
+   value=[value copy];
+   [_textAttributesForNegativeValues release];
+   _textAttributesForNegativeValues=value;
 }
 
--(void)setAttributedStringForNil:(NSAttributedString *)attributedString {
+-(void)setAttributedStringForNil:(NSAttributedString *)value {
+   value=[value copy];
    [_attributedStringForNil release];
-   _attributedStringForNil = [attributedString retain];
+   _attributedStringForNil=value;
 }
 
--(void)setAttributedStringForNotANumber:(NSAttributedString *)attributedString {
+-(void)setAttributedStringForNotANumber:(NSAttributedString *)value {
+   value=[value copy];
    [_attributedStringForNotANumber release];
-   _attributedStringForNotANumber = [attributedString retain];
+   _attributedStringForNotANumber=value;
 }
 
--(void)setAttributedStringForZero:(NSAttributedString *)attributedString {
+-(void)setAttributedStringForZero:(NSAttributedString *)value {
+   value=[value copy];
    [_attributedStringForZero release];
-   _attributedStringForZero = [attributedString retain];
+   _attributedStringForZero=value;
+}
+
+-(NSString *)stringFromNumber10_0:(NSNumber *)number {
+   NSUnimplementedMethod();
+   return [number description];
+}
+
+static NSString *stringWithFormatGrouping(NSString *format,id locale,NSString *groupingSeparator,NSInteger groupingSize,...){
+   NSUInteger length=0;
+   va_list arguments;
+
+   va_start(arguments,groupingSize);
+
+   unichar *unicode=NSCharactersNewWithFormatAndGrouping(format,locale,arguments,&length,NULL,groupingSeparator,groupingSize);
+
+   return [NSString_unicodePtrNewNoCopy(NULL,unicode,length) autorelease];
+}
+
+-(NSString *)_stringFromNumber:(NSNumber *)number  {
+   NSString *string=nil;
+   
+   if(number==nil)
+    string=[self nilSymbol];
+   else if(number==(NSNumber *)kCFNumberNaN)
+    string=[self notANumberSymbol];
+   else if(number==(NSNumber *)kCFNumberPositiveInfinity){
+    NSString *check=[self positiveInfinitySymbol];
+    
+    if(check==nil){
+     unichar code=0x221E; // unicode infinity
+     
+     check=[NSString stringWithCharacters:&code length:1];
+    }
+    
+    string=check;
+   }
+   else if(number==(NSNumber *)kCFNumberNegativeInfinity){
+    NSString *check=[self negativeInfinitySymbol];
+
+    if(check==nil){
+     unichar codes[2]={ '-', 0x221E }; // unicode infinity
+     
+     check=[NSString stringWithCharacters:codes length:2];
+    }
+    
+    string=check;
+   }
+
+   const char *objcType=[number objCType];
+   
+   if(objcType==NULL || strlen(objcType)!=1)
+    objcType="?";
+  
+   switch(*objcType){
+    case _C_CHR:
+    case _C_SHT:
+    case _C_INT:
+#ifndef __LP64__    
+    case _C_LNG:
+#endif
+     string=stringWithFormatGrouping(@"%i",_locale,[self groupingSeparator],[self groupingSize],[number intValue]);
+     break;
+
+
+    case _C_UCHR:
+    case _C_USHT:
+    case _C_UINT:
+#ifndef __LP64__    
+    case _C_ULNG:
+#endif
+     string=stringWithFormatGrouping(@"%u",_locale,[self groupingSeparator],[self groupingSize],[number unsignedIntValue]);
+     break;
+     
+#ifdef __LP64__    
+    case _C_LNG:
+#endif
+    case _C_LNGLNG:
+     string=stringWithFormatGrouping(@"%qd",_locale,[self groupingSeparator],[self groupingSize],[number longLongValue]);
+     break;
+     break;
+
+#ifdef __LP64__    
+    case _C_ULNG:
+#endif
+    case _C_ULNGLNG:
+     string=stringWithFormatGrouping(@"%qu",_locale,[self groupingSeparator],[self groupingSize],[number unsignedLongLongValue]);
+     break;
+
+    case _C_FLT:
+    case _C_DBL:;
+     NSString *format;
+     
+     format=[NSString stringWithFormat:@"%%.%df",[self maximumFractionDigits]];
+      
+     string=stringWithFormatGrouping(format,_locale,[self groupingSeparator],[self groupingSize],[number doubleValue]);
+     break;
+    
+    default:
+     string=[number description];
+     break;
+   }
+
+   return string;
+}
+
+static NSNumber *multipliedNumber(NSNumber *number,NSNumber *multiplier){
+   if(multiplier==nil)
+    return number;
+   
+   return [NSNumber numberWithDouble:[number doubleValue]*[multiplier doubleValue]];
+}
+
+static BOOL numberIsNegative(NSNumber *number){
+   if(number==nil)
+    return NO;
+    
+   return (copysign(1.0,[number doubleValue])<0)?YES:NO;
+}
+
+static BOOL numberIsPositive(NSNumber *number){
+   if(number==nil)
+    return YES; // ?
+    
+   return (copysign(1.0,[number doubleValue])>0)?YES:NO;
+}
+
+-(NSString *)stringFromNumberNoStyle:(NSNumber *)number {
+   number=multipliedNumber(number,[self multiplier]);
+   
+   NSString *prefix;
+   NSString *suffix;
+   NSString *format;
+
+   if(numberIsNegative(number)){
+    prefix=[self negativePrefix];
+    suffix=[self negativeSuffix];
+    format=[self negativeFormat];
+   }
+   else {
+    prefix=[self positivePrefix];
+    suffix=[self positiveSuffix];
+    format=[self positiveFormat];
+   }
+   
+   NSString *result;
+   
+   result=prefix;
+   result=[result stringByAppendingString:[self _stringFromNumber:number]];
+   result=[result stringByAppendingString:suffix];
+   
+   return result;
+}
+
+-(NSString *)stringFromNumberPercentStyle:(NSNumber *)number {
+   NSUnimplementedMethod();
+   return [[self stringFromNumberNoStyle:number] stringByAppendingString:[self percentSymbol]];
+}
+
+-(NSString *)stringFromNumber10_4:(NSNumber *)number {
+   switch(_numberStyle){
+
+    case NSNumberFormatterNoStyle:
+     return [self stringFromNumberNoStyle:number];
+
+    case NSNumberFormatterDecimalStyle:
+     return [self stringFromNumberNoStyle:number];
+
+    case NSNumberFormatterCurrencyStyle:
+     NSUnimplementedMethod();
+     break;
+
+    case NSNumberFormatterPercentStyle:
+     return [self stringFromNumberNoStyle:number];
+
+    case NSNumberFormatterScientificStyle:
+     NSUnimplementedMethod();
+     break;
+
+    case NSNumberFormatterSpellOutStyle:
+     NSUnimplementedMethod();
+     break;
+   }
+   return [number description];
 }
 
 -(NSString *)stringFromNumber:(NSNumber *)number {
-   NSUnimplementedMethod();
-   return 0;
+   NSNumberFormatterBehavior check=_behavior;
+   
+   if(check==NSNumberFormatterBehaviorDefault)
+    check=NSNumberFormatterBehavior10_4;
+   
+   if(check==NSNumberFormatterBehavior10_0)
+    return [self stringFromNumber10_0:number];
+   else
+    return [self stringFromNumber10_4:number];
 }
+
 -(NSNumber *)numberFromString:(NSString *)string {
    NSUnimplementedMethod();
    return 0;
@@ -647,6 +1159,7 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 #if 0  
 -(NSString *)_objectValue:(id)object withNumberFormat:(NSString *)format {
    NSString *stringValue = [[NSNumber numberWithDouble:[object doubleValue]] stringValue];
+   //NSAllocateMemoryPages wtf??
    unichar *valueBuffer = NSAllocateMemoryPages([stringValue length]+1);
    unichar *formatBuffer = NSAllocateMemoryPages([format length]+1);
    unichar *outputBuffer = NSAllocateMemoryPages([format length]+64);
@@ -827,31 +1340,78 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    return result;
 }
 
--(NSString *)_objectValue:(id)object withNumberFormat:(NSString *)format {
-   return [self _stringValue:[[NSNumber numberWithDouble:[object doubleValue]] stringValue]
-      withNumberFormat:format];
-}
-
--(NSString *)stringForObjectValue:(id)object {
-   return [[self attributedStringForObjectValue:object 
-      withDefaultAttributes:[NSDictionary dictionary]] string];
-}
-
--(NSAttributedString *)attributedStringForObjectValue:(id)object 
-   withDefaultAttributes:(NSDictionary *)attributes {
-   if (object == nil)
-      return _attributedStringForNil;
-
-   if ([object doubleValue] > 0.0) {
-      return [[[NSAttributedString allocWithZone:NULL] initWithString:[self _objectValue:object withNumberFormat:_positiveFormat] 
-         attributes:_positiveAttributes] autorelease];
-   }
-   else if ([object doubleValue] < 0.0) {
-      return [[[NSAttributedString allocWithZone:NULL] initWithString: [self _objectValue:object withNumberFormat:_negativeFormat] 
-         attributes:_negativeAttributes] autorelease];
-   } 
+-(NSString *)stringForObjectValue:object {
+   if([object isKindOfClass:[NSNumber class]])
+    return [self stringFromNumber:object];
    else
-      return _attributedStringForZero;
+    return [object description];
+}
+
+-(NSAttributedString *)attributedStringForObjectValue10_0:object withDefaultAttributes:(NSDictionary *)defaultAttributes {
+   if(object==nil){
+    NSAttributedString *check=[self attributedStringForNil];
+    
+    if(check!=nil)
+     return check;
+}
+   if(object==(NSNumber *)kCFNumberNaN){
+    NSAttributedString *check=[self attributedStringForNotANumber];
+
+    if(check!=nil)
+     return check;
+   }
+   
+   NSString     *string=[self stringForObjectValue:object];
+   NSDictionary *attributes=nil;
+    
+   if(numberIsPositive(object))
+    attributes=[self textAttributesForPositiveValues];
+   else if(numberIsNegative(object))
+    attributes=[self textAttributesForNegativeValues];
+   else
+    attributes=[self textAttributesForZero];
+    
+   if(attributes==nil)
+    attributes=defaultAttributes;
+     
+   return [[[NSAttributedString allocWithZone:NULL] initWithString:string attributes:attributes] autorelease];
+}
+
+-(NSAttributedString *)attributedStringForObjectValue10_4:object withDefaultAttributes:(NSDictionary *)defaultAttributes {
+   NSString     *string=[self stringForObjectValue:object];
+   NSDictionary *attributes=nil;
+   
+   if (object == nil)
+    attributes=[self textAttributesForNil];
+   else if(object==(NSNumber *)kCFNumberNaN)
+    attributes=[self textAttributesForNotANumber];
+   else if(object==(NSNumber *)kCFNumberPositiveInfinity)
+    attributes=[self textAttributesForPositiveInfinity];
+   else if(object==(NSNumber *)kCFNumberNegativeInfinity)
+    attributes=[self textAttributesForNegativeInfinity];
+   else if(numberIsPositive(object))
+    attributes=[self textAttributesForPositiveValues];
+   else if(numberIsNegative(object))
+    attributes=[self textAttributesForNegativeValues];
+   else
+    attributes=[self textAttributesForZero];
+
+   if(attributes==nil)
+    attributes=defaultAttributes;
+
+   return [[[NSAttributedString allocWithZone:NULL] initWithString:string attributes:attributes] autorelease];
+   }
+
+-(NSAttributedString *)attributedStringForObjectValue:object withDefaultAttributes:(NSDictionary *)attributes {
+   NSNumberFormatterBehavior check=_behavior;
+   
+   if(check==NSNumberFormatterBehaviorDefault)
+    check=NSNumberFormatterBehavior10_4;
+   
+   if(check==NSNumberFormatterBehavior10_0)
+    return [self attributedStringForObjectValue10_0:object withDefaultAttributes:(NSDictionary *)attributes];
+   else
+    return [self attributedStringForObjectValue10_4:object withDefaultAttributes:(NSDictionary *)attributes];
 }
 
 -(NSString *)editingStringForObjectValue:(id)object {
@@ -863,10 +1423,6 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    return 0;
 }
 
-// what's the story with this method? dox are pretty unclear
-// tests with MacOS X 10.0.4:
-// @"365.25" = NSDecimalNumber[0x65ad0] 365.25
-// @"bork", @"j80.0", @" 80." = Invalid number
 -(BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error {
    // simple test of characters...
    NSMutableCharacterSet *digitsAndSeparators = [[[NSCharacterSet decimalDigitCharacterSet] mutableCopy] autorelease];

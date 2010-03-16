@@ -26,6 +26,8 @@ FOUNDATION_EXPORT NSString * const NSLocaleScriptCode;
 FOUNDATION_EXPORT NSString * const NSLocaleExemplarCharacterSet;
 FOUNDATION_EXPORT NSString * const NSLocaleCollationIdentifier;
 
+FOUNDATION_EXPORT NSString * const NSCurrentLocaleDidChangeNotification;
+
 @interface NSLocale : NSObject <NSCoding,NSCopying> {
    NSDictionary *_locale;
 }

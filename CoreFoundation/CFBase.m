@@ -81,7 +81,7 @@ CFStringRef CFCopyTypeIDDescription(CFTypeID typeID){
 }
 
 CFStringRef CFCopyDescription(CFTypeRef self){
-   return (CFStringRef)[(id) self description];
+   return (CFStringRef)[[(id) self description] copy];
 }
 
 CFTypeRef CFMakeCollectable(CFTypeRef self){

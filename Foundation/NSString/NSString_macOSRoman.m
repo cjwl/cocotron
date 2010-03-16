@@ -254,7 +254,7 @@ NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInte
     
     if(length+1 > maxLength) {
         cString[0]='\0';
-        return 0;
+        return NSNotFound;
     }
     for(i=0;i<length && result<=maxLength;i++){
         const unichar code=characters[i];

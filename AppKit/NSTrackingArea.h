@@ -34,8 +34,8 @@ typedef NSUInteger NSTrackingAreaOptions;
    NSRect                 _rect;
    NSTrackingAreaOptions  _options;
    id                     _owner;
-   // Don't retain this, as it's not always an object.
-   NSDictionary          *_userInfo;
+   void                  *_userData;
+   BOOL                   _retainUserData;
 
    // NSWindow needs this. It's maintained when areas are collected for the window.
    NSView                *_view;
@@ -61,7 +61,7 @@ typedef NSUInteger NSTrackingAreaOptions;
 
 
 // undocumented
--(id)_initWithRect:(NSRect)rect options:(NSTrackingAreaOptions)options owner:(id)owner userInfo:(NSDictionary *)userInfo isToolTip:(BOOL)isToolTip isLegacy:(BOOL)legacy;
+-(id)_initWithRect:(NSRect)rect options:(NSTrackingAreaOptions)options owner:(id)owner userData:(void *)userData retainUserData:(BOOL)retainUserData isToolTip:(BOOL)isToolTip isLegacy:(BOOL)legacy;
 
 //-(void)_setRect:(NSRect)rect;
 -(NSRect)_rectInWindow;

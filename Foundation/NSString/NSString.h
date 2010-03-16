@@ -85,8 +85,8 @@ FOUNDATION_EXPORT const NSUInteger NSMaximumStringLength;
 
 -initWithString:(NSString *)string;
 
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments;
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale,...;
+-initWithFormat:(NSString *)format locale:(id)locale arguments:(va_list)arguments;
+-initWithFormat:(NSString *)format locale:(id)locale,...;
 -initWithFormat:(NSString *)format arguments:(va_list)arguments;
 -initWithFormat:(NSString *)format,...;
 
@@ -218,7 +218,7 @@ FOUNDATION_EXPORT const NSUInteger NSMaximumStringLength;
 @end
 
 @interface NSConstantString : NSString {
-    char    *_bytes;
+    void    *_bytes;
     uint32_t _length;
 }
 @end

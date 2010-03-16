@@ -44,7 +44,6 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(NSString *)DNSHostName;
 -(NSArray *)addressesForDNSHostName:(NSString *)name;
 
--(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)length;
 -(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
 -(void)unmapAddress:(void *)ptr length:(NSUInteger)length;
 
@@ -58,6 +57,7 @@ FOUNDATION_EXPORT NSUInteger NSPlatformThreadID();
 FOUNDATION_EXPORT NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate();
 FOUNDATION_EXPORT void NSPlatformLogString(NSString *string);
 FOUNDATION_EXPORT void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval);
+FOUNDATION_EXPORT void *NSPlatformContentsOfFile(NSString *path,NSUInteger *length);
 
 // These functions are implemented in the platform subproject
 

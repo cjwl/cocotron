@@ -229,6 +229,8 @@ void NSDeallocateObject(id object) {
       if(zone==NULL)
          zone=NSDefaultMallocZone();
 
+      object->isa=0;
+      
       NSZoneFree(zone,object);
    }
 }

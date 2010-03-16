@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSString.h>
 
-unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
-     va_list arguments,NSUInteger *lengthp,NSZone *zone);
+unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,va_list arguments,NSUInteger *lengthp,NSZone *zone);
+unichar *NSCharactersNewWithFormatAndGrouping(NSString *format,NSDictionary *locale,va_list arguments,NSUInteger *lengthp,NSZone *zone,NSString *grouping,NSInteger groupingSize);
 
 NSString *NSStringNewWithFormat(NSString *format,NSDictionary *locale,
   va_list arguments,NSZone *zone);

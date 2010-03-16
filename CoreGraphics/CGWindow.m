@@ -116,4 +116,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+-(void)flashWindow {
+   O2InvalidAbstractInvocation();
+}
+
+
 @end

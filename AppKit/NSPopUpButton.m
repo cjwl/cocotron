@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSObject+BindingSupport.h>
 
-static NSString *NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingObservationContext";
+static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingObservationContext";
 
 @implementation NSPopUpButton
 

@@ -54,6 +54,7 @@ typedef enum {
 -(void)sendEvent:(CGEvent *)event;
 
 -(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
+-(void)flashWindow;
 
 @end
 

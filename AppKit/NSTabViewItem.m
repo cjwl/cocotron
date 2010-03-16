@@ -45,6 +45,7 @@ NSString *_NSTruncatedStringWithAttributesInRect(NSString *string, NSDictionary 
     _identifier=[[keyed decodeObjectForKey:@"NSIdentifier"] retain];
     _label=[[keyed decodeObjectForKey:@"NSLabel"] retain];
     _view=[[keyed decodeObjectForKey:@"NSView"] retain];
+
     _tabView=[keyed decodeObjectForKey:@"NSTabView"];
     _color=[[keyed decodeObjectForKey:@"NSColor"] retain];
    }

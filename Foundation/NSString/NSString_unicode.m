@@ -32,7 +32,7 @@ NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger
 {
     if((length+1)*2 > maxLength) {
         cString[0]='\0';
-        return 0;
+        return NSNotFound;
     }
     
     NSUInteger ucByteLen = length*sizeof(unichar);

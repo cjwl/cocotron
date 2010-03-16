@@ -11,20 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 int OBJCRegisterDLL(HINSTANCE handle);
 
-void FoundationThreadCleanup(void);
-
-
 int APIENTRY DllMain(HINSTANCE handle,DWORD reason,LPVOID _reserved) {
 
    if(reason==DLL_PROCESS_ATTACH)
     return OBJCRegisterDLL(handle);
 
    if(reason==DLL_THREAD_DETACH){
-     FoundationThreadCleanup();
      return TRUE;
    }
    return TRUE;
 }
-
-
-

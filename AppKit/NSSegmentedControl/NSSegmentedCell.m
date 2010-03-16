@@ -195,6 +195,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    // TODO: implement setLineBreakMode on NSCell
    //[cell setLineBreakMode:NSLineBreakByTruncatingTail];
    
+   [cell setControlView:view];
    [cell drawWithFrame:frame inView:view];
    
    [cell release];

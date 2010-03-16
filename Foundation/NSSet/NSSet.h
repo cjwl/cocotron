@@ -26,6 +26,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +setWithObjects:first,...;
 +setWithObjects:(id *)objects count:(NSUInteger)count;
 
+-(NSSet *)setByAddingObject:object;
+-(NSSet *)setByAddingObjectsFromSet:(NSSet *)other;
+
 -member:object;
 -(NSUInteger)count;
 -(NSEnumerator *)objectEnumerator;

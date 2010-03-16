@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSNumber.h>
 
 NSString * const NSLocaleCountryCode=@"NSLocaleCountryCode";
 NSString * const NSLocaleLanguageCode=@"NSLocaleLanguageCode";
@@ -25,6 +26,10 @@ NSString * const NSLocaleMeasurementSystem=@"NSLocaleMeasurementSystem";
 NSString * const NSLocaleScriptCode=@"NSLocaleScriptCode";
 NSString * const NSLocaleExemplarCharacterSet=@"NSLocaleExemplarCharacterSet";
 NSString * const NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
+
+NSString * const NSCurrentLocaleDidChangeNotification=@"NSCurrentLocaleDidChangeNotification";
+
+BOOL NSCurrentLocaleIsMetric();
 
 @implementation NSLocale
 
@@ -120,6 +125,7 @@ static NSLocale *_sharedCurrentLocale = nil;
    [super init];
 
    NSString *separator, *language;
+   NSNumber *usesMetric;
 
    if ([identifier isEqualToString:@"de_DE"])
    {
@@ -138,9 +144,15 @@ static NSLocale *_sharedCurrentLocale = nil;
       separator = @".";
       language  = @"English";
    }
-   _locale = [[NSDictionary dictionaryWithObjectsAndKeys:identifier, NSLocaleIdentifier,
+   
+   // FIXME: This is wrong in that it is using the current locales value, not the identified one
+   usesMetric=[NSNumber numberWithBool:NSCurrentLocaleIsMetric()];
+   
+   _locale = [[NSDictionary allocWithZone:NULL] initWithObjectsAndKeys:identifier, NSLocaleIdentifier,
                                                           separator, NSLocaleDecimalSeparator,
-                                                           language, NSLocaleLanguageCode, nil] retain];
+                                                           language, NSLocaleLanguageCode,
+                                                           usesMetric, NSLocaleUsesMetricSystem,
+                                                            nil];
    return self;
 }
 

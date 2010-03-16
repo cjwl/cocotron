@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 APPKIT_EXPORT NSString * const NSWorkspaceWillPowerOffNotification;
 
+APPKIT_EXPORT NSString * const NSWorkspaceRecycleOperation;
+
 @interface NSWorkspace : NSObject {
    NSNotificationCenter *_notificationCenter;
 }

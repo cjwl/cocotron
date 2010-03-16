@@ -18,4 +18,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-NSEnumerator *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table);
+NSEnumerator_set *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table);
+id NSEnumerator_setNextObject(NSEnumerator_set *self);

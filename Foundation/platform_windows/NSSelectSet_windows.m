@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNotificationCenter.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSRunLoop.h>
+#import <pthread.h>
 
 @implementation NSSelectSet(windows)
 
@@ -119,7 +120,7 @@ void native_set_remove(native_set *native,native_set *remove){
     native_set_clear(remove,native->fdset->fd_array[i]);
 }
 
-struct NSSelectSetBackgroundInfo {
+typedef struct NSSelectSetBackgroundInfo {
    HANDLE                 eventHandle;
    NSHandleMonitor_win32 *eventMonitor;
    NSMutableArray        *eventMonitorModes;
@@ -132,6 +133,7 @@ struct NSSelectSetBackgroundInfo {
    
    CRITICAL_SECTION *lock;
    
+   BOOL              shutdown;
    native_set       *inputRead;
    native_set       *inputWrite;
    native_set       *inputExcept;
@@ -140,9 +142,10 @@ struct NSSelectSetBackgroundInfo {
    native_set       *outputWrite;
    native_set       *outputExcept;
    native_set       *outputError;
-};
+} NSSelectSetBackgroundInfo;
 
 static WINAPI DWORD selectThread(LPVOID arg){
+   BOOL   shutdown=NO;
    struct NSSelectSetBackgroundInfo *async=arg;
    native_set *activeRead;
    native_set *activeWrite;
@@ -156,7 +159,7 @@ static WINAPI DWORD selectThread(LPVOID arg){
    checkForErrors=native_set_new();
    gotErrors=native_set_new();
    
-   while(YES){
+   while(!shutdown){
     BOOL setEvent;
     
     EnterCriticalSection(async->lock);
@@ -217,12 +220,111 @@ static WINAPI DWORD selectThread(LPVOID arg){
     
     if(setEvent)
      SetEvent(async->eventHandle);
+     
+    EnterCriticalSection(async->lock);
+    shutdown=async->shutdown;
+    LeaveCriticalSection(async->lock);
    }
+   
+   CloseHandle(async->eventHandle);
+   
+   [async->pingRead close];
+   [async->pingRead release];
+   
+   [async->pingWrite close];
+   [async->pingWrite release];
+   
+   native_set_free(async->inputRead);
+   native_set_free(async->inputWrite);
+   native_set_free(async->inputExcept);
+
+   native_set_free(async->outputRead);
+   native_set_free(async->outputWrite);
+   native_set_free(async->outputExcept);
+   native_set_free(async->outputError);
+
+   NSZoneFree(NULL,async->lock);
+   NSZoneFree(NULL,async);
+   
    return 0;
 }
 
-// one per thread at some point
-static struct NSSelectSetBackgroundInfo *_async=NULL;
+static pthread_once_t asyncThreadKeyOnce=PTHREAD_ONCE_INIT;
+static pthread_key_t  asyncThreadKey;
+
+static void asyncThreadInfoDealloc(void *asyncX){
+   struct NSSelectSetBackgroundInfo *async=asyncX;
+   
+}
+
+static void asyncThreadKeyInitialize(void) {
+   pthread_key_create(&asyncThreadKey,(void(*)(void*))&asyncThreadInfoDealloc);
+}
+
+static struct NSSelectSetBackgroundInfo *asyncThreadInfo(){
+   pthread_once(&asyncThreadKeyOnce,asyncThreadKeyInitialize);
+   
+   struct NSSelectSetBackgroundInfo *result=pthread_getspecific(asyncThreadKey);
+   if (result == NULL){
+    result=NSZoneMalloc(NULL,sizeof(struct NSSelectSetBackgroundInfo));
+   
+    result->eventHandle=CreateEvent(NULL,FALSE,FALSE,NULL);
+    result->eventMonitor=[[NSHandleMonitor_win32 handleMonitorWithHandle:result->eventHandle] retain];
+    [result->eventMonitor setDelegate:[NSSelectSet_windows class]];
+    [result->eventMonitor setCurrentActivity:Win32HandleSignaled];
+    result->eventMonitorModes=[NSMutableArray new];
+
+    result->pingWrite=[[NSSocket alloc] initConnectedToSocket:&result->pingRead];
+    [result->pingRead retain];
+    result->pingWriteHandle=[result->pingWrite socketHandle];
+    result->pingReadHandle=[result->pingRead socketHandle];
+
+    result->lock=NSZoneMalloc(NULL,sizeof(CRITICAL_SECTION));
+    InitializeCriticalSection(result->lock);
+   
+    result->shutdown=NO;
+    
+    result->inputRead=native_set_new();
+    result->inputWrite=native_set_new();
+    result->inputExcept=native_set_new();
+
+    result->outputRead=native_set_new();
+    result->outputWrite=native_set_new();
+    result->outputExcept=native_set_new();
+    result->outputError=native_set_new();
+
+    pthread_setspecific(asyncThreadKey,result);
+
+    DWORD threadID;
+    
+    CreateThread(NULL,0,selectThread,result,0,&threadID);
+   }
+   
+   return result;
+}
+
+void NSSelectSetShutdownForCurrentThread() {
+   pthread_once(&asyncThreadKeyOnce,asyncThreadKeyInitialize);
+   
+   struct NSSelectSetBackgroundInfo *async=pthread_getspecific(asyncThreadKey);
+   if(async!=NULL){
+    pthread_setspecific(asyncThreadKey,NULL);
+    
+    [async->eventMonitor invalidate];
+    [async->eventMonitor release];
+    async->eventMonitor=nil;
+    [async->eventMonitorModes release];
+    async->eventMonitorModes=nil;
+    
+    EnterCriticalSection(async->lock);
+    async->shutdown=YES;
+
+    uint8_t one[1]={ 42 };
+   
+    [async->pingWrite write:one maxLength:1];
+    LeaveCriticalSection(async->lock);
+   }
+}
 
 static void transferSetToNative(NSSet *set,native_set *native){
    NSEnumerator     *state=[set objectEnumerator];
@@ -251,41 +353,15 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
 
 +(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
    NSSelectSet_windows *outputSet=[[[NSSelectSet alloc] init] autorelease];
+   NSSelectSetBackgroundInfo *async=asyncThreadInfo();
 
-   EnterCriticalSection(_async->lock);
-   transferNativeToSet(_async->outputRead,outputSet->_readSet);
-   transferNativeToSet(_async->outputWrite,outputSet->_writeSet);
-   transferNativeToSet(_async->outputExcept,outputSet->_exceptionSet);
-   LeaveCriticalSection(_async->lock);
+   EnterCriticalSection(async->lock);
+   transferNativeToSet(async->outputRead,outputSet->_readSet);
+   transferNativeToSet(async->outputWrite,outputSet->_writeSet);
+   transferNativeToSet(async->outputExcept,outputSet->_exceptionSet);
+   LeaveCriticalSection(async->lock);
    
    [[NSNotificationCenter defaultCenter] postNotificationName:NSSelectSetOutputNotification object:outputSet];
-}
-
-+(void)initBackgroundInfo {
-   _async=NSZoneMalloc([self zone],sizeof(struct NSSelectSetBackgroundInfo));
-   
-   _async->eventHandle=CreateEvent(NULL,FALSE,FALSE,NULL);
-   _async->eventMonitor=[[NSHandleMonitor_win32 handleMonitorWithHandle:_async->eventHandle] retain];
-   [_async->eventMonitor setDelegate:self];
-   [_async->eventMonitor setCurrentActivity:Win32HandleSignaled];
-   _async->eventMonitorModes=[NSMutableArray new];
-
-   _async->pingWrite=[[NSSocket alloc] initConnectedToSocket:&_async->pingRead];
-   [_async->pingRead retain];
-   _async->pingWriteHandle=[_async->pingWrite socketHandle];
-   _async->pingReadHandle=[_async->pingRead socketHandle];
-
-   _async->lock=NSZoneMalloc([self zone],sizeof(CRITICAL_SECTION));
-   InitializeCriticalSection(_async->lock);
-   
-   _async->inputRead=native_set_new();
-   _async->inputWrite=native_set_new();
-   _async->inputExcept=native_set_new();
-
-   _async->outputRead=native_set_new();
-   _async->outputWrite=native_set_new();
-   _async->outputExcept=native_set_new();
-   _async->outputError=native_set_new();
 }
 
 -(void)waitInBackgroundInMode:(NSString *)mode {
@@ -294,43 +370,33 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
    if([self isEmpty])
     return;
 
-   if(_async==NULL){
+   NSSelectSetBackgroundInfo *async=asyncThreadInfo();
 
-    pingElseThread=NO;
-    [isa initBackgroundInfo];
-   }
-   if(![_async->eventMonitorModes containsObject:mode]){
-    [_async->eventMonitorModes addObject:mode];
-    [[NSRunLoop currentRunLoop] addInputSource:_async->eventMonitor forMode:mode];
+   if(![async->eventMonitorModes containsObject:mode]){
+    [async->eventMonitorModes addObject:mode];
+    [[NSRunLoop currentRunLoop] addInputSource:async->eventMonitor forMode:mode];
    }
    
-   EnterCriticalSection(_async->lock);
-   native_set_reset(_async->inputRead);
-   native_set_reset(_async->inputWrite);
-   native_set_reset(_async->inputExcept);
+   EnterCriticalSection(async->lock);
+   native_set_reset(async->inputRead);
+   native_set_reset(async->inputWrite);
+   native_set_reset(async->inputExcept);
    
-   transferSetToNative(_readSet,_async->inputRead);
-   transferSetToNative(_writeSet,_async->inputWrite);
-   transferSetToNative(_exceptionSet,_async->inputExcept);
+   transferSetToNative(_readSet,async->inputRead);
+   transferSetToNative(_writeSet,async->inputWrite);
+   transferSetToNative(_exceptionSet,async->inputExcept);
 
-   native_set_reset(_async->outputRead);
-   native_set_reset(_async->outputWrite);
-   native_set_reset(_async->outputExcept);
-   native_set_reset(_async->outputError);
-   LeaveCriticalSection(_async->lock);
+   native_set_reset(async->outputRead);
+   native_set_reset(async->outputWrite);
+   native_set_reset(async->outputExcept);
+   native_set_reset(async->outputError);
+   LeaveCriticalSection(async->lock);
 
-   if(pingElseThread){
     uint8_t one[1]={ 42 };
    
-    [_async->pingWrite write:one maxLength:1];
+   [async->pingWrite write:one maxLength:1];
    }
-   else {
-    DWORD threadID;
     
-    CreateThread(NULL,0,selectThread,_async,0,&threadID);
-   }
-}
-
 -(NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSetX beforeDate:(NSDate *)beforeDate {
    NSError          *result=nil;
    NSSocket_windows *cheater=[NSSocket_windows socketWithSocketHandle:0];

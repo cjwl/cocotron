@@ -8,11 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 
-@interface NSWindowBackgroundView : NSView 
-{
-    NSBorderType _borderType;
-    BOOL _cachesImageForAnimation;
-    NSImage *_animationCache;
+@interface NSWindowBackgroundView : NSView  {
+   NSBorderType _borderType;
 }
 
 enum {
@@ -21,12 +18,5 @@ enum {
 
 - (NSBorderType)borderType;
 - (void)setBorderType:(NSBorderType)borderType;
-
-- (BOOL)cachesImageForAnimation;
-- (void)setCachesImageForAnimation:(BOOL)flag;
-
-- (void)cacheImageForAnimation;
-- (BOOL)cachedImageIsValid;
-- (void)invalidateCachedImage;
 
 @end

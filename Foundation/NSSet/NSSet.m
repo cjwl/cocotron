@@ -155,12 +155,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSSet_concreteNew(NULL,objects,count));
 }
 
--(id)setByAddingObjectsFromSet:(NSSet*)other
-{
-	id ret=[self mutableCopy];
-	[ret unionSet:other];
-	[ret autorelease];
-	return [[ret copy] autorelease];
+-(NSSet *)setByAddingObject:object {
+   id result=[[self mutableCopy] autorelease];
+   
+   [result addObject:object];
+   
+   return result;
+}
+
+-(NSSet *)setByAddingObjectsFromSet:(NSSet*)other {
+	id result=[[self mutableCopy] autorelease];
+    
+	[result unionSet:other];
+
+	return result;
 }
 
 -(Class)classForCoder {

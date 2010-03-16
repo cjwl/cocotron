@@ -32,6 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket_windows.h>
 #import <Foundation/NSParentDeathMonitor_win32.h>
 #import <Foundation/NSSelectInputSourceSet.h>
+#import <stdio.h>
 
 #import <objc/runtime.h>
 #import <Foundation/ObjCModule.h>
@@ -332,15 +333,13 @@ void NSPlatformLogString(NSString *string) {
    NSData     *data=[NSPropertyListWriter_vintage nullTerminatedASCIIDataWithString:string];
    const char *cString=[data bytes];
    NSUInteger    length=[data length]-1; // skip 0
-   DWORD       ignore;
-   HANDLE      handle;
 
-   handle=GetStdHandle(STD_ERROR_HANDLE);
-   WriteFile(handle,cString,length,&ignore,NULL);
+   fprintf(stderr, "%s", cString);
    if(length==0 || cString[length-1]!='\n')
-    WriteFile(handle,"\n",1,&ignore,NULL);
+    fprintf(stderr, "\n");
+   fflush(stderr);
 
- //  handle=OpenEventLog(NULL,[processName() cString]);
+ // HANDLE handle=OpenEventLog(NULL,[processName() cString]);
    static HANDLE eventLog=NULL;
    
    if(eventLog==NULL){
@@ -351,9 +350,8 @@ void NSPlatformLogString(NSString *string) {
  //  CloseEventLog(handle);
 }
 
--(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)lengthp {
-   HANDLE file=CreateFileW([path fileSystemRepresentationW],GENERIC_READ,FILE_SHARE_READ,NULL,
-      OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
+void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
+   HANDLE file=CreateFileW([path fileSystemRepresentationW],GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN,NULL);
    DWORD  length,readLength;
    void  *result;
 

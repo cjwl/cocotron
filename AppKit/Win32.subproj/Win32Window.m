@@ -528,6 +528,10 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    [_deviceDictionary addEntriesFromDictionary:entries];
 }
 
+-(void)flashWindow {
+   FlashWindow(_handle,TRUE);
+}
+
 -(void)_GetWindowRectDidSize:(BOOL)didSize {
    RECT   windowRect;
    RECT   clientRect;

@@ -98,7 +98,7 @@ NSUInteger NSGetNEXTSTEPCStringWithMaxLength(const unichar *characters,NSUIntege
 
     if(length+1 > maxLength) {
         cString[0]='\0';
-        return 0;
+        return NSNotFound;
     }
    for(i=0;i<length && result<=maxLength;i++){
     unichar code=characters[i];

@@ -88,6 +88,7 @@ typedef enum {
    NSMutableArray *_modalStack;
    NSMutableArray *_orderedDocuments;
    NSMutableArray *_orderedWindows;
+   NSTimer *_attentionTimer;
 }
 
 +(NSApplication *)sharedApplication;

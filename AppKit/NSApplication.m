@@ -796,8 +796,14 @@ id NSApp=nil;
    NSLog(@"NSApplication got exception: %@",exception);
 }
 
+-(void)_attentionTimer:(NSTimer *)timer {
+   [_windows makeObjectsPerformSelector:@selector(_flashWindow)];
+}
+
 -(int)requestUserAttention:(NSRequestUserAttentionType)attentionType {
-   NSUnimplementedMethod();
+   [_attentionTimer invalidate];
+   _attentionTimer=[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(_attentionTimer:) userInfo:nil repeats:YES];
+
    return 0;
 }
 
@@ -1093,6 +1099,9 @@ standardAboutPanel] retain];
 
 
 -(void)_windowWillBecomeActive:(NSWindow *)window {
+   [_attentionTimer invalidate];
+   _attentionTimer=nil;
+   
    if(![self isActive]){
     [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillBecomeActiveNotification object:self];
    }

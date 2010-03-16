@@ -360,6 +360,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(NSRect)bounds {
+// FIXME: not correct
    return [self controlPointBounds];
 }
 

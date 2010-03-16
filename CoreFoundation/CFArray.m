@@ -210,7 +210,8 @@ CFIndex CFArrayGetCountOfValue(CFArrayRef self,CFRange range,const void *value) 
 	int count=0;
 	for(i=range.location+range.length;i>range.location;i--)
 	{
-		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value]) return count++;
+		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value])
+         count++;
 	}
 	return count;
 	

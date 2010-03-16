@@ -702,6 +702,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
                     if ([_delegate respondsToSelector:@selector(outlineView:willDisplayOutlineCell:forTableColumn:item:)])
                         [_delegate outlineView:self willDisplayOutlineCell:_markerCell forTableColumn:column item:item];
 
+                    [_markerCell setControlView:self];
                     [_markerCell drawWithFrame:[self frameOfMarkerCellAtColumn:drawThisColumn row:row level:[self levelForRow:row]]
                                         inView:self];
                 }
@@ -710,6 +711,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
             if ([_delegate respondsToSelector:@selector(outlineView:willDisplayCell:forTableColumn:item:)])
                 [_delegate outlineView:self willDisplayCell:dataCell forTableColumn:column item:item];
 
+            [dataCell setControlView:self];
             [dataCell drawWithFrame:NSInsetRect([self _adjustedFrameOfCellAtColumn:drawThisColumn row:row objectValue:objectValue],ceil(_intercellSpacing.width/2),ceil( _intercellSpacing.height/2))
                              inView:self];
         }

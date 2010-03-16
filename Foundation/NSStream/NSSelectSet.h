@@ -39,3 +39,5 @@ FOUNDATION_EXPORT NSString * const NSSelectSetOutputNotification;
 -(NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSet beforeDate:(NSDate *)beforeDate;
 
 @end
+
+void NSSelectSetShutdownForCurrentThread();

@@ -676,16 +676,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setFrame:(NSRect)frame display:(BOOL)display {
-   _frame=frame;
-   _makeSureIsOnAScreen=YES;
-
-   [_backgroundView setFrameSize:_frame.size];
-   [[self platformWindow] setFrame:_frame];
-
-   [self _updateTrackingAreas];
-
-   if(display)
-    [self display];
+   [self setFrame:frame display:display animate:NO];
 }
 
 - (void)_animateWithContext:(NSWindowAnimationContext *)context
@@ -738,26 +729,25 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     return _animationContext;
 }
 
--(void)setFrame:(NSRect)newFrame display:(BOOL)display animate:(BOOL)animate 
-{
-    NSWindowAnimationContext *context;
-    
-    // no fun at all!
-    if (animate == NO) {
-        [self setFrame:newFrame display:display];
-        return;
-    }
+-(void)setFrame:(NSRect)newFrame display:(BOOL)display animate:(BOOL)animate  {
+   _frame=newFrame;
+   _makeSureIsOnAScreen=YES;
 
-    context = [NSWindowAnimationContext contextToTransformWindow:self startRect:[self frame] targetRect:newFrame resizeTime:[self animationResizeTime:newFrame] display:display];
+   [_backgroundView setFrameSize:_frame.size];
+   [[self platformWindow] setFrame:_frame];
 
-// FIX
-#if 0
-    [_backgroundView setCachesImageForAnimation:NO];    // re-enable
-    if ([_backgroundView cachedImageIsValid] == NO)
-        [_backgroundView cacheImageForAnimation];
-#endif
+   [self _invalidateTrackingAreas];
+
+   if(display)
+    [self display];
+
+   if(animate){
+     NSWindowAnimationContext *context;
+
+     context = [NSWindowAnimationContext contextToTransformWindow:self startRect:[self frame] targetRect:newFrame resizeTime:    [self animationResizeTime:newFrame] display:display];
 
     [self _animateWithContext:context];
+   }
 }
 
 -(void)setContentSize:(NSSize)size {
@@ -800,7 +790,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setContentMaxSize:(NSSize)value {
    _contentMaxSize=value;
-   NSUnimplementedMethod();
 }
 
 -(void)setContentBorderThickness:(CGFloat)thickness forEdge:(NSRectEdge)edge {
@@ -848,6 +837,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSUnimplementedMethod();
 }
 
+-(BOOL)_isApplicationWindow {
+   return (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])?YES:NO;
+}
+
 -(void)setTitle:(NSString *)title {
    title=[title copy];
    [_title release];
@@ -858,7 +851,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    [self _updatePlatformWindowTitle];
 
-   if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
+   if ([self _isApplicationWindow])
        [NSApp changeWindowsItem:self title:title filename:NO];
 }
 
@@ -867,7 +860,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
       [filename lastPathComponent],
       [filename stringByDeletingLastPathComponent]]];
 
-    if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
+   if ([self _isApplicationWindow])
         [NSApp changeWindowsItem:self title:filename filename:YES];
 }
 
@@ -1587,6 +1580,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [self flushWindowIfNeeded];
     [pool release];
    }
+   else {
+    // If we were asked to display and weren't visible, mark it for display
+    [_backgroundView setNeedsDisplay:YES];
+}
 }
 
 -(void)invalidateShadow {
@@ -1612,18 +1609,18 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)disableCursorRects {
    _cursorRectsDisabled++;
    if(_cursorRectsDisabled==1)
-    [self _updateTrackingAreas];
+    [self _invalidateTrackingAreas];
 }
 
 -(void)enableCursorRects {
    _cursorRectsDisabled--;
    if(_cursorRectsDisabled==0)
-    [self _updateTrackingAreas];
+    [self _invalidateTrackingAreas];
 }
 
 -(void)discardCursorRects {
    [[self _backgroundView] discardCursorRects];
-   [self _updateTrackingAreas];
+   [self _invalidateTrackingAreas];
 }
 
 // Apple docs say: "sends -resetCursorRects to every NSView object in the [...] hierarchy",
@@ -1642,13 +1639,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)resetCursorRects {
    [self discardCursorRects];
    [self _resetCursorRectsInView:_backgroundView];
-   [self _updateTrackingAreas];
+   [self _invalidateTrackingAreas];
 }
 
 -(void)invalidateCursorRectsForView:(NSView *)view {
    [view discardCursorRects];
    [view resetCursorRects];
-   [self _updateTrackingAreas];
+   [self _invalidateTrackingAreas];
 }
 
 // This shall be received in case of
@@ -1657,7 +1654,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 // - the number or TrackingAreas has changed
 // - a property of one of the TrackingAreas has changed
 // - a frame of this window or one the relevant views has changed.
--(void)_updateTrackingAreas {
+-(void)_invalidateTrackingAreas {
    // Rebuild it on demand.
    [_trackingAreas release];
    _trackingAreas=nil;
@@ -1670,8 +1667,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     BOOL toolTipsAllowed=[[NSApplication sharedApplication] isActive] ||
                          [self allowsToolTipsWhenApplicationIsInactive];
 
-    _trackingAreas=[[NSMutableArray alloc] init];
-    [[self _backgroundView] _collectTrackingAreasForWindowInto:_trackingAreas];
+    NSMutableArray *collectedAreas=[[NSMutableArray alloc] init];
+    [[self _backgroundView] _collectTrackingAreasForWindowInto:collectedAreas];
+    _trackingAreas=collectedAreas;
     
     count=[_trackingAreas count];
     while(--count>=0){
@@ -1705,7 +1703,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self orderOut:nil];
 
    [_childWindows makeObjectsPerformSelector:@selector(_parentWindowDidClose:) withObject:self];
-   if ([_drawers count] > 0)
        [_drawers makeObjectsPerformSelector:@selector(parentWindowDidClose:) withObject:self];
 
    [self postNotificationName:NSWindowWillCloseNotification];
@@ -2332,6 +2329,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     _sheetContext=nil;
 }
 
+-(void)_flashWindow {
+   if([self _isApplicationWindow])
+    [[self platformWindow] flashWindow];
+}
 
 -(void)platformWindowActivated:(CGWindow *)window displayIfNeeded:(BOOL)displayIfNeeded {
    [NSApp _windowWillBecomeActive:self];
@@ -2487,8 +2488,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)platformWindowSetCursorEvent:(CGWindow *)window {
+   NSMutableArray *exited=[NSMutableArray array];
+   NSMutableArray *entered=[NSMutableArray array];
+   NSMutableArray *moved=[NSMutableArray array];
+   NSMutableArray *update=[NSMutableArray array];
+   
    NSPoint     mousePoint={-1,-1};
-   NSView     *mouseView=nil;
    BOOL        cursorIsSet=NO;
    BOOL        raiseToolTipWindow=NO;
    NSUInteger  i,count;
@@ -2539,41 +2544,53 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      else if(options&NSTrackingActiveInActiveApp && [NSApp isActive]==NO){
       mouseIsInside=NO;
      }
-     else if(options&NSTrackingActiveInKeyWindow &&
-             ([self isKeyWindow]==NO || [self _sheetContext]!=nil)){
+     else if(options&NSTrackingActiveInKeyWindow && ([self isKeyWindow]==NO || [self _sheetContext]!=nil)){
       mouseIsInside=NO;
      }
      else if(options&NSTrackingActiveWhenFirstResponder && [area _view]!=[self firstResponder]){
       mouseIsInside=NO;
      }
      if(options&NSTrackingInVisibleRect){
-      if(mouseView==nil) // lazy initialisation
-       mouseView=[_backgroundView _hiddenHitTest:mousePoint];
-      if(mouseView!=[area _view])
+      // This does not do hit testing, it just checks if it's inside the visible rect,
+      // child views will cause the test to fail if they aren't tracking anything
+      NSPoint check=[[area _view] convertPoint:mousePoint fromView:nil];
+      
+      if(!NSMouseInRect(check,[[area _view] visibleRect],[[area _view] isFlipped]))
        mouseIsInside=NO;
      }
+     
+//FIXME:
      if(options&NSTrackingEnabledDuringMouseDrag){
-      NSLog(@"NSTrackingEnabledDuringMouseDrag handling unimplemented.");
+      // NSLog(@"NSTrackingEnabledDuringMouseDrag handling unimplemented.");
      }
 
      // Send appropriate events.
-     if(options&NSTrackingMouseEnteredAndExited &&
-        mouseWasInside==NO && mouseIsInside==YES &&
-        [owner respondsToSelector:@selector(mouseEntered:)]==YES){
-      NSEvent *event=[NSEvent enterExitEventWithType:NSMouseEntered
-                                            location:mousePoint
-                                       modifierFlags:[NSEvent modifierFlags]
-                                           timestamp:[NSDate timeIntervalSinceReferenceDate]
-                                        windowNumber:(int)self
-                                             context:[self graphicsContext]
-                                         eventNumber:0 // NSEvent currently ignores this.
-                                      trackingNumber:(NSInteger)area
-                                            userData:[area userInfo]];
-      [owner mouseEntered:event];
+     if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==NO && mouseIsInside==YES){
+      [entered addObject:area];
      }
-     if(options&NSTrackingMouseEnteredAndExited &&
-        mouseWasInside==YES && mouseIsInside==NO &&
-        [owner respondsToSelector:@selector(mouseExited:)]==YES){
+     if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==YES && mouseIsInside==NO){
+      [exited addObject:area];
+     }
+     if(options&NSTrackingMouseMoved && [self acceptsMouseMovedEvents]==YES){
+      [moved addObject:area];
+     }
+     if(options&NSTrackingCursorUpdate && mouseWasInside==NO && mouseIsInside==YES && !(options&NSTrackingActiveAlways)){
+      [update addObject:area];
+     }
+     if(options&NSTrackingCursorUpdate && mouseIsInside==YES)
+      cursorIsSet=YES;
+    } // (not) ToolTip
+
+    [area _setMouseInside:mouseIsInside];
+   }
+
+// Exited events need to be sent before entered events
+// The order of the other two is not specific at this time
+   
+   for(NSTrackingArea *check in exited){
+    id owner=[check owner];
+    
+    if([owner respondsToSelector:@selector(mouseExited:)]){
       NSEvent *event=[NSEvent enterExitEventWithType:NSMouseExited
                                             location:mousePoint
                                        modifierFlags:[NSEvent modifierFlags]
@@ -2581,13 +2598,33 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                         windowNumber:(int)self
                                              context:[self graphicsContext]
                                          eventNumber:0 // NSEvent currently ignores this.
-                                      trackingNumber:(NSInteger)area
-                                            userData:[area userInfo]];
+                                      trackingNumber:(NSInteger)check
+                                            userData:[check userInfo]];
       [owner mouseExited:event];
      }
-     if(options&NSTrackingMouseMoved &&
-        [self acceptsMouseMovedEvents]==YES &&
-        [owner respondsToSelector:@selector(mouseMoved:)]==YES){
+   }
+   
+   for(NSTrackingArea *check in entered){
+    id owner=[check owner];
+    
+    if([owner respondsToSelector:@selector(mouseEntered:)]){
+      NSEvent *event=[NSEvent enterExitEventWithType:NSMouseEntered
+                                            location:mousePoint
+                                       modifierFlags:[NSEvent modifierFlags]
+                                           timestamp:[NSDate timeIntervalSinceReferenceDate]
+                                        windowNumber:(int)self
+                                             context:[self graphicsContext]
+                                         eventNumber:0 // NSEvent currently ignores this.
+                                      trackingNumber:(NSInteger)check
+                                            userData:[check userInfo]];
+      [owner mouseEntered:event];
+     }
+   }
+   
+   for(NSTrackingArea *check in moved){
+    id owner=[check owner];
+    
+    if([owner respondsToSelector:@selector(mouseMoved:)]){
       NSEvent *event=[NSEvent mouseEventWithType:NSMouseMoved
                                         location:mousePoint
                                    modifierFlags:[NSEvent modifierFlags]
@@ -2599,10 +2636,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                         pressure:0.];
       [owner mouseMoved:event];
      }
-     if(options&NSTrackingCursorUpdate &&
-        mouseWasInside==NO && mouseIsInside==YES &&
-        !(options&NSTrackingActiveAlways) && // documented
-        [owner respondsToSelector:@selector(cursorUpdate:)]==YES){
+   }
+   
+   for(NSTrackingArea *check in update){
+    id owner=[check owner];
+    
+    if([owner respondsToSelector:@selector(cursorUpdate:)]){
       NSEvent *event=[NSEvent enterExitEventWithType:NSCursorUpdate
                                             location:mousePoint
                                        modifierFlags:[NSEvent modifierFlags]
@@ -2610,15 +2649,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                         windowNumber:(int)self
                                              context:[self graphicsContext]
                                          eventNumber:0 // NSEvent currently ignores this.
-                                      trackingNumber:(NSInteger)area
-                                            userData:[area userInfo]];
+                                      trackingNumber:(NSInteger)check
+                                            userData:[check userInfo]];
       [owner cursorUpdate:event];
      }
-     if(options&NSTrackingCursorUpdate && mouseIsInside==YES)
-      cursorIsSet=YES;
-    } // (not) ToolTip
-
-    [area _setMouseInside:mouseIsInside];
    }
    
    if(raiseToolTipWindow==YES){

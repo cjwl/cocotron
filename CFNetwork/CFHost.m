@@ -204,7 +204,7 @@ static unsigned addressResolverThread(void *arg){
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
 
    if(_request==NULL){
-    NSLog(@"CFHost request is NULL %s %d",__FILE__,__LINE__);
+    // cancelled
     return;
    }
    

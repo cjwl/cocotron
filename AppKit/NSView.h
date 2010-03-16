@@ -85,6 +85,7 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
    NSMutableArray *_trackingAreas;
    NSRect          _invalidRect;
 
+   BOOL              _validTrackingAreas;
    BOOL              _validTransforms;
    CGAffineTransform _transformFromWindow;
    CGAffineTransform _transformToWindow;
@@ -92,7 +93,9 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
    NSFocusRingType   _focusRingType;
    
    BOOL     _wantsLayer;
+   CALayer *_backingLayer;
    CALayer *_layer;
+   NSArray *_contentFilters;
 }
 
 +(NSView *)focusView;
@@ -179,6 +182,13 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
 -(void)setBoundsSize:(NSSize)size;
 -(void)setBoundsOrigin:(NSPoint)origin;
 -(void)setBoundsRotation:(CGFloat)angle;
+
+-(CGFloat)frameRotation;
+-(CGFloat)boundsRotation;
+
+-(void)setFrameRotation:(CGFloat)degrees;
+-(void)setBoundsRotation:(CGFloat)degrees;
+-(void)rotateByAngle:(CGFloat)degrees;
 
 -(void)setPostsFrameChangedNotifications:(BOOL)flag;
 -(void)setPostsBoundsChangedNotifications:(BOOL)flag;
@@ -373,7 +383,6 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
 -(NSArray *)_draggedTypes;
 -(void)_setWindow:(NSWindow *)window;
 -(void)_collectTrackingAreasForWindowInto:(NSMutableArray *)collector;
--(NSView *)_hiddenHitTest:(NSPoint)point;
 
 @end
 

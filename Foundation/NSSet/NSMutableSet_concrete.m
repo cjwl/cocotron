@@ -74,4 +74,41 @@ NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array) {
    NSSetTableRemoveObject(&_table,object);
 }
 
+#if 0
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length {
+    if(_table.count==0)
+     return 0;
+    if(state->state==(unsigned long)self)
+     return 0;
+     
+	state->itemsPtr=stackbuf;
+	state->mutationsPtr=(unsigned long*)self;
+    
+    NSEnumerator_set *enumerator;
+    
+	if((enumerator=(NSEnumerator_set *)state->state)==0)
+     enumerator=NSEnumerator_setNew(NULL,self,&_table);
+ 	
+	NSInteger i;
+
+	for(i=0; i<length; i++)
+     if((state->itemsPtr[i]=NSEnumerator_setNextObject(enumerator))==nil)
+      break;
+
+    if(state->state==0){
+
+     if(i<length){
+      state->state=(unsigned long)self;
+      [enumerator release];
+     }
+     else {
+      state->state=(unsigned long)enumerator;
+      [enumerator autorelease];
+     }
+    }
+    
+	return i;
+}
+#endif
+
 @end

@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSEnumerator_set
 
-NSEnumerator *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table) {
+NSEnumerator_set *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table) {
    NSEnumerator_set *self=NSAllocateObject([NSEnumerator_set class],0,zone);
 
    self->_set=[set retain];
@@ -35,7 +35,7 @@ NSEnumerator *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table) {
    [super dealloc];
 }
 
-static id nextObject(NSEnumerator_set *self){
+id NSEnumerator_setNextObject(NSEnumerator_set *self){
    id object;
 
    if(self->_bucket==NULL)
@@ -53,14 +53,14 @@ static id nextObject(NSEnumerator_set *self){
 }
 
 -nextObject {
-   return nextObject(self);
+   return NSEnumerator_setNextObject(self);
 }
 
 -(NSArray *)allObjects {
    NSMutableArray *array=[NSMutableArray array];
    id next;
 
-   while((next=nextObject(self))!=nil)
+   while((next=NSEnumerator_setNextObject(self))!=nil)
     [array addObject:next];
 
    return array;
