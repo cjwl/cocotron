@@ -10,7 +10,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView,NSOpenGLDrawable;
 
-typedef int NSOpenGLContextParameter;
+typedef enum {
+   NSOpenGLCPSwapRectangle      =200,
+   NSOpenGLCPSwapRectangleEnable=201,
+   NSOpenGLCPRasterizationEnable=221,
+   NSOpenGLCPSwapInterval       =222,
+   NSOpenGLCPSurfaceOrder       =235,
+   NSOpenGLCPSurfaceOpacity     =236,
+   NSOpenGLCPStateValidation    =301,
+} NSOpenGLContextParameter;
 
 @interface NSOpenGLContext : NSObject {
    NSOpenGLPixelFormat *_pixelFormat;
