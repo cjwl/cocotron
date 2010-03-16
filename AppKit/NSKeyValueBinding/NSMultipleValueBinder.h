@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSArray* _rowValues;
 	NSString* _arrayKeyPath;
 	NSString* _valueKeyPath;
+    BOOL _isObserving;
 }
 -(void)applyToCell:(id)cell inRow:(int)row;
 -(void)applyFromCell:(id)cell inRow:(int)row;
@@ -24,6 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 
-@interface _NSTableViewContentBinder : _NSBinder
+@interface _NSTableViewContentBinder : _NSBinder {
+   BOOL _isObserving;
+}
 
 @end

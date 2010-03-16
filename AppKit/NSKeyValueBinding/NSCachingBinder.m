@@ -18,18 +18,20 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
 
 @implementation _NSCachingBinder
 
-- (void)startObservingChanges
-{
-  [_destination addObserver:self
-                 forKeyPath:_keyPath
-                    options:0
-                    context:NSCachingBinderChangeContext];
+-(void)startObservingChanges {
+   if(!_isObserving){
+    _isObserving=YES;
+   [_destination addObserver:self forKeyPath:_keyPath options:0 context:NSCachingBinderChangeContext];
+   }
 }
 
 - (void)stopObservingChanges
 {
-  if (_bound)
+   
+  if (_isObserving){
+    _isObserving=NO;
     [_destination removeObserver:self forKeyPath:_keyPath];
+   }
 }
 
 - (void)dealloc
@@ -53,18 +55,31 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
     }
 }
 
+NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCount);
+
+-displayPatternedObject:object {
+   NSString *pattern=[_options objectForKey:NSDisplayPatternBindingOption];
+   
+   if(pattern!=nil)
+    object=NSFormatDisplayPattern(pattern,&object,1);
+   
+   return object;
+}
+
+// This should be updating using NSKVOBinder multiple values code
 - (void)showValue:(id)newValue
 {
   if (![_cachedValue isEqual:newValue] && !_currentlyTransferring)
     {
       _currentlyTransferring = YES;
       [self setCachedValue:newValue];
-      
+     
       BOOL editable=YES;
       BOOL isPlaceholder=NO;
       if(newValue==NSMultipleValuesMarker)
         {
           newValue=[self multipleValuesPlaceholder];
+
           if(![self allowsEditingMultipleValues])
             editable=NO;
           isPlaceholder=YES;
@@ -72,12 +87,14 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
       else if(newValue==NSNoSelectionMarker)
         {
           newValue=[self noSelectionPlaceholder];
+
           editable=NO;
           isPlaceholder=YES;
         }
       else if(!newValue || newValue==[NSNull null])
         {
           newValue=[self nullPlaceholder];
+
           isPlaceholder=YES;
         }
       
@@ -85,9 +102,22 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
         [_source setEditable:editable];
       if([self conditionallySetsEnabled])
         [_source setEnabled:editable];
+     
+      newValue=[self transformedObject:newValue];
+      newValue=[self displayPatternedObject:newValue];
       
-      [_source setValue:newValue
-             forKeyPath:_bindingPath];
+     // Somewhere in the binding logic it generates a proper instance for the formatter if there isn't one
+     // More binding logic needs to be moved into the view per the KVB doc.s
+    if([_source isKindOfClass:[NSControl class]]){
+     NSFormatter *formatter=[(NSControl *)_source formatter];
+    
+     if([formatter isKindOfClass:[NSDateFormatter class]]){
+      if(newValue!=nil && ![newValue isKindOfClass:[NSDate class]])
+       newValue=[NSDate dateWithTimeIntervalSinceReferenceDate:0];
+     }
+    
+    }
+      [_source setValue:newValue forKeyPath:_bindingPath];
       
       if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
         [_source _setCurrentValueIsPlaceholder:YES];  
@@ -122,8 +152,10 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
   {
     if ([self raisesForNotApplicableKeys])
       [ex raise];
-    else
+    else {
+
       return NSNotApplicableMarker;
+}
   }
   return nil; // To avoid compiler warnings
 }
@@ -133,10 +165,13 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
                         change:(NSDictionary *)change 
                        context:(void *)context
 {
+   [self stopObservingChanges];
+   
   if (context == NSCachingBinderChangeContext)
     {
       [self showValue:[self destinationValue]];
     }
+   [self startObservingChanges];
 }
 
 - (void)syncUp
@@ -148,13 +183,11 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
 {
 	[self syncUp];
 	[self startObservingChanges];
-  _bound = YES;
 }
 
 - (void)unbind
 {
 	[self stopObservingChanges];
-  _bound = NO;
 }
 
 @end

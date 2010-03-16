@@ -125,7 +125,7 @@ void OBJCInitializeProcess_Darwin(void)
           else 
           {
             // when could this happen?
-             OBJCLog("%s does not exist yet!? Is it a ref?\n", aref );
+             NSCLog("%s does not exist yet!? Is it a ref?\n", aref );
           }
       }
    } //iterate mach_headers

@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSynchronization.h>
 #import <Foundation/NSConditionLock.h>
 #import <Foundation/objc_debugHelpers.h>
+#import <Foundation/NSSelectSet.h>
 
 NSString * const NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString * const NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
@@ -49,8 +50,7 @@ static NSThread* mainThread = nil;
 }
 
 +(NSThread *)mainThread {
-	return mainThread;
-   return 0;
+   return mainThread;
 }
 
 
@@ -72,13 +72,14 @@ static  unsigned __stdcall nsThreadStartThread(void* t)
 static void *nsThreadStartThread(void* t)
 #endif
 {
-    NSThread    *thread = t;
+   NSThread    *thread = t;
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
    [thread main];
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
    [thread release];
+//   NSSelectSetShutdownForCurrentThread();
    NSPlatformSetCurrentThread(nil);
 	return 0;
 }
@@ -160,7 +161,7 @@ static void *nsThreadStartThread(void* t)
    // if we were init'ed before didBecomeMultithreaded, we won't have a lock either
    if(!_sharedObjectLock)
       _sharedObjectLock=[NSLock new];
-   
+    
 	if (NSPlatformDetachThread( &nsThreadStartThread, self) == 0) {
 		// No thread has been created. Don't leak:
 		[self release];
@@ -301,23 +302,27 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 @end
 
 @implementation NSObject(NSThread)
--(void)_performSelectorOnThreadHelper:(NSArray*)selectorAndArguments {
-	NSConditionLock* waitingLock=[selectorAndArguments objectAtIndex:0];
-   [waitingLock lockWhenCondition:0];
-	SEL selector=NSSelectorFromString([selectorAndArguments objectAtIndex:1]);
-	id object=nil;
-   if([selectorAndArguments count]==3)
-      object=[[selectorAndArguments objectAtIndex:2] pointerValue];
 
-	[self performSelector:selector withObject:object];
-	[waitingLock unlockWithCondition:1];
+-(void)_performSelectorOnThreadHelper:(NSArray*)selectorAndArguments {
+   NSConditionLock *waitingLock=[selectorAndArguments objectAtIndex:0];
+   SEL              selector=NSSelectorFromString([selectorAndArguments objectAtIndex:1]);
+   id               object=[[selectorAndArguments objectAtIndex:2] pointerValue];
+   
+   [waitingLock lockWhenCondition:0];
+   
+   [self performSelector:selector withObject:object];
+   
+   [waitingLock unlockWithCondition:1];
    [selectorAndArguments release];
 }
 
 - (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes
 {
+   if(thread==nil){
+    [NSException raise:NSInvalidArgumentException format:@"Thread is nil"];
+    return;
+   }
 	id runloop=_NSThreadSharedInstance(thread, @"NSRunLoop", NO);
-
 	if(waitUntilDone)
 	{
 		if(thread==[NSThread currentThread])
@@ -329,6 +334,7 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 			if(!runloop)
 				[NSException raise:NSInvalidArgumentException format:@"thread %@ has no runloop in %@", thread, NSStringFromSelector(_cmd)];
 			NSConditionLock *waitingLock=[[NSConditionLock alloc] initWithCondition:0];
+
          // array retain balanced in _performSelectorOnThreadHelper:
 			[runloop performSelector:@selector(_performSelectorOnThreadHelper:)
 							  target:self 
@@ -352,8 +358,7 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 
 - (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone
 {
-   // TODO: should be NSRunLoopCommonModes here
-	[self performSelector:selector onThread:thread withObject:object waitUntilDone:waitUntilDone modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+	[self performSelector:selector onThread:thread withObject:object waitUntilDone:waitUntilDone modes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 }
 
 -(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes {
@@ -361,8 +366,7 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 }
 
 -(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone {
-   // TODO: should be NSRunLoopCommonModes here
-	[self performSelectorOnMainThread:selector withObject:object waitUntilDone:waitUntilDone modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+	[self performSelectorOnMainThread:selector withObject:object waitUntilDone:waitUntilDone modes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 }
 
 -(void)performSelectorInBackground:(SEL)selector withObject:object {

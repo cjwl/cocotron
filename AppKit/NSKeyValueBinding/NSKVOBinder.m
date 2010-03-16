@@ -19,54 +19,168 @@ static void *NSKVOBinderChangeContext;
 
 @implementation _NSKVOBinder
 -(void)startObservingChanges
-{   
+{ 
+  if(!_isObserving){
    @try {
       //NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
       [super startObservingChanges];
-      [_destination addObserver:self 
-                     forKeyPath:_keyPath 
-                        options:0
-                        context:&NSKVOBinderChangeContext];
+      [_destination addObserver:self  forKeyPath:_keyPath  options:0 context:&NSKVOBinderChangeContext];
       _isObserving=YES;
    } @catch(id ex) {
-      NSLog(@"%@", ex);
+      NSLog(@"startObservingChanges %@", ex);
    }
+  }
 }
 
 -(void)stopObservingChanges {
    @try {
-      [super stopObservingChanges];
       if(_isObserving) {
+         [super stopObservingChanges];
          [_destination removeObserver:self forKeyPath:_keyPath];
+       _isObserving=NO;
       }
    } @catch(id ex) {
-      NSLog(@"%@", ex);
+      NSLog(@"stopObservingChanges %@", ex);
    }
 }
 
--(id)destinationValue
-{
-	id peers=[self peerBinders];
-	if([peers count])
-	{
-		// Support for pattern binders
-		// FIX: maybe this should be in subclasses.
-		// however, as long as there's just booleans (enabled, hidden etc.)
-		// and strings (%{value1}@...
-		peers=[peers sortedArrayUsingSelector:@selector(compare:)];
-		id values=[peers valueForKeyPath:@"realDestinationValue"];
-		int i;
-		id pattern=[[[_options objectForKey:@"NSDisplayPattern"] mutableCopy] autorelease];
-		if(pattern)
-		{
-			for(i=0; i<[peers count]; i++)
-			{
-				id token=[NSString stringWithFormat:@"%%{value%i}@", i+1];
-				[pattern replaceCharactersInRange:[pattern rangeOfString:token]
-									   withString:[[values objectAtIndex:i] description]];
-			}
-			return pattern;
-		}
+NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCount){
+   NSInteger i,length=[pattern length];
+   NSUInteger valueIndex=0;
+   unichar   buffer[length];
+   NSInteger resultCount=0,resultCapacity=256;
+   unichar  *result=NSZoneMalloc(NULL,sizeof(unichar)*resultCapacity);
+   enum {
+    STATE_NONE,
+    STATE_PERCENT,
+    STATE_OPEN_BRACE,
+    STATE_CLOSE_BRACE,
+   } state=STATE_NONE;
+   
+   [pattern getCharacters:buffer];
+   for(i=0;i<length;i++){
+    unichar code=buffer[i];
+    BOOL    append=NO;
+    
+    switch(state){
+    
+     case STATE_NONE:
+      if(code=='%'){
+       valueIndex=0;
+       state=STATE_PERCENT;
+      }
+      else
+       append=YES;
+      break;
+      
+     case STATE_PERCENT:
+      if(code=='{')
+       state=STATE_OPEN_BRACE;
+      else {
+       append=YES;
+       state=STATE_NONE;
+      }
+      break;
+     
+     case STATE_OPEN_BRACE:
+      if(code=='}')
+       state=STATE_CLOSE_BRACE;
+       
+      if(code>='0' && code<='9'){
+       valueIndex*=10;
+       valueIndex+=(code-'0');
+      }
+      break;
+     
+     case STATE_CLOSE_BRACE:
+      valueIndex--;
+      if(code=='@'){
+       NSString *string=(valueIndex<valueCount)?[values[valueIndex] description]:@"";
+       NSInteger s,stringLength=[string length];
+       
+       while(resultCount+stringLength>=resultCapacity){
+        resultCapacity*=2;
+        result=NSZoneRealloc(NULL,result,sizeof(unichar)*resultCapacity);
+       }
+       [string getCharacters:result+resultCount];
+       resultCount+=stringLength;
+      }
+      state=STATE_NONE;
+      break;
+    }
+    
+    if(append){
+     if(resultCount+1>=resultCapacity){
+      resultCapacity*=2;
+      result=NSZoneRealloc(NULL,result,sizeof(unichar)*resultCapacity);
+     }
+     result[resultCount++]=code;
+    }
+    
+   }
+   NSString *display=[NSString stringWithCharacters:result length:resultCount];
+   NSZoneFree(NULL,result);
+   
+   return display;
+}
+
+-(void)writeDestinationToSource {
+   NSArray  *peersIncludingSelf=[self peerBinders];
+   NSInteger i,count=(peersIncludingSelf==nil)?1:[peersIncludingSelf count];
+   id        allBinders[count];
+   id        allValues[count];
+   BOOL      isEditable=YES;
+   BOOL      containsPlaceholder=NO;
+      
+   if(count>1)
+    peersIncludingSelf=[peersIncludingSelf sortedArrayUsingSelector:@selector(compare:)];
+
+   if(peersIncludingSelf==nil)
+    allBinders[0]=self;
+   else
+    [peersIncludingSelf getObjects:allBinders];
+        
+   for(i=0;i<count;i++){
+    _NSBinder *binder=allBinders[i];
+    id         dstValue=[[binder destination] valueForKeyPath:[binder keyPath]];
+    BOOL       isPlaceholder=NO;
+          
+    if(dstValue==NSMultipleValuesMarker){
+     dstValue=[binder multipleValuesPlaceholder];
+     
+     if(![binder allowsEditingMultipleValues])
+      isEditable=NO;
+     containsPlaceholder=isPlaceholder=YES;
+    }
+    else if(dstValue==NSNoSelectionMarker){
+     dstValue=[binder noSelectionPlaceholder];
+     isEditable=NO;
+     containsPlaceholder=isPlaceholder=YES;
+    }
+    else if(!dstValue || dstValue==[NSNull null]){
+      if((dstValue=[binder nullPlaceholder])!=nil)
+       containsPlaceholder=isPlaceholder=YES;
+    }
+
+    if(!isPlaceholder)
+     dstValue=[binder transformedObject:dstValue];
+    
+    allValues[i]=dstValue;
+   }
+   
+   NSString *pattern=[[allBinders[0] options] objectForKey:NSDisplayPatternBindingOption];
+   id        value;
+   
+   if(pattern!=nil)
+    value=NSFormatDisplayPattern(pattern,allValues,count);
+   else if(count==1)
+    value=allValues[0];
+   else {
+// FIXME: multiple values without a display pattern
+#if 1
+    value=allValues[0];
+#else
+// This was broken/unused in the previous code
 		else if([[values lastObject] isKindOfClass:[NSNumber class]])
 		{
 			BOOL ret;
@@ -96,52 +210,29 @@ static void *NSKVOBinderChangeContext;
 			}
 			return [NSNumber numberWithBool:ret];
 		}
-		return pattern;
-	}
-	else
-   {
-		return [_destination valueForKeyPath:_keyPath];
-   }
-}
-
--(id)_realDestinationValue
-{
-	return [_destination valueForKeyPath:_keyPath];
-}
-
--(void)writeDestinationToSource {
-   id newValue=[self destinationValue];
-
-   BOOL editable=YES;
-   BOOL isPlaceholder=NO;
-   if(newValue==NSMultipleValuesMarker)
-   {
-      newValue=[self multipleValuesPlaceholder];
-      if(![self allowsEditingMultipleValues])
-         editable=NO;
-      isPlaceholder=YES;
-   }
-   else if(newValue==NSNoSelectionMarker)
-   {
-      newValue=[self noSelectionPlaceholder];
-      editable=NO;
-      isPlaceholder=YES;
-   }
-   else if(!newValue || newValue==[NSNull null])
-   {
-      newValue=[self nullPlaceholder];
-      isPlaceholder=YES;
+#endif
    }
    
+   // Somewhere in the binding logic it generates a proper instance for the formatter if there isn't one
+   // More binding logic needs to be moved into the view per the KVB doc.s
+   if([_source isKindOfClass:[NSControl class]]){
+    NSFormatter *formatter=[(NSControl *)_source formatter];
+    
+    if([formatter isKindOfClass:[NSDateFormatter class]]){
+     if(value!=nil && ![value isKindOfClass:[NSDate class]])
+      value=[NSDate dateWithTimeIntervalSinceReferenceDate:0];
+    }
+    
+   }
+   
+   [_source setValue:value forKeyPath:_bindingPath];
+
    if([self conditionallySetsEditable])
-      [_source setEditable:editable];
+      [_source setEditable:isEditable];
    if([self conditionallySetsEnabled])
-      [_source setEnabled:editable];
-   
-   [_source setValue:newValue
-          forKeyPath:_bindingPath];
-   
-   if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
+      [_source setEnabled:isEditable];
+
+   if(containsPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
       [_source _setCurrentValueIsPlaceholder:YES];  
 }
 
@@ -158,26 +249,36 @@ static void *NSKVOBinderChangeContext;
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-   //NSLog(@"observeValueForKeyPath %@, %@", kp, object);
+  //NSLog(@"observeValueForKeyPath %@, %@", kp, object);
+
+// We want changes to propogate one way so we stop observing for both our handling and super's,
+// otherwise our change will generate a change for the super's observation and it will write a value
+// back the value we just got here which causes a problem for read only values
+// If this isn't how it's supposed to be, there must be some other logic which prevents writing back values
+// which are read only
+   
    if(context==&NSKVOBinderChangeContext)
 	{
-      [self stopObservingChanges];
-      //NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
+   [self stopObservingChanges];
 
-      //NSLog(@"new value %@", newValue);
+    //  NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
+
       @try {
          [self writeDestinationToSource];
       }
       @catch(id ex) {
-         if([self raisesForNotApplicableKeys])
+         if([self raisesForNotApplicableKeys]){
+            [self startObservingChanges];
             [ex raise];
+
+         }
       }
-      @finally {
-         [self startObservingChanges];
-      }
+    [self startObservingChanges];
 	}
-	else
+	else {
       [super observeValueForKeyPath:kp ofObject:object change:change context:context];
+    }
+    
 }
 
 -(void)bind

@@ -57,7 +57,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
    struct objc_protocol_list *list;
    unsigned          i;
 
-   if(instanceMethods==NULL)
+   if(instanceMethods!=NULL)
     for(i=0;i<instanceMethods->count;i++)
      if(instanceMethods->list[i].name==selector)
       return &instanceMethods->list[i];
@@ -83,7 +83,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
    struct objc_protocol_list *list;
    unsigned          i;
 
-   if(classMethods==NULL)
+   if(classMethods!=NULL)
     for(i=0;i<classMethods->count;i++)
      if(classMethods->list[i].name==selector)
       return &classMethods->list[i];

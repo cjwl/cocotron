@@ -17,6 +17,7 @@
   id _cachedValue;
   BOOL _bound;
   BOOL _currentlyTransferring;
+  BOOL _isObserving;
 }
 
 - (id)cachedValue;

@@ -32,18 +32,12 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
 
 @implementation _NSMultipleValueBinder
 
-#pragma mark -
-#pragma mark Outside accessors
-
-- (NSArray *)rowValues 
-{
-    return [[_rowValues retain] autorelease];
+-(NSArray *)rowValues {
+    return _rowValues;
 }
 
-- (void)setRowValues:(NSArray *)value 
-{
-    if (_rowValues != value)
-	{
+-(void)setRowValues:(NSArray *)value  {
+    if (_rowValues != value){
         [_rowValues release];
         _rowValues = [value retain];
     }
@@ -71,8 +65,7 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
 
 -(void)applyFromObject:(id)object inRow:(int)row keyPath:(id)keypath
 {
-	[[_rowValues objectAtIndex:row] setValue:[object valueForKeyPath:keypath] 
-								 forKeyPath:_valueKeyPath];
+	[[_rowValues objectAtIndex:row] setValue:[object valueForKeyPath:keypath]  forKeyPath:_valueKeyPath];
 }
 
 -(void)applyFromObject:(id)object inRow:(int)row
@@ -86,19 +79,13 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
 }
 
 
--(unsigned)count
-{
+-(unsigned)count {
 	return [_rowValues count];
 }
 
--(id)objectAtIndex:(unsigned)row
-{
+-(id)objectAtIndex:(unsigned)row {
 	return [[_rowValues objectAtIndex:row] valueForKeyPath:_valueKeyPath];
 }
-
-#pragma mark -
-#pragma mark Internal stuff
-
 
 -(void)cacheArrayKeyPath
 {
@@ -150,6 +137,8 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
 
 -(void)startObservingChanges
 {
+   if(!_isObserving){
+    _isObserving=YES;
 	@try {
       [_destination addObserver:self 
                      forKeyPath:_arrayKeyPath 
@@ -165,10 +154,13 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
    @catch(id ex) {
       NSLog(@"%@", ex);
    }
+   }
 }
 
 -(void)stopObservingChanges
 {
+   if(_isObserving){
+    _isObserving=NO;
 	@try {
       [_destination removeObserver:self forKeyPath:_arrayKeyPath];
       if(![_valueKeyPath hasPrefix:@"@"])
@@ -178,6 +170,7 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
    }
    @catch(id ex) {
       NSLog(@"%@", ex);
+   }
    }
 }
 
@@ -250,8 +243,7 @@ static void* NSMultipleValueBinderWholeArrayChangeContext;
 	return [NSString stringWithFormat:@"%@ %@", [super description], [self rowValues]];
 }
 
--(void)updateRowValues
-{
+-(void)updateRowValues {
 	id value=[_destination valueForKeyPath:_arrayKeyPath];
 	if(![value respondsToSelector:@selector(objectAtIndex:)])
 		value=[[[_NSMultipleValueWrapperArray alloc] initWithObject:value] autorelease];
@@ -268,34 +260,33 @@ static void* NSTableViewContentBinderChangeContext;
 @class NSTableView;
 
 @implementation _NSTableViewContentBinder
--(void)startObservingChanges
-{
-	NSParameterAssert([_source isKindOfClass:[NSTableView class]]);
-	[_destination addObserver:self 
-				  forKeyPath:_keyPath 
-					 options:NSKeyValueObservingOptionNew
-					 context:&NSTableViewContentBinderChangeContext];
+
+-(void)startObservingChanges {
+   if(!_isObserving){
+    _isObserving=YES;
+// FIXME: assertions are buggy, dont until they are fixed
+//	NSParameterAssert([_source isKindOfClass:[NSTableView class]]);
+	[_destination addObserver:self forKeyPath:_keyPath options:NSKeyValueObservingOptionNew context:&NSTableViewContentBinderChangeContext];
+   }
 }
 
--(void)stopObservingChanges
-{
+-(void)stopObservingChanges {
+   if(_isObserving){
+     _isObserving=NO;
 	@try {
 		[_destination removeObserver:self forKeyPath:_keyPath];
    } @catch (id ex) {
       NSLog(@"%@", ex);   
    }
+   }
 }
 
--(void)syncUp
-{
-	[_source performSelector:@selector(reloadData) 
-				 withObject:nil
-				 afterDelay:0.0];
+-(void)syncUp {
+	[_source performSelector:@selector(reloadData) withObject:nil afterDelay:0.0];
 	[_source reloadData];
 }
 
-- (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
+- (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	[self stopObservingChanges];
 
 	if(context==&NSTableViewContentBinderChangeContext)
@@ -306,46 +297,41 @@ static void* NSTableViewContentBinderChangeContext;
 	[self startObservingChanges];
 }
 
--(void)bind
-{
+-(void)bind {
 	[self syncUp];
 	[self startObservingChanges];
 }
 
--(void)unbind
-{
+-(void)unbind {
 	[self stopObservingChanges];
 }
 
--(unsigned)numberOfRows
-{
+-(unsigned)numberOfRows {
+//NSLog(@"_desination=%@, keypath=%@",_destination,_keyPath);
 	return [[_destination valueForKeyPath:_keyPath] count];
 }
 @end
 
 @implementation _NSMultipleValueWrapperArray
--(id)initWithObject:(id)obj
-{
-	if((self = [super init]))
-	{
-		object=[obj retain];
-	}
-	return self;
+
+-initWithObject:(id)obj {
+   if((self = [super init])){
+     object=[obj retain];
+   }
+   return self;
 }
 
--(void)dealloc
-{
+-(void)dealloc {
 	[object release];
 	[super dealloc];
 }
 
--(NSUInteger)count
-{
+-(NSUInteger)count {
 	return 1;
 }
 
--(id)objectAtIndex:(NSUInteger)idx
-{
-	return object;
+-objectAtIndex:(NSUInteger)idx {
+   return object;
 }
+
 @end

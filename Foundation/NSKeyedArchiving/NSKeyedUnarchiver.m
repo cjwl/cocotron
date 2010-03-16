@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSException.h>
+#import <Foundation/CFUID.h>
+#import <Foundation/NSCFTypeID.h>
 
 NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationException";
 
@@ -56,11 +58,22 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    return YES;
 }
 
+static inline int integerFromCFUID(id object){
+// We can deal with CFUID's and dictionaries
+   unsigned typeID=[object _cfTypeID];
+   
+   if(typeID==kNSCFTypeDictionary){
+    NSNumber *uid=[object objectForKey:@"CF$UID"];
+    return [uid integerValue];
+   }
+
+   return [object integerValue];
+}
+
 -(Class)decodeClassFromDictionary:(NSDictionary *)classReference {
    Class         result;
    NSDictionary *plist=[classReference objectForKey:@"$class"];
-   NSNumber     *uid=[plist objectForKey:@"CF$UID"];
-   NSDictionary *profile=[_objects objectAtIndex:[uid intValue]];
+   NSDictionary *profile=[_objects objectAtIndex:integerFromCFUID(plist)];
    NSDictionary *classes=[profile objectForKey:@"$classes"];
    NSString     *className=[profile objectForKey:@"$classname"];
    
@@ -71,14 +84,14 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    return result;
 }
 
--decodeObjectForUID:(NSNumber *)uid {
-   NSInteger uidIntValue=[uid integerValue];
+-decodeObjectForUID:(NSInteger )uidIntValue {
    id result=NSMapGet(_uidToObject,(void *)uidIntValue);
             
    if(result==nil){
     id plist=[_objects objectAtIndex:uidIntValue];
+    unsigned typeID=[plist _cfTypeID];
     
-    if([plist isKindOfClass:[NSString class]]){
+    if(typeID==kNSCFTypeString){
      if([plist isEqualToString:@"$null"])
       result=nil;
      else {
@@ -86,7 +99,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
       NSMapInsert(_uidToObject,(void *)uidIntValue,result);
      }
     }
-    else if([plist isKindOfClass:[NSDictionary class]]){
+    else if(typeID==kNSCFTypeDictionary){
      Class class=[self decodeClassFromDictionary:plist];
    
      [_plistStack addObject:plist];
@@ -101,11 +114,11 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
      [_plistStack removeLastObject];
     }
-    else if([plist isKindOfClass:[NSNumber class]]){
+    else if(typeID==kNSCFTypeNumber || typeID==kNSCFTypeBoolean){
      result=plist;
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
     }
-    else if ([plist isKindOfClass:[NSData class]]) {
+    else if (typeID==kNSCFTypeData) {
      result=plist;
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
     }
@@ -126,9 +139,8 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    }
    else {
     NSDictionary *object=[values objectAtIndex:0];
-    NSNumber     *uid=[object objectForKey:@"CF$UID"];
     
-    return [self decodeObjectForUID:uid];
+    return [self decodeObjectForUID:integerFromCFUID(object)];
    }
 }
 
@@ -156,18 +168,23 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    return [data bytes];
 }
 
--(NSNumber *)_numberForKey:(NSString *)key {
-   NSNumber *result=[[_plistStack lastObject] objectForKey:key];
+static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
+   NSNumber *result=[[self->_plistStack lastObject] objectForKey:key];
 
-   if(result==nil || [result isKindOfClass:[NSNumber class]])
+   if(result==nil)
     return result;
-   
+    
+   unsigned typeID=[result _cfTypeID];
+  
+   if(typeID==kNSCFTypeNumber || typeID==kNSCFTypeBoolean)
+    return result;
+    
    [NSException raise:@"NSKeyedUnarchiverException" format:@"Expecting number, got %@",result];
    return nil;
 }
 
 -(BOOL)decodeBoolForKey:(NSString *)key {
-   NSNumber *number=[self _numberForKey:key];
+   NSNumber *number=_numberForKey(self,key);
    
    if(number==nil)
     return NO;
@@ -176,7 +193,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 }
 
 -(double)decodeDoubleForKey:(NSString *)key {
-   NSNumber *number=[self _numberForKey:key];
+   NSNumber *number=_numberForKey(self,key);
    
    if(number==nil)
     return 0;
@@ -185,7 +202,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 }
 
 -(float)decodeFloatForKey:(NSString *)key {
-   NSNumber *number=[self _numberForKey:key];
+   NSNumber *number=_numberForKey(self,key);
    
    if(number==nil)
     return 0;
@@ -194,7 +211,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 }
 
 -(int)decodeIntForKey:(NSString *)key {
-   NSNumber *number=[self _numberForKey:key];
+   NSNumber *number=_numberForKey(self,key);
    
    if(number==nil)
     return 0;
@@ -203,7 +220,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 }
 
 -(int32_t)decodeInt32ForKey:(NSString *)key {
-   NSNumber *number=[self _numberForKey:key];
+   NSNumber *number=_numberForKey(self,key);
    
    if(number==nil)
     return 0;
@@ -212,7 +229,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 }
 
 -(int64_t)decodeInt64ForKey:(NSString *)key {
-   NSNumber *number=[self _numberForKey:key];
+   NSNumber *number=_numberForKey(self,key);
    
    if(number==nil)
     return 0;
@@ -383,15 +400,13 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 }
 
 -_decodeObjectWithPropertyList:plist {
+   unsigned typeID=[plist _cfTypeID];
 
-   if([plist isKindOfClass:[NSString class]] || [plist isKindOfClass:[NSData class]])
+   if(typeID==kNSCFTypeString || typeID==kNSCFTypeData)
     return plist;
-   if([plist isKindOfClass:[NSDictionary class]]){
-    NSNumber *uid=[plist objectForKey:@"CF$UID"];
-
-    return [self decodeObjectForUID:uid];
-   }
-   else if([plist isKindOfClass:[NSArray class]]){
+   if(typeID==kNSCFTypeDictionary)
+    return [self decodeObjectForUID:integerFromCFUID(plist)];
+   if(typeID==kNSCFTypeArray){
     NSMutableArray *result=[NSMutableArray array];
     NSInteger       i,count=[plist count];
     
@@ -403,6 +418,8 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
     
     return result;
    }
+   if([plist isKindOfClass:[CFUID class]])
+    return [self decodeObjectForUID:[plist integerValue]];
    
    [NSException raise:@"NSKeyedUnarchiverException" format:@"Unable to decode property list with class %@",[plist class]];
    return nil;

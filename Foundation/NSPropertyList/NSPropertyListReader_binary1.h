@@ -10,15 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData;
 
-@interface NSPropertyListReader_binary1 : NSObject
-{
-        NSData *_data;
-        
-        uint8_t  _trailerOffsetIntSize;
-        uint8_t  _trailerOffsetRefSize;
-        uint64_t _trailerNumObjects;
-        uint64_t _trailerTopObject;
-        uint64_t _trailerOffsetTableOffset;
+@interface NSPropertyListReader_binary1 : NSObject {
+   NSData  *_data;
+   NSUInteger _length;
+   const uint8_t *_bytes;
+   
+   uint8_t  _trailerOffsetIntSize;
+   uint8_t  _trailerOffsetRefSize;
+   uint64_t _trailerNumObjects;
+   uint64_t _trailerTopObject;
+   uint64_t _trailerOffsetTableOffset;
 }
 
 +propertyListFromData:(NSData *)data;

@@ -59,14 +59,14 @@ NSModuleHandle NSLoadModule(const char *path) {
           path = buf;
       }
       else {
-          OBJCLog("NSLoadModule: cannot find cwd and relative path specified");
+          NSCLog("NSLoadModule: cannot find cwd and relative path specified");
           return NULL;
       }
    }
 
    handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
    if (NSLastModuleError() != NULL){
-       OBJCLog(NSLastModuleError());
+       NSCLog(NSLastModuleError());
        handle = NULL;
    }
 

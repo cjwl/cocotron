@@ -48,8 +48,8 @@
 		FE5A86BE10C6EE28005E348A /* CFXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FEED22730EFB669D004E378B /* CFXMLNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A86BF10C6EE28005E348A /* CFXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FEED22740EFB669D004E378B /* CFXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A86C110C6EE28005E348A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
-		FEA7525E114EA57300AF634E /* pthread.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828EEA110DE9080008AFA2 /* pthread.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEA7525F114EA57A00AF634E /* sched.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828EEC110DE9080008AFA2 /* sched.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE828EED110DE9080008AFA2 /* pthread.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828EEA110DE9080008AFA2 /* pthread.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE828EEF110DE9080008AFA2 /* sched.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828EEC110DE9080008AFA2 /* sched.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA828B5109B754A00C7A732 /* CFBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C60DC962D600598037 /* CFBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA828B6109B754A00C7A732 /* CFLocale.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C70DC962D600598037 /* CFLocale.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA828B7109B754A00C7A732 /* CFNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C90DC962D600598037 /* CFNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -308,6 +308,7 @@
 		8DC2EF5B0486A6940098B216 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE5A86C810C6EE28005E348A /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE828EEA110DE9080008AFA2 /* pthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthread.h; sourceTree = "<group>"; };
+		FE828EEB110DE9080008AFA2 /* pthread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pthread.m; sourceTree = "<group>"; };
 		FE828EEC110DE9080008AFA2 /* sched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sched.h; sourceTree = "<group>"; };
 		FEA828E4109B754A00C7A732 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEA82956109B75D600C7A732 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -507,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				FE828EEA110DE9080008AFA2 /* pthread.h */,
+				FE828EEB110DE9080008AFA2 /* pthread.m */,
 				FE828EEC110DE9080008AFA2 /* sched.h */,
 			);
 			path = pthread;
@@ -558,8 +560,8 @@
 				FEED22940EFB669D004E378B /* CFUUID.h in Headers */,
 				FEED22950EFB669D004E378B /* CFXMLNode.h in Headers */,
 				FEED22960EFB669D004E378B /* CFXMLParser.h in Headers */,
-				FEA7525E114EA57300AF634E /* pthread.h in Headers */,
-				FEA7525F114EA57A00AF634E /* sched.h in Headers */,
+				FE828EED110DE9080008AFA2 /* pthread.h in Headers */,
+				FE828EEF110DE9080008AFA2 /* sched.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

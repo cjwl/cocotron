@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/deprecated.h>
 #import <objc/message.h>
 #import <Foundation/objc_forward_ffi.h>
+#import <Foundation/NSRaiseException.h>
 
 #ifdef WIN32
 #import <windows.h>
@@ -25,6 +26,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 
 #import <Foundation/NSAtomicCompareAndSwap.h>
+#import <pthread.h>
+
+static pthread_mutex_t classTableLock=PTHREAD_MUTEX_INITIALIZER;
 
 #define INITIAL_CLASS_HASHTABLE_SIZE	256
 
@@ -38,24 +42,37 @@ static inline OBJCHashTable *OBJCClassTable(void) {
 }
 
 static inline OBJCHashTable *OBJCFutureClassTable(void) {
-   static OBJCHashTable *allClasses=NULL;
+   static OBJCHashTable *allFutureClasses=NULL;
    
-   if(allClasses==NULL)
-      allClasses=OBJCCreateHashTable(INITIAL_CLASS_HASHTABLE_SIZE);
+   if(allFutureClasses==NULL)
+      allFutureClasses=OBJCCreateHashTable(INITIAL_CLASS_HASHTABLE_SIZE);
    
-   return allClasses;
+   return allFutureClasses;
 }
 
 id objc_lookUpClass(const char *className) {
-   return OBJCHashValueForKey(OBJCClassTable(),className);
+   id result;
+   
+   pthread_mutex_lock(&classTableLock);
+   result=OBJCHashValueForKey(OBJCClassTable(),className);
+   pthread_mutex_unlock(&classTableLock);
+   
+   return result;
 }
 
 id objc_getClass(const char *name) {
+   id result;
+   
    // technically, this should call a class lookup callback if class not found (unlike objc_lookUpClass)
-   return OBJCHashValueForKey(OBJCClassTable(),name);
+   pthread_mutex_lock(&classTableLock);
+   result=OBJCHashValueForKey(OBJCClassTable(),name);
+   pthread_mutex_unlock(&classTableLock);
+   
+   return result;
 }
 
 int objc_getClassList(Class *buffer,int bufferLen) {
+   pthread_mutex_lock(&classTableLock);
    OBJCHashEnumerator classes=OBJCEnumerateHashTable(OBJCClassTable());
    int i=0;
     
@@ -68,7 +85,7 @@ int objc_getClassList(Class *buffer,int bufferLen) {
    
    for(;OBJCNextHashEnumeratorValue(&classes)!=0; i++)
     ;
-   
+   pthread_mutex_unlock(&classTableLock);
    return i;
 }
 
@@ -342,23 +359,27 @@ void OBJCEnableMsgTracing(){
      cache->table[j].method=&empty_method;
     }
    }
-   
-   OBJCLog("OBJC msg tracing ENABLED");
+
+   NSCLog("OBJC msg tracing ENABLED");
 }
 void OBJCDisableMsgTracing(){
    msg_tracing=0;
-   OBJCLog("OBJC msg tracing DISABLED");
+   NSCLog("OBJC msg tracing DISABLED");
 }
 
 void objc_logMsgSend(id object,SEL selector){
-   OBJCPartialLog("objc_msgSend %x %s",selector,sel_getName(selector));
-   OBJCFinishLog(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogThreadId();
+   NSCLogFormat("objc_msgSend %x %s",selector,sel_getName(selector));
+   NSCLogFormat(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogNewline();
 }
 
 void objc_logMsgSendSuper(struct objc_super *super,SEL selector){
-   OBJCPartialLog("objc_msgSendSuper %x %s",selector,sel_getName(selector));
+   NSCLogThreadId();
+   NSCLogFormat("objc_msgSendSuper %x %s",selector,sel_getName(selector));
    id object=super->receiver;
-   OBJCFinishLog(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogFormat(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogNewline();
 }
 
 static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL selector){
@@ -651,9 +672,11 @@ void OBJCRegisterClass(Class class) {
          class=futureClass;
       }
    }
-    
+   
+   pthread_mutex_lock(&classTableLock);
    OBJCHashInsertValueForKey(OBJCClassTable(), class->name, class);
-
+   pthread_mutex_unlock(&classTableLock);
+   
    OBJCRegisterSelectorsInClass(class);
    OBJCRegisterSelectorsInClass(class->isa);
 

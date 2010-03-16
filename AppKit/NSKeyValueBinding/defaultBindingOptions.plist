@@ -2,24 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSActionCell</key>
+	<key>NSActionCell.value</key>
 	<dict>
 		<key>NSCreatesSortDescriptors</key>
 		<true/>
 	</dict>
-	<key>NSCell</key>
+	<key>NSCell.value</key>
 	<dict>
 		<key>NSCreatesSortDescriptors</key>
 		<false/>
 	</dict>
-	<key>NSObject</key>
+	<key>NSObject.value</key>
 	<dict>
 		<key>NSAllowsEditingMultipleValuesSelection</key>
 		<true/>
 		<key>NSRaisesForNotApplicableKeys</key>
 		<true/>
 	</dict>
-	<key>NSTextField</key>
+	<key>NSTextField.value</key>
 	<dict>
 		<key>NSNullPlaceholder</key>
 		<string></string>
@@ -28,7 +28,7 @@
 		<key>NSNoSelectionPlaceholder</key>
 		<string>No selection</string>
 	</dict>
-	<key>NSTextFieldCell</key>
+	<key>NSTextFieldCell.value</key>
 	<dict>
 		<key>NSNullPlaceholder</key>
 		<string></string>
@@ -36,6 +36,16 @@
 		<string>Multiple values</string>
 		<key>NSNoSelectionPlaceholder</key>
 		<string>No selection</string>
+	</dict>
+	<key>NSProgressIndicator.value</key>
+	<dict>
+		<key>NSNullPlaceholder</key>
+		<integer>0</integer>
+	</dict>
+	<key>NSImageView.hidden</key>
+	<dict>
+		<key>NSNullPlaceholder</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

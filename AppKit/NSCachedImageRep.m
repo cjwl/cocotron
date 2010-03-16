@@ -66,8 +66,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)drawInRect:(NSRect)rect {
-	// FIXME: should this scale?
-	return [self drawAtPoint:rect.origin];
+   CGImageRef imageRef=CGBitmapContextCreateImage([[_window graphicsContext] graphicsPort]);
+   
+   CGContextDrawImage(NSCurrentGraphicsPort(),rect,imageRef);
+   
+   CGImageRelease(imageRef);
+   
+   return YES;
 }
 
 @end

@@ -15,12 +15,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValueTransformer.h>
+#import <Foundation/NSDebug.h>
 #import <AppKit/NSController.h>
 
 static void* NSBinderChangeContext;
-
-#pragma mark -
-#pragma mark Binding Options
 
 @implementation _NSBinder (BindingOptions)
 -(BOOL)conditionallySetsEditable
@@ -61,6 +59,7 @@ static void* NSBinderChangeContext;
 	id ret=[_options objectForKey:NSMultipleValuesPlaceholderBindingOption];
 	if(!ret)
 		return NSMultipleValuesMarker;
+
 	return ret;
 }
 
@@ -69,29 +68,33 @@ static void* NSBinderChangeContext;
 	id ret=[_options objectForKey:NSNoSelectionPlaceholderBindingOption];
 	if(!ret)
 		return NSNoSelectionMarker;
+
 	return ret;
 }
 
--(id)nullPlaceholder
-{
-	id ret=[_options objectForKey:NSNullPlaceholderBindingOption];
-	if(!ret)
-		return NSNoSelectionMarker;
-	return ret;
+-(id)nullPlaceholder {
+	return [_options objectForKey:NSNullPlaceholderBindingOption];
 }
 
--(id)valueTransformer
-{
-	id ret=[_options objectForKey:NSValueTransformerBindingOption];
-	if(!ret)
-	{
-		ret=[_options objectForKey:NSValueTransformerNameBindingOption];
-		if(!ret)
-			return nil;
-		ret=[NSValueTransformer valueTransformerForName:ret];
-		[_options setObject:ret forKey:NSValueTransformerBindingOption];
-	}
-	return ret;	
+-valueTransformer {
+   id result=[_options objectForKey:NSValueTransformerBindingOption];
+   
+   if(result==nil){
+    NSString *name=[_options objectForKey:NSValueTransformerNameBindingOption];
+    
+    if(name==nil)
+     return nil;
+     
+    result=[NSValueTransformer valueTransformerForName:name];
+    
+    if(NSDebugEnabled && result==nil)
+     NSLog(@"[NSValueTransformer valueTransformerForName:%@] failed in NSBinder.m",name);
+    
+    if(result!=nil)
+     [_options setObject:result forKey:NSValueTransformerBindingOption];
+   }
+   
+   return result;	
 }
 
 -(id)transformedObject:(id)object
@@ -99,6 +102,7 @@ static void* NSBinderChangeContext;
 	id transformer=[self valueTransformer];
 	if(!transformer)
 		return object;
+        
 	return [transformer transformedValue:object];
 }
 
@@ -109,15 +113,22 @@ static void* NSBinderChangeContext;
 		return object;
 	return [transformer reverseTransformedValue:object];
 }
-@end
 
-#pragma mark -
-#pragma mark Class implementation
+-(BOOL)allowsReverseTransformation {
+   NSValueTransformer *transformer=[self valueTransformer];
+   
+   if(transformer==nil)
+    return YES;
+   
+   return [[transformer class] allowsReverseTransformation];
+}
+
+@end
 
 @implementation _NSBinder
 
 - (id)source {
-    return [[_source retain] autorelease];
+    return _source;
 }
 
 - (void)setSource:(id)value {
@@ -130,7 +141,7 @@ static void* NSBinderChangeContext;
 
 - (id)destination 
 {
-    return [[_destination retain] autorelease];
+    return _destination;
 }
 
 - (void)setDestination:(id)value 
@@ -143,7 +154,7 @@ static void* NSBinderChangeContext;
 }
 
 - (NSString*)keyPath {
-    return [[_keyPath retain] autorelease];
+    return _keyPath;
 }
 
 - (void)setKeyPath:(NSString*)value {
@@ -154,7 +165,7 @@ static void* NSBinderChangeContext;
 }
 
 - (NSString*)binding {
-    return [[_binding retain] autorelease];
+    return _binding;
 }
 
 - (void)setBinding:(NSString*)value {
@@ -165,24 +176,26 @@ static void* NSBinderChangeContext;
     }
 }
 
--(id)defaultBindingOptionsForBinding:(id)thisBinding
-{
+-(id)defaultBindingOptionsForBinding:(id)thisBinding {
 	return [_source _defaultBindingOptionsForBinding:thisBinding];
 }
 
-- (id)options {
-    return [[_options retain] autorelease];
+-options {
+    return _options;
 }
 
 - (void)setOptions:(id)value {
 	[_options release];
-	_options=[[self defaultBindingOptionsForBinding:_binding] mutableCopy];
+// We only use the defaults if no options are specified
+// If the Cocoa behavior is to merge the defaults, the defaults we have are wrong
 	if(value)
-		[_options setValuesForKeysWithDictionary:value];
+     _options=[value mutableCopy];
+    else
+ 	 _options=[[self defaultBindingOptionsForBinding:_binding] mutableCopy];
 }
 
 - (id)bindingPath {
-    return [[_bindingPath retain] autorelease];
+    return _bindingPath;
 }
 
 - (void)setBindingPath:(id)value {
@@ -193,35 +206,38 @@ static void* NSBinderChangeContext;
 }
 
 -(void)startObservingChanges {
-   [_source addObserver:self
-             forKeyPath:_bindingPath 
-                options:0
-                context:&NSBinderChangeContext];
+   if([self allowsReverseTransformation])
+    [_source addObserver:self forKeyPath:_bindingPath  options:0 context:&NSBinderChangeContext];
 }
 
 
 -(void)stopObservingChanges {
-   [_source removeObserver:self forKeyPath:_bindingPath];
+   if([self allowsReverseTransformation])
+    [_source removeObserver:self forKeyPath:_bindingPath];
 }
 
-- (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-   if(context==&NSBinderChangeContext)
-   {
+- (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+   if([self allowsReverseTransformation]){
+
+    if(context==&NSBinderChangeContext) {
       [self stopObservingChanges];
 
       //NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
       //NSLog(@"new value %@", [_source valueForKeyPath:_bindingPath]);
+ //  NSLog(@"DST setting %@, for %@",[_source valueForKeyPath:_bindingPath],_keyPath);
       
-      [_destination setValue:[_source valueForKeyPath:_bindingPath]
-                  forKeyPath:_keyPath];
+       id value=[_source valueForKeyPath:_bindingPath];
+       
+       value=[self reverseTransformedObject:value];
+       
+       [_destination setValue:value forKeyPath:_keyPath];
       
-      [self startObservingChanges];
+       [self startObservingChanges];
+    }
    }
 }
 
--(void)dealloc
-{
+-(void)dealloc {
 	[self stopObservingChanges];
 	[_keyPath release];
 	[_binding release];
@@ -231,24 +247,24 @@ static void* NSBinderChangeContext;
 	[super dealloc];
 }
 
--(void)bind
-{
+-(void)bind {
 }
 
--(void)unbind
-{
+-(void)unbind {
 }
 
--(NSComparisonResult)compare:(id)other
-{
+-(NSComparisonResult)compare:(id)other {
 	// FIXME: needs to be a compare understanding that 11<20
 	return [_binding compare:[other binding]];
 }
 
--(id)peerBinders
-{
-	//NSRange numberAtEnd=[binding rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]
-	//											 options:NSBackwardsSearch|NSAnchoredSearch];
+-(NSArray *)peerBinders {
+    NSArray *allUsedBinders=[_source _allUsedBinders];
+    
+    // there is only one binder and it's self
+    if([allUsedBinders count]==1)
+     return allUsedBinders;
+    
 	// FIXME: total hack. assume only one digit at end, 1-9
 	NSRange numberAtEnd=NSMakeRange([_binding length]-1, 1);
 	if([[_binding substringWithRange:numberAtEnd] intValue]==0)
@@ -256,23 +272,22 @@ static void* NSBinderChangeContext;
 	
 	if(numberAtEnd.location==NSNotFound)
 		return nil;
-	id baseName=[_binding substringToIndex:numberAtEnd.location];
-	
-	id binders=[[_source _allUsedBinders] objectEnumerator];
-	id binder;
-	id ret=[NSMutableArray array];
-	while((binder=[binders nextObject])!=nil)
-	{
-		if([[binder binding] hasPrefix:baseName])
-			[ret addObject:binder];
-	}
-	return ret;
+   
+	NSString       *baseName=[_binding substringToIndex:numberAtEnd.location];
+	NSMutableArray *result=[NSMutableArray array];
+    
+   for(_NSBinder *check in allUsedBinders){
+    if([[check binding] hasPrefix:baseName])
+     [result addObject:check];
+   }
+    
+   return result;
 }
 
--(NSString*)description
-{
-	return [NSString stringWithFormat:@"%@: %@, %@ -> %@", [self class], _binding, _source, _destination];
+-(NSString *)description {
+   return [NSString stringWithFormat:@"%@: %@, %@ -> %@", [self class], _binding, _source, _destination];
 }
+
 @end
 
 

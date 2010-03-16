@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSString, NSMutableDictionary, NSValueTransformer;
+@class NSString, NSMutableDictionary, NSValueTransformer,NSArray;
 
 @interface _NSBinder : NSObject {
 	id _source;
@@ -44,10 +44,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setBindingPath:(id)value;
 
--(id)peerBinders;
+-(NSArray *)peerBinders;
 
 -(void)startObservingChanges;
 -(void)stopObservingChanges;
+
 @end
 
 @interface _NSBinder (BindingOptions)
@@ -60,5 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)multipleValuesPlaceholder;
 -(id)noSelectionPlaceholder;
 -(id)nullPlaceholder;
+-(id)transformedObject:(id)object;
+-(id)reverseTransformedObject:(id)object;
 @end
 

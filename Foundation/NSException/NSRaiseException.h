@@ -16,4 +16,8 @@ FOUNDATION_EXPORT void NSRaiseException(NSString *name,id self,SEL cmd,NSString 
 
 // This is just a wrapper for fprintf, it doesn't handle %@
 // There are situations (such as localization inside NSLog) where you don't want to use NSLog
+FOUNDATION_EXPORT void NSCLogv(const char *format,va_list arguments);
 FOUNDATION_EXPORT void NSCLog(const char *format,...);
+FOUNDATION_EXPORT void NSCLogThreadId();
+FOUNDATION_EXPORT void NSCLogNewline();
+FOUNDATION_EXPORT void NSCLogFormat(const char *format,...);

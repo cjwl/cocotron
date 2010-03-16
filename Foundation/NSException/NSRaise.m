@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <objc/runtime.h>
 #import <stdio.h>
+#import <windows.h>
 
 // DO NOT USE IN NEW CODE AND REPLACE USAGE. Use NSAssert().
 void NSRaiseException(NSString *name,id self,SEL cmd,NSString *fmt,...) {
@@ -20,16 +21,42 @@ void NSRaiseException(NSString *name,id self,SEL cmd,NSString *fmt,...) {
 
    why=[[[NSString allocWithZone:NULL] initWithFormat:fmt arguments:args] autorelease];
 
+   va_end(args);
    [NSException raise:name format:@"%@ %@",where,why];
+}
+
+void NSCLogThreadId(){
+   fprintf(stderr,"threadId=%p:tick=%d:",GetCurrentThreadId(),GetTickCount());
+}
+
+void NSCLogNewline(){
+   fprintf(stderr,"\n",GetCurrentThreadId());
+   fflush(stderr);
+}
+
+void NSCLogFormatWithArguments(const char *format,va_list arguments){
+   vfprintf(stderr,format,arguments);
+   fflush(stderr);
+}
+
+void NSCLogFormat(const char *format,...){
+   va_list arguments;
+
+   va_start(arguments,format);
+   NSCLogFormatWithArguments(format,arguments);
+   va_end(arguments);
+}
+
+void NSCLogv(const char *format,va_list arguments) {
+   NSCLogThreadId();
+   NSCLogFormatWithArguments(format,arguments);
+   NSCLogNewline();
 }
 
 void NSCLog(const char *format,...) {
    va_list arguments;
 
    va_start(arguments,format);
-
-   fprintf(stderr,"ERROR:");
-   vfprintf(stderr,format,arguments);
-   fprintf(stderr,"\n");
-   fflush(stderr);
+   NSCLogv(format,arguments);
+   va_end(arguments);
 }

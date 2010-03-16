@@ -15,26 +15,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/CFUID.h>
 #import <assert.h>
 #import <string.h>
 
-@interface NSPropertyListReader_binary1 (Private)
-
-- (id)_readInlineObjectAtOffset: (NSUInteger *)offset;
-
-@end
-
-
 @implementation NSPropertyListReader_binary1
 
+static id _readInlineObjectAtOffset(NSPropertyListReader_binary1 *self,NSUInteger *offset);
+
 +propertyListFromData:(NSData *)data {
-  id                            result=nil;
   NSPropertyListReader_binary1 *reader=[[self alloc] initWithData:data];
   
   if(reader==nil)
    return nil;
   
-  result=[reader read];
+  id result=[reader read];
+  
   [reader release];
   
   return result;
@@ -44,41 +41,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define FORMAT "00"
 #define TRAILER_SIZE (sizeof( uint8_t ) * 2 + sizeof( uint64_t ) * 3)
 
-- (id)initWithData: (NSData *)data
-{
-        if( (self = [self init]) )
-        {
-                size_t magiclen = strlen( MAGIC FORMAT );
+-initWithData: (NSData *)data {
+   size_t magiclen = strlen( MAGIC FORMAT );
                 
-                BOOL good = YES;
-                if( good && [data length] < magiclen + TRAILER_SIZE )
-                        good = NO;
-                if( good && strncmp( [data bytes], MAGIC FORMAT, magiclen ) != 0 )
-                        good = NO;
+   BOOL good = YES;
+   if( good && [data length] < magiclen + TRAILER_SIZE )
+    good = NO;
+   if( good && strncmp( [data bytes], MAGIC FORMAT, magiclen ) != 0 )
+    good = NO;
                 
-                if( !good )
-                {
-                        [self release];
-                        return nil;
-                }
+   if( !good ){
+    [self release];
+    return nil;
+   }
                 
-                // [data subdataWithRange: NSMakeRange( magiclen, [data length] - magiclen )]
-                _data = [data copy];
-        }
-        return self;
+   _data = [data copy];
+   _length=[_data length];
+   _bytes=[_data bytes];
+   
+   return self;
 }
 
-- (void)dealloc
-{
-        [_data release];
-        
-        [super dealloc];
+-(void)dealloc {
+   [_data release];
+   [super dealloc];
 }
 
-- (uint64_t)_readIntOfSize: (size_t)size atOffset: (NSUInteger *)offsetPtr
-{
+static inline uint64_t _readIntOfSize(NSPropertyListReader_binary1 *self,size_t size,NSUInteger *offsetPtr) {
         uint64_t ret = 0;
-        const uint8_t *ptr = [_data bytes] + *offsetPtr;
+        const uint8_t *ptr = self->_bytes + *offsetPtr;
         size_t i;
         for( i = 0; i < size; i++ )
         {
@@ -92,9 +83,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return ret;
 }
 
-- (double)_readFloatOfSize: (size_t)size atOffset: (NSUInteger *)offsetPtr
-{
-        uint64_t val = [self _readIntOfSize: size atOffset: offsetPtr];
+static inline double _readFloatOfSize(NSPropertyListReader_binary1 *self,size_t size,NSUInteger *offsetPtr) {
+        uint64_t val = _readIntOfSize(self, size , offsetPtr);
         
         if( size == 4 )
         {
@@ -112,24 +102,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)_readHeader
 {
-        NSUInteger trailerStart = [_data length] - TRAILER_SIZE;
+        NSUInteger trailerStart = _length - TRAILER_SIZE;
         
-        _trailerOffsetIntSize           = [self _readIntOfSize: sizeof( _trailerOffsetIntSize )
-                                                                                   atOffset: &trailerStart];
-        _trailerOffsetRefSize           = [self _readIntOfSize: sizeof( _trailerOffsetRefSize )
-                                                                                   atOffset: &trailerStart];
-        _trailerNumObjects                   = [self _readIntOfSize: sizeof( _trailerNumObjects )
-                                                                                 atOffset: &trailerStart];
-        _trailerTopObject                   = [self _readIntOfSize: sizeof( _trailerTopObject )
-                                                                                atOffset: &trailerStart];
-        _trailerOffsetTableOffset = [self _readIntOfSize: sizeof( _trailerOffsetTableOffset )
-                                                                                        atOffset: &trailerStart];
+        _trailerOffsetIntSize= _readIntOfSize(self, sizeof( _trailerOffsetIntSize ), &trailerStart);
+        _trailerOffsetRefSize= _readIntOfSize(self, sizeof( _trailerOffsetRefSize ), &trailerStart);
+        _trailerNumObjects= _readIntOfSize(self, sizeof( _trailerNumObjects ), &trailerStart);
+        _trailerTopObject= _readIntOfSize(self, sizeof( _trailerTopObject ), &trailerStart);
+        _trailerOffsetTableOffset = _readIntOfSize(self, sizeof( _trailerOffsetTableOffset ), &trailerStart);
 }
 
 static uint64_t ReadSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offset, uint8_t size)
 {
-        const uint8_t   *ptr = [bplist->_data bytes];
-        NSUInteger        length=[bplist->_data length];
+        const uint8_t   *ptr = bplist->_bytes;
+        NSUInteger        length=bplist->_length;
         
         assert(ptr != NULL && size >= 1 && size <= 8 && offset + size <= length);
         
@@ -146,8 +131,8 @@ static uint64_t ReadSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offs
 
 static BOOL ReadSelfSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offset, uint64_t *outValue, size_t *outSize)
 {
-        const uint8_t   *ptr = [bplist->_data bytes];
-        NSUInteger        length=[bplist->_data length];
+        const uint8_t   *ptr = bplist->_bytes;
+        NSUInteger        length=bplist->_length;
         
         uint32_t                        size;
         int64_t                                value;
@@ -195,12 +180,11 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
                 return nil;
         }
         
-        return [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedLongLong:value] forKey:@"CF$UID"];
+        return [[CFUID alloc] initWithUnsignedLongLong:value];
 }
 
-- (id)_readObjectAtOffset: (NSUInteger *)offset
-{
-        const uint8_t *ptr = [_data bytes];
+static id _readObjectAtOffset(NSPropertyListReader_binary1 *self,NSUInteger *offset) {
+        const uint8_t *ptr = self->_bytes;
         uint8_t marker = ptr[*offset];
         
         (*offset)++;
@@ -208,54 +192,51 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
         if( marker == 0x00 )
                 return [NSNull null];
         if( marker == 0x08 )
-                return [NSNumber numberWithBool: NO];
+                return (id)kCFBooleanFalse;
         if( marker == 0x09 )
-                return [NSNumber numberWithBool: YES];
+                return (id)kCFBooleanTrue;
         
         uint8_t topNibble = marker >> 4;
         uint8_t botNibble = marker & 0x0F;
         
         if( topNibble == 0x1 )
-                return [NSNumber numberWithLongLong: [self _readIntOfSize: 1 << botNibble
-                                                                                                                 atOffset: offset]];
+                return [[NSNumber alloc] initWithLongLong: _readIntOfSize(self, 1 << botNibble , offset)];
         if( topNibble == 0x2 )
 		{
 			size_t size = 1 << botNibble;
-			uint64_t val = [self _readIntOfSize: size atOffset: offset];
+			uint64_t val = _readIntOfSize(self, size , offset);
 			
 			if( size == 4 )
 			{
 				uint32_t val32 = (uint32_t)val;
-				return [NSNumber numberWithFloat: *(float*)&val32];
+				return [[NSNumber alloc] initWithFloat: *(float*)&val32];
 			}
 			if( size == 8 )
 			{
-				return [NSNumber numberWithDouble: *(double*)&val];
+				return [[NSNumber alloc] initWithDouble: *(double*)&val];
 			}
-			return [NSNumber numberWithDouble:0.0];
+			return [[NSNumber alloc] initWithDouble:0.0];
 		}
         if( topNibble == 0x3 )
-                return [NSDate dateWithTimeIntervalSinceReferenceDate:
-                                [self _readFloatOfSize: 8 atOffset: offset]];
+                return [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:_readFloatOfSize(self,8,offset)];
         if( topNibble == 0x4 || topNibble == 0x5 || topNibble == 0x6 || topNibble == 0x8 || topNibble == 0xA || topNibble == 0xD )
         {
                 uint64_t length = 0;
                 if( botNibble != 0xF )
                         length = botNibble;
-                else
-                        length = [[self _readObjectAtOffset: offset] unsignedLongLongValue];
+                else {
+                        NSNumber *number=_readObjectAtOffset(self,offset);
+                        length = [number unsignedLongLongValue];
+                        [number release];
+                }
                 
                 if( topNibble == 0x4 )
-                        return [_data subdataWithRange: NSMakeRange( *offset, length )];
+                        return [[self->_data subdataWithRange: NSMakeRange( *offset, length )] copy];
                 if( topNibble == 0x5 )
-                        return [[[NSString alloc]
-                                         initWithData: [_data subdataWithRange: NSMakeRange( *offset, length )]
-                                         encoding: NSASCIIStringEncoding] autorelease];
+                        return [[NSString alloc] initWithBytes:self->_bytes+*offset length:length encoding: NSASCIIStringEncoding];
                 if( topNibble == 0x6 ){
                 
-                        return [[[NSString alloc]
-                                         initWithData: [_data subdataWithRange: NSMakeRange( *offset, length * 2 )]
-                                         encoding: NSUTF16BigEndianStringEncoding] autorelease];
+                        return [[NSString alloc] initWithBytes:self->_bytes+*offset length:length*2 encoding: NSUTF16BigEndianStringEncoding];
                                      }
                 if( topNibble == 0x8 )
                  return ExtractUID(self, (*offset)-1);
@@ -266,9 +247,11 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
                         id *objs = malloc( length * sizeof( *objs ) );
                         uint64_t i;
                         for( i = 0; i < length; i++ )
-                                objs[i] = [self _readInlineObjectAtOffset: offset];
+                                objs[i] = _readInlineObjectAtOffset(self,offset);
                         
-                        result=[NSArray arrayWithObjects: objs count: length];
+                        result=[[NSArray alloc] initWithObjects: objs count: length];
+                        for(i=0;i<length;i++)
+                         [objs[i] release];
                         free(objs);
                         return result;
                 }
@@ -280,13 +263,15 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
                         id *objs = malloc( length * sizeof( *objs ) );
                         uint64_t i;
                         for( i = 0; i < length; i++ )
-                                keys[i] = [self _readInlineObjectAtOffset: offset];
+                                keys[i] = _readInlineObjectAtOffset(self,offset);
                         for( i = 0; i < length; i++ )
-                                objs[i] = [self _readInlineObjectAtOffset: offset];
+                                objs[i] = _readInlineObjectAtOffset(self,offset);
                         
-                        result=[NSDictionary dictionaryWithObjects: objs
-                                                                                           forKeys: keys
-                                                                                                 count: length];
+                        result=[[NSDictionary alloc] initWithObjects: objs forKeys: keys count: length];
+                        for(i=0;i<length;i++){
+                         [keys[i] release];
+                         [objs[i] release];
+                        }
                         free(keys);
                         free(objs);
                         return result;
@@ -297,44 +282,36 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
         return nil;
 }
 
-- (id)_readInlineObjectAtOffset: (NSUInteger *)offset
-{
+static id _readInlineObjectAtOffset(NSPropertyListReader_binary1 *self,NSUInteger *offset) {
         // first read the offset table index out of the file
-        NSUInteger objOffset = [self _readIntOfSize: _trailerOffsetRefSize
-                                                                         atOffset: offset];
+        NSUInteger objOffset = _readIntOfSize(self, self->_trailerOffsetRefSize , offset);
         
         // then transform the index into an offset in the file which points to
         // that offset table entry
-        objOffset = _trailerOffsetTableOffset + objOffset * _trailerOffsetIntSize;
+        objOffset = self->_trailerOffsetTableOffset + objOffset * self->_trailerOffsetIntSize;
         
         // lastly read the offset stored at that entry
-        objOffset = [self _readIntOfSize: _trailerOffsetIntSize atOffset: &objOffset];
+        objOffset = _readIntOfSize(self, self->_trailerOffsetIntSize , &objOffset);
         
         // and read the object stored there
-        return [self _readObjectAtOffset: &objOffset];
+        return _readObjectAtOffset(self, &objOffset);
         
 }
 
-- (id)read
-{
+- (id)read {
         id result=nil;
         
-        //@try 
-        NS_DURING
-        {
+        @try {
                 [self _readHeader];
 
                 NSUInteger offset = _trailerTopObject + strlen( MAGIC FORMAT );
-                 result= [self _readObjectAtOffset: &offset];
+                 result= _readObjectAtOffset(self,&offset);
         }
-        NS_HANDLER
-        // @catch( id exception )
-        {
-                NSLog( @"Unable to read binary plist: %@", localException );
+        @catch( id exception ) {
+                NSLog( @"Unable to read binary plist: %@", exception );
         }
-        NS_ENDHANDLER
-        
-        return result;
+           
+   return [result autorelease];
 }
 
 @end

@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // returns a dictionary with the default options for the specified binding
 // the dictionaries are stored on a per-class basis in defaultBindingOptions.plist
 // the binding parameter is currently ignored
--(id)_defaultBindingOptionsForBinding:(id)binding;
+-(NSDictionary *)_defaultBindingOptionsForBinding:(NSString *)binding;
 
 // return the class of a suitable binder for the respective binding
 +(Class)_binderClassForBinding:(id)binding;
@@ -73,4 +73,5 @@ APPKIT_EXPORT NSString * const NSValueTransformerBindingOption;
 APPKIT_EXPORT NSString * const NSConditionallySetsEnabledBindingOption;
 APPKIT_EXPORT NSString * const NSConditionallySetsEditableBindingOption;
 APPKIT_EXPORT NSString * const NSContinuouslyUpdatesValueBindingOption;
+APPKIT_EXPORT NSString * const NSDisplayPatternBindingOption;
 

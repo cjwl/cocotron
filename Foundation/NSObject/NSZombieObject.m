@@ -10,35 +10,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSInvocation.h>
+#import <pthread.h>
 
+static pthread_mutex_t zombieLock=PTHREAD_MUTEX_INITIALIZER;
 static NSMapTable *objectToClassName=NULL;
 
 void NSRegisterZombie(NSObject *object) {
+   pthread_mutex_lock(&zombieLock);
+   
    if(objectToClassName==NULL){
-    objectToClassName=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,
-     NSNonOwnedPointerMapValueCallBacks,0);
+    objectToClassName=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
    }
 
    NSMapInsert(objectToClassName,object,((struct objc_object *)object)->isa);
    ((struct objc_object *)object)->isa=objc_lookUpClass("NSZombieObject");
+   
+   pthread_mutex_unlock(&zombieLock);
 }
 
 @implementation NSZombieObject
 
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+   pthread_mutex_lock(&zombieLock);
    Class cls=NSMapGet(objectToClassName,self);
-   
-   NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,sel_getName(selector),class_getName((Class)NSMapGet(objectToClassName,self)));
+   pthread_mutex_unlock(&zombieLock);
+
+   NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,sel_getName(selector),class_getName(cls));
    
    return [cls instanceMethodSignatureForSelector:selector];
 }
 
 -(void)forwardInvocation:(NSInvocation *)invocation {
-   NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s",self,sel_getName([invocation selector]),class_getName((Class)NSMapGet(objectToClassName,self)));
+   pthread_mutex_lock(&zombieLock);
+   Class cls=NSMapGet(objectToClassName,self);
+   pthread_mutex_unlock(&zombieLock);
+
+   NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s",self,sel_getName([invocation selector]),class_getName(cls));
 }
 
 -(id)forwardSelector:(SEL)selector arguments:(void *)arguments {
-   NSLog(@"-[NSZombieObject %x %s] %s",self,sel_getName(selector),class_getName((Class)NSMapGet(objectToClassName,self)));
+   pthread_mutex_lock(&zombieLock);
+   Class cls=NSMapGet(objectToClassName,self);
+   pthread_mutex_unlock(&zombieLock);
+
+   NSLog(@"-[NSZombieObject %x %s] %s",self,sel_getName(selector),class_getName(cls));
    return nil;
 }
 
