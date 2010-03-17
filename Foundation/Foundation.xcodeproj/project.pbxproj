@@ -6450,12 +6450,19 @@
 			remoteGlobalIDString = FE01A57F0C5D9B3100AEA51A;
 			remoteInfo = "objc-Windows-i386";
 		};
-		FE2569DF10F2F91C005CE23E /* PBXContainerItemProxy */ = {
+		FE1342C81151842200404745 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = "CFNetwork-Windows-i386";
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* CoreServices.framework */;
+			remoteInfo = "CoreServices-Windows-i386";
+		};
+		FE1342D41151843C00404745 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* CoreServices-Windows-i386 */;
+			remoteInfo = "CoreServices-Windows-i386";
 		};
 		FE50C5D90D85891000CD1896 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6505,13 +6512,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = FE651A9D0FBC84DD00464BFD;
 			remoteInfo = "objc-Darwin-i386 copy";
-		};
-		FEA752F6114EB30B00AF634E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FEA752F3114EB30B00AF634E;
-			remoteInfo = "CFNetwork-Windows-i386 copy";
 		};
 		FEA828AA109B74B200C7A732 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -7114,6 +7114,7 @@
 		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSConditionLock_win32.h; sourceTree = "<group>"; };
 		C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSConditionLock_win32.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1342BD1151842200404745 /* CoreServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreServices.xcodeproj; path = ../CoreServices/CoreServices.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE1365D80F154B3A000F2657 /* NSAtomicList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicList.h; sourceTree = "<group>"; };
 		FE1365D90F154B3A000F2657 /* NSAtomicList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAtomicList.m; sourceTree = "<group>"; };
 		FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLatchTrigger.h; sourceTree = "<group>"; };
@@ -7127,7 +7128,6 @@
 		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwarding.h; sourceTree = "<group>"; };
 		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forwarding.m; sourceTree = "<group>"; };
 		FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegalCharacterSet.bitmap; path = NSCharacterSet/illegalCharacterSet.bitmap; sourceTree = "<group>"; };
-		FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE2569E610F2F9C7005CE23E /* CFHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFHost.m; sourceTree = "<group>"; };
 		FE2569E710F2F9C7005CE23E /* CFNetServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFNetServices.m; sourceTree = "<group>"; };
 		FE2569E810F2F9C7005CE23E /* CFSocketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSocketStream.m; sourceTree = "<group>"; };
@@ -7529,8 +7529,8 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FE1342BD1151842200404745 /* CoreServices.xcodeproj */,
 				FE2569E410F2F936005CE23E /* CFNetwork */,
-				FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */,
 				FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */,
 				151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */,
 				FE463E54102CD5C700B265D6 /* NSPointerArray.h */,
@@ -8456,6 +8456,14 @@
 			name = NSCharacterSet;
 			sourceTree = "<group>";
 		};
+		FE1342BE1151842200404745 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE1342C91151842200404745 /* CoreServices.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FE1365D70F154B3A000F2657 /* NSOperation */ = {
 			isa = PBXGroup;
 			children = (
@@ -8479,15 +8487,6 @@
 				FED70D610C3C0973000CBE5B /* objc_msgSend-darwin-ppc.s */,
 			);
 			path = platform_darwin;
-			sourceTree = "<group>";
-		};
-		FE2569DC10F2F91C005CE23E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FE2569E010F2F91C005CE23E /* CFNetwork.framework */,
-				FEA752F7114EB30B00AF634E /* CFNetwork.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		FE2569E410F2F936005CE23E /* CFNetwork */ = {
@@ -11912,6 +11911,7 @@
 			dependencies = (
 				FE01A7F30C5D9B9100AEA51A /* PBXTargetDependency */,
 				FEA828AD109B752F00C7A732 /* PBXTargetDependency */,
+				FE1342D51151843C00404745 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -12018,12 +12018,12 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FE2569DC10F2F91C005CE23E /* Products */;
-					ProjectRef = FE2569DB10F2F91C005CE23E /* CFNetwork.xcodeproj */;
-				},
-				{
 					ProductGroup = FEA828A4109B74B200C7A732 /* Products */;
 					ProjectRef = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+				},
+				{
+					ProductGroup = FE1342BE1151842200404745 /* Products */;
+					ProjectRef = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
 				},
 				{
 					ProductGroup = FEB6CC410B4A1922004FADF2 /* Products */;
@@ -12061,11 +12061,11 @@
 			remoteRef = 28D485000FE04DDD00DC03EF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE2569E010F2F91C005CE23E /* CFNetwork.framework */ = {
+		FE1342C91151842200404745 /* CoreServices.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CFNetwork.framework;
-			remoteRef = FE2569DF10F2F91C005CE23E /* PBXContainerItemProxy */;
+			path = CoreServices.framework;
+			remoteRef = FE1342C81151842200404745 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE5A868E10C6EDDC005E348A /* objc.framework */ = {
@@ -12087,13 +12087,6 @@
 			fileType = wrapper.framework;
 			path = objc.framework;
 			remoteRef = FE651AA00FBC84DD00464BFD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FEA752F7114EB30B00AF634E /* CFNetwork.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CFNetwork.framework;
-			remoteRef = FEA752F6114EB30B00AF634E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FEA828AB109B74B200C7A732 /* CoreFoundation.framework */ = {
@@ -15668,6 +15661,11 @@
 			isa = PBXTargetDependency;
 			name = "objc-Windows-i386";
 			targetProxy = FE01A7F20C5D9B9100AEA51A /* PBXContainerItemProxy */;
+		};
+		FE1342D51151843C00404745 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreServices-Windows-i386";
+			targetProxy = FE1342D41151843C00404745 /* PBXContainerItemProxy */;
 		};
 		FE50C5DA0D85891000CD1896 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

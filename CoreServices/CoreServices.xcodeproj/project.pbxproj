@@ -23,6 +23,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE1342D21151843000404745 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA752F3114EB30B00AF634E /* CFNetwork.framework */;
+			remoteInfo = "CFNetwork-Linux-i386";
+		};
 		FE7433B210A89F5D004CDF00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
@@ -124,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				FE7433B310A89F5D004CDF00 /* CFNetwork.framework */,
+				FE1342D31151843000404745 /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -188,6 +196,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FE1342D31151843000404745 /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = FE1342D21151843000404745 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE7433B310A89F5D004CDF00 /* CFNetwork.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
