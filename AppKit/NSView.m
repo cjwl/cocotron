@@ -840,8 +840,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSToolTipTag)addToolTipRect:(NSRect)rect owner:object userData:(void *)userData {
    NSTrackingArea *area=nil;
 
-   // NSTrackingArea retains userInfo, but userData is not guaranteed to be an
-   // object. We box it in an NSValue while in the tracking area
    area=[[NSTrackingArea alloc] _initWithRect:rect options:0 owner:object userData:userData retainUserData:NO isToolTip:YES isLegacy:NO];
    [_trackingAreas addObject:area];
    [area release];
@@ -1409,16 +1407,17 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    NSUnimplementedMethod();
 }
 
--(void)lockFocus {
-   NSGraphicsContext *context=[[self window] graphicsContext];
+static NSGraphicsContext *graphicsContextForView(NSView *view){
+   return [[view window] graphicsContext];
+}
 
-   if(context!=nil){
+-(void)_lockFocusInContext:(NSGraphicsContext *)context {
     CGContextRef graphicsPort=[context graphicsPort];
 
     [NSGraphicsContext saveGraphicsState];
     [NSGraphicsContext setCurrentContext:context];
    
-    [NSCurrentFocusStack() addObject:self];
+    [[context focusStack] addObject:self];
 
     CGContextSaveGState(graphicsPort);
     CGContextResetClip(graphicsPort);
@@ -1426,7 +1425,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     CGContextClipToRect(graphicsPort,[self visibleRect]);
 
     [self setUpGState];
-   }
+}
+
+-(void)lockFocus {
+   [self _lockFocusInContext:graphicsContextForView(self)];
 }
 
 -(BOOL)lockFocusIfCanDraw {
@@ -1438,20 +1440,20 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)lockFocusIfCanDrawInContext:(NSGraphicsContext *)context {
-   NSUnimplementedMethod();
+   if(context!=nil){
+    [self _lockFocusInContext:context];
+    return YES;
+   }
    return NO;
 }
 
 -(void)unlockFocus {
-   NSGraphicsContext *context=[[self window] graphicsContext];
+   NSGraphicsContext *context=[NSGraphicsContext currentContext];
+   
+   CGContextRestoreGState([context graphicsPort]);
 
-   if(context!=nil){
-    CGContextRef graphicsPort=[context graphicsPort];
-
-    CGContextRestoreGState(graphicsPort);
-    [NSCurrentFocusStack() removeLastObject];
-    [NSGraphicsContext restoreGraphicsState];
-   }
+   [[context focusStack] removeLastObject];
+   [NSGraphicsContext restoreGraphicsState];
 }
 
 -(BOOL)needsToDrawRect:(NSRect)rect {
@@ -1486,8 +1488,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)displayIfNeeded {
    int i,count=[_subviews count];
   
-   if([self needsDisplay])
+   if([self needsDisplay]){
      [self displayRect:_invalidRect];
+    _invalidRect=NSZeroRect;
+   }
 
    for(i=0;i<count;i++) // back to front
     [[_subviews objectAtIndex:i] displayIfNeeded];
@@ -1495,6 +1499,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)displayIfNeededInRect:(NSRect)rect {
    int i,count=[_subviews count];
+   
    rect=NSIntersectionRect(_invalidRect, rect);
 
    if([self needsDisplay])
@@ -1511,6 +1516,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {
    int i,count=[_subviews count];
+   
    rect=NSIntersectionRect(_invalidRect, rect);
 
    if([self needsDisplay])
@@ -1544,33 +1550,34 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [opaque displayRectIgnoringOpacity:rect];
 }
 
--(void)displayRectIgnoringOpacity:(NSRect)rect {
-   int i,count=[_subviews count];
-
-   if(!NSIsEmptyRect(_invalidRect)){
-    rect=NSUnionRect(rect,_invalidRect);
+-(void)displayRectIgnoringOpacity:(NSRect)rect {   
+   if(NSContainsRect(rect,_invalidRect)){
     _invalidRect=NSZeroRect;
    }
 
    rect=NSIntersectionRect(rect,[self visibleRect]);
 
+   if(NSIsEmptyRect(rect))
+    return;
+    
    if([self canDraw]){
     [self lockFocus];
-// rect should be expanded to completely cover all the non-opaque subviews invalid rects
-// We may not completely erase the background of a non-opaque view
-
-    NSGraphicsContext *context=[[self window] graphicsContext];
+    NSGraphicsContext *context=[NSGraphicsContext currentContext];
     CGContextRef       graphicsPort=[context graphicsPort];
 
     CGContextClipToRect(graphicsPort,rect);
+
     [self drawRect:rect];
 
+    int i,count=[_subviews count];
+    
     for(i=0;i<count;i++){
      NSView *view=[_subviews objectAtIndex:i];
      NSRect  check=[self convertRect:rect toView:view];
 
-     if(NSIntersectsRect(check,[view bounds])){
-      check=NSIntersectionRect(check,[view visibleRect]);
+     check=NSIntersectionRect(check,[view bounds]);
+     
+     if(!NSIsEmptyRect(check)){
       [view displayRectIgnoringOpacity:check];
      }
     }
@@ -1582,7 +1589,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [[self window] flushWindow];
 }
 
--(void)displayRectIgnoringOpacity:(NSRect)rect inContext:(NSGraphicsContext *)context {
+-(void)displayRectIgnoringOpacity:(NSRect)rect inContext:(NSGraphicsContext *)context {   
    NSUnimplementedMethod();
 }
 

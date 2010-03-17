@@ -79,7 +79,7 @@ static void *nsThreadStartThread(void* t)
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
    [thread release];
-//   NSSelectSetShutdownForCurrentThread();
+   NSSelectSetShutdownForCurrentThread();
    NSPlatformSetCurrentThread(nil);
 	return 0;
 }

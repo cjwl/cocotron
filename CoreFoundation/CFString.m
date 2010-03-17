@@ -43,6 +43,7 @@ static inline NSStringEncoding convertCFEncodingToNSEncoding(CFStringEncoding en
 }
 
 CFStringRef CFStringMakeConstant(const char *cString) {
+// FIXME: constify
    return (CFStringRef)[[[NSString allocWithZone:NULL]initWithUTF8String:cString] autorelease];
 }
 
