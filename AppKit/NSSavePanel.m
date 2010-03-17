@@ -135,6 +135,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return ret;
 }
 
+-(void)setPrompt:(NSString*)prompt;
+{
+	@synchronized(self)
+	{
+		if(_prompt!=prompt)
+		{
+			[_prompt release];
+			_prompt=[prompt copy];
+		}
+	}
+}
+
+-(NSString*)prompt;
+{
+	id ret=nil;
+	@synchronized(self)
+	{
+		ret=[[_prompt copy] autorelease];
+	}
+	return ret;
+}
+
+
 -(void)setTreatsFilePackagesAsDirectories:(BOOL)flag {
    _treatsFilePackagesAsDirectories=flag;
 }
