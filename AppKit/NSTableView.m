@@ -779,6 +779,7 @@ _dataSource);
    value=[value copy];
    [_selectedRowIndexes release];
    _selectedRowIndexes = value;
+    [self noteSelectionDidChange];
 }
 
 // That's the setter for _selectedRowIndexes.
@@ -836,10 +837,8 @@ _dataSource);
       // NSLog(@"NSTableView row %d for redraw.", i);
      }
 
-   [self _setSelectedRowIndexes:newIndexes];
-
-   if (changed)
-    [self noteSelectionDidChange];
+   if(changed)
+    [self _setSelectedRowIndexes:newIndexes];
 }
 
 -(int)selectedRow {
