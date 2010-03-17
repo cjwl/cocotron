@@ -8,7 +8,7 @@
 
 @protocol NSPathControlDelegate
 
-@optional
+//@optional
 
 - (BOOL)pathControl:(NSPathControl *)pathControl acceptDrop:(id < NSDraggingInfo >)info;
 - (BOOL)pathControl:(NSPathControl *)pathControl shouldDragPathComponentCell:(NSPathComponentCell *)pathComponentCell withPasteboard:(NSPasteboard *)pasteboard;
