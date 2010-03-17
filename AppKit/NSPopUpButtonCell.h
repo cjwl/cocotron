@@ -18,8 +18,9 @@ typedef enum {
 
 @interface NSPopUpButtonCell : NSButtonCell {
    NSMenu *             _menu;
-   int                  _selectedIndex;
+   NSInteger            _selectedIndex;
    BOOL                 _pullsDown;
+   BOOL                 _autoenablesItems;
    NSPopUpArrowPosition _arrowPosition;
    NSRectEdge           _preferredEdge;
 }
@@ -28,20 +29,48 @@ typedef enum {
 
 -(BOOL)pullsDown;
 -(NSMenu *)menu;
--(NSArray *)itemArray;
--(int)numberOfItems;
+-(BOOL)autoenablesItems;
 -(NSRectEdge)preferredEdge;
+
+-(NSArray *)itemArray;
+-(NSInteger)numberOfItems;
+
+-(NSMenuItem *)itemAtIndex:(NSInteger)index;
+-(NSMenuItem *)itemWithTitle:(NSString *)title;
+-(NSMenuItem *)lastItem;
+
+-(NSInteger)indexOfItem:(NSMenuItem *)item;
+-(NSInteger)indexOfItemWithTitle:(NSString *)title;
+-(NSInteger)indexOfItemWithTag:(NSInteger)tag;
+-(NSInteger)indexOfItemWithRepresentedObject:object;
+-(NSInteger)indexOfItemWithTarget:target andAction:(SEL)action;
+
+-(NSMenuItem *)selectedItem;
+-(NSString *)titleOfSelectedItem;
+-(NSInteger)indexOfSelectedItem;
 
 -(void)setPullsDown:(BOOL)flag;
 -(void)setMenu:(NSMenu *)menu;
+-(void)setAutoenablesItems:(BOOL)value;
 -(void)setPreferredEdge:(NSRectEdge)edge;
 
--(int)indexOfItemWithTitle:(NSString *)title;
--(int)indexOfItemWithTag:(int)tag;
+-(void)addItemWithTitle:(NSString *)title;
+-(void)addItemsWithTitles:(NSArray *)titles;
 
--(NSMenuItem *)selectedItem;
+-(void)removeAllItems;
+-(void)removeItemAtIndex:(NSInteger)index;
+-(void)removeItemWithTitle:(NSString *)title;
 
+-(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index;
+
+-(void)selectItem:(NSMenuItem *)item;
+-(void)selectItemAtIndex:(NSInteger)index;
 -(void)selectItemWithTitle:(NSString *)title;
+-(BOOL)selectItemWithTag:(NSInteger)tag;
 
-- (NSMenuItem *)lastItem;
+-(NSString *)itemTitleAtIndex:(NSInteger)index;
+-(NSArray *)itemTitles;
+
+-(void)synchronizeTitleAndSelectedItem;
+
 @end

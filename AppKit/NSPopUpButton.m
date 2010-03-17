@@ -1,62 +1,65 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>, David Young <daver@geeks.org>
 #import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSObject+BindingSupport.h>
+
+NSString * const NSPopUpButtonWillPopUpNotification=@"NSPopUpButtonWillPopUpNotification";
 
 static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingObservationContext";
 
 @implementation NSPopUpButton
 
 +(Class)cellClass {
-    return [NSPopUpButtonCell class];
+   return [NSPopUpButtonCell class];
 }
 
--(id)initWithFrame:(NSRect)frame pullsDown:(BOOL)pullsDown
-{
-    [super initWithFrame:frame];
-    [self setPullsDown:pullsDown];
-    
-    return self;
+-initWithFrame:(NSRect)frame pullsDown:(BOOL)pullsDown {
+   [super initWithFrame:frame];
+   [self setPullsDown:pullsDown];
+   return self;
 }
 
--(void)dealloc
-{
-	NS_DURING
-	[self removeObserver:self forKeyPath:@"cell.selectedItem"];
-	[self removeObserver:self forKeyPath:@"cell.menu.itemArray"];
-	NS_HANDLER
-	NS_ENDHANDLER
+-(void)dealloc {
+   NS_DURING
+    [self removeObserver:self forKeyPath:@"cell.selectedItem"];
+    [self removeObserver:self forKeyPath:@"cell.menu.itemArray"];
+   NS_HANDLER
+   NS_ENDHANDLER
 	
-	[super dealloc];
+   [super dealloc];
 }
 
--(BOOL)pullsDown
-{
-    return [_cell pullsDown];
+-(BOOL)pullsDown {
+   return [_cell pullsDown];
 }
 
--(NSMenu *)menu
-{
-    return [_cell menu];
+-(NSMenu *)menu {
+   return [_cell menu];
+}
+
+-(BOOL)autoenablesItems {
+   return [_cell autoenablesItems];
+}
+
+-(NSRectEdge)preferredEdge {
+   return [_cell preferredEdge];
 }
 
 -(NSArray *)itemArray {
    return [_cell itemArray];
 }
 
--(int)numberOfItems {
+-(NSInteger)numberOfItems {
    return [_cell numberOfItems];
 }
 
--(NSMenuItem *)itemAtIndex:(int)index {
+-(NSMenuItem *)itemAtIndex:(NSInteger)index {
    return [_cell itemAtIndex:index];
 }
 
@@ -64,12 +67,28 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
    return [_cell itemWithTitle:title];
 }
 
--(int)indexOfItemWithTitle:(NSString *)title {
+-(NSMenuItem *)lastItem {
+   return [_cell lastItem];
+}
+
+-(NSInteger)indexOfItem:(NSMenuItem *)item {
+   return [_cell indexOfItem:item];
+}
+
+-(NSInteger)indexOfItemWithTitle:(NSString *)title {
    return [_cell indexOfItemWithTitle:title];
 }
 
--(int)indexOfItemWithTag:(int)tag {
+-(NSInteger)indexOfItemWithTag:(NSInteger)tag {
    return [_cell indexOfItemWithTag:tag];
+}
+
+-(NSInteger)indexOfItemWithRepresentedObject:object {
+   return [_cell indexOfItemWithRepresentedObject:object];
+}
+
+-(NSInteger)indexOfItemWithTarget:target andAction:(SEL)action {
+   return [_cell indexOfItemWithTarget:target andAction:action];
 }
 
 -(NSMenuItem *)selectedItem {
@@ -80,51 +99,70 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
    return [_cell titleOfSelectedItem];
 }
 
--(int)selectedTag {
+-(NSInteger)selectedTag {
    return [_cell tag];
 }
 
--(int)indexOfSelectedItem {
+-(NSInteger)indexOfSelectedItem {
    return [_cell indexOfSelectedItem];
 }
 
--(void)setPullsDown:(BOOL)flag
-{
-    [_cell setPullsDown:flag];
+-(void)setPullsDown:(BOOL)flag {
+   [_cell setPullsDown:flag];
+   [self setNeedsDisplay:YES];
 }
 
--(void)setMenu:(NSMenu *)menu
-{
-    [_cell setMenu:menu];
+-(void)setMenu:(NSMenu *)menu {
+   [_cell setMenu:menu];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setAutoenablesItems:(BOOL)value {
+   [_cell setAutoenablesItems:value];
+}
+
+-(void)setPreferredEdge:(NSRectEdge)edge {
+   [_cell setPreferredEdge:edge];
 }
 
 -(void)addItemWithTitle:(NSString *)title {
    [_cell addItemWithTitle:title];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)addItemsWithTitles:(NSArray *)titles {
    [_cell addItemsWithTitles:titles];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)removeAllItems {
    [_cell removeAllItems];
-}
-
--(void)removeItemAtIndex:(int)index {
-   [_cell removeItemAtIndex:index];
-}
-
--(void)insertItemWithTitle:(NSString *)title atIndex:(int)index {
-   [_cell insertItemWithTitle:title atIndex:index];
-}
-
--(void)selectItemAtIndex:(int)index {
-   [_cell selectItemAtIndex:index];
    [self setNeedsDisplay:YES];
 }
 
-- (NSMenuItem *)lastItem {
-   return [_cell lastItem];
+-(void)removeItemAtIndex:(NSInteger)index {
+   [_cell removeItemAtIndex:index];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)removeItemWithTitle:(NSString *)title {
+   [_cell removeItemWithTitle:title];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index {
+   [_cell insertItemWithTitle:title atIndex:index];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)selectItem:(NSMenuItem *)item {
+   [_cell selectItem:item];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)selectItemAtIndex:(NSInteger)index {
+   [_cell selectItemAtIndex:index];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)selectItemWithTitle:(NSString *)title {
@@ -132,15 +170,22 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
    [self setNeedsDisplay:YES];
 }
 
--(BOOL)selectItemWithTag:(int)tag {
-   int index = [self indexOfItemWithTag:tag];
-   if (index >= 0)
-   {
-      [self selectItemAtIndex:index];
-      return YES;
-   }
-   else
-      return NO;
+-(BOOL)selectItemWithTag:(NSInteger)tag {
+   [self setNeedsDisplay:YES];
+   return [_cell selectItemWithTag:tag];
+}
+
+-(NSString *)itemTitleAtIndex:(NSInteger)index {
+   return [_cell itemTitleAtIndex:index];
+}
+
+-(NSArray *)itemTitles {
+   return [_cell itemTitles];
+}
+
+-(void)synchronizeTitleAndSelectedItem {
+   [_cell synchronizeTitleAndSelectedItem];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)mouseDown:(NSEvent *)event {
@@ -234,11 +279,11 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 }
 
 
--(int)_selectedTag {
+-(NSInteger)_selectedTag {
    return [[_cell selectedItem] tag];
 }
 
--(void)_setSelectedTag:(int)tag {
+-(void)_setSelectedTag:(NSInteger)tag {
    int index = [_cell indexOfItemWithTag:tag];
    
    if (index >= 0)

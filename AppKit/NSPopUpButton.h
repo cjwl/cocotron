@@ -9,40 +9,56 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSButton.h>
 #import <AppKit/NSMenuItem.h>
 
+APPKIT_EXPORT NSString * const NSPopUpButtonWillPopUpNotification;
+
 @interface NSPopUpButton : NSButton
 
--(id)initWithFrame:(NSRect)frame pullsDown:(BOOL)pullsDown;
+-initWithFrame:(NSRect)frame pullsDown:(BOOL)pullsDown;
 
 -(BOOL)pullsDown;
 -(NSMenu *)menu;
+-(BOOL)autoenablesItems;
+-(NSRectEdge)preferredEdge;
+
 -(NSArray *)itemArray;
--(int)numberOfItems;
+-(NSInteger)numberOfItems;
 
--(NSMenuItem *)itemAtIndex:(int)index;
+-(NSMenuItem *)itemAtIndex:(NSInteger)index;
 -(NSMenuItem *)itemWithTitle:(NSString *)title;
+-(NSMenuItem *)lastItem;
 
--(int)indexOfItemWithTitle:(NSString *)title;
--(int)indexOfItemWithTag:(int)tag;
+-(NSInteger)indexOfItem:(NSMenuItem *)item;
+-(NSInteger)indexOfItemWithTitle:(NSString *)title;
+-(NSInteger)indexOfItemWithTag:(NSInteger)tag;
+-(NSInteger)indexOfItemWithRepresentedObject:object;
+-(NSInteger)indexOfItemWithTarget:target andAction:(SEL)action;
 
 -(NSMenuItem *)selectedItem;
 -(NSString *)titleOfSelectedItem;
--(int)indexOfSelectedItem;
+-(NSInteger)indexOfSelectedItem;
 
 -(void)setPullsDown:(BOOL)flag;
 -(void)setMenu:(NSMenu *)menu;
+-(void)setAutoenablesItems:(BOOL)value;
+-(void)setPreferredEdge:(NSRectEdge)edge;
 
 -(void)addItemWithTitle:(NSString *)title;
 -(void)addItemsWithTitles:(NSArray *)titles;
 
 -(void)removeAllItems;
--(void)removeItemAtIndex:(int)index;
+-(void)removeItemAtIndex:(NSInteger)index;
+-(void)removeItemWithTitle:(NSString *)title;
 
--(void)insertItemWithTitle:(NSString *)title atIndex:(int)index;
+-(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index;
 
--(void)selectItemAtIndex:(int)index;
+-(void)selectItem:(NSMenuItem *)item;
+-(void)selectItemAtIndex:(NSInteger)index;
 -(void)selectItemWithTitle:(NSString *)title;
--(BOOL)selectItemWithTag:(int)tag;
+-(BOOL)selectItemWithTag:(NSInteger)tag;
 
-- (NSMenuItem *)lastItem;
+-(NSString *)itemTitleAtIndex:(NSInteger)index;
+-(NSArray *)itemTitles;
+
+-(void)synchronizeTitleAndSelectedItem;
 
 @end
