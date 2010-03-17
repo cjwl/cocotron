@@ -123,6 +123,7 @@ typedef enum {
 -(NSInteger)numberOfRows;
 -(NSUInteger)numberOfColumns;
 -(NSArray *)tableColumns;
+-(NSInteger)columnWithIdentifier:(id)identifier;
 -(NSTableColumn *)tableColumnWithIdentifier:identifier;
 
 -(NSRect)rectOfRow:(NSInteger)row;
@@ -161,6 +162,7 @@ typedef enum {
 
 -(void)addTableColumn:(NSTableColumn *)column;
 -(void)removeTableColumn:(NSTableColumn *)column;
+-(void)moveColumn:(NSInteger)columnIndex toColumn:(NSInteger)newIndex;
 
 -(int)editedRow;
 -(int)editedColumn;

@@ -297,6 +297,21 @@ const int NSTableViewDefaultRowHeight=16.;
    return _tableColumns;
 }
 
+-(NSInteger)columnWithIdentifier:(id)identifier {
+    NSEnumerator *tableColumnEnumerator = [_tableColumns objectEnumerator];
+    NSTableColumn *column;
+	
+	int idx = 0;
+    while ((column = [tableColumnEnumerator nextObject])!=nil) {
+        if ([[column identifier] isEqual:identifier])
+            return idx;
+		
+		idx++;
+	}
+	
+    return -1;
+}
+
 -(NSTableColumn *)tableColumnWithIdentifier:identifier {
     NSEnumerator *tableColumnEnumerator = [_tableColumns objectEnumerator];
     NSTableColumn *column;
@@ -623,6 +638,10 @@ static float rowHeightAtIndex(NSTableView *self,int index){
     [_tableColumns removeObject:column];
     [self reloadData];
     [_headerView setNeedsDisplay:YES];
+}
+
+-(void)moveColumn:(NSInteger)columnIndex toColumn:(NSInteger)newIndex {
+	NSUnimplementedMethod();
 }
 
 -(int)editedRow {
