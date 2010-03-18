@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSRaise.h>
 #import <objc/message.h>
+#import "forwarding.h"
 
 BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    struct objc_class *class=object->isa;
@@ -50,6 +51,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 
 +(void)initialize {
+   objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
 }
 
 +(Class)superclass {

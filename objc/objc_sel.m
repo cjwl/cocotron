@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_sel.h"
 #import "ObjCHashTable.h"
 #import "ObjCException.h"
-#import <Foundation/NSZone.h>
+#import "objc_malloc.h"
 #import "objc_class.h"
 #import "objc_cache.h"
 
@@ -51,7 +51,7 @@ SEL sel_getUid(const char *selectorName) {
     result=(SEL)OBJCHashValueForKey(nameToNumber,selectorName);
 
    if(result==NULL){
-    char *copy=NSZoneMalloc(NULL,sizeof(char)*(strlen(selectorName)+1));
+    char *copy=objc_malloc(sizeof(char)*(strlen(selectorName)+1));
 
     strcpy(copy,selectorName);
     result=(SEL)sel_registerNameNoCopy(copy);

@@ -117,6 +117,10 @@ id objc_msgForward(id object,SEL message,...){
     return nil;
    }
 }
+
+void objc_msgForward_stret(void *result,id object,SEL message,...) {
+}
+
 #else
 id objc_msgForward(id object,SEL message,...){
    Class       class=object->isa;
@@ -130,4 +134,9 @@ id objc_msgForward(id object,SEL message,...){
     return nil;
    }
 }
+
+void objc_msgForward_stret(void *result,id object,SEL message,...){
+}
+
+
 #endif

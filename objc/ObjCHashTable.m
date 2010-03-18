@@ -6,14 +6,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "ObjCHashTable.h"
-#import <Foundation/NSZone.h>
+#import "objc_malloc.h"
 
 OBJCHashTable * OBJCCreateHashTable (unsigned capacity) {
-    OBJCHashTable *result=NSZoneCalloc(NULL,1,sizeof(OBJCHashTable));
+    OBJCHashTable *result=objc_calloc(1,sizeof(OBJCHashTable));
 
     result->count=0;
     result->nBuckets=10;
-    result->buckets=NSZoneCalloc(NULL,result->nBuckets,sizeof(OBJCHashBucket *));
+    result->buckets=objc_calloc(result->nBuckets,sizeof(OBJCHashBucket *));
 
     return result;
 }
@@ -35,7 +35,7 @@ void *OBJCHashInsertValueForKey(OBJCHashTable *table, const char *key,void *valu
     OBJCHashBucket **buckets=table->buckets,*next;
 
     table->nBuckets=nBuckets*2;
-    table->buckets= NSZoneCalloc(NULL,table->nBuckets,sizeof(OBJCHashBucket *));
+    table->buckets= objc_calloc(table->nBuckets,sizeof(OBJCHashBucket *));
 
     for(i=0;i<nBuckets;i++)
      for(j=buckets[i];j!=NULL;j=next){
@@ -45,11 +45,11 @@ void *OBJCHashInsertValueForKey(OBJCHashTable *table, const char *key,void *valu
       j->next=table->buckets[newi];
       table->buckets[newi]=j;
      }
-    NSZoneFree(NULL,buckets);
+    objc_free(buckets);
     i=hash%table->nBuckets;
    }
 
-   j=NSZoneMalloc(NULL,sizeof(OBJCHashBucket));
+   j=objc_malloc(sizeof(OBJCHashBucket));
    j->key=key;
    j->value=value;
    j->next=table->buckets[i];

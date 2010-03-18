@@ -1,9 +1,9 @@
 #import <objc/runtime.h>
-#import <Foundation/NSString.h>
 #import <string.h>
 #import <stddef.h>
 #import <stdlib.h>
 #import <ctype.h>
+#import <Foundation/NSObject.h>
 
 const char *property_getAttributes(objc_property_t property){
    // UNIMPLEMENTED

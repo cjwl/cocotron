@@ -8,14 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_class.h"
 #import "objc_sel.h"
 #import "objc_protocol.h"
-#import <Foundation/NSZone.h>
+#import "objc_malloc.h"
 #import "ObjCException.h"
 #import "ObjCModule.h"
 #import <stdio.h>
 #import "objc_cache.h"
 #import <objc/deprecated.h>
 #import <objc/message.h>
-#import <Foundation/NSRaiseException.h>
 
 #ifdef WIN32
 #import <windows.h>
@@ -23,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #ifdef SOLARIS
 #import <stdarg.h>
 #endif
+#import <Foundation/NSRaiseException.h>
 
 #import <pthread.h>
 
@@ -97,7 +97,7 @@ Class objc_getFutureClass(const char *name) {
    }
    if(!ret) {
       // no future class; build one
-      ret=NSZoneCalloc(NULL, 1, sizeof(struct objc_class));
+      ret=objc_calloc( 1, sizeof(struct objc_class));
       ret->name=strdup(name);
       OBJCHashInsertValueForKey(OBJCFutureClassTable(), ret->name, ret);
    }
@@ -301,7 +301,7 @@ static inline void OBJCInitializeCacheEntryOffset(OBJCMethodCacheEntry *entry){
 
 // FIXME, better allocator
 static OBJCMethodCacheEntry *allocateCacheEntry(){
-   OBJCMethodCacheEntry *result=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCacheEntry));
+   OBJCMethodCacheEntry *result=objc_calloc(1,sizeof(OBJCMethodCacheEntry));
    
    OBJCInitializeCacheEntryOffset(result);
    
@@ -650,7 +650,7 @@ static void OBJCCreateCacheForClass(Class class){
    if(class->cache==NULL){
     int i;
     
-    class->cache=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCache));
+    class->cache=objc_calloc(1,sizeof(OBJCMethodCache));
     
     for(i=0;i<OBJCMethodCacheNumberOfEntries;i++){
      OBJCMethodCacheEntry *entry=class->cache->table+i;
@@ -767,12 +767,10 @@ void OBJCInitializeClass(Class class) {
    }
 }
 
-extern id objc_msgForward(id object,SEL message,...);
+void *objc_forwardHandler=NULL;
+void *objc_forwardHandler_stret=NULL;
 
-void *objc_forwardHandler=objc_msgForward;
-void *objc_forwardHandler_stret=objc_msgForward;
-
-void objc_setForwardHandler(void *handler, void *handler_stret){
+void objc_setForwardHandler(void *handler,void *handler_stret){
    objc_forwardHandler=handler;
    objc_forwardHandler_stret=handler_stret;
 }

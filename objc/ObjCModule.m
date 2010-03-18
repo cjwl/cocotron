@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_sel.h"
 #import <objc/Protocol.h>
 #import "ObjCException.h"
-#import <Foundation/NSZone.h>
+#import "objc_malloc.h"
  
 #import <string.h>
 
@@ -42,9 +42,9 @@ static OBJCArray *OBJCObjectFileImageArray(void) {
 
 
 static OBJCObjectFile *OBJCObjectFileWithPath(const char *path) {
-   OBJCObjectFile *result=NSZoneCalloc(NULL,1,sizeof(OBJCObjectFile));
+   OBJCObjectFile *result=objc_calloc(1,sizeof(OBJCObjectFile));
    
-   result->path=NSZoneCalloc(NULL,strlen(path)+1,sizeof(char));
+   result->path=objc_calloc(strlen(path)+1,sizeof(char));
    strcpy(result->path,path);
    result->moduleArray = OBJCArrayNew();
    

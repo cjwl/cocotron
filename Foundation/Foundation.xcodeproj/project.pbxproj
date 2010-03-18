@@ -4381,6 +4381,33 @@
 		FE65B30F1107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
 		FE65B3101107690500439F46 /* NSObservationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE65B2FE1107690500439F46 /* NSObservationInfo.h */; };
 		FE65B3111107690500439F46 /* NSObservationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE65B2FF1107690500439F46 /* NSObservationInfo.m */; };
+		FE6CF871115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF872115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF873115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF874115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF875115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF876115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF877115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF878115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF879115272ED00B6D893 /* debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF870115272ED00B6D893 /* debugHelpers.m */; };
+		FE6CF8A01152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8A11152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8A21152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8A31152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8A41152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8A51152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8A61152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8A71152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8A81152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8A91152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8AA1152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8AB1152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8AC1152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8AD1152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8AE1152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8AF1152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
+		FE6CF8B01152743100B6D893 /* objc_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6CF89E1152743100B6D893 /* objc_malloc.h */; };
+		FE6CF8B11152743100B6D893 /* objc_malloc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6CF89F1152743100B6D893 /* objc_malloc.m */; };
 		FE6DC2590BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6DC25A0BA902710082AC66 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC2560BA902710082AC66 /* NSAffineTransform.m */; };
 		FE6DC25B0BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7185,6 +7212,9 @@
 		FE651A870FBC844C00464BFD /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE65B2FE1107690500439F46 /* NSObservationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationInfo.h; sourceTree = "<group>"; };
 		FE65B2FF1107690500439F46 /* NSObservationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObservationInfo.m; sourceTree = "<group>"; };
+		FE6CF870115272ED00B6D893 /* debugHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = debugHelpers.m; sourceTree = "<group>"; };
+		FE6CF89E1152743100B6D893 /* objc_malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_malloc.h; sourceTree = "<group>"; };
+		FE6CF89F1152743100B6D893 /* objc_malloc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_malloc.m; sourceTree = "<group>"; };
 		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE74776D0BAC4E9000829F4F /* NSDecimal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimal.h; sourceTree = "<group>"; };
@@ -7781,6 +7811,7 @@
 		6E2803310974790A00EC542B /* NSException */ = {
 			isa = PBXGroup;
 			children = (
+				FE6CF870115272ED00B6D893 /* debugHelpers.m */,
 				FEA317850FD5843900F480D4 /* NSRaiseException.h */,
 				6E2803BA09747B6200EC542B /* NSException.h */,
 				6E2803BB09747B6200EC542B /* NSException.m */,
@@ -8169,6 +8200,8 @@
 		6E28034609747A2500EC542B /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				FE6CF89E1152743100B6D893 /* objc_malloc.h */,
+				FE6CF89F1152743100B6D893 /* objc_malloc.m */,
 				FE35CAEC0B4AB85800FE7AB3 /* objc.m */,
 				FEA36F250C24C57000025A9C /* objc_cache.h */,
 				6E28052909747C8900EC542B /* objc_class.h */,
@@ -8644,11 +8677,11 @@
 		FEB6CC410B4A1922004FADF2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				FEB6CC480B4A1922004FADF2 /* objc.framework */,
 				FEB6CC4A0B4A1922004FADF2 /* objc.framework */,
 				FEB6CC4C0B4A1922004FADF2 /* objc.framework */,
 				FED70AAC0C3B3F5E000CBE5B /* objc.framework */,
 				FED70FCC0C3C0A17000CBE5B /* objc.framework */,
-				FEB6CC480B4A1922004FADF2 /* objc.framework */,
 				FE651AA10FBC84DD00464BFD /* objc.framework */,
 				28D485010FE04DDD00DC03EF /* objc.framework */,
 				15D921E9105E924500171406 /* objc.framework */,
@@ -9152,6 +9185,7 @@
 				FE9C1BA81125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474C112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8AE1152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9478,6 +9512,7 @@
 				FE9C1BA41125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474A112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8AC1152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9804,6 +9839,7 @@
 				FE9C1B941125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4742112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8A41152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10130,6 +10166,7 @@
 				FE9C1B901125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4740112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8A21152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10460,6 +10497,7 @@
 				FE9C1B8C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C473E112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8A01152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10786,6 +10824,7 @@
 				FE9C1BAC1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474E112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8B01152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11113,6 +11152,7 @@
 				FE9C1BA01125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4748112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8AA1152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11440,6 +11480,7 @@
 				FE9C1B981125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4744112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8A61152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11767,6 +11808,7 @@
 				FE9C1B9C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4746112AF7FC0099DAB8 /* CFUID.h in Headers */,
+				FE6CF8A81152743100B6D893 /* objc_malloc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12666,6 +12708,8 @@
 				FE9C1BA91125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BAB1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C474D112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF878115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8AF1152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13028,6 +13072,8 @@
 				FE9C1BA51125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BA71125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C474B112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF877115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8AD1152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13391,6 +13437,8 @@
 				FE9C1B951125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B971125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4743112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF873115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8A51152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13755,6 +13803,8 @@
 				FE9C1B911125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B931125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4741112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF872115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8A31152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14125,6 +14175,8 @@
 				FE9C1B8D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B8F1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C473F112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF871115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8A11152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14489,6 +14541,8 @@
 				FE9C1BAD1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BAF1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C474F112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF879115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8B11152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14856,6 +14910,8 @@
 				FE9C1BA11125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BA31125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4749112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF876115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8AB1152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15224,6 +15280,8 @@
 				FE9C1B991125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B9B1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4745112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF874115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8A71152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15592,6 +15650,8 @@
 				FE9C1B9D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B9F1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4747112AF7FC0099DAB8 /* CFUID.m in Sources */,
+				FE6CF875115272ED00B6D893 /* debugHelpers.m in Sources */,
+				FE6CF8A91152743100B6D893 /* objc_malloc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

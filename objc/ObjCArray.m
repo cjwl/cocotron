@@ -6,11 +6,11 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "ObjCArray.h"
-#import <Foundation/NSZone.h>
+#import "objc_malloc.h"
 #import "ObjCException.h"
 
 OBJCArray *OBJCArrayNew() {
-    OBJCArray *result=NSZoneCalloc(NULL,1,sizeof(OBJCArray));
+    OBJCArray *result=objc_calloc(1,sizeof(OBJCArray));
 
     result->data=NULL;
     result->count=0;
@@ -21,16 +21,16 @@ OBJCArray *OBJCArrayNew() {
 
 void OBJCArrayDealloc(OBJCArray *array) {
    if(array->data!=NULL)
-    NSZoneFree(NULL,array->data);
-   NSZoneFree(NULL,array);
+    objc_free(array->data);
+   objc_free(array);
 }
 
 void OBJCArrayAdd(OBJCArray *array, void *item) {
    if (array->count >= array->size) {
     if (array->data == NULL)
-     array->data = NSZoneCalloc(NULL,1,sizeof(void *));
+     array->data = objc_calloc(1,sizeof(void *));
     else
-     array->data = NSZoneRealloc(NULL,array->data,(array->size*sizeof(void*))+sizeof(void *));
+     array->data = objc_realloc(array->data,(array->size*sizeof(void*))+sizeof(void *));
     array->size++;
    }
     
