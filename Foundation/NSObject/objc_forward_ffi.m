@@ -24,7 +24,7 @@
 #import <ffi.h>
 #endif
 #import <Foundation/NSMethodSignature.h>
-#import <Foundation/ObjCHashTable.h>
+#import "ObjCHashTable.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSInvocation.h>

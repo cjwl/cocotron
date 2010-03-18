@@ -12,6 +12,3 @@ void OBJCLog(const char *format,...);
 void OBJCPartialLog(const char *format,...);
 void OBJCFinishLog(const char *format,...);
 void OBJCRaiseException(const char *name,const char *format,...);
-#ifdef WIN32
-void OBJCRaiseWin32Failure(const char *name,const char *format,...);
-#endif

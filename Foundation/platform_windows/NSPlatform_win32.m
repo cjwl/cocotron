@@ -35,7 +35,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdio.h>
 
 #import <objc/runtime.h>
-#import <Foundation/ObjCModule.h>
 
 NSString *NSPlatformClassName=@"NSPlatform_win32";
 

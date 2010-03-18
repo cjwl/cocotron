@@ -5,17 +5,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <Foundation/objc_class.h>
-#import <Foundation/objc_sel.h>
+#import "objc_class.h"
+#import "objc_sel.h"
 #import "objc_protocol.h"
 #import <Foundation/NSZone.h>
-#import <Foundation/ObjCException.h>
-#import <Foundation/ObjCModule.h>
+#import "ObjCException.h"
+#import "ObjCModule.h"
 #import <stdio.h>
 #import "objc_cache.h"
 #import <objc/deprecated.h>
 #import <objc/message.h>
-#import <Foundation/objc_forward_ffi.h>
 #import <Foundation/NSRaiseException.h>
 
 #ifdef WIN32
@@ -25,7 +24,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdarg.h>
 #endif
 
-#import <Foundation/NSAtomicCompareAndSwap.h>
 #import <pthread.h>
 
 static pthread_mutex_t classTableLock=PTHREAD_MUTEX_INITIALIZER;
@@ -786,11 +784,7 @@ IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super,SEL selector){
    IMP result = class_getMethodImplementation(super->super_class,selector);
 
    if(result==NULL){
-#ifdef HAVE_LIBFFI
-    result=objc_forward_ffi(super->receiver, selector);
-#else
     result=objc_forwardHandler;
-#endif
    }
    return result;
 }
@@ -809,11 +803,7 @@ IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL selector){
    IMP result=class_getMethodImplementation(class,selector);
    
    if(result==NULL){
-#ifdef HAVE_LIBFFI
-    result=objc_forward_ffi(object, selector);
-#else
     result=objc_forwardHandler;
-#endif
    }
    return result;
 }

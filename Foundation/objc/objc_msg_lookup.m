@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/message.h>
 #import "objc_cache.h"
 #import "objc_class.h"
-#import <Foundation/ObjCException.h>
+#import "ObjCException.h"
 
 static id nil_message(id object,SEL message,...){
    return nil;

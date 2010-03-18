@@ -317,7 +317,6 @@
 		15D92035105E918000171406 /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		15D92036105E918000171406 /* NSURLConnectionState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */; };
 		15D92037105E918000171406 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
-		15D92038105E918000171406 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D92039105E918000171406 /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D9203A105E918000171406 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D9203B105E918000171406 /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -627,7 +626,6 @@
 		15D9216D105E918000171406 /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		15D9216E105E918000171406 /* NSURLConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6BC0E2F9BEA0034932A /* NSURLConnectionState.m */; };
 		15D9216F105E918000171406 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
-		15D92170105E918000171406 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
 		15D92171105E918000171406 /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
 		15D92172105E918000171406 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
 		15D92173105E918000171406 /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
@@ -1036,7 +1034,6 @@
 		28D486300FE04E7100DC03EF /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		28D486310FE04E7100DC03EF /* NSURLConnectionState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */; };
 		28D486320FE04E7100DC03EF /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
-		28D486330FE04E7100DC03EF /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D486340FE04E7100DC03EF /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D486350FE04E7100DC03EF /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D486360FE04E7100DC03EF /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1337,7 +1334,6 @@
 		28D4875F0FE04E7100DC03EF /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		28D487600FE04E7100DC03EF /* NSURLConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6BC0E2F9BEA0034932A /* NSURLConnectionState.m */; };
 		28D487610FE04E7100DC03EF /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
-		28D487620FE04E7100DC03EF /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
 		28D487630FE04E7100DC03EF /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
 		28D487640FE04E7100DC03EF /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
 		28D487650FE04E7100DC03EF /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
@@ -1892,10 +1888,10 @@
 		6EA0494209E57D5F0067589C /* ObjCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052709747C8900EC542B /* ObjCArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0494309E57D5F0067589C /* objc_class.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052909747C8900EC542B /* objc_class.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0494409E57D5F0067589C /* ObjCDynamicModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052B09747C8900EC542B /* ObjCDynamicModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6EA0494509E57D5F0067589C /* ObjCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052D09747C8900EC542B /* ObjCException.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0494609E57D5F0067589C /* ObjCHashTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052F09747C8900EC542B /* ObjCHashTable.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0494809E57D5F0067589C /* ObjCModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053309747C8900EC542B /* ObjCModule.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0494909E57D5F0067589C /* objc_sel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053509747C8900EC542B /* objc_sel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6EA0494509E57D5F0067589C /* ObjCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052D09747C8900EC542B /* ObjCException.h */; settings = {ATTRIBUTES = (); }; };
+		6EA0494609E57D5F0067589C /* ObjCHashTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052F09747C8900EC542B /* ObjCHashTable.h */; settings = {ATTRIBUTES = (); }; };
+		6EA0494809E57D5F0067589C /* ObjCModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053309747C8900EC542B /* ObjCModule.h */; settings = {ATTRIBUTES = (); }; };
+		6EA0494909E57D5F0067589C /* objc_sel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053509747C8900EC542B /* objc_sel.h */; settings = {ATTRIBUTES = (); }; };
 		6EA0496209E57D5F0067589C /* NSBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F309747D5800EC542B /* NSBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0496309E57D5F0067589C /* NSByteOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F509747D5800EC542B /* NSByteOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0496409E57D5F0067589C /* NSCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F709747D5800EC542B /* NSCoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2178,16 +2174,6 @@
 		C851D8740E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
 		C851D8750E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
 		C851D8760E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
-		C851D87A0E40E428001DAB69 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C851D87B0E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
-		C851D87C0E40E428001DAB69 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C851D87D0E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
-		C851D87E0E40E428001DAB69 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C851D87F0E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
-		C851D8800E40E428001DAB69 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C851D8810E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
-		C851D8820E40E428001DAB69 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C851D8830E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
 		C89B47370F5C6A4B0070120D /* NSCancelInputSource_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */; };
 		C89B47380F5C6A4B0070120D /* NSCancelInputSource_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = C89B47360F5C6A4B0070120D /* NSCancelInputSource_win32.m */; };
 		C89B473F0F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C89B473D0F5C6AB50070120D /* NSCancelInputSource_posix.h */; };
@@ -2340,13 +2326,13 @@
 		FE01A6080C5D9B6900AEA51A /* NSValue_pointer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28051209747C7300EC542B /* NSValue_pointer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A6090C5D9B6900AEA51A /* NSValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28051409747C7300EC542B /* NSValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A60A0C5D9B6900AEA51A /* NSZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052109747C7E00EC542B /* NSZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A60B0C5D9B6900AEA51A /* ObjCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052709747C8900EC542B /* ObjCArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A60C0C5D9B6900AEA51A /* objc_class.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052909747C8900EC542B /* objc_class.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A60D0C5D9B6900AEA51A /* ObjCDynamicModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052B09747C8900EC542B /* ObjCDynamicModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A60E0C5D9B6900AEA51A /* ObjCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052D09747C8900EC542B /* ObjCException.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A60F0C5D9B6900AEA51A /* ObjCHashTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052F09747C8900EC542B /* ObjCHashTable.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A6100C5D9B6900AEA51A /* ObjCModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053309747C8900EC542B /* ObjCModule.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A6110C5D9B6900AEA51A /* objc_sel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053509747C8900EC542B /* objc_sel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A60B0C5D9B6900AEA51A /* ObjCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052709747C8900EC542B /* ObjCArray.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A60C0C5D9B6900AEA51A /* objc_class.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052909747C8900EC542B /* objc_class.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A60D0C5D9B6900AEA51A /* ObjCDynamicModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052B09747C8900EC542B /* ObjCDynamicModule.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A60E0C5D9B6900AEA51A /* ObjCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052D09747C8900EC542B /* ObjCException.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A60F0C5D9B6900AEA51A /* ObjCHashTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28052F09747C8900EC542B /* ObjCHashTable.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A6100C5D9B6900AEA51A /* ObjCModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053309747C8900EC542B /* ObjCModule.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A6110C5D9B6900AEA51A /* objc_sel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053509747C8900EC542B /* objc_sel.h */; settings = {ATTRIBUTES = (); }; };
 		FE01A6160C5D9B6900AEA51A /* NSFileHandle_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805A309747D0400EC542B /* NSFileHandle_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A6170C5D9B6900AEA51A /* NSFileManager_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805A509747D0400EC542B /* NSFileManager_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A6180C5D9B6900AEA51A /* NSHandleMonitor_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805A709747D0400EC542B /* NSHandleMonitor_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3165,7 +3151,6 @@
 		FE30A16D10C6ED6F00A1BF7F /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		FE30A16E10C6ED6F00A1BF7F /* NSURLConnectionState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */; };
 		FE30A16F10C6ED6F00A1BF7F /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
-		FE30A17010C6ED6F00A1BF7F /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A17110C6ED6F00A1BF7F /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A17210C6ED6F00A1BF7F /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A17310C6ED6F00A1BF7F /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3480,7 +3465,6 @@
 		FE30A2AC10C6ED6F00A1BF7F /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		FE30A2AD10C6ED6F00A1BF7F /* NSURLConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6BC0E2F9BEA0034932A /* NSURLConnectionState.m */; };
 		FE30A2AE10C6ED6F00A1BF7F /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
-		FE30A2AF10C6ED6F00A1BF7F /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
 		FE30A2B010C6ED6F00A1BF7F /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
 		FE30A2B110C6ED6F00A1BF7F /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
 		FE30A2B210C6ED6F00A1BF7F /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
@@ -4050,7 +4034,6 @@
 		FE6519320FBC844C00464BFD /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		FE6519330FBC844C00464BFD /* NSURLConnectionState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */; };
 		FE6519340FBC844C00464BFD /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
-		FE6519350FBC844C00464BFD /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6519360FBC844C00464BFD /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6519370FBC844C00464BFD /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; };
 		FE6519380FBC844C00464BFD /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -4352,7 +4335,6 @@
 		FE651A630FBC844C00464BFD /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		FE651A640FBC844C00464BFD /* NSURLConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6BC0E2F9BEA0034932A /* NSURLConnectionState.m */; };
 		FE651A650FBC844C00464BFD /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
-		FE651A660FBC844C00464BFD /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
 		FE651A670FBC844C00464BFD /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
 		FE651A680FBC844C00464BFD /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
 		FE651A690FBC844C00464BFD /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
@@ -7099,8 +7081,6 @@
 		C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSynchronization.m; sourceTree = "<group>"; };
 		C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListWriter_xml1.m; sourceTree = "<group>"; };
 		C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_xml1.h; sourceTree = "<group>"; };
-		C851D8780E40E428001DAB69 /* objc_forward_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_forward_ffi.h; sourceTree = "<group>"; };
-		C851D8790E40E428001DAB69 /* objc_forward_ffi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_forward_ffi.m; sourceTree = "<group>"; };
 		C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCancelInputSource_win32.h; sourceTree = "<group>"; };
 		C89B47360F5C6A4B0070120D /* NSCancelInputSource_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCancelInputSource_win32.m; sourceTree = "<group>"; };
 		C89B473D0F5C6AB50070120D /* NSCancelInputSource_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCancelInputSource_posix.h; path = platform_posix/NSCancelInputSource_posix.h; sourceTree = "<group>"; };
@@ -7908,11 +7888,10 @@
 		6E2803380974795100EC542B /* NSObject */ = {
 			isa = PBXGroup;
 			children = (
+				151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */,
 				FE3B5D390FF3A6E6005E7605 /* platform_linux */,
 				FE3B5D380FF3A6DA005E7605 /* platform_windows */,
 				FE3B5D350FF3A6CF005E7605 /* platform_solaris */,
-				C851D8780E40E428001DAB69 /* objc_forward_ffi.h */,
-				C851D8790E40E428001DAB69 /* objc_forward_ffi.m */,
 				FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */,
 				FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */,
 				6E28043809747BBE00EC542B /* NSObject.h */,
@@ -8355,7 +8334,6 @@
 			isa = PBXGroup;
 			children = (
 				FED216020FA14BAA00B74EFE /* objc-msgsend.s */,
-				151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */,
 			);
 			path = platform_linux;
 			sourceTree = "<group>";
@@ -9137,7 +9115,6 @@
 				15D92035105E918000171406 /* NSURLProtocol_http.h in Headers */,
 				15D92036105E918000171406 /* NSURLConnectionState.h in Headers */,
 				15D92037105E918000171406 /* NSPropertyListWriter_xml1.h in Headers */,
-				15D92038105E918000171406 /* objc_forward_ffi.h in Headers */,
 				15D92039105E918000171406 /* objc_debugHelpers.h in Headers */,
 				15D9203A105E918000171406 /* NSConditionLock_posix.h in Headers */,
 				15D9203B105E918000171406 /* NSNetServices.h in Headers */,
@@ -9464,7 +9441,6 @@
 				28D486300FE04E7100DC03EF /* NSURLProtocol_http.h in Headers */,
 				28D486310FE04E7100DC03EF /* NSURLConnectionState.h in Headers */,
 				28D486320FE04E7100DC03EF /* NSPropertyListWriter_xml1.h in Headers */,
-				28D486330FE04E7100DC03EF /* objc_forward_ffi.h in Headers */,
 				28D486340FE04E7100DC03EF /* objc_debugHelpers.h in Headers */,
 				28D486350FE04E7100DC03EF /* NSConditionLock_posix.h in Headers */,
 				28D486360FE04E7100DC03EF /* NSNetServices.h in Headers */,
@@ -9791,7 +9767,6 @@
 				FEC9F6B20E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6C10E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8720E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
-				C851D87E0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BD90E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 				FEE7D30D0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
@@ -10118,7 +10093,6 @@
 				FEC9F6B00E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6BF0E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8760E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
-				C851D8820E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDF0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E080EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 				FEE7D30B0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
@@ -10449,7 +10423,6 @@
 				FEC9F6AE0E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6BD0E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8740E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
-				C851D8800E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDD0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C970100EBDBC63009CE9BC /* NSConditionLock_win32.h in Headers */,
 				FEE7D3130ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
@@ -10774,7 +10747,6 @@
 				FE30A16D10C6ED6F00A1BF7F /* NSURLProtocol_http.h in Headers */,
 				FE30A16E10C6ED6F00A1BF7F /* NSURLConnectionState.h in Headers */,
 				FE30A16F10C6ED6F00A1BF7F /* NSPropertyListWriter_xml1.h in Headers */,
-				FE30A17010C6ED6F00A1BF7F /* objc_forward_ffi.h in Headers */,
 				FE30A17110C6ED6F00A1BF7F /* objc_debugHelpers.h in Headers */,
 				FE30A17210C6ED6F00A1BF7F /* NSConditionLock_posix.h in Headers */,
 				FE30A17310C6ED6F00A1BF7F /* NSNetServices.h in Headers */,
@@ -11103,7 +11075,6 @@
 				FE6519320FBC844C00464BFD /* NSURLProtocol_http.h in Headers */,
 				FE6519330FBC844C00464BFD /* NSURLConnectionState.h in Headers */,
 				FE6519340FBC844C00464BFD /* NSPropertyListWriter_xml1.h in Headers */,
-				FE6519350FBC844C00464BFD /* objc_forward_ffi.h in Headers */,
 				FE6519360FBC844C00464BFD /* objc_debugHelpers.h in Headers */,
 				FE6519370FBC844C00464BFD /* NSConditionLock_posix.h in Headers */,
 				FE6519380FBC844C00464BFD /* NSNetServices.h in Headers */,
@@ -11431,7 +11402,6 @@
 				FEC9F6B40E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6C30E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D86E0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
-				C851D87A0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BD70E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E060EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 				FEE7D30F0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
@@ -11759,7 +11729,6 @@
 				FEC9F6B60E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6C50E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8700E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
-				C851D87C0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDB0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E040EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 				FEE7D3110ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
@@ -12625,7 +12594,6 @@
 				15D9216D105E918000171406 /* NSURLProtocol_http.m in Sources */,
 				15D9216E105E918000171406 /* NSURLConnectionState.m in Sources */,
 				15D9216F105E918000171406 /* NSPropertyListWriter_xml1.m in Sources */,
-				15D92170105E918000171406 /* objc_forward_ffi.m in Sources */,
 				15D92171105E918000171406 /* objc_debugHelpers.m in Sources */,
 				15D92172105E918000171406 /* NSConditionLock_posix.m in Sources */,
 				15D92173105E918000171406 /* NSNetServices.m in Sources */,
@@ -12989,7 +12957,6 @@
 				28D4875F0FE04E7100DC03EF /* NSURLProtocol_http.m in Sources */,
 				28D487600FE04E7100DC03EF /* NSURLConnectionState.m in Sources */,
 				28D487610FE04E7100DC03EF /* NSPropertyListWriter_xml1.m in Sources */,
-				28D487620FE04E7100DC03EF /* objc_forward_ffi.m in Sources */,
 				28D487630FE04E7100DC03EF /* objc_debugHelpers.m in Sources */,
 				28D487640FE04E7100DC03EF /* NSConditionLock_posix.m in Sources */,
 				28D487650FE04E7100DC03EF /* NSNetServices.m in Sources */,
@@ -13353,7 +13320,6 @@
 				FEC9F6B30E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C20E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D8710E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
-				C851D87F0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BDA0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E030EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D30E0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
@@ -13717,7 +13683,6 @@
 				FEC9F6B10E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C00E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D8750E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
-				C851D8830E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BE00E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E090EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D30C0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
@@ -14086,7 +14051,6 @@
 				FEC9F6AF0E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6BE0E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D8730E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
-				C851D8810E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */,
 				C8B53BDE0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C970110EBDBC63009CE9BC /* NSConditionLock_win32.m in Sources */,
@@ -14450,7 +14414,6 @@
 				FE30A2AC10C6ED6F00A1BF7F /* NSURLProtocol_http.m in Sources */,
 				FE30A2AD10C6ED6F00A1BF7F /* NSURLConnectionState.m in Sources */,
 				FE30A2AE10C6ED6F00A1BF7F /* NSPropertyListWriter_xml1.m in Sources */,
-				FE30A2AF10C6ED6F00A1BF7F /* objc_forward_ffi.m in Sources */,
 				FE30A2B010C6ED6F00A1BF7F /* objc_debugHelpers.m in Sources */,
 				FE30A2B110C6ED6F00A1BF7F /* NSConditionLock_posix.m in Sources */,
 				FE30A2B210C6ED6F00A1BF7F /* NSNetServices.m in Sources */,
@@ -14818,7 +14781,6 @@
 				FE651A630FBC844C00464BFD /* NSURLProtocol_http.m in Sources */,
 				FE651A640FBC844C00464BFD /* NSURLConnectionState.m in Sources */,
 				FE651A650FBC844C00464BFD /* NSPropertyListWriter_xml1.m in Sources */,
-				FE651A660FBC844C00464BFD /* objc_forward_ffi.m in Sources */,
 				FE651A670FBC844C00464BFD /* objc_debugHelpers.m in Sources */,
 				FE651A680FBC844C00464BFD /* NSConditionLock_posix.m in Sources */,
 				FE651A690FBC844C00464BFD /* NSNetServices.m in Sources */,
@@ -15186,7 +15148,6 @@
 				FEC9F6B50E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C40E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D86D0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
-				C851D87B0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BD80E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E070EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D3100ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
@@ -15556,7 +15517,6 @@
 				FEC9F6B70E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C60E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D86F0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
-				C851D87D0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BDC0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E050EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D3120ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,

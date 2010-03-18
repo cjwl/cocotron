@@ -1,7 +1,7 @@
 #import <objc/runtime.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSInvocation.h>
-#import <Foundation/ObjCException.h>
+#import <stdio.h>
 
 #define NSABISizeofRegisterReturn 8
 #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
@@ -15,6 +15,18 @@
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
+
+static void OBJCRaiseException(const char *name,const char *format,...) {
+   va_list arguments;
+
+   va_start(arguments,format);
+
+   fprintf(stderr,"ObjC:%s:",name);
+   vfprintf(stderr,format,arguments);
+   fprintf(stderr,"\n");
+   fflush(stderr);
+   va_end(arguments);
+}
 
 id NSObjCGetFastForwardTarget(id object,SEL selector){
    id check=nil;

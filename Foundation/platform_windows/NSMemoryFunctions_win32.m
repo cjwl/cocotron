@@ -151,35 +151,6 @@ NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *a
 }
 
 
-static void *allocation=NULL;
-static long used=0;
-const long maxSize=64*1024;
-
-/* This must be protected by some kind of lock.
- It is only called from _closure in objc_forward_ffi.m */
-void *_NSClosureAlloc(NSUInteger size)
-{
-   if(!allocation ||
-      used+size>maxSize)
-   {
-      allocation=VirtualAlloc(NULL, maxSize, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-      used=0;
-   }
-   else
-   {
-      VirtualProtect(allocation, maxSize, PAGE_EXECUTE_READWRITE, NULL);
-   }
-   
-   void *ret=allocation+used;
-   used+=size;
-   
-   return ret;
-}
-
-void _NSClosureProtect(void* closure, NSUInteger size)
-{
-   VirtualProtect(allocation, maxSize, PAGE_EXECUTE_READ, NULL);
-}
 
 void FoundationThreadCleanup()
 {

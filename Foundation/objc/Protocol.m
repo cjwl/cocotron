@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/Protocol.h>
 #import "objc_protocol.h"
 
-#import <Foundation/ObjCHashTable.h>
-#import <Foundation/objc_class.h>
-#import <Foundation/objc_sel.h>
-#import <Foundation/ObjCException.h>
+#import "ObjCHashTable.h"
+#import "objc_class.h"
+#import "objc_sel.h"
+#import "ObjCException.h"
 
 #define PROTOCOL_CLASS "Protocol"
 

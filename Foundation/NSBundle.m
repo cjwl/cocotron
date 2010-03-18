@@ -18,9 +18,143 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
-#import <Foundation/ObjCDynamicModule.h>
 #import <objc/runtime.h>
 #import <Foundation/NSRaiseException.h>
+
+#import <objc/objc.h>
+#import <stdio.h>
+
+typedef void *NSModuleHandle;
+
+OBJC_EXPORT NSModuleHandle NSLoadModule(const char *path);
+OBJC_EXPORT BOOL NSUnloadModule(NSModuleHandle handle);
+OBJC_EXPORT const char *NSLastModuleError(void);
+OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
+
+#ifdef WIN32
+#import <windows.h>
+#else
+#import <dlfcn.h>
+#import <sys/param.h>
+#import <string.h>
+#import <stdlib.h>
+#import <unistd.h>
+#endif
+
+#ifdef WIN32
+
+static char *lastErrorString(DWORD error) {
+    LPVOID lpMsgBuf;
+
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+                  FORMAT_MESSAGE_FROM_SYSTEM |
+                  FORMAT_MESSAGE_IGNORE_INSERTS,
+                  NULL,
+                  error,
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),	// Default language
+                  (LPTSTR) &lpMsgBuf,
+                  0,
+                  NULL);
+
+    return lpMsgBuf;
+}
+
+void OBJCRaiseWin32Failure(const char *name,const char *format,...) {
+   DWORD   lastError=GetLastError();
+   va_list arguments;
+
+   va_start(arguments,format);
+
+   fprintf(stderr,"ObjC:Win32:%ld,%s:",lastError,name);
+   vfprintf(stderr,format,arguments);
+   fprintf(stderr,"...\n");
+   fflush(stderr);
+
+   fprintf(stderr,"ObjC:Win32: ... %s\n",lastErrorString(lastError));
+   fflush(stderr);
+   va_end(arguments);
+}
+
+// only frameworks need to call this from DllMain, NSLoadModule will do it for loaded object files (i.e. bundles)
+int OBJCRegisterDLL(HINSTANCE handle){
+   char path[MAX_PATH+1];
+
+   if(!GetModuleFileName(handle,path,MAX_PATH))
+    OBJCRaiseWin32Failure("OBJCModuleFailed","OBJCInitializeModule, GetModuleFileName failed");
+   else
+    OBJCLinkQueuedModulesToObjectFileWithPath(path);
+
+   return 1;
+}
+
+NSModuleHandle NSLoadModule(const char *path) {
+   NSModuleHandle handle;
+   
+   OBJCResetModuleQueue();
+   
+   handle=LoadLibrary(path);
+
+   if(handle!=NULL)
+    OBJCRegisterDLL(handle);
+   
+   return handle;
+}
+#else
+
+NSModuleHandle NSLoadModule(const char *path) {
+   NSModuleHandle handle;
+
+   // dlopen doesn't accept partial paths.
+   if (path[0] != '/' && path[0] != '.') {
+      char buf[MAXPATHLEN];
+
+      if (getcwd(buf, MAXPATHLEN) != NULL) {
+          strncat(buf, "/", MAXPATHLEN);
+          strncat(buf, path, MAXPATHLEN);
+          path = buf;
+      }
+      else {
+          NSCLog("NSLoadModule: cannot find cwd and relative path specified");
+          return NULL;
+      }
+   }
+
+   handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
+   if (NSLastModuleError() != NULL){
+       NSCLog(NSLastModuleError());
+       handle = NULL;
+   }
+
+   return handle;
+}
+#endif
+
+BOOL NSUnloadModule(NSModuleHandle handle) {
+#ifdef WIN32
+   return NO;
+#else
+   if (dlclose(handle))
+       return NO;
+
+   return YES;
+#endif
+}
+
+const char *NSLastModuleError(void) {
+#ifdef WIN32
+   return NULL;
+#else
+   return dlerror();
+#endif
+}
+
+void *NSSymbolInModule(NSModuleHandle handle, const char *symbol) {
+#ifdef WIN32
+   return NULL;
+#else
+   return dlsym(handle, symbol);
+#endif
+}
 
 NSString * const NSBundleDidLoadNotification=@"NSBundleDidLoadNotification";
 NSString * const NSLoadedClasses=@"NSLoadedClasses";

@@ -16,10 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 
-@interface NSInvocation (FFICalling)
--(void)_ffiInvokeWithTarget:target;
-@end
-
 @implementation NSInvocation
 
 -(void)buildFrame {
@@ -318,13 +314,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
    [self invokeWithTarget:[self target]];
 }
 
--(void)invokeWithTarget:target {
-	if([self respondsToSelector:@selector(_ffiInvokeWithTarget:)])
-	{
-		[self _ffiInvokeWithTarget:target];
-		return;
-	}
-	
+-(void)invokeWithTarget:target {	
    const char *returnType=[_signature methodReturnType];
    void *msgSendv=objc_msgSendv;
 

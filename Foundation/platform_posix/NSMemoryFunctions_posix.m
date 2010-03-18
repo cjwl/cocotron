@@ -113,14 +113,3 @@ NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg) {
 	pthread_create(&thread, NULL, func, arg);
 	return (NSUInteger)thread;
 }
-
-/* This will fail with W^X. See win32 implementation for how to get this running. */
-
-void *_NSClosureAlloc(unsigned size)
-{
-   return malloc(size);
-}
-
-void _NSClosureProtect(void* closure, unsigned size)
-{
-}
