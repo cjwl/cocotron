@@ -322,21 +322,21 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
    [delayed perform];
 }
 
-+(void)object:object performSelector:(SEL)selector withObject:argument
-            afterDelay:(NSTimeInterval)delay {
-   NSDelayedPerform *delayed=[NSDelayedPerform delayedPerformWithObject:object selector:selector
-     argument:argument];
-   NSTimer          *timer;
-
-   timer=[NSTimer scheduledTimerWithTimeInterval:delay
-    target:[NSObject class] selector:@selector(_delayedPerform:)
-    userInfo:delayed repeats:NO];
++(void)object:object performSelector:(SEL)selector withObject:argument afterDelay:(NSTimeInterval)delay inModes:(NSArray *)modes {
+   NSDelayedPerform *delayed=[NSDelayedPerform delayedPerformWithObject:object selector:selector argument:argument];
+   NSTimer          *timer=[NSTimer timerWithTimeInterval:delay target:[NSObject class] selector:@selector(_delayedPerform:) userInfo:delayed repeats:NO];
+   NSInteger         i,count=[modes count];
+   
+   for(i=0;i<count;i++)
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:[modes objectAtIndex:i]];
 }
 
--(void)performSelector:(SEL)selector withObject:argument
-            afterDelay:(NSTimeInterval)delay {
-   [[self class] object:self performSelector:selector withObject:argument
-      afterDelay:delay];
+-(void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay {
+   [[self class] object:self performSelector:selector withObject:object afterDelay:delay inModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+}
+
+-(void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay inModes:(NSArray *)modes {
+   [[self class] object:self performSelector:selector withObject:object afterDelay:delay inModes:modes];
 }
 
 @end

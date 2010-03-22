@@ -50,8 +50,8 @@ FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
 
 @interface NSObject(NSRunLoop_delayedPerform)
 
--(void)performSelector:(SEL)selector withObject:object
-  afterDelay:(NSTimeInterval)delay;
+-(void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay;
+-(void)performSelector:(SEL)selector withObject:object afterDelay:(NSTimeInterval)delay inModes:(NSArray *)modes;
 
 +(void)cancelPreviousPerformRequestsWithTarget:target selector:(SEL)selector object:object;
 +(void)cancelPreviousPerformRequestsWithTarget:target;
