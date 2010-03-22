@@ -62,3 +62,20 @@ BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc) {
 
    return function(dc,hglrc);
 }
+
+PROC  opengl_wglGetProcAddress(LPCSTR name){
+   typedef WINGDIAPI PROC WINAPI (*ftype)(LPCSTR name);
+   static ftype                    function=NULL;
+
+   if(function==NULL){
+    HANDLE library=LoadLibrary("OPENGL32");
+    
+    function=(ftype)GetProcAddress(library,"wglGetProcAddress");
+   }
+   if(function==NULL)
+    return NULL;
+
+   return function(name);
+}
+
+

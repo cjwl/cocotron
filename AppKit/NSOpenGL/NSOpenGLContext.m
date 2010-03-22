@@ -91,12 +91,12 @@ static inline void _clearCurrentContext(){
    return _glContext;
 }
 
--(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter {
-   NSUnimplementedMethod();
+-(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter {   
+   CGLGetParameter([self CGLContextObj],parameter,(GLint *)&vals);
 }
 
--(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter {
-   NSUnimplementedMethod();
+-(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter {   
+   CGLSetParameter([self CGLContextObj],parameter,(const GLint *)vals);
 }
 
 -(void)setView:(NSView *)view {

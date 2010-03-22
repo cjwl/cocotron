@@ -301,7 +301,7 @@ static inline void OBJCInitializeCacheEntryOffset(OBJCMethodCacheEntry *entry){
 
 // FIXME, better allocator
 static OBJCMethodCacheEntry *allocateCacheEntry(){
-   OBJCMethodCacheEntry *result=objc_calloc(1,sizeof(OBJCMethodCacheEntry));
+   OBJCMethodCacheEntry *result=objc_malloc(sizeof(OBJCMethodCacheEntry));
    
    OBJCInitializeCacheEntryOffset(result);
    

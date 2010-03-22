@@ -41,6 +41,6 @@ typedef struct {
 
 -initWithInfo:(void *)info bounds:(O2Rect)bounds matrix:(O2AffineTransform)matrix xstep:(O2Float)xstep ystep:(O2Float)ystep tiling:(O2PatternTiling)tiling isColored:(BOOL)isColored callbacks:(const O2PatternCallbacks *)callbacks;
 
--(CGRect)bounds;
+-(O2Rect)bounds;
 -(void)drawInContext:(O2ContextRef)context;
 @end

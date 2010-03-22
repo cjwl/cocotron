@@ -27,6 +27,12 @@
 		A1CC70491005371100DB9974 /* NSTextFieldBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC70411005371100DB9974 /* NSTextFieldBinder.m */; };
 		C81BEA0F0EA6038800478D50 /* O2Context_cairo.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* O2Context_cairo.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C81BEA100EA6038800478D50 /* O2Context_cairo.m in Sources */ = {isa = PBXBuildFile; fileRef = C81BEA0E0EA6038800478D50 /* O2Context_cairo.m */; };
+		C829A6A310FF911400A2306E /* NSGoLeftTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */; };
+		C829A6A410FF911F00A2306E /* NSGoLeftTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */; };
+		C829A6A510FF912000A2306E /* NSGoLeftTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */; };
+		C829A6A610FF912100A2306E /* NSGoLeftTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */; };
+		C829A6A710FF912200A2306E /* NSGoLeftTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */; };
+		C829A6B310FFA2D100A2306E /* NSGoRightTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C829A6B210FFA2D100A2306E /* NSGoRightTemplate.pdf */; };
 		C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C84909380E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */; };
 		C85D91950EE6A806004EBAEA /* NSDictionaryController.h in Headers */ = {isa = PBXBuildFile; fileRef = C85D91930EE6A806004EBAEA /* NSDictionaryController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -4349,6 +4355,8 @@
 		A1CC70411005371100DB9974 /* NSTextFieldBinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldBinder.m; sourceTree = "<group>"; };
 		C81BEA0D0EA6038800478D50 /* O2Context_cairo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_cairo.h; sourceTree = "<group>"; };
 		C81BEA0E0EA6038800478D50 /* O2Context_cairo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_cairo.m; sourceTree = "<group>"; };
+		C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSGoLeftTemplate.pdf; sourceTree = "<group>"; };
+		C829A6B210FFA2D100A2306E /* NSGoRightTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSGoRightTemplate.pdf; sourceTree = "<group>"; };
 		C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultsControllerProxy.h; sourceTree = "<group>"; };
 		C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultsControllerProxy.m; sourceTree = "<group>"; };
 		C85D91930EE6A806004EBAEA /* NSDictionaryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryController.h; sourceTree = "<group>"; };
@@ -5132,6 +5140,8 @@
 		6E2B54E60976075300DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C829A6B210FFA2D100A2306E /* NSGoRightTemplate.pdf */,
+				C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */,
 				FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */,
 				FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */,
 				FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */,
@@ -8103,6 +8113,7 @@
 				C88977040EA0BF3100D0A0A2 /* NSSystemInfoPanel.nib in Resources */,
 				FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
 				FEE36B810F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
+				C829A6A410FF911F00A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8152,6 +8163,7 @@
 				C8A2E56A0F07EA1F0054397C /* NSSystemInfoPanel.nib in Resources */,
 				C8A2E56B0F07EA1F0054397C /* NSImageNameRefreshTemplate.pdf in Resources */,
 				FEE36B820F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
+				C829A6A510FF912000A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8201,6 +8213,8 @@
 				FE8286820D34727900F7489F /* NSSystemInfoPanel.nib in Resources */,
 				FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
 				FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
+				C829A6A310FF911400A2306E /* NSGoLeftTemplate.pdf in Resources */,
+				C829A6B310FFA2D100A2306E /* NSGoRightTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8250,6 +8264,7 @@
 				FE5A8BD910C6F50E005E348A /* NSSystemInfoPanel.nib in Resources */,
 				FE5A8BDA10C6F50E005E348A /* NSImageNameRefreshTemplate.pdf in Resources */,
 				FE5A8BDB10C6F50E005E348A /* NSToolbarOverflowArrow.pdf in Resources */,
+				C829A6A710FF912200A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8299,6 +8314,7 @@
 				FEA316430FD5667D00F480D4 /* NSSystemInfoPanel.nib in Resources */,
 				FEA316440FD5667D00F480D4 /* NSImageNameRefreshTemplate.pdf in Resources */,
 				FEA316450FD5667D00F480D4 /* NSToolbarOverflowArrow.pdf in Resources */,
+				C829A6A610FF912100A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

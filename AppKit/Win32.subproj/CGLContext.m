@@ -1,5 +1,6 @@
 #import <OpenGL/OpenGL.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSRaise.h>
 
 #import "opengl_dll.h"
 
@@ -70,4 +71,32 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
    LeaveCriticalSection(&(context->lock));
    return kCGLNoError;
 }
+
+
+CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
+   switch(parameter){
+    case kCGLCPSwapInterval:;
+     typedef BOOL (WINAPI * PFNWGLSWAPINTERVALEXTPROC)(int interval); 
+     PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)opengl_wglGetProcAddress("wglSwapIntervalEXT"); 
+     if(wglSwapIntervalEXT==NULL){
+      NSLog(@"wglGetProcAddress failed for wglSwapIntervalEXT");
+      return kCGLNoError;
+     }
+     
+     wglSwapIntervalEXT(*value); 
+     break;
+     
+    default:
+     NSUnimplementedFunction();
+     break;
+   }
+   
+   return kCGLNoError;
+}
+
+CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter parameter,GLint *value) { 
+   NSUnimplementedFunction();
+   return kCGLNoError;
+}
+
 

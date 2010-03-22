@@ -48,6 +48,11 @@ typedef enum {
    kCGLBadConnection=10017,
 } CGLError;
 
+typedef enum {
+   kCGLCPSwapInterval  =222,
+   kCGLCPSurfaceOpacity=236,
+} CGLContextParameter;
+
 typedef struct _CGLContextObj *CGLContextObj;
 typedef struct _CGLPixelFormatObj *CGLPixelFormatObj;
 typedef struct _CGLPBufferObj *CGLPBufferObj;

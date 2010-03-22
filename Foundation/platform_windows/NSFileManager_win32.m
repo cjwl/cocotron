@@ -334,6 +334,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(NSString *)stringWithFileSystemRepresentation:(const char *)string length:(NSUInteger)length {
+   return [NSString stringWithCString:string length:length];
+}
 
 -(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
    NSUInteger i,length=[path length];

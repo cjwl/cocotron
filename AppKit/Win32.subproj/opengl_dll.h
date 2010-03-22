@@ -6,3 +6,5 @@ HGLRC opengl_wglCreateContext(HDC dc);
 BOOL  opengl_wglDeleteContext(HGLRC hglrc);
 HGLRC opengl_wglGetCurrentContext(void);
 BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc);
+BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc);
+PROC  opengl_wglGetProcAddress(LPCSTR name);

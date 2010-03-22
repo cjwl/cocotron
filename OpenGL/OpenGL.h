@@ -13,3 +13,6 @@ CGL_EXPORT CGLError CGLDestroyContext(CGLContextObj context);
 
 CGL_EXPORT CGLError CGLLockContext(CGLContextObj context);
 CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context);
+
+CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value);
+CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter parameter,GLint *value);
