@@ -815,6 +815,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
 #if 1
 
+#if 0
 static void sourceOverImage(O2Image *image,O2argb8u *resultBGRX,int width,int height,float fraction){
    O2argb8u *span=__builtin_alloca(width*sizeof(O2argb8u));
    int y,coverage=RI_INT_CLAMP(fraction*256,0,256);
@@ -833,7 +834,7 @@ static void sourceOverImage(O2Image *image,O2argb8u *resultBGRX,int width,int he
     O2BlendSpanNormal_8888_coverage(span,combine,coverage,width);
    }
 }
-
+#endif
 void O2GraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultBGRX,int width,int height,float fraction) {
    int sourceIndex=0;
    int sourceLength=width*height*4;
@@ -911,6 +912,10 @@ void O2GraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned 
    O2argb8u    *combineBGRX;
    unsigned char *imageRGBA=(void *)data;
 
+   rect.size=O2SizeApplyAffineTransform(rect.size,ctm);
+   if(rect.size.height<0)
+    rect.size.height=-rect.size.height;
+    
    if(transformIsFlipped(ctm))
     point.y-=rect.size.height;
 
