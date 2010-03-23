@@ -436,7 +436,9 @@ Protocol **class_copyProtocolList(Class cls,unsigned int *countp) {
 }
 
 Class class_setSuperclass(Class cls,Class parent) {
+   Class result=cls->super_class;
    cls->super_class=parent;
+   return result;
 }
 
 void class_setVersion(Class class,int version) {

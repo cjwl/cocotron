@@ -6627,6 +6627,34 @@
 			remoteGlobalIDString = FE4034840B42E94D00CEC41A;
 			remoteInfo = "objc-Solaris-sparc";
 		};
+		FEC32E55115909F00008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEC32E52115909F00008ECE5 /* CoreServices.framework */;
+			remoteInfo = "CoreServices-Windows-i386 copy";
+		};
+		FEC32E6611590A130008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEC32E6311590A130008ECE5 /* CoreServices.framework */;
+			remoteInfo = "CoreServices-Darwin-i386 copy";
+		};
+		FEC32E7511590C8B0008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEC32E5711590A130008ECE5 /* CoreServices-Linux-i386 */;
+			remoteInfo = "CoreServices-Linux-i386";
+		};
+		FEC32E7711590C950008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEC32E45115909F00008ECE5 /* CoreServices-Darwin-i386 */;
+			remoteInfo = "CoreServices-Darwin-i386";
+		};
 		FECB395F0FE143E9000562E8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -8472,6 +8500,8 @@
 			isa = PBXGroup;
 			children = (
 				FE1342C91151842200404745 /* CoreServices.framework */,
+				FEC32E56115909F00008ECE5 /* CoreServices.framework */,
+				FEC32E6711590A130008ECE5 /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -11900,6 +11930,7 @@
 			dependencies = (
 				FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */,
 				FEA8295C109B771000C7A732 /* PBXTargetDependency */,
+				FEC32E7611590C8B0008ECE5 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -11988,6 +12019,7 @@
 			dependencies = (
 				FED70AB60C3B3FAC000CBE5B /* PBXTargetDependency */,
 				FEA8295E109B772000C7A732 /* PBXTargetDependency */,
+				FEC32E7811590C950008ECE5 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Darwin-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -12155,6 +12187,20 @@
 			fileType = wrapper.framework;
 			path = objc.framework;
 			remoteRef = FEB6CC4B0B4A1922004FADF2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEC32E56115909F00008ECE5 /* CoreServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreServices.framework;
+			remoteRef = FEC32E55115909F00008ECE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEC32E6711590A130008ECE5 /* CoreServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreServices.framework;
+			remoteRef = FEC32E6611590A130008ECE5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FED70AAC0C3B3F5E000CBE5B /* objc.framework */ = {
@@ -15743,6 +15789,16 @@
 			name = "objc-Solaris-sparc";
 			targetProxy = FEB6CC520B4A1952004FADF2 /* PBXContainerItemProxy */;
 		};
+		FEC32E7611590C8B0008ECE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreServices-Linux-i386";
+			targetProxy = FEC32E7511590C8B0008ECE5 /* PBXContainerItemProxy */;
+		};
+		FEC32E7811590C950008ECE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreServices-Darwin-i386";
+			targetProxy = FEC32E7711590C950008ECE5 /* PBXContainerItemProxy */;
+		};
 		FECB39600FE143E9000562E8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FE6518160FBC844C00464BFD /* Foundation-Darwin-x86_64 */;
@@ -16218,6 +16274,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_UNROLL_LOOPS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";

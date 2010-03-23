@@ -158,10 +158,12 @@ Boolean CFSocketIsValid(CFSocketRef self) {
 
 CFSocketError CFSocketSendData(CFSocketRef self,CFDataRef address,CFDataRef data,CFTimeInterval timeout) {
    [NSSocketCast(self) sendToAddress:address data:data timeout:timeout];
+   return 0;
 }
 
 CFSocketError CFSocketSetAddress(CFSocketRef self,CFDataRef address) {
    [NSSocketCast(self) setAddress:address];
+   return 0;
 }
 
 void CFSocketSetSocketFlags(CFSocketRef self,CFOptionFlags flags) {

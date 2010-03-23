@@ -100,17 +100,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     while(--count>=0){
      NSNotification *check=[[queue objectAtIndex:count] notification];
-     BOOL            remove=NO;
+     BOOL            matches=NO;
 
      if(mask&NSNotificationCoalescingOnName)
       if([[check name] isEqualToString:[note name]])
-       remove=YES;
+       matches=YES;
 
      if(mask&NSNotificationCoalescingOnSender)
       if([check object]==[note object])
-       remove=YES;
+       matches=YES;
 
-     if(remove)
+     if(matches)
       [queue removeObjectAtIndex:count];
     }
    }

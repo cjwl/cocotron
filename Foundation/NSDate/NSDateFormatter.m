@@ -752,12 +752,12 @@ NSDictionary *locale) {
                     }
 
                     case 'z': {
-                        NSInteger hoursMinutes, hours, minutes;
+                        NSInteger hoursMinutes, tzHours, tzMinutes;
                         if (![scanner scanInteger:&hoursMinutes])
                             return nil;
-                        hours = hoursMinutes / 100;
-                        minutes = hoursMinutes % 100;
-                        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(hours * 3600) + (minutes * 60)];
+                        tzHours = hoursMinutes / 100;
+                        tzMinutes = hoursMinutes % 100;
+                        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(tzHours * 3600) + (tzMinutes * 60)];
                         break;
                     }
                 }

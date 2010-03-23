@@ -27,6 +27,7 @@ static NSMutableArray *_registeredClasses=nil;
 
 +(BOOL)registerClass:(Class)cls {
    [_registeredClasses addObject:cls];
+   return YES;
 }
 
 +(void)unregisterClass:(Class)cls {

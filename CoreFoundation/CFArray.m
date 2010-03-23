@@ -228,6 +228,7 @@ void CFArrayApplyFunction(CFArrayRef self,CFRange range,CFArrayApplierFunction f
 
 CFIndex CFArrayBSearchValues(CFArrayRef self,CFRange range,const void *value,CFComparatorFunction function,void *context) {
    NSUnimplementedFunction();
+   return 0;
 }
 
 

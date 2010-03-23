@@ -114,12 +114,12 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
     return [self hostName];
 }
 
-NSString *NSPlatformExecutableDirectory=@"Darwin";
-NSString *NSPlatformResourceNameSuffix=@"darwin";
+NSString * const NSPlatformExecutableDirectory=@"Darwin";
+NSString * const NSPlatformResourceNameSuffix=@"darwin";
 
-NSString *NSPlatformExecutableFileExtension=@"";
-NSString *NSPlatformLoadableObjectFileExtension=@"";
-NSString *NSPlatformLoadableObjectFilePrefix=@"";
+NSString * const NSPlatformExecutableFileExtension=@"";
+NSString * const NSPlatformLoadableObjectFileExtension=@"";
+NSString * const NSPlatformLoadableObjectFilePrefix=@"";
 
 -(Class)taskClass {
    return [NSTask_darwin class];

@@ -509,7 +509,7 @@ static BONJOUR_CALL void RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjou
   {
     NSLog(@"Incorrect length %d", len);
   }
-  
+  return result;
 }
 
 - (id) init

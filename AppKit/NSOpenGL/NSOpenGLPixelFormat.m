@@ -23,8 +23,10 @@ static inline BOOL attributeHasArgument(NSOpenGLPixelFormatAttribute attribute){
     case NSOpenGLPFARendererID:
     case NSOpenGLPFAScreenMask:
      return YES;
+     
+    default:
+     return NO;
    }
-   return NO;
 }
 
 -initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes {

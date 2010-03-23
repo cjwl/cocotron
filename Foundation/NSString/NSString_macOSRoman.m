@@ -162,11 +162,8 @@ const unichar _mapMacOSRomanToUnichar(const unsigned char c)
 			}
 		}		
 	}
-	else
-	{
-		return c;
-	}
-	
+
+   return c;
 }
 unichar *NSMacOSRomanToUnicode(const char *cString,NSUInteger length,
                             NSUInteger *resultLength,NSZone *zone) {

@@ -365,13 +365,13 @@ static void scan_net_loc(urlScanner *scanner,NSURL *url){
     
     port++;
     NSString  *string=[[NSString alloc] initWithCharacters:scanner->part+port length:portEnd-port];
-    NSScanner *scanner=[[NSScanner alloc] initWithString:string];
+    NSScanner *portScanner=[[NSScanner alloc] initWithString:string];
     int        portNumber;
     
-    if([scanner scanInt:&portNumber] && [scanner isAtEnd])
+    if([portScanner scanInt:&portNumber] && [portScanner isAtEnd])
      url->_port=[[NSNumber alloc] initWithInt:portNumber];
 
-    [scanner release];
+    [portScanner release];
     [string release];
    }
    

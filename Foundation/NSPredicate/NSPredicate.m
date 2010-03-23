@@ -445,6 +445,18 @@ static int scanToken(predicateScanner *scanner,id *token){
       }
       break;
 
+     case STATE_HEX_SEQUENCE:
+      NSUnimplementedFunction();
+      break;
+
+     case STATE_OCTAL_SEQUENCE:
+      NSUnimplementedFunction();
+      break;
+
+     case STATE_BINARY_SEQUENCE:
+      NSUnimplementedFunction();
+      break;
+
      case STATE_STRING_DOUBLE:
       if(code=='\\'){
        state=STATE_STRING_DOUBLE_ESCAPE;
@@ -1471,6 +1483,8 @@ static NSPredicate *nextTopLevelPredicate(predicateScanner *scanner){
    NSPredicate *result=nextTopLevelPredicate(&scanner);
    
    va_end(scanner.arguments);
+   
+   return result;
 }
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format,... {
@@ -1479,7 +1493,10 @@ static NSPredicate *nextTopLevelPredicate(predicateScanner *scanner){
    va_start(arguments,format);
 
    NSPredicate *result=[self predicateWithFormat:format arguments:arguments];
+   
    va_end(arguments);
+   
+   return result;
 }
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format argumentArray:(NSArray *)arguments {

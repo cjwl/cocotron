@@ -250,7 +250,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Init instance of regular file type
 - (id) initRegularFileWithContents: (NSData*) data
 {	
-	if (self = [self init]) {
+	if ((self = [self init])!=nil) {
 		contentData = [data copy];
 	} 
 	return self;
@@ -308,12 +308,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (id) initDirectoryWithFileWrappers: (NSDictionary*) docs;
 {
-	if (self = [self init]) {
+	if ((self = [self init])!=nil) {
 		contentDictionary = [docs mutableCopy];
 		
 		NSEnumerator* ke = [contentDictionary keyEnumerator];
 		NSString* name;
-		while (name = [ke nextObject]) {
+		while ((name = [ke nextObject])!=nil) {
 			NSFileWrapper* wrapper = [contentDictionary objectForKey: name];
 			if ([[wrapper preferredFilename] length] == 0) {
 				[wrapper setPreferredFilename: name];
@@ -435,7 +435,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (id) initSymbolicLinkWithDestination: (NSString*) path
 {	
-	if (self = [self init]) {
+	if ((self = [self init])!=nil) {
 		linkDestination = [path copy];
 	}	
 	return self;

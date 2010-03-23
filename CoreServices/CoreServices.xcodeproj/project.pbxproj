@@ -9,12 +9,24 @@
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE7433A910A89ED7004CDF00 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC32E49115909F00008ECE5 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC32E4B115909F00008ECE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		FEC32E5B11590A130008ECE5 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC32E5D11590A130008ECE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
 		FE7433A310A89EB5004CDF00 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FEC32E6811590A4C0008ECE5 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -27,7 +39,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FEA752F3114EB30B00AF634E /* CFNetwork.framework */;
+			remoteGlobalIDString = FEA752F3114EB30B00AF634E;
 			remoteInfo = "CFNetwork-Linux-i386";
 		};
 		FE7433B210A89F5D004CDF00 /* PBXContainerItemProxy */ = {
@@ -44,6 +56,27 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CFNetwork-Windows-i386";
 		};
+		FEC32E43115909B30008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEC32E40115909B30008ECE5 /* CFNetwork.framework */;
+			remoteInfo = "CFNetwork-Linux-i386 copy";
+		};
+		FEC32E6911590A7E0008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEC32E35115909B30008ECE5 /* CFNetwork-Darwin-i386 */;
+			remoteInfo = "CFNetwork-Darwin-i386";
+		};
+		FEC32E6B11590A8F0008ECE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA752E8114EB30B00AF634E /* CFNetwork-Linux-i386 */;
+			remoteInfo = "CFNetwork-Linux-i386";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -53,10 +86,29 @@
 		8DC2EF5B0486A6940098B216 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7433A810A89ED7004CDF00 /* CoreServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreServices.h; sourceTree = "<group>"; };
 		FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FEC32E2C115903370008ECE5 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
+		FEC32E52115909F00008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEC32E53115909F00008ECE5 /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
+		FEC32E6311590A130008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEC32E6411590A130008ECE5 /* Info copy 3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 3.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E4D115909F00008ECE5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E5F11590A130008ECE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -70,6 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* CoreServices.framework */,
+				FEC32E52115909F00008ECE5 /* CoreServices.framework */,
+				FEC32E6311590A130008ECE5 /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,6 +155,9 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+				FEC32E2C115903370008ECE5 /* Info copy.plist */,
+				FEC32E53115909F00008ECE5 /* Info copy 2.plist */,
+				FEC32E6411590A130008ECE5 /* Info copy 3.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -132,6 +189,7 @@
 			children = (
 				FE7433B310A89F5D004CDF00 /* CFNetwork.framework */,
 				FE1342D31151843000404745 /* CFNetwork.framework */,
+				FEC32E44115909B30008ECE5 /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,6 +202,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE7433A910A89ED7004CDF00 /* CoreServices.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E48115909F00008ECE5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC32E49115909F00008ECE5 /* CoreServices.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E5A11590A130008ECE5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC32E5B11590A130008ECE5 /* CoreServices.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +245,47 @@
 			productReference = 8DC2EF5B0486A6940098B216 /* CoreServices.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		FEC32E45115909F00008ECE5 /* CoreServices-Darwin-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEC32E4F115909F00008ECE5 /* Build configuration list for PBXNativeTarget "CoreServices-Darwin-i386" */;
+			buildPhases = (
+				FEC32E48115909F00008ECE5 /* Headers */,
+				FEC32E4A115909F00008ECE5 /* Resources */,
+				FEC32E4C115909F00008ECE5 /* Sources */,
+				FEC32E4D115909F00008ECE5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FEC32E6A11590A7E0008ECE5 /* PBXTargetDependency */,
+			);
+			name = "CoreServices-Darwin-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreServices;
+			productReference = FEC32E52115909F00008ECE5 /* CoreServices.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FEC32E5711590A130008ECE5 /* CoreServices-Linux-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEC32E6011590A130008ECE5 /* Build configuration list for PBXNativeTarget "CoreServices-Linux-i386" */;
+			buildPhases = (
+				FEC32E5A11590A130008ECE5 /* Headers */,
+				FEC32E5C11590A130008ECE5 /* Resources */,
+				FEC32E5E11590A130008ECE5 /* Sources */,
+				FEC32E5F11590A130008ECE5 /* Frameworks */,
+			);
+			buildRules = (
+				FEC32E6811590A4C0008ECE5 /* PBXBuildRule */,
+			);
+			dependencies = (
+				FEC32E6C11590A8F0008ECE5 /* PBXTargetDependency */,
+			);
+			name = "CoreServices-Linux-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreServices;
+			productReference = FEC32E6311590A130008ECE5 /* CoreServices.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -191,6 +306,8 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* CoreServices-Windows-i386 */,
+				FEC32E45115909F00008ECE5 /* CoreServices-Darwin-i386 */,
+				FEC32E5711590A130008ECE5 /* CoreServices-Linux-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -210,6 +327,13 @@
 			remoteRef = FE7433B210A89F5D004CDF00 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FEC32E44115909B30008ECE5 /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = FEC32E43115909B30008ECE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -218,6 +342,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E4A115909F00008ECE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC32E4B115909F00008ECE5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E5C11590A130008ECE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC32E5D11590A130008ECE5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +371,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FEC32E4C115909F00008ECE5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC32E5E11590A130008ECE5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -238,6 +392,16 @@
 			isa = PBXTargetDependency;
 			name = "CFNetwork-Windows-i386";
 			targetProxy = FE7433B410A89F63004CDF00 /* PBXContainerItemProxy */;
+		};
+		FEC32E6A11590A7E0008ECE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CFNetwork-Darwin-i386";
+			targetProxy = FEC32E6911590A7E0008ECE5 /* PBXContainerItemProxy */;
+		};
+		FEC32E6C11590A8F0008ECE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CFNetwork-Linux-i386";
+			targetProxy = FEC32E6B11590A8F0008ECE5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -319,6 +483,86 @@
 			};
 			name = Release;
 		};
+		FEC32E50115909F00008ECE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				INFOPLIST_FILE = "Info copy 2.plist";
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Darwin/i386;
+			};
+			name = Debug;
+		};
+		FEC32E51115909F00008ECE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				INFOPLIST_FILE = "Info copy 2.plist";
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Darwin/i386;
+			};
+			name = Release;
+		};
+		FEC32E6111590A130008ECE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				INFOPLIST_FILE = "Info copy 3.plist";
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Linux/i386;
+			};
+			name = Debug;
+		};
+		FEC32E6211590A130008ECE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				INFOPLIST_FILE = "Info copy 3.plist";
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Linux/i386;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -336,6 +580,24 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FEC32E4F115909F00008ECE5 /* Build configuration list for PBXNativeTarget "CoreServices-Darwin-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEC32E50115909F00008ECE5 /* Debug */,
+				FEC32E51115909F00008ECE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FEC32E6011590A130008ECE5 /* Build configuration list for PBXNativeTarget "CoreServices-Linux-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEC32E6111590A130008ECE5 /* Debug */,
+				FEC32E6211590A130008ECE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

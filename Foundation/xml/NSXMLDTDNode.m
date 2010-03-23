@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSXMLDTDNode
 
 -initWithXMLString:(NSString *)string {
+   return nil;
 }
 
 -(NSXMLDTDNodeKind)DTDKind {
@@ -19,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isExternal {
+   return 0;
 }
 
 -(NSString *)notationName {

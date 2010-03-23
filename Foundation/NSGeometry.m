@@ -128,35 +128,35 @@ NSRect NSIntersectionRect(NSRect rect0,NSRect rect1) {
 }
 
 
-void NSDivideRect(NSRect rect,NSRect *slice,NSRect *remainder,CGFloat amount,NSRectEdge edge) {
-    *slice = rect;
-    *remainder = rect;
-    CGFloat temp;
+void NSDivideRect(NSRect rect,NSRect *slicep,NSRect *remainderp,CGFloat amount,NSRectEdge edge) {
+   *slicep = rect;
+   *remainderp = rect;
+   CGFloat temp;
 
-    switch(edge) {
+   switch(edge) {
     case NSMinXEdge:
-	slice->size.width = amount;
-	remainder->size.width -= amount;
-	remainder->origin.x += amount;
-	break;
+	 slicep->size.width = amount;
+	 remainderp->size.width -= amount;
+	 remainderp->origin.x += amount;
+	 break;
     case NSMinYEdge:
-	slice->size.height = amount;
-	remainder->size.height -= amount;
-	remainder->origin.y += amount;
-	break;
+     slicep->size.height = amount;
+	 remainderp->size.height -= amount;
+	 remainderp->origin.y += amount;
+	 break;
     case NSMaxXEdge:
-	temp = slice->size.width - amount;
-	remainder->size.width = temp;
-	slice->size.width = amount;
-	slice->origin.x += temp;
-	break;
+	 temp = slicep->size.width - amount;
+	 remainderp->size.width = temp;
+	 slicep->size.width = amount;
+	 slicep->origin.x += temp;
+	 break;
     case NSMaxYEdge:
-	temp = slice->size.height - amount;
-	remainder->size.height = temp;
-	slice->size.height = amount;
-	slice->origin.y += temp;
-	break;
-    }
+	 temp = slicep->size.height - amount;
+	 remainderp->size.height = temp;
+	 slicep->size.height = amount;
+	 slicep->origin.y += temp;
+	 break;
+   }
 }
 
 

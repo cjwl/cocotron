@@ -83,7 +83,7 @@
    UPDATE_TIME;
 
    HRESULT res;
-   if(res=WaitForSingleObject(_mutex, time)) {
+   if((res=WaitForSingleObject(_mutex, time))!=0) {
       return NO;
    }
 
@@ -100,7 +100,7 @@
     UPDATE_TIME;
 
     HRESULT res;
-    if(res=WaitForSingleObject(_mutex, time)) {
+    if((res=WaitForSingleObject(_mutex, time))!=0) {
         return NO;
     }
 
@@ -126,7 +126,7 @@
 }
 
 -(id)initWithCondition:(NSInteger)value {
-   if(self = [super init]) {
+   if((self = [super init])!=nil) {
       _value=value;
       _semaphore=CreateSemaphore(NULL, 0, INT_MAX, NULL);
       _waitersDone=CreateEvent(NULL, NO, NO, NULL);

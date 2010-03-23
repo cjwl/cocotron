@@ -370,6 +370,10 @@ static inline O2GState *currentState(O2Context *self){
     case kO2ColorSpaceModelCMYK:
      [self contentWithFormat:@"%f %f %f %f K ",components[0],components[1],components[2],components[3]];
      break;
+    
+    default:
+     O2UnimplementedMethod();
+     break;
    }
   }
 
@@ -388,6 +392,10 @@ static inline O2GState *currentState(O2Context *self){
      
     case kO2ColorSpaceModelCMYK:
      [self contentWithFormat:@"%f %f %f %f k ",components[0],components[1],components[2],components[3]];
+     break;
+
+    default:
+     O2UnimplementedMethod();
      break;
    }
   }

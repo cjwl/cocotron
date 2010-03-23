@@ -155,6 +155,7 @@ static void encodeUnsigned16OrUnsigned32(O2TIFFEncoderRef self,uint32_t value){
     encodeUnsigned32(self,value);
 }
 
+#if 0
 static void encodeUnsigned32AtPosition(O2TIFFEncoderRef self,uint32_t value,uint32_t position){
    uint32_t save=setPosition(self,position);
    
@@ -183,6 +184,7 @@ static void encodeArrayOfUnsigned8(O2TIFFEncoderRef self,uint8_t *values,uint32_
      putUnsigned32(self,values[i]);
    }
 }
+#endif
 
 static uint32_t reserveArrayOfUnsigned16(O2TIFFEncoderRef self){
    uint32_t result=currentPosition(self);

@@ -12,6 +12,7 @@
 
 #import <setjmp.h>
 
+#if 0
 static void *_objc_returnAddress(unsigned frame)
 {
    void *ret=0;
@@ -55,6 +56,7 @@ static void _objc_badAccessHandler()
 {
    longjmp(handleBadAccess, 1);
 }
+#endif
 
 id _NSStackTrace()
 {

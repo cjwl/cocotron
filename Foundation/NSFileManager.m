@@ -140,7 +140,7 @@ NSString * const NSFileSystemFreeSize=@"NSFileSystemFreeSize";
    return 0;
 }
 
--(NSArray *)_subpathsAtPath:(NSString *)path basePath:(NSString*)basePath 
+-(void)_subpathsAtPath:(NSString *)path basePath:(NSString*)basePath 
 paths:(NSMutableArray*)paths
 {
 	NSArray* files = [self directoryContentsAtPath:path];

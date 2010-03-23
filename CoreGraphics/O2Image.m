@@ -313,9 +313,10 @@ static BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPerCompon
     case kO2ColorSpaceModelRGB:
      self->_read_lRGBA8888_PRE=O2ImageRead_I8_to_RGBA8888;
      return YES;
+    
+    default:
+     return NO;
    }
-   
-   return NO;
 }
 
 static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
@@ -329,16 +330,17 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
    
    switch([colorSpace type]){
     case kO2ColorSpaceModelMonochrome:
-     break;
+     return NO;
     case kO2ColorSpaceModelRGB:
      return initFunctionsForRGBColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
     case kO2ColorSpaceModelCMYK:
      return initFunctionsForCMYKColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
     case kO2ColorSpaceModelIndexed:
      return initFunctionsForIndexedColorSpace(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+    default:
+     return NO;
    }
    
-   return NO;
       
 }
 

@@ -93,12 +93,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByAppendingPathComponent:(NSString *)other {
    NSUInteger selfLength=[self length];
-   if(!selfLength)
+   
+   if(selfLength==0){
     if(other)
      return [NSString stringWithString:other];
     else
      return @"";
-
+   }
+   
    NSUInteger otherLength=[other length];
    NSUInteger totalLength=selfLength+1+otherLength;
    unichar  characters[totalLength];

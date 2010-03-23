@@ -541,6 +541,9 @@ static void cgArcApply(void *info,const CGPathElement *element) {
     case kCGPathElementAddCurveToPoint:
      [self curveToPoint:element->points[2] controlPoint1:element->points[0] controlPoint2:element->points[1]];
      break;
+    
+    default:
+     break;
    }
    
 }
@@ -563,6 +566,9 @@ static void cgArcFromApply(void *info,const CGPathElement *element) {
      
     case kCGPathElementAddCurveToPoint:
      [self curveToPoint:element->points[2] controlPoint1:element->points[0] controlPoint2:element->points[1]];
+     break;
+
+    default:
      break;
    }
    

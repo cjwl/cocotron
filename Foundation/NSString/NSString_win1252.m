@@ -71,11 +71,8 @@ const unichar _mapWin1252ToUnichar(const unsigned char c)
 		}
 		
 	}
-	else
-	{
-		return c;
-	}
-	
+
+   return c;
 }
 unichar *NSWin1252ToUnicode(const char *cString,NSUInteger length,
 							  NSUInteger *resultLength,NSZone *zone) {

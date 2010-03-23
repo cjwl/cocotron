@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [colorBrowser setCellClass:[NSBrowserCellColorList class]];
 
     [colorListPopUp removeAllItems];
-    while (colorList = [colorListsEnumerator nextObject])
+    while ((colorList = [colorListsEnumerator nextObject])!=nil)
         [self attachColorList:colorList];
 
     [self colorListPopUpClicked:colorListPopUp];

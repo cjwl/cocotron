@@ -258,15 +258,15 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
    unsigned i,count=symbolTable->categoryCount;
 
    if(unlinkedCategories!=NULL){
-    int count=unlinkedCategories->count;
+    int unlinkedIndex=unlinkedCategories->count;
    
-    while(--count>=0){
-     Category category=OBJCArrayItemAtIndex(unlinkedCategories,count);
+    while(--unlinkedIndex>=0){
+     Category category=OBJCArrayItemAtIndex(unlinkedCategories,unlinkedIndex);
      Class         class=objc_lookUpClass(category->className);
 
      if(class!=Nil){
       OBJCRegisterCategoryInClass(category,class);
-	  OBJCArrayRemoveItemAtIndex(unlinkedCategories,count);
+	  OBJCArrayRemoveItemAtIndex(unlinkedCategories,unlinkedIndex);
 	 }
 	}
    }

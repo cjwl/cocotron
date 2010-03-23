@@ -198,6 +198,7 @@ static unsigned addressResolverThread(void *arg){
      }
     }
    }
+   return 0;
    
 }
 

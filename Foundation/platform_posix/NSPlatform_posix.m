@@ -192,7 +192,7 @@ void NSPlatformLogString(NSString *string) {
     fprintf(stderr, "%s\n", [string UTF8String]);
 }
 
-void *NSPlatformContentsOfFile(NSString *path,NSUInteger *length) {
+void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
     int fd = open([path fileSystemRepresentation], O_RDONLY);
     char *buf;
     off_t pos, total = 0;

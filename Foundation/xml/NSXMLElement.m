@@ -15,18 +15,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSXMLElement
 
 -initWithName:(NSString *)name {
+   return 0;
 }
 
 -initWithName:(NSString *)name stringValue:(NSString *)string {
+   return 0;
 }
 
 -initWithName:(NSString *)name URI:(NSString *)uri {
+   return 0;
 }
 
 -initWithXMLString:(NSString *)xml error:(NSError **)error {
+   return 0;
 }
 
 -copyWithZone:(NSZone *)zone {
+   return 0;
 }
 
 -(NSArray *)attributes {
@@ -34,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSXMLNode *)attributeForLocalName:(NSString *)name URI:(NSString *)uri {
+   return 0;
 }
 
 -(NSXMLNode *)attributeForName:(NSString *)name {
@@ -41,15 +47,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)uri {
+   return 0;
 }
 
 -(NSArray *)elementsForName:(NSString *)name {
+   return 0;
 }
 
 -(NSArray *)namespaces {
+   return 0;
 }
 
 -(NSXMLNode *)namespaceForPrefix:(NSString *)prefix {
+   return 0;
 }
 
 -(void)setAttributes:(NSArray *)attributes {

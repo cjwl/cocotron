@@ -10,9 +10,8 @@
 
 
 @implementation _NSControllerMarker
--(id)initWithString:(NSString*)identifier;
-{
-   if(self = [super init]) {
+-initWithString:(NSString*)identifier {
+   if((self = [super init])!=nil) {
       _backing=[identifier copy];
    }
    return self;

@@ -382,6 +382,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _changeCount=0;
      [self _updateFileModificationDate]; // Since file was just saved or reverted
      break;
+    
+    case NSChangeReadOtherContents:
+    case NSChangeAutosaved:
+     NSUnimplementedMethod();
+     break;
    }
   
    BOOL edited = [self isDocumentEdited];

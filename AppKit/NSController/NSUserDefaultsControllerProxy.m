@@ -18,8 +18,7 @@
 @implementation NSUserDefaultsControllerProxy
 
 -(id)initWithController:(NSUserDefaultsController*)controller {
-   if(self=[super init])
-   {
+   if((self=[super init])!=nil){
       _controller = controller;
       _cachedValues = [NSMutableDictionary new];
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:[_controller defaults]];

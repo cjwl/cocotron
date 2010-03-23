@@ -53,19 +53,19 @@ void native_set_reset(native_set *native) {
    native->fdset->fd_count=0;
 }
 
-void native_set_set(native_set *native,SOCKET socket) {
+void native_set_set(native_set *native,SOCKET handle) {
    if(native->fdset->fd_count>=native->max){
     native->max*=2;
     native->fdset=NSZoneRealloc(NULL,native->fdset,sizeof(fd_set)+sizeof(SOCKET)*(native->max-FD_SETSIZE));
    }
-   native->fdset->fd_array[native->fdset->fd_count++]=socket;
+   native->fdset->fd_array[native->fdset->fd_count++]=handle;
 }
 
-void native_set_clear(native_set *native,SOCKET socket){
+void native_set_clear(native_set *native,SOCKET handle){
    int  i;
 
    for(i=0;i<native->fdset->fd_count;i++){
-    if(native->fdset->fd_array[i]==socket){
+    if(native->fdset->fd_array[i]==handle){
      native->fdset->fd_count--; 
      while(i<native->fdset->fd_count){
       native->fdset->fd_array[i]=native->fdset->fd_array[i+1];
@@ -90,11 +90,11 @@ void native_set_copy(native_set *native,native_set *copy){
    copy->fdset->fd_count=i;
 }
 
-BOOL native_set_is_set(native_set *native,SOCKET socket) {
+BOOL native_set_is_set(native_set *native,SOCKET handle) {
    int i;
 
    for(i=0;i<native->fdset->fd_count;i++)
-    if(native->fdset->fd_array[i]==socket)
+    if(native->fdset->fd_array[i]==handle)
      return YES;
 
    return NO;

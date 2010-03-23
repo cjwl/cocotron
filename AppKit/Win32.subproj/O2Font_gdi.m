@@ -72,7 +72,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     OUTLINETEXTMETRICW *ttMetrics=__builtin_alloca(size);
 
     ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICW);
-    if(size=GetOutlineTextMetricsW(dc,size,ttMetrics)){
+    if((size=GetOutlineTextMetricsW(dc,size,ttMetrics))!=0){
    
      if(ttMetrics->otmEMSquare!=_unitsPerEm){
       // if our first try didn't have the typical em square, recreate using the em square 

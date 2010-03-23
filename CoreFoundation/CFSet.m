@@ -59,10 +59,12 @@ Boolean CFSetGetValueIfPresent(CFSetRef self,const void *candidate,const void **
 
 CFMutableSetRef CFSetCreateMutable(CFAllocatorRef allocator,CFIndex capacity,const CFSetCallBacks *callbacks){
    NSUnimplementedFunction();
+   return 0;
 }
 
 CFMutableSetRef CFSetCreateMutableCopy(CFAllocatorRef allocator,CFIndex capacity,CFSetRef self){
    NSUnimplementedFunction();
+   return 0;
 }
 
 void CFSetAddValue(CFMutableSetRef self,const void *value){

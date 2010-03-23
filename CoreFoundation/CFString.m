@@ -39,7 +39,7 @@ static inline NSStringEncoding convertCFEncodingToNSEncoding(CFStringEncoding en
     case kCFStringEncodingNonLossyASCII:
      return NSNonLossyASCIIStringEncoding;
    }
-   
+   return NSASCIIStringEncoding;
 }
 
 CFStringRef CFStringMakeConstant(const char *cString) {
@@ -47,7 +47,10 @@ CFStringRef CFStringMakeConstant(const char *cString) {
    return (CFStringRef)[[[NSString allocWithZone:NULL]initWithUTF8String:cString] autorelease];
 }
 
-CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator){}
+CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator){
+   NSUnimplementedFunction();
+   return 0;
+}
 
 CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self){
    return ToCFString([ToNSString(self) copyWithZone:NULL]);
