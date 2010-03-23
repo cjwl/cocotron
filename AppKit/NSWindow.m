@@ -2303,7 +2303,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_sheetContext autorelease];
    _sheetContext=[sheetContext retain];
 
-   [(NSWindowBackgroundView *)[sheet _backgroundView] setBorderType:NSButtonBorder];
+   [(NSWindowBackgroundView *)[sheet _backgroundView] setWindowBorderType:NSWindowSheetBorderType];
    
    [self _setSheetOrigin];
    sheetFrame = [sheet frame];   

@@ -492,7 +492,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				INFOPLIST_FILE = "Info copy 2.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
@@ -512,7 +512,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				INFOPLIST_FILE = "Info copy 2.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
@@ -532,7 +532,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				INFOPLIST_FILE = "Info copy 3.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
@@ -552,7 +552,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				INFOPLIST_FILE = "Info copy 3.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";

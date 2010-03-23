@@ -20,11 +20,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(NSBorderType)borderType {
+-(NSWindowBorderType)windowBorderType {
    return _borderType;
 }
 
--(void)setBorderType:(NSBorderType)borderType {
+-(void)setWindowBorderType:(NSWindowBorderType)borderType {
    _borderType = borderType;
    [self setNeedsDisplay:YES];
 }
@@ -37,26 +37,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         case NSNoBorder:
             break;
             
-        case NSLineBorder:
+        case NSWindowToolTipBorderType:
             [[NSColor blackColor] setStroke];
             NSFrameRect(bounds);
             bounds = NSInsetRect(bounds, 1, 1);
             cheatSheet = 1;
             break;
-            
-        case NSBezelBorder:
-            NSDrawGrayBezel(bounds,bounds);         // this looks pretty bad here too
-            bounds = NSInsetRect(bounds, 2, 2);
-            cheatSheet = 2;
-            break;
-            
-        case NSGrooveBorder:
-            NSDrawGroove(bounds,bounds);
-            bounds = NSInsetRect(bounds, 2, 2);
-            cheatSheet = 2;
-            break;
-            
-        case NSButtonBorder:
+                
+        case NSWindowSheetBorderType:
             NSDrawButton(bounds,bounds);
             bounds = NSInsetRect(bounds, 2, 2);
             cheatSheet = 2;
