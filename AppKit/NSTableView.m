@@ -889,12 +889,20 @@ _dataSource);
    return result;
 }
 
+// Deprecated in Mac OS X 10.3.
 -(NSEnumerator *)selectedRowEnumerator {
-    NSUnimplementedMethod();
-    return nil;
+   NSMutableArray *rows=[NSMutableArray array];
+   NSUInteger i,count=[_selectedRowIndexes count];
+   NSUInteger buffer[count];
+   
+   [_selectedRowIndexes getIndexes:buffer maxCount:count inIndexRange:NULL];
+   for(i=0;i<count;i++)
+    [rows addObject:[NSNumber numberWithInteger:buffer[i]]];
+   
+   return [rows objectEnumerator];
 }
 
-// Deprecated since Mac OS X 10.3.
+// Deprecated in Mac OS X 10.3.
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
 
    if (extend)

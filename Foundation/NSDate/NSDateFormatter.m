@@ -534,6 +534,8 @@ NSDictionary *locale) {
     NSTimeZone      *timeZone = nil;
     NSTimeInterval   timeInterval;
     NSCalendarDate  *calendarDate;
+    
+    [scanner setCharactersToBeSkipped:nil];
 
     enum {
         STATE_SCANNING,
