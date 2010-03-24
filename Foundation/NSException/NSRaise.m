@@ -36,7 +36,11 @@ void NSCLogThreadId(){
 }
 
 void NSCLogNewline(){
+#ifdef WINDOWS
    fprintf(stderr,"\n",GetCurrentThreadId());
+#else
+   fprintf(stderr,"\n",GetCurrentThreadId());
+#endif
    fflush(stderr);
 }
 

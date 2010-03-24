@@ -97,10 +97,48 @@ CFStringRef CFStringCreateFromExternalRepresentation(CFAllocatorRef allocator,CF
    return 0;
 }
 
+CFStringRef CFStringCreateWithSubstring(CFAllocatorRef allocator,CFStringRef self,CFRange range) {
+   NSUnimplementedFunction();
+   return 0;
+}
+
+
+void CFShow(CFTypeRef self) {
+   NSUnimplementedFunction();
+}
+
+void CFShowStr(CFStringRef self) {
+   NSUnimplementedFunction();
+}
+
+
 CFComparisonResult CFStringCompare(CFStringRef self,CFStringRef other,CFOptionFlags options){
    return [ToNSString(self) compare:(NSString *)other options:options];
 }
 
+CFComparisonResult CFStringCompareWithOptions(CFStringRef self,CFStringRef other,CFRange range,CFOptionFlags options) {
+   NSRange nsRange={range.location,range.length};
+   return [ToNSString(self) compare:(NSString *)other options:options range:nsRange];
+}
+
+CFComparisonResult CFStringCompareWithOptionsAndLocale(CFStringRef self,CFStringRef other,CFRange range,CFOptionFlags options,CFLocaleRef locale) {
+   NSRange nsRange={range.location,range.length};
+   return [ToNSString(self) compare:(NSString *)other options:options range:nsRange locale:(id)locale];
+}
+
+
+CFIndex CFStringGetLength(CFStringRef self) {
+   return [ToNSString(self) length];
+}
+
+UniChar CFStringGetCharacterAtIndex(CFStringRef self,CFIndex index) {
+   return [ToNSString(self) characterAtIndex:index];
+}
+
+void CFStringGetCharacters(CFStringRef self,CFRange range,UniChar *buffer) {
+   NSRange nsRange={range.location,range.length};
+   [ToNSString(self) getCharacters:buffer range:nsRange];
+}
 
 Boolean CFStringGetCString(CFStringRef self,char *buffer,CFIndex bufferSize,CFStringEncoding encoding) {
    return [(NSString *)self getCString:buffer maxLength:bufferSize encoding:convertCFEncodingToNSEncoding(encoding)];

@@ -30,6 +30,19 @@ static NSMutableArray *_registeredClasses=nil;
    return YES;
 }
 
++(Class)_URLProtocolClassForRequest:(NSURLRequest *)request {
+   NSArray  *classes=[NSURLProtocol _registeredClasses];
+   NSInteger count=[classes count];
+   
+   while(--count>=0){
+    Class check=[classes objectAtIndex:count];
+    
+    if([check canInitWithRequest:request])
+     return check;
+   }
+   return nil;
+}
+
 +(void)unregisterClass:(Class)cls {
    [_registeredClasses removeObjectIdenticalTo:cls];
 }

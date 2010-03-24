@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSURLConnectionState.h"
 
 @interface NSURLProtocol(private)
-+(NSArray *)_registeredClasses;
++(Class)_URLProtocolClassForRequest:(NSURLRequest *)request;
 @end;
 
 @interface NSURLConnection(private) <NSURLProtocolClient>
@@ -27,21 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSURLConnection
 
-+(Class)_URLProtocolClassForRequest:(NSURLRequest *)request {
-   NSArray  *classes=[NSURLProtocol _registeredClasses];
-   NSInteger count=[classes count];
-   
-   while(--count>=0){
-    Class check=[classes objectAtIndex:count];
-    
-    if([check canInitWithRequest:request])
-     return check;
-   }
-   return nil;
-}
-
 +(BOOL)canHandleRequest:(NSURLRequest *)request {
-   return ([self _URLProtocolClassForRequest:request]!=nil)?YES:NO;
+   return ([NSURLProtocol _URLProtocolClassForRequest:request]!=nil)?YES:NO;
 }
 
 +(NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)responsep error:(NSError **)errorp {
@@ -77,7 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithRequest:(NSURLRequest *)request delegate:delegate startImmediately:(BOOL)startLoading {
    _request=[request copy];
-   Class cls=[isa _URLProtocolClassForRequest:request];
+   Class cls=[NSURLProtocol _URLProtocolClassForRequest:request];
    _protocol=[[cls alloc] initWithRequest:_request cachedResponse:nil client:self];
    _delegate=delegate;
    _modes=[[NSMutableArray arrayWithObject:NSDefaultRunLoopMode] retain];

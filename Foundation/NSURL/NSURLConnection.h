@@ -40,7 +40,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
--(void)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response;
--(void)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
+-(NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response;
+-(NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection;
 
 @end
