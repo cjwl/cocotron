@@ -760,6 +760,8 @@
 		269249A51157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
 		269249A61157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
 		269249A71157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249CC1157AD6500A96CEB /* NSCondition_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 269249CA1157AD6500A96CEB /* NSCondition_win32.m */; };
+		269249CD1157AD6500A96CEB /* NSCondition_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 269249CB1157AD6500A96CEB /* NSCondition_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485180FE04E7100DC03EF /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485190FE04E7100DC03EF /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D4851A0FE04E7100DC03EF /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -6728,6 +6730,8 @@
 		1ACAB27B108C5B010057A542 /* NSNumber_BOOL_const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_BOOL_const.h; path = NSNumber/NSNumber_BOOL_const.h; sourceTree = "<group>"; };
 		1ACAB27C108C5B010057A542 /* NSNumber_double_const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_double_const.h; path = NSNumber/NSNumber_double_const.h; sourceTree = "<group>"; };
 		2692499E1157AC7B00A96CEB /* NSCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCondition.m; sourceTree = "<group>"; };
+		269249CA1157AD6500A96CEB /* NSCondition_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCondition_win32.m; sourceTree = "<group>"; };
+		269249CB1157AD6500A96CEB /* NSCondition_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCondition_win32.h; sourceTree = "<group>"; };
 		28D487A90FE04E7100DC03EF /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_xml1.h; sourceTree = "<group>"; };
 		6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_xml1.m; sourceTree = "<group>"; };
@@ -8339,6 +8343,8 @@
 		6E28034A09747A7700EC542B /* platform_windows */ = {
 			isa = PBXGroup;
 			children = (
+				269249CA1157AD6500A96CEB /* NSCondition_win32.m */,
+				269249CB1157AD6500A96CEB /* NSCondition_win32.h */,
 				FE6014291042FD6B008A7357 /* NSString_defaultEncoding_windows.m */,
 				6E28059F09747D0400EC542B /* dllmain.m */,
 				C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */,
@@ -10539,6 +10545,7 @@
 				FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C473E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A01152743100B6D893 /* objc_malloc.h in Headers */,
+				269249CD1157AD6500A96CEB /* NSCondition_win32.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14239,6 +14246,7 @@
 				FE6CF871115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A11152743100B6D893 /* objc_malloc.m in Sources */,
 				2692499F1157AC7B00A96CEB /* NSCondition.m in Sources */,
+				269249CC1157AD6500A96CEB /* NSCondition_win32.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
