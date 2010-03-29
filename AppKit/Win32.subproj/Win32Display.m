@@ -152,19 +152,27 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 }
 
 static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPARAM dwData) {
-   HANDLE          library=LoadLibrary("USER32");
-   FARPROC         getMonitorInfo=GetProcAddress(library,"GetMonitorInfoA");
-   NSMutableArray *array=(id)dwData;
-   NSRect          frame=NSRectFromRECT(*rect); 
-   NSScreen       *screen;
-   MONITORINFOEX   info;
+	static FARPROC  getMonitorInfo = NULL;
+	
+	if (NULL == getMonitorInfo) {
+		HANDLE library = LoadLibrary("USER32");
+		getMonitorInfo = GetProcAddress(library,"GetMonitorInfoA");
+	}
 
-   info.cbSize=sizeof(info);
-   getMonitorInfo(hMonitor,&info);
+	NSMutableArray *array= (id)dwData;
+  
+	MONITORINFOEX info;
+	info.cbSize = sizeof(info);
+	getMonitorInfo(hMonitor,&info);
+	
+	NSRect frame = NSRectFromRECT( info.rcMonitor );
+	NSRect visibleFrame = NSRectFromRECT( info.rcWork );
 
-   frame.origin.y=GetSystemMetrics(SM_CYSCREEN)-(frame.origin.y+frame.size.height);
+	CGFloat bottom = GetSystemMetrics( SM_YVIRTUALSCREEN ) + GetSystemMetrics( SM_CYVIRTUALSCREEN );
+	frame.origin.y = bottom - (frame.origin.y + frame.size.height);
+	visibleFrame.origin.y = bottom - (visibleFrame.origin.y + visibleFrame.size.height);
 
-   screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:frame] autorelease];
+	NSScreen *screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:visibleFrame] autorelease];
 
 #ifdef MONITORINFOF_PRIMARY
 #warning MONITORINFOF_PRIMARY now defined
@@ -172,30 +180,27 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 #define MONITORINFOF_PRIMARY 0x01
 #endif
 
-   if(info.dwFlags&MONITORINFOF_PRIMARY)
-    [array insertObject:screen atIndex:0];
-   else
-    [array addObject:screen];
+   if (info.dwFlags & MONITORINFOF_PRIMARY) [array insertObject:screen atIndex:0];
+   else [array addObject:screen];
 
    return TRUE;
 }
 
 -(NSArray *)screens {
-   HANDLE  library=LoadLibrary("USER32");
-   FARPROC enumDisplayMonitors=GetProcAddress(library,"EnumDisplayMonitors");
+	static FARPROC enumDisplayMonitors = NULL;
+	if (NULL == enumDisplayMonitors) {
+		HANDLE  library = LoadLibrary( "USER32" );
+		enumDisplayMonitors = GetProcAddress(library,"EnumDisplayMonitors");
+	}
+	
+	if(enumDisplayMonitors != NULL){
+		NSMutableArray *result = [NSMutableArray array];
+		enumDisplayMonitors( NULL, NULL, monitorEnumerator, result );
+		return result;
+	} else {
+		NSRect frame=NSMakeRect(0,0,GetSystemMetrics(SM_CXSCREEN),GetSystemMetrics(SM_CYSCREEN));
 
-   if(enumDisplayMonitors!=NULL){
-    NSMutableArray *result=[NSMutableArray array];
-
-    enumDisplayMonitors(NULL,NULL, monitorEnumerator,result);
-
-    return result;
-   }
-   else {
-    NSRect frame=NSMakeRect(0,0,GetSystemMetrics(SM_CXSCREEN),GetSystemMetrics(SM_CYSCREEN));
-// visibleFrame=SystemParametersInfo(SPI_GETWORKAREA,0,(LPVOID)&rectWorkArea,0);
-
-    return [NSArray arrayWithObject:[[[NSScreen alloc] initWithFrame:frame visibleFrame:frame] autorelease]];
+		return [NSArray arrayWithObject:[[[NSScreen alloc] initWithFrame:frame visibleFrame:frame] autorelease]];
    }
 }
 
