@@ -751,6 +751,15 @@
 		1ACAB28A108C5B010057A542 /* NSNumber_double_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ACAB27C108C5B010057A542 /* NSNumber_double_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1ACAB28B108C5B010057A542 /* NSNumber_BOOL_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ACAB27B108C5B010057A542 /* NSNumber_BOOL_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1ACAB28C108C5B010057A542 /* NSNumber_double_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ACAB27C108C5B010057A542 /* NSNumber_double_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		2692499F1157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A01157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A11157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A21157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A31157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A41157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A51157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A61157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
+		269249A71157AC7B00A96CEB /* NSCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692499E1157AC7B00A96CEB /* NSCondition.m */; };
 		28D485180FE04E7100DC03EF /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485190FE04E7100DC03EF /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D4851A0FE04E7100DC03EF /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -6718,6 +6727,7 @@
 		1A8A694E1091EF0200DC5A01 /* NSCFTypeID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCFTypeID.h; sourceTree = SOURCE_ROOT; };
 		1ACAB27B108C5B010057A542 /* NSNumber_BOOL_const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_BOOL_const.h; path = NSNumber/NSNumber_BOOL_const.h; sourceTree = "<group>"; };
 		1ACAB27C108C5B010057A542 /* NSNumber_double_const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_double_const.h; path = NSNumber/NSNumber_double_const.h; sourceTree = "<group>"; };
+		2692499E1157AC7B00A96CEB /* NSCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCondition.m; sourceTree = "<group>"; };
 		28D487A90FE04E7100DC03EF /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_xml1.h; sourceTree = "<group>"; };
 		6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_xml1.m; sourceTree = "<group>"; };
@@ -7852,6 +7862,7 @@
 		6E2803320974791700EC542B /* NSLock */ = {
 			isa = PBXGroup;
 			children = (
+				2692499E1157AC7B00A96CEB /* NSCondition.m */,
 				FED311CA0BCC0E1D00552615 /* NSConditionLock.h */,
 				FED311CB0BCC0E1D00552615 /* NSConditionLock.m */,
 				6E2803C609747B7100EC542B /* NSLock.h */,
@@ -12756,6 +12767,7 @@
 				FE3C474D112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF878115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8AF1152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A11157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13120,6 +13132,7 @@
 				FE3C474B112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF877115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8AD1152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A21157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13485,6 +13498,7 @@
 				FE3C4743112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF873115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A51152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A61157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13851,6 +13865,7 @@
 				FE3C4741112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF872115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A31152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A71157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14223,6 +14238,7 @@
 				FE3C473F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF871115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A11152743100B6D893 /* objc_malloc.m in Sources */,
+				2692499F1157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14589,6 +14605,7 @@
 				FE3C474F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF879115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8B11152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A01157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14958,6 +14975,7 @@
 				FE3C4749112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF876115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8AB1152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A31157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15328,6 +15346,7 @@
 				FE3C4745112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF874115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A71152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A51157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15698,6 +15717,7 @@
 				FE3C4747112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF875115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A91152743100B6D893 /* objc_malloc.m in Sources */,
+				269249A41157AC7B00A96CEB /* NSCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

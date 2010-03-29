@@ -25,5 +25,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
+@interface NSCondition : NSObject <NSLocking> {
+	NSString *name;
+}
+
+- (void)broadcast;
+- (void)signal;
+
+- (void)wait;
+- (BOOL)waitUntilDate:(NSDate *)limit;
+
+- (NSString *)name;
+- (void)setName:(NSString *)newName;
+
+@end
+
 #import <Foundation/NSConditionLock.h>
 #import <Foundation/NSRecursiveLock.h>
