@@ -62,6 +62,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)layoutFrameSizeWithWidth:(CGFloat)width;
 @end
 
+@interface NSWindow ()
+
+- (NSRect) zoomedFrame;
+
+@end
+
 @implementation NSWindow
 
 +(NSWindowDepth)defaultDepthLimit {
@@ -123,7 +129,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    _frame=[isa frameRectForContentRect:contentRect styleMask:styleMask];
    backgroundFrame.size=_frame.size;
-
+   _savedFrame = _frame;
+	
    _styleMask=styleMask;
    _backingType=backing;
 
@@ -1243,8 +1250,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)isZoomed {
-   NSUnimplementedMethod();
-   return 0;
+	NSRect zoomedFrame = [self zoomedFrame];
+	return NSEqualRects( _frame, zoomedFrame );
 }
 
 -(BOOL)isVisible {
@@ -2079,11 +2086,39 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)performZoom:sender {
-   NSUnimplementedMethod();
+	[self zoom: sender];
+}
+
+- (NSRect) zoomedFrame; 
+{
+	NSScreen *screen = [self screen];
+	NSRect zoomedFrame = [screen visibleFrame];
+	
+	if (_delegate && [_delegate respondsToSelector: @selector(windowWillUseStandardFrame:defaultFrame:)]) {
+		zoomedFrame = [_delegate windowWillUseStandardFrame: self defaultFrame: zoomedFrame];
+	} else if ([self respondsToSelector: @selector( windowWillUseStandardFrame:defaultFrame: )]) {
+		zoomedFrame = [self windowWillUseStandardFrame: self defaultFrame: zoomedFrame];
+	}
+	//	zoomedFrame = [self constrainFrameRect: zoomedFrame toScreen: screen];
+
+	return zoomedFrame;
 }
 
 -(void)zoom:sender {
-   NSUnimplementedMethod();
+	NSRect zoomedFrame = [self zoomedFrame];
+	if (NSEqualRects( _frame, zoomedFrame )) zoomedFrame = _savedFrame;
+	
+	BOOL shouldZoom = YES;
+	if (_delegate && [_delegate respondsToSelector: @selector( windowShouldZoom:toFrame: )]) {
+		shouldZoom = [_delegate windowShouldZoom: self toFrame: zoomedFrame];
+	} else if ([self respondsToSelector: @selector( windowShouldZoom:toFrame: )]) {
+		shouldZoom = [self windowShouldZoom: self toFrame: zoomedFrame];
+	}
+	
+	if (shouldZoom) {
+		_savedFrame = [self frame];
+		[self setFrame: zoomedFrame display: YES];
+	}
 }
 
 -(void)miniaturize:sender {
