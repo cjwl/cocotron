@@ -14,26 +14,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSOperation.h"
 #import <Foundation/NSThread.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSLock.h>
 
 #import "NSAtomicList.h"
-#import "NSLatchTrigger.h"
 #import <Foundation/NSRaise.h>
+#import <string.h>
 
+enum {
+	Priority_Count = 3
+};
 
 @interface NSOperationQueueImpl : NSObject
 {
-	NSThread*		_thread;
+	NSThread *_thread;
 	
-	NSLatchTrigger*	_trigger;
+	NSCondition *workAvailable;
+	NSCondition *suspendedCondition;
+	BOOL isSuspended;
 	
-	// NOTE: operations in lists are explicitly retained, must be released when popping
-	NSAtomicListRef	_operationList;
-	NSAtomicListRef	_highPriorityOperationList;
+	NSAtomicListRef queues[Priority_Count];
 }
 
-- (void)addOperation: (NSOperation *)op;
-- (void)addHighPriorityOperation: (NSOperation *)op;
+- (void)addOperation: (NSOperation *)op withPriority: (unsigned) priority;
 - (void)stop;
+
+- (void) suspend;
+- (void) resume;
+- (BOOL) isSuspended;
 
 @end
 
@@ -43,7 +50,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	if( (self = [super init]) )
 	{
-		_trigger = [[NSLatchTrigger alloc] init];
+		workAvailable = [[NSCondition alloc] init];
+		suspendedCondition = [[NSCondition alloc] init];
+		isSuspended = NO;
 		
 		_thread = [[NSThread alloc] initWithTarget: self selector: @selector( _workThread ) object: nil];
 		[_thread start];
@@ -51,44 +60,66 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return self;
 }
 
-- (NSOperation *)_popOperation: (NSAtomicListRef *)listPtr
+static id PopOperation( NSAtomicListRef *listPtr )
 {
 	return [(id)NSAtomicListPop( listPtr ) autorelease];
 }
 
+static void ClearList( NSAtomicListRef *listPtr )
+{
+	for (int i = 0; i < Priority_Count; i++) {
+		while (PopOperation( &listPtr[i] )) ;	
+	}
+}
+
 - (void)dealloc
 {
-	[_thread release];
-	[_trigger release];
+	[_thread release], _thread = nil;
+	[workAvailable release], workAvailable = nil;
+	[suspendedCondition release], suspendedCondition = nil;
 	
-	while( [self _popOperation: &_operationList] )
-		;
-	while( [self _popOperation: &_highPriorityOperationList] )
-		;
+	ClearList( queues );
 	
 	[super dealloc];
 }
 
-- (void)_addOperation: (NSOperation *)op toList: (NSAtomicListRef *)listPtr
+- (void) suspend;
 {
-	NSAtomicListInsert( listPtr, [op retain] );
-	[_trigger signal];
+	[suspendedCondition lock];
+	isSuspended = YES;
+	[suspendedCondition unlock];
 }
 
-- (void)addOperation: (NSOperation *)op
+- (void) resume;
 {
-	[self _addOperation: op toList: &_operationList];
+	[suspendedCondition lock];
+	if (isSuspended) {
+		isSuspended = NO;
+		[suspendedCondition broadcast];
+	}
+	[suspendedCondition unlock];
 }
 
-- (void)addHighPriorityOperation: (NSOperation *)op
+- (BOOL) isSuspended;
 {
-	[self _addOperation: op toList: &_highPriorityOperationList];
+	[suspendedCondition lock];
+	BOOL result = isSuspended;
+	[suspendedCondition unlock];
+	return result;
+}
+
+- (void)addOperation: (NSOperation *)op withPriority: (unsigned) priority;
+{
+	NSAssert( priority < Priority_Count, @"Invalid priority" );
+	NSAtomicListInsert( &queues[priority], [op retain] );
+	[workAvailable signal];
 }
 
 - (void)stop
 {
 	[_thread cancel];
-	[_trigger signal];
+	[self resume];
+	[workAvailable broadcast];
 }
 
 #pragma mark -
@@ -97,22 +128,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // if the list is empty, steal the source list into the given list and run an operation from it
 // if both are empty, do nothing
 // returns YES if an operation was executed, NO otherwise
-- (BOOL)_runOperationFromList: (NSAtomicListRef *)listPtr sourceList: (NSAtomicListRef *)sourceListPtr
+// - (BOOL)_runOperationFromList: (NSAtomicListRef *)listPtr sourceList: (NSAtomicListRef *)sourceListPtr
+static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *sourceListPtr )
 {
-	NSOperation *op = [self _popOperation: listPtr];
-	if( !op )
-	{
+	NSOperation *op = PopOperation( listPtr );
+	if( !op ) {
 		*listPtr = NSAtomicListSteal( sourceListPtr );
 		// source lists are in LIFO order, but we want to execute operations in the order they were enqueued
 		// so we reverse the list before we do anything with it
 		NSAtomicListReverse( listPtr );
-		op = [self _popOperation: listPtr];
+		op = PopOperation( listPtr );
 	}
 	
-	if( op )
-		[op start];
+	if (op) {
+		if ([op isReady]) [op start];
+		else NSAtomicListInsert( sourceListPtr, [op retain] );
+	}
 	
 	return op != nil;
+}
+
+- (BOOL) hasMoreWork;
+{
+	for (int i = 0; i < Priority_Count; i++) if (0 != queues[i]) return YES;
+	return NO;
 }
 
 - (void)_workThread
@@ -121,36 +160,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	NSThread *thread = [NSThread currentThread];
 	
-	NSAtomicListRef operations = NULL;
-	NSAtomicListRef highPriorityOperations = NULL;
+	NSAtomicListRef myQueues[Priority_Count];
+	memset( myQueues, 0, sizeof( myQueues ) );
 	
 	NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
 	
 	BOOL didRun = NO;
 	while( ![thread isCancelled] )
 	{
-		if( !didRun )
-			[_trigger wait];
+		[suspendedCondition lock];
+		while (isSuspended) [suspendedCondition wait];
+		[suspendedCondition unlock];
 		
-		// first attempt to run a high-priority operation
-		didRun = [self _runOperationFromList: &highPriorityOperations
-									   sourceList: &_highPriorityOperationList];
-		// if no high priority operation could be run, then attempt to run a low-priority operation
-		if( !didRun )
-			didRun = [self _runOperationFromList: &operations
-									  sourceList: &_operationList];
+		if( !didRun ) {
+			[workAvailable lock];
+			while (![self hasMoreWork] && ![thread isCancelled]) [workAvailable wait];
+			[workAvailable unlock];
+		}
+		
+		for (int i = 0; i < Priority_Count; i++) {
+			didRun = RunOperationFromLists( &myQueues[i], &queues[i] );
+			if (didRun) break;
+		}
 		
 		[innerPool release];
 		innerPool = [[NSAutoreleasePool alloc] init];
-		
 	}
 	
 	[innerPool release];
 	
-	while( [self _popOperation: &operations] )
-		;
-	while( [self _popOperation: &highPriorityOperations] )
-		;
+	// This thread got cancelled, so insert all of its operations back into the main queue.
+	// The thread pool could have been reduced and then other threads should do this thread's work.
+	for (int i = 0; i < Priority_Count; i++) {
+		id op = 0;
+		while ((op = (id)NSAtomicListPop( &myQueues[i] ))) {
+			NSAtomicListInsert( &queues[i], op );
+		}
+	}
+	
+	ClearList( myQueues );
 	
 	[outerPool release];
 }
@@ -179,8 +227,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)addOperation: (NSOperation *)op
 {
-	if ([op queuePriority] > NSOperationQueuePriorityNormal) [_impl addHighPriorityOperation: op];
-	else [_impl addOperation: op];
+	unsigned priority = 1;
+	if ([op queuePriority] < NSOperationQueuePriorityNormal) priority = 2;
+	else if ([op queuePriority] > NSOperationQueuePriorityNormal) priority = 0;
+	
+	[_impl addOperation: op withPriority: priority];
 }
 
 - (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
@@ -225,13 +276,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (BOOL)isSuspended;
 {
-	NSUnimplementedMethod();
-	return NO;
+	return [_impl isSuspended];
 }
 
 - (void)setSuspended:(BOOL)suspend;
 {
-	NSUnimplementedMethod();
+	if (suspend) [_impl suspend];
+	else [_impl resume];
 }
 
 - (void)waitUntilAllOperationsAreFinished;
