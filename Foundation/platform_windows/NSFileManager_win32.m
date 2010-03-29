@@ -338,48 +338,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithCString:string length:length];
 }
 
--(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
-   NSUInteger i,length=[path length];
-   unichar  buffer[length];
-   BOOL     converted=NO;
+static NSString *TranslatePath( NSString *path )
+{
+    NSUInteger length = [path length];
+    if (0 == length) return path;
+    
+    unichar buffer[length];
+    
+    [path getCharacters:buffer];
 
-   [path getCharacters:buffer];
+    BOOL converted=NO;
 
-   for(i=0;i<length;i++){
-    if(buffer[i]=='/'){
-     buffer[i]='\\';
-     converted=YES;
+    for (NSUInteger i = 0; i < length; i++ ) {
+        if (buffer[i] == '/') {
+            buffer[i] = '\\';
+            converted = YES;
+        }
     }
-   }
+    
+    unichar *begin = buffer;
+    if (length >= 4 && begin[0] == '\\' && (begin[2] == ':' || begin[2] == '|') && begin[3] == '\\') {
+        // Begin of path matches URL style drive spec \c:\path or \c|\path, both need to be translated to c:\path
+        begin[2] = ':';
+        converted = YES;
+        ++begin; 
+        --length;
+    }
 
-   if(converted){
-    //NSLog(@"%s %@",sel_getName(_cmd),path);
-    path=[NSString stringWithCharacters:buffer length:length];
-   }
+    if (converted) {
+        path = [NSString stringWithCharacters:begin length:length];
+    }
+    
+    return path;
+}
 
-   return (const unichar *)[path cStringUsingEncoding:NSUnicodeStringEncoding];
+-(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
+    path = TranslatePath( path );
+    return (const unichar *)[path cStringUsingEncoding:NSUnicodeStringEncoding];
 }
 
 -(const char*)fileSystemRepresentationWithPath:(NSString *)path {
-	NSUInteger i,length=[path length];
-	char  buffer[length];
-	BOOL     converted=NO;
-	
-	[path getCString:buffer];
-	
-	for(i=0;i<length;i++){
-		if(buffer[i]=='/'){
-			buffer[i]='\\';
-			converted=YES;
-		}
-	}
-	
-	if(converted){
-		//NSLog(@"%s %@",sel_getName(_cmd),path);
-		path=[NSString stringWithCString:buffer length:length];
-	}
-	//	NSLog(path);
-   return [path cString];
+    path = TranslatePath( path );
+    return [path cString];
 }
 
 
