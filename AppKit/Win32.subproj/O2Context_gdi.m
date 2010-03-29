@@ -531,18 +531,18 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
     XFORM rotate={cos(angle),sin(angle),-sin(angle),cos(angle),0,0};
      
     if(!GetWorldTransform(_dc,&current))
-     NSLog(@"GetWorldTransform failed");
+     NSLog(@"GetWorldTransform failed %s %d",__FILE__,__LINE__);
      
     if(!ModifyWorldTransform(_dc,&rotate,MWT_RIGHTMULTIPLY))
      NSLog(@"ModifyWorldTransform failed");
     if(!ModifyWorldTransform(_dc,&translate,MWT_RIGHTMULTIPLY))
-     NSLog(@"ModifyWorldTransform failed");
+     NSLog(@"ModifyWorldTransform failed %s %d",__FILE__,__LINE__);
     
     if(!gradientFill(_dc,vertices,vertexIndex,rect,rectIndex,GRADIENT_FILL_RECT_H))
-     NSLog(@"GradientFill failed");
+     NSLog(@"GradientFill failed %s %d",__FILE__,__LINE__);
 
     if(!SetWorldTransform(_dc,&current))
-     NSLog(@"GetWorldTransform failed");
+     NSLog(@"GetWorldTransform failed %s %d",__FILE__,__LINE__);
    }
 }
 

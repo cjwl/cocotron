@@ -177,10 +177,10 @@ void O2DeviceContextClipToPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O
    XFORM userToDevice={deviceXFORM.a,deviceXFORM.b,deviceXFORM.c,deviceXFORM.d,deviceXFORM.tx,deviceXFORM.ty};
 
    if(!GetWorldTransform(dc,&current))
-    NSLog(@"GetWorldTransform failed");
+    NSLog(@"GetWorldTransform failed %s %d",__FILE__,__LINE__);
 
    if(!SetWorldTransform(dc,&userToDevice))
-    NSLog(@"ModifyWorldTransform failed");
+    NSLog(@"ModifyWorldTransform failed %s %d",__FILE__,__LINE__);
 
    O2DeviceContextEstablishDeviceSpacePath_gdi(dc,path,xform);
    SetPolyFillMode(dc,evenOdd?ALTERNATE:WINDING);
@@ -188,7 +188,7 @@ void O2DeviceContextClipToPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O
     NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),O2PathNumberOfElements(path));
 
    if(!SetWorldTransform(dc,&current))
-    NSLog(@"SetWorldTransform failed");
+    NSLog(@"SetWorldTransform failed %s %d",__FILE__,__LINE__);
 }
 
 void O2DeviceContextClipToNonZeroPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM){

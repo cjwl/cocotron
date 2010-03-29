@@ -112,7 +112,7 @@ BOOL O2PDFGetPageArrayForKey(O2PDFPage *page,const char *key,O2PDFArray **arrayp
 }
 
 
--(O2AffineTransform)drawingTransformForBox:(O2PDFBox)box inRect:(O2Rect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio {
+O2AffineTransform O2PDFPageGetDrawingTransform(O2PDFPageRef self,O2PDFBox box,O2Rect rect,int clockwiseDegrees,bool preserveAspectRatio) {
    O2AffineTransform result=O2AffineTransformIdentity;
    O2Rect boxRect;
    
@@ -121,7 +121,7 @@ BOOL O2PDFGetPageArrayForKey(O2PDFPage *page,const char *key,O2PDFArray **arrayp
     result=O2AffineTransformTranslate(result,rect.origin.x,rect.origin.y);
     result=O2AffineTransformScale(result,rect.size.width/boxRect.size.width,rect.size.height/boxRect.size.height);
    }
-   
+
    return result;
 }
 

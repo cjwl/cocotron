@@ -90,7 +90,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
    
    CGContextSaveGState(context);
-   CGContextConcatCTM(context,CGPDFPageGetDrawingTransform(page,kCGPDFMediaBox,rect,0,NO));
+
+   CGAffineTransform xform=CGPDFPageGetDrawingTransform(page,kCGPDFMediaBox,rect,0,NO);
+   
+   CGContextConcatCTM(context,xform);
    CGContextDrawPDFPage(context,page);
    CGContextRestoreGState(context);
    return YES;

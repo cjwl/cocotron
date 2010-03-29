@@ -1380,7 +1380,7 @@
 		C8A2E5680F07EA1F0054397C /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		C8A2E5690F07EA1F0054397C /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		C8A2E56A0F07EA1F0054397C /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
-		C8A2E56B0F07EA1F0054397C /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
+		C8A2E56B0F07EA1F0054397C /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
 		C8A2E56D0F07EA1F0054397C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		C8A2E6080F07F4540054397C /* O2Context_cairo.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* O2Context_cairo.h */; };
 		C8AB730A0F40C21A00D93B96 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2924,7 +2924,7 @@
 		FE5A8BD710C6F50E005E348A /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		FE5A8BD810C6F50E005E348A /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		FE5A8BD910C6F50E005E348A /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
-		FE5A8BDA10C6F50E005E348A /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
+		FE5A8BDA10C6F50E005E348A /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
 		FE5A8BDB10C6F50E005E348A /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
 		FE5A8BDD10C6F50E005E348A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FE5C69A10D76039F00098551 /* O2DeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* O2DeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3553,7 +3553,7 @@
 		FEA316410FD5667D00F480D4 /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		FEA316420FD5667D00F480D4 /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		FEA316430FD5667D00F480D4 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
-		FEA316440FD5667D00F480D4 /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
+		FEA316440FD5667D00F480D4 /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
 		FEA316450FD5667D00F480D4 /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
 		FEA316470FD5667D00F480D4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FEA317C20FD5893300F480D4 /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317C10FD5893300F480D4 /* NSRaise.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3621,8 +3621,8 @@
 		FEE7E0B710E26487004A50F8 /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7E0B610E26487004A50F8 /* CGLContext.m */; };
 		FEE7E0B810E26487004A50F8 /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7E0B610E26487004A50F8 /* CGLContext.m */; };
 		FEE7E0B910E26487004A50F8 /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7E0B610E26487004A50F8 /* CGLContext.m */; };
-		FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
-		FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
+		FEED247A0EC9E8F200A5B07E /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
+		FEED247B0EC9E8F200A5B07E /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
 		FEF0889F10C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
 		FEF088A010C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
 		FEF088A110C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
@@ -4713,7 +4713,7 @@
 		FEDF951C0CAF43E7009DC96F /* O2PDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2PDFContext.m; sourceTree = "<group>"; };
 		FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSToolbarOverflowArrow.pdf; sourceTree = "<group>"; };
 		FEE7E0B610E26487004A50F8 /* CGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGLContext.m; sourceTree = "<group>"; };
-		FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSImageNameRefreshTemplate.pdf; sourceTree = "<group>"; };
+		FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSRefreshTemplate.pdf; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF0889E10C5B06400D38A2F /* CGImageDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageDestination.m; sourceTree = "<group>"; };
 		FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_gdiView.h; sourceTree = "<group>"; };
@@ -5142,7 +5142,7 @@
 			children = (
 				C829A6B210FFA2D100A2306E /* NSGoRightTemplate.pdf */,
 				C829A6A210FF911400A2306E /* NSGoLeftTemplate.pdf */,
-				FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */,
+				FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */,
 				FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */,
 				FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */,
 				FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */,
@@ -8111,7 +8111,7 @@
 				C88977020EA0BF3100D0A0A2 /* defaultBindingOptions.plist in Resources */,
 				C88977030EA0BF3100D0A0A2 /* NSApplicationIcon.tiff in Resources */,
 				C88977040EA0BF3100D0A0A2 /* NSSystemInfoPanel.nib in Resources */,
-				FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FEED247B0EC9E8F200A5B07E /* NSRefreshTemplate.pdf in Resources */,
 				FEE36B810F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
 				C829A6A410FF911F00A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
@@ -8161,7 +8161,7 @@
 				C8A2E5680F07EA1F0054397C /* defaultBindingOptions.plist in Resources */,
 				C8A2E5690F07EA1F0054397C /* NSApplicationIcon.tiff in Resources */,
 				C8A2E56A0F07EA1F0054397C /* NSSystemInfoPanel.nib in Resources */,
-				C8A2E56B0F07EA1F0054397C /* NSImageNameRefreshTemplate.pdf in Resources */,
+				C8A2E56B0F07EA1F0054397C /* NSRefreshTemplate.pdf in Resources */,
 				FEE36B820F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
 				C829A6A510FF912000A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
@@ -8211,7 +8211,7 @@
 				FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */,
 				FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */,
 				FE8286820D34727900F7489F /* NSSystemInfoPanel.nib in Resources */,
-				FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FEED247A0EC9E8F200A5B07E /* NSRefreshTemplate.pdf in Resources */,
 				FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
 				C829A6A310FF911400A2306E /* NSGoLeftTemplate.pdf in Resources */,
 				C829A6B310FFA2D100A2306E /* NSGoRightTemplate.pdf in Resources */,
@@ -8262,7 +8262,7 @@
 				FE5A8BD710C6F50E005E348A /* defaultBindingOptions.plist in Resources */,
 				FE5A8BD810C6F50E005E348A /* NSApplicationIcon.tiff in Resources */,
 				FE5A8BD910C6F50E005E348A /* NSSystemInfoPanel.nib in Resources */,
-				FE5A8BDA10C6F50E005E348A /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FE5A8BDA10C6F50E005E348A /* NSRefreshTemplate.pdf in Resources */,
 				FE5A8BDB10C6F50E005E348A /* NSToolbarOverflowArrow.pdf in Resources */,
 				C829A6A710FF912200A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);
@@ -8312,7 +8312,7 @@
 				FEA316410FD5667D00F480D4 /* defaultBindingOptions.plist in Resources */,
 				FEA316420FD5667D00F480D4 /* NSApplicationIcon.tiff in Resources */,
 				FEA316430FD5667D00F480D4 /* NSSystemInfoPanel.nib in Resources */,
-				FEA316440FD5667D00F480D4 /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FEA316440FD5667D00F480D4 /* NSRefreshTemplate.pdf in Resources */,
 				FEA316450FD5667D00F480D4 /* NSToolbarOverflowArrow.pdf in Resources */,
 				C829A6A610FF912100A2306E /* NSGoLeftTemplate.pdf in Resources */,
 			);

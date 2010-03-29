@@ -66,6 +66,7 @@ static inline O2GState *currentState(O2Context *self){
    O2ContextDeviceClipToEvenOddPath_builtin(self,path);
    
    O2GState *state=currentState(self);
+
    if(_dc!=NULL)
     O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
 }

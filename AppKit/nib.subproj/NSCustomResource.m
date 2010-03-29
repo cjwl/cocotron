@@ -35,16 +35,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -awakeAfterUsingCoder:(NSCoder *)coder {
    if([_className isEqualToString:@"NSImage"]){
-    NSImage *image;
+    NSImage *image=[NSImage imageNamed:_resourceName];
     
-    if([_resourceName isEqualToString:@"NSRefreshTemplate"]){
-     image=[NSImage imageNamed:@"NSImageNameRefreshTemplate"];
-     [image setSize:NSMakeSize(12,12)];
-    }
-    else {
-     image=[NSImage imageNamed:_resourceName];
-    }
-        
     if(image!=nil){
         [self release];
         return [image retain];
