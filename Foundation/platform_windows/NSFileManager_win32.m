@@ -47,35 +47,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)attributesOfItemAtPath:(NSString *)path error:(NSError **)error {
-   NSMutableDictionary       *result=[NSMutableDictionary dictionary];
    WIN32_FILE_ATTRIBUTE_DATA  fileData;
-   NSDate                    *date;
 
-   if(!GetFileAttributesExW([path fileSystemRepresentationW],GetFileExInfoStandard,&fileData))
-    return nil;
+   if (!GetFileAttributesExW( [path fileSystemRepresentationW],GetFileExInfoStandard,&fileData) ) {
+	   // TODO: set error
+	   return nil;
+   }
 
-   date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
-   [result setObject:date forKey:NSFileModificationDate];
+	NSMutableDictionary *result = [NSMutableDictionary dictionary];
+	NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
+	[result setObject:date forKey:NSFileModificationDate];
 
-   // dth
-   NSString* fileType = NSFileTypeRegular;
-   if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-          fileType = NSFileTypeDirectory;
-   // FIX: Support for links and other attributes needed!
+	NSString *fileType = NSFileTypeRegular;
+	if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) fileType = NSFileTypeDirectory;
+	
+	[result setObject:fileType forKey:NSFileType];
+	[result setObject:@"USER" forKey:NSFileOwnerAccountName];
+	[result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
+	[result setObject:[NSNumber numberWithUnsignedLong:0666] forKey:NSFilePosixPermissions];
 
-   [result setObject:fileType forKey:NSFileType];
-   [result setObject:@"USER" forKey:NSFileOwnerAccountName];
-   [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
-   [result setObject:[NSNumber numberWithUnsignedLong:0666]
-              forKey:NSFilePosixPermissions];
 	uint64_t sizeOfFile = fileData.nFileSizeLow;
 	uint64_t sizeHigh = fileData.nFileSizeHigh;
 	sizeOfFile |= sizeHigh << 32;
 	
-	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile]
-			   forKey:NSFileSize];	
+	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile] forKey:NSFileSize];	
 
-   return result;
+	return result;
 }
 
 -(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error {
@@ -232,36 +229,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)fileAttributesAtPath:(NSString *)path traverseLink:(BOOL)traverse {
-// FIXME: use attributesOfItemAtPath
-   NSMutableDictionary       *result=[NSMutableDictionary dictionary];
-   WIN32_FILE_ATTRIBUTE_DATA  fileData;
-   NSDate                    *date;
-
-   if(!GetFileAttributesExW([path fileSystemRepresentationW],GetFileExInfoStandard,&fileData))
-    return nil;
-
-   date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
-   [result setObject:date forKey:NSFileModificationDate];
-
-   // dth
-   NSString* fileType = NSFileTypeRegular;
-   if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-          fileType = NSFileTypeDirectory;
-   // FIX: Support for links and other attributes needed!
-
-   [result setObject:fileType forKey:NSFileType];
-   [result setObject:@"USER" forKey:NSFileOwnerAccountName];
-   [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
-   [result setObject:[NSNumber numberWithUnsignedLong:0666]
-              forKey:NSFilePosixPermissions];
-	uint64_t sizeOfFile = fileData.nFileSizeLow;
-	uint64_t sizeHigh = fileData.nFileSizeHigh;
-	sizeOfFile |= sizeHigh << 32;
-	
-	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile]
-			   forKey:NSFileSize];	
-
-   return result;
+	return [self attributesOfItemAtPath: path error: 0];
 }
 
 -(BOOL)isReadableFileAtPath:(NSString *)path {
