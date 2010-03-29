@@ -1,0 +1,7 @@
+syntax: glob
+*.mode1
+*.mode1v3
+*.pbxuser
+*.perspectivev3
+*.mode2v3
+build
