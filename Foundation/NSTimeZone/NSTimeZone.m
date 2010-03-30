@@ -7,7 +7,6 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSTimeZone.h>
-#import <Foundation/NSTimeZone_concrete.h>
 #import <Foundation/NSTimeZone_absolute.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSRaise.h>
@@ -16,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSPlatform.h>
+#include <stdio.h>
 
 NSString * const NSSystemTimeZoneDidChangeNotification=@"NSSystemTimeZoneDidChangeNotification";
 
@@ -25,6 +25,13 @@ static NSTimeZone *_localTimeZone=nil;
 
 @implementation NSTimeZone
 
++allocWithZone:(NSZone *)zone {
+    if(self==[NSTimeZone class])
+        return NSAllocateObject([[NSPlatform currentPlatform] timeZoneClass],0,zone);
+    else
+        return NSAllocateObject(self,0,zone);
+}
+
 +(NSTimeZone *)localTimeZone {
     if (_localTimeZone == nil)
         _localTimeZone = [self defaultTimeZone];
@@ -33,15 +40,16 @@ static NSTimeZone *_localTimeZone=nil;
 }
 
 +(NSTimeZone *)systemTimeZone {
-    if (_systemTimeZone == nil) {
-        _systemTimeZone = [[[NSPlatform currentPlatform] systemTimeZone] copy];
+    if (_systemTimeZone == nil) { 
+        _systemTimeZone = [[[[NSPlatform currentPlatform] timeZoneClass] systemTimeZone] retain];        
     }
+
     return _systemTimeZone;
 }
 
 +(NSTimeZone *)defaultTimeZone {
     if (_defaultTimeZone == nil)
-        _defaultTimeZone = [self systemTimeZone];
+        _defaultTimeZone = [[self systemTimeZone] retain];
     
     return _defaultTimeZone;
 }
@@ -52,19 +60,22 @@ static NSTimeZone *_localTimeZone=nil;
 }
 
 +(void)setDefaultTimeZone:(NSTimeZone *)timeZone {
-    [_defaultTimeZone release];
+    [_defaultTimeZone autorelease];
     _defaultTimeZone = [timeZone retain];
 }
 
 +(NSArray *)knownTimeZoneNames {
-   static NSDictionary *_regionsDictionary = nil;
+    
+    return nil;
+
+  /* static NSDictionary *_regionsDictionary = nil;
     if (_regionsDictionary == nil) {
         NSString *pathToPlist = [[NSBundle bundleForClass:self] pathForResource:@"NSTimeZoneRegions"
                                                                          ofType:@"plist"];
         _regionsDictionary = [[NSDictionary allocWithZone:NULL] initWithContentsOfFile:pathToPlist];
     }
 
-    return [_regionsDictionary allKeys];
+    return [_regionsDictionary allKeys];*/
 }
 
 +(NSDictionary *)abbreviationDictionary {
@@ -79,11 +90,8 @@ static NSTimeZone *_localTimeZone=nil;
 }
 
 -initWithName:(NSString *)name data:(NSData *)data {
-    id retValue = [[NSTimeZone_concrete allocWithZone:NULL] initWithName:name data:data];
-
-    [self dealloc];
-    
-    return retValue;
+    NSInvalidAbstractInvocation();
+    return nil;
 }
 
 -initWithName:(NSString *)name {
@@ -126,13 +134,11 @@ static NSTimeZone *_localTimeZone=nil;
 }
 
 -(NSString *)name {
-    NSInvalidAbstractInvocation();
-    return nil;
+    return _name;
 }
 
 -(NSData *)data {
-    NSInvalidAbstractInvocation();
-    return nil;
+    return _data;
 }
 
 -(BOOL)isEqual:other {

@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 
 // given in spec. is this a default someplace?
-static NSString *DEFAULT_CALENDAR_FORMAT = @"%Y-%m-%d %H:%M:%S %z";
+static NSString * const defaultCalendarDate = @"%Y-%m-%d %H:%M:%S %z";
 
 @implementation NSCalendarDate
 
@@ -24,7 +24,7 @@ static NSString *DEFAULT_CALENDAR_FORMAT = @"%Y-%m-%d %H:%M:%S %z";
 
 -initWithTimeIntervalSinceReferenceDate:(NSTimeInterval)seconds {
     _timeInterval=seconds;
-    _format=DEFAULT_CALENDAR_FORMAT;
+    _format=[defaultCalendarDate retain];
     _timeZone=[[NSTimeZone defaultTimeZone] retain];
 
     return self;
@@ -44,7 +44,7 @@ timeZone:(NSTimeZone *)aTimeZone; {
 	NSTimeInterval interval = NSTimeIntervalWithComponents(year, month, day, hour, minute, 
 second, 0);
 	NSTimeZone *tz = (aTimeZone == nil ? [NSTimeZone localTimeZone] : aTimeZone);
-	interval = interval - [tz secondsFromGMT];
+	interval = interval - [tz secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
 	
 	[self initWithTimeIntervalSinceReferenceDate: interval];
     [_timeZone release];
@@ -76,7 +76,7 @@ second, 0);
 }
 
 -initWithString:(NSString *)string {
-    return [self initWithString:string calendarFormat:DEFAULT_CALENDAR_FORMAT];
+    return [self initWithString:string calendarFormat:defaultCalendarDate];
 }
 
 -(void)dealloc {

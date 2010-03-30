@@ -169,7 +169,7 @@ NSWeekDayNameArray];
 
 NSTimeInterval NSAdjustTimeIntervalWithTimeZone(NSTimeInterval interval,
                                                 NSTimeZone *timeZone) {
-    return interval+[timeZone secondsFromGMT];
+    return interval + [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
 }
 
 #define NSDaysOfCommonEraOfReferenceDate	730486
@@ -506,8 +506,13 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
                         [result appendString:[timeZone name]];
                         break;
 
-                    case 'z':
-                        [result appendString:[timeZone abbreviationForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]]];
+                    case 'z': {
+                        NSInteger  secondsFromGMT = [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
+                        [result appendString:[[NSString allocWithZone:NULL] initWithFormat:@"%@%02d%02d",
+                                                                          (secondsFromGMT >= 0 ? @"+" : @""),
+                                                                          secondsFromGMT/3600,
+                                                                          (secondsFromGMT % 3600)/60]];
+                    }
                         break;
                 }
                 state=STATE_SCANNING;
@@ -798,9 +803,7 @@ NSDictionary *locale) {
     timeInterval = NSTimeIntervalWithComponents(years, months, days, hours, minutes, seconds, milliseconds);
     timeInterval += adjustment;
 
-    // adjusting twice "makes it work", dunno why though.
-    timeInterval = NSAdjustTimeIntervalWithTimeZone(timeInterval, timeZone);
-    timeInterval = NSAdjustTimeIntervalWithTimeZone(timeInterval, timeZone);
+	timeInterval = timeInterval-[timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval]];
 
     calendarDate = [[[NSCalendarDate allocWithZone:NULL] 
 initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];

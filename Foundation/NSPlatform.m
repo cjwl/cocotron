@@ -57,6 +57,11 @@ extern NSString *NSPlatformClassName;
    return Nil;
 }
 
+-(Class)timeZoneClass {
+   NSInvalidAbstractInvocation();
+   return Nil;
+}
+
 -(NSString *)userName {
    NSInvalidAbstractInvocation();
    return nil;

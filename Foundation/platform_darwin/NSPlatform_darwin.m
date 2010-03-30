@@ -45,44 +45,6 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
 
 @implementation NSPlatform_darwin
 
-/*
-     The external time_t variable altzone  contains  the  differ-
-     ence, in seconds, between Coordinated Universal Time and the
-     alternate time zone. The external variable timezone contains
-     the  difference,  in seconds, between UTC and local standard
-     time.  The external variable daylight indicates whether time
-     should  reflect  daylight  savings  time.  Both timezone and
-     altzone default to 0 (UTC). The external  variable  daylight
-     is  non-zero if an alternate time zone exists. The time zone
-     names are contained in the external variable  tzname,  which
-     by default is set to:
- */
--(NSTimeZone *)systemTimeZone {
-   NSTimeZone *systemTimeZone;
-    NSString *timeZoneName;
-    NSInteger secondsFromGMT;
-
-#if 0		// time zone method 1. not great.
-   tzset();
-   printf("abbrev is %s\n", __tzname[__daylight]); 
-   printf("TZ is %s tzname is %s\n", getenv("TZ"), tzname[1]);
-   systemTimeZone = [[NSTimeZone timeZoneWithAbbreviation:[NSString stringWithCString:__tzname[__daylight]]] retain];
-#endif
-
-#if 0		// more anomalous results...
-   systemTimeZone = [[NSTimeZone alloc] initWithName:@"SolarisSystem" 
-               data:[NSData dataWithContentsOfFile:@"/etc/localtime"]];
-#endif
-
-   // similar to Win32's implementation
-   tzset();
-
-   secondsFromGMT = -timezone + daylight*3600;
-   systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
-
-   return systemTimeZone;
-}
-
 // nanosleep() is IEEE Std 1003.1b-1993, POSIX.1
 // This can probably move down to NSPlatform_posix
 

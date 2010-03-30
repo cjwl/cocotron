@@ -8,8 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSTimeZone.h>
 
-@interface NSTimeZone_absolute : NSTimeZone <NSCopying, NSCoding> {
-    NSString *_name;
+@interface NSTimeZone_absolute : NSTimeZone {
     NSString *_abbreviation;
     NSInteger _secondsFromGMT;
 }

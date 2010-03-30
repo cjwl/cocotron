@@ -25,39 +25,6 @@ NSString *NSPlatformClassName=@"NSPlatform_linux";
 
 @implementation NSPlatform_linux
 
-// FIX messy
-extern char *__tzname[2];
-extern int __daylight;
-extern long int __timezone;
-
--(NSTimeZone *)systemTimeZone {
-   NSTimeZone *systemTimeZone;
-    NSString *timeZoneName;
-    int secondsFromGMT;
-
-#if 0		// time zone method 1. not great.
-   tzset();
-   printf("abbrev is %s\n", __tzname[__daylight]); 
-   printf("TZ is %s tzname is %s\n", getenv("TZ"), tzname[1]);
-   systemTimeZone = [[NSTimeZone timeZoneWithAbbreviation:[NSString stringWithCString:__tzname[__daylight]]] retain];
-#endif
-
-#if 0		// more anomalous results...
-   systemTimeZone = [[NSTimeZone alloc] initWithName:@"LinuxSystem" 
-               data:[NSData dataWithContentsOfFile:@"/etc/localtime"]];
-#endif
-
-   // similar to Win32's implementation
-   // extern long int __timezone;   /* Seconds west of UTC.  */
-   // this is really somewhat ugly, but /etc/localtime (above) should "just
-   // work" and it does not.
-   tzset();
-   secondsFromGMT = 0-__timezone + __daylight*3600;
-   systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
-
-   return systemTimeZone;
-}
-
 /*
  BSD  4.3.  The SUSv2 version returns int, and this is also
  the prototype used by glibc 2.2.2.  Only the EINVAL  error

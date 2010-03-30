@@ -194,7 +194,6 @@
 		15D91FBA105E918000171406 /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15D91FBB105E918000171406 /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15D91FBC105E918000171406 /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		15D91FBD105E918000171406 /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FBE105E918000171406 /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FBF105E918000171406 /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FC0105E918000171406 /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -499,7 +498,6 @@
 		15D920ED105E918000171406 /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		15D920EE105E918000171406 /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		15D920EF105E918000171406 /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		15D920F0105E918000171406 /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		15D920F1105E918000171406 /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		15D920F2105E918000171406 /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		15D920F3105E918000171406 /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -911,7 +909,6 @@
 		28D485B50FE04E7100DC03EF /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28D485B60FE04E7100DC03EF /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28D485B70FE04E7100DC03EF /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		28D485B80FE04E7100DC03EF /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485B90FE04E7100DC03EF /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485BA0FE04E7100DC03EF /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485BB0FE04E7100DC03EF /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1207,7 +1204,6 @@
 		28D486DF0FE04E7100DC03EF /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		28D486E00FE04E7100DC03EF /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		28D486E10FE04E7100DC03EF /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		28D486E20FE04E7100DC03EF /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		28D486E30FE04E7100DC03EF /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		28D486E40FE04E7100DC03EF /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		28D486E50FE04E7100DC03EF /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -1566,7 +1562,6 @@
 		6E4D92380A2642BD003D335C /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D92390A2642BD003D335C /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D923A0A2642BD003D335C /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D923B0A2642BD003D335C /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D923C0A2642BD003D335C /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D923D0A2642BD003D335C /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D923E0A2642BD003D335C /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1739,7 +1734,6 @@
 		6E4D92FC0A2642BD003D335C /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		6E4D92FD0A2642BD003D335C /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		6E4D92FE0A2642BD003D335C /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		6E4D92FF0A2642BD003D335C /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		6E4D93000A2642BD003D335C /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		6E4D93010A2642BD003D335C /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		6E4D93040A2642BD003D335C /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -1933,7 +1927,6 @@
 		6EA0498809E57D5F0067589C /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0498909E57D5F0067589C /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0498A09E57D5F0067589C /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0498B09E57D5F0067589C /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0498C09E57D5F0067589C /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0498D09E57D5F0067589C /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0498E09E57D5F0067589C /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2097,7 +2090,6 @@
 		6EA04A4109E57D5F0067589C /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		6EA04A4209E57D5F0067589C /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		6EA04A4309E57D5F0067589C /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		6EA04A4409E57D5F0067589C /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		6EA04A4509E57D5F0067589C /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		6EA04A4609E57D5F0067589C /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		6EA04A4909E57D5F0067589C /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -2139,6 +2131,25 @@
 		6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
+		C6BC3CB11162303400DFC16C /* NSTimeZone_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */; };
+		C6BC3CB21162303400DFC16C /* NSTimeZone_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */; };
+		C6BC3CB51162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CB61162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CB71162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CB81162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CB91162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CBA1162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CBB1162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CBC1162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CBD1162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CBE1162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CBF1162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CC01162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CC11162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CC21162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CC31162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; };
+		C6BC3CC41162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
+		C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */; };
 		C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */; };
 		C816EBEF0F0A763500EDC3EB /* NSDarwinString.h in Headers */ = {isa = PBXBuildFile; fileRef = C816EBED0F0A763500EDC3EB /* NSDarwinString.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C816EBF00F0A763500EDC3EB /* NSDarwinString.m in Sources */ = {isa = PBXBuildFile; fileRef = C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */; };
@@ -2386,7 +2397,6 @@
 		FE01A6480C5D9B6900AEA51A /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A6490C5D9B6900AEA51A /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A64A0C5D9B6900AEA51A /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A64B0C5D9B6900AEA51A /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A64C0C5D9B6900AEA51A /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A64D0C5D9B6900AEA51A /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A64E0C5D9B6900AEA51A /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2648,7 +2658,6 @@
 		FE01A75B0C5D9B6900AEA51A /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		FE01A75C0C5D9B6900AEA51A /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		FE01A75D0C5D9B6900AEA51A /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		FE01A75E0C5D9B6900AEA51A /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		FE01A75F0C5D9B6900AEA51A /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		FE01A7600C5D9B6900AEA51A /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		FE01A7610C5D9B6900AEA51A /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -3030,7 +3039,6 @@
 		FE30A0F210C6ED6F00A1BF7F /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE30A0F310C6ED6F00A1BF7F /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE30A0F410C6ED6F00A1BF7F /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE30A0F510C6ED6F00A1BF7F /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A0F610C6ED6F00A1BF7F /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A0F710C6ED6F00A1BF7F /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A0F810C6ED6F00A1BF7F /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3340,7 +3348,6 @@
 		FE30A22C10C6ED6F00A1BF7F /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		FE30A22D10C6ED6F00A1BF7F /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		FE30A22E10C6ED6F00A1BF7F /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		FE30A22F10C6ED6F00A1BF7F /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		FE30A23010C6ED6F00A1BF7F /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		FE30A23110C6ED6F00A1BF7F /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		FE30A23210C6ED6F00A1BF7F /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -3911,7 +3918,6 @@
 		FE6518B70FBC844C00464BFD /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6518B80FBC844C00464BFD /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6518B90FBC844C00464BFD /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6518BA0FBC844C00464BFD /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6518BB0FBC844C00464BFD /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6518BC0FBC844C00464BFD /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6518BD0FBC844C00464BFD /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -4207,7 +4213,6 @@
 		FE6519E10FBC844C00464BFD /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		FE6519E20FBC844C00464BFD /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		FE6519E30FBC844C00464BFD /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		FE6519E40FBC844C00464BFD /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		FE6519E50FBC844C00464BFD /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		FE6519E60FBC844C00464BFD /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		FE6519E70FBC844C00464BFD /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -5232,7 +5237,6 @@
 		FED708C10C3B3D2C000CBE5B /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED708C20C3B3D2C000CBE5B /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED708C30C3B3D2C000CBE5B /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FED708C40C3B3D2C000CBE5B /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED708C50C3B3D2C000CBE5B /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED708C60C3B3D2C000CBE5B /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED708C70C3B3D2C000CBE5B /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -5501,7 +5505,6 @@
 		FED709DD0C3B3D2C000CBE5B /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		FED709DE0C3B3D2C000CBE5B /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		FED709DF0C3B3D2C000CBE5B /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		FED709E00C3B3D2C000CBE5B /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		FED709E10C3B3D2C000CBE5B /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		FED709E20C3B3D2C000CBE5B /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		FED709E30C3B3D2C000CBE5B /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -5792,7 +5795,6 @@
 		FED70E0C0C3C09C7000CBE5B /* NSDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069909747E7B00EC542B /* NSDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E0D0C3C09C7000CBE5B /* NSDateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28069B09747E7B00EC542B /* NSDateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E0E0C3C09C7000CBE5B /* NSTimeZone_absolute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FED70E0F0C3C09C7000CBE5B /* NSTimeZone_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70E100C3C09C7000CBE5B /* NSTimeZoneTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70E110C3C09C7000CBE5B /* NSTimeZoneType.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806AC09747EA400EC542B /* NSTimeZoneType.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70E120C3C09C7000CBE5B /* NSTimeZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2806B009747EA400EC542B /* NSTimeZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -6063,7 +6065,6 @@
 		FED70F280C3C09C7000CBE5B /* NSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069A09747E7B00EC542B /* NSDate.m */; };
 		FED70F290C3C09C7000CBE5B /* NSDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28069C09747E7B00EC542B /* NSDateFormatter.m */; };
 		FED70F2A0C3C09C7000CBE5B /* NSTimeZone_absolute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */; };
-		FED70F2B0C3C09C7000CBE5B /* NSTimeZone_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */; };
 		FED70F2C0C3C09C7000CBE5B /* NSTimeZoneTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */; };
 		FED70F2D0C3C09C7000CBE5B /* NSTimeZoneType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806AD09747EA400EC542B /* NSTimeZoneType.m */; };
 		FED70F2E0C3C09C7000CBE5B /* NSTimeZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2806B109747EA400EC542B /* NSTimeZone.m */; };
@@ -7104,8 +7105,6 @@
 		6E28069C09747E7B00EC542B /* NSDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatter.m; path = NSDate/NSDateFormatter.m; sourceTree = "<group>"; };
 		6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTimeZone_absolute.h; sourceTree = "<group>"; };
 		6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTimeZone_absolute.m; sourceTree = "<group>"; };
-		6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTimeZone_concrete.h; sourceTree = "<group>"; };
-		6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTimeZone_concrete.m; sourceTree = "<group>"; };
 		6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTimeZoneTransition.h; sourceTree = "<group>"; };
 		6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTimeZoneTransition.m; sourceTree = "<group>"; };
 		6E2806AC09747EA400EC542B /* NSTimeZoneType.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTimeZoneType.h; sourceTree = "<group>"; };
@@ -7127,6 +7126,11 @@
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTimeZone_win32.h; sourceTree = "<group>"; };
+		C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTimeZone_win32.m; sourceTree = "<group>"; };
+		C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTimeZone_posix.h; path = platform_posix/NSTimeZone_posix.h; sourceTree = "<group>"; };
+		C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTimeZone_posix.m; path = platform_posix/NSTimeZone_posix.m; sourceTree = "<group>"; };
+		C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = NSTimeZoneWindowsZones.plist; path = NSTimeZone/NSTimeZoneWindowsZones.plist; sourceTree = "<group>"; };
 		C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = "objc-msgsend.s"; sourceTree = "<group>"; };
 		C816EBED0F0A763500EDC3EB /* NSDarwinString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDarwinString.h; sourceTree = "<group>"; };
 		C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDarwinString.m; sourceTree = "<group>"; };
@@ -8283,6 +8287,8 @@
 		6E28034809747A5F00EC542B /* platform_posix */ = {
 			isa = PBXGroup;
 			children = (
+				C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */,
+				C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */,
 				FE6014221042FD49008A7357 /* NSString_defaultEncoding_posix.m */,
 				FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */,
 				FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */,
@@ -8328,6 +8334,8 @@
 		6E28034A09747A7700EC542B /* platform_windows */ = {
 			isa = PBXGroup;
 			children = (
+				C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */,
+				C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */,
 				FE6014291042FD6B008A7357 /* NSString_defaultEncoding_windows.m */,
 				6E28059F09747D0400EC542B /* dllmain.m */,
 				C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */,
@@ -8461,8 +8469,6 @@
 			children = (
 				6E2806A609747EA400EC542B /* NSTimeZone_absolute.h */,
 				6E2806A709747EA400EC542B /* NSTimeZone_absolute.m */,
-				6E2806A809747EA400EC542B /* NSTimeZone_concrete.h */,
-				6E2806A909747EA400EC542B /* NSTimeZone_concrete.m */,
 				6E2806AA09747EA400EC542B /* NSTimeZoneTransition.h */,
 				6E2806AB09747EA400EC542B /* NSTimeZoneTransition.m */,
 				6E2806AC09747EA400EC542B /* NSTimeZoneType.h */,
@@ -8476,6 +8482,7 @@
 		6E280B2709747EC800EC542B /* NSTimeZone */ = {
 			isa = PBXGroup;
 			children = (
+				C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */,
 				6E2806B209747EA400EC542B /* NSTimeZoneAbbreviations.plist */,
 				6E2806B309747EA400EC542B /* NSTimeZoneRegions.plist */,
 			);
@@ -9056,7 +9063,6 @@
 				15D91FBA105E918000171406 /* NSDate.h in Headers */,
 				15D91FBB105E918000171406 /* NSDateFormatter.h in Headers */,
 				15D91FBC105E918000171406 /* NSTimeZone_absolute.h in Headers */,
-				15D91FBD105E918000171406 /* NSTimeZone_concrete.h in Headers */,
 				15D91FBE105E918000171406 /* NSTimeZoneTransition.h in Headers */,
 				15D91FBF105E918000171406 /* NSTimeZoneType.h in Headers */,
 				15D91FC0105E918000171406 /* NSTimeZone.h in Headers */,
@@ -9216,6 +9222,7 @@
 				FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474C112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8AE1152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CC11162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9383,7 +9390,6 @@
 				28D485B50FE04E7100DC03EF /* NSDate.h in Headers */,
 				28D485B60FE04E7100DC03EF /* NSDateFormatter.h in Headers */,
 				28D485B70FE04E7100DC03EF /* NSTimeZone_absolute.h in Headers */,
-				28D485B80FE04E7100DC03EF /* NSTimeZone_concrete.h in Headers */,
 				28D485B90FE04E7100DC03EF /* NSTimeZoneTransition.h in Headers */,
 				28D485BA0FE04E7100DC03EF /* NSTimeZoneType.h in Headers */,
 				28D485BB0FE04E7100DC03EF /* NSTimeZone.h in Headers */,
@@ -9543,6 +9549,7 @@
 				FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474A112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8AC1152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CBF1162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9710,7 +9717,6 @@
 				6E4D92380A2642BD003D335C /* NSDate.h in Headers */,
 				6E4D92390A2642BD003D335C /* NSDateFormatter.h in Headers */,
 				6E4D923A0A2642BD003D335C /* NSTimeZone_absolute.h in Headers */,
-				6E4D923B0A2642BD003D335C /* NSTimeZone_concrete.h in Headers */,
 				6E4D923C0A2642BD003D335C /* NSTimeZoneTransition.h in Headers */,
 				6E4D923D0A2642BD003D335C /* NSTimeZoneType.h in Headers */,
 				6E4D923E0A2642BD003D335C /* NSTimeZone.h in Headers */,
@@ -9870,6 +9876,7 @@
 				FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4742112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A41152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CB71162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10037,7 +10044,6 @@
 				6EA0498809E57D5F0067589C /* NSDate.h in Headers */,
 				6EA0498909E57D5F0067589C /* NSDateFormatter.h in Headers */,
 				6EA0498A09E57D5F0067589C /* NSTimeZone_absolute.h in Headers */,
-				6EA0498B09E57D5F0067589C /* NSTimeZone_concrete.h in Headers */,
 				6EA0498C09E57D5F0067589C /* NSTimeZoneTransition.h in Headers */,
 				6EA0498D09E57D5F0067589C /* NSTimeZoneType.h in Headers */,
 				6EA0498E09E57D5F0067589C /* NSTimeZone.h in Headers */,
@@ -10197,6 +10203,7 @@
 				FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4740112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A21152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CB51162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10376,7 +10383,6 @@
 				FE01A6480C5D9B6900AEA51A /* NSDate.h in Headers */,
 				FE01A6490C5D9B6900AEA51A /* NSDateFormatter.h in Headers */,
 				FE01A64A0C5D9B6900AEA51A /* NSTimeZone_absolute.h in Headers */,
-				FE01A64B0C5D9B6900AEA51A /* NSTimeZone_concrete.h in Headers */,
 				FE01A64C0C5D9B6900AEA51A /* NSTimeZoneTransition.h in Headers */,
 				FE01A64D0C5D9B6900AEA51A /* NSTimeZoneType.h in Headers */,
 				FE01A64E0C5D9B6900AEA51A /* NSTimeZone.h in Headers */,
@@ -10528,6 +10534,7 @@
 				FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C473E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A01152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CB11162303400DFC16C /* NSTimeZone_win32.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10695,7 +10702,6 @@
 				FE30A0F210C6ED6F00A1BF7F /* NSDate.h in Headers */,
 				FE30A0F310C6ED6F00A1BF7F /* NSDateFormatter.h in Headers */,
 				FE30A0F410C6ED6F00A1BF7F /* NSTimeZone_absolute.h in Headers */,
-				FE30A0F510C6ED6F00A1BF7F /* NSTimeZone_concrete.h in Headers */,
 				FE30A0F610C6ED6F00A1BF7F /* NSTimeZoneTransition.h in Headers */,
 				FE30A0F710C6ED6F00A1BF7F /* NSTimeZoneType.h in Headers */,
 				FE30A0F810C6ED6F00A1BF7F /* NSTimeZone.h in Headers */,
@@ -10855,6 +10861,7 @@
 				FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8B01152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CC31162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11022,7 +11029,6 @@
 				FE6518B70FBC844C00464BFD /* NSDate.h in Headers */,
 				FE6518B80FBC844C00464BFD /* NSDateFormatter.h in Headers */,
 				FE6518B90FBC844C00464BFD /* NSTimeZone_absolute.h in Headers */,
-				FE6518BA0FBC844C00464BFD /* NSTimeZone_concrete.h in Headers */,
 				FE6518BB0FBC844C00464BFD /* NSTimeZoneTransition.h in Headers */,
 				FE6518BC0FBC844C00464BFD /* NSTimeZoneType.h in Headers */,
 				FE6518BD0FBC844C00464BFD /* NSTimeZone.h in Headers */,
@@ -11183,6 +11189,7 @@
 				FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4748112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8AA1152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CBD1162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11350,7 +11357,6 @@
 				FED708C10C3B3D2C000CBE5B /* NSDate.h in Headers */,
 				FED708C20C3B3D2C000CBE5B /* NSDateFormatter.h in Headers */,
 				FED708C30C3B3D2C000CBE5B /* NSTimeZone_absolute.h in Headers */,
-				FED708C40C3B3D2C000CBE5B /* NSTimeZone_concrete.h in Headers */,
 				FED708C50C3B3D2C000CBE5B /* NSTimeZoneTransition.h in Headers */,
 				FED708C60C3B3D2C000CBE5B /* NSTimeZoneType.h in Headers */,
 				FED708C70C3B3D2C000CBE5B /* NSTimeZone.h in Headers */,
@@ -11511,6 +11517,7 @@
 				FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4744112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A61152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CB91162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11678,7 +11685,6 @@
 				FED70E0C0C3C09C7000CBE5B /* NSDate.h in Headers */,
 				FED70E0D0C3C09C7000CBE5B /* NSDateFormatter.h in Headers */,
 				FED70E0E0C3C09C7000CBE5B /* NSTimeZone_absolute.h in Headers */,
-				FED70E0F0C3C09C7000CBE5B /* NSTimeZone_concrete.h in Headers */,
 				FED70E100C3C09C7000CBE5B /* NSTimeZoneTransition.h in Headers */,
 				FED70E110C3C09C7000CBE5B /* NSTimeZoneType.h in Headers */,
 				FED70E120C3C09C7000CBE5B /* NSTimeZone.h in Headers */,
@@ -11839,6 +11845,7 @@
 				FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4746112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A81152743100B6D893 /* objc_malloc.h in Headers */,
+				C6BC3CBB1162305000DFC16C /* NSTimeZone_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12312,6 +12319,7 @@
 				FE01A7E70C5D9B6900AEA51A /* NSUserDefaults.plist in Resources */,
 				FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 				FE86D408114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
+				C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12556,7 +12564,6 @@
 				15D920ED105E918000171406 /* NSDate.m in Sources */,
 				15D920EE105E918000171406 /* NSDateFormatter.m in Sources */,
 				15D920EF105E918000171406 /* NSTimeZone_absolute.m in Sources */,
-				15D920F0105E918000171406 /* NSTimeZone_concrete.m in Sources */,
 				15D920F1105E918000171406 /* NSTimeZoneTransition.m in Sources */,
 				15D920F2105E918000171406 /* NSTimeZoneType.m in Sources */,
 				15D920F3105E918000171406 /* NSTimeZone.m in Sources */,
@@ -12756,6 +12763,7 @@
 				FE3C474D112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF878115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8AF1152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CC21162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12921,7 +12929,6 @@
 				28D486DF0FE04E7100DC03EF /* NSDate.m in Sources */,
 				28D486E00FE04E7100DC03EF /* NSDateFormatter.m in Sources */,
 				28D486E10FE04E7100DC03EF /* NSTimeZone_absolute.m in Sources */,
-				28D486E20FE04E7100DC03EF /* NSTimeZone_concrete.m in Sources */,
 				28D486E30FE04E7100DC03EF /* NSTimeZoneTransition.m in Sources */,
 				28D486E40FE04E7100DC03EF /* NSTimeZoneType.m in Sources */,
 				28D486E50FE04E7100DC03EF /* NSTimeZone.m in Sources */,
@@ -13120,6 +13127,7 @@
 				FE3C474B112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF877115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8AD1152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CC01162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13285,7 +13293,6 @@
 				6E4D92FC0A2642BD003D335C /* NSDate.m in Sources */,
 				6E4D92FD0A2642BD003D335C /* NSDateFormatter.m in Sources */,
 				6E4D92FE0A2642BD003D335C /* NSTimeZone_absolute.m in Sources */,
-				6E4D92FF0A2642BD003D335C /* NSTimeZone_concrete.m in Sources */,
 				6E4D93000A2642BD003D335C /* NSTimeZoneTransition.m in Sources */,
 				6E4D93010A2642BD003D335C /* NSTimeZoneType.m in Sources */,
 				6E4D93040A2642BD003D335C /* NSTimeZone.m in Sources */,
@@ -13485,6 +13492,7 @@
 				FE3C4743112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF873115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A51152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CB81162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13650,7 +13658,6 @@
 				6EA04A4109E57D5F0067589C /* NSDate.m in Sources */,
 				6EA04A4209E57D5F0067589C /* NSDateFormatter.m in Sources */,
 				6EA04A4309E57D5F0067589C /* NSTimeZone_absolute.m in Sources */,
-				6EA04A4409E57D5F0067589C /* NSTimeZone_concrete.m in Sources */,
 				6EA04A4509E57D5F0067589C /* NSTimeZoneTransition.m in Sources */,
 				6EA04A4609E57D5F0067589C /* NSTimeZoneType.m in Sources */,
 				6EA04A4909E57D5F0067589C /* NSTimeZone.m in Sources */,
@@ -13851,6 +13858,7 @@
 				FE3C4741112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF872115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A31152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CB61162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14016,7 +14024,6 @@
 				FE01A75B0C5D9B6900AEA51A /* NSDate.m in Sources */,
 				FE01A75C0C5D9B6900AEA51A /* NSDateFormatter.m in Sources */,
 				FE01A75D0C5D9B6900AEA51A /* NSTimeZone_absolute.m in Sources */,
-				FE01A75E0C5D9B6900AEA51A /* NSTimeZone_concrete.m in Sources */,
 				FE01A75F0C5D9B6900AEA51A /* NSTimeZoneTransition.m in Sources */,
 				FE01A7600C5D9B6900AEA51A /* NSTimeZoneType.m in Sources */,
 				FE01A7610C5D9B6900AEA51A /* NSTimeZone.m in Sources */,
@@ -14223,6 +14230,7 @@
 				FE3C473F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF871115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A11152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CB21162303400DFC16C /* NSTimeZone_win32.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14388,7 +14396,6 @@
 				FE30A22C10C6ED6F00A1BF7F /* NSDate.m in Sources */,
 				FE30A22D10C6ED6F00A1BF7F /* NSDateFormatter.m in Sources */,
 				FE30A22E10C6ED6F00A1BF7F /* NSTimeZone_absolute.m in Sources */,
-				FE30A22F10C6ED6F00A1BF7F /* NSTimeZone_concrete.m in Sources */,
 				FE30A23010C6ED6F00A1BF7F /* NSTimeZoneTransition.m in Sources */,
 				FE30A23110C6ED6F00A1BF7F /* NSTimeZoneType.m in Sources */,
 				FE30A23210C6ED6F00A1BF7F /* NSTimeZone.m in Sources */,
@@ -14589,6 +14596,7 @@
 				FE3C474F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF879115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8B11152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CC41162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14754,7 +14762,6 @@
 				FE6519E10FBC844C00464BFD /* NSDate.m in Sources */,
 				FE6519E20FBC844C00464BFD /* NSDateFormatter.m in Sources */,
 				FE6519E30FBC844C00464BFD /* NSTimeZone_absolute.m in Sources */,
-				FE6519E40FBC844C00464BFD /* NSTimeZone_concrete.m in Sources */,
 				FE6519E50FBC844C00464BFD /* NSTimeZoneTransition.m in Sources */,
 				FE6519E60FBC844C00464BFD /* NSTimeZoneType.m in Sources */,
 				FE6519E70FBC844C00464BFD /* NSTimeZone.m in Sources */,
@@ -14958,6 +14965,7 @@
 				FE3C4749112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF876115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8AB1152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CBE1162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15123,7 +15131,6 @@
 				FED709DD0C3B3D2C000CBE5B /* NSDate.m in Sources */,
 				FED709DE0C3B3D2C000CBE5B /* NSDateFormatter.m in Sources */,
 				FED709DF0C3B3D2C000CBE5B /* NSTimeZone_absolute.m in Sources */,
-				FED709E00C3B3D2C000CBE5B /* NSTimeZone_concrete.m in Sources */,
 				FED709E10C3B3D2C000CBE5B /* NSTimeZoneTransition.m in Sources */,
 				FED709E20C3B3D2C000CBE5B /* NSTimeZoneType.m in Sources */,
 				FED709E30C3B3D2C000CBE5B /* NSTimeZone.m in Sources */,
@@ -15328,6 +15335,7 @@
 				FE3C4745112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF874115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A71152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CBA1162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15493,7 +15501,6 @@
 				FED70F280C3C09C7000CBE5B /* NSDate.m in Sources */,
 				FED70F290C3C09C7000CBE5B /* NSDateFormatter.m in Sources */,
 				FED70F2A0C3C09C7000CBE5B /* NSTimeZone_absolute.m in Sources */,
-				FED70F2B0C3C09C7000CBE5B /* NSTimeZone_concrete.m in Sources */,
 				FED70F2C0C3C09C7000CBE5B /* NSTimeZoneTransition.m in Sources */,
 				FED70F2D0C3C09C7000CBE5B /* NSTimeZoneType.m in Sources */,
 				FED70F2E0C3C09C7000CBE5B /* NSTimeZone.m in Sources */,
@@ -15698,6 +15705,7 @@
 				FE3C4747112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF875115272ED00B6D893 /* debugHelpers.m in Sources */,
 				FE6CF8A91152743100B6D893 /* objc_malloc.m in Sources */,
+				C6BC3CBC1162305000DFC16C /* NSTimeZone_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

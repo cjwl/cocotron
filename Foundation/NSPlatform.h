@@ -28,6 +28,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(Class)lockClass;
 -(Class)conditionLockClass;
 -(Class)persistantDomainClass;
+-(Class)timeZoneClass;
 
 -(NSString *)userName;
 -(NSString *)fullUserName;

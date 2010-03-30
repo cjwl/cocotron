@@ -9,13 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
 
-@class NSArray,NSDate,NSData,NSDictionary,NSLocale;
+@class NSArray,NSDate,NSData,NSDictionary,NSLocale, NSString, NSMutableArray;
 
 typedef NSInteger NSTimeZoneNameStyle;
 
 FOUNDATION_EXPORT NSString * const NSSystemTimeZoneDidChangeNotification;
 
 @interface NSTimeZone : NSObject <NSCoding,NSCopying>
+{
+    NSString *_name;
+    NSData *_data;
+}
 
 +(NSTimeZone *)localTimeZone;
 +(NSTimeZone *)systemTimeZone;

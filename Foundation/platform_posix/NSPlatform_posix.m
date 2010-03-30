@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSLock_posix.h>
 #import <Foundation/NSConditionLock_posix.h>
 #import <Foundation/NSPersistantDomain_posix.h>
+#import <Foundation/NSTimeZone_posix.h>
 #import <Foundation/NSTask_posix.h>
 #import <Foundation/NSPipe_posix.h>
 #import <Foundation/NSRaiseException.h>
@@ -70,6 +71,10 @@ BOOL NSCurrentLocaleIsMetric(){
 
 -(Class)persistantDomainClass {
    return [NSPersistantDomain_posix class];
+}
+
+-(Class)timeZoneClass {
+    return [NSTimeZone_posix class];
 }
 
 static struct passwd *pwent = NULL;

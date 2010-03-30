@@ -21,11 +21,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super init];
     _secondsFromGMT = seconds;
     _name = [[NSString allocWithZone:NULL] initWithFormat:@"GMT %@%02d%02d",
-           (seconds > 0 ? @"+" : @""),
+           (seconds >= 0 ? @"+" : @""),
            seconds/3600,
            (seconds % 3600)/60];
     _abbreviation = [[NSString allocWithZone:NULL] initWithFormat:@"%@%02d%02d",
-           (seconds > 0 ? @"+" : @""),
+           (seconds >= 0 ? @"+" : @""),
            seconds/3600,
            (seconds % 3600)/60];
 
