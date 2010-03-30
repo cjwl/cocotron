@@ -97,7 +97,17 @@ NSString *NSPlatformLoadableObjectFileExtension=@"so";
 NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 
 -(Class)taskClass {
-   return [NSTask_solaris class];
+    static Class NSTaskClass = Nil;
+    
+    @synchronized(self)
+	{
+        if (NSTaskClass == Nil) {
+            NSTaskClass = [NSTask_solaris class];
+            [NSTaskClass registerNotification];
+        }
+    }
+    
+    return NSTaskClass;
 }
 
 @end

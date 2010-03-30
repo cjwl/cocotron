@@ -66,7 +66,6 @@ extern NSMutableArray *_liveTasks; // = nil;
      wstat(3XFN).
  */
 +(void)signalPipeReadNotification:(NSNotification *)note {
-   NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
    NSTask *task;
    pid_t pid;
    int status;
@@ -83,21 +82,24 @@ extern NSMutableArray *_liveTasks; // = nil;
       // [NSException raise:NSInternalInconsistencyException format:@"wait4() returned 0, but data was fed to the pipe!"];
    }
    else {
-       while (task = [taskEnumerator nextObject]) {
-           if ([task processIdentifier] == pid) {
-               if (WIFEXITED(status))
-                   [task setTerminationStatus:WEXITSTATUS(status)];
-               else
-                   [task setTerminationStatus:-1];
-
-               [task taskFinished];
-
-               [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName: NSTaskDidTerminateNotification object:task]];
-
-               return;
+       @synchronized(_liveTasks) {
+           NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
+           while (task = [taskEnumerator nextObject]) {
+               if ([task processIdentifier] == pid) {
+                   if (WIFEXITED(status))
+                       [task setTerminationStatus:WEXITSTATUS(status)];
+                   else
+                       [task setTerminationStatus:-1];
+                   
+                   [task taskFinished];
+                   
+                   [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName: NSTaskDidTerminateNotification object:task]];
+                   
+                   return;
+               }
            }
        }
-
+       
        // something got out of synch here
        [NSException raise:NSInternalInconsistencyException format:@"wait4() returned %d, but we have no matching task!", pid];
    }

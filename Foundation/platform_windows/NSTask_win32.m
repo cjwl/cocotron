@@ -79,7 +79,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    ZeroMemory(&startupInfo,sizeof(startupInfo));
    startupInfo.cb=sizeof(startupInfo);
-   startupInfo.dwFlags=STARTF_USESTDHANDLES;
+   startupInfo.dwFlags|=STARTF_USESTDHANDLES;
 
    if(standardInput==nil)
     startupInfo.hStdInput=GetStdHandle(STD_INPUT_HANDLE);
@@ -87,13 +87,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     startupInfo.hStdInput=[(NSFileHandle_win32 *)[standardInput fileHandleForReading] fileHandle];
    else
     startupInfo.hStdInput=[standardInput fileHandle];
+      
+    SetHandleInformation([(NSFileHandle_win32 *)[standardInput fileHandleForWriting] fileHandle], HANDLE_FLAG_INHERIT, 0);
 
-   if(standardOutput==nil)
+    if(standardOutput==nil)
     startupInfo.hStdOutput=GetStdHandle(STD_OUTPUT_HANDLE);
    else if([standardOutput isKindOfClass:[NSPipe class]])
     startupInfo.hStdOutput=[(NSFileHandle_win32 *)[standardOutput fileHandleForWriting] fileHandle];
    else
     startupInfo.hStdOutput=[standardOutput fileHandle];
+    
+    SetHandleInformation([(NSFileHandle_win32 *)[standardOutput fileHandleForReading] fileHandle], HANDLE_FLAG_INHERIT, 0);
 
    if(standardError==nil)
      startupInfo.hStdError=GetStdHandle(STD_ERROR_HANDLE);
@@ -101,6 +105,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     startupInfo.hStdError=[(NSFileHandle_win32 *)[standardError fileHandleForWriting] fileHandle];
    else
     startupInfo.hStdError=[standardError fileHandle];
+    
+    SetHandleInformation([(NSFileHandle_win32 *)[standardError fileHandleForReading] fileHandle], HANDLE_FLAG_INHERIT, 0);
+
 
    ZeroMemory(& _processInfo,sizeof(_processInfo));
 
@@ -131,6 +138,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    TerminateProcess(_processInfo.hProcess,0);
    Win32Assert("TerminateProcess");
 }
+
+-(int)terminationStatus {
+    return (int)_exitCode;
+}	
 
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
 

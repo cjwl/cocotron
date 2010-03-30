@@ -84,7 +84,17 @@ NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 
 - (Class)taskClass
 {
-	return [NSTask_bsd class];
+    static Class NSTaskClass = Nil;
+    
+    @synchronized(self)
+	{
+        if (NSTaskClass == Nil) {
+            NSTaskClass = [NSTask_bsd class];
+            [NSTaskClass registerNotification];
+        }
+    }
+    
+    return NSTaskClass;
 }
 
 @end

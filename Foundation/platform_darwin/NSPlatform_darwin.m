@@ -122,7 +122,17 @@ NSString * const NSPlatformLoadableObjectFileExtension=@"";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"";
 
 -(Class)taskClass {
-   return [NSTask_darwin class];
+    static Class NSTaskClass = Nil;
+    
+    @synchronized(self)
+	{
+        if (NSTaskClass == Nil) {
+            NSTaskClass = [NSTask_darwin class];
+            [NSTaskClass registerNotification];
+        }
+    }
+    
+    return NSTaskClass;
 }
 
 - (NSUInteger)processorCount
