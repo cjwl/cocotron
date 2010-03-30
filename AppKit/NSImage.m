@@ -678,12 +678,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil];
    NSImageRep        *drawRep=nil;
    CGContextRef       context;
-   
+      
    if(NSIsEmptyRect(source)){
     if([any isKindOfClass:[NSCachedImageRep class]])
      drawRep=[any retain];
     else if([any isKindOfClass:[NSBitmapImageRep class]])
      drawRep=[any retain];
+//    else if([any isKindOfClass:[NSPDFImageRep class]])
+//     drawRep=[any retain];
    }
     
    if(drawRep==nil) {
@@ -723,7 +725,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    
    [[NSGraphicsContext currentContext] setCompositingOperation:operation];
-   
+      
    [drawRep drawInRect:rect];
    
    CGContextRestoreGState(context);

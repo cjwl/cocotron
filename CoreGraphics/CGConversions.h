@@ -8,11 +8,15 @@
 #import "O2Path.h"
 
 static inline CGAffineTransform CGAffineTransformFromO2(O2AffineTransform xform){
-   return *(CGAffineTransform *)&xform;
+   CGAffineTransform result={xform.a,xform.b,xform.c,xform.d,xform.tx,xform.ty};
+
+   return result;
 }
 
 static inline O2AffineTransform O2AffineTransformFromCG(CGAffineTransform xform){
-   return *(O2AffineTransform *)&xform;
+   O2AffineTransform result={xform.a,xform.b,xform.c,xform.d,xform.tx,xform.ty};
+
+   return result;
 }
 
 static inline const O2AffineTransform *O2AffineTransformPtrFromCG(const CGAffineTransform *xform){

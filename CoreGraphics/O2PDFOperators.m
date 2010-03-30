@@ -131,7 +131,7 @@ void O2PDF_render_cm(O2PDFScanner *scanner,void *info) {
     return;
    if(![scanner popNumber:&matrix.a])
     return;
-  
+
    O2ContextConcatCTM(context,matrix);
 }
 

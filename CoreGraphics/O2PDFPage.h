@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import "O2Geometry.h"
 #import "O2AffineTransform.h"
+#import <stdbool.h>
 
 @class O2PDFPage;
 
@@ -43,7 +44,7 @@ typedef enum {
 
 -(int)rotationAngle;
 
--(O2AffineTransform)drawingTransformForBox:(O2PDFBox)box inRect:(O2Rect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
+O2AffineTransform O2PDFPageGetDrawingTransform(O2PDFPageRef self,O2PDFBox box,O2Rect rect,int clockwiseDegrees,bool preserveAspectRatio);
 
 -(void)drawInContext:(O2Context *)context;
 
