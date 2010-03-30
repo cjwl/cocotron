@@ -7,6 +7,7 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSRecursiveLock.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSRecursiveLock
 -(id)init
@@ -66,7 +67,7 @@
 		}
 	}
 	else
-		[NSException raise:NSInternalInconsistencyException format:@"tried to unlock lock %@ owned by thread %@ from thread %@", self, _lockingThread, currentThread];
+		NSCLog("tried to unlock lock 0x%x owned by thread 0x%x from thread 0x%x", self, _lockingThread, currentThread);
 }
 
 -(BOOL)tryLock;

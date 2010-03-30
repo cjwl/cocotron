@@ -8,6 +8,7 @@
 
 #import <Foundation/NSConditionLock_posix.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSRaiseException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
 #import <time.h>
@@ -48,7 +49,8 @@
 
 -(void)unlock {
    if(_lockingThread!=NSCurrentThread()) {
-      [NSException raise:NSInvalidArgumentException format:@"trying to unlock %@ from thread %@, was locked from %@", self, NSCurrentThread(), _lockingThread];
+       NSCLog("trying to unlock 0x%x from thread 0x%x, was locked from 0x%x", self, NSCurrentThread(), _lockingThread);
+       return;
    }
    
    _lockingThread=nil;
@@ -100,7 +102,8 @@
 
 -(void)unlockWithCondition:(NSInteger)condition {
    if(_lockingThread!=NSCurrentThread()) {
-      [NSException raise:NSInvalidArgumentException format:@"trying to unlock %@ from thread %@, was locked from %@", self, NSCurrentThread(), _lockingThread];
+       NSCLog("trying to unlock 0x%x from thread 0x%x, was locked from 0x%x", self, NSCurrentThread(), _lockingThread);
+       return;
    }
 
     _lockingThread=nil;
