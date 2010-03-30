@@ -11,8 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <mach-o/dyld.h>
 #import <mach-o/getsect.h>
 #import "objc_sel.h"
+#import "objc_class.h"
 #import <string.h>
 #import "ObjCException.h"
+#import <Foundation/NSRaiseException.h>
 
 /*
  * Fetches all Objective-C-Modules via the mach-o/dyld.h interface and initializes them.

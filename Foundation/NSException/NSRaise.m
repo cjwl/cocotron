@@ -39,7 +39,7 @@ void NSCLogNewline(){
 #ifdef WINDOWS
    fprintf(stderr,"\n",GetCurrentThreadId());
 #else
-   fprintf(stderr,"\n",GetCurrentThreadId());
+   fprintf(stderr,"\n");
 #endif
    fflush(stderr);
 }

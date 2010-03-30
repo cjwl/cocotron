@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSRaise.h>
 
 #import <errno.h>
 #import <sys/select.h>
@@ -117,6 +118,9 @@ static int maxDescriptorInThreeSets(NSSet *set1,NSSet *set2,NSSet *set3){
    return result;
 }
 
+void NSSelectSetShutdownForCurrentThread() {
+    NSUnimplementedFunction();
+}
 static void transferSetToNative(NSSet *set,native_set *native){
    NSEnumerator *state=[set objectEnumerator];
    NSSocket_bsd *socket;
