@@ -270,9 +270,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(attributes==-1)
     return NO;
 
-   if(attributes&FILE_ATTRIBUTE_DIRECTORY)
-    return NO;
-
    return YES;
 }
 
@@ -282,7 +279,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(attributes==-1)
     return NO;
 
-   if(attributes&(FILE_ATTRIBUTE_DIRECTORY|FILE_ATTRIBUTE_READONLY))
+   if(attributes&FILE_ATTRIBUTE_READONLY)
     return NO;
 
    return YES;
