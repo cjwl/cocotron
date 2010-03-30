@@ -48,8 +48,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSHost *)hostWithAddress:(NSString *)address {
-   NSUnimplementedMethod();
-   return nil;
+    NSString *hostName = [[NSPlatform currentPlatform] hostNameByAddress:address];
+    
+    if(hostName == nil) {
+        return nil;
+    }
+    
+    return [NSHost hostWithName:hostName];
 }
 
 -(BOOL)isEqualToHost:(NSHost *)host {

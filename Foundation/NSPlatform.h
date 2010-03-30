@@ -43,6 +43,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 
 -(NSString *)DNSHostName;
 -(NSArray *)addressesForDNSHostName:(NSString *)name;
+-(NSString *)hostNameByAddress:(NSString *)address;
 
 -(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
 -(void)unmapAddress:(void *)ptr length:(NSUInteger)length;

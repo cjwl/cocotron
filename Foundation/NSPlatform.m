@@ -107,6 +107,11 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
+-(NSString *)hostNameByAddress:(NSString *)address{
+    NSInvalidAbstractInvocation();
+    return nil;
+}
+
 -(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length {
    NSInvalidAbstractInvocation();
    return NULL;

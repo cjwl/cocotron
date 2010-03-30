@@ -198,6 +198,21 @@ NSUInteger NSPlatformThreadID() {
     }
 }
 
+-(NSString *)hostNameByAddress:(NSString *)address
+{
+    struct in_addr addr;
+    struct hostent *remoteHost;
+    addr.s_addr = inet_addr([address cString]);
+    if (addr.s_addr == INADDR_NONE) {
+        return nil;
+    }
+    remoteHost = gethostbyaddr((char *) &addr, 4, AF_INET);
+    if(remoteHost == NULL)
+        return nil;
+    
+    return [NSString stringWithCString:remoteHost->h_name];
+}
+
 void NSPlatformLogString(NSString *string) {
     fprintf(stderr, "%s\n", [string UTF8String]);
 }
