@@ -85,7 +85,7 @@ NSString * const NSFileSystemFreeSize=@"NSFileSystemFreeSize";
    return 0;
 }
 -(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return 0;
 }
 

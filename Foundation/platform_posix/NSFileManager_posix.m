@@ -361,4 +361,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [path cStringUsingEncoding:NSUTF8StringEncoding];
 }
 
+-(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error {
+    char destination[MAXPATHLEN+1];
+    ssize_t bytes;
+    
+    bytes = readlink([path fileSystemRepresentation], destination, MAXPATHLEN);
+    
+    if (bytes == -1) {
+        //TODO fill error
+        return nil;
+    }
+    
+    destination[bytes] = 0;
+    
+    return [NSString stringWithCString:destination encoding:NSUTF8StringEncoding];
+}
+
 @end

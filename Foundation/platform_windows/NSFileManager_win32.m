@@ -430,6 +430,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [path cString];
 }
 
+-(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error {
+    
+    //see http://download.microsoft.com/download/B/0/B/B0B199DB-41E6-400F-90CD-C350D0C14A53/%5BMS-SHLLINK%5D.pdf
+    NSUnimplementedMethod();
+    return 0;
+}
 
 
 @end
