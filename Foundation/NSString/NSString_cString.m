@@ -153,6 +153,8 @@ NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone
             return NSWin1252CStringNewWithCharacters(zone,characters,length, lossy);
         case NSMacOSRomanStringEncoding:
             return NSMacOSRomanCStringNewWithCharacters(zone,characters,length, lossy);
+        case NSISOLatin1StringEncoding:
+            return NSISOLatin1CStringNewWithCharacters(zone,characters,length, lossy);
         default:
             if(encoding != defaultEncoding()) {
                 NSUnimplementedFunction();

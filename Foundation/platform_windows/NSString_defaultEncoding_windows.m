@@ -48,8 +48,6 @@ NSStringEncoding defaultEncoding()
             return NSISO2022JPStringEncoding;
             
 		case 10000:
-// FIXME: use until the right encoding is implemented
-            return NSWindowsCP1252StringEncoding;
 			return NSMacOSRomanStringEncoding;
             
 		case 12000:

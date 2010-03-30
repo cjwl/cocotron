@@ -27,3 +27,7 @@ NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
 
 NSUInteger NSGetISOLatin1CStringWithMaxLength(const unichar *characters,NSUInteger length,
                                             NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
+
+
+NSString *NSISOLatin1CStringNewWithCharacters(NSZone *zone,
+                                               const unichar *characters,NSUInteger length,BOOL lossy);

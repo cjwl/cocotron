@@ -41,8 +41,6 @@ NSStringEncoding defaultEncoding()
 			switch(enc) {
 				case 0:
 					defaultEncoding = NSMacOSRomanStringEncoding;
-// FIXME: use until the right encoding is implemented
-defaultEncoding = NSISOLatin1StringEncoding;
 					break;
 				case 0x0500:
 					defaultEncoding = NSWindowsCP1252StringEncoding;
@@ -88,16 +86,12 @@ defaultEncoding = NSISOLatin1StringEncoding;
 					break;					
 				default:
 					defaultEncoding = NSMacOSRomanStringEncoding;					
-// FIXME: use until the right encoding is implemented
-defaultEncoding = NSISOLatin1StringEncoding;
                    break;
-		}
+            }
 		
         }
         if(defaultEncoding == -1) {
 			defaultEncoding = NSMacOSRomanStringEncoding;
-// FIXME: use until the right encoding is implemented
-defaultEncoding = NSISOLatin1StringEncoding;
 		}
 	}
 	

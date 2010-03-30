@@ -10,7 +10,7 @@
 #import <Foundation/NSRaiseException.h>
 
 
-#define UNDEFINED_UNICODE 0x0000
+#define UNDEFINED_UNICODE 0xFFFD
 
 typedef struct
 {
@@ -57,19 +57,10 @@ static CharMapping mapping_array[]=
 
 const unichar _mapWin1252ToUnichar(const unsigned char c)
 {
-	if(c>= 0x80 && c<=0x9F)
-	{
+	if (c>= 0x80 && c<=0x9F) {
 		static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
-		int j = 0;
-		
-		for(;j < size;j++)
-		{
-			if(mapping_array[j].win1252 == c)
-			{
-				return mapping_array[j].unicode;
-			}
-		}
-		
+        
+        return mapping_array[c - 0x80].unicode;
 	}
 
    return c;
@@ -82,7 +73,7 @@ unichar *NSWin1252ToUnicode(const char *cString,NSUInteger length,
 	for(i=0;i<length;i++)
 	{
 		characters[i]=_mapWin1252ToUnichar(cString[i]);
-	}
+    }
 			
 	*resultLength=i;
 	return characters;
@@ -95,7 +86,7 @@ char *NSUnicodeToWin1252(const unichar *characters,NSUInteger length,
 	
 	for(i=0;i<length;i++){
 		
-		if(characters[i]<256 && !(characters[i]>= 0x80 && characters[i]<=0x9F))
+		if(characters[i] <= 256 && !(characters[i] >= 0x80 && characters[i] <= 0x9F))
 			win1252[i]=characters[i];
 		else
 		{
@@ -106,9 +97,9 @@ char *NSUnicodeToWin1252(const unichar *characters,NSUInteger length,
 			
 			for(;j < size;j++)
 			{
-				if(mapping_array[i].unicode == characters[i])
+				if(mapping_array[j].unicode == characters[i] && characters[i] != UNDEFINED_UNICODE)
 				{
-					win1252[i]=mapping_array[i].win1252;
+					win1252[i]=mapping_array[j].win1252;
 					found = YES;
 					break;
 				}
@@ -163,7 +154,7 @@ NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters,NSUInteger
     for(i=0;i<length && result<=maxLength;i++){
         const unichar code=characters[i];
         
-        if(code<0x80)
+        if(code <= 256 && !(code >= 0x80 && code <= 0x9F))
             cString[result++]=code;
         else {
             unsigned char j;
@@ -196,11 +187,17 @@ NSString *NSString_win1252NewWithBytes(NSZone *zone,
 	NSString_win1252 *string;
 	int                i;
 	
-	string=NSAllocateObject([NSString_win1252 class],length*sizeof(char),zone);
+	string=NSAllocateObject( [NSString_win1252 class],length*sizeof(char),zone);
 	
 	string->_length=length;
-	for(i=0;i<length;i++)
-		string->_bytes[i]=((uint8_t *)bytes)[i];
+	for(i=0;i<length;i++) {
+        unsigned char c = ((uint8_t *)bytes)[i];
+		string->_bytes[i]=c;
+        if(_mapWin1252ToUnichar(c) == UNDEFINED_UNICODE) {
+            [string release];
+            return nil;
+        }
+    }
 	string->_bytes[i]='\0';	
 	
 	return string;

@@ -152,15 +152,8 @@ const unichar _mapMacOSRomanToUnichar(const unsigned char c)
 	if(c>= 0x80)
 	{
 		static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
-		int j = 0;
 		
-		for(;j < size;j++)
-		{
-			if(mapping_array[j].macOSRoman == c)
-			{
-				return mapping_array[j].unicode;
-			}
-		}		
+        return mapping_array[c - 0x80].unicode;
 	}
 
    return c;
@@ -197,9 +190,9 @@ char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
 			
 			for(;j < size;j++)
 			{
-				if(mapping_array[i].unicode == characters[i])
+				if(mapping_array[j].unicode == characters[i])
 				{
-					macOSRoman[i]=mapping_array[i].macOSRoman;
+					macOSRoman[i]=mapping_array[j].macOSRoman;
 					found = YES;
 					break;
 				}
@@ -259,13 +252,13 @@ NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInte
         if(code<0x80)
             cString[result++]=code;
         else {
-            unsigned char j;
+            unsigned int j;
             
-            for(j=0x80;j<=0x9F;j++)
+            for(j=0x80;j<=0xFF;j++)
                 if(code==_mapMacOSRomanToUnichar(j))
                     break;
             
-            if(j<=0x9F)
+            if(j<=0xFF)
                 cString[result++]=j;
             else if(lossy)
                 cString[result++]='\0';
