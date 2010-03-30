@@ -94,8 +94,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)closeFile {
-   CloseHandle(_handle);
-   _handle=NULL;
+    if (_handle != NULL) {
+        CloseHandle(_handle);
+        _handle=NULL;
+    }
 }
 
 -(void)synchronizeFile {
@@ -189,52 +191,59 @@ while(GetLastError()!=ERROR_BROKEN_PIPE &&
 	}
 
 	return result;
-} 
+}
+
 - (NSData *)availableData {
-    NSMutableData *mutableData = [NSMutableData dataWithLength:4096];
-    DWORD count;
-	BOOL success;
-	DWORD error;
-	LPVOID lpMsgBuf;
+    NSMutableData *mutableData = [NSMutableData dataWithLength:0];
+    DWORD   count = 0;
+    int     length = 0;
+	DWORD   error;
+	LPVOID  lpMsgBuf;
     
-    OVERLAPPED ov;
-	memset(&ov,0,sizeof(ov));
-    ReadFile(_handle, [mutableData mutableBytes], 4096,NULL,&ov);
-    success=GetOverlappedResult(_handle,&ov,&count,TRUE);
-   
-	
-    if (!success) {
-		error=GetLastError();
-		if(error!=ERROR_BROKEN_PIPE)
-		{
-			FormatMessage(
-						  FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-						  FORMAT_MESSAGE_FROM_SYSTEM |
-						  FORMAT_MESSAGE_IGNORE_INSERTS,
-						  NULL,
-						  error,
-						  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						  (LPTSTR) &lpMsgBuf,
-						  0, NULL );
-			NSRaiseException(NSFileHandleOperationException, self, _cmd,
-							 @"read(%d) %s", _handle,lpMsgBuf);
-			return nil;
-		}
-    }
-	
-    [mutableData setLength:count];
+    do {
+        [mutableData increaseLengthBy:4096];
+        if (!ReadFile(_handle,  &((char*)[mutableData mutableBytes])[length], 4096,&count,NULL)) {
+            error = GetLastError();
+            if (error == ERROR_BROKEN_PIPE || error == ERROR_HANDLE_EOF) {
+                break;
+            }
+            else {
+                FormatMessage(
+                              FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+                              FORMAT_MESSAGE_FROM_SYSTEM |
+                              FORMAT_MESSAGE_IGNORE_INSERTS,
+                              NULL,
+                              error,
+                              MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                              (LPTSTR) &lpMsgBuf,
+                              0, NULL );
+                NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                                 @"read(%d) %s", _handle,lpMsgBuf);
+                return nil;
+                
+            }
+
+        }
+
+        length += count;
+        
+        if (count < 4096 && GetFileType(_handle) == FILE_TYPE_DISK) {
+            //end of file
+            break;
+        }
+        
+    } while(length <= 0 || count == 4096);
+    
+    [mutableData setLength:length];
     
     return mutableData;
 }
 
-
-
-
 -(void)writeData:(NSData *)data {
-   DWORD bytesWritten=0;
-
-   if(!WriteFile(_handle,[data bytes],[data length],&bytesWritten,NULL))
-    Win32Assert("WriteFile");
+    DWORD bytesWritten=0;
+    
+    if(!WriteFile(_handle,[data bytes],[data length],&bytesWritten,NULL))
+        Win32Assert("WriteFile");
 }
 
 -(void)truncateFileAtOffset:(uint64_t)offset {

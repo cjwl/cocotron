@@ -134,9 +134,14 @@ CONFORMING TO
        POSIX.1b (formerly POSIX.4)
  */
 - (void)closeFile {
+    if (_fileDescriptor == -1)
+        return;
     if (close(_fileDescriptor) == -1)
+    {
         NSRaiseException(NSFileHandleOperationException, self, _cmd,
                          @"close(%d): %s", _fileDescriptor, strerror(errno));
+    }
+    _fileDescriptor = -1;
 }
 
 - (void)synchronizeFile {
@@ -195,7 +200,7 @@ CONFORMING TO
     if (flag)
         flags |= O_NONBLOCK;
     else
-        flags &= O_NONBLOCK;
+        flags &= ~O_NONBLOCK;
     
     fcntl(_fileDescriptor, F_SETFL, flags);
 }
@@ -229,17 +234,18 @@ CONFORMING TO
 
     do {
         count = read(_fileDescriptor, [mutableData mutableBytes]+total, 4096);
-        if (total == -1) {
+        if (count == -1) {
             NSRaiseException(NSFileHandleOperationException, self, _cmd,
                              @"read(%d): %s", _fileDescriptor, strerror(errno));
             return nil;
         }
-
-        [mutableData increaseLengthBy:4096];
+        
         if (count == 0) {	// end of file
             [mutableData setLength:total];
             break;
         }
+        
+        [mutableData increaseLengthBy:4096];
 
         total += count;
     } while (YES);
@@ -248,25 +254,47 @@ CONFORMING TO
 }
 
 - (NSData *)availableData {
-    NSMutableData *mutableData = [NSMutableData dataWithLength:4096];
-    size_t count;
+    NSMutableData *mutableData = [NSMutableData dataWithLength:0];
+    int count;
+    int length = 0;
     int err;
     
-    [self setNonBlocking:YES];
-    count = read(_fileDescriptor, [mutableData mutableBytes], 4096);
-    err = errno; // preserved so that the next fcntl doesn't clobber it
-    [self setNonBlocking:NO];
+    do {
+        [mutableData increaseLengthBy:4096];
+        [self setNonBlocking:YES];
+        count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 4096);
+        err = errno; // preserved so that the next fcntl doesn't clobber it
+        [self setNonBlocking:NO];
         
-    if (count == -1) {
-        if (err == EAGAIN)
-            return nil;
-
-        NSRaiseException(NSFileHandleOperationException, self, _cmd,
-                         @"read(%d): %s", _fileDescriptor, strerror(errno));
-        return nil;
-    }
-
-    [mutableData setLength:count];
+        if (count <= 0) {
+            if (err == EAGAIN || err == EINTR) {
+                [self setNonBlocking: NO];
+                count = read(_fileDescriptor, [mutableData mutableBytes], 1);
+                err = errno; // preserved so that the next fcntl doesn't clobber it
+                [self setNonBlocking: YES];
+                if (count > 0) {
+                    count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length + 1], 4096-1);
+                    if (count > 0) {
+                        count += 1;
+                    }
+                    else {
+                        count = 1;
+                    }
+                }
+            }
+        }
+        
+        if (count < 0) {
+            NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                             @"read(%d): %s", _fileDescriptor, strerror(err));
+        }
+        
+        length += count;
+        
+        
+    } while(count == 4096);
+    
+    [mutableData setLength:length];
     
     return mutableData;
 }
