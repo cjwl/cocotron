@@ -38,8 +38,6 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(NSArray *)arguments;
 -(NSDictionary *)environment;
 
--(NSTimeZone *)systemTimeZone;
-
 -(NSString *)hostName;
 
 -(NSString *)DNSHostName;

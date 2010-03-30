@@ -92,11 +92,6 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(NSTimeZone *)systemTimeZone {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
 -(NSString *)hostName {
    NSInvalidAbstractInvocation();
    return nil;
