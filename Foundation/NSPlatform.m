@@ -52,6 +52,12 @@ extern NSString *NSPlatformClassName;
    return Nil;
 }
 
+-(Class)conditionClass;
+{
+	NSInvalidAbstractInvocation();
+	return Nil;
+}
+
 -(Class)persistantDomainClass {
    NSInvalidAbstractInvocation();
    return Nil;

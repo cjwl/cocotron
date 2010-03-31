@@ -11,7 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import "NSOperation.h"
-#import "NSLatchTrigger.h"
 
 #import <Foundation/NSString.h>
 #import <Foundation/NSMethodSignature.h>
