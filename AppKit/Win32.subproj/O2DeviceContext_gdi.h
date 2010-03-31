@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
-#import <CoreGraphics/O2AffineTransform.h>
-#import <CoreGraphics/O2Color.h>
+#import <Onyx2D/O2AffineTransform.h>
+#import <Onyx2D/O2Color.h>
 #import <windows.h>
 
 @class Win32DeviceContextWindow,O2Path;

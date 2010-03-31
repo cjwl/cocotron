@@ -1,6 +1,6 @@
 #import <QuartzCore/CARenderer.h>
 #import <OpenGL/OpenGL.h>
-#import <CoreGraphics/O2Surface.h>
+#import <Onyx2D/O2Surface.h>
 
 @implementation CARenderer
 

@@ -13,8 +13,8 @@
 #import <AppKit/NSRaise.h>
 #import <X11/Xutil.h>
 #import <Foundation/NSException.h>
-#import <CoreGraphics/O2Context.h>
-#import <CoreGraphics/O2Surface.h>
+#import <Onyx2D/O2Context.h>
+#import <Onyx2D/O2Surface.h>
 #import <QuartzCore/CARenderer.h>
 
 CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,XVisualInfo *vis,Window window,CGLContextObj *resultp);

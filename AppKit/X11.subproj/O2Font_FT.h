@@ -1,4 +1,4 @@
-#import <CoreGraphics/O2Font.h>
+#import <Onyx2D/O2Font.h>
 
 #import <stddef.h>
 #import <ft2build.h>
