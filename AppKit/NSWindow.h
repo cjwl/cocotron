@@ -183,6 +183,8 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    NSMutableArray *_drawers;
    NSToolbar *_toolbar;
    NSWindowAnimationContext *_animationContext;
+	
+   NSRect _savedFrame;
 }
 
 +(NSWindowDepth)defaultDepthLimit;
