@@ -1,4 +1,4 @@
-#import <CoreGraphics/O2Geometry.h>
+#import <Onyx2D/O2Geometry.h>
 #import <cairo/cairo-ft.h>
 
 @class O2Font_FT;

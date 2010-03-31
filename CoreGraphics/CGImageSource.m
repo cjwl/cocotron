@@ -1,5 +1,5 @@
 #import <CoreGraphics/CGImageSource.h>
-#import "O2ImageSource.h"
+#import <Onyx2D/O2ImageSource.h>
 
 @interface _O2ImageSource : O2ImageSource
 @end

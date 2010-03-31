@@ -1,7 +1,7 @@
 #import "O2Context_builtin_FT.h"
-#import <CoreGraphics/O2GraphicsState.h>
+#import <Onyx2D/O2GraphicsState.h>
 #import "O2Font_FT.h"
-#import <CoreGraphics/O2Paint_color.h>
+#import <Onyx2D/O2Paint_color.h>
 
 @implementation O2Context_builtin_FT
 

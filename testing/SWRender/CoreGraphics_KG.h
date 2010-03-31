@@ -1,18 +1,18 @@
-#import "O2Context.h"
-#import "O2BitmapContext.h"
-#import "O2Path.h"
-#import "O2MutablePath.h"
-#import "O2Color.h"
-#import "O2ColorSpace.h"
-#import "O2Image.h"
-#import "O2ImageSource.h"
-#import "O2ImageDestination.h"
-#import "O2DataProvider.h"
-#import "O2PDFDocument.h"
-#import "O2PDFPage.h"
-#import "O2Function.h"
-#import "O2Shading.h"
-#import "O2Font.h"
+#import <Onyx2D/O2Context.h>
+#import <Onyx2D/O2BitmapContext.h>
+#import <Onyx2D/O2Path.h>
+#import <Onyx2D/O2MutablePath.h>
+#import <Onyx2D/O2Color.h>
+#import <Onyx2D/O2ColorSpace.h>
+#import <Onyx2D/O2Image.h>
+#import <Onyx2D/O2ImageSource.h>
+#import <Onyx2D/O2ImageDestination.h>
+#import <Onyx2D/O2DataProvider.h>
+#import <Onyx2D/O2PDFDocument.h>
+#import <Onyx2D/O2PDFPage.h>
+#import <Onyx2D/O2Function.h>
+#import <Onyx2D/O2Shading.h>
+#import <Onyx2D/O2Font.h>
 
 #define ONYX2D
 

@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Cursor.h>
 #import <AppKit/O2Context_gdi.h>
 #import <AppKit/Win32DeviceContextWindow.h>
-#import <CoreGraphics/O2GraphicsState.h>
+#import <Onyx2D/O2GraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
 
 #import <AppKit/NSScreen.h>
@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSColor_CGColor.h>
-#import <CoreGraphics/O2ColorSpace.h>
+#import <Onyx2D/O2ColorSpace.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSSavePanel-Win32.h>
 #import <AppKit/NSOpenPanel-Win32.h>
