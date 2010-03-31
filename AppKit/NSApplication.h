@@ -261,6 +261,43 @@ typedef enum {
 
 @end
 
+
+@protocol NSApplicationDelegate
+
+// FIXME: @optional is broken in compiler
+//@optional
+
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename;
+- (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames;
+- (BOOL)application:(id)sender openFileWithoutUI:(NSString *)filename;
+- (BOOL)application:(NSApplication *)theApplication openTempFile:(NSString *)filename;
+- (BOOL)application:(NSApplication *)theApplication printFile:(NSString *)filename;
+- (NSApplicationPrintReply)application:(NSApplication *)application printFiles:(NSArray *)fileNames withSettings:(NSDictionary *)printSettings showPrintPanels:(BOOL)showPrintPanels;
+- (NSError *)application:(NSApplication *)application willPresentError:(NSError *)error;
+- (void)applicationDidBecomeActive:(NSNotification *)aNotification;
+- (void)applicationDidChangeScreenParameters:(NSNotification *)aNotification;
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+- (void)applicationDidHide:(NSNotification *)aNotification;
+- (void)applicationDidResignActive:(NSNotification *)aNotification;
+- (void)applicationDidUnhide:(NSNotification *)aNotification;
+- (void)applicationDidUpdate:(NSNotification *)aNotification;
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender;
+- (BOOL)applicationOpenUntitledFile:(NSApplication *)theApplication;
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag;
+- (BOOL)applicationShouldOpenUntitledFile:(NSApplication *)sender;
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication;
+- (void)applicationWillBecomeActive:(NSNotification *)aNotification;
+- (void)applicationWillFinishLaunching:(NSNotification *)aNotification;
+- (void)applicationWillHide:(NSNotification *)aNotification;
+- (void)applicationWillResignActive:(NSNotification *)aNotification;
+- (void)applicationWillTerminate:(NSNotification *)aNotification;
+- (void)applicationWillUnhide:(NSNotification *)aNotification;
+- (void)applicationWillUpdate:(NSNotification *)aNotification;
+
+
+@end
+
 APPKIT_EXPORT int NSApplicationMain(int argc, const char *argv[]);
 
 APPKIT_EXPORT void NSUpdateDynamicServices(void);
