@@ -52,7 +52,7 @@ static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOO
    {
       NSString *date=[[NSDate date]
                       descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S.%F"
-                      timeZone:nil locale:nil];
+                      timeZone:[NSTimeZone systemTimeZone] locale:nil];
       NSString *process=[[NSProcessInfo processInfo] processName];
       
       NSLogFormat(@"%@ %@[%d:%lx] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),message);
