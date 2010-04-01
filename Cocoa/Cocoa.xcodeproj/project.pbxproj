@@ -669,7 +669,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -692,7 +692,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -715,7 +715,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -745,7 +745,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -784,7 +784,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -808,7 +808,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -832,7 +832,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -856,7 +856,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};

@@ -452,7 +452,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Security;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/Security/Windows;
+				SYMROOT = build/Windows/i386;
 				WARNING_CFLAGS = "-Wno-multichar";
 			};
 			name = Release;

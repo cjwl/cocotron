@@ -1065,7 +1065,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/arm;
+				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
@@ -1089,7 +1089,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/arm;
+				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
@@ -1121,7 +1121,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/ppc;
+				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};
@@ -1145,7 +1145,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/ppc;
+				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -1169,7 +1169,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -1193,7 +1193,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Solaris/sparc;
+				SYMROOT = build/Solaris/sparc;
 			};
 			name = Debug;
 		};
@@ -1227,7 +1227,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -1250,7 +1250,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/ppc;
+				SYMROOT = build/Darwin/ppc;
 			};
 			name = Debug;
 		};
@@ -1278,7 +1278,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -1317,7 +1317,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -1341,7 +1341,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -1365,7 +1365,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Solaris/sparc;
+				SYMROOT = build/Solaris/sparc;
 			};
 			name = Release;
 		};
@@ -1400,7 +1400,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -1424,7 +1424,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -1447,7 +1447,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/x86_64;
+				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Release;
 		};
@@ -1470,7 +1470,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -1493,7 +1493,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/i386;
+				SYMROOT = build/arwin/i386;
 			};
 			name = Release;
 		};
@@ -1516,7 +1516,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
-				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/ppc;
+				SYMROOT = build/Darwin/ppc;
 			};
 			name = Release;
 		};

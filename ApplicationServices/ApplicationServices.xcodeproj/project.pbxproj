@@ -768,7 +768,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
-				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -790,7 +790,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
-				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -818,7 +818,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
-				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -841,7 +841,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
-				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};

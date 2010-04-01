@@ -10200,7 +10200,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -10261,7 +10261,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Linux;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -10313,7 +10313,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Linux;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -10371,7 +10371,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -10427,7 +10427,7 @@
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -10485,7 +10485,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -10538,7 +10538,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/FreeBSD;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -10588,7 +10588,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/FreeBSD;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -10628,7 +10628,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/MacOS;
+				SYMROOT = build/MacOS/i386;
 			};
 			name = Release;
 		};
@@ -10682,7 +10682,7 @@
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
-				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Darwin;
+				SYMROOT = build/MacOS/i386;
 			};
 			name = Debug;
 		};

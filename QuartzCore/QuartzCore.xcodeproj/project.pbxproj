@@ -588,7 +588,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/QuartzCore/FreeBSD;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -637,7 +637,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/QuartzCore/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -668,7 +668,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/QuartzCore/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};

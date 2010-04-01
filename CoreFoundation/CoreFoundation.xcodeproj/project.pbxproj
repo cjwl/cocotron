@@ -1065,7 +1065,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -1085,7 +1085,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -1133,7 +1133,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -1153,7 +1153,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -1173,7 +1173,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -1193,7 +1193,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -1213,7 +1213,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -1233,7 +1233,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -1253,7 +1253,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Linux/arm;
+				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
@@ -1273,7 +1273,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Linux/arm;
+				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
@@ -1293,7 +1293,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Linux/ppc;
+				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -1313,7 +1313,7 @@
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreFoundation/Linux/ppc;
+				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};

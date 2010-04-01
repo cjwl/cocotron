@@ -268,7 +268,7 @@
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CFNetwork/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -288,7 +288,7 @@
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CFNetwork/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -333,7 +333,7 @@
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CFNetwork/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -352,7 +352,7 @@
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CFNetwork/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -371,7 +371,7 @@
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CFNetwork/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -390,7 +390,7 @@
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CFNetwork/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};

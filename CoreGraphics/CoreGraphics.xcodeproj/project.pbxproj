@@ -2750,7 +2750,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -2792,7 +2792,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/FreeBSD;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -2828,7 +2828,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/FreeBSD;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -2864,7 +2864,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Linux;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -2898,7 +2898,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -2943,7 +2943,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -2979,7 +2979,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Linux;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -3013,7 +3013,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};

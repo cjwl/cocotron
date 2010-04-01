@@ -502,7 +502,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreData;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreData/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -539,7 +539,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreData;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreData/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};

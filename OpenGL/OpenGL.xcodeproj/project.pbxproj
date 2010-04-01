@@ -361,7 +361,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = OpenGL;
-				SYMROOT = /Developer/Cocotron/1.0/build/OpenGL/Windows/i386;
+				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = framework;
 				ZERO_LINK = YES;
 			};
@@ -390,7 +390,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				PREBINDING = NO;
 				PRODUCT_NAME = OpenGL;
-				SYMROOT = /Developer/Cocotron/1.0/build/OpenGL/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -408,7 +408,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				PREBINDING = NO;
 				PRODUCT_NAME = OpenGL;
-				SYMROOT = /Developer/Cocotron/1.0/build/OpenGL/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

@@ -1119,7 +1119,7 @@
 				"Precompile prefix header" = YES;
 				"Prefix Header" = SenTestingKit_Prefix.pch;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin;
+				SYMROOT = build/Darwin/i386;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Default;
@@ -1153,7 +1153,7 @@
 				"Precompile prefix header" = YES;
 				"Prefix Header" = SenTestingKit_Prefix.pch;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux;
+				SYMROOT = build/Linux/i386;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Default;
@@ -1197,7 +1197,7 @@
 				"Precompile prefix header" = YES;
 				"Prefix Header" = SenTestingKit_Prefix.pch;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Windows;
+				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Default;

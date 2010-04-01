@@ -433,7 +433,7 @@
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -453,7 +453,7 @@
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Windows/i386;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -499,7 +499,7 @@
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -519,7 +519,7 @@
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -539,7 +539,7 @@
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -559,7 +559,7 @@
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreServices/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};

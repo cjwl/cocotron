@@ -1857,7 +1857,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = "/Developer/Cocotron/1.0/build/$(PRODUCT_NAME)/Windows";
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -1897,7 +1897,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = "/Developer/Cocotron/1.0/build/$(PRODUCT_NAME)/Windows";
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -1948,7 +1948,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = "/Developer/Cocotron/1.0/build/$(PRODUCT_NAME)/Windows";
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -1987,7 +1987,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = "/Developer/Cocotron/1.0/build/$(PRODUCT_NAME)/Windows";
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -2026,7 +2026,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = "/Developer/Cocotron/1.0/build/$(PRODUCT_NAME)/Windows";
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -2065,7 +2065,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = "/Developer/Cocotron/1.0/build/$(PRODUCT_NAME)/Windows";
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};

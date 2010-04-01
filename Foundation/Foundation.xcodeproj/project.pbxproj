@@ -15911,7 +15911,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux/arm;
+				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
@@ -15945,7 +15945,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux/arm;
+				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
@@ -15979,7 +15979,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux/ppc;
+				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};
@@ -16011,7 +16011,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux/ppc;
+				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -16066,7 +16066,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Solaris/sparc;
+				SYMROOT = build/Solaris/sparc;
 				VALID_ARCHS = sparc;
 			};
 			name = Release;
@@ -16102,7 +16102,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -16142,7 +16142,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -16175,7 +16175,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Linux/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -16207,7 +16207,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Solaris/sparc;
+				SYMROOT = build/Solaris/sparc;
 				VALID_ARCHS = sparc;
 			};
 			name = Debug;
@@ -16238,7 +16238,7 @@
 				OTHER_LDFLAGS = "-lffi";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -16264,7 +16264,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/ppc;
+				SYMROOT = build/Darwin/ppc;
 			};
 			name = Debug;
 		};
@@ -16339,7 +16339,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -16373,7 +16373,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -16405,7 +16405,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/FreeBSD/i386;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -16436,7 +16436,7 @@
 				OTHER_LDFLAGS = "-lffi";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/x86_64;
+				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Release;
 		};
@@ -16466,7 +16466,7 @@
 				OTHER_LDFLAGS = "-lffi";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/i386;
+				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Debug;
 		};
@@ -16497,7 +16497,7 @@
 				OTHER_LDFLAGS = "-lffi";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/i386;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -16524,7 +16524,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/ppc;
+				SYMROOT = build/Darwin/ppc;
 			};
 			name = Release;
 		};

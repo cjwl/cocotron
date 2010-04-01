@@ -593,7 +593,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreText;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreText/Windows;
+				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -636,7 +636,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreText;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreText/FreeBSD;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -676,7 +676,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreText;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreText/Linux;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -711,7 +711,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreText;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = /Developer/Cocotron/1.0/build/CoreText/Darwin;
+				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
