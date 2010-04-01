@@ -113,7 +113,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString            *key=[removeRegistries objectAtIndex:count];
     NSObjectToObservers *oto=[_nameToRegistry objectForKey:key];
 
-    [[oto retain] autorelease];
     [oto invalidate];
 
     [_nameToRegistry removeObjectForKey:key];
@@ -126,7 +125,8 @@ static inline void postNotification(NSNotificationCenter *self,NSNotification *n
 
    [registry postNotification:note];
    registry=[self->_nameToRegistry objectForKey:[note name]];
-   [registry postNotification:note];
+   [[registry retain] postNotification:note];
+   [registry release];
 
    [pool release];
 }
