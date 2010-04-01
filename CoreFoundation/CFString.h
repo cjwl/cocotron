@@ -72,6 +72,8 @@ COREFOUNDATION_EXPORT CFStringRef CFStringMakeConstant(const char *cString);
 #define CFSTR(s) CFStringMakeConstant(s)
 #endif
 
+COREFOUNDATION_EXPORT void CFStringAppendCharacters(CFMutableStringRef mutableString, const UniChar *chars, CFIndex numChars);
+
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator);
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self);
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation);

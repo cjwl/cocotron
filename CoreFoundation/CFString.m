@@ -1,6 +1,7 @@
 #import <CoreFoundation/CFString.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSPlatform.h>
 
 struct __CFString {
 };
@@ -40,6 +41,11 @@ static inline NSStringEncoding convertCFEncodingToNSEncoding(CFStringEncoding en
      return NSNonLossyASCIIStringEncoding;
    }
    return NSASCIIStringEncoding;
+}
+
+void CFStringAppendCharacters(CFMutableStringRef mutableString, const UniChar *chars, CFIndex numChars)
+{
+	[(NSMutableString *)mutableString appendString:[NSString stringWithCharacters:chars length:numChars]];
 }
 
 CFStringRef CFStringMakeConstant(const char *cString) {
@@ -104,7 +110,7 @@ CFStringRef CFStringCreateWithSubstring(CFAllocatorRef allocator,CFStringRef sel
 
 
 void CFShow(CFTypeRef self) {
-   NSUnimplementedFunction();
+   NSPlatformLogString([ToNSString(self) description]);
 }
 
 void CFShowStr(CFStringRef self) {
