@@ -66,6 +66,8 @@ enum {
    kSecAccountItemAttr='acct',
    kSecServerItemAttr='srvr',
    kSecProtocolItemAttr='ptcl',
+   kSecServiceItemAttr='svce',
+   kSecGenericPasswordItemClass='genp'   
 };
 
 // Keychain Item Class
@@ -77,6 +79,8 @@ enum {
  errSecItemNotFound=-25300
 };
 
+SECURITY_EXPORT OSStatus SecKeychainFindGenericPassword (CFTypeRef keychainOrArray, UInt32 serviceNameLength, const char *serviceName, UInt32 accountNameLength, const char *accountName, UInt32 *passwordLength, void **passwordData, SecKeychainItemRef *itemRef);
+SECURITY_EXPORT OSStatus SecKeychainAddGenericPassword (SecKeychainRef keychain, UInt32 serviceNameLength, const char *serviceName, UInt32 accountNameLength, const char *accountName, UInt32 passwordLength, void *passwordData, SecKeychainItemRef *itemRef);
 
 SECURITY_EXPORT OSStatus SecKeychainSearchCreateFromAttributes(CFTypeRef keychainOrArray,SecItemClass itemClass,const SecKeychainAttributeList *attributeList,SecKeychainSearchRef *resultSearch);
 SECURITY_EXPORT OSStatus SecKeychainSearchCopyNext(SecKeychainSearchRef search,SecKeychainItemRef *resultItem);
@@ -84,6 +88,7 @@ SECURITY_EXPORT OSStatus SecKeychainSearchCopyNext(SecKeychainSearchRef search,S
 SECURITY_EXPORT OSStatus SecKeychainItemCopyAttributesAndData(SecKeychainItemRef item,SecKeychainAttributeInfo *info,SecItemClass *itemClass,SecKeychainAttributeList **attributeList,UInt32 *length,void **resultBytes);
 SECURITY_EXPORT OSStatus SecKeychainItemModifyAttributesAndData(SecKeychainItemRef item,const SecKeychainAttributeList *attributeList,UInt32 length,const void *bytes);
 SECURITY_EXPORT OSStatus SecKeychainItemFreeAttributesAndData(SecKeychainAttributeList *attributeList,void *data);
+SECURITY_EXPORT OSStatus SecKeychainItemFreeContent(SecKeychainAttributeList *attributeList,void *data);
 
 SECURITY_EXPORT OSStatus SecTrustedApplicationCreateFromPath(const char *path,SecTrustedApplicationRef *resultApplication);
 SECURITY_EXPORT OSStatus SecAccessCreate(CFStringRef descriptor,CFArrayRef trustedlist,SecAccessRef *resultAccess);

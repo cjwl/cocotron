@@ -279,6 +279,7 @@ static void *decryptData(void *bytes,unsigned length,unsigned *resultLength){
       case kSecLabelItemAttr: // utf8
       case kSecAccountItemAttr: // utf8
       case kSecServerItemAttr: // utf8
+      case kSecServiceItemAttr: // utf8
        ;
        const char *utf8=[string UTF8String];
        
@@ -380,6 +381,7 @@ static void *decryptData(void *bytes,unsigned length,unsigned *resultLength){
      case kSecLabelItemAttr: // utf8
      case kSecAccountItemAttr: // utf8
      case kSecServerItemAttr: // utf8
+     case kSecServiceItemAttr: // utf8
       ;
       NSString *string=[[NSString alloc] initWithBytes:data length:length encoding:NSUTF8StringEncoding];
       const unichar  *unicode=ZeroTerminatedString(string);

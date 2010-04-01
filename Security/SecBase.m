@@ -5,6 +5,60 @@
 #import "SecKeychainSearch.h"
 #import "SecTrustedApplication.h"
 
+OSStatus SecKeychainFindGenericPassword(CFTypeRef keychainOrArray, UInt32 serviceNameLength, const char *serviceName, UInt32 accountNameLength, const char *accountName, UInt32 *passwordLength, void **passwordData, SecKeychainItemRef *itemRef)
+{
+	SecKeychainAttributeList attributeList;
+	attributeList.count = 2;
+	attributeList.attr = malloc(sizeof(SecKeychainAttribute) * attributeList.count);
+	attributeList.attr[0].tag = kSecAccountItemAttr;
+	attributeList.attr[0].length = accountNameLength;
+	attributeList.attr[0].data = (void *)accountName;
+	attributeList.attr[1].tag = kSecServiceItemAttr;
+	attributeList.attr[1].length = serviceNameLength;
+	attributeList.attr[1].data = (void *)serviceName;
+
+	SecKeychainSearchRef search;
+	OSStatus status = SecKeychainSearchCreateFromAttributes(NULL, kSecGenericPasswordItemClass, &attributeList, &search);
+	if (status != noErr)
+	{
+		free(attributeList.attr);
+		return status;
+	}
+	
+	status = SecKeychainSearchCopyNext(search, itemRef);
+	if (status == noErr && *itemRef)
+	{
+		status = SecKeychainItemCopyAttributesAndData(*itemRef, NULL, NULL, NULL, passwordLength, passwordData);
+	}
+	else
+	{
+		status = errSecItemNotFound;
+		*itemRef = NULL;
+		*passwordData = NULL;
+		*passwordLength = 0;
+	}
+
+	free(attributeList.attr);
+	return status;
+}
+
+OSStatus SecKeychainAddGenericPassword (SecKeychainRef keychain, UInt32 serviceNameLength, const char *serviceName, UInt32 accountNameLength, const char *accountName, UInt32 passwordLength, void *passwordData, SecKeychainItemRef *itemRef)
+{
+	SecKeychainAttributeList attributeList;
+	attributeList.count = 2;
+	attributeList.attr = malloc(sizeof(SecKeychainAttribute) * attributeList.count);
+	attributeList.attr[0].tag = kSecAccountItemAttr;
+	attributeList.attr[0].length = accountNameLength;
+	attributeList.attr[0].data = (void *)accountName;
+	attributeList.attr[1].tag = kSecServiceItemAttr;
+	attributeList.attr[1].length = serviceNameLength;
+	attributeList.attr[1].data = (void *)serviceName;
+
+	OSStatus status = SecKeychainItemCreateFromContent(kSecGenericPasswordItemClass, &attributeList, passwordLength, passwordData, keychain, NULL, itemRef);
+	free(attributeList.attr);
+	return status;
+}
+
 OSStatus SecKeychainSearchCreateFromAttributes(CFTypeRef keychainOrArray,SecItemClass itemClass,const SecKeychainAttributeList *attributeList,SecKeychainSearchRef *resultSearch) {
    *resultSearch=[[SecKeychainSearch alloc] initWithKeychainOrArray:keychainOrArray itemClass:itemClass attributeList:attributeList];
    return 0;
@@ -27,6 +81,15 @@ OSStatus SecKeychainItemModifyAttributesAndData(SecKeychainItemRef item,const Se
 }
 
 OSStatus SecKeychainItemFreeAttributesAndData(SecKeychainAttributeList *attributeList,void *data) {
+   SecFreeAttributeList(attributeList);
+   
+   if(data!=NULL)
+    NSZoneFree(NULL,data);
+    
+   return 0;
+}
+
+OSStatus SecKeychainItemFreeContent(SecKeychainAttributeList *attributeList,void *data) {
    SecFreeAttributeList(attributeList);
    
    if(data!=NULL)
