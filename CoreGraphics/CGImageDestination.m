@@ -1,6 +1,6 @@
 #import <CoreGraphics/CGImageDestination.h>
-#import "O2ImageDestination.h"
-#import "O2ImageSource.h"
+#import <Onyx2D/O2ImageDestination.h>
+#import <Onyx2D/O2ImageSource.h>
 
 const CFStringRef kCGImageDestinationLossyCompressionQuality=(CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
 const CFStringRef kCGImageDestinationBackgroundColor=(CFStringRef)@"kCGImageDestinationLossyCompressionQuality";

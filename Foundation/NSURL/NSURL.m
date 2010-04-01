@@ -473,9 +473,8 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
 }
 
 -initFileURLWithPath:(NSString *)path {
-   _scheme=NSURLFileScheme;
-   _path=[path copy];
-   return self;
+	if (![path hasPrefix: @"/"]) path = [@"/" stringByAppendingString: path];
+	return [self initWithScheme: NSURLFileScheme host: @"localhost" path: [path stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]];
 }
 
 -initWithString:(NSString *)string {
@@ -627,9 +626,7 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
 
 static NSString *NormalizePath( NSString *path )
 {
-	static NSRange slashRange = { '/', 1 };
-	
-	NSArray *components = [path componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithRange: slashRange]];
+	NSArray *components = [path componentsSeparatedByString: @"/"];
 	NSMutableArray *actualComponents = [NSMutableArray arrayWithCapacity: [components count]];
 	
 	NSString *lastComponent = [components lastObject];
@@ -639,7 +636,7 @@ static NSString *NormalizePath( NSString *path )
 		if ([part isEqualToString: @".."]) {
 			if ([actualComponents count] > 0 && ![[actualComponents lastObject] isEqualToString: @".."]) [actualComponents removeLastObject];
 			else [actualComponents addObject: part];
-		} else if (![part isEqualToString: @"."] && [part length] != 0) {
+		} else if (![part isEqualToString: @"."] && ![part isEqualToString: @""]) {
 			[actualComponents addObject: part];
 		}
 	}
@@ -655,32 +652,22 @@ static NSString *NormalizePath( NSString *path )
 
 -(NSString *)_pathWithPercents 
 {
-	NSString *result;
-   
-	if (!_path && !_host && !_scheme ) return [_baseURL _pathWithPercents];
+	NSString *result = _path;
 
-	if (!_baseURL || [_path hasPrefix: @"/"]) {
-		result = _path;
-	} else {
-		if (!_scheme && !_host ) {
-			result = [_baseURL _pathWithPercents];
-		
-			BOOL startsWithSlash = [result hasPrefix: @"/"];
-		
-			if (_path ) {
-				if (![result hasSuffix:@"/"]) result = [result stringByDeletingLastPathComponent];
-				result = [[result stringByAppendingString: @"/"] stringByAppendingString:_path];    
-			}
-			
-			result = NormalizePath( result );
-		   
-			if (startsWithSlash) result = [@"/" stringByAppendingString: result];
-		} else {
-			result = @"";
+	if (!_host && !_scheme && _baseURL && ![_path hasPrefix: @"/"]) {
+		result = [_baseURL _pathWithPercents];
+
+		if (_path ) {
+			if (![result hasSuffix:@"/"]) result = [result stringByDeletingLastPathComponent];
+			result = [result stringByAppendingFormat: @"/%@", _path];    
 		}
-   }
+		
+		result = NormalizePath( result );
+		
+		result = [@"/" stringByAppendingString: result];
+	} 
 
-   return result;
+	return result;
 }
 
 static void AppendValueWithPrefix( NSMutableString *orig, NSString *prefix, NSString *value )
@@ -730,7 +717,7 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
 
 -(NSString *)absoluteString 
 {
-   if(_scheme) {
+   if(_scheme && _string) {
 	   return _string;   
    } else {
 	   NSMutableString *result = [NSMutableString string];
@@ -786,7 +773,7 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
    
    if([result length]>1 && [result hasSuffix:@"/"])
     result=[result substringToIndex:[result length]-1];
-   
+
    return result;
 }
 

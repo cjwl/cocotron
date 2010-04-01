@@ -1,4 +1,4 @@
-#import <CoreGraphics/O2Font.h>
+#import <Onyx2D/O2Font.h>
 #import <windows.h>
 
 @class Win32Font;

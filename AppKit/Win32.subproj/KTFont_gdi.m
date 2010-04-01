@@ -1,10 +1,10 @@
 #import "KTFont_gdi.h"
-#import <CoreGraphics/O2Font.h>
+#import <Onyx2D/O2Font.h>
 #import "O2Context_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
 #import "O2Font_gdi.h"
-#import <CoreGraphics/O2MutablePath.h>
+#import <Onyx2D/O2MutablePath.h>
 #import <AppKit/NSRaise.h>
 
 #define MAXUNICHAR 0xFFFF

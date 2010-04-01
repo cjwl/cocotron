@@ -8,13 +8,13 @@
 
 #import "O2Context_cairo.h"
 #import <AppKit/X11Display.h>
-#import <CoreGraphics/O2MutablePath.h>
-#import <CoreGraphics/O2Color.h>
+#import <Onyx2D/O2MutablePath.h>
+#import <Onyx2D/O2Color.h>
 #import <Foundation/NSException.h>
-#import <CoreGraphics/O2GraphicsState.h>
+#import <Onyx2D/O2GraphicsState.h>
 #import <AppKit/KTFont_FT.h>
-#import <CoreGraphics/O2ColorSpace.h>
-#import <CoreGraphics/O2Surface.h>
+#import <Onyx2D/O2ColorSpace.h>
+#import <Onyx2D/O2Surface.h>
 #import <Foundation/NSException.h>
 #import <cairo/cairo-ft.h>
 #import <cairo/cairo.h>

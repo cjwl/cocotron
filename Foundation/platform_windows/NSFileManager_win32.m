@@ -50,39 +50,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)attributesOfItemAtPath:(NSString *)path error:(NSError **)error {
-   NSMutableDictionary       *result=[NSMutableDictionary dictionary];
    WIN32_FILE_ATTRIBUTE_DATA  fileData;
-   NSDate                    *date;
    
    if(path == nil) {
         return nil;
    }
-    
-   if(!GetFileAttributesExW([path fileSystemRepresentationW],GetFileExInfoStandard,&fileData))
-    return nil;
 
-   date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
-   [result setObject:date forKey:NSFileModificationDate];
+   if (!GetFileAttributesExW( [path fileSystemRepresentationW],GetFileExInfoStandard,&fileData) ) {
+	   // TODO: set error
+	   return nil;
+   }
 
-   // dth
-   NSString* fileType = NSFileTypeRegular;
-   if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-          fileType = NSFileTypeDirectory;
-   // FIX: Support for links and other attributes needed!
+	NSMutableDictionary *result = [NSMutableDictionary dictionary];
+	NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
+	[result setObject:date forKey:NSFileModificationDate];
 
-   [result setObject:fileType forKey:NSFileType];
-   [result setObject:@"USER" forKey:NSFileOwnerAccountName];
-   [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
-   [result setObject:[NSNumber numberWithUnsignedLong:0666]
-              forKey:NSFilePosixPermissions];
+	NSString *fileType = NSFileTypeRegular;
+	if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) fileType = NSFileTypeDirectory;
+	
+	[result setObject:fileType forKey:NSFileType];
+	[result setObject:@"USER" forKey:NSFileOwnerAccountName];
+	[result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
+	[result setObject:[NSNumber numberWithUnsignedLong:0666] forKey:NSFilePosixPermissions];
+
 	uint64_t sizeOfFile = fileData.nFileSizeLow;
 	uint64_t sizeHigh = fileData.nFileSizeHigh;
 	sizeOfFile |= sizeHigh << 32;
 	
-	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile]
-			   forKey:NSFileSize];	
+	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile] forKey:NSFileSize];	
 
-   return result;
+	return result;
 }
 
 -(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error {
@@ -268,40 +265,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)fileAttributesAtPath:(NSString *)path traverseLink:(BOOL)traverse {
-// FIXME: use attributesOfItemAtPath
-   NSMutableDictionary       *result=[NSMutableDictionary dictionary];
-   WIN32_FILE_ATTRIBUTE_DATA  fileData;
-   NSDate                    *date;
-   
-   if(path == nil) {
-    return nil;
-   }
-    
-   if(!GetFileAttributesExW([path fileSystemRepresentationW],GetFileExInfoStandard,&fileData))
-    return nil;
-
-   date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
-   [result setObject:date forKey:NSFileModificationDate];
-
-   // dth
-   NSString* fileType = NSFileTypeRegular;
-   if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-          fileType = NSFileTypeDirectory;
-   // FIX: Support for links and other attributes needed!
-
-   [result setObject:fileType forKey:NSFileType];
-   [result setObject:@"USER" forKey:NSFileOwnerAccountName];
-   [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
-   [result setObject:[NSNumber numberWithUnsignedLong:0666]
-              forKey:NSFilePosixPermissions];
-	uint64_t sizeOfFile = fileData.nFileSizeLow;
-	uint64_t sizeHigh = fileData.nFileSizeHigh;
-	sizeOfFile |= sizeHigh << 32;
-	
-	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile]
-			   forKey:NSFileSize];	
-
-   return result;
+	return [self attributesOfItemAtPath: path error: 0];
 }
 
 -(BOOL)isReadableFileAtPath:(NSString *)path {
@@ -386,48 +350,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithCString:string length:length];
 }
 
--(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
-   NSUInteger i,length=[path length];
-   unichar  buffer[length];
-   BOOL     converted=NO;
+static NSString *TranslatePath( NSString *path )
+{
+    NSUInteger length = [path length];
+    if (0 == length) return path;
+    
+    unichar buffer[length];
+    
+    [path getCharacters:buffer];
 
-   [path getCharacters:buffer];
+    BOOL converted=NO;
 
-   for(i=0;i<length;i++){
-    if(buffer[i]=='/'){
-     buffer[i]='\\';
-     converted=YES;
+    for (NSUInteger i = 0; i < length; i++ ) {
+        if (buffer[i] == '/') {
+            buffer[i] = '\\';
+            converted = YES;
+        }
     }
-   }
+    
+    unichar *begin = buffer;
+    if (length >= 4 && begin[0] == '\\' && (begin[2] == ':' || begin[2] == '|') && begin[3] == '\\') {
+        // Begin of path matches URL style drive spec \c:\path or \c|\path, both need to be translated to c:\path
+        begin[2] = ':';
+        converted = YES;
+        ++begin; 
+        --length;
+    }
 
-   if(converted){
-    //NSLog(@"%s %@",sel_getName(_cmd),path);
-    path=[NSString stringWithCharacters:buffer length:length];
-   }
+    if (converted) {
+        path = [NSString stringWithCharacters:begin length:length];
+    }
+    
+    return path;
+}
 
-   return (const unichar *)[path cStringUsingEncoding:NSUnicodeStringEncoding];
+-(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
+    path = TranslatePath( path );
+    return (const unichar *)[path cStringUsingEncoding:NSUnicodeStringEncoding];
 }
 
 -(const char*)fileSystemRepresentationWithPath:(NSString *)path {
-	NSUInteger i,length=[path length];
-	char  buffer[length];
-	BOOL     converted=NO;
-	
-	[path getCString:buffer];
-	
-	for(i=0;i<length;i++){
-		if(buffer[i]=='/'){
-			buffer[i]='\\';
-			converted=YES;
-		}
-	}
-	
-	if(converted){
-		//NSLog(@"%s %@",sel_getName(_cmd),path);
-		path=[NSString stringWithCString:buffer length:length];
-	}
-	//	NSLog(path);
-   return [path cString];
+    path = TranslatePath( path );
+    return [path cString];
 }
 
 -(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error {

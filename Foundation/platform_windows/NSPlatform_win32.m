@@ -33,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket_windows.h>
 #import <Foundation/NSParentDeathMonitor_win32.h>
 #import <Foundation/NSSelectInputSourceSet.h>
+#import <Foundation/NSCondition_win32.h>
 #import <stdio.h>
 
 #import <objc/runtime.h>
@@ -112,6 +113,10 @@ static NSString *processName(){
 
 -(Class)timeZoneClass {
     return [NSTimeZone_win32 class];
+}
+
+-(Class)conditionClass {
+	return [NSCondition_win32 class];
 }
 
 -(NSString *)userName {

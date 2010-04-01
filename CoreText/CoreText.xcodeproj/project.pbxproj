@@ -73,14 +73,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE5A884510C6F286005E348A /* CoreGraphics.framework */;
+			remoteGlobalIDString = FE5A884510C6F286005E348A;
 			remoteInfo = "CoreGraphics-Darwin-i386 copy";
 		};
 		FE5A889310C6F33D005E348A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE5A877910C6F286005E348A /* CoreGraphics-FreeBSD-i386 */;
+			remoteGlobalIDString = FE5A877910C6F286005E348A;
 			remoteInfo = "CoreGraphics-FreeBSD-i386";
 		};
 		FECF92710FFB2BA7007AECF1 /* PBXContainerItemProxy */ = {
