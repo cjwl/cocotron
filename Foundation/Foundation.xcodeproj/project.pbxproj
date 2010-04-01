@@ -16283,6 +16283,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
 					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 				);

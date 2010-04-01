@@ -60,8 +60,9 @@ static void _objc_badAccessHandler()
 
 id _NSStackTrace()
 {
-   // this crashes after all. Disable for now.
+   // this crashes after all. Disable for now
    return nil;
+#if 0
 #ifdef DEBUG
    NSMutableArray *ret=[NSMutableArray array];
 
@@ -102,6 +103,7 @@ restore:
    return ret;
 #else
    return [NSArray arrayWithObject:@"Stack trace unavailable in Release builds"];
+#endif
 #endif
 }
 
