@@ -47,7 +47,7 @@ static void NSLogFormat(NSString *format,...) {
 }
 
 static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOOL withSyslogBanner) {
-   NSString *message = [[NSString allocWithZone:NULL] initWithBytes:string length:length encoding:NSUTF8StringEncoding];
+   NSString *message = [[NSString alloc] initWithBytes:string length:length encoding:[NSString defaultCStringEncoding]];
    if (withSyslogBanner)
    {
       NSString *date=[[NSDate date]
@@ -72,7 +72,7 @@ void NSLogv(NSString *format,va_list arguments) {
    char    *bytes;
    
    [string getCharacters:unicode];
-   bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,NO);
+   bytes=NSString_cStringFromCharacters(unicode,length,YES,&byteLength,NULL,NO);
    [string release];
    if (bytes == NULL) return;
    
