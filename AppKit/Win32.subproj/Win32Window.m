@@ -208,7 +208,10 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    _ignoreMinMaxMessage=NO;
    _sentBeginSizing=NO;
    _deviceDictionary=[NSMutableDictionary new];
-   
+   NSString *check=[[NSUserDefaults standardUserDefaults] stringForKey:@"CGBackingRasterizer"];
+   if([check isEqual:@"Onyx"] || [check isEqual:@"GDI"])
+    [_deviceDictionary setObject:check forKey:@"CGContext"];
+    
    return self;
 }
 

@@ -521,7 +521,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
 
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
-   _png=O2DataProviderCopyData(provider);
+   _png=(NSData *)O2DataProviderCopyData(provider);
    return self;
 }
 

@@ -1073,7 +1073,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
 
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
-   _jpg=O2DataProviderCopyData(provider);
+   _jpg=(NSData *)O2DataProviderCopyData(provider);
    return self;
 }
 

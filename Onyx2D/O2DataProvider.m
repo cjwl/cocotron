@@ -78,11 +78,11 @@ void O2DataProviderRelease(O2DataProviderRef self) {
     CFRelease(self);
 }
 
-NSData *O2DataProviderCopyData(O2DataProviderRef self) {
+CFDataRef O2DataProviderCopyData(O2DataProviderRef self) {
    if(self->_data!=nil)
-    return [self->_data copy];
+    return (CFDataRef)[self->_data copy];
    else
-    return [[NSData alloc] initWithContentsOfMappedFile:self->_path]; 
+    return (CFDataRef)[[NSData alloc] initWithContentsOfFile:self->_path]; 
 }
 
 -(void)dealloc {

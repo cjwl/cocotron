@@ -35,7 +35,7 @@ O2DataProviderRef O2DataProviderCreateWithURL(NSURL *url);
 O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString);
 O2DataProviderRef O2DataProviderRetain(O2DataProviderRef self);
 void O2DataProviderRelease(O2DataProviderRef self);
-NSData *O2DataProviderCopyData(O2DataProviderRef self);
+CFDataRef O2DataProviderCopyData(O2DataProviderRef self);
 
 size_t O2DataProviderRewind(O2DataProviderRef self);
 size_t O2DataProviderGetBytesAtPosition(O2DataProviderRef self,void *buffer,size_t length,size_t position);

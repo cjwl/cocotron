@@ -106,7 +106,7 @@
 		FE5A87D010C6F286005E348A /* O2Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* O2Shading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A87D110C6F286005E348A /* O2Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* O2Surface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A87D210C6F286005E348A /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A87D310C6F286005E348A /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5A87D310C6F286005E348A /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A87D410C6F286005E348A /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A87D510C6F286005E348A /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A87D610C6F286005E348A /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -200,7 +200,7 @@
 		FE5A883010C6F286005E348A /* O2Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* O2Shading.m */; };
 		FE5A883110C6F286005E348A /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* O2Surface.m */; };
 		FE5A883210C6F286005E348A /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* O2zlib.m */; };
-		FE5A883310C6F286005E348A /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FE5A883310C6F286005E348A /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* O2TIFFImageDirectory.m */; };
 		FE5A883410C6F286005E348A /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* O2Decoder_TIFF.m */; };
 		FE5A883510C6F286005E348A /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
 		FE5A883610C6F286005E348A /* CGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */; };
@@ -297,7 +297,7 @@
 		FE6F7B4B0FD554A800C3244F /* O2Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* O2Shading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4C0FD554A800C3244F /* O2Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* O2Surface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4D0FD554A800C3244F /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B500FD554A800C3244F /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B510FD554A800C3244F /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B520FD554A800C3244F /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B530FD554A800C3244F /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -381,7 +381,7 @@
 		FE6F7BA60FD554A800C3244F /* O2Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* O2Shading.m */; };
 		FE6F7BA70FD554A800C3244F /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* O2Surface.m */; };
 		FE6F7BA80FD554A800C3244F /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* O2zlib.m */; };
-		FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FE6F7BAB0FD554A800C3244F /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* O2TIFFImageDirectory.m */; };
 		FE6F7BAC0FD554A800C3244F /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* O2Decoder_TIFF.m */; };
 		FE6F7BAD0FD554A800C3244F /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
 		FE6F7BAF0FD554A800C3244F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
@@ -469,7 +469,7 @@
 		FE6F7C300FD55FA300C3244F /* O2Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* O2Shading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C310FD55FA300C3244F /* O2Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* O2Surface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C320FD55FA300C3244F /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C350FD55FA300C3244F /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C360FD55FA300C3244F /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C370FD55FA300C3244F /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C380FD55FA300C3244F /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -553,7 +553,7 @@
 		FE6F7C8B0FD55FA300C3244F /* O2Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* O2Shading.m */; };
 		FE6F7C8C0FD55FA300C3244F /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* O2Surface.m */; };
 		FE6F7C8D0FD55FA300C3244F /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* O2zlib.m */; };
-		FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FE6F7C900FD55FA300C3244F /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* O2TIFFImageDirectory.m */; };
 		FE6F7C910FD55FA300C3244F /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* O2Decoder_TIFF.m */; };
 		FE6F7C920FD55FA300C3244F /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
 		FE6F7C940FD55FA300C3244F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
@@ -763,8 +763,8 @@
 		FEC11B8A0FD4B4D600082282 /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* O2Surface.m */; };
 		FEC11B8B0FD4B4D600082282 /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B8C0FD4B4D600082282 /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* O2zlib.m */; };
-		FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FEC11B910FD4B4D600082282 /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B920FD4B4D600082282 /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* O2TIFFImageDirectory.m */; };
 		FEC11B930FD4B4D600082282 /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B940FD4B4D600082282 /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* O2Decoder_TIFF.m */; };
 		FEC11B950FD4B4D600082282 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1209,8 +1209,8 @@
 		FEC11ADA0FD4B4D600082282 /* O2Surface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2Surface.m; path = ../Onyx2D/O2Surface.m; sourceTree = "<group>"; };
 		FEC11ADB0FD4B4D600082282 /* O2zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O2zlib.h; path = ../Onyx2D/O2zlib.h; sourceTree = "<group>"; };
 		FEC11ADC0FD4B4D600082282 /* O2zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2zlib.m; path = ../Onyx2D/O2zlib.m; sourceTree = "<group>"; };
-		FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTIFFImageFileDirectory.h; path = ../Onyx2D/NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
-		FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTIFFImageFileDirectory.m; path = ../Onyx2D/NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
+		FEC11AE10FD4B4D600082282 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O2TIFFImageDirectory.h; path = ../Onyx2D/O2TIFFImageDirectory.h; sourceTree = "<group>"; };
+		FEC11AE20FD4B4D600082282 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2TIFFImageDirectory.m; path = ../Onyx2D/O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		FEC11AE30FD4B4D600082282 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O2Decoder_TIFF.h; path = ../Onyx2D/O2Decoder_TIFF.h; sourceTree = "<group>"; };
 		FEC11AE40FD4B4D600082282 /* O2Decoder_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2Decoder_TIFF.m; path = ../Onyx2D/O2Decoder_TIFF.m; sourceTree = "<group>"; };
 		FEC11AE50FD4B4D600082282 /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VGmath.h; path = ../Onyx2D/VGmath.h; sourceTree = "<group>"; };
@@ -1366,8 +1366,8 @@
 			children = (
 				FEC11A630FD4B4D600082282 /* gif_lib.h */,
 				FEC11A640FD4B4D600082282 /* gif_lib.m */,
-				FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */,
-				FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */,
+				FEC11AE10FD4B4D600082282 /* O2TIFFImageDirectory.h */,
+				FEC11AE20FD4B4D600082282 /* O2TIFFImageDirectory.m */,
 				FE3C8539108779410018252A /* O2AffineTransform.h */,
 				FE3C853A108779410018252A /* O2AffineTransform.m */,
 				FEC11A650FD4B4D600082282 /* O2BitmapContext.h */,
@@ -1640,7 +1640,7 @@
 				FEC11B870FD4B4D600082282 /* O2Shading.h in Headers */,
 				FEC11B890FD4B4D600082282 /* O2Surface.h in Headers */,
 				FEC11B8B0FD4B4D600082282 /* O2zlib.h in Headers */,
-				FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */,
+				FEC11B910FD4B4D600082282 /* O2TIFFImageDirectory.h in Headers */,
 				FEC11B930FD4B4D600082282 /* O2Decoder_TIFF.h in Headers */,
 				FEC11B950FD4B4D600082282 /* VGmath.h in Headers */,
 				FEC11B960FD4B4D600082282 /* VGPath.h in Headers */,
@@ -1745,7 +1745,7 @@
 				FE5A87D010C6F286005E348A /* O2Shading.h in Headers */,
 				FE5A87D110C6F286005E348A /* O2Surface.h in Headers */,
 				FE5A87D210C6F286005E348A /* O2zlib.h in Headers */,
-				FE5A87D310C6F286005E348A /* NSTIFFImageFileDirectory.h in Headers */,
+				FE5A87D310C6F286005E348A /* O2TIFFImageDirectory.h in Headers */,
 				FE5A87D410C6F286005E348A /* O2Decoder_TIFF.h in Headers */,
 				FE5A87D510C6F286005E348A /* VGmath.h in Headers */,
 				FE5A87D610C6F286005E348A /* VGPath.h in Headers */,
@@ -1850,7 +1850,7 @@
 				FE6F7B4B0FD554A800C3244F /* O2Shading.h in Headers */,
 				FE6F7B4C0FD554A800C3244F /* O2Surface.h in Headers */,
 				FE6F7B4D0FD554A800C3244F /* O2zlib.h in Headers */,
-				FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */,
+				FE6F7B500FD554A800C3244F /* O2TIFFImageDirectory.h in Headers */,
 				FE6F7B510FD554A800C3244F /* O2Decoder_TIFF.h in Headers */,
 				FE6F7B520FD554A800C3244F /* VGmath.h in Headers */,
 				FE6F7B530FD554A800C3244F /* VGPath.h in Headers */,
@@ -1955,7 +1955,7 @@
 				FE6F7C300FD55FA300C3244F /* O2Shading.h in Headers */,
 				FE6F7C310FD55FA300C3244F /* O2Surface.h in Headers */,
 				FE6F7C320FD55FA300C3244F /* O2zlib.h in Headers */,
-				FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */,
+				FE6F7C350FD55FA300C3244F /* O2TIFFImageDirectory.h in Headers */,
 				FE6F7C360FD55FA300C3244F /* O2Decoder_TIFF.h in Headers */,
 				FE6F7C370FD55FA300C3244F /* VGmath.h in Headers */,
 				FE6F7C380FD55FA300C3244F /* VGPath.h in Headers */,
@@ -2352,7 +2352,7 @@
 				FEC11B880FD4B4D600082282 /* O2Shading.m in Sources */,
 				FEC11B8A0FD4B4D600082282 /* O2Surface.m in Sources */,
 				FEC11B8C0FD4B4D600082282 /* O2zlib.m in Sources */,
-				FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */,
+				FEC11B920FD4B4D600082282 /* O2TIFFImageDirectory.m in Sources */,
 				FEC11B940FD4B4D600082282 /* O2Decoder_TIFF.m in Sources */,
 				FEC11B970FD4B4D600082282 /* VGPath.m in Sources */,
 				FE9DB4620FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
@@ -2451,7 +2451,7 @@
 				FE5A883010C6F286005E348A /* O2Shading.m in Sources */,
 				FE5A883110C6F286005E348A /* O2Surface.m in Sources */,
 				FE5A883210C6F286005E348A /* O2zlib.m in Sources */,
-				FE5A883310C6F286005E348A /* NSTIFFImageFileDirectory.m in Sources */,
+				FE5A883310C6F286005E348A /* O2TIFFImageDirectory.m in Sources */,
 				FE5A883410C6F286005E348A /* O2Decoder_TIFF.m in Sources */,
 				FE5A883510C6F286005E348A /* VGPath.m in Sources */,
 				FE5A883610C6F286005E348A /* CGDataConsumer.m in Sources */,
@@ -2550,7 +2550,7 @@
 				FE6F7BA60FD554A800C3244F /* O2Shading.m in Sources */,
 				FE6F7BA70FD554A800C3244F /* O2Surface.m in Sources */,
 				FE6F7BA80FD554A800C3244F /* O2zlib.m in Sources */,
-				FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */,
+				FE6F7BAB0FD554A800C3244F /* O2TIFFImageDirectory.m in Sources */,
 				FE6F7BAC0FD554A800C3244F /* O2Decoder_TIFF.m in Sources */,
 				FE6F7BAD0FD554A800C3244F /* VGPath.m in Sources */,
 				FE9DB4640FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
@@ -2649,7 +2649,7 @@
 				FE6F7C8B0FD55FA300C3244F /* O2Shading.m in Sources */,
 				FE6F7C8C0FD55FA300C3244F /* O2Surface.m in Sources */,
 				FE6F7C8D0FD55FA300C3244F /* O2zlib.m in Sources */,
-				FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */,
+				FE6F7C900FD55FA300C3244F /* O2TIFFImageDirectory.m in Sources */,
 				FE6F7C910FD55FA300C3244F /* O2Decoder_TIFF.m in Sources */,
 				FE6F7C920FD55FA300C3244F /* VGPath.m in Sources */,
 				FE9DB4660FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,

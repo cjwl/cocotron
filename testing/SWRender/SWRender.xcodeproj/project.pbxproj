@@ -40,35 +40,35 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE5C0E2E1162E81000065D1C /* Onyx2D.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* Onyx2D.framework */;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = "Onyx2D-Windows-i386";
 		};
 		FE5C0E371162E81000065D1C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE5C0E2E1162E81000065D1C /* Onyx2D.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE5C0CA61162A99A00065D1C /* Onyx2D.framework */;
+			remoteGlobalIDString = FE5C0CA61162A99A00065D1C;
 			remoteInfo = "Onyx2D-Linux-i386";
 		};
 		FE5C0E391162E81000065D1C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE5C0E2E1162E81000065D1C /* Onyx2D.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE5C0D461162A9AB00065D1C /* Onyx2D.framework */;
+			remoteGlobalIDString = FE5C0D461162A9AB00065D1C;
 			remoteInfo = "Onyx2D-FreeBSD-i386";
 		};
 		FE5C0E3B1162E81000065D1C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE5C0E2E1162E81000065D1C /* Onyx2D.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE5C0D571162A9D600065D1C /* Onyx2D.framework */;
+			remoteGlobalIDString = FE5C0D571162A9D600065D1C;
 			remoteInfo = "Onyx2D-MacOS";
 		};
 		FE5C0E3D1162E81800065D1C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE5C0E2E1162E81000065D1C /* Onyx2D.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE5C0D561162A9D600065D1C /* Onyx2D-MacOS */;
+			remoteGlobalIDString = FE5C0D561162A9D600065D1C;
 			remoteInfo = "Onyx2D-MacOS";
 		};
 /* End PBXContainerItemProxy section */
@@ -357,7 +357,7 @@
 					/System/Library/Frameworks/ApplicationServices.framework/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/Cocotron/MacOS/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "/Developer/Cocotron/MacOS/Frameworks\"";
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;

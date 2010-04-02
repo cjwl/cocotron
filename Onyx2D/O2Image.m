@@ -471,7 +471,7 @@ static inline const void *directBytes(O2Image *self){
      self->_directLength=[self->_provider length];
    }
     else {
-     self->_directData=O2DataProviderCopyData(self->_provider);
+     self->_directData=(NSData *)O2DataProviderCopyData(self->_provider);
      self->_directBytes=[self->_directData bytes];
      self->_directLength=[self->_directData length];
     }

@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class O2Decoder_TIFF;
 
-@interface NSTIFFImageFileDirectory : NSObject {
+@interface O2TIFFImageDirectory : NSObject {
   NSString            *_artist;
   unsigned             _sizeOfBitsPerSample;
   unsigned            *_bitsPerSample;

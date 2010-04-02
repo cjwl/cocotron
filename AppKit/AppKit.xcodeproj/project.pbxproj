@@ -233,7 +233,7 @@
 		C88974E70EA0BF3100D0A0A2 /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974EA0EA0BF3100D0A0A2 /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974EB0EA0BF3100D0A0A2 /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C88974EC0EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C88974EC0EA0BF3100D0A0A2 /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974ED0EA0BF3100D0A0A2 /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974EE0EA0BF3100D0A0A2 /* NSIBObjectData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC350A35D0C200E8D6CA /* NSIBObjectData.h */; };
 		C88974EF0EA0BF3100D0A0A2 /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -528,7 +528,7 @@
 		C88976400EA0BF3100D0A0A2 /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
 		C88976430EA0BF3100D0A0A2 /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		C88976440EA0BF3100D0A0A2 /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
-		C88976450EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
+		C88976450EA0BF3100D0A0A2 /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */; };
 		C88976460EA0BF3100D0A0A2 /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6809A3C40F009C8693 /* O2Decoder_TIFF.m */; };
 		C88976470EA0BF3100D0A0A2 /* NSIBObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC360A35D0C200E8D6CA /* NSIBObjectData.m */; };
 		C88976480EA0BF3100D0A0A2 /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
@@ -895,7 +895,7 @@
 		C8A2E3680F07EA1F0054397C /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E36B0F07EA1F0054397C /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E36C0F07EA1F0054397C /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C8A2E36D0F07EA1F0054397C /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8A2E36D0F07EA1F0054397C /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E36E0F07EA1F0054397C /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E36F0F07EA1F0054397C /* NSIBObjectData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC350A35D0C200E8D6CA /* NSIBObjectData.h */; };
 		C8A2E3700F07EA1F0054397C /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1196,7 +1196,7 @@
 		C8A2E4A80F07EA1F0054397C /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4AB0F07EA1F0054397C /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4AC0F07EA1F0054397C /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4AD0F07EA1F0054397C /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
+		C8A2E4AD0F07EA1F0054397C /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */; };
 		C8A2E4AE0F07EA1F0054397C /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6809A3C40F009C8693 /* O2Decoder_TIFF.m */; };
 		C8A2E4AF0F07EA1F0054397C /* NSIBObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC360A35D0C200E8D6CA /* NSIBObjectData.m */; };
 		C8A2E4B00F07EA1F0054397C /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
@@ -1589,7 +1589,7 @@
 		FE01A8D90C5D9BCB00AEA51A /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8DC0C5D9BCB00AEA51A /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8DD0C5D9BCB00AEA51A /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE01A8DE0C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8DE0C5D9BCB00AEA51A /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8DF0C5D9BCB00AEA51A /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8E00C5D9BCB00AEA51A /* NSIBObjectData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC350A35D0C200E8D6CA /* NSIBObjectData.h */; };
 		FE01A8E10C5D9BCB00AEA51A /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1877,7 +1877,7 @@
 		FE01AA1B0C5D9BCB00AEA51A /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA1E0C5D9BCB00AEA51A /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA1F0C5D9BCB00AEA51A /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA200C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
+		FE01AA200C5D9BCB00AEA51A /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */; };
 		FE01AA210C5D9BCB00AEA51A /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6809A3C40F009C8693 /* O2Decoder_TIFF.m */; };
 		FE01AA220C5D9BCB00AEA51A /* NSIBObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC360A35D0C200E8D6CA /* NSIBObjectData.m */; };
 		FE01AA230C5D9BCB00AEA51A /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
@@ -2369,7 +2369,7 @@
 		FE5A899B10C6F50E005E348A /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A899C10C6F50E005E348A /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE5A899D10C6F50E005E348A /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE5A899E10C6F50E005E348A /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5A899E10C6F50E005E348A /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A899F10C6F50E005E348A /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A89A010C6F50E005E348A /* NSIBObjectData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC350A35D0C200E8D6CA /* NSIBObjectData.h */; };
 		FE5A89A110C6F50E005E348A /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2704,7 +2704,7 @@
 		FE5A8AF510C6F50E005E348A /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AF610C6F50E005E348A /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AF710C6F50E005E348A /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AF810C6F50E005E348A /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
+		FE5A8AF810C6F50E005E348A /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */; };
 		FE5A8AF910C6F50E005E348A /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6809A3C40F009C8693 /* O2Decoder_TIFF.m */; };
 		FE5A8AFA10C6F50E005E348A /* NSIBObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC360A35D0C200E8D6CA /* NSIBObjectData.m */; };
 		FE5A8AFB10C6F50E005E348A /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
@@ -3916,8 +3916,8 @@
 /* Begin PBXFileReference section */
 		36570F980E818CD5008FE1BE /* NSGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGradient.h; sourceTree = "<group>"; };
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
-		6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
-		6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
+		6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
+		6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Decoder_TIFF.h; sourceTree = "<group>"; };
 		6E14EC6809A3C40F009C8693 /* O2Decoder_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2Decoder_TIFF.m; sourceTree = "<group>"; };
 		6E2B53250976075200DA0954 /* NSActionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSActionCell.m; sourceTree = "<group>"; };
@@ -5730,8 +5730,8 @@
 				FE33952C0DB92D25009AB3E0 /* O2Blending.h */,
 				FE669C8C0F12B1A600534F46 /* gif_lib.h */,
 				FE669C840F12B1A600534F46 /* gif_lib.m */,
-				6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */,
-				6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */,
+				6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */,
+				6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */,
 				6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */,
 				6E14EC6809A3C40F009C8693 /* O2Decoder_TIFF.m */,
 				FE8C01D610C59B0600FE4072 /* O2Encoder_TIFF.h */,
@@ -6167,7 +6167,7 @@
 				C88974E70EA0BF3100D0A0A2 /* NSToolbarCustomizationView.h in Headers */,
 				C88974EA0EA0BF3100D0A0A2 /* NSDrawer.h in Headers */,
 				C88974EB0EA0BF3100D0A0A2 /* NSDrawerWindow.h in Headers */,
-				C88974EC0EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.h in Headers */,
+				C88974EC0EA0BF3100D0A0A2 /* O2TIFFImageDirectory.h in Headers */,
 				C88974ED0EA0BF3100D0A0A2 /* O2Decoder_TIFF.h in Headers */,
 				C88974EE0EA0BF3100D0A0A2 /* NSIBObjectData.h in Headers */,
 				C88974EF0EA0BF3100D0A0A2 /* NSCustomObject.h in Headers */,
@@ -6546,7 +6546,7 @@
 				C8A2E3680F07EA1F0054397C /* NSToolbarCustomizationView.h in Headers */,
 				C8A2E36B0F07EA1F0054397C /* NSDrawer.h in Headers */,
 				C8A2E36C0F07EA1F0054397C /* NSDrawerWindow.h in Headers */,
-				C8A2E36D0F07EA1F0054397C /* NSTIFFImageFileDirectory.h in Headers */,
+				C8A2E36D0F07EA1F0054397C /* O2TIFFImageDirectory.h in Headers */,
 				C8A2E36E0F07EA1F0054397C /* O2Decoder_TIFF.h in Headers */,
 				C8A2E36F0F07EA1F0054397C /* NSIBObjectData.h in Headers */,
 				C8A2E3700F07EA1F0054397C /* NSCustomObject.h in Headers */,
@@ -6924,7 +6924,7 @@
 				FE01A8D90C5D9BCB00AEA51A /* NSToolbarCustomizationView.h in Headers */,
 				FE01A8DC0C5D9BCB00AEA51A /* NSDrawer.h in Headers */,
 				FE01A8DD0C5D9BCB00AEA51A /* NSDrawerWindow.h in Headers */,
-				FE01A8DE0C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.h in Headers */,
+				FE01A8DE0C5D9BCB00AEA51A /* O2TIFFImageDirectory.h in Headers */,
 				FE01A8DF0C5D9BCB00AEA51A /* O2Decoder_TIFF.h in Headers */,
 				FE01A8E00C5D9BCB00AEA51A /* NSIBObjectData.h in Headers */,
 				FE01A8E10C5D9BCB00AEA51A /* NSCustomObject.h in Headers */,
@@ -7295,7 +7295,7 @@
 				FE5A899B10C6F50E005E348A /* NSToolbarCustomizationView.h in Headers */,
 				FE5A899C10C6F50E005E348A /* NSDrawer.h in Headers */,
 				FE5A899D10C6F50E005E348A /* NSDrawerWindow.h in Headers */,
-				FE5A899E10C6F50E005E348A /* NSTIFFImageFileDirectory.h in Headers */,
+				FE5A899E10C6F50E005E348A /* O2TIFFImageDirectory.h in Headers */,
 				FE5A899F10C6F50E005E348A /* O2Decoder_TIFF.h in Headers */,
 				FE5A89A010C6F50E005E348A /* NSIBObjectData.h in Headers */,
 				FE5A89A110C6F50E005E348A /* NSCustomObject.h in Headers */,
@@ -8528,7 +8528,7 @@
 				C88976400EA0BF3100D0A0A2 /* NSToolbarCustomizationView.m in Sources */,
 				C88976430EA0BF3100D0A0A2 /* NSDrawer.m in Sources */,
 				C88976440EA0BF3100D0A0A2 /* NSDrawerWindow.m in Sources */,
-				C88976450EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.m in Sources */,
+				C88976450EA0BF3100D0A0A2 /* O2TIFFImageDirectory.m in Sources */,
 				C88976460EA0BF3100D0A0A2 /* O2Decoder_TIFF.m in Sources */,
 				C88976470EA0BF3100D0A0A2 /* NSIBObjectData.m in Sources */,
 				C88976480EA0BF3100D0A0A2 /* NSCustomObject.m in Sources */,
@@ -8880,7 +8880,7 @@
 				C8A2E4A80F07EA1F0054397C /* NSToolbarCustomizationView.m in Sources */,
 				C8A2E4AB0F07EA1F0054397C /* NSDrawer.m in Sources */,
 				C8A2E4AC0F07EA1F0054397C /* NSDrawerWindow.m in Sources */,
-				C8A2E4AD0F07EA1F0054397C /* NSTIFFImageFileDirectory.m in Sources */,
+				C8A2E4AD0F07EA1F0054397C /* O2TIFFImageDirectory.m in Sources */,
 				C8A2E4AE0F07EA1F0054397C /* O2Decoder_TIFF.m in Sources */,
 				C8A2E4AF0F07EA1F0054397C /* NSIBObjectData.m in Sources */,
 				C8A2E4B00F07EA1F0054397C /* NSCustomObject.m in Sources */,
@@ -9262,7 +9262,7 @@
 				FE01AA1B0C5D9BCB00AEA51A /* NSToolbarCustomizationView.m in Sources */,
 				FE01AA1E0C5D9BCB00AEA51A /* NSDrawer.m in Sources */,
 				FE01AA1F0C5D9BCB00AEA51A /* NSDrawerWindow.m in Sources */,
-				FE01AA200C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.m in Sources */,
+				FE01AA200C5D9BCB00AEA51A /* O2TIFFImageDirectory.m in Sources */,
 				FE01AA210C5D9BCB00AEA51A /* O2Decoder_TIFF.m in Sources */,
 				FE01AA220C5D9BCB00AEA51A /* NSIBObjectData.m in Sources */,
 				FE01AA230C5D9BCB00AEA51A /* NSCustomObject.m in Sources */,
@@ -9610,7 +9610,7 @@
 				FE5A8AF510C6F50E005E348A /* NSToolbarCustomizationView.m in Sources */,
 				FE5A8AF610C6F50E005E348A /* NSDrawer.m in Sources */,
 				FE5A8AF710C6F50E005E348A /* NSDrawerWindow.m in Sources */,
-				FE5A8AF810C6F50E005E348A /* NSTIFFImageFileDirectory.m in Sources */,
+				FE5A8AF810C6F50E005E348A /* O2TIFFImageDirectory.m in Sources */,
 				FE5A8AF910C6F50E005E348A /* O2Decoder_TIFF.m in Sources */,
 				FE5A8AFA10C6F50E005E348A /* NSIBObjectData.m in Sources */,
 				FE5A8AFB10C6F50E005E348A /* NSCustomObject.m in Sources */,

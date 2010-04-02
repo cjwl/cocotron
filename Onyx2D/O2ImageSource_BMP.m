@@ -413,7 +413,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
 
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
-   _bmp=O2DataProviderCopyData(provider);
+   _bmp=(NSData *)O2DataProviderCopyData(provider);
    return self;
 }
 

@@ -45,12 +45,6 @@ static inline O2GState *currentState(O2Context *self){
    return [self->_stateStack lastObject];
 }
 
-static BOOL _isAvailable=NO;
-
-+(void)initialize {
-   _isAvailable=[[NSUserDefaults standardUserDefaults] boolForKey:@"CGEnableBuiltin"];
-}
-
 +(BOOL)canInitBitmap {
    return YES;
 }
@@ -59,12 +53,9 @@ static BOOL _isAvailable=NO;
    NSString *name=[deviceDictionary objectForKey:@"CGContext"];
 
    if(name==nil)
-    return _isAvailable;
-    
-   if([name isEqual:@"Onyx"])
     return YES;
     
-   return NO;
+   return [name isEqual:@"Onyx"];
 }
 
 -(void)reallocateForSurface {

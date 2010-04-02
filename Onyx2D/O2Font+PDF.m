@@ -53,7 +53,8 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Glyph encoding[25
 }
 
 -(const char *)pdfFontName {
-   return [[[self->_name componentsSeparatedByString:@" "] componentsJoinedByString:@","] cString];
+// possibly wrong encoding
+   return [[[self->_name componentsSeparatedByString:@" "] componentsJoinedByString:@","] cStringUsingEncoding:NSISOLatin1StringEncoding];
 }
 
 -(O2PDFDictionary *)_pdfFontDescriptorWithSize:(CGFloat)size {

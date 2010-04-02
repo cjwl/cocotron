@@ -621,7 +621,7 @@ NSMapTable *O2TTFDecoderGetPostScriptNameMapTable(O2TTFDecoderRef self,int *numb
 
 int O2TTFDecoderGetOffsetsAreLong(O2TTFDecoderRef self) {
    if(!seekToTable(self,'head'))
-    return NULL;
+    return 0;
 
    Fixed32  version=decode_Fixed32(self);
    Fixed32  fontRevision=decode_Fixed32(self);

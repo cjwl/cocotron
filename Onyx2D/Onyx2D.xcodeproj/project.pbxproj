@@ -13,8 +13,8 @@
 		FE5C0A4C116297FA00065D1C /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A49116297FA00065D1C /* VGPath.m */; };
 		FE5C0ADD1162981200065D1C /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4D1162981100065D1C /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0ADE1162981200065D1C /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A4E1162981100065D1C /* gif_lib.m */; };
-		FE5C0ADF1162981200065D1C /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AE01162981200065D1C /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* NSTIFFImageFileDirectory.m */; };
+		FE5C0ADF1162981200065D1C /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5C0AE01162981200065D1C /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */; };
 		FE5C0AE11162981200065D1C /* O2AffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A511162981100065D1C /* O2AffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0AE21162981200065D1C /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A521162981100065D1C /* O2AffineTransform.m */; };
 		FE5C0AE31162981200065D1C /* O2BitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A531162981100065D1C /* O2BitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -157,7 +157,7 @@
 		FE5C0C0A1162A99A00065D1C /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A47116297FA00065D1C /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0C0B1162A99A00065D1C /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A48116297FA00065D1C /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0C0C1162A99A00065D1C /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4D1162981100065D1C /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0C0D1162A99A00065D1C /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5C0C0D1162A99A00065D1C /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0C0E1162A99A00065D1C /* O2AffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A511162981100065D1C /* O2AffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0C0F1162A99A00065D1C /* O2BitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A531162981100065D1C /* O2BitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0C101162A99A00065D1C /* O2Blending.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A551162981100065D1C /* O2Blending.h */; };
@@ -232,7 +232,7 @@
 		FE5C0C561162A99A00065D1C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE5C0C581162A99A00065D1C /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A49116297FA00065D1C /* VGPath.m */; };
 		FE5C0C591162A99A00065D1C /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A4E1162981100065D1C /* gif_lib.m */; };
-		FE5C0C5A1162A99A00065D1C /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* NSTIFFImageFileDirectory.m */; };
+		FE5C0C5A1162A99A00065D1C /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */; };
 		FE5C0C5B1162A99A00065D1C /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A521162981100065D1C /* O2AffineTransform.m */; };
 		FE5C0C5C1162A99A00065D1C /* O2BitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A541162981100065D1C /* O2BitmapContext.m */; };
 		FE5C0C5D1162A99A00065D1C /* O2ClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A571162981100065D1C /* O2ClipPhase.m */; };
@@ -304,7 +304,7 @@
 		FE5C0CAA1162A9AB00065D1C /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A47116297FA00065D1C /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0CAB1162A9AB00065D1C /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A48116297FA00065D1C /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0CAC1162A9AB00065D1C /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4D1162981100065D1C /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0CAD1162A9AB00065D1C /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5C0CAD1162A9AB00065D1C /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0CAE1162A9AB00065D1C /* O2AffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A511162981100065D1C /* O2AffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0CAF1162A9AB00065D1C /* O2BitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A531162981100065D1C /* O2BitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0CB01162A9AB00065D1C /* O2Blending.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A551162981100065D1C /* O2Blending.h */; };
@@ -379,7 +379,7 @@
 		FE5C0CF61162A9AB00065D1C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE5C0CF81162A9AB00065D1C /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A49116297FA00065D1C /* VGPath.m */; };
 		FE5C0CF91162A9AB00065D1C /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A4E1162981100065D1C /* gif_lib.m */; };
-		FE5C0CFA1162A9AB00065D1C /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* NSTIFFImageFileDirectory.m */; };
+		FE5C0CFA1162A9AB00065D1C /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */; };
 		FE5C0CFB1162A9AB00065D1C /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A521162981100065D1C /* O2AffineTransform.m */; };
 		FE5C0CFC1162A9AB00065D1C /* O2BitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A541162981100065D1C /* O2BitmapContext.m */; };
 		FE5C0CFD1162A9AB00065D1C /* O2ClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A571162981100065D1C /* O2ClipPhase.m */; };
@@ -449,7 +449,7 @@
 		FE5C0D3F1162A9AB00065D1C /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADC1162981200065D1C /* O2zlib.m */; };
 		FE5C0D411162A9AB00065D1C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE5C0D6F1162AEF500065D1C /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4D1162981100065D1C /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0D701162AEF500065D1C /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5C0D701162AEF500065D1C /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0D711162AEF500065D1C /* O2AffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A511162981100065D1C /* O2AffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0D721162AEF500065D1C /* O2BitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A531162981100065D1C /* O2BitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5C0D731162AEF500065D1C /* O2Blending.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A551162981100065D1C /* O2Blending.h */; };
@@ -524,7 +524,7 @@
 		FE5C0DB81162AEF500065D1C /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A47116297FA00065D1C /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0DB91162AEF500065D1C /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A48116297FA00065D1C /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0DBB1162AF0100065D1C /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A4E1162981100065D1C /* gif_lib.m */; };
-		FE5C0DBC1162AF0100065D1C /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* NSTIFFImageFileDirectory.m */; };
+		FE5C0DBC1162AF0100065D1C /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */; };
 		FE5C0DBD1162AF0100065D1C /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A521162981100065D1C /* O2AffineTransform.m */; };
 		FE5C0DBE1162AF0100065D1C /* O2BitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A541162981100065D1C /* O2BitmapContext.m */; };
 		FE5C0DBF1162AF0100065D1C /* O2ClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A571162981100065D1C /* O2ClipPhase.m */; };
@@ -593,6 +593,8 @@
 		FE5C0DFF1162AF0100065D1C /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD81162981200065D1C /* O2Surface.m */; };
 		FE5C0E011162AF0100065D1C /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADC1162981200065D1C /* O2zlib.m */; };
 		FE5C0E021162AF0100065D1C /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A49116297FA00065D1C /* VGPath.m */; };
+		FE8EBE7B11658E5300BC0ED6 /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADA1162981200065D1C /* O2TTFDecoder.m */; };
+		FE8EBE7E11658E6200BC0ED6 /* O2Font_ttf.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A6C1162981100065D1C /* O2Font_ttf.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -633,8 +635,8 @@
 		FE5C0A49116297FA00065D1C /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
 		FE5C0A4D1162981100065D1C /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
 		FE5C0A4E1162981100065D1C /* gif_lib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gif_lib.m; sourceTree = "<group>"; };
-		FE5C0A4F1162981100065D1C /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
-		FE5C0A501162981100065D1C /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
+		FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
+		FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		FE5C0A511162981100065D1C /* O2AffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2AffineTransform.h; sourceTree = "<group>"; };
 		FE5C0A521162981100065D1C /* O2AffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2AffineTransform.m; sourceTree = "<group>"; };
 		FE5C0A531162981100065D1C /* O2BitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2BitmapContext.h; sourceTree = "<group>"; };
@@ -776,11 +778,8 @@
 		FE5C0ADB1162981200065D1C /* O2zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2zlib.h; sourceTree = "<group>"; };
 		FE5C0ADC1162981200065D1C /* O2zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2zlib.m; sourceTree = "<group>"; };
 		FE5C0CA61162A99A00065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE5C0CA71162A99A00065D1C /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FE5C0D461162A9AB00065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE5C0D471162A9AB00065D1C /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
 		FE5C0D571162A9D600065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE5C0D581162A9D600065D1C /* Onyx2D-MacOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Onyx2D-MacOS-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -834,8 +833,8 @@
 			children = (
 				FE5C0A4D1162981100065D1C /* gif_lib.h */,
 				FE5C0A4E1162981100065D1C /* gif_lib.m */,
-				FE5C0A4F1162981100065D1C /* NSTIFFImageFileDirectory.h */,
-				FE5C0A501162981100065D1C /* NSTIFFImageFileDirectory.m */,
+				FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */,
+				FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */,
 				FE5C0A511162981100065D1C /* O2AffineTransform.h */,
 				FE5C0A521162981100065D1C /* O2AffineTransform.m */,
 				FE5C0A531162981100065D1C /* O2BitmapContext.h */,
@@ -983,7 +982,6 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
-				FE5C0D581162A9D600065D1C /* Onyx2D-MacOS-Info.plist */,
 			);
 			name = Onyx2D;
 			sourceTree = "<group>";
@@ -1002,8 +1000,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				FE5C0CA71162A99A00065D1C /* Info copy.plist */,
-				FE5C0D471162A9AB00065D1C /* Info copy 2.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1041,7 +1037,7 @@
 				FE5C0A4A116297FA00065D1C /* VGmath.h in Headers */,
 				FE5C0A4B116297FA00065D1C /* VGPath.h in Headers */,
 				FE5C0ADD1162981200065D1C /* gif_lib.h in Headers */,
-				FE5C0ADF1162981200065D1C /* NSTIFFImageFileDirectory.h in Headers */,
+				FE5C0ADF1162981200065D1C /* O2TIFFImageDirectory.h in Headers */,
 				FE5C0AE11162981200065D1C /* O2AffineTransform.h in Headers */,
 				FE5C0AE31162981200065D1C /* O2BitmapContext.h in Headers */,
 				FE5C0AE51162981200065D1C /* O2Blending.h in Headers */,
@@ -1123,7 +1119,7 @@
 				FE5C0C0A1162A99A00065D1C /* VGmath.h in Headers */,
 				FE5C0C0B1162A99A00065D1C /* VGPath.h in Headers */,
 				FE5C0C0C1162A99A00065D1C /* gif_lib.h in Headers */,
-				FE5C0C0D1162A99A00065D1C /* NSTIFFImageFileDirectory.h in Headers */,
+				FE5C0C0D1162A99A00065D1C /* O2TIFFImageDirectory.h in Headers */,
 				FE5C0C0E1162A99A00065D1C /* O2AffineTransform.h in Headers */,
 				FE5C0C0F1162A99A00065D1C /* O2BitmapContext.h in Headers */,
 				FE5C0C101162A99A00065D1C /* O2Blending.h in Headers */,
@@ -1205,7 +1201,7 @@
 				FE5C0CAA1162A9AB00065D1C /* VGmath.h in Headers */,
 				FE5C0CAB1162A9AB00065D1C /* VGPath.h in Headers */,
 				FE5C0CAC1162A9AB00065D1C /* gif_lib.h in Headers */,
-				FE5C0CAD1162A9AB00065D1C /* NSTIFFImageFileDirectory.h in Headers */,
+				FE5C0CAD1162A9AB00065D1C /* O2TIFFImageDirectory.h in Headers */,
 				FE5C0CAE1162A9AB00065D1C /* O2AffineTransform.h in Headers */,
 				FE5C0CAF1162A9AB00065D1C /* O2BitmapContext.h in Headers */,
 				FE5C0CB01162A9AB00065D1C /* O2Blending.h in Headers */,
@@ -1285,7 +1281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0D6F1162AEF500065D1C /* gif_lib.h in Headers */,
-				FE5C0D701162AEF500065D1C /* NSTIFFImageFileDirectory.h in Headers */,
+				FE5C0D701162AEF500065D1C /* O2TIFFImageDirectory.h in Headers */,
 				FE5C0D711162AEF500065D1C /* O2AffineTransform.h in Headers */,
 				FE5C0D721162AEF500065D1C /* O2BitmapContext.h in Headers */,
 				FE5C0D731162AEF500065D1C /* O2Blending.h in Headers */,
@@ -1505,7 +1501,7 @@
 			files = (
 				FE5C0A4C116297FA00065D1C /* VGPath.m in Sources */,
 				FE5C0ADE1162981200065D1C /* gif_lib.m in Sources */,
-				FE5C0AE01162981200065D1C /* NSTIFFImageFileDirectory.m in Sources */,
+				FE5C0AE01162981200065D1C /* O2TIFFImageDirectory.m in Sources */,
 				FE5C0AE21162981200065D1C /* O2AffineTransform.m in Sources */,
 				FE5C0AE41162981200065D1C /* O2BitmapContext.m in Sources */,
 				FE5C0AE71162981200065D1C /* O2ClipPhase.m in Sources */,
@@ -1582,7 +1578,7 @@
 			files = (
 				FE5C0C581162A99A00065D1C /* VGPath.m in Sources */,
 				FE5C0C591162A99A00065D1C /* gif_lib.m in Sources */,
-				FE5C0C5A1162A99A00065D1C /* NSTIFFImageFileDirectory.m in Sources */,
+				FE5C0C5A1162A99A00065D1C /* O2TIFFImageDirectory.m in Sources */,
 				FE5C0C5B1162A99A00065D1C /* O2AffineTransform.m in Sources */,
 				FE5C0C5C1162A99A00065D1C /* O2BitmapContext.m in Sources */,
 				FE5C0C5D1162A99A00065D1C /* O2ClipPhase.m in Sources */,
@@ -1659,7 +1655,7 @@
 			files = (
 				FE5C0CF81162A9AB00065D1C /* VGPath.m in Sources */,
 				FE5C0CF91162A9AB00065D1C /* gif_lib.m in Sources */,
-				FE5C0CFA1162A9AB00065D1C /* NSTIFFImageFileDirectory.m in Sources */,
+				FE5C0CFA1162A9AB00065D1C /* O2TIFFImageDirectory.m in Sources */,
 				FE5C0CFB1162A9AB00065D1C /* O2AffineTransform.m in Sources */,
 				FE5C0CFC1162A9AB00065D1C /* O2BitmapContext.m in Sources */,
 				FE5C0CFD1162A9AB00065D1C /* O2ClipPhase.m in Sources */,
@@ -1735,7 +1731,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0DBB1162AF0100065D1C /* gif_lib.m in Sources */,
-				FE5C0DBC1162AF0100065D1C /* NSTIFFImageFileDirectory.m in Sources */,
+				FE5C0DBC1162AF0100065D1C /* O2TIFFImageDirectory.m in Sources */,
 				FE5C0DBD1162AF0100065D1C /* O2AffineTransform.m in Sources */,
 				FE5C0DBE1162AF0100065D1C /* O2BitmapContext.m in Sources */,
 				FE5C0DBF1162AF0100065D1C /* O2ClipPhase.m in Sources */,
@@ -1804,6 +1800,8 @@
 				FE5C0DFF1162AF0100065D1C /* O2Surface.m in Sources */,
 				FE5C0E011162AF0100065D1C /* O2zlib.m in Sources */,
 				FE5C0E021162AF0100065D1C /* VGPath.m in Sources */,
+				FE8EBE7B11658E5300BC0ED6 /* O2TTFDecoder.m in Sources */,
+				FE8EBE7E11658E6200BC0ED6 /* O2Font_ttf.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

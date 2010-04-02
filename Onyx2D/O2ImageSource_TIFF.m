@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/O2ImageSource_TIFF.h>
 #import <Onyx2D/O2Decoder_TIFF.h>
-#import "NSTIFFImageFileDirectory.h"
+#import "O2TIFFImageDirectory.h"
 #import <Onyx2D/O2DataProvider.h>
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2Image.h>
@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
    
-   NSData *data=O2DataProviderCopyData(provider);
+   NSData *data=(NSData *)O2DataProviderCopyData(provider);
    _reader=[[O2Decoder_TIFF alloc] initWithData:data];
    [data release];
    
@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([entries count]<=index)
     return nil;
    
-   NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
+   O2TIFFImageDirectory *directory=[entries objectAtIndex:index];
    
    return (CFDictionaryRef)[[directory properties] copy];
 }
@@ -81,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([entries count]<=index)
     return nil;
    
-   NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
+   O2TIFFImageDirectory *directory=[entries objectAtIndex:index];
    
    int            width=[directory imageWidth];
    int            height=[directory imageLength];
