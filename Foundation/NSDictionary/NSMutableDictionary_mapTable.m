@@ -156,8 +156,8 @@ static void NSDictInsert(NSMutableDictionary_CF *self,const void *key,const void
      void *oldKey=j->key;
      void *oldValue=j->value;
 
-     self->_keyCallBacks.retain(NULL,key);
-     self->_valueCallBacks.retain(NULL,value);
+     key=self->_keyCallBacks.retain(NULL,key);
+     value=self->_valueCallBacks.retain(NULL,value);
      j->key=(void *)key;
      j->value=(void *)value;
      self->_keyCallBacks.release(NULL,oldKey);
