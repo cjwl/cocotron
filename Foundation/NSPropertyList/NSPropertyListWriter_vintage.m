@@ -26,6 +26,17 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO,YES,// 80
 YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 };
 
+static NSInteger keySort(id key1, id key2, void *context)
+{
+    
+    if ([key1 isKindOfClass:objc_lookUpClass("NSString")] 
+        && [key2 isKindOfClass:objc_lookUpClass("NSString")])
+        return [key1 compare:key2];
+    else
+        //undefined
+        return NSOrderedDescending;
+}
+
 -init {
    _data=[NSMutableData new];
    return self;
@@ -135,7 +146,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 
 -(void)encodeDictionary:(NSDictionary *)dictionary indent:(NSInteger)indent {
    NSArray *allKeys=[[dictionary allKeys]
-    sortedArrayUsingSelector:@selector(compare:)];
+    sortedArrayUsingFunction:keySort context:NULL];
    NSInteger      i,count=[allKeys count];
 
    [_data appendBytes:"{\n" length:2];
