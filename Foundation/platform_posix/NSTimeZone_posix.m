@@ -28,6 +28,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define	TZ_MAGIC	"TZif"
 
+void tzset (void);
+extern char *tzname[];
+extern long int timezone;
+extern int daylight;
+
 struct tzhead {
  	char	tzh_magic[4];		/* TZ_MAGIC */
 	char	tzh_reserved[16];	/* reserved for future use */
