@@ -249,9 +249,10 @@ static O2Point circularLerp(O2Point t0, O2Point t1, O2Float ratio){
 }
 
 -(void)dealloc {
-   NSZoneFree(NULL,self->_vertices);
-   NSZoneFree(NULL,self->_segmentToVertex);
-   [super dealloc];
+    [_path release];
+    NSZoneFree(NULL,self->_vertices);
+    NSZoneFree(NULL,self->_segmentToVertex);
+    [super dealloc];
 }
 
 /// Given a path segment type, returns the number of coordinates it uses.
