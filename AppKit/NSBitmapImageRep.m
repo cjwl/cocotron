@@ -446,9 +446,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(CGColorSpaceRef)CGColorSpace {
    if([_colorSpaceName isEqualToString:NSDeviceRGBColorSpace])
-    return CGColorSpaceCreateDeviceRGB();
+    return (CGColorSpaceRef)[(id)CGColorSpaceCreateDeviceRGB() autorelease];
    if([_colorSpaceName isEqualToString:NSCalibratedRGBColorSpace])
-    return CGColorSpaceCreateDeviceRGB();
+    return (CGColorSpaceRef)[(id)CGColorSpaceCreateDeviceRGB() autorelease];
 
    return NULL;
 }

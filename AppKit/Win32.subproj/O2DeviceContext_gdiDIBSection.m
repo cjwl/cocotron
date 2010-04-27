@@ -13,21 +13,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation O2DeviceContext_gdiDIBSection
 
 -initWithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible bitsPerPixel:(int)bpp {
-   [self initWithDC:CreateCompatibleDC([compatible dc])];
+   HDC compatibleDC=(compatible!=nil)?[compatible dc]:GetDC(NULL);
+   
+   [self initWithDC:CreateCompatibleDC(compatibleDC)];
     _compatible=[compatible retain];
 
     struct {
      BITMAPV4HEADER bitmapInfo;
      RGBQUAD        colors[256+3];
     } dibInfo;
-    HBITMAP    probe=CreateCompatibleBitmap([compatible dc],1,1);
+    HBITMAP    probe=CreateCompatibleBitmap(compatibleDC,1,1);
 
     memset(&dibInfo,0,sizeof(dibInfo));
     dibInfo.bitmapInfo.bV4Size=sizeof(BITMAPV4HEADER);
 
-    if(!GetDIBits([compatible dc],probe,0,1,NULL,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS))
+    if(!GetDIBits(compatibleDC,probe,0,1,NULL,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS))
      NSLog(@"GetDIBits failed");
-    if(!GetDIBits([compatible dc],probe,0,1,NULL,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS))
+    if(!GetDIBits(compatibleDC,probe,0,1,NULL,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS))
      NSLog(@"GetDIBits failed");
     
     if((_bitsPerPixel=bpp)==0)
@@ -43,8 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     dibInfo.bitmapInfo.bV4BitCount=32;
     dibInfo.bitmapInfo.bV4V4Compression=BI_RGB;
 
-    _bitmap=CreateDIBSection([compatible dc],(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS,&_bits,NULL,0);
-
+    _bitmap=CreateDIBSection(compatibleDC,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS,&_bits,NULL,0);
 
    SelectObject(_dc,_bitmap);
    return self;

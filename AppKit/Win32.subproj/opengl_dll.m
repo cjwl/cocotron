@@ -78,4 +78,19 @@ PROC  opengl_wglGetProcAddress(LPCSTR name){
    return function(name);
 }
 
+void opengl_glReadPixels(GLint x,GLint y,GLsizei width,GLsizei height,GLenum format,GLenum type,GLvoid *pixels) {
+   static typeof(glReadPixels) *function=NULL;
+
+   if(function==NULL){
+    HANDLE library=LoadLibrary("OPENGL32");
+    
+    function=(typeof(function))GetProcAddress(library,"glReadPixels");
+   }
+   if(function==NULL)
+    return;
+
+   return function(x,y,width,height,format,type,pixels);
+}
+
+
 

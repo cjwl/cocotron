@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView,NSOpenGLDrawable;
+@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView;
 
 typedef enum {
    NSOpenGLCPSwapRectangle      =200,
@@ -24,7 +24,6 @@ typedef enum {
    NSOpenGLPixelFormat *_pixelFormat;
    NSView              *_view;
    void                *_glContext;
-   NSOpenGLDrawable    *_drawable;
 }
 
 +(NSOpenGLContext *)currentContext;

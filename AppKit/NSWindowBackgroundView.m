@@ -30,9 +30,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawRect:(NSRect)rect {
-    NSRect bounds=[self bounds];
-    float cheatSheet = 0;
+   NSRect bounds=[self bounds];
+   float cheatSheet = 0;
 
+   [[NSColor redColor] setFill];
+   NSRectFill([self bounds]);
+   
     switch(_borderType){
         case NSNoBorder:
             break;
@@ -55,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     bounds.size.height += cheatSheet;
 
    [[[self window] backgroundColor] setFill];
-   NSRectFill(bounds);
+   NSRectFill([[[self window] contentView] frame]);
 }
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -76,13 +79,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [menuView resizeWithOldSuperviewSize:oldSize];
    [toolbarView resizeWithOldSuperviewSize:oldSize];
 
-   NSRect contentFrame=[self bounds];
-   
-   if(toolbarView!=nil)
-    contentFrame.size.height=[toolbarView frame].origin.y-contentFrame.origin.y;
-   else if(menuView!=nil)
-    contentFrame.size.height=[menuView frame].origin.y-contentFrame.origin.y;
-    
+   NSRect contentFrame=[[self window] contentRectForFrameRect:[self bounds]];
+
    [contentView setFrame:contentFrame];
 }
 

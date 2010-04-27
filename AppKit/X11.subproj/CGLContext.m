@@ -50,7 +50,7 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,
    if(vis==NULL)
     return kCGLBadDisplay;
     
-   CGLContextObj result=NSZoneMalloc(NULL,sizeof(struct _CGLContextObj));
+   CGLContextObj result=malloc(sizeof(struct _CGLContextObj));
    
    pthread_mutex_init(&(result->lock),NULL);
    result->dpy=dpy;
@@ -69,7 +69,7 @@ CGL_EXPORT CGLError CGLDestroyContext(CGLContextObj context) {
     
     pthread_mutex_destroy(&(context->lock));
     glXDestroyContext(context->dpy, context->glc);
-    NSZoneFree(NULL,context);
+    free(context);
    }
 
    return kCGLNoError;

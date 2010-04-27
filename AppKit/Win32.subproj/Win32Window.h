@@ -13,21 +13,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define WINVER 0x501 // XP drop shadow constants
 #import <windows.h>
 
-@class NSEvent;
+@class O2Context_gdi;
 
 
 @interface Win32Window : CGWindow {
-   NSRect                 _frame;
+   CGRect                 _frame;
+   BOOL                   _isOpaque;
+   BOOL                   _hasShadow;
+   CGFloat                _alphaValue;
    HWND                   _handle;
-   NSSize                 _size;
-   O2Context             *_cgContext;
+   O2Context_gdi         *_cgContext;
 
-   CGSBackingStoreType  _backingType;
+   CGSBackingStoreType    _backingType;
    O2Context             *_backingContext;
    CGLContextObj          _cglContext;
 
+   NSString              *_title;
    BOOL                  _isLayered;
-   BOOL                  _isOpenGL;
    BOOL                  _ignoreMinMaxMessage;
    BOOL                  _sentBeginSizing;
    BOOL                  _disableDisplay;
@@ -38,7 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableDictionary  *_deviceDictionary;
 }
 
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
+-initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
 
 -(void)setDelegate:delegate;
 -delegate;
@@ -46,13 +48,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)invalidate;
 
 -(HWND)windowHandle;
+-(unsigned)styleMask;
+-(CGRect)frame;
 
 -(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
--(void)setFrame:(NSRect)frame;
+-(void)setFrame:(CGRect)frame;
 
--(void)showWindowForAppActivation:(NSRect)frame;
--(void)hideWindowForAppDeactivation:(NSRect)frame;
+-(void)showWindowForAppActivation:(CGRect)frame;
+-(void)hideWindowForAppDeactivation:(CGRect)frame;
 
 -(void)hideWindow;
 -(void)showWindowWithoutActivation;
@@ -77,14 +81,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-static inline NSRect NSRectFromRECT(RECT rect) {
-   NSRect result;
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right);
+
+static inline CGRect CGRectFromRECT(RECT rect) {
+   CGRect result;
 
    result.origin.x=rect.left;
    result.origin.y=rect.top;
    result.size.width=rect.right-rect.left;
    result.size.height=rect.bottom-rect.top;
 
+   return result;
+}
+
+static inline RECT RECTFromCGRect(CGRect rect) {
+   RECT result;
+   
+   result.top=rect.origin.y;
+   result.left=rect.origin.x;
+   result.bottom=result.top+rect.size.height;
+   result.right=result.left+rect.size.width;
+   
    return result;
 }
 

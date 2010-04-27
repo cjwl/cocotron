@@ -48,9 +48,55 @@ typedef enum {
    kCGLBadConnection=10017,
 } CGLError;
 
+enum {
+   kCGLPFAAllRenderers         =  1,
+   kCGLPFADoubleBuffer         =  5,
+   kCGLPFAStereo               =  6,
+   kCGLPFAAuxBuffers           =  7,
+   kCGLPFAColorSize            =  8,
+   kCGLPFAAlphaSize            = 11,
+   kCGLPFADepthSize            = 12,
+   kCGLPFAStencilSize          = 13,
+   kCGLPFAAccumSize            = 14,
+   kCGLPFAMinimumPolicy        = 51,
+   kCGLPFAMaximumPolicy        = 52,
+   kCGLPFAOffScreen            = 53,
+   kCGLPFAFullScreen           = 54,
+   kCGLPFASampleBuffers        = 55,
+   kCGLPFASamples              = 56,
+   kCGLPFAAuxDepthStencil      = 57,
+   kCGLPFAColorFloat           = 58,
+   kCGLPFAMultisample          = 59,
+   kCGLPFASupersample          = 60,
+   kCGLPFASampleAlpha          = 61,
+   kCGLPFARendererID           = 70,
+   kCGLPFASingleRenderer       = 71,
+   kCGLPFANoRecovery           = 72,
+   kCGLPFAAccelerated          = 73,
+   kCGLPFAClosestPolicy        = 74,
+   kCGLPFARobust               = 75,
+   kCGLPFABackingStore         = 76,
+   kCGLPFAMPSafe               = 78,
+   kCGLPFAWindow               = 80,
+   kCGLPFAMultiScreen          = 81,
+   kCGLPFACompliant            = 83,
+   kCGLPFADisplayMask          = 84,
+   kCGLPFAPBuffer              = 90,
+   kCGLPFARemotePBuffer        = 91,
+   kCGLPFAAllowOfflineRenderers= 96,
+   kCGLPFAAcceleratedCompute   = 97,
+   kCGLPFAVirtualScreenCount   =128,
+};
+
+typedef uint32_t CGLPixelFormatAttribute;
+
 typedef enum {
    kCGLCPSwapInterval  =222,
    kCGLCPSurfaceOpacity=236,
+
+// internal, do not use   
+   kCGLCPSurfaceFrame=500,
+   kCGLCPWindowNumber=501,
 } CGLContextParameter;
 
 typedef struct _CGLContextObj *CGLContextObj;
