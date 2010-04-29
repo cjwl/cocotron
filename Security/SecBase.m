@@ -19,14 +19,14 @@ OSStatus SecKeychainFindGenericPassword(CFTypeRef keychainOrArray, UInt32 servic
 
 	SecKeychainSearchRef search;
 	OSStatus status = SecKeychainSearchCreateFromAttributes(NULL, kSecGenericPasswordItemClass, &attributeList, &search);
-	if (status != noErr)
+	if (status != 0)
 	{
 		free(attributeList.attr);
 		return status;
 	}
 	
 	status = SecKeychainSearchCopyNext(search, itemRef);
-	if (status == noErr && *itemRef)
+	if (status == 0 && *itemRef)
 	{
 		status = SecKeychainItemCopyAttributesAndData(*itemRef, NULL, NULL, NULL, passwordLength, passwordData);
 	}
