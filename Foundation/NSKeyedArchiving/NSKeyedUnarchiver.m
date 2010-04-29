@@ -402,7 +402,7 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 -_decodeObjectWithPropertyList:plist {
    unsigned typeID=[plist _cfTypeID];
 
-   if(typeID==kNSCFTypeString || typeID==kNSCFTypeData)
+   if(typeID==kNSCFTypeString || typeID==kNSCFTypeData || typeID==kNSCFTypeNumber)
     return plist;
    if(typeID==kNSCFTypeDictionary)
     return [self decodeObjectForUID:integerFromCFUID(plist)];

@@ -60,21 +60,21 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FEC32E40115909B30008ECE5 /* CFNetwork.framework */;
+			remoteGlobalIDString = FEC32E40115909B30008ECE5;
 			remoteInfo = "CFNetwork-Linux-i386 copy";
 		};
 		FEC32E6911590A7E0008ECE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FEC32E35115909B30008ECE5 /* CFNetwork-Darwin-i386 */;
+			remoteGlobalIDString = FEC32E35115909B30008ECE5;
 			remoteInfo = "CFNetwork-Darwin-i386";
 		};
 		FEC32E6B11590A8F0008ECE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FEA752E8114EB30B00AF634E /* CFNetwork-Linux-i386 */;
+			remoteGlobalIDString = FEA752E8114EB30B00AF634E;
 			remoteInfo = "CFNetwork-Linux-i386";
 		};
 /* End PBXContainerItemProxy section */
@@ -86,11 +86,8 @@
 		8DC2EF5B0486A6940098B216 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7433A810A89ED7004CDF00 /* CoreServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreServices.h; sourceTree = "<group>"; };
 		FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
-		FEC32E2C115903370008ECE5 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FEC32E52115909F00008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FEC32E53115909F00008ECE5 /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
 		FEC32E6311590A130008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FEC32E6411590A130008ECE5 /* Info copy 3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 3.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,9 +152,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				FEC32E2C115903370008ECE5 /* Info copy.plist */,
-				FEC32E53115909F00008ECE5 /* Info copy 2.plist */,
-				FEC32E6411590A130008ECE5 /* Info copy 3.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

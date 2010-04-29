@@ -50,11 +50,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
+    _supermenu=[keyed decodeObjectForKey:@"NSMenu"];
     _title=[[keyed decodeObjectForKey:@"NSTitle"] copy];
     _name=[[keyed decodeObjectForKey:@"NSName"] copy];
     
     _itemArray=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSMenuItems"]];
-    [_itemArray makeObjectsPerformSelector:@selector(_setMenu:) withObject:self];
     _autoenablesItems=![keyed decodeBoolForKey:@"NSNoAutoenable"];    
    }
    else {

@@ -684,8 +684,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      drawRep=[any retain];
     else if([any isKindOfClass:[NSBitmapImageRep class]])
      drawRep=[any retain];
-//    else if([any isKindOfClass:[NSPDFImageRep class]])
-//     drawRep=[any retain];
    }
     
    if(drawRep==nil) {

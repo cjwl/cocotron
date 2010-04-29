@@ -2032,6 +2032,76 @@
 		FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08C3220DDF299800B3169A /* NSColor_CGColor.m */; };
 		FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
+		FE20C20E11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C21011892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C21111892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C21211892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C21311892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C21411892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C21511892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C21611892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C21711892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C21811892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C21911892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C21A11892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C21B11892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C21C11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C21D11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C21E11892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C21F11892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C22011892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C22111892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C22211892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C22311892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C22411892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C22511892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C22611892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C22711892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C22811892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C22911892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C22A11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C22B11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C22C11892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C22D11892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C22E11892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C22F11892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C23011892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C245118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C246118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C247118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C248118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C249118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24A118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24B118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C24C118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24D118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C24E118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24F118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C250118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C251118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C252118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C253118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C254118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C255118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C256118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C257118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C258118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C259118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C25A118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C25B118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C25C118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C25D118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C26711892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26811892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26911892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26A11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26B11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26C11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26D11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26E11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26F11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C27011892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
 		FE25FF620EE58712009C91B1 /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE25FF630EE58712009C91B1 /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		FE25FF640EE58712009C91B1 /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -4402,6 +4472,20 @@
 		FE1CEA6C0C8F12F800184630 /* opengl_dll.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = opengl_dll.m; sourceTree = "<group>"; };
 		FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle.h; sourceTree = "<group>"; };
 		FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle.m; sourceTree = "<group>"; };
+		FE20C20711892436006F01BA /* CAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAAnimation.m; path = ../QuartzCore/CAAnimation.m; sourceTree = SOURCE_ROOT; };
+		FE20C20811892436006F01BA /* CIAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIAffineTransform.m; path = ../QuartzCore/CIAffineTransform.m; sourceTree = SOURCE_ROOT; };
+		FE20C20911892436006F01BA /* CIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIColor.m; path = ../QuartzCore/CIColor.m; sourceTree = SOURCE_ROOT; };
+		FE20C20A11892436006F01BA /* CIContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIContext.m; path = ../QuartzCore/CIContext.m; sourceTree = SOURCE_ROOT; };
+		FE20C20B11892436006F01BA /* CIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIFilter.m; path = ../QuartzCore/CIFilter.m; sourceTree = SOURCE_ROOT; };
+		FE20C20C11892436006F01BA /* CIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIImage.m; path = ../QuartzCore/CIImage.m; sourceTree = SOURCE_ROOT; };
+		FE20C20D11892436006F01BA /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIVector.m; path = ../QuartzCore/CIVector.m; sourceTree = SOURCE_ROOT; };
+		FE20C240118924A4006F01BA /* NSAccessibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAccessibility.h; sourceTree = "<group>"; };
+		FE20C241118924A4006F01BA /* NSAccessibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAccessibility.m; sourceTree = "<group>"; };
+		FE20C242118924A4006F01BA /* NSCIImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCIImageRep.h; sourceTree = "<group>"; };
+		FE20C243118924A4006F01BA /* NSCIImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCIImageRep.m; sourceTree = "<group>"; };
+		FE20C244118924A4006F01BA /* NSErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSErrors.h; sourceTree = "<group>"; };
+		FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibAXRelationshipConnector.h; sourceTree = "<group>"; };
+		FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibAXRelationshipConnector.m; sourceTree = "<group>"; };
 		FE25FF600EE58712009C91B1 /* O2Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font.h; sourceTree = "<group>"; };
 		FE25FF610EE58712009C91B1 /* O2Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font.m; sourceTree = "<group>"; };
 		FE267E840B8BCC3C0000DDC0 /* O2ImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2ImageSource_JPEG.m; sourceTree = "<group>"; };
@@ -4811,6 +4895,11 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE20C240118924A4006F01BA /* NSAccessibility.h */,
+				FE20C241118924A4006F01BA /* NSAccessibility.m */,
+				FE20C242118924A4006F01BA /* NSCIImageRep.h */,
+				FE20C243118924A4006F01BA /* NSCIImageRep.m */,
+				FE20C244118924A4006F01BA /* NSErrors.h */,
 				FE463EC4102D0F9C00B265D6 /* NSPathCell.h */,
 				FE463EC5102D0F9C00B265D6 /* NSPathCell.m */,
 				FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */,
@@ -5177,6 +5266,8 @@
 		6E2B55100976075300DA0954 /* nib */ = {
 			isa = PBXGroup;
 			children = (
+				FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */,
+				FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */,
 				FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */,
 				FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */,
 				6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */,
@@ -5952,6 +6043,13 @@
 		FED38C2610E1305700A2A651 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FE20C20711892436006F01BA /* CAAnimation.m */,
+				FE20C20811892436006F01BA /* CIAffineTransform.m */,
+				FE20C20911892436006F01BA /* CIColor.m */,
+				FE20C20A11892436006F01BA /* CIContext.m */,
+				FE20C20B11892436006F01BA /* CIFilter.m */,
+				FE20C20C11892436006F01BA /* CIImage.m */,
+				FE20C20D11892436006F01BA /* CIVector.m */,
 				FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */,
 				FED38C3110E13DCA00A2A651 /* CALayer.m */,
 				FED38C3210E13DCA00A2A651 /* CARenderer.m */,
@@ -6351,6 +6449,10 @@
 				FEA2CD4A10D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131DC10E93C0600FFF5D7 /* X11Event.h in Headers */,
 				FE7AA13910F97E3300FEDD9C /* CABackingRenderer.h in Headers */,
+				FE20C24A118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C24C118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C24E118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26911892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6729,6 +6831,10 @@
 				FEA2CD4810D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131DA10E93C0600FFF5D7 /* X11Event.h in Headers */,
 				FE7AA13410F97E3300FEDD9C /* CABackingRenderer.h in Headers */,
+				FE20C24F118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C251118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C253118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26B11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7100,6 +7206,10 @@
 				FEF4684310895C9800B45195 /* CGConversions.h in Headers */,
 				FE8C01CE10C59ADA00FE4072 /* O2ImageDestination.h in Headers */,
 				FE8C01D810C59B0600FE4072 /* O2Encoder_TIFF.h in Headers */,
+				FE20C245118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C247118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C249118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26711892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7480,6 +7590,10 @@
 				FEA2CD4610D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131D810E93C0500FFF5D7 /* X11Event.h in Headers */,
 				FE7AA0CD10F9788100FEDD9C /* CABackingRenderer.h in Headers */,
+				FE20C259118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C25B118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C25D118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26F11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7776,6 +7890,10 @@
 				FE3C855D108779540018252A /* O2AffineTransform.h in Headers */,
 				FE3C855F108779540018252A /* O2Geometry.h in Headers */,
 				FEF4684610895C9800B45195 /* CGConversions.h in Headers */,
+				FE20C254118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C256118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C258118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26D11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8717,6 +8835,16 @@
 				FE7AA13710F97E3300FEDD9C /* CARenderer.m in Sources */,
 				FE7AA13810F97E3300FEDD9C /* CATransform3D.m in Sources */,
 				FE7AA13A10F97E3300FEDD9C /* CABackingRenderer.m in Sources */,
+				FE20C21511892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C21611892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C21711892436006F01BA /* CIColor.m in Sources */,
+				FE20C21811892436006F01BA /* CIContext.m in Sources */,
+				FE20C21911892436006F01BA /* CIFilter.m in Sources */,
+				FE20C21A11892436006F01BA /* CIImage.m in Sources */,
+				FE20C21B11892436006F01BA /* CIVector.m in Sources */,
+				FE20C24B118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C24D118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26A11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9068,6 +9196,16 @@
 				FE7AA13210F97E3300FEDD9C /* CARenderer.m in Sources */,
 				FE7AA13310F97E3300FEDD9C /* CATransform3D.m in Sources */,
 				FE7AA13510F97E3300FEDD9C /* CABackingRenderer.m in Sources */,
+				FE20C21C11892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C21D11892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C21E11892436006F01BA /* CIColor.m in Sources */,
+				FE20C21F11892436006F01BA /* CIContext.m in Sources */,
+				FE20C22011892436006F01BA /* CIFilter.m in Sources */,
+				FE20C22111892436006F01BA /* CIImage.m in Sources */,
+				FE20C22211892436006F01BA /* CIVector.m in Sources */,
+				FE20C250118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C252118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26C11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9447,6 +9585,16 @@
 				FE8C01CF10C59ADA00FE4072 /* O2ImageDestination.m in Sources */,
 				FE8C01D910C59B0600FE4072 /* O2Encoder_TIFF.m in Sources */,
 				FEF0889F10C5B06400D38A2F /* CGImageDestination.m in Sources */,
+				FE20C20E11892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C21011892436006F01BA /* CIColor.m in Sources */,
+				FE20C21111892436006F01BA /* CIContext.m in Sources */,
+				FE20C21211892436006F01BA /* CIFilter.m in Sources */,
+				FE20C21311892436006F01BA /* CIImage.m in Sources */,
+				FE20C21411892436006F01BA /* CIVector.m in Sources */,
+				FE20C246118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C248118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26811892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9800,6 +9948,16 @@
 				FEE7E0B710E26487004A50F8 /* CGLContext.m in Sources */,
 				FE9131D910E93C0600FFF5D7 /* X11Event.m in Sources */,
 				FE7AA0CE10F9788100FEDD9C /* CABackingRenderer.m in Sources */,
+				FE20C22A11892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C22B11892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C22C11892436006F01BA /* CIColor.m in Sources */,
+				FE20C22D11892436006F01BA /* CIContext.m in Sources */,
+				FE20C22E11892436006F01BA /* CIFilter.m in Sources */,
+				FE20C22F11892436006F01BA /* CIImage.m in Sources */,
+				FE20C23011892436006F01BA /* CIVector.m in Sources */,
+				FE20C25A118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C25C118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C27011892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10047,6 +10205,16 @@
 				FE953DE1103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 				FE3C855E108779540018252A /* O2AffineTransform.m in Sources */,
 				FE3C8560108779540018252A /* O2Geometry.m in Sources */,
+				FE20C22311892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C22411892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C22511892436006F01BA /* CIColor.m in Sources */,
+				FE20C22611892436006F01BA /* CIContext.m in Sources */,
+				FE20C22711892436006F01BA /* CIFilter.m in Sources */,
+				FE20C22811892436006F01BA /* CIImage.m in Sources */,
+				FE20C22911892436006F01BA /* CIVector.m in Sources */,
+				FE20C255118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C257118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26E11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
