@@ -46,12 +46,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)directoryContentsAtPath:(NSString *)path {
-    NSMutableArray *result=[NSMutableArray array];
-    DIR *dirp = opendir([path fileSystemRepresentation]);
+    NSMutableArray *result=nil;
+    DIR *dirp = NULL;
     struct dirent *dire;
+    
+    if(path == nil) {
+        return nil;
+    }
+    
+    dirp = opendir([path fileSystemRepresentation]);
 
     if (dirp == NULL)
         return nil;
+    
+    result=[NSMutableArray array];
 
     while (dire = readdir(dirp)){
 	 if(strcmp(".",dire->d_name)==0)
