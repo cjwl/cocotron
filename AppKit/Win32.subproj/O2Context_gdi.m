@@ -1135,22 +1135,6 @@ static void zeroBytes(void *bytes,int size){
    return YES;
 }
 
--(void)drawBackingContext:(O2Context *)other size:(NSSize)size {
-   O2DeviceContext_gdi *deviceContext=nil;
-
-   if([other isKindOfClass:[O2Context_gdi class]])
-    deviceContext=[(O2Context_gdi *)other deviceContext];
-   else {
-    O2Surface *surface=[other surface];
-    
-    if([surface isKindOfClass:[O2Surface_DIBSection class]])
-     deviceContext=[(O2Surface_DIBSection *)surface deviceContext];
-   }
-
-   if(deviceContext!=nil)
-    [self drawDeviceContext:deviceContext inRect:NSMakeRect(0,0,size.width,size.height) ctm:O2AffineTransformIdentity];
-}
-
 -(void)flush {
    GdiFlush();
 }

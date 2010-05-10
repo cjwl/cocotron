@@ -28,6 +28,9 @@ typedef enum {
 -(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;
+-(void)setOpaque:(BOOL)value;
+-(void)setAlphaValue:(CGFloat)value;
+-(void)setHasShadow:(BOOL)value;
 
 -(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow;
 -(void)sheetOrderOutToFrame:(NSRect)frame;
@@ -38,8 +41,12 @@ typedef enum {
 -(void)hideWindow;
 -(void)showWindowWithoutActivation;
 
--(void)placeAboveWindow:(CGWindow *)other;
--(void)placeBelowWindow:(CGWindow *)other;
++windowWithWindowNumber:(int)windowNumber;
+
+-(int)windowNumber;
+
+-(void)placeAboveWindow:(int)otherNumber;
+-(void)placeBelowWindow:(int)otherNumber;
 
 -(void)makeKey;
 -(void)captureEvents;
@@ -85,3 +92,7 @@ typedef enum {
 -(void)platformWindowDidInvalidateCGContext:(CGWindow *)window;
 
 @end
+
+CGRect CGInsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask);
+CGRect CGOutsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask);
+

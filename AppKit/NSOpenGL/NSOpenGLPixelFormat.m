@@ -9,42 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSData.h>
+#import <OpenGL/OpenGL.h>
 
 @implementation NSOpenGLPixelFormat
 
-static inline BOOL attributeHasArgument(NSOpenGLPixelFormatAttribute attribute){
-   switch(attribute){
-    case NSOpenGLPFAAuxBuffers:
-    case NSOpenGLPFAColorSize:
-    case NSOpenGLPFAAlphaSize:
-    case NSOpenGLPFADepthSize:
-    case NSOpenGLPFAStencilSize:
-    case NSOpenGLPFAAccumSize:
-    case NSOpenGLPFARendererID:
-    case NSOpenGLPFAScreenMask:
-     return YES;
-     
-    default:
-     return NO;
-   }
-}
-
 -initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes {
-   int count;
-   
-   for(count=0;attributes[count]!=0;count++)
-    if(attributeHasArgument(attributes[count]))
-     count++;
-        
-   _attributes=NSZoneMalloc(NULL,sizeof(NSOpenGLPixelFormatAttribute)*(count+1));
-   for(count=0;(_attributes[count]=attributes[count])!=0;count++)
-    ;
-
+   CGLChoosePixelFormat(attributes,(CGLPixelFormatObj *)&_cglPixelFormat,&_numberOfVirtualScreens);
    return self;
 }
 
 -(void)dealloc {
-   NSZoneFree(NULL,_attributes);
+   CGLReleasePixelFormat(_cglPixelFormat);
    [super dealloc];
 }
 
@@ -83,34 +58,19 @@ static inline BOOL attributeHasArgument(NSOpenGLPixelFormatAttribute attribute){
 }
 
 -(void *)CGLPixelFormatObj {
-   NSUnimplementedMethod();
-   return 0;
+   return _cglPixelFormat;
 }
 
--(int)numberOfVirtualScreens {
-   NSUnimplementedMethod();
-   return 0;
+-(GLint)numberOfVirtualScreens {
+   return _numberOfVirtualScreens;
 }
 
 -(void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen {
-   int i;
-   
-   for(i=0;_attributes[i]!=0;i++){
-    BOOL hasArgument=attributeHasArgument(_attributes[i]);
-    
-    if(_attributes[i]==attribute){
-     if(hasArgument)
-      *values=_attributes[i+1];
-     else
-      *values=1;
-     
-     return;
-    }
-    
-    if(hasArgument)
-     i++;
-   }
-   *values=0;
+   GLint glValue=0;
+
+   CGLDescribePixelFormat(_cglPixelFormat,screen,attribute,&glValue);
+
+   *values=glValue;
 }
 
 @end

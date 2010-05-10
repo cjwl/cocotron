@@ -42,6 +42,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+-(void)setOpaque:(BOOL)value {
+   O2InvalidAbstractInvocation();
+}
+
+-(void)setAlphaValue:(CGFloat)value {
+   O2InvalidAbstractInvocation();
+}
+
+-(void)setHasShadow:(BOOL)value {
+   O2InvalidAbstractInvocation();
+}
+
 -(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow {
    O2InvalidAbstractInvocation();
 }
@@ -66,12 +78,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+// these suck
++windowWithWindowNumber:(int)windowNumber {
+   return (id)windowNumber;
+}
 
--(void)placeAboveWindow:(CGWindow *)other {
+-(int)windowNumber {
+   return (int)self;
+}
+
+-(void)placeAboveWindow:(int)other {
    O2InvalidAbstractInvocation();
 }
 
--(void)placeBelowWindow:(CGWindow *)other {
+-(void)placeBelowWindow:(int)other {
    O2InvalidAbstractInvocation();
 }
 

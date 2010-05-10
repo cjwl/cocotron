@@ -13,7 +13,7 @@
 #import <AppKit/NSRaise.h>
 #import <X11/Xutil.h>
 #import <Foundation/NSException.h>
-#import <Onyx2D/O2Context.h>
+#import "O2Context_cairo.h"
 #import <Onyx2D/O2Surface.h>
 #import <QuartzCore/CARenderer.h>
 
@@ -236,7 +236,8 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,
    _mapped=NO;
 }
 
--(void)placeAboveWindow:(X11Window *)other {
+-(void)placeAboveWindow:(int)otherNumber {
+   X11Window *other=[X11Window windowWithWindowNumber:otherNumber];
    [self ensureMapped];
 
    if(!other) {
@@ -248,7 +249,8 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,
    }
 }
 
--(void)placeBelowWindow:(X11Window *)other {
+-(void)placeBelowWindow:(int)otherNumber {
+   X11Window *other=[X11Window windowWithWindowNumber:otherNumber];
    [self ensureMapped];
 
    if(!other) {

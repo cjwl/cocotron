@@ -155,8 +155,6 @@ O2ColorRef O2ContextFillColor(O2ContextRef self);
 
 // temporary
 
--(void)drawBackingContext:(O2Context *)other size:(O2Size)size;
-
 -(void)setAntialiasingQuality:(int)value;
 -(void)setWordSpacing:(O2Float)spacing;
 -(void)setTextLeading:(O2Float)leading;

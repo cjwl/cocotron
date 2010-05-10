@@ -301,10 +301,6 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 
 // temporary
 
--(void)drawBackingContext:(O2Context *)other size:(O2Size)size {
-   O2InvalidAbstractInvocation();
-}
-
 -(void)setAntialiasingQuality:(int)value {
    [currentState(self) setAntialiasingQuality:value];
 }

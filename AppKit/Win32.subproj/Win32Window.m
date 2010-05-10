@@ -19,21 +19,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
 #import <QuartzCore/CABackingRenderer.h>
+#import "O2Surface_DIBSection.h"
 
 @implementation Win32Window
 
--(float)primaryScreenHeight {
-   return GetSystemMetrics(SM_CYSCREEN);
-}
-
--(NSRect)flipOnWin32Screen:(NSRect)rect {
-
-   rect.origin.y=[self primaryScreenHeight]-(rect.origin.y+rect.size.height);
+static CGRect convertFrameToWin32ScreenCoordinates(CGRect rect){
+   rect.origin.y=GetSystemMetrics(SM_CYSCREEN)-(rect.origin.y+rect.size.height);
 
    return rect;
 }
 
-static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL isLayered) {
+static CGRect convertFrameFromWin32ScreenCoordinates(CGRect rect){
+   rect.origin.y=GetSystemMetrics(SM_CYSCREEN)-(rect.origin.y+rect.size.height);
+
+   return rect;
+}
+
+static bool isLayeredWindowStyleMask(unsigned styleMask){
+   return (styleMask&(NSDocModalWindowMask|NSBorderlessWindowMask))?TRUE:FALSE;
+}
+
+static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel) {
    DWORD result=0;
 
    if(styleMask==NSBorderlessWindowMask)
@@ -47,14 +53,14 @@ static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL
    if(isPanel)
     result|=WS_EX_NOACTIVATE;
     
-   if(isLayered)
+   if(isLayeredWindowStyleMask(styleMask))
     result|=/*CS_DROPSHADOW|*/WS_EX_LAYERED;
 
    return result/*|0x80000*/ ;
 }
 
 static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel) {
-   DWORD result=WS_CLIPCHILDREN|WS_CLIPSIBLINGS;
+   DWORD result=isLayeredWindowStyleMask(styleMask)?0:WS_CLIPCHILDREN|WS_CLIPSIBLINGS;
 
    if(styleMask==NSBorderlessWindowMask)
     result|=WS_POPUP;
@@ -89,71 +95,68 @@ static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel) {
    return result;
 }
 
-static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
-   if(styleMask==NSBorderlessWindowMask)
-    return "NSWin32PopUpWindow";
-   else
-    return "NSWin32StandardWindow";
-}
-
--(RECT)win32FrameRECTFromContentRECT:(RECT)rect {
-   DWORD style=Win32StyleForStyleMask(_styleMask,_isPanel);
-   DWORD exStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,_isLayered);
-
-   AdjustWindowRectEx(&rect,style,NO,exStyle);
-
-   return rect;
-}
-
--(NSRect)win32FrameForRect:(NSRect)frame {
-   NSRect moveTo=[self flipOnWin32Screen:frame];
-   RECT   winRect;
-
-   winRect.top=moveTo.origin.y;
-   winRect.left=moveTo.origin.x;
-   winRect.bottom=moveTo.origin.y+moveTo.size.height;
-   winRect.right=moveTo.origin.x+moveTo.size.width;
-
-   winRect=[self win32FrameRECTFromContentRECT:winRect];
-
-   moveTo.origin.y=winRect.top;
-   moveTo.origin.x=winRect.left;
-   moveTo.size.width=(winRect.right-winRect.left);
-   moveTo.size.height=(winRect.bottom-winRect.top); 
-
-   return moveTo;
-}
-
--(RECT)win32ContentRECTFromFrameRECT:(RECT)rect {
-   DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel);
-   DWORD  exStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,_isLayered);
-   RECT   delta;
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right){
+   RECT delta;
 
    delta.top=0;
    delta.left=0;
    delta.bottom=100;
    delta.right=100;
 
-   AdjustWindowRectEx(&delta,style,NO,exStyle);
+   AdjustWindowRectEx(&delta,Win32StyleForStyleMask(styleMask,NO),NO,Win32ExtendedStyleForStyleMask(styleMask,NO));
+   
+   *top=-delta.top;
+   *left=-delta.left;
+   *bottom=delta.bottom-100;
+   *right=delta.right-100;
+}
 
-   rect.top+=-delta.top;
-   rect.left+=-delta.left;
-   rect.bottom-=(delta.bottom-100);
-   rect.right-=(delta.right-100);
+CGRect CGInsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask){
+   CGFloat top,left,bottom,right;
+   
+   CGNativeBorderFrameWidthsForStyle(styleMask,&top,&left,&bottom,&right);
+   
+   frame.origin.x+=left;
+   frame.origin.y+=bottom;
+   frame.size.width-=left+right;
+   frame.size.height-=top+bottom;
+   
+   return frame;
+}
 
-   return rect;
+CGRect CGOutsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask){
+   CGFloat top,left,bottom,right;
+   
+   CGNativeBorderFrameWidthsForStyle(styleMask,&top,&left,&bottom,&right);
+   
+   frame.origin.x-=left;
+   frame.origin.y-=bottom;
+   frame.size.width+=left+right;
+   frame.size.height+=top+bottom;
+   
+   return frame;
+}
+
+static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow) {
+   if(styleMask==NSBorderlessWindowMask)
+    return  hasShadow?"Win32BorderlessWindowWithShadow":"Win32BorderlessWindow";
+   else
+    return "NSWin32StandardWindow";
 }
 
 -(void)createWindowHandle {
+   CGRect win32Frame=convertFrameToWin32ScreenCoordinates(_frame);
    DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel);
-   DWORD  extendStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,_isLayered);
-   NSRect win32Frame=[self win32FrameForRect:_frame];
-   const char *className=Win32ClassNameForStyleMask(_styleMask);
-
+   DWORD  extendStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel);
+   const char *className=Win32ClassNameForStyleMask(_styleMask,_hasShadow);
+    
    _handle=CreateWindowEx(extendStyle,className,"", style,
      win32Frame.origin.x, win32Frame.origin.y,
      win32Frame.size.width, win32Frame.size.height,
      NULL,NULL, GetModuleHandle (NULL),NULL);
+
+   if(_title!=nil)
+    SetWindowTextW(_handle,(const unichar *)[_title cStringUsingEncoding:NSUnicodeStringEncoding]);
 
    SetProp(_handle,"self",self);
 }
@@ -164,38 +167,17 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    _handle=NULL;
 }
 
--initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
+-initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
+   _frame=frame;
+   _isOpaque=YES;
+   _hasShadow=YES;
+   _alphaValue=1.0;
+   
    _styleMask=styleMask;
    _isPanel=isPanel;
-   _isLayered=(_styleMask&(NSDocModalWindowMask|NSBorderlessWindowMask))?YES:NO;
-   _isOpenGL=NO;
-   _frame=frame;
    
    [self createWindowHandle];
 
-   if(_isOpenGL){
-    PIXELFORMATDESCRIPTOR pfd;
-   
-    memset(&pfd,0,sizeof(pfd));
-   
-    pfd.nSize=sizeof(PIXELFORMATDESCRIPTOR);
-    pfd.nVersion=1;
-    pfd.dwFlags=PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER|PFD_GENERIC_ACCELERATED|PFD_DRAW_TO_WINDOW;
-    pfd.iPixelType=PFD_TYPE_RGBA;
-    pfd.cColorBits=24;
-    pfd.cAlphaBits=8;
-    pfd.iLayerType=PFD_MAIN_PLANE;
-
-    HDC dc=GetDC(_handle);
-    int pfIndex=ChoosePixelFormat(dc,&pfd); 
- 
-    if(!SetPixelFormat(dc,pfIndex,&pfd))
-     NSLog(@"SetPixelFormat failed at %s %d",__FILE__,__LINE__);
-
-    ReleaseDC(_handle,dc);
-   }
-   
-   _size=frame.size;
    _cgContext=nil;
 
    _backingType=backingType;
@@ -208,6 +190,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    _ignoreMinMaxMessage=NO;
    _sentBeginSizing=NO;
    _deviceDictionary=[NSMutableDictionary new];
+   
    NSString *check=[[NSUserDefaults standardUserDefaults] stringForKey:@"CGBackingRasterizer"];
    if([check isEqual:@"Onyx"] || [check isEqual:@"GDI"])
     [_deviceDictionary setObject:check forKey:@"CGContext"];
@@ -248,14 +231,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
 
 -(O2Context *)createCGContextIfNeeded {
    if(_cgContext==nil)
-    _cgContext=[O2Context createContextWithSize:_size window:self];
+    _cgContext=(O2Context_gdi *)[O2Context createContextWithSize:_frame.size window:self];
 
    return _cgContext;
 }
 
 -(O2Context *)createBackingCGContextIfNeeded {
    if(_backingContext==nil){
-    _backingContext=[O2Context createBackingContextWithSize:_size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
+    _backingContext=[O2Context createBackingContextWithSize:_frame.size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
    }
    
    return _backingContext;
@@ -274,9 +257,9 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    }
 }
 
--(void)invalidateContextsWithNewSize:(NSSize)size forceRebuild:(BOOL)forceRebuild {
-   if(!NSEqualSizes(_size,size) || forceRebuild){
-    _size=size;
+-(void)invalidateContextsWithNewSize:(CGSize)size forceRebuild:(BOOL)forceRebuild {
+   if(!NSEqualSizes(_frame.size,size) || forceRebuild){
+    _frame.size=size;
     [_cgContext release];
     _cgContext=nil;
     [_backingContext release];
@@ -285,38 +268,64 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    }  
 }
 
--(void)invalidateContextsWithNewSize:(NSSize)size {
+-(void)invalidateContextsWithNewSize:(CGSize)size {
    [self invalidateContextsWithNewSize:size forceRebuild:NO];
+}
+
+-(CGRect)frame {
+   return _frame;
+}
+
+-(unsigned)styleMask {
+   return _styleMask;
 }
 
 -(void)setStyleMask:(unsigned)mask {
    _styleMask=mask;
-   _isLayered=(_styleMask&(NSDocModalWindowMask|NSBorderlessWindowMask))?YES:NO;
    [self destroyWindowHandle];
    [self createWindowHandle];
 }
 
 -(void)setTitle:(NSString *)title {
-   SetWindowTextW(_handle,(const unichar *)[title cStringUsingEncoding:NSUnicodeStringEncoding]);
+   title=[title copy];
+   [_title release];
+   _title=title;
+   
+   SetWindowTextW(_handle,(const unichar *)[_title cStringUsingEncoding:NSUnicodeStringEncoding]);
 }
 
--(void)setFrame:(NSRect)frame {
+-(void)setFrame:(CGRect)frame {
    _frame=frame;
    
-   NSRect moveTo=[self win32FrameForRect:_frame];
+   CGRect moveTo=convertFrameToWin32ScreenCoordinates(_frame);
 
    _ignoreMinMaxMessage=YES;
-   MoveWindow(_handle, moveTo.origin.x, moveTo.origin.y,
-    moveTo.size.width, moveTo.size.height,YES);
+   MoveWindow(_handle, moveTo.origin.x, moveTo.origin.y,moveTo.size.width, moveTo.size.height,YES);
    _ignoreMinMaxMessage=NO;
 
    [self invalidateContextsWithNewSize:frame.size];
 }
 
--(void)sheetOrderFrontFromFrame:(NSRect)frame aboveWindow:(CGWindow *)aboveWindow {
-   NSRect moveTo=[self win32FrameForRect:_frame];
+-(void)setOpaque:(BOOL)value {
+   _isOpaque=value;
+   [self flushBuffer];
+}
+
+-(void)setAlphaValue:(CGFloat)value {
+   _alphaValue=value;
+   [self flushBuffer];
+}
+
+-(void)setHasShadow:(BOOL)value {
+   _hasShadow=value;
+   [self destroyWindowHandle];
+   [self createWindowHandle];
+}
+
+-(void)sheetOrderFrontFromFrame:(CGRect)frame aboveWindow:(CGWindow *)aboveWindow {
+   CGRect moveTo=convertFrameToWin32ScreenCoordinates(_frame);
    POINT origin={moveTo.origin.x,moveTo.origin.y};
-   SIZE sizeWnd = {_size.width, 1};
+   SIZE sizeWnd = {_frame.size.width, 1};
    POINT ptSrc = {0, 0};
 
    UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
@@ -325,45 +334,45 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    _disableDisplay=NO;
 
    int i;
-   int interval=(_size.height/400.0)*100;
-   int chunk=_size.height/(interval/2);
+   int interval=(_frame.size.height/400.0)*100;
+   int chunk=_frame.size.height/(interval/2);
    
    if(chunk<1)
     chunk=1;
     
-   for(i=0;i<_size.height;i+=chunk){
-    sizeWnd = (SIZE){_size.width, i};
-    ptSrc = (POINT){0, _size.height-i};
+   for(i=0;i<_frame.size.height;i+=chunk){
+    sizeWnd = (SIZE){_frame.size.width, i};
+    ptSrc = (POINT){0, _frame.size.height-i};
     UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
     Sleep(1);
    }
    UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
 }
 
--(void)sheetOrderOutToFrame:(NSRect)frame {
+-(void)sheetOrderOutToFrame:(CGRect)frame {
    int i;
-   int interval=(_size.height/400.0)*100;
-   int chunk=_size.height/(interval/2);
+   int interval=(_frame.size.height/400.0)*100;
+   int chunk=_frame.size.height/(interval/2);
    
    if(chunk<1)
     chunk=1;
     
-   for(i=0;i<_size.height;i+=chunk){
-   SIZE sizeWnd = {_size.width, _size.height-i};
+   for(i=0;i<_frame.size.height;i+=chunk){
+   SIZE sizeWnd = {_frame.size.width, _frame.size.height-i};
    POINT ptSrc = {0, i};
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
     Sleep(1);
    }
-   SIZE sizeWnd = {_size.width, 0};
+   SIZE sizeWnd = {_frame.size.width, 0};
    POINT ptSrc = {0, i};
    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
 }
 
--(void)showWindowForAppActivation:(NSRect)frame {
+-(void)showWindowForAppActivation:(CGRect)frame {
    [self showWindowWithoutActivation];
 }
 
--(void)hideWindowForAppDeactivation:(NSRect)frame {
+-(void)hideWindowForAppDeactivation:(CGRect)frame {
    [self hideWindow];
 }
 
@@ -377,12 +386,10 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
 
 -(void)bringToTop {
    if(_styleMask==NSBorderlessWindowMask){
-    SetWindowPos(_handle,HWND_TOPMOST,0,0,0,0,
-      SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+    SetWindowPos(_handle,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    }
    else {
-    SetWindowPos(_handle,HWND_TOP,0,0,0,0,
-      SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+    SetWindowPos(_handle,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    }
 }
 
@@ -424,11 +431,28 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
     return IsIconic(_handle);
 }
 
+#if 0
 -(CGLContextObj)createCGLContextObjIfNeeded {
    if(_cglContext==NULL){
+    PIXELFORMATDESCRIPTOR pfd;
     CGLError error;
-    HDC dc=GetDC(_handle);
-    
+    HDC       dc=GetDC(_handle);
+       
+    memset(&pfd,0,sizeof(pfd));
+   
+    pfd.nSize=sizeof(PIXELFORMATDESCRIPTOR);
+    pfd.nVersion=1;
+    pfd.dwFlags=PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER|PFD_GENERIC_ACCELERATED|PFD_DRAW_TO_WINDOW;
+    pfd.iPixelType=PFD_TYPE_RGBA;
+    pfd.cColorBits=24;
+    pfd.cAlphaBits=8;
+    pfd.iLayerType=PFD_MAIN_PLANE;
+
+    int pfIndex=ChoosePixelFormat(dc,&pfd); 
+ 
+    if(!SetPixelFormat(dc,pfIndex,&pfd))
+     NSLog(@"SetPixelFormat failed at %s %d",__FILE__,__LINE__);
+
     CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,HDC dc,CGLContextObj *resultp);
  
     if((error=CGLCreateContext(NULL,dc,&_cglContext))!=kCGLNoError)
@@ -464,24 +488,23 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    
    return YES;
 }
+#endif
 
--(void)flushBuffer {
-   if(_isOpenGL){
-    if([self openGLFlushBuffer])
-     return;
-   }
-   
-   if(_isLayered){
-    BLENDFUNCTION blend = {0,0,0,0};
-    blend.BlendOp = AC_SRC_OVER;
-    blend.SourceConstantAlpha = 255;
-    blend.AlphaFormat = AC_SRC_ALPHA;
+-(void)flushBuffer {   
+   if(isLayeredWindowStyleMask(_styleMask)){
+    BLENDFUNCTION blend;
+    BYTE          constantAlpha=MAX(0,MIN(_alphaValue*255,255));
     
-    SIZE sizeWnd = {_size.width, _size.height};
+    blend.BlendOp=AC_SRC_OVER;
+    blend.BlendFlags=0;
+    blend.SourceConstantAlpha=constantAlpha;
+    blend.AlphaFormat=AC_SRC_ALPHA;
+    
+    SIZE sizeWnd = {_frame.size.width, _frame.size.height};
     POINT ptSrc = {0, 0};
-
-  //  UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_ALPHA);
-    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_OPAQUE);
+    DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
+    
+    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, flags);
    }
    else {
     switch(_backingType){
@@ -491,24 +514,45 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
       break;
  
      case CGSBackingStoreBuffered:
-      if(_backingContext!=nil)
-       [_cgContext drawBackingContext:_backingContext size:_size];
-      break;
+      if(_backingContext!=nil){
+       int                  dstX=0;
+       int                  dstY=0;
+       int                  width=_frame.size.width;
+       int                  height=_frame.size.height;
+       O2Context           *other=_backingContext;
+       O2DeviceContext_gdi *deviceContext=nil;
+
+       if([other isKindOfClass:[O2Context_gdi class]])
+        deviceContext=[(O2Context_gdi *)other deviceContext];
+       else {
+        O2Surface *surface=[other surface];
+       
+        if([surface isKindOfClass:[O2Surface_DIBSection class]])
+         deviceContext=[(O2Surface_DIBSection *)surface deviceContext];
+       }
+       
+       CGFloat top,left,bottom,right;
+       
+       CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
+       
+       if(deviceContext!=nil)
+        BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+      }
     }
    }
 }
 
--(NSPoint)convertPOINTLToBase:(POINTL)point {
-   NSPoint result;
+-(CGPoint)convertPOINTLToBase:(POINTL)point {
+   CGPoint result;
 
    result.x=point.x;
    result.y=point.y;
-   result.y=[self primaryScreenHeight]-result.y;
+   result.y=GetSystemMetrics(SM_CYSCREEN)-result.y;
 
    return result;
 }
 
--(NSPoint)mouseLocationOutsideOfEventStream {
+-(CGPoint)mouseLocationOutsideOfEventStream {
    POINT   winPoint;
 
    GetCursorPos(&winPoint);
@@ -516,8 +560,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    return [self convertPOINTLToBase:winPoint];
 }
 
--(void)adjustEventLocation:(NSPoint *)location {
-    location->y=(_size.height-1)-location->y;
+-(void)adjustEventLocation:(CGPoint *)location {
+   CGFloat top,left,bottom,right;
+       
+   CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
+   location->x+=left;
+   location->y+=top;
+   
+   location->y=(_frame.size.height-1)-location->y;
 }
 
 -(void)sendEvent:(CGEvent *)eventX {
@@ -535,35 +585,32 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
    FlashWindow(_handle,TRUE);
 }
 
+-(CGRect)queryFrame {
+   RECT rect;
+   
+   if(GetWindowRect(_handle,&rect)==0){
+    NSLog(@"GetWindowRect failed, handle=%p, %s %d",_handle,__FILE__,__LINE__);
+    
+    return CGRectMake(0,0,0,0);
+   }
+   
+   return convertFrameFromWin32ScreenCoordinates(CGRectFromRECT(rect));
+}
+
 -(void)_GetWindowRectDidSize:(BOOL)didSize {
-   RECT   windowRect;
-   RECT   clientRect;
-   NSRect frame;
-
-   GetWindowRect(_handle,&windowRect);
-   windowRect=[self win32ContentRECTFromFrameRECT:windowRect];
-
-   GetClientRect(_handle,&clientRect);
-   windowRect.right=windowRect.left+clientRect.right;
-   windowRect.bottom=windowRect.top+clientRect.bottom;
-
-   frame=[self flipOnWin32Screen:NSRectFromRECT(windowRect)];
-
+   CGRect frame=[self queryFrame];
+   
    if(frame.size.width>0 && frame.size.height>0)
     [_delegate platformWindow:self frameChanged:frame didSize:didSize];
 }
 
 -(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   NSSize contentSize={LOWORD(lParam),HIWORD(lParam)};
-//   BOOL   equalSizes=NSEqualSizes(_backingSize,contentSize);
+   CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
 
    if(contentSize.width>0 && contentSize.height>0){
-    [self invalidateContextsWithNewSize:contentSize];
+    [self invalidateContextsWithNewSize:[self queryFrame].size];
 
     [self _GetWindowRectDidSize:YES];
-
-//    if(equalSizes)
-//     return 0;
 
     switch(_backingType){
 
@@ -590,7 +637,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
 -(int)WM_PAINT_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
    PAINTSTRUCT paintStruct;
    RECT        updateRECT;
-//   NSRect      displayRect;
+//   CGRect      displayRect;
 
    if(GetUpdateRect(_handle,&updateRECT,NO)){
 // The update rect is usually empty
@@ -654,8 +701,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
 }
 
 -(int)WM_SIZING_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   RECT   rect=[self win32ContentRECTFromFrameRECT:*(RECT *)lParam];
-   NSSize size=NSMakeSize(rect.right-rect.left,rect.bottom-rect.top);
+   RECT   rect=*(RECT *)lParam;
+   CGSize size=NSMakeSize(rect.right-rect.left,rect.bottom-rect.top);
 
    if(!_sentBeginSizing)
     [_delegate platformWindowWillBeginSizing:self];
@@ -690,7 +737,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask) {
      break;
    }
 
-   *(RECT *)lParam=[self win32FrameRECTFromContentRECT:rect];
+   *(RECT *)lParam=rect;
 
    return 0;
 }
@@ -789,7 +836,9 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
 }
 
 static void initializeWindowClass(WNDCLASS *class){
-   class->style=CS_HREDRAW|CS_VREDRAW|CS_OWNDC|CS_DBLCLKS;
+/* WS_EX_LAYERED windows can not use CS_OWNDC or CS_CLASSDC */
+/* OpenGL windows want CS_OWNDC, so don't use OpenGL on a top level window */
+   class->style=CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS;
    class->lpfnWndProc=windowProcedure;
    class->cbClsExtra=0;
    class->cbWndExtra=0;
@@ -807,30 +856,38 @@ static void initializeWindowClass(WNDCLASS *class){
     NSString *path=[[NSBundle mainBundle] pathForResource:name ofType:@"ico"];
     HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
-    static WNDCLASS _standardWindowClass,_popupWindowClass,_glWindowClass;
+    static WNDCLASS _standardWindowClass,_borderlessWindowClass,_borderlessWindowClassWithShadow;
     OSVERSIONINFOEX osVersion;
     
+    osVersion.dwOSVersionInfoSize=sizeof(osVersion);
+    GetVersionEx((OSVERSIONINFO *)&osVersion);
+
     if(icon==NULL)
      icon=LoadImage(NULL,IDI_APPLICATION,IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_SHARED);
 
     initializeWindowClass(&_standardWindowClass);
+    initializeWindowClass(&_borderlessWindowClass);
+    initializeWindowClass(&_borderlessWindowClassWithShadow);
+
     _standardWindowClass.lpszClassName="NSWin32StandardWindow";
     _standardWindowClass.hIcon=icon;
+    
+    _borderlessWindowClass.lpszClassName="Win32BorderlessWindow";
+    
+    _borderlessWindowClassWithShadow.lpszClassName="Win32BorderlessWindowWithShadow";
+    
+    // XP or higher
+    if((osVersion.dwMajorVersion==5 && osVersion.dwMinorVersion>=1) || osVersion.dwMajorVersion>5){
+     _borderlessWindowClassWithShadow.style|=CS_DROPSHADOW;
+    }
+        
     if(RegisterClass(&_standardWindowClass)==0)
      NSLog(@"RegisterClass failed");
 
-    initializeWindowClass(&_popupWindowClass);
-    _popupWindowClass.style|=CS_SAVEBITS;
-
-    osVersion.dwOSVersionInfoSize=sizeof(osVersion);
-    GetVersionEx((OSVERSIONINFO *)&osVersion);
-    // XP or higher
-    if((osVersion.dwMajorVersion==5 && osVersion.dwMinorVersion>=1) || osVersion.dwMajorVersion>5){
-     _popupWindowClass.style|=CS_DROPSHADOW;
-    }
-
-    _popupWindowClass.lpszClassName="NSWin32PopUpWindow";
-    if(RegisterClass(&_popupWindowClass)==0)
+    if(RegisterClass(&_borderlessWindowClass)==0)
+     NSLog(@"RegisterClass failed");
+     
+    if(RegisterClass(&_borderlessWindowClassWithShadow)==0)
      NSLog(@"RegisterClass failed");
    }
 }
