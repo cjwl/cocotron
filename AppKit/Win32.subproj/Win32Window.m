@@ -101,7 +101,7 @@ static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel) {
    return result;
 }
 
-void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right){
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right){   
    RECT delta;
 
    delta.top=0;

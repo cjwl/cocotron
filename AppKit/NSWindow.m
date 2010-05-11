@@ -285,8 +285,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)setStyleMask:(unsigned)mask {
    _styleMask=mask;
    [_platformWindow setStyleMask:_styleMask];
-   if(_styleMask&NSDocModalWindowMask)
-    [self _hideMenuViewIfNeeded];
+   
+   [self _hideMenuViewIfNeeded];
+    
+   [_backgroundView resizeSubviewsWithOldSize:[_backgroundView frame].size];
+   [_backgroundView setNeedsDisplay:YES]; // FIXME: verify this is done
 }
 
 -(void)postNotificationName:(NSString *)name {
