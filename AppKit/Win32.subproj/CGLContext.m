@@ -348,9 +348,9 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   SwapBuffers(context->dc);
-
-   if(context->windowNumber!=0 && context->imagePixelData!=NULL){
+   if(usesChildWindow(context))
+    SwapBuffers(context->dc);
+   else if(context->windowNumber!=0 && context->imagePixelData!=NULL){
     Win32Window *parentWindow=[Win32Window windowWithWindowNumber:context->windowNumber];
     HWND         parentHandle=[parentWindow windowHandle];
     O2Context   *o2Context=[parentWindow cgContext];
@@ -362,6 +362,7 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
     GLuint bufferId;
 
   // glFinish(); supposedly this is not needed
+    opengl_glReadBuffer(GL_BACK);
     opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,context->imagePixelData);
     
     int r,c;

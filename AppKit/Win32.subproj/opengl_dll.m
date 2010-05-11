@@ -78,6 +78,21 @@ PROC  opengl_wglGetProcAddress(LPCSTR name){
    return function(name);
 }
 
+void  opengl_glReadBuffer(GLenum mode) {
+   typedef WINGDIAPI PROC WINAPI (*ftype)(GLenum mode);
+   static ftype                    function=NULL;
+
+   if(function==NULL){
+    HANDLE library=LoadLibrary("OPENGL32");
+    
+    function=(ftype)GetProcAddress(library,"glReadBuffer");
+   }
+   if(function==NULL)
+    return;
+
+   function(mode);
+}
+
 void opengl_glReadPixels(GLint x,GLint y,GLsizei width,GLsizei height,GLenum format,GLenum type,GLvoid *pixels) {
    static typeof(glReadPixels) *function=NULL;
 
