@@ -65,7 +65,7 @@ void O2PaintRadialGradient(O2Paint_radialGradient *self,O2Float *g, O2Float *rho
 }
 
 
-static inline O2argb32f radialGradientColorAt(O2Paint_radialGradient *self,int x,int y,int *skip){
+ONYX2D_STATIC_INLINE O2argb32f radialGradientColorAt(O2Paint_radialGradient *self,int x,int y,int *skip){
    O2argb32f result;
    
    O2Float g, rho;
@@ -76,7 +76,7 @@ static inline O2argb32f radialGradientColorAt(O2Paint_radialGradient *self,int x
    return result;
 }
 
-static int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
+ONYX2D_STATIC int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
    O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
    int previous=-1;
@@ -97,7 +97,7 @@ static int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,i
    return (previous==1)?-length:length;
 }
 
-static int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+ONYX2D_STATIC int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
    int previous=-1;

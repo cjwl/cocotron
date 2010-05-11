@@ -30,7 +30,21 @@
 
 @implementation O2Paint_axialGradient
 
-static int linear_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
+// O2PaintColorRamp is expensive, this could be  more accurate
+// Interestingly, using this produces stair step artifacts at the same angles that Quartz2D produces artifacts
+// The artifacts are different but shaped the same
+ONYX2D_STATIC_INLINE O2argb8u O2PaintFastAxialRamp(O2Paint_ramp *self,O2Float gradient, O2Float rho,int *skip)  {
+   if(gradient<=0.0)
+    return self->_colorStops[0].color8u;
+   else if(gradient>=1.0)
+    return self->_colorStops[self->_numberOfColorStops-1].color8u;
+   else {
+    int i=RI_FLOOR_TO_INT(gradient*(self->_numberOfColorStops-1));
+    return self->_colorStops[i].color8u;
+   }
+}
+
+ONYX2D_STATIC int linear_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
    O2Paint_axialGradient *self=(O2Paint_axialGradient *)selfX;
    int i;
    int previous=-1;
@@ -41,12 +55,63 @@ static int linear_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,i
    point=Vector2Subtract(point,self->_startPoint);
    delta=O2SizeApplyAffineTransform(delta,self->m_surfaceToPaintMatrix);
    
+   if(self->_rho==0.0f){	//points are equal, gradient is always 1.0f
+   for(i=0;i<length;i++,x++,point.x+=delta.width){
+     int skip=0;
+     O2argb8u  value=O2PaintFastAxialRamp(self,1.0f, self->_rho,&skip);
+    
+     if(skip!=previous){
+      if(previous==-1)
+       previous=skip;
+      else
+       return (previous==1)?-i:i;
+     }
+
+     span[i]=value;
+    }
+   }
+   else {
+    O2Float gx=point.x*self->_u.x*self->_oou;
+    O2Float dx=delta.width*self->_u.x*self->_oou;
+    O2Float gy=point.y*self->_u.y*self->_oou;
+
+    for(i=0;i<length;i++,x++,gx+=dx){
+     O2Float g=gx+gy;
+
+    int skip=0;
+     O2argb8u value=O2PaintFastAxialRamp(self,g, self->_rho,&skip);
+    
+    if(skip!=previous){
+     if(previous==-1)
+      previous=skip;
+     else
+      return (previous==1)?-i:i;
+    }
+    
+     span[i]=value;
+   }
+   }
+   
+   return (previous==1)?-length:length;
+}
+
+ONYX2D_STATIC int linear_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+   O2Paint_axialGradient *self=(O2Paint_axialGradient *)selfX;
+   int i;
+   int previous=-1;
+   O2Point point=O2PointMake(x+0.5f, y+0.5f);
+   O2Size  delta=O2SizeMake(1.0f,0.0f);
+   
+   point=O2PointApplyAffineTransform(point,self->m_surfaceToPaintMatrix);
+   point=Vector2Subtract(point,self->_startPoint);
+   delta=O2SizeApplyAffineTransform(delta,self->m_surfaceToPaintMatrix);
+
    for(i=0;i<length;i++,x++,point.x+=delta.width){
     O2Float g;
     
     if(self->_rho==0.0f)	//points are equal, gradient is always 1.0f
      g=1.0f;
-    else { 
+    else {    
      O2Point p=point;   
 
      g=Vector2Dot(p, self->_u)*self->_oou;
@@ -62,39 +127,7 @@ static int linear_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,i
       return (previous==1)?-i:i;
     }
     
-    span[i]=O2argb8uFromO2argb32f(value);
-   }
-   return (previous==1)?-length:length;
-}
-
-static int linear_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
-   O2Paint_axialGradient *self=(O2Paint_axialGradient *)selfX;
-   int i;
-   int previous=-1;
-   
-   for(i=0;i<length;i++,x++){
-    O2Float g;
-    
-    if(self->_rho==0.0f)	//points are equal, gradient is always 1.0f
-     g=1.0f;
-    else {    
-     O2Point p=O2PointMake(x+0.5f, y+0.5f);
-     p=O2PointApplyAffineTransform(p,self->m_surfaceToPaintMatrix);
-     p=Vector2Subtract(p,self->_startPoint);
-     g=Vector2Dot(p, self->_u)*self->_oou;
-    }
-
-    int skip=0;
-    O2argb32f  value=O2PaintColorRamp(self,g, self->_rho,&skip);
-    
-    if(skip!=previous){
-     if(previous==-1)
-      previous=skip;
-     else
-      return (previous==1)?-i:i;
-    }
-    
-    span[i]=(value);
+    span[i]=value;
    }
    return (previous==1)?-length:length;
 }

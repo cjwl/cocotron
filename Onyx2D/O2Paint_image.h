@@ -34,6 +34,6 @@
    O2InterpolationQuality _interpolationQuality;
 }
 
--initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality;
+-initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality surfaceToPaintTransform:(O2AffineTransform)transform;
 
 @end

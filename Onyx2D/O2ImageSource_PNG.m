@@ -545,9 +545,15 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
 // clamp premultiplied data, this should probably be moved into the O2Image init
    int i;
    for(i=0;i<bytesPerRow*height;i+=4){
-    pixels[i]=MIN(pixels[i],pixels[i+3]);
-    pixels[i+1]=MIN(pixels[i+1],pixels[i+3]);
-    pixels[i+2]=MIN(pixels[i+2],pixels[i+3]);
+    unsigned char r=pixels[i+0];
+    unsigned char g=pixels[i+1];
+    unsigned char b=pixels[i+2];
+    unsigned char a=pixels[i+3];
+    
+    pixels[i+0]=MIN(r,a);
+    pixels[i+1]=MIN(g,a);
+    pixels[i+2]=MIN(b,a);
+    pixels[i+3]=a;
    }
 
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
@@ -555,7 +561,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Image *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kO2ImageAlphaPremultipliedLast|kO2BitmapByteOrder32Big provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

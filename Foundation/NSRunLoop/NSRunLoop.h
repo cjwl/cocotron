@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSDate.h>
 #import <Foundation/NSMapTable.h>
+#import <CoreFoundation/CFRunLoop.h>
 
 @class NSTimer,NSDate,NSMutableArray,NSInputSource,NSPort,NSPipe;
 
@@ -26,6 +27,8 @@ FOUNDATION_EXPORT NSString * const NSRunLoopCommonModes;
 +(NSRunLoop *)mainRunLoop;
 
 -(NSString *)currentMode;
+- (CFRunLoopRef)getCFRunLoop;
+
 -(NSDate *)limitDateForMode:(NSString *)mode;
 -(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
 

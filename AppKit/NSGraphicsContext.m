@@ -44,7 +44,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    
    _graphicsPort=CGBitmapContextCreate([imageRep bitmapData],[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bitsPerSample],[imageRep bytesPerRow],colorSpace,[imageRep CGBitmapInfo]);
-   CGColorSpaceRelease(colorSpace);
    
    if(_graphicsPort==nil){
     [self dealloc];
@@ -93,7 +92,12 @@ static NSMutableArray *_contextStack() {
 
 static NSGraphicsContext *_currentContext() {
    NSMutableDictionary *shared=[NSCurrentThread() sharedDictionary];
-   return [shared objectForKey:@"NSGraphicsContext"];
+   id result=[shared objectForKey:@"NSGraphicsContext"];
+   
+   if(result==[NSNull null])
+    return nil;
+   
+   return result;
 }
 
 CGContextRef NSCurrentGraphicsPort() {
@@ -113,9 +117,6 @@ NSMutableArray *NSCurrentFocusStack() {
 +(NSGraphicsContext *)currentContext {
    NSGraphicsContext   *current=_currentContext();
 
-   if(current==nil)
-    [NSException raise:NSInvalidArgumentException format:@"+[%@ %s] is *nil*",self,sel_getName(_cmd)];
-
    return current;
 }
 
@@ -123,7 +124,7 @@ NSMutableArray *NSCurrentFocusStack() {
    NSMutableDictionary *shared=[NSCurrentThread() sharedDictionary];
 
    if(context==nil)
-    [shared removeObjectForKey:@"NSGraphicsContext"];
+    [shared setObject:[NSNull null] forKey:@"NSGraphicsContext"];
    else
     [shared setObject:context forKey:@"NSGraphicsContext"];
 }

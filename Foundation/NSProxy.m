@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
 
+
 @implementation NSProxy
 
 +(void)load {
@@ -52,6 +53,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    // do nothing?
 }
 
+-(void)doesNotRecognizeSelector:(SEL)selector {
+	[NSException raise:NSInvalidArgumentException
+				format:@"%c[%@ %@]: selector not recognized", class_isMetaClass(isa)?'+':'-',
+	 NSStringFromClass(isa),NSStringFromSelector(selector)];
+}
+
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
    NSInvalidAbstractInvocation();
    return nil;
@@ -59,12 +66,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)forwardInvocation:(NSInvocation *)invocation {
    NSInvalidAbstractInvocation();
-}
-
--(void)doesNotRecognizeSelector:(SEL)selector {
-   [NSException raise:NSInvalidArgumentException
-     format:@"%c[%@ %@]: selector not recognized", class_isMetaClass(isa)?'+':'-',
-      NSStringFromClass(isa),NSStringFromSelector(selector)];
 }
 
 -(id)forwardSelector:(SEL)selector arguments:(void *)arguments {
@@ -86,6 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return result;
    }
 }
+
 
 -(NSUInteger)hash {
    return (NSUInteger)self>>4;

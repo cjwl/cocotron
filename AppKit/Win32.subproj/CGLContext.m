@@ -348,10 +348,9 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   
-   if(usesChildWindow(context))
-    SwapBuffers(context->dc);
-   else if(context->windowNumber!=0 && context->imagePixelData!=NULL){
+   SwapBuffers(context->dc);
+
+   if(context->windowNumber!=0 && context->imagePixelData!=NULL){
     Win32Window *parentWindow=[Win32Window windowWithWindowNumber:context->windowNumber];
     HWND         parentHandle=[parentWindow windowHandle];
     O2Context   *o2Context=[parentWindow cgContext];

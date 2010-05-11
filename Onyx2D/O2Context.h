@@ -242,8 +242,6 @@ void O2ContextSetStrokeColorWithColor(O2ContextRef self,O2ColorRef color);
 void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha);
 void O2ContextSetRGBStrokeColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha);
 void O2ContextSetCMYKStrokeColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha);
-void O2ContextSetCalibratedRGBStrokeColor(O2ContextRef self,O2Float red,O2Float green,O2Float blue,O2Float alpha);
-void O2ContextSetCalibratedGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha);
 
 void O2ContextSetFillColor(O2ContextRef self,const O2Float *components);
 void O2ContextSetFillColorWithColor(O2ContextRef self,O2ColorRef color);

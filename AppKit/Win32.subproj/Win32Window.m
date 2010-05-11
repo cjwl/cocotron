@@ -36,7 +36,13 @@ static CGRect convertFrameFromWin32ScreenCoordinates(CGRect rect){
 }
 
 static bool isLayeredWindowStyleMask(unsigned styleMask){
-   return (styleMask&(NSDocModalWindowMask|NSBorderlessWindowMask))?TRUE:FALSE;
+   if(styleMask==NSBorderlessWindowMask)
+    return TRUE;
+    
+   if(styleMask&NSDocModalWindowMask)
+    return TRUE;
+    
+   return FALSE;
 }
 
 static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel) {
@@ -503,7 +509,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     SIZE sizeWnd = {_frame.size.width, _frame.size.height};
     POINT ptSrc = {0, 0};
     DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
-    
+        
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, flags);
    }
    else {

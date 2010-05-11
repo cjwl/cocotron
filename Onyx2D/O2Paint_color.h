@@ -34,7 +34,7 @@
    O2argb8u _RGBA8888_PRE;
 }
 
--initWithGray:(O2Float)gray alpha:(O2Float)alpha;
--initWithRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha;
+-initWithGray:(O2Float)gray alpha:(O2Float)alpha surfaceToPaintTransform:(O2AffineTransform)transform;
+-initWithRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha surfaceToPaintTransform:(O2AffineTransform)transform;
 
 @end

@@ -29,6 +29,11 @@
 
 @implementation O2Paint
 
+O2PaintRef O2PaintInitWithTransform(O2PaintRef self,O2AffineTransform transform) {
+   self->m_surfaceToPaintMatrix = transform;
+   return self;
+}
+
 O2PaintRef O2PaintRetain(O2PaintRef self) {
    return (self!=NULL)?(O2PaintRef)CFRetain(self):NULL;
 }
@@ -36,10 +41,6 @@ O2PaintRef O2PaintRetain(O2PaintRef self) {
 void O2PaintRelease(O2PaintRef self) {
    if(self!=NULL)
     CFRelease(self);
-}
-
-void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,O2AffineTransform surfaceToPaintMatrix) {
-	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 
 @end

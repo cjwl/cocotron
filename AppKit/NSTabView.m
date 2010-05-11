@@ -41,6 +41,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _font=[[NSFont boldSystemFontOfSize:13-_controlSize*2] retain];
     _type=(flags&0x7);
 
+   switch (_type) {
+	   case NSTopTabsBezelBorder:
+	   case NSLeftTabsBezelBorder:
+	   case NSBottomTabsBezelBorder:
+	   case NSRightTabsBezelBorder: {
     // adjust the layout rectangle
     NSRect frame=[self frame];
     frame.origin.x += 8;
@@ -61,6 +66,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
     }
     [self setFrame:frame];
+   }
+		   
+	   case NSNoTabsBezelBorder:
+	   case NSNoTabsLineBorder:
+	   case NSNoTabsNoBorder:
+	   default:
+		   break;
+   }
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];

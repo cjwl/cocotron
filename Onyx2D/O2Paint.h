@@ -43,11 +43,10 @@ typedef int (*O2PaintReadSpan_lRGBAffff_PRE_function)(O2Paint *self,int x,int y,
     O2AffineTransform               m_surfaceToPaintMatrix;
 }
 
+O2PaintRef O2PaintInitWithTransform(O2PaintRef self,O2AffineTransform transform);
+
 O2PaintRef O2PaintRetain(O2PaintRef self);
 void O2PaintRelease(O2PaintRef self);
-
-void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,O2AffineTransform surfaceToPaintMatrix);
-
 
 @end
 

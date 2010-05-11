@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 #define ONYX2D_EXPORT
+#define ONYX2D_STATIC static
+#define ONYX2D_STATIC_INLINE static inline
 
 typedef float O2Float;
 
