@@ -93,6 +93,37 @@ void  opengl_glReadBuffer(GLenum mode) {
    function(mode);
 }
 
+void opengl_glGetIntegerv(GLenum pname,GLint *params) {
+   typedef WINGDIAPI PROC WINAPI (*ftype)(GLenum pname,GLint *params);
+   static ftype                    function=NULL;
+
+   if(function==NULL){
+    HANDLE library=LoadLibrary("OPENGL32");
+    
+    function=(ftype)GetProcAddress(library,"glGetIntegerv");
+   }
+   if(function==NULL)
+    return;
+
+   function(pname,params);
+}
+
+
+void  opengl_glDrawBuffer(GLenum mode) {
+   typedef WINGDIAPI PROC WINAPI (*ftype)(GLenum mode);
+   static ftype                    function=NULL;
+
+   if(function==NULL){
+    HANDLE library=LoadLibrary("OPENGL32");
+    
+    function=(ftype)GetProcAddress(library,"glDrawBuffer");
+   }
+   if(function==NULL)
+    return;
+
+   function(mode);
+}
+
 void opengl_glReadPixels(GLint x,GLint y,GLsizei width,GLsizei height,GLenum format,GLenum type,GLvoid *pixels) {
    static typeof(glReadPixels) *function=NULL;
 

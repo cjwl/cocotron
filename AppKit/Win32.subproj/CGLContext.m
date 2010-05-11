@@ -361,8 +361,12 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
     int    bytesPerRow=pixelsWide*4;
     GLuint bufferId;
 
-  // glFinish(); supposedly this is not needed
-    opengl_glReadBuffer(GL_BACK);
+  // glFinish(); supposedly this is not needed with glReadPixels
+  
+    GLint mode;
+    opengl_glGetIntegerv(GL_DRAW_BUFFER,&mode);
+    opengl_glReadBuffer(mode);
+    
     opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,context->imagePixelData);
     
     int r,c;
