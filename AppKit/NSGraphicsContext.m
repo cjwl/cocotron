@@ -209,7 +209,7 @@ NSMutableArray *NSCurrentFocusStack() {
 
 -(CIContext *)CIContext {
    if(_ciContext==nil)
-    ;//_ciContext=[[CIContext contextWithCGContext:_graphicsPort options:nil] retain];
+    _ciContext=[[CIContext contextWithCGContext:_graphicsPort options:nil] retain];
 
    return _ciContext;
 }

@@ -28,7 +28,7 @@
 }
 
 -(void)drawImage:(CIImage *)image atPoint:(CGPoint)atPoint fromRect:(CGRect)fromRect {
-   CGRect inRect={atPoint.x,atPoint.y,fromRect.size.width,fromRect.size.height};
+   CGRect inRect={{atPoint.x,atPoint.y},{fromRect.size.width,fromRect.size.height}};
    
    [self drawImage:image inRect:inRect fromRect:fromRect];
 }
