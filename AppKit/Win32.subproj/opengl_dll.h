@@ -8,3 +8,7 @@ HGLRC opengl_wglGetCurrentContext(void);
 BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc);
 BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc);
 PROC  opengl_wglGetProcAddress(LPCSTR name);
+void  opengl_glReadBuffer(GLenum mode);
+void  opengl_glGetIntegerv(GLenum pname,GLint *params);
+void  opengl_glDrawBuffer(GLenum mode);
+void  opengl_glReadPixels(GLint x,GLint y,GLsizei width,GLsizei height,GLenum format,GLenum type,GLvoid *pixels);

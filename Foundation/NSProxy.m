@@ -14,6 +14,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <objc/message.h>
 
+@interface NSInvocation(private)
++(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
+@end
+
+
 @implementation NSProxy
 
 +(void)load {
@@ -48,6 +53,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    // do nothing?
 }
 
+-(void)doesNotRecognizeSelector:(SEL)selector {
+	[NSException raise:NSInvalidArgumentException
+				format:@"%c[%@ %@]: selector not recognized", class_isMetaClass(isa)?'+':'-',
+	 NSStringFromClass(isa),NSStringFromSelector(selector)];
+}
+
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
    NSInvalidAbstractInvocation();
    return nil;
@@ -56,6 +67,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)forwardInvocation:(NSInvocation *)invocation {
    NSInvalidAbstractInvocation();
 }
+
+-(id)forwardSelector:(SEL)selector arguments:(void *)arguments {
+   NSMethodSignature *signature=[self methodSignatureForSelector:selector];
+
+   if(signature==nil){
+    [self doesNotRecognizeSelector:selector];
+    return nil;
+   }
+   else {
+    NSInvocation *invocation=[NSInvocation invocationWithMethodSignature:signature arguments:arguments];
+   // char          result[[signature methodReturnLength]];
+    id              result;
+
+    [self forwardInvocation:invocation];
+    [invocation getReturnValue:&result];
+
+   // __builtin_return(result); Can we use __builtin_return like this? It still doesn't seem to work on float/doubles ?
+    return result;
+   }
+}
+
 
 -(NSUInteger)hash {
    return (NSUInteger)self>>4;

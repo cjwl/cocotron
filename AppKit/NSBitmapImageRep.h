@@ -40,7 +40,6 @@ typedef enum {
    int _samplesPerPixel;
    int _bitsPerPixel;
    int _bytesPerRow;
-   int _numberOfPlanes;
    int _bytesPerPlane;
    NSBitmapFormat  _bitmapFormat;
    BOOL            _freeWhenDone;
@@ -48,7 +47,7 @@ typedef enum {
    unsigned char **_bitmapPlanes;
    NSMutableDictionary *_properties;
    
-   CGImageRef _image;
+   CGImageRef _cgImage;
 }
 
 +(void)getTIFFCompressionTypes:(const NSTIFFCompression **)types count:(int *)count;
@@ -71,6 +70,7 @@ typedef enum {
 
 -initWithData:(NSData *)data;
 -initWithContentsOfFile:(NSString *)path;
+-initWithCGImage:(CGImageRef)cgImage;
 
 -(int)incrementalLoadFromData:(NSData *)data complete:(BOOL)complete;
 

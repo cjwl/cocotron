@@ -29,21 +29,21 @@
 
 @implementation O2Paint_image
 
-static int O2PaintReadResampledHighSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledHighSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
    O2ImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledLowSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledLowSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
    O2ImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
    O2ImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
@@ -52,28 +52,42 @@ static int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y
 
 //
 
-static int O2PaintReadResampledHighSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledHighSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledLowSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledLowSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledNoneSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledLowSpanFloatTranslate_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
+
+   O2ImageBilinearFloatTranslate_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
+}
+
+ONYX2D_STATIC int O2PaintReadResampledNoneSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int multiply(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+
+ONYX2D_STATIC int O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
+   O2ImageIntegerTranslate_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
+}
+
+ONYX2D_STATIC int multiply(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2PaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
@@ -104,7 +118,7 @@ static int multiply(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    return length;
 }
 
-static int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    self->_paint->_paint_lRGBAffff_PRE(self->_paint,x,y,span,length);
@@ -157,8 +171,24 @@ static int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
 }
 
 
--initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality {
-   self->m_surfaceToPaintMatrix=O2AffineTransformIdentity;
+-initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality surfaceToPaintTransform:(O2AffineTransform)xform {
+   bool integerTranslate=FALSE;
+   bool floatTranslate=FALSE;
+   
+   O2PaintInitWithTransform(self,xform);
+   
+   
+   if(xform.a==1.0f && xform.b==0.0f && xform.c==0.0f && ABS(xform.d)==1.0f){
+    if(xform.tx==RI_FLOOR_TO_INT(xform.tx) && xform.ty==RI_FLOOR_TO_INT(xform.ty))
+     integerTranslate=TRUE;
+    else
+     floatTranslate=TRUE;
+   }
+#if 0
+   else
+      NSLog(@"xform a=%f, b=%f, c=%f, d=%f, tx=%f, ty=%f",xform.a,xform.b,xform.c,xform.d,xform.tx,xform.ty);
+#endif
+
    switch(mode){
    
     case VG_DRAW_IMAGE_MULTIPLY:
@@ -173,17 +203,30 @@ static int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
      switch(interpolationQuality){
      
       case kO2InterpolationHigh:
+       if(integerTranslate)
+        _paint_lRGBA8888_PRE=O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE;
+       else
        _paint_lRGBA8888_PRE=O2PaintReadResampledHighSpan_lRGBA8888_PRE;
        _paint_lRGBAffff_PRE=O2PaintReadResampledHighSpan_lRGBAffff_PRE;
        break;
        
       case kO2InterpolationLow:
+      
+       if(integerTranslate)
+        _paint_lRGBA8888_PRE=O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE;
+       else if(floatTranslate)
+        _paint_lRGBA8888_PRE=O2PaintReadResampledLowSpanFloatTranslate_lRGBA8888_PRE;
+       else
        _paint_lRGBA8888_PRE=O2PaintReadResampledLowSpan_lRGBA8888_PRE;
+        
        _paint_lRGBAffff_PRE=O2PaintReadResampledLowSpan_lRGBAffff_PRE;
        break;
 
       case kO2InterpolationNone:
       default:
+       if(integerTranslate)
+        _paint_lRGBA8888_PRE=O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE;
+       else
        _paint_lRGBA8888_PRE=O2PaintReadResampledNoneSpan_lRGBA8888_PRE;
        _paint_lRGBAffff_PRE=O2PaintReadResampledNoneSpan_lRGBAffff_PRE;
        break;

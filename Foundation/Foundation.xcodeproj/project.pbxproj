@@ -16124,6 +16124,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
+					"-DCFNETWORK_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DDEBUG",
@@ -16135,7 +16136,7 @@
 					"-lffi",
 					"-B,dynamic",
 					"-shared",
-					"-lwsock32",
+					"-lws2_32",
 					"-Wl,--export-all-symbols",
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
@@ -16294,6 +16295,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
@@ -16303,7 +16306,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_UNROLL_LOOPS = NO;

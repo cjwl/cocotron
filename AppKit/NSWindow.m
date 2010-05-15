@@ -75,15 +75,21 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
+   NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,styleMask);
+   
    if(styleMask!=0)
-    contentRect.size.height+=[NSMainMenuView menuHeight];
-   return contentRect;
+    result.size.height+=[NSMainMenuView menuHeight];
+    
+   return result;
 }
 
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask {
+   NSRect result=CGInsetRectForNativeWindowBorder(frameRect,styleMask);
+   
    if(styleMask!=0)
-    frameRect.size.height-=[NSMainMenuView menuHeight];
-   return frameRect;
+    result.size.height-=[NSMainMenuView menuHeight];
+    
+   return result;
 }
 
 +(float)minFrameWidthWithTitle:(NSString *)title styleMask:(unsigned)styleMask {
@@ -124,11 +130,15 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask backing:(unsigned)backing defer:(BOOL)defer {
-   NSRect backgroundFrame={{0,0},contentRect.size};
-   NSRect contentViewFrame={{0,0},contentRect.size};
+   NSRect backgroundFrame;
+   NSRect contentViewFrame;
 
    _frame=[isa frameRectForContentRect:contentRect styleMask:styleMask];
+   
+   backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
+   contentViewFrame=[isa contentRectForFrameRect:backgroundFrame styleMask:styleMask];
+   
    _savedFrame = _frame;
 	
    _styleMask=styleMask;
@@ -142,7 +152,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    _menu=nil;
    if(![self isKindOfClass:[NSPanel class]] && styleMask!=0){
-    NSRect frame=NSMakeRect(0,contentRect.size.height,contentRect.size.width,[NSMainMenuView menuHeight]);
+    NSRect frame=NSMakeRect(contentViewFrame.origin.x,NSMaxY(contentViewFrame),contentViewFrame.size.width,[NSMainMenuView menuHeight]);
 
     _menu=[[NSApp mainMenu] copy];
 
@@ -275,8 +285,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)setStyleMask:(unsigned)mask {
    _styleMask=mask;
    [_platformWindow setStyleMask:_styleMask];
-   if(_styleMask&NSDocModalWindowMask)
-    [self _hideMenuViewIfNeeded];
+   
+   [self _hideMenuViewIfNeeded];
+    
+   [_backgroundView resizeSubviewsWithOldSize:[_backgroundView frame].size];
+   [_backgroundView setNeedsDisplay:YES]; // FIXME: verify this is done
 }
 
 -(void)postNotificationName:(NSString *)name {
@@ -512,7 +525,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return _backgroundColor;
 }
 
--(float)alphaValue {
+-(CGFloat)alphaValue {
    return _alphaValue;
 }
 
@@ -758,11 +771,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setContentSize:(NSSize)size {
-   NSRect frame,content=[[self class] contentRectForFrameRect:[self frame] styleMask:_styleMask];
+   NSRect frame,content=[self contentRectForFrameRect:[self frame]];
 
    content.size=size;
 
-   frame=[[self class] frameRectForContentRect:content styleMask:_styleMask];
+   frame=[self frameRectForContentRect:content];
 
    [self setFrame:frame display:YES];
 }
@@ -905,12 +918,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    color=[color copy];
    [_backgroundColor release];
    _backgroundColor=color;
+   [_backgroundView setNeedsDisplay:YES];
 }
 
--(void)setAlphaValue:(float)value {
+-(void)setAlphaValue:(CGFloat)value {
    _alphaValue=value;
-// FIXME:
-//   NSUnimplementedMethod();
+   [[self platformWindow] setAlphaValue:value];
 }
 
 -(void)_toolbarSizeDidChangeFromOldHeight:(CGFloat)oldHeight {
@@ -988,7 +1001,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setHasShadow:(BOOL)value {
    _hasShadow=value;
-   // FIXME: implement
+   [[self platformWindow] setHasShadow:value];
 }
 
 -(void)setIgnoresMouseEvents:(BOOL)value {
@@ -1025,6 +1038,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setOpaque:(BOOL)value {
    _isOpaque=value;
+   [[self platformWindow] setOpaque:_isOpaque];
 }
 
 -(void)setParentWindow:(NSWindow *)value {
@@ -1190,7 +1204,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(int)windowNumber {
-   return (int)self;
+   return [[self platformWindow] windowNumber];
 }
 
 -(int)gState {
@@ -1321,7 +1335,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSRect)contentRectForFrameRect:(NSRect)rect {
-   return [isa contentRectForFrameRect:rect styleMask:[self styleMask]];
+   NSRect result=[isa contentRectForFrameRect:rect styleMask:[self styleMask]];
+       
+   if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
+    result.size.height-=[[_toolbar _view] frame].size.height;
+   
+   return result;
 }
 
 -(NSRect)constrainFrameRect:(NSRect)rect toScreen:(NSScreen *)screen {
@@ -1744,7 +1763,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      [self update];
 
      _isVisible=YES;
-     [[self platformWindow] placeAboveWindow:[(NSWindow *)relativeTo platformWindow]];
+     [[self platformWindow] placeAboveWindow:relativeTo];
 /* In some instances when a COMMAND is issued from a menu item to bring a
    window front, the window is not displayed right (black, incomplete). This
    may be the right place to do this, maybe not, further investigation is
@@ -1754,7 +1773,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
          [NSApp changeWindowsItem:self title:_title filename:NO];
-         [NSApp _windowOrderingChange: NSWindowAbove forWindow: self relativeTo: (NSWindow *)relativeTo];
+         [NSApp _windowOrderingChange: NSWindowAbove forWindow: self relativeTo: [NSApp windowWithWindowNumber:relativeTo]];
      }
      
      break;
@@ -1763,7 +1782,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      [self update];
 
      _isVisible=YES;
-     [[self platformWindow] placeBelowWindow:[(NSWindow *)relativeTo platformWindow]];
+     [[self platformWindow] placeBelowWindow:relativeTo];
 /* In some instances when a COMMAND is issued from a menu item to bring a
    window front, the window is not displayed right (black, incomplete). This
    may be the right place to do this, maybe not, further investigation is
@@ -1773,7 +1792,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
        [NSApp changeWindowsItem:self title:_title filename:NO];
-       [NSApp _windowOrderingChange: NSWindowBelow forWindow: self relativeTo: (NSWindow*)relativeTo];
+       [NSApp _windowOrderingChange: NSWindowBelow forWindow: self relativeTo: [NSApp windowWithWindowNumber:relativeTo]];
      }
      break;
 
@@ -2630,7 +2649,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                             location:mousePoint
                                        modifierFlags:[NSEvent modifierFlags]
                                            timestamp:[NSDate timeIntervalSinceReferenceDate]
-                                        windowNumber:(int)self
+                                        windowNumber:[self windowNumber]
                                              context:[self graphicsContext]
                                          eventNumber:0 // NSEvent currently ignores this.
                                       trackingNumber:(NSInteger)check
@@ -2647,7 +2666,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                             location:mousePoint
                                        modifierFlags:[NSEvent modifierFlags]
                                            timestamp:[NSDate timeIntervalSinceReferenceDate]
-                                        windowNumber:(int)self
+                                        windowNumber:[self windowNumber]
                                              context:[self graphicsContext]
                                          eventNumber:0 // NSEvent currently ignores this.
                                       trackingNumber:(NSInteger)check
@@ -2664,7 +2683,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                         location:mousePoint
                                    modifierFlags:[NSEvent modifierFlags]
                                        timestamp:[NSDate timeIntervalSinceReferenceDate]
-                                    windowNumber:(int)self
+                                    windowNumber:[self windowNumber]
                                          context:[self graphicsContext]
                                      eventNumber:0 // NSEvent currently ignores this.
                                       clickCount:0
@@ -2681,7 +2700,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                                             location:mousePoint
                                        modifierFlags:[NSEvent modifierFlags]
                                            timestamp:[NSDate timeIntervalSinceReferenceDate]
-                                        windowNumber:(int)self
+                                        windowNumber:[self windowNumber]
                                              context:[self graphicsContext]
                                          eventNumber:0 // NSEvent currently ignores this.
                                       trackingNumber:(NSInteger)check

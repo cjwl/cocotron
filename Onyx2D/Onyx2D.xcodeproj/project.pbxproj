@@ -624,12 +624,86 @@
 		};
 /* End PBXBuildRule section */
 
+/* Begin PBXContainerItemProxy section */
+		FE081BB7118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE081BB9118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
+			remoteInfo = "Foundation-Linux-i386";
+		};
+		FE081BBB118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
+			remoteInfo = "Foundation-Solaris-sparc";
+		};
+		FE081BBD118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+		FE081BBF118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
+			remoteInfo = "Foundation-Darwin-ppc";
+		};
+		FE081BC1118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE651A870FBC844C00464BFD;
+			remoteInfo = "Foundation-Darwin-x86_64";
+		};
+		FE081BC3118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
+			remoteInfo = "Foundation-Linux-ppc";
+		};
+		FE081BC5118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15D921C0105E918000171406;
+			remoteInfo = "Foundation-Linux-arm";
+		};
+		FE081BC7118A165F0026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F;
+			remoteInfo = "Foundation-FreeBSD-i386";
+		};
+		FE081BC9118A16710026A20E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* Onyx2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Onyx2D_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE081BAA118A165F0026A20E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE5C0A47116297FA00065D1C /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
 		FE5C0A48116297FA00065D1C /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE5C0A49116297FA00065D1C /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
@@ -831,6 +905,7 @@
 		0867D691FE84028FC02AAC07 /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE081BAA118A165F0026A20E /* Foundation.xcodeproj */,
 				FE5C0A4D1162981100065D1C /* gif_lib.h */,
 				FE5C0A4E1162981100065D1C /* gif_lib.m */,
 				FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */,
@@ -1025,6 +1100,22 @@
 				32DBCF5E0370ADEE00C91783 /* Onyx2D_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		FE081BAB118A165F0026A20E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE081BB8118A165F0026A20E /* Foundation.framework */,
+				FE081BBA118A165F0026A20E /* Foundation.framework */,
+				FE081BBC118A165F0026A20E /* Foundation.framework */,
+				FE081BBE118A165F0026A20E /* Foundation.framework */,
+				FE081BC0118A165F0026A20E /* Foundation.framework */,
+				FE081BC2118A165F0026A20E /* Foundation.framework */,
+				FE081BC4118A165F0026A20E /* Foundation.framework */,
+				FE081BC6118A165F0026A20E /* Foundation.framework */,
+				FE081BC8118A165F0026A20E /* Foundation.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1374,6 +1465,7 @@
 				FE5C0B9411629AE600065D1C /* PBXBuildRule */,
 			);
 			dependencies = (
+				FE081BCA118A16710026A20E /* PBXTargetDependency */,
 			);
 			name = "Onyx2D-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -1450,6 +1542,12 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* Onyx2D */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE081BAB118A165F0026A20E /* Products */;
+					ProjectRef = FE081BAA118A165F0026A20E /* Foundation.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Onyx2D-Windows-i386 */,
@@ -1459,6 +1557,72 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE081BB8118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BB7118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BBA118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BB9118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BBC118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BBB118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BBE118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BBD118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BC0118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BBF118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BC2118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BC1118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BC4118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BC3118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BC6118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BC5118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE081BC8118A165F0026A20E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE081BC7118A165F0026A20E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {
@@ -1806,6 +1970,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE081BCA118A16710026A20E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Windows-i386";
+			targetProxy = FE081BC9118A16710026A20E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {

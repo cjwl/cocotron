@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -selection;
 -(NSArray *)selectedObjects;
 
-//-initWithContent:content;
+-initWithContent:content;
 
 //-(Class)objectClass;
 //-(NSString *)entityName;

@@ -165,8 +165,8 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 	info.cbSize = sizeof(info);
 	getMonitorInfo(hMonitor,&info);
 	
-	NSRect frame = NSRectFromRECT( info.rcMonitor );
-	NSRect visibleFrame = NSRectFromRECT( info.rcWork );
+	NSRect frame = CGRectFromRECT( info.rcMonitor );
+	NSRect visibleFrame = CGRectFromRECT( info.rcWork );
 
 	CGFloat bottom = GetSystemMetrics( SM_YVIRTUALSCREEN ) + GetSystemMetrics( SM_CYVIRTUALSCREEN );
 	frame.origin.y = bottom - (frame.origin.y + frame.size.height);
@@ -596,7 +596,7 @@ The values should be upgraded to something which is more generic to implement, p
     if(isKeypad)
      modifierFlags|=NSNumericPadKeyMask;
 
-    event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:(int)window context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:keyCode];
+    event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:keyCode];
     [self postEvent:event atStart:NO];
     return YES;
    }
@@ -696,7 +696,7 @@ The values should be upgraded to something which is more generic to implement, p
 
    if([platformWindow respondsToSelector:@selector(appkitWindow)])
     window=[platformWindow performSelector:@selector(appkitWindow)];
-    
+
    if(![window isKindOfClass:[NSWindow class]])
     window=nil;
 
@@ -798,6 +798,14 @@ The values should be upgraded to something which is more generic to implement, p
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
+    if(msg.hwnd!=[platformWindow windowHandle]){
+     RECT rect;
+     
+     GetClientRect(msg.hwnd,&rect);
+     location.x+=rect.left;
+     location.y+=rect.top;
+    }
+     
     [platformWindow adjustEventLocation:&location];
     
     modifierFlags=[self currentModifierFlags];

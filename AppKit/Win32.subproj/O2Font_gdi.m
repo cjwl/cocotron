@@ -1,6 +1,4 @@
 #import "O2Font_gdi.h"
-#undef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
 #import <windows.h>
 #import <Foundation/NSString_win32.h>
 #import "Win32Font.h"

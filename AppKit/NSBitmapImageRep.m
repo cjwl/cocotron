@@ -139,34 +139,92 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithData:(NSData *)data {
    CGImageSourceRef imageSource=CGImageSourceCreateWithData((CFDataRef)data,nil);
+   
+   if(imageSource==nil){
+    [self dealloc];
+    return nil;
+   }
+    
    CGImageRef       cgImage=CGImageSourceCreateImageAtIndex(imageSource,0,nil);
    
+   if(cgImage==nil){
+    CFRelease(imageSource);
+    [self dealloc];
+    return nil;
+   }
+   
+   CFDictionaryRef properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
+   NSNumber        *xres=[[(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIWidth) copy] autorelease];
+   NSNumber        *yres=[[(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIHeight) copy] autorelease];
+
+   CFRelease(properties);
+   CFRelease(imageSource);
+
    if(cgImage==nil){
     [self dealloc];
     return nil;
    }
-   CFDictionaryRef properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
-   NSNumber *xres=(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIWidth);
-   NSNumber *yres=(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIHeight);
 
-   _size.width=CGImageGetWidth(cgImage);
-   _size.height=CGImageGetHeight(cgImage);
+   if((self=[self initWithCGImage:cgImage])==nil)
+    return nil;   
 
+   CGImageRelease(cgImage);
+   
    if(xres!=nil && [xres doubleValue]>0)
     _size.width*=72.0/[xres doubleValue];
     
    if(yres!=nil && [yres doubleValue]>0)
     _size.height*=72.0/[yres doubleValue];
 
-   CGColorSpaceRef colorSpace=CGImageGetColorSpace(cgImage);
+   return self;
+}
+   
+-initWithContentsOfFile:(NSString *)path {
+   NSData *data=[NSData dataWithContentsOfFile:path];
+
+   if(data==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   return [self initWithData:data];
+}
+
+-(void)createBitmapIfNeeded {
+   if(_bitmapPlanes==NULL){
+    _freeWhenDone=YES;
+    _bitmapPlanes=NSZoneCalloc(NULL,1,sizeof(unsigned char *));
+    _bitmapPlanes[0]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
+   
+    if(_cgImage!=NULL){
+     CGDataProviderRef    provider=CGImageGetDataProvider(_cgImage);
+// FIXME: inefficient but there is no API to get mutable bytes out of an image or image source
+     CFDataRef            bitmapData=CGDataProviderCopyData(provider);
+     const unsigned char *bytes=CFDataGetBytePtr(bitmapData);
+     int                  i,length=_bytesPerRow*_pixelsHigh;
+   
+     for(i=0;i<length;i++)
+      _bitmapPlanes[0][i]=bytes[i];
+
+     CFRelease(bitmapData);
+    }
+   }
+}
+
+-initWithCGImage:(CGImageRef)cgImage {
+   _cgImage=CGImageRetain(cgImage);
+   _size.width=CGImageGetWidth(_cgImage);
+   _size.height=CGImageGetHeight(_cgImage);
+
+   CGColorSpaceRef colorSpace=CGImageGetColorSpace(_cgImage);
    
    // FIXME:
    _colorSpaceName=NSDeviceRGBColorSpace;
-   _bitsPerSample=CGImageGetBitsPerComponent(cgImage);
-   _pixelsWide=CGImageGetWidth(cgImage);
-   _pixelsHigh=CGImageGetHeight(cgImage);
+   _bitsPerSample=CGImageGetBitsPerComponent(_cgImage);
+   _pixelsWide=CGImageGetWidth(_cgImage);
+   _pixelsHigh=CGImageGetHeight(_cgImage);
 
-   switch(CGImageGetAlphaInfo(cgImage)){
+   switch(CGImageGetAlphaInfo(_cgImage)){
     case kCGImageAlphaPremultipliedLast:
     case kCGImageAlphaPremultipliedFirst:
     case kCGImageAlphaLast:
@@ -183,10 +241,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _samplesPerPixel++;
    _isPlanar=NO;
    _bitmapFormat=0;
-   if(CGImageGetBitmapInfo(cgImage)&kCGBitmapFloatComponents){
+   if(CGImageGetBitmapInfo(_cgImage)&kCGBitmapFloatComponents){
     _bitmapFormat|=NSFloatingPointSamplesBitmapFormat;
    }
-   switch(CGImageGetAlphaInfo(cgImage)){
+   switch(CGImageGetAlphaInfo(_cgImage)){
     case kCGImageAlphaNone:
      break;
     case kCGImageAlphaPremultipliedLast:
@@ -206,43 +264,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
    }
     
-   _bitsPerPixel=CGImageGetBitsPerPixel(cgImage);
-   _bytesPerRow=CGImageGetBytesPerRow(cgImage);
-   _freeWhenDone=YES;
-   _bitmapPlanes=NSZoneCalloc(NULL,1,sizeof(unsigned char *));
-   _bitmapPlanes[0]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
+   _bitsPerPixel=CGImageGetBitsPerPixel(_cgImage);
+   _bytesPerRow=CGImageGetBytesPerRow(_cgImage);
+   _freeWhenDone=NO;
    
-   CGDataProviderRef    provider=CGImageGetDataProvider(cgImage);
-// FIXME: inefficient but there is no API to get mutable bytes out of an image or image source
-   CFDataRef            bitmapData=CGDataProviderCopyData(provider);
-   const unsigned char *bytes=CFDataGetBytePtr(bitmapData);
-   int                  i,length=_bytesPerRow*_pixelsHigh;
-   
-   for(i=0;i<length;i++)
-    _bitmapPlanes[0][i]=bytes[i];
-   
-   CFRelease(bitmapData);
-   
-   CFRelease(properties);
-   CFRelease(imageSource);
-   CGImageRelease(cgImage);
+//   [self createBitmapIfNeeded];
    
    return self;
 }
 
--initWithContentsOfFile:(NSString *)path {
-   NSData *data=[NSData dataWithContentsOfFile:path];
    
-   if(data==nil){
-    [self dealloc];
-    return nil;
-   }
-   
-   return [self initWithData:data];
-}
-
 -(void)dealloc {
-   CGImageRelease(_image);
+   if(_freeWhenDone){
+    if(_bitmapPlanes!=NULL){
+     int i,numberOfPlanes=[self numberOfPlanes];
+   
+     for(i=0;i<numberOfPlanes;i++)
+      if(_bitmapPlanes[i]!=NULL)
+       NSZoneFree(NULL,_bitmapPlanes[i]);
+       
+     NSZoneFree(NULL,_bitmapPlanes);
+}
+   }
+
+   CGImageRelease(_cgImage);
    [super dealloc];
 }
 
@@ -270,7 +315,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)numberOfPlanes {
-   return _numberOfPlanes;
+   return _isPlanar?_samplesPerPixel:1;
 }
 
 -(int)bytesPerPlane {
@@ -282,11 +327,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(unsigned char *)bitmapData {
+   [self createBitmapIfNeeded];
+   
    return _bitmapPlanes[0];
 }
 
 -(void)getBitmapDataPlanes:(unsigned char **)planes {
-   int i,numberOfPlanes=_isPlanar?_samplesPerPixel:1;
+   [self createBitmapIfNeeded];
+
+   int i,numberOfPlanes=[self numberOfPlanes];
 
    for(i=0;i<numberOfPlanes;i++)
     planes[i]=_bitmapPlanes[i];
@@ -303,6 +352,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSAssert(x>=0 && x<[self pixelsWide],@"x out of bounds");
    NSAssert(y>=0 && y<[self pixelsHigh],@"y out of bounds");
 
+   [self createBitmapIfNeeded];
    
    if(_isPlanar)
     NSUnimplementedMethod();
@@ -410,7 +460,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 													  factor:factor];
 }
 
--(CGImageRef)createCGImage {
+-(CGImageRef)createCGImageIfNeeded {
+   if(_cgImage!=NULL)
+    return CGImageRetain(_cgImage);
+    
    if(_isPlanar)
     NSUnimplementedMethod();
     
@@ -419,24 +472,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   CGImageRef image=CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerPixel/_samplesPerPixel,_bitsPerPixel,_bytesPerRow,[self CGColorSpace],
      [self CGBitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
      
+   CGDataProviderRelease(provider);
+  
   return image;
 }
 
 -(CGImageRef)CGImage {
-   if(_image!=NULL)
-    return _image;
+   if(_cgImage!=NULL)
+    return _cgImage;
     
-   return (CGImageRef)[(id)[self createCGImage] autorelease];
+   return (CGImageRef)[(id)[self createCGImageIfNeeded] autorelease];
 }
 
 -(BOOL)draw {
    CGContextRef context=NSCurrentGraphicsPort();
    NSSize size=[self size];
-   CGImageRef image=CGImageRetain(_image);
+   CGImageRef image=[self createCGImageIfNeeded];
    
-   if(image==nil)
-    image=[self createCGImage];
-
    CGContextDrawImage(context,NSMakeRect(0,0,size.width,size.height),image);
    
    CGImageRelease(image);
@@ -446,9 +498,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(CGColorSpaceRef)CGColorSpace {
    if([_colorSpaceName isEqualToString:NSDeviceRGBColorSpace])
-    return CGColorSpaceCreateDeviceRGB();
+    return (CGColorSpaceRef)[(id)CGColorSpaceCreateDeviceRGB() autorelease];
    if([_colorSpaceName isEqualToString:NSCalibratedRGBColorSpace])
-    return CGColorSpaceCreateDeviceRGB();
+    return (CGColorSpaceRef)[(id)CGColorSpaceCreateDeviceRGB() autorelease];
 
    return NULL;
 }

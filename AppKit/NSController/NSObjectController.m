@@ -27,6 +27,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setKeys:[NSArray arrayWithObjects:@"content", nil] triggerChangeNotificationsForDependentKey:@"contentObject"];
 }
 
+- (id)initWithContent:(id)content
+{
+	if ((self=[super init])) {
+		_objectClassName=@"NSMutableDictionary";
+		
+		_editable = YES;
+		_automaticallyPreparesContent = NO;
+
+		_observedKeys=[[NSCountedSet alloc] init];
+		_selection=[[NSControllerSelectionProxy alloc] initWithController:self];
+	}
+	
+	return self;
+}
+
 -initWithCoder:(NSCoder*)coder {
    if((self=[super init])) {
    
@@ -42,6 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    return self;
 }
+
 
 - (id)content {
     return [[_content retain] autorelease];

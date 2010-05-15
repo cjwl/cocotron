@@ -133,6 +133,10 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
    return _currentMode;
 }
 
+- (CFRunLoopRef)getCFRunLoop {
+	return (CFRunLoopRef)self;
+}
+
 -(void)_wakeUp {
    [[self stateForMode:_currentMode] wakeUp];
 }

@@ -301,10 +301,6 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 
 // temporary
 
--(void)drawBackingContext:(O2Context *)other size:(O2Size)size {
-   O2InvalidAbstractInvocation();
-}
-
 -(void)setAntialiasingQuality:(int)value {
    [currentState(self) setAntialiasingQuality:value];
 }
@@ -358,32 +354,53 @@ void O2ContextRelease(O2ContextRef self) {
 
 // context state
 void O2ContextSetAllowsAntialiasing(O2ContextRef self,BOOL yesOrNo) {
+   if(self==nil)
+    return;
+
    self->_allowsAntialiasing=yesOrNo;
 }
 
 // layers
 void O2ContextBeginTransparencyLayer(O2ContextRef self,NSDictionary *unused) {
+   if(self==nil)
+    return;
+
    [self beginTransparencyLayerWithInfo:unused];
 }
 
 void O2ContextEndTransparencyLayer(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    [self endTransparencyLayer];
 }
 
 // path
 BOOL O2ContextIsPathEmpty(O2ContextRef self) {
+   if(self==nil)
+    return YES;
+
    return (self->_path==nil)?YES:O2PathIsEmpty(self->_path);
 }
 
 O2Point O2ContextGetPathCurrentPoint(O2ContextRef self) {
+   if(self==nil)
+    return O2PointZero;
+
    return (self->_path==nil)?O2PointZero:O2PathGetCurrentPoint(self->_path);
 }
 
 O2Rect  O2ContextGetPathBoundingBox(O2ContextRef self) {
+   if(self==nil)
+    return O2RectZero;
+
    return (self->_path==nil)?O2RectZero:O2PathGetBoundingBox(self->_path);
 }
 
 BOOL    O2ContextPathContainsPoint(O2ContextRef self,O2Point point,O2PathDrawingMode pathMode) {
+   if(self==nil)
+    return NO;
+
    O2AffineTransform ctm=currentState(self)->_deviceSpaceTransform;
 
 // FIX  evenOdd
@@ -391,10 +408,16 @@ BOOL    O2ContextPathContainsPoint(O2ContextRef self,O2Point point,O2PathDrawing
 }
 
 void O2ContextBeginPath(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    O2PathReset(self->_path);
 }
 
 void O2ContextClosePath(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    O2PathCloseSubpath(self->_path);
 }
 
@@ -404,78 +427,118 @@ void O2ContextClosePath(O2ContextRef self) {
  */
 
 void O2ContextMoveToPoint(O2ContextRef self,O2Float x,O2Float y) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathMoveToPoint(self->_path,&ctm,x,y);
 }
 
 void O2ContextAddLineToPoint(O2ContextRef self,O2Float x,O2Float y) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddLineToPoint(self->_path,&ctm,x,y);
 }
 
 void O2ContextAddCurveToPoint(O2ContextRef self,O2Float cx1,O2Float cy1,O2Float cx2,O2Float cy2,O2Float x,O2Float y) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddCurveToPoint(self->_path,&ctm,cx1,cy1,cx2,cy2,x,y);
 }
 
 void O2ContextAddQuadCurveToPoint(O2ContextRef self,O2Float cx1,O2Float cy1,O2Float x,O2Float y) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddQuadCurveToPoint(self->_path,&ctm,cx1,cy1,x,y);
 }
 
 void O2ContextAddLines(O2ContextRef self,const O2Point *points,unsigned count) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddLines(self->_path,&ctm,points,count);
 }
 
 void O2ContextAddRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddRect(self->_path,&ctm,rect);
 }
 
 void O2ContextAddRects(O2ContextRef self,const O2Rect *rects,unsigned count) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddRects(self->_path,&ctm,rects,count);
 }
 
 void O2ContextAddArc(O2ContextRef self,O2Float x,O2Float y,O2Float radius,O2Float startRadian,O2Float endRadian,BOOL clockwise) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddArc(self->_path,&ctm,x,y,radius,startRadian,endRadian,clockwise);
 }
 
 void O2ContextAddArcToPoint(O2ContextRef self,O2Float x1,O2Float y1,O2Float x2,O2Float y2,O2Float radius) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddArcToPoint(self->_path,&ctm,x1,y1,x2,y2,radius);
 }
 
 void O2ContextAddEllipseInRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddEllipseInRect(self->_path,&ctm,rect);
 }
 
 void O2ContextAddPath(O2ContextRef self,O2PathRef path) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathAddPath(self->_path,&ctm,path);
 }
 
 void O2ContextReplacePathWithStrokedPath(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    O2UnimplementedFunction();
 }
 
 // gstate
 
 void O2ContextSaveGState(O2ContextRef self) {
+   if(self==nil){
+    return;
+   }
+
    O2GState *current=currentState(self),*next;
 
    next=O2GStateCopyWithZone(current,NULL);
@@ -525,70 +588,121 @@ void O2ContextRestoreGState(O2ContextRef self) {
 }
 
 O2AffineTransform      O2ContextGetUserSpaceToDeviceSpaceTransform(O2ContextRef self) {
+   if(self==nil)
+    return O2AffineTransformIdentity;
+
    return currentState(self)->_deviceSpaceTransform;
 }
 
 O2AffineTransform      O2ContextGetCTM(O2ContextRef self){
+   if(self==nil)
+    return O2AffineTransformIdentity;
+
    return O2GStateUserSpaceTransform(currentState(self));
 }
 
 O2Rect                 O2ContextGetClipBoundingBox(O2ContextRef self) {
+   if(self==nil)
+    return O2RectZero;
+
    return [currentState(self) clipBoundingBox];
 }
 
 O2AffineTransform      O2ContextGetTextMatrix(O2ContextRef self) {
+   if(self==nil)
+    return O2AffineTransformIdentity;
+
    return [currentState(self) textMatrix];
 }
 
 O2InterpolationQuality O2ContextGetInterpolationQuality(O2ContextRef self) {
+   if(self==nil)
+    return 0;
+
    return [currentState(self) interpolationQuality];
 }
 
 O2Point O2ContextGetTextPosition(O2ContextRef self){
+   if(self==nil)
+    return O2PointZero;
+
    return [currentState(self) textPosition];
 }
 
 O2Point O2ContextConvertPointToDeviceSpace(O2ContextRef self,O2Point point) {
+   if(self==nil)
+    return O2PointZero;
+
    return [currentState(self) convertPointToDeviceSpace:point];
 }
 
 O2Point O2ContextConvertPointToUserSpace(O2ContextRef self,O2Point point) {
+   if(self==nil)
+    return O2PointZero;
+
    return [currentState(self) convertPointToUserSpace:point];
 }
 
 O2Size  O2ContextConvertSizeToDeviceSpace(O2ContextRef self,O2Size size) {
+   if(self==nil)
+    return O2SizeZero;
+
    return [currentState(self) convertSizeToDeviceSpace:size];
 }
 
 O2Size  O2ContextConvertSizeToUserSpace(O2ContextRef self,O2Size size) {
+   if(self==nil)
+    return O2SizeZero;
+
    return [currentState(self) convertSizeToUserSpace:size];
 }
 
 O2Rect  O2ContextConvertRectToDeviceSpace(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return O2RectZero;
+
    return [currentState(self) convertRectToDeviceSpace:rect];
 }
 
 O2Rect  O2ContextConvertRectToUserSpace(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return O2RectZero;
+
    return [currentState(self) convertRectToUserSpace:rect];
 }
 
 void O2ContextConcatCTM(O2ContextRef self,O2AffineTransform matrix) {
+   if(self==nil)
+    return;
+
    O2GStateConcatCTM(currentState(self),matrix);
 }
 
 void O2ContextTranslateCTM(O2ContextRef self,O2Float translatex,O2Float translatey) {
+   if(self==nil)
+    return;
+
    O2ContextConcatCTM(self,O2AffineTransformMakeTranslation(translatex,translatey));
 }
 
 void O2ContextScaleCTM(O2ContextRef self,O2Float scalex,O2Float scaley) {
+   if(self==nil)
+    return;
+
    O2ContextConcatCTM(self,O2AffineTransformMakeScale(scalex,scaley));
 }
 
 void O2ContextRotateCTM(O2ContextRef self,O2Float radians) {
+   if(self==nil)
+    return;
+
    O2ContextConcatCTM(self,O2AffineTransformMakeRotation(radians));
 }
 
 void O2ContextClip(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    if(O2PathIsEmpty(self->_path))
     return;
    
@@ -598,6 +712,9 @@ void O2ContextClip(O2ContextRef self) {
 }
 
 void O2ContextEOClip(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    if(O2PathIsEmpty(self->_path))
     return;
 
@@ -607,11 +724,17 @@ void O2ContextEOClip(O2ContextRef self) {
 }
 
 void O2ContextClipToMask(O2ContextRef self,O2Rect rect,O2ImageRef image) {
+   if(self==nil)
+    return;
+
    [currentState(self) addClipToMask:image inRect:rect];
    [self deviceClipToMask:image inRect:rect];
 }
 
 void O2ContextClipToRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+    
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathReset(self->_path);
@@ -620,6 +743,9 @@ void O2ContextClipToRect(O2ContextRef self,O2Rect rect) {
 }
 
 void O2ContextClipToRects(O2ContextRef self,const O2Rect *rects,unsigned count) {
+   if(self==nil)
+    return;
+
    O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
 
    O2PathReset(self->_path);
@@ -628,6 +754,9 @@ void O2ContextClipToRects(O2ContextRef self,const O2Rect *rects,unsigned count) 
 }
 
 void O2ContextSetStrokeColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) {
+   if(self==nil)
+    return;
+
    int   i,length=O2ColorSpaceGetNumberOfComponents(colorSpace);
    O2Float components[length+1];
    
@@ -643,6 +772,9 @@ void O2ContextSetStrokeColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) 
 }
 
 void O2ContextSetFillColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) {
+   if(self==nil)
+    return;
+
    int   i,length=O2ColorSpaceGetNumberOfComponents(colorSpace);
    O2Float components[length+1];
    
@@ -658,6 +790,9 @@ void O2ContextSetFillColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace) {
 }
 
 void O2ContextSetStrokeColor(O2ContextRef self,const O2Float *components) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace([self strokeColor]);
    O2ColorRef color=O2ColorCreate(colorSpace,components);
    
@@ -667,10 +802,16 @@ void O2ContextSetStrokeColor(O2ContextRef self,const O2Float *components) {
 }
 
 void O2ContextSetStrokeColorWithColor(O2ContextRef self,O2ColorRef color) {
+   if(self==nil)
+    return;
+
    O2GStateSetStrokeColor(currentState(self),color);
 }
 
 void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceGray();
    O2Float         components[2]={gray,alpha};
    O2ColorRef color=O2ColorCreate(colorSpace,components);
@@ -682,6 +823,9 @@ void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha) {
 }
 
 void O2ContextSetRGBStrokeColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Float         components[4]={r,g,b,alpha};
    O2ColorRef color=O2ColorCreate(colorSpace,components);
@@ -693,6 +837,9 @@ void O2ContextSetRGBStrokeColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,
 }
 
 void O2ContextSetCMYKStrokeColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceCMYK();
    O2Float         components[5]={c,m,y,k,alpha};
    O2ColorRef color=O2ColorCreate(colorSpace,components);
@@ -703,13 +850,10 @@ void O2ContextSetCMYKStrokeColor(O2ContextRef self,O2Float c,O2Float m,O2Float y
    O2ColorSpaceRelease(colorSpace);
 }
 
-void O2ContextSetCalibratedRGBStrokeColor(O2ContextRef self,O2Float red,O2Float green,O2Float blue,O2Float alpha) {
-}
-
-void O2ContextSetCalibratedGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha) {
-}
-
 void O2ContextSetFillColor(O2ContextRef self,const O2Float *components) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(O2ContextFillColor(self));
    O2ColorRef color=O2ColorCreate(colorSpace,components);
    
@@ -719,10 +863,16 @@ void O2ContextSetFillColor(O2ContextRef self,const O2Float *components) {
 }
 
 void O2ContextSetFillColorWithColor(O2ContextRef self,O2ColorRef color) {
+   if(self==nil)
+    return;
+
    O2GStateSetFillColor(currentState(self),color);
 }
 
 void O2ContextSetGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceGray();
    O2Float         components[2]={gray,alpha};
    O2ColorRef color=O2ColorCreate(colorSpace,components);
@@ -734,6 +884,9 @@ void O2ContextSetGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha) {
 }
 
 void O2ContextSetRGBFillColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Float         components[4]={r,g,b,alpha};
    O2ColorRef color=O2ColorCreate(colorSpace,components);
@@ -745,6 +898,9 @@ void O2ContextSetRGBFillColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2
 }
 
 void O2ContextSetCMYKFillColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha) {
+   if(self==nil)
+    return;
+
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceCMYK();
    O2Float         components[5]={c,m,y,k,alpha};
    O2ColorRef color=O2ColorCreate(colorSpace,components);
@@ -755,111 +911,180 @@ void O2ContextSetCMYKFillColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O
    O2ColorSpaceRelease(colorSpace);
 }
 
-void O2ContextSetCalibratedGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha) {
-}
-
-void O2ContextSetCalibratedRGBFillColor(O2ContextRef self,O2Float red,O2Float green,O2Float blue,O2Float alpha) {
-}
-
 void O2ContextSetAlpha(O2ContextRef self,O2Float alpha) {
+   if(self==nil)
+    return;
+
    [self setStrokeAlpha:alpha];
    [self setFillAlpha:alpha];
 }
 
 void O2ContextSetPatternPhase(O2ContextRef self,O2Size phase) {
+   if(self==nil)
+    return;
+
    [currentState(self) setPatternPhase:phase];
 }
 
 void O2ContextSetStrokePattern(O2ContextRef self,O2PatternRef pattern,const O2Float *components) {
+   if(self==nil)
+    return;
+
    [currentState(self) setStrokePattern:pattern components:components];
 }
 
 void O2ContextSetFillPattern(O2ContextRef self,O2PatternRef pattern,const O2Float *components) {
+   if(self==nil)
+    return;
+
    [currentState(self) setFillPattern:pattern components:components];
 }
 
 void O2ContextSetTextMatrix(O2ContextRef self,O2AffineTransform matrix) {
+   if(self==nil)
+    return;
+
    O2GStateSetTextMatrix(currentState(self),matrix);
 }
 
 void O2ContextSetTextPosition(O2ContextRef self,O2Float x,O2Float y) {
+   if(self==nil)
+    return;
+
    O2GStateSetTextPosition(currentState(self),x,y);
 }
 
 void O2ContextSetCharacterSpacing(O2ContextRef self,O2Float spacing) {
+   if(self==nil)
+    return;
+
    [currentState(self) setCharacterSpacing:spacing];
 }
 
 void O2ContextSetTextDrawingMode(O2ContextRef self,O2TextDrawingMode textMode) {
+   if(self==nil)
+    return;
+
    [currentState(self) setTextDrawingMode:textMode];
 }
 
 void O2ContextSetFont(O2ContextRef self,O2FontRef font) {
+   if(self==nil)
+    return;
+
    O2GStateSetFont(currentState(self),font);
 }
 
 void O2ContextSetFontSize(O2ContextRef self,O2Float size) {
+   if(self==nil)
+    return;
+
    O2GStateSetFontSize(currentState(self),size);
 }
 
 void O2ContextSelectFont(O2ContextRef self,const char *name,O2Float size,O2TextEncoding encoding) {
+   if(self==nil)
+    return;
+
    [currentState(self) selectFontWithName:name size:size encoding:encoding];
 }
 
 void O2ContextSetShouldSmoothFonts(O2ContextRef self,BOOL yesOrNo) {
+   if(self==nil)
+    return;
+
    [currentState(self) setShouldSmoothFonts:yesOrNo];
 }
 
 void O2ContextSetLineWidth(O2ContextRef self,O2Float width) {
+   if(self==nil)
+    return;
+
    O2GStateSetLineWidth(currentState(self),width);
 }
 
 void O2ContextSetLineCap(O2ContextRef self,O2LineCap lineCap) {
+   if(self==nil)
+    return;
+
    O2GStateSetLineCap(currentState(self),lineCap);
 }
 
 void O2ContextSetLineJoin(O2ContextRef self,O2LineJoin lineJoin) {
+    if(self==nil)
+    return;
+
    O2GStateSetLineJoin(currentState(self),lineJoin);
 }
 
 void O2ContextSetMiterLimit(O2ContextRef self,O2Float miterLimit) {
+   if(self==nil)
+    return;
+
    O2GStateSetMiterLimit(currentState(self),miterLimit);
 }
 
 void O2ContextSetLineDash(O2ContextRef self,O2Float phase,const O2Float *lengths,unsigned count) {
+   if(self==nil)
+    return;
+
    O2GStateSetLineDash(currentState(self),phase,lengths,count);
 }
 
 void O2ContextSetRenderingIntent(O2ContextRef self,O2ColorRenderingIntent renderingIntent) {
+   if(self==nil)
+    return;
+
    [currentState(self) setRenderingIntent:renderingIntent];
 }
 
 void O2ContextSetBlendMode(O2ContextRef self,O2BlendMode blendMode) {
+   if(self==nil)
+    return;
+
    O2GStateSetBlendMode(currentState(self),blendMode);
 }
 
 void O2ContextSetFlatness(O2ContextRef self,O2Float flatness) {
+   if(self==nil)
+    return;
+
    [currentState(self) setFlatness:flatness];
 }
 
 void O2ContextSetInterpolationQuality(O2ContextRef self,O2InterpolationQuality quality) {
+   if(self==nil)
+    return;
+
    [currentState(self) setInterpolationQuality:quality];
 }
 
 void O2ContextSetShadowWithColor(O2ContextRef self,O2Size offset,O2Float blur,O2ColorRef color) {
+   if(self==nil)
+    return;
+
    [currentState(self) setShadowOffset:offset blur:blur color:color];
 }
 
 void O2ContextSetShadow(O2ContextRef self,O2Size offset,O2Float blur) {
+   if(self==nil)
+    return;
+
    [currentState(self) setShadowOffset:offset blur:blur];
 }
 
 void O2ContextSetShouldAntialias(O2ContextRef self,BOOL yesOrNo) {
+   if(self==nil)
+    return;
+
    [currentState(self) setShouldAntialias:yesOrNo];
 }
 
 // drawing
 void O2ContextStrokeLineSegments(O2ContextRef self,const O2Point *points,unsigned count) {
+   if(self==nil)
+    return;
+
    int i;
    
    O2ContextBeginPath(self);
@@ -871,12 +1096,18 @@ void O2ContextStrokeLineSegments(O2ContextRef self,const O2Point *points,unsigne
 }
 
 void O2ContextStrokeRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
    O2ContextBeginPath(self);
    O2ContextAddRect(self,rect);
    O2ContextStrokePath(self);
 }
 
 void O2ContextStrokeRectWithWidth(O2ContextRef self,O2Rect rect,O2Float width) {
+   if(self==nil)
+    return;
+
    O2ContextSaveGState(self);
    O2ContextSetLineWidth(self,width);
    O2ContextBeginPath(self);
@@ -886,44 +1117,71 @@ void O2ContextStrokeRectWithWidth(O2ContextRef self,O2Rect rect,O2Float width) {
 }
 
 void O2ContextStrokeEllipseInRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
    O2ContextBeginPath(self);
    O2ContextAddEllipseInRect(self,rect);
    O2ContextStrokePath(self);
 }
 
 void O2ContextFillRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
    O2ContextFillRects(self,&rect,1);
 }
 
 void O2ContextFillRects(O2ContextRef self,const O2Rect *rects,unsigned count) {
+   if(self==nil)
+    return;
+
    O2ContextBeginPath(self);
    O2ContextAddRects(self,rects,count);
    O2ContextFillPath(self);
 }
 
 void O2ContextFillEllipseInRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
    O2ContextBeginPath(self);
    O2ContextAddEllipseInRect(self,rect);
    O2ContextFillPath(self);
 }
 
 void O2ContextDrawPath(O2ContextRef self,O2PathDrawingMode pathMode) {
+   if(self==nil)
+    return;
+
    [self drawPath:pathMode];
 }
 
 void O2ContextStrokePath(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    O2ContextDrawPath(self,kO2PathStroke);
 }
 
 void O2ContextFillPath(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    O2ContextDrawPath(self,kO2PathFill);
 }
 
 void O2ContextEOFillPath(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    O2ContextDrawPath(self,kO2PathEOFill);
 }
 
 void O2ContextClearRect(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return;
+
 // doc.s are not clear. tests say O2ContextClearRect resets the path and does not affect gstate color
    O2ContextSaveGState(self);
    O2ContextSetBlendMode(self,kO2BlendModeCopy); // does it set the blend mode?
@@ -933,15 +1191,24 @@ void O2ContextClearRect(O2ContextRef self,O2Rect rect) {
 }
 
 void O2ContextShowGlyphs(O2ContextRef self,const O2Glyph *glyphs,unsigned count) {
+   if(self==nil)
+    return;
+
    [self showGlyphs:glyphs count:count];
 }
 
 void O2ContextShowGlyphsAtPoint(O2ContextRef self,O2Float x,O2Float y,const O2Glyph *glyphs,unsigned count) {
+   if(self==nil)
+    return;
+
    O2ContextSetTextPosition(self,x,y);
    O2ContextShowGlyphs(self,glyphs,count);
 }
 
 void O2ContextShowGlyphsWithAdvances(O2ContextRef self,const O2Glyph *glyphs,const O2Size *advances,unsigned count) {
+   if(self==nil)
+    return;
+
    O2AffineTransform textMatrix=[currentState(self) textMatrix];
    O2Float             x=textMatrix.tx;
    O2Float             y=textMatrix.ty;
@@ -957,23 +1224,38 @@ void O2ContextShowGlyphsWithAdvances(O2ContextRef self,const O2Glyph *glyphs,con
 }
 
 void O2ContextShowText(O2ContextRef self,const char *text,unsigned count) {
+   if(self==nil)
+    return;
+
    [self showText:text length:count];
 }
 
 void O2ContextShowTextAtPoint(O2ContextRef self,O2Float x,O2Float y,const char *text,unsigned count) {
+   if(self==nil)
+    return;
+
    O2ContextSetTextPosition(self,x,y);
    O2ContextShowText(self,text,count);
 }
 
 void O2ContextDrawShading(O2ContextRef self,O2ShadingRef shading) {
+   if(self==nil)
+    return;
+
    [self drawShading:shading];
 }
 
 void O2ContextDrawImage(O2ContextRef self,O2Rect rect,O2ImageRef image) {
+   if(self==nil)
+    return;
+
    [self drawImage:image inRect:rect];
 }
 
 void O2ContextDrawLayerAtPoint(O2ContextRef self,O2Point point,O2LayerRef layer) {
+   if(self==nil)
+    return;
+
    O2Size size=O2LayerGetSize(layer);
    O2Rect rect={point,size};
    
@@ -981,34 +1263,55 @@ void O2ContextDrawLayerAtPoint(O2ContextRef self,O2Point point,O2LayerRef layer)
 }
 
 void O2ContextDrawLayerInRect(O2ContextRef self,O2Rect rect,O2LayerRef layer) {
+   if(self==nil)
+    return;
+
    [self drawLayer:layer inRect:rect];
 }
 
 void O2ContextDrawPDFPage(O2ContextRef self,O2PDFPageRef page) {
+   if(self==nil)
+    return;
+
    [page drawInContext:self];
 }
 
 void O2ContextFlush(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    [self flush];
 }
 
 void O2ContextSynchronize(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    [self synchronize];
 }
 
 // pagination
 
 void O2ContextBeginPage(O2ContextRef self,const O2Rect *mediaBox) {
+   if(self==nil)
+    return;
+
    [self beginPage:mediaBox];
 }
 
 void O2ContextEndPage(O2ContextRef self) {
+   if(self==nil)
+    return;
+
    [self endPage];
 }
 
 // **PRIVATE** These are private in Apple's implementation as well as ours.
 
 void O2ContextSetCTM(O2ContextRef self,O2AffineTransform matrix) {
+   if(self==nil)
+    return;
+    
    O2AffineTransform deviceTransform=self->_userToDeviceTransform;
    
    deviceTransform=O2AffineTransformConcat(matrix,deviceTransform);
@@ -1019,6 +1322,9 @@ void O2ContextSetCTM(O2ContextRef self,O2AffineTransform matrix) {
 }
 
 void O2ContextResetClip(O2ContextRef self) {
+   if(self==nil)
+    return;
+    
    [currentState(self) removeAllClipPhases];
    [self deviceClipReset];
 }
@@ -1026,10 +1332,16 @@ void O2ContextResetClip(O2ContextRef self) {
 // Temporary hacks
 
 NSData *O2ContextCaptureBitmap(O2ContextRef self,O2Rect rect) {
+   if(self==nil)
+    return nil;
+
    return [self captureBitmapInRect:rect];
 }
 
 void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
+   if(self==nil)
+    return;
+
    [self copyBitsInRect:rect toPoint:point gState:gState];
 }
 

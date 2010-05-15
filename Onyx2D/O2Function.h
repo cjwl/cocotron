@@ -35,8 +35,6 @@ void O2FunctionRelease(O2FunctionRef self);
 // FIX, only works for one input value
 void O2FunctionEvaluate(O2FunctionRef self,O2Float in,O2Float *out);
 
--initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const O2FunctionCallbacks *)callbacks;
-
 -(unsigned)domainCount;
 -(const float *)domain;
 -(unsigned)rangeCount;

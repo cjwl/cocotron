@@ -7,8 +7,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <AppKit/NSOpenGLContext.h>
 #import <AppKit/NSOpenGLPixelFormat.h>
-#import <AppKit/NSOpenGLDrawable.h>
+#import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSView.h>
+#import <AppKit/NSWindow-Private.h>
 #import <OpenGL/OpenGL.h>
 #import <Foundation/NSThread-Private.h>
 
@@ -40,7 +42,11 @@ static inline void _clearCurrentContext(){
 }
 
 -initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext {
+   CGLError error;
+   
    _pixelFormat=[pixelFormat retain];
+   if((error=CGLCreateContext([_pixelFormat CGLPixelFormatObj],[shareContext CGLContextObj],(CGLContextObj *)&_glContext))!=kCGLNoError)
+    NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
    return self;
 }
 
@@ -50,8 +56,6 @@ static inline void _clearCurrentContext(){
       _clearCurrentContext();
    [_pixelFormat release];
    _view=nil;
-   [_drawable invalidate];
-   [_drawable release];
    CGLDestroyContext(_glContext);
    [super dealloc];
 }
@@ -75,43 +79,37 @@ static inline void _clearCurrentContext(){
    return 0;
 }
 
--(void)_createContextIfNeeded {
-   if(_drawable==nil){
-    _drawable=[[NSOpenGLDrawable alloc] initWithPixelFormat:_pixelFormat view:_view];
-      
-    if((_glContext=[_drawable createGLContext])==NULL){
-     NSLog(@"unable to create _glContext");
-     return;
-    }
-   }
-}
-
 -(void *)CGLContextObj {
-   [self _createContextIfNeeded];
    return _glContext;
 }
 
 -(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter {   
-   CGLGetParameter([self CGLContextObj],parameter,(GLint *)&vals);
+   CGLGetParameter(_glContext,parameter,(GLint *)vals);
 }
 
 -(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter {   
-   CGLSetParameter([self CGLContextObj],parameter,(const GLint *)vals);
+   CGLSetParameter(_glContext,parameter,(const GLint *)vals);
 }
 
 -(void)setView:(NSView *)view {
    _view=view;
+   [self update];
 }
 
 -(void)makeCurrentContext {
-   [self _createContextIfNeeded];
-   [_drawable makeCurrentWithGLContext:_glContext];
+   CGLError error;
+   
+   if((error=CGLSetCurrentContext(_glContext))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
+    
    _setCurrentContext(self);
 }
 
 -(void)_clearCurrentContext {
-  if (_drawable!=nil)
-    [_drawable clearCurrentWithGLContext:_glContext];
+   CGLError error;
+   
+   if((error=CGLSetCurrentContext(NULL))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
 }
 
 -(int)currentVirtualScreen {
@@ -143,14 +141,22 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)update {
-   [_drawable updateWithView:_view];
+   if(_view!=nil){
+    NSRect rect=[_view convertRect:[_view bounds] toView:nil];
+    GLint frame[4]={
+     rect.origin.x,
+     rect.origin.y,
+     rect.size.width,
+     rect.size.height };
+    GLint number[1]={[[_view window] windowNumber]};
+   
+    CGLSetParameter(_glContext,kCGLCPSurfaceFrame,frame);
+    CGLSetParameter(_glContext,kCGLCPWindowNumber,number);
+   }
 }
 
 -(void)clearDrawable {
    _view=nil;
-   [_drawable invalidate];
-   [_drawable release];
-   _drawable=nil;
 }
 
 -(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {
@@ -162,8 +168,8 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)flushBuffer {
-   // fix, check if doublebuffered
-   [_drawable swapBuffers];
+   CGLFlushDrawable(_glContext);
+   
 }
 
 @end

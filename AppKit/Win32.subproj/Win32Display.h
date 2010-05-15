@@ -10,9 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSEvent.h>
 
-#undef _WIN32_WINNT
-#define _WIN32_WINNT 0x0400
-
 #import <windows.h>
 
 @class NSEvent, NSColor, Win32EventInputSource,O2Context_gdi;

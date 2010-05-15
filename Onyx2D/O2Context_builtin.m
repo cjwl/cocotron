@@ -76,7 +76,7 @@ static inline O2GState *currentState(O2Context *self){
    [super initWithSurface:surface flipped:flipped];
         
    _clipContext=nil;
-   _paint=[[O2Paint_color alloc] initWithGray:0 alpha:1];
+   _paint=[[O2Paint_color alloc] initWithGray:0 alpha:1 surfaceToPaintTransform:O2AffineTransformIdentity];
 
    O2RasterizeSetBlendMode(self,kO2BlendModeNormal);
 
@@ -185,7 +185,7 @@ void O2ContextDeviceClipReset_builtin(O2Context_builtin *self){
    O2ContextDeviceClipReset_builtin(self);
 }
 
-static void O2ContextClipViewportToPath(O2Context_builtin *self,O2Path *path) {
+ONYX2D_STATIC void O2ContextClipViewportToPath(O2Context_builtin *self,O2Path *path) {
    O2MutablePath *copy=O2PathCreateMutableCopy(path);
     
    O2PathApplyTransform(copy,O2AffineTransformInvert(currentState(self)->_userSpaceTransform));
@@ -224,7 +224,8 @@ void O2ContextDeviceClipToEvenOddPath_builtin(O2Context_builtin *self,O2Path *pa
 //   O2InvalidAbstractInvocation();
 }
 
-static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
+ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O2AffineTransform surfaceToPaintMatrix){
+   O2Paint      *result=nil;
    O2PatternRef pattern=O2ColorGetPattern(color);
    
    if(pattern!=NULL){
@@ -236,25 +237,25 @@ static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
 // do save/restore? probably pointless
     [pattern drawInContext:context];
     
-    O2Paint *result=[[O2Paint_image alloc] initWithImage:surface mode:VG_DRAW_IMAGE_NORMAL paint:nil interpolationQuality:kO2InterpolationNone];
+    result=[[O2Paint_image alloc] initWithImage:surface mode:VG_DRAW_IMAGE_NORMAL paint:nil interpolationQuality:kO2InterpolationNone surfaceToPaintTransform:surfaceToPaintMatrix];
     
     O2ContextRelease(context);
     [surface release];
-
-    return result;
    }
    else {
     size_t    count=O2ColorGetNumberOfComponents(color);
     const float *components=O2ColorGetComponents(color);
 
     if(count==2)
-     return [[O2Paint_color alloc] initWithGray:components[0]  alpha:components[1]];
-    if(count==4)
-     return [[O2Paint_color alloc] initWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
-    
-    return [[O2Paint_color alloc] initWithGray:0 alpha:1];
+     result=[[O2Paint_color alloc] initWithGray:components[0]  alpha:components[1] surfaceToPaintTransform:surfaceToPaintMatrix];
+    else if(count==4)
+     result=[[O2Paint_color alloc] initWithRed:components[0] green:components[1] blue:components[2] alpha:components[3] surfaceToPaintTransform:surfaceToPaintMatrix];
+    else
+     result=[[O2Paint_color alloc] initWithGray:0 alpha:1 surfaceToPaintTransform:surfaceToPaintMatrix];
    }
-}
+    
+   return result;
+   }
 
 -(void)drawPath:(O2PathDrawingMode)drawingMode {
    O2GState *gState=currentState(self);
@@ -271,15 +272,15 @@ static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
    VGPath *vgPath=[[VGPath alloc] initWithKGPath:_path];
 
    if(drawingMode!=kO2PathStroke){
-    O2Paint *paint=paintFromColor(self,gState->_fillColor);
-    O2DContextSetPaint(self,paint);
-    [paint release];
-    
     O2AffineTransform surfaceToPaintMatrix =userToSurfaceMatrix;//context->m_pathUserToSurface * context->m_fillPaintToUser;
     
     surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
-     O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
+    O2Paint *paint=paintFromColor(self,gState->_fillColor,surfaceToPaintMatrix);
+    O2DContextSetPaint(self,paint);
+    [paint release];
+    
+    
      VGPathFill(vgPath,userToSurfaceMatrix,self);
                 
      VGFillRuleMask fillRule=(drawingMode==kO2PathFill || drawingMode==kO2PathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
@@ -289,14 +290,14 @@ static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
 
    if(drawingMode>=kO2PathStroke){
     if(gState->_lineWidth > 0.0f){
-     O2Paint *paint=paintFromColor(self,gState->_strokeColor);
-     O2DContextSetPaint(self,paint);
-     [paint release];
-     
      O2AffineTransform surfaceToPaintMatrix=userToSurfaceMatrix;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
 
      surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
-      O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
+
+     O2Paint *paint=paintFromColor(self,gState->_strokeColor,surfaceToPaintMatrix);
+     O2DContextSetPaint(self,paint);
+     [paint release];
+     
 
       O2RasterizerClear(self);
                                  
@@ -380,17 +381,6 @@ static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
 
    O2RasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-   O2Paint *paint=paintFromColor(self,gState->_fillColor);
-   O2InterpolationQuality iq;
-   if(gState->_interpolationQuality==kO2InterpolationDefault)
-    iq=kO2InterpolationLow;
-   else
-    iq=gState->_interpolationQuality;
-
-   O2Paint *imagePaint=[[O2Paint_image alloc] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq];
-        
-   O2DContextSetPaint(self,imagePaint);
-
    O2RasterizeSetBlendMode(self,gState->_blendMode);
 
    O2AffineTransform surfaceToImageMatrix = imageUserToSurface;
@@ -398,8 +388,18 @@ static O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color){
         
    surfaceToImageMatrix=O2AffineTransformInvert(surfaceToImageMatrix);
    surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
-   O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
-   O2PaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
+
+   O2Paint *paint=paintFromColor(self,gState->_fillColor,surfaceToPaintMatrix);
+   O2InterpolationQuality iq;
+   if(gState->_interpolationQuality==kO2InterpolationDefault)
+    iq=kO2InterpolationLow;
+   else
+    iq=gState->_interpolationQuality;
+
+   O2Paint *imagePaint=[[O2Paint_image allocWithZone:NULL] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq surfaceToPaintTransform:surfaceToImageMatrix];
+        
+   O2DContextSetPaint(self,imagePaint);
+
 
    O2DContextAddEdge(self,p0, p1);
    O2DContextAddEdge(self,p1, p2);
@@ -473,7 +473,7 @@ void O2DContextAddEdge(O2Context_builtin *self,const O2Point v0, const O2Point v
 }
 
 // Returns a radical inverse of a given integer for Hammersley point set.
-static double radicalInverseBase2(unsigned int i)
+ONYX2D_STATIC double radicalInverseBase2(unsigned int i)
 {
 	if( i == 0 )
 		return 0.0;
@@ -528,7 +528,7 @@ void O2RasterizerSetShouldAntialias(O2Context_builtin *self,BOOL antialias,int q
     }
 }
 
-static void O2ApplyCoverageAndMaskToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2Float *mask,O2argb32f *src,int length){
+ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2Float *mask,O2argb32f *src,int length){
    int i;
    
    for(i=0;i<length;i++){
@@ -541,7 +541,7 @@ static void O2ApplyCoverageAndMaskToSpan_lRGBAffff_PRE(O2argb32f *dst,int icover
    }
 }
 
-static void O2ApplyCoverageToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2argb32f *src,int length){
+ONYX2D_STATIC void O2ApplyCoverageToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2argb32f *src,int length){
    int i;
    O2Float coverage=zeroToOneFromCoverage(icoverage);
    
@@ -553,7 +553,7 @@ static void O2ApplyCoverageToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2a
    }
 }
          
-static void O2ApplyCoverageAndMaskToSpan_lRGBA8888_PRE(O2argb8u *dst,int icoverage,uint8_t *mask,O2argb8u *src,int length){
+ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_lRGBA8888_PRE(O2argb8u *dst,int icoverage,uint8_t *mask,O2argb8u *src,int length){
    int i;
    
    for(i=0;i<length;i++){
@@ -581,69 +581,136 @@ void O2ApplyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,int coverage,O2argb8u *sr
      O2argb8u r=*src;
      O2argb8u d=*dst;
     
-     *dst=O2argb8uAdd(O2argb8uMultiplyByCoverage(r , coverage) , O2argb8uMultiplyByCoverage(d , oneMinusCoverage));
+     *dst=O2argb8uAdd(O2argb8uMultiplyByCoverageNoBypass(r , coverage) , O2argb8uMultiplyByCoverageNoBypass(d , oneMinusCoverage));
     }
    }
 }
 
-void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length){
+
+void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,unsigned coverage,int length){
+#if 1
+// Passes Visual Test
+   int i;
+   
+   if(coverage==256){
+    for(i=0;i<length;i++,src++,dst++){
+     uint32_t srb=*(uint32_t *)src;
+     
+     if((srb&0xFF000000)==0xFF000000)
+      *dst=*src;
+     else {
+      uint32_t sag=srb>>8;
+      uint32_t drb=*(uint32_t *)dst;
+      uint32_t dag=drb>>8;
+      O2argb8u r;
+
+      uint32_t sa=255-(sag>>16);
+      uint32_t trb,tag;
+    
+      srb&=0x00FF00FF;
+      drb&=0x00FF00FF;
+      srb+=Mul8x2(drb,sa);
+    
+      sag&=0x00FF00FF;
+      dag&=0x00FF00FF;
+      sag+=Mul8x2(dag,sa);
+
+      *(uint32_t *)dst=(sag<<8)|srb;
+     }
+    }
+   }
+   else {
+    uint32_t oneMinusCoverage=inverseCoverage(coverage);
+    
+    for(i=0;i<length;i++,src++,dst++){
+     uint32_t srb=*(uint32_t *)src;
+     uint32_t sag=srb>>8;
+     uint32_t drb=*(uint32_t *)dst;
+     uint32_t dag=drb>>8;
+     O2argb8u r;
+
+     uint32_t sa=255-(sag>>16);
+     uint32_t trb,tag;
+    
+     srb&=0x00FF00FF;
+     drb&=0x00FF00FF;
+     srb+=Mul8x2(drb,sa);
+
+     sag&=0x00FF00FF;
+     dag&=0x00FF00FF;
+     sag+=Mul8x2(dag,sa);
+        
+     sag=((sag*coverage)>>8)&0x00FF00FF;
+     srb=((srb*coverage)>>8)&0x00FF00FF;
+     dag=((dag*oneMinusCoverage)>>8)&0x00FF00FF;
+     drb=((drb*oneMinusCoverage)>>8)&0x00FF00FF;
+     
+     r.a=RI_INT_MIN(sag+dag,0x00FF0000)>>16;
+     r.g=RI_INT_MIN((sag+dag)&0xFFFF,255);
+     r.r=RI_INT_MIN(srb+drb,0x00FF0000)>>16;
+     r.b=RI_INT_MIN((srb+drb)&0xFFFF,255);
+
+     *dst=r;
+    }
+   }
+
+#else
 // Passes Visual Test
    int i;
    
    if(coverage==256){
     for(i=0;i<length;i++,src++,dst++){
      O2argb8u s=*src;
-     O2argb8u d=*dst;
      O2argb8u r;
     
      if(s.a==255)
       r=*src;
      else {
-      unsigned char sa=255-s.a;
+      O2argb8u d=*dst;
+      uint32_t sa=255-s.a;
 
-      r.r=RI_INT_MIN((int)s.r+alphaMultiply(d.r,sa),255);
-      r.g=RI_INT_MIN((int)s.g+alphaMultiply(d.g,sa),255);
-      r.b=RI_INT_MIN((int)s.b+alphaMultiply(d.b,sa),255);
-      r.a=RI_INT_MIN((int)s.a+alphaMultiply(d.a,sa),255);
+      r.a=RI_UINT32_MIN((uint32_t)s.a+alphaMultiply(d.a,sa),255);
+      r.r=RI_UINT32_MIN((uint32_t)s.r+alphaMultiply(d.r,sa),255);
+      r.g=RI_UINT32_MIN((uint32_t)s.g+alphaMultiply(d.g,sa),255);
+      r.b=RI_UINT32_MIN((uint32_t)s.b+alphaMultiply(d.b,sa),255);
      }
      *dst=r;
     }
    }
    else {
-    int oneMinusCoverage=inverseCoverage(coverage);
+    uint32_t oneMinusCoverage=inverseCoverage(coverage);
 
     for(i=0;i<length;i++,src++,dst++){
      O2argb8u s=*src;
      O2argb8u d=*dst;
      O2argb8u r;
-     unsigned char sa=255-s.a;
+     uint32_t sa=255-s.a;
+     uint32_t tmp,dcomp;
      
-     r.r=RI_INT_MIN((int)s.r+alphaMultiply(d.r,sa),255);
-     r.r=multiplyByCoverage(r.r,coverage);
-     d.r=(d.r*oneMinusCoverage)/256;
-     r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
+     dcomp=s.a;
+     tmp=((uint32_t)s.a+alphaMultiply(dcomp,sa))*coverage;
+     r.a=RI_UINT32_MIN((tmp+dcomp*oneMinusCoverage)/COVERAGE_MULTIPLIER,255);
     
-     r.g=RI_INT_MIN((int)s.g+alphaMultiply(d.g,sa),255);
-     r.g=multiplyByCoverage(r.g,coverage);
-     d.g=(d.g*oneMinusCoverage)/256;
-     r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
+     dcomp=d.r;
+     tmp=((uint32_t)s.r+alphaMultiply(dcomp,sa))*coverage;
+     r.r=RI_UINT32_MIN((tmp+dcomp*oneMinusCoverage)/COVERAGE_MULTIPLIER,255);
     
-     r.b=RI_INT_MIN((int)s.b+alphaMultiply(d.b,sa),255);
-     r.b=multiplyByCoverage(r.b,coverage);
-     d.b=(d.b*oneMinusCoverage)/256;
-     r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
+     dcomp=d.g;
+     tmp=((uint32_t)s.g+alphaMultiply(dcomp,sa))*coverage;
+     r.g=RI_UINT32_MIN((tmp+dcomp*oneMinusCoverage)/COVERAGE_MULTIPLIER,255);
     
-     r.a=RI_INT_MIN((int)s.a+alphaMultiply(d.a,sa),255);
-     r.a=multiplyByCoverage(r.a,coverage);
-     d.a=(d.a*oneMinusCoverage)/256;
-     r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
+     dcomp=d.b;
+     tmp=((uint32_t)s.b+alphaMultiply(dcomp,sa))*coverage;
+     r.b=RI_UINT32_MIN((tmp+dcomp*oneMinusCoverage)/COVERAGE_MULTIPLIER,255);
+    
     
      *dst=r;
     }
    }
+#endif
 }
 
-static void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length){
+ONYX2D_STATIC void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length){
 // Passes Visual Test
    int i;
 
@@ -681,7 +748,7 @@ static void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,int covera
 
 /* Paint functions can selectively paint or not paint at all, e.g. gradients with extend turned off, they do this by returning a negative chunk for a pixels which aren't generated and positive chunk for pixels that are. We need to make sure we cover the entire span so we loop until the span is complete.
  */
-static inline void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
     O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
     O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
@@ -715,7 +782,7 @@ static inline void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *surface,O2
 }
 
 
-static inline void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
    O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
    O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
@@ -749,7 +816,7 @@ static inline void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surface,O2Su
    }
 }
 
-static inline void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
    O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
    O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
@@ -792,7 +859,7 @@ static inline void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2Surface
    }
 }
 
-static inline void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBAffff blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBAffff blendFunction) {
    O2argb32f *dst=__builtin_alloca(length*sizeof(O2argb32f));
    O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(surface,x,y,dst,length);
 
@@ -835,7 +902,7 @@ static inline void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2Surface
    }
 }
 
-static inline void sortEdgesByMinY(Edge **edges,int count,Edge **B){
+ONYX2D_STATIC_INLINE void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   int h, i, j, k, l, m, n = count;
   Edge  *A;
 
@@ -868,7 +935,7 @@ static inline void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   }
 }
 
-static inline void initEdgeForAET(O2Context_builtin *self,Edge *edge,int scany){
+ONYX2D_STATIC_INLINE void initEdgeForAET(O2Context_builtin *self,Edge *edge,int scany){
    //compute edge min and max x-coordinates for this scanline
    
    O2Point vd = Vector2Subtract(edge->v1,edge->v0);
@@ -924,7 +991,7 @@ static inline void initEdgeForAET(O2Context_builtin *self,Edge *edge,int scany){
    edge->maxSample=max;
 }
 
-static inline void incrementEdgeForAET(Edge *edge,int vpx){
+ONYX2D_STATIC_INLINE void incrementEdgeForAET(Edge *edge,int vpx){
    edge->sxPre+= edge->vdxwl;
    edge->exPre+= edge->vdxwl;
    
@@ -935,7 +1002,7 @@ static inline void incrementEdgeForAET(Edge *edge,int vpx){
    edge->minx = MAX(vpx,minx);
 }
 
-static inline void removeEdgeFromAET(Edge *edge){
+ONYX2D_STATIC_INLINE void removeEdgeFromAET(Edge *edge){
    NSZoneFree(NULL,edge->samples);
 }
 

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSMutableDictionary_mapTable.h>
 #import <Foundation/NSDictionary_mapTable.h>
 #import <Foundation/NSEnumerator_dictionaryObjects.h>
 #import <Foundation/NSPropertyListReader.h>
@@ -52,27 +53,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithDictionary:(NSDictionary *)dictionary {
-   NSUInteger      i,count=[dictionary count];
-   NSEnumerator *state=[dictionary keyEnumerator];
-   id            key,object,keys[count],objects[count];
+   NSUInteger count=[dictionary count];
+   id         keys[count],objects[count];
 
-   for(i=0;(key=[state nextObject])!=nil;i++){
-    keys[i]=key;
-    objects[i]=[dictionary objectForKey:key];
-   }
+   [dictionary getObjects:objects andKeys:keys];
 
    return [self initWithObjects:objects forKeys:keys count:count];
 }
 
 -initWithDictionary:(NSDictionary *)dictionary copyItems:(BOOL)copyItems {
    NSUInteger      i,count=[dictionary count];
-   NSEnumerator *state=[dictionary keyEnumerator];
-   id            key,object,keys[count],objects[count];
+   id         keys[count],objects[count];
 
-   for(i=0;(key=[state nextObject])!=nil;i++){
-    keys[i]=key;
-    objects[i]=[dictionary objectForKey:key];
-   }
+   [dictionary getObjects:objects andKeys:keys];
 
    if(copyItems){
     for(i=0;i<count;i++){
@@ -347,11 +340,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)allKeys {
    NSInteger i,count=[self count];
-   id keys[count],obj;
-   NSEnumerator *state=[self keyEnumerator];
+   id keys[count],objects[count];
 
-   for(i=0;(obj=[state nextObject])!=nil;i++)
-    keys[i]=obj;
+   [self getObjects:objects andKeys:keys];
 
    return [[[NSArray allocWithZone:NULL] initWithObjects:keys count:count] autorelease];
 }
@@ -389,14 +380,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         } 
 
 -(NSArray *)allValues {
-   NSInteger i,count=[self count];
-   id values[count],obj;
-   NSEnumerator *state=[self keyEnumerator];
+   NSInteger count=[self count];
+   id objects[count],keys[count];
 
-   for(i=0;(obj=[state nextObject])!=nil;i++)
-    values[i]=[self objectForKey:obj];
+   [self getObjects:objects andKeys:keys];
 
-   return [[[NSArray allocWithZone:NULL] initWithObjects:values count:count] autorelease];
+   return [[[NSArray allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
 -(NSArray *)objectsForKeys:(NSArray *)keys notFoundMarker:marker {

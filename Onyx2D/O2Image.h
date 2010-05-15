@@ -271,24 +271,25 @@ static inline O2argb8u O2argb8uFromO2argb32f(O2argb32f rgba){
 }
 
 #define COVERAGE_MULTIPLIER 256
+#define COVERAGE_MULTIPLIER_FLOAT 256.0f
 
-static inline O2Float zeroToOneFromCoverage(int coverage){
+static inline O2Float zeroToOneFromCoverage(unsigned coverage){
    return (O2Float)coverage/(O2Float)COVERAGE_MULTIPLIER;
 }
 
-static inline O2Float coverageFromZeroToOne(O2Float value){
-   return value*COVERAGE_MULTIPLIER;
+static inline uint32_t coverageFromZeroToOne(O2Float value){
+   return value*COVERAGE_MULTIPLIER_FLOAT;
 }
 
-static inline int inverseCoverage(int coverage){
+static inline uint32_t inverseCoverage(uint32_t coverage){
    return COVERAGE_MULTIPLIER-coverage;
 }
 
-static inline int multiplyByCoverage(int value,int coverage){
+static inline uint32_t multiplyByCoverage(uint32_t value,uint32_t coverage){
    return (value*coverage)/COVERAGE_MULTIPLIER;
 }
 
-static inline int divideBy255(int t){
+static inline unsigned divideBy255(unsigned t){
 // t/255
 // From Imaging Compositing Fundamentals, Technical Memo 4 by Alvy Ray Smith, Aug 15, 1995
 // Faster and more accurate in that it rounds instead of truncates   
@@ -298,27 +299,72 @@ static inline int divideBy255(int t){
    return t;
 }
 
-static inline int alphaMultiply(int c,int a){
+static inline uint32_t alphaMultiply(uint32_t c,uint32_t a){
    return divideBy255(c*a);
 }
 
-static inline O2argb8u O2argb8uMultiplyByCoverage(O2argb8u result,int value){
-   if(value!=COVERAGE_MULTIPLIER){
-    result.r=((int)result.r*value)/COVERAGE_MULTIPLIER;
-    result.g=((int)result.g*value)/COVERAGE_MULTIPLIER;
-    result.b=((int)result.b*value)/COVERAGE_MULTIPLIER;
-    result.a=((int)result.a*value)/COVERAGE_MULTIPLIER;
+static inline O2argb8u O2argb8uMultiplyByCoverageNoBypass(O2argb8u result,unsigned value){
+   result.r=multiplyByCoverage(result.r,value);
+   result.g=multiplyByCoverage(result.g,value);
+   result.b=multiplyByCoverage(result.b,value);
+   result.a=multiplyByCoverage(result.a,value);
+
+   return result;
    }
+
+static inline O2argb8u O2argb8uMultiplyByCoverage(O2argb8u result,unsigned value){
+   if(value!=COVERAGE_MULTIPLIER)
+    result=O2argb8uMultiplyByCoverageNoBypass(result,value);
+
    return result;
 }
 
+static inline O2argb8u O2argb8uMultiplyByCoverageAdd(O2argb8u left,uint32_t leftCoverage,O2argb8u right,uint32_t rightCoverage){
+// O2argb8uAdd(O2argb8uMultiplyByCoverage(left,leftCoverage),O2argb8uMultiplyByCoverage(right,rightCoverage));
+#if 0
+   if(rightCoverage==COVERAGE_MULTIPLIER)
+    return right;
+   if(leftCoverage==COVERAGE_MULTIPLIER)
+    return left;
+#endif
+
+   uint32_t srb=*(uint32_t *)&left;
+   uint32_t sag=srb>>8;
+   
+   sag&=0x00FF00FF;
+   srb&=0x00FF00FF;
+   sag=((sag*leftCoverage)>>8)&0x00FF00FF;
+   srb=((srb*leftCoverage)>>8)&0x00FF00FF;
+
+   uint32_t drb=*(uint32_t *)&right;
+   uint32_t dag=drb>>8;
+    
+   dag&=0x00FF00FF;
+   drb&=0x00FF00FF;
+        
+   dag=((dag*rightCoverage)>>8)&0x00FF00FF;
+   drb=((drb*rightCoverage)>>8)&0x00FF00FF;
+   
+   uint32_t r;
+   
+   sag+=dag;
+   r=RI_INT_MIN(sag,0x00FF0000)<<8;
+   r|=RI_INT_MIN(sag&0xFFFF,255)<<8;
+   srb+=drb;
+   r|=RI_INT_MIN(srb,0x00FF0000);
+   r|=RI_INT_MIN(srb&0xFFFF,255);
+
+   return *(O2argb8u *)&r;
+}
+
 static inline O2argb8u O2argb8uAdd(O2argb8u result,O2argb8u other){
-   result.r=RI_INT_MIN((int)result.r+(int)other.r,255);
-   result.g=RI_INT_MIN((int)result.g+(int)other.g,255);
-   result.b=RI_INT_MIN((int)result.b+(int)other.b,255);
-   result.a=RI_INT_MIN((int)result.a+(int)other.a,255);
+   result.r=RI_INT_MIN((unsigned)result.r+(unsigned)other.r,255);
+   result.g=RI_INT_MIN((unsigned)result.g+(unsigned)other.g,255);
+   result.b=RI_INT_MIN((unsigned)result.b+(unsigned)other.b,255);
+   result.a=RI_INT_MIN((unsigned)result.a+(unsigned)other.a,255);
    return result;
 }
+
 
 typedef O2argb8u *(*O2ImageReadSpan_RGBA8888)(O2Image *self,int x,int y,O2argb8u *span,int length);
 typedef O2argb32f *(*O2ImageReadSpan_RGBAffff)(O2Image *self,int x,int y,O2argb32f *span,int length);
@@ -452,7 +498,6 @@ O2argb32f *O2ImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,O2argb32f *sp
 uint8_t    *O2ImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length);
 O2Float    *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int length);
 
-void O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, O2argb8u *span,int length);
 void O2ImageReadTileSpanExtendEdge_lRGBAffff_PRE(O2Image *self,int u, int v, O2argb32f *span,int length);
 
 void O2ImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
@@ -462,5 +507,7 @@ void O2ImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int
 void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
 void O2ImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
 void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBilinearFloatTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageIntegerTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
 
 void O2ImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);

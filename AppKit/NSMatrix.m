@@ -406,6 +406,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setDelegate:delegate {
+   if(_delegate==delegate)
+    return;
+    
    NSNotificationCenter *center=[NSNotificationCenter defaultCenter];
    struct {
     SEL       selector;

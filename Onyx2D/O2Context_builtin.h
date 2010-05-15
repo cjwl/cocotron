@@ -110,6 +110,6 @@ void O2ContextDeviceClipReset_builtin(O2Context_builtin *self);
 void O2ContextDeviceClipToNonZeroPath_builtin(O2Context_builtin *self,O2Path *path);
 void O2ContextDeviceClipToEvenOddPath_builtin(O2Context_builtin *self,O2Path *path);
 
-void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length);
+void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,unsigned coverage,int length);
 
 @end

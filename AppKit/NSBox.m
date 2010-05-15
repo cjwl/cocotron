@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSRaise.h>
 
+
 @implementation NSBox
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -36,12 +37,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
+    _boxType=[keyed decodeIntForKey:@"NSBoxType"];
     _borderType=[keyed decodeIntForKey:@"NSBorderType"];
     _titlePosition=[keyed decodeIntForKey:@"NSTitlePosition"];
     _contentViewMargins=[keyed decodeSizeForKey:@"NSOffsets"];
     _titleCell=[[keyed decodeObjectForKey:@"NSTitleCell"] retain];
     [[_subviews lastObject] setAutoresizingMask: NSViewWidthSizable| NSViewHeightSizable];
     [[_subviews lastObject] setAutoresizesSubviews:YES];
+	   
+    if (_boxType == NSBoxCustom)
+	{
+		id obj;
+		_customData = [[NSMutableDictionary alloc] init];
+		
+		obj = [keyed decodeObjectForKey:@"NSBorderWidth2"];
+		if (obj == nil) obj = [NSNumber numberWithDouble:1];
+		[_customData setObject:obj forKey:@"NSBorderWidth2"];
+		
+		obj = [keyed decodeObjectForKey:@"NSCornerRadius2"];
+		if (obj == nil) obj = [NSNumber numberWithDouble:0];
+
+		[_customData setObject:obj forKey:@"NSCornerRadius2"];
+		
+		obj = [keyed decodeObjectForKey:@"NSBorderColor2"];
+		if (obj == nil) obj = [NSColor colorWithCalibratedWhite:0.000 alpha:0.420];
+		[_customData setObject:obj forKey:@"NSBorderColor2"];
+		
+		obj = [keyed decodeObjectForKey:@"NSFillColor2"];
+		if (obj == nil) obj = [NSColor colorWithCalibratedWhite:0.000 alpha:0.000];
+		[_customData setObject:obj forKey:@"NSFillColor2"];
+   }
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -62,6 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
   
 -(void)dealloc {
+   [_customData release];
    [_titleCell release];
    [super dealloc];
 }
@@ -257,6 +283,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //   [[NSColor controlColor] setFill];
   // NSRectFill(rect);
 
+	if (_boxType == NSBoxCustom){
+		
+		// Ignoring corner radius for now.
+		[[self fillColor] set];
+		NSRectFill(rect);
+		
+		if (_borderType != NSNoBorder)
+		{
+			[[self borderColor] set];
+			NSFrameRectWithWidth(_bounds,[self borderWidth]);
+		}
+	}
+	else{
    switch(_borderType){
     case NSNoBorder:
      break;
@@ -273,7 +312,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [[self graphicsStyle] drawBoxWithGrooveInRect:grooveRect clipRect:rect];
      break;
    }
-
+	}
    if(drawTitle){
 #if 0
     [[NSColor windowBackgroundColor] setFill];
@@ -289,6 +328,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_titleCell setControlView:self];
     [_titleCell drawWithFrame: titleRect inView: self];
    }
+}
+
+- (CGFloat)borderWidth
+{
+	return [[_customData objectForKey:@"NSBorderWidth2"] doubleValue];
+}
+
+- (CGFloat)cornerRadius;
+{
+	return [[_customData objectForKey:@"NSCornerRadius2"] doubleValue];
+}
+
+- (NSColor *)borderColor;
+{
+   return [_customData objectForKey:@"NSBorderColor2"];
+}
+
+- (NSColor *)fillColor;
+{
+   return [_customData objectForKey:@"NSFillColor2"];
+}
+
+
+- (void)setBorderWidth:(CGFloat)value
+{
+	[_customData setObject:[NSNumber numberWithDouble:value] forKey:@"NSBorderWidth2"];
+}
+
+- (void)setCornerRadius:(CGFloat)value
+{
+	[_customData setObject:[NSNumber numberWithDouble:value] forKey:@"NSCornerRadius2"];
+}
+
+- (void)setBorderColor:(NSColor *)value
+{
+   [_customData setObject:value forKey:@"NSBorderColor2"];
+}
+
+- (void)setFillColor:(NSColor *)value
+{
+   [_customData setObject:value forKey:@"NSFillColor2"];
 }
 
 @end

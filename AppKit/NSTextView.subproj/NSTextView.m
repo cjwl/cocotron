@@ -1838,6 +1838,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)setDelegate:delegate {
+   if(delegate==_delegate)
+    return;
+    
    NSNotificationCenter *center=[NSNotificationCenter defaultCenter];
    struct {
     SEL       selector;

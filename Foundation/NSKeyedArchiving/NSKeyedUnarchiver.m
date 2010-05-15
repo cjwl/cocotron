@@ -40,7 +40,8 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    _objects=[[_propertyList objectForKey:@"$objects"] retain];
    _plistStack=[NSMutableArray new];
    [_plistStack addObject:[_propertyList objectForKey:@"$top"]];
-   _uidToObject=NSCreateMapTable(NSIntMapKeyCallBacks,NSNonRetainedObjectMapValueCallBacks,0);
+   _uidToObject=NSCreateMapTable(NSIntMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
+   _objectToUid=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,NSIntMapValueCallBacks,0);
    return self;
 }
 
@@ -51,6 +52,8 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    [_plistStack release];
    if(_uidToObject!=NULL)
     NSFreeMapTable(_uidToObject);
+   if(_objectToUid!=NULL)
+    NSFreeMapTable(_objectToUid);
    [super dealloc];
 }
 
@@ -97,6 +100,7 @@ static inline int integerFromCFUID(id object){
      else {
       result=plist;
       NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+      NSMapInsert(_objectToUid,result,(void *)uidIntValue);
      }
     }
     else if(typeID==kNSCFTypeDictionary){
@@ -105,22 +109,27 @@ static inline int integerFromCFUID(id object){
      [_plistStack addObject:plist];
      result=[class allocWithKeyedUnarchiver:self];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+     NSMapInsert(_objectToUid,result,(void *)uidIntValue);
      result=[result initWithCoder:self];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+     NSMapInsert(_objectToUid,result,(void *)uidIntValue);
      result=[result awakeAfterUsingCoder:self];
      [result autorelease];
      if([_delegate respondsToSelector:@selector(unarchiver:didDecodeObject:)])
       result=[_delegate unarchiver:self didDecodeObject:result];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+     NSMapInsert(_objectToUid,result,(void *)uidIntValue);
      [_plistStack removeLastObject];
     }
     else if(typeID==kNSCFTypeNumber || typeID==kNSCFTypeBoolean){
      result=plist;
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+     NSMapInsert(_objectToUid,result,(void *)uidIntValue);
     }
     else if (typeID==kNSCFTypeData) {
      result=plist;
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+     NSMapInsert(_objectToUid,result,(void *)uidIntValue);
     }
     else
      NSLog(@"plist of class %@",[plist class]);
@@ -402,7 +411,7 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 -_decodeObjectWithPropertyList:plist {
    unsigned typeID=[plist _cfTypeID];
 
-   if(typeID==kNSCFTypeString || typeID==kNSCFTypeData)
+   if(typeID==kNSCFTypeString || typeID==kNSCFTypeData || typeID==kNSCFTypeNumber)
     return plist;
    if(typeID==kNSCFTypeDictionary)
     return [self decodeObjectForUID:integerFromCFUID(plist)];
@@ -439,20 +448,19 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 }
 
 -(void)replaceObject:object withObject:replacement {
-   NSMapEnumerator state=NSEnumerateMapTable(_uidToObject);
-   void           *key,*value;
+   int uid=(int)NSMapGet(_objectToUid,object);
+   id check=NSMapGet(_uidToObject,(void *)uid);
    
-   while(NSNextMapEnumeratorPair(&state,&key,&value)){
-    if(value==object){
-    
+   if(check!=object)
+    NSLog(@"fail %d %p %p",uid,check,object);
+   else {
      if([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)])
-      [_delegate unarchiver:self willReplaceObject:value withObject:replacement];
+      [_delegate unarchiver:self willReplaceObject:object withObject:replacement];
       
-     NSMapInsert(_uidToObject,key,replacement);
-     return;
+     NSMapInsert(_uidToObject,(void *)uid,replacement);
+     NSMapInsert(_uidToObject,replacement,(void *)uid);
     }
    }
-}
 
 -(void)finishDecoding {
 }

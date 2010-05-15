@@ -13,39 +13,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2Function
 
--initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const O2FunctionCallbacks *)callbacks {
+O2FunctionRef O2FunctionInit(O2FunctionRef self,void *info,size_t domainCount,const O2Float *domain,size_t rangeCount,const O2Float *range,const O2FunctionCallbacks *callbacks) {
    int i;
    
-   _info=info;
+   self->_info=info;
    
-   _domainCount=domainCount*2;
-   _domain=NSZoneMalloc(NULL,sizeof(float)*_domainCount);
+   self->_domainCount=domainCount*2;
+   self->_domain=NSZoneMalloc(NULL,sizeof(float)*self->_domainCount);
    if(domain==NULL){
-    for(i=0;i<_domainCount;i++)
-     _domain[i]=i%2;
+    for(i=0;i<self->_domainCount;i++)
+     self->_domain[i]=i%2;
    }
    else {
-    for(i=0;i<_domainCount;i++)
-     _domain[i]=domain[i];
+    for(i=0;i<self->_domainCount;i++)
+     self->_domain[i]=domain[i];
    }
    
-   _rangeCount=rangeCount*2;
-   _range=NSZoneMalloc(NULL,sizeof(float)*_rangeCount);
+   self->_rangeCount=rangeCount*2;
+   self->_range=NSZoneMalloc(NULL,sizeof(float)*self->_rangeCount);
    if(range==NULL){
-    for(i=0;i<_rangeCount;i++)
-     _range[i]=i%2;
+    for(i=0;i<self->_rangeCount;i++)
+     self->_range[i]=i%2;
    }
    else {
-    for(i=0;i<_rangeCount;i++)
-     _range[i]=range[i];
+    for(i=0;i<self->_rangeCount;i++)
+     self->_range[i]=range[i];
    }
    
-   _callbacks=*callbacks;
+   self->_callbacks=*callbacks;
    return self;
 }
 
 O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const O2Float *domain,size_t rangeDimension,const O2Float *range,const O2FunctionCallbacks *callbacks) {   
-   return [[O2Function alloc] initWithInfo:info domainDimension:domainDimension domain:domain rangeDimension:rangeDimension range:range callbacks:callbacks];
+   O2Function *result=[O2Function allocWithZone:NULL];
+   
+   return O2FunctionInit(result,info,domainDimension,domain,rangeDimension,range,callbacks);
 }
 
 O2FunctionRef O2FunctionRetain(O2FunctionRef self) {

@@ -25,3 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSEnumerator *)keyEnumerator;
 
 @end
+
+@interface NSDictionary_CF : NSMutableDictionary_CF
+
+@end

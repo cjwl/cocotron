@@ -5,6 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <Foundation/NSMutableDictionary_mapTable.h>
 
 #import <Foundation/NSEnumerator_dictionaryKeys.h>
@@ -36,8 +37,6 @@ typedef struct {
 -nextObject;
 
 @end
-
-NSEnumerator *NSEnumerator_dictionaryKeysNew(NSMapTable *table);
 
 @implementation NSEnumerator_CFDictionaryKeys
 
@@ -266,6 +265,9 @@ static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
    return self;
 }
 
+-initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
+   return [self initWithKeys:(const void **)keys values:(const void **)objects count:count keyCallBacks:&objectKeyCallBacks valueCallBacks:&objectValueCallbacks];
+}
 
 -initWithCapacity:(NSUInteger)capacity {
    return [self initWithKeys:NULL values:NULL count:0 keyCallBacks:&objectKeyCallBacks valueCallBacks:&objectValueCallbacks];
@@ -291,33 +293,63 @@ static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
 }
 
 -(void)addEntriesFromDictionary:(NSDictionary *)dictionary {
-   NSEnumerator *keyEnum=[dictionary keyEnumerator];
-   id            key;
+   NSUInteger i,otherCount=[dictionary count];
+   id keys[otherCount],objects[otherCount];
 
-   while((key=[keyEnum nextObject])!=nil)
-    setObjectForKey(self,[dictionary objectForKey:key],key);
+   [dictionary getObjects:objects andKeys:keys];
+   
+   for(i=0;i<otherCount;i++)
+    setObjectForKey(self,objects[i],keys[i]);
 }
 
-static NSMutableDictionary_CF *mutableCopyWithZone(NSMutableDictionary_CF *self,NSZone *zone){
-   void **keys=__builtin_alloca(sizeof(void *)*self->_count);
-   void **values=__builtin_alloca(sizeof(void *)*self->_count);
+-(void)getObjects:(id *)objects andKeys:(id *)keys {
    NSInteger i;
    
    CFDictionaryEnumerator state=keyEnumeratorState(self);
    
    for(i=0;i<self->_count;i++)
-    NSNextDictionaryEnumeratorPair(&state,&(keys[i]),&(values[i]));
+    NSNextDictionaryEnumeratorPair(&state,(void **)&(keys[i]),(void **)&(objects[i]));
+}
  
-   return [[self->isa alloc] initWithKeys:(const void **)keys values:(const void **)values count:self->_count keyCallBacks:&(self->_keyCallBacks) valueCallBacks:&(self->_valueCallBacks)];
+static NSDictionary *copyWithClassAndZone(NSMutableDictionary_CF *self,Class cls,NSZone *zone){
+   void **keys=__builtin_alloca(sizeof(void *)*self->_count);
+   void **values=__builtin_alloca(sizeof(void *)*self->_count);
 
+   [self getObjects:(id *)values andKeys:(id *)keys];
+    
+   return [[cls alloc] initWithKeys:(const void **)keys values:(const void **)values count:self->_count keyCallBacks:&(self->_keyCallBacks) valueCallBacks:&(self->_valueCallBacks)];
+}
+
+-copy {
+   return copyWithClassAndZone(self,[NSDictionary_CF class],NULL);
+}
+
+-copyWithZone:(NSZone *)zone {
+   return copyWithClassAndZone(self,[NSDictionary_CF class],NULL);
 }
 
 -mutableCopy {
-   return mutableCopyWithZone(self,NULL);
+   return copyWithClassAndZone(self,[NSMutableDictionary_CF class],NULL);
 }
 
 -mutableCopyWithZone:(NSZone *)zone {
-   return mutableCopyWithZone(self,NULL);
+   return copyWithClassAndZone(self,[NSMutableDictionary_CF class],NULL);
+}
+
+@end
+
+@implementation NSDictionary_CF
+
+-(void)setObject:object forKey:key {
+   [self doesNotRecognizeSelector:_cmd];
+}
+
+-(void)addEntriesFromDictionary:(NSDictionary *)dictionary {
+   [self doesNotRecognizeSelector:_cmd];
+}
+
+-(void)removeObjectForKey:key {
+   [self doesNotRecognizeSelector:_cmd];
 }
 
 @end

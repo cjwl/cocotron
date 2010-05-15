@@ -99,7 +99,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (BOOL)isOpaque {
-	return YES;
+// Cocoa always return YES, until the compositing is improved for transparent surfaces we need to do this
+   long value=YES;
+   
+   [[self openGLContext] getValues:&value forParameter:NSOpenGLCPSurfaceOpacity];
+
+   return value;
 }
 
 - (void)lockFocus {

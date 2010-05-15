@@ -128,7 +128,10 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 }
 
 -(void)raise {
-   //NSLog(@"RAISE %@",self);
+   if(NSDebugEnabled){
+    NSCLog("RAISE %s",[[self description] cString]);
+    return;
+   }
    [_callStack release];
    _callStack=[[NSThread callStackReturnAddresses] retain];
    _NSRaiseException(self);

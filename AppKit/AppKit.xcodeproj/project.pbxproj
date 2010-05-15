@@ -334,7 +334,6 @@
 		C88975500EA0BF3100D0A0A2 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975510EA0BF3100D0A0A2 /* O2DeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975520EA0BF3100D0A0A2 /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C88975530EA0BF3100D0A0A2 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975540EA0BF3100D0A0A2 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		C88975550EA0BF3100D0A0A2 /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975560EA0BF3100D0A0A2 /* O2ImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* O2ImageSource_BMP.h */; };
@@ -996,7 +995,6 @@
 		C8A2E3D10F07EA1F0054397C /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3D20F07EA1F0054397C /* O2DeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3D30F07EA1F0054397C /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C8A2E3D40F07EA1F0054397C /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3D50F07EA1F0054397C /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		C8A2E3D60F07EA1F0054397C /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3D70F07EA1F0054397C /* O2ImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* O2ImageSource_BMP.h */; };
@@ -2032,6 +2030,76 @@
 		FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08C3220DDF299800B3169A /* NSColor_CGColor.m */; };
 		FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
+		FE20C20E11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C21011892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C21111892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C21211892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C21311892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C21411892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C21511892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C21611892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C21711892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C21811892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C21911892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C21A11892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C21B11892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C21C11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C21D11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C21E11892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C21F11892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C22011892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C22111892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C22211892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C22311892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C22411892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C22511892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C22611892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C22711892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C22811892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C22911892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C22A11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
+		FE20C22B11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
+		FE20C22C11892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
+		FE20C22D11892436006F01BA /* CIContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20A11892436006F01BA /* CIContext.m */; };
+		FE20C22E11892436006F01BA /* CIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20B11892436006F01BA /* CIFilter.m */; };
+		FE20C22F11892436006F01BA /* CIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20C11892436006F01BA /* CIImage.m */; };
+		FE20C23011892436006F01BA /* CIVector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20D11892436006F01BA /* CIVector.m */; };
+		FE20C245118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C246118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C247118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C248118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C249118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24A118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24B118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C24C118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24D118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C24E118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C24F118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C250118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C251118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C252118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C253118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C254118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C255118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C256118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C257118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C258118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C259118924A4006F01BA /* NSAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C240118924A4006F01BA /* NSAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C25A118924A4006F01BA /* NSAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C241118924A4006F01BA /* NSAccessibility.m */; };
+		FE20C25B118924A4006F01BA /* NSCIImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C242118924A4006F01BA /* NSCIImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C25C118924A4006F01BA /* NSCIImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C243118924A4006F01BA /* NSCIImageRep.m */; };
+		FE20C25D118924A4006F01BA /* NSErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C244118924A4006F01BA /* NSErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE20C26711892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26811892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26911892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26A11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26B11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26C11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26D11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C26E11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
+		FE20C26F11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */; };
+		FE20C27011892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */; };
 		FE25FF620EE58712009C91B1 /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE25FF630EE58712009C91B1 /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		FE25FF640EE58712009C91B1 /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2470,7 +2538,6 @@
 		FE5A8A0010C6F50E005E348A /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A0110C6F50E005E348A /* O2DeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A0210C6F50E005E348A /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5A8A0310C6F50E005E348A /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A0410C6F50E005E348A /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE5A8A0510C6F50E005E348A /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A0610C6F50E005E348A /* O2ImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* O2ImageSource_BMP.h */; };
@@ -3272,7 +3339,6 @@
 		FEA3149E0FD5667D00F480D4 /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
 		FEA314A00FD5667D00F480D4 /* O2DeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314A10FD5667D00F480D4 /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEA314A20FD5667D00F480D4 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314A30FD5667D00F480D4 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FEA314A80FD5667D00F480D4 /* O2Context_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD6030CB9D0C90035F828 /* O2Context_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314A90FD5667D00F480D4 /* KTFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE311FA40CCC430200EBD696 /* KTFont_gdi.h */; };
@@ -3626,8 +3692,6 @@
 		FEF0889F10C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
 		FEF088A010C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
 		FEF088A110C5B06400D38A2F /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
-		FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */; };
 		FEF4684310895C9800B45195 /* CGConversions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF4684210895C9800B45195 /* CGConversions.h */; };
 		FEF4684410895C9800B45195 /* CGConversions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF4684210895C9800B45195 /* CGConversions.h */; };
 		FEF4684510895C9800B45195 /* CGConversions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF4684210895C9800B45195 /* CGConversions.h */; };
@@ -4402,6 +4466,20 @@
 		FE1CEA6C0C8F12F800184630 /* opengl_dll.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = opengl_dll.m; sourceTree = "<group>"; };
 		FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle.h; sourceTree = "<group>"; };
 		FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle.m; sourceTree = "<group>"; };
+		FE20C20711892436006F01BA /* CAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAAnimation.m; path = ../QuartzCore/CAAnimation.m; sourceTree = SOURCE_ROOT; };
+		FE20C20811892436006F01BA /* CIAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIAffineTransform.m; path = ../QuartzCore/CIAffineTransform.m; sourceTree = SOURCE_ROOT; };
+		FE20C20911892436006F01BA /* CIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIColor.m; path = ../QuartzCore/CIColor.m; sourceTree = SOURCE_ROOT; };
+		FE20C20A11892436006F01BA /* CIContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIContext.m; path = ../QuartzCore/CIContext.m; sourceTree = SOURCE_ROOT; };
+		FE20C20B11892436006F01BA /* CIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIFilter.m; path = ../QuartzCore/CIFilter.m; sourceTree = SOURCE_ROOT; };
+		FE20C20C11892436006F01BA /* CIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIImage.m; path = ../QuartzCore/CIImage.m; sourceTree = SOURCE_ROOT; };
+		FE20C20D11892436006F01BA /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIVector.m; path = ../QuartzCore/CIVector.m; sourceTree = SOURCE_ROOT; };
+		FE20C240118924A4006F01BA /* NSAccessibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAccessibility.h; sourceTree = "<group>"; };
+		FE20C241118924A4006F01BA /* NSAccessibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAccessibility.m; sourceTree = "<group>"; };
+		FE20C242118924A4006F01BA /* NSCIImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCIImageRep.h; sourceTree = "<group>"; };
+		FE20C243118924A4006F01BA /* NSCIImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCIImageRep.m; sourceTree = "<group>"; };
+		FE20C244118924A4006F01BA /* NSErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSErrors.h; sourceTree = "<group>"; };
+		FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibAXRelationshipConnector.h; sourceTree = "<group>"; };
+		FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibAXRelationshipConnector.m; sourceTree = "<group>"; };
 		FE25FF600EE58712009C91B1 /* O2Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font.h; sourceTree = "<group>"; };
 		FE25FF610EE58712009C91B1 /* O2Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font.m; sourceTree = "<group>"; };
 		FE267E840B8BCC3C0000DDC0 /* O2ImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2ImageSource_JPEG.m; sourceTree = "<group>"; };
@@ -4716,8 +4794,6 @@
 		FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSRefreshTemplate.pdf; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF0889E10C5B06400D38A2F /* CGImageDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageDestination.m; sourceTree = "<group>"; };
-		FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_gdiView.h; sourceTree = "<group>"; };
-		FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_gdiView.m; sourceTree = "<group>"; };
 		FEF33BFF0B93543C00DC0B6F /* O2MutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2MutablePath.h; sourceTree = "<group>"; };
 		FEF33C000B93543C00DC0B6F /* O2MutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2MutablePath.m; sourceTree = "<group>"; };
 		FEF4684210895C9800B45195 /* CGConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGConversions.h; sourceTree = "<group>"; };
@@ -4811,6 +4887,11 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE20C240118924A4006F01BA /* NSAccessibility.h */,
+				FE20C241118924A4006F01BA /* NSAccessibility.m */,
+				FE20C242118924A4006F01BA /* NSCIImageRep.h */,
+				FE20C243118924A4006F01BA /* NSCIImageRep.m */,
+				FE20C244118924A4006F01BA /* NSErrors.h */,
 				FE463EC4102D0F9C00B265D6 /* NSPathCell.h */,
 				FE463EC5102D0F9C00B265D6 /* NSPathCell.m */,
 				FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */,
@@ -5177,6 +5258,8 @@
 		6E2B55100976075300DA0954 /* nib */ = {
 			isa = PBXGroup;
 			children = (
+				FE20C26511892517006F01BA /* NSNibAXRelationshipConnector.h */,
+				FE20C26611892517006F01BA /* NSNibAXRelationshipConnector.m */,
 				FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */,
 				FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */,
 				6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */,
@@ -5361,8 +5444,6 @@
 				FE311FA50CCC430200EBD696 /* KTFont_gdi.m */,
 				FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */,
 				FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */,
-				FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */,
-				FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */,
 				6E2B565D0976075400DA0954 /* NSOpenPanel-Win32.h */,
 				6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */,
 				6E2B565B0976075400DA0954 /* NSSavePanel-Win32.h */,
@@ -5952,6 +6033,13 @@
 		FED38C2610E1305700A2A651 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FE20C20711892436006F01BA /* CAAnimation.m */,
+				FE20C20811892436006F01BA /* CIAffineTransform.m */,
+				FE20C20911892436006F01BA /* CIColor.m */,
+				FE20C20A11892436006F01BA /* CIContext.m */,
+				FE20C20B11892436006F01BA /* CIFilter.m */,
+				FE20C20C11892436006F01BA /* CIImage.m */,
+				FE20C20D11892436006F01BA /* CIVector.m */,
 				FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */,
 				FED38C3110E13DCA00A2A651 /* CALayer.m */,
 				FED38C3210E13DCA00A2A651 /* CARenderer.m */,
@@ -6268,7 +6356,6 @@
 				C88975500EA0BF3100D0A0A2 /* KTFont.h in Headers */,
 				C88975510EA0BF3100D0A0A2 /* O2DeviceContext_gdi.h in Headers */,
 				C88975520EA0BF3100D0A0A2 /* NSPrintPanel.h in Headers */,
-				C88975530EA0BF3100D0A0A2 /* NSOpenGLDrawable_gdiView.h in Headers */,
 				C88975540EA0BF3100D0A0A2 /* opengl_dll.h in Headers */,
 				C88975550EA0BF3100D0A0A2 /* O2zlib.h in Headers */,
 				C88975560EA0BF3100D0A0A2 /* O2ImageSource_BMP.h in Headers */,
@@ -6351,6 +6438,10 @@
 				FEA2CD4A10D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131DC10E93C0600FFF5D7 /* X11Event.h in Headers */,
 				FE7AA13910F97E3300FEDD9C /* CABackingRenderer.h in Headers */,
+				FE20C24A118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C24C118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C24E118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26911892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6647,7 +6738,6 @@
 				C8A2E3D10F07EA1F0054397C /* KTFont.h in Headers */,
 				C8A2E3D20F07EA1F0054397C /* O2DeviceContext_gdi.h in Headers */,
 				C8A2E3D30F07EA1F0054397C /* NSPrintPanel.h in Headers */,
-				C8A2E3D40F07EA1F0054397C /* NSOpenGLDrawable_gdiView.h in Headers */,
 				C8A2E3D50F07EA1F0054397C /* opengl_dll.h in Headers */,
 				C8A2E3D60F07EA1F0054397C /* O2zlib.h in Headers */,
 				C8A2E3D70F07EA1F0054397C /* O2ImageSource_BMP.h in Headers */,
@@ -6729,6 +6819,10 @@
 				FEA2CD4810D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131DA10E93C0600FFF5D7 /* X11Event.h in Headers */,
 				FE7AA13410F97E3300FEDD9C /* CABackingRenderer.h in Headers */,
+				FE20C24F118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C251118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C253118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26B11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7025,7 +7119,6 @@
 				FE01A94F0C5D9BCB00AEA51A /* KTFont.h in Headers */,
 				FE01A9510C5D9BCB00AEA51A /* O2DeviceContext_gdi.h in Headers */,
 				FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */,
-				FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */,
 				FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */,
 				FE8F9F2A0C9C5D0000270AEE /* O2zlib.h in Headers */,
 				FE572D8F0CA0809500FB3E79 /* O2ImageSource_BMP.h in Headers */,
@@ -7100,6 +7193,10 @@
 				FEF4684310895C9800B45195 /* CGConversions.h in Headers */,
 				FE8C01CE10C59ADA00FE4072 /* O2ImageDestination.h in Headers */,
 				FE8C01D810C59B0600FE4072 /* O2Encoder_TIFF.h in Headers */,
+				FE20C245118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C247118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C249118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26711892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7396,7 +7493,6 @@
 				FE5A8A0010C6F50E005E348A /* KTFont.h in Headers */,
 				FE5A8A0110C6F50E005E348A /* O2DeviceContext_gdi.h in Headers */,
 				FE5A8A0210C6F50E005E348A /* NSPrintPanel.h in Headers */,
-				FE5A8A0310C6F50E005E348A /* NSOpenGLDrawable_gdiView.h in Headers */,
 				FE5A8A0410C6F50E005E348A /* opengl_dll.h in Headers */,
 				FE5A8A0510C6F50E005E348A /* O2zlib.h in Headers */,
 				FE5A8A0610C6F50E005E348A /* O2ImageSource_BMP.h in Headers */,
@@ -7480,6 +7576,10 @@
 				FEA2CD4610D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131D810E93C0500FFF5D7 /* X11Event.h in Headers */,
 				FE7AA0CD10F9788100FEDD9C /* CABackingRenderer.h in Headers */,
+				FE20C259118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C25B118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C25D118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26F11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7732,7 +7832,6 @@
 				FEA3149E0FD5667D00F480D4 /* NSTypesetter_concrete.h in Headers */,
 				FEA314A00FD5667D00F480D4 /* O2DeviceContext_gdi.h in Headers */,
 				FEA314A10FD5667D00F480D4 /* NSPrintPanel.h in Headers */,
-				FEA314A20FD5667D00F480D4 /* NSOpenGLDrawable_gdiView.h in Headers */,
 				FEA314A30FD5667D00F480D4 /* opengl_dll.h in Headers */,
 				FEA314A80FD5667D00F480D4 /* O2Context_gdi.h in Headers */,
 				FEA314A90FD5667D00F480D4 /* KTFont_gdi.h in Headers */,
@@ -7776,6 +7875,10 @@
 				FE3C855D108779540018252A /* O2AffineTransform.h in Headers */,
 				FE3C855F108779540018252A /* O2Geometry.h in Headers */,
 				FEF4684610895C9800B45195 /* CGConversions.h in Headers */,
+				FE20C254118924A4006F01BA /* NSAccessibility.h in Headers */,
+				FE20C256118924A4006F01BA /* NSCIImageRep.h in Headers */,
+				FE20C258118924A4006F01BA /* NSErrors.h in Headers */,
+				FE20C26D11892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8717,6 +8820,16 @@
 				FE7AA13710F97E3300FEDD9C /* CARenderer.m in Sources */,
 				FE7AA13810F97E3300FEDD9C /* CATransform3D.m in Sources */,
 				FE7AA13A10F97E3300FEDD9C /* CABackingRenderer.m in Sources */,
+				FE20C21511892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C21611892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C21711892436006F01BA /* CIColor.m in Sources */,
+				FE20C21811892436006F01BA /* CIContext.m in Sources */,
+				FE20C21911892436006F01BA /* CIFilter.m in Sources */,
+				FE20C21A11892436006F01BA /* CIImage.m in Sources */,
+				FE20C21B11892436006F01BA /* CIVector.m in Sources */,
+				FE20C24B118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C24D118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26A11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9068,6 +9181,16 @@
 				FE7AA13210F97E3300FEDD9C /* CARenderer.m in Sources */,
 				FE7AA13310F97E3300FEDD9C /* CATransform3D.m in Sources */,
 				FE7AA13510F97E3300FEDD9C /* CABackingRenderer.m in Sources */,
+				FE20C21C11892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C21D11892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C21E11892436006F01BA /* CIColor.m in Sources */,
+				FE20C21F11892436006F01BA /* CIContext.m in Sources */,
+				FE20C22011892436006F01BA /* CIFilter.m in Sources */,
+				FE20C22111892436006F01BA /* CIImage.m in Sources */,
+				FE20C22211892436006F01BA /* CIVector.m in Sources */,
+				FE20C250118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C252118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26C11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9374,7 +9497,6 @@
 				FE01AA900C5D9BCB00AEA51A /* KTFont.m in Sources */,
 				FE01AA920C5D9BCB00AEA51A /* O2DeviceContext_gdi.m in Sources */,
 				FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */,
-				FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */,
 				FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */,
 				FE8F9F2B0C9C5D0000270AEE /* O2zlib.m in Sources */,
 				FE572D900CA0809500FB3E79 /* O2ImageSource_BMP.m in Sources */,
@@ -9447,6 +9569,16 @@
 				FE8C01CF10C59ADA00FE4072 /* O2ImageDestination.m in Sources */,
 				FE8C01D910C59B0600FE4072 /* O2Encoder_TIFF.m in Sources */,
 				FEF0889F10C5B06400D38A2F /* CGImageDestination.m in Sources */,
+				FE20C20E11892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C21011892436006F01BA /* CIColor.m in Sources */,
+				FE20C21111892436006F01BA /* CIContext.m in Sources */,
+				FE20C21211892436006F01BA /* CIFilter.m in Sources */,
+				FE20C21311892436006F01BA /* CIImage.m in Sources */,
+				FE20C21411892436006F01BA /* CIVector.m in Sources */,
+				FE20C246118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C248118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26811892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9800,6 +9932,16 @@
 				FEE7E0B710E26487004A50F8 /* CGLContext.m in Sources */,
 				FE9131D910E93C0600FFF5D7 /* X11Event.m in Sources */,
 				FE7AA0CE10F9788100FEDD9C /* CABackingRenderer.m in Sources */,
+				FE20C22A11892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C22B11892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C22C11892436006F01BA /* CIColor.m in Sources */,
+				FE20C22D11892436006F01BA /* CIContext.m in Sources */,
+				FE20C22E11892436006F01BA /* CIFilter.m in Sources */,
+				FE20C22F11892436006F01BA /* CIImage.m in Sources */,
+				FE20C23011892436006F01BA /* CIVector.m in Sources */,
+				FE20C25A118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C25C118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C27011892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10047,6 +10189,16 @@
 				FE953DE1103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 				FE3C855E108779540018252A /* O2AffineTransform.m in Sources */,
 				FE3C8560108779540018252A /* O2Geometry.m in Sources */,
+				FE20C22311892436006F01BA /* CAAnimation.m in Sources */,
+				FE20C22411892436006F01BA /* CIAffineTransform.m in Sources */,
+				FE20C22511892436006F01BA /* CIColor.m in Sources */,
+				FE20C22611892436006F01BA /* CIContext.m in Sources */,
+				FE20C22711892436006F01BA /* CIFilter.m in Sources */,
+				FE20C22811892436006F01BA /* CIImage.m in Sources */,
+				FE20C22911892436006F01BA /* CIVector.m in Sources */,
+				FE20C255118924A4006F01BA /* NSAccessibility.m in Sources */,
+				FE20C257118924A4006F01BA /* NSCIImageRep.m in Sources */,
+				FE20C26E11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10158,6 +10310,7 @@
 			buildSettings = {
 				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -10187,6 +10340,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
+					"-lMsimg32",
 					"-lole32",
 					"-lgdi32",
 					"-luser32",
@@ -10462,6 +10616,7 @@
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DWINVER=0x500",
 					"-DQUARTZCORE_INSIDE_BUILD",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
@@ -10472,6 +10627,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
+					"-lMsimg32",
 					"-lole32",
 					"-lgdi32",
 					"-luser32",

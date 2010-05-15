@@ -78,6 +78,23 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	return self;
 }
 
+- (id)initWithContent:(id)content
+{
+	if ((self = [super init]))
+	{
+		_flags.avoidsEmptySelection = YES;
+		_flags.clearsFilterPredicateOnInsertion = YES;
+		_flags.filterRestrictsInsertion = NO;
+		_flags.preservesSelection = YES;
+		_flags.selectsInsertedObjects = YES;
+		_flags.alwaysUsesMultipleValuesMarker = NO;
+		
+		[self setAutomaticallyPreparesContent:NO];
+		[self _setContentArray:content];
+	}
+	return self;
+}
+
 -(void)prepareContent
 {
 	id array=[NSMutableArray array];

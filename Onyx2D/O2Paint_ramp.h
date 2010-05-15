@@ -31,7 +31,8 @@
 
 typedef struct  {
    O2Float    offset;
-   O2argb32f color;
+   O2argb32f color32f;
+   O2argb8u  color8u;
 } GradientStop;
 
 @interface O2Paint_ramp : O2Paint {
