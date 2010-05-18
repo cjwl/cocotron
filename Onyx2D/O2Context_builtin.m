@@ -166,12 +166,15 @@ static inline O2GState *currentState(O2Context *self){
    
    O2ContextRestoreGState(self);
    [self->_layerStack removeLastObject];
-   
-   O2Surface *shadow=[self createSurfaceWithWidth:O2ImageGetWidth(_surface) height:O2ImageGetHeight(_surface)];
+
    O2Size size=[self size];
+
+   if (currentState(self)->_shadowKernel) {
+    O2Surface *shadow=[self createSurfaceWithWidth:O2ImageGetWidth(_surface) height:O2ImageGetHeight(_surface)];
    
-   O2SurfaceGaussianBlur(shadow,O2LayerGetSurface(layer),currentState(self)->_shadowKernel,currentState(self)->_shadowColor);
-   O2ContextDrawImage(self,O2RectMake(currentState(self)->_shadowOffset.width,currentState(self)->_shadowOffset.height,size.width,size.height),shadow);
+    O2SurfaceGaussianBlur(shadow,O2LayerGetSurface(layer),currentState(self)->_shadowKernel,currentState(self)->_shadowColor);
+    O2ContextDrawImage(self,O2RectMake(currentState(self)->_shadowOffset.width,currentState(self)->_shadowOffset.height,size.width,size.height),shadow);
+   }
    
    O2ContextDrawLayerInRect(self,O2RectMake(0,0,size.width,size.height),layer);
    O2LayerRelease(layer);
