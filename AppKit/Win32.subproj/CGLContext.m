@@ -404,8 +404,9 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
     blend.AlphaFormat=AC_SRC_ALPHA;
 
     int y=[parentWindow frame].size.height-(context->y+context->h);
-    
+
     AlphaBlend([deviceContext dc],context->x,y,context->w,context->h,[context->dibSection dc],0,0,context->w,context->h,blend);
+
    }
    return kCGLNoError;
 }

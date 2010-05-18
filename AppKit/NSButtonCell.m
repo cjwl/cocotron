@@ -91,7 +91,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isBordered=(flags&0x00800000)?YES:NO; // err, this flag is in NSCell too
 
     _bezelStyle=(flags2&0x7)|(flags2&0x20>>2);
-
+    
+    if (_bezelStyle==0)  // this is how textured buttons are encoded by IB
+     _bezelStyle=NSTexturedSquareBezelStyle;
+    if (_bezelStyle==3)
+     _bezelStyle=NSTexturedRoundedBezelStyle;
+    if (_bezelStyle==4)
+     _bezelStyle=NSRoundRectBezelStyle;
+    
     _isTransparent=(flags&0x00008000)?YES:NO;
     _imageDimsWhenDisabled=(flags&0x00002000)?NO:YES;
     
@@ -285,7 +292,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isOpaque {
-   if(_bezelStyle==NSDisclosureBezelStyle)
+   if(_bezelStyle==NSDisclosureBezelStyle
+      || _bezelStyle==NSTexturedSquareBezelStyle || _bezelStyle==NSTexturedRoundedBezelStyle
+      )
     return NO;
    return ![self isTransparent] && [self isBordered];
 }
@@ -609,6 +618,97 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return frame;
 }
 
+- (void)_drawTexturedBezelWithFrame:(NSRect)frame
+{
+    BOOL highlighted=[self isHighlighted];
+    BOOL pressed=[self state] && ([self showsStateBy] & NSChangeBackgroundCellMask);
+    
+    BOOL renderDarkenBg=NO, renderOutlineShadow=NO;
+    CGFloat topGray=0.98, bottomGray=0.67, strokeGray=0.4;
+    if (pressed) {
+        topGray=0.30;
+        bottomGray=0.4;
+    }
+    renderDarkenBg=highlighted;
+    renderOutlineShadow=highlighted || pressed;
+    
+    CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
+    CGContextSaveGState(ctx);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextSetFillColorSpace(ctx, colorSpace);
+    CGContextSetStrokeColorSpace(ctx, colorSpace);
+    CGColorSpaceRelease(colorSpace);
+    
+    frame = NSInsetRect(frame, 1.5, 1.5);
+    const CGFloat rounding=1.5;
+    
+    const CGFloat baseY = floor(frame.origin.y);
+    const CGFloat maxY = baseY + frame.size.height - 1.0;
+    CGRect r = CGRectMake(floor(frame.origin.x), baseY, ceil(frame.size.width), 1.0);
+    while (r.origin.y <= maxY) {
+        CGFloat g = bottomGray + (topGray - bottomGray) * ((r.origin.y - baseY) / (maxY - baseY));
+        CGFloat components[4] = { g, g, g, 1.0 };
+        CGContextSetFillColor(ctx, components);
+        
+        if (r.origin.y < baseY+1.0f || r.origin.y > maxY-1.0f) {
+            CGContextFillRect(ctx, CGRectMake(r.origin.x+1.0f, r.origin.y, r.size.width-2.0f, r.size.height));
+        } else {
+            CGContextFillRect(ctx, r);
+        }
+        r.origin.y += 1.0f;
+    }
+    
+    const CGFloat lx = floor(frame.origin.x) + 0.5f;
+    const CGFloat rx = floor(frame.origin.x + frame.size.width) + 0.5f;
+    const CGFloat ty = floor(frame.origin.y) + 0.5f;
+    const CGFloat by = floor(frame.origin.y + frame.size.height) + 0.5f;
+    const CGFloat rlx = lx + rounding;
+    const CGFloat rrx = rx - rounding;
+    const CGFloat rty = ty + rounding;
+    const CGFloat rby = by - rounding;
+    CGContextBeginPath(ctx);
+    CGContextMoveToPoint(ctx, rlx, ty);
+    CGContextAddLineToPoint(ctx, rrx, ty);
+    CGContextAddLineToPoint(ctx, rx, rty);
+    CGContextAddLineToPoint(ctx, rx, rby);
+    CGContextAddLineToPoint(ctx, rrx, by);
+    CGContextAddLineToPoint(ctx, rlx, by);
+    CGContextAddLineToPoint(ctx, lx, rby);
+    CGContextAddLineToPoint(ctx, lx, rty);
+    CGContextClosePath(ctx);
+    
+    CGFloat components[4] = { strokeGray, strokeGray, strokeGray, 1.0 };
+    CGContextSetStrokeColor(ctx, components);
+    CGContextSetLineWidth(ctx, 1.0);
+    
+    if (renderDarkenBg) {
+        components[0] = components[1] = components[2] = 0.0;
+        components[3] = 0.15;
+        CGContextSetFillColor(ctx, components);
+        CGContextDrawPath(ctx, kCGPathFillStroke);
+    } else {
+        CGContextStrokePath(ctx);
+    }
+    
+    if (renderOutlineShadow) {  // a small interior shadow within the button's outline
+        const CGFloat ins = 0.4f;
+        CGContextBeginPath(ctx);
+        CGContextMoveToPoint(ctx, lx+ins, ty+ins);
+        CGContextAddLineToPoint(ctx, rx-ins, ty+ins);
+        CGContextAddLineToPoint(ctx, rx-ins, by-ins);
+        CGContextAddLineToPoint(ctx, lx+ins, by-ins);
+        CGContextClosePath(ctx);
+        
+        components[0] = components[1] = components[2] = 0.0;
+        components[3] = 0.3;
+        CGContextSetStrokeColor(ctx, components);
+        CGContextSetLineWidth(ctx, 0.9);
+        CGContextStrokePath(ctx);
+    }
+    
+    CGContextRestoreGState(ctx);
+}
 
 -(void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView {
    BOOL defaulted=([[controlView window] defaultButtonCell] == self);
@@ -644,6 +744,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       NSRectFill(bottom);
       [[NSColor lightGrayColor] set];
       NSFrameRectWithWidth(frame,1);
+     }
+     break;
+    
+    case NSTexturedSquareBezelStyle:
+    case NSTexturedRoundedBezelStyle:
+     if ([self isBordered]) {
+      [self _drawTexturedBezelWithFrame:frame];
      }
      break;
      
@@ -762,8 +869,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSRectFill(frame);
     }
    }
+   
+   const BOOL isTextured=(_bezelStyle == NSTexturedSquareBezelStyle || _bezelStyle == NSTexturedRoundedBezelStyle);
 
-   if([self isBordered]){
+   if([self isBordered] && !isTextured){
     if(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted]){
      imageOrigin.x+=1;
      imageOrigin.y+=[controlView isFlipped]?1:-1;
@@ -779,7 +888,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(drawTitle){
     BOOL drawDottedRect=NO;
-
+    
+    if (isTextured && [title length]) {
+        const BOOL pressed=[self state] && ([self showsStateBy] & NSChangeBackgroundCellMask);
+        const CGFloat fgGray = (pressed) ? 0.98 : 0.0;
+        const CGFloat shadowGray = (pressed) ? 0.07 : 0.93;
+        const CGFloat shadowAlpha = ([self isHighlighted]) ? 0.15 : 0.25;
+        NSString *baseTitle = [NSString stringWithString:[title string]];
+        NSMutableDictionary *shadowAttrs = [[[title attributesAtIndex:0 effectiveRange:NULL] mutableCopy] autorelease];
+        
+        if (titleRect.origin.y > frame.origin.y+1) {  // only draw the shadow if it doesn't come too close to the edge
+            [shadowAttrs setObject:[NSColor colorWithDeviceRed:shadowGray green:shadowGray blue:shadowGray alpha:shadowAlpha]
+                        forKey:NSForegroundColorAttributeName];
+        
+            NSAttributedString *shadowTitle = [[[NSAttributedString alloc] initWithString:baseTitle attributes:shadowAttrs] autorelease];
+            NSRect shadowRect = NSOffsetRect(titleRect, 0, -1);
+        
+            [shadowTitle _clipAndDrawInRect:shadowRect];
+        }
+        
+        NSMutableDictionary *fgAttrs = [[shadowAttrs mutableCopy] autorelease];
+        [fgAttrs setObject:[NSColor colorWithDeviceRed:fgGray green:fgGray blue:fgGray alpha:1.0]
+                    forKey:NSForegroundColorAttributeName];
+        title = [[[NSAttributedString alloc] initWithString:baseTitle attributes:fgAttrs] autorelease];
+    }
+    
     [title _clipAndDrawInRect:titleRect];
 
     if([[controlView window] firstResponder]==controlView){

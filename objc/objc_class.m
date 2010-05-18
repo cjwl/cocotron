@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_malloc.h"
 #import "ObjCException.h"
 #import "ObjCModule.h"
+#import <Foundation/NSRaiseException.h>
 #import <stdio.h>
 #import "objc_cache.h"
 #import <objc/deprecated.h>

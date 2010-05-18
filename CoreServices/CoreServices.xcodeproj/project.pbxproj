@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE7433A910A89ED7004CDF00 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE8492E8119A5EA000E252CC /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE8492EA119A5EA000E252CC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FEC32E49115909F00008ECE5 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC32E4B115909F00008ECE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FEC32E5B11590A130008ECE5 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,6 +21,14 @@
 		FE7433A310A89EB5004CDF00 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FE8492ED119A5EA000E252CC /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -56,6 +66,20 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CFNetwork-Windows-i386";
 		};
+		FE849312119AF77F00E252CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE84930F119AF77F00E252CC;
+			remoteInfo = "CFNetwork-Linux-i386 copy";
+		};
+		FE84931B119AF7C900E252CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE849304119AF77F00E252CC;
+			remoteInfo = "CFNetwork-FreeBSD-i386";
+		};
 		FEC32E43115909B30008ECE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
@@ -86,12 +110,21 @@
 		8DC2EF5B0486A6940098B216 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7433A810A89ED7004CDF00 /* CoreServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreServices.h; sourceTree = "<group>"; };
 		FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE8492F1119A5EA000E252CC /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE8492F2119A5EA000E252CC /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FEC32E52115909F00008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEC32E6311590A130008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE8492EC119A5EA000E252CC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -121,6 +154,7 @@
 				8DC2EF5B0486A6940098B216 /* CoreServices.framework */,
 				FEC32E52115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6311590A130008ECE5 /* CoreServices.framework */,
+				FE8492F1119A5EA000E252CC /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,6 +186,7 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+				FE8492F2119A5EA000E252CC /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -184,6 +219,7 @@
 				FE7433B310A89F5D004CDF00 /* CFNetwork.framework */,
 				FE1342D31151843000404745 /* CFNetwork.framework */,
 				FEC32E44115909B30008ECE5 /* CFNetwork.framework */,
+				FE849313119AF77F00E252CC /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,6 +232,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE7433A910A89ED7004CDF00 /* CoreServices.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE8492E7119A5EA000E252CC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE8492E8119A5EA000E252CC /* CoreServices.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +281,27 @@
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreServices;
 			productReference = 8DC2EF5B0486A6940098B216 /* CoreServices.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE8492E4119A5EA000E252CC /* CoreServices-FreeBSD-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE8492EE119A5EA000E252CC /* Build configuration list for PBXNativeTarget "CoreServices-FreeBSD-i386" */;
+			buildPhases = (
+				FE8492E7119A5EA000E252CC /* Headers */,
+				FE8492E9119A5EA000E252CC /* Resources */,
+				FE8492EB119A5EA000E252CC /* Sources */,
+				FE8492EC119A5EA000E252CC /* Frameworks */,
+			);
+			buildRules = (
+				FE8492ED119A5EA000E252CC /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE84931C119AF7C900E252CC /* PBXTargetDependency */,
+			);
+			name = "CoreServices-FreeBSD-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreServices;
+			productReference = FE8492F1119A5EA000E252CC /* CoreServices.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FEC32E45115909F00008ECE5 /* CoreServices-Darwin-i386 */ = {
@@ -302,6 +367,7 @@
 				8DC2EF4F0486A6940098B216 /* CoreServices-Windows-i386 */,
 				FEC32E45115909F00008ECE5 /* CoreServices-Darwin-i386 */,
 				FEC32E5711590A130008ECE5 /* CoreServices-Linux-i386 */,
+				FE8492E4119A5EA000E252CC /* CoreServices-FreeBSD-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -321,6 +387,13 @@
 			remoteRef = FE7433B210A89F5D004CDF00 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FE849313119AF77F00E252CC /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = FE849312119AF77F00E252CC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FEC32E44115909B30008ECE5 /* CFNetwork.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -336,6 +409,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE8492E9119A5EA000E252CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE8492EA119A5EA000E252CC /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,6 +446,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE8492EB119A5EA000E252CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FEC32E4C115909F00008ECE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -386,6 +474,11 @@
 			isa = PBXTargetDependency;
 			name = "CFNetwork-Windows-i386";
 			targetProxy = FE7433B410A89F63004CDF00 /* PBXContainerItemProxy */;
+		};
+		FE84931C119AF7C900E252CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CFNetwork-FreeBSD-i386";
+			targetProxy = FE84931B119AF7C900E252CC /* PBXContainerItemProxy */;
 		};
 		FEC32E6A11590A7E0008ECE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -474,6 +567,46 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		FE8492EF119A5EA000E252CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/FreeBSD/i386;
+			};
+			name = Debug;
+		};
+		FE8492F0119A5EA000E252CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -574,6 +707,15 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE8492EE119A5EA000E252CC /* Build configuration list for PBXNativeTarget "CoreServices-FreeBSD-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE8492EF119A5EA000E252CC /* Debug */,
+				FE8492F0119A5EA000E252CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

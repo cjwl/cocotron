@@ -1573,7 +1573,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     _flushNeeded=YES;
    else {
     _flushNeeded=NO;
-    [[self platformWindow] flushBuffer];
+    BOOL doFlush=YES;
+    
+    if(([self styleMask]==NSBorderlessWindowMask) && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+     doFlush=NO;
+    
+    if(doFlush)
+     [[self platformWindow] flushBuffer];
    }
 }
 
