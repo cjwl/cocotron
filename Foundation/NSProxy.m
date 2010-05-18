@@ -18,7 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
 
-
 @implementation NSProxy
 
 +(void)load {
@@ -87,7 +86,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return result;
    }
 }
-
 
 -(NSUInteger)hash {
    return (NSUInteger)self>>4;

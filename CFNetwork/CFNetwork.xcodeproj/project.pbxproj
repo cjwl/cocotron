@@ -114,7 +114,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				FE849310119AF77F00E252CC /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

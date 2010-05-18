@@ -110,8 +110,6 @@
 		8DC2EF5B0486A6940098B216 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7433A810A89ED7004CDF00 /* CoreServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreServices.h; sourceTree = "<group>"; };
 		FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
-		FE8492F1119A5EA000E252CC /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE8492F2119A5EA000E252CC /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FEC32E52115909F00008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEC32E6311590A130008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -186,7 +184,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				FE8492F2119A5EA000E252CC /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
