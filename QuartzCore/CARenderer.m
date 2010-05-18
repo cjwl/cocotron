@@ -4,8 +4,10 @@
 
 @implementation CARenderer
 
+#if 0
 @synthesize bounds=_bounds;
 @synthesize layer=_rootLayer;
+#endif
 
 -initWithCGLContext:(void *)cglContext options:(NSDictionary *)options {
    _cglContext=cglContext;

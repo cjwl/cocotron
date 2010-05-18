@@ -1037,7 +1037,6 @@
 		C8A2E4000F07EA1F0054397C /* KTFont_FT.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746BAB0EA3EE11007A6BE2 /* KTFont_FT.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E4030F07EA1F0054397C /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E4040F07EA1F0054397C /* NSDictionaryController.h in Headers */ = {isa = PBXBuildFile; fileRef = C85D91930EE6A806004EBAEA /* NSDictionaryController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C8A2E4050F07EA1F0054397C /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E4070F07EA1F0054397C /* NSActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53250976075200DA0954 /* NSActionCell.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4080F07EA1F0054397C /* NSAlertPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53290976075200DA0954 /* NSAlertPanel.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4090F07EA1F0054397C /* NSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532B0976075200DA0954 /* NSApplication.m */; settings = {ATTRIBUTES = (); }; };
@@ -1337,7 +1336,6 @@
 		C8A2E53E0F07EA1F0054397C /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		C8A2E53F0F07EA1F0054397C /* NSDictionaryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C85D91940EE6A806004EBAEA /* NSDictionaryController.m */; };
 		C8A2E5400F07EA1F0054397C /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE337FC90EE77A6C00D4A751 /* CTFont.m */; };
-		C8A2E5410F07EA1F0054397C /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
 		C8A2E5430F07EA1F0054397C /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54DF0976075300DA0954 /* NSFontPanel.nib */; };
 		C8A2E5440F07EA1F0054397C /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E10976075300DA0954 /* NSColorPanel.nib */; };
 		C8A2E5450F07EA1F0054397C /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
@@ -1389,10 +1387,6 @@
 		C8AB730F0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
 		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
-		C8E0BDF00F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8E0BDF10F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */; };
-		C8E0BDF20F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8E0BDF30F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */; };
 		C8E0BE9A0F0E54B500677729 /* NSOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B20976075400DA0954 /* NSOpenGLContext.m */; };
 		C8E0BE9B0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */; };
 		C8E0BE9C0F0E54B500677729 /* NSOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B60976075400DA0954 /* NSOpenGLView.m */; };
@@ -2243,10 +2237,6 @@
 		FE49B9AC1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
 		FE49B9AD1030C49300ADCC6C /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE49B9AE1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
-		FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
-		FE54BECB0EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE54BECC0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
 		FE572D8F0CA0809500FB3E79 /* O2ImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* O2ImageSource_BMP.h */; };
 		FE572D900CA0809500FB3E79 /* O2ImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* O2ImageSource_BMP.m */; };
 		FE5A88DC10C6F50E005E348A /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -2581,10 +2571,8 @@
 		FE5A8A2D10C6F50E005E348A /* O2Context_cairo.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* O2Context_cairo.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A2F10C6F50E005E348A /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A3010C6F50E005E348A /* NSDictionaryController.h in Headers */ = {isa = PBXBuildFile; fileRef = C85D91930EE6A806004EBAEA /* NSDictionaryController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5A8A3110C6F50E005E348A /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A3210C6F50E005E348A /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
 		FE5A8A3310C6F50E005E348A /* O2ImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC0C77F0F146AF800903F6D /* O2ImageSource_GIF.h */; };
-		FE5A8A3710C6F50E005E348A /* NSOpenGLDrawable_X11.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A3810C6F50E005E348A /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A3910C6F50E005E348A /* NSToolbarItemGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8A3A10C6F50E005E348A /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2915,10 +2903,8 @@
 		FE5A8B8710C6F50E005E348A /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		FE5A8B8810C6F50E005E348A /* NSDictionaryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C85D91940EE6A806004EBAEA /* NSDictionaryController.m */; };
 		FE5A8B8910C6F50E005E348A /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE337FC90EE77A6C00D4A751 /* CTFont.m */; };
-		FE5A8B8A10C6F50E005E348A /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
 		FE5A8B8B10C6F50E005E348A /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
 		FE5A8B8C10C6F50E005E348A /* O2ImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* O2ImageSource_GIF.m */; };
-		FE5A8B9010C6F50E005E348A /* NSOpenGLDrawable_X11.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */; };
 		FE5A8B9110C6F50E005E348A /* NSOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B20976075400DA0954 /* NSOpenGLContext.m */; };
 		FE5A8B9210C6F50E005E348A /* NSOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */; };
 		FE5A8B9310C6F50E005E348A /* NSOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B60976075400DA0954 /* NSOpenGLView.m */; };
@@ -3355,7 +3341,6 @@
 		FEA314C90FD5667D00F480D4 /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA314CA0FD5667D00F480D4 /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314CF0FD5667D00F480D4 /* NSDictionaryController.h in Headers */ = {isa = PBXBuildFile; fileRef = C85D91930EE6A806004EBAEA /* NSDictionaryController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEA314D00FD5667D00F480D4 /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314D70FD5667D00F480D4 /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314D80FD5667D00F480D4 /* NSToolbarItemGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA314D90FD5667D00F480D4 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3572,7 +3557,6 @@
 		FEA316050FD5667D00F480D4 /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		FEA316060FD5667D00F480D4 /* NSUserDefaultsControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */; };
 		FEA3160B0FD5667D00F480D4 /* NSDictionaryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C85D91940EE6A806004EBAEA /* NSDictionaryController.m */; };
-		FEA3160D0FD5667D00F480D4 /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
 		FEA316150FD5667D00F480D4 /* NSOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B20976075400DA0954 /* NSOpenGLContext.m */; };
 		FEA316160FD5667D00F480D4 /* NSOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */; };
 		FEA316170FD5667D00F480D4 /* NSOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B60976075400DA0954 /* NSOpenGLView.m */; };
@@ -4438,8 +4422,6 @@
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
 		C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationProxy.h; sourceTree = "<group>"; };
 		C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObservationProxy.m; sourceTree = "<group>"; };
-		C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_X11.h; sourceTree = "<group>"; };
-		C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_X11.m; sourceTree = "<group>"; };
 		C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4594,8 +4576,6 @@
 		FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCollectionViewItem.m; path = NSCollectionView/NSCollectionViewItem.m; sourceTree = "<group>"; };
 		FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFontDescriptor.h; sourceTree = "<group>"; };
 		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
-		FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable.h; sourceTree = "<group>"; };
-		FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable.m; sourceTree = "<group>"; };
 		FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableAttributedString.h; sourceTree = "<group>"; };
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
 		FE572D8B0CA0809500FB3E79 /* O2ImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2ImageSource_BMP.h; sourceTree = "<group>"; };
@@ -5534,8 +5514,6 @@
 			isa = PBXGroup;
 			children = (
 				FE4478071039F64E00ECD6A6 /* NSOpenGL.h */,
-				FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */,
-				FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */,
 				6E2B56B90976075400DA0954 /* NSOpenGLContext.h */,
 				6E2B56B20976075400DA0954 /* NSOpenGLContext.m */,
 				FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */,
@@ -5666,8 +5644,6 @@
 				FE9131D610E93C0500FFF5D7 /* X11Event.h */,
 				FE9131D710E93C0500FFF5D7 /* X11Event.m */,
 				FEE7E0B610E26487004A50F8 /* CGLContext.m */,
-				C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */,
-				C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */,
 				FEA2CD4410D6D870003C8FF5 /* O2Context_builtin_FT.h */,
 				FEA2CD4510D6D870003C8FF5 /* O2Context_builtin_FT.m */,
 				C81BEA0D0EA6038800478D50 /* O2Context_cairo.h */,
@@ -6399,10 +6375,8 @@
 				C81BEA0F0EA6038800478D50 /* O2Context_cairo.h in Headers */,
 				FE25FF640EE58712009C91B1 /* O2Font.h in Headers */,
 				C85D91950EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
-				FE54BECB0EEB086900B4559F /* NSOpenGLDrawable.h in Headers */,
 				FE669CA80F12B1A600534F46 /* gif_lib.h in Headers */,
 				FEC0C7830F146AF800903F6D /* O2ImageSource_GIF.h in Headers */,
-				C8E0BDF00F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
 				FE38749E0F4333D600EC9F00 /* NSToolbarItemView.h in Headers */,
 				FE6BE4480F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */,
 				C8AB730A0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
@@ -6780,9 +6754,7 @@
 				C8A2E4000F07EA1F0054397C /* KTFont_FT.h in Headers */,
 				C8A2E4030F07EA1F0054397C /* O2Font.h in Headers */,
 				C8A2E4040F07EA1F0054397C /* NSDictionaryController.h in Headers */,
-				C8A2E4050F07EA1F0054397C /* NSOpenGLDrawable.h in Headers */,
 				C8A2E6080F07F4540054397C /* O2Context_cairo.h in Headers */,
-				C8E0BDF20F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
 				FE3874A00F4333D600EC9F00 /* NSToolbarItemView.h in Headers */,
 				FE6BE44A0F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */,
 				C8AB730C0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
@@ -7158,7 +7130,6 @@
 				C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */,
 				FE25FF620EE58712009C91B1 /* O2Font.h in Headers */,
 				C85D91970EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
-				FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */,
 				FEA25F980EECCE4D008750D0 /* NSSound_win32.h in Headers */,
 				FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */,
 				FEC0C7810F146AF800903F6D /* O2ImageSource_GIF.h in Headers */,
@@ -7536,10 +7507,8 @@
 				FE5A8A2D10C6F50E005E348A /* O2Context_cairo.h in Headers */,
 				FE5A8A2F10C6F50E005E348A /* O2Font.h in Headers */,
 				FE5A8A3010C6F50E005E348A /* NSDictionaryController.h in Headers */,
-				FE5A8A3110C6F50E005E348A /* NSOpenGLDrawable.h in Headers */,
 				FE5A8A3210C6F50E005E348A /* gif_lib.h in Headers */,
 				FE5A8A3310C6F50E005E348A /* O2ImageSource_GIF.h in Headers */,
-				FE5A8A3710C6F50E005E348A /* NSOpenGLDrawable_X11.h in Headers */,
 				FE5A8A3810C6F50E005E348A /* NSToolbarItemView.h in Headers */,
 				FE5A8A3910C6F50E005E348A /* NSToolbarItemGroup.h in Headers */,
 				FE5A8A3A10C6F50E005E348A /* NSControllerMarker.h in Headers */,
@@ -7848,7 +7817,6 @@
 				FEA314C90FD5667D00F480D4 /* NSGradient.h in Headers */,
 				FEA314CA0FD5667D00F480D4 /* NSUserDefaultsControllerProxy.h in Headers */,
 				FEA314CF0FD5667D00F480D4 /* NSDictionaryController.h in Headers */,
-				FEA314D00FD5667D00F480D4 /* NSOpenGLDrawable.h in Headers */,
 				FEA314D70FD5667D00F480D4 /* NSToolbarItemView.h in Headers */,
 				FEA314D80FD5667D00F480D4 /* NSToolbarItemGroup.h in Headers */,
 				FEA314D90FD5667D00F480D4 /* NSControllerMarker.h in Headers */,
@@ -8775,10 +8743,8 @@
 				FE25FF650EE58712009C91B1 /* O2Font.m in Sources */,
 				C85D91960EE6A806004EBAEA /* NSDictionaryController.m in Sources */,
 				FE337FCB0EE77A6C00D4A751 /* CTFont.m in Sources */,
-				FE54BECC0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */,
 				FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */,
 				FEC0C7840F146AF800903F6D /* O2ImageSource_GIF.m in Sources */,
-				C8E0BDF10F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */,
 				C8E0BE9D0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
 				C8E0BE9E0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
 				C8E0BE9F0F0E54B500677729 /* NSOpenGLView.m in Sources */,
@@ -9136,9 +9102,7 @@
 				C8A2E53E0F07EA1F0054397C /* O2Font.m in Sources */,
 				C8A2E53F0F07EA1F0054397C /* NSDictionaryController.m in Sources */,
 				C8A2E5400F07EA1F0054397C /* CTFont.m in Sources */,
-				C8A2E5410F07EA1F0054397C /* NSOpenGLDrawable.m in Sources */,
 				C8A2379A0F09AC6300A3EC80 /* O2Context_cairo.m in Sources */,
-				C8E0BDF30F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */,
 				C8E0BE9A0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
 				C8E0BE9B0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
 				C8E0BE9C0F0E54B500677729 /* NSOpenGLView.m in Sources */,
@@ -9534,7 +9498,6 @@
 				FE25FF630EE58712009C91B1 /* O2Font.m in Sources */,
 				C85D91980EE6A806004EBAEA /* NSDictionaryController.m in Sources */,
 				FE337FCA0EE77A6C00D4A751 /* CTFont.m in Sources */,
-				FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */,
 				FEA25F990EECCE4D008750D0 /* NSSound_win32.m in Sources */,
 				FE669C920F12B1A600534F46 /* gif_lib.m in Sources */,
 				FEC0C7820F146AF800903F6D /* O2ImageSource_GIF.m in Sources */,
@@ -9886,10 +9849,8 @@
 				FE5A8B8710C6F50E005E348A /* O2Font.m in Sources */,
 				FE5A8B8810C6F50E005E348A /* NSDictionaryController.m in Sources */,
 				FE5A8B8910C6F50E005E348A /* CTFont.m in Sources */,
-				FE5A8B8A10C6F50E005E348A /* NSOpenGLDrawable.m in Sources */,
 				FE5A8B8B10C6F50E005E348A /* gif_lib.m in Sources */,
 				FE5A8B8C10C6F50E005E348A /* O2ImageSource_GIF.m in Sources */,
-				FE5A8B9010C6F50E005E348A /* NSOpenGLDrawable_X11.m in Sources */,
 				FE5A8B9110C6F50E005E348A /* NSOpenGLContext.m in Sources */,
 				FE5A8B9210C6F50E005E348A /* NSOpenGLPixelFormat.m in Sources */,
 				FE5A8B9310C6F50E005E348A /* NSOpenGLView.m in Sources */,
@@ -10162,7 +10123,6 @@
 				FEA316050FD5667D00F480D4 /* NSGradient.m in Sources */,
 				FEA316060FD5667D00F480D4 /* NSUserDefaultsControllerProxy.m in Sources */,
 				FEA3160B0FD5667D00F480D4 /* NSDictionaryController.m in Sources */,
-				FEA3160D0FD5667D00F480D4 /* NSOpenGLDrawable.m in Sources */,
 				FEA316150FD5667D00F480D4 /* NSOpenGLContext.m in Sources */,
 				FEA316160FD5667D00F480D4 /* NSOpenGLPixelFormat.m in Sources */,
 				FEA316170FD5667D00F480D4 /* NSOpenGLView.m in Sources */,

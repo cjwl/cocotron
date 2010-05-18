@@ -187,7 +187,10 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         
         systemTimeZone = [self timeZoneWithName:timeZoneName];
     }
-    
+
+#ifdef LINUX
+// FIXME: BSD does not have 'timezone' or __timezone
+
     if (systemTimeZone == nil) {
         NSString        *abbreviation;
         
@@ -208,6 +211,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:-timezone];
         }
     }
+#endif
     
     return systemTimeZone;
 }

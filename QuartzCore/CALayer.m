@@ -6,6 +6,7 @@
    return [[[self alloc] init] autorelease];
 }
 
+#if 0
 @synthesize superLayer=_superLayer;
 @synthesize sublayers=_sublayers;
 @synthesize delegate=_delegate;
@@ -16,6 +17,7 @@
 @synthesize contents=_contents;
 @synthesize transform=_transform;
 @synthesize sublayerTransform=_sublayerTransform;
+#endif
 
 -init {
    _superLayer=nil;

@@ -37,6 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <stdio.h>
 #include <poll.h>
 #include <pthread.h>
+#import <sys/socket.h>
 
 BOOL NSCurrentLocaleIsMetric(){
    return NO;

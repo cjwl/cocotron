@@ -1006,6 +1006,13 @@
 			remoteGlobalIDString = FEA82925109B75D600C7A732;
 			remoteInfo = "CoreFoundation-Darwin-i386";
 		};
+		FE8493E6119B043500E252CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE5C0BE711629FD900065D1C /* Onyx2D.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5C0CA81162A9AB00065D1C;
+			remoteInfo = "Onyx2D-FreeBSD-i386";
+		};
 		FE8F93BC0FE344D6003F38A6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
@@ -2014,6 +2021,7 @@
 			dependencies = (
 				FE5A887010C6F2AD005E348A /* PBXTargetDependency */,
 				FE5A887210C6F2B1005E348A /* PBXTargetDependency */,
+				FE8493E7119B043500E252CC /* PBXTargetDependency */,
 			);
 			name = "CoreGraphics-FreeBSD-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -2711,6 +2719,11 @@
 			isa = PBXTargetDependency;
 			name = "CoreFoundation-Darwin-i386";
 			targetProxy = FE74351110A8BEAB004CDF00 /* PBXContainerItemProxy */;
+		};
+		FE8493E7119B043500E252CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Onyx2D-FreeBSD-i386";
+			targetProxy = FE8493E6119B043500E252CC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

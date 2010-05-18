@@ -61,12 +61,12 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 	 return [self hostName];
 }
 
-NSString *NSPlatformExecutableDirectory=@"BSD";
-NSString *NSPlatformResourceNameSuffix=@"bsd";
+NSString * const NSPlatformExecutableDirectory=@"BSD";
+NSString * const NSPlatformResourceNameSuffix=@"bsd";
 
-NSString *NSPlatformExecutableFileExtension=@"";
-NSString *NSPlatformLoadableObjectFileExtension=@"so";
-NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
+NSString * const NSPlatformExecutableFileExtension=@"";
+NSString * const NSPlatformLoadableObjectFileExtension=@"so";
+NSString * const NSPlatformLoadableObjectFilePrefix=@"lib";
 
 - (Class)taskClass
 {
