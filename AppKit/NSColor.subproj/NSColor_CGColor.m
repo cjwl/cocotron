@@ -126,6 +126,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 } 
 
+
+#define REC601_LUMINANCE_R   0.299f
+#define REC601_LUMINANCE_G   0.587f
+#define REC601_LUMINANCE_B   0.114f
+
+static inline CGFloat calibratedWhiteFromRGB(CGFloat r, CGFloat g, CGFloat b) {
+   return (REC601_LUMINANCE_R*r, REC601_LUMINANCE_G*g, REC601_LUMINANCE_B*b);
+}
+
+
 -(NSColor *)colorUsingColorSpaceName:(NSString *)otherSpaceName device:(NSDictionary *)device {
    if(otherSpaceName==nil || [otherSpaceName isEqualToString:_colorSpaceName])
     return self;
@@ -136,9 +146,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    const CGFloat  *components=CGColorGetComponents(_colorRef);
 
    if([_colorSpaceName isEqualToString:NSDeviceBlackColorSpace]){
-
    }
-   else if([_colorSpaceName isEqualToString:NSDeviceWhiteColorSpace]) {
+   else if([_colorSpaceName isEqualToString:NSDeviceWhiteColorSpace]){
+    CGFloat white=components[0];
+    CGFloat alpha=components[1];
+
+    if([otherSpaceName isEqualToString:NSCalibratedRGBColorSpace] || colorSpace == nil)
+     return [NSColor colorWithCalibratedRed:white green:white blue:white alpha:alpha];
+    
+    if([otherSpaceName isEqualToString:NSDeviceRGBColorSpace])
+     return [NSColor colorWithDeviceRed:white green:white blue:white alpha:alpha];
+
+    if([otherSpaceName isEqualToString:NSDeviceCMYKColorSpace])
+     return [NSColor colorWithDeviceCyan:0 magenta:0 yellow:0 black:1-white alpha:alpha];
    }
    else if([_colorSpaceName isEqualToString:NSDeviceRGBColorSpace]){
     CGFloat red=components[0];
@@ -147,7 +167,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     CGFloat alpha=components[3];
 
     if([otherSpaceName isEqualToString:NSDeviceWhiteColorSpace])
-     return [NSColor colorWithDeviceWhite:(red+green+blue)/3 alpha:alpha];
+     return [NSColor colorWithDeviceWhite:calibratedWhiteFromRGB(red, green, blue) alpha:alpha];
 
     if([otherSpaceName isEqualToString:NSDeviceCMYKColorSpace])
      return [NSColor colorWithDeviceCyan:1.0-red magenta:1.0-green yellow:1.0-blue black:0.0 alpha:alpha];
@@ -156,7 +176,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
 
     if([otherSpaceName isEqualToString:NSCalibratedWhiteColorSpace])
-     return [NSColor colorWithCalibratedWhite:(red+green+blue)/3 alpha:alpha];
+     return [NSColor colorWithCalibratedWhite:calibratedWhiteFromRGB(red, green, blue) alpha:alpha];
    }
    else if([_colorSpaceName isEqualToString:NSDeviceCMYKColorSpace]){
     CGFloat cyan=components[0];
@@ -171,10 +191,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      CGFloat green=(magenta > white ? 0 : white - magenta);
      CGFloat blue=(yellow > white ? 0 : white - yellow);
     
-     return [NSColor colorWithCalibratedRed:red  green:green blue:blue alpha:alpha];
+     return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
     }
 
-    if([otherSpaceName isEqualToString:NSCalibratedWhiteColorSpace]) {
+    if([otherSpaceName isEqualToString:NSCalibratedWhiteColorSpace]){
      CGFloat white = 1 - cyan - magenta - yellow - black;
      
      return [NSColor colorWithCalibratedWhite:(white > 0 ? white : 0) alpha:alpha];
@@ -188,6 +208,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     if([otherSpaceName isEqualToString:NSCalibratedRGBColorSpace] || colorSpace == nil)
      return [NSColor colorWithCalibratedRed:white green:white blue:white alpha:alpha];
+    
+    if([otherSpaceName isEqualToString:NSDeviceRGBColorSpace])
+     return [NSColor colorWithDeviceRed:white green:white blue:white alpha:alpha];
 
     if([otherSpaceName isEqualToString:NSDeviceCMYKColorSpace])
      return [NSColor colorWithDeviceCyan:0 magenta:0 yellow:0 black:1-white alpha:alpha];
@@ -198,11 +221,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     CGFloat blue=components[2];
     CGFloat alpha=components[3];
 
-    if([otherSpaceName isEqualToString:NSCalibratedWhiteColorSpace])
-     return [NSColor colorWithCalibratedWhite:(red+green+blue)/3 alpha:alpha];
+    if([otherSpaceName isEqualToString:NSDeviceWhiteColorSpace])
+     return [NSColor colorWithDeviceWhite:calibratedWhiteFromRGB(red, green, blue) alpha:alpha];
 
     if([otherSpaceName isEqualToString:NSDeviceCMYKColorSpace])
      return [NSColor colorWithDeviceCyan:1.0-red magenta:1.0-green yellow:1.0-blue black:0.0 alpha:alpha];
+
+    if([otherSpaceName isEqualToString:NSCalibratedWhiteColorSpace])
+     return [NSColor colorWithCalibratedWhite:calibratedWhiteFromRGB(red, green, blue) alpha:alpha];
+
+    if([otherSpaceName isEqualToString:NSCalibratedRGBColorSpace])
+     return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
    }
     
    return nil;
