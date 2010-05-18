@@ -54,10 +54,13 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -initWithNibNamed:(NSString *)name bundle:(NSBundle *)bundle {
+   if(bundle==nil)
+    bundle = [NSBundle mainBundle];
+    
    NSString *path=[bundle pathForResource:name ofType:@"nib"];
    
    if(path==nil){
-    NSLog(@"%s: unable to init nib from file '%@'", __PRETTY_FUNCTION__, path);
+    NSLog(@"%s: unable to init nib with name '%@'", __PRETTY_FUNCTION__, name);
     [self release];
     return nil;
    }
@@ -114,6 +117,7 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     if((menu=[objectData mainMenu])!=nil)
      [NSApp setMainMenu:menu];
      
+    NSMutableArray *topLevelObjectsFromNameTable = [nameTable objectForKey:NSNibTopLevelObjects];
     NSMutableDictionary *aDict = [NSMutableDictionary dictionaryWithDictionary:nameTable];
     [aDict removeObjectForKey:NSNibTopLevelObjects];
     nameTable = aDict;
@@ -122,8 +126,8 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     // array for key NSNibTopLevelObjects, then this array retains all top-level objects,
     // else we simply do a retain on them.
     topLevelObjects = [objectData topLevelObjects];
-    if([nameTable objectForKey:NSNibTopLevelObjects])
-        [[nameTable objectForKey:NSNibTopLevelObjects] setArray:topLevelObjects];
+    if(topLevelObjectsFromNameTable)
+        [topLevelObjectsFromNameTable setArray:topLevelObjects];
     else
         [topLevelObjects makeObjectsPerformSelector:@selector(retain)];
     
