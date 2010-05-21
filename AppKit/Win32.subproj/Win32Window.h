@@ -48,12 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)invalidate;
 
 -(HWND)windowHandle;
--(unsigned)styleMask;
 -(CGRect)frame;
-
--(void)setStyleMask:(unsigned)mask;
--(void)setTitle:(NSString *)title;
--(void)setFrame:(CGRect)frame;
 
 -(void)showWindowForAppActivation:(CGRect)frame;
 -(void)hideWindowForAppDeactivation:(CGRect)frame;

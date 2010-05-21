@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
-#import <QuartzCore/CABackingRenderer.h>
+#import <QuartzCore/CAWindowOpenGLContext.h>
 #import "O2Surface_DIBSection.h"
 
 @implementation Win32Window
@@ -35,17 +35,23 @@ static CGRect convertFrameFromWin32ScreenCoordinates(CGRect rect){
    return rect;
 }
 
-static bool isLayeredWindowStyleMask(unsigned styleMask){
-   if(styleMask==NSBorderlessWindowMask)
+-(BOOL)isLayeredWindow {
+   if(_styleMask&NSDocModalWindowMask)
     return TRUE;
-    
-   if(styleMask&NSDocModalWindowMask)
+   
+   if(_styleMask==NSBorderlessWindowMask)
     return TRUE;
-    
+/*
+   if(!_isOpaque)
+    return TRUE;
+   
+   if(_alphaValue<1.0f)
+    return TRUE;
+ */  
    return FALSE;
 }
 
-static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel) {
+static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL isLayeredWindow) {
    DWORD result=0;
 
    if(styleMask==NSBorderlessWindowMask)
@@ -59,14 +65,14 @@ static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel) {
    if(isPanel)
     result|=WS_EX_NOACTIVATE;
     
-   if(isLayeredWindowStyleMask(styleMask))
+   if(isLayeredWindow)
     result|=/*CS_DROPSHADOW|*/WS_EX_LAYERED;
 
    return result/*|0x80000*/ ;
 }
 
-static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel) {
-   DWORD result=isLayeredWindowStyleMask(styleMask)?0:WS_CLIPCHILDREN|WS_CLIPSIBLINGS;
+static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL isLayeredWindow) {
+   DWORD result=isLayeredWindow?0:WS_CLIPCHILDREN|WS_CLIPSIBLINGS;
 
    if(styleMask==NSBorderlessWindowMask)
     result|=WS_POPUP;
@@ -101,6 +107,11 @@ static DWORD Win32StyleForStyleMask(unsigned styleMask,BOOL isPanel) {
    return result;
 }
 
+-(void)changeWindowStyle {
+   SetWindowLong(_handle,GWL_EXSTYLE,Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,[self isLayeredWindow])); 
+   SetWindowLong(_handle,GWL_STYLE,Win32StyleForStyleMask(_styleMask,_isPanel,[self isLayeredWindow])); 
+}
+
 void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right){   
    RECT delta;
 
@@ -109,7 +120,7 @@ void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *
    delta.bottom=100;
    delta.right=100;
 
-   AdjustWindowRectEx(&delta,Win32StyleForStyleMask(styleMask,NO),NO,Win32ExtendedStyleForStyleMask(styleMask,NO));
+   AdjustWindowRectEx(&delta,Win32StyleForStyleMask(styleMask,NO,NO),NO,Win32ExtendedStyleForStyleMask(styleMask,NO,NO));
    
    *top=-delta.top;
    *left=-delta.left;
@@ -152,8 +163,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -(void)createWindowHandle {
    CGRect win32Frame=convertFrameToWin32ScreenCoordinates(_frame);
-   DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel);
-   DWORD  extendStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel);
+   DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel,[self isLayeredWindow]);
+   DWORD  extendStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,[self isLayeredWindow]);
    const char *className=Win32ClassNameForStyleMask(_styleMask,_hasShadow);
     
    _handle=CreateWindowEx(extendStyle,className,"", style,
@@ -481,7 +492,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     
    [self createCGLContextObjIfNeeded];
        
-   CABackingRenderer *renderer=(CABackingRenderer *)[NSClassFromString(@"CABackingRenderer") rendererWithCGLContext:_cglContext options:nil];
+   CAWindowOpenGLContext *renderer=(CAWindowOpenGLContext *)[NSClassFromString(@"CAWindowOpenGLContext") rendererWithCGLContext:_cglContext options:nil];
    
    if(renderer==nil)
     return NO;
@@ -497,7 +508,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 #endif
 
 -(void)flushBuffer {   
-   if(isLayeredWindowStyleMask(_styleMask)){
+   if([self isLayeredWindow]){
     BLENDFUNCTION blend;
     BYTE          constantAlpha=MAX(0,MIN(_alphaValue*255,255));
     
@@ -809,7 +820,9 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
      [[Win32Display currentDisplay] invalidateSystemColors];
      [_delegate platformWindowStyleChanged:self];
      return 0;
- //   case WM_ERASEBKGND: return 1;
+    
+    // This can avoid OpenGL flickering
+    case WM_ERASEBKGND: return 1;
 
 #if 0
 // doesn't seem to work

@@ -1,17 +1,40 @@
-#import <QuartzCore/CABackingRenderer.h>
+#import <QuartzCore/CAWindowOpenGLContext.h>
 #import <OpenGL/OpenGL.h>
 #import <Onyx2D/O2Surface.h>
 
-@implementation CABackingRenderer
+@implementation CAWindowOpenGLContext
 
--(void)renderWithSurface:(O2Surface *)surface {
-   size_t width=O2ImageGetWidth(surface);
-   size_t height=O2ImageGetHeight(surface);
+-initWithCGLContext:(CGLContextObj)cglContext {
+   _cglContext=CGLRetainContext(cglContext);
+   return self;
+}
 
+-(void)dealloc {
+   CGLReleaseContext(_cglContext);
+   [super dealloc];
+}
+
+-(void)prepareViewportWidth:(int)width height:(int)height {
+// prepare
    CGLError error;
 
    if((error=CGLSetCurrentContext(_cglContext))!=kCGLNoError)
     NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
+
+   glEnable(GL_DEPTH_TEST);
+   glShadeModel(GL_SMOOTH);
+
+// reshape
+   glViewport(0,0,width,height);
+   glMatrixMode(GL_PROJECTION);                      
+   glLoadIdentity();
+   glOrtho (0, width, 0, height, -1, 1);
+}
+
+-(void)renderSurface:(O2Surface *)surface {
+   size_t width=O2ImageGetWidth(surface);
+   size_t height=O2ImageGetHeight(surface);
+
 
 // prepare
    glEnable(GL_DEPTH_TEST);

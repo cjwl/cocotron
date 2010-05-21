@@ -6,18 +6,86 @@
    return [[[self alloc] init] autorelease];
 }
 
-#if 0
-@synthesize superLayer=_superLayer;
-@synthesize sublayers=_sublayers;
-@synthesize delegate=_delegate;
-@synthesize frame=_frame;
-@synthesize bounds=_bounds;
-@synthesize opacity=_opacity;
-@synthesize opaque=_opaque;
-@synthesize contents=_contents;
-@synthesize transform=_transform;
-@synthesize sublayerTransform=_sublayerTransform;
-#endif
+-(CALayer *)superLayer {
+   return _superLayer;
+}
+
+-(NSArray *)sublayers {
+   return _sublayers;
+}
+
+-(void)setSublayers:(NSArray *)sublayers {
+   sublayers=[sublayers copy];
+   [_sublayers release];
+   _sublayers=sublayers;
+   [_sublayers makeObjectsPerformSelector:@selector(_setSuperLayer:) withObject:self];
+}
+
+-(id)delegate {
+   return _delegate;
+}
+
+-(void)setDelegate:value {
+   _delegate=value;
+}
+
+-(CGRect)frame {
+   return _frame;
+}
+
+-(void)setFrame:(CGRect)value {
+   _frame=value;
+}
+
+-(CGRect)bounds {
+   return _bounds;
+}
+
+-(void)setBounds:(CGRect)value {
+   _bounds=value;
+}
+
+-(float)opacity {
+   return _opacity;
+}
+
+-(void)setOpacity:(float)value {
+   _opacity=value;
+}
+
+-(BOOL)opaque {
+   return _opaque;
+}
+
+-(void)setOpaque:(BOOL)value {
+   _opaque=value;
+}
+
+-(id)contents {
+   return _contents;
+}
+
+-(void)setContents:(id)value {
+   value=[value retain];
+   [_contents release];
+   _contents=value;
+}
+
+-(CATransform3D)transform {
+   return _transform;
+}
+
+-(void)setTransform:(CATransform3D)value {
+   _transform=value;
+}
+
+-(CATransform3D)sublayerTransform {
+   return _sublayerTransform;
+}
+
+-(void)setSublayerTransform:(CATransform3D)value {
+   _sublayerTransform=value;
+}
 
 -init {
    _superLayer=nil;
@@ -38,12 +106,13 @@
 }
 
 -(void)_removeSublayer:(CALayer *)child {
-   [_sublayers removeObjectIdenticalTo:child];
+   NSMutableArray *layers=[_sublayers mutableCopy];
+   [layers removeObjectIdenticalTo:child];
+   [self setSublayers:layers];
 }
 
 -(void)addSublayer:(CALayer *)layer {
-   [_sublayers addObject:layer];
-   [layer _setSuperLayer:self];
+   [self setSublayers:[_sublayers arrayByAddingObject:layer]];
 }
 
 -(void)display {

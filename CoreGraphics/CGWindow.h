@@ -25,9 +25,11 @@ typedef enum {
 
 -(O2Context *)cgContext;
 
+-(unsigned)styleMask;
+
 -(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
--(void)setFrame:(NSRect)frame;
+-(void)setFrame:(CGRect)frame;
 -(void)setOpaque:(BOOL)value;
 -(void)setAlphaValue:(CGFloat)value;
 -(void)setHasShadow:(BOOL)value;

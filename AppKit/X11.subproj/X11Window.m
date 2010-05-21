@@ -15,9 +15,14 @@
 #import <Foundation/NSException.h>
 #import "O2Context_cairo.h"
 #import <Onyx2D/O2Surface.h>
-#import <QuartzCore/CARenderer.h>
+#import <QuartzCore/CAWindowOpenGLContext.h>
 
-CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,XVisualInfo *vis,Window window,CGLContextObj *resultp);
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right) {
+   *top=0;
+   *left=0;
+   *bottom=0;
+   *right=0;
+}
 
 @implementation X11Window
 
@@ -165,6 +170,10 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,
    }
 }
 
+-(Window)windowHandle {
+   return _window;
+}
+
 -(O2Context *)createCGContextIfNeeded {
    if(_context==nil)
     _context=[O2Context createContextWithSize:_frame.size window:self];
@@ -284,45 +293,37 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,Display *dpy,
    return NO;
 }
 
--(CGLContextObj)createCGLContextObjIfNeeded {
+CGL_EXPORT CGLError CGLCreateContextForWindow(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLContextObj *resultp,Display *display,XVisualInfo *visualInfo,Window window);
+
+-(void)createCGLContextObjIfNeeded {
    if(_cglContext==NULL){
     CGLError error;
-
-    if((error=CGLCreateContext(NULL,_display,_visualInfo,_window,&_cglContext))!=kCGLNoError)
-     NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
+    
+    if((error=CGLCreateContextForWindow(NULL,NULL,&_cglContext,_display,_visualInfo,_window))!=kCGLNoError)
+     NSLog(@"glXCreateContext failed at %s %d with error %d",__FILE__,__LINE__,error);
+   }
+   if(_cglContext!=NULL && _caContext==NULL){
+    _caContext=[[CAWindowOpenGLContext alloc] initWithCGLContext:_cglContext];
    }
    
-   return _cglContext;
 }
 
 -(void)openGLFlushBuffer {
    CGLError error;
    
    [self createCGLContextObjIfNeeded];
-   
-   if((error=CGLSetCurrentContext(_cglContext))!=kCGLNoError)
-    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
+   if(_caContext==NULL)
+    return;
 
    O2Surface *surface=[_backingContext surface];
    size_t width=O2ImageGetWidth(surface);
    size_t height=O2ImageGetHeight(surface);
 
-// prepare
-    glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
-
-// reshape
-   glViewport(0,0,width,height);
-   glMatrixMode(GL_PROJECTION);                      
-   glLoadIdentity();
-   glOrtho (0, width, 0, height, -1, 1);
-
-   CARenderer *renderer=[CARenderer rendererWithCGLContext:_cglContext options:nil];
-
-   [renderer renderWithSurface:surface];
+   [_caContext prepareViewportWidth:width height:height];
+   [_caContext renderSurface:surface];
    
    glFlush();
-   glXSwapBuffers(_display, _window);
+   glXSwapBuffers(_display,_window);
 }
 
 -(void)flushBuffer {

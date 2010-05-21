@@ -174,12 +174,6 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 
 	NSScreen *screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:visibleFrame] autorelease];
 
-#ifdef MONITORINFOF_PRIMARY
-#warning MONITORINFOF_PRIMARY now defined
-#else
-#define MONITORINFOF_PRIMARY 0x01
-#endif
-
    if (info.dwFlags & MONITORINFOF_PRIMARY) [array insertObject:screen atIndex:0];
    else [array addObject:screen];
 

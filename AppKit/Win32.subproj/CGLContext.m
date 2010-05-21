@@ -10,6 +10,10 @@
 
 #import "opengl_dll.h"
 
+#ifndef PFD_SUPPORT_COMPOSITION
+#define PFD_SUPPORT_COMPOSITION 0x00008000
+#endif
+
 struct _CGLContextObj {
    GLuint           retainCount;
    CRITICAL_SECTION lock; // FIXME: this should be converted to the OS*Lock* functions when they appear
@@ -50,6 +54,9 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
     return MA_NOACTIVATE;
 
    if(message==WM_ACTIVATE)
+    return 1;
+
+   if(message==WM_ERASEBKGND)
     return 1;
         
    return DefWindowProc(handle,message,wParam,lParam);
@@ -123,7 +130,8 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_GENERIC_ACCELERATED|PFD_DOUBLEBUFFER;
    pfd->iLayerType=PFD_MAIN_PLANE;
    pfd->iPixelType=PFD_TYPE_RGBA;
-
+   pfd->cColorBits=32;
+   
    for(i=0;pixelFormat->attributes[i]!=0;i++){
     CGLPixelFormatAttribute attribute=pixelFormat->attributes[i];
 
@@ -173,7 +181,7 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 
    InitializeCriticalSection(&(result->lock));
    
-   result->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP,0,0,1,1,NULL,NULL,GetModuleHandle(NULL),NULL);
+   result->window=CreateWindowEx(0,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,1,1,NULL,NULL,GetModuleHandle(NULL),NULL);
    SetWindowPos(result->window,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
 
    result->dc=GetDC(result->window);
@@ -361,14 +369,15 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
     int    bytesPerRow=pixelsWide*4;
     GLuint bufferId;
 
-  // glFinish(); supposedly this is not needed with glReadPixels
-  
     GLint mode;
+
     opengl_glGetIntegerv(GL_DRAW_BUFFER,&mode);
     opengl_glReadBuffer(mode);
-    
-    opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,context->imagePixelData);
-    
+
+// GL_UNSIGNED_INT_8_8_8_8_REV does not work on Vista, bad enumeration (??).
+//  opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,context->imagePixelData);
+    opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_BYTE,context->imagePixelData);
+
     int r,c;
     unsigned char *imageRow=context->imagePixelData;
     

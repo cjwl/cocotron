@@ -4,10 +4,15 @@
 
 @implementation CARenderer
 
-#if 0
-@synthesize bounds=_bounds;
+-(CGRect)bounds {
+   return _bounds;
+}
+
+-(void)setBounds:(CGRect)value {
+   _bounds=value;
+}
+
 @synthesize layer=_rootLayer;
-#endif
 
 -initWithCGLContext:(void *)cglContext options:(NSDictionary *)options {
    _cglContext=cglContext;

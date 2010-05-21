@@ -15,7 +15,7 @@ enum {
 
 @interface CALayer : NSObject {
    CALayer      *_superLayer;
-   NSMutableArray *_sublayers;
+   NSArray      *_sublayers;
    id            _delegate;
    CGRect        _frame;
    CGRect        _bounds;
@@ -31,7 +31,7 @@ enum {
 
 @property(readonly) CALayer *superLayer;
 @property(copy) NSArray *sublayers;
-@property id delegate;
+@property(assign) id delegate;
 @property CGRect frame;
 @property CGRect bounds;
 @property float opacity;

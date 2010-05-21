@@ -771,6 +771,14 @@
 		FEC11B960FD4B4D600082282 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B970FD4B4D600082282 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
 		FEC11BA50FD4B83E00082282 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FED56E8411A2D8E200D6D09B /* CGGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FED56E8211A2D8E200D6D09B /* CGGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED56E8511A2D8E200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E8311A2D8E200D6D09B /* CGGradient.m */; };
+		FED56E8611A2D8E200D6D09B /* CGGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FED56E8211A2D8E200D6D09B /* CGGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED56E8711A2D8E200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E8311A2D8E200D6D09B /* CGGradient.m */; };
+		FED56E8811A2D8E200D6D09B /* CGGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FED56E8211A2D8E200D6D09B /* CGGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED56E8911A2D8E200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E8311A2D8E200D6D09B /* CGGradient.m */; };
+		FED56E8A11A2D8E200D6D09B /* CGGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FED56E8211A2D8E200D6D09B /* CGGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED56E8B11A2D8E200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E8311A2D8E200D6D09B /* CGGradient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1223,6 +1231,8 @@
 		FEC11AE50FD4B4D600082282 /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VGmath.h; path = ../Onyx2D/VGmath.h; sourceTree = "<group>"; };
 		FEC11AE60FD4B4D600082282 /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VGPath.h; path = ../Onyx2D/VGPath.h; sourceTree = "<group>"; };
 		FEC11AE70FD4B4D600082282 /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VGPath.m; path = ../Onyx2D/VGPath.m; sourceTree = "<group>"; };
+		FED56E8211A2D8E200D6D09B /* CGGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGGradient.h; sourceTree = "<group>"; };
+		FED56E8311A2D8E200D6D09B /* CGGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGradient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1281,6 +1291,8 @@
 				FE8C020A10C59BB300FE4072 /* CGImageDestination.h */,
 				FE8C020B10C59BB300FE4072 /* CGImageDestination.m */,
 				FEC11A380FD4B4D600082282 /* CGAffineTransform.h */,
+				FED56E8211A2D8E200D6D09B /* CGGradient.h */,
+				FED56E8311A2D8E200D6D09B /* CGGradient.m */,
 				FEC11A390FD4B4D600082282 /* CGAffineTransform.m */,
 				FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */,
 				FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */,
@@ -1661,6 +1673,7 @@
 				FE8C021010C59BB300FE4072 /* CGImageDestination.h in Headers */,
 				FE8C021210C59BB300FE4072 /* O2Encoder_TIFF.h in Headers */,
 				FE8C021410C59BB300FE4072 /* O2ImageDestination.h in Headers */,
+				FED56E8411A2D8E200D6D09B /* CGGradient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1766,6 +1779,7 @@
 				FE5A87DE10C6F286005E348A /* CGImageDestination.h in Headers */,
 				FE5A87DF10C6F286005E348A /* O2Encoder_TIFF.h in Headers */,
 				FE5A87E010C6F286005E348A /* O2ImageDestination.h in Headers */,
+				FED56E8A11A2D8E200D6D09B /* CGGradient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1871,6 +1885,7 @@
 				FE8C021610C59BB300FE4072 /* CGImageDestination.h in Headers */,
 				FE8C021810C59BB300FE4072 /* O2Encoder_TIFF.h in Headers */,
 				FE8C021A10C59BB300FE4072 /* O2ImageDestination.h in Headers */,
+				FED56E8611A2D8E200D6D09B /* CGGradient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1976,6 +1991,7 @@
 				FE8C021C10C59BB300FE4072 /* CGImageDestination.h in Headers */,
 				FE8C021E10C59BB300FE4072 /* O2Encoder_TIFF.h in Headers */,
 				FE8C022010C59BB300FE4072 /* O2ImageDestination.h in Headers */,
+				FED56E8811A2D8E200D6D09B /* CGGradient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2372,6 +2388,7 @@
 				FE8C021110C59BB300FE4072 /* CGImageDestination.m in Sources */,
 				FE8C021310C59BB300FE4072 /* O2Encoder_TIFF.m in Sources */,
 				FE8C021510C59BB300FE4072 /* O2ImageDestination.m in Sources */,
+				FED56E8511A2D8E200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2471,6 +2488,7 @@
 				FE5A883C10C6F286005E348A /* CGImageDestination.m in Sources */,
 				FE5A883D10C6F286005E348A /* O2Encoder_TIFF.m in Sources */,
 				FE5A883E10C6F286005E348A /* O2ImageDestination.m in Sources */,
+				FED56E8B11A2D8E200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2570,6 +2588,7 @@
 				FE8C021710C59BB300FE4072 /* CGImageDestination.m in Sources */,
 				FE8C021910C59BB300FE4072 /* O2Encoder_TIFF.m in Sources */,
 				FE8C021B10C59BB300FE4072 /* O2ImageDestination.m in Sources */,
+				FED56E8711A2D8E200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2669,6 +2688,7 @@
 				FE8C021D10C59BB300FE4072 /* CGImageDestination.m in Sources */,
 				FE8C021F10C59BB300FE4072 /* O2Encoder_TIFF.m in Sources */,
 				FE8C022110C59BB300FE4072 /* O2ImageDestination.m in Sources */,
+				FED56E8911A2D8E200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
