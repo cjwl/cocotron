@@ -12,17 +12,19 @@
 #import <GL/glx.h>
 #import <OpenGL/OpenGL.h>
 
-@class O2Context_cairo, X11Display;
+@class O2Context_cairo, X11Display,CAWindowOpenGLContext;
 
 @interface X11Window : CGWindow {
-   Display *_display;
+   Display     *_display;
    XVisualInfo *_visualInfo;
-   Window   _window;
+   Window       _window;
+   CGLContextObj _cglContext;
+   CAWindowOpenGLContext *_caContext;
+
    id       _delegate;
    CGSBackingStoreType  _backingType;
    O2Context    *_backingContext;
    O2Context    *_context;
-   CGLContextObj _cglContext;
    
    NSMutableDictionary *_deviceDictionary;
    O2Rect _frame;
@@ -36,6 +38,10 @@
 -(NSPoint)transformPoint:(NSPoint)pos;
 -(O2Rect)transformFrame:(O2Rect)frame;
 
+-(Window)windowHandle;
+
 -(void)frameChanged;
 
 @end
+
+void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *left,CGFloat *bottom,CGFloat *right);

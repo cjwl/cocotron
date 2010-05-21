@@ -26,9 +26,9 @@
 		FE0FB9C810F9815300EBA597 /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE255FF210F10397005CE23E /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE7AA0ED10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE7AA0EE10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE7AA0EF10F97A6700FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE7AA0ED10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE7AA0EE10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE7AA0EF10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3F2131133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3F2141133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3F2151133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -147,8 +147,8 @@
 		FE0FB9B910F9815300EBA597 /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIVector.m; sourceTree = "<group>"; };
 		FE255FEF10F10397005CE23E /* CoreImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreImage.h; sourceTree = "<group>"; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
-		FE7AA0EB10F97A2A00FEDD9C /* CABackingRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABackingRenderer.m; sourceTree = "<group>"; };
-		FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABackingRenderer.h; sourceTree = "<group>"; };
+		FE7AA0EB10F97A2A00FEDD9C /* CAWindowOpenGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAWindowOpenGLContext.m; sourceTree = "<group>"; };
+		FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAWindowOpenGLContext.h; sourceTree = "<group>"; };
 		FEA3F2121133089500690AA2 /* CIAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIAffineTransform.h; sourceTree = "<group>"; };
 		FEC3ED7710E1270C00511C18 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARenderer.m; sourceTree = "<group>"; };
 		FECA81A110EBB231003472F1 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,8 +214,8 @@
 				FE0FB9B810F9815300EBA597 /* CIVector.h */,
 				FE0FB9B910F9815300EBA597 /* CIVector.m */,
 				FE255FEF10F10397005CE23E /* CoreImage.h */,
-				FE7AA0EC10F97A6700FEDD9C /* CABackingRenderer.h */,
-				FE7AA0EB10F97A2A00FEDD9C /* CABackingRenderer.m */,
+				FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */,
+				FE7AA0EB10F97A2A00FEDD9C /* CAWindowOpenGLContext.m */,
 				FED38C8D10E13FCC00A2A651 /* CABase.h */,
 				FED38BEA10E12BAB00A2A651 /* CARenderer.h */,
 				FEC3ED7710E1270C00511C18 /* CARenderer.m */,
@@ -308,7 +308,7 @@
 				FE255FF210F10397005CE23E /* CoreImage.h in Headers */,
 				FED38BEB10E12BAB00A2A651 /* CARenderer.h in Headers */,
 				FED38C8E10E13FCC00A2A651 /* CABase.h in Headers */,
-				FE7AA0ED10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
+				FE7AA0ED10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */,
 				FE0FB9BA10F9815300EBA597 /* CIColor.h in Headers */,
 				FE0FB9BB10F9815300EBA597 /* CIContext.h in Headers */,
 				FE0FB9BC10F9815300EBA597 /* CIFilter.h in Headers */,
@@ -328,7 +328,7 @@
 				FECA819B10EBB231003472F1 /* QuartzCore.h in Headers */,
 				FECA819C10EBB231003472F1 /* CARenderer.h in Headers */,
 				FECA819D10EBB231003472F1 /* CABase.h in Headers */,
-				FE7AA0EF10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
+				FE7AA0EF10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */,
 				FE0FB9AE10F9814400EBA597 /* CoreImage.h in Headers */,
 				FE0FB9C410F9815300EBA597 /* CIColor.h in Headers */,
 				FE0FB9C510F9815300EBA597 /* CIContext.h in Headers */,
@@ -349,7 +349,7 @@
 				FED38C4810E13E1000A2A651 /* QuartzCore.h in Headers */,
 				FED38C4910E13E1000A2A651 /* CARenderer.h in Headers */,
 				FED38C8F10E13FCC00A2A651 /* CABase.h in Headers */,
-				FE7AA0EE10F97A6700FEDD9C /* CABackingRenderer.h in Headers */,
+				FE7AA0EE10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */,
 				FE0FB9AD10F9814400EBA597 /* CoreImage.h in Headers */,
 				FE0FB9BF10F9815300EBA597 /* CIColor.h in Headers */,
 				FE0FB9C010F9815300EBA597 /* CIContext.h in Headers */,

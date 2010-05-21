@@ -29,6 +29,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(unsigned)styleMask {
+   O2InvalidAbstractInvocation();
+   return 0;
+}
 
 -(void)setStyleMask:(unsigned)mask {
    O2InvalidAbstractInvocation();
@@ -38,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
--(void)setFrame:(NSRect)frame {
+-(void)setFrame:(CGRect)frame {
    O2InvalidAbstractInvocation();
 }
 

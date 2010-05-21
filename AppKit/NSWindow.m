@@ -1575,7 +1575,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     _flushNeeded=NO;
     BOOL doFlush=YES;
     
-    if(([self styleMask]==NSBorderlessWindowMask) && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
      doFlush=NO;
     
     if(doFlush)

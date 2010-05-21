@@ -1,6 +1,8 @@
 #import <OpenGL/OpenGL.h>
 #import <Foundation/NSString.h>
 #import "X11Display.h"
+#import "X11Window.h"
+#import <Foundation/NSRaise.h>
 
 #import <X11/X.h>
 #import <X11/Xlib.h>
@@ -11,9 +13,9 @@
 struct _CGLContextObj {
    GLuint           retainCount;
    pthread_mutex_t lock;
-   Window       window;
    Display     *display;
-   XVisualInfo *vis;
+   XVisualInfo *visualInfo;
+   Window       window;
    GLXContext   glc;
    int          x,y,w,h;
    GLint        opacity;
@@ -39,13 +41,13 @@ static pthread_key_t cglThreadKey(){
    return cglContextKey;
 }
 
-CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
+CGLContextObj CGLGetCurrentContext(void) {
    CGLContextObj result=pthread_getspecific(cglThreadKey());
    
    return result;
 }
 
-CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
+CGLError CGLSetCurrentContext(CGLContextObj context) {
    pthread_setspecific(cglThreadKey(), context);
       
    if(context==NULL)
@@ -90,7 +92,7 @@ static GLint *attributesFromPixelFormat(CGLPixelFormatObj pixelFormat){
    GLint *result=malloc(resultCapacity*sizeof(GLint));
    int  i,virtualScreen=0;
    
-   attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_RGBA);
+   result=addAttribute(result,&resultCapacity,&resultCount,GLX_RGBA);
 
    for(i=0;pixelFormat->attributes[i]!=0;i++){
     CGLPixelFormatAttribute attribute=pixelFormat->attributes[i];
@@ -101,117 +103,115 @@ static GLint *attributesFromPixelFormat(CGLPixelFormatObj pixelFormat){
     switch(attribute){
     
      case kCGLPFAColorSize:
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_RED_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/3);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_GREEN_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/3);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_BLUE_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/3);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_RED_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/3);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_GREEN_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/3);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_BLUE_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/3);
       break;
       
      case kCGLPFAAlphaSize:
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_ALPHA_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_ALPHA_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
       break;
       
      case kCGLPFAAccumSize:
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_ACCUM_RED_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_ACCUM_GREEN_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_ACCUM_BLUE_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_ACCUM_ALPHA_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_ACCUM_RED_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_ACCUM_GREEN_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_ACCUM_BLUE_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_ACCUM_ALPHA_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]/4);
       break;
       
      case kCGLPFADepthSize:
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_DEPTH_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_DEPTH_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
       break;
       
      case kCGLPFAStencilSize:
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_STENCIL_SIZE);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_STENCIL_SIZE);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
       break;
       
      case kCGLPFAAuxBuffers:
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,GLX_AUX_BUFFERS);
-      attribList=addAttribute(attribList,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
+      result=addAttribute(result,&resultCapacity,&resultCount,GLX_AUX_BUFFERS);
+      result=addAttribute(result,&resultCapacity,&resultCount,pixelFormat->attributes[i]);
       break;
     }
     
    }
-   attribList=addAttribute(attribList,&resultCapacity,&resultCount,None);
+   result=addAttribute(result,&resultCapacity,&resultCount,None);
+   
+   return result;
 }
 
-CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLContextObj *resultp) {
-   CGLContextObj result=malloc(sizeof(struct _CGLContextObj));
-   GLint        *attribList=attributesFromPixelFormat(pixelFormat);
+CGLError CGLCreateContextForWindow(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLContextObj *resultp,Display *display,XVisualInfo *visualInfo,Window window) {
+   CGLContextObj context=malloc(sizeof(struct _CGLContextObj));
+
+   context->retainCount=1;
+   pthread_mutex_init(&(context->lock),NULL);
+   context->display=display;
+   context->visualInfo=visualInfo;
+   context->window=window;
+   context->glc=glXCreateContext(context->display,context->visualInfo,NULL,GL_TRUE);
+   context->x=0;
+   context->y=0;
+   context->w=1;
+   context->h=1;
+   context->opacity=1;
+   context->windowNumber=0;
    
-   result->display=[(X11Display*)[NSDisplay currentDisplay] display];
-   
-   int screen = DefaultScreen(_display);
-      
-   if((_visualInfo=glXChooseVisual(_display,screen,att))==NULL){
-    NSLog(@"glXChooseVisual failed");
-    return kCGLBadDisplay;
-   }
-
-
-
-   if(vis==NULL)
-    return kCGLBadDisplay;
-    
-    
-    
-      
-      Colormap cmap = XCreateColormap(_display, RootWindow(_display, _visualInfo->screen), _visualInfo->visual, AllocNone);
-
-      if(cmap<0){
-       NSLog(@"XCreateColormap failed");
-       [self dealloc];
-       return nil;
-      }
-      
-      XSetWindowAttributes xattr;
-      
-      bzero(&xattr,sizeof(xattr));
-      
-      xattr.colormap=cmap;
-      xattr.border_pixel = 0;                                                           
-      xattr.event_mask = ExposureMask | KeyPressMask | ButtonPressMask | StructureNotifyMask;
-                                            
-      NSRect frame=[view frame];
-    
-       Window parent=[(X11Window*)[[view window] platformWindow] drawable];
-       
-       if(parent==0)
-        parent=RootWindow(_display, _visualInfo->screen);
-        
-      _window = XCreateWindow(_display,parent, frame.origin.x, frame.origin.y, frame.size.width,frame.size.height, 0, _visualInfo->depth, InputOutput, _visualInfo->visual, CWBorderPixel | CWColormap | CWEventMask, &xattr);
-      
-      
-     // XSetWindowBackgroundPixmap(_display, _window, None);
-     // [X11Window removeDecorationForWindow:_window onDisplay:_display];
-      
-      XMapWindow(_display, _window);
-
-    
-    
-    
-   
-   pthread_mutex_init(&(result->lock),NULL);
-   result->display=display;
-   result->vis=vis;
-   result->window=window;
-   result->glc=glXCreateContext(result->display,result->vis,NULL,GL_TRUE);
-   *resultp=result;
+   *resultp=context;
    
    return kCGLNoError;
 }
 
-CGL_EXPORT CGLContextObj CGLRetainContext(CGLContextObj context) {
+CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLContextObj *resultp) {
+   Display    *display=[(X11Display*)[NSDisplay currentDisplay] display];
+   XVisualInfo*visualInfo;
+   Window      window;
+   GLint      *attribList=attributesFromPixelFormat(pixelFormat);
+   int         screen=DefaultScreen(display);
+      
+   if((visualInfo=glXChooseVisual(display,screen,attribList))==NULL){
+    NSLog(@"glXChooseVisual failed");
+    return kCGLBadDisplay;
+   }
+
+   if(visualInfo==NULL)
+    return kCGLBadDisplay;
+    
+   Colormap cmap = XCreateColormap(display, RootWindow(display, visualInfo->screen), visualInfo->visual, AllocNone);
+
+   if(cmap<0){
+    NSLog(@"XCreateColormap failed");
+    return kCGLBadDisplay;
+   }
+      
+   XSetWindowAttributes xattr={0};
+
+   xattr.colormap=cmap;
+   xattr.border_pixel = 0;                                                           
+   xattr.event_mask = ExposureMask | KeyPressMask | ButtonPressMask | StructureNotifyMask;
+                                                
+   Window parent=RootWindow(display, visualInfo->screen);
+        
+   window = XCreateWindow(display,parent, 0, 0, 1,1, 0, visualInfo->depth, InputOutput, visualInfo->visual, CWBorderPixel | CWColormap | CWEventMask, &xattr);
+      
+   // XSetWindowBackgroundPixmap(_display, _window, None);
+   // [X11Window removeDecorationForWindow:_window onDisplay:_display];
+      
+   XMapWindow(display, window);
+
+   return CGLCreateContextForWindow(pixelFormat,share,resultp,display,visualInfo,window);
+   
+}
+
+CGLContextObj CGLRetainContext(CGLContextObj context) {
    if(context==NULL)
     return NULL;
 
@@ -219,7 +219,7 @@ CGL_EXPORT CGLContextObj CGLRetainContext(CGLContextObj context) {
    return context;
 }
 
-CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
+void CGLReleaseContext(CGLContextObj context) {
    if(context==NULL)
     return;
     
@@ -229,8 +229,8 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
     if(CGLGetCurrentContext()==context)
      CGLSetCurrentContext(NULL);
     
-   if(_window)
-      XDestroyWindow(_display, _window);
+   if(context->window)
+      XDestroyWindow(context->display, context->window);
 
     pthread_mutex_destroy(&(context->lock));
     glXDestroyContext(context->display, context->glc);
@@ -239,25 +239,25 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
    
 }
 
-CGL_EXPORT GLuint CGLGetContextRetainCount(CGLContextObj context) {
+GLuint CGLGetContextRetainCount(CGLContextObj context) {
    if(context==NULL)
     return 0;
 
    return context->retainCount;
 }
 
-CGL_EXPORT CGLError CGLDestroyContext(CGLContextObj context) {
+CGLError CGLDestroyContext(CGLContextObj context) {
    CGLReleaseContext(context);
 
    return kCGLNoError;
 }
 
-CGL_EXPORT CGLError CGLLockContext(CGLContextObj context) {
+CGLError CGLLockContext(CGLContextObj context) {
    pthread_mutex_lock(&(context->lock));
    return kCGLNoError;
 }
 
-CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
+CGLError CGLUnlockContext(CGLContextObj context) {
    pthread_mutex_unlock(&(context->lock));
    return kCGLNoError;
 }
@@ -266,7 +266,7 @@ static bool usesChildWindow(CGLContextObj context){
    return (context->opacity!=0)?TRUE:FALSE;
 }
 
-static void adjustFrameInParent(CGLContextObj context,Win32Window *parentWindow,GLint *x,GLint *y,GLint *w,GLint *h){
+static void adjustFrameInParent(CGLContextObj context,X11Window *parentWindow,GLint *x,GLint *y,GLint *w,GLint *h){
    if(parentWindow!=nil){
     CGFloat top,left,bottom,right;
 
@@ -286,25 +286,18 @@ static void adjustInParentForSurfaceOpacity(CGLContextObj context){
    GLint h=context->h;
 
    if(usesChildWindow(context)){
-    Win32Window *parentWindow=[Win32Window windowWithWindowNumber:context->windowNumber];
-    HWND         parentHandle=[parentWindow windowHandle];
+    X11Window *parentWindow=[X11Window windowWithWindowNumber:context->windowNumber];
+    Window     parentHandle=[parentWindow windowHandle];
    
-    SetProp(context->window,"self",parentWindow);
-    SetParent(context->window,parentHandle);
-    ShowWindow(context->window,SW_SHOWNOACTIVATE);
-
     adjustFrameInParent(context,parentWindow,&x,&y,&w,&h);
-   }
-   else {
-    ShowWindow(context->window,SW_HIDE);
-    SetProp(context->window,"self",NULL);
-    SetParent(context->window,NULL);
-   }
 
-   MoveWindow(context->window,x,y,w,h,NO);
+    XReparentWindow(context->display, parentHandle, context->window, x, y);
+   }
+   
+   XMoveResizeWindow(context->display,context->window, x, y, w, h);
 }
 
-CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
+CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
    switch(parameter){
     
     case kCGLCPSurfaceFrame:;
@@ -312,14 +305,6 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      context->y=value[1];
      context->w=value[2];
      context->h=value[3];
-
-     if(context->imagePixelData!=NULL){
-      [context->dibSection release];
-      context->imagePixelData=NULL;
-     }
-     
-     context->dibSection=[[O2DeviceContext_gdiDIBSection alloc] initWithWidth:context->w height:-context->h deviceContext:nil];
-     context->imagePixelData=[context->dibSection bitmapBytes];
      adjustInParentForSurfaceOpacity(context);     
      break;
     
@@ -339,33 +324,9 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
    }
   
    return kCGLNoError;
-
-
-
-
-
-
-
-   NSRect frame=[view frame];
-   frame=[[view superview] convertRect:frame toView:nil];
-
-   X11Window *wnd=(X11Window*)[[view window] platformWindow];
-   NSRect wndFrame=[wnd frame];
-   
-   frame.origin.y=wndFrame.size.height-(frame.origin.y+frame.size.height);
-   
-   XMoveResizeWindow(_display, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
-   Window viewWindow=[(X11Window*)[[view window] platformWindow] drawable];
-   if(_lastParent!=viewWindow) {
-      XReparentWindow(_display, _window, viewWindow, frame.origin.x, frame.origin.y);
-      _lastParent=viewWindow;
-   }
-
-
-   return kCGLNoError;
 }
 
-CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter parameter,GLint *value) { 
+CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter parameter,GLint *value) { 
    switch(parameter){
    
     case kCGLCPSurfaceOpacity:
@@ -380,7 +341,8 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   glXSwapBuffers(_display, _window);
+   glXSwapBuffers(context->display,context->window);
+   return kCGLNoError;
 }
 
 static int attributesCount(const CGLPixelFormatAttribute *attributes){
@@ -437,7 +399,7 @@ GLuint CGLGetPixelFormatRetainCount(CGLPixelFormatObj pixelFormat) {
    return pixelFormat->retainCount;
 }
 
-CGL_EXPORT CGLError CGLDescribePixelFormat(CGLPixelFormatObj pixelFormat,GLint screenNumber,CGLPixelFormatAttribute attribute,GLint *valuesp) {
+CGLError CGLDescribePixelFormat(CGLPixelFormatObj pixelFormat,GLint screenNumber,CGLPixelFormatAttribute attribute,GLint *valuesp) {
    int i;
    
    for(i=0;pixelFormat->attributes[i]!=0;i++){

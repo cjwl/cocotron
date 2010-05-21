@@ -3007,18 +3007,18 @@
 		FE6EE28F0DB91FDF005503A1 /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE28D0DB91FDF005503A1 /* O2Surface.m */; };
 		FE6EE2E50DB92B11005503A1 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE2E30DB92B11005503A1 /* VGPath.h */; };
 		FE6EE2E60DB92B11005503A1 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE2E40DB92B11005503A1 /* VGPath.m */; };
-		FE7AA0CD10F9788100FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CABackingRenderer.h */; };
-		FE7AA0CE10F9788100FEDD9C /* CABackingRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CABackingRenderer.m */; };
+		FE7AA0CD10F9788100FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */; };
+		FE7AA0CE10F9788100FEDD9C /* CAWindowOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */; };
 		FE7AA13110F97E3300FEDD9C /* CALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3110E13DCA00A2A651 /* CALayer.m */; };
 		FE7AA13210F97E3300FEDD9C /* CARenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3210E13DCA00A2A651 /* CARenderer.m */; };
 		FE7AA13310F97E3300FEDD9C /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3310E13DCA00A2A651 /* CATransform3D.m */; };
-		FE7AA13410F97E3300FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CABackingRenderer.h */; };
-		FE7AA13510F97E3300FEDD9C /* CABackingRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CABackingRenderer.m */; };
+		FE7AA13410F97E3300FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */; };
+		FE7AA13510F97E3300FEDD9C /* CAWindowOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */; };
 		FE7AA13610F97E3300FEDD9C /* CALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3110E13DCA00A2A651 /* CALayer.m */; };
 		FE7AA13710F97E3300FEDD9C /* CARenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3210E13DCA00A2A651 /* CARenderer.m */; };
 		FE7AA13810F97E3300FEDD9C /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3310E13DCA00A2A651 /* CATransform3D.m */; };
-		FE7AA13910F97E3300FEDD9C /* CABackingRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CABackingRenderer.h */; };
-		FE7AA13A10F97E3300FEDD9C /* CABackingRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CABackingRenderer.m */; };
+		FE7AA13910F97E3300FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */; };
+		FE7AA13A10F97E3300FEDD9C /* CAWindowOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */; };
 		FE7ABEBE0DC2C9BA0060D15B /* CGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7ABEBD0DC2C9BA0060D15B /* CGPDFDocument.m */; };
 		FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		FE8286800D34727900F7489F /* NSSystemInfoPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8286780D34727900F7489F /* NSSystemInfoPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3663,6 +3663,15 @@
 		FED38C3410E13DCA00A2A651 /* CALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3110E13DCA00A2A651 /* CALayer.m */; };
 		FED38C3510E13DCA00A2A651 /* CARenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3210E13DCA00A2A651 /* CARenderer.m */; };
 		FED38C3610E13DCA00A2A651 /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3310E13DCA00A2A651 /* CATransform3D.m */; };
+		FED56E6511A2D87200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E6411A2D87100D6D09B /* CGGradient.m */; };
+		FED56E6611A2D87200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E6411A2D87100D6D09B /* CGGradient.m */; };
+		FED56E6711A2D87200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E6411A2D87100D6D09B /* CGGradient.m */; };
+		FED56E6811A2D87200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E6411A2D87100D6D09B /* CGGradient.m */; };
+		FED56E6911A2D87200D6D09B /* CGGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FED56E6411A2D87100D6D09B /* CGGradient.m */; };
+		FED56E6A11A2D89400D6D09B /* CALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3110E13DCA00A2A651 /* CALayer.m */; };
+		FED56E6B11A2D89900D6D09B /* CARenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3210E13DCA00A2A651 /* CARenderer.m */; };
+		FED56E6C11A2D89E00D6D09B /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3310E13DCA00A2A651 /* CATransform3D.m */; };
+		FED56E6D11A2D8A200D6D09B /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */; };
 		FEDF951F0CAF43E7009DC96F /* O2PDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* O2PDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDF95200CAF43E7009DC96F /* O2PDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* O2PDFContext.m */; };
 		FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
@@ -4673,8 +4682,8 @@
 		FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextAttachmentCell.m; sourceTree = "<group>"; };
 		FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTypesetter_concrete.h; sourceTree = "<group>"; };
 		FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTypesetter_concrete.m; sourceTree = "<group>"; };
-		FE7AA0CB10F9788100FEDD9C /* CABackingRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CABackingRenderer.h; path = ../QuartzCore/CABackingRenderer.h; sourceTree = SOURCE_ROOT; };
-		FE7AA0CC10F9788100FEDD9C /* CABackingRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CABackingRenderer.m; path = ../QuartzCore/CABackingRenderer.m; sourceTree = SOURCE_ROOT; };
+		FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAWindowOpenGLContext.h; path = ../QuartzCore/CAWindowOpenGLContext.h; sourceTree = SOURCE_ROOT; };
+		FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAWindowOpenGLContext.m; path = ../QuartzCore/CAWindowOpenGLContext.m; sourceTree = SOURCE_ROOT; };
 		FE7ABEBD0DC2C9BA0060D15B /* CGPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFDocument.m; sourceTree = "<group>"; };
 		FE8286770D34727900F7489F /* NSApplicationIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSApplicationIcon.tiff; sourceTree = "<group>"; };
 		FE8286780D34727900F7489F /* NSSystemInfoPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSystemInfoPanel.h; sourceTree = "<group>"; };
@@ -4767,6 +4776,7 @@
 		FED38C3210E13DCA00A2A651 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CARenderer.m; path = ../QuartzCore/CARenderer.m; sourceTree = SOURCE_ROOT; };
 		FED38C3310E13DCA00A2A651 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CATransform3D.m; path = ../QuartzCore/CATransform3D.m; sourceTree = SOURCE_ROOT; };
 		FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QuartzCore.xcodeproj; path = ../QuartzCore/QuartzCore.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FED56E6411A2D87100D6D09B /* CGGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGradient.m; sourceTree = "<group>"; };
 		FEDF951B0CAF43E7009DC96F /* O2PDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2PDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* O2PDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2PDFContext.m; sourceTree = "<group>"; };
 		FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSToolbarOverflowArrow.pdf; sourceTree = "<group>"; };
@@ -5346,6 +5356,7 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FED56E6411A2D87100D6D09B /* CGGradient.m */,
 				FEF0889E10C5B06400D38A2F /* CGImageDestination.m */,
 				FEF4684210895C9800B45195 /* CGConversions.h */,
 				FEAED7A40FD6C9820043F915 /* CGPDFContext.m */,
@@ -6020,8 +6031,8 @@
 				FED38C3110E13DCA00A2A651 /* CALayer.m */,
 				FED38C3210E13DCA00A2A651 /* CARenderer.m */,
 				FED38C3310E13DCA00A2A651 /* CATransform3D.m */,
-				FE7AA0CB10F9788100FEDD9C /* CABackingRenderer.h */,
-				FE7AA0CC10F9788100FEDD9C /* CABackingRenderer.m */,
+				FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */,
+				FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */,
 			);
 			name = QuartzCore;
 			sourceTree = "<group>";
@@ -6411,7 +6422,7 @@
 				FEA2CD2210D6C1C0003C8FF5 /* O2Surface_cairo.h in Headers */,
 				FEA2CD4A10D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131DC10E93C0600FFF5D7 /* X11Event.h in Headers */,
-				FE7AA13910F97E3300FEDD9C /* CABackingRenderer.h in Headers */,
+				FE7AA13910F97E3300FEDD9C /* CAWindowOpenGLContext.h in Headers */,
 				FE20C24A118924A4006F01BA /* NSAccessibility.h in Headers */,
 				FE20C24C118924A4006F01BA /* NSCIImageRep.h in Headers */,
 				FE20C24E118924A4006F01BA /* NSErrors.h in Headers */,
@@ -6790,7 +6801,7 @@
 				FEA2CD2010D6C1C0003C8FF5 /* O2Surface_cairo.h in Headers */,
 				FEA2CD4810D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131DA10E93C0600FFF5D7 /* X11Event.h in Headers */,
-				FE7AA13410F97E3300FEDD9C /* CABackingRenderer.h in Headers */,
+				FE7AA13410F97E3300FEDD9C /* CAWindowOpenGLContext.h in Headers */,
 				FE20C24F118924A4006F01BA /* NSAccessibility.h in Headers */,
 				FE20C251118924A4006F01BA /* NSCIImageRep.h in Headers */,
 				FE20C253118924A4006F01BA /* NSErrors.h in Headers */,
@@ -7168,6 +7179,7 @@
 				FE20C247118924A4006F01BA /* NSCIImageRep.h in Headers */,
 				FE20C249118924A4006F01BA /* NSErrors.h in Headers */,
 				FE20C26711892517006F01BA /* NSNibAXRelationshipConnector.h in Headers */,
+				FED56E6D11A2D8A200D6D09B /* CAWindowOpenGLContext.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7544,7 +7556,7 @@
 				FEA2CD1E10D6C1C0003C8FF5 /* O2Surface_cairo.h in Headers */,
 				FEA2CD4610D6D870003C8FF5 /* O2Context_builtin_FT.h in Headers */,
 				FE9131D810E93C0500FFF5D7 /* X11Event.h in Headers */,
-				FE7AA0CD10F9788100FEDD9C /* CABackingRenderer.h in Headers */,
+				FE7AA0CD10F9788100FEDD9C /* CAWindowOpenGLContext.h in Headers */,
 				FE20C259118924A4006F01BA /* NSAccessibility.h in Headers */,
 				FE20C25B118924A4006F01BA /* NSCIImageRep.h in Headers */,
 				FE20C25D118924A4006F01BA /* NSErrors.h in Headers */,
@@ -8785,7 +8797,7 @@
 				FE7AA13610F97E3300FEDD9C /* CALayer.m in Sources */,
 				FE7AA13710F97E3300FEDD9C /* CARenderer.m in Sources */,
 				FE7AA13810F97E3300FEDD9C /* CATransform3D.m in Sources */,
-				FE7AA13A10F97E3300FEDD9C /* CABackingRenderer.m in Sources */,
+				FE7AA13A10F97E3300FEDD9C /* CAWindowOpenGLContext.m in Sources */,
 				FE20C21511892436006F01BA /* CAAnimation.m in Sources */,
 				FE20C21611892436006F01BA /* CIAffineTransform.m in Sources */,
 				FE20C21711892436006F01BA /* CIColor.m in Sources */,
@@ -8796,6 +8808,7 @@
 				FE20C24B118924A4006F01BA /* NSAccessibility.m in Sources */,
 				FE20C24D118924A4006F01BA /* NSCIImageRep.m in Sources */,
 				FE20C26A11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
+				FED56E6611A2D87200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9144,7 +9157,7 @@
 				FE7AA13110F97E3300FEDD9C /* CALayer.m in Sources */,
 				FE7AA13210F97E3300FEDD9C /* CARenderer.m in Sources */,
 				FE7AA13310F97E3300FEDD9C /* CATransform3D.m in Sources */,
-				FE7AA13510F97E3300FEDD9C /* CABackingRenderer.m in Sources */,
+				FE7AA13510F97E3300FEDD9C /* CAWindowOpenGLContext.m in Sources */,
 				FE20C21C11892436006F01BA /* CAAnimation.m in Sources */,
 				FE20C21D11892436006F01BA /* CIAffineTransform.m in Sources */,
 				FE20C21E11892436006F01BA /* CIColor.m in Sources */,
@@ -9155,6 +9168,7 @@
 				FE20C250118924A4006F01BA /* NSAccessibility.m in Sources */,
 				FE20C252118924A4006F01BA /* NSCIImageRep.m in Sources */,
 				FE20C26C11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
+				FED56E6711A2D87200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9542,6 +9556,10 @@
 				FE20C246118924A4006F01BA /* NSAccessibility.m in Sources */,
 				FE20C248118924A4006F01BA /* NSCIImageRep.m in Sources */,
 				FE20C26811892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
+				FED56E6511A2D87200D6D09B /* CGGradient.m in Sources */,
+				FED56E6A11A2D89400D6D09B /* CALayer.m in Sources */,
+				FED56E6B11A2D89900D6D09B /* CARenderer.m in Sources */,
+				FED56E6C11A2D89E00D6D09B /* CATransform3D.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9892,7 +9910,7 @@
 				FED38C3610E13DCA00A2A651 /* CATransform3D.m in Sources */,
 				FEE7E0B710E26487004A50F8 /* CGLContext.m in Sources */,
 				FE9131D910E93C0600FFF5D7 /* X11Event.m in Sources */,
-				FE7AA0CE10F9788100FEDD9C /* CABackingRenderer.m in Sources */,
+				FE7AA0CE10F9788100FEDD9C /* CAWindowOpenGLContext.m in Sources */,
 				FE20C22A11892436006F01BA /* CAAnimation.m in Sources */,
 				FE20C22B11892436006F01BA /* CIAffineTransform.m in Sources */,
 				FE20C22C11892436006F01BA /* CIColor.m in Sources */,
@@ -9903,6 +9921,7 @@
 				FE20C25A118924A4006F01BA /* NSAccessibility.m in Sources */,
 				FE20C25C118924A4006F01BA /* NSCIImageRep.m in Sources */,
 				FE20C27011892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
+				FED56E6911A2D87200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10159,6 +10178,7 @@
 				FE20C255118924A4006F01BA /* NSAccessibility.m in Sources */,
 				FE20C257118924A4006F01BA /* NSCIImageRep.m in Sources */,
 				FE20C26E11892517006F01BA /* NSNibAXRelationshipConnector.m in Sources */,
+				FED56E6811A2D87200D6D09B /* CGGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10291,6 +10311,7 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
+					"-DWINVER=0x500",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
@@ -10305,6 +10326,7 @@
 					"-lgdi32",
 					"-luser32",
 					"-lcomdlg32",
+					"-lopengl32",
 					"-lcomctl32",
 					"-lwinmm",
 					"-Wl,--enable-auto-import",
@@ -10592,6 +10614,7 @@
 					"-lgdi32",
 					"-luser32",
 					"-lcomdlg32",
+					"-lopengl32",
 					"-lwinmm",
 					"-Wl,--enable-auto-import",
 					"-Wl,--export-all-symbols",

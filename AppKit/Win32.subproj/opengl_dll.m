@@ -135,7 +135,7 @@ void opengl_glReadPixels(GLint x,GLint y,GLsizei width,GLsizei height,GLenum for
    if(function==NULL)
     return;
 
-   return function(x,y,width,height,format,type,pixels);
+   function(x,y,width,height,format,type,pixels);
 }
 
 
