@@ -65,6 +65,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // FIX, not nextstep
     case NSASCIIStringEncoding:
+    case NSNonLossyASCIIStringEncoding:
      return NSNEXTSTEPStringNewWithBytes(NULL,bytes,length);
 
     case NSISOLatin1StringEncoding:
@@ -89,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
 
     default:
-     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"encoding %d not (yet) implemented",encoding); 
+      NSRaiseException(NSInvalidArgumentException,nil,_cmd,@"encoding %d not (yet) implemented",encoding); 
     break;
   }
 

@@ -155,8 +155,8 @@ static void NSDictInsert(NSMutableDictionary_CF *self,const void *key,const void
      void *oldKey=j->key;
      void *oldValue=j->value;
 
-     self->_keyCallBacks.retain(NULL,key);
-     self->_valueCallBacks.retain(NULL,value);
+     key=self->_keyCallBacks.retain(NULL,key);
+     value=self->_valueCallBacks.retain(NULL,value);
      j->key=(void *)key;
      j->value=(void *)value;
      self->_keyCallBacks.release(NULL,oldKey);
@@ -186,8 +186,8 @@ static void NSDictInsert(NSMutableDictionary_CF *self,const void *key,const void
     i=hash%self->_nBuckets;
    }
 
-   self->_keyCallBacks.retain(NULL,key);
-   self->_valueCallBacks.retain(NULL,value);
+   key=self->_keyCallBacks.retain(NULL,key);
+   value=self->_valueCallBacks.retain(NULL,value);
    j=NSZoneMalloc(zone,sizeof(NSDictNode));
    j->key=(void *)key;
    j->value=(void *)value;
@@ -197,9 +197,7 @@ static void NSDictInsert(NSMutableDictionary_CF *self,const void *key,const void
 }
 
 static inline void setValueForKey(NSMutableDictionary_CF *self,const void *value,const void *key){
-   key=self->_keyCallBacks.retain(NULL,key);
    NSDictInsert(self,key,value);
-   self->_keyCallBacks.release(NULL,key);
 }
 
 static inline void setObjectForKey(NSMutableDictionary_CF *self,id object,id key){
