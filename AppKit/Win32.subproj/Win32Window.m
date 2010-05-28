@@ -312,15 +312,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)setFrame:(CGRect)frame {
-   _frame=frame;
-   
-   CGRect moveTo=convertFrameToWin32ScreenCoordinates(_frame);
+   CGRect moveTo=convertFrameToWin32ScreenCoordinates(frame);
 
    _ignoreMinMaxMessage=YES;
    MoveWindow(_handle, moveTo.origin.x, moveTo.origin.y,moveTo.size.width, moveTo.size.height,YES);
    _ignoreMinMaxMessage=NO;
 
    [self invalidateContextsWithNewSize:frame.size];
+   _frame=frame;
 }
 
 -(void)setOpaque:(BOOL)value {
@@ -508,6 +507,18 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 #endif
 
 -(void)flushBuffer {   
+   O2Context           *other=_backingContext;
+   O2DeviceContext_gdi *deviceContext=nil;
+
+   if([other isKindOfClass:[O2Context_gdi class]])
+    deviceContext=[(O2Context_gdi *)other deviceContext];
+   else {
+    O2Surface *surface=[other surface];
+       
+    if([surface isKindOfClass:[O2Surface_DIBSection class]])
+     deviceContext=[(O2Surface_DIBSection *)surface deviceContext];
+   }
+
    if([self isLayeredWindow]){
     BLENDFUNCTION blend;
     BYTE          constantAlpha=MAX(0,MIN(_alphaValue*255,255));
@@ -520,8 +531,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     SIZE sizeWnd = {_frame.size.width, _frame.size.height};
     POINT ptSrc = {0, 0};
     DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
-        
-    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, flags);
+    
+    UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
    }
    else {
     switch(_backingType){
@@ -536,17 +547,6 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
        int                  dstY=0;
        int                  width=_frame.size.width;
        int                  height=_frame.size.height;
-       O2Context           *other=_backingContext;
-       O2DeviceContext_gdi *deviceContext=nil;
-
-       if([other isKindOfClass:[O2Context_gdi class]])
-        deviceContext=[(O2Context_gdi *)other deviceContext];
-       else {
-        O2Surface *surface=[other surface];
-       
-        if([surface isKindOfClass:[O2Surface_DIBSection class]])
-         deviceContext=[(O2Surface_DIBSection *)surface deviceContext];
-       }
        
        CGFloat top,left,bottom,right;
        

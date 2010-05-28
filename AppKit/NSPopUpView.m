@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,8 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Keyboard movement - David Young <daver@geeks.org>
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSPopUpView.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSGraphicsStyle.h>
@@ -181,7 +179,7 @@ enum {
     itemRect=NSInsetRect(itemRect,2,2);
     itemRect.origin.y+=floor((_cellSize.height-size.height)/2);
     itemRect.size.height=size.height;
-     
+   
     [string _clipAndDrawInRect:itemRect withAttributes:attributes];
    }
 }
@@ -225,9 +223,6 @@ enum {
    point=[self convertPoint:point fromView:nil];
    firstLocation=point;
 
-   [self lockFocus];
-   [self drawRect:[self bounds]];
-
    do {
     unsigned index=[self itemIndexForPoint:point];
     NSRect   screenVisible;
@@ -237,14 +232,9 @@ enum {
       unsigned previous=_selectedIndex;
 
       _selectedIndex=index;
-
-      if(previous!=NSNotFound)
-       [self drawItemAtIndex:previous];
-
-	  if( _selectedIndex != NSNotFound )
-        [self drawItemAtIndex:_selectedIndex];
      }
     }
+    [self setNeedsDisplay:YES];
     [[self window] flushWindow];
 
     event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask];
@@ -309,7 +299,6 @@ enum {
 
    }while(state!=STATE_EXIT);
 
-   [self unlockFocus];
    [[self window] setAcceptsMouseMovedEvents: oldAcceptsMouseMovedEvents];
 
    _keyboardUIState = KEYBOARD_INACTIVE;
@@ -338,10 +327,7 @@ enum {
     if ((int)_selectedIndex < 0)
         _selectedIndex = previous;
 
-    if (previous != NSNotFound)
-        [self drawItemAtIndex:previous];
-
-    [self drawItemAtIndex:_selectedIndex];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)moveDown:(id)sender {
@@ -361,10 +347,7 @@ enum {
    if (_selectedIndex >= [items count])
         _selectedIndex = previous;
 
-    if (previous != NSNotFound)
-        [self drawItemAtIndex:previous];
-
-    [self drawItemAtIndex:_selectedIndex];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)cancel:(id)sender {
