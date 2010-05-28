@@ -6532,13 +6532,6 @@
 			remoteGlobalIDString = FE651A9D0FBC84DD00464BFD;
 			remoteInfo = "objc-Darwin-i386 copy";
 		};
-		FE8492F4119A5EA100E252CC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE8492F1119A5EA000E252CC;
-			remoteInfo = "CoreServices-Linux-i386 copy";
-		};
 		FE8492F8119A5EE900E252CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
@@ -8540,7 +8533,6 @@
 				FE1342C91151842200404745 /* CoreServices.framework */,
 				FEC32E56115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6711590A130008ECE5 /* CoreServices.framework */,
-				FE8492F5119A5EA100E252CC /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -12169,13 +12161,6 @@
 			fileType = wrapper.framework;
 			path = objc.framework;
 			remoteRef = FE651AA00FBC84DD00464BFD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE8492F5119A5EA100E252CC /* CoreServices.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CoreServices.framework;
-			remoteRef = FE8492F4119A5EA100E252CC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FEA828AB109B74B200C7A732 /* CoreFoundation.framework */ = {

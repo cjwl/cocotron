@@ -1895,32 +1895,36 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
       [self makeFirstResponder:view];
 // Doing this again seems correct for control cells which put a field editor up when they become first responder but I'm not sure
       view=[_backgroundView hitTest:[event locationInWindow]];
+      _mouseDownLocationInWindow=[event locationInWindow];
       [view mouseDown:event];
      }
      break;
 
     case NSLeftMouseUp:
-     [[_backgroundView hitTest:[event locationInWindow]] mouseUp:event];
+     _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
+     [[_backgroundView hitTest:_mouseDownLocationInWindow] mouseUp:event];
      break;
 
     case NSRightMouseDown:
+      _mouseDownLocationInWindow=[event locationInWindow];
      [[_backgroundView hitTest:[event locationInWindow]] rightMouseDown:event];
      break;
 
     case NSRightMouseUp:
-     [[_backgroundView hitTest:[event locationInWindow]] rightMouseUp:event];
+     _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
+     [[_backgroundView hitTest:_mouseDownLocationInWindow] rightMouseUp:event];
      break;
 
     case NSMouseMoved:
      [[_backgroundView hitTest:[event locationInWindow]] mouseMoved:event];
      break;
 
-    case NSLeftMouseDragged:
-     [[_backgroundView hitTest:[event locationInWindow]] mouseDragged:event];
+    case NSLeftMouseDragged:    
+     [[_backgroundView hitTest:_mouseDownLocationInWindow] mouseDragged:event];
      break;
 
     case NSRightMouseDragged:
-     [[_backgroundView hitTest:[event locationInWindow]] rightMouseDragged:event];
+     [[_backgroundView hitTest:_mouseDownLocationInWindow] rightMouseDragged:event];
      break;
 
     case NSMouseEntered:

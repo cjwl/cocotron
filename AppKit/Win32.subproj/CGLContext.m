@@ -47,8 +47,10 @@ static DWORD cglThreadStorageIndex(){
 }
 
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
-   if(message==WM_PAINT)
+   if(message==WM_PAINT){    
+    ValidateRect(handle, NULL);
     return 1;
+   }
    
    if(message==WM_MOUSEACTIVATE)
     return MA_NOACTIVATE;
@@ -127,11 +129,15 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    pfd->nSize=sizeof(PIXELFORMATDESCRIPTOR);
    pfd->nVersion=1;
    
-   pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_GENERIC_ACCELERATED|PFD_DOUBLEBUFFER;
+   pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
    pfd->iLayerType=PFD_MAIN_PLANE;
    pfd->iPixelType=PFD_TYPE_RGBA;
    pfd->cColorBits=32;
-   
+   pfd->cRedBits=8;
+   pfd->cGreenBits=8;
+   pfd->cBlueBits=8;
+   pfd->cAlphaBits=8;
+
    for(i=0;pixelFormat->attributes[i]!=0;i++){
     CGLPixelFormatAttribute attribute=pixelFormat->attributes[i];
 
@@ -187,7 +193,7 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    result->dc=GetDC(result->window);
    
    pfIndex=ChoosePixelFormat(result->dc,&pfd); 
- 
+
    if(!SetPixelFormat(result->dc,pfIndex,&pfd))
     NSLog(@"SetPixelFormat failed");
 
@@ -495,5 +501,74 @@ CGL_EXPORT CGLError CGLDescribePixelFormat(CGLPixelFormatObj pixelFormat,GLint s
    }
    *valuesp=0;
      return kCGLNoError;
+}
+
+struct _CGLPBufferObj {
+   GLuint retainCount;
+   GLsizei width;
+   GLsizei height;
+   GLenum target;
+   GLenum internalFormat;
+   GLint maxDetail;
+};
+
+CGLError CGLCreatePBuffer(GLsizei width,GLsizei height,GLenum target,GLenum internalFormat,GLint maxDetail,CGLPBufferObj *pbufferp) {
+   CGLPBufferObj pbuffer=calloc(1,sizeof(struct _CGLPBufferObj));
+   pbuffer->width=width;
+   pbuffer->height=height;
+   pbuffer->target=target;
+   pbuffer->internalFormat=internalFormat;
+   pbuffer->maxDetail=maxDetail;
+   *pbufferp=pbuffer;
+   return kCGLNoError;
+}
+
+CGLError CGLDescribePBuffer(CGLPBufferObj pbuffer,GLsizei *width,GLsizei *height,GLenum *target,GLenum *internalFormat,GLint *mipmap) {
+   *width=pbuffer->width;
+   *height=pbuffer->height;
+   *target=pbuffer->target;
+   *internalFormat=pbuffer->internalFormat;
+   *mipmap=pbuffer->maxDetail;
+   return kCGLNoError;
+}
+
+CGLPBufferObj CGLRetainPBuffer(CGLPBufferObj pbuffer) {
+   if(pbuffer==NULL)
+    return NULL;
+    
+   pbuffer->retainCount++;
+   return pbuffer;
+}
+
+void CGLReleasePBuffer(CGLPBufferObj pbuffer) {
+   if(pbuffer==NULL)
+    return;
+    
+   pbuffer->retainCount--;
+   
+   if(pbuffer->retainCount==0){
+    free(pbuffer);
+   }
+}
+
+GLuint CGLGetPBufferRetainCount(CGLPBufferObj pbuffer) {
+   return pbuffer->retainCount;
+}
+
+CGLError CGLDestroyPBuffer(CGLPBufferObj pbuffer) {
+   CGLReleasePBuffer(pbuffer);
+   return kCGLNoError;
+}
+
+CGLError CGLGetPBuffer(CGLContextObj context,CGLPBufferObj *pbuffer,GLenum *face,GLint *level,GLint *screen) {
+   return kCGLNoError;
+}
+
+CGLError CGLSetPBuffer(CGLContextObj context,CGLPBufferObj pbuffer,GLenum face,GLint level,GLint screen) {
+   return kCGLNoError;
+}
+
+CGLError CGLTexImagePBuffer(CGLContextObj context,CGLPBufferObj pbuffer,GLenum sourceBuffer) {
+   return kCGLNoError;
 }
 

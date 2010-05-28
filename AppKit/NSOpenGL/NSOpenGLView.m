@@ -34,7 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (id)initWithFrame:(NSRect)frame {
 	[super initWithFrame:frame];
 
-	_pixelFormat = [isa defaultPixelFormat];
+	_pixelFormat = [[isa defaultPixelFormat] retain];
 	_context = nil;
 
 	return self;

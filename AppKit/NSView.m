@@ -528,8 +528,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    
    point=[self convertPoint:point fromView:[self superview]];
 
-   if(!NSMouseInRect(point,[self visibleRect],[self isFlipped]))
+   if(!NSMouseInRect(point,[self visibleRect],[self isFlipped])){
     return nil;
+   }
    else {
     NSArray *subviews=[self subviews];
     int      count=[subviews count];
@@ -538,9 +539,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
      NSView *check=[subviews objectAtIndex:count];
      NSView *hit=[check hitTest:point];
 
-     if(hit!=nil)
+     if(hit!=nil){
       return hit;
+     }
     }
+
     return self;
    }
 }

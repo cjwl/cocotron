@@ -714,7 +714,6 @@ The values should be upgraded to something which is more generic to implement, p
     _lastPosition=msg.lParam;
    }
 
-   // NSLog(@"message=0x%04X",msg.message);
    switch(msg.message){
 
      case WM_KEYDOWN:
@@ -745,7 +744,7 @@ The values should be upgraded to something which is more generic to implement, p
      case WM_LBUTTONDOWN:
      case WM_LBUTTONDBLCLK:
       type=NSLeftMouseDown;
-      SetCapture(msg.hwnd);
+      SetCapture([platformWindow windowHandle]);
       break;
 
      case WM_LBUTTONUP:
@@ -793,11 +792,15 @@ The values should be upgraded to something which is more generic to implement, p
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
     if(msg.hwnd!=[platformWindow windowHandle]){
-     RECT rect;
-     
-     GetClientRect(msg.hwnd,&rect);
-     location.x+=rect.left;
-     location.y+=rect.top;
+     RECT child={0},parent={0};
+
+// There is no way to get a child's frame inside the parent, you have to get
+// them both in screen coordinates and do a delta
+// GetClientRect always returns 0,0 for top,left which makes it useless     
+     GetWindowRect(msg.hwnd,&child);
+     GetWindowRect([platformWindow windowHandle],&parent);
+     location.x+=child.left-parent.left;
+     location.y+=child.top-parent.top;
     }
      
     [platformWindow adjustEventLocation:&location];
