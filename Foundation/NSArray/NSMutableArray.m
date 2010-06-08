@@ -90,29 +90,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 +arrayWithObjects:first,... {
-   va_list  arguments;
-   NSUInteger i,count;
-   id      *objects;
+   NSUInteger i,count=0;
+   id        *objects=NULL;
 
-   va_start(arguments,first);
-   count=1;
-   while(va_arg(arguments,id)!=nil)
-    count++;
-   va_end(arguments);
+   if(first!=nil){
+    va_list  arguments;
 
-   objects=__builtin_alloca(sizeof(id)*count);
+    va_start(arguments,first);
+    count=1;
+    while(va_arg(arguments,id)!=nil)
+     count++;
+    va_end(arguments);
 
-   va_start(arguments,first);
-   objects[0]=first;
-   for(i=1;i<count;i++)
-    objects[i]=va_arg(arguments,id);
-   va_end(arguments);
+    objects=__builtin_alloca(sizeof(id)*count);
 
+    va_start(arguments,first);
+    objects[0]=first;
+    for(i=1;i<count;i++)
+     objects[i]=va_arg(arguments,id);
+    va_end(arguments);
+   }
+   
    if(self==[NSMutableArray class])
     return NSAutorelease(NSMutableArray_concreteNew(NULL,objects,count));
 
-   return [[[self allocWithZone:NULL]
-     initWithObjects:objects count:count] autorelease];
+   return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
 

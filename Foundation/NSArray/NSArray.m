@@ -192,26 +192,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 +arrayWithObjects:object,... {
-   va_list  arguments;
-   NSUInteger i,count; 
-   id      *objects;
+   NSUInteger i,count=0; 
+   id        *objects=NULL;
+   
+   if(object!=nil){
+    va_list  arguments;
 
-   va_start(arguments,object);
-   count=1; // include object
-   while(va_arg(arguments,id)!=nil)
-    count++;
-   va_end(arguments);
+    va_start(arguments,object);
+    count=1; // include object
+    while(va_arg(arguments,id)!=nil)
+     count++;
+    va_end(arguments);
 
-   objects=__builtin_alloca(sizeof(id)*count);
+    objects=__builtin_alloca(sizeof(id)*count);
 
-   va_start(arguments,object);
-   objects[0]=object;
-   for(i=1;i<count;i++)
-    objects[i]=va_arg(arguments,id);
-   va_end(arguments);
-
-   return [[[self allocWithZone:NULL]
-     initWithObjects:objects count:count] autorelease];
+    va_start(arguments,object);
+    objects[0]=object;
+    for(i=1;i<count;i++)
+     objects[i]=va_arg(arguments,id);
+    va_end(arguments);
+   }
+   
+   return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
 

@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMutableArray_concrete
 
 static inline NSUInteger roundCapacityUp(NSUInteger capacity){
-   return (capacity<4)?4:capacity;
+   return (capacity<1)?1:capacity;
 }
 
 NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self,id *objects,NSUInteger count,NSZone *zone) {
