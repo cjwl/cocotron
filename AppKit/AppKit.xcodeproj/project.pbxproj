@@ -10321,7 +10321,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
-					"-lMsimg32",
+					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",
 					"-luser32",
@@ -10609,7 +10609,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
-					"-lMsimg32",
+					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",
 					"-luser32",

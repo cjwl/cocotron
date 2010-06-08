@@ -1,4 +1,4 @@
-#import <Appkit/NSControl.h>
+#import <AppKit/NSControl.h>
 #import <AppKit/NSPathCell.h>
 #import <AppKit/NSDragging.h>
 

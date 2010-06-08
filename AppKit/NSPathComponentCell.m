@@ -2,7 +2,7 @@
 #import "AppKit/NSRaise.h"
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSImage.h>
-#import <Appkit/NSAttributedString.h>
+#import <AppKit/NSAttributedString.h>
 
 @implementation NSPathComponentCell
 
