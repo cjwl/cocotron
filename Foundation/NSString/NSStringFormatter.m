@@ -216,18 +216,23 @@ static inline void appendCStringChar(NSStringBuffer *buffer,char c,
 }
 
 double roundDouble(double value) {
+#ifdef WINDOWS
+   return round(value);
+#else
+// some OS's don't have round(), Linux?
    return (value < 0.0 )? ceil(value-0.5) : floor(value+0.5);
+#endif
 }
 
 static inline void appendFloat(NSStringBuffer *buffer,double value,
   unichar fillChar,BOOL leftAdj,BOOL plusSign,BOOL spaceSign,
   int fieldWidth,int precision,BOOL gFormat,BOOL altForm,NSDictionary *locale,NSString *groupingSeparator,NSUInteger groupingSize){
-   if(1.0/0.0==value)
-    appendCString(buffer,"1.#INF00",' ',leftAdj,fieldWidth);
-   else if(log(0)==value)
-    appendCString(buffer,"-1.#INF00",' ',leftAdj,fieldWidth);
-   else if(value!=value)
-    appendCString(buffer,"NaN",' ',leftAdj,fieldWidth);
+   int valueType=fpclassify(value);
+  
+   if(valueType==FP_INFINITE)
+    appendCString(buffer,(value>0.0)?"inf":"-inf",' ',leftAdj,fieldWidth);
+   else if(valueType==FP_NAN)
+    appendCString(buffer,"nan",' ',leftAdj,fieldWidth);
    else{
     double   integral,fractional,power;
     unsigned i,j,length=0,numberOfIntegralDigits=0;
@@ -246,7 +251,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
          power=pow(10.0,precision);
        else 
          power=pow(10.0,precision-1-floor(log10(value)));
-       value=(1.0 + 1.0e-15)*roundDouble(value*power)/power;
+       value=roundDouble(value*power)/power;
     }
 
     fractional=modf(value,&integral);

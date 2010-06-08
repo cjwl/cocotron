@@ -116,7 +116,7 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
 }
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
-   return NSStringWithFormatAndLocale(@"%0.16g",locale,_value);
+   return NSStringWithFormatAndLocale(@"%0.15g",locale,_value);
 }
 
 @end
