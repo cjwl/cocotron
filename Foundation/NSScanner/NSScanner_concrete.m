@@ -562,11 +562,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             _location = oldLocation;  
             return NO;
         } 
-        if ([subStr compare:string options:compareOption range:range] == NSOrderedSame  && scanStarted == YES) {
-            if (stringp != NULL)
-                *stringp = [NSString stringWithCharacters:result length:resultLength];
+        if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
+            if (scanStarted) {
+                if (stringp != NULL)
+                    *stringp = [NSString stringWithCharacters:result length:resultLength];
 
-            return YES;
+                return YES;
+            } else {
+                return NO;
+            }
         }
         else if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
             continue;
