@@ -76,7 +76,7 @@ ONYX2D_STATIC_INLINE O2argb32f radialGradientColorAt(O2Paint_radialGradient *sel
    return result;
 }
 
-ONYX2D_STATIC int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
+ONYX2D_STATIC int radial_span_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
    O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
    int previous=-1;
@@ -97,7 +97,7 @@ ONYX2D_STATIC int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u 
    return (previous==1)?-length:length;
 }
 
-ONYX2D_STATIC int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+ONYX2D_STATIC int radial_span_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
    int previous=-1;
@@ -120,8 +120,8 @@ ONYX2D_STATIC int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f
 
 -initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform {
    [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:1024];
-   _paint_lRGBA8888_PRE=radial_span_lRGBA8888_PRE;
-   _paint_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
+   _paint_largb8u_PRE=radial_span_largb8u_PRE;
+   _paint_largb32f_PRE=radial_span_largb32f_PRE;
    _endRadius=[shading endRadius];
 
    return self;

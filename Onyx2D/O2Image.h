@@ -366,8 +366,8 @@ static inline O2argb8u O2argb8uAdd(O2argb8u result,O2argb8u other){
 }
 
 
-typedef O2argb8u *(*O2ImageReadSpan_RGBA8888)(O2Image *self,int x,int y,O2argb8u *span,int length);
-typedef O2argb32f *(*O2ImageReadSpan_RGBAffff)(O2Image *self,int x,int y,O2argb32f *span,int length);
+typedef O2argb8u *(*O2ImageReadSpan_argb8u)(O2Image *self,int x,int y,O2argb8u *span,int length);
+typedef O2argb32f *(*O2ImageReadSpan_argb32f)(O2Image *self,int x,int y,O2argb32f *span,int length);
 typedef uint8_t    *(*O2ImageReadSpan_A8)(O2Image *self,int x,int y,uint8_t *span,int length);
 typedef O2Float    *(*O2ImageReadSpan_Af)(O2Image *self,int x,int y,O2Float *span,int length);
 
@@ -400,8 +400,8 @@ typedef O2Float    *(*O2ImageReadSpan_Af)(O2Image *self,int x,int y,O2Float *spa
    struct O2Surface    **_mipmaps;
 
 @public
-   O2ImageReadSpan_RGBA8888 _read_lRGBA8888_PRE;
-   O2ImageReadSpan_RGBAffff _read_lRGBAffff_PRE;
+   O2ImageReadSpan_argb8u _read_argb8u_PRE;
+   O2ImageReadSpan_argb32f _read_largb32f_PRE;
    O2ImageReadSpan_A8 _readA8;
    O2ImageReadSpan_Af _readAf;
 }
@@ -467,47 +467,47 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent);
 
   The return value will be either NULL or a pointer to the image data if direct access is available for the given format. You must use the return value if it is not NULL. If the value is not NULL you don't do a write back. This is a big boost for native ARGB format as it avoids a copy out and a copy in.
   
-  The nomenclature for the RGBA8888 functions is the bit sequencing in big endian
+  The nomenclature for the argb8u functions is the bit sequencing in big endian
  */
 
 uint8_t *O2ImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
 O2Float *O2ImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,O2Float *alpha,int length);
-uint8_t *O2ImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
+uint8_t *O2ImageRead_ANY_to_argb8u_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
 
-O2argb8u *O2ImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
-O2argb8u *O2ImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_G8_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_GA88_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGBA8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_ABGR8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_BGRA8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGB888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_BGRX8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_XRGB8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_G3B5X1R5G2_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGBA4444_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_BARG4444_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGBA2222_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_CMYK8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_I8_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
 
-O2argb32f *O2ImageRead_ANY_to_RGBA8888_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length);
+O2argb32f *O2ImageRead_ANY_to_argb8u_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length);
 
-O2argb32f *O2ImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length);
-O2argb32f *O2ImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length);
+O2argb32f *O2ImageRead_argb32fLittle_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length);
+O2argb32f *O2ImageRead_argb32fBig_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length);
 
-O2argb32f *O2ImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,O2argb32f *span,int length);
+O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *span,int length);
 uint8_t    *O2ImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length);
 O2Float    *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int length);
 
-void O2ImageReadTileSpanExtendEdge_lRGBAffff_PRE(O2Image *self,int u, int v, O2argb32f *span,int length);
+void O2ImageReadTileSpanExtendEdge_largb32f_PRE(O2Image *self,int u, int v, O2argb32f *span,int length);
 
-void O2ImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
-void O2ImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
-void O2ImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
-void O2ImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
-void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
-void O2ImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
-void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
-void O2ImageBilinearFloatTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
-void O2ImageIntegerTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageEWAOnMipmaps_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBicubic_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBicubic_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBilinear_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBilinear_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImagePointSampling_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImagePointSampling_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBilinearFloatTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageIntegerTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
 
-void O2ImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);
+void O2ImageReadPatternSpan_largb32f_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);

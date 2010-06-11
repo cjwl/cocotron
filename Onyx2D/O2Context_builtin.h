@@ -29,6 +29,7 @@
 #import <Onyx2D/O2BitmapContext.h>
 #import <Onyx2D/VGmath.h>
 #import <Onyx2D/O2Surface.h>
+#import <Onyx2D/O2Paint.h>
 
 @class O2Paint;
 
@@ -57,9 +58,9 @@ typedef struct Edge {
    O2Float      maxSample;
 } Edge;
 
-typedef void (*O2BlendSpan_RGBA8888)(O2argb8u *src,O2argb8u *dst,int length);
-typedef void (*O2BlendSpan_RGBAffff)(O2argb32f *src,O2argb32f *dst,int length);
-typedef void (*O2WriteCoverage_RGBA8888)(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction);
+typedef void (*O2BlendSpan_argb8u)(O2argb8u *src,O2argb8u *dst,int length);
+typedef void (*O2BlendSpan_argb32f)(O2argb32f *src,O2argb32f *dst,int length);
+typedef void (*O2WriteCoverage_argb8u)(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_argb8u blendFunction);
 
 @class O2Surface,O2Context_builtin;
 
@@ -68,9 +69,9 @@ typedef void (*O2WriteCoverage_RGBA8888)(O2Surface *surface,O2Surface *mask,O2Pa
    O2Paint           *_paint;
    O2Context_builtin *_clipContext;
    
-   O2BlendSpan_RGBA8888     _blend_lRGBA8888_PRE;
-   O2BlendSpan_RGBAffff     _blend_lRGBAffff_PRE;
-   O2WriteCoverage_RGBA8888 _writeCoverage_lRGBA8888_PRE;
+   O2BlendSpan_argb8u     _blend_argb8u_PRE;
+   O2BlendSpan_argb32f     _blend_argb32f_PRE;
+   O2WriteCoverage_argb8u _writeCoverage_argb8u_PRE;
    void               (*_blendFunction)();
    void               (*_writeCoverageFunction)();
    
@@ -102,9 +103,9 @@ void O2DContextAddEdge(O2Context_builtin *self,const O2Point v0, const O2Point v
 void O2RasterizerSetShouldAntialias(O2Context_builtin *self,BOOL antialias,int quality);
 void O2RasterizerFill(O2Context_builtin *self,int fillRule);
 
-void O2RasterizeSetBlendMode(O2Context_builtin *self,O2BlendMode blendMode);
+void O2ContextSetupPaintAndBlendMode(O2Context_builtin *self,O2PaintRef paint,O2BlendMode blendMode);
 void O2RasterizeSetMask(O2Context_builtin *self,O2Surface* mask);
-void O2DContextSetPaint(O2Context_builtin *self,O2Paint* paint);
+void O2ContextSetPaint(O2Context_builtin *self,O2Paint* paint);
 
 void O2ContextDeviceClipReset_builtin(O2Context_builtin *self);
 void O2ContextDeviceClipToNonZeroPath_builtin(O2Context_builtin *self,O2Path *path);

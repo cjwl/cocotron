@@ -76,10 +76,13 @@ static inline O2GState *currentState(O2Context *self){
    [super initWithSurface:surface flipped:flipped];
         
    _clipContext=nil;
-   _paint=[[O2Paint_color alloc] initWithGray:0 alpha:1 surfaceToPaintTransform:O2AffineTransformIdentity];
+   
+   O2PaintRef paint=[[O2Paint_color alloc] initWithGray:0 alpha:1 surfaceToPaintTransform:O2AffineTransformIdentity];
 
-   O2RasterizeSetBlendMode(self,kO2BlendModeNormal);
+   O2ContextSetupPaintAndBlendMode(self,paint,kO2BlendModeNormal);
 
+   O2PaintRelease(paint);
+   
    _vpwidth=self->_vpheight=0;
    
    _edgeCount=0;
@@ -87,6 +90,9 @@ static inline O2GState *currentState(O2Context *self){
    _edges=NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge *));
    _sortCache=NSZoneMalloc(NULL,(self->_edgeCapacity/2 + 1)*sizeof(Edge *));
    
+   sampleSizeShift=0;
+   numSamples=0;
+   samplesWeight=0;
    samplesX=NSZoneMalloc(NULL,MAX_SAMPLES*sizeof(O2Float));
 
    O2RasterizerSetViewport(self,0,0,O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
@@ -263,8 +269,6 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
 -(void)drawPath:(O2PathDrawingMode)drawingMode {
    O2GState *gState=currentState(self);
    
-   O2RasterizeSetBlendMode(self,gState->_blendMode);
-
    O2RasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
 /* Path construction is affected by the CTM, and the stroke pen is affected by the CTM , this means path points and the stroke can be affected by different transforms as the CTM can change during path construction and before stroking. For example, creation of transformed shapes which are drawn using an untransformed pen. The current tesselator expects everything to be in user coordinates and it tesselates from there into device space, but the path points are already in base coordinates. So, path points are brought from base coordinates into the active coordinate space using an inverted transform and then everything is tesselated using the CTM into device space.  */
@@ -280,8 +284,8 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
     surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
 
     O2Paint *paint=paintFromColor(self,gState->_fillColor,surfaceToPaintMatrix);
-    O2DContextSetPaint(self,paint);
-    [paint release];
+    O2ContextSetupPaintAndBlendMode(self,paint,gState->_blendMode);
+    O2PaintRelease(paint);
     
     
      VGPathFill(vgPath,userToSurfaceMatrix,self);
@@ -298,10 +302,9 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
      surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
 
      O2Paint *paint=paintFromColor(self,gState->_strokeColor,surfaceToPaintMatrix);
-     O2DContextSetPaint(self,paint);
-     [paint release];
+     O2ContextSetupPaintAndBlendMode(self,paint,gState->_blendMode);
+     O2PaintRelease(paint);
      
-
       O2RasterizerClear(self);
                                  
       VGPathStroke(vgPath,userToSurfaceMatrix, self, gState->_dashLengths,gState->_dashLengthsCount, gState->_dashPhase, YES /* context->m_strokeDashPhaseReset ? YES : NO*/,
@@ -310,7 +313,7 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
     }
    }
 
-   O2DContextSetPaint(self,nil);
+   O2ContextSetPaint(self,nil);
    [vgPath release];
    O2RasterizerClear(self);
    O2PathReset(_path);
@@ -332,7 +335,6 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
    O2GState *gState=currentState(self);
    O2Paint         *paint;
 
-   O2RasterizeSetBlendMode(self,gState->_blendMode);
    O2RasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
    if([shading isAxial]){
@@ -342,14 +344,14 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
     paint=[[O2Paint_radialGradient alloc] initWithShading:shading deviceTransform:gState->_deviceSpaceTransform];
    }
   
-
-   O2DContextSetPaint(self,paint);
-   [paint release];
+   O2ContextSetupPaintAndBlendMode(self,paint,gState->_blendMode);
+   O2PaintRelease(paint);
  
    O2DContextAddEdge(self,O2PointMake(0,0), O2PointMake(0,O2ImageGetHeight(_surface)));
    O2DContextAddEdge(self,O2PointMake(O2ImageGetWidth(_surface),0), O2PointMake(O2ImageGetWidth(_surface),O2ImageGetHeight(_surface)));
 
    O2DContextClipAndFillEdges(self,VG_NON_ZERO);
+   O2ContextSetPaint(self,nil);
    O2RasterizerClear(self);
 }
 
@@ -384,7 +386,6 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
 
    O2RasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-   O2RasterizeSetBlendMode(self,gState->_blendMode);
 
    O2AffineTransform surfaceToImageMatrix = imageUserToSurface;
    O2AffineTransform surfaceToPaintMatrix = O2AffineTransformConcat(imageUserToSurface,fillPaintToUser);
@@ -401,7 +402,10 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
 
    O2Paint *imagePaint=[[O2Paint_image allocWithZone:NULL] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq surfaceToPaintTransform:surfaceToImageMatrix];
         
-   O2DContextSetPaint(self,imagePaint);
+   O2ContextSetupPaintAndBlendMode(self,imagePaint,gState->_blendMode);
+   
+   O2PaintRelease(paint);
+   O2PaintRelease(imagePaint);
 
 
    O2DContextAddEdge(self,p0, p1);
@@ -410,9 +414,7 @@ ONYX2D_STATIC O2Paint *paintFromColor(O2Context_builtin *self,O2ColorRef color,O
    O2DContextAddEdge(self,p3, p0);
    O2DContextClipAndFillEdges(self,VG_EVEN_ODD);
 
-   O2DContextSetPaint(self,nil);
-   O2PaintRelease(paint);
-   O2PaintRelease(imagePaint);
+   O2ContextSetPaint(self,nil);
 
    O2RasterizerClear(self);
 }
@@ -494,9 +496,6 @@ ONYX2D_STATIC double radicalInverseBase2(unsigned int i)
 }
 
 void O2RasterizerSetShouldAntialias(O2Context_builtin *self,BOOL antialias,int quality) {
- 
-	//make a sampling pattern
-
    quality=RI_INT_CLAMP(quality,1,MAX_SAMPLES);
    
    self->alias=(!antialias || quality==1)?YES:NO;
@@ -511,27 +510,34 @@ void O2RasterizerSetShouldAntialias(O2Context_builtin *self,BOOL antialias,int q
    }
    else
 #endif   
-   {
-    int shift;
-    int numberOfSamples=1;
-        
-    for(shift=0;numberOfSamples<quality;shift++)
-     numberOfSamples<<=1;
+   
+   if(self->numSamples==quality)
+    return;
+    
+   int shift;
+   int numberOfSamples=1;
 
-        self->sampleSizeShift=shift;
-		self->numSamples = numberOfSamples;
-        int i;
+   for(shift=0;numberOfSamples<quality;shift++)
+    numberOfSamples<<=1;
 
-		 self->samplesInitialY = ((O2Float)(0.5f)) / (O2Float)numberOfSamples;
-		 self->samplesDeltaY = ((O2Float)(1.0f)) / (O2Float)numberOfSamples;
-        for(i=0;i<numberOfSamples;i++){
-	     self->samplesX[i] = (O2Float)radicalInverseBase2(i);
-         self->samplesWeight=MAX_SAMPLES/numberOfSamples;
-        }
-    }
+// quality is a hint and may not match the number of samples, recheck for optimization
+   if(self->numSamples==numberOfSamples)
+    return;
+    
+   self->sampleSizeShift=shift;
+   self->numSamples = numberOfSamples;
+
+   self->samplesInitialY = ((O2Float)(0.5f)) / (O2Float)numberOfSamples;
+   self->samplesDeltaY = ((O2Float)(1.0f)) / (O2Float)numberOfSamples;
+
+   int i;
+   for(i=0;i<numberOfSamples;i++){
+    self->samplesX[i] = (O2Float)radicalInverseBase2(i);
+    self->samplesWeight=MAX_SAMPLES/numberOfSamples;
+   }
 }
 
-ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2Float *mask,O2argb32f *src,int length){
+ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_largb32f_PRE(O2argb32f *dst,int icoverage,O2Float *mask,O2argb32f *src,int length){
    int i;
    
    for(i=0;i<length;i++){
@@ -544,7 +550,7 @@ ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_lRGBAffff_PRE(O2argb32f *dst,int
    }
 }
 
-ONYX2D_STATIC void O2ApplyCoverageToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2argb32f *src,int length){
+ONYX2D_STATIC void O2ApplyCoverageToSpan_largb32f_PRE(O2argb32f *dst,int icoverage,O2argb32f *src,int length){
    int i;
    O2Float coverage=zeroToOneFromCoverage(icoverage);
    
@@ -556,7 +562,7 @@ ONYX2D_STATIC void O2ApplyCoverageToSpan_lRGBAffff_PRE(O2argb32f *dst,int icover
    }
 }
          
-ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_lRGBA8888_PRE(O2argb8u *dst,int icoverage,uint8_t *mask,O2argb8u *src,int length){
+ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_largb8u_PRE(O2argb8u *dst,int icoverage,uint8_t *mask,O2argb8u *src,int length){
    int i;
    
    for(i=0;i<length;i++){
@@ -569,7 +575,7 @@ ONYX2D_STATIC void O2ApplyCoverageAndMaskToSpan_lRGBA8888_PRE(O2argb8u *dst,int 
    }
 }
 
-void O2ApplyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,int coverage,O2argb8u *src,int length){
+void O2ApplyCoverageToSpan_largb8u_PRE(O2argb8u *dst,int coverage,O2argb8u *src,int length){
    int i;
    
    if(coverage==256){   
@@ -601,7 +607,7 @@ void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,unsigned covera
      
      if((srb&0xFF000000)==0xFF000000)
       *dst=*src;
-     else {
+     else if((srb&0xFF000000)!=0x00000000){
       uint32_t sag=srb>>8;
       uint32_t drb=*(uint32_t *)dst;
       uint32_t dag=drb>>8;
@@ -648,10 +654,10 @@ void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,unsigned covera
      dag=((dag*oneMinusCoverage)>>8)&0x00FF00FF;
      drb=((drb*oneMinusCoverage)>>8)&0x00FF00FF;
      
-     r.a=RI_INT_MIN(sag+dag,0x00FF0000)>>16;
-     r.g=RI_INT_MIN((sag+dag)&0xFFFF,255);
-     r.r=RI_INT_MIN(srb+drb,0x00FF0000)>>16;
-     r.b=RI_INT_MIN((srb+drb)&0xFFFF,255);
+     r.a=RI_UINT32_MIN(sag+dag,0x00FF0000)>>16;
+     r.g=RI_UINT32_MIN((sag+dag)&0xFFFF,255);
+     r.r=RI_UINT32_MIN(srb+drb,0x00FF0000)>>16;
+     r.b=RI_UINT32_MIN((srb+drb)&0xFFFF,255);
 
      *dst=r;
     }
@@ -713,37 +719,42 @@ void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,unsigned covera
 #endif
 }
 
-ONYX2D_STATIC void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length){
+ONYX2D_STATIC_INLINE void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,unsigned coverage,int length){
 // Passes Visual Test
    int i;
 
    if(coverage==256){
     for(i=0;i<length;i++)
-     *dst++=*src++;
+     dst[i]=src[i];
    }
    else {
-    int oneMinusCoverage=256-coverage;
-
+    uint32_t oneMinusCoverage=inverseCoverage(coverage);
+    
     for(i=0;i<length;i++,src++,dst++){
-     O2argb8u d=*dst;
-     O2argb8u r=*src;
+     uint32_t srb=*(uint32_t *)src;
+     uint32_t sag=srb>>8;
+     uint32_t drb=*(uint32_t *)dst;
+     uint32_t dag=drb>>8;
+     O2argb8u r;
+
+     uint32_t trb,tag;
     
-     r.r=multiplyByCoverage(r.r,coverage);
-     d.r=(d.r*oneMinusCoverage)/256;
-     r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
-    
-     r.g=multiplyByCoverage(r.g,coverage);
-     d.g=(d.g*oneMinusCoverage)/256;
-     r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
-    
-     r.b=multiplyByCoverage(r.b,coverage);
-     d.b=(d.b*oneMinusCoverage)/256;
-     r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
-    
-     r.a=multiplyByCoverage(r.a,coverage);
-     d.a=(d.a*oneMinusCoverage)/256;
-     r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
+     srb&=0x00FF00FF;
+     drb&=0x00FF00FF;
+
+     sag&=0x00FF00FF;
+     dag&=0x00FF00FF;
+        
+     sag=((sag*coverage)>>8)&0x00FF00FF;
+     srb=((srb*coverage)>>8)&0x00FF00FF;
+     dag=((dag*oneMinusCoverage)>>8)&0x00FF00FF;
+     drb=((drb*oneMinusCoverage)>>8)&0x00FF00FF;
      
+     r.a=RI_UINT32_MIN(sag+dag,0x00FF0000)>>16;
+     r.g=RI_UINT32_MIN((sag+dag)&0xFFFF,255);
+     r.r=RI_UINT32_MIN(srb+drb,0x00FF0000)>>16;
+     r.b=RI_UINT32_MIN((srb+drb)&0xFFFF,255);
+
      *dst=r;
     }
    }
@@ -751,9 +762,9 @@ ONYX2D_STATIC void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,int
 
 /* Paint functions can selectively paint or not paint at all, e.g. gradients with extend turned off, they do this by returning a negative chunk for a pixels which aren't generated and positive chunk for pixels that are. We need to make sure we cover the entire span so we loop until the span is complete.
  */
-ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_argb8u blendFunction) {
     O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
-    O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+    O2argb8u *direct=surface->_read_argb8u_PRE(surface,x,y,dst,length);
    
     if(direct!=NULL)
      dst=direct;
@@ -761,7 +772,7 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *sur
     O2argb8u *src=__builtin_alloca(length*sizeof(O2argb8u));
     
     while(YES){
-     int chunk=O2PaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
+     int chunk=O2PaintReadSpan_argb8u_PRE(paint,x,y,src,length);
            
      if(chunk<0) // skip
       chunk=-chunk;
@@ -771,7 +782,7 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *sur
 
       if(direct==NULL){
    	 //write result to the destination surface
-       O2SurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
+       O2SurfaceWriteSpan_argb8u_PRE(surface,x,y,dst,chunk);
       }
      }
      length-=chunk;
@@ -785,9 +796,9 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Normal(O2Surface *sur
 }
 
 
-ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_argb8u blendFunction) {
    O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
-   O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+   O2argb8u *direct=surface->_read_argb8u_PRE(surface,x,y,dst,length);
    
    if(direct!=NULL)
     dst=direct;
@@ -795,7 +806,7 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surfa
    O2argb8u *src=__builtin_alloca(length*sizeof(O2argb8u));
     
    while(YES){
-    int chunk=O2PaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
+    int chunk=O2PaintReadSpan_argb8u_PRE(paint,x,y,src,length);
            
     if(chunk<0) // skip
      chunk=-chunk;
@@ -805,7 +816,7 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surfa
 
      if(direct==NULL){
      //write result to the destination surface
-      O2SurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
+      O2SurfaceWriteSpan_argb8u_PRE(surface,x,y,dst,chunk);
      }
     }
     
@@ -819,9 +830,9 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888_Copy(O2Surface *surfa
    }
 }
 
-ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_argb8u blendFunction) {
    O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
-   O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+   O2argb8u *direct=surface->_read_argb8u_PRE(surface,x,y,dst,length);
    
    if(direct!=NULL)
     dst=direct;
@@ -829,7 +840,7 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2
    O2argb8u *src=__builtin_alloca(length*sizeof(O2argb8u));
    
    while(YES){
-    int chunk=O2PaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
+    int chunk=O2PaintReadSpan_argb8u_PRE(paint,x,y,src,length);
 
     if(chunk<0) // skip
      chunk=-chunk;
@@ -838,17 +849,17 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2
     
      //apply masking
      if(mask==NULL)
-      O2ApplyCoverageToSpan_lRGBA8888_PRE(dst,coverage,src,chunk);
+      O2ApplyCoverageToSpan_largb8u_PRE(dst,coverage,src,chunk);
      else {
       uint8_t maskSpan[chunk];
      
       O2ImageReadSpan_A8_MASK(mask,x,y,maskSpan,chunk);
-      O2ApplyCoverageAndMaskToSpan_lRGBA8888_PRE(dst,coverage,maskSpan,src,chunk);
+      O2ApplyCoverageAndMaskToSpan_largb8u_PRE(dst,coverage,maskSpan,src,chunk);
      }
 
      if(direct==NULL){
       //write result to the destination surface
-      O2SurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
+      O2SurfaceWriteSpan_argb8u_PRE(surface,x,y,dst,chunk);
      }
     }
     
@@ -862,9 +873,9 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpan8888(O2Surface *surface,O2
    }
 }
 
-ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBAffff blendFunction) {
+ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_argb32f blendFunction) {
    O2argb32f *dst=__builtin_alloca(length*sizeof(O2argb32f));
-   O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(surface,x,y,dst,length);
+   O2argb32f *direct=O2ImageReadSpan_largb32f_PRE(surface,x,y,dst,length);
 
    if(direct!=NULL)
     dst=direct;
@@ -872,7 +883,7 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2
    O2argb32f *src=__builtin_alloca(length*sizeof(O2argb32f));
 
    while(YES){
-    int chunk=O2PaintReadSpan_lRGBAffff_PRE(paint,x,y,src,length);
+    int chunk=O2PaintReadSpan_largb32f_PRE(paint,x,y,src,length);
     
     if(chunk<0) // skip
      chunk=-chunk;
@@ -881,17 +892,17 @@ ONYX2D_STATIC_INLINE void O2RasterizeWriteCoverageSpanffff(O2Surface *surface,O2
     
      //apply masking
  	 if(mask==NULL)
-      O2ApplyCoverageToSpan_lRGBAffff_PRE(dst,coverage,src,chunk);
+      O2ApplyCoverageToSpan_largb32f_PRE(dst,coverage,src,chunk);
      else {
       O2Float maskSpan[length];
      
       O2ImageReadSpan_Af_MASK(mask,x,y,maskSpan,chunk);
-      O2ApplyCoverageAndMaskToSpan_lRGBAffff_PRE(dst,coverage,maskSpan,src,chunk);
+      O2ApplyCoverageAndMaskToSpan_largb32f_PRE(dst,coverage,maskSpan,src,chunk);
      }
     
      if(direct==NULL){
   	 //write result to the destination surface
-      O2SurfaceWriteSpan_lRGBAffff_PRE(surface,x,y,dst,chunk);
+      O2SurfaceWriteSpan_largb32f_PRE(surface,x,y,dst,chunk);
      }
     }
 
@@ -1343,152 +1354,157 @@ void O2DContextClipAndFillEdges(O2Context_builtin *self,int fillRuleMask){
    O2DContextFillEdgesOnSurface(self,surface,mask,self->_paint,fillRuleMask);
 }
 
-void O2RasterizeSetBlendMode(O2Context_builtin *self,O2BlendMode blendMode) {
+void O2ContextSetupPaintAndBlendMode(O2Context_builtin *self,O2PaintRef paint,O2BlendMode blendMode) {
    RI_ASSERT(blendMode >= kO2BlendModeNormal && blendMode <= kO2BlendModePlusLighter);
    
-   self->_blend_lRGBA8888_PRE=NULL;
-   self->_writeCoverage_lRGBA8888_PRE=NULL;
+   self->_blend_argb8u_PRE=NULL;
+   self->_writeCoverage_argb8u_PRE=NULL;
+   
+   O2ContextSetPaint(self,paint);
+
+   if(O2PaintIsOpaque(self->_paint) && (blendMode==kO2BlendModeNormal))
+    blendMode=kO2BlendModeCopy;
    
    switch(blendMode){
    
     case kO2BlendModeNormal:
-     self->_blend_lRGBA8888_PRE=O2BlendSpanNormal_8888;
-     self->_blend_lRGBAffff_PRE=O2BlendSpanNormal_ffff;
-     self->_writeCoverage_lRGBA8888_PRE=O2RasterizeWriteCoverageSpan8888_Normal;
+     self->_blend_argb8u_PRE=O2BlendSpanNormal_8888;
+     self->_blend_argb32f_PRE=O2BlendSpanNormal_ffff;
+     self->_writeCoverage_argb8u_PRE=O2RasterizeWriteCoverageSpan8888_Normal;
      break;
      
 	case kO2BlendModeMultiply:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanMultiply_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanMultiply_ffff;
      break;
      
 	case kO2BlendModeScreen:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanScreen_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanScreen_ffff;
 	 break;
 
 	case kO2BlendModeOverlay:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanOverlay_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanOverlay_ffff;
      break;
         
 	case kO2BlendModeDarken:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanDarken_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanDarken_ffff;
      break;
 
 	case kO2BlendModeLighten:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanLighten_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanLighten_ffff;
      break;
 
 	case kO2BlendModeColorDodge:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanColorDodge_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanColorDodge_ffff;
      break;
         
 	case kO2BlendModeColorBurn:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanColorBurn_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanColorBurn_ffff;
      break;
         
 	case kO2BlendModeHardLight:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanHardLight_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanHardLight_ffff;
      break;
         
 	case kO2BlendModeSoftLight:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanSoftLight_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanSoftLight_ffff;
      break;
         
 	case kO2BlendModeDifference:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanDifference_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanDifference_ffff;
      break;
         
 	case kO2BlendModeExclusion:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanExclusion_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanExclusion_ffff;
      break;
         
 	case kO2BlendModeHue:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanHue_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanHue_ffff;
      break; 
         
 	case kO2BlendModeSaturation:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanSaturation_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanSaturation_ffff;
      break;
         
 	case kO2BlendModeColor:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanColor_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanColor_ffff;
      break;
         
 	case kO2BlendModeLuminosity:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanLuminosity_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanLuminosity_ffff;
      break;
         
 	case kO2BlendModeClear:
-     self->_blend_lRGBA8888_PRE=O2BlendSpanClear_8888;
-     self->_blend_lRGBAffff_PRE=O2BlendSpanClear_ffff;
+     self->_blend_argb8u_PRE=O2BlendSpanClear_8888;
+     self->_blend_argb32f_PRE=O2BlendSpanClear_ffff;
      break;
 
 	case kO2BlendModeCopy:
-     self->_blend_lRGBA8888_PRE=O2BlendSpanCopy_8888;
-     self->_blend_lRGBAffff_PRE=O2BlendSpanCopy_ffff;
-     self->_writeCoverage_lRGBA8888_PRE=O2RasterizeWriteCoverageSpan8888_Copy;
+     self->_blend_argb8u_PRE=O2BlendSpanCopy_8888;
+     self->_blend_argb32f_PRE=O2BlendSpanCopy_ffff;
+     self->_writeCoverage_argb8u_PRE=O2RasterizeWriteCoverageSpan8888_Copy;
      break;
 
 	case kO2BlendModeSourceIn:
-     self->_blend_lRGBA8888_PRE=O2BlendSpanSourceIn_8888;
-     self->_blend_lRGBAffff_PRE=O2BlendSpanSourceIn_ffff;
+     self->_blend_argb8u_PRE=O2BlendSpanSourceIn_8888;
+     self->_blend_argb32f_PRE=O2BlendSpanSourceIn_ffff;
      break;
 
 	case kO2BlendModeSourceOut:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanSourceOut_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanSourceOut_ffff;
      break;
 
 	case kO2BlendModeSourceAtop:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanSourceAtop_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanSourceAtop_ffff;
      break;
 
 	case kO2BlendModeDestinationOver:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationOver_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanDestinationOver_ffff;
      break;
 
 	case kO2BlendModeDestinationIn:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationIn_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanDestinationIn_ffff;
      break;
 
 	case kO2BlendModeDestinationOut:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationOut_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanDestinationOut_ffff;
      break;
 
 	case kO2BlendModeDestinationAtop:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationAtop_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanDestinationAtop_ffff;
      break;
 
 	case kO2BlendModeXOR:
-     self->_blend_lRGBA8888_PRE=O2BlendSpanXOR_8888;
-     self->_blend_lRGBAffff_PRE=O2BlendSpanXOR_ffff;
+     self->_blend_argb8u_PRE=O2BlendSpanXOR_8888;
+     self->_blend_argb32f_PRE=O2BlendSpanXOR_ffff;
      break;
 
 	case kO2BlendModePlusDarker:
-     self->_blend_lRGBAffff_PRE=O2BlendSpanPlusDarker_ffff;
+     self->_blend_argb32f_PRE=O2BlendSpanPlusDarker_ffff;
      break;
 
 	case kO2BlendModePlusLighter:
-     self->_blend_lRGBA8888_PRE=O2BlendSpanPlusLighter_8888;
-     self->_blend_lRGBAffff_PRE=O2BlendSpanPlusLighter_ffff;
+     self->_blend_argb8u_PRE=O2BlendSpanPlusLighter_8888;
+     self->_blend_argb32f_PRE=O2BlendSpanPlusLighter_ffff;
      break;
    }
 
-   if(self->_writeCoverage_lRGBA8888_PRE!=NULL){
+   if(self->_writeCoverage_argb8u_PRE!=NULL){
     self->_blendFunction=NULL;
-    self->_writeCoverageFunction=self->_writeCoverage_lRGBA8888_PRE;
+    self->_writeCoverageFunction=self->_writeCoverage_argb8u_PRE;
    }
    else {
-    if(self->_blend_lRGBA8888_PRE!=NULL){
-     self->_blendFunction=self->_blend_lRGBA8888_PRE;
+    if(self->_blend_argb8u_PRE!=NULL){
+     self->_blendFunction=self->_blend_argb8u_PRE;
      self->_writeCoverageFunction=O2RasterizeWriteCoverageSpan8888;
     }
     else {
-     self->_blendFunction=self->_blend_lRGBAffff_PRE;
+     self->_blendFunction=self->_blend_argb32f_PRE;
      self->_writeCoverageFunction=O2RasterizeWriteCoverageSpanffff;
     }
    }
 }
 
-void O2DContextSetPaint(O2Context_builtin *self, O2Paint* paint) {
+void O2ContextSetPaint(O2Context_builtin *self,O2PaintRef paint) {
    paint=O2PaintRetain(paint);
    O2PaintRelease(self->_paint);
    self->_paint=paint;

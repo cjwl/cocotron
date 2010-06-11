@@ -433,7 +433,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 }
 
 static void evaluate(void *info,const float *in, float *output) {
-   static CGFloat _C0[4]={0,1,0,0};
+   static CGFloat _C0[4]={0,1,0,1};
    static CGFloat _C1[4]={1,0,0,1};
    float         x=in[0];
    int           i;
@@ -456,7 +456,7 @@ static void evaluate(void *info,const float *in, float *output) {
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextSetRGBFillColor(_context,0.5,0.5,0.5,0.5);
-   CGContextFillRect(_context,CGRectMake(0,0,400,400));
+  // CGContextFillRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,ctm);
    [self establishContextState];
 

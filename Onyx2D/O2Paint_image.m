@@ -29,73 +29,73 @@
 
 @implementation O2Paint_image
 
-ONYX2D_STATIC int O2PaintReadResampledHighSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledHighSpan_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
-   O2ImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBicubic_largb32f_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-ONYX2D_STATIC int O2PaintReadResampledLowSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledLowSpan_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
-   O2ImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBilinear_largb32f_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-ONYX2D_STATIC int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledNoneSpan_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
-   O2ImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImagePointSampling_largb32f_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
 //
 
-ONYX2D_STATIC int O2PaintReadResampledHighSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledHighSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   O2ImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBicubic_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-ONYX2D_STATIC int O2PaintReadResampledLowSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledLowSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   O2ImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBilinear_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-ONYX2D_STATIC int O2PaintReadResampledLowSpanFloatTranslate_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledLowSpanFloatTranslate_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   O2ImageBilinearFloatTranslate_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBilinearFloatTranslate_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-ONYX2D_STATIC int O2PaintReadResampledNoneSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadResampledNoneSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   O2ImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImagePointSampling_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
 
-ONYX2D_STATIC int O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
+ONYX2D_STATIC int O2PaintReadIntegerTranslateSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
-   O2ImageIntegerTranslate_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageIntegerTranslate_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
 ONYX2D_STATIC int multiply(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   O2PaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
+   O2PaintReadSpan_largb32f_PRE(self->_paint,x,y,span,length);
 
    O2argb32f imageSpan[length];
    
 // FIXME: Should this take into account the interpolation quality? (depends on how it is used)
-   O2PaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+   O2PaintReadResampledNoneSpan_largb32f_PRE(self,x,y,imageSpan,length);
 
    int i;
    
@@ -121,11 +121,11 @@ ONYX2D_STATIC int multiply(O2Paint *selfX,int x,int y,O2argb32f *span,int length
 ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   self->_paint->_paint_lRGBAffff_PRE(self->_paint,x,y,span,length);
+   self->_paint->_paint_largb32f_PRE(self->_paint,x,y,span,length);
 
    O2argb32f imageSpan[length];
 // FIXME: Should this take into account the interpolation quality? (depends on how it is used)
-   O2PaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+   O2PaintReadResampledNoneSpan_largb32f_PRE(self,x,y,imageSpan,length);
 
    int i;
    
@@ -192,11 +192,11 @@ ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length)
    switch(mode){
    
     case VG_DRAW_IMAGE_MULTIPLY:
-     _paint_lRGBAffff_PRE=multiply;
+     _paint_largb32f_PRE=multiply;
      break;
      
     case VG_DRAW_IMAGE_STENCIL:
-     _paint_lRGBAffff_PRE=stencil;
+     _paint_largb32f_PRE=stencil;
      break;
      
     default:
@@ -204,31 +204,31 @@ ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length)
      
       case kO2InterpolationHigh:
        if(integerTranslate)
-        _paint_lRGBA8888_PRE=O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE;
+        _paint_largb8u_PRE=O2PaintReadIntegerTranslateSpan_largb8u_PRE;
        else
-       _paint_lRGBA8888_PRE=O2PaintReadResampledHighSpan_lRGBA8888_PRE;
-       _paint_lRGBAffff_PRE=O2PaintReadResampledHighSpan_lRGBAffff_PRE;
+       _paint_largb8u_PRE=O2PaintReadResampledHighSpan_largb8u_PRE;
+       _paint_largb32f_PRE=O2PaintReadResampledHighSpan_largb32f_PRE;
        break;
        
       case kO2InterpolationLow:
       
        if(integerTranslate)
-        _paint_lRGBA8888_PRE=O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE;
+        _paint_largb8u_PRE=O2PaintReadIntegerTranslateSpan_largb8u_PRE;
        else if(floatTranslate)
-        _paint_lRGBA8888_PRE=O2PaintReadResampledLowSpanFloatTranslate_lRGBA8888_PRE;
+        _paint_largb8u_PRE=O2PaintReadResampledLowSpanFloatTranslate_largb8u_PRE;
        else
-       _paint_lRGBA8888_PRE=O2PaintReadResampledLowSpan_lRGBA8888_PRE;
+       _paint_largb8u_PRE=O2PaintReadResampledLowSpan_largb8u_PRE;
         
-       _paint_lRGBAffff_PRE=O2PaintReadResampledLowSpan_lRGBAffff_PRE;
+       _paint_largb32f_PRE=O2PaintReadResampledLowSpan_largb32f_PRE;
        break;
 
       case kO2InterpolationNone:
       default:
        if(integerTranslate)
-        _paint_lRGBA8888_PRE=O2PaintReadIntegerTranslateSpan_lRGBA8888_PRE;
+        _paint_largb8u_PRE=O2PaintReadIntegerTranslateSpan_largb8u_PRE;
        else
-       _paint_lRGBA8888_PRE=O2PaintReadResampledNoneSpan_lRGBA8888_PRE;
-       _paint_lRGBAffff_PRE=O2PaintReadResampledNoneSpan_lRGBAffff_PRE;
+       _paint_largb8u_PRE=O2PaintReadResampledNoneSpan_largb8u_PRE;
+       _paint_largb32f_PRE=O2PaintReadResampledNoneSpan_largb32f_PRE;
        break;
     
      }

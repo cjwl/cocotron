@@ -116,7 +116,7 @@ typedef struct VGColor {
 	VGColorInternalFormat	m_format;
 } VGColor;
 
-static inline VGColor VGColorFromRGBAffff(O2argb32f rgba,VGColorInternalFormat format){
+static inline VGColor VGColorFromargb32f(O2argb32f rgba,VGColorInternalFormat format){
    VGColor result;
    
    result.r=rgba.r;
@@ -215,20 +215,20 @@ static inline void O2argb32fConvertSpan(O2argb32f *span,int length,VGColorIntern
     int i;
    
     for(i=0;i<length;i++)
-     span[i]=O2argb32fFromColor(VGColorConvert(VGColorFromRGBAffff(span[i],fromFormat),toFormat));
+     span[i]=O2argb32fFromColor(VGColorConvert(VGColorFromargb32f(span[i],fromFormat),toFormat));
    }
 }
 
 
 @class O2Surface;
 
-typedef void (*O2SurfaceWriteSpan_RGBA8888)(O2Surface *self,int x,int y,O2argb8u *span,int length);
-typedef void (*O2SurfaceWriteSpan_RGBAffff)(O2Surface *self,int x,int y,O2argb32f *span,int length);
+typedef void (*O2SurfaceWriteSpan_argb8u)(O2Surface *self,int x,int y,O2argb8u *span,int length);
+typedef void (*O2SurfaceWriteSpan_argb32f)(O2Surface *self,int x,int y,O2argb32f *span,int length);
 
 @interface O2Surface : O2Image {
    unsigned char              *_pixelBytes;
-   O2SurfaceWriteSpan_RGBA8888 _writeRGBA8888;
-   O2SurfaceWriteSpan_RGBAffff _writeRGBAffff;
+   O2SurfaceWriteSpan_argb8u _writeargb8u;
+   O2SurfaceWriteSpan_argb32f _writeargb32f;
    
 	BOOL           m_ownsData;
 	VGPixelDecode	m_desc;
@@ -249,8 +249,8 @@ void O2SurfaceMask(O2Surface *self,O2Surface* src, VGMaskOperation operation, in
 VGColor O2SurfaceReadPixel(O2Image *self,int x, int y);
 
 void O2SurfaceWritePixel(O2Surface *self,int x, int y, VGColor c);
-void O2SurfaceWriteSpan_lRGBA8888_PRE(O2Surface *self,int x,int y,O2argb8u *span,int length);
-void O2SurfaceWriteSpan_lRGBAffff_PRE(O2Surface *self,int x,int y,O2argb32f *span,int length);
+void O2SurfaceWriteSpan_argb8u_PRE(O2Surface *self,int x,int y,O2argb8u *span,int length);
+void O2SurfaceWriteSpan_largb32f_PRE(O2Surface *self,int x,int y,O2argb32f *span,int length);
 
 void O2SurfaceWriteFilteredPixel(O2Surface *self,int x, int y, VGColor c, VGbitfield channelMask);
 

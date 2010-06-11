@@ -33,13 +33,13 @@
 static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_pattern *self=(O2Paint_pattern *)selfX;
    
-   O2ImageReadPatternSpan_lRGBAffff_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kO2PatternTilingConstantSpacing);
+   O2ImageReadPatternSpan_largb32f_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kO2PatternTilingConstantSpacing);
    return length;
 }
 
 -initWithImage:(O2Image *)image {
-   self->m_surfaceToPaintMatrix=O2AffineTransformIdentity;
-   _paint_lRGBAffff_PRE=O2PaintReadPremultipliedPatternSpan;
+   O2PaintInitWithTransform(self,O2AffineTransformIdentity);
+   _paint_largb32f_PRE=O2PaintReadPremultipliedPatternSpan;
    m_pattern=[image retain];
    return self;
 }

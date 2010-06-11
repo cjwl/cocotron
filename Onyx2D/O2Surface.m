@@ -155,7 +155,7 @@ static void colorToBytesLittle(O2Float color,uint8_t *scanline){
 #endif
 }
 
-static void O2SurfaceWrite_RGBAffff_to_RGBAffffLittle(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_argb32fLittle(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -195,7 +195,7 @@ static void colorToBytesBig(O2Float color,uint8_t *scanline){
 #endif
 }
 
-static void O2SurfaceWrite_RGBAffff_to_RGBAffffBig(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_argb32fBig(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -218,7 +218,7 @@ static unsigned char colorToNibble(O2Float c){
 	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (O2Float)0xF + 0.5f), 0), 0xF);
 }
 
-static void O2SurfaceWrite_RGBAffff_to_GA88(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_GA88(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -231,7 +231,7 @@ static void O2SurfaceWrite_RGBAffff_to_GA88(O2Surface *self,int x,int y,O2argb32
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_G8(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_G8(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -244,7 +244,7 @@ static void O2SurfaceWrite_RGBAffff_to_G8(O2Surface *self,int x,int y,O2argb32f 
 }
 
 
-static void O2SurfaceWrite_RGBAffff_to_RGBA8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_argb8u(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -259,7 +259,7 @@ static void O2SurfaceWrite_RGBAffff_to_RGBA8888(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBA8888_to_RGBA8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
+static void O2SurfaceWrite_argb8u_to_argb8u(O2Surface *self,int x,int y,O2argb8u *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -274,7 +274,7 @@ static void O2SurfaceWrite_RGBA8888_to_RGBA8888(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_ABGR8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_ABGR8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -289,7 +289,7 @@ static void O2SurfaceWrite_RGBAffff_to_ABGR8888(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBA8888_to_ABGR8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
+static void O2SurfaceWrite_argb8u_to_ABGR8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -304,7 +304,7 @@ static void O2SurfaceWrite_RGBA8888_to_ABGR8888(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBA8888_to_BGRA8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
+static void O2SurfaceWrite_argb8u_to_BGRA8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -319,7 +319,7 @@ static void O2SurfaceWrite_RGBA8888_to_BGRA8888(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_RGBA4444(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_RGBA4444(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -332,7 +332,7 @@ static void O2SurfaceWrite_RGBAffff_to_RGBA4444(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_BARG4444(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_BARG4444(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -345,7 +345,7 @@ static void O2SurfaceWrite_RGBAffff_to_BARG4444(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_RGBA2222(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_RGBA2222(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -357,7 +357,7 @@ static void O2SurfaceWrite_RGBAffff_to_RGBA2222(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_CMYK8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_CMYK8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
@@ -372,7 +372,7 @@ static void O2SurfaceWrite_RGBAffff_to_CMYK8888(O2Surface *self,int x,int y,O2ar
    }
 }
 
-static void O2SurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(O2Surface *self,int x,int y,O2argb32f *span,int length){
+static void O2SurfaceWrite_argb32f_to_argb8u_to_ANY(O2Surface *self,int x,int y,O2argb32f *span,int length){
    O2argb8u span8888[length];
    int i;
    
@@ -384,11 +384,11 @@ static void O2SurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(O2Surface *self,int x,int
     span8888[i].b=O2ByteFromFloat(rgba.b);
     span8888[i].a=O2ByteFromFloat(rgba.a);
    }
-   self->_writeRGBA8888(self,x,y,span8888,length);
+   self->_writeargb8u(self,x,y,span8888,length);
 }
 
 static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
-   self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA8888_to_ANY;// default
+   self->_writeargb32f=O2SurfaceWrite_argb32f_to_argb8u_to_ANY;// default
    
    switch(bitsPerComponent){
    
@@ -401,12 +401,12 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
         case kO2BitmapByteOrderDefault:
         case kO2BitmapByteOrder16Little:
         case kO2BitmapByteOrder32Little:
-         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBAffffLittle;
+         self->_writeargb32f=O2SurfaceWrite_argb32f_to_argb32fLittle;
          return YES;
          
         case kO2BitmapByteOrder16Big:
         case kO2BitmapByteOrder32Big:
-         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBAffffBig;
+         self->_writeargb32f=O2SurfaceWrite_argb32f_to_argb32fBig;
          return YES;
        }
      }
@@ -416,11 +416,11 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
      switch(bitsPerPixel){
      
       case 8:
-       self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_G8;
+       self->_writeargb32f=O2SurfaceWrite_argb32f_to_G8;
        return YES;
 
       case 16:
-       self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_GA88;
+       self->_writeargb32f=O2SurfaceWrite_argb32f_to_GA88;
        return YES;
 
       case 24:
@@ -439,14 +439,14 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
            case kO2BitmapByteOrderDefault:
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_ABGR8888;
-            self->_writeRGBA8888=O2SurfaceWrite_RGBA8888_to_ABGR8888;
+            self->_writeargb32f=O2SurfaceWrite_argb32f_to_ABGR8888;
+            self->_writeargb8u=O2SurfaceWrite_argb8u_to_ABGR8888;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA8888;
-            self->_writeRGBA8888=O2SurfaceWrite_RGBA8888_to_RGBA8888;
+            self->_writeargb32f=O2SurfaceWrite_argb32f_to_argb8u;
+            self->_writeargb8u=O2SurfaceWrite_argb8u_to_argb8u;
             return YES;
           }
 
@@ -457,7 +457,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
            case kO2BitmapByteOrderDefault:
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_writeRGBA8888=O2SurfaceWrite_RGBA8888_to_BGRA8888;
+            self->_writeargb8u=O2SurfaceWrite_argb8u_to_BGRA8888;
             return YES;
           }
           break;
@@ -481,7 +481,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
          
          case kO2BitmapByteOrder16Big:
          case kO2BitmapByteOrder32Big:
-          self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_CMYK8888;
+          self->_writeargb32f=O2SurfaceWrite_argb32f_to_CMYK8888;
          return YES;
         }
        }
@@ -500,12 +500,12 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
         case kO2BitmapByteOrderDefault:
         case kO2BitmapByteOrder16Little:
         case kO2BitmapByteOrder32Little:
-         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_BARG4444;
+         self->_writeargb32f=O2SurfaceWrite_argb32f_to_BARG4444;
          return YES;
          
         case kO2BitmapByteOrder16Big:
         case kO2BitmapByteOrder32Big:
-         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA4444;
+         self->_writeargb32f=O2SurfaceWrite_argb32f_to_RGBA4444;
          return YES;
        }
      }
@@ -518,7 +518,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
       case 6:
        break;
       case 8:
-       self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA2222;
+       self->_writeargb32f=O2SurfaceWrite_argb32f_to_RGBA2222;
        return YES;
      }
      break;
@@ -526,7 +526,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
     case  1:
      switch(bitsPerPixel){
       case 1:
-       //  self->_writeRGBAffff=O2SurfaceWriteSpan_lRGBAffff_PRE_01;
+       //  self->_writeargb32f=O2SurfaceWriteSpan_largb32f_PRE_01;
        return YES;
        
       case 3:
@@ -660,12 +660,12 @@ VGColor O2SurfaceReadPixel(O2Image *self,int x, int y) {
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
  
-    O2argb32f span,*direct=O2ImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
+    O2argb32f span,*direct=O2ImageReadSpan_largb32f_PRE(self,x,y,&span,1);
    
     if(direct!=NULL)
-     return VGColorFromRGBAffff(*direct,VGColor_lRGBA_PRE);
+     return VGColorFromargb32f(*direct,VGColor_lRGBA_PRE);
     else
-     return VGColorFromRGBAffff(span,VGColor_lRGBA_PRE);
+     return VGColorFromargb32f(span,VGColor_lRGBA_PRE);
 }
 
 
@@ -915,24 +915,24 @@ void O2SurfaceMask(O2Surface *self,O2Surface* src, VGMaskOperation operation, in
 	}
 }
 
-void O2SurfaceWriteSpan_lRGBA8888_PRE(O2Surface *self,int x,int y,O2argb8u *span,int length) {   
+void O2SurfaceWriteSpan_argb8u_PRE(O2Surface *self,int x,int y,O2argb8u *span,int length) {   
    if(length==0)
     return;
 
   // O2argb8uConvertSpan(span,length,VGColor_lRGBA_PRE,self->_colorFormat);
    
-   self->_writeRGBA8888(self,x,y,span,length);
+   self->_writeargb8u(self,x,y,span,length);
    
    self->m_mipmapsValid = NO;
 }
 
-void O2SurfaceWriteSpan_lRGBAffff_PRE(O2Surface *self,int x,int y,O2argb32f *span,int length) {   
+void O2SurfaceWriteSpan_largb32f_PRE(O2Surface *self,int x,int y,O2argb32f *span,int length) {   
    if(length==0)
     return;
     
    O2argb32fConvertSpan(span,length,VGColor_lRGBA_PRE,self->_colorFormat);
    
-   self->_writeRGBAffff(self,x,y,span,length);
+   self->_writeargb32f(self,x,y,span,length);
    
    self->m_mipmapsValid = NO;
 }
@@ -944,7 +944,7 @@ void O2SurfaceWritePixel(O2Surface *self,int x, int y, VGColor c) {
 	RI_ASSERT(c.m_format == self->_colorFormat);
     O2argb32f span=O2argb32fFromColor(VGColorConvert(c,VGColor_lRGBA_PRE));
     
-    O2SurfaceWriteSpan_lRGBAffff_PRE(self,x,y,&span,1);
+    O2SurfaceWriteSpan_largb32f_PRE(self,x,y,&span,1);
 	self->m_mipmapsValid = NO;
 }
 
@@ -1442,7 +1442,7 @@ void O2SurfaceGaussianBlur(O2Surface *self,O2Image * src, O2GaussianKernel *kern
 	for(j=0;j<src->_height;j++){
      O2argb32f *tmpRow=tmp+j*src->_width;
      int         i,width=src->_width;
-     O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(src,0,j,tmpRow,width);
+     O2argb32f *direct=O2ImageReadSpan_largb32f_PRE(src,0,j,tmpRow,width);
      
      if(direct!=NULL){
       for(i=0;i<width;i++)
@@ -1481,7 +1481,7 @@ void O2SurfaceGaussianBlur(O2Surface *self,O2Image * src, O2GaussianKernel *kern
 				sum=O2argb32fAdd(sum,  O2argb32fMultiplyByFloat(gaussianReadPixel(i, y, w, src->_height, tmp2), kernel->yValues[kj]));
 			}
             sum=O2argb32fMultiplyByFloat(sum, kernel->yScale);
-			O2SurfaceWriteSpan_lRGBAffff_PRE(self,i, j, &sum,1);
+			O2SurfaceWriteSpan_largb32f_PRE(self,i, j, &sum,1);
 		}
 	}
     NSZoneFree(NULL,tmp);

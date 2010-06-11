@@ -56,7 +56,7 @@ ONYX2D_STATIC_INLINE void CMYKAToRGBA(float *input,float *output){
 }
 
 -initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples {
-   m_surfaceToPaintMatrix=O2AffineTransformInvert(deviceTransform);
+   O2PaintInitWithTransform(self,O2AffineTransformInvert(deviceTransform));
    
    _startPoint=[shading startPoint];
    _endPoint=[shading endPoint];
@@ -93,6 +93,9 @@ ONYX2D_STATIC_INLINE void CMYKAToRGBA(float *input,float *output){
    
    _colorStops=NSZoneMalloc(NULL,_numberOfColorStops*sizeof(GradientStop));
    int i;
+   
+   isOpaque=TRUE;
+   
    for(i=0;i<_numberOfColorStops;i++){
     _colorStops[i].offset=(O2Float)i/(O2Float)(_numberOfColorStops-1);
 
@@ -101,6 +104,9 @@ ONYX2D_STATIC_INLINE void CMYKAToRGBA(float *input,float *output){
     O2FunctionEvaluate(function,_colorStops[i].offset,output);
     outputToRGBA(output,rgba);
     
+    if(rgba[3]<1.0f)
+     isOpaque=FALSE;
+     
     _colorStops[i].color32f=O2argb32fPremultiply(O2argb32fInit(rgba[0],rgba[1],rgba[2],rgba[3]));
     _colorStops[i].color8u=O2argb8uFromO2argb32f(_colorStops[i].color32f);
    }

@@ -127,12 +127,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
        switch(bitmapInfo&kO2BitmapByteOrderMask){
         case kO2BitmapByteOrder16Little:
         case kO2BitmapByteOrder32Little:
-         self->_read_lRGBAffff_PRE=O2ImageRead_RGBAffffLittle_to_RGBAffff;
+         self->_read_largb32f_PRE=O2ImageRead_argb32fLittle_to_argb32f;
          return YES;
          
         case kO2BitmapByteOrder16Big:
         case kO2BitmapByteOrder32Big:
-         self->_read_lRGBAffff_PRE=O2ImageRead_RGBAffffBig_to_RGBAffff;
+         self->_read_largb32f_PRE=O2ImageRead_argb32fBig_to_argb32f;
          return YES;
        }
      }
@@ -143,18 +143,18 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
      
       case 8:
        self->_readA8=O2ImageRead_G8_to_A8;
-       self->_read_lRGBA8888_PRE=O2ImageRead_G8_to_RGBA8888;
+       self->_read_argb8u_PRE=O2ImageRead_G8_to_argb8u;
        return YES;
       
       case 16:
-       self->_read_lRGBA8888_PRE=O2ImageRead_GA88_to_RGBA8888;
+       self->_read_argb8u_PRE=O2ImageRead_GA88_to_argb8u;
        return YES;
        
       case 24:
        switch(bitmapInfo&kO2BitmapAlphaInfoMask){
         case kO2ImageAlphaNone:
           // FIXME: how is endian ness interpreted ?
-         self->_read_lRGBA8888_PRE=O2ImageRead_RGB888_to_RGBA8888;
+         self->_read_argb8u_PRE=O2ImageRead_RGB888_to_argb8u;
          return YES;
        }
        break;
@@ -169,12 +169,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
           switch(bitmapInfo&kO2BitmapByteOrderMask){
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=O2ImageRead_ABGR8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_ABGR8888_to_argb8u;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_read_lRGBA8888_PRE=O2ImageRead_RGBA8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_RGBA8888_to_argb8u;
             return YES;
           }
           break;
@@ -183,7 +183,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
           switch(bitmapInfo&kO2BitmapByteOrderMask){
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=O2ImageRead_BGRA8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_BGRA8888_to_argb8u;
             return YES;
           }
           break;
@@ -195,12 +195,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
           switch(bitmapInfo&kO2BitmapByteOrderMask){
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=O2ImageRead_ABGR8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_ABGR8888_to_argb8u;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_read_lRGBA8888_PRE=O2ImageRead_RGBA8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_RGBA8888_to_argb8u;
             return YES;
           }
           break;
@@ -210,12 +210,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
            
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=O2ImageRead_BGRX8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_BGRX8888_to_argb8u;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_read_lRGBA8888_PRE=O2ImageRead_XRGB8888_to_RGBA8888;
+            self->_read_argb8u_PRE=O2ImageRead_XRGB8888_to_argb8u;
             return YES;
           }
           break;
@@ -230,7 +230,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
      
       case 16:
        if(bitmapInfo==(kO2BitmapByteOrder16Little|kO2ImageAlphaNoneSkipFirst)){
-        self->_read_lRGBA8888_PRE=O2ImageRead_G3B5X1R5G2_to_RGBA8888;
+        self->_read_argb8u_PRE=O2ImageRead_G3B5X1R5G2_to_argb8u;
         return YES;
        }
        break;
@@ -247,12 +247,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
        switch(bitmapInfo&kO2BitmapByteOrderMask){
         case kO2BitmapByteOrder16Little:
         case kO2BitmapByteOrder32Little:
-         self->_read_lRGBA8888_PRE=O2ImageRead_BARG4444_to_RGBA8888;
+         self->_read_argb8u_PRE=O2ImageRead_BARG4444_to_argb8u;
          return YES;
          
         case kO2BitmapByteOrder16Big:
         case kO2BitmapByteOrder32Big:
-         self->_read_lRGBA8888_PRE=O2ImageRead_RGBA4444_to_RGBA8888;
+         self->_read_argb8u_PRE=O2ImageRead_RGBA4444_to_argb8u;
          return YES;
        }
 
@@ -267,7 +267,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
       case 6:
        break;
       case 8:
-       self->_read_lRGBA8888_PRE=O2ImageRead_RGBA2222_to_RGBA8888;
+       self->_read_argb8u_PRE=O2ImageRead_RGBA2222_to_argb8u;
        return YES;
      }
      break;
@@ -275,7 +275,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
     case  1:
      switch(bitsPerPixel){
       case 1:
-    //   self->_read_lRGBAffff_PRE=O2ImageReadPixelSpan_01;
+    //   self->_read_largb32f_PRE=O2ImageReadPixelSpan_01;
      //  return YES;
        
       case 3:
@@ -297,7 +297,7 @@ ONYX2D_STATIC BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerCo
         switch(bitmapInfo&kO2BitmapByteOrderMask){
          case kO2BitmapByteOrder16Big:
          case kO2BitmapByteOrder32Big:
-          self->_read_lRGBA8888_PRE=O2ImageRead_CMYK8888_to_RGBA8888;
+          self->_read_argb8u_PRE=O2ImageRead_CMYK8888_to_argb8u;
           return YES;
         }
        break;
@@ -311,7 +311,7 @@ ONYX2D_STATIC BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPe
 
    switch([[(O2ColorSpace_indexed *)colorSpace baseColorSpace] type]){
     case kO2ColorSpaceModelRGB:
-     self->_read_lRGBA8888_PRE=O2ImageRead_I8_to_RGBA8888;
+     self->_read_argb8u_PRE=O2ImageRead_I8_to_argb8u;
      return YES;
     
     default:
@@ -321,9 +321,9 @@ ONYX2D_STATIC BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPe
 
 ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
 
-   self->_readA8=O2ImageRead_ANY_to_RGBA8888_to_A8;
+   self->_readA8=O2ImageRead_ANY_to_argb8u_to_A8;
    self->_readAf=O2ImageRead_ANY_to_A8_to_Af;
-   self->_read_lRGBAffff_PRE=O2ImageRead_ANY_to_RGBA8888_to_RGBAffff;
+   self->_read_largb32f_PRE=O2ImageRead_ANY_to_argb8u_to_argb32f;
 
    if((bitmapInfo&kO2BitmapByteOrderMask)==kO2BitmapByteOrderDefault)
     bitmapInfo|=kO2BitmapByteOrder32Big;
@@ -605,9 +605,9 @@ O2BitmapInfo O2ImageGetBitmapInfo(O2ImageRef self) {
    return self->_bitmapInfo;
 }
 
-O2argb32f *O2ImageRead_ANY_to_RGBA8888_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length){
+O2argb32f *O2ImageRead_ANY_to_argb8u_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length){
    O2argb8u *span8888=__builtin_alloca(length*sizeof(O2argb8u));
-   O2argb8u *direct=self->_read_lRGBA8888_PRE(self,x,y,span8888,length);
+   O2argb8u *direct=self->_read_argb8u_PRE(self,x,y,span8888,length);
    
    if(direct!=NULL)
     span8888=direct;
@@ -646,7 +646,7 @@ float bytesLittleToFloat(const unsigned char *scanline){
    return u.f;
 }
 
-O2argb32f *O2ImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length){
+O2argb32f *O2ImageRead_argb32fLittle_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -692,7 +692,7 @@ float bytesBigToFloat(const unsigned char *scanline){
    return u.f;
 }
 
-O2argb32f *O2ImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length){
+O2argb32f *O2ImageRead_argb32fBig_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -731,11 +731,11 @@ uint8_t *O2ImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int lengt
    return NULL;
 }
 
-uint8_t *O2ImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
+uint8_t *O2ImageRead_ANY_to_argb8u_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
    O2argb8u *span=__builtin_alloca(length*sizeof(O2argb8u));
    int i;
    
-   O2argb8u *direct=self->_read_lRGBA8888_PRE(self,x,y,span,length);
+   O2argb8u *direct=self->_read_argb8u_PRE(self,x,y,span,length);
    if(direct!=NULL)
     span=direct;
     
@@ -756,7 +756,7 @@ O2Float *O2ImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,O2Float *alpha,in
    return NULL;
 }
 
-O2argb8u *O2ImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_G8_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
 
@@ -777,7 +777,7 @@ O2argb8u *O2ImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,in
    return NULL;
 }
 
-O2argb8u *O2ImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_GA88_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
 
@@ -797,7 +797,7 @@ O2argb8u *O2ImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,
    return NULL;
 }
 
-O2argb8u *O2ImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_RGBA8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -808,16 +808,17 @@ O2argb8u *O2ImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    for(i=0;i<length;i++){
     O2argb8u  result;
     
-    result.r = *scanline++;
-    result.g = *scanline++;
-    result.b = *scanline++;
-	result.a = *scanline++;
+    result.r = scanline[0];
+    result.g = scanline[1];
+    result.b = scanline[2];
+	result.a = scanline[3];
     *span++=result;
+    scanline+=4;
    }
    return NULL;
 }
 
-O2argb8u *O2ImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_ABGR8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -837,7 +838,7 @@ O2argb8u *O2ImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
+O2argb8u *O2ImageRead_BGRA8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -861,7 +862,7 @@ O2argb8u *O2ImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
+O2argb8u *O2ImageRead_RGB888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -882,7 +883,7 @@ O2argb8u *O2ImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *spa
    return NULL;
 }
 
-O2argb8u *O2ImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
+O2argb8u *O2ImageRead_BGRX8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -903,7 +904,7 @@ O2argb8u *O2ImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
+O2argb8u *O2ImageRead_XRGB8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -925,7 +926,7 @@ O2argb8u *O2ImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
 }
 
 // kO2BitmapByteOrder16Little|kO2ImageAlphaNoneSkipFirst
-O2argb8u *O2ImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_G3B5X1R5G2_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -949,7 +950,7 @@ O2argb8u *O2ImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,O2argb8u 
    return NULL;
 }
 
-O2argb8u *O2ImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_RGBA4444_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -971,7 +972,7 @@ O2argb8u *O2ImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_BARG4444_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -993,7 +994,7 @@ O2argb8u *O2ImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_RGBA2222_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -1014,7 +1015,7 @@ O2argb8u *O2ImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2ImageRead_CMYK8888_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
 // poor results
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
@@ -1040,7 +1041,7 @@ O2argb8u *O2ImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *s
    return NULL;
 }
 
-O2argb8u *O2ImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
+O2argb8u *O2ImageRead_I8_to_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length) {
    O2ColorSpace_indexed *indexed=(O2ColorSpace_indexed *)self->_colorSpace;
    unsigned hival=[indexed hival];
    const unsigned char *palette=[indexed paletteBytes];
@@ -1085,20 +1086,20 @@ O2argb8u *O2ImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,in
    
    Ideally the averaging algorithms would only use the available pixels on the edges */
    
-ONYX2D_STATIC_INLINE void O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, O2argb8u *span,int length){
+ONYX2D_STATIC_INLINE void O2ImageReadTileSpanExtendEdge_largb8u_PRE(O2Image *self,int u, int v, O2argb8u *span,int length){
    int i;
    O2argb8u *direct;
    v = RI_INT_CLAMP(v,0,self->_height-1);
       
-   for(i=0;i<length && u<0;u++,i++){
-    direct=self->_read_lRGBA8888_PRE(self,0,v,span+i,1);
+   for(i=0;u<0 && i<length;u++,i++){
+    direct=self->_read_argb8u_PRE(self,0,v,span+i,1);
 
     if(direct!=NULL)
      span[i]=direct[0];
    }   
 
    int chunk=RI_MIN(length-i,self->_width-u);
-   direct=self->_read_lRGBA8888_PRE(self,u,v,span+i,chunk);
+   direct=self->_read_argb8u_PRE(self,u,v,span+i,chunk);
    if(direct!=NULL) {
     int k;
     
@@ -1110,27 +1111,27 @@ ONYX2D_STATIC_INLINE void O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *s
    u+=chunk;
 
    for(;i<length;i++){
-    direct=self->_read_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
+    direct=self->_read_argb8u_PRE(self,self->_width-1,v,span+i,1);
     
     if(direct!=NULL)
      span[i]=direct[0];
    }
 }
 
-void O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(O2Image *self,int u, int v, O2argb32f *span,int length){
+void O2ImageReadTileSpanExtendEdge__largb32f_PRE(O2Image *self,int u, int v, O2argb32f *span,int length){
    int i;
    O2argb32f *direct;
    
    v = RI_INT_CLAMP(v,0,self->_height-1);
    
    for(i=0;i<length && u<0;u++,i++){
-    direct=O2ImageReadSpan_lRGBAffff_PRE(self,0,v,span+i,1);
+    direct=O2ImageReadSpan_largb32f_PRE(self,0,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
    
    int chunk=RI_MIN(length-i,self->_width-u);
-   direct=O2ImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,chunk);
+   direct=O2ImageReadSpan_largb32f_PRE(self,u,v,span+i,chunk);
    if(direct!=NULL) {
     int k;
     
@@ -1141,7 +1142,7 @@ void O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(O2Image *self,int u, int v, O2
    u+=chunk;
 
    for(;i<length;i++){
-    direct=O2ImageReadSpan_lRGBAffff_PRE(self,self->_width-1,v,span+i,1);
+    direct=O2ImageReadSpan_largb32f_PRE(self,self->_width-1,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
@@ -1284,7 +1285,7 @@ O2Image *O2ImageMipMapForLevel(O2Image *self,int level){
 }
 
 
-void O2ImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
+void O2ImageEWAOnMipmaps_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    int i;
    		O2Float m_pixelFilterRadius = 1.25f;
 		O2Float m_resamplingFilterRadius = 1.25f;
@@ -1402,7 +1403,7 @@ void O2ImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *spa
             int u;
             
             O2argb32f texel[u2-u1];
-            O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(mipmap,u1, v,texel,(u2-u1));
+            O2ImageReadTileSpanExtendEdge__largb32f_PRE(mipmap,u1, v,texel,(u2-u1));
 			for(u=u1;u<u2;u++)
 			{
 				if( Q >= 0.0f && Q < 1.0f )
@@ -1437,7 +1438,7 @@ ONYX2D_STATIC_INLINE int cubic_8(int v0,int v1,int v2,int v3,int fraction){
   return RI_INT_CLAMP((p * (fraction*fraction*fraction))/(256*256*256) + (q * fraction*fraction)/(256*256) + ((v2 - v0) * fraction)/256 + v1,0,255);
 }
 
-ONYX2D_STATIC_INLINE O2argb8u bicubic_lRGBA8888_PRE(O2argb8u a,O2argb8u b,O2argb8u c,O2argb8u d,int fraction) {
+ONYX2D_STATIC_INLINE O2argb8u bicubic_largb8u_PRE(O2argb8u a,O2argb8u b,O2argb8u c,O2argb8u d,int fraction) {
   return O2argb8uInit(
    cubic_8(a.r, b.r, c.r, d.r, fraction),
    cubic_8(a.g, b.g, c.g, d.g, fraction),
@@ -1445,7 +1446,7 @@ ONYX2D_STATIC_INLINE O2argb8u bicubic_lRGBA8888_PRE(O2argb8u a,O2argb8u b,O2argb
    cubic_8(a.a, b.a, c.a, d.a, fraction));
 }
 
-void O2ImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
+void O2ImageBicubic_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1464,19 +1465,19 @@ void O2ImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int 
     O2argb8u t0,t1,t2,t3;
     O2argb8u cspan[4];
      
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
-    t0 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u - 1,v - 1,cspan,4);
+    t0 = bicubic_largb8u_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v,cspan,4);
-    t1 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u - 1,v,cspan,4);
+    t1 = bicubic_largb8u_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
-    t2 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u - 1,v+1,cspan,4);     
+    t2 = bicubic_largb8u_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
-    t3 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u - 1,v+2,cspan,4);     
+    t3 = bicubic_largb8u_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
-    span[i]=bicubic_lRGBA8888_PRE(t0,t1,t2,t3, vfrac);
+    span[i]=bicubic_largb8u_PRE(t0,t1,t2,t3, vfrac);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
@@ -1490,7 +1491,7 @@ ONYX2D_STATIC_INLINE float cubic_f(float v0,float v1,float v2,float v3,float fra
   return RI_CLAMP((p * (fraction*fraction*fraction)) + (q * fraction*fraction) + ((v2 - v0) * fraction) + v1,0,1);
 }
 
-O2argb32f bicubic_lRGBAffff_PRE(O2argb32f a,O2argb32f b,O2argb32f c,O2argb32f d,float fraction) {
+O2argb32f bicubic_largb32f_PRE(O2argb32f a,O2argb32f b,O2argb32f c,O2argb32f d,float fraction) {
   return O2argb32fInit(
    cubic_f(a.r, b.r, c.r, d.r, fraction),
    cubic_f(a.g, b.g, c.g, d.g, fraction),
@@ -1498,7 +1499,7 @@ O2argb32f bicubic_lRGBAffff_PRE(O2argb32f a,O2argb32f b,O2argb32f c,O2argb32f d,
    cubic_f(a.a, b.a, c.a, d.a, fraction));
 }
 
-void O2ImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
+void O2ImageBicubic_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1517,63 +1518,71 @@ void O2ImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int
     O2argb32f t0,t1,t2,t3;
     O2argb32f cspan[4];
      
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v - 1,cspan,4);
-    t0 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,u - 1,v - 1,cspan,4);
+    t0 = bicubic_largb32f_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v,cspan,4);
-    t1 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,u - 1,v,cspan,4);
+    t1 = bicubic_largb32f_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+1,cspan,4);     
-    t2 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,u - 1,v+1,cspan,4);     
+    t2 = bicubic_largb32f_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+2,cspan,4);     
-    t3 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,u - 1,v+2,cspan,4);     
+    t3 = bicubic_largb32f_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
-    span[i]=bicubic_lRGBAffff_PRE(t0,t1,t2,t3, vfrac);
+    span[i]=bicubic_largb32f_PRE(t0,t1,t2,t3, vfrac);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
    }
 }
 
-void O2ImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
-   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
-   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
+void O2ImageBilinear_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
+   double du=(x+0.5)*surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5)*surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
+   double a=surfaceToImage.a*COVERAGE_MULTIPLIER_FLOAT;
+   double b=surfaceToImage.b*COVERAGE_MULTIPLIER_FLOAT;
    int i;
    
    du-=0.5;
    dv-=0.5;
+
+// Coordinates are pre-scaled by 256 to avoid float multiplication and
+// subtraction inside the loop for generating the coverage amount.
+
+   du*=COVERAGE_MULTIPLIER_FLOAT;
+   dv*=COVERAGE_MULTIPLIER_FLOAT;
    
    for(i=0;i<length;i++,x++){
-    O2Float uvx=du;
-    O2Float uvy=dv;
-
-	int     u=RI_FLOORF_TO_INT(uvx);
-	int     v=RI_FLOORF_TO_INT(uvy);
-
-    uint32_t fu = coverageFromZeroToOne(uvx-u);
+    int uvx=du;
+    int uvy=dv;
+    
+    int u=uvx>>8;
+    int v=uvy>>8;
+    
+    uint32_t fu = uvx&0xFF;
     uint32_t oneMinusFu=inverseCoverage(fu);
     
 	O2argb8u line0[2];
 	O2argb8u line1[2];
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v,line0,2);
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v+1,line1,2);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u,v,line0,2);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u,v+1,line1,2);
 
     O2argb8u c0 = O2argb8uMultiplyByCoverageAdd(line0[0],oneMinusFu,line0[1],fu);
     O2argb8u c1 = O2argb8uMultiplyByCoverageAdd(line1[0],oneMinusFu,line1[1],fu);
     
-    uint32_t fv = coverageFromZeroToOne(uvy-v);
+    uint32_t fv = uvy&0xFF;
     uint32_t oneMinusFv=inverseCoverage(fv);
 
     span[i]=O2argb8uMultiplyByCoverageAdd(c0,oneMinusFv,c1,fv);
         
-    du+=surfaceToImage.a;
-    dv+=surfaceToImage.b;
+    du+=a;
+    dv+=b;
    }
 }
 
 
-void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
+void O2ImageBilinear_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1586,10 +1595,10 @@ void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,in
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	O2argb32f c00c01[2];
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v,c00c01,2);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,u,v,c00c01,2);
 
     O2argb32f c01c11[2];
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v+1,c01c11,2);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,u,v+1,c01c11,2);
 
     O2Float fu = uv.x - (O2Float)u;
     O2Float fv = uv.y - (O2Float)v;
@@ -1602,7 +1611,7 @@ void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,in
    }
 }
 
-void O2ImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
+void O2ImagePointSampling_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1610,14 +1619,14 @@ void O2ImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *spa
    for(i=0;i<length;i++,x++){
     O2Point uv=O2PointMake(du,dv);
 
-    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
    }
 }
 
-void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
+void O2ImagePointSampling_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1625,7 +1634,7 @@ void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *sp
    for(i=0;i<length;i++,x++){
     O2Point uv=O2PointMake(du,dv);
 
-    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    O2ImageReadTileSpanExtendEdge__largb32f_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
@@ -1633,7 +1642,7 @@ void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *sp
 }
 
 // Float translate, or float translate with flip
-void O2ImageBilinearFloatTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
+void O2ImageBilinearFloatTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1654,8 +1663,8 @@ void O2ImageBilinearFloatTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2ar
    O2argb8u line0[length+1];
    O2argb8u line1[length+1];
    
-   O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v+0,line0,length+1);
-   O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v+1,line1,length+1);
+   O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u,v+0,line0,length+1);
+   O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,u,v+1,line1,length+1);
 
    for(i=0;i<length;i++){
     O2argb8u c0 = O2argb8uMultiplyByCoverageAdd(line0[i],oneMinusFu,line0[i+1],fu);
@@ -1666,15 +1675,15 @@ void O2ImageBilinearFloatTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2ar
 }
 
 // Translate or translate with -1 flip
-void O2ImageIntegerTranslate_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
+void O2ImageIntegerTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    int du=x+surfaceToImage.tx;
    int dv=((y+0.5)*surfaceToImage.d+surfaceToImage.ty)-0.5;
    
-   O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,du,dv,span,length);
+   O2ImageReadTileSpanExtendEdge_largb8u_PRE(self,du,dv,span,length);
 }
 
 //clamp premultiplied color to alpha to enforce consistency
-ONYX2D_STATIC void clampSpan_lRGBAffff_PRE(O2argb32f *span,int length){
+ONYX2D_STATIC void clampSpan_largb32f_PRE(O2argb32f *span,int length){
    int i;
    
    for(i=0;i<length;i++){
@@ -1694,10 +1703,10 @@ ONYX2D_STATIC_INLINE void O2RGBPremultiplySpan(O2argb32f *span,int length){
    }
 }
 
-O2argb32f *O2ImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {
+O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {
    VGColorInternalFormat format=self->_colorFormat;
    
-   O2argb32f *direct=self->_read_lRGBAffff_PRE(self,x,y,span,length);
+   O2argb32f *direct=self->_read_largb32f_PRE(self,x,y,span,length);
    
    if(direct!=NULL)
     span=direct;
@@ -1711,7 +1720,7 @@ O2argb32f *O2ImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,O2argb32f *sp
    }
    else {
     if(self->_clampExternalPixels)
-      clampSpan_lRGBAffff_PRE(span,length); // We don't need to do this for internally generated images (context)
+      clampSpan_largb32f_PRE(span,length); // We don't need to do this for internally generated images (context)
    }
    return NULL;
 }
@@ -1748,7 +1757,7 @@ void O2ImageReadTexelTileRepeat(O2Image *self,int u, int v, O2argb32f *span,int 
    for(i=0;i<length;i++,u++){
     u = RI_INT_MOD(u, self->_width);
 
-    O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,1);
+    O2argb32f *direct=O2ImageReadSpan_largb32f_PRE(self,u,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
@@ -1798,7 +1807,7 @@ void O2ImagePattern_PointSampling(O2Image *self,O2Float x, O2Float y,O2argb32f *
    }
 }
 
-void O2ImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion)	{
+void O2ImageReadPatternSpan_largb32f_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion)	{
     
    switch(distortion){
     case kO2PatternTilingNoDistortion:

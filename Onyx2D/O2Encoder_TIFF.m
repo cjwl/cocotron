@@ -371,7 +371,7 @@ void O2TIFFEncoderWriteImage(O2TIFFEncoderRef self,O2ImageRef image,CFDictionary
    
    for(row=0;row<rowCount;row++,y++){
    
-    imageRow=image->_read_lRGBA8888_PRE(image,0,y,imageRowBuffer,imageWidth);
+    imageRow=image->_read_argb8u_PRE(image,0,y,imageRowBuffer,imageWidth);
     if(imageRow==NULL)
      imageRow=imageRowBuffer;
     
