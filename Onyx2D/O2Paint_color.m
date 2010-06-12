@@ -60,10 +60,10 @@ ONYX2D_STATIC int color_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,
 
    _paint_largb8u_PRE=color_largb8u_PRE;
    _paint_largb32f_PRE=color_largb32f_PRE;
-   m_paintColor=VGColorRGBA(gray,gray,gray,alpha,VGColor_lRGBA);
-   m_paintColor=VGColorClamp(m_paintColor);
-   m_paintColor=VGColorPremultiply(m_paintColor);
-   _argb32f_PRE=O2argb32fFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
+   
+   _argb32f_PRE=O2argb32fInit(gray,gray,gray,alpha);
+   _argb32f_PRE=O2argb32fClamp(_argb32f_PRE);
+   _argb32f_PRE=O2argb32fPremultiply(_argb32f_PRE);
    _argb8u_PRE=O2argb8uFromO2argb32f(_argb32f_PRE);
    return self;
 }
@@ -76,10 +76,9 @@ ONYX2D_STATIC int color_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,
     
    _paint_largb8u_PRE=color_largb8u_PRE;
    _paint_largb32f_PRE=color_largb32f_PRE;
-   m_paintColor=VGColorRGBA(red,green,blue,alpha,VGColor_lRGBA);
-   m_paintColor=VGColorClamp(m_paintColor);
-   m_paintColor=VGColorPremultiply(m_paintColor);
-   _argb32f_PRE=O2argb32fFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
+   _argb32f_PRE=O2argb32fInit(red,green,blue,alpha);
+   _argb32f_PRE=O2argb32fClamp(_argb32f_PRE);
+   _argb32f_PRE=O2argb32fPremultiply(_argb32f_PRE);
    _argb8u_PRE=O2argb8uFromO2argb32f(_argb32f_PRE);
    return self;
 }

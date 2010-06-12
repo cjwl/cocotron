@@ -80,86 +80,7 @@ typedef unsigned O2BitmapInfo;
 #import <Onyx2D/O2DataProvider.h>
 #import <Onyx2D/VGmath.h>
 
-typedef enum {
-  /* RGB{A,X} channel ordering */
-  VG_sRGBX_8888                               =  0,
-  VG_sRGBA_8888                               =  1,
-  VG_sRGBA_8888_PRE                           =  2,
-  VG_sRGB_565                                 =  3,
-  VG_sRGBA_5551                               =  4,
-  VG_sRGBA_4444                               =  5,
-  VG_sL_8                                     =  6,
-  VG_lRGBX_8888                               =  7,
-  VG_lRGBA_8888                               =  8,
-  VG_lRGBA_8888_PRE                           =  9,
-  VG_lL_8                                     = 10,
-  VG_A_8                                      = 11,
-  VG_BW_1                                     = 12,
-
-  /* {A,X}RGB channel ordering */
-  VG_sXRGB_8888                               =  0 | (1 << 6),
-  VG_sARGB_8888                               =  1 | (1 << 6),
-  VG_sARGB_8888_PRE                           =  2 | (1 << 6),
-  VG_sARGB_1555                               =  4 | (1 << 6),
-  VG_sARGB_4444                               =  5 | (1 << 6),
-  VG_lXRGB_8888                               =  7 | (1 << 6),
-  VG_lARGB_8888                               =  8 | (1 << 6),
-  VG_lARGB_8888_PRE                           =  9 | (1 << 6),
-
-  /* BGR{A,X} channel ordering */
-  VG_sBGRX_8888                               =  0 | (1 << 7),
-  VG_sBGRA_8888                               =  1 | (1 << 7),
-  VG_sBGRA_8888_PRE                           =  2 | (1 << 7),
-  VG_sBGR_565                                 =  3 | (1 << 7),
-  VG_sBGRA_5551                               =  4 | (1 << 7),
-  VG_sBGRA_4444                               =  5 | (1 << 7),
-  VG_lBGRX_8888                               =  7 | (1 << 7),
-  VG_lBGRA_8888                               =  8 | (1 << 7),
-  VG_lBGRA_8888_PRE                           =  9 | (1 << 7),
-
-  /* {A,X}BGR channel ordering */
-  VG_sXBGR_8888                               =  0 | (1 << 6) | (1 << 7),
-  VG_sABGR_8888                               =  1 | (1 << 6) | (1 << 7),
-  VG_sABGR_8888_PRE                           =  2 | (1 << 6) | (1 << 7),
-  VG_sABGR_1555                               =  4 | (1 << 6) | (1 << 7),
-  VG_sABGR_4444                               =  5 | (1 << 6) | (1 << 7),
-  VG_lXBGR_8888                               =  7 | (1 << 6) | (1 << 7),
-  VG_lABGR_8888                               =  8 | (1 << 6) | (1 << 7),
-  VG_lABGR_8888_PRE                           =  9 | (1 << 6) | (1 << 7)
-} O2ImageFormat;
-
 typedef float O2Float32;
-
-enum {
- VGColorNONLINEAR		= (1<<0),
- VGColorPREMULTIPLIED	= (1<<1),
- VGColorLUMINANCE		= (1<<2)
-};
-
-typedef enum {
- VGColor_lRGBA			= 0,
- VGColor_sRGBA			= VGColorNONLINEAR,
- VGColor_lRGBA_PRE		= VGColorPREMULTIPLIED,
- VGColor_sRGBA_PRE		= VGColorPREMULTIPLIED|VGColorNONLINEAR,
- VGColor_lLA            = VGColorLUMINANCE,
- VGColor_sLA			= VGColorLUMINANCE|VGColorNONLINEAR,
- VGColor_lLA_PRE		= VGColorLUMINANCE|VGColorPREMULTIPLIED,
- VGColor_sLA_PRE        = VGColorLUMINANCE|VGColorPREMULTIPLIED|VGColorNONLINEAR
-} VGColorInternalFormat;
-
-typedef struct  {
-   int redBits;
-   int redShift;
-   int greenBits;
-   int greenShift;
-   int blueBits;
-   int blueShift;
-   int alphaBits;
-   int alphaShift;
-   int luminanceBits;
-   int luminanceShift;
-} VGPixelDecode;
-
 
 typedef struct {
    O2Float32 a;
@@ -392,12 +313,6 @@ typedef O2Float    *(*O2ImageReadSpan_Af)(O2Image *self,int x,int y,O2Float *spa
    unsigned             _directLength;
    
    BOOL           _clampExternalPixels;
-   VGColorInternalFormat _colorFormat;
-
-   BOOL			     	m_mipmapsValid;
-   int                 _mipmapsCount;
-   int                 _mipmapsCapacity;
-   struct O2Surface    **_mipmaps;
 
 @public
    O2ImageReadSpan_argb8u _read_argb8u_PRE;
@@ -456,8 +371,6 @@ O2BitmapInfo O2ImageGetBitmapInfo(O2ImageRef self);
 -(void)releaseDirectDataIfPossible;
 
 @end
-
-VGPixelDecode O2ImageParametersToPixelLayout(O2ImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
 
 O2ColorRenderingIntent O2ImageRenderingIntentWithName(const char *name);
 const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent);

@@ -29,7 +29,6 @@
 #import <Onyx2D/O2Paint.h>
 
 @interface O2Paint_color : O2Paint {
-   VGColor m_paintColor;
    O2argb32f _argb32f_PRE;
    O2argb8u _argb8u_PRE;
 }

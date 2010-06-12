@@ -36,84 +36,21 @@
 
 @implementation O2Image
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Creates a pixel format descriptor out of O2ImageFormat
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-VGPixelDecode O2ImageParametersToPixelLayout(O2ImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
-	VGPixelDecode desc;
-	memset(&desc, 0, sizeof(VGPixelDecode));
-
-	int baseFormat = (int)format & 15;
-	RI_ASSERT(baseFormat >= 0 && baseFormat <= 12);
-	int swizzleBits = ((int)format >> 6) & 3;
-
-	/* base formats
-	VG_sRGBX_8888                               =  0,
-	VG_sRGBA_8888                               =  1,
-	VG_sRGBA_8888_PRE                           =  2,
-	VG_sRGB_565                                 =  3,
-	VG_sRGBA_5551                               =  4,
-	VG_sRGBA_4444                               =  5,
-	VG_sL_8                                     =  6,
-	VG_lRGBX_8888                               =  7,
-	VG_lRGBA_8888                               =  8,
-	VG_lRGBA_8888_PRE                           =  9,
-	VG_lL_8                                     = 10,
-	VG_A_8                                      = 11,
-	VG_BW_1                                     = 12,
-	*/
-
-	static const int redBits[13] =       {8, 8, 8, 5, 5, 4, 0, 8, 8, 8, 0, 0, 0};
-	static const int greenBits[13] =     {8, 8, 8, 6, 5, 4, 0, 8, 8, 8, 0, 0, 0};
-	static const int blueBits[13] =      {8, 8, 8, 5, 5, 4, 0, 8, 8, 8, 0, 0, 0};
-	static const int alphaBits[13] =     {0, 8, 8, 0, 1, 4, 0, 0, 8, 8, 0, 8, 0};
-	static const int luminanceBits[13] = {0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 1};
-
-	static const int redShifts[4*13] =   {24, 24, 24, 11, 11, 12, 0, 24, 24, 24, 0, 0, 0,	//RGBA
-                                          16, 16, 16, 11, 10, 8,  0, 16, 16, 16, 0, 0, 0,	//ARGB
-                                          8,  8,  8,  0,  1,  4,  0, 8,  8,  8,  0, 0, 0,	//BGRA
-                                          0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0};	//ABGR
-
-	static const int greenShifts[4*13] = {16, 16, 16, 5,  6,  8,  0, 16, 16, 16, 0, 0, 0,	//RGBA
-                                          8,  8,  8,  5,  5,  4,  0, 8,  8,  8,  0, 0, 0,	//ARGB
-                                          16, 16, 16, 5,  6,  8,  0, 16, 16, 16, 0, 0, 0,	//BGRA
-                                          8,  8,  8,  5,  5,  4,  0, 8,  8,  8,  0, 0, 0};	//ABGR
-
-	static const int blueShifts[4*13] =  {8,  8,  8,  0,  1,  4,  0, 8,  8,  8,  0, 0, 0,	//RGBA
-                                          0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,	//ARGB
-                                          24, 24, 24, 11, 11, 12, 0, 24, 24, 24, 0, 0, 0,	//BGRA
-                                          16, 16, 16, 11, 10, 8,  0, 16, 16, 16, 0, 0, 0};	//ABGR
-
-	static const int alphaShifts[4*13] = {0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,	//RGBA
-                                          0,  24, 24, 0,  15, 12, 0, 0,  24, 24, 0, 0, 0,	//ARGB
-                                          0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,	//BGRA
-                                          0,  24, 24, 0,  15, 12, 0, 0,  24, 24, 0, 0, 0};	//ABGR
-
-	static const int bpps[13] = {32, 32, 32, 16, 16, 16, 8, 32, 32, 32, 8, 8, 1};
-
-	static const VGColorInternalFormat internalFormats[13] = {VGColor_sRGBA, VGColor_sRGBA, VGColor_sRGBA_PRE, VGColor_sRGBA, VGColor_sRGBA, VGColor_sRGBA, VGColor_sLA, VGColor_lRGBA, VGColor_lRGBA, VGColor_lRGBA_PRE, VGColor_lLA, VGColor_lRGBA, VGColor_lLA};
-
-	desc.redBits = redBits[baseFormat];
-	desc.greenBits = greenBits[baseFormat];
-	desc.blueBits = blueBits[baseFormat];
-	desc.alphaBits = alphaBits[baseFormat];
-	desc.luminanceBits = luminanceBits[baseFormat];
-
-	desc.redShift = redShifts[swizzleBits * 13 + baseFormat];
-	desc.greenShift = greenShifts[swizzleBits * 13 + baseFormat];
-	desc.blueShift = blueShifts[swizzleBits * 13 + baseFormat];
-	desc.alphaShift = alphaShifts[swizzleBits * 13 + baseFormat];
-	desc.luminanceShift = 0;	//always zero
-
-	*bitsPerPixel = bpps[baseFormat];
-	*colorFormat = internalFormats[baseFormat];
-
-	return desc;
+ONYX2D_STATIC BOOL initFunctionsForMonochrome(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2BitmapInfo bitmapInfo){
+   switch(bitsPerComponent){
+    case 8:
+     switch(bitsPerPixel){
+      case 8:
+       self->_readA8=O2ImageRead_G8_to_A8;
+       self->_read_argb8u_PRE=O2ImageRead_G8_to_argb8u;
+       return YES;
+     }
+     break;
+     
+   }
+   return NO;
 }
+
 
 ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2BitmapInfo bitmapInfo){   
 
@@ -310,6 +247,7 @@ ONYX2D_STATIC BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerCo
 ONYX2D_STATIC BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
 
    switch([[(O2ColorSpace_indexed *)colorSpace baseColorSpace] type]){
+
     case kO2ColorSpaceModelRGB:
      self->_read_argb8u_PRE=O2ImageRead_I8_to_argb8u;
      return YES;
@@ -330,7 +268,7 @@ ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerCompon
    
    switch([colorSpace type]){
     case kO2ColorSpaceModelMonochrome:
-     return NO;
+     return initFunctionsForMonochrome(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
     case kO2ColorSpaceModelRGB:
      return initFunctionsForRGBColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
     case kO2ColorSpaceModelCMYK:
@@ -368,29 +306,7 @@ ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerCompon
     [self dealloc];
     return nil;
    }
-   
-    O2ImageFormat imageFormat=VG_lRGBA_8888;
-    switch(bitmapInfo&kO2BitmapAlphaInfoMask){
-     case kO2ImageAlphaPremultipliedLast:
-     case kO2ImageAlphaPremultipliedFirst:
-      imageFormat|=VGColorPREMULTIPLIED;
-      break;
-      
-     case kO2ImageAlphaNone:
-     case kO2ImageAlphaLast:
-     case kO2ImageAlphaFirst:
-     case kO2ImageAlphaNoneSkipLast:
-     case kO2ImageAlphaNoneSkipFirst:
-      break;
-    }
-    
-    size_t checkBPP;
-	O2ImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
-    RI_ASSERT(checkBPP==bitsPerPixel);
-    m_mipmapsValid=NO;
-    _mipmapsCount=0;
-    _mipmapsCapacity=0;
-    _mipmaps=NULL;
+       
    return self;
 }
 
@@ -428,8 +344,6 @@ ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerCompon
     NSZoneFree(NULL,_decode);
    [_mask release];
    [_directData release];
-   if(_mipmaps!=NULL)
-    NSZoneFree(NULL,_mipmaps);
    [super dealloc];
 }
 
@@ -1148,289 +1062,6 @@ void O2ImageReadTileSpanExtendEdge__largb32f_PRE(O2Image *self,int u, int v, O2a
    }
 }
 
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Generates mip maps for an image.
-* \param	
-* \return	
-* \note		Downsampling is done in the input color space. We use a box
-*			filter for downsampling.
-*//*-------------------------------------------------------------------*/
-
-void O2ImageMakeMipMaps(O2Image *self) {
-	RI_ASSERT(directBytes(self));
-
-	if(self->m_mipmapsValid)
-		return;
-
-	//delete existing mipmaps
-    int i;
-	for(i=0;i<self->_mipmapsCount;i++)
-     [self->_mipmaps[i] release];
-	self->_mipmapsCount=0;
-
-//	try
-	{
-		VGColorInternalFormat procFormat = self->_colorFormat;
-		procFormat = (VGColorInternalFormat)(procFormat | VGColorPREMULTIPLIED);	//premultiplied
-
-		//generate mipmaps until width and height are one
-		O2Image* prev = self;
-		while( prev->_width > 1 || prev->_height > 1 )
-		{
-			int nextw = (int)ceil(prev->_width*0.5f);
-			int nexth = (int)ceil(prev->_height*0.5f);
-			RI_ASSERT(nextw >= 1 && nexth >= 1);
-			RI_ASSERT(nextw < prev->_width || nexth < prev->_height);
-
-            if(self->_mipmapsCount+1>self->_mipmapsCapacity){
-             if(self->_mipmapsCapacity==0)
-              self->_mipmapsCapacity=self->_mipmapsCount+1;
-             else
-              self->_mipmapsCapacity*=2;
-              
-             self->_mipmaps=(O2Surface **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(O2Surface *)*self->_mipmapsCapacity);
-            }
-            self->_mipmapsCount++;
-			self->_mipmaps[self->_mipmapsCount-1] = NULL;
-
-			O2Surface* next =[[O2Surface alloc] initWithBytes:NULL width:nextw height:nexth bitsPerComponent:self->_bitsPerComponent bytesPerRow:self->_bytesPerRow colorSpace:self->_colorSpace bitmapInfo:self->_bitmapInfo];
-            
-            int j;
-			for(j=0;j<O2ImageGetHeight(next);j++)
-			{
-				for(i=0;i<O2ImageGetWidth(next);i++)
-				{
-					O2Float u0 = (O2Float)i / (O2Float)O2ImageGetWidth(next);
-					O2Float u1 = (O2Float)(i+1) / (O2Float)O2ImageGetWidth(next);
-					O2Float v0 = (O2Float)j / (O2Float)O2ImageGetHeight(next);
-					O2Float v1 = (O2Float)(j+1) / (O2Float)O2ImageGetHeight(next);
-
-					u0 *= prev->_width;
-					u1 *= prev->_width;
-					v0 *= prev->_height;
-					v1 *= prev->_height;
-
-					int su = RI_FLOOR_TO_INT(u0);
-					int eu = (int)ceil(u1);
-					int sv = RI_FLOOR_TO_INT(v0);
-					int ev = (int)ceil(v1);
-
-					VGColor c=VGColorRGBA(0,0,0,0,procFormat);
-					int samples = 0;
-                    int y;
-					for(y=sv;y<ev;y++)
-					{
-                        int x;
-						for(x=su;x<eu;x++)
-						{
-							VGColor p = O2SurfaceReadPixel(prev,x, y);
-							p=VGColorConvert(p,procFormat);
-							c=VGColorAdd(c, p);
-							samples++;
-						}
-					}
-					c=VGColorMultiplyByFloat(c,(1.0f/samples));
-					c=VGColorConvert(c,self->_colorFormat);
-					O2SurfaceWritePixel(next,i,j,c);
-				}
-			}
-			self->_mipmaps[self->_mipmapsCount-1] = next;
-			prev = next;
-		}
-		RI_ASSERT(prev->_width == 1 && prev->_height == 1);
-		self->m_mipmapsValid = YES;
-	}
-#if 0
-	catch(std::bad_alloc)
-	{
-		//delete existing mipmaps
-		for(int i=0;i<self->_mipmapsCount;i++)
-		{
-			if(self->_mipmaps[i])
-			{
-					[self->_mipmaps[i] release];
-			}
-		}
-		self->_mipmapsCount=0;
-		self->m_mipmapsValid = NO;
-		throw;
-	}
-#endif
-}
-
-// accuracy doesn't seem to matter much, it appears
-ONYX2D_STATIC_INLINE float fastExp(float value){
-   static float table[10];
-   static BOOL initTable=YES;
-   
-   if(initTable){
-    initTable=NO;
-    int i;
-    for(i=0;i<10;i++)
-     table[i]=exp(-i/2.0);
-   }
-   return table[(int)(-value*2)];
-}
-
-O2Image *O2ImageMipMapForLevel(O2Image *self,int level){
-	O2Image* image = self;
-    
-	if( level > 0 ){
-		RI_ASSERT(level <= self->_mipmapsCount);
-		image = self->_mipmaps[level-1];
-	}
-	RI_ASSERT(image);
-    return image;
-}
-
-
-void O2ImageEWAOnMipmaps_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
-   int i;
-   		O2Float m_pixelFilterRadius = 1.25f;
-		O2Float m_resamplingFilterRadius = 1.25f;
-
-   O2ImageMakeMipMaps(self);
-   
-   O2Point uv=O2PointMake(0,0);
-   uv=O2PointApplyAffineTransform(uv,surfaceToImage);
-
-   
-		O2Float Ux = (surfaceToImage.a ) * m_pixelFilterRadius;
-		O2Float Vx = (surfaceToImage.b ) * m_pixelFilterRadius;
-		O2Float Uy = (surfaceToImage.c ) * m_pixelFilterRadius;
-		O2Float Vy = (surfaceToImage.d ) * m_pixelFilterRadius;
-
-		//calculate mip level
-		int level = 0;
-		O2Float axis1sq = Ux*Ux + Vx*Vx;
-		O2Float axis2sq = Uy*Uy + Vy*Vy;
-		O2Float minorAxissq = RI_MIN(axis1sq,axis2sq);
-		while(minorAxissq > 9.0f && level < self->_mipmapsCount)	//half the minor axis must be at least three texels
-		{
-			level++;
-			minorAxissq *= 0.25f;
-		}
-
-		O2Float sx = 1.0f;
-		O2Float sy = 1.0f;
-		if(level > 0)
-		{
-			sx = (O2Float)O2ImageGetWidth(self->_mipmaps[level-1]) / (O2Float)self->_width;
-			sy = (O2Float)O2ImageGetHeight(self->_mipmaps[level-1]) / (O2Float)self->_height;
-		}
-        O2Image *mipmap=O2ImageMipMapForLevel(self,level);
-        
-		Ux *= sx;
-		Vx *= sx;
-		Uy *= sy;
-		Vy *= sy;
-
-		//clamp filter size so that filtering doesn't take excessive amount of time (clamping results in aliasing)
-		O2Float lim = 100.0f;
-		axis1sq = Ux*Ux + Vx*Vx;
-		axis2sq = Uy*Uy + Vy*Vy;
-		if( axis1sq > lim*lim )
-		{
-			O2Float s = lim / (O2Float)sqrt(axis1sq);
-			Ux *= s;
-			Vx *= s;
-		}
-		if( axis2sq > lim*lim )
-		{
-			O2Float s = lim / (O2Float)sqrt(axis2sq);
-			Uy *= s;
-			Vy *= s;
-		}
-
-		//form elliptic filter by combining texel and pixel filters
-		O2Float A = Vx*Vx + Vy*Vy + 1.0f;
-		O2Float B = -2.0f*(Ux*Vx + Uy*Vy);
-		O2Float C = Ux*Ux + Uy*Uy + 1.0f;
-		//scale by the user-defined size of the kernel
-		A *= m_resamplingFilterRadius;
-		B *= m_resamplingFilterRadius;
-		C *= m_resamplingFilterRadius;
-
-		//calculate bounding box in texture space
-		O2Float usize = (O2Float)sqrt(C);
-		O2Float vsize = (O2Float)sqrt(A);
-
-		//scale the filter so that Q = 1 at the cutoff radius
-		O2Float F = A*C - 0.25f * B*B;
-		if( F <= 0.0f ){
-         for(i=0;i<length;i++)
-		  span[i]=O2argb32fInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
-          
-         return ;
-        }
-		O2Float ooF = 1.0f / F;
-		A *= ooF;
-		B *= ooF;
-		C *= ooF;
-
-   for(i=0;i<length;i++,x++){
-    uv=O2PointMake(x+0.5f,y+0.5f);
-    uv=O2PointApplyAffineTransform(uv,surfaceToImage);
-   
-		O2Float U0 = uv.x;
-		O2Float V0 = uv.y;
-		U0 *= sx;
-		V0 *= sy;
-		
-		int u1 = RI_FLOOR_TO_INT(U0 - usize + 0.5f);
-		int u2 = RI_FLOOR_TO_INT(U0 + usize + 0.5f);
-		int v1 = RI_FLOOR_TO_INT(V0 - vsize + 0.5f);
-		int v2 = RI_FLOOR_TO_INT(V0 + vsize + 0.5f);
-		if( u1 == u2 || v1 == v2 ){
-			span[i]=O2argb32fInit(0,0,0,0);
-            continue;
-        }
-        
-		
-		//evaluate filter by using forward differences to calculate Q = A*U^2 + B*U*V + C*V^2
-		O2argb32f color=O2argb32fInit(0,0,0,0);
-		O2Float sumweight = 0.0f;
-		O2Float DDQ = 2.0f * A;
-		O2Float U = (O2Float)u1 - U0 + 0.5f;
-        int v;
-        
-		for(v=v1;v<v2;v++)
-		{
-			O2Float V = (O2Float)v - V0 + 0.5f;
-			O2Float DQ = A*(2.0f*U+1.0f) + B*V;
-			O2Float Q = (C*V+B*U)*V + A*U*U;
-            int u;
-            
-            O2argb32f texel[u2-u1];
-            O2ImageReadTileSpanExtendEdge__largb32f_PRE(mipmap,u1, v,texel,(u2-u1));
-			for(u=u1;u<u2;u++)
-			{
-				if( Q >= 0.0f && Q < 1.0f )
-				{	//Q = r^2, fit gaussian to the range [0,1]
-#if 0
-					O2Float weight = (O2Float)expf(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
-#else
-					O2Float weight = (O2Float)fastExp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
-#endif
-                    
-					color=O2argb32fAdd(color,  O2argb32fMultiplyByFloat(texel[u-u1],weight));
-					sumweight += weight;
-				}
-				Q += DQ;
-				DQ += DDQ;
-			}
-		}
-		if( sumweight == 0.0f ){
-			span[i]=O2argb32fInit(0,0,0,0);
-            continue;
-        }
-		RI_ASSERT(sumweight > 0.0f);
-		sumweight = 1.0f / sumweight;
-		span[i]=O2argb32fMultiplyByFloat(color,sumweight);
-	}
-}
-
 ONYX2D_STATIC_INLINE int cubic_8(int v0,int v1,int v2,int v3,int fraction){
   int p = (v3 - v2) - (v0 - v1);
   int q = (v0 - v1) - p;
@@ -1703,25 +1334,15 @@ ONYX2D_STATIC_INLINE void O2RGBPremultiplySpan(O2argb32f *span,int length){
    }
 }
 
-O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {
-   VGColorInternalFormat format=self->_colorFormat;
-   
+O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {   
    O2argb32f *direct=self->_read_largb32f_PRE(self,x,y,span,length);
    
    if(direct!=NULL)
     span=direct;
     
-   if(format&VGColorNONLINEAR){
-    O2argb32fConvertSpan(span,length,format,VGColor_lRGBA_PRE);
-   }
-   if(!(format&VGColorPREMULTIPLIED)){
-    O2RGBPremultiplySpan(span,length);
-    format|=VGColorPREMULTIPLIED;
-   }
-   else {
-    if(self->_clampExternalPixels)
-      clampSpan_largb32f_PRE(span,length); // We don't need to do this for internally generated images (context)
-   }
+   if(self->_clampExternalPixels)
+    clampSpan_largb32f_PRE(span,length); // We don't need to do this for internally generated images (context)
+
    return NULL;
 }
 
