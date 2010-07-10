@@ -16,6 +16,7 @@ FOUNDATION_EXPORT NSString * const NSLoadedClasses;
 @interface NSBundle : NSObject {
    NSString     *_path;
    NSString     *_resourcePath;
+   NSString     *_pluginPath;
    NSDictionary *_infoDictionary;
    NSString     *_executablePath;
    NSArray      *_lookInDirectories;

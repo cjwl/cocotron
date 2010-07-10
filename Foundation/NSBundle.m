@@ -320,7 +320,12 @@ static NSMapTable *pathToObject=NULL;
     _resourcePath=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Resources"];
    [_resourcePath retain];
    
-   _infoDictionary=nil;
+	_pluginPath=[_path stringByAppendingPathComponent:@"PlugIns"];
+	if(![[NSFileManager defaultManager] fileExistsAtPath:_pluginPath])
+		_pluginPath=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"PlugIns"];
+	[_pluginPath retain];
+   
+	_infoDictionary=nil;
    _localizedTables=nil;
    _isLoaded=NO;
 
@@ -362,8 +367,7 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(NSString *)builtInPlugInsPath {
-   NSUnimplementedMethod();
-   return 0;
+   return _pluginPath;
 }
 
 -(NSDictionary *)infoDictionary {
