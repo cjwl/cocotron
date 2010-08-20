@@ -530,7 +530,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     
     SIZE sizeWnd = {_frame.size.width, _frame.size.height};
     POINT ptSrc = {0, 0};
-    DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
+//    DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
+    DWORD flags=ULW_OPAQUE;
     
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
    }

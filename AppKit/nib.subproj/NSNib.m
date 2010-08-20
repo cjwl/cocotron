@@ -117,7 +117,6 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     if((menu=[objectData mainMenu])!=nil)
      [NSApp setMainMenu:menu];
      
-    NSMutableArray *topLevelObjectsFromNameTable = [nameTable objectForKey:NSNibTopLevelObjects];
     NSMutableDictionary *aDict = [NSMutableDictionary dictionaryWithDictionary:nameTable];
     [aDict removeObjectForKey:NSNibTopLevelObjects];
     nameTable = aDict;
@@ -126,8 +125,8 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     // array for key NSNibTopLevelObjects, then this array retains all top-level objects,
     // else we simply do a retain on them.
     topLevelObjects = [objectData topLevelObjects];
-    if(topLevelObjectsFromNameTable)
-        [topLevelObjectsFromNameTable setArray:topLevelObjects];
+    if([nameTable objectForKey:NSNibTopLevelObjects])
+        [[nameTable objectForKey:NSNibTopLevelObjects] setArray:topLevelObjects];
     else
         [topLevelObjects makeObjectsPerformSelector:@selector(retain)];
     

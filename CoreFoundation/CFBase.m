@@ -88,3 +88,44 @@ CFTypeRef CFMakeCollectable(CFTypeRef self){
    //does nothing on cocotron
    return 0;
 }
+
+unsigned int sleep(unsigned int seconds) {
+   NSUnimplementedFunction();
+   return 0;
+}
+
+size_t strlcpy(char *dst, const char *src, size_t size) {
+   int i,count=size;
+   
+   for(i=0;i<count-1;i++)
+    dst[i]=src[i];
+    
+   dst[i]='\0';
+
+   return i;
+}
+
+void bzero(void *ptr,size_t size){
+   size_t i;
+   
+   for(i=0;i<size;i++)
+    ((unsigned char *)ptr)[i]=0;
+}
+
+void bcopy(const void *s1, void *s2, size_t n) {
+   size_t i;
+   
+   for(i=0;i<n;i++)
+    ((unsigned char *)s2)[i]=((unsigned char *)s1)[i];
+}
+
+int bcmp(const void *s1, void *s2, size_t n) {
+   size_t i;
+   
+   for(i=0;i<n;i++)
+    if(((unsigned char *)s2)[i]!=((unsigned char *)s1)[i])
+     return 1;
+   
+   return 0;
+}
+

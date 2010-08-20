@@ -4763,40 +4763,22 @@
 		FE8C914B0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
 		FE8C914C0FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8C914D0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
-		FE9C1B8C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1B8D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1B8F1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1B901125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1B911125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1B931125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1B941125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1B951125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1B971125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1B981125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1B991125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1B9B1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1B9C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1B9D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1B9F1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1BA01125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1BA11125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1BA31125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1BA41125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1BA51125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1BA71125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1BA81125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1BA91125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1BAB1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
-		FE9C1BAC1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */; };
-		FE9C1BAD1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */; };
 		FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1BAF1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
 		FE9D95440C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
@@ -7337,8 +7319,6 @@
 		FE88A4D50F8A9DE00081CFC1 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
 		FE8C913E0FFD1E430027C889 /* NSString_win1252.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_win1252.h; sourceTree = "<group>"; };
 		FE8C913F0FFD1E430027C889 /* NSString_win1252.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_win1252.m; sourceTree = "<group>"; };
-		FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSSLHandler_openssl.h; sourceTree = "<group>"; };
-		FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSSLHandler_openssl.m; sourceTree = "<group>"; };
 		FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSSLHandler.h; sourceTree = "<group>"; };
 		FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSSLHandler.m; sourceTree = "<group>"; };
 		FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNil.h; sourceTree = "<group>"; };
@@ -8075,8 +8055,6 @@
 		6E28033D0974797500EC542B /* NSStream */ = {
 			isa = PBXGroup;
 			children = (
-				FE9C1B881125A649002DA20B /* CFSSLHandler_openssl.h */,
-				FE9C1B891125A649002DA20B /* CFSSLHandler_openssl.m */,
 				FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */,
 				FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */,
 				FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */,
@@ -9239,7 +9217,6 @@
 				1A8A69561091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B30E1107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F47110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1BA81125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474C112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8AE1152743100B6D893 /* objc_malloc.h in Headers */,
@@ -9566,7 +9543,6 @@
 				1A8A69551091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B30C1107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F45110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1BA41125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474A112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8AC1152743100B6D893 /* objc_malloc.h in Headers */,
@@ -9893,7 +9869,6 @@
 				1A8A69521091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B3041107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F3D110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1B941125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4742112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A41152743100B6D893 /* objc_malloc.h in Headers */,
@@ -10220,7 +10195,6 @@
 				1A8A69531091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B3021107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F3B110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1B901125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4740112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A21152743100B6D893 /* objc_malloc.h in Headers */,
@@ -10552,7 +10526,6 @@
 				1A8A69541091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B3001107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F39110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1B8C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C473E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A01152743100B6D893 /* objc_malloc.h in Headers */,
@@ -10878,7 +10851,6 @@
 				FE5A86DD10C6EF43005E348A /* NSTask_bsd.h in Headers */,
 				FE65B3101107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F49110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1BAC1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474E112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8B01152743100B6D893 /* objc_malloc.h in Headers */,
@@ -11206,7 +11178,6 @@
 				1A8A69511091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B30A1107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F43110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1BA01125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4748112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8AA1152743100B6D893 /* objc_malloc.h in Headers */,
@@ -11534,7 +11505,6 @@
 				1A8A694F1091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B3061107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F3F110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1B981125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4744112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A61152743100B6D893 /* objc_malloc.h in Headers */,
@@ -11862,7 +11832,6 @@
 				1A8A69501091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE65B3081107690500439F46 /* NSObservationInfo.h in Headers */,
 				FE828F41110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
-				FE9C1B9C1125A649002DA20B /* CFSSLHandler_openssl.h in Headers */,
 				FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C4746112AF7FC0099DAB8 /* CFUID.h in Headers */,
 				FE6CF8A81152743100B6D893 /* objc_malloc.h in Headers */,
@@ -12780,7 +12749,6 @@
 				FE65B30F1107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F48110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD211119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1BA91125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BAB1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C474D112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF878115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -13145,7 +13113,6 @@
 				FE65B30D1107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F46110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD201119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1BA51125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BA71125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C474B112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF877115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -13511,7 +13478,6 @@
 				FE65B3051107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F3E110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD1C1119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1B951125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B971125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4743112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF873115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -13878,7 +13844,6 @@
 				FE65B3031107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F3C110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD1B1119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1B911125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B931125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4741112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF872115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -14251,7 +14216,6 @@
 				FE828F0B110DEB540008AFA2 /* pthread.m in Sources */,
 				FE828F3A110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD1A1119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1B8D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B8F1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C473F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF871115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -14618,7 +14582,6 @@
 				FE65B3111107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F4A110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD221119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1BAD1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BAF1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C474F112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF879115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -14988,7 +14951,6 @@
 				FE65B30B1107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F44110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD1F1119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1BA11125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1BA31125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4749112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF876115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -15359,7 +15321,6 @@
 				FE65B3071107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F40110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD1D1119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1B991125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B9B1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4745112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF874115272ED00B6D893 /* debugHelpers.m in Sources */,
@@ -15730,7 +15691,6 @@
 				FE65B3091107690500439F46 /* NSObservationInfo.m in Sources */,
 				FE828F42110DFA1C0008AFA2 /* NSKVOInfoPerObject.m in Sources */,
 				FE55AD1E1119D86900A777AB /* CFByteOrder.m in Sources */,
-				FE9C1B9D1125A649002DA20B /* CFSSLHandler_openssl.m in Sources */,
 				FE9C1B9F1125A649002DA20B /* CFSSLHandler.m in Sources */,
 				FE3C4747112AF7FC0099DAB8 /* CFUID.m in Sources */,
 				FE6CF875115272ED00B6D893 /* debugHelpers.m in Sources */,

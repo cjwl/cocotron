@@ -1505,7 +1505,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)recalculateKeyViewLoop {
-   NSUnimplementedMethod();
+//   NSUnimplementedMethod();
 }
 
 -(NSSelectionDirection)keyViewSelectionDirection {
