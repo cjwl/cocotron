@@ -331,7 +331,9 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     
     _edge = edge;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillOpenNotification object:self];
+	if ([[self delegate] respondsToSelector:@selector(drawerWillOpen:)]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillOpenNotification object:self];
+	}
 
     frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerOpenState];
     [self setContentSize:frame.size];
@@ -351,7 +353,7 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 }
 
 // a bit easier time of it as the much of the setup is already done.
-// FIX in general either make sure contentSize stays in sync, or do this from the open frame...
+// FIXME: in general either make sure contentSize stays in sync, or do this from the open frame...
 - (void)close {
     NSRect frame;
     
@@ -361,7 +363,9 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
     frame.size = [self drawerWindow:_drawerWindow constrainSize:frame.size edge:_edge];    
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillCloseNotification object:self];
+	if ([[self delegate] respondsToSelector:@selector(drawerWillClose:)]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillCloseNotification object:self];
+	}
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerDidClose:) name:NSWindowDidAnimateNotification object:_drawerWindow];
     _state = NSDrawerClosingState;
@@ -495,17 +499,21 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 - (void)drawerDidOpen:(NSNotification *)note {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     _state = NSDrawerOpenState;
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerDidOpenNotification object:self];
+	if ([[self delegate] respondsToSelector:@selector(drawerDidOpen:)]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerDidOpenNotification object:self];
+	}
 }
 
 - (void)drawerDidClose:(NSNotification *)nilObject {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_drawerWindow orderOut:nil];        
-    _state = NSDrawerClosedState;
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerDidCloseNotification object:self];
-
-    if (_nextParentWindow != nil)
-        [self setNextParentWindow];    
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_drawerWindow orderOut:nil];        
+	_state = NSDrawerClosedState;
+	if ([[self delegate] respondsToSelector:@selector(drawerDidClose:)]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerDidCloseNotification object:self];
+	}
+	
+	if (_nextParentWindow != nil)
+		[self setNextParentWindow];    
 }
 
 @end
