@@ -389,11 +389,11 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     [self close];
 }
 
-// FIX add support for transient states
+// FIXME: add support for transient states
 - (void)toggle:sender {
     switch ([self state]) {
-        case NSDrawerOpenState:     [self close];   break;
-        case NSDrawerClosedState:   [self open];    break;
+        case NSDrawerOpenState:     [self close:self];   break;
+        case NSDrawerClosedState:   [self open:self];    break;
             
         case NSDrawerOpeningState:
         case NSDrawerClosingState:
