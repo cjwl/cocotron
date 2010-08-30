@@ -673,7 +673,7 @@ static NSMapTable *pathToObject=NULL;
    }
 
    if((result=[dictionary objectForKey:key])==nil)
-    result=(value!=nil)?value:key;
+	   result=(value!=nil && [value isEqual:@""] == NO)?value:key;
    
    return result;
 }

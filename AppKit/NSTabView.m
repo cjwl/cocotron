@@ -290,7 +290,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeTabViewItem:(NSTabViewItem *)item {
-    [_items removeObject:item];
+	int selectedIndex = [self indexOfTabViewItem:_selectedItem];
+	if (item == _selectedItem) {
+        int newIndex = selectedIndex - 1;
+		
+        if (newIndex < 0) {
+            newIndex = selectedIndex + 1;
+			
+            if (newIndex >= [self numberOfTabViewItems]) {
+                newIndex = NSNotFound;
+            }
+        }
+		
+        if (newIndex == NSNotFound) {
+            [[_selectedItem view] removeFromSuperview];
+            _selectedItem = nil;
+        } else {
+            [self selectTabViewItemAtIndex:newIndex];
+        }
+    }
+	
+	[_items removeObject:item];
 
     if ([_delegate respondsToSelector:@selector(tabViewDidChangeNumberOfTabViewItems:)])
         [_delegate tabViewDidChangeNumberOfTabViewItems:self];

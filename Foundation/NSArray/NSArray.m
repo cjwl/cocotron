@@ -298,25 +298,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSUInteger)indexOfObject:object {
-   NSInteger i,count=[self count];
-
-   for(i=0;i<count;i++)
-    if([[self objectAtIndex:i] isEqual:object])
-     return i;
-
-   return NSNotFound;
+	return [self indexOfObject:object inRange:NSMakeRange(0,[self count])];
 }
 
 
 -(NSUInteger)indexOfObject:object inRange:(NSRange)range {
-   NSInteger i,count=[self count],loc=range.location;
+	NSInteger i,count=[self count];
 
    if(NSMaxRange(range)>count)
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
      NSStringFromRange(range),[self count]);
 
-   for(i=0;i<range.length;i++)
-    if([[self objectAtIndex:loc+i] isEqual:object])
+   for(i=range.location;i<range.length;i++)
+    if([[self objectAtIndex:i] isEqual:object])
      return i;
 
    return NSNotFound;

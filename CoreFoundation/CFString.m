@@ -62,6 +62,10 @@ CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self){
    return ToCFString([ToNSString(self) copyWithZone:NULL]);
 }
 
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateMutableCopy(CFAllocatorRef allocator,CFIndex maxLength,CFStringRef self){
+	return ToCFString([ToNSString(self) mutableCopyWithZone:NULL]);
+}
+
 CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation){
    NSUnimplementedFunction();
    return 0;
@@ -133,6 +137,12 @@ CFComparisonResult CFStringCompareWithOptionsAndLocale(CFStringRef self,CFString
 }
 
 
+void CFStringDelete(CFMutableStringRef self,CFRange range)
+{
+	NSRange inrange = NSMakeRange(range.location,range.length);
+	[(NSMutableString *)self deleteCharactersInRange:inrange];
+}
+
 CFIndex CFStringGetLength(CFStringRef self) {
    return [ToNSString(self) length];
 }
@@ -147,12 +157,23 @@ void CFStringGetCharacters(CFStringRef self,CFRange range,UniChar *buffer) {
 }
 
 Boolean CFStringGetCString(CFStringRef self,char *buffer,CFIndex bufferSize,CFStringEncoding encoding) {
-   return [(NSString *)self getCString:buffer maxLength:bufferSize encoding:convertCFEncodingToNSEncoding(encoding)];
+   return [ToNSString(self) getCString:buffer maxLength:bufferSize encoding:convertCFEncodingToNSEncoding(encoding)];
 }
 
 const char *CFStringGetCStringPtr(CFStringRef self,CFStringEncoding encoding) {
-   return [(NSString *)self cStringUsingEncoding:convertCFEncodingToNSEncoding(encoding)];
+   return [ToNSString(self) cStringUsingEncoding:convertCFEncodingToNSEncoding(encoding)];
 }
 
+Boolean CFStringFindCharacterFromSet(CFStringRef self,CFCharacterSetRef set,CFRange range,CFOptionFlags options,CFRange *result){
+	NSRange inrange = NSMakeRange(range.location,range.length);
+	NSRange outrange = [ToNSString(self) rangeOfCharacterFromSet:(NSCharacterSet*)set options:(NSStringCompareOptions)options range:inrange];
+	if (result)
+		*result = CFRangeMake(outrange.location, outrange.length);
+	return outrange.location != NSNotFound;
+}
 
+void CFStringInsert(CFMutableStringRef self, CFIndex idx, CFStringRef insertedStr)
+{
+	[(NSMutableString *)self insertString:ToNSString(insertedStr) atIndex:(NSUInteger)idx];
+}
 

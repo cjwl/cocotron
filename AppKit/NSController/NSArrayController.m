@@ -249,7 +249,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
     
 	[mutableValue removeIndexesInRange:NSMakeRange([[self arrangedObjects] count]+1, NSNotFound)];
 	
-    if (![_selectionIndexes isEqualToIndexSet: mutableValue]) {
+    if (![_selectionIndexes isEqual:mutableValue]) {
 		[self willChangeValueForKey:@"selectionIndexes"];
        [self _selectionWillChange];
        

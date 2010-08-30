@@ -132,8 +132,7 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
 }
 
 -copyWithZone:(NSZone *)zone {
-    NSInvalidAbstractInvocation();
-    return nil;
+	return [self retain];
 }
 
 +(NSTimeZone *)systemTimeZone {

@@ -125,6 +125,37 @@ static Boolean defaultEqual(const void *value,const void *other) {
    }
 }
 
+-(BOOL)isEqualToArray:(NSArray *)array {
+	NSInteger i,count;
+	
+	if(self==array)
+		return YES;
+	
+	count=[self count];
+	if(count!=[array count])
+		return NO;
+	
+	for(i=0;i<count;i++)
+		if (!_callBacks.equal([self objectAtIndex:i], [array objectAtIndex:i]))
+			return NO;
+	
+	return YES;
+}
+
+-(NSUInteger)indexOfObject:object inRange:(NSRange)range {
+	NSInteger i,count=[self count];
+	
+	if(NSMaxRange(range)>count)
+		NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
+						 NSStringFromRange(range),[self count]);
+	
+	for(i=range.location;i<range.length;i++)
+		if (_callBacks.equal([self objectAtIndex:i], object))
+			return i;
+	
+	return NSNotFound;
+}
+
 @end
 
 static const void *cfArrayRetain(CFAllocatorRef allocator,const void *value) {
@@ -176,13 +207,8 @@ void CFArrayGetValues(CFArrayRef self,CFRange range,const void **values) {
 }
 
 Boolean CFArrayContainsValue(CFArrayRef self,CFRange range,const void *value) {
-	int i;
-	for(i=range.location;i<range.location+range.length;i++)
-	{
-		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value]) return YES;
-	}
-	return NO;
-	
+	NSRange inrange = NSMakeRange(range.location, range.length);
+	return [self indexOfObject:value inRange:inrange] != NSNotFound;
 }
 
 CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
@@ -197,12 +223,8 @@ CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self,CFRange range,const void *va
 }
 
 CFIndex CFArrayGetLastIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
-	int i;
-	for(i=range.location+range.length;i>range.location;i--)
-	{
-		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value]) return i;
-	}
-	return NSNotFound;
+	NSRange inrange = NSMakeRange(range.location, range.length);
+	return [self indexOfObject:value inRange:inrange];
 }
 
 CFIndex CFArrayGetCountOfValue(CFArrayRef self,CFRange range,const void *value) {

@@ -8,9 +8,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
+#import <CoreFoundation/CFCalendar.h>
 
 @class NSDateComponents,NSTimeZone,NSLocale,NSDate;
 
+enum {
+	NSEraCalendarUnit = kCFCalendarUnitEra,
+	NSYearCalendarUnit = kCFCalendarUnitYear,
+	NSMonthCalendarUnit = kCFCalendarUnitMonth,
+	NSDayCalendarUnit = kCFCalendarUnitDay,
+	NSHourCalendarUnit = kCFCalendarUnitHour,
+	NSMinuteCalendarUnit = kCFCalendarUnitMinute,
+	NSSecondCalendarUnit = kCFCalendarUnitSecond,
+	NSWeekCalendarUnit = kCFCalendarUnitWeek,
+	NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
+	NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal
+};
 typedef int NSCalendarUnit;
 
 FOUNDATION_EXPORT NSString * const NSGregorianCalendar;

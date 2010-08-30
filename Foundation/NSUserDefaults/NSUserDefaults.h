@@ -72,11 +72,13 @@ FOUNDATION_EXPORT NSString * const NSUserDefaultsDidChangeNotification;
 -(BOOL)boolForKey:(NSString *)key;  
 -(NSInteger)integerForKey:(NSString *)key; 
 -(float)floatForKey:(NSString *)key;
+-(double)doubleForKey:(NSString *)key;
 
 -(void)setObject:value forKey:(NSString *)key;
 -(void)setBool:(BOOL)value forKey:(NSString *)key;
 -(void)setInteger:(NSInteger)value forKey:(NSString *)key;
 -(void)setFloat:(float)value forKey:(NSString *)key;
+-(void)setDouble:(double)value forKey:(NSString *)key;
 
 -(void)removeObjectForKey:(NSString *)key;
 

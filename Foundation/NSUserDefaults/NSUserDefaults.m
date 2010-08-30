@@ -325,6 +325,14 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
 }
 
+-(double)doubleForKey:(NSString *)defaultName {
+	id number=[self objectForKey:defaultName];
+	
+	return [number isKindOfClass:objc_lookUpClass("NSString")]?[(NSString *)number doubleValue]:
+	([number isKindOfClass:objc_lookUpClass("NSNumber")]?[(NSNumber *)number doubleValue]:0.0);
+	
+}
+
 -(void)setObject:value forKey:(NSString *)key {
    [[self persistantDomain] setObject:value forKey:key];
    [_dictionaryRep autorelease];
@@ -343,6 +351,10 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
 -(void)setFloat:(float)value forKey:(NSString *)defaultName {
    [self setObject:[NSNumber numberWithFloat:value] forKey:defaultName];
+}
+
+-(void)setDouble:(double)value forKey:(NSString *)defaultName {
+	[self setObject:[NSNumber numberWithDouble:value] forKey:defaultName];
 }
 
 -(void)removeObjectForKey:(NSString *)key {
