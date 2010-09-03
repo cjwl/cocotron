@@ -1901,8 +1901,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      break;
 
     case NSLeftMouseUp:
-     _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
      [[_backgroundView hitTest:_mouseDownLocationInWindow] mouseUp:event];
+     _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
      break;
 
     case NSRightMouseDown:
@@ -1911,8 +1911,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      break;
 
     case NSRightMouseUp:
-     _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
      [[_backgroundView hitTest:_mouseDownLocationInWindow] rightMouseUp:event];
+     _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
      break;
 
     case NSMouseMoved:
