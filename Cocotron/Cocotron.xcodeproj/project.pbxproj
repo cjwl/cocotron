@@ -27,14 +27,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE0513E4121E06D90097BA92 /* Security.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* Security.framework */;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = "Security-Windows-i386";
 		};
 		FE0513EE121E06DF0097BA92 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE0513E4121E06D90097BA92 /* Security.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* Security-Windows-i386 */;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "Security-Windows-i386";
 		};
 		FE1FC00911E7806100A9A87A /* PBXContainerItemProxy */ = {
