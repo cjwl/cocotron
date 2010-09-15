@@ -200,6 +200,11 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    result->glContext=opengl_wglCreateContext(result->dc);
    result->opacity=1;
    
+   if(share!=NULL){
+    if(!opengl_wglShareLists(share->glContext,result->glContext))
+     NSLog(@"opengl_wglShareLists failed");
+   }
+
    *resultp=result;
    
    return kCGLNoError;
