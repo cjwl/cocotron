@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/Win32GeneralPasteboard.h>
 #import <AppKit/Win32Pasteboard.h>
+#import <Foundation/NSSet.h>
 
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow-Private.h>
@@ -852,7 +853,7 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
 }
 
 -(NSSet *)allFontFamilyNames {
-   NSMutableSet *result=[NSMutableSet set];
+   NSMutableSet *result=[[[NSMutableSet alloc] init] autorelease];
    HDC           dc=GetDC(NULL);
    LOGFONT       logFont;
 

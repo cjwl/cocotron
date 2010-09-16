@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect bounds=[self bounds];
    float cheatSheet = 0;
 
-   [[NSColor redColor] setFill];
+   [[[self window] backgroundColor] setFill];
    NSRectFill([self bounds]);
    
     switch(_borderType){

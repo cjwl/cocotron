@@ -79,6 +79,10 @@ PROC  opengl_wglGetProcAddress(LPCSTR name){
    return function(name);
 }
 
+BOOL opengl_wglShareLists(HGLRC hglrc1,HGLRC hglrc2) {
+   return wglShareLists(hglrc1,hglrc2);
+}
+
 void  opengl_glReadBuffer(GLenum mode) {
    typedef WINGDIAPI PROC WINAPI (*ftype)(GLenum mode);
    static ftype                    function=NULL;

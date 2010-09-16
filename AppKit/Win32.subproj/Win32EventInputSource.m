@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
-    if(![[Win32Display currentDisplay] postMSG:msg])
+    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg])
      DispatchMessage(&msg);
 
     [pool release];

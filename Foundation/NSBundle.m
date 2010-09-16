@@ -92,6 +92,7 @@ NSModuleHandle NSLoadModule(const char *path) {
    
    OBJCResetModuleQueue();
    
+   
    handle=LoadLibrary(path);
 
    if(handle!=NULL)

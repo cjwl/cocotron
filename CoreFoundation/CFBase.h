@@ -200,4 +200,11 @@ COREFOUNDATION_EXPORT CFStringRef    CFCopyTypeIDDescription(CFTypeID typeID);
 COREFOUNDATION_EXPORT CFStringRef    CFCopyDescription(CFTypeRef self);
 COREFOUNDATION_EXPORT CFTypeRef      CFMakeCollectable(CFTypeRef self);
 
+#ifdef WINDOWS
+COREFOUNDATION_EXPORT unsigned int sleep(unsigned int seconds);
+COREFOUNDATION_EXPORT size_t strlcpy(char *dst, const char *src, size_t size);
+COREFOUNDATION_EXPORT void bzero(void *ptr,size_t size);
+COREFOUNDATION_EXPORT void bcopy(const void *s1, void *s2, size_t n);
+COREFOUNDATION_EXPORT int bcmp(const void *s1, void *s2, size_t n);
+#endif
 

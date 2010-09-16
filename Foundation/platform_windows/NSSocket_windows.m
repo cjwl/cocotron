@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSData.h>
 #import <Foundation/CFSSLHandler.h>
+#import <Foundation/NSBundle.h>
 
 #undef WINVER
 #define WINVER 0x501
@@ -44,6 +45,14 @@ static inline void byteZero(void *vsrc,size_t size){
    WSADATA wsaData;
    
    WSAStartup(vR, &wsaData);
+
+   NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"CFSSLHandler_openssl" ofType:@"bundle"];
+        
+   if(path!=nil){
+    NSBundle *bundle=[NSBundle bundleWithPath:path];
+
+    [bundle load];
+   }
 }
 
 -initWithSocketHandle:(SOCKET)handle {
@@ -285,8 +294,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(BOOL)setSSLProperties:(CFDictionaryRef )sslProperties {
+
    if(_sslHandler==nil){
-    _sslHandler=[[CFSSLHandler alloc] initWithProperties:sslProperties];
+    _sslHandler=[[NSClassFromString(@"CFSSLHandler_openssl") alloc] initWithProperties:sslProperties];
    }
    else {
     // FIXME: what do we do if different properties are set
