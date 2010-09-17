@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSParagraphStyle *)defaultParagraphStyle;
 
+-(BOOL)drawsBackground;
 -(BOOL)isEditable;
 -(BOOL)isSelectable;
 -(BOOL)isRichText;

@@ -57,6 +57,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _defaultParagraphStyle;
 }
 
+-(BOOL)drawsBackground {
+	return (_flags & (1 << 8)) ? YES : NO;
+}
+
 -(BOOL)isEditable {
    return (_flags&0x00000002)?YES:NO;
 }

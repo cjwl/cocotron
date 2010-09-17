@@ -109,7 +109,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _isSelectable=[sharedData isSelectable];
     _isRichText=[sharedData isRichText];
     _backgroundColor=[[sharedData backgroundColor] retain];
-    _drawsBackground=YES;
+    _drawsBackground=[sharedData drawsBackground];
     _font=[[NSFont userFontOfSize:0] retain];
     _textColor=[[NSColor textColor] copy];
     
