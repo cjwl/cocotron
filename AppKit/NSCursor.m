@@ -14,9 +14,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSCursor
 
+static NSMutableArray *_cursorStack=nil;
+
++(void)initialize {
+   if(self==[NSCursor class]){
+    _cursorStack=[[NSMutableArray alloc] init];
+   }
+}
+
 +(NSCursor *)currentCursor {
-   NSUnimplementedMethod();
-   return 0;
+   return [_cursorStack lastObject];
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -214,19 +221,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)pop {
-   NSUnimplementedMethod();
+   [isa pop];
 }
 
 -(void)set {
+   if([_cursorStack count])
+    [_cursorStack removeLastObject];
+    
+   [_cursorStack addObject:self];
    [[NSDisplay currentDisplay] setCursor:_cursor];
 }
 
 -(void)push {
-   NSUnimplementedMethod();
+   [_cursorStack addObject:self];
+   [[NSDisplay currentDisplay] setCursor:_cursor];
 }
 
 +(void)pop {
-   NSUnimplementedMethod();
+   if([_cursorStack count]<2)
+    return;
+   
+   [_cursorStack removeLastObject];
+   
+   NSCursor *cursor=[_cursorStack lastObject];
+   [[NSDisplay currentDisplay] setCursor:cursor->_cursor];
 }
 
 @end

@@ -25,19 +25,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else if([name isEqualToString:@"IBeamCursor"])
     idc=IDC_IBEAM;
    else if([name isEqualToString:@"openHandCursor"])
-    idc=IDC_ARROW;
+    idc=IDC_HAND;
    else if([name isEqualToString:@"pointingHandCursor"])
     idc=IDC_HAND;
    else if([name isEqualToString:@"resizeDownCursor"])
-    idc=IDC_ARROW;
+    idc=IDC_SIZENS;
    else if([name isEqualToString:@"resizeLeftCursor"])
-    idc=IDC_ARROW;
+    idc=IDC_SIZEWE;
    else if([name isEqualToString:@"resizeLeftRightCursor"])
     idc=IDC_SIZEWE;
    else if([name isEqualToString:@"resizeRightCursor"])
-    idc=IDC_ARROW;
+    idc=IDC_SIZEWE;
    else if([name isEqualToString:@"resizeUpCursor"])
-    idc=IDC_ARROW;
+    idc=IDC_SIZENS;
    else if([name isEqualToString:@"resizeUpDownCursor"])
     idc=IDC_SIZENS;
 

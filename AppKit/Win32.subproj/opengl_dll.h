@@ -10,6 +10,7 @@ HGLRC opengl_wglGetCurrentContext(void);
 BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc);
 BOOL  opengl_wglMakeCurrent(HDC dc,HGLRC hglrc);
 PROC  opengl_wglGetProcAddress(LPCSTR name);
+BOOL  opengl_wglShareLists(HGLRC hglrc1,HGLRC hglrc2);
 void  opengl_glReadBuffer(GLenum mode);
 void  opengl_glGetIntegerv(GLenum pname,GLint *params);
 void  opengl_glDrawBuffer(GLenum mode);
