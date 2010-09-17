@@ -20,7 +20,7 @@ void cfReleaseCallBack(CFAllocatorRef allocator,const void *value) {
 }
 
 const CFDictionaryKeyCallBacks kCFCopyStringDictionaryKeyCallBacks={
-	0,CFStringCreateCopy,cfReleaseCallBack,CFCopyDescription,CFEqual,CFHash,
+	0,(CFDictionaryRetainCallBack)CFStringCreateCopy,cfReleaseCallBack,CFCopyDescription,CFEqual,CFHash,
 };
 
 const CFDictionaryKeyCallBacks kCFTypeDictionaryKeyCallBacks={

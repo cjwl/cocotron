@@ -25,8 +25,7 @@ CFCharacterSetRef CFCharacterSetCreateWithCharactersInRange(CFAllocatorRef alloc
 }
 
 CFCharacterSetRef CFCharacterSetCreateWithCharactersInString(CFAllocatorRef allocator,CFStringRef string){
-	return [[NSCharacterSet_string alloc] initWithString:(NSString *)string inverted:NO];
-   return 0;
+	return (CFCharacterSetRef)[[NSCharacterSet_string alloc] initWithString:(NSString *)string inverted:NO];
 }
 
 

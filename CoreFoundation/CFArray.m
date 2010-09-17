@@ -208,7 +208,7 @@ void CFArrayGetValues(CFArrayRef self,CFRange range,const void **values) {
 
 Boolean CFArrayContainsValue(CFArrayRef self,CFRange range,const void *value) {
 	NSRange inrange = NSMakeRange(range.location, range.length);
-	return [self indexOfObject:value inRange:inrange] != NSNotFound;
+	return [(NSArray*)self indexOfObject:(id)value inRange:inrange] != NSNotFound;
 }
 
 CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
@@ -224,7 +224,7 @@ CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self,CFRange range,const void *va
 
 CFIndex CFArrayGetLastIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
 	NSRange inrange = NSMakeRange(range.location, range.length);
-	return [self indexOfObject:value inRange:inrange];
+	return [(NSArray*)self indexOfObject:(id)value inRange:inrange];
 }
 
 CFIndex CFArrayGetCountOfValue(CFArrayRef self,CFRange range,const void *value) {
