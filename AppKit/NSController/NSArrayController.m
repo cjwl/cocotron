@@ -384,7 +384,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
       [self didChangeValueForKey:@"arrangedObjects"];
 
       [self willChangeValueForKey:@"selectionIndexes"];
-      [_selectionIndexes shiftIndexesStartingAtIndex:pos by:-1];
+      [_selectionIndexes shiftIndexesStartingAtIndex:pos+1 by:-1];
       [self didChangeValueForKey:@"selectionIndexes"];
    }
 }
