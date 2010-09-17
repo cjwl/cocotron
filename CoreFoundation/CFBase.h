@@ -51,6 +51,11 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
    this is a hassle on platforms where you just want to use Foundation, so we put them in CoreFoundation and see what happens
 */
  
+enum
+{
+	kCFNotFound = LONG_MAX
+};
+
 #ifdef __LP64__
 typedef double CGFloat;
 #define CGFLOAT_MIN DBL_MIN
