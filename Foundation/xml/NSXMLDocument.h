@@ -10,6 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSXMLDTD,NSURL,NSData,NSMutableArray;
 
+enum {
+	NSXMLDocumentXMLKind = 0,
+	NSXMLDocumentXHTMLKind,
+	NSXMLDocumentHTMLKind,
+	NSXMLDocumentTextKind
+};
 typedef int NSXMLDocumentContentKind;
 
 @interface NSXMLDocument : NSXMLNode {

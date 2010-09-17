@@ -3691,7 +3691,7 @@
 		FE463E71102CD5C700B265D6 /* NSPointerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E55102CD5C700B265D6 /* NSPointerArray.m */; };
 		FE463E72102CD5C700B265D6 /* NSPointerFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E56102CD5C700B265D6 /* NSPointerFunctions.h */; };
 		FE463E73102CD5C700B265D6 /* NSPointerFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E57102CD5C700B265D6 /* NSPointerFunctions.m */; };
-		FE463E75102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
+		FE463E75102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E76102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
 		FE463E77102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
 		FE463E78102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
