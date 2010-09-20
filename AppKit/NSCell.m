@@ -52,6 +52,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isBezeled=(flags&0x00400000)?YES:NO;
     _isSelectable=(flags&0x00200000)?YES:NO;
     _isScrollable=(flags&0x00100000)?YES:NO;
+    _refusesFirstResponder=(flags2&0x2000000)?YES:NO;
    // _wraps=(flags&0x00100000)?NO:YES; // ! scrollable, use lineBreakMode ?
     _allowsMixedState=(flags2&0x1000000)?YES:NO;
     // 0x00080000 = continuous
