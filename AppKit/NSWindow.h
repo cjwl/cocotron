@@ -514,6 +514,10 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 -(void)windowDidUpdate:(NSNotification *)note;
 -(BOOL)windowShouldClose:sender;
 -(void)windowWillClose:(NSNotification *)note;
+
+
++(void)setCocotronSheetAnimations:(BOOL)enabled;
++(BOOL)cocotronSheetAnimations;
 @end
 
 //private

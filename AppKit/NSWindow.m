@@ -54,6 +54,7 @@ NSString * const NSWindowWillAnimateNotification=@"NSWindowWillAnimateNotificati
 NSString * const NSWindowAnimatingNotification=@"NSWindowAnimatingNotification";
 NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
+static BOOL cocotronSheetAnimations_state=YES;
 
 @interface NSToolbar (NSToolbar_privateForWindow)
 - (void)_setWindow:(NSWindow *)window;
@@ -2781,5 +2782,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     return _backgroundView;
 }
 
+
++(BOOL)cocotronSheetAnimations
+{
+    return cocotronSheetAnimations_state;
+}
++(void)setCocotronSheetAnimations:(BOOL)enabled
+{
+    cocotronSheetAnimations_state = enabled;
+}
 @end
 
