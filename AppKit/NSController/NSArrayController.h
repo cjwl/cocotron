@@ -82,4 +82,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSArray *)arrangeObjects:(NSArray *)objects;
 -(void)rearrangeObjects;
 
+// actions useable with IB
+-(void)add:(id)sender;
+-(void)insert:(id)sender;
+-(void)remove:(id)sender;
 @end
