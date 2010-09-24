@@ -76,6 +76,7 @@ COREFOUNDATION_EXPORT void CFStringAppendCharacters(CFMutableStringRef mutableSt
 
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator);
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateMutableCopy(CFAllocatorRef allocator,CFIndex maxLength,CFStringRef self);
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation);
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation,CFAllocatorRef contentsDeallocator);
 COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithCharacters(CFAllocatorRef allocator,const UniChar *chars,CFIndex length);
@@ -106,6 +107,7 @@ COREFOUNDATION_EXPORT CFStringEncoding CFStringConvertWindowsCodepageToEncoding(
 COREFOUNDATION_EXPORT CFArrayRef       CFStringCreateArrayBySeparatingStrings(CFAllocatorRef allocator,CFStringRef self,CFStringRef separatorString);
 COREFOUNDATION_EXPORT CFArrayRef       CFStringCreateArrayWithFindResults(CFAllocatorRef allocator,CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options);
 COREFOUNDATION_EXPORT CFDataRef        CFStringCreateExternalRepresentation(CFAllocatorRef allocator,CFStringRef self,CFStringEncoding encoding,uint8_t lossByte);
+COREFOUNDATION_EXPORT void             CFStringDelete(CFMutableStringRef theString,CFRange range);
 
 COREFOUNDATION_EXPORT Boolean          CFStringHasPrefix(CFStringRef self,CFStringRef prefix);
 COREFOUNDATION_EXPORT Boolean          CFStringHasSuffix(CFStringRef self,CFStringRef suffix);
@@ -125,6 +127,7 @@ COREFOUNDATION_EXPORT Boolean         CFStringGetCString(CFStringRef self,char *
 COREFOUNDATION_EXPORT const char     *CFStringGetCStringPtr(CFStringRef self,CFStringEncoding encoding);
 
 COREFOUNDATION_EXPORT void            CFStringInitInlineBuffer(CFStringRef self,CFStringInlineBuffer *buffer,CFRange range);
+COREFOUNDATION_EXPORT void            CFStringInsert(CFMutableStringRef str, CFIndex idx, CFStringRef insertedStr);
 COREFOUNDATION_EXPORT UniChar         CFStringGetCharacterFromInlineBuffer(CFStringInlineBuffer *buffer,CFIndex index);
 
 COREFOUNDATION_EXPORT CFInteger        CFStringGetIntValue(CFStringRef self);

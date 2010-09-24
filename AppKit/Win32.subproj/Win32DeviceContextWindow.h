@@ -32,5 +32,6 @@ enum {
 
 -(HWND)windowHandle;
 -(HANDLE)theme:(int)uxthClassId;
+-(void)themeChanged;
 
 @end

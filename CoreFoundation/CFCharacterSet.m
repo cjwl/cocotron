@@ -1,6 +1,7 @@
 #import <CoreFoundation/CFCharacterSet.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
+#import <Foundation/NSCharacterSet_string.h>
 
 CFTypeID CFCharacterSetGetTypeID(void){
    return kNSCFTypeCharacterSet;
@@ -24,8 +25,7 @@ CFCharacterSetRef CFCharacterSetCreateWithCharactersInRange(CFAllocatorRef alloc
 }
 
 CFCharacterSetRef CFCharacterSetCreateWithCharactersInString(CFAllocatorRef allocator,CFStringRef string){
-   NSUnimplementedFunction();
-   return 0;
+	return (CFCharacterSetRef)[[NSCharacterSet_string alloc] initWithString:(NSString *)string inverted:NO];
 }
 
 

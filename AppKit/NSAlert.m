@@ -448,11 +448,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)_alertButton:sender {
    if([_window isSheet])
+   {
     [NSApp endSheet:_window returnCode:[sender tag]];
+   }
    else
+   {
     [NSApp stopModalWithCode:[sender tag]];
-
-   [_window close];
+    [_window close];
+   }
 }
 
 @end

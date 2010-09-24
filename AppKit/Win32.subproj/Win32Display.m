@@ -274,6 +274,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 // extensions
     { @"menuBackgroundColor", COLOR_MENU },
     { @"menuItemTextColor", COLOR_MENUTEXT },
+     { @"_sourceListBackgroundColor", COLOR_WINDOW },
  
     { nil, 0 }
    };

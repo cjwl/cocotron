@@ -224,7 +224,11 @@ static NSFont **_fontCache=NULL;
     return @"Lucida Sans Regular";
 
    if([name isEqual:@"HelveticaNeue-CondensedBold"])
-    return @"Helvetica Neue Condensed Bold";
+    return @"Arial";    
+   if([name isEqual:@"HelveticaNeue-Bold"])
+	return @"Arial";
+   if([name isEqual:@"HelveticaNeue-Regular"])
+	return @"Arial";
     
    return name;
 }

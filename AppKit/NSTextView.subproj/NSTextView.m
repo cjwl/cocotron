@@ -38,6 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContext.h>
 #import "NSTextViewSharedData.h"
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSController.h>
 
 NSString * const NSTextViewDidChangeSelectionNotification=@"NSTextViewDidChangeSelectionNotification";
 NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
@@ -108,7 +109,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _isSelectable=[sharedData isSelectable];
     _isRichText=[sharedData isRichText];
     _backgroundColor=[[sharedData backgroundColor] retain];
-    _drawsBackground=YES;
+    _drawsBackground=[sharedData drawsBackground];
     _font=[[NSFont userFontOfSize:0] retain];
     _textColor=[[NSColor textColor] copy];
     
@@ -1958,9 +1959,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(BOOL)readRTFDFromFile:(NSString *)path {
-   [_textStorage setAttributedString:[NSRichTextReader attributedStringWithContentsOfFile:path]];
+	NSAttributedString *contents = [NSRichTextReader attributedStringWithContentsOfFile:path];
+	
+   [_textStorage setAttributedString:contents];
 
-   return NO;
+   return contents != nil;
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withRTF:(NSData *)rtf {
@@ -2544,5 +2547,23 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     return result;
 }
+
+- (void)setAttributedString:(NSAttributedString *)attrString
+{
+	if (!NSIsControllerMarker(attrString))
+	{
+		[_textStorage setAttributedString:attrString];
+	}
+	else
+	{
+		[_textStorage setAttributedString:[[[NSAttributedString alloc] initWithString:NSLocalizedString(@"",@"") attributes:nil] autorelease]];
+	}
+}
+
+- (NSAttributedString *)attributedString
+{
+	return [[_textStorage copy] autorelease];
+}
+
 
 @end
