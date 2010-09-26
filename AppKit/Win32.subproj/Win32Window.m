@@ -376,7 +376,9 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    if(![NSWindow cocotronSheetAnimations])
    {
       // FIXME just close the window here?
-      SetWindowPos(_handle, [(Win32Window *)aboveWindow windowHandle], _frame.origin.x, _frame.origin.y, _frame.size.width, 0, SWP_SHOWWINDOW);
+      SIZE sizeWnd = {_frame.size.width, 0};
+      POINT ptSrc = {0, _frame.size.height};
+      UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
       return;
    }
    int i;
