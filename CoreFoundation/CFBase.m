@@ -89,6 +89,7 @@ CFTypeRef CFMakeCollectable(CFTypeRef self){
    return 0;
 }
 
+#ifdef WINDOWS
 unsigned int sleep(unsigned int seconds) {
    NSUnimplementedFunction();
    return 0;
@@ -128,4 +129,4 @@ int bcmp(const void *s1, void *s2, size_t n) {
    
    return 0;
 }
-
+#endif
