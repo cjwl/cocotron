@@ -2238,7 +2238,7 @@
 		C8BAA57A0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
 		C8BAA57B0DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8BAA57C0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
-		C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; };
+		C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8C39E030EAB6646002568A3 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
 		C8C39E040EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; };
 		C8C39E050EAB6646002568A3 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
@@ -3693,7 +3693,7 @@
 		FE463E73102CD5C700B265D6 /* NSPointerFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E57102CD5C700B265D6 /* NSPointerFunctions.m */; };
 		FE463E75102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E76102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE463E77102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
+		FE463E77102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E78102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
 		FE463E79102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
 		FE463E7A102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
@@ -6301,7 +6301,7 @@
 		};
 		6E4D93250A2642BD003D335C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
+			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.default;
 			fileType = sourcecode.asm;
 			isEditable = 1;
 			outputFiles = (
@@ -6311,7 +6311,7 @@
 		};
 		6E4D93260A2642BD003D335C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
+			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -6416,13 +6416,6 @@
 			remoteGlobalIDString = 15D921D5105E922600171406;
 			remoteInfo = "objc-Linux-arm";
 		};
-		1A27C00A1090CC7200C44FD7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
-			remoteInfo = "Foundation-Darwin-i386";
-		};
 		28D485000FE04DDD00DC03EF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -6443,6 +6436,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6EA048CA09E57D5F0067589C;
 			remoteInfo = "Foundation-Linux-i386-gcc-4.0.3-redhat";
+		};
+		C67E02FD125B217800C10757 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C67E02F8125B214E00C10757 /* CoreFoundation.framework */;
+			remoteInfo = "CoreFoundation-Solaris-sparc";
+		};
+		C67E0320125B225000C10757 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C67E0319125B223000C10757 /* CoreServices.framework */;
+			remoteInfo = "CoreServices-Solaris-sparc";
+		};
+		C67E0354125B237800C10757 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C67E02C7125B214E00C10757 /* CoreFoundation-Solaris-sparc */;
+			remoteInfo = "CoreFoundation-Solaris-sparc";
+		};
+		C67E0356125B237F00C10757 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C67E030C125B223000C10757 /* CoreServices-Solaris-sparc */;
+			remoteInfo = "CoreServices-Solaris-sparc";
 		};
 		FE01A7F20C5D9B9100AEA51A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -8511,6 +8532,7 @@
 				FE1342C91151842200404745 /* CoreServices.framework */,
 				FEC32E56115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6711590A130008ECE5 /* CoreServices.framework */,
+				C67E0321125B225000C10757 /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8707,6 +8729,7 @@
 				FEA82994109B775200C7A732 /* CoreFoundation.framework */,
 				FEA829D1109B7C1B00C7A732 /* CoreFoundation.framework */,
 				FE5A86CC10C6EE28005E348A /* CoreFoundation.framework */,
+				C67E02FE125B217800C10757 /* CoreFoundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -11903,8 +11926,9 @@
 				6E4D93260A2642BD003D335C /* PBXBuildRule */,
 			);
 			dependencies = (
-				1A27C00B1090CC7200C44FD7 /* PBXTargetDependency */,
 				FEB6CC530B4A1952004FADF2 /* PBXTargetDependency */,
+				C67E0355125B237800C10757 /* PBXTargetDependency */,
+				C67E0357125B237F00C10757 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Solaris-sparc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -12102,6 +12126,20 @@
 			fileType = wrapper.framework;
 			path = objc.framework;
 			remoteRef = 28D485000FE04DDD00DC03EF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C67E02FE125B217800C10757 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = C67E02FD125B217800C10757 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C67E0321125B225000C10757 /* CoreServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreServices.framework;
+			remoteRef = C67E0320125B225000C10757 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE1342C91151842200404745 /* CoreServices.framework */ = {
@@ -15709,11 +15747,6 @@
 			name = "objc-Linux-arm";
 			targetProxy = 15D921EA105E927F00171406 /* PBXContainerItemProxy */;
 		};
-		1A27C00B1090CC7200C44FD7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FED7081C0C3B3D2C000CBE5B /* Foundation-Darwin-i386 */;
-			targetProxy = 1A27C00A1090CC7200C44FD7 /* PBXContainerItemProxy */;
-		};
 		28D487AF0FE04F3F00DC03EF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-Linux-ppc";
@@ -15723,6 +15756,16 @@
 			isa = PBXTargetDependency;
 			target = 6EA048CA09E57D5F0067589C /* Foundation-Linux-i386 */;
 			targetProxy = 6E3877330A0A78F800643D29 /* PBXContainerItemProxy */;
+		};
+		C67E0355125B237800C10757 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Solaris-sparc";
+			targetProxy = C67E0354125B237800C10757 /* PBXContainerItemProxy */;
+		};
+		C67E0357125B237F00C10757 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreServices-Solaris-sparc";
+			targetProxy = C67E0356125B237F00C10757 /* PBXContainerItemProxy */;
 		};
 		FE01A7F30C5D9B9100AEA51A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -16020,11 +16063,13 @@
 				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PLATFORM_DEFINES = "-DSOLARIS";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DCOCOTRON_DISALLOW_FORWARDING",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
@@ -16163,10 +16208,12 @@
 				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PLATFORM_DEFINES = "-DSOLARIS";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DCOCOTRON_DISALLOW_FORWARDING",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
