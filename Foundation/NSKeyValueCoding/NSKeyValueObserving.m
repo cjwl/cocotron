@@ -172,7 +172,10 @@ static NSArray *addKeyPathObserverToDependantPaths(id object,NSSet *dependentPat
     
     //NSLog(@"dependant=%@",dependentPaths);
     for(NSString *path in dependentPaths){
-     [result addObject:addKeyPathObserverToObject(object,path,keyPathObserver)];
+     NSKeyObserver *check=addKeyPathObserverToObject(object,path,keyPathObserver);
+     
+     if(check!=nil)
+      [result addObject:check];
     }
     
     return result;
@@ -300,7 +303,7 @@ static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeIn
      if(idxs==nil)
       [changeDictionary setValue:[rootObject valueForKeyPath:rootKeyPath] forKey:NSKeyValueChangeOldKey];
      else {
-#warning this is wrong, the type of change will depend on the positin in the key path
+// FIXME: this is wrong, the type of change will depend on the positin in the key path
       int type=[[changeDictionary objectForKey:NSKeyValueChangeKindKey] intValue];
       
       // for to-many relationships, oldvalue is only sensible for replace and remove
