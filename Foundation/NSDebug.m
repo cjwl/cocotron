@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 BOOL NSZombieEnabled=NO;
-BOOL NSDebugEnabled=YES;
+BOOL NSDebugEnabled=NO;
 
 const char* _NSPrintForDebugger(id object) {
 	if(object && [object respondsToSelector:@selector(description)]) {
