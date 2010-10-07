@@ -3694,7 +3694,7 @@
 		FE463E75102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E76102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E77102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE463E78102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
+		FE463E78102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E79102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
 		FE463E7A102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
 		FE463E7B102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
@@ -6441,28 +6441,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C67E02F8125B214E00C10757 /* CoreFoundation.framework */;
+			remoteGlobalIDString = C67E02F8125B214E00C10757;
 			remoteInfo = "CoreFoundation-Solaris-sparc";
 		};
 		C67E0320125B225000C10757 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C67E0319125B223000C10757 /* CoreServices.framework */;
+			remoteGlobalIDString = C67E0319125B223000C10757;
 			remoteInfo = "CoreServices-Solaris-sparc";
 		};
 		C67E0354125B237800C10757 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C67E02C7125B214E00C10757 /* CoreFoundation-Solaris-sparc */;
+			remoteGlobalIDString = C67E02C7125B214E00C10757;
 			remoteInfo = "CoreFoundation-Solaris-sparc";
 		};
 		C67E0356125B237F00C10757 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C67E030C125B223000C10757 /* CoreServices-Solaris-sparc */;
+			remoteGlobalIDString = C67E030C125B223000C10757;
 			remoteInfo = "CoreServices-Solaris-sparc";
 		};
 		FE01A7F20C5D9B9100AEA51A /* PBXContainerItemProxy */ = {
