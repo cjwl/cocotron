@@ -112,13 +112,14 @@ static inline NSMapTable *masterObservationInfo(){
 }
 
 static void addKeyObserver(NSKeyObserver *keyObserver){
+//NSLog(@"addKeyObserver:%@",keyObserver);
+
    id object=[keyObserver object];
 
    [object _KVO_swizzle];
 
    NSKVOInfoPerObject *observationInfo=[object observationInfo];
 
-//NSLog(@"addKeyObserver:%@",keyObserver);
    
    if(observationInfo==nil){
     observationInfo=[[NSKVOInfoPerObject allocWithZone:NULL] init];
@@ -129,11 +130,11 @@ static void addKeyObserver(NSKeyObserver *keyObserver){
 }
 
 static void removeKeyObserver(NSKeyObserver *keyObserver){
+//NSLog(@"removeKeyObserver:%@",keyObserver);
+
    if(keyObserver==nil)
     return;
 
-//NSLog(@"removeKeyObserver:%@",keyObserver);
-   
    [keyObserver invalidate];
    
    id                  object=[keyObserver object];
@@ -170,7 +171,7 @@ static NSKeyObserver *addKeyPathObserverToObject(id object,NSString *path,NSKeyP
 static NSArray *addKeyPathObserverToDependantPaths(id object,NSSet *dependentPaths,NSKeyPathObserver *keyPathObserver){
     NSMutableArray *result=[NSMutableArray array];
     
-    //NSLog(@"dependant=%@",dependentPaths);
+//NSLog(@"dependant=%@",dependentPaths);
     for(NSString *path in dependentPaths){
      NSKeyObserver *check=addKeyPathObserverToObject(object,path,keyPathObserver);
      
@@ -199,6 +200,7 @@ static void addKeyObserverDependantsAndRestOfPath(NSKeyObserver *keyObserver){
 }
 
 static NSKeyObserver *addKeyPathObserverToObject(id object,NSString *path,NSKeyPathObserver *keyPathObserver){
+//NSLog(@"addKeyPathObserverToObject(%@,%@)",[object class],path);
    if(object==nil)
     return nil;
     
@@ -830,11 +832,14 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 		currentMethod++;
 	}
 	
-	void *iterator=0;
-	Class currentClass=isa;	
-	struct objc_method_list* list = class_nextMethodList(currentClass, &iterator);
-	while(list)
-	{
+	Class currentClass=isa;
+    
+    for(;currentClass && currentClass->super_class!=currentClass;currentClass=currentClass->super_class){
+     void *iterator=0;
+    
+     struct objc_method_list *list=class_nextMethodList(currentClass,&iterator);
+     
+     while(list){
         NSAutoreleasePool *pool=[NSAutoreleasePool new];
 		int i;
 		for(i=0; i<list->method_count; i++)
@@ -954,20 +959,15 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 				//NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
 			}
 		}
+        
 		list=class_nextMethodList(currentClass, &iterator);
-		if(!list)
-		{
-			currentClass=currentClass->super_class;
-			iterator=0;
-			if(currentClass && currentClass->super_class!=currentClass)
-				list=class_nextMethodList(currentClass, &iterator);
-		}
         [pool release];
-	}
+     }
+    }
 #undef CHECK_AND_ASSIGN
 
 	// crop the method array to currently used size
-	list = calloc(sizeof(struct objc_method_list)+currentMethod*sizeof(struct objc_method), 1);
+	struct objc_method_list *list = calloc(sizeof(struct objc_method_list)+currentMethod*sizeof(struct objc_method), 1);
 	list->method_count=currentMethod;
 	memcpy(list->method_list, newMethods, sizeof(struct objc_method)*currentMethod);
 	
