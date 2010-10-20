@@ -14,6 +14,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    SEL       _selector;
 }
 
++sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending;
++sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector;
+
 -initWithKey:(NSString *)key ascending:(BOOL)ascending;
 -initWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector;
 
