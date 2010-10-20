@@ -227,11 +227,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      
     case NSMatchesPredicateOperatorType:
      NSUnimplementedMethod();
-     return NO;
+     return YES;
      
     case NSLikePredicateOperatorType:
      NSUnimplementedMethod();
-     return NO;
+     return YES;
      
     case NSBeginsWithPredicateOperatorType:{
       NSRange range = NSMakeRange(0,[rightResult length]);
@@ -260,11 +260,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)evaluateWithObject:(id)object{
    NSMutableArray *values = [NSMutableArray array];
    NSComparisonPredicateModifier modifier = [self comparisonPredicateModifier];
-	
    id leftValue = [[self leftExpression] expressionValueWithObject:object context:NULL];
 	
-   if(modifier==NSDirectPredicateModifier)
+   if(modifier==NSDirectPredicateModifier){
+/* It is possible for an expression to return nil (constant or keypath for example), comparisons consider
+   NSNull and nil equal (right?), so we just use NSNull here since you can use nil in an array */
+   
+    if(leftValue==nil)
+     leftValue=[NSNull null];
+     
     [values addObject:leftValue];
+   }
    else{		
     if ([[self leftExpression] expressionType] != NSKeyPathExpressionType || !([leftValue isKindOfClass:[NSArray class]] || [leftValue isKindOfClass:[NSSet class]]))
      [NSException raise:NSInvalidArgumentException format:@"The left hand side for an ALL or ANY operator must be either an NSArray or an NSSet"];
@@ -276,8 +282,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    id value;
    while ((value = [e nextObject])!=nil) {
     BOOL eval = [self _evaluateValue:value withObject:(id)object];
-    if (eval == (modifier != NSAllPredicateModifier)) return eval;		
+    
+    if (eval == (modifier != NSAllPredicateModifier))
+     return eval;		
    }
+
    return result;
 }
 
