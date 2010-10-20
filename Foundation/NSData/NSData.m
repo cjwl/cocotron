@@ -20,7 +20,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaiseException.h>
 #import <Foundation/NSURLConnection.h>
 #import <Foundation/NSURLRequest.h>
+#import <Foundation/NSURLError.h>
 #import <Foundation/NSCFTypeID.h>
+#import <Foundation/NSError.h>
+#import <Foundation/NSDIctionary.h>
 
 @implementation NSData
 
@@ -41,8 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithBytes:(const void *)bytes length:(NSUInteger)length {
-   return [self initWithBytesNoCopy:NSBytesReplicate(bytes,length,
-    NSZoneFromPointer(self)) length:length];
+   return [self initWithBytesNoCopy:NSBytesReplicate(bytes,length,NSZoneFromPointer(self)) length:length];
 }
 
 -initWithData:(NSData *)data {
@@ -50,23 +52,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   return [self initWithContentsOfFile:path options:0 error:nil];
+   return [self initWithContentsOfFile:path options:0 error:NULL];
 }
 
 -initWithContentsOfMappedFile:(NSString *)path {
-   return [self initWithContentsOfFile:path options:NSMappedRead error:nil];
+   return [self initWithContentsOfFile:path options:NSMappedRead error:NULL];
 }
 
 -initWithContentsOfURL:(NSURL *)url {
-   return [self initWithContentsOfURL:url options:0 error:nil];
+   return [self initWithContentsOfURL:url options:0 error:NULL];
 }
 
 -initWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
    NSUInteger length;
    void *bytes=NULL;
-
-   if(errorp)
-    NSLog(@"-[%@ %s]: NSError not (yet) supported.",[self class],_cmd);
 
    if (options&NSUncachedRead)
     NSLog(@"-[%@ %s] option NSUncachedRead currently ignored.",[self class],_cmd);
@@ -77,7 +76,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     bytes=NSPlatformContentsOfFile(path,&length);
   
    if(bytes==NULL){
-    // TODO: Should fill NSError here.
+    
+    if(errorp!=NULL){
+     NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Could not open file %@", path] forKey:NSLocalizedDescriptionKey];
+     
+     *errorp=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotOpenFile userInfo:userInfo];
+    }
+    
     [self dealloc];
     return nil;
    }
@@ -88,21 +93,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
 
    if(![url isFileURL]){
-	   if ( [[url scheme] isEqual:@"http"] ) {
+    
+	   if ( [[url scheme] isEqual:@"http"] || [[url scheme] isEqual:@"https"]) {
 		   NSError *error=nil;
 		   NSURLResponse *response=nil;
-		   NSLog(@"will run NSURLConnection");
+
 		   NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&response error:&error];
-		   NSLog(@"did run NSURLConnection");
+
 		   return [self initWithData:data];
 	   } else {
 		   [self dealloc];
-		   [NSException raise:NSRangeException format:@"-[NSData initWithContentsOfURL:options:error:] currently, only file:// urls are supported"];
+           
+           if(errorp!=NULL){
+            NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Could not open url %@", url] forKey:NSLocalizedDescriptionKey];
+            
+            *errorp=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
 	   }
     return nil;
    }
+   }
 
-   return [self initWithContentsOfFile:[url path] options:0 error:nil];
+   return [self initWithContentsOfFile:[url path] options:options error:errorp];
 }
 
 -copyWithZone:(NSZone *)zone {
@@ -269,7 +280,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
-  NSAssert([url isFileURL], @"-[%@ %s]: Only file: URLs are supported so far.",[self class],_cmd);
+  if(![url isFileURL]){
+   NSLog(@"-[%@ %s]: Only file: URLs are supported so far.",[self class],_cmd);
+   return NO;
+  }
   return [self writeToFile:[url path] options:options error:errorp];
 }
 

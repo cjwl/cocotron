@@ -9,14 +9,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-enum {
-   NSMappedRead=0x01,
-   NSUncachedRead=0x02,
+@class NSURL,NSError;
 
-   NSAtomicWrite=0x01,
+enum {
+   NSDataReadingMapped  =0x01,
+   NSDataReadingUncached=0x02,
+
+// deprecated
+   NSMappedRead  =NSDataReadingMapped,
+   NSUncachedRead=NSDataReadingUncached,
+};
+typedef NSUInteger NSDataReadingOptions;
+
+enum {
+   NSDataWritingAtomic=0x01,
+
+// deprecated
+   NSAtomicWrite=NSDataWritingAtomic,
 };
 
-@class NSURL,NSError;
+typedef NSUInteger NSDataWritingOptions;
+
+enum {
+   NSDataSearchBackwards=0x01,
+   NSDataSearchAnchored =0x02,
+};
+typedef NSUInteger NSDataSearchOptions;
 
 @interface NSData : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
