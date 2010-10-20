@@ -23,6 +23,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return NO;
 }
 
+// KVO and KVC can not share the path splitting code:
+// Strangely, KVO will observe a key when specified capitalized
+// Even stranger, KVC will treat such a key or path as undefined 
+NSString *_NSKVOSplitKeyPath(NSString *path,NSString **restOfPath){
+   NSInteger dot,length=[path length];
+   unichar   buffer[length];
+   
+   [path getCharacters:buffer];
+   
+   for(dot=0;dot<length;dot++)
+    if(buffer[dot]=='.')
+     break;
+   
+   if(dot<length)
+    *restOfPath=[NSString stringWithCharacters:buffer+dot+1 length:length-(dot+1)];
+   else
+    *restOfPath=nil;   
+
+// we must always lowercase
+   buffer[0]=tolower(buffer[0]);
+   
+   return [NSString stringWithCharacters:buffer length:dot];
+}
+
 -(void)_KVC_partBeforeDot:(NSString**)before afterDot:(NSString**)after;
 {
 	NSRange range=[self rangeOfString:@"."];

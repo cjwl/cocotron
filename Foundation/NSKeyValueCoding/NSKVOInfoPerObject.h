@@ -1,7 +1,7 @@
 #import <Foundation/NSObject.h>
 #import <pthread.h>
 
-@class NSMutableDictionary,NSMutableArray;
+@class NSMutableDictionary,NSMutableArray,NSArray,NSKeyObserver;
 
 @interface NSKVOInfoPerObject : NSObject {
    pthread_mutex_t      _lock;
@@ -9,10 +9,14 @@
 }
 
 -init;
+
+-(BOOL)isEmpty;
+
 -objectForKey:key;
--(void)setObject:value forKey:key;
--(void)removeObjectForKey:key;
--(NSUInteger)count;
--(NSMutableArray *)observersForKey:(NSString *)key;
+-(void)setObject:object forKey:key;
+
+-(NSArray *)keyObserversForKey:(NSString *)key;
+-(void)addKeyObserver:(NSKeyObserver *)keyObserver;
+-(void)removeKeyObserver:(NSKeyObserver *)keyObserver;
 
 @end
