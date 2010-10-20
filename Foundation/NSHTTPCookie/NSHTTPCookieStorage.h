@@ -9,7 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSHTTPCookie,NSURL;
 
-typedef int NSHTTPCookieAcceptPolicy;
+typedef enum {
+   NSHTTPCookieAcceptPolicyAlways,
+   NSHTTPCookieAcceptPolicyNever,
+   NSHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain,
+} NSHTTPCookieAcceptPolicy;
 
 @interface NSHTTPCookieStorage : NSObject {
 
