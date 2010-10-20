@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithCoder:(NSCoder*)coder {
    [super initWithCoder:coder];
    
-   if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+   if([coder allowsKeyedCoding]){
     NSDictionary *attributes=[coder decodeObjectForKey:@"NS.attributes"];
      
     _dateFormat10_0=[[attributes objectForKey:@"dateFormat_10_0"] copy];
@@ -72,6 +72,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSDictionary *)locale {
     return _locale;
+}
+
+-(void)setDateFormat:(NSString *)format {
+   format=[format copy];
+   [_dateFormat10_0 release];
+   _dateFormat10_0 = format;
+    
+   format=[format copy];
+   [_dateFormat release];
+   _dateFormat = format;
 }
 
 NSTimeZone *getTimeZoneFromDate(NSDate *date) {
@@ -99,6 +109,9 @@ NSShortWeekDayNameArray];
 - (NSArray *)standaloneWeekdaySymbols {
 	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
 NSWeekDayNameArray];
+}
+
+-(void)setLenient:(BOOL)value {
 }
 
 -(NSString *)stringForObjectValue:(id)object {
@@ -167,9 +180,13 @@ NSWeekDayNameArray];
 
 @end
 
-NSTimeInterval NSAdjustTimeIntervalWithTimeZone(NSTimeInterval interval,
+NSTimeInterval NSMoveIntervalFromTimeZoneToGMT(NSTimeInterval interval,
                                                 NSTimeZone *timeZone) {
     return interval + [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
+}
+
+NSTimeInterval NSMoveIntervalFromGMTToTimeZone(NSTimeInterval interval, NSTimeZone *timeZone) {
+    return interval - [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
 }
 
 #define NSDaysOfCommonEraOfReferenceDate	730486
@@ -341,7 +358,7 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
         STATE_CONVERSION
     } state=STATE_SCANNING;
 
-    interval=NSAdjustTimeIntervalWithTimeZone(interval,timeZone);
+    interval=NSMoveIntervalFromTimeZoneToGMT(interval,timeZone);
     if (locale == nil)
         locale = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 

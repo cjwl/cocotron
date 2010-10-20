@@ -43,18 +43,22 @@ typedef enum {
 -(NSString *)dateFormat;
 -(BOOL)allowsNaturalLanguage;
 
-// hmmm
 -(NSDictionary *)locale;
+
+-(void)setDateFormat:(NSString *)format;
 
 - (NSString *)stringFromDate:(NSDate *)date;
 - (NSArray *)shortStandaloneWeekdaySymbols;
 - (NSArray *)standaloneWeekdaySymbols;
 
+-(void)setLenient:(BOOL)value;
+
 @end
 
 // internal use
 
-NSTimeInterval NSAdjustTimeIntervalWithTimeZone(NSTimeInterval interval, NSTimeZone *timeZone);
+NSTimeInterval NSMoveIntervalFromTimeZoneToGMT(NSTimeInterval interval, NSTimeZone *timeZone);
+NSTimeInterval NSMoveIntervalFromGMTToTimeZone(NSTimeInterval interval, NSTimeZone *timeZone);
 
 // interval is not time zone adjusteed
 NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSInteger day, NSInteger hour, NSInteger minute, NSInteger second, NSInteger milliseconds);
