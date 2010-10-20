@@ -16,10 +16,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 #import <Foundation/NSHost.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSURLError.h>
+#import <Foundation/NSURLCache.h>
+#import <Foundation/NSCachedURLResponse.h>
+#import <Foundation/NSError.h>
 #import "NSURLConnectionState.h"
 
 @interface NSURLProtocol(private)
 +(Class)_URLProtocolClassForRequest:(NSURLRequest *)request;
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 @end;
 
 @interface NSURLConnection(private) <NSURLProtocolClient>
@@ -32,30 +38,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)responsep error:(NSError **)errorp {
-	NSLog(@"sendSynchronousRequest");
-//	NSURLConnectionState *state=[[[NSURLConnectionState alloc] init] autorelease];
-	NSURLConnectionState *state=[[NSURLConnectionState alloc] init];
-	NSLog(@"state: %@",state);
+   NSURLConnectionState *state=[[[NSURLConnectionState alloc] init] autorelease];
    NSURLConnection      *connection=[[self alloc] initWithRequest:request delegate:state];
+   
+   if(connection==nil){
+   
+    if(errorp!=NULL){
+     *errorp=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotConnectToHost userInfo:nil];
+    }
+    
+    return nil;
+   }
+
    NSString *mode=@"NSURLConnectionRequestMode";
    
     [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
     
-	NSLog(@"will receive data");
 	[state receiveAllDataInMode:mode];
     [connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-	NSLog(@"did receive data");
 
+   NSData *result=[[connection->_mutableData retain] autorelease];
 
     [connection cancel];
-    [connection release];
     
    if(errorp!=NULL)
     *errorp=[state error];
+
    if(responsep!=NULL)
-    *responsep=[state response];
+    *responsep=[[connection->_response retain] autorelease];
     
-   return [state data];
+   [connection release];
+ 
+   return result;
 }
 
 +(NSURLConnection *)connectionWithRequest:(NSURLRequest *)request delegate:delegate {
@@ -65,11 +79,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithRequest:(NSURLRequest *)request delegate:delegate startImmediately:(BOOL)startLoading {
    _request=[request copy];
    Class cls=[NSURLProtocol _URLProtocolClassForRequest:request];
-   _protocol=[[cls alloc] initWithRequest:_request cachedResponse:nil client:self];
-   _delegate=delegate;
-   _modes=[[NSMutableArray arrayWithObject:NSDefaultRunLoopMode] retain];
+   
+   if((_protocol=[[cls alloc] initWithRequest:_request cachedResponse:[[NSURLCache sharedURLCache] cachedResponseForRequest:_request] client:self])==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   _delegate=[delegate retain];
+   
+   [self retain];
+
    if(startLoading)
     [self start];
+
+
    return self;
 }
 
@@ -80,62 +103,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_request release];
    [_protocol release];
-   _delegate=nil;
-   [_modes release];
-   [_inputStream release];
-   [_outputStream release];
+   [_delegate release];
+   [_response release];
+   [_mutableData release];
    [super dealloc];
 }
 
 -(void)start {
-   NSURL    *url=[_request URL];
-   NSString *hostName=[url host];
-   NSNumber *portNumber=[url port];
-//	NSLog(@"startloading");
-   
-   if(portNumber==nil)
-    portNumber=[NSNumber numberWithInt:80];
-    
-   NSHost *host=[NSHost hostWithName:hostName];
-   
-   [NSStream getStreamsToHost:host port:[portNumber intValue] inputStream:&_inputStream outputStream:&_outputStream];
-   [_inputStream setDelegate:_protocol];
-   [_outputStream setDelegate:_protocol];
-	
-   for(NSString *mode in _modes){
-    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-   }
-    
-	[_inputStream retain];
-	[_outputStream retain];
-	[_inputStream open];
-	[_outputStream open];
-//	NSLog(@"input stream %@",_inputStream);
-
-	NSLog(@"start -> startLoading");
    [_protocol startLoading];
 }
 
 -(void)cancel {
    [_protocol stopLoading];
-   
-   [_inputStream setDelegate:nil];
-   [_outputStream setDelegate:nil];
-   for(NSString *mode in _modes){
-    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
    }
-}
 
 -(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
-   [_inputStream scheduleInRunLoop:runLoop forMode:mode];
-   [_outputStream scheduleInRunLoop:runLoop forMode:mode];
+   [_protocol scheduleInRunLoop:runLoop forMode:mode];
 }
 
 -(void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
-   [_inputStream removeFromRunLoop:runLoop forMode:mode];
-   [_outputStream removeFromRunLoop:runLoop forMode:mode];
+   [_protocol unscheduleFromRunLoop:runLoop forMode:mode];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect {
@@ -151,26 +138,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveResponse:(NSURLResponse *)response cacheStoragePolicy:(NSURLCacheStoragePolicy)policy {
-  // [_delegate connection:self ];
+    _response=[response retain];
+    _storagePolicy=policy;
+    
+   if([_delegate respondsToSelector:@selector(connection:didReceiveResponse:)])
+    [_delegate connection:self didReceiveResponse:response];
 }
 
--(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)response {
-  // [_delegate connection:self];
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)cachedResponse {
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data {
-	NSLog(@"URLProtocol:didLoadData:");
+
+   if(_mutableData==nil)
+    _mutableData=[[NSMutableData alloc] init];
+    
+   [_mutableData appendData:data];
+   
    [_delegate connection:self didReceiveData:data];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didFailWithError:(NSError *)error {
    [_delegate connection:self didFailWithError:error];
+   
+   [self autorelease];
 }
 
 -(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol {
-	NSLog(@"URLProtocolDidFinishLoading:");
+   if(_storagePolicy==NSURLCacheStorageNotAllowed){
+    [[NSURLCache sharedURLCache] removeCachedResponseForRequest:_response];
+   }
+   else {
+    NSCachedURLResponse *cachedResponse=[[NSCachedURLResponse alloc] initWithResponse:_response data:_mutableData userInfo:nil storagePolicy:_storagePolicy];
+   
+    if([_delegate respondsToSelector:@selector(connection:willCacheResponse:)])
+     cachedResponse=[_delegate connection:self willCacheResponse:cachedResponse];
+
+    if(cachedResponse!=nil){
+     [[NSURLCache sharedURLCache] storeCachedResponse:cachedResponse forRequest:_request];
+    }
+   }
+   
 	if([_delegate respondsToSelector:@selector(connectionDidFinishLoading:)])
 		[_delegate performSelector:@selector(connectionDidFinishLoading:) withObject:self];
+        
+   [self autorelease];
 }
 
 

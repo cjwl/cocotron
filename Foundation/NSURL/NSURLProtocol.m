@@ -76,23 +76,31 @@ static NSMutableArray *_registeredClasses=nil;
 }
 
 -initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id <NSURLProtocolClient>)client {
-   NSUnimplementedMethod();
-   return 0;
+   _request=[request retain];
+   _cachedResponse=[response retain];
+   // Unknown whether the client should be retained
+   // It will create a retain loop with NSURLConnection if it is, so if you retain it
+   // Clear the loop at some point or itll leak
+   _client=client;
+   return self;
+}
+
+-(void)dealloc {
+   [_request release];
+   [_cachedResponse release];
+   [super dealloc];
 }
 
 -(NSURLRequest *)request {
-   NSUnimplementedMethod();
-   return 0;
+   return _request;
 }
 
 -(NSCachedURLResponse *)cachedResponse {
-   NSUnimplementedMethod();
-   return 0;
+   return _cachedResponse;
 }
 
 -(id <NSURLProtocolClient>)client {
-   NSUnimplementedMethod();
-   return 0;
+   return _client;
 }
 
 -(void)startLoading {

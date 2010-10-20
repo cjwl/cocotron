@@ -64,20 +64,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString *value=[allValues objectForKey:key];
     
     if([key isKindOfClass:[NSString class]] && [value isKindOfClass:[NSString class]])
-     [_headerFields setObject:value forKey:[key uppercaseString]];
+     [_headerFields setObject:value forKey:key];
    }
 }
 
 -(void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
-   field=[field uppercaseString];
-   
    [_headerFields setObject:value forKey:field];
 }
 
 -(void)addValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
    NSString *existing;
    
-   field=[field uppercaseString];
    existing=[_headerFields objectForKey:field];
    if(existing!=nil)
     value=[[existing stringByAppendingString:@","] stringByAppendingString:value];
