@@ -5,35 +5,29 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSRelationshipDescription.h"
-#import "NSEntityDescription.h"
+#import <CoreData/NSRelationshipDescription.h>
+#import <CoreData/NSEntityDescription.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 
 @implementation NSRelationshipDescription
 
-- (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
-       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
-       _deleteRule = [keyed decodeIntForKey: @"NSDeleteRule"];
-       _destinationEntity = [keyed decodeObjectForKey: @"NSDestinationEntity"];
-       _entity = [keyed decodeObjectForKey: @"NSEntity"];
-       _inverseRelationship = [keyed decodeObjectForKey: @"NSInverseRelationship"];
-       _optional = [keyed decodeBoolForKey: @"NSIsOptional"];
-       _maxCount = [keyed decodeIntForKey: @"NSMaxCount"];
-       _minCount = [keyed decodeIntForKey: @"NSMinCount"];
-       _propertyName = [[keyed decodeObjectForKey: @"NSPropertyName"] retain];
+-initWithCoder: (NSCoder *) coder {
+   if(![coder allowsKeyedCoding])
+    [NSException raise: NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
+
+   [super initWithCoder:coder];
+   
+   _deleteRule = [coder decodeIntForKey: @"NSDeleteRule"];
+   _destinationEntity = [coder decodeObjectForKey: @"NSDestinationEntity"];
+   _inverseRelationship = [coder decodeObjectForKey: @"NSInverseRelationship"];
+   _optional = [coder decodeBoolForKey: @"NSIsOptional"];
+   _maxCount = [coder decodeIntForKey: @"NSMaxCount"];
+   _minCount = [coder decodeIntForKey: @"NSMinCount"];
        
-       _destinationEntityName
-	   = [keyed decodeObjectForKey: @"_NSDestinationEntityName"];
-       _inverseRelationshipName
-	   = [keyed decodeObjectForKey: @"_NSInverseRelationshipName"];
+   _destinationEntityName= [coder decodeObjectForKey: @"_NSDestinationEntityName"];
+   _inverseRelationshipName= [coder decodeObjectForKey: @"_NSInverseRelationshipName"];
        
-       return self;
-   } else {
-       [NSException raise: NSInvalidArgumentException
-		    format: @"%@ can not initWithCoder:%@", isa, [coder class]];
-       return nil;
-   }
+   return self;
 }
 
 
@@ -44,10 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 - (BOOL) isToMany {
-    if(_maxCount > 1)
-	return YES;
-    else
-	return NO;
+   return (_minCount==1 && _maxCount==1)?NO:YES;
 }
 
 

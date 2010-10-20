@@ -9,4 +9,3 @@
 #import <CoreData/NSPersistentStoreCoordinator.h>
 #import <CoreData/NSPropertyDescription.h>
 #import <CoreData/NSRelationshipDescription.h>
-#import <CoreData/NSPersistentDocument.h>
