@@ -22,8 +22,7 @@ enum {
 };
 typedef NSInteger NSOperationQueuePriority;
 
-@interface NSOperation : NSObject
-{
+@interface NSOperation : NSObject {
 	NSOperationQueuePriority priority;
 	NSMutableArray *dependencies;
 	
@@ -58,16 +57,15 @@ extern NSString * const NSInvocationOperationVoidResultException;
 extern NSString * const NSInvocationOperationCancelledException;
 
 
-@interface NSInvocationOperation : NSOperation
-{
-	NSInvocation *invocation;
+@interface NSInvocationOperation : NSOperation {
+   NSInvocation *_invocation;
 }
 
-- (id)initWithInvocation:(NSInvocation *)inv;
-- (id)initWithTarget:(id)target selector:(SEL)sel object:(id)arg;
+-initWithInvocation:(NSInvocation *)invocation;
+-initWithTarget:target selector:(SEL)selector object:argument;
 
 - (NSInvocation *)invocation;
 
-- (id)result;
+-result;
 
 @end

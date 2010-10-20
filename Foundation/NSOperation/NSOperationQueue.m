@@ -15,114 +15,156 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSLock.h>
+#import <Foundation/NSDebug.h>
 
 #import "NSAtomicList.h"
 #import <Foundation/NSRaise.h>
 #import <string.h>
 
-enum {
-	Priority_Count = 3
-};
 
-@interface NSOperationQueueImpl : NSObject
-{
-	NSThread *_thread;
-	
-	NSCondition *workAvailable;
-	NSCondition *suspendedCondition;
-	BOOL isSuspended;
-	
-	NSAtomicListRef queues[Priority_Count];
-}
-
-- (void)addOperation: (NSOperation *)op withPriority: (unsigned) priority;
-- (void)stop;
-
-- (void) suspend;
-- (void) resume;
-- (BOOL) isSuspended;
-
-@end
-
-@implementation NSOperationQueueImpl
-
-- (id)init
-{
-	if( (self = [super init]) )
-	{
-		workAvailable = [[NSCondition alloc] init];
-		suspendedCondition = [[NSCondition alloc] init];
-		isSuspended = NO;
-		
-		_thread = [[NSThread alloc] initWithTarget: self selector: @selector( _workThread ) object: nil];
-		[_thread start];
-	}
-	return self;
-}
+@implementation NSOperationQueue
 
 static id PopOperation( NSAtomicListRef *listPtr )
 {
 	return [(id)NSAtomicListPop( listPtr ) autorelease];
 }
-
+	
 static void ClearList( NSAtomicListRef *listPtr )
 {
-	for (int i = 0; i < Priority_Count; i++) {
+	for (int i = 0; i < NSOperationQueuePriority_Count; i++) {
 		while (PopOperation( &listPtr[i] )) ;	
-	}
+}
 }
 
-- (void)dealloc
-{
-	[_thread release], _thread = nil;
-	[workAvailable release], workAvailable = nil;
-	[suspendedCondition release], suspendedCondition = nil;
-	
-	ClearList( queues );
-	
-	[super dealloc];
+
+-init {
+		workAvailable = [[NSCondition alloc] init];
+		suspendedCondition = [[NSCondition alloc] init];
+   allWorkDone = [[NSCondition alloc] init];
+		isSuspended = NO;
+		
+		_thread = [[NSThread alloc] initWithTarget: self selector: @selector( _workThread ) object: nil];
+		[_thread start];
+
+	return self;
 }
 
-- (void) suspend;
-{
+-(void) resume {
+   [suspendedCondition lock];
+	if (isSuspended) {
+		isSuspended = NO;
+		[suspendedCondition broadcast];
+}
+	[suspendedCondition unlock];
+}
+
+-(void) suspend {
 	[suspendedCondition lock];
 	isSuspended = YES;
 	[suspendedCondition unlock];
 }
 
-- (void) resume;
-{
-	[suspendedCondition lock];
-	if (isSuspended) {
-		isSuspended = NO;
-		[suspendedCondition broadcast];
-	}
-	[suspendedCondition unlock];
-}
-
-- (BOOL) isSuspended;
-{
-	[suspendedCondition lock];
-	BOOL result = isSuspended;
-	[suspendedCondition unlock];
-	return result;
-}
-
-- (void)addOperation: (NSOperation *)op withPriority: (unsigned) priority;
-{
-	NSAssert( priority < Priority_Count, @"Invalid priority" );
-	NSAtomicListInsert( &queues[priority], [op retain] );
-	[workAvailable signal];
-}
 
 - (void)stop
 {
 	[_thread cancel];
 	[self resume];
 	[workAvailable broadcast];
+	}
+
+
+- (void)dealloc
+{
+	[self stop];
+	
+	[_thread release];
+	[workAvailable release];
+	[suspendedCondition release];
+	
+	ClearList( queues );
+	
+	[super dealloc];
 }
 
-#pragma mark -
+- (void)addOperation: (NSOperation *)op
+{
+	unsigned priority = 1;
+	if ([op queuePriority] < NSOperationQueuePriorityNormal) priority = 2;
+	else if ([op queuePriority] > NSOperationQueuePriorityNormal) priority = 0;
+	
+	NSAtomicListInsert( &queues[priority], [op retain] );
+	[workAvailable signal];
+}
+
+- (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait {
+	NSUnimplementedMethod();
+	}
+
+- (void)cancelAllOperations {
+	NSUnimplementedMethod();
+}
+
+- (NSInteger)maxConcurrentOperationCount {
+	NSUnimplementedMethod();
+	return NSOperationQueueDefaultMaxConcurrentOperationCount;
+}
+
+- (void)setMaxConcurrentOperationCount:(NSInteger)count {
+// FIXME: implement but dont warn
+//	NSUnimplementedMethod();
+}
+
+- (NSString *)name {
+	return _name;
+}
+
+-(void)setName:(NSString *)newName {
+	if (_name != newName) {
+		[_name release];
+		_name = [newName copy];
+	}
+}
+
+- (NSArray *)operations {
+	NSUnimplementedMethod();
+	return nil;
+}
+
+- (BOOL)isSuspended {
+	[suspendedCondition lock];
+	BOOL result = isSuspended;
+	[suspendedCondition unlock];
+	return result;
+}
+
+-(void)setSuspended:(BOOL)suspend {
+	if (suspend)
+     [self suspend];
+	else
+     [self resume];
+}
+
+-(BOOL) hasMoreWork {
+	for (int i = 0; i < NSOperationQueuePriority_Count; i++)
+     if (0 != queues[i])
+      return YES;
+     
+	return NO;
+}
+
+-(void)waitUntilAllOperationsAreFinished {
+   BOOL isWorking;
+
+   [workAvailable lock];
+   isWorking=[self hasMoreWork];
+   [workAvailable unlock];
+
+   if(isWorking){
+    [allWorkDone lock];
+    [allWorkDone wait];
+    [allWorkDone unlock];
+   }
+}
 
 // pop an operation from the given list and run it
 // if the list is empty, steal the source list into the given list and run an operation from it
@@ -141,17 +183,13 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 	}
 	
 	if (op) {
-		if ([op isReady]) [op start];
-		else NSAtomicListInsert( sourceListPtr, [op retain] );
+		if ([op isReady])
+         [op start];
+		else
+         NSAtomicListInsert( sourceListPtr, [op retain] );
 	}
 	
 	return op != nil;
-}
-
-- (BOOL) hasMoreWork;
-{
-	for (int i = 0; i < Priority_Count; i++) if (0 != queues[i]) return YES;
-	return NO;
 }
 
 - (void)_workThread
@@ -160,7 +198,7 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 	
 	NSThread *thread = [NSThread currentThread];
 	
-	NSAtomicListRef myQueues[Priority_Count];
+	NSAtomicListRef myQueues[NSOperationQueuePriority_Count];
 	memset( myQueues, 0, sizeof( myQueues ) );
 	
 	NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
@@ -168,19 +206,31 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 	BOOL didRun = NO;
 	while( ![thread isCancelled] )
 	{
+        
 		[suspendedCondition lock];
-		while (isSuspended) [suspendedCondition wait];
+        
+		while (isSuspended)
+         [suspendedCondition wait];
+         
 		[suspendedCondition unlock];
 		
 		if( !didRun ) {
 			[workAvailable lock];
-			while (![self hasMoreWork] && ![thread isCancelled]) [workAvailable wait];
+            
+            if(![self hasMoreWork]){
+             [allWorkDone signal];
+            }
+            
+			while (![self hasMoreWork] && ![thread isCancelled])
+             [workAvailable wait];
+
 			[workAvailable unlock];
 		}
 		
-		for (int i = 0; i < Priority_Count; i++) {
+		for (int i = 0; i < NSOperationQueuePriority_Count; i++) {
 			didRun = RunOperationFromLists( &myQueues[i], &queues[i] );
-			if (didRun) break;
+			if (didRun)
+              break;
 		}
 		
 		[innerPool release];
@@ -191,7 +241,7 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 	
 	// This thread got cancelled, so insert all of its operations back into the main queue.
 	// The thread pool could have been reduced and then other threads should do this thread's work.
-	for (int i = 0; i < Priority_Count; i++) {
+	for (int i = 0; i < NSOperationQueuePriority_Count; i++) {
 		id op = 0;
 		while ((op = (id)NSAtomicListPop( &myQueues[i] ))) {
 			NSAtomicListInsert( &queues[i], op );
@@ -203,91 +253,5 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 	[outerPool release];
 }
 
-@end
-
-
-@implementation NSOperationQueue
-
-- (id)init
-{
-	if( (self = [super init]) )
-	{
-		_impl = [[NSOperationQueueImpl alloc] init];
-	}
-	return self;
-}
-
-- (void)dealloc
-{
-	[_impl stop];
-	[_impl release];
-	
-	[super dealloc];
-}
-
-- (void)addOperation: (NSOperation *)op
-{
-	unsigned priority = 1;
-	if ([op queuePriority] < NSOperationQueuePriorityNormal) priority = 2;
-	else if ([op queuePriority] > NSOperationQueuePriorityNormal) priority = 0;
-	
-	[_impl addOperation: op withPriority: priority];
-}
-
-- (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
-{
-	NSUnimplementedMethod();
-}
-
-- (void)cancelAllOperations;
-{
-	NSUnimplementedMethod();
-}
-
-- (NSInteger)maxConcurrentOperationCount;
-{
-	NSUnimplementedMethod();
-	return NSOperationQueueDefaultMaxConcurrentOperationCount;
-}
-
-- (void)setMaxConcurrentOperationCount:(NSInteger)count;
-{
-	NSUnimplementedMethod();
-}
-
-- (NSString *)name;
-{
-	return [[_name retain] autorelease];
-}
-
-- (void)setName:(NSString *)newName;
-{
-	if (_name != newName) {
-		[_name release];
-		_name = [newName copy];
-	}
-}
-
-- (NSArray *)operations;
-{
-	NSUnimplementedMethod();
-	return nil;
-}
-
-- (BOOL)isSuspended;
-{
-	return [_impl isSuspended];
-}
-
-- (void)setSuspended:(BOOL)suspend;
-{
-	if (suspend) [_impl suspend];
-	else [_impl resume];
-}
-
-- (void)waitUntilAllOperationsAreFinished;
-{
-	NSUnimplementedMethod();
-}
 
 @end
