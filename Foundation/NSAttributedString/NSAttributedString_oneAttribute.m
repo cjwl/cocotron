@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithString:(NSString *)string attributes:(NSDictionary *)attributes {
    _string=[string copy];
-   _attributes=[attributes retain];
+   _attributes=[attributes copy];
    return self;
 }
 
