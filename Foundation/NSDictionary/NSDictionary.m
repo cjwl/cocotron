@@ -215,7 +215,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+   if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     NSArray           *keys=[keyed decodeObjectForKey:@"NS.keys"];
     NSArray           *objects=[keyed decodeObjectForKey:@"NS.objects"];
