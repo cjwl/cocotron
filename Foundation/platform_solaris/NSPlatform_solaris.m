@@ -43,7 +43,7 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 -(NSString *)hostName {
     char buf[MAXHOSTNAMELEN];
     gethostname(buf, MAXHOSTNAMELEN);
-    return [NSString stringWithCString:buf];
+    return [NSString stringWithUTF8String:buf];
 }
 
 -(NSString *)DNSHostName {
