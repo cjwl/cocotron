@@ -42,6 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCustomImageRep.h>
 #import <AppKit/NSDatePicker.h>
 #import <AppKit/NSDatePickerCell.h>
+#import <AppKit/NSDictionaryController.h>
 #import <AppKit/NSDockTile.h>
 #import <AppKit/NSDocument.h>
 #import <AppKit/NSDocumentController.h>
