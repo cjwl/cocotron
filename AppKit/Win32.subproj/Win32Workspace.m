@@ -43,6 +43,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)openFile:(NSString *)path {
+   NSString *extension=[path pathExtension];
+   
+   if([extension isEqualToString:@"app"]){
+    NSString *name=[[path lastPathComponent] stringByDeletingPathExtension];
+    
+    path=[path stringByAppendingPathComponent:@"Contents"];
+    path=[path stringByAppendingPathComponent:@"Windows"];
+    path=[path stringByAppendingPathComponent:name];
+    path=[path stringByAppendingPathExtension:@"exe"];
+   }
+   
    return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[path fileSystemRepresentationW],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
