@@ -28,7 +28,23 @@ typedef float NSAnimationProgress;
 
 APPKIT_EXPORT NSString * const NSAnimationProgressMarkNotification;
 
-@interface NSAnimation : NSObject {
+APPKIT_EXPORT NSString *NSAnimationTriggerOrderIn;
+APPKIT_EXPORT NSString *NSAnimationTriggerOrderOut;
+
+@protocol NSAnimatablePropertyContainer
+
++defaultAnimationForKey:(NSString *)key;
+
+-animator;
+-(NSDictionary *)animations;
+
+-animationForKey:(NSString *)key;
+
+-(void)setAnimations:(NSDictionary *)dictionary;
+
+@end
+
+@interface NSAnimation : NSObject <NSCopying> {
    NSTimeInterval          _duration;
    NSAnimationCurve        _curve;
    float                   _frameRate;
@@ -36,9 +52,11 @@ APPKIT_EXPORT NSString * const NSAnimationProgressMarkNotification;
    id                      _delegate;
    NSMutableArray         *_progressMarks;
    float                   _currentValue;
+   NSAnimationProgress     _currentProgress;
    NSArray                *_runLoopModes;
    BOOL                    _isAnimating;
    NSTimer                *_timer;
+   NSTimeInterval          _startTime;
 }
 
 -initWithDuration:(NSTimeInterval)duration animationCurve:(NSAnimationCurve)curve;
