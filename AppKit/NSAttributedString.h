@@ -42,6 +42,12 @@ enum {
    NSUnderlineStyleDouble,
 };
 
+// Deprecated constants
+enum {
+   NSNoUnderlineStyle = NSUnderlineStyleNone,
+   NSSingleUnderlineStyle = NSUnderlineStyleSingle,
+};
+
 enum {
    NSUnderlinePatternSolid=0x000,
    NSUnderlinePatternDot=0x100,
