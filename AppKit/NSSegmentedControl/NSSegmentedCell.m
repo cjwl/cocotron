@@ -10,79 +10,70 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import "NSSegmentItem.h"
 #import <AppKit/NSButtonCell.h>
+#import <AppKit/NSPopUpWindow.h>
 
 @implementation NSSegmentedCell
 
-- (id)initWithCoder:(NSCoder *)decoder {
-   _segments=[[decoder decodeObjectForKey:@"NSSegmentImages"] retain];
+-initWithCoder:(NSCoder *)coder {
+   [super initWithCoder:coder];
    
-   NSView* view=[decoder decodeObjectForKey:@"NSControlView"];
-   if(view) {
-      float totalWidth=0;
-      int numUndefined=0;
-      for(NSSegmentItem *item in _segments)
-      {
-         float w=[item width];
-         totalWidth+=w;
-         if(w==0.0)
-            numUndefined++;
-      }
-      float remainingWidth=[view frame].size.width-totalWidth;
+   _segments=[[coder decodeObjectForKey:@"NSSegmentImages"] retain];
+   _selectedSegment=[coder decodeIntForKey:@"NSSelectedSegment"];
+   _trackingMode=[coder decodeIntForKey:@"NSTrackingMode"];
       
-      for(NSSegmentItem *item in _segments)
-      {
-         if([item width]==0.0)
-            [item setWidth:remainingWidth/(float)numUndefined];
+   return self;
       }
-   }
-   [self setSelectedSegment:[decoder decodeIntForKey:@"NSSelectedSegment"]];
-   [self setTrackingMode:[decoder decodeIntForKey:@"NSTrackingMode"]];
    
-   return [super initWithCoder:decoder];
-}
-
 -(void)dealloc {
    [_segments release];
    [super dealloc];
 }
 
--(int)segmentCount {
+-(NSInteger)segmentCount {
    return [_segments count];
+}
+
+-(NSSegmentStyle)segmentStyle {
+   return _style;
 }
 
 -(NSSegmentSwitchTracking)trackingMode {
    return _trackingMode;
 }
 
--(int)tagForSegment:(int)segment {
+-(NSInteger)tagForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] tag];
 }
 
--(NSImage *)imageForSegment:(int)segment {
+-(NSImage *)imageForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] image];
 }
 
--(BOOL)isEnabledForSegment:(int)segment {
+-(BOOL)isEnabledForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] isEnabled];
 }
 
--(NSString *)labelForSegment:(int)segment {
+-(NSString *)labelForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] label];
 }
 
--(NSMenu *)menuForSegment:(int)segment {
+-(NSMenu *)menuForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] menu];
 }
 
--(NSString *)toolTipForSegment:(int)segment {
+-(NSString *)toolTipForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] toolTip];
 }
 
--(float)widthForSegment:(int)segment {
+-(CGFloat)widthForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] width];
 }
 
--(int)selectedSegment {
+-(NSImageScaling)imageScalingForSegment:(NSInteger)segment {
+   return [[_segments objectAtIndex:segment] imageScaling];
+}
+   
+-(NSInteger)selectedSegment {
    
    if(_selectedSegment==NSNotFound) {
       int i,count=[_segments count];
@@ -95,47 +86,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _selectedSegment;
 }
 
--(BOOL)isSelectedForSegment:(int)segment {
+-(BOOL)isSelectedForSegment:(NSInteger)segment {
    return [[_segments objectAtIndex:segment] isSelected];
 }
 
--(void)setSegmentCount:(int)count {
+-(void)setSegmentCount:(NSInteger)count {
    NSUnimplementedMethod();
+}
+
+-(void)setSegmentStyle:(NSSegmentStyle)value {
+   _style=value;
 }
 
 -(void)setTrackingMode:(NSSegmentSwitchTracking)trackingMode {
    _trackingMode=trackingMode;
 }
 
--(void)setTag:(int)tag forSegment:(int)segment {
+-(void)setTag:(NSInteger)tag forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setTag:tag];
 }
 
--(void)setImage:(NSImage *)image forSegment:(int)segment {
+-(void)setImage:(NSImage *)image forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setImage:image];
 }
 
--(void)setEnabled:(BOOL)enabled forSegment:(int)segment {
+-(void)setEnabled:(BOOL)enabled forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setEnabled:enabled];
 }
 
--(void)setLabel:(NSString *)label forSegment:(int)segment {
+-(void)setLabel:(NSString *)label forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setLabel:label];
 }
 
--(void)setMenu:(NSMenu *)menu forSegment:(int)segment {
+-(void)setMenu:(NSMenu *)menu forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setMenu:menu];
 }
 
--(void)setToolTip:(NSString *)string forSegment:(int)segment {
+-(void)setToolTip:(NSString *)string forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setToolTip:string];
 }
 
--(void)setWidth:(float)width forSegment:(int)segment {
+-(void)setWidth:(CGFloat)width forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setWidth:width];
 }
 
--(BOOL)selectSegmentWithTag:(int)tag {
+-(void)setImageScaling:(NSImageScaling)value forSegment:(NSInteger)segment {
+   [[_segments objectAtIndex:segment] setImageScaling:value];
+}
+
+-(BOOL)selectSegmentWithTag:(NSInteger)tag {
    int i,count=[_segments count];   
    for(i=0;i<count;i++)
     if([[_segments objectAtIndex:i] tag]==tag){
@@ -145,17 +144,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(void)setSelected:(BOOL)flag forSegment:(int)segment {
+-(void)setSelected:(BOOL)flag forSegment:(NSInteger)segment {
    [self willChangeValueForKey:@"selectedSegment"];
    _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
    [[_segments objectAtIndex:segment] setSelected:flag];
    [self didChangeValueForKey:@"selectedSegment"];
 }
 
--(void)setSelectedSegment:(int)segment {
-   if(_selectedSegment!=NSNotFound)
-      [[_segments objectAtIndex:_selectedSegment] setSelected:NO];
-   _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
+-(void)setSelectedSegment:(NSInteger)segment {
+   for(NSSegmentItem *item in _segments)
+    [item setSelected:NO];
+
+   _selectedSegment=segment;
    [[_segments objectAtIndex:segment] setSelected:YES];
 }
 
@@ -166,7 +166,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(void)drawSegment:(int)idx inFrame:(NSRect)frame withView:(NSView *)view {
+-(void)drawSegment:(NSInteger)idx inFrame:(NSRect)frame withView:(NSView *)view {
    NSSegmentItem *segment=[_segments objectAtIndex:idx];
    NSButtonCell *cell=[NSButtonCell new];
    NSString *label=[segment label];
@@ -215,7 +215,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _lastDrawRect=cellFrame;
 }
 
--(int)_segmentForPoint:(NSPoint)point {
+-(NSInteger)_segmentForPoint:(NSPoint)point {
    int i=0, count=[self segmentCount];
    NSRect segmentFrame=_lastDrawRect;
 
@@ -317,6 +317,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
    }
    [self didChangeValueForKey:@"selectedSegment"];
+   
+}
+
+-(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag {
+   NSPoint        startPoint=[event locationInWindow];
+   NSInteger      segmentUnderMouse=[self _segmentForPoint:[controlView convertPoint:startPoint fromView:nil]];
+   
+   if(segmentUnderMouse==NSNotFound)
+    return YES;
+    
+   NSSegmentItem *trackingItem=[_segments objectAtIndex:segmentUnderMouse];
+
+   if(![trackingItem isEnabled])
+      return YES;
+
+   NSMenu *menu=[trackingItem menu];
+   
+   if(menu==nil)
+    return [super trackMouse:event inRect:cellFrame ofView:controlView untilMouseUp:flag];
+   
+   [self setSelectedSegment:segmentUnderMouse];
+   
+   [NSMenu popUpContextMenu:menu withEvent:event forView:controlView];
+   
+   return YES;
 }
 
 @end

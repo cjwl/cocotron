@@ -11,83 +11,101 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSegmentedControl
 
--(int)segmentCount {
+-(NSInteger)segmentCount {
    return [_cell segmentCount];
 }
 
--(int)tagForSegment:(int)segment {
+-(NSSegmentStyle)segmentStyle {
+   return [_cell segmentStyle];
+}
+
+-(NSInteger)tagForSegment:(NSInteger)segment {
    return [_cell tagForSegment:segment];
 }
 
--(NSImage *)imageForSegment:(int)segment {
+-(NSImage *)imageForSegment:(NSInteger)segment {
    return [_cell imageForSegment:segment];
 }
 
--(BOOL)isEnabledForSegment:(int)segment {
+-(BOOL)isEnabledForSegment:(NSInteger)segment {
    return [_cell isEnabledForSegment:segment];
 }
 
--(NSString *)labelForSegment:(int)segment {
+-(NSString *)labelForSegment:(NSInteger)segment {
    return [_cell labelForSegment:segment];
 }
 
--(NSMenu *)menuForSegment:(int)segment {
+-(NSMenu *)menuForSegment:(NSInteger)segment {
    return [_cell menuForSegment:segment];
 }
 
--(NSString *)toolTipForSegment:(int)segment {
+-(NSString *)toolTipForSegment:(NSInteger)segment {
    return [_cell toolTipForSegment:segment];
 }
 
--(float)widthForSegment:(int)segment {
+-(CGFloat)widthForSegment:(NSInteger)segment {
    return [_cell widthForSegment:segment];
 }
 
--(int)selectedSegment {
+-(NSImageScaling)imageScalingForSegment:(NSInteger)segment {
+   return [_cell imageScalingForSegment:segment];
+}
+
+-(NSInteger)selectedSegment {
    return [_cell selectedSegment];
 }
 
--(BOOL)isSelectedForSegment:(int)segment {
+-(BOOL)isSelectedForSegment:(NSInteger)segment {
    return [_cell isSelectedForSegment:segment];
 }
 
--(void)setSegmentCount:(int)count {
-   return [_cell setSegmentCount:count];
+-(void)setSegmentCount:(NSInteger)count {
+   [_cell setSegmentCount:count];
 }
 
--(void)setTag:(int)tag forSegment:(int)segment {
+-(void)setSegmentStyle:(NSSegmentStyle)value {
+   [_cell setSegmentStyle:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTag:(NSInteger)tag forSegment:(NSInteger)segment {
    [_cell setTag:tag forSegment:segment];
 }
 
--(void)setImage:(NSImage *)image forSegment:(int)segment {
+-(void)setImage:(NSImage *)image forSegment:(NSInteger)segment {
    [_cell setImage:image forSegment:segment];
    [self setNeedsDisplay:YES];
 }
 
--(void)setEnabled:(BOOL)enabled forSegment:(int)segment {
+-(void)setEnabled:(BOOL)enabled forSegment:(NSInteger)segment {
    [_cell setEnabled:enabled forSegment:segment];
    [self setNeedsDisplay:YES];
 }
 
--(void)setLabel:(NSString *)label forSegment:(int)segment {
+-(void)setLabel:(NSString *)label forSegment:(NSInteger)segment {
    [_cell setLabel:label forSegment:segment];
    [self setNeedsDisplay:YES];
 }
 
--(void)setMenu:(NSMenu *)menu forSegment:(int)segment {
+-(void)setMenu:(NSMenu *)menu forSegment:(NSInteger)segment {
    [_cell setMenu:menu forSegment:segment];
 }
 
--(void)setToolTip:(NSString *)string forSegment:(int)segment {
+-(void)setToolTip:(NSString *)string forSegment:(NSInteger)segment {
    [_cell setToolTip:string forSegment:segment];
 }
 
--(void)setWidth:(float)width forSegment:(int)segment {
+-(void)setWidth:(CGFloat)width forSegment:(NSInteger)segment {
    [_cell setWidth:width forSegment:segment];
    [self setNeedsDisplay:YES];
 }
 
--(BOOL)selectSegmentWithTag:(int)tag {
+-(void)setImageScaling:(NSImageScaling)value forSegment:(NSInteger)segment {
+   [_cell setImageScaling:value forSegment:segment];
+   [self setNeedsDisplay:YES];
+}
+
+-(BOOL)selectSegmentWithTag:(NSInteger)tag {
    BOOL result=[_cell selectSegmentWithTag:tag];
 
    [self setNeedsDisplay:YES];
@@ -95,12 +113,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(void)setSelected:(BOOL)flag forSegment:(int)segment {
+-(void)setSelected:(BOOL)flag forSegment:(NSInteger)segment {
    [_cell setSelected:flag forSegment:segment];
    [self setNeedsDisplay:YES];
 }
 
--(void)setSelectedSegment:(int)segment {
+-(void)setSelectedSegment:(NSInteger)segment {
    [_cell setSelectedSegment:segment];
    [self setNeedsDisplay:YES];
 }
@@ -128,12 +146,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSSet setWithObject:@"cell.selectedSegment"];
 }
 
--(int)_selectedTag
+-(NSInteger)_selectedTag
 {
    return [_cell tagForSegment:[_cell selectedSegment]];
 }
 
--(void)_setSelectedTag:(int)tag
+-(void)_setSelectedTag:(NSInteger)tag
 {
    [_cell selectSegmentWithTag:tag];
 }
@@ -142,12 +160,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSSet setWithObject:@"cell.selectedSegment"];
 }
 
--(int)_selectedIndex
+-(NSInteger)_selectedIndex
 {
    return [_cell selectedSegment];
 }
 
--(void)_setSelectedIndex:(int)idx
+-(void)_setSelectedIndex:(NSInteger)idx
 {
    [_cell setSelectedSegment:idx];
 }
