@@ -12,6 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSDatePicker
 
+-(BOOL)acceptsFirstResponder {
+   return YES;
+}
+
 -(NSDatePickerCell *)_pickerCell {
    return [self cell];
 }
@@ -164,6 +168,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[self _pickerCell] setTextColor:color];
    [self setNeedsDisplay:YES];
 }
+
+-(void)insertText:(NSString *)string {
+   [[self cell] insertText:string];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)keyDown:(NSEvent *)event {
+   if([event type]==NSKeyDown) {
+    [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+   }
+}
+
 
 -(id)_replacementKeyPathForBinding:(id)binding
 {
