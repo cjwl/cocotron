@@ -59,6 +59,7 @@ typedef enum {
 -(void)setImageInterpolation:(NSImageInterpolation)value;
 -(void)setColorRenderingIntent:(NSColorRenderingIntent)value;
 -(void)setCompositingOperation:(NSCompositingOperation)value;
+-(void)setPatternPhase:(NSPoint)phase;
 
 -(CIContext *)CIContext;
 
