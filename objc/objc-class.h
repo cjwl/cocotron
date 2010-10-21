@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <objc/objc-export.h>
 #import <objc/objc.h>
+#import <stdint.h>
 
 enum {
    _C_ID='@',
@@ -90,6 +91,23 @@ struct objc_category {
    struct objc_protocol_list *protocols;
 };
 
+struct objc_property {
+   const char * const name;
+   const char * const attributes;
+};
+
+struct objc_prop_list_t {
+   uint32_t size;
+   uint32_t prop_count;
+   struct objc_property prop_list [1];
+};
+
+struct objc_class_extension {
+   uint32_t             size;
+   const char          *weak_ivar_layout;
+   struct objc_prop_list_t *properties;
+};
+
 struct objc_class {			
    struct objc_class        *isa;	
    struct objc_class        *super_class;	
@@ -101,6 +119,7 @@ struct objc_class {
    struct objc_method_list **methodLists;
    struct objc_cache        *cache;
    struct objc_protocol_list *protocols;
-   void                     *privateData;
+   const char *ivar_layout;
+   struct objc_class_extension  *ext;
 };
 
