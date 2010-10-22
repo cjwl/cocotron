@@ -1,0 +1,272 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		FE43024611E259D100EBDD56 /* ImageKit.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43024511E259D100EBDD56 /* ImageKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE43042F11E2746700EBDD56 /* IKImageBrowserView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43042D11E2746700EBDD56 /* IKImageBrowserView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE43043011E2746700EBDD56 /* IKImageBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE43042E11E2746700EBDD56 /* IKImageBrowserView.m */; };
+		FE4306F411E39D9F00EBDD56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE71DB7B11F7498E00E6F801 /* ImageKit_Framework.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71DB7A11F7498E00E6F801 /* ImageKit_Framework.m */; };
+		FEAD494411E90BBE00063B34 /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAD494311E90BBE00063B34 /* dllmain.m */; };
+		FEAD498411E90DF800063B34 /* ImageKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAD498311E90DF800063B34 /* ImageKitExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDE65AC1210A706003D3EF1 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEDE65AB1210A706003D3EF1 /* AppKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE43021511E2591100EBDD56 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* ImageKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE43024511E259D100EBDD56 /* ImageKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageKit.h; sourceTree = "<group>"; };
+		FE43042D11E2746700EBDD56 /* IKImageBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKImageBrowserView.h; sourceTree = "<group>"; };
+		FE43042E11E2746700EBDD56 /* IKImageBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKImageBrowserView.m; sourceTree = "<group>"; };
+		FE71DB7A11F7498E00E6F801 /* ImageKit_Framework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageKit_Framework.m; sourceTree = "<group>"; };
+		FEAD494311E90BBE00063B34 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
+		FEAD498311E90DF800063B34 /* ImageKitExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageKitExport.h; sourceTree = "<group>"; };
+		FEDE65AB1210A706003D3EF1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4306F411E39D9F00EBDD56 /* Foundation.framework in Frameworks */,
+				FEDE65AC1210A706003D3EF1 /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* ImageKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* ImageKit */ = {
+			isa = PBXGroup;
+			children = (
+				FE71DB7A11F7498E00E6F801 /* ImageKit_Framework.m */,
+				FEAD498311E90DF800063B34 /* ImageKitExport.h */,
+				FEAD494311E90BBE00063B34 /* dllmain.m */,
+				FE43042D11E2746700EBDD56 /* IKImageBrowserView.h */,
+				FE43042E11E2746700EBDD56 /* IKImageBrowserView.m */,
+				FE43024511E259D100EBDD56 /* ImageKit.h */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = ImageKit;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				FEDE65AB1210A706003D3EF1 /* AppKit.framework */,
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE43024611E259D100EBDD56 /* ImageKit.h in Headers */,
+				FE43042F11E2746700EBDD56 /* IKImageBrowserView.h in Headers */,
+				FEAD498411E90DF800063B34 /* ImageKitExport.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* ImageKit-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "ImageKit-Windows-i386" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+				FE43021511E2591100EBDD56 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "ImageKit-Windows-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = ImageKit;
+			productReference = 8DC2EF5B0486A6940098B216 /* ImageKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "ImageKit" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* ImageKit */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* ImageKit-Windows-i386 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE43043011E2746700EBDD56 /* IKImageBrowserView.m in Sources */,
+				FEAD494411E90BBE00063B34 /* dllmain.m in Sources */,
+				FE71DB7B11F7498E00E6F801 /* ImageKit_Framework.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1667FE841158C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ImageKit;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/Windows/i386;
+			};
+			name = Release;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_CFLAGS = "-DIMAGEKIT_INSIDE_BUILD=1";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "ImageKit-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "ImageKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
