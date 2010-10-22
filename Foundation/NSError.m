@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSString * const NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
 NSString * const NSOSStatusErrorDomain=@"NSOSStatusErrorDomain";
 NSString * const NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
+NSString * const NSWin32ErrorDomain=@"NSWin32ErrorDomain";
 NSString * const NSCocoaErrorDomain=@"NSCocoaErrorDomain";
 
 NSString * const NSUnderlyingErrorKey=@"NSUnderlyingErrorKey";
