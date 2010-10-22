@@ -37,7 +37,7 @@ enum {
 @property float opacity;
 @property BOOL opaque;
 @property(retain) id contents;
-@property CATransform3D transform;
+//@property CATransform3D transform;
 @property CATransform3D sublayerTransform;
 
 -init;
