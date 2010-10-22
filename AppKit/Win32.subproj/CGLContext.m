@@ -329,7 +329,7 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
       context->imagePixelData=NULL;
      }
      
-     context->dibSection=[[O2DeviceContext_gdiDIBSection alloc] initWithWidth:context->w height:-context->h deviceContext:nil];
+     context->dibSection=[[O2DeviceContext_gdiDIBSection alloc] initARGB32WithWidth:context->w height:-context->h deviceContext:nil];
      context->imagePixelData=[context->dibSection bitmapBytes];
      adjustInParentForSurfaceOpacity(context);     
      break;

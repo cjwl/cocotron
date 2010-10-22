@@ -358,7 +358,7 @@ void O2ContextResetClip(O2ContextRef self);
 O2AffineTransform O2ContextGetTextRenderingMatrix(O2ContextRef self);
 
 void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size *advances,size_t count);
-void O2ContextConcatAdvancesToTextMatrix(O2ContextRef self,O2Size *advances,size_t count);
+void O2ContextConcatAdvancesToTextMatrix(O2ContextRef self,const O2Size *advances,size_t count);
 
 O2GState *O2ContextCurrentGState(O2ContextRef self);
 

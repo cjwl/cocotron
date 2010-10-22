@@ -14,7 +14,10 @@ O2FontRef O2FontCreateWithFontName_platform(NSString *name) {
 O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider) {
 #if 0
    return [[O2Font_freetype alloc] initWithDataProvider:provider];
+#else
+   return nil;
 #endif
+
 }
 
 @interface O2Font_gdi(forward)

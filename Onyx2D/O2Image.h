@@ -122,7 +122,6 @@ typedef O2Float    *(*O2ImageFunction_read_a32f)(O2Image *self,int x,int y,O2Flo
 -initWithPNGDataProvider:(O2DataProvider *)jpegProvider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent;
 
 -(O2Image *)copyWithColorSpace:(O2ColorSpaceRef)colorSpace;
--(O2Image *)childImageInRect:(O2Rect)rect;
 
 -(void)setMask:(O2Image *)mask;
 -copyWithMask:(O2Image *)image;

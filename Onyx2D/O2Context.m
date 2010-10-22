@@ -1402,7 +1402,7 @@ void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size 
    }
 }
 
-void O2ContextConcatAdvancesToTextMatrix(O2ContextRef self,O2Size *advances,size_t count){
+void O2ContextConcatAdvancesToTextMatrix(O2ContextRef self,const O2Size *advances,size_t count){
    O2AffineTransform Tm=self->_textMatrix;
    O2Size            totalAdvance=O2SizeMake(0,0);
    size_t            i;

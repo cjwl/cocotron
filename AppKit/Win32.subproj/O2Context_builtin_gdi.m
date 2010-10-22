@@ -100,6 +100,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+#if 0
 static O2Paint *paintFromColor(O2ColorRef color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
    const float *components=O2ColorGetComponents(rgbColor);
@@ -114,6 +115,7 @@ static O2Paint *paintFromColor(O2ColorRef color){
    
    return [[O2Paint_color alloc] initWithRed:r green:g blue:b alpha:a surfaceToPaintTransform:O2AffineTransformIdentity];
 }
+#endif
 
 static inline unsigned testDivideBy255(unsigned t){
 // t/255
@@ -221,9 +223,11 @@ static void drawGray8Stencil(O2Context_builtin_gdi *self,O2Surface *surface,CGFl
     
 }
 
+#if 0
 static void drawFreeTypeBitmap(O2Context_builtin_gdi *self,O2Surface *surface,O2GlyphStencilRef stencil,CGFloat fpx,CGFloat fpy,O2Paint *paint){
    drawGray8Stencil(self,surface,fpx,fpy,paint,O2GlyphStencilGetCoverage(stencil),O2GlyphStencilGetWidth(stencil),O2GlyphStencilGetWidth(stencil),O2GlyphStencilGetHeight(stencil),O2GlyphStencilGetLeft(stencil),O2GlyphStencilGetTop(stencil));
 }
+#endif
 
 static inline O2GlyphStencilRef stencilForGlyphIndex(O2Context_builtin_gdi *self,O2Glyph glyph){
    if(glyph<self->_glyphCacheCount)
