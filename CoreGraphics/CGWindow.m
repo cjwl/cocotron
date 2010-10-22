@@ -34,6 +34,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
+-(void)setLevel:(int)value {
+   O2InvalidAbstractInvocation();
+}
+
 -(void)setStyleMask:(unsigned)mask {
    O2InvalidAbstractInvocation();
 }

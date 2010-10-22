@@ -1334,6 +1334,10 @@ ONYX2D_STATIC_INLINE void O2RGBPremultiplySpan(O2argb32f *span,int length){
    }
 }
 
+O2argb8u *O2ImageReadSpan_largb8u_PRE(O2Image *self,int x,int y,O2argb8u *span,int length){
+   return self->_read_argb8u_PRE(self,x,y,span,length);
+}
+   
 O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {   
    O2argb32f *direct=self->_read_largb32f_PRE(self,x,y,span,length);
    
@@ -1362,15 +1366,22 @@ O2Float *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int
 }
 
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Maps point (x,y) to an image and returns a filtered,
-*			premultiplied color value.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+void O2ImageReadTexelTileRepeat_largb8u_PRE(O2Image *self,int u,int v,O2argb8u *span,int length){
+   int i;
 
-void O2ImageReadTexelTileRepeat(O2Image *self,int u, int v, O2argb32f *span,int length){
+   v = RI_INT_MOD(v, self->_height);
+   
+   for(i=0;i<length;i++,u++){
+    u = RI_INT_MOD(u,self->_width);
+
+    O2argb8u *direct=O2ImageReadSpan_largb8u_PRE(self,u,v,span+i,1);
+    
+    if(direct!=NULL)
+     span[i]=direct[0];
+   }
+}
+
+void O2ImageReadTexelTileRepeat_largb32f_PRE(O2Image *self,int u, int v, O2argb32f *span,int length){
    int i;
 
    v = RI_INT_MOD(v, self->_height);
@@ -1397,10 +1408,10 @@ void O2ImagePattern_Bilinear(O2Image *self,O2Float x, O2Float y,O2argb32f *span,
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	O2argb32f c00c01[2];
-    O2ImageReadTexelTileRepeat(self,u,v,c00c01,2);
+    O2ImageReadTexelTileRepeat_largb32f_PRE(self,u,v,c00c01,2);
 
     O2argb32f c01c11[2];
-    O2ImageReadTexelTileRepeat(self,u,v+1,c01c11,2);
+    O2ImageReadTexelTileRepeat_largb32f_PRE(self,u,v+1,c01c11,2);
 
     O2Float fu = uv.x - (O2Float)u;
     O2Float fv = uv.y - (O2Float)v;
@@ -1413,7 +1424,7 @@ void O2ImagePattern_Bilinear(O2Image *self,O2Float x, O2Float y,O2argb32f *span,
    }
 }
 
-void O2ImagePattern_PointSampling(O2Image *self,O2Float x, O2Float y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){	//point sampling
+void O2ImagePattern_PointSampling_largb8u_PRE(O2Image *self,O2Float x,O2Float y,O2argb8u *span,int length,O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
@@ -1421,10 +1432,36 @@ void O2ImagePattern_PointSampling(O2Image *self,O2Float x, O2Float y,O2argb32f *
    for(i=0;i<length;i++,x++){
     O2Point uv=O2PointMake(du,dv);
 
-    O2ImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    O2ImageReadTexelTileRepeat_largb8u_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
+   }
+}
+
+void O2ImagePattern_PointSampling_largb32f_PRE(O2Image *self,O2Float x, O2Float y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    O2Point uv=O2PointMake(du,dv);
+
+    O2ImageReadTexelTileRepeat_largb32f_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
+   }
+}
+
+void O2ImageReadPatternSpan_largb8u_PRE(O2Image *self,O2Float x, O2Float y, O2argb8u *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion) {
+    
+   switch(distortion){
+    case kO2PatternTilingNoDistortion:
+    case kO2PatternTilingConstantSpacingMinimalDistortion:
+    case kO2PatternTilingConstantSpacing:
+      O2ImagePattern_PointSampling_largb8u_PRE(self,x,y,span,length,surfaceToImage);
+      break;
    }
 }
 
@@ -1432,7 +1469,7 @@ void O2ImageReadPatternSpan_largb32f_PRE(O2Image *self,O2Float x, O2Float y, O2a
     
    switch(distortion){
     case kO2PatternTilingNoDistortion:
-      O2ImagePattern_PointSampling(self,x,y,span,length,surfaceToImage);
+      O2ImagePattern_PointSampling_largb32f_PRE(self,x,y,span,length,surfaceToImage);
       break;
 
     case kO2PatternTilingConstantSpacingMinimalDistortion:
@@ -1443,5 +1480,8 @@ void O2ImageReadPatternSpan_largb32f_PRE(O2Image *self,O2Float x, O2Float y, O2a
    }
 }
 
+-(NSString *)description {
+   return [NSString stringWithFormat:@"<%@:%p> width=%d,height=%d,bpc=%d,bpp=%d,bpr=%d, data length=%d",isa,self,_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,[_provider length]];
+}
 
 @end

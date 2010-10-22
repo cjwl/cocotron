@@ -11,11 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct O2PDFPage *CGPDFPageRef;
 
 typedef enum {
-   kCGPDFMediaBox,
-   kCGPDFCropBox,
-   kCGPDFBleedBox,
-   kCGPDFTrimBox,
-   kCGPDFArtBox,
+   kCGPDFMediaBox=0,
+   kCGPDFCropBox=1,
+   kCGPDFBleedBox=2,
+   kCGPDFTrimBox=3,
+   kCGPDFArtBox=4,
 } CGPDFBox;
 
 COREGRAPHICS_EXPORT CGPDFPageRef      CGPDFPageRetain(CGPDFPageRef self);

@@ -37,4 +37,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _callbacks.drawPattern(_info,context);
 }
 
+O2PatternRef O2PatternCreate(void *info,O2Rect bounds,O2AffineTransform matrix,O2Float xStep,O2Float yStep,O2PatternTiling tiling,bool isColored,const O2PatternCallbacks *callbacks) {
+   return [[O2Pattern alloc] initWithInfo:info bounds:bounds matrix:matrix xstep:xStep ystep:yStep tiling:tiling isColored:isColored callbacks:callbacks];
+}
+
+O2PatternRef O2PatternRetain(O2PatternRef self) {
+   return [self retain];
+}
+
+void O2PatternRelease(O2PatternRef self) {
+   [self release];
+}
+
 @end

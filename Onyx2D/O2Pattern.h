@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2Geometry.h>
 #import <Onyx2D/O2AffineTransform.h>
+#import <stdbool.h>
 
 @class O2Pattern;
 
@@ -39,8 +40,12 @@ typedef struct {
    O2PatternCallbacks _callbacks;
 }
 
--initWithInfo:(void *)info bounds:(O2Rect)bounds matrix:(O2AffineTransform)matrix xstep:(O2Float)xstep ystep:(O2Float)ystep tiling:(O2PatternTiling)tiling isColored:(BOOL)isColored callbacks:(const O2PatternCallbacks *)callbacks;
-
 -(O2Rect)bounds;
 -(void)drawInContext:(O2ContextRef)context;
+
+O2PatternRef O2PatternCreate(void *info,O2Rect bounds,O2AffineTransform matrix,O2Float xStep,O2Float yStep,O2PatternTiling tiling,bool isColored,const O2PatternCallbacks *callbacks);
+
+O2PatternRef O2PatternRetain(O2PatternRef self);
+void         O2PatternRelease(O2PatternRef self);
+
 @end

@@ -423,4 +423,5 @@ void O2ImagePointSampling_largb32f_PRE(O2Image *self,int x, int y,O2argb32f *spa
 void O2ImageBilinearFloatTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
 void O2ImageIntegerTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
 
+void O2ImageReadPatternSpan_largb8u_PRE(O2Image *self,O2Float x, O2Float y, O2argb8u *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);
 void O2ImageReadPatternSpan_largb32f_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);

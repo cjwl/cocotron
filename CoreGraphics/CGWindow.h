@@ -16,6 +16,17 @@ typedef enum {
    CGSBackingStoreBuffered=2
 } CGSBackingStoreType;
 
+enum {
+   kCGNormalWindowLevel,
+   kCGFloatingWindowLevel,
+   kCGTornOffMenuWindowLevel,
+   kCGMainMenuWindowLevel,
+   kCGStatusWindowLevel,
+   kCGModalPanelWindowLevel,
+   kCGPopUpMenuWindowLevel,
+   kCGScreenSaverWindowLevel,
+};
+
 @interface CGWindow : NSObject
 
 -(void)setDelegate:delegate;
@@ -27,6 +38,7 @@ typedef enum {
 
 -(unsigned)styleMask;
 
+-(void)setLevel:(int)value;
 -(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(CGRect)frame;
