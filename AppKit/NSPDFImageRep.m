@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithData:(NSData *)data {
    _pdf=[data retain];
-   _currentPage=1;
+   _currentPage=0;
    CGDataProviderRef provider=CGDataProviderCreateWithCFData((CFDataRef)_pdf);
    _document=CGPDFDocumentCreateWithProvider(provider);
    CGDataProviderRelease(provider);
@@ -44,6 +44,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_pdf release];
    CGPDFDocumentRelease(_document);
    [super dealloc];
+}
+
+-copyWithZone:(NSZone *)zone {
+   NSPDFImageRep *result=[super copyWithZone:zone];
+   
+   result->_pdf=[_pdf copy];
+   result->_document=CGPDFDocumentRetain(_document);
+   
+   return result;
 }
 
 +(NSArray *)imageRepsWithData:(NSData *)data {
@@ -76,15 +85,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSSize)size {
-   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage);
+   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage+1);
    NSRect       mediaBox=CGPDFPageGetBoxRect(page,kCGPDFMediaBox);
       
    return mediaBox.size;
 }
 
+-(BOOL)draw {
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage+1);
+
+   if(page==nil)
+    return NO;
+   
+   CGContextSaveGState(context);
+   CGContextDrawPDFPage(context,page);
+   CGContextRestoreGState(context);
+   return YES;
+}
+
 -(BOOL)drawInRect:(NSRect)rect {
    CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
-   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage);
+   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage+1);
 
    if(page==nil)
     return NO;

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageRep.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@interface NSPDFImageRep : NSImageRep {
+@interface NSPDFImageRep : NSImageRep <NSCopying> {
    NSData        *_pdf;
    int            _currentPage;
    CGPDFDocumentRef _document;
