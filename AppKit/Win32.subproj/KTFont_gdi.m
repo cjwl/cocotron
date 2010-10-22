@@ -407,7 +407,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     case kCTFontMenuItemFontType:
      if(size==0)
       size=10;
-     font=[O2Font createWithFontName:@"Tahoma"];
+     font=O2FontCreateWithFontName(@"Tahoma");
      
 #if 0
 // We should be able to get the menu font but this doesnt work

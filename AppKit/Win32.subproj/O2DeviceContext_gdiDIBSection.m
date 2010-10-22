@@ -51,8 +51,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible {
+-initARGB32WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible {
    return [self initWithWidth:width height:height deviceContext:compatible bitsPerPixel:0];
+}
+
+-initGray8WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible {
+   HDC compatibleDC=(compatible!=nil)?[compatible dc]:GetDC(NULL);
+   
+   [self initWithDC:CreateCompatibleDC(compatibleDC)];
+   _compatible=[compatible retain];
+   _bitsPerPixel=8;
+   _bitsPerComponent=8;
+   _bytesPerRow=width;
+
+   struct {
+    BITMAPV4HEADER bitmapInfo;
+    RGBQUAD        colors[256+3];
+   } dibInfo={0};
+   
+   dibInfo.bitmapInfo.bV4Size=sizeof(BITMAPV4HEADER);
+   dibInfo.bitmapInfo.bV4Width=width;
+   dibInfo.bitmapInfo.bV4Height=-(int)height;
+   dibInfo.bitmapInfo.bV4Planes=1;
+   dibInfo.bitmapInfo.bV4BitCount=8;
+   dibInfo.bitmapInfo.bV4V4Compression=BI_RGB;
+   int i;
+   for(i=0;i<256;i++){
+    dibInfo.colors[i].rgbRed=i;
+    dibInfo.colors[i].rgbGreen=i;
+    dibInfo.colors[i].rgbBlue=i;
+   }
+   
+   _bitmap=CreateDIBSection(compatibleDC,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS,&_bits,NULL,0);
+
+   SelectObject(_dc,_bitmap);
+   return self;
 }
 
 -(void)dealloc {

@@ -214,6 +214,8 @@ void O2PathAddRects(O2MutablePathRef self,const O2AffineTransform *matrix,const 
 }
 
 void O2PathAddArc(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float x,O2Float y,O2Float radius,O2Float startRadian,O2Float endRadian,BOOL clockwise) {
+   startRadian=fmod(startRadian,M_PI*2);
+   endRadian=fmod(endRadian,M_PI*2);
 
    if(clockwise){
     float tmp=startRadian;
@@ -221,8 +223,12 @@ void O2PathAddArc(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float 
     endRadian=tmp;
    }
 
+   if(endRadian<startRadian){
+    endRadian+=M_PI*2;
+   }
+   
    float   radiusx=radius,radiusy=radius;
-   double  remainder=endRadian-startRadian;
+   double  remainder=ABS(endRadian-startRadian);
    double  delta=M_PI_2; // 90 degrees
    int     i;
    O2Point points[4*((int)ceil(remainder/delta)+1)];
@@ -255,6 +261,7 @@ void O2PathAddArc(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float 
     }
    }
    
+
    if(clockwise){
     // just reverse points
     for(i=0;i<pointsIndex/2;i++){
@@ -266,16 +273,15 @@ void O2PathAddArc(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float 
     }     
    }
    
-   BOOL first=YES;
-   for(i=0;i<pointsIndex;i+=4){
-    if(first){
+   if(pointsIndex>0){
      if(O2PathIsEmpty(self)) {
-      O2PathMoveToPoint(self,matrix,points[i].x,points[i].y);
+      O2PathMoveToPoint(self,matrix,points[0].x,points[0].y);
      } else {
-      O2PathAddLineToPoint(self,matrix,points[i].x,points[i].y);
+      O2PathAddLineToPoint(self,matrix,points[0].x,points[0].y);
      }
-    first=NO;
     }
+   
+   for(i=0;i<pointsIndex;i+=4){
     O2PathAddCurveToPoint(self,matrix,points[i+1].x,points[i+1].y,points[i+2].x,points[i+2].y,points[i+3].x,points[i+3].y);
    }
 }

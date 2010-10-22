@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface O2PDFStream : O2PDFObject {
    O2PDFDictionary *_dictionary;
    NSData          *_data;
+   NSData          *_resultData;
    O2PDFxref       *_xref;
 }
 

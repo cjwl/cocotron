@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2MutablePath.h>
 #import <Onyx2D/O2Font.h>
-#import <Onyx2D/O2ClipPhase.h>
+#import <Onyx2D/O2ClipState.h>
 #import <Foundation/NSArray.h>
 #import <Onyx2D/O2Exceptions.h>
 #import <Onyx2D/O2Surface.h>
@@ -23,14 +23,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDeviceTransform:(O2AffineTransform)deviceTransform {
    _deviceSpaceTransform=deviceTransform;
    _userSpaceTransform=O2AffineTransformIdentity;
-   _textTransform=O2AffineTransformIdentity;
-   _clipPhases=[NSMutableArray new];
+   _clipState=[[O2ClipState alloc] init];
    _strokeColor=[[O2Color alloc] init];
    _fillColor=[[O2Color alloc] init];
+   _fillColorIsDirty=YES;
    _font=nil;
    _pointSize=12.0;
    _fontIsDirty=YES;
-   _textEncoding=kO2EncodingFontSpecific;
+   _encoding=nil;
+   _pdfCharWidths=nil;
    _fontState=nil;
    _patternPhase=O2SizeMake(0,0);
    _lineWidth=1.0;
@@ -59,10 +60,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
-   [_clipPhases release];
+   [_clipState release];
    O2ColorRelease(_strokeColor);
    O2ColorRelease(_fillColor);
    [_font release];
+   [_encoding release];
+   [_pdfCharWidths release];
    [_fontState release];
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
@@ -76,10 +79,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 O2GState *O2GStateCopyWithZone(O2GState *self,NSZone *zone) {
    O2GState *copy=NSCopyObject(self,0,zone);
 
-   copy->_clipPhases=[[NSMutableArray alloc] initWithArray:self->_clipPhases];
+   copy->_clipState=O2ClipStateCreateCopy(self->_clipState);
    copy->_strokeColor=O2ColorCreateCopy(self->_strokeColor);
    copy->_fillColor=O2ColorCreateCopy(self->_fillColor);
    copy->_font=[self->_font retain];
+   copy->_encoding=[self->_encoding retain];
+   copy->_pdfCharWidths=[self->_pdfCharWidths retain];
    copy->_fontState=[self->_fontState retain];
    if(self->_dashLengths!=NULL){
     int i;
@@ -109,17 +114,8 @@ O2AffineTransform O2GStateUserSpaceTransform(O2GState *self) {
    return O2RectZero;
 }
 
--(O2AffineTransform)textMatrix {
-   return _textTransform;
-}
-
 -(O2InterpolationQuality)interpolationQuality {
    return _interpolationQuality;
-}
-
--(O2Point)textPosition {
-// FIX, is this right?
-  return O2PointMake(_textTransform.tx,_textTransform.ty);
 }
 
 -(O2Point)convertPointToDeviceSpace:(O2Point)point {
@@ -150,44 +146,38 @@ O2AffineTransform O2GStateUserSpaceTransform(O2GState *self) {
 
 void O2GStateSetDeviceSpaceCTM(O2GState *self,O2AffineTransform transform){
    self->_deviceSpaceTransform=transform;
+   self->_fontIsDirty=YES;
 }
 
 void O2GStateSetUserSpaceCTM(O2GState *self,O2AffineTransform transform) {
    self->_userSpaceTransform=transform;
+   self->_fontIsDirty=YES;
 }
 
 void O2GStateConcatCTM(O2GState *self,O2AffineTransform transform) {
    self->_deviceSpaceTransform=O2AffineTransformConcat(transform,self->_deviceSpaceTransform);
    self->_userSpaceTransform=O2AffineTransformConcat(transform,self->_userSpaceTransform);
+   self->_fontIsDirty=YES;
 }
 
-NSArray *O2GStateClipPhases(O2GState *self){
-   return self->_clipPhases;
+O2ClipState *O2GStateClipState(O2GState *self){
+   return self->_clipState;
 }
 
--(void)removeAllClipPhases {
-   [_clipPhases removeAllObjects];
+void O2GStateResetClip(O2GState *self){
+   O2ClipStateReset(self->_clipState);
 }
 
 void O2GStateAddClipToPath(O2GState *self,O2Path *path) {
-   O2ClipPhase *phase=O2ClipPhaseInitWithNonZeroPath([O2ClipPhase allocWithZone:NULL],path);
-   
-   [self->_clipPhases addObject:phase];
-   [phase release];
+   [self->_clipState addNonZeroWindingPath:path];
 }
 
--(void)addEvenOddClipToPath:(O2Path *)path {
-   O2ClipPhase *phase=[[O2ClipPhase alloc] initWithEOPath:path];
-   
-   [_clipPhases addObject:phase];
-   [phase release];
+void O2GStateAddEvenOddClipToPath(O2GState *self,O2Path *path) {
+   [self->_clipState addEvenOddWindingPath:path];
 }
 
--(void)addClipToMask:(O2Image *)image inRect:(O2Rect)rect {
-   O2ClipPhase *phase=[[O2ClipPhase alloc] initWithMask:image rect:rect transform:_deviceSpaceTransform];
-   
-   [_clipPhases addObject:phase];
-   [phase release];
+void O2GStateAddClipToMask(O2GState *self,O2Image *image,O2Rect rect) {
+   [self->_clipState addMask:image inRect:rect transform:self->_deviceSpaceTransform];
 }
 
 O2ColorRef O2GStateStrokeColor(O2GState *self){
@@ -199,19 +189,24 @@ O2ColorRef O2GStateFillColor(O2GState *self){
 }
 
 void O2GStateSetStrokeColor(O2GState *self,O2ColorRef color) {
-   [color retain];
+   color=[color retain];
    [self->_strokeColor release];
    self->_strokeColor=color;
 }
 
 void O2GStateSetFillColor(O2GState *self,O2ColorRef color) {
-   [color retain];
+   color=[color retain];
    [self->_fillColor release];
    self->_fillColor=color;
+   self->_fillColorIsDirty=YES;
 }
 
--(void)setPatternPhase:(O2Size)phase {
-   _patternPhase=phase;
+O2Size O2GStatePatternPhase(O2GState *self) {
+   return self->_patternPhase;
+}
+
+void O2GStateSetPatternPhase(O2GState *self,O2Size value) {
+   self->_patternPhase=value;
 }
 
 -(void)setStrokePattern:(O2Pattern *)pattern components:(const float *)components {
@@ -220,37 +215,38 @@ void O2GStateSetFillColor(O2GState *self,O2ColorRef color) {
 -(void)setFillPattern:(O2Pattern *)pattern components:(const float *)components {
 }
 
-void O2GStateSetTextMatrix(O2GState *self,O2AffineTransform transform) {
-   self->_textTransform=transform;
-}
-
-void O2GStateSetTextPosition(O2GState *self,float x,float y) {
-   self->_textTransform.tx=x;
-   self->_textTransform.ty=y;
-}
-
--(void)setCharacterSpacing:(float)spacing {
-   _characterSpacing=spacing;
-}
-
 -(void)setTextDrawingMode:(int)textMode {
    _textDrawingMode=textMode;
 }
 
--(O2Font *)font {
-   return _font;
+O2FontRef O2GStateFont(O2GState *self){
+   return self->_font;
 }
 
 O2Float O2GStatePointSize(O2GState *self) {
    return self->_pointSize;
 }
 
--(O2TextEncoding)textEncoding {
-   return _textEncoding;
+O2Encoding *O2GStateEncoding(O2GState *self) {
+   return self->_encoding;
 }
 
--(O2Glyph *)glyphTableForTextEncoding {
-   return [_font glyphTableForEncoding:_textEncoding];
+O2PDFCharWidths *O2GStateCharWidths(O2GState *self) {
+   return self->_pdfCharWidths;
+}
+
+-(O2Encoding *)encoding {
+   return _encoding;
+}
+
+-(O2PDFCharWidths *)pdfCharWidths {
+   return _pdfCharWidths;
+}
+
+-(void)setPDFCharWidths:(O2PDFCharWidths *)value {
+   value=[value retain];
+   [_pdfCharWidths release];
+   _pdfCharWidths=value;
 }
 
 void O2GStateClearFontIsDirty(O2GState *self){
@@ -272,6 +268,11 @@ void O2GStateSetFont(O2GState *self,O2Font *font) {
     font=[font retain];
     [self->_font release];
     self->_font=font;
+
+    O2Encoding *encoding=[self->_font createEncodingForTextEncoding:kO2EncodingFontSpecific];     
+    O2GStateSetFontEncoding(self,encoding);
+    [encoding release];
+
     self->_fontIsDirty=YES;
    }
 }
@@ -283,17 +284,60 @@ void O2GStateSetFontSize(O2GState *self,float size) {
    }
 }
 
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(O2TextEncoding)encoding {
+void O2GStateSetFontEncoding(O2GState *self,O2Encoding *encoding){
+   encoding=[encoding retain];
+   [self->_encoding release];
+   self->_encoding=encoding;
+}
+
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(O2TextEncoding)textEncoding {
    O2Font *font=O2FontCreateWithFontName([NSString stringWithCString:name encoding:NSUTF8StringEncoding]);
    
-   if(font!=nil){
-    [_font release];
-    _font=font;
+   O2GStateSetFont(self,font);
+   O2GStateSetFontSize(self,size);
+   O2Encoding *encoding=[_font createEncodingForTextEncoding:textEncoding];
+   O2GStateSetFontEncoding(self,encoding);
+   [encoding release];
    }
    
-   _pointSize=size;
-   _textEncoding=encoding;
-   _fontIsDirty=YES;
+CGFloat O2GStateCharacterSpacing(O2GState *self) {
+   return self->_characterSpacing;
+}
+
+CGFloat O2GStateWordSpacing(O2GState *self) {
+   return self->_wordSpacing;
+}
+
+CGFloat O2GStateTextLeading(O2GState *self) {
+   return self->_textLeading;
+}
+
+CGFloat O2GStateTextRise(O2GState *self) {
+   return self->_textRise;
+}
+
+CGFloat O2GStateTextHorizontalScaling(O2GState *self) {
+   return self->_textHorizontalScaling;
+}
+
+void O2GStateSetCharacterSpacing(O2GState *self,CGFloat value) {
+   self->_characterSpacing=value;
+}
+
+void O2GStateSetWordSpacing(O2GState *self,CGFloat value) {
+   self->_wordSpacing=value;
+}
+
+void O2GStateSetTextLeading(O2GState *self,CGFloat value) {
+   self->_textLeading=value;
+}
+
+void O2GStateSetTextRise(O2GState *self,CGFloat value) {
+   self->_textRise=value;
+}
+
+void O2GStateSetTextHorizontalScaling(O2GState *self,CGFloat value) {
+   self->_textHorizontalScaling=value;
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {
@@ -354,7 +398,7 @@ void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode){
 -(void)setShadowOffset:(O2Size)offset blur:(float)blur color:(O2ColorRef )color {
    _shadowOffset=offset;
    _shadowBlur=blur;
-   [color retain];
+   color=[color retain];
    [_shadowColor release];
    _shadowColor=color;
    O2GaussianKernelRelease(_shadowKernel);
@@ -379,14 +423,6 @@ void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode){
 
 -(void)setAntialiasingQuality:(int)value {
    _antialiasingQuality=value;
-}
-
--(void)setWordSpacing:(float)spacing {
-   _wordSpacing=spacing;
-}
-
--(void)setTextLeading:(float)leading {
-   _textLeading=leading;
 }
 
 @end

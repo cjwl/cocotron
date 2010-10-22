@@ -6,6 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 
 @class O2PDFContext;
 
@@ -32,6 +33,14 @@ typedef enum {
    O2PDFObjectTypeMark_dictionary_open,
    O2PDFObjectTypeMark_array_close,
    O2PDFObjectTypeMark_dictionary_close,
+
+// PS calculator
+   O2PDFObjectTypeMark_proc_open,
+   O2PDFObjectTypeMark_proc_close,
+   kO2PDFObjectTypeBlock,
+
+//
+   O2PDFObjectTypeCached,
 } O2PDFObjectType;
 
 @interface O2PDFObject : NSObject
@@ -47,3 +56,6 @@ typedef enum {
 -(void)encodeWithPDFContext:(O2PDFContext *)encoder;
 
 @end
+
+void O2PDFError(const char *file,int line,NSString *format,...);
+void O2PDFFix(const char *file,int line,NSString *format,...);

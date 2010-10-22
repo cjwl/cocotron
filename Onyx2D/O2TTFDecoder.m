@@ -22,6 +22,14 @@ O2TTFDecoderRef O2TTFDecoderCreate(O2DataProviderRef dataProvider) {
    return self;
 }
 
+O2TTFDecoderRef O2TTFDecoderRetain(O2TTFDecoderRef self) {
+   return [self retain];
+}
+
+void O2TTFDecoderRelease(O2TTFDecoderRef self) {
+   [self release];
+}
+
 static void dump(O2TTFDecoderRef self,NSString *format,...){
    if(self->_dump){
     va_list arguments;
@@ -30,6 +38,14 @@ static void dump(O2TTFDecoderRef self,NSString *format,...){
     NSLogv(format,arguments);
     va_end(arguments);
    }
+}
+
+static CFIndex currentPosition(O2TTFDecoderRef self){
+   return self->_position;
+}
+
+static void seekToPosition(O2TTFDecoderRef self,CFIndex value){
+   self->_position=value;
 }
 
 static uint8_t decode_uint8(O2TTFDecoderRef self){
@@ -701,5 +717,40 @@ O2PathRef O2TTFDecoderGetGlyphOutline(O2TTFDecoderRef self,int glyphLocation) {
    return result;
 }
 
+void O2TTFDecoderGetNameTable(O2TTFDecoderRef self) {
+   if(!seekToTable(self,'name')){
+    NSLog(@"TrueType error: No name table");
+    return;
+   }
+
+   int      stringTable=self->_position;
+   
+   uint16_t format=decode_uint16(self);
+   uint16_t i,count=decode_uint16(self);
+   uint16_t stringOffset=decode_uint16(self);
+
+   stringTable+=stringOffset;
+   
+   for(i=0;i<count;i++){
+    uint16_t platformID=decode_uint16(self);
+    uint16_t platformSpecificID=decode_uint16(self);
+    uint16_t languageID=decode_uint16(self);
+    uint16_t nameID=decode_uint16(self);
+    uint16_t length=decode_uint16(self);
+    uint16_t offset=decode_uint16(self);
+    
+    CFIndex location=stringTable+offset;
+    
+    NSLog(@"platformID=%d,languageId=%d,nameID=%d",platformID,languageID,nameID);
+    
+    NSLog(@"position=%d,stringOffset=%d,offset=%d",self->_position,stringOffset,offset);
+    
+    NSString *string=[NSString stringWithCString:self->_bytes+location length:length];
+    
+    NSLog(@"platformID=%d,languageID=%d,string=%@",platformID,languageID,string);
+   }
+
+
+}
 
 @end

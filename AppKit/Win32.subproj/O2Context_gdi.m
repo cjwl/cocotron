@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2PDFContext.h>
 #import "O2Font_gdi.h"
 #import <Onyx2D/O2Image.h>
+#import <Onyx2D/O2ClipState.h>
 #import <Onyx2D/O2ClipPhase.h>
 #import <AppKit/Win32Font.h>
 #import <AppKit/NSRaise.h>
@@ -63,12 +64,23 @@ static inline void RGBAToRGBA(float *input,float *output){
 }
 
 static inline void CMYKAToRGBA(float *input,float *output){
+#if 1
+   float K=input[3];
+   float C=(input[0]*(1-K)+K);
+   float M=(input[1]*(1-K)+K);
+   float Y=(input[2]*(1-K)+K);
+   
+   output[0]=(1-C);
+   output[1]=(1-M);
+   output[2]=(1-Y);
+   output[3]=input[4];
+#else
    float white=1-input[3];
    
    output[0]=(input[0]>white)?0:white-input[0];
    output[1]=(input[1]>white)?0:white-input[1];
    output[2]=(input[2]>white)?0:white-input[2];
-   output[3]=input[4];
+#endif
 }
 
 static RECT NSRectToRECT(NSRect rect) {
@@ -88,10 +100,6 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 @implementation O2Context_gdi
-
-static inline O2GState *currentState(O2Context *self){        
-   return [self->_stateStack lastObject];
-}
 
 +(BOOL)canInitWithWindow:(CGWindow *)window {
    return YES;
@@ -198,22 +206,34 @@ static inline O2GState *currentState(O2Context *self){
    return _deviceContext;
 }
 
--(void)deviceClipReset {
+-(void)clipToState:(O2ClipState *)clipState {
+   O2GState *gState=O2ContextCurrentGState(self);
+   NSArray  *phases=[O2GStateClipState(gState) clipPhases];
+   int       i,count=[phases count];
+   
    O2DeviceContextClipReset_gdi(_dc);
+
+   for(i=0;i<count;i++){
+    O2ClipPhase *phase=[phases objectAtIndex:i];
+    
+    switch(O2ClipPhasePhaseType(phase)){
+    
+     case O2ClipPhaseNonZeroPath:;
+      O2Path   *path=O2ClipPhaseObject(phase);
+      O2DeviceContextClipToNonZeroPath_gdi(_dc,path,O2AffineTransformIdentity,O2AffineTransformIdentity);
+      break;
+      
+     case O2ClipPhaseEOPath:{
+       O2Path   *path=O2ClipPhaseObject(phase);
+       O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformIdentity,O2AffineTransformIdentity);
+}
+      break;
+
+     case O2ClipPhaseMask:
+      break;
 }
 
--(void)deviceClipToNonZeroPath:(O2Path *)path {
-   O2GState *state=currentState(self);
-   O2DeviceContextClipToNonZeroPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
 }
-
--(void)deviceClipToEvenOddPath:(O2Path *)path {
-   O2GState *state=currentState(self);
-   O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformInvert(state->_userSpaceTransform),state->_deviceSpaceTransform);
-}
-
--(void)deviceClipToMask:(O2Image *)mask inRect:(NSRect)rect {
-// do nothing, see image drawing for how clip masks are used (1x1 alpha mask)
 }
 
 -(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(O2GState *)state {
@@ -308,25 +328,26 @@ static inline O2GState *currentState(O2Context *self){
 
 -(void)drawPath:(O2PathDrawingMode)pathMode {
 
-   [self drawPathInDeviceSpace:_path drawingMode:pathMode state:currentState(self) ];
+   [self drawPathInDeviceSpace:_path drawingMode:pathMode state:O2ContextCurrentGState(self) ];
    
    O2PathReset(_path);
 }
 
 -(void)establishFontStateInDeviceIfDirty {
-   O2GState *gState=currentState(self);
+   O2GState *gState=O2ContextCurrentGState(self);
    
    if(gState->_fontIsDirty){
     O2GStateClearFontIsDirty(gState);
     [_gdiFont release];
-    _gdiFont=[(O2Font_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:O2GStatePointSize(gState)];
+    _gdiFont=[(O2Font_gdi *)O2GStateFont(gState) createGDIFontSelectedInDC:_dc pointSize:O2GStatePointSize(gState)];
    }
 }
 
--(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
+// FIXME: use advances if not NULL
    O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
-   O2GState  *gState=currentState(self);
-   O2AffineTransform Trm=O2AffineTransformConcat(gState->_textTransform,transformToDevice);
+   O2GState  *gState=O2ContextCurrentGState(self);
+   O2AffineTransform Trm=O2AffineTransformConcat(_textMatrix,transformToDevice);
    NSPoint           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
    [self establishFontStateInDeviceIfDirty];
@@ -335,21 +356,20 @@ static inline O2GState *currentState(O2Context *self){
 
    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 
-   O2Font *font=[gState font];
-   int     i,advances[count];
-   O2Float unitsPerEm=O2FontGetUnitsPerEm(font);
+   O2Font *font=O2GStateFont(gState);
    
-   O2FontGetGlyphAdvances(font,glyphs,count,advances);
+   O2Size  defaultAdvances[count];
    
-   O2Float total=0;
+   O2ContextGetDefaultAdvances(self,glyphs,defaultAdvances,count);
    
-   for(i=0;i<count;i++)
-    total+=advances[i];
+   const O2Size *useAdvances;
     
-   total=(total/O2FontGetUnitsPerEm(font))*gState->_pointSize;
+   if(advances!=NULL)
+    useAdvances=advances;
+   else
+    useAdvances=defaultAdvances;
       
-   currentState(self)->_textTransform.tx+=total;
-   currentState(self)->_textTransform.ty+=0;
+   O2ContextConcatAdvancesToTextMatrix(self,useAdvances,count);
 }
 
 
@@ -831,7 +851,7 @@ static void sourceOverImage(O2Image *image,O2argb8u *resultBGRX,int width,int he
       span[x]=direct[x];
     }
     
-    O2BlendSpanNormal_8888_coverage(span,combine,coverage,width);
+    O2argb8u_sover_by_coverage(span,combine,coverage,width);
    }
 }
 #endif
@@ -1058,8 +1078,8 @@ static void zeroBytes(void *bytes,int size){
 
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
    O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
-   O2GState *gState=currentState(self);
-   O2ClipPhase     *phase=[O2GStateClipPhases(gState) lastObject];
+   O2GState *gState=O2ContextCurrentGState(self);
+   O2ClipPhase     *phase=[[O2GStateClipState(gState) clipPhases] lastObject];
    
 /* The NSImage drawing methods which take a fraction use a 1x1 alpha mask to set the fraction.
    We don't do alpha masks yet but the rough fraction code already existed so we check for this
@@ -1099,7 +1119,7 @@ static void zeroBytes(void *bytes,int size){
    }
    O2DeviceContext_gdi *deviceContext=[(O2Context_gdi *)context deviceContext];
    
-   [self drawDeviceContext:deviceContext inRect:rect ctm:currentState(self)->_deviceSpaceTransform];
+   [self drawDeviceContext:deviceContext inRect:rect ctm:O2ContextCurrentGState(self)->_deviceSpaceTransform];
 }
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState {
@@ -1137,65 +1157,6 @@ static void zeroBytes(void *bytes,int size){
 
 -(void)flush {
    GdiFlush();
-}
-
--(NSData *)captureBitmapInRect:(NSRect)rect {
-   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
-   NSPoint           pt = O2PointApplyAffineTransform(rect.origin, transformToDevice);
-   int               width = rect.size.width;
-   int               height = rect.size.height;
-   unsigned long     bmSize = 4*width*height;
-   void             *bmBits;
-   HBITMAP           bmHandle;
-   BITMAPFILEHEADER  bmFileHeader = {0, 0, 0, 0, 0};
-   BITMAPINFO        bmInfo;
-
-   if (transformIsFlipped(transformToDevice))
-      pt.y -= rect.size.height;
-
-   HDC destDC = CreateCompatibleDC(_dc);
-   if (destDC == NULL)
-   {
-      NSLog(@"CreateCompatibleDC failed");
-      return nil;
-   }
-
-   bmInfo.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);
-   bmInfo.bmiHeader.biWidth=width;
-   bmInfo.bmiHeader.biHeight=height;
-   bmInfo.bmiHeader.biPlanes=1;
-   bmInfo.bmiHeader.biBitCount=32;
-   bmInfo.bmiHeader.biCompression=BI_RGB;
-   bmInfo.bmiHeader.biSizeImage=0;
-   bmInfo.bmiHeader.biXPelsPerMeter=0;
-   bmInfo.bmiHeader.biYPelsPerMeter=0;
-   bmInfo.bmiHeader.biClrUsed=0;
-   bmInfo.bmiHeader.biClrImportant=0;
-
-   bmHandle = CreateDIBSection(_dc, &bmInfo, DIB_RGB_COLORS, &bmBits, NULL, 0);
-   if (bmHandle == NULL)
-   {
-      NSLog(@"CreateDIBSection failed");
-      return nil;
-   }
-
-   SelectObject(destDC, bmHandle);
-   BitBlt(destDC, 0, 0, width, height, _dc, pt.x, pt.y, SRCCOPY);
-   GdiFlush();
-
-   ((char *)&bmFileHeader)[0] = 'B';
-   ((char *)&bmFileHeader)[1] = 'M';
-   bmFileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
-   bmFileHeader.bfSize = bmFileHeader.bfOffBits + bmSize;
-
-   NSMutableData *result = [NSMutableData dataWithBytes:&bmFileHeader length:sizeof(BITMAPFILEHEADER)];
-   [result appendBytes:&bmInfo.bmiHeader length:sizeof(BITMAPINFOHEADER)];
-   [result appendBytes:bmBits length:bmSize];
-   
-   DeleteObject(bmHandle);
-   DeleteDC(destDC);
-
-   return result;
 }
 
 @end

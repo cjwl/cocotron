@@ -37,7 +37,9 @@ id O2PathInitWithOperators(O2Path *self,unsigned char *elements,unsigned numberO
 }
 
 -(void)dealloc {
+   if(_elements!=NULL)
    NSZoneFree(NULL,_elements);
+   if(_points!=NULL)
    NSZoneFree(NULL,_points);
    [super dealloc];
 }
@@ -129,15 +131,16 @@ BOOL O2PathIsRect(O2PathRef self,O2Rect *rect) {
    if(self->_elements[4]!=kO2PathElementCloseSubpath)
     return NO;
    
-   if(self->_points[0].x!=self->_points[1].x)
+   if(self->_points[0].y!=self->_points[1].y)
     return NO;
-   if(self->_points[1].y!=self->_points[2].y)
+   if(self->_points[1].x!=self->_points[2].x)
     return NO;
-   if(self->_points[2].x!=self->_points[3].x)
+   if(self->_points[2].y!=self->_points[3].y)
     return NO;
-   if(self->_points[3].y!=self->_points[0].y)
+   if(self->_points[3].x!=self->_points[0].x)
     return NO;
    
+// FIXME: this is probably wrong, coordinate order   
    rect->origin=self->_points[0];
    rect->size=O2SizeMake(self->_points[2].x-self->_points[0].x,self->_points[2].y-self->_points[0].y);
    

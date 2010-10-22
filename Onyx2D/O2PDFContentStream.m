@@ -65,7 +65,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _streams;
 }
 
--(O2PDFObject *)resourceForCategory:(const char *)category name:(const char *)name {
+-(id)resourceForCategory:(const char *)category name:(const char *)name {
    O2PDFObject     *result;
    O2PDFDictionary *sub;
    
@@ -75,5 +75,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    return [_parent resourceForCategory:category name:name];
 }
+
+-(void)replaceResource:(O2PDFObject *)object forCategory:(const char *)category name:(const char *)name withObject:(id)replacement {
+   O2PDFObject     *result;
+   O2PDFDictionary *sub;
+   
+   if([_resources getDictionaryForKey:category value:&sub])
+    if([sub getObjectForKey:name value:&result]){
+     if(result==object)
+      [sub setObjectForKey:name value:replacement];
+    }
+   
+   return [_parent replaceResource:object forCategory:category name:name withObject:replacement];
+}
+
 
 @end

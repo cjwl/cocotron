@@ -41,8 +41,8 @@ ONYX2D_STATIC BOOL initFunctionsForMonochrome(O2Image *self,size_t bitsPerCompon
     case 8:
      switch(bitsPerPixel){
       case 8:
-       self->_readA8=O2ImageRead_G8_to_A8;
-       self->_read_argb8u_PRE=O2ImageRead_G8_to_argb8u;
+       self->_read_a8u=O2ImageRead_G8_to_A8;
+       self->_read_argb8u=O2ImageRead_G8_to_argb8u;
        return YES;
      }
      break;
@@ -64,12 +64,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
        switch(bitmapInfo&kO2BitmapByteOrderMask){
         case kO2BitmapByteOrder16Little:
         case kO2BitmapByteOrder32Little:
-         self->_read_largb32f_PRE=O2ImageRead_argb32fLittle_to_argb32f;
+         self->_read_argb32f=O2ImageRead_argb32fLittle_to_argb32f;
          return YES;
          
         case kO2BitmapByteOrder16Big:
         case kO2BitmapByteOrder32Big:
-         self->_read_largb32f_PRE=O2ImageRead_argb32fBig_to_argb32f;
+         self->_read_argb32f=O2ImageRead_argb32fBig_to_argb32f;
          return YES;
        }
      }
@@ -79,19 +79,19 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
      switch(bitsPerPixel){
      
       case 8:
-       self->_readA8=O2ImageRead_G8_to_A8;
-       self->_read_argb8u_PRE=O2ImageRead_G8_to_argb8u;
+       self->_read_a8u=O2ImageRead_G8_to_A8;
+       self->_read_argb8u=O2ImageRead_G8_to_argb8u;
        return YES;
       
       case 16:
-       self->_read_argb8u_PRE=O2ImageRead_GA88_to_argb8u;
+       self->_read_argb8u=O2ImageRead_GA88_to_argb8u;
        return YES;
        
       case 24:
        switch(bitmapInfo&kO2BitmapAlphaInfoMask){
         case kO2ImageAlphaNone:
           // FIXME: how is endian ness interpreted ?
-         self->_read_argb8u_PRE=O2ImageRead_RGB888_to_argb8u;
+         self->_read_argb8u=O2ImageRead_RGB888_to_argb8u;
          return YES;
        }
        break;
@@ -106,12 +106,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
           switch(bitmapInfo&kO2BitmapByteOrderMask){
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_argb8u_PRE=O2ImageRead_ABGR8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_ABGR8888_to_argb8u;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_read_argb8u_PRE=O2ImageRead_RGBA8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_RGBA8888_to_argb8u;
             return YES;
           }
           break;
@@ -120,7 +120,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
           switch(bitmapInfo&kO2BitmapByteOrderMask){
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_argb8u_PRE=O2ImageRead_BGRA8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_BGRA8888_to_argb8u;
             return YES;
           }
           break;
@@ -132,12 +132,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
           switch(bitmapInfo&kO2BitmapByteOrderMask){
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_argb8u_PRE=O2ImageRead_ABGR8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_ABGR8888_to_argb8u;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_read_argb8u_PRE=O2ImageRead_RGBA8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_RGBA8888_to_argb8u;
             return YES;
           }
           break;
@@ -147,12 +147,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
            
            case kO2BitmapByteOrder16Little:
            case kO2BitmapByteOrder32Little:
-            self->_read_argb8u_PRE=O2ImageRead_BGRX8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_BGRX8888_to_argb8u;
             return YES;
 
            case kO2BitmapByteOrder16Big:
            case kO2BitmapByteOrder32Big:
-            self->_read_argb8u_PRE=O2ImageRead_XRGB8888_to_argb8u;
+            self->_read_argb8u=O2ImageRead_XRGB8888_to_argb8u;
             return YES;
           }
           break;
@@ -167,7 +167,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
      
       case 16:
        if(bitmapInfo==(kO2BitmapByteOrder16Little|kO2ImageAlphaNoneSkipFirst)){
-        self->_read_argb8u_PRE=O2ImageRead_G3B5X1R5G2_to_argb8u;
+        self->_read_argb8u=O2ImageRead_G3B5X1R5G2_to_argb8u;
         return YES;
        }
        break;
@@ -184,12 +184,12 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
        switch(bitmapInfo&kO2BitmapByteOrderMask){
         case kO2BitmapByteOrder16Little:
         case kO2BitmapByteOrder32Little:
-         self->_read_argb8u_PRE=O2ImageRead_BARG4444_to_argb8u;
+         self->_read_argb8u=O2ImageRead_BARG4444_to_argb8u;
          return YES;
          
         case kO2BitmapByteOrder16Big:
         case kO2BitmapByteOrder32Big:
-         self->_read_argb8u_PRE=O2ImageRead_RGBA4444_to_argb8u;
+         self->_read_argb8u=O2ImageRead_RGBA4444_to_argb8u;
          return YES;
        }
 
@@ -204,7 +204,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
       case 6:
        break;
       case 8:
-       self->_read_argb8u_PRE=O2ImageRead_RGBA2222_to_argb8u;
+       self->_read_argb8u=O2ImageRead_RGBA2222_to_argb8u;
        return YES;
      }
      break;
@@ -212,7 +212,7 @@ ONYX2D_STATIC BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerCom
     case  1:
      switch(bitsPerPixel){
       case 1:
-    //   self->_read_largb32f_PRE=O2ImageReadPixelSpan_01;
+    //   self->_read_argb32f=O2ImageReadPixelSpan_01;
      //  return YES;
        
       case 3:
@@ -234,7 +234,7 @@ ONYX2D_STATIC BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerCo
         switch(bitmapInfo&kO2BitmapByteOrderMask){
          case kO2BitmapByteOrder16Big:
          case kO2BitmapByteOrder32Big:
-          self->_read_argb8u_PRE=O2ImageRead_CMYK8888_to_argb8u;
+          self->_read_argb8u=O2ImageRead_CMYK8888_to_argb8u;
           return YES;
         }
        break;
@@ -249,7 +249,7 @@ ONYX2D_STATIC BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPe
    switch([[(O2ColorSpace_indexed *)colorSpace baseColorSpace] type]){
 
     case kO2ColorSpaceModelRGB:
-     self->_read_argb8u_PRE=O2ImageRead_I8_to_argb8u;
+     self->_read_argb8u=O2ImageRead_I8_to_argb8u;
      return YES;
     
     default:
@@ -259,9 +259,9 @@ ONYX2D_STATIC BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPe
 
 ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
 
-   self->_readA8=O2ImageRead_ANY_to_argb8u_to_A8;
-   self->_readAf=O2ImageRead_ANY_to_A8_to_Af;
-   self->_read_largb32f_PRE=O2ImageRead_ANY_to_argb8u_to_argb32f;
+   self->_read_a8u=O2Image_read_a8u_src_argb8u;
+   self->_read_a32f=O2ImageRead_ANY_to_A8_to_Af;
+   self->_read_argb32f=O2ImageRead_ANY_to_argb8u_to_argb32f;
 
    if((bitmapInfo&kO2BitmapByteOrderMask)==kO2BitmapByteOrderDefault)
     bitmapInfo|=kO2BitmapByteOrder32Big;
@@ -321,19 +321,15 @@ ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerCompon
 }
 
 -initMaskWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow provider:(O2DataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate {
-   _width=width;
-   _height=height;
-   _bitsPerComponent=bitsPerComponent;
-   _bitsPerPixel=bitsPerPixel;
-   _bytesPerRow=bytesPerRow;
-   _colorSpace=nil;
-   _bitmapInfo=0;
-   _provider=[provider retain];
-  // _decode=NULL;
-   _interpolate=interpolate;
+   O2ColorSpaceRef gray=O2ColorSpaceCreateDeviceGray();
+   
+   if((self=[self initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:gray bitmapInfo:kO2ImageAlphaNone provider:provider decode:decode interpolate:interpolate renderingIntent:kO2RenderingIntentDefault])==nil){
+    O2ColorSpaceRelease(gray);
+    return nil;
+   }
+   
+   O2ColorSpaceRelease(gray);
    _isMask=YES;
-   _renderingIntent=0;
-   _mask=nil;
    return self;
 }
 
@@ -356,12 +352,7 @@ ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerCompon
    return nil;
 }
 
--(O2Image *)childImageInRect:(O2Rect)rect {
-   O2UnimplementedMethod();
-   return nil;
-}
-
--(void)addMask:(O2Image *)image {
+-(void)setMask:(O2Image *)image {
    [image retain];
    [_mask release];
    _mask=image;
@@ -447,7 +438,38 @@ O2ImageRef O2ImageCreateWithPNGDataProvider(O2DataProviderRef pngProvider,const 
 }
 
 O2ImageRef O2ImageCreateWithImageInRect(O2ImageRef self,O2Rect rect) {
-   return [self childImageInRect:rect];
+   rect=O2RectIntegral(rect);
+   size_t         x=MAX(0,rect.origin.x);
+   size_t         y=MAX(0,rect.origin.y);
+   size_t         col,width=rect.size.width;
+   size_t         row,height=rect.size.height;
+   size_t         childBytesPerRow=(width*self->_bitsPerPixel+7)/8;
+   uint8_t       *childPixelBytes=malloc(height*childBytesPerRow);
+   size_t         childIndex=0;
+   const uint8_t *pixelBytes=directBytes(self);
+   
+   pixelBytes+=self->_bytesPerRow*y;
+   
+   for(row=0;row<height;row++){
+    const uint8_t *rowBytes=pixelBytes+(x*self->_bitsPerPixel)/8;
+    
+    for(col=0;col<width;col++){
+     childPixelBytes[childIndex++]=rowBytes[col];
+}
+
+    pixelBytes+=self->_bytesPerRow;
+   }
+   
+   NSData *data=[NSData dataWithBytesNoCopy:childPixelBytes length:childIndex];
+   O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+   
+   [data release];
+
+   O2ImageRef result=O2ImageCreate(width,height,self->_bitsPerComponent,self->_bitsPerPixel,childBytesPerRow,self->_colorSpace,self->_bitmapInfo,provider,self->_decode,self->_interpolate,self->_renderingIntent);
+   
+   O2DataProviderRelease(provider);
+   
+   return result;
 }
 
 O2ImageRef O2ImageCreateWithMask(O2ImageRef self,O2ImageRef mask) {
@@ -468,60 +490,106 @@ void O2ImageRelease(O2ImageRef self) {
 }
 
 BOOL O2ImageIsMask(O2ImageRef self) {
+   if(self==NULL)
+    return NO;
+    
    return self->_isMask;
 }
 
 size_t O2ImageGetWidth(O2Image *self) {
+   if(self==NULL)
+    return 0;
+
    return self->_width;
 }
 
 size_t O2ImageGetHeight(O2Image *self) {
+   if(self==NULL)
+    return 0;
+
    return self->_height;
 }
 
 size_t O2ImageGetBitsPerComponent(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_bitsPerComponent;
 }
 
 size_t O2ImageGetBitsPerPixel(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_bitsPerPixel;
 }
 
 size_t O2ImageGetBytesPerRow(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_bytesPerRow;
 }
 
 O2ColorSpaceRef O2ImageGetColorSpace(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_colorSpace;
 }
 
 O2ImageAlphaInfo O2ImageGetAlphaInfo(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_bitmapInfo&kO2BitmapAlphaInfoMask;
 }
 
 O2DataProviderRef O2ImageGetDataProvider(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_provider;
 }
 
 const O2Float *O2ImageGetDecode(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_decode;
 }
 
 BOOL O2ImageGetShouldInterpolate(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_interpolate;
 }
 
 O2ColorRenderingIntent O2ImageGetRenderingIntent(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_renderingIntent;
 }
 
 O2BitmapInfo O2ImageGetBitmapInfo(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+
    return self->_bitmapInfo;
+}
+
+O2ImageRef O2ImageGetMask(O2ImageRef self) {
+   if(self==NULL)
+    return 0;
+   
+   return self->_mask;
 }
 
 O2argb32f *O2ImageRead_ANY_to_argb8u_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length){
    O2argb8u *span8888=__builtin_alloca(length*sizeof(O2argb8u));
-   O2argb8u *direct=self->_read_argb8u_PRE(self,x,y,span8888,length);
+   O2argb8u *direct=self->_read_argb8u(self,x,y,span8888,length);
    
    if(direct!=NULL)
     span8888=direct;
@@ -645,11 +713,11 @@ uint8_t *O2ImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int lengt
    return NULL;
 }
 
-uint8_t *O2ImageRead_ANY_to_argb8u_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
+uint8_t *O2Image_read_a8u_src_argb8u(O2Image *self,int x,int y,uint8_t *alpha,int length) {
    O2argb8u *span=__builtin_alloca(length*sizeof(O2argb8u));
    int i;
    
-   O2argb8u *direct=self->_read_argb8u_PRE(self,x,y,span,length);
+   O2argb8u *direct=self->_read_argb8u(self,x,y,span,length);
    if(direct!=NULL)
     span=direct;
     
@@ -663,7 +731,7 @@ O2Float *O2ImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,O2Float *alpha,in
    uint8_t span[length];
    int     i;
    
-   self->_readA8(self,x,y,span,length);
+   self->_read_a8u(self,x,y,span,length);
    for(i=0;i<length;i++)
     alpha[i]=O2Float32FromByte(span[i]);
     
@@ -1006,14 +1074,14 @@ ONYX2D_STATIC_INLINE void O2ImageReadTileSpanExtendEdge_largb8u_PRE(O2Image *sel
    v = RI_INT_CLAMP(v,0,self->_height-1);
       
    for(i=0;u<0 && i<length;u++,i++){
-    direct=self->_read_argb8u_PRE(self,0,v,span+i,1);
+    direct=self->_read_argb8u(self,0,v,span+i,1);
 
     if(direct!=NULL)
      span[i]=direct[0];
    }   
 
    int chunk=RI_MIN(length-i,self->_width-u);
-   direct=self->_read_argb8u_PRE(self,u,v,span+i,chunk);
+   direct=self->_read_argb8u(self,u,v,span+i,chunk);
    if(direct!=NULL) {
     int k;
     
@@ -1025,7 +1093,7 @@ ONYX2D_STATIC_INLINE void O2ImageReadTileSpanExtendEdge_largb8u_PRE(O2Image *sel
    u+=chunk;
 
    for(;i<length;i++){
-    direct=self->_read_argb8u_PRE(self,self->_width-1,v,span+i,1);
+    direct=self->_read_argb8u(self,self->_width-1,v,span+i,1);
     
     if(direct!=NULL)
      span[i]=direct[0];
@@ -1039,13 +1107,13 @@ void O2ImageReadTileSpanExtendEdge__largb32f_PRE(O2Image *self,int u, int v, O2a
    v = RI_INT_CLAMP(v,0,self->_height-1);
    
    for(i=0;i<length && u<0;u++,i++){
-    direct=O2ImageReadSpan_largb32f_PRE(self,0,v,span+i,1);
+    direct=O2Image_read_argb32f(self,0,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
    
    int chunk=RI_MIN(length-i,self->_width-u);
-   direct=O2ImageReadSpan_largb32f_PRE(self,u,v,span+i,chunk);
+   direct=O2Image_read_argb32f(self,u,v,span+i,chunk);
    if(direct!=NULL) {
     int k;
     
@@ -1056,7 +1124,7 @@ void O2ImageReadTileSpanExtendEdge__largb32f_PRE(O2Image *self,int u, int v, O2a
    u+=chunk;
 
    for(;i<length;i++){
-    direct=O2ImageReadSpan_largb32f_PRE(self,self->_width-1,v,span+i,1);
+    direct=O2Image_read_argb32f(self,self->_width-1,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
@@ -1070,11 +1138,14 @@ ONYX2D_STATIC_INLINE int cubic_8(int v0,int v1,int v2,int v3,int fraction){
 }
 
 ONYX2D_STATIC_INLINE O2argb8u bicubic_largb8u_PRE(O2argb8u a,O2argb8u b,O2argb8u c,O2argb8u d,int fraction) {
-  return O2argb8uInit(
-   cubic_8(a.r, b.r, c.r, d.r, fraction),
-   cubic_8(a.g, b.g, c.g, d.g, fraction),
-   cubic_8(a.b, b.b, c.b, d.b, fraction),
-   cubic_8(a.a, b.a, c.a, d.a, fraction));
+  O2argb8u result;
+  
+  result.r=cubic_8(a.r, b.r, c.r, d.r, fraction);
+  result.b=cubic_8(a.g, b.g, c.g, d.g, fraction);
+  result.g=cubic_8(a.b, b.b, c.b, d.b, fraction);
+  result.a=cubic_8(a.a, b.a, c.a, d.a, fraction);
+  
+  return result;
 }
 
 void O2ImageBicubic_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
@@ -1335,11 +1406,11 @@ ONYX2D_STATIC_INLINE void O2RGBPremultiplySpan(O2argb32f *span,int length){
 }
 
 O2argb8u *O2ImageReadSpan_largb8u_PRE(O2Image *self,int x,int y,O2argb8u *span,int length){
-   return self->_read_argb8u_PRE(self,x,y,span,length);
+   return self->_read_argb8u(self,x,y,span,length);
 }
    
-O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {   
-   O2argb32f *direct=self->_read_largb32f_PRE(self,x,y,span,length);
+O2argb32f *O2Image_read_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length) {   
+   O2argb32f *direct=self->_read_argb32f(self,x,y,span,length);
    
    if(direct!=NULL)
     span=direct;
@@ -1350,19 +1421,12 @@ O2argb32f *O2ImageReadSpan_largb32f_PRE(O2Image *self,int x,int y,O2argb32f *spa
    return NULL;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Reads the pixel (x,y) and converts it into an alpha mask value.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-uint8_t *O2ImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length){
-   return self->_readA8(self,x,y,coverage,length);
+uint8_t *O2Image_read_a8u(O2Image *self,int x,int y,uint8_t *coverage,int length){
+   return self->_read_a8u(self,x,y,coverage,length);
 }
 
 O2Float *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int length) {
-   return self->_readAf(self,x,y,coverage,length);
+   return self->_read_a32f(self,x,y,coverage,length);
 }
 
 
@@ -1389,7 +1453,7 @@ void O2ImageReadTexelTileRepeat_largb32f_PRE(O2Image *self,int u, int v, O2argb3
    for(i=0;i<length;i++,u++){
     u = RI_INT_MOD(u, self->_width);
 
-    O2argb32f *direct=O2ImageReadSpan_largb32f_PRE(self,u,v,span+i,1);
+    O2argb32f *direct=O2Image_read_argb32f(self,u,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }

@@ -11,68 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Color.h>
 #import <Onyx2D/O2ColorSpace.h>
 
-static inline void CMYKAToRGBA(const float *input,float *output){
-   float white=1-input[3];
-   
-   output[0]=(input[0]>white)?0:white-input[0];
-   output[1]=(input[1]>white)?0:white-input[1];
-   output[2]=(input[2]>white)?0:white-input[2];
-   output[3]=input[4];
-}
-
-static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
-#if 0
-// Do not use this, it's expensive, build a table for the byte components if needed
-// lame gamma adjustment so that non-system colors appear similar to those on a Mac
-
-   const float assumedGamma=1.3;
-   const float displayGamma=2.2;
-   float gammaAdjustment=assumedGamma/displayGamma
-   r=pow(r,assumedGamma/displayGamma);
-   if(r>1.0)
-    r=1.0;
-
-   g=pow(g,assumedGamma/displayGamma);
-   if(g>1.0)
-    g=1.0;
-
-   b=pow(b,assumedGamma/displayGamma);
-   if(b>1.0)
-    b=1.0;
-#endif
-    
-   return RGB(r*255,g*255,b*255);
-}
-
 COLORREF COLORREFFromColor(O2Color *color){
-   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
-   const float    *components=O2ColorGetComponents(color);
+   O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
+   const float *components=O2ColorGetComponents(rgbColor);
    
-   switch([colorSpace type]){
+   COLORREF result=RGB(RI_INT_CLAMP(components[0]*255,0,255),RI_INT_CLAMP(components[1]*255,0,255),RI_INT_CLAMP(components[2]*255,0,255));
 
-    case kO2ColorSpaceModelMonochrome:
-     return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
+   O2ColorRelease(rgbColor);
      
-    case kO2ColorSpaceModelRGB:
-     if(O2ColorSpaceIsPlatformRGB)
-      return RGB(components[0]*255,components[1]*255,components[2]*255);
-     else
-      return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
-     
-    case kO2ColorSpaceModelCMYK:{
-      float rgba[4];
-      
-      CMYKAToRGBA(components,rgba);
-      return gammaAdjustedRGBFromComponents(rgba[0],rgba[1],rgba[2]);
+   return result;
      }
-     break;
                
-    default:
-     NSLog(@"GDI context can't translate from colorspace %@",colorSpace);
-     return RGB(0,0,0);
-   }
-}
-
 @implementation O2DeviceContext_gdi
 
 -initWithDC:(HDC)dc {

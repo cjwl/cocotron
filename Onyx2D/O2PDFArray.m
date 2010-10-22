@@ -185,6 +185,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(BOOL)getIntegers:(O2PDFInteger **)intsp count:(unsigned *)countp {
+   unsigned     i,count=[self count];
+   O2PDFInteger *result;
+
+   result=NSZoneMalloc(NULL,sizeof(O2PDFInteger)*count);
+   for(i=0;i<count;i++){
+    if(![self getIntegerAtIndex:i value:result+i]){
+     NSZoneFree(NULL,result);
+     *intsp=NULL;
+     *countp=0;
+     return NO;
+    }
+   }
+   
+   *intsp=result;
+   *countp=count;
+   return YES;
+}
+
 
 -(NSString *)description {
    NSMutableString *result=[NSMutableString string];

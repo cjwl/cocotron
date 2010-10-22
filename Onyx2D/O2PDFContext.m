@@ -30,15 +30,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Onyx2D/O2Exceptions.h>
+#import <Onyx2D/O2ClipState.h>
 #import <Onyx2D/O2ClipPhase.h>
 
 const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 
 @implementation O2PDFContext
-
-static inline O2GState *currentState(O2Context *self){        
-   return [self->_stateStack lastObject];
-}
 
 -initWithConsumer:(O2DataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    [super init];
@@ -299,7 +296,7 @@ static inline O2GState *currentState(O2Context *self){
    const unsigned char *elements=O2PathElements(path);
    const O2Point       *points=O2PathPoints(path);
    int                  pi=0;
-   O2AffineTransform    invertUserSpaceTransform=O2AffineTransformInvert(O2GStateUserSpaceTransform(currentState(self)));
+   O2AffineTransform    invertUserSpaceTransform=O2AffineTransformInvert(O2GStateUserSpaceTransform(O2ContextCurrentGState(self)));
    
    for(i=0;i<numberOfElements;i++){
     switch(elements[i]){
@@ -352,7 +349,7 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(void)emitCurrentGState {
-  O2GState *gState=currentState(self);
+  O2GState *gState=O2ContextCurrentGState(self);
   
   {
   const float *components=O2ColorGetComponents(gState->_strokeColor);
@@ -441,7 +438,7 @@ static inline O2GState *currentState(O2Context *self){
    O2AffineTransform matrix=gState->_userSpaceTransform;
    [self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-   NSArray *clipPhases=O2GStateClipPhases(gState);
+   NSArray *clipPhases=[O2GStateClipState(gState) clipPhases];
    
    for(O2ClipPhase *phase in clipPhases){
     switch(O2ClipPhasePhaseType(phase)){
@@ -509,31 +506,27 @@ static inline O2GState *currentState(O2Context *self){
    [self emitRestoreGState];
 }
 
--(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
-   [self emitSaveGState];
-   [self emitCurrentGState];
-   unsigned char bytes[count];
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
+// FIXME: use advances if not null
 
-   [[currentState(self) font] getMacRomanBytes:bytes forGlyphs:glyphs length:count];
-   [self showText:(char *)bytes length:count];
-   [self emitRestoreGState];
-}
-
--(void)showText:(const char *)text length:(unsigned)length {
    [self emitSaveGState];
    [self emitCurrentGState];
    [self contentWithString:@"BT "];
    
-   O2GState *state=currentState(self);
-   O2PDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:O2GStatePointSize(state)];
+   O2GState *state=O2ContextCurrentGState(self);
+   O2PDFObject *pdfObject=[O2GStateFont(state) encodeReferenceWithContext:self size:O2GStatePointSize(state)];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
-   [self contentWithFormat:@"%@ %g Tf ",name,O2GStatePointSize(currentState(self))];
+   [self contentWithFormat:@"%@ %g Tf ",name,O2GStatePointSize(O2ContextCurrentGState(self))];
 
    O2AffineTransform matrix=O2ContextGetTextMatrix(self);
    [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-   [self contentPDFStringWithBytes:text length:length];
+   unsigned char text[count];
+
+   [O2GStateFont(O2ContextCurrentGState(self)) getMacRomanBytes:text forGlyphs:glyphs length:count];
+
+   [self contentPDFStringWithBytes:text length:count];
    [self contentWithString:@" Tj "];
    
    [self contentWithString:@"ET "];

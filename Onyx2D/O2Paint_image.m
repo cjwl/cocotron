@@ -52,10 +52,31 @@ ONYX2D_STATIC int O2PaintReadResampledNoneSpan_largb32f_PRE(O2Paint *selfX,int x
 
 //
 
+void O2PaintApplyMaskSpan(O2argb8u *span,O2argb8u *maskSpan,int length){
+   int i;
+   
+   for(i=0;i<length;i++){
+    uint8_t alpha=maskSpan[i].r;
+    
+    span[i].r=O2Image_8u_mul_8u_div_255(span[i].r,alpha);
+    span[i].g=O2Image_8u_mul_8u_div_255(span[i].g,alpha);
+    span[i].b=O2Image_8u_mul_8u_div_255(span[i].b,alpha);
+    span[i].a=O2Image_8u_mul_8u_div_255(span[i].a,alpha);
+   }
+}
+
 ONYX2D_STATIC int O2PaintReadResampledHighSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImageBicubic_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   
+   if(self->_mask!=NULL){
+    O2argb8u maskSpan[length];
+    
+    O2ImageBicubic_largb8u_PRE(self->_mask,x,y,maskSpan,length,self->_surfaceToMask);
+    O2PaintApplyMaskSpan(span,maskSpan,length);
+   }
+   
    return length;
 }
 
@@ -63,6 +84,14 @@ ONYX2D_STATIC int O2PaintReadResampledLowSpan_largb8u_PRE(O2Paint *selfX,int x,i
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImageBilinear_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+
+   if(self->_mask!=NULL){
+    O2argb8u maskSpan[length];
+    
+    O2ImageBilinear_largb8u_PRE(self->_mask,x,y,maskSpan,length,self->_surfaceToMask);
+    O2PaintApplyMaskSpan(span,maskSpan,length);
+   }
+
    return length;
 }
 
@@ -70,6 +99,13 @@ ONYX2D_STATIC int O2PaintReadResampledLowSpanFloatTranslate_largb8u_PRE(O2Paint 
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImageBilinearFloatTranslate_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+
+   if(self->_mask!=NULL){
+    O2argb8u maskSpan[length];
+    
+    O2ImageBilinear_largb8u_PRE(self->_mask,x,y,maskSpan,length,self->_surfaceToMask);
+    O2PaintApplyMaskSpan(span,maskSpan,length);
+   }
    return length;
 }
 
@@ -77,13 +113,29 @@ ONYX2D_STATIC int O2PaintReadResampledNoneSpan_largb8u_PRE(O2Paint *selfX,int x,
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2ImagePointSampling_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   if(self->_mask!=NULL){
+    O2argb8u maskSpan[length];
+    
+    O2ImagePointSampling_largb8u_PRE(self->_mask,x,y,maskSpan,length,self->_surfaceToMask);
+    O2PaintApplyMaskSpan(span,maskSpan,length);
+   }
+   
    return length;
 }
 
 
 ONYX2D_STATIC int O2PaintReadIntegerTranslateSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
+   
    O2ImageIntegerTranslate_largb8u_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+
+   if(self->_mask!=NULL){
+    O2argb8u maskSpan[length];
+    
+    O2ImagePointSampling_largb8u_PRE(self->_mask,x,y,maskSpan,length,self->_surfaceToMask);
+    O2PaintApplyMaskSpan(span,maskSpan,length);
+   }
+
    return length;
 }
 
@@ -171,22 +223,21 @@ ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length)
 }
 
 
--initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality surfaceToPaintTransform:(O2AffineTransform)xform {
+-initWithImage:(O2Image *)image mask:(O2ImageRef)mask mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality surfaceToImage:(O2AffineTransform)surfaceToImage surfaceToMask:(O2AffineTransform)surfaceToMask {
    bool integerTranslate=FALSE;
    bool floatTranslate=FALSE;
    
-   O2PaintInitWithTransform(self,xform);
+   O2PaintInitWithTransform(self,surfaceToImage);
    
-   
-   if(xform.a==1.0f && xform.b==0.0f && xform.c==0.0f && ABS(xform.d)==1.0f){
-    if(xform.tx==RI_FLOOR_TO_INT(xform.tx) && xform.ty==RI_FLOOR_TO_INT(xform.ty))
+   if(surfaceToImage.a==1.0f && surfaceToImage.b==0.0f && surfaceToImage.c==0.0f && ABS(surfaceToImage.d)==1.0f){
+    if(surfaceToImage.tx==RI_FLOOR_TO_INT(surfaceToImage.tx) && surfaceToImage.ty==RI_FLOOR_TO_INT(surfaceToImage.ty))
      integerTranslate=TRUE;
     else
      floatTranslate=TRUE;
    }
 #if 0
    else
-      NSLog(@"xform a=%f, b=%f, c=%f, d=%f, tx=%f, ty=%f",xform.a,xform.b,xform.c,xform.d,xform.tx,xform.ty);
+      NSLog(@"surfaceToImage a=%f, b=%f, c=%f, d=%f, tx=%f, ty=%f",surfaceToImage.a,surfaceToImage.b,surfaceToImage.c,surfaceToImage.d,surfaceToImage.tx,surfaceToImage.ty);
 #endif
 
    switch(mode){
@@ -201,7 +252,8 @@ ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length)
      
     default:
      switch(interpolationQuality){
-     
+#if 0 
+// This is slow and buggy right now
       case kO2InterpolationHigh:
        if(integerTranslate)
         _paint_largb8u_PRE=O2PaintReadIntegerTranslateSpan_largb8u_PRE;
@@ -209,7 +261,9 @@ ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length)
        _paint_largb8u_PRE=O2PaintReadResampledHighSpan_largb8u_PRE;
        _paint_largb32f_PRE=O2PaintReadResampledHighSpan_largb32f_PRE;
        break;
-       
+#else
+      case kO2InterpolationHigh:
+#endif       
       case kO2InterpolationLow:
       
        if(integerTranslate)
@@ -235,10 +289,13 @@ ONYX2D_STATIC int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length)
      break;
    }
    
-   _image=[image retain];
+   _image=O2ImageRetain(image);
+   _mask=O2ImageRetain(mask);
    _mode=mode;
    _paint=[paint retain];
    _interpolationQuality=interpolationQuality;
+   _surfaceToMask=surfaceToMask;
+   
    return self;
 }
 

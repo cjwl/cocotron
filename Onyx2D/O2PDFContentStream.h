@@ -20,6 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithStream:(O2PDFStream *)stream resources:(O2PDFDictionary *)resources parent:(O2PDFContentStream *)parent;
 
 -(NSArray *)streams;
--(O2PDFObject *)resourceForCategory:(const char *)category name:(const char *)name;
+-(id)resourceForCategory:(const char *)category name:(const char *)name;
+
+-(void)replaceResource:(O2PDFObject *)object forCategory:(const char *)category name:(const char *)name withObject:(id)replacement;
 
 @end

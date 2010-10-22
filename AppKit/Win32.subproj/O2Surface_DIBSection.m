@@ -11,9 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2Surface_DIBSection
 
--initWithWidth:(size_t)width height:(size_t)height compatibleWithDeviceContext:(O2DeviceContext_gdi *)compatible {
-   _deviceContext=[[O2DeviceContext_gdiDIBSection alloc] initWithWidth:width height:height deviceContext:compatible];
+-initWithWidth:(int)width height:(int)height  compatibleWithDeviceContext:(O2DeviceContext_gdi *)compatible {
+   _deviceContext=[[O2DeviceContext_gdiDIBSection alloc] initARGB32WithWidth:width height:height deviceContext:compatible];
 
+// we support -height for flipped DIB sections
+
+   height=ABS(height);
+   
    if(_deviceContext==nil){
     [super dealloc];
     return nil;

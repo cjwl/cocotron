@@ -10,24 +10,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Geometry.h>
 #import <Onyx2D/O2Font.h>
 
-@class O2Image,O2ColorSpace,O2Color,O2Pattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font;
+@class O2Image,O2ColorSpace,O2Color,O2Pattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font,O2Encoding,O2PDFCharWidths,O2ClipState;
 
 @interface O2GState : NSObject {
 @public
    O2AffineTransform   _deviceSpaceTransform;
    O2AffineTransform   _userSpaceTransform;
-   O2AffineTransform   _textTransform;
    
-   NSMutableArray     *_clipPhases;
+   O2ClipState        *_clipState;
    O2ColorRef _strokeColor;
    O2ColorRef _fillColor;
    O2FontRef           _font;
    O2Float             _pointSize;
    BOOL                _fontIsDirty;
-   O2TextEncoding      _textEncoding;
+   BOOL                _fillColorIsDirty;
+   
+   O2Float             _characterSpacing;
+   O2Float             _wordSpacing;
+   O2Float             _textLeading;
+   O2Float             _textRise;
+   O2Float             _textHorizontalScaling;
+
+   O2Encoding         *_encoding;
+   O2PDFCharWidths    *_pdfCharWidths;
    id                  _fontState;
    O2Size              _patternPhase;   
-   float               _characterSpacing;
    int                 _textDrawingMode;
    BOOL                _shouldSmoothFonts;
    float               _lineWidth;
@@ -48,8 +55,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                _shouldAntialias;
    
    int                 _antialiasingQuality;
-   float               _wordSpacing;
-   float               _textLeading;
 }
 
 -initWithDeviceTransform:(O2AffineTransform)deviceTransform;
@@ -62,9 +67,7 @@ O2GState *O2GStateCopyWithZone(O2GState *self,NSZone *zone);
 -(O2AffineTransform)userSpaceToDeviceSpaceTransform;
 O2AffineTransform O2GStateUserSpaceTransform(O2GState *self);
 -(O2Rect)clipBoundingBox;
--(O2AffineTransform)textMatrix;
 -(O2InterpolationQuality)interpolationQuality;
--(O2Point)textPosition;
 -(O2Point)convertPointToDeviceSpace:(O2Point)point;
 -(O2Point)convertPointToUserSpace:(O2Point)point;
 -(O2Size)convertSizeToDeviceSpace:(O2Size)size;
@@ -76,11 +79,11 @@ void O2GStateSetDeviceSpaceCTM(O2GState *self,O2AffineTransform transform);
 void O2GStateSetUserSpaceCTM(O2GState *self,O2AffineTransform transform);
 void O2GStateConcatCTM(O2GState *self,O2AffineTransform transform);
 
-NSArray *O2GStateClipPhases(O2GState *self);
--(void)removeAllClipPhases;
+O2ClipState *O2GStateClipState(O2GState *self);
+void O2GStateResetClip(O2GState *self);
 void O2GStateAddClipToPath(O2GState *self,O2Path *path);
--(void)addEvenOddClipToPath:(O2Path *)path;
--(void)addClipToMask:(O2Image *)image inRect:(O2Rect)rect;
+void O2GStateAddEvenOddClipToPath(O2GState *self,O2Path *path);
+void O2GStateAddClipToMask(O2GState *self,O2Image *image,O2Rect rect);
 
 O2ColorRef O2GStateStrokeColor(O2GState *self);
 O2ColorRef O2GStateFillColor(O2GState *self);
@@ -88,25 +91,43 @@ O2ColorRef O2GStateFillColor(O2GState *self);
 void O2GStateSetStrokeColor(O2GState *self,O2ColorRef color);
 void O2GStateSetFillColor(O2GState *self,O2ColorRef color);
 
--(void)setPatternPhase:(O2Size)phase;
+O2Size O2GStatePatternPhase(O2GState *self);
+void   O2GStateSetPatternPhase(O2GState *self,O2Size value);
+
 -(void)setStrokePattern:(O2Pattern *)pattern components:(const float *)components;
 -(void)setFillPattern:(O2Pattern *)pattern components:(const float *)components;
 
-void O2GStateSetTextMatrix(O2GState *self,O2AffineTransform transform);
-void O2GStateSetTextPosition(O2GState *self,float x,float y);
--(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
--(O2Font *)font;
+O2FontRef O2GStateFont(O2GState *self);
 O2Float O2GStatePointSize(O2GState *self);
 
--(O2TextEncoding)textEncoding;
--(O2Glyph *)glyphTableForTextEncoding;
+O2Encoding *O2GStateEncoding(O2GState *self);
+O2PDFCharWidths *O2GStateCharWidths(O2GState *self);
+
+-(O2Encoding *)encoding;
+-(O2PDFCharWidths *)pdfCharWidths;
+-(void)setPDFCharWidths:(O2PDFCharWidths *)value;
+
 void O2GStateClearFontIsDirty(O2GState *self);
 -(id)fontState;
 -(void)setFontState:(id)fontState;
 void O2GStateSetFont(O2GState *self,O2Font *font);
 void O2GStateSetFontSize(O2GState *self,float size);
+void O2GStateSetFontEncoding(O2GState *self,O2Encoding *encoding);
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(O2TextEncoding)encoding;
+
+CGFloat O2GStateCharacterSpacing(O2GState *self);
+CGFloat O2GStateWordSpacing(O2GState *self);
+CGFloat O2GStateTextLeading(O2GState *self);
+CGFloat O2GStateTextRise(O2GState *self);
+CGFloat O2GStateTextHorizontalScaling(O2GState *self);
+
+void O2GStateSetCharacterSpacing(O2GState *self,CGFloat value);
+void O2GStateSetWordSpacing(O2GState *self,CGFloat value);
+void O2GStateSetTextLeading(O2GState *self,CGFloat value);
+void O2GStateSetTextRise(O2GState *self,CGFloat value);
+void O2GStateSetTextHorizontalScaling(O2GState *self,CGFloat value);
+
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 void O2GStateSetLineWidth(O2GState *self,float width);
@@ -128,7 +149,5 @@ void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode);
 
 // temporary?
 -(void)setAntialiasingQuality:(int)value;
--(void)setWordSpacing:(float)spacing;
--(void)setTextLeading:(float)leading;
 
 @end

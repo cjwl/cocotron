@@ -542,6 +542,9 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;
    
+   if(pixels==NULL)
+    return nil;
+    
 // clamp premultiplied data, this should probably be moved into the O2Image init
    int i;
    for(i=0;i<bytesPerRow*height;i+=4){

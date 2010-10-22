@@ -18,8 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    void                *_bits;
 }
 
--initWithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible bitsPerPixel:(int)bpp;
--initWithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
+-initARGB32WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
+-initGray8WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
 
 -(void *)bitmapBytes;
 

@@ -2,14 +2,20 @@
 #import <windows.h>
 #import <Foundation/NSString_win32.h>
 #import "Win32Font.h"
+#import <Onyx2D/O2Encoding.h>
+#if 0
+#import <Onyx2D/O2Font_freetype.h>
+#endif
 
-@implementation O2Font(GDI)
-
-+allocWithZone:(NSZone *)zone {
-   return NSAllocateObject([O2Font_gdi class],0,NULL);
+O2FontRef O2FontCreateWithFontName_platform(NSString *name) {
+   return [[O2Font_gdi alloc] initWithFontName:name];
 }
 
-@end
+O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider) {
+#if 0
+   return [[O2Font_freetype alloc] initWithDataProvider:provider];
+#endif
+}
 
 @interface O2Font_gdi(forward)
 -(void)fetchGlyphsToCharacters;
@@ -28,6 +34,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     return nil;
    }
    _name=[name copy];
+   _platformType=O2FontPlatformTypeGDI;
 
    HDC dc=GetDC(NULL);
 
@@ -123,13 +130,37 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    return self;
 }
 
+-initWithDataProvider:(O2DataProviderRef)provider {
+   if([super initWithDataProvider:provider]==nil)
+    return nil;
+
+   const void *bytes=[provider bytes];
+   DWORD       length=[provider length];
+   DWORD       numberOfFonts=1;
+
+   _fontMemResource=AddFontMemResourceEx(bytes,length,0,&numberOfFonts);
+   NSLog(@"FAILURE AddFontMemResourceEx bytes=%p length=%d numberOfFonts=%d,result=%x",bytes,length,numberOfFonts,_fontMemResource);
+
+   return self;
+}
+
 -(void)dealloc {
    if(_glyphsToCharacters!=NULL)
     NSZoneFree(NULL,_glyphsToCharacters);
+   
+   if(_fontMemResource!=NULL)
+    if(!RemoveFontMemResourceEx(_fontMemResource))
+     NSLog(@"RemoveFontMemResourceEx failed!");
+   
+   [_macRomanEncoding release];
+   [_macExpertEncoding release];
+   [_winAnsiEncoding release];
    [super dealloc];
 }
 
 -(O2Glyph)glyphWithGlyphName:(NSString *)name {
+   NSLog(@"glyphWithGlyphName:%@",name);
+
    return 0;
 }
 
@@ -189,7 +220,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
        pointSize=pointSize/1.125;
    }
    int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
-   Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:NO];
+   Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES];
    
    SelectObject(dc,[result fontHandle]);
    
@@ -228,6 +259,8 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 }
 
 -(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const O2Glyph *)glyphs length:(unsigned)length {
+// FIXME: broken
+
    if(_glyphsToCharacters==NULL)
     [self fetchGlyphsToCharacters];
 
@@ -245,6 +278,19 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     else
      bytes[i]=' ';
    }
+}
+
+-(void)getGlyphsForUnicode:(unichar *)unicode:(O2Glyph *)glyphs:(int)length {
+    HDC      dc=GetDC(NULL);
+    HANDLE   library=LoadLibrary("GDI32");
+    FARPROC  getGlyphIndices=GetProcAddress(library,"GetGlyphIndicesW");
+    int      i;
+       
+    HFONT font=Win32FontHandleWithName(_name,_unitsPerEm);
+    SelectObject(dc,font);
+    getGlyphIndices(dc,unicode,256,glyphs,0);
+    DeleteObject(font);
+    ReleaseDC(NULL,dc);
 }
 
 -(O2Glyph *)MacRomanEncoding {
@@ -266,6 +312,40 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     ReleaseDC(NULL,dc);
    }
    return _MacRomanEncoding;
+}
+
+-(O2Encoding *)createEncodingForTextEncoding:(O2TextEncoding)encoding {
+   unichar unicode[256];
+   O2Glyph glyphs[256];
+   
+   switch(encoding){
+    case kO2EncodingFontSpecific:
+    case kO2EncodingMacRoman:
+     if(_macRomanEncoding==nil){
+      O2EncodingGetMacRomanUnicode(unicode);
+      [self getGlyphsForUnicode:unicode:glyphs:256];
+      _macRomanEncoding=[[O2Encoding alloc] initWithGlyphs:glyphs unicode:unicode];
+     }
+     return [_macRomanEncoding retain];
+     
+    case kO2EncodingMacExpert:
+     if(_macExpertEncoding==nil){
+      O2EncodingGetMacExpertUnicode(unicode);
+      [self getGlyphsForUnicode:unicode:glyphs:256];
+      _macExpertEncoding=[[O2Encoding alloc] initWithGlyphs:glyphs unicode:unicode];
+     }
+     return [_macExpertEncoding retain];
+
+    case kO2EncodingWinAnsi:
+     if(_winAnsiEncoding==nil){
+      O2EncodingGetWinAnsiUnicode(unicode);
+      [self getGlyphsForUnicode:unicode:glyphs:256];
+      _winAnsiEncoding=[[O2Encoding alloc] initWithGlyphs:glyphs unicode:unicode];
+     }
+     return [_winAnsiEncoding retain];
+   }
+   
+   return nil;
 }
 
 @end

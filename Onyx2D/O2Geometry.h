@@ -64,3 +64,17 @@ static inline O2Rect O2RectIntersection(O2Rect rect0,O2Rect rect1) {
    return NSIntersectionRect(rect0,rect1);
 }
 
+static inline O2Rect O2RectIntegral(O2Rect rect){
+   float minx=floor(rect.origin.x);
+   float miny=floor(rect.origin.y);
+   float maxx=ceil(O2RectGetMaxX(rect));
+   float maxy=ceil(O2RectGetMaxY(rect));
+   
+   rect.origin.x=minx;
+   rect.origin.y=miny;
+   rect.size.width=maxx-minx;
+   rect.size.height=maxy-miny;
+
+   return rect; 
+}
+

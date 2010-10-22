@@ -399,9 +399,9 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
       unsigned int r=imageRow[c+2];
       unsigned int a=imageRow[c+3];
       
-      imageRow[c+2]=alphaMultiply(r,a);
-      imageRow[c+1]=alphaMultiply(g,a);
-      imageRow[c+0]=alphaMultiply(b,a);
+      imageRow[c+2]=O2Image_8u_mul_8u_div_255(r,a);
+      imageRow[c+1]=O2Image_8u_mul_8u_div_255(g,a);
+      imageRow[c+0]=O2Image_8u_mul_8u_div_255(b,a);
      }
     }
 

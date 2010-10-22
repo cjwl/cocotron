@@ -3,6 +3,7 @@
 #import <Onyx2D/O2PDFDictionary.h>
 #import <Onyx2D/O2PDFContext.h>
 #import <Foundation/NSArray.h>
+#import "O2Encoding.h"
 
 @implementation O2Font(PDF)
 
@@ -22,13 +23,16 @@ uint8_t O2PDFMacRomanPositionOfGlyphName(NSString *name){
    return [[map objectForKey:name] intValue];
 }
 
-O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Glyph encoding[256]){
+O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Encoding *encoding){
    CGFloat       unitsPerEm=O2FontGetUnitsPerEm(self);
    O2PDFArray   *result=[[O2PDFArray alloc] init];
+   O2Glyph       glyphs[256];
    int           widths[256];
    int           i;
    
-   O2FontGetGlyphAdvances(self,encoding,256,widths);
+   [encoding getGlyphs:glyphs];
+
+   O2FontGetGlyphAdvances(self,glyphs,256,widths);
 
    for(i=32;i<256;i++){
     O2PDFReal width=(widths[i]/unitsPerEm)*1000; // normalized to 1000
@@ -92,7 +96,7 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Glyph encoding[25
    
    if(reference==nil){
     O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
-    O2Glyph         *encoding=[self MacRomanEncoding];
+    O2Encoding      *encoding=[self createEncodingForTextEncoding:kO2EncodingMacRoman];
     int              i;    
      
     [result setNameForKey:"Type" value:"Font"];
@@ -101,6 +105,7 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Glyph encoding[25
     [result setIntegerForKey:"FirstChar" value:32];
     [result setIntegerForKey:"LastChar" value:255];
     O2PDFArray *widths=O2FontCreatePDFWidthsWithEncoding(self,encoding);
+    [encoding release];
     [result setObjectForKey:"Widths" value:[context encodeIndirectPDFObject:widths]];
     [widths release];
     

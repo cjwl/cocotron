@@ -456,7 +456,3 @@ void CGContextResetClip(CGContextRef context) {
 void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState) {
    O2ContextCopyBits(context,rect,point,gState);
 }
-
-CFDataRef CGContextCaptureBitmap(CGContextRef context, CGRect rect) {
-   return (CFDataRef)O2ContextCaptureBitmap(context,rect);
-}

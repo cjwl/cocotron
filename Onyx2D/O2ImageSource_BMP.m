@@ -45,7 +45,7 @@ static char *failure_reason;
 static int e(char *str)
 {
    failure_reason = str;
-   NSLog(@"PNG failure: %s",str);
+   NSLog(@"BMP failure: %s",str);
    return 0;
 }
 
@@ -434,6 +434,9 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;
    
+   if(pixels==NULL)
+    return nil;
+
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];

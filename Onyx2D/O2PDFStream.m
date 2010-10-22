@@ -41,6 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_dictionary release];
    [_data release];
+   [_resultData release];
    [_xref release];
    [super dealloc];
 }
@@ -79,15 +80,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _xref;
 }
 
--(NSData *)data {
+-(NSData *)resultData {
    O2PDFInteger     length;
    NSData          *result;
    const char      *name;
    O2PDFDictionary *parameters;
    O2PDFArray      *filters;
 
-   if(![_dictionary getIntegerForKey:"Length" value:&length])
+   if(![_dictionary getIntegerForKey:"Length" value:&length]){
+    O2PDFError(__FILE__,__LINE__,@"stream does not contain Length");
     return nil;
+   }
 
    result=_data;
        
@@ -107,7 +110,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     for(i=0;i<count;i++){
      if(![filters getNameAtIndex:i value:&name]){
-      NSLog(@"expecting filter name at %d",i);
+      O2PDFError(__FILE__,__LINE__,@"expecting filter name at %d",i);
       return nil;
      }
      if(![parameterArray getDictionaryAtIndex:i value:&parameters])
@@ -118,6 +121,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
      
    return result;
+}
+
+-(NSData *)data {
+   if(_resultData==nil)
+    _resultData=[[self resultData] retain];
+   
+   return _resultData;
 }
 
 -(NSMutableData *)mutableData {
