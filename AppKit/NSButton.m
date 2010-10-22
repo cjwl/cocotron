@@ -23,6 +23,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [super resignFirstResponder];
 }
 
+-(BOOL)isFlipped {
+   return YES;
+}
+
 -(BOOL)isOpaque {
    return [_cell isOpaque];
 }

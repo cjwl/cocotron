@@ -10,4 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSTableHeaderCell : NSTextFieldCell
 
+-(NSRect)sortIndicatorRectForBounds:(NSRect)bounds;
+
+-(void)drawSortIndicatorWithFrame:(NSRect)frame inView:(NSView *)controlView ascending:(BOOL)ascending priority:(NSInteger)priority;
+
 @end

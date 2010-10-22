@@ -225,6 +225,10 @@ const int NSTableViewDefaultRowHeight=16.;
     return _gridStyleMask != NSTableViewGridNone;
 }
 
+-(NSTableViewSelectionHighlightStyle)selectionHighlightStyle {
+   return _selectionHighlightStyle;
+}
+
 -(BOOL)allowsColumnReordering {
     return _allowsColumnReordering;
 }
@@ -465,8 +469,7 @@ static float rowHeightAtIndex(NSTableView *self,int index){
    NSRect frame;
    NSInteger i;
 
-   if (column < 0 || column > [self numberOfColumns] ||
-       row < 0 || row > [self numberOfRows])
+   if (column < 0 || column > [self numberOfColumns] || row < 0 || row > [self numberOfRows])
     return NSZeroRect;
 
    frame.origin.x = 0.;
@@ -622,6 +625,12 @@ static float rowHeightAtIndex(NSTableView *self,int index){
 
 -(void)setGridStyleMask:(unsigned int)gridStyle {
    _gridStyleMask = gridStyle;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setSelectionHighlightStyle:(NSTableViewSelectionHighlightStyle)value {
+   _selectionHighlightStyle=value;
+   [self setNeedsDisplay:YES];
 }
 
 // the appkit dox are pretty vague on these two. should they trigger a redraw or reloadData?

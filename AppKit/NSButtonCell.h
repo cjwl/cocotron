@@ -28,6 +28,9 @@ typedef enum {
    NSMomentaryChangeButton=5,
    NSOnOffButton=6,
    NSMomentaryPushInButton=7,
+// deprecated values
+   NSMomentaryPushButton= 0,
+   NSMomentaryLight=7
 } NSButtonType;
 
 typedef enum {
@@ -56,6 +59,7 @@ typedef enum {
 } NSGradientType;
 
 @interface NSButtonCell : NSActionCell {
+   NSImage  *_normalImage;
    NSString *_alternateTitle;
    NSImage  *_alternateImage;
    int       _imagePosition;
@@ -124,6 +128,7 @@ typedef enum {
 
 -(void)drawBezelWithFrame:(NSRect)rect inView:(NSView *)view;
 -(void)drawImage:(NSImage *)image withFrame:(NSRect)rect inView:(NSView *)view;
+-(NSRect)drawTitle:(NSAttributedString *)title withFrame:(NSRect)rect inView:(NSView *)view;
 
 -(void)mouseEntered:(NSEvent *)event;
 -(void)mouseExited:(NSEvent *)event;
