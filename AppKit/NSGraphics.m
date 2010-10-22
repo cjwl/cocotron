@@ -122,12 +122,16 @@ void NSRectFill(NSRect rect) {
    CGContextRestoreGState(context);
 }
 
-void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op) {
+void NSRectFillListUsingOperation(const NSRect *rects,int count,NSCompositingOperation operation) {
    CGContextRef context=NSCurrentGraphicsPort();
    CGContextSaveGState(context);
-   CGContextSetBlendMode(context,blendModeForCompositeOp(op));
-   CGContextFillRect(NSCurrentGraphicsPort(),rect);
+   CGContextSetBlendMode(context,blendModeForCompositeOp(operation));
+   CGContextFillRects(NSCurrentGraphicsPort(),rects,count);
    CGContextRestoreGState(context);
+}
+
+void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op) {
+   NSRectFillListUsingOperation(&rect,1,op);
 }
 
 void NSFrameRectWithWidth(NSRect rect,CGFloat width) {
@@ -496,3 +500,8 @@ void NSEnableScreenUpdates(void) {
 
 void NSDisableScreenUpdates(void) {
 }
+
+void NSShowAnimationEffect(NSAnimationEffect effect,NSPoint center,NSSize size,id delegate,SEL didEndSelector,void *context) {
+   NSUnimplementedFunction();
+}
+

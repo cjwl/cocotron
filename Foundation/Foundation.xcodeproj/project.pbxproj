@@ -337,7 +337,7 @@
 		15D9204C105E918000171406 /* NSGarbageCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E44102CD5B700B265D6 /* NSGarbageCollector.h */; };
 		15D9204D105E918000171406 /* NSPointerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E54102CD5C700B265D6 /* NSPointerArray.h */; };
 		15D9204E105E918000171406 /* NSPointerFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E56102CD5C700B265D6 /* NSPointerFunctions.h */; };
-		15D9204F105E918000171406 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
+		15D9204F105E918000171406 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15D92050105E918000171406 /* NSString_defaultEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE60143A1042FDD2008A7357 /* NSString_defaultEncoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D92052105E918000171406 /* NSArray_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280312097478CC00EC542B /* NSArray_concrete.m */; };
 		15D92053105E918000171406 /* NSArray_placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280314097478CC00EC542B /* NSArray_placeholder.m */; };
@@ -3193,7 +3193,7 @@
 		FE30A18410C6ED6F00A1BF7F /* NSGarbageCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E44102CD5B700B265D6 /* NSGarbageCollector.h */; };
 		FE30A18510C6ED6F00A1BF7F /* NSPointerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E54102CD5C700B265D6 /* NSPointerArray.h */; };
 		FE30A18610C6ED6F00A1BF7F /* NSPointerFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E56102CD5C700B265D6 /* NSPointerFunctions.h */; };
-		FE30A18710C6ED6F00A1BF7F /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
+		FE30A18710C6ED6F00A1BF7F /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE30A18810C6ED6F00A1BF7F /* NSString_defaultEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE60143A1042FDD2008A7357 /* NSString_defaultEncoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A18910C6ED6F00A1BF7F /* NSAtomicCompareAndSwap.h in Headers */ = {isa = PBXBuildFile; fileRef = 151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE30A18A10C6ED6F00A1BF7F /* NSNumber_BOOL_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ACAB27B108C5B010057A542 /* NSNumber_BOOL_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3692,12 +3692,12 @@
 		FE463E72102CD5C700B265D6 /* NSPointerFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E56102CD5C700B265D6 /* NSPointerFunctions.h */; };
 		FE463E73102CD5C700B265D6 /* NSPointerFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E57102CD5C700B265D6 /* NSPointerFunctions.m */; };
 		FE463E75102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE463E76102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
-		FE463E77102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
-		FE463E78102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
-		FE463E79102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
-		FE463E7A102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
-		FE463E7B102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; };
+		FE463E76102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE463E77102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE463E78102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE463E79102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE463E7A102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE463E7B102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4EC6900BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4EC6910BD9B47B0015F9E9 /* NSKeyedArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4EC68D0BD9B47B0015F9E9 /* NSKeyedArchiver.m */; };
 		FE4EC6920BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };

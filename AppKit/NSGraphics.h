@@ -49,6 +49,12 @@ typedef enum {
 
 typedef int NSWindowDepth;
 
+enum {
+   NSAnimationEffectDisappearingItemDefault= 0,
+   NSAnimationEffectPoof                   =10,
+};
+typedef NSUInteger NSAnimationEffect;
+
 APPKIT_EXPORT const float NSBlack;
 APPKIT_EXPORT const float NSDarkGray;
 APPKIT_EXPORT const float NSLightGray;
@@ -105,3 +111,5 @@ APPKIT_EXPORT void NSBeep();
 
 APPKIT_EXPORT void NSEnableScreenUpdates(void);
 APPKIT_EXPORT void NSDisableScreenUpdates(void);
+
+APPKIT_EXPORT void NSShowAnimationEffect(NSAnimationEffect effect,NSPoint center,NSSize size,id delegate,SEL didEndSelector,void *context);
