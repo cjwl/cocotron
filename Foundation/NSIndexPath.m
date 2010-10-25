@@ -23,29 +23,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [[[self alloc] initWithIndexes: indexes length: length] autorelease];
 }
 
-- (id) initWithIndex: (NSUInteger) index {
+-  initWithIndex: (NSUInteger) index {
 	return [self initWithIndexes: &index length: 1];
 }
 
-- (id) initWithIndexes: (NSUInteger*) indexes length: (NSUInteger) length {
-	if ((self = [self init])) {
+-  initWithIndexes: (NSUInteger*) indexes length: (NSUInteger) length {
 		int i;
 		
 		_length  = length;
-		_indexes = indexes;
-		_hash    = 0;
-		// Calculate hash:
-		for (i=0; i<_length; i++) {
-			_hash = _hash*2 + _indexes[i];
-		}
-		_hash = 2*_hash + _length;
    		_indexes = malloc(length*sizeof(NSUInteger));
-		memcpy(_indexes, indexes, length*sizeof(NSUInteger));
-   	}
+   
+   for(i=0;i<length;i++)
+    _indexes[i]=indexes[i];
+
 	return self;
 }
 
-- (BOOL) isEqual: (id) other {
+- (BOOL) isEqual:  other {
 	if ([other isKindOfClass: [NSIndexPath class]]) {
 		NSIndexPath* otherPath = other;
 		return _length == otherPath->_length && memcmp(_indexes, otherPath->_indexes, _length);
@@ -54,33 +48,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (void) dealloc {
-	if (_indexes) free(_indexes);
+   if (_indexes)
+    free(_indexes);
 	[super dealloc];
 }
 
 - (NSIndexPath*) indexPathByAddingIndex: (NSUInteger) index {
-	// Use lazy copying, if possible:
-	NSUInteger* indexesCopy = realloc(_indexes, (_length+1)*sizeof(NSUInteger));
-	// Add the index:
-	indexesCopy[_length] = index;
-	// Make sure to use the designated initializer:
-	NSIndexPath* result = [self initWithIndexes: indexesCopy length: _length+1];
+   NSUInteger length=[self length];
+   NSUInteger buffer[length+1];
 	
-	if (indexesCopy != _indexes) {
-		// We actually got a copy (not an extension), so free it:
-		free(indexesCopy);
+   [self getIndexes:buffer];
+   buffer[length]=index;
+   length++;
+   
+   return [[[NSIndexPath alloc] initWithIndexes:buffer length:length] autorelease];
 	}
 	
-	return [result autorelease];
+- (NSIndexPath*) indexPathByRemovingLastIndex {
+   if(_length==0){
+	[NSException raise:NSInvalidArgumentException format:@"Unable to remove index from zero length path."];
+    return nil;
 }
 
-- (NSIndexPath*) indexPathByRemovingLastIndex {
-	NSAssert(_length>1, @"Unable to remove index from zero length path.");
 	return [[[NSIndexPath alloc] initWithIndexes: _indexes length: _length-1] autorelease];
 }
 
 - (NSUInteger) indexAtPosition: (NSUInteger) position {
-	NSParameterAssert(position < _length);
+   if(position>=_length){
+	[NSException raise:NSInvalidArgumentException format:@"Unable to remove index from zero length path."];
+    return 0;
+   }
 	return _indexes[position];
 }
 
@@ -103,26 +100,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return NSOrderedSame;
 }
 
-- (id) copyWithZone: (NSZone*) zone
-{
+-copyWithZone:(NSZone*) zone {
 	return [self retain];
 }
 
 
-- (id) copy 
-{
+-copy  {
 	return [self retain];
 }
 
 - (NSUInteger) hash {
-	return _hash;
+   NSUInteger result=0;
+   int i;
+		   
+   for(i=0;i<_length;i++){
+    result = result*2 + _indexes[i];
+}
+   result = 2*result + _length;
+
+   return result;
 }
 
-- (void) encodeWithCoder: (NSCoder*) aCoder {
+-(void)encodeWithCoder: (NSCoder*) coder {
 	NSUnimplementedMethod();
 }
 
-- (id) initWithCoder: (NSCoder*) aDecoder {
+- initWithCoder: (NSCoder*) coder {
 	NSUnimplementedMethod();
     return nil;
 }

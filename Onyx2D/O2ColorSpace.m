@@ -36,6 +36,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithPattern {
+   _type=kO2ColorSpaceModelPattern;
+   _isPlatformRGB=NO;
+   return self;
+}
+
 -copyWithZone:(NSZone *)zone {
    return [self retain];
 }
@@ -72,20 +78,36 @@ O2ColorSpaceRef O2ColorSpaceCreatePlatformRGB(void) {
    return [[O2ColorSpace alloc] initWithPlatformRGB];
 }
 
+O2ColorSpaceRef O2ColorSpaceCreatePattern(O2ColorSpaceRef baseSpace) {
+   return [[O2ColorSpace alloc] initWithPattern];
+}
+
+O2ColorSpaceRef O2ColorSpaceCreateDeviceN(const char **names,O2ColorSpaceRef alternateSpace,O2FunctionRef tintTransform) {
+   return [[O2ColorSpace_DeviceN alloc] initWithComponentNames:names alternateSpace:alternateSpace tintTransform:tintTransform];
+}
+
 BOOL O2ColorSpaceIsPlatformRGB(O2ColorSpaceRef self) {
    return self->_isPlatformRGB;
 }
 
 size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
    switch(self->_type){
+   
     case kO2ColorSpaceModelMonochrome:
      return 1;
+     
     case kO2ColorSpaceModelRGB: 
      return 3;
+     
     case kO2ColorSpaceModelCMYK:
      return 4;
+     
     case kO2ColorSpaceModelIndexed:
      return 1;
+     
+    case kO2ColorSpaceModelDeviceN:
+     return ((O2ColorSpace_DeviceN *)self)->_numberOfComponents;
+     
     default:
      return 0;
    }
@@ -160,3 +182,47 @@ O2ColorSpaceModel O2ColorSpaceGetModel(O2ColorSpaceRef self) {
 @end
 
 
+@implementation O2ColorSpace_DeviceN
+
+-initWithComponentNames:(const char **)names alternateSpace:(O2ColorSpaceRef)altSpace tintTransform:(O2FunctionRef)tintTransform {
+   int i;
+   
+   for(i=0;names[i]!=NULL;i++)
+    _numberOfComponents++;
+    
+   _names=malloc(sizeof(char *)*_numberOfComponents);
+   
+   for(i=0;i<_numberOfComponents;i++){
+    size_t length=strlen(names[i]);
+    _names[i]=malloc(length+1);
+    
+    strcpy(_names[i],names[i]);
+   }
+    
+   _type=kO2ColorSpaceModelDeviceN;
+   _alternateSpace=O2ColorSpaceRetain(altSpace);
+   _tintTransform=O2FunctionRetain(tintTransform);
+   return self;
+}
+
+-(void)dealloc {
+   int i;
+   
+   for(i=0;i<_numberOfComponents;i++)
+    free(_names[i]);
+   free(_names);
+   
+   O2ColorSpaceRelease(_alternateSpace);
+   O2FunctionRelease(_tintTransform);
+   [super dealloc];
+}
+
+-(O2ColorSpaceRef)alternateSpace {
+   return _alternateSpace;
+}
+
+-(O2FunctionRef)tintTransform {
+   return _tintTransform;
+}
+
+@end

@@ -5,18 +5,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-// -*- mode: objc -*-
-#import <Foundation/Foundation.h>
+#import <Foundation/NSObject.h>
 
-@class NSEntityDescription;
-@class NSArray;
-@class NSDictionary;
+@class NSEntityDescription,NSArray,NSDictionary;
+
 @interface NSPropertyDescription : NSObject <NSCoding,NSCopying> {
     NSEntityDescription *_entity;
     NSString *_propertyName;
 }
 
-- (NSEntityDescription *) entity;
+-(NSEntityDescription *)entity;
 
 - (NSString *) name;
 - (BOOL) isOptional;
@@ -29,7 +27,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void) setOptional: (BOOL) value;
 - (void) setTransient: (BOOL) value;
 - (void) setUserInfo: (NSDictionary *) value;
-- (void) setValidationPredicates: (NSArray *) predicates
-	  withValidationWarnings: (NSArray *) warnings;
+- (void) setValidationPredicates: (NSArray *) predicates withValidationWarnings: (NSArray *) warnings;
 
 @end

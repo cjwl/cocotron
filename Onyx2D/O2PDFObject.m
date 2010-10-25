@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2PDFObject.h>
 #import <Foundation/NSString.h>
 
+BOOL O2PDFDebug=YES;
+
 @implementation O2PDFObject
 
 -(O2PDFObject *)realObject {
@@ -38,3 +40,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+void O2PDFError(const char *file,int line,NSString *format,...) {
+   va_list arguments;
+
+   va_start(arguments,format);
+   NSString *string=[[NSString alloc] initWithFormat:format arguments:arguments];
+   NSLog(@"PDF error: %s %d %@",file,line,string);
+   va_end(arguments);
+}
+
+void O2PDFFix(const char *file,int line,NSString *format,...) {
+   va_list arguments;
+
+   va_start(arguments,format);
+   NSString *string=[[NSString alloc] initWithFormat:format arguments:arguments];
+   NSLog(@"PDF unimplemented: %s %d %@",file,line,string);
+   va_end(arguments);
+}
+

@@ -267,7 +267,7 @@ static void removeRangeAtPosition(NSRange *ranges,NSUInteger length,NSUInteger p
 -(id)initWithCoder:(NSCoder *)coder {
 	//Structure of this method is based on NSSortDescriptor r662
 	[super initWithCoder:coder];
-	if ([coder isKindOfClass:[NSKeyedUnarchiver class]]) {
+	if ([coder allowsKeyedCoding]) {
 		NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder;
 		_capacity = [[keyed decodeObjectForKey:@"capacity"] intValue];
 	}

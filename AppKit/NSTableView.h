@@ -48,6 +48,13 @@ enum {
    NSTableViewSolidHorizontalGridLineMask
 };
 
+enum {
+   NSTableViewSelectionHighlightStyleNone      =-1,
+   NSTableViewSelectionHighlightStyleRegular   = 0,
+   NSTableViewSelectionHighlightStyleSourceList= 1,
+};
+typedef NSInteger NSTableViewSelectionHighlightStyle;
+
 typedef enum { 
    NSTableViewDropOn, 
    NSTableViewDropAbove 
@@ -80,6 +87,7 @@ typedef enum {
 
    BOOL _alternatingRowBackground;
    unsigned int _gridStyleMask;
+   NSTableViewSelectionHighlightStyle _selectionHighlightStyle;
 
    // temp ivars
    NSMutableArray *_selectedColumns;
@@ -119,6 +127,7 @@ typedef enum {
 
 -(BOOL)usesAlternatingRowBackgroundColors;
 -(unsigned int)gridStyleMask;
+-(NSTableViewSelectionHighlightStyle)selectionHighlightStyle;
 
 -(NSInteger)numberOfRows;
 -(NSUInteger)numberOfColumns;
@@ -159,6 +168,7 @@ typedef enum {
 
 -(void)setUsesAlternatingRowBackgroundColors:(BOOL)flag;
 -(void)setGridStyleMask:(unsigned int)gridStyle;
+-(void)setSelectionHighlightStyle:(NSTableViewSelectionHighlightStyle)value;
 
 -(void)addTableColumn:(NSTableColumn *)column;
 -(void)removeTableColumn:(NSTableColumn *)column;

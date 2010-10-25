@@ -61,3 +61,7 @@ static inline CGRect CGRectInset(CGRect rect,CGFloat dx,CGFloat dy) {
    return rect;
 }
 
+static inline bool CGRectIsEmpty(CGRect rect) {
+   return ((rect.size.width==0) && (rect.size.height==0))?TRUE:FALSE;
+}
+

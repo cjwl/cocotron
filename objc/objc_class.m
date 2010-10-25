@@ -262,10 +262,10 @@ struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId){
 struct objc_method *class_getInstanceMethod(Class class,SEL uniqueId) {
    struct objc_method *result=NULL;
 
-   for(;class!=NULL;class=class->super_class)
+   for(;class!=NULL;class=class->super_class){     
     if((result=OBJCLookupUniqueIdInOnlyThisClass(class,uniqueId))!=NULL)
      break;
-   
+   }
    return result;
 }
 
@@ -337,9 +337,11 @@ static struct objc_method empty_method={
 };
 
 static int msg_tracing=0;
+static int msgLoggingCount=0;
 
-void OBJCEnableMsgTracing(){
+OBJC_EXPORT void objc_enableMessageLoggingWithCount(int count) {
    msg_tracing=1;
+   msgLoggingCount=count;
    
    int   i,capacity=objc_getClassList(NULL,0);
    Class list[capacity];
@@ -358,25 +360,38 @@ void OBJCEnableMsgTracing(){
     }
    }
 
-   NSCLog("OBJC msg tracing ENABLED");
+   NSCLog("OBJC msg tracing ENABLED count=%d",count);
 }
+
+void OBJCEnableMsgTracing(){
+   objc_enableMessageLoggingWithCount(0x7FFFFFFF);
+}
+
 void OBJCDisableMsgTracing(){
    msg_tracing=0;
    NSCLog("OBJC msg tracing DISABLED");
 }
 
 void objc_logMsgSend(id object,SEL selector){
+   msgLoggingCount--;
+   if(msgLoggingCount<0)
+    msg_tracing=0;
+    
    NSCLogThreadId();
-   NSCLogFormat("objc_msgSend %x %s",selector,sel_getName(selector));
+   NSCLogFormat("objc_msgSend %x %s self=%p",selector,sel_getName(selector),object);
    NSCLogFormat(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
    NSCLogNewline();
 }
 
 void objc_logMsgSendSuper(struct objc_super *super,SEL selector){
+   msgLoggingCount--;
+   if(msgLoggingCount<0)
+    msg_tracing=0;
+    
    NSCLogThreadId();
    NSCLogFormat("objc_msgSendSuper %x %s",selector,sel_getName(selector));
    id object=super->receiver;
-   NSCLogFormat(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogFormat("self=%p isa %x name %s",object,(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
    NSCLogNewline();
 }
 
@@ -426,11 +441,38 @@ Method *class_copyMethodList(Class cls,unsigned int *countp) {
 }
 
 objc_property_t *class_copyPropertyList(Class cls,unsigned int *countp) {
-   // UNIMPLEMENTED
+   struct objc_class_extension *ext=cls->ext;
+   
+   if(ext==NULL){
+    *countp=0;
    return NULL;
+}
+   if(ext->properties==NULL){
+    *countp=0;
+    return NULL;
+   }
+
+   uint32_t i,propertyCount=ext->properties->prop_count;
+   
+   if(propertyCount==0){
+    *countp=0;
+    return NULL;
+   }
+   
+   objc_property_t *result=malloc(sizeof(struct objc_property)*propertyCount);
+      
+   for(i=0;i<propertyCount;i++){
+    result[i]=&(ext->properties->prop_list[i]);
+   }
+ 
+   *countp=propertyCount;
+   
+   return result;
 }
 
 Protocol **class_copyProtocolList(Class cls,unsigned int *countp) {
+   *countp=0;
+   NSCLog("class_copyProtocolList unimplemented");
    // UNIMPLEMENTED
    return NULL;
 }

@@ -317,10 +317,22 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
      assignFirst=NO;
     }
     else {
-     result.origin.x=MIN(rect.origin.x,result.origin.x);
-     result.origin.y=MIN(rect.origin.y,result.origin.y);
-     result.size.width=MAX(NSMaxX(rect),NSMaxX(result))-result.origin.x;
-     result.size.height=MAX(NSMaxY(rect),NSMaxY(result))-result.origin.y;
+     result=NSUnionRect(result,rect);
+    }
+   }
+
+   if(assignFirst){
+    // if empty, use the extra rect
+    if(container==_extraLineFragmentTextContainer){
+     NSRect extra=_extraLineFragmentUsedRect;
+  /* Currently extra rect has a very large width  due to the behavior of the layout mechanism, so we set it to 1 here for proper sizing
+     The insertion point code does the same thing to draw the point at the end of text.
+     
+     If the extra rect should not be large, need to reflect that change here and everywhere else it is used.
+   */
+     extra.size.width=1;
+    
+     result=extra;
     }
    }
 

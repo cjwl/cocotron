@@ -5,50 +5,45 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSAttributeDescription.h"
-#import "NSEntityDescription.h"
+#import <CoreData/NSAttributeDescription.h>
+#import <CoreData/NSEntityDescription.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 
 @implementation NSAttributeDescription
 
-- (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
-       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
-       _attributeType = [keyed decodeIntForKey: @"NSAttributeType"];
-       _valueClassName
-	   = [[keyed decodeObjectForKey: @"NSAttributeValueClassName"] retain];
-       _defaultValue = [[keyed decodeObjectForKey: @"NSDefaultValue"] retain];
-       _entity = [keyed decodeObjectForKey: @"NSEntity"];
-       _propertyName = [[keyed decodeObjectForKey: @"NSPropertyName"] retain];
-       _valueTransformerName
-	   = [[keyed decodeObjectForKey: @"NSValueTransformerName"] retain];
-       
-       return self;
-   } else {
-       [NSException raise: NSInvalidArgumentException
-		    format: @"%@ can not initWithCoder:%@", isa, [coder class]];
-       return nil;
-   }
+-initWithCoder:(NSCoder *)coder {
+   if(![coder allowsKeyedCoding])
+    [NSException raise: NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
+
+   [super initWithCoder:coder];
+
+   _attributeType = [coder decodeIntForKey: @"NSAttributeType"];
+   _valueClassName= [[coder decodeObjectForKey: @"NSAttributeValueClassName"] retain];
+   _defaultValue = [[coder decodeObjectForKey: @"NSDefaultValue"] retain];
+   _valueTransformerName= [[coder decodeObjectForKey: @"NSValueTransformerName"] retain];
+   if(_valueTransformerName!=nil)
+    NSLog(@"UNIMPLEMENTED _valueTransformerName=%@",_valueTransformerName);
+    
+   return self;
 }
 
 
-- (id) copyWithZone: (NSZone *) zone {
-    return [self retain];
+-copyWithZone: (NSZone *) zone {
+   return [self retain];
 }
 
 
-- (void) dealloc {
-    if(_valueClassName) [_valueClassName release];
-    if(_defaultValue) [_defaultValue release];
-    if(_propertyName) [_propertyName release];
-    if(_valueTransformerName) [_valueTransformerName release];
-    [super dealloc];
+-(void)dealloc {
+   [_valueClassName release];
+   [_defaultValue release];
+   [_propertyName release];
+   [_valueTransformerName release];
+   [super dealloc];
 }
 
 
 - (NSString *) description {
-    return [NSString stringWithFormat: @"<NSAttributeDescription: %@ %@>",
-		     _valueClassName, _propertyName];
+    return [NSString stringWithFormat: @"<NSAttributeDescription: %@ %@>",_valueClassName, _propertyName];
 }
 
 
@@ -83,10 +78,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return;
     }
     
-    if(_defaultValue == value) return;
-    if(_defaultValue) [_defaultValue release];
-    if(value) [value retain];
-    _defaultValue = value;
+    value=[value retain];
+    [_defaultValue release];
+    _defaultValue=value;
 }
 
 @end

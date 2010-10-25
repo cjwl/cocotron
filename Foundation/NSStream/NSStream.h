@@ -35,6 +35,14 @@ typedef enum {
 FOUNDATION_EXPORT NSString * const NSStreamDataWrittenToMemoryStreamKey;
 FOUNDATION_EXPORT NSString * const NSStreamFileCurrentOffsetKey;
 
+FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelKey;
+
+FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelNone;
+FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelSSLv2;
+FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelSSLv3;
+FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelTLSv1;
+FOUNDATION_EXPORT NSString * const NSStreamSocketSecurityLevelNegotiatedSSL;
+
 @interface NSStream : NSObject
 
 +(void)getStreamsToHost:(NSHost *)host port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;

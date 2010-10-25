@@ -28,12 +28,14 @@
 #import <Onyx2D/O2Paint.h>
 
 @interface O2Paint_image : O2Paint {
-   O2Image *_image;
+   O2ImageRef _image;
+   O2ImageRef _mask;
    O2SurfaceMode _mode;
    O2Paint *_paint;
    O2InterpolationQuality _interpolationQuality;
+   O2AffineTransform _surfaceToMask;
 }
 
--initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality surfaceToPaintTransform:(O2AffineTransform)transform;
+-initWithImage:(O2Image *)image mask:(O2ImageRef)mask mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality surfaceToImage:(O2AffineTransform)surfaceToImage surfaceToMask:(O2AffineTransform)surfaceToMask;
 
 @end

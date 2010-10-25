@@ -11,6 +11,18 @@
    return self;
 }
 
+-initWithCoder:(NSCoder *)coder {
+   if([coder allowsKeyedCoding]){
+    _nibName=[[coder decodeObjectForKey:@"NSNibName"] copy];
+    _title=[[coder decodeObjectForKey:@"NSTitle"] copy];
+    NSString *bundleIdentifier=[coder decodeObjectForKey:@"NSNibBundleIdentifier"];
+    if(bundleIdentifier!=nil)
+     _nibBundle=[NSBundle bundleWithIdentifier:bundleIdentifier];
+   }
+   
+   return self;
+}
+
 -(NSString *)nibName {
    return _nibName;
 }
@@ -56,6 +68,12 @@
    NSString *name=[self nibName];
    NSBundle *bundle=[self nibBundle];
 
+   if(name==nil){
+   // should pathForResource assert name for non-nil?
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] nibName is nil",isa,_cmd];
+    return;
+   }
+   
    if(bundle==nil)
     bundle=[NSBundle mainBundle];
 

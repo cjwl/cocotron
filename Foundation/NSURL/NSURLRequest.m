@@ -33,7 +33,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithURL:(NSURL *)url {
-   return [self initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60];
+// apparently the default is 4 minutes
+   return [self initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60*4];
 }
 
 -initWithURL:(NSURL *)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeout {
@@ -45,6 +46,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _method=@"GET";
    _handleCookies=YES;
    return self;
+}
+
+-init {
+   return [self initWithURL:nil];
 }
 
 -(void)dealloc {
@@ -117,6 +122,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)HTTPShouldHandleCookies {
    return _handleCookies;
+}
+
+-(NSString *)description {
+   return [NSString stringWithFormat:@"<%@ %x: url=%@>",isa,self,_url];
 }
 
 @end

@@ -5,163 +5,183 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSFetchRequest.h"
-#import "NSManagedObject.h"
-#import "NSManagedObjectContext.h"
-#import "NSEntityDescription.h"
-#import <AppKit/NSRaise.h>
+#import <CoreData/NSFetchRequest.h>
+#import <CoreData/NSManagedObject.h>
+#import <CoreData/NSManagedObjectContext.h>
+#import <CoreData/NSEntityDescription.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSFetchRequest
 
-- (id) init {
-    _entity = nil;
-    _predicate = nil;
-    _sortDescriptors = [[NSMutableArray arrayWithCapacity: 1] retain];
-    _affectedStores = [[NSMutableArray arrayWithCapacity: 1] retain];
-    _fetchLimit = 0;
-    _owner = nil;
-    return self;
+-init {
+   _entity=nil;
+   _predicate=nil;
+   _sortDescriptors=nil;
+   _affectedStores=nil;
+   _fetchLimit=0;
+   return self;
 }
 
-
-- (id) initWithCoder: (NSCoder *) coder {
-    NSUnimplementedMethod();
-    return nil;
+-initWithCoder: (NSCoder *) coder {
+   NSUnimplementedMethod();
+   return nil;
 }
 
-
-- (void) encodeWithCoder: (NSCoder *) coder {
-    NSUnimplementedMethod();
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
 }
 
+-copyWithZone:(NSZone *)zone {
+   NSFetchRequest *result=NSCopyObject(self,0,zone);
+   
+   result->_entity=[_entity retain];
+   result->_predicate=[_predicate copy];
+   result->_sortDescriptors=[_sortDescriptors copy];
+   result->_affectedStores=[_affectedStores copy];
+   result->_propertiesToFetch=[_propertiesToFetch copy];
+   result->_relationshipKeyPathsForPrefetching=[_relationshipKeyPathsForPrefetching copy];
 
-- (id) copyWithZone: (NSZone *) zone {
-    return [self retain];
+   return result;
 }
 
-
-- (void) dealloc {
-    if(_cachedContext)
-	[_cachedContext _removeFetchRequest: self];
-    [super dealloc];
+-(void)dealloc {
+   [_entity release];
+   [_predicate release];
+   [_sortDescriptors release];
+   [_affectedStores release];
+   [super dealloc];
 }
 
-
-- (void) _refresh {
-    [self _invalidateCache];
-    if(_owner) [_owner performSelector: @selector(_refresh)];
+-(NSFetchRequestResultType)resultType {
+   return _resultType;
 }
 
-
-- (void) _setOwner: (id) owner {
-    _owner = owner;
+-(NSEntityDescription *)entity {
+   return _entity;
 }
 
-
-- (void) _invalidateCache {
-    if(_cachedContext)
-	[_cachedContext _removeFetchRequest: self];
-    _cachedContext = nil;
-    if(_cachedResults) {
-	[_cachedResults release];
-	_cachedResults = nil;
-    }
+-(NSPredicate *)predicate {
+   return _predicate;
 }
 
-
-- (BOOL) _cacheIsValidForContext: (NSManagedObjectContext *) context {
-    if((_cachedContext == context) && _cachedResults)
-	return YES;
-    else
-	return NO;
+-(NSArray *)sortDescriptors {
+   return _sortDescriptors;
 }
 
-
-- (void) _performInContext: (NSManagedObjectContext *) context {
-    [self _invalidateCache];
-    [context _addFetchRequest: self];
-    _cachedContext = context;
-    _cachedResults = [[NSMutableArray arrayWithCapacity: 10] retain];
-    NSSet *objects = [context insertedObjects];
-    for(NSManagedObject *object in [objects allObjects]) {
-	NSEntityDescription *entity;
-	for(entity = [object entity]; entity; entity = [entity superentity]) {
-	    if(entity == _entity) {
-		[_cachedResults addObject: object];
-		break;
-	    }
-	}
-    }
+-(NSArray *)affectedStores {
+   return _affectedStores;
 }
 
-
-- (NSUInteger) _countInContext: (NSManagedObjectContext *) context {
-    if(![self _cacheIsValidForContext: context])
-	[self _performInContext: context];
-    return [_cachedResults count];
+-(NSUInteger)fetchLimit {
+   return _fetchLimit;
 }
 
-
-- (NSArray *) _resultsInContext: (NSManagedObjectContext *) context {
-    if(![self _cacheIsValidForContext: context])
-	[self _performInContext: context];
-    return _cachedResults;
+-(NSUInteger)fetchBatchSize {
+   return _fetchBatchSize;
 }
 
-
-- (NSEntityDescription *) entity {
-    return _entity;
+-(NSUInteger)fetchOffset {
+   return _fetchOffset;
 }
 
-
-- (NSPredicate *) predicate {
-    return _predicate;
+-(BOOL)includesPendingChanges {
+   return _includesPendingChanges;
 }
 
-
-- (NSArray *) sortDescriptors {
-    return _sortDescriptors;
+-(BOOL)includesPropertyValues {
+   return _includesPropertyValues;
 }
 
-
-- (NSArray *) affectedStores {
-    return _affectedStores;
+-(BOOL)includesSubentities {
+   return _includesSubentities;
 }
 
-
-- (unsigned) fetchLimit {
-    return _fetchLimit;
+-(BOOL)returnsDistinctResults {
+   return _returnsDistinctResults;
 }
 
-
-- (void) setEntity: (NSEntityDescription *) value {
-    _entity = value;
+-(BOOL)returnsObjectsAsFaults {
+   return _returnsObjectsAsFaults;
 }
 
-
-- (void) setPredicate: (NSPredicate *) value {
-    if(_predicate == value) return;
-    if(_predicate) [_predicate release];
-    if(value) [value retain];
-    _predicate = value;
+-(NSArray *)propertiesToFetch {
+   return _propertiesToFetch;
 }
 
-
-- (void) setSortDescriptors: (NSArray *) value {
-    [_sortDescriptors removeAllObjects];
-    [_sortDescriptors addObjectsFromArray: value];
+-(NSArray *)relationshipKeyPathsForPrefetching {
+   return _relationshipKeyPathsForPrefetching;
 }
 
-
-- (void) setAffectedStores: (NSArray *) value {
-    [_affectedStores removeAllObjects];
-    [_affectedStores addObjectsFromArray: value];
+-(void)setResultType:(NSFetchRequestResultType)type {
+   _resultType=type;
 }
 
-
-- (void) setFetchLimit: (unsigned) value {
-    _fetchLimit = value;
+-(void)setEntity:(NSEntityDescription *)value {
+   value=[value retain];
+   [_entity release];
+   _entity=value;
 }
 
+-(void)setPredicate:(NSPredicate *)value {
+   value=[value retain];
+   [_predicate release];
+   _predicate=value;
+}
+
+-(void)setSortDescriptors:(NSArray *)value {
+   value=[value copy];
+   [_sortDescriptors release];
+   _sortDescriptors=value;
+}
+
+-(void)setAffectedStores:(NSArray *)value {
+   value=[value copy];
+   [_affectedStores release];
+   _affectedStores=value;
+}
+
+-(void)setFetchLimit:(NSUInteger)value {
+   _fetchLimit=value;
+}
+
+-(void)setFetchBatchSize:(NSUInteger)value {
+   _fetchBatchSize=value;
+}
+
+-(void)setFetchOffset:(NSUInteger)value {
+   _fetchOffset=value;
+}
+
+-(void)setIncludesPendingChanges:(BOOL)value {
+   _includesPendingChanges=value;
+}
+
+-(void)setIncludesPropertyValues:(BOOL)value {
+   _includesPropertyValues=value;
+}
+
+-(void)setIncludesSubentities:(BOOL)value {
+   _includesSubentities=value;
+}
+
+-(void)setReturnsDistinctResults:(BOOL)value {
+   _returnsDistinctResults=value;
+}
+
+-(void)setReturnsObjectsAsFaults:(BOOL)value {
+   _returnsObjectsAsFaults=value;
+}
+
+-(void)setPropertiesToFetch:(NSArray *)value {
+   value=[value copy];
+   [_propertiesToFetch release];
+   _propertiesToFetch=value;
+}
+
+-(void)setRelationshipKeyPathsForPrefetching:(NSArray *)value {
+   value=[value copy];
+   [_relationshipKeyPathsForPrefetching release];
+   _relationshipKeyPathsForPrefetching=value;
+}
 
 @end

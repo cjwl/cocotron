@@ -41,9 +41,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _helpAnchor=nil;
    _buttons=[NSMutableArray new];   
    _window=[[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,10,10) styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:NO];
-   _supressionButton=[[NSButton alloc] init];
- //  [_supressionButton setButtonType:NSSwitchButton];
-   [_supressionButton setTitle:NSLocalizedString(@"Do not show this message again",@"Default NSAlert supression button title")];
+   _suppressionButton=[[NSButton alloc] init];
+ //  [_suppressionButton setButtonType:NSSwitchButton];
+   [_suppressionButton setTitle:NSLocalizedString(@"Do not show this message again",@"Default NSAlert supression button title")];
    _needsLayout=YES;
    return self;
 }
@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_accessoryView release];
    [_helpAnchor release];
    [_buttons release];
-   [_supressionButton release];
+   [_suppressionButton release];
    [_window release];
    [super dealloc];
 }
@@ -141,8 +141,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _buttons;
 }
 
--(NSButton *)supressionButton {
-   return _supressionButton;
+-(NSButton *)suppressionButton {
+   return _suppressionButton;
 }
 
 -window {
@@ -310,7 +310,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     messageInformativeGap=INTERTEXT_GAP;
 
    if(_showsSuppressionButton)
-    supressionSize=[drawer sizeOfString:[_supressionButton title] withAttributes:suppressionAttributes inSize:textSize];
+    supressionSize=[drawer sizeOfString:[_suppressionButton title] withAttributes:suppressionAttributes inSize:textSize];
 
    if(_informativeText!=nil && _showsSuppressionButton)
     informativeSuppressionGap=INTERTEXT_GAP;
@@ -372,8 +372,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    frame.origin.x=LEFT_MARGIN+iconSize.width+ICON_MAIN_GAP;
    frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-messageInformativeGap-informativeSize.height-informativeSuppressionGap-frame.size.height;
    frame.size=supressionSize;
-   [_supressionButton setFrame:frame];
-   [[_window contentView] addSubview:_supressionButton];
+   [_suppressionButton setFrame:frame];
+   [[_window contentView] addSubview:_suppressionButton];
   }
 
   if(_accessoryView!=nil){
@@ -448,14 +448,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)_alertButton:sender {
    if([_window isSheet])
-   {
     [NSApp endSheet:_window returnCode:[sender tag]];
-   }
    else
-   {
     [NSApp stopModalWithCode:[sender tag]];
+
     [_window close];
    }
-}
 
 @end

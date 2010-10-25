@@ -1,6 +1,8 @@
 #import <CFNetwork/CFSocketStream.h>
 #import <Foundation/NSString.h>
 
+/************* These values are also in NSStream, keep in sync */
+
 const CFStringRef kCFStreamPropertyShouldCloseNativeSocket=(CFStringRef)@"kCFStreamPropertyShouldCloseNativeSocket";
 const CFStringRef kCFStreamPropertySocketSecurityLevel=(CFStringRef)@"kCFStreamPropertySocketSecurityLevel";
 const CFStringRef kCFStreamPropertySOCKSProxy=(CFStringRef)@"kCFStreamPropertySOCKSProxy";

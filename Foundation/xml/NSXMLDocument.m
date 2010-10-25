@@ -9,7 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSXMLDocument.h>
 #import <Foundation/NSXMLElement.h>
 #import <Foundation/NSXMLDTD.h>
+#import <Foundation/NSXMLParser.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSXMLDocument
@@ -28,14 +30,83 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributes {
+   NSXMLElement *element=[[NSXMLElement alloc] initWithName:elementName];
+   
+  // NSLog(@"element=%@",[element name]);
+   
+   [element setAttributesAsDictionary:attributes];
+   
+   NSXMLElement *parent=[_elementStack lastObject];
+  // NSLog(@"parent=%@",[parent name]);
+   [parent addChild:element];
+   
+   [_elementStack addObject:element];
+   
+   if([_elementStack count]==1)
+    [self addChild:element];
+}
+
+-(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName {
+   NSXMLElement *element=[_elementStack lastObject];
+    
+   [_elementStack removeLastObject];     
+}
+
+-(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+   NSXMLElement *element=[_elementStack lastObject];
+   
+  // NSLog(@"foundCharacters=%@",string);
+   [element setStringValue:[[element stringValue] stringByAppendingString:string]];
+}
+
+-(void)parser:(NSXMLParser *)parser foundIgnorableWhitespace:(NSString *)whitespace {
+
+   if(_options&NSXMLDocumentTidyXML)
+    return;
+    
+   [self parser:parser foundCharacters:whitespace];
+}
+
 -initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error {
-   NSUnimplementedMethod();
+   [super initWithKind:NSXMLDocumentKind options:NSXMLNodeOptionsNone];
+//   NSLog(@"xml=%@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+   NSXMLParser *parser=[[NSXMLParser alloc] initWithData:data];
+   
+   [parser setDelegate:self];
+   _options=options;
+   _elementStack=[[NSMutableArray alloc] init];
+   
+   if(![parser parse]){
+    [self dealloc];
+    
+    if(error!=NULL)
+     *error=[[[parser parserError] retain] autorelease];
+     
+    [parser release];
    return nil;
 }
 
+   [parser release];
+
+   return self;
+}
+
 -initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error {
-   NSUnimplementedMethod();
+   NSData *data=[NSData dataWithContentsOfURL:url options:0 error:error];
+   
+   if(data==nil){
+    [self dealloc];
    return nil;
+}
+
+   return [self initWithData:data options:options error:error];
+}
+
+-(void)dealloc {
+   [_elementStack release];
+   [_rootElement release];
+   [super dealloc];
 }
 
 -(NSXMLDocumentContentKind)documentContentKind {
@@ -59,7 +130,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSXMLElement *)rootElement {
-   return _rootElement;
+   return [_children count]?[_children objectAtIndex:0]:nil;
 }
 
 -(NSXMLDTD *)DTD {
@@ -146,23 +217,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(NSString *)XMLStringWithOptions:(NSUInteger)options {
+   NSMutableString *result=[NSMutableString string];
+
+   [result appendString:@"<?xml version=\"1.0\" standalone=\"yes\"?>"];
+   
+   for(NSXMLNode *node in _children)
+    [result appendString:[node XMLStringWithOptions:options]];
+
+   return result;
+}
+
 -(NSData *)XMLData {
    return [self XMLDataWithOptions:NSXMLNodeOptionsNone];
 }
 
 -(NSData *)XMLDataWithOptions:(NSUInteger)options {
-   NSUnimplementedMethod();
-   return nil;
+   NSString *string=[self XMLStringWithOptions:options];
+   
+   return [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 -objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError *)error {
    NSUnimplementedMethod();
    return nil;
 }
+
 -objectByApplyingXSLTAtURL:(NSURL *)url arguments:(NSDictionary *)arguments error:(NSError *)error {
    NSUnimplementedMethod();
    return nil;
 }
+
 -objectByApplyingXSLTString:(NSString *)string arguments:(NSDictionary *)arguments error:(NSError *)error {
    NSUnimplementedMethod();
    return nil;

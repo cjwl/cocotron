@@ -473,8 +473,10 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
 }
 
 -initFileURLWithPath:(NSString *)path {
-	if (![path hasPrefix: @"/"]) path = [@"/" stringByAppendingString: path];
-	return [self initWithScheme: NSURLFileScheme host: @"localhost" path: [path stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]];
+	if (![path hasPrefix: @"/"])
+     path = [@"/" stringByAppendingString: path];
+     
+	return [self initWithScheme: NSURLFileScheme host: @"localhost" path:path];
 }
 
 -initWithString:(NSString *)string {
@@ -533,7 +535,7 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+   if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     NSString          *rel=[keyed decodeObjectForKey:@"NS.relative"];
     
@@ -582,7 +584,7 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
 
 
 -(NSUInteger)hash {
-	return [_host hash];
+	return [_path hash];
 }
 
 -(BOOL)isEqual:other {
@@ -606,22 +608,25 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
    return YES;
 }
 
--(NSString *)_hostWithPercents 
-{
-   if (!_scheme && !_host) return [_baseURL _hostWithPercents];
+-(NSString *)_baseHost  {
+   if (!_scheme && !_host)
+    return [_baseURL _baseHost];
+    
    else return _host;
 }
 
--(NSString *)_userWithPercents 
-{
-   if (!_user && !_host && !_scheme ) return [_baseURL _userWithPercents];
+-(NSString *)_baseUser  {
+   if (!_user && !_host && !_scheme )
+     return [_baseURL _baseUser];
+     
    else return _user;
 }
 
--(NSString *)_passwordWithPercents 
-{
-	if (!_password && !_user && !_host && !_scheme)  return [_baseURL _passwordWithPercents];
-	else return _password;
+-(NSString *)_basePassword  {
+	if (!_password && !_user && !_host && !_scheme)
+      return [_baseURL _basePassword];
+	
+    return _password;
 }
 
 static NSString *NormalizePath( NSString *path )
@@ -650,12 +655,12 @@ static NSString *NormalizePath( NSString *path )
 	return [actualComponents componentsJoinedByString: @"/"];	
 }
 
--(NSString *)_pathWithPercents 
+-(NSString *)_basePath 
 {
 	NSString *result = _path;
 
 	if (!_host && !_scheme && _baseURL && ![_path hasPrefix: @"/"]) {
-		result = [_baseURL _pathWithPercents];
+		result = [_baseURL _basePath];
 
 		if (_path ) {
 			if (![result hasSuffix:@"/"]) result = [result stringByDeletingLastPathComponent];
@@ -704,10 +709,10 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
 
 -(NSString *)_buildResourceSpecifier 
 {
-	NSString *host = [self _hostWithPercents];
-	NSString *user = [self _userWithPercents];
-	NSString *password = [self _passwordWithPercents];
-	NSString *path = [self _pathWithPercents];
+	NSString *host = [self _baseHost];
+	NSString *user = [self _baseUser];
+	NSString *password = [self _basePassword];
+	NSString *path = [self _basePath];
 	NSString *parameterString = [self parameterString];
 	NSString *query = [self query];
 	NSString *fragment = [self fragment];
@@ -751,25 +756,25 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
 }
 
 -(NSString *)host {
-   return [[self _hostWithPercents] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+   return [self _baseHost];
 }
 
 -(NSString *)user {
-   return [[self _userWithPercents] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+   return [self _baseUser];
 }
 
 -(NSString *)password {
-   return [[self _passwordWithPercents] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+   return [self _basePassword];
 }
 
--(NSString *)fragment 
-{
-	if (!_fragment && !_query && !_parameter && !_path && !_scheme && !_host) return [_baseURL fragment];
+-(NSString *)fragment  {
+	if (!_fragment && !_query && !_parameter && !_path && !_scheme && !_host)
+      return [_baseURL fragment];
 	else return _fragment;
 }
 
 -(NSString *)path {
-   NSString *result=[[self _pathWithPercents] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+   NSString *result=[self _basePath];
    
    if([result length]>1 && [result hasSuffix:@"/"])
     result=[result substringToIndex:[result length]-1];

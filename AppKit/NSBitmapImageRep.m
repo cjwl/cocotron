@@ -15,19 +15,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSBitmapImageRep
 
 +(NSArray *)imageUnfilteredFileTypes {
-   return [NSArray arrayWithObjects:@"tiff",@"tif",@"png",@"jpg",@"gif",@"bmp",nil];
+   return [NSArray arrayWithObjects:@"tiff",@"tif",@"png",@"jpg",@"gif",@"bmp",@"icns",nil];
 }
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
-   NSMutableArray *result=[NSMutableArray array];
-   NSBitmapImageRep *rep=[[[NSBitmapImageRep alloc] initWithContentsOfFile:path] autorelease];
+   NSData *data=[NSData dataWithContentsOfFile:path];
    
-   if(rep==nil)
+   if(data==nil)
     return nil;
     
-   [result addObject:rep];
+   if([self canInitWithData:data])
+    return [self imageRepsWithData:data];
    
-   return result;
+   return nil;
 }
 
 +(void)getTIFFCompressionTypes:(const NSTIFFCompression **)types count:(int *)count {
@@ -62,13 +62,54 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
++(BOOL)canInitWithData:(NSData *)data {
+   CGImageSourceRef imageSource=CGImageSourceCreateWithData((CFDataRef)data,nil);
+   BOOL result=(imageSource!=NULL)?YES:NO;
+   CFRelease(imageSource);
+   return result;
+}
+
 +(NSArray *)imageRepsWithData:(NSData *)data {
-   id result=[self imageRepWithData:data];
+   NSMutableArray *result=[NSMutableArray array];
+   CGImageSourceRef imageSource=CGImageSourceCreateWithData((CFDataRef)data,nil);
    
-   if(result==nil)
+   if(imageSource==nil)
     return nil;
   
-   return [NSArray arrayWithObject:result];
+   size_t i,count=CGImageSourceGetCount(imageSource);
+   
+   for(i=0;i<count;i++){
+    CGImageRef cgImage=CGImageSourceCreateImageAtIndex(imageSource,i,nil);
+   
+    if(cgImage==nil)
+     break;
+        
+    CFDictionaryRef properties=CGImageSourceCopyPropertiesAtIndex(imageSource,i,nil);
+    NSNumber        *xres=[[(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIWidth) copy] autorelease];
+    NSNumber        *yres=[[(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIHeight) copy] autorelease];
+
+    CFRelease(properties);
+
+    NSBitmapImageRep *imageRep=[[self alloc] initWithCGImage:cgImage];
+    NSSize size={ CGImageGetWidth(cgImage),CGImageGetHeight(cgImage) };
+    
+    CGImageRelease(cgImage);
+   
+    if(xres!=nil && [xres doubleValue]>0)
+     size.width*=72.0/[xres doubleValue];
+    
+    if(yres!=nil && [yres doubleValue]>0)
+     size.height*=72.0/[yres doubleValue];
+     
+    [imageRep setSize:size];
+    
+    if(imageRep!=nil)
+     [result addObject:imageRep];
+}
+
+   CFRelease(imageSource);
+
+   return result;
 }
 
 +imageRepWithData:(NSData *)data {
@@ -134,7 +175,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithFocusedViewRect:(NSRect)rect {
-   return [self initWithData:(NSData *)CGContextCaptureBitmap(NSCurrentGraphicsPort(), rect)];
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
+   
+   if(graphicsPort==NULL){
+    [self dealloc];
+    return nil;
+}
+
+   CGImageRef image=CGBitmapContextCreateImage(graphicsPort);
+   
+   self=[self initWithCGImage:image];
+   
+   CGImageRelease(image);
+   
+   return self;
 }
 
 -initWithData:(NSData *)data {
@@ -197,15 +251,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _bitmapPlanes[0]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
    
     if(_cgImage!=NULL){
+     CGBitmapInfo         bitmapInfo=CGImageGetBitmapInfo(_cgImage);
      CGDataProviderRef    provider=CGImageGetDataProvider(_cgImage);
 // FIXME: inefficient but there is no API to get mutable bytes out of an image or image source
      CFDataRef            bitmapData=CGDataProviderCopyData(provider);
      const unsigned char *bytes=CFDataGetBytePtr(bitmapData);
      int                  i,length=_bytesPerRow*_pixelsHigh;
    
+     if(bitmapInfo==(kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Big)){
      for(i=0;i<length;i++)
       _bitmapPlanes[0][i]=bytes[i];
+     }
+     else {
+      for(i=0;i<length;i+=4){
+       unsigned char b=bytes[i+0];
+       unsigned char g=bytes[i+1];
+       unsigned char r=bytes[i+2];
+       unsigned char a=bytes[i+3];
 
+       _bitmapPlanes[0][i+0]=r;
+       _bitmapPlanes[0][i+1]=g;
+       _bitmapPlanes[0][i+2]=b;
+       _bitmapPlanes[0][i+3]=a;
+      }
+     }
      CFRelease(bitmapData);
     }
    }

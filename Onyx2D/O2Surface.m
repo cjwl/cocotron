@@ -494,6 +494,11 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
     m_ownsData=NO;
    }
    else {
+    if(bytesPerRow>0 && bytesPerRow<(width*bitsPerPixel)/8){
+     NSLog(@"invalid bytes per row=%d",bytesPerRow);
+     bytesPerRow=0;
+    }
+    
     if(bytesPerRow==0)
      bytesPerRow=(width*bitsPerPixel)/8;
      
@@ -704,7 +709,7 @@ void O2SurfaceGaussianBlur(O2Surface *self,O2Image * src, O2GaussianKernel *kern
 	for(j=0;j<src->_height;j++){
      O2argb32f *tmpRow=tmp+j*src->_width;
      int         i,width=src->_width;
-     O2argb32f *direct=O2ImageReadSpan_largb32f_PRE(src,0,j,tmpRow,width);
+     O2argb32f *direct=O2Image_read_argb32f(src,0,j,tmpRow,width);
      
      if(direct!=NULL){
       for(i=0;i<width;i++)

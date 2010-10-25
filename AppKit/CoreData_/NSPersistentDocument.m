@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNib.h>
 #import <Foundation/NSRaise.h>
 #import "NSPersistentDocument.h"
-#import "NSManagedObjectContext.h"
-#import "NSPersistentStoreCoordinator.h"
+#import <CoreData/NSManagedObjectContext.h>
+#import <CoreData/NSPersistentStoreCoordinator.h>
 
 @implementation NSPersistentDocument
 
@@ -83,6 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (BOOL)isDocumentEdited {
    NSUnimplementedMethod();
+   return NO;
 }
 
 

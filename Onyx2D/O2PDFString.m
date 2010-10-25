@@ -72,6 +72,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
+size_t O2PDFStringGetLength(O2PDFStringRef string) {
+   return string->_length;
+}
+
+const unsigned char *O2PDFStringGetBytePtr(O2PDFStringRef string) {
+   return string->_bytes;
+}
+
+
 -(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendPDFStringWithBytes:_bytes length:_length];
 }

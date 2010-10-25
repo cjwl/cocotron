@@ -112,4 +112,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _width=width;
 }
 
+-(void)setImageScaling:(NSImageScaling)value {
+   _imageScaling=value;
+}
+
 @end

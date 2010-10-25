@@ -17,16 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init {
    _isRunning=YES;
-   _response=nil;
    _error=nil;
-   _data=[[NSMutableData alloc] init];
    return self;
 }
 
 -(void)dealloc {
-   [_response release];
    [_error release];
-   [_data release];
    [super dealloc];
 }
 
@@ -34,58 +30,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isRunning;
 }
 
--(void)receiveAllDataInMode:(NSString *)mode
-{
+-(void)receiveAllDataInMode:(NSString *)mode {
 	while (  [self isRunning] ) {
 		[[NSRunLoop currentRunLoop] runMode:mode beforeDate:[NSDate distantFuture]];
-//		NSLog(@"loop did run");
 	}
-	NSLog(@"done %d",_isRunning);
 	
 }
 
--(NSURLResponse *)response {
-   return _response;
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 }
 
 -(NSError *)error {
    return _error;
 }
 
--(NSMutableData *)data {
-   return _data;
-}
-
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	NSLog(@"connection didFailWithError: %@",error);
 	_isRunning=NO;
 	_error=[error retain];
 }
 
--(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-}
-
--(void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-}
-
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	NSLog(@"connection didReceiveData: %d",[data length]);
-	[_data appendData:data];
-}
-
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	NSLog(@"connection didReceiveResponse: %@",response);
-}
-
--(void)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response {
-}
-
--(void)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	NSLog(@"connection connectionDidFinishLoading");
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection {
 
 	_isRunning=NO;
 }

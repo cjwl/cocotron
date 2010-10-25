@@ -37,15 +37,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([_className isEqualToString:@"NSImage"]){
     NSImage *image=[NSImage imageNamed:_resourceName];
     
+    if([_resourceName hasSuffix:@"Template"])
+     [image setTemplate:YES];
+     
     if(image!=nil){
         [self release];
         return [image retain];
     }
    }
 
-   NSLog(@"Could not find image named '%@'.", _resourceName);
+   NSLog(@"Could not find image named '%@'", _resourceName);
    
-   return nil;
+   return [[NSImage alloc] init];
 }
 
 @end

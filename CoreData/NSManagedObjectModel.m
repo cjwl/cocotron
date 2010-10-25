@@ -5,119 +5,139 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSManagedObjectModel.h"
+#import <CoreData/NSManagedObjectModel.h>
+#import <CoreData/NSEntityDescription.h>
+
 #import <Foundation/NSKeyedUnarchiver.h>
-#import <AppKit/NSRaise.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSManagedObjectModel
 
-
-- (id) initWithName: (NSString *) name {
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *path = [bundle pathForResource: name ofType: @"mom"];
-    if(!path) return nil;
-    NSData *data = [[NSData alloc] initWithContentsOfFile: path];
-    if(!data) return nil;
-    NSDictionary *nameTable
-	= [NSDictionary dictionaryWithObject: self forKey: @"NSOwner"];
-    NSKeyedUnarchiver *unarchiver
-	= [[[NSKeyedUnarchiver alloc] initForReadingWithData: data
-					 externalNameTable: nameTable] autorelease];
-    NSManagedObjectModel *result = [unarchiver decodeObjectForKey: @"root"];
-    return result;
++(NSManagedObjectModel *)modelByMergingModels:(NSArray *)models {
+   NSManagedObjectModel *result=[[NSManagedObjectModel alloc] init];
+   NSMutableArray       *entities=[NSMutableArray array];
+   
+   for(NSManagedObjectModel *merge in models){
+    [entities addObjectsFromArray:[merge entities]];
+   }
+   
+   [result setEntities:entities];
+      
+   return result;
 }
 
++(NSManagedObjectModel *)mergedModelFromBundles:(NSArray *)bundles {
+   NSMutableArray *models=[NSMutableArray array];
+   
+   if(bundles==nil)
+    bundles=[NSArray arrayWithObject:[NSBundle mainBundle]];
+  
+   for(NSBundle *bundle in bundles){
+    NSArray *moms=[bundle pathsForResourcesOfType:@"mom" inDirectory:nil];
+        
+    for(NSString *path in moms){
+     NSURL                *url=[NSURL fileURLWithPath:path];
+     NSManagedObjectModel *model=[[NSManagedObjectModel alloc] initWithContentsOfURL:url];
+     
+     if(model==nil)
+      NSLog(@"-[%@ initWithContentsOfURL:] failed. url=%@",self,url);
+     
+     if(model!=nil)
+      [models addObject:model];
+    }
+    
+   }
+   
+   return [self modelByMergingModels:models];
+}
 
-- (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
-       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
-       _entities = [[keyed decodeObjectForKey: @"NSEntities"] retain];
-       _fetchRequestTemplates
-	   = [[keyed decodeObjectForKey: @"NSFetchRequestTemplates"] retain];
-       _versionIdentifiers
-	   = [[keyed decodeObjectForKey: @"NSVersionIdentifiers"] retain];
-       return self;
-   } else {
-       [NSException raise: NSInvalidArgumentException
-		    format: @"%@ can not initWithCoder:%@", isa, [coder class]];
-       return nil;
+-init {
+   _entities=[[NSMutableDictionary alloc] init];
+   _fetchRequestTemplates=[[NSMutableDictionary alloc] init];
+   _configurations=[[NSMutableDictionary alloc] init];
+   return self;
+}
+
+-initWithCoder: (NSCoder *) coder {
+   if(![coder allowsKeyedCoding])
+    [NSException raise:NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
+
+   _entities=[[coder decodeObjectForKey: @"NSEntities"] retain];
+   for(NSEntityDescription *entity in [_entities allValues])
+    [_entities setObject:entity forKey:[[entity name] uppercaseString]];
+    
+   _fetchRequestTemplates=[[coder decodeObjectForKey: @"NSFetchRequestTemplates"] retain];
+   _versionIdentifiers=[[coder decodeObjectForKey: @"NSVersionIdentifiers"] retain];
+   
+   return self;
+}
+
+-initWithContentsOfURL:(NSURL *)url {
+   [self dealloc];
+   
+   NSData *data=[[NSData alloc] initWithContentsOfURL:url];
+   
+   if(data==nil)
+    return nil;
+
+   NSKeyedUnarchiver *unarchiver=[[NSKeyedUnarchiver alloc] initForReadingWithData: data];
+   NSManagedObjectModel *result=[unarchiver decodeObjectForKey: @"root"];
+   
+   [unarchiver release];
+   [data release];
+   
+   return result;
+}
+
+-(NSArray *)entities {
+   return [_entities allValues];
+}
+
+-(NSDictionary *)entitiesByName {
+   return _entities;
+}
+
+-(NSDictionary *) localizationDictionary {
+   return _localizationDictionary;
+}
+
+-(void)setEntities: (NSArray *)entities {
+   [_entities removeAllObjects];
+   
+   for(NSEntityDescription *entity in entities){
+    [_entities setObject:entity forKey:[entity name]];
+    [_entities setObject:entity forKey:[[entity name] uppercaseString]];
    }
 }
 
+-(void)setLocalizationDictionary:(NSDictionary *)dictionary {
+   dictionary=[dictionary copy];
+   [_localizationDictionary release];
+   _localizationDictionary=dictionary;
+}
 
-+ (NSManagedObjectModel *) mergedModelFromBundles: (NSArray *) bundles {
+-(NSArray *)configurations {
+   return [_configurations allKeys];
+}
+
+-(NSArray *)entitiesForConfiguration: (NSString *) configuration {
+   return [_configurations objectForKey:configuration];
+}
+
+-(void)setEntities:(NSArray *)entities forConfiguration:(NSString *)configuration {
+   [_configurations setObject:entities forKey:configuration];
+}
+
+-(NSFetchRequest *)fetchRequestTemplateForName: (NSString *) name {
+   return [_fetchRequestTemplates objectForKey:name];
+}
+
+-(NSFetchRequest *)fetchRequestFromTemplateWithName:(NSString *)name substitutionVariables:(NSDictionary *)variables {
     NSUnimplementedMethod();
 }
 
-
-+ (NSManagedObjectModel *) modelByMergingModels: (NSArray *) models {
-    NSUnimplementedMethod();
+-(void)setFetchRequestTemplate: (NSFetchRequest *) fetchRequest forName: (NSString *) name {
+   [_fetchRequestTemplates setObject:fetchRequest forKey:name];
 }
-
-
-- (id) initWithContentsOfURL: (NSURL *) url {
-    NSUnimplementedMethod();
-}
-
-
-- (NSArray *) configurations {
-    NSUnimplementedMethod();
-}
-
-
-- (NSArray *) entities {
-    NSUnimplementedMethod();
-}
-
-
-- (NSArray *) entitiesForConfiguration: (NSString *) configuration {
-    NSUnimplementedMethod();
-}
-
-
-- (NSDictionary *) localizationDictionary {
-    NSUnimplementedMethod();
-}
-
-
-- (NSFetchRequest *) fetchRequestTemplateForName: (NSString *) name {
-    NSUnimplementedMethod();
-}
-
-
-- (void) setEntities: (NSArray *) entities {
-    NSUnimplementedMethod();
-}
-
-
-- (void) setEntities: (NSArray *) entities forConfiguration: (NSString *) configuration
-{
-    NSUnimplementedMethod();
-}
-
-
-- (void) setLocalizationDictionary: (NSDictionary *) dictionary {
-    NSUnimplementedMethod();
-}
-
-
-- (void) setFetchRequestTemplate: (NSFetchRequest *) fetchRequest
-			 forName: (NSString *) name;
-{
-    NSUnimplementedMethod();
-}
-
-
-- (NSDictionary *) entitiesByName {
-    return _entities;
-}
-
-
-- (NSFetchRequest *) fetchRequestFromTemplateWithName: (NSString *) name
-				substitutionVariables: (NSDictionary *) variables
-{
-    NSUnimplementedMethod();
-}
-
 
 @end

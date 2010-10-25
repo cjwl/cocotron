@@ -7,10 +7,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "_NSManagedProxy.h"
-#import "NSEntityDescription.h"
-#import "NSManagedObjectContext.h"
-#import "NSManagedObject.h"
-#import "NSFetchRequest.h"
+#import <CoreData/NSEntityDescription.h>
+#import <CoreData/NSManagedObjectContext.h>
+#import <CoreData/NSManagedObject.h>
+#import <CoreData/NSFetchRequest.h>
 
 @implementation _NSManagedProxy_observerInfo
 @synthesize indexSet;
@@ -22,43 +22,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 @implementation _NSManagedProxy
-- (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSKeyedUnarchiver class]]){
-       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
-       _object = nil;
-       _context = nil;
-       _entity = nil;
 
-       _entityName = [[keyed decodeObjectForKey: @"NSEntityName"] retain];
-       NSPredicate *fetchPredicate = [keyed decodeObjectForKey: @"NSFetchPredicate"];
+- initWithCoder: (NSCoder *) coder {
+
+   if([coder allowsKeyedCoding]){
+    _object = nil;
+    _context = nil;
+    _entity = nil;
+
+    _entityName = [[coder decodeObjectForKey: @"NSEntityName"] retain];
+    NSPredicate *fetchPredicate=[coder decodeObjectForKey: @"NSFetchPredicate"];
        
-       _fetchRequest = [[NSFetchRequest alloc] init];
-       [_fetchRequest setEntity: _entity];
-       [_fetchRequest setPredicate: fetchPredicate];
-       [_fetchRequest _setOwner: self];
-       
-       _observers = [[NSMutableArray arrayWithCapacity: 5] retain];
-       return self;
+    _fetchRequest = [[NSFetchRequest alloc] init];
+    [_fetchRequest setEntity: _entity];
+    [_fetchRequest setPredicate: fetchPredicate];
+   
+    _observers = [[NSMutableArray alloc] init];
+    return self;
    } else {
-       [NSException raise: NSInvalidArgumentException
-		    format: @"%@ can not initWithCoder:%@", isa, [coder class]];
-       return nil;
+    [NSException raise:NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
+    return nil;
    }
 }
 
 
-- (id) initWithParent: (_NSManagedProxy *) parent object: (NSManagedObject *) object {
-    _object = [object retain];
-    _entity = [parent entity];
-    _entityName = [parent entityName];
-    _context = [parent managedObjectContext];
+-initWithParent: (_NSManagedProxy *) parent object: (NSManagedObject *) object {
+   _object = [object retain];
+   _entity = [parent entity];
+   _entityName = [parent entityName];
+   _context = [parent managedObjectContext];
 
-    _fetchRequest = [[NSFetchRequest alloc] init];
-    [_fetchRequest setEntity: _entity];
-    [_fetchRequest _setOwner: self];
+   _fetchRequest = [[NSFetchRequest alloc] init];
+   [_fetchRequest setEntity: _entity];
     
-    _observers = [[NSMutableArray arrayWithCapacity: 5] retain];
-    return self;
+   _observers = [[NSMutableArray alloc] init];
+   return self;
 }
 
 
@@ -91,7 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _context = context;
     _entity = [NSEntityDescription entityForName: _entityName
 				   inManagedObjectContext: _context];
-    [_fetchRequest _invalidateCache];
+
     [_fetchRequest setEntity: _entity];
 }
 

@@ -11,26 +11,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSXMLElement
 
 -initWithName:(NSString *)name {
-   return 0;
+   [super initWithKind:NSXMLElementKind options:NSXMLNodeOptionsNone];
+   _name=[name copy];
+   _attributes=[[NSMutableDictionary alloc] init];
+   _namespaces=[[NSMutableDictionary alloc] init];
+   return self;
 }
 
 -initWithName:(NSString *)name stringValue:(NSString *)string {
-   return 0;
+   [self initWithName:name];
+   _value=[string copy];
+   return self;
 }
 
 -initWithName:(NSString *)name URI:(NSString *)uri {
+   NSUnimplementedMethod();
    return 0;
 }
 
 -initWithXMLString:(NSString *)xml error:(NSError **)error {
+   NSUnimplementedMethod();
    return 0;
 }
 
 -copyWithZone:(NSZone *)zone {
+   NSUnimplementedMethod();
    return 0;
 }
 
@@ -39,6 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSXMLNode *)attributeForLocalName:(NSString *)name URI:(NSString *)uri {
+   NSUnimplementedMethod();
    return 0;
 }
 
@@ -47,23 +58,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)uri {
+   NSUnimplementedMethod();
    return 0;
 }
 
 -(NSArray *)elementsForName:(NSString *)name {
-   return 0;
+   NSMutableArray *result=[NSMutableArray array];
+   
+   for(NSXMLNode *node in _children)
+    if([[node name] isEqualToString:name])
+     [result addObject:node];
+     
+   return result;
 }
 
 -(NSArray *)namespaces {
+   NSUnimplementedMethod();
    return 0;
 }
 
 -(NSXMLNode *)namespaceForPrefix:(NSString *)prefix {
+   NSUnimplementedMethod();
    return 0;
 }
 
 -(void)setAttributes:(NSArray *)attributes {
    NSInteger i,count=[attributes count];
+   
+   [_attributes removeAllObjects];
    
    for(i=0;i<count;i++){
     NSXMLNode *add=[attributes objectAtIndex:i];
@@ -75,6 +97,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setAttributesAsDictionary:(NSDictionary *)attributes {
    NSEnumerator *state=[attributes keyEnumerator];
    NSString     *name;
+   
+   [_attributes removeAllObjects];
    
    while((name=[state nextObject])!=nil){
     NSString  *value=[attributes objectForKey:name];
@@ -93,6 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addChild:(NSXMLNode *)node {
+   node->_parent=self;
    [_children addObject:node];
 }
 
@@ -132,12 +157,85 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)resolveNamespaceForName:(NSString *)name {
+   NSUnimplementedMethod();
 }
 
 -(void)resolvePrefixForNamespaceURI:(NSString *)uri {
+   NSUnimplementedMethod();
 }
 
 -(void)normalizeAdjacentTextNodesPreservingCDATA:(BOOL)preserve {
+   NSUnimplementedMethod();
+}
+
+static void appendStringWithCharacterEntities(NSMutableString *result,NSString *string){
+   NSUInteger i,length=[string length],location=0;
+   unichar    buffer[length];
+   
+   [string getCharacters:buffer];
+   
+   for(i=0;i<length;i++){
+    unichar   code=buffer[i];
+    NSString *entity=nil;
+    
+    if(code=='<')
+     entity=@"&lt;";
+    else if(code=='&')
+     entity=@"&amp;";
+    else if(code=='>')
+     entity=@"&gt;";
+    else if(code=='\"')
+     entity=@"&quot;";
+    else if(code=='\'')
+     entity=@"&apos;";
+    
+    if(entity!=nil){
+     if(i-location>0){
+      NSString *chunk=[[NSString alloc] initWithCharacters:buffer+location length:i-location];
+      [result appendString:chunk];
+      [chunk release];
+     }
+     
+     [result appendString:entity];
+     location=i+1;
+    }
+    
+   }
+   
+   if(location==0)
+    [result appendString:string];
+   else if(i-location>0){
+    NSString *chunk=[[NSString alloc] initWithCharacters:buffer+location length:i-location];
+    [result appendString:chunk];
+    [chunk release];
+   }
+}
+
+-(NSString *)XMLStringWithOptions:(NSUInteger)options {
+   NSMutableString *result=[NSMutableString string];
+   
+   [result appendString:@"<"];
+   [result appendString:[self name]];
+   
+   for(NSXMLNode *attribute in [self attributes]){
+    [result appendString:@" "];
+    [result appendString:[attribute XMLStringWithOptions:options]];
+   }
+   
+   [result appendString:@">"];
+   
+   for(NSXMLNode *element in [self children]){
+    [result appendString:@" "];
+    [result appendString:[element XMLStringWithOptions:options]];
+   }
+   
+   appendStringWithCharacterEntities(result,[self stringValue]);
+
+   [result appendString:@"</"];
+   [result appendString:[self name]];
+   [result appendString:@">\n"];
+   
+   return result;
 }
 
 @end

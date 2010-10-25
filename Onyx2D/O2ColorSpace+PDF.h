@@ -4,5 +4,5 @@
 
 @interface O2ColorSpace(PDF)
 -(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context;
-+(O2ColorSpaceRef)colorSpaceFromPDFObject:(O2PDFObject *)object;
++(O2ColorSpaceRef)createColorSpaceFromPDFObject:(O2PDFObject *)object;
 @end

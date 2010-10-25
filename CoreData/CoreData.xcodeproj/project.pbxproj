@@ -8,11 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
-		E205443B0DC209DC00E9DD09 /* NSPersistentDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = E20544390DC209DC00E9DD09 /* NSPersistentDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E205443C0DC209DC00E9DD09 /* NSPersistentDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = E205443A0DC209DC00E9DD09 /* NSPersistentDocument.m */; };
-		E2054A2C0DC3FFBE00E9DD09 /* _NSManagedProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = E2054A2A0DC3FFBE00E9DD09 /* _NSManagedProxy.m */; };
-		E2054A2D0DC3FFBE00E9DD09 /* _NSManagedProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = E2054A2B0DC3FFBE00E9DD09 /* _NSManagedProxy.h */; };
-		E2F490290DC80FE600310CCE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F490280DC80FE600310CCE /* AppKit.framework */; };
+		FE06432B121AD56400373F23 /* NSManagedObjectSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064327121AD56400373F23 /* NSManagedObjectSet.h */; };
+		FE06432C121AD56400373F23 /* NSManagedObjectSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064328121AD56400373F23 /* NSManagedObjectSet.m */; };
+		FE06432D121AD56400373F23 /* NSManagedObjectSetEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064329121AD56400373F23 /* NSManagedObjectSetEnumerator.h */; };
+		FE06432E121AD56400373F23 /* NSManagedObjectSetEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FE06432A121AD56400373F23 /* NSManagedObjectSetEnumerator.m */; };
+		FE06433F121AD7C200373F23 /* NSManagedObjectMutableSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE06433D121AD7C200373F23 /* NSManagedObjectMutableSet.h */; };
+		FE064340121AD7C200373F23 /* NSManagedObjectMutableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE06433E121AD7C200373F23 /* NSManagedObjectMutableSet.m */; };
+		FE1FBEF311E6692400A9A87A /* NSAtomicStore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1FBEED11E6692400A9A87A /* NSAtomicStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE1FBEF411E6692400A9A87A /* NSAtomicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1FBEEE11E6692400A9A87A /* NSAtomicStore.m */; };
+		FE1FBEF511E6692400A9A87A /* NSAtomicStoreCacheNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1FBEEF11E6692400A9A87A /* NSAtomicStoreCacheNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE1FBEF611E6692400A9A87A /* NSAtomicStoreCacheNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1FBEF011E6692400A9A87A /* NSAtomicStoreCacheNode.m */; };
+		FE1FBEF711E6692400A9A87A /* NSPersistentStore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1FBEF111E6692400A9A87A /* NSPersistentStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE1FBEF811E6692400A9A87A /* NSPersistentStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1FBEF211E6692400A9A87A /* NSPersistentStore.m */; };
+		FE1FC22911E8116200A9A87A /* NSInMemoryPersistentStore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1FC22511E8116200A9A87A /* NSInMemoryPersistentStore.h */; };
+		FE1FC22A11E8116200A9A87A /* NSInMemoryPersistentStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1FC22611E8116200A9A87A /* NSInMemoryPersistentStore.m */; };
+		FE1FC22B11E8116200A9A87A /* NSXMLPersistentStore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1FC22711E8116200A9A87A /* NSXMLPersistentStore.h */; };
+		FE1FC22C11E8116200A9A87A /* NSXMLPersistentStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1FC22811E8116200A9A87A /* NSXMLPersistentStore.m */; };
 		FE21313A0DBFC72700CEDC65 /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2131390DBFC72700CEDC65 /* dllmain.m */; };
 		FE2131420DBFC74200CEDC65 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE2132900DBFD21900CEDC65 /* CoreDataExports.h in Headers */ = {isa = PBXBuildFile; fileRef = FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,6 +50,13 @@
 		FE82F3E70BF1042F00B18B54 /* NSPropertyDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = FE82F3D10BF1042F00B18B54 /* NSPropertyDescription.m */; };
 		FE82F3E80BF1042F00B18B54 /* NSRelationshipDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = FE82F3D20BF1042F00B18B54 /* NSRelationshipDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE82F3E90BF1042F00B18B54 /* NSRelationshipDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = FE82F3D30BF1042F00B18B54 /* NSRelationshipDescription.m */; };
+		FEA2C93012077436003B1BB9 /* NSManagedObject-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA2C92E12077436003B1BB9 /* NSManagedObject-Private.h */; };
+		FEA2C93112077436003B1BB9 /* NSManagedObjectID-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA2C92F12077436003B1BB9 /* NSManagedObjectID-Private.h */; };
+		FEDE4B951208545A003D3EF1 /* NSPersistentStoreCoordinator-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDE4B941208545A003D3EF1 /* NSPersistentStoreCoordinator-Private.h */; };
+		FEDE4E5112089EDC003D3EF1 /* CoreDataErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDE4E4F12089EDC003D3EF1 /* CoreDataErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDE4E5212089EDC003D3EF1 /* CoreDataErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDE4E5012089EDC003D3EF1 /* CoreDataErrors.m */; };
+		FEDE51FE1209B1A0003D3EF1 /* NSManagedObjectContext-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDE51FD1209B1A0003D3EF1 /* NSManagedObjectContext-Private.h */; };
+		FEDE52F61209C3AE003D3EF1 /* NSEntityDescription-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDE52F51209C3AE003D3EF1 /* NSEntityDescription-Private.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -53,12 +71,40 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		E2F48FA50DC80FAE00310CCE /* PBXContainerItemProxy */ = {
+		FE39C6841203D5F800A80A71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
+			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE43FC5611DE832600EBDD56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
-			remoteInfo = "AppKit-Windows-i386";
+			remoteGlobalIDString = FE651A870FBC844C00464BFD;
+			remoteInfo = "Foundation-Darwin-x86_64";
+		};
+		FE43FC5811DE832600EBDD56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
+			remoteInfo = "Foundation-Linux-ppc";
+		};
+		FE43FC5A11DE832600EBDD56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15D921C0105E918000171406;
+			remoteInfo = "Foundation-Linux-arm";
+		};
+		FE43FC5C11DE832600EBDD56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F;
+			remoteInfo = "Foundation-FreeBSD-i386";
 		};
 		FE59F30F0D54301D00D54A25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -95,20 +141,6 @@
 			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
 			remoteInfo = "Foundation-Darwin-ppc";
 		};
-		FE6E110C0F4F8F6600C65544 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
-			remoteInfo = "AppKit-Linux-i386";
-		};
-		FE6E110E0F4F8F6600C65544 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
-			remoteInfo = "AppKit-Darwin-i386";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -116,12 +148,22 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E20544390DC209DC00E9DD09 /* NSPersistentDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPersistentDocument.h; sourceTree = "<group>"; };
-		E205443A0DC209DC00E9DD09 /* NSPersistentDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPersistentDocument.m; sourceTree = "<group>"; };
-		E2054A2A0DC3FFBE00E9DD09 /* _NSManagedProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _NSManagedProxy.m; sourceTree = "<group>"; };
-		E2054A2B0DC3FFBE00E9DD09 /* _NSManagedProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _NSManagedProxy.h; sourceTree = "<group>"; };
-		E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
-		E2F490280DC80FE600310CCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		FE064327121AD56400373F23 /* NSManagedObjectSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSManagedObjectSet.h; sourceTree = "<group>"; };
+		FE064328121AD56400373F23 /* NSManagedObjectSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSManagedObjectSet.m; sourceTree = "<group>"; };
+		FE064329121AD56400373F23 /* NSManagedObjectSetEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSManagedObjectSetEnumerator.h; sourceTree = "<group>"; };
+		FE06432A121AD56400373F23 /* NSManagedObjectSetEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSManagedObjectSetEnumerator.m; sourceTree = "<group>"; };
+		FE06433D121AD7C200373F23 /* NSManagedObjectMutableSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSManagedObjectMutableSet.h; sourceTree = "<group>"; };
+		FE06433E121AD7C200373F23 /* NSManagedObjectMutableSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSManagedObjectMutableSet.m; sourceTree = "<group>"; };
+		FE1FBEED11E6692400A9A87A /* NSAtomicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicStore.h; sourceTree = "<group>"; };
+		FE1FBEEE11E6692400A9A87A /* NSAtomicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAtomicStore.m; sourceTree = "<group>"; };
+		FE1FBEEF11E6692400A9A87A /* NSAtomicStoreCacheNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicStoreCacheNode.h; sourceTree = "<group>"; };
+		FE1FBEF011E6692400A9A87A /* NSAtomicStoreCacheNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAtomicStoreCacheNode.m; sourceTree = "<group>"; };
+		FE1FBEF111E6692400A9A87A /* NSPersistentStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPersistentStore.h; sourceTree = "<group>"; };
+		FE1FBEF211E6692400A9A87A /* NSPersistentStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPersistentStore.m; sourceTree = "<group>"; };
+		FE1FC22511E8116200A9A87A /* NSInMemoryPersistentStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInMemoryPersistentStore.h; sourceTree = "<group>"; };
+		FE1FC22611E8116200A9A87A /* NSInMemoryPersistentStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInMemoryPersistentStore.m; sourceTree = "<group>"; };
+		FE1FC22711E8116200A9A87A /* NSXMLPersistentStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXMLPersistentStore.h; sourceTree = "<group>"; };
+		FE1FC22811E8116200A9A87A /* NSXMLPersistentStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXMLPersistentStore.m; sourceTree = "<group>"; };
 		FE2131390DBFC72700CEDC65 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 		FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataExports.h; sourceTree = "<group>"; };
 		FE2132910DBFD22000CEDC65 /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
@@ -148,6 +190,13 @@
 		FE82F3D10BF1042F00B18B54 /* NSPropertyDescription.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyDescription.m; sourceTree = "<group>"; };
 		FE82F3D20BF1042F00B18B54 /* NSRelationshipDescription.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSRelationshipDescription.h; sourceTree = "<group>"; };
 		FE82F3D30BF1042F00B18B54 /* NSRelationshipDescription.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSRelationshipDescription.m; sourceTree = "<group>"; };
+		FEA2C92E12077436003B1BB9 /* NSManagedObject-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject-Private.h"; sourceTree = "<group>"; };
+		FEA2C92F12077436003B1BB9 /* NSManagedObjectID-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectID-Private.h"; sourceTree = "<group>"; };
+		FEDE4B941208545A003D3EF1 /* NSPersistentStoreCoordinator-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStoreCoordinator-Private.h"; sourceTree = "<group>"; };
+		FEDE4E4F12089EDC003D3EF1 /* CoreDataErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataErrors.h; sourceTree = "<group>"; };
+		FEDE4E5012089EDC003D3EF1 /* CoreDataErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataErrors.m; sourceTree = "<group>"; };
+		FEDE51FD1209B1A0003D3EF1 /* NSManagedObjectContext-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext-Private.h"; sourceTree = "<group>"; };
+		FEDE52F51209C3AE003D3EF1 /* NSEntityDescription-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription-Private.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,7 +205,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE2131420DBFC74200CEDC65 /* Foundation.framework in Frameworks */,
-				E2F490290DC80FE600310CCE /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,15 +222,28 @@
 		0867D691FE84028FC02AAC07 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				E2F490280DC80FE600310CCE /* AppKit.framework */,
-				E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */,
-				E2054A2A0DC3FFBE00E9DD09 /* _NSManagedProxy.m */,
-				E2054A2B0DC3FFBE00E9DD09 /* _NSManagedProxy.h */,
-				E20544390DC209DC00E9DD09 /* NSPersistentDocument.h */,
-				E205443A0DC209DC00E9DD09 /* NSPersistentDocument.m */,
+				FE06433D121AD7C200373F23 /* NSManagedObjectMutableSet.h */,
+				FE06433E121AD7C200373F23 /* NSManagedObjectMutableSet.m */,
+				FE064327121AD56400373F23 /* NSManagedObjectSet.h */,
+				FE064328121AD56400373F23 /* NSManagedObjectSet.m */,
+				FE064329121AD56400373F23 /* NSManagedObjectSetEnumerator.h */,
+				FE06432A121AD56400373F23 /* NSManagedObjectSetEnumerator.m */,
+				FEDE52F51209C3AE003D3EF1 /* NSEntityDescription-Private.h */,
+				FEDE51FD1209B1A0003D3EF1 /* NSManagedObjectContext-Private.h */,
+				FEDE4E4F12089EDC003D3EF1 /* CoreDataErrors.h */,
+				FEDE4E5012089EDC003D3EF1 /* CoreDataErrors.m */,
+				FEDE4B941208545A003D3EF1 /* NSPersistentStoreCoordinator-Private.h */,
+				FEA2C92E12077436003B1BB9 /* NSManagedObject-Private.h */,
+				FEA2C92F12077436003B1BB9 /* NSManagedObjectID-Private.h */,
+				08FB77AEFE84172EC02AAC07 /* Classes */,
 				FE2132910DBFD22000CEDC65 /* CoreData.h */,
 				FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */,
+				FE1FBEED11E6692400A9A87A /* NSAtomicStore.h */,
+				FE1FBEEE11E6692400A9A87A /* NSAtomicStore.m */,
+				FE1FBEEF11E6692400A9A87A /* NSAtomicStoreCacheNode.h */,
+				FE1FBEF011E6692400A9A87A /* NSAtomicStoreCacheNode.m */,
 				FE82F3BE0BF1042F00B18B54 /* NSAttributeDescription.h */,
 				FE82F3BF0BF1042F00B18B54 /* NSAttributeDescription.m */,
 				FE82F3C00BF1042F00B18B54 /* NSEntityDescription.h */,
@@ -191,6 +252,8 @@
 				FE82F3C30BF1042F00B18B54 /* NSFetchedPropertyDescription.m */,
 				FE82F3C40BF1042F00B18B54 /* NSFetchRequest.h */,
 				FE82F3C50BF1042F00B18B54 /* NSFetchRequest.m */,
+				FE1FC22511E8116200A9A87A /* NSInMemoryPersistentStore.h */,
+				FE1FC22611E8116200A9A87A /* NSInMemoryPersistentStore.m */,
 				FE82F3C60BF1042F00B18B54 /* NSManagedObject.h */,
 				FE82F3C70BF1042F00B18B54 /* NSManagedObject.m */,
 				FE82F3C80BF1042F00B18B54 /* NSManagedObjectContext.h */,
@@ -199,17 +262,19 @@
 				FE82F3CB0BF1042F00B18B54 /* NSManagedObjectID.m */,
 				FE82F3CC0BF1042F00B18B54 /* NSManagedObjectModel.h */,
 				FE82F3CD0BF1042F00B18B54 /* NSManagedObjectModel.m */,
+				FE1FBEF111E6692400A9A87A /* NSPersistentStore.h */,
+				FE1FBEF211E6692400A9A87A /* NSPersistentStore.m */,
 				FE82F3CE0BF1042F00B18B54 /* NSPersistentStoreCoordinator.h */,
 				FE82F3CF0BF1042F00B18B54 /* NSPersistentStoreCoordinator.m */,
 				FE82F3D00BF1042F00B18B54 /* NSPropertyDescription.h */,
 				FE82F3D10BF1042F00B18B54 /* NSPropertyDescription.m */,
 				FE82F3D20BF1042F00B18B54 /* NSRelationshipDescription.h */,
 				FE82F3D30BF1042F00B18B54 /* NSRelationshipDescription.m */,
-				08FB77AEFE84172EC02AAC07 /* Classes */,
+				FE1FC22711E8116200A9A87A /* NSXMLPersistentStore.h */,
+				FE1FC22811E8116200A9A87A /* NSXMLPersistentStore.m */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
-				089C1665FE841158C02AAC07 /* Resources */,
-				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				089C1665FE841158C02AAC07 /* Resources */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -262,16 +327,6 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
-		E2F48FA20DC80FAE00310CCE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E2F48FA60DC80FAE00310CCE /* AppKit.framework */,
-				FE6E110D0F4F8F6600C65544 /* AppKit.framework */,
-				FE6E110F0F4F8F6600C65544 /* AppKit.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FE59F3000D54301C00D54A25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +335,10 @@
 				FE59F3140D54301D00D54A25 /* Foundation.framework */,
 				FE59F3160D54301D00D54A25 /* Foundation.framework */,
 				FE59F3180D54301D00D54A25 /* Foundation.framework */,
+				FE43FC5711DE832600EBDD56 /* Foundation.framework */,
+				FE43FC5911DE832600EBDD56 /* Foundation.framework */,
+				FE43FC5B11DE832600EBDD56 /* Foundation.framework */,
+				FE43FC5D11DE832600EBDD56 /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -304,8 +363,20 @@
 				FE82F3E80BF1042F00B18B54 /* NSRelationshipDescription.h in Headers */,
 				FE2132900DBFD21900CEDC65 /* CoreDataExports.h in Headers */,
 				FE2132920DBFD22000CEDC65 /* CoreData.h in Headers */,
-				E205443B0DC209DC00E9DD09 /* NSPersistentDocument.h in Headers */,
-				E2054A2D0DC3FFBE00E9DD09 /* _NSManagedProxy.h in Headers */,
+				FE1FBEF311E6692400A9A87A /* NSAtomicStore.h in Headers */,
+				FE1FBEF511E6692400A9A87A /* NSAtomicStoreCacheNode.h in Headers */,
+				FE1FBEF711E6692400A9A87A /* NSPersistentStore.h in Headers */,
+				FE1FC22911E8116200A9A87A /* NSInMemoryPersistentStore.h in Headers */,
+				FE1FC22B11E8116200A9A87A /* NSXMLPersistentStore.h in Headers */,
+				FEA2C93012077436003B1BB9 /* NSManagedObject-Private.h in Headers */,
+				FEA2C93112077436003B1BB9 /* NSManagedObjectID-Private.h in Headers */,
+				FEDE4B951208545A003D3EF1 /* NSPersistentStoreCoordinator-Private.h in Headers */,
+				FEDE4E5112089EDC003D3EF1 /* CoreDataErrors.h in Headers */,
+				FEDE51FE1209B1A0003D3EF1 /* NSManagedObjectContext-Private.h in Headers */,
+				FEDE52F61209C3AE003D3EF1 /* NSEntityDescription-Private.h in Headers */,
+				FE06432B121AD56400373F23 /* NSManagedObjectSet.h in Headers */,
+				FE06432D121AD56400373F23 /* NSManagedObjectSetEnumerator.h in Headers */,
+				FE06433F121AD7C200373F23 /* NSManagedObjectMutableSet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +396,7 @@
 				FED50C130D52BED300195B38 /* PBXBuildRule */,
 			);
 			dependencies = (
+				FE39C6851203D5F800A80A71 /* PBXTargetDependency */,
 			);
 			name = "CoreData-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -345,10 +417,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = E2F48FA20DC80FAE00310CCE /* Products */;
-					ProjectRef = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
-				},
-				{
 					ProductGroup = FE59F3000D54301C00D54A25 /* Products */;
 					ProjectRef = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
 				},
@@ -361,11 +429,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		E2F48FA60DC80FAE00310CCE /* AppKit.framework */ = {
+		FE43FC5711DE832600EBDD56 /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = E2F48FA50DC80FAE00310CCE /* PBXContainerItemProxy */;
+			path = Foundation.framework;
+			remoteRef = FE43FC5611DE832600EBDD56 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE43FC5911DE832600EBDD56 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE43FC5811DE832600EBDD56 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE43FC5B11DE832600EBDD56 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE43FC5A11DE832600EBDD56 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE43FC5D11DE832600EBDD56 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE43FC5C11DE832600EBDD56 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE59F3100D54301D00D54A25 /* Foundation.framework */ = {
@@ -403,20 +492,6 @@
 			remoteRef = FE59F3170D54301D00D54A25 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE6E110D0F4F8F6600C65544 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FE6E110C0F4F8F6600C65544 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE6E110F0F4F8F6600C65544 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FE6E110E0F4F8F6600C65544 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -447,12 +522,27 @@
 				FE82F3E70BF1042F00B18B54 /* NSPropertyDescription.m in Sources */,
 				FE82F3E90BF1042F00B18B54 /* NSRelationshipDescription.m in Sources */,
 				FE21313A0DBFC72700CEDC65 /* dllmain.m in Sources */,
-				E205443C0DC209DC00E9DD09 /* NSPersistentDocument.m in Sources */,
-				E2054A2C0DC3FFBE00E9DD09 /* _NSManagedProxy.m in Sources */,
+				FE1FBEF411E6692400A9A87A /* NSAtomicStore.m in Sources */,
+				FE1FBEF611E6692400A9A87A /* NSAtomicStoreCacheNode.m in Sources */,
+				FE1FBEF811E6692400A9A87A /* NSPersistentStore.m in Sources */,
+				FE1FC22A11E8116200A9A87A /* NSInMemoryPersistentStore.m in Sources */,
+				FE1FC22C11E8116200A9A87A /* NSXMLPersistentStore.m in Sources */,
+				FEDE4E5212089EDC003D3EF1 /* CoreDataErrors.m in Sources */,
+				FE06432C121AD56400373F23 /* NSManagedObjectSet.m in Sources */,
+				FE06432E121AD56400373F23 /* NSManagedObjectSetEnumerator.m in Sources */,
+				FE064340121AD7C200373F23 /* NSManagedObjectMutableSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE39C6851203D5F800A80A71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Windows-i386";
+			targetProxy = FE39C6841203D5F800A80A71 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {

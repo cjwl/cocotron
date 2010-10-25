@@ -43,6 +43,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 enum {
    NSLibraryDirectory=5,
+   NSCachesDirectory=13,
+   NSApplicationSupportDirectory=14,
 };
 
 typedef NSUInteger NSSearchPathDirectory;

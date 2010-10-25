@@ -25,6 +25,9 @@
 		FE0FB9C710F9815300EBA597 /* CIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B610F9815300EBA597 /* CIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE0FB9C810F9815300EBA597 /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE255FF210F10397005CE23E /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4301AC11E255A500EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4301AD11E255A500EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4301AE11E255A500EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4477C01039EECB00ECD6A6 /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7AA0ED10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE7AA0EE10F97A6700FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -32,6 +35,39 @@
 		FEA3F2131133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3F2141133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3F2151133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEAEF7E911E3AAD000CA0912 /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7EA11E3AAD000CA0912 /* CAAnimationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E111E3AAD000CA0912 /* CAAnimationGroup.m */; };
+		FEAEF7EB11E3AAD000CA0912 /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7EC11E3AAD000CA0912 /* CABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E311E3AAD000CA0912 /* CABasicAnimation.m */; };
+		FEAEF7ED11E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7EE11E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E511E3AAD000CA0912 /* CAPropertyAnimation.m */; };
+		FEAEF7EF11E3AAD000CA0912 /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E611E3AAD000CA0912 /* CATransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7F011E3AAD000CA0912 /* CATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E711E3AAD000CA0912 /* CATransition.m */; };
+		FEAEF7F111E3AAD000CA0912 /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E811E3AAD000CA0912 /* CIAffineTransform.m */; };
+		FEAEF7F211E3AAD000CA0912 /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7F311E3AAD000CA0912 /* CAAnimationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E111E3AAD000CA0912 /* CAAnimationGroup.m */; };
+		FEAEF7F411E3AAD000CA0912 /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7F511E3AAD000CA0912 /* CABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E311E3AAD000CA0912 /* CABasicAnimation.m */; };
+		FEAEF7F611E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7F711E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E511E3AAD000CA0912 /* CAPropertyAnimation.m */; };
+		FEAEF7F811E3AAD000CA0912 /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E611E3AAD000CA0912 /* CATransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7F911E3AAD000CA0912 /* CATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E711E3AAD000CA0912 /* CATransition.m */; };
+		FEAEF7FA11E3AAD000CA0912 /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E811E3AAD000CA0912 /* CIAffineTransform.m */; };
+		FEAEF7FB11E3AAD000CA0912 /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7FD11E3AAD000CA0912 /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF7FF11E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF80111E3AAD000CA0912 /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E611E3AAD000CA0912 /* CATransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF82311E3AB6A00CA0912 /* CoreAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF82211E3AB6A00CA0912 /* CoreAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF82411E3AB6A00CA0912 /* CoreAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF82211E3AB6A00CA0912 /* CoreAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF82511E3AB6A00CA0912 /* CoreAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF82211E3AB6A00CA0912 /* CoreAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF85E11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF85F11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF86011E3AFEF00CA0912 /* CAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF8C311E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF8C411E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */; };
+		FEAEF8C511E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEF8C611E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */; };
+		FEAEF8C711E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819810EBB231003472F1 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819910EBB231003472F1 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819A10EBB231003472F1 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -85,6 +121,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = FE5A884510C6F286005E348A;
 			remoteInfo = "CoreGraphics-FreeBSD-i386";
+		};
+		FE4301A111E2556B00EBDD56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "CoreVideo-Windows-i386";
+		};
+		FE4301A311E2557400EBDD56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "CoreVideo-Windows-i386";
 		};
 		FECA81AD10EBB2AC003472F1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -146,10 +196,25 @@
 		FE0FB9B810F9815300EBA597 /* CIVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIVector.h; sourceTree = "<group>"; };
 		FE0FB9B910F9815300EBA597 /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIVector.m; sourceTree = "<group>"; };
 		FE255FEF10F10397005CE23E /* CoreImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreImage.h; sourceTree = "<group>"; };
+		FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreVideo.xcodeproj; path = ../CoreVideo/CoreVideo.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE4301AB11E255A500EBDD56 /* CoreVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreVideo.h; sourceTree = "<group>"; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
 		FE7AA0EB10F97A2A00FEDD9C /* CAWindowOpenGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAWindowOpenGLContext.m; sourceTree = "<group>"; };
 		FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAWindowOpenGLContext.h; sourceTree = "<group>"; };
 		FEA3F2121133089500690AA2 /* CIAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIAffineTransform.h; sourceTree = "<group>"; };
+		FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAnimationGroup.h; sourceTree = "<group>"; };
+		FEAEF7E111E3AAD000CA0912 /* CAAnimationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAAnimationGroup.m; sourceTree = "<group>"; };
+		FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABasicAnimation.h; sourceTree = "<group>"; };
+		FEAEF7E311E3AAD000CA0912 /* CABasicAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABasicAnimation.m; sourceTree = "<group>"; };
+		FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAPropertyAnimation.h; sourceTree = "<group>"; };
+		FEAEF7E511E3AAD000CA0912 /* CAPropertyAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAPropertyAnimation.m; sourceTree = "<group>"; };
+		FEAEF7E611E3AAD000CA0912 /* CATransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransition.h; sourceTree = "<group>"; };
+		FEAEF7E711E3AAD000CA0912 /* CATransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransition.m; sourceTree = "<group>"; };
+		FEAEF7E811E3AAD000CA0912 /* CIAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIAffineTransform.m; sourceTree = "<group>"; };
+		FEAEF82211E3AB6A00CA0912 /* CoreAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreAnimation.h; sourceTree = "<group>"; };
+		FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMediaTiming.h; sourceTree = "<group>"; };
+		FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMediaTimingFunction.h; sourceTree = "<group>"; };
+		FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAMediaTimingFunction.m; sourceTree = "<group>"; };
 		FEC3ED7710E1270C00511C18 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARenderer.m; sourceTree = "<group>"; };
 		FECA81A110EBB231003472F1 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED38BEA10E12BAB00A2A651 /* CARenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARenderer.h; sourceTree = "<group>"; };
@@ -202,7 +267,30 @@
 		0867D691FE84028FC02AAC07 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */,
+				FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */,
+				FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */,
+				FEF88C35100CC62400B15FD7 /* CAAnimation.m */,
+				FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */,
+				FEAEF7E111E3AAD000CA0912 /* CAAnimationGroup.m */,
+				FED38C8D10E13FCC00A2A651 /* CABase.h */,
+				FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */,
+				FEAEF7E311E3AAD000CA0912 /* CABasicAnimation.m */,
+				FEF88C2C100CC45B00B15FD7 /* CALayer.h */,
+				FEF88C36100CC62400B15FD7 /* CALayer.m */,
+				FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */,
+				FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */,
+				FEAEF7E511E3AAD000CA0912 /* CAPropertyAnimation.m */,
+				FED38BEA10E12BAB00A2A651 /* CARenderer.h */,
+				FEC3ED7710E1270C00511C18 /* CARenderer.m */,
+				FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */,
+				FEF88C37100CC62400B15FD7 /* CATransform3D.m */,
+				FEAEF7E611E3AAD000CA0912 /* CATransition.h */,
+				FEAEF7E711E3AAD000CA0912 /* CATransition.m */,
+				FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */,
+				FE7AA0EB10F97A2A00FEDD9C /* CAWindowOpenGLContext.m */,
 				FEA3F2121133089500690AA2 /* CIAffineTransform.h */,
+				FEAEF7E811E3AAD000CA0912 /* CIAffineTransform.m */,
 				FE0FB9B010F9815300EBA597 /* CIColor.h */,
 				FE0FB9B110F9815300EBA597 /* CIColor.m */,
 				FE0FB9B210F9815300EBA597 /* CIContext.h */,
@@ -213,24 +301,16 @@
 				FE0FB9B710F9815300EBA597 /* CIImage.m */,
 				FE0FB9B810F9815300EBA597 /* CIVector.h */,
 				FE0FB9B910F9815300EBA597 /* CIVector.m */,
-				FE255FEF10F10397005CE23E /* CoreImage.h */,
-				FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */,
-				FE7AA0EB10F97A2A00FEDD9C /* CAWindowOpenGLContext.m */,
-				FED38C8D10E13FCC00A2A651 /* CABase.h */,
-				FED38BEA10E12BAB00A2A651 /* CARenderer.h */,
-				FEC3ED7710E1270C00511C18 /* CARenderer.m */,
-				FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */,
-				FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */,
-				FEF88C35100CC62400B15FD7 /* CAAnimation.m */,
-				FEF88C2C100CC45B00B15FD7 /* CALayer.h */,
-				FEF88C36100CC62400B15FD7 /* CALayer.m */,
-				FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */,
-				FEF88C37100CC62400B15FD7 /* CATransform3D.m */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
+				FEAEF82211E3AB6A00CA0912 /* CoreAnimation.h */,
 				FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */,
+				FE255FEF10F10397005CE23E /* CoreImage.h */,
+				FE4301AB11E255A500EBDD56 /* CoreVideo.h */,
+				FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */,
 				089C1665FE841158C02AAC07 /* Resources */,
 			);
 			name = QuartzCore;
@@ -283,6 +363,14 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
+		FE43019E11E2556B00EBDD56 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE4301A211E2556B00EBDD56 /* CoreVideo.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FEF88C1E100CC41C00B15FD7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +403,14 @@
 				FE0FB9BD10F9815300EBA597 /* CIImage.h in Headers */,
 				FE0FB9BE10F9815300EBA597 /* CIVector.h in Headers */,
 				FEA3F2131133089500690AA2 /* CIAffineTransform.h in Headers */,
+				FE4301AC11E255A500EBDD56 /* CoreVideo.h in Headers */,
+				FEAEF7E911E3AAD000CA0912 /* CAAnimationGroup.h in Headers */,
+				FEAEF7EB11E3AAD000CA0912 /* CABasicAnimation.h in Headers */,
+				FEAEF7ED11E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */,
+				FEAEF7EF11E3AAD000CA0912 /* CATransition.h in Headers */,
+				FEAEF82311E3AB6A00CA0912 /* CoreAnimation.h in Headers */,
+				FEAEF85E11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */,
+				FEAEF8C311E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +432,14 @@
 				FE0FB9C710F9815300EBA597 /* CIImage.h in Headers */,
 				FE0FB9C810F9815300EBA597 /* CIVector.h in Headers */,
 				FEA3F2151133089500690AA2 /* CIAffineTransform.h in Headers */,
+				FE4301AE11E255A500EBDD56 /* CoreVideo.h in Headers */,
+				FEAEF7FB11E3AAD000CA0912 /* CAAnimationGroup.h in Headers */,
+				FEAEF7FD11E3AAD000CA0912 /* CABasicAnimation.h in Headers */,
+				FEAEF7FF11E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */,
+				FEAEF80111E3AAD000CA0912 /* CATransition.h in Headers */,
+				FEAEF82511E3AB6A00CA0912 /* CoreAnimation.h in Headers */,
+				FEAEF86011E3AFEF00CA0912 /* CAMediaTiming.h in Headers */,
+				FEAEF8C711E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +461,14 @@
 				FE0FB9C210F9815300EBA597 /* CIImage.h in Headers */,
 				FE0FB9C310F9815300EBA597 /* CIVector.h in Headers */,
 				FEA3F2141133089500690AA2 /* CIAffineTransform.h in Headers */,
+				FE4301AD11E255A500EBDD56 /* CoreVideo.h in Headers */,
+				FEAEF7F211E3AAD000CA0912 /* CAAnimationGroup.h in Headers */,
+				FEAEF7F411E3AAD000CA0912 /* CABasicAnimation.h in Headers */,
+				FEAEF7F611E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */,
+				FEAEF7F811E3AAD000CA0912 /* CATransition.h in Headers */,
+				FEAEF82411E3AB6A00CA0912 /* CoreAnimation.h in Headers */,
+				FEAEF85F11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */,
+				FEAEF8C511E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +510,7 @@
 			);
 			dependencies = (
 				FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */,
+				FE4301A411E2557400EBDD56 /* PBXTargetDependency */,
 			);
 			name = "QuartzCore-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -442,6 +555,10 @@
 					ProductGroup = FEF88C1E100CC41C00B15FD7 /* Products */;
 					ProjectRef = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
 				},
+				{
+					ProductGroup = FE43019E11E2556B00EBDD56 /* Products */;
+					ProjectRef = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -458,6 +575,13 @@
 			fileType = wrapper.framework;
 			path = CoreGraphics.framework;
 			remoteRef = FE293C5D10D984D10031C1DC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE4301A211E2556B00EBDD56 /* CoreVideo.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreVideo.framework;
+			remoteRef = FE4301A111E2556B00EBDD56 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FEF88C24100CC41C00B15FD7 /* CoreGraphics.framework */ = {
@@ -512,6 +636,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEAEF7EA11E3AAD000CA0912 /* CAAnimationGroup.m in Sources */,
+				FEAEF7EC11E3AAD000CA0912 /* CABasicAnimation.m in Sources */,
+				FEAEF7EE11E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */,
+				FEAEF7F011E3AAD000CA0912 /* CATransition.m in Sources */,
+				FEAEF7F111E3AAD000CA0912 /* CIAffineTransform.m in Sources */,
+				FEAEF8C411E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +649,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEAEF7F311E3AAD000CA0912 /* CAAnimationGroup.m in Sources */,
+				FEAEF7F511E3AAD000CA0912 /* CABasicAnimation.m in Sources */,
+				FEAEF7F711E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */,
+				FEAEF7F911E3AAD000CA0912 /* CATransition.m in Sources */,
+				FEAEF7FA11E3AAD000CA0912 /* CIAffineTransform.m in Sources */,
+				FEAEF8C611E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +668,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FE4301A411E2557400EBDD56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreVideo-Windows-i386";
+			targetProxy = FE4301A311E2557400EBDD56 /* PBXContainerItemProxy */;
+		};
 		FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreGraphics-Windows-i386";

@@ -248,6 +248,16 @@ static void removeObjectAtIndex(NSMutableArray_concrete *self,NSUInteger index) 
     objects[i]=_objects[i];
 }
 
+-(NSUInteger)indexOfObjectIdenticalTo:object {
+   NSInteger i;
+
+   for(i=0;i<self->_count;i++)
+    if(self->_objects[i]==object)
+     return i;
+
+   return NSNotFound;
+}
+
 static inline NSUInteger indexOfObject(NSMutableArray_concrete *self,id object){
    NSUInteger i;
 

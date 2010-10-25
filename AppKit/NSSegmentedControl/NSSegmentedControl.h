@@ -7,34 +7,50 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSControl.h>
+#import <AppKit/NSCell.h>
+
+enum {
+   NSSegmentStyleAutomatic      =0,
+   NSSegmentStyleRounded        =1,
+   NSSegmentStyleTexturedRounded=2,
+   NSSegmentStyleRoundRect      =3,
+   NSSegmentStyleTexturedSquare =4,
+   NSSegmentStyleCapsule        =5,
+   NSSegmentStyleSmallSquare    =6,
+};
+typedef NSInteger NSSegmentStyle;
 
 @interface NSSegmentedControl : NSControl
 
--(int)segmentCount;
+-(NSInteger)segmentCount;
+-(NSSegmentStyle)segmentStyle;
 
--(int)tagForSegment:(int)segment;
--(NSImage *)imageForSegment:(int)segment;
--(BOOL)isEnabledForSegment:(int)segment;
--(NSString *)labelForSegment:(int)segment;
--(NSMenu *)menuForSegment:(int)segment;
--(NSString *)toolTipForSegment:(int)segment;
--(float)widthForSegment:(int)segment;
+-(NSInteger)tagForSegment:(NSInteger)segment;
+-(NSImage *)imageForSegment:(NSInteger)segment;
+-(BOOL)isEnabledForSegment:(NSInteger)segment;
+-(NSString *)labelForSegment:(NSInteger)segment;
+-(NSMenu *)menuForSegment:(NSInteger)segment;
+-(NSString *)toolTipForSegment:(NSInteger)segment;
+-(CGFloat)widthForSegment:(NSInteger)segment;
+-(NSImageScaling)imageScalingForSegment:(NSInteger)segment;
 
--(int)selectedSegment;
--(BOOL)isSelectedForSegment:(int)segment;
+-(NSInteger)selectedSegment;
+-(BOOL)isSelectedForSegment:(NSInteger)segment;
 
--(void)setSegmentCount:(int)count;
+-(void)setSegmentCount:(NSInteger)count;
+-(void)setSegmentStyle:(NSSegmentStyle)value;
 
--(void)setTag:(int)tag forSegment:(int)segment;
--(void)setImage:(NSImage *)image forSegment:(int)segment;
--(void)setEnabled:(BOOL)enabled forSegment:(int)segment;
--(void)setLabel:(NSString *)label forSegment:(int)segment;
--(void)setMenu:(NSMenu *)menu forSegment:(int)segment;
--(void)setToolTip:(NSString *)string forSegment:(int)segment;
--(void)setWidth:(float)width forSegment:(int)segment;
+-(void)setTag:(NSInteger)tag forSegment:(NSInteger)segment;
+-(void)setImage:(NSImage *)image forSegment:(NSInteger)segment;
+-(void)setEnabled:(BOOL)enabled forSegment:(NSInteger)segment;
+-(void)setLabel:(NSString *)label forSegment:(NSInteger)segment;
+-(void)setMenu:(NSMenu *)menu forSegment:(NSInteger)segment;
+-(void)setToolTip:(NSString *)string forSegment:(NSInteger)segment;
+-(void)setWidth:(CGFloat)width forSegment:(NSInteger)segment;
+-(void)setImageScaling:(NSImageScaling)value forSegment:(NSInteger)segment;
 
--(BOOL)selectSegmentWithTag:(int)tag;
--(void)setSelected:(BOOL)flag forSegment:(int)segment;
--(void)setSelectedSegment:(int)segment;
+-(BOOL)selectSegmentWithTag:(NSInteger)tag;
+-(void)setSelected:(BOOL)flag forSegment:(NSInteger)segment;
+-(void)setSelectedSegment:(NSInteger)segment;
 
 @end

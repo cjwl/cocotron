@@ -141,9 +141,15 @@ NSString *_NSTruncatedStringWithAttributesInRect(NSString *string, NSDictionary 
     _initialFirstResponder=responder;
 }   
 
+// This is private Apple API, BGHUDAppKit uses it, override for custom color
+-_labelColor {
+   return [NSColor blackColor];
+}
+
 -(NSDictionary *)labelAttributes {
    return [NSDictionary dictionaryWithObjectsAndKeys:
     [_tabView font],NSFontAttributeName,
+    [self _labelColor],NSForegroundColorAttributeName,
     nil];
 }
 

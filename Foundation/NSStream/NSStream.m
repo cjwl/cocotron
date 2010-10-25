@@ -15,6 +15,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSString * const NSStreamDataWrittenToMemoryStreamKey=@"kCFStreamPropertyDataWritten";
 NSString * const NSStreamFileCurrentOffsetKey=@"kCFStreamPropertyFileCurrentOffset";
 
+/************* These values are also in CFStream, keep in sync */
+
+NSString * const NSStreamSocketSecurityLevelKey=@"kCFStreamSSLLevel";
+
+NSString * const NSStreamSocketSecurityLevelNone=@"kCFStreamSocketSecurityLevelNone";
+NSString * const NSStreamSocketSecurityLevelSSLv2=@"kCFStreamSocketSecurityLevelSSLv2";
+NSString * const NSStreamSocketSecurityLevelSSLv3=@"kCFStreamSocketSecurityLevelSSLv3";
+NSString * const NSStreamSocketSecurityLevelTLSv1=@"kCFStreamSocketSecurityLevelTLSv1";
+NSString * const NSStreamSocketSecurityLevelNegotiatedSSL=@"kCFStreamSocketSecurityLevelNegotiatedSSL";
+
 @implementation NSStream
 
 +(void)getStreamsToHost:(NSHost *)host port:(NSInteger)port inputStream:(NSInputStream **)inputStreamp outputStream:(NSOutputStream **)outputStreamp {

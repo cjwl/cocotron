@@ -6,6 +6,7 @@
 #import <Onyx2D/O2PDFStream.h>
 #import <Onyx2D/O2PDFString.h>
 #import <Onyx2D/O2PDFDictionary.h>
+#import <Onyx2D/O2Function+PDF.h>
 
 @implementation O2ColorSpace(PDF)
 
@@ -33,7 +34,7 @@
    return [context encodeIndirectPDFObject:name];
 }
 
-+(O2ColorSpaceRef)colorSpaceFromPDFObject:(O2PDFObject *)object {
++(O2ColorSpaceRef)createColorSpaceFromPDFObject:(O2PDFObject *)object {
    const char  *colorSpaceName;
    O2PDFArray  *colorSpaceArray;
 
@@ -69,7 +70,7 @@
       return nil;
      }
 
-     if((baseColorSpace=[O2ColorSpace colorSpaceFromPDFObject:baseObject])==NULL){
+     if((baseColorSpace=[O2ColorSpace createColorSpaceFromPDFObject:baseObject])==NULL){
       NSLog(@"Indexed color space invalid base %@",baseObject);
       return nil;
      }
@@ -137,12 +138,103 @@
      }
      
     }
+    else if(strcmp(name,"Separation")==0){
+     const char  *name;
+     O2PDFObject *alternateDictionary;
+     O2PDFObject *tintObject;
+
+     if(![colorSpaceArray getNameAtIndex:1 value:&name]){
+      O2PDFError(__FILE__,__LINE__,@"No name available in color space %@",object);
+      return nil;
+     }
+     
+     if(![colorSpaceArray getObjectAtIndex:2 value:&alternateDictionary]){
+      O2PDFError(__FILE__,__LINE__,@"No alternateSpace available in color space %@",object);
+      return nil;
+     }
+
+     if(![colorSpaceArray getObjectAtIndex:3 value:&tintObject]){
+      O2PDFError(__FILE__,__LINE__,@"No tintFunction available in color space %@",object);
+      return nil;
+     }
+     
+     O2ColorSpaceRef alternateSpace=[self createColorSpaceFromPDFObject:alternateDictionary];
+     
+     if(alternateSpace==NULL)
+      O2PDFError(__FILE__,__LINE__,@"unable to intiialize alternateSpace");
+     
+     O2Function *tintFunction;
+     
+     if([tintObject objectType]==kO2PDFObjectTypeDictionary)
+      tintFunction=[O2Function createFunctionWithDictionary:(O2PDFDictionary *)tintObject];
+     else if([tintObject objectType]==kO2PDFObjectTypeStream)
+      tintFunction=[O2Function createFunctionWithStream:(O2PDFStream *)tintObject];
+     else
+      O2PDFError(__FILE__,__LINE__,@"tintFunction unknown type %d",[tintObject objectType]);
+      
+     if(tintFunction==NULL)
+      O2PDFError(__FILE__,__LINE__,@"unable to initialize tintFunction");
+     
+     const char *cStringNames[2];
+     
+     cStringNames[0]=name;
+     cStringNames[1]=NULL;
+     
+     return O2ColorSpaceCreateDeviceN(cStringNames,alternateSpace,tintFunction);
+    }
+    else if(strcmp(name,"DeviceN")==0){
+     O2PDFArray  *names;
+     O2PDFObject *alternateDictionary;
+     O2PDFObject *tintObject;
+
+     if(![colorSpaceArray getArrayAtIndex:1 value:&names]){
+      O2PDFError(__FILE__,__LINE__,@"DeviceN has no names array");
+      return nil;
+     }
+     
+     if(![colorSpaceArray getObjectAtIndex:2 value:&alternateDictionary]){
+      O2PDFError(__FILE__,__LINE__,@"No alternateSpace available in color space %@",object);
+      return nil;
+     }
+
+     if(![colorSpaceArray getObjectAtIndex:3 value:&tintObject]){
+      O2PDFError(__FILE__,__LINE__,@"No tintFunction available in color space %@",object);
+      return nil;
+     }
+
+     O2ColorSpaceRef alternateSpace=[self createColorSpaceFromPDFObject:alternateDictionary];
+     if(alternateSpace==NULL)
+      O2PDFError(__FILE__,__LINE__,@"unable to intiialize alternateSpace");
+
+     O2Function *tintFunction;
+     
+     if([tintObject objectType]==kO2PDFObjectTypeDictionary)
+      tintFunction=[O2Function createFunctionWithDictionary:(O2PDFDictionary *)tintObject];
+     else if([tintObject objectType]==kO2PDFObjectTypeStream)
+      tintFunction=[O2Function createFunctionWithStream:(O2PDFStream *)tintObject];
+     else
+      O2PDFError(__FILE__,__LINE__,@"tintFunction unknown type %d",[tintObject objectType]);
+      
+     if(tintFunction==NULL)
+      O2PDFError(__FILE__,__LINE__,@"unable to initialize tintFunction");
+     
+     int         i,count=[names count];
+     const char *cStringNames[count+1];
+     
+     for(i=0;i<count;i++)
+      [names getNameAtIndex:i value:cStringNames+i];
+ 
+     cStringNames[i]=NULL;
+ 
+     return O2ColorSpaceCreateDeviceN(cStringNames,alternateSpace,tintFunction);
+    }
+    
     else {
-     NSLog(@"does not handle color space %@",object);
+     O2PDFError(__FILE__,__LINE__,@"does not handle color space %@",object);
     }
    }
    else {
-    NSLog(@"invalid color space type %@",object);
+    O2PDFError(__FILE__,__LINE__,@"invalid color space type %@",object);
    }
 
    

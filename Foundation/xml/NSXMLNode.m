@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSXMLElement.h>
 #import <Foundation/NSXMLDocument.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSArray.h>
 
 @implementation NSXMLNode
 
@@ -104,27 +105,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -initWithKind:(NSXMLNodeKind)kind {
-   _parent=nil;
-   _index=0;
-   _kind=kind;
-   _options=NSXMLNodeOptionsNone;
-   _name=nil;
-   _value=nil;
-   return self;
+   return [self initWithKind:kind options:NSXMLNodeOptionsNone];
 }
 
 -initWithKind:(NSXMLNodeKind)kind options:(NSUInteger)options {
    _parent=nil;
+   _children=[[NSMutableArray alloc] init];
    _index=0;
    _kind=kind;
    _options=options;
    _name=nil;
-   _value=nil;
+   _value=@""; // Behavior is empty string not null
    return self;
 }
 
 -(void)dealloc {
    _parent=nil;
+   [_children release];
    [_name release];
    [_value release];
    [super dealloc];
@@ -209,15 +206,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSUInteger)childCount {
-   return 0;
+   return [_children count];
 }
 
 -(NSArray *)children {
-   return nil;
+   return _children;
 }
 
 -(NSXMLNode *)childAtIndex:(NSUInteger)index {
-   return nil;
+   return [_children objectAtIndex:index];
 }
 
 -(void)setName:(NSString *)name {
@@ -248,8 +245,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error {
-   NSUnimplementedMethod();
-   return nil;
+   NSMutableArray *result=[NSMutableArray array];
+   NSRange         range=[xpath rangeOfString:@"/"];
+       
+   if(range.location==NSNotFound){
+    
+    for(NSXMLNode *node in _children){
+
+     if([xpath isEqualToString:@"*"])
+      [result addObject:node];
+      
+     if([xpath isEqualToString:[node name]])
+      [result addObject:node];
+}
+   }
+   else {
+    NSString *firstComponent=[xpath substringWithRange:NSMakeRange(0,range.location)];
+    NSString *remainder=[xpath substringFromIndex:NSMaxRange(range)];
+
+    for(NSXMLNode *node in _children){
+
+     if([firstComponent isEqualToString:@"*"])
+      [result addObjectsFromArray:[node nodesForXPath:remainder error:error]];
+      
+     if([firstComponent isEqualToString:[node name]])
+      [result addObjectsFromArray:[node nodesForXPath:remainder error:error]];
+    }
+   }
+   
+   return result;
 }
 
 -(NSArray *)objectsForXQuery:(NSString *)xquery constants:(NSDictionary *)constants error:(NSError **)error {
@@ -263,13 +287,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)XMLString {
-   NSUnimplementedMethod();
-   return nil;
+   return [self XMLStringWithOptions:0];
 }
 
 -(NSString *)XMLStringWithOptions:(NSUInteger)options {
-   NSUnimplementedMethod();
-   return nil;
+   NSMutableString *result=[NSMutableString string];
+   
+   switch([self kind]){
+
+    case NSXMLInvalidKind:
+     break;
+
+    case NSXMLDocumentKind:
+     // Handled in subclass
+     break;
+
+    case NSXMLElementKind:
+     // Handled in subclass
+     break;
+
+    case NSXMLAttributeKind:
+     [result appendString:[self name]];
+     [result appendString:@"=\""];
+     [result appendString:[self stringValue]];
+     [result appendString:@"\""];
+     break;
+
+    case NSXMLNamespaceKind:
+     break;
+
+    case NSXMLProcessingInstructionKind:
+     break;
+
+    case NSXMLCommentKind:
+     break;
+
+    case NSXMLTextKind:
+     break;
+
+    case NSXMLDTDKind:
+     break;
+
+    case NSXMLEntityDeclarationKind:
+     break;
+
+    case NSXMLAttributeDeclarationKind:
+     break;
+
+    case NSXMLElementDeclarationKind:
+     break;
+
+    case NSXMLNotationDeclarationKind:
+     break;
+}
+
+   return result;
 }
 
 -(NSString *)XPath {
@@ -280,6 +352,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)canonicalXMLStringPreservingComments:(BOOL)comments {
    NSUnimplementedMethod();
    return nil;
+}
+
+-(NSString *)description {
+   return [self XMLString];
 }
 
 @end

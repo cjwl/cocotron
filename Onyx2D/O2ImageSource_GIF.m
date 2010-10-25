@@ -73,11 +73,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    size_t         width=gifImage->ImageDesc.Width;
    size_t         height=gifImage->ImageDesc.Height;
-   size_t         bytesPerRow=width*sizeof(O2RGBA32Big);
+   size_t         bytesPerRow=width*sizeof(O2rgba8u_BE);
    size_t         bitsPerComponent=8;
    size_t         bitsPerPixel=32;
-   O2RGBA32Big    *pixels=NSZoneMalloc(NULL,bytesPerRow*height);
-   O2RGBA32Big    *scanline=pixels;
+   O2rgba8u_BE    *pixels=NSZoneMalloc(NULL,bytesPerRow*height);
+   O2rgba8u_BE    *scanline=pixels;
    BOOL           interlace=gifImage->ImageDesc.Interlace;
    int            interlacePass=1;
    int            interlaceDelta=8;

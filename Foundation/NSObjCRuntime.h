@@ -37,6 +37,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #endif
 
+#define NS_INLINE static inline
+
 @class NSString;
 
 #define NSINTEGER_DEFINED 1

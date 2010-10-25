@@ -33,7 +33,7 @@ enum {
    BOOL         _showsSuppressionButton;
    NSString    *_helpAnchor;
    NSMutableArray *_buttons;
-   NSButton    *_supressionButton;
+   NSButton    *_suppressionButton;
    NSWindow    *_window;
 
    BOOL         _needsLayout;
@@ -54,7 +54,7 @@ enum {
 -(BOOL)showsSuppressionButton;
 -(NSString *)helpAnchor;
 -(NSArray *)buttons;
--(NSButton *)supressionButton;
+-(NSButton *)suppressionButton;
 -window;
 
 -(void)setDelegate:delegate;

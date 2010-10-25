@@ -145,6 +145,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return [[self selectedCell] stringValue];
 }
 
+-(NSAttributedString *)attributedStringValue {
+   return [[self selectedCell] attributedStringValue];
+}
+
 -(int)intValue {
    return [[self selectedCell] intValue];
 }
@@ -347,6 +351,9 @@ static NSMutableDictionary *cellClassDictionary = nil;
 // this may be invalid after endEditingFor: if we dont retain it
     NSView *superview=[[[_currentEditor superview] retain] autorelease];
 
+// we don't want delegate messages when aborting
+    [_currentEditor setDelegate:nil];
+    
     [[self window] endEditingFor:self];
 
     if([superview isKindOfClass:[NSClipView class]])
@@ -363,7 +370,9 @@ static NSMutableDictionary *cellClassDictionary = nil;
 }
 
 -(void)sizeToFit {
-   NSUnimplementedMethod();
+   NSSize cellSize=[[self cell] cellSize];
+   
+   [self setFrameSize:cellSize];
 }
 
 -(void)setNeedsDisplay {

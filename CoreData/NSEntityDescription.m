@@ -5,16 +5,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSEntityDescription.h"
-#import "NSManagedObjectContext.h"
-#import "NSManagedObjectModel.h"
-#import "NSPersistentStoreCoordinator.h"
-#import "NSPropertyDescription.h"
-#import "NSAttributeDescription.h"
-#import "NSRelationshipDescription.h"
-#import "NSManagedObject.h"
+#import "NSEntityDescription-Private.h"
+#import <CoreData/NSManagedObjectContext.h>
+#import <CoreData/NSManagedObjectModel.h>
+#import <CoreData/NSPersistentStoreCoordinator.h>
+#import <CoreData/NSPropertyDescription.h>
+#import <CoreData/NSAttributeDescription.h>
+#import <CoreData/NSRelationshipDescription.h>
+#import <CoreData/NSManagedObject.h>
 #import <Foundation/NSKeyedUnarchiver.h>
-#import <AppKit/NSRaise.h>
+#import <Foundation/NSRaise.h>
 #import <objc/objc-class.h>
 #import <ctype.h>
 #import <string.h>
@@ -22,129 +22,129 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 @implementation NSEntityDescription
-@synthesize _selectorPropertyMap;
 
-- (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
-       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
-       _className = [[keyed decodeObjectForKey: @"NSClassNameForEntity"] retain];
-       _name = [[keyed decodeObjectForKey: @"NSEntityName"] retain];
-       _model = [keyed decodeObjectForKey: @"NSManagedObjectModel"];
-       _properties = [[keyed decodeObjectForKey: @"NSProperties"] retain];
-       _subentities = [[keyed decodeObjectForKey: @"NSSubentities"] retain];
-       _superentity = [[keyed decodeObjectForKey: @"NSSuperentity"] retain];
-       _userInfo = [[keyed decodeObjectForKey: @"NSUserInfo"] retain];
-       _versionHashModifier
-	   = [[keyed decodeObjectForKey: @"NSVersionHashModifier"] retain];
+static id getValue(id self, SEL selector) {
+    NSPropertyDescription *property = [[self entity] _propertyForSelector: selector];
+    id result= [self valueForKey:[property name]];
+   return result;
+}
 
-       _selectorPropertyMap = [[NSMutableDictionary dictionaryWithCapacity: 20] retain];
 
-       _hasBeenInstantiated = NO;
+static void setValue(id self, SEL selector, id newValue) {
+    NSPropertyDescription *property = [[self entity] _propertyForSelector: selector];
+    [self setValue: newValue forKey:[property name]];
+}
 
-       if(_className) {
-	   Class class = NSClassFromString(_className);
-	   NSMutableArray *newMethods = [NSMutableArray arrayWithCapacity: 10];
-	   
-	   for(NSPropertyDescription *property in [_properties allValues]) {
-	       if([property isMemberOfClass: [NSAttributeDescription class]]) {
-		   NSAttributeDescription *attribute
-		       = (NSAttributeDescription *) property;
+static void addObject(id self,SEL selector, id value){
+   NSPropertyDescription *property=[[self entity] _propertyForSelector:selector];
+   NSMutableSet *set=[self mutableSetValueForKey:[property name]];
 
-		   NSString *propertyName = [property name];
-		   
-		   NSString *getSelectorName = propertyName;
-		   SEL getSelector = NSSelectorFromString(getSelectorName);
-		   NSString *getTypes = @"@@:";
+   [set addObject:value];
+}
 
-		   NSMutableString *setSelectorName
-		       = [NSMutableString stringWithFormat: @"set%c%@:",
-					  toupper([propertyName characterAtIndex: 0]),
-					  [propertyName substringFromIndex: 1]];
-		   SEL setSelector = NSSelectorFromString(setSelectorName);
-		   NSString *setTypes = @"v@:@";
-		   
-		   [_selectorPropertyMap
-		       setObject: property
-		       forKey: [NSEntityDescription _selectorKey: getSelector]];
-		   [_selectorPropertyMap
-		       setObject: property
-		       forKey: [NSEntityDescription _selectorKey: setSelector]];
-		   
-		   struct objc_method *method = malloc(sizeof(struct objc_method));
-		   method->method_name = getSelector;
-		   method->method_types = strdup([getTypes UTF8String]);
-		   method->method_imp = (IMP) getValue;
-		   [newMethods addObject: [NSValue valueWithPointer: method]];
-		   
-		   method = malloc(sizeof(struct objc_method));
-		   method->method_name = setSelector;
-		   method->method_types = strdup([setTypes UTF8String]);
-		   method->method_imp = (IMP) setValue;
-		   [newMethods addObject: [NSValue valueWithPointer: method]];
-	       } else if([property isMemberOfClass: [NSRelationshipDescription class]]) {
-		   NSRelationshipDescription *relationship
-		       = (NSRelationshipDescription *) property;
+static void removeObject(id self,SEL selector, id value){
+   NSPropertyDescription *property=[[self entity] _propertyForSelector:selector];
+   NSMutableSet *set=[self mutableSetValueForKey:[property name]];
+   [set removeObject:value];
+}
 
-		   if(![relationship isToMany]) {
-		       NSString *propertyName = [property name];
-		       
-		       NSString *getSelectorName = propertyName;
-		       SEL getSelector = NSSelectorFromString(getSelectorName);
-		       NSString *getTypes = @"@@:";
+static void addObjectSet(id self,SEL selector,NSSet *values){
+   NSPropertyDescription *property=[[self entity] _propertyForSelector:selector];
+   NSMutableSet *set=[self mutableSetValueForKey:[property name]];
+   [set unionSet:values];
+}
 
-		       NSMutableString *setSelectorName
-			   = [NSMutableString stringWithFormat: @"set%c%@:",
-					      toupper([propertyName characterAtIndex: 0]),
-					      [propertyName substringFromIndex: 1]];
-		       SEL setSelector = NSSelectorFromString(setSelectorName);
-		       NSString *setTypes = @"v@:@";
-		   
-		       [_selectorPropertyMap
-			   setObject: property
-			   forKey: [NSEntityDescription _selectorKey: getSelector]];
-		       [_selectorPropertyMap
-			   setObject: property
-			   forKey: [NSEntityDescription _selectorKey: setSelector]];
-		   
-		       struct objc_method *method = malloc(sizeof(struct objc_method));
-		       method->method_name = getSelector;
-		       method->method_types = strdup([getTypes UTF8String]);
-		       method->method_imp = (IMP) getValue;
-		       [newMethods addObject: [NSValue valueWithPointer: method]];
-		   
-		       method = malloc(sizeof(struct objc_method));
-		       method->method_name = setSelector;
-		       method->method_types = strdup([setTypes UTF8String]);
-		       method->method_imp = (IMP) setValue;
-		       [newMethods addObject: [NSValue valueWithPointer: method]];
-		   } else {
-		       NSLog(@"Not adding accessors for to-many relationship %@.%@",
-			     [self name],
-			     [relationship name]);
-		   }
-	       }
-	   }
-	   
-	   struct objc_method_list *newMethodList
-	       = malloc(sizeof(struct objc_method_list)
-			+ [newMethods count] * sizeof(struct objc_method));
-	   newMethodList->method_count = [newMethods count];
-	   NSInteger i = 0;
-	   for(NSValue *methodValue in newMethods) {
-	       struct objc_method *method = [methodValue pointerValue];
-	       memcpy(&(newMethodList->method_list[i]), method,
-		      sizeof(struct objc_method));
-	       i++;
-	   }
-	   class_addMethods(class, newMethodList);
-       }
-       
-       return self;
-   } else {
-       [NSException raise: NSInvalidArgumentException
-		    format: @"%@ can not initWithCoder:%@", isa, [coder class]];
-       return nil;
+static void removeObjectSet(id self,SEL selector,NSSet *values){
+   NSPropertyDescription *property=[[self entity] _propertyForSelector:selector];
+   NSMutableSet *set=[self mutableSetValueForKey:[property name]];
+   [set minusSet:values];
+}
+
+id keyObjectForSelector(SEL selector){
+   return [NSNumber numberWithInteger: (NSInteger) selector];
+}
+
+
+static struct objc_method_list *appendMethodToList(struct objc_method_list *list,NSString *selectorName,IMP imp,const char *types,SEL *selectorp){
+
+   if(list==NULL){
+    list=malloc(sizeof(struct objc_method_list)+sizeof(struct objc_method));
+    list->method_count=1;
    }
+   else {
+    list->method_count++;
+    list=realloc(list,sizeof(struct objc_method_list)+list->method_count*sizeof(struct objc_method));
+   }
+   
+   SEL selector=NSSelectorFromString(selectorName);
+   
+   list->method_list[list->method_count-1].method_name=selector;
+   list->method_list[list->method_count-1].method_types=(char *)types;
+   list->method_list[list->method_count-1].method_imp=imp;
+   
+   *selectorp=selector;
+   
+   return list;
+}
+
+-initWithCoder:(NSCoder *)coder {
+   if(![coder allowsKeyedCoding]) {
+    [NSException raise: NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
+    return nil;
+   }
+
+   _className = [[coder decodeObjectForKey: @"NSClassNameForEntity"] retain];
+   _name = [[coder decodeObjectForKey: @"NSEntityName"] retain];
+   _model = [coder decodeObjectForKey: @"NSManagedObjectModel"];
+   _properties = [[coder decodeObjectForKey: @"NSProperties"] retain];
+   _subentities = [[coder decodeObjectForKey: @"NSSubentities"] retain];
+   _superentity = [[coder decodeObjectForKey: @"NSSuperentity"] retain];
+   _userInfo = [[coder decodeObjectForKey: @"NSUserInfo"] retain];
+   _versionHashModifier= [[coder decodeObjectForKey: @"NSVersionHashModifier"] retain];
+
+   _selectorPropertyMap = [[NSMutableDictionary alloc] init];
+
+   _hasBeenInstantiated = NO;
+       
+   if(_className) {
+    Class                    class=NSClassFromString(_className);
+    struct objc_method_list *methodList=NULL;
+    
+    for(NSPropertyDescription *property in [_properties allValues]) {
+     NSString *propertyName=[property name];
+     NSString *upperName=[[[propertyName substringToIndex:1] uppercaseString] stringByAppendingString:[propertyName substringFromIndex: 1]];
+     NSString *selectorName;
+     SEL       selector;
+     
+     methodList=appendMethodToList(methodList,propertyName,(IMP) getValue,"@@:",&selector);
+     [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+
+     methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"set%@:",upperName],(IMP) setValue,"v@:@",&selector);     
+     [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+
+     if([property isKindOfClass: [NSRelationshipDescription class]]) {
+      NSRelationshipDescription *relationship= (NSRelationshipDescription *) property;
+            
+      if([relationship isToMany]){
+       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"add%@Object:",upperName],(IMP)addObject,"v@:@",&selector);     
+       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+
+       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"remove%@Object:",upperName],(IMP)removeObject,"v@:@",&selector);     
+       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+
+       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"add%@:",upperName],(IMP)addObjectSet,"v@:@",&selector);     
+       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+
+       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"remove%@:",upperName],(IMP)removeObjectSet,"v@:@",&selector);     
+       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+      }
+     }
+    }
+
+    if(methodList!=NULL)
+     class_addMethods(class,methodList);
+   }
+   return self;
 }
 
 
@@ -152,21 +152,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSString stringWithFormat: @"<NSEntityDescription %@>", _name];
 }
 
-
-+ (id) _selectorKey: (SEL) selector {
-    return [NSNumber numberWithInteger: (NSInteger) selector];
-}
-
-
-- (NSPropertyDescription *) _propertyForSelector: (SEL) selector {
-    NSEntityDescription *entity;
-    for(entity = self; entity; entity = [entity superentity]) {
-	NSPropertyDescription *result
-	    = [[entity _selectorPropertyMap] objectForKey:
-					[NSEntityDescription _selectorKey: selector]];
-	if(result) return result;
-    }
-    return nil;
+-(NSPropertyDescription *)_propertyForSelector:(SEL) selector {
+   id keyObject=keyObjectForSelector(selector);
+   NSEntityDescription *entity;
+   
+   for(entity = self; entity; entity = [entity superentity]) {
+    NSPropertyDescription *result= [entity->_selectorPropertyMap objectForKey:keyObject];
+    
+	if(result)
+     return result;
+   }
+   return nil;
 }
 
 
@@ -248,81 +244,77 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 */
 
-+ (NSEntityDescription *) entityForName: (NSString *) entityName
-		 inManagedObjectContext: (NSManagedObjectContext *) context
-{
-    NSDictionary *entities = [[[context persistentStoreCoordinator]
-				  managedObjectModel]
-				 entitiesByName];
-    return [entities objectForKey: entityName];
-}
-
-
-+ (NSManagedObject *) insertNewObjectForEntityForName: (NSString *) entityName
-			       inManagedObjectContext: (NSManagedObjectContext *) context
-{
-    NSEntityDescription *entity = [self entityForName: entityName
-					inManagedObjectContext: context];
-    NSString *className = [entity managedObjectClassName];
-    Class class;
-    if(className)
-	class = NSClassFromString(className);
-    else
-	class = [NSManagedObject class];
-    NSManagedObject *result = [class alloc];
-    [result initWithEntity: entity
-	    insertIntoManagedObjectContext: context];
-    return result;
-}
-
-
-- (NSManagedObjectModel *) managedObjectModel {
-    NSUnimplementedMethod();
-    return nil;
-}
-
-
-- (NSString *) name {
-    return _name;
-}
-
-
-- (BOOL) isAbstract {
-    NSUnimplementedMethod();
-    return NO;
-}
-
-
-- (NSString *) managedObjectClassName {
-    return _className;
-}
-
-
-- (NSArray *) properties {
-    NSUnimplementedMethod();
-    return nil;
-}
-
-
-- (NSArray *) subentities {
-    NSUnimplementedMethod();
-    return nil;
-}
-
-
-- (NSDictionary *) userInfo {
-    NSUnimplementedMethod();
-    return nil;
-}
-
-
-- (void) setName: (NSString *) value {
-    if(_hasBeenInstantiated) {
-	NSLog(@"Attempt to modify entity after instantiating it.");
-	return;
-    }
++(NSEntityDescription *)entityForName: (NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)context {
+   NSDictionary *entities=[[[context persistentStoreCoordinator] managedObjectModel] entitiesByName];
     
-    NSUnimplementedMethod();
+   return [entities objectForKey:entityName];
+}
+
+
++ insertNewObjectForEntityForName:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)context {
+   NSEntityDescription *entity=[self entityForName:entityName inManagedObjectContext:context];
+   NSString            *className=[entity managedObjectClassName];
+   Class                class;
+ 
+   if(className)
+    class = NSClassFromString(className);
+   else {
+    NSLog(@"Unable to find class %@ specified by entity %@ in the runtime",className,[entity name]);
+    
+    class = [NSManagedObject class];
+   }
+   
+   return [[class alloc] initWithEntity: entity insertIntoManagedObjectContext: context];
+}
+
+
+-(NSManagedObjectModel *)managedObjectModel {
+   return _model;
+}
+
+-(NSString *)name {
+   return _name;
+}
+
+
+-(BOOL)isAbstract {
+   return _isAbstract;
+}
+
+
+-(NSString *)managedObjectClassName {
+// should probably init _className like this but initWithCoder logic needs to be changed
+   if(_className==nil)
+    return @"NSManagedObject";
+    
+   return _className;
+}
+
+
+-(NSArray *)properties {
+   return [_properties allValues];
+}
+
+
+-(NSArray *)subentities {
+   return [_subentities allValues];
+}
+
+
+-(NSDictionary *)userInfo {
+   return _userInfo;
+}
+
+
+-(void)setName:(NSString *)value {
+   if(_hasBeenInstantiated) {
+    NSLog(@"Attempt to modify entity after instantiating it.");
+    return;
+   }
+   
+   value=[value copy];
+   [_name release];
+   _name=value;
 }
 
 
@@ -332,7 +324,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return;
     }
     
-    NSUnimplementedMethod();
+    _isAbstract=value;
 }
 
 
@@ -342,17 +334,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return;
     }
     
-    NSUnimplementedMethod();
+    value=[value copy];
+    [_className release];
+    _className=value;
 }
 
 
 - (void) setProperties: (NSArray *) value {
-    if(_hasBeenInstantiated) {
-	NSLog(@"Attempt to modify entity after instantiating it.");
-	return;
-    }
+   if(_hasBeenInstantiated) {
+    NSLog(@"Attempt to modify entity after instantiating it.");
+    return;
+   }
     
-    NSUnimplementedMethod();
+   NSUnimplementedMethod();
 }
 
 
@@ -372,54 +366,75 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return;
     }
     
-    NSUnimplementedMethod();
+    value=[value copy];
+    [_userInfo release];
+    _userInfo=value;
 }
 
 
-- (NSEntityDescription *) superentity {
-    return _superentity;
+-(NSEntityDescription *)superentity {
+   return _superentity;
 }
 
 
-- (NSDictionary *) subentitiesByName {
-    NSUnimplementedMethod();
-    return nil;
+-(NSDictionary *)subentitiesByName {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 
-- (NSDictionary *) attributesByName {
-    NSUnimplementedMethod();
-    return nil;
+-(NSDictionary *)attributesByName {
+   NSMutableDictionary *result=[NSMutableDictionary dictionary];
+   
+   for(NSPropertyDescription *check in [_properties allValues]){
+    if([check isKindOfClass:[NSAttributeDescription class]]){
+     [result setObject:check forKey:[check name]];
+    }
+   }
+      
+   return result;
 }
 
 
-- (NSDictionary *) propertiesByName {
-    NSUnimplementedMethod();
-    return nil;
+-(NSDictionary *)propertiesByName {
+   return _properties;
 }
 
 
-- (NSDictionary *) relationshipsByName {
-    NSUnimplementedMethod();
-    return nil;
+-(NSDictionary *)relationshipsByName {
+   NSMutableDictionary *result=[NSMutableDictionary dictionary];
+   
+   for(NSPropertyDescription *check in [_properties allValues]){
+    if([check isKindOfClass:[NSRelationshipDescription class]])
+     [result setObject:check forKey:[check name]];
+   }
+      
+   return result;
 }
 
 
-- (NSArray *) relationshipsWithDestinationEntity: (NSEntityDescription *) entity {
-    NSUnimplementedMethod();
-    return nil;
+-(NSArray *)relationshipsWithDestinationEntity:(NSEntityDescription *)entity {
+   NSMutableArray *result=[NSMutableArray array];
+
+   for(NSPropertyDescription *check in [_properties allValues]){
+    if([check isKindOfClass:[NSRelationshipDescription class]]){
+     if([[check entity] isEqual:entity])
+      [result addObject:check];
+    }
+   }
+   
+   return result;
+}
+
+-(BOOL)_isKindOfEntity:(NSEntityDescription *)other {
+   NSEntityDescription *check=self;
+   
+   for(;check!=nil;check=check->_superentity)
+    if(check==other)
+     return YES;
+   
+   return NO;
 }
 
 @end
 
-
-id getValue(id self, SEL selector) {
-    NSPropertyDescription *property = [[self entity] _propertyForSelector: selector];
-    return [self _valueForProperty: property];
-}
-
-
-void setValue(id self, SEL selector, id newValue) {
-    NSPropertyDescription *property = [[self entity] _propertyForSelector: selector];
-    [self _setValue: newValue forProperty: property];
-}

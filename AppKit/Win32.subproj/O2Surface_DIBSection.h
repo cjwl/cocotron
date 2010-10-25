@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2DeviceContext_gdiDIBSection *_deviceContext;
 }
 
--initWithWidth:(size_t)width height:(size_t)height compatibleWithDeviceContext:(O2DeviceContext_gdi *)compatible;
+-initWithWidth:(int)width height:(int)height compatibleWithDeviceContext:(O2DeviceContext_gdi *)compatible;
 
 -(O2DeviceContext_gdi *)deviceContext;
 
