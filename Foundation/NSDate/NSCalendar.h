@@ -22,7 +22,7 @@ enum {
 	NSSecondCalendarUnit = kCFCalendarUnitSecond,
 	NSWeekCalendarUnit = kCFCalendarUnitWeek,
 	NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
-   NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal,
+    NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal,
 //   NSQuarterCalendarUnit = kCFCalendarUnitQuarter,
 };
 typedef NSUInteger NSCalendarUnit;
