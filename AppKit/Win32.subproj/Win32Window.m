@@ -872,9 +872,9 @@ static void initializeWindowClass(WNDCLASS *class){
 
 +(void)initialize {
    if(self==[Win32Window class]){
-    NSString *name=[[NSProcessInfo processInfo] processName];
+	NSString *name=[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIconFile"];
     NSString *path=[[NSBundle mainBundle] pathForResource:name ofType:@"ico"];
-    HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
+    HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,16,16,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
     static WNDCLASS _standardWindowClass,_borderlessWindowClass,_borderlessWindowClassWithShadow;
     OSVERSIONINFOEX osVersion;
