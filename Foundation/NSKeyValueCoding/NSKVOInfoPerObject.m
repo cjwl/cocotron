@@ -45,7 +45,7 @@
 }
 
 -(void)removeKeyObserver:(NSKeyObserver *)keyObserver {
-   NSString       *key=[keyObserver key];
+   NSString       *key=[[[keyObserver key] retain] autorelease];  // do the retain/autorelease dance, because we just might release the key out from under us when the keyObserver is deallocated.
    NSMutableArray *observers=[_dictionary objectForKey:key];
    
    [observers removeObjectIdenticalTo:keyObserver];
