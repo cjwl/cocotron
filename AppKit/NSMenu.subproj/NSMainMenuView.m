@@ -202,8 +202,8 @@ static void drawSunkenBorder(NSRect rect){
    NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
    BOOL          overflow=NO;
 
-//   [[NSColor menuBackgroundColor] setFill];
-//   NSRectFill(bounds);
+   [[NSColor menuBackgroundColor] setFill];
+   NSRectFill(bounds);
 
    for(i=0;i<count;i++){
     NSMenuItem *item=[items objectAtIndex:i];

@@ -272,7 +272,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
    { @"selectedMenuItemColor", COLOR_HIGHLIGHT }, // FIXME:
    { @"selectedMenuItemTextColor", COLOR_HIGHLIGHTTEXT }, // FIXME:
 // extensions
-    { @"menuBackgroundColor", COLOR_MENU },
+    { @"menuBackgroundColor", 30 },
     { @"menuItemTextColor", COLOR_MENUTEXT },
      { @"_sourceListBackgroundColor", COLOR_WINDOW },
  
