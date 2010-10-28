@@ -273,21 +273,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(_autoenablesItems){
      BOOL enabled=NO;
 
-     if([item action]!=NULL){
-      id target=[item target];
-
-      if(target==nil)
-       target=[NSApp targetForAction:[item action]];
-
-      if(target!=nil){
-       if(![target respondsToSelector:@selector(validateMenuItem:)])
-        enabled=YES;
-       else
-        enabled=[target validateMenuItem:item];
-      }
-     }
-
-     if(enabled!=[item isEnabled] && ![item _binderForBinding:@"enabled" create:NO]){
+		if([item action]!=NULL){
+			id target=[item target];
+			
+			target=[NSApp targetForAction:[item action] to:[item target] from:nil];
+			
+			if ((target == nil) || ![target respondsToSelector:[item action]]) {
+				enabled = NO;
+			} else if ([target respondsToSelector:@selector(validateMenuItem:)]) {
+				enabled = [target validateMenuItem:item];
+			} else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)]) { // New validation scheme
+				enabled = [target validateUserInterfaceItem:item];
+			} else {
+				enabled = YES;
+			}
+		} 
+	   if(enabled!=[item isEnabled] && ![item _binderForBinding:@"enabled" create:NO]){
       [item setEnabled:enabled];
       [self itemChanged:item];
      }
