@@ -38,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSImage *image=[NSImage imageNamed:_resourceName];
     
     if([_resourceName hasSuffix:@"Template"])
-     [image setTemplate:YES];
+     [image setTemplate:YES]; // can't find this method, is it even ever called?
      
     if(image!=nil){
         [self release];

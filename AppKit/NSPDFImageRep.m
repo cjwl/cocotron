@@ -47,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -copyWithZone:(NSZone *)zone {
-   NSPDFImageRep *result=[super copyWithZone:zone];
+   NSPDFImageRep *result=[super copyWithZone:zone]; // OK, don't see how this works.
    
    result->_pdf=[_pdf copy];
    result->_document=CGPDFDocumentRetain(_document);

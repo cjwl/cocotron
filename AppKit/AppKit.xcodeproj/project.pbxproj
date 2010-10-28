@@ -8248,7 +8248,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 6E2B531A0976074C00DA0954 /* AppKit */;
 			productRefGroup = 6E2B53230976074C00DA0954 /* Products */;
 			projectDirPath = "";
