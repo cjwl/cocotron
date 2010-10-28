@@ -146,20 +146,17 @@ NSString *NSAnimationRunLoopMode=@"NSAnimationRunLoopMode";
 }
 
 -(void)_setCurrentProgressAndEndIfNeeded:(NSAnimationProgress)progress {
-   if(_isAnimating){
-    progress=MAX(0.0,MIN(1.0,progress));
-    [self setCurrentProgress:progress];
-   
-    if(progress>=1.0){
-   if([_delegate respondsToSelector:@selector(animationDidEnd:)])
-    [_delegate performSelector:@selector(animationDidEnd:) withObject:self];
-
-   _isAnimating=NO;
-     [_timer invalidate];
-   _timer=nil;
-   [self autorelease];
-}
-   }
+	if(_isAnimating){
+		progress=MAX(0.0,MIN(1.0,progress));
+		[self setCurrentProgress:progress];
+		
+		if(progress>=1.0){
+			if([_delegate respondsToSelector:@selector(animationDidEnd:)])
+				[_delegate performSelector:@selector(animationDidEnd:) withObject:self];
+			
+			[self stopAnimation];
+		}
+	}
 }
 
 -(void)timer:(NSTimer *)timer {
@@ -208,12 +205,12 @@ NSString *NSAnimationRunLoopMode=@"NSAnimationRunLoopMode";
 }
 
 -(void)stopAnimation {
-   if(_isAnimating){
-    _isAnimating=NO;
-    [_timer invalidate];
-    _timer=nil;
-    [self autorelease];
-   }
+	if(_isAnimating){
+		_isAnimating=NO;
+		[_timer invalidate];
+		_timer=nil;
+		[self autorelease];
+	}
 }
 
 -(void)startWhenAnimation:(NSAnimation *)animation reachesProgress:(NSAnimationProgress)progress {
