@@ -269,10 +269,10 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
    { @"secondarySelectedControlColor", COLOR_HIGHLIGHT }, // FIXME:
    { @"keyboardFocusIndicatorColor", COLOR_ACTIVEBORDER }, // FIXME:
    { @"windowFrameColor", COLOR_WINDOWFRAME }, // FIXME:
-   { @"selectedMenuItemColor", COLOR_HIGHLIGHT }, // FIXME:
+   { @"selectedMenuItemColor", 29 /* COLOR_MENUHILIGHT */ }, // FIXME:
    { @"selectedMenuItemTextColor", COLOR_HIGHLIGHTTEXT }, // FIXME:
 // extensions
-    { @"menuBackgroundColor", 30 },
+    { @"menuBackgroundColor", 30 /* COLOR_MENUBAR */ },
     { @"menuItemTextColor", COLOR_MENUTEXT },
      { @"_sourceListBackgroundColor", COLOR_WINDOW },
  
