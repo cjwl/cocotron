@@ -265,15 +265,12 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
    if(![self drawPartId:MP_SEPARATOR stateId:MS_NORMAL uxthClassId:uxthMENU inRect:rect])
     [super drawMenuSeparatorInRect:rect];
 }
-#endif
 
--(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected {
-   NSSize size=[self sizeOfMenuBranchArrow];
-   NSRect rect=NSMakeRect(point.x,point.y,size.width,size.height);
-   
+-(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {   
    if(![self drawPartId:MP_CHEVRON stateId:selected?MS_SELECTED:MS_NORMAL uxthClassId:uxthMENU inRect:rect])
-    [super drawMenuBranchArrowAtPoint:point selected:selected];
+    [super drawMenuBranchArrowInRect:rect selected:selected];
 }
+#endif
 
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect {
    rect.size.width-=1.0;
