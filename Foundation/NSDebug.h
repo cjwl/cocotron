@@ -10,3 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 FOUNDATION_EXPORT BOOL NSZombieEnabled;
 FOUNDATION_EXPORT BOOL NSDebugEnabled;
+FOUNDATION_EXPORT BOOL NSCooperativeThreadsEnabled;
+
+void NSCooperativeThreadBlocking();
+void NSCooperativeThreadWaiting();
