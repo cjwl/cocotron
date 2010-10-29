@@ -13,15 +13,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDateComponents,NSTimeZone,NSLocale,NSDate;
 
 enum {
-	NSEraCalendarUnit = kCFCalendarUnitEra,
-	NSYearCalendarUnit = kCFCalendarUnitYear,
-	NSMonthCalendarUnit = kCFCalendarUnitMonth,
-	NSDayCalendarUnit = kCFCalendarUnitDay,
-	NSHourCalendarUnit = kCFCalendarUnitHour,
-	NSMinuteCalendarUnit = kCFCalendarUnitMinute,
-	NSSecondCalendarUnit = kCFCalendarUnitSecond,
-	NSWeekCalendarUnit = kCFCalendarUnitWeek,
-	NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
+   NSEraCalendarUnit = kCFCalendarUnitEra,
+   NSYearCalendarUnit = kCFCalendarUnitYear,
+   NSMonthCalendarUnit = kCFCalendarUnitMonth,
+   NSDayCalendarUnit = kCFCalendarUnitDay,
+   NSHourCalendarUnit = kCFCalendarUnitHour,
+   NSMinuteCalendarUnit = kCFCalendarUnitMinute,
+   NSSecondCalendarUnit = kCFCalendarUnitSecond,
+   NSWeekCalendarUnit = kCFCalendarUnitWeek,
+   NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
    NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal,
 //   NSQuarterCalendarUnit = kCFCalendarUnitQuarter,
 };

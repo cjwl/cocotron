@@ -109,7 +109,7 @@ NSString * const NSGregorianCalendar=@"NSGregorianCalendar";
   interval=NSMoveIntervalFromTimeZoneToGMT(interval,[NSTimeZone localTimeZone]);
    
    if(flags&NSEraCalendarUnit)
-   NSUnimplementedMethod();
+    NSUnimplementedMethod();
    if(flags&NSYearCalendarUnit)
     [result setYear:NSYearFromTimeInterval(interval)];
    if(flags&NSMonthCalendarUnit)
