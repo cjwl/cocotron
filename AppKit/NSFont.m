@@ -80,8 +80,7 @@ static NSFont **_fontCache=NULL;
 }
 
 +(float)smallSystemFontSize {
-   NSUnimplementedMethod();
-   return 0;
+   return 10.0;
 }
 
 +(float)labelFontSize {
@@ -89,8 +88,17 @@ static NSFont **_fontCache=NULL;
 }
 
 +(float)systemFontSizeForControlSize:(NSControlSize)size {
-   NSUnimplementedMethod();
-   return 0;
+   switch(size){
+    default:
+    case NSRegularControlSize:
+     return 13.0;
+     
+    case NSSmallControlSize:
+     return 11.0;
+     
+    case NSMiniControlSize:
+     return 9.0;
+   }
 }
 
 +(NSFont *)boldSystemFontOfSize:(float)size {
@@ -512,12 +520,15 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    CGContextSetFont(cgContext,_cgFont);
    CGContextSetFontSize(cgContext,_pointSize);
 
+   CGAffineTransform textMatrix;
+   
 // FIX, should check the focusView in the context instead of NSView's
-   if([[NSGraphicsContext currentContext] isFlipped]){
-    CGAffineTransform flip={1,0,0,-1,0,0};
-    
-    CGContextSetTextMatrix(cgContext,flip);
-   }
+   if([[NSGraphicsContext currentContext] isFlipped])
+    textMatrix=(CGAffineTransform){1,0,0,-1,0,0};
+   else
+    textMatrix=CGAffineTransformIdentity;
+
+   CGContextSetTextMatrix(cgContext,textMatrix);
 }
 
 -(void)set {
