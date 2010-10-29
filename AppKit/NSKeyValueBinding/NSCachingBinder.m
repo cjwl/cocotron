@@ -43,7 +43,7 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
 
 - (id)cachedValue
 {
-  return [[_cachedValue retain] autorelease];
+  return _cachedValue;
 }
 
 - (void)setCachedValue:(id)value
