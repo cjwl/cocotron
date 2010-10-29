@@ -418,7 +418,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [values addEntriesFromDictionary:_changedValues];
    
-   return [NSString stringWithFormat:@"<%@ %x:entity name=%@, values=%@>",isa,self,[self entity],values];
+   return [NSString stringWithFormat:@"<%@ %x:objectID=%@ entity name=%@, values=%@>",isa,self,_objectID,[self entity],values];
 }
 
 @end

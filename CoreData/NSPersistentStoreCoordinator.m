@@ -96,7 +96,7 @@ static NSMutableDictionary *_storeTypes=nil;
 
    [store willRemoveFromPersistentStoreCoordinator:self];
 
-   [[NSNotificationCenter defaultCenter] postNotificationName:NSPersistentStoreCoordinatorStoresDidChangeNotification object:store userInfo:userInfo];
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSPersistentStoreCoordinatorStoresDidChangeNotification object:self userInfo:userInfo];
    
    [_stores removeObjectIdenticalTo:store];
    

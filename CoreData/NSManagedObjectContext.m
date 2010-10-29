@@ -85,14 +85,21 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
 
 -(void)persistentStoresDidChange:(NSNotification *)note {
    NSArray *stores=[[note userInfo] objectForKey:NSRemovedPersistentStoresKey];
-   
+      
    for(NSPersistentStore *store in stores){
     NSArray *allObjects=NSAllMapTableValues(_objectIdToObject);
 
     for(NSManagedObject *check in allObjects){
      NSManagedObjectID *objectID=[check objectID];
-    
+        
      if([objectID persistentStore]==store){
+     
+     NSEntityDescription *entity=[check entity];
+      NSArray             *properties=[[entity propertiesByName] allKeys];
+
+      for(NSString *key in properties)
+       [check removeObserver:self forKeyPath:key];
+
       [_registeredObjects removeObject:check];
       [_insertedObjects removeObject:check];
       [_updatedObjects removeObject:check];
@@ -222,7 +229,7 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
 
 -(NSManagedObject *)objectWithID:(NSManagedObjectID *)objectID {
    NSManagedObject *result=NSMapGet(_objectIdToObject,objectID);
-   
+
    if(result==nil){
     result=[[NSManagedObject alloc] initWithObjectID:objectID managedObjectContext:self];
     NSMapInsert(_objectIdToObject,objectID,result);
@@ -235,7 +242,7 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
 
 -(NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error {
    NSArray *affectedStores=[fetchRequest affectedStores];
-      
+
    if(affectedStores==nil)
     affectedStores=[_storeCoordinator persistentStores];
   
@@ -246,8 +253,9 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
     
     if([entity _isKindOfEntity:[fetchRequest entity]]){       
      if(![_deletedObjects containsObject:check]){
-      if([affectedStores containsObject:[[check objectID] persistentStore]])
+      if([affectedStores containsObject:[[check objectID] persistentStore]]){
        [resultSet addObject:check];
+       }
      }
     }
    }
@@ -261,13 +269,14 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
     
      if([entity _isKindOfEntity:[fetchRequest entity]]){
       NSManagedObject *check=[self objectWithID:checkID];
-       
-      if(![_deletedObjects containsObject:check])
+      
+      if(![_deletedObjects containsObject:check]){
        [resultSet addObject:check];
+       }
 	 }
     }
    }
-
+   
    NSMutableArray *result=[NSMutableArray arrayWithArray:[resultSet allObjects]];
 
    NSPredicate *p=[fetchRequest predicate];
@@ -358,7 +367,8 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-   [_updatedObjects addObject:object];
+   if(NSMapGet(_objectIdToObject,[object objectID])==object)
+    [_updatedObjects addObject:object];
 }
 
 -(BOOL)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error {
@@ -451,7 +461,7 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
    for(NSManagedObject *updated in _updatedObjects){
     NSAtomicStore          *store=(NSAtomicStore *)[_storeCoordinator _persistentStoreForObject:updated];
     NSAtomicStoreCacheNode *node=[store cacheNodeForObjectID:[updated objectID]];
-    
+
     [store updateCacheNode:node fromManagedObject:updated];
 
     [affectedStores addObject:store];

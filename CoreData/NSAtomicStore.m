@@ -12,7 +12,7 @@
 -initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)coordinator configurationName:(NSString *)configurationName URL:(NSURL *)url options:(NSDictionary *)options {
    if([super initWithPersistentStoreCoordinator:coordinator configurationName:configurationName URL:url options:options]==nil)
     return nil;
-   
+
    _metadata=[[NSDictionary alloc] init];
    _cacheNodes=[[NSMutableSet alloc] init];
    _objectIDToCacheNode=[[NSMutableDictionary alloc] init];
@@ -62,7 +62,7 @@
 
 -(NSManagedObjectID *)objectIDForEntity:(NSEntityDescription *)entity referenceObject:referenceObject {
    NSMutableDictionary *refTable=[_objectIDTable objectForKey:[entity name]];
-   
+
    if(refTable==nil){
     refTable=[NSMutableDictionary dictionary];
     [_objectIDTable setObject:refTable forKey:[entity name]];
@@ -76,7 +76,7 @@
     [result setReferenceObject:referenceObject];
     [result setStoreIdentifier:[self identifier]];
     [result setPersistentStore:self];
-    
+
     [refTable setObject:result forKey:referenceObject];
    }
    
