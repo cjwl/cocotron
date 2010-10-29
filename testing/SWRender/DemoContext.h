@@ -31,6 +31,7 @@
 -(void)setRotation:(float)value;
 -(void)setShouldAntialias:(BOOL)value;
 -(void)setInterpolationQuality:(CGInterpolationQuality)value;
+-(void)setImageData:(NSData *)data;
 -(void)setPDFData:(NSData *)data;
 
 -(void)drawClassic;

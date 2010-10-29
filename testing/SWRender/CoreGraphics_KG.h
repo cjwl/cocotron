@@ -23,7 +23,13 @@
 #define CGRectMake O2RectMake
 #define CGPointMake O2PointMake
 #define CGSizeMake O2SizeMake
+#define CGRectGetMinX O2RectGetMinX
+#define CGRectGetMaxX O2RectGetMaxX
+#define CGRectGetMinY O2RectGetMinY
+#define CGRectGetMaxY O2RectGetMaxY
+
 #define CGAffineTransform O2AffineTransform
+#define CGAffineTransformIdentity O2AffineTransformIdentity
 #define CGAffineTransformScale O2AffineTransformScale
 #define CGAffineTransformRotate O2AffineTransformRotate
 #define CGAffineTransformMakeRotation O2AffineTransformMakeRotation
@@ -216,11 +222,22 @@
 #define CGColorGetAlpha O2ColorGetAlpha
 #define CGColorGetPattern O2ColorGetPattern
 
+// CGPattern
+#define CGPatternRef O2PatternRef
+#define kCGPatternTilingNoDistortion kO2PatternTilingNoDistortion
+#define CGPatternCallbacks O2PatternCallbacks
+
+#define CGPatternCreate O2PatternCreate
+#define CGPatternRetain O2PatternRetain
+#define CGPatternRelease O2PatternRelease
+
+
 // CGColorSpace
 
 #define CGColorSpaceCreateDeviceRGB  O2ColorSpaceCreateDeviceRGB
 #define CGColorSpaceCreateDeviceGray O2ColorSpaceCreateDeviceGray
 #define CGColorSpaceCreateDeviceCMYK O2ColorSpaceCreateDeviceCMYK
+#define CGColorSpaceCreatePattern O2ColorSpaceCreatePattern
 #define CGColorSpaceRelease O2ColorSpaceRelease
 
 // CGImage
