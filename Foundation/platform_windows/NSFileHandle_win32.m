@@ -32,6 +32,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)closeOnDealloc {
+   _handle=(HANDLE)descriptor;
+   _closeOnDealloc=closeOnDealloc;
+   return self;
+}
+
 -(void)dealloc {
    if(_closeOnDealloc)
     [self closeFile];
@@ -43,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 +fileHandleForReadingAtPath:(NSString *)path {
-   HANDLE handle=CreateFile([path fileSystemRepresentation],
+   HANDLE handle=CreateFileW([path fileSystemRepresentationW],
     GENERIC_READ,0,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
 
    if(handle==NULL)
@@ -53,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +fileHandleForWritingAtPath:(NSString *)path {
-   HANDLE handle=CreateFile([path fileSystemRepresentation],
+   HANDLE handle=CreateFileW([path fileSystemRepresentationW],
     GENERIC_WRITE,0,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
 
    if(handle==NULL)
@@ -63,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +fileHandleForUpdatingAtPath:(NSString *)path {
-   HANDLE handle=CreateFile([path fileSystemRepresentation],
+   HANDLE handle=CreateFileW([path fileSystemRepresentationW],
     GENERIC_WRITE|GENERIC_READ,0,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
 
    if(handle==NULL)
