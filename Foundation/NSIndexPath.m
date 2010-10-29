@@ -28,15 +28,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -  initWithIndexes: (NSUInteger*) indexes length: (NSUInteger) length {
-		int i;
+   int i;
 		
-		_length  = length;
-   		_indexes = malloc(length*sizeof(NSUInteger));
+   _length  = length;
+   _indexes = malloc(length*sizeof(NSUInteger));
    
    for(i=0;i<length;i++)
     _indexes[i]=indexes[i];
 
-	return self;
+   return self;
 }
 
 - (BOOL) isEqual:  other {
@@ -50,27 +50,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void) dealloc {
    if (_indexes)
     free(_indexes);
-	[super dealloc];
+   [super dealloc];
 }
 
 - (NSIndexPath*) indexPathByAddingIndex: (NSUInteger) index {
    NSUInteger length=[self length];
    NSUInteger buffer[length+1];
-	
+   
    [self getIndexes:buffer];
    buffer[length]=index;
    length++;
    
    return [[[NSIndexPath alloc] initWithIndexes:buffer length:length] autorelease];
-	}
-	
+}
+
 - (NSIndexPath*) indexPathByRemovingLastIndex {
    if(_length==0){
 	[NSException raise:NSInvalidArgumentException format:@"Unable to remove index from zero length path."];
     return nil;
-}
-
-	return [[[NSIndexPath alloc] initWithIndexes: _indexes length: _length-1] autorelease];
+   }
+   
+   return [[[NSIndexPath alloc] initWithIndexes: _indexes length: _length-1] autorelease];
 }
 
 - (NSUInteger) indexAtPosition: (NSUInteger) position {
@@ -78,7 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[NSException raise:NSInvalidArgumentException format:@"Unable to remove index from zero length path."];
     return 0;
    }
-	return _indexes[position];
+   return _indexes[position];
 }
 
 - (NSUInteger) length {
@@ -101,33 +101,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -copyWithZone:(NSZone*) zone {
-	return [self retain];
+   return [self retain];
 }
 
 
 -copy  {
-	return [self retain];
+   return [self retain];
 }
 
-- (NSUInteger) hash {
+-(NSUInteger) hash {
    NSUInteger result=0;
    int i;
 		   
    for(i=0;i<_length;i++){
     result = result*2 + _indexes[i];
-}
+   }
    result = 2*result + _length;
-
+   
    return result;
 }
 
 -(void)encodeWithCoder: (NSCoder*) coder {
-	NSUnimplementedMethod();
+   NSUnimplementedMethod();
 }
 
 - initWithCoder: (NSCoder*) coder {
-	NSUnimplementedMethod();
-    return nil;
+   NSUnimplementedMethod();
+   return nil;
 }
 
 @end
