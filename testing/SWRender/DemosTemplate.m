@@ -61,6 +61,7 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    _bitmapInfo=kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Little;
    _data=NSZoneMalloc(NULL,_bytesPerRow*_pixelsHigh);
    _context=CGBitmapContextCreate(_data,_pixelsWide,_pixelsHigh,_bitsPerComponent,_bytesPerRow,_colorSpace,_bitmapInfo);
+   
    NSLog(@"%s %d",__FILE__,__LINE__);
    _fillColor=createCGColor(0,0,1,1);
    _strokeColor=createCGColor(1,0,0,1);
@@ -69,7 +70,7 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    _interpolationQuality=kCGInterpolationLow;
    _scalex=1;
    _scaley=1;
-   _rotation=0;
+   _rotation=10;
    _blendMode=kCGBlendModeNormal;
    _shadowColor=createCGColor(0,0,0,1);
    _shadowBlur=1;
@@ -240,6 +241,11 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    _interpolationQuality=value;
 }
 
+-(void)setImageData:(NSData *)data {
+   CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
+   _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
+}
+
 -(void)setPDFData:(NSData *)data {
    if(_pdfDocument!=NULL)
     CGPDFDocumentRelease(_pdfDocument);
@@ -301,10 +307,23 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
    [self establishContextState];
 
+#if 1
+   CGRect frame=CGRectMake(0,0,300,50);
+   CGFloat radius=50;
+   
+   CGContextBeginPath(_context);
+ //     CGContextMoveToPoint(_context,CGRectGetMinX(frame)+radius,CGRectGetMaxY(frame));
+      CGContextAddArc(_context,CGRectGetMaxX(frame)-radius,CGRectGetMaxY(frame),radius,M_PI_2,M_PI_2*3,YES);
+      CGContextAddArc(_context,CGRectGetMinX(frame)+radius,CGRectGetMinY(frame)+radius,radius,M_PI_2*3,M_PI_2,YES);
+      CGContextClosePath(_context);
+      CGContextFillPath(_context);
+#else
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
    
    CGContextDrawPath(_context,_pathDrawingMode);
+#endif
+
    CGContextRestoreGState(_context);
 }
 
@@ -333,6 +352,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextClip(_context);
 #endif
 
+   if(_resamplingImage!=NULL)
    CGContextDrawImage(_context,CGRectMake(0,0,CGImageGetWidth(_resamplingImage),CGImageGetHeight(_resamplingImage)),_resamplingImage);
    
    CGContextRestoreGState(_context);
@@ -464,6 +484,11 @@ static void evaluate(void *info,const float *in, float *output) {
 
    shading=CGShadingCreateAxial(CGColorSpaceCreateDeviceRGB(),CGPointMake(_startPoint.x,_startPoint.y),
       CGPointMake(_endPoint.x,_endPoint.y),function,_extendStart,_extendEnd);
+      
+   CGContextBeginPath(_context);
+   CGContextAddArc(_context,0,0,200,0,M_PI*2,YES);
+   CGContextClip(_context);
+
    CGContextDrawShading(_context,shading);
    CGShadingRelease(shading);
    
@@ -563,6 +588,52 @@ static void evaluate(void *info,const float *in, float *output) {
    CGContextFillPath(_context);
    CGContextEndTransparencyLayer(_context);
    CGContextRestoreGState(_context);
+}
+
+static void drawPattern(void *info, CGContextRef ctxt){
+   CGContextSetRGBFillColor(ctxt,1,1,0,1);
+   CGContextFillEllipseInRect(ctxt,CGRectMake(0,0,8,8));
+   CGContextSetRGBFillColor(ctxt,1,0,1,1);
+   CGContextFillEllipseInRect(ctxt,CGRectMake(0,3,6,6));
+   CGContextSetRGBFillColor(ctxt,0,0,1,1);
+   CGContextFillEllipseInRect(ctxt,CGRectMake(0,6,4,6));
+}
+
+-(void)drawPattern {
+   CGPatternCallbacks callbacks={0,drawPattern,NULL};
+   CGPatternRef pattern=CGPatternCreate(NULL,CGRectMake(0,0,10,10),CGAffineTransformIdentity,10,10,kCGPatternTilingNoDistortion,YES,&callbacks);
+   CGColorSpaceRef colorSpace=CGColorSpaceCreatePattern(NULL);
+   CGFloat components[4]={1};
+   CGColorRef color=CGColorCreateWithPattern(colorSpace,pattern,components);
+
+#ifdef USING_QUARTZ2DX
+   CGContextRef save=_context;
+   CGRect media=CGRectMake(0,0,400,400);
+   _context=CGPDFContextCreateWithURL([NSURL fileURLWithPath:@"/tmp/foo.pdf"],&media,NULL);
+   CGPDFContextBeginPage(_context,NULL);
+#endif
+   CGContextSaveGState(_context);
+
+   CGContextClearRect(_context,CGRectMake(0,0,400,400));
+
+   CGAffineTransform ctm=[self ctm];
+   ctm=CGAffineTransformTranslate(ctm,-200,-200);
+   CGContextConcatCTM(_context,ctm);
+
+   CGContextSetFillColorWithColor(_context,color);
+   CGContextFillRect(_context,CGRectMake(0,0,300,300));
+   CGContextRestoreGState(_context);
+#ifdef USING_QUARTZ2DX
+   CGPDFContextEndPage(_context);
+   CGPDFContextClose(_context);
+   CGContextRelease(_context);
+   
+   _context=save;
+#endif
+
+   CGColorRelease(color);
+   CGColorSpaceRelease(colorSpace);
+   CGPatternRelease(pattern);
 }
 
 #if 0

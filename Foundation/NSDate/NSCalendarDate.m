@@ -115,7 +115,7 @@ second, 0);
     [coder encodeValueOfObjCType:@encode(double) at:&_timeInterval];
     [coder encodeObject:_timeZone];
     [coder encodeObject:_format];
-}
+   }
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -130,8 +130,8 @@ second, 0);
     _timeZone = [[coder decodeObject] retain];
     _format = [[coder decodeObject] retain];
    }
-
-    return self;
+   
+   return self;
 }
 
 -(NSString *)calendarFormat {

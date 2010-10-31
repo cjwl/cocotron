@@ -102,11 +102,11 @@ OBJC_EXPORT id          object_dispose(id object);
 
 // FIXME. Non-compliant API. TO BE CLEANED UP.
 
-OBJC_EXPORT const char *OBJCModulePathForProcess();
+OBJC_EXPORT const char *objc_mainImageName();
 OBJC_EXPORT void OBJCResetModuleQueue(void);
 OBJC_EXPORT void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path);
 
-OBJC_EXPORT void OBJCSetDispatchTracing(BOOL yesOrNo);
+OBJC_EXPORT void objc_enableMessageLoggingWithCount(int count);
 OBJC_EXPORT void OBJCEnableMsgTracing();
 OBJC_EXPORT void OBJCDisableMsgTracing();
 

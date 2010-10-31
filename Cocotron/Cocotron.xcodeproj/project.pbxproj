@@ -138,7 +138,14 @@
 			isa = PBXProject;
 			buildConfigurationList = FE1FBFF511E7804C00A9A87A /* Build configuration list for PBXProject "Cocotron" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = FE1FBFF011E7804C00A9A87A;
 			projectDirPath = "";
 			projectReferences = (

@@ -105,7 +105,7 @@
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %s URL=%@>",isa,_cmd,[self URL]];
+   return [NSString stringWithFormat:@"<%@ %p URL=%@>",isa,self,[self URL]];
 }
 
 @end

@@ -26,10 +26,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(NSSize)sizeOfMenuBranchArrow {
-   return [[[[NSInterfacePartAttributedString alloc] initWithCharacter:0x34 fontName:@"Marlett" pointSize:10 color:[NSColor menuItemTextColor]] autorelease] size];
-}
-
 -(void)drawMenuSeparatorInRect:(NSRect)rect {
    NSPoint point=rect.origin;
    float   width=rect.size.width;
@@ -115,13 +111,22 @@ pointSize:10 color:color] autorelease];
    return NSInsetRect(rect,2,2);
 }
 
--(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected {
-   NSColor         *color=selected?[NSColor selectedControlTextColor]:[NSColor menuItemTextColor];
-   NSInterfacePart *arrow;
-         
-   arrow=[[[NSInterfacePartAttributedString alloc] initWithCharacter:0x34 fontName:@"Marlett" pointSize:10 color:color] autorelease];
+-(NSSize)sizeOfMenuBranchArrow {
+   return NSMakeSize(5,9);
+}
 
-   [arrow drawAtPoint:point];
+-(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+   NSColor *color=selected?[NSColor selectedControlTextColor]:[NSColor menuItemTextColor];
+   
+   [color set];
+   
+   CGContextBeginPath(context);
+   CGContextMoveToPoint(context,NSMinX(rect),NSMaxY(rect));
+   CGContextAddLineToPoint(context,NSMaxX(rect),NSMidY(rect));
+   CGContextAddLineToPoint(context,NSMinX(rect),NSMinY(rect));
+   CGContextClosePath(context);
+   CGContextFillPath(context);
 }
 
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect {

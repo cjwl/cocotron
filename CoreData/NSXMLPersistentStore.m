@@ -312,7 +312,7 @@
    NSDictionary   *attributesByName=[[managedObject entity] attributesByName];
    NSArray        *attributeKeys=[attributesByName allKeys];
    NSMutableArray *children=[NSMutableArray array];
-   
+
    for(NSString *attributeName in attributeKeys){
     NSAttributeDescription *attributeDescription=[attributesByName objectForKey:attributeName];
     NSXMLElement           *attributeElement=[NSXMLNode elementWithName:@"attribute"];
@@ -418,7 +418,8 @@
     [relationshipElement addAttribute:[NSXMLNode attributeWithName:@"destination" stringValue:[destinationEntity name]]];
     
     NSMutableArray *idrefArray=[NSMutableArray array];
-    
+
+  
     for(NSManagedObjectID *objectID in valueSet){
      id referenceObject=[self referenceObjectForObjectID:objectID];
      

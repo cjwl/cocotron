@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawBrowserTitleBackgroundInRect:(NSRect)rect;
 -(void)drawBrowserHorizontalScrollerWellInRect:(NSRect)rect clipRect:(NSRect)clipRect;
 -(NSRect)drawColorWellBorderInRect:(NSRect)rect enabled:(BOOL)enabled bordered:(BOOL)bordered active:(BOOL)active;
--(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected;
+-(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected;
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect;
 
 -(void)drawPopUpButtonWindowBackgroundInRect:(NSRect)rect;

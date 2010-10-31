@@ -37,6 +37,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return self;
 }
 
+-init {
+   return [self initWithDateFormat:@"" allowNaturalLanguage:NO];
+}
+
 -(void)dealloc {
     [_dateFormat10_0 release];
     [_dateFormat release];
@@ -68,6 +72,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)allowsNaturalLanguage {
     return _allowsNaturalLanguage;
+}
+
+-(NSDateFormatterBehavior)formatterBehavior {
+   return _behavior;
 }
 
 -(NSDictionary *)locale {
@@ -112,6 +120,10 @@ NSWeekDayNameArray];
 }
 
 -(void)setLenient:(BOOL)value {
+}
+
+-(void)setFormatterBehavior:(NSDateFormatterBehavior)value {
+   _behavior=value;
 }
 
 -(NSString *)stringForObjectValue:(id)object {

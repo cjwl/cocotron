@@ -3,8 +3,13 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSCFTypeID.h>
 
-@interface __CFMutableData : NSMutableData
-@end
+struct __CFMutableData {
+};
+
+#define ToCFData(x) ((CFDataRef)(x))
+#define ToCFMutableData(x) ((CFMutableDataRef)(x))
+#define ToNSData(x) ((NSData *)(x))
+#define ToNSMutableData(x) ((NSMutableData *)(x))
 
 static inline NSRange NSRangeFromCFRange(CFRange range){
    NSRange result={range.location,range.length};
@@ -16,7 +21,7 @@ CFTypeID CFDataGetTypeID(void){
 }
 
 CFDataRef CFDataCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length){
-   return [[NSData allocWithZone:NULL] initWithBytes:bytes length:length];
+   return ToCFData([[NSData allocWithZone:NULL] initWithBytes:bytes length:length]);
 }
 
 CFDataRef CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesAllocator){
@@ -25,55 +30,55 @@ CFDataRef CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *by
 }
 
 CFDataRef CFDataCreateCopy(CFAllocatorRef allocator,CFDataRef self){
-   return [self copy];
+   return ToCFData([ToNSData(self) copy]);
 }
 
 CFIndex CFDataGetLength(CFDataRef self){
-   return [self length];
+   return [ToNSData(self) length];
 }
 
 const uint8_t *CFDataGetBytePtr(CFDataRef self){
-   return [self bytes];
+   return [ToNSData(self) bytes];
 }
 
 void CFDataGetBytes(CFDataRef self,CFRange range,uint8_t *bytes){
-   [self getBytes:bytes range:NSRangeFromCFRange(range)];
+   [ToNSData(self) getBytes:bytes range:NSRangeFromCFRange(range)];
 }
 
 // mutable
 
 CFMutableDataRef CFDataCreateMutable(CFAllocatorRef allocator,CFIndex capacity){
-   return [[NSMutableData allocWithZone:NULL] initWithCapacity:capacity];
+   return ToCFMutableData([[NSMutableData allocWithZone:NULL] initWithCapacity:capacity]);
 }
 
 CFMutableDataRef CFDataCreateMutableCopy(CFAllocatorRef allocator,CFIndex capacity,CFDataRef other){
    CFMutableDataRef self=CFDataCreateMutable(allocator,capacity);
    
-   [self setData:other];
+   [ToNSMutableData(self) setData:ToNSData(other)];
 
    return self;
 }
 
 uint8_t *CFDataGetMutableBytePtr(CFMutableDataRef self){
-   return [self mutableBytes];
+   return [ToNSMutableData(self) mutableBytes];
 }
 
 void CFDataSetLength(CFMutableDataRef self,CFIndex length){
-   [self setLength:length];
+   [ToNSMutableData(self) setLength:length];
 }
 
 void CFDataAppendBytes(CFMutableDataRef self,const uint8_t *bytes,CFIndex length){
-   [self appendBytes:bytes length:length];
+   [ToNSMutableData(self) appendBytes:bytes length:length];
 }
 
 void CFDataDeleteBytes(CFMutableDataRef self,CFRange range){
-   [self replaceBytesInRange:NSRangeFromCFRange(range) withBytes:NULL length:0];
+   [ToNSMutableData(self) replaceBytesInRange:NSRangeFromCFRange(range) withBytes:NULL length:0];
 }
 
 void CFDataIncreaseLength(CFMutableDataRef self,CFIndex delta){
-   [self increaseLengthBy:delta];
+   [ToNSMutableData(self) increaseLengthBy:delta];
 }
 
 void CFDataReplaceBytes(CFMutableDataRef self,CFRange range,const uint8_t *bytes,CFIndex length){
-   [self replaceBytesInRange:NSRangeFromCFRange(range) withBytes:bytes length:length];
+   [ToNSMutableData(self) replaceBytesInRange:NSRangeFromCFRange(range) withBytes:bytes length:length];
 }

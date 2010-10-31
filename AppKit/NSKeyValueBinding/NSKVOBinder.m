@@ -165,7 +165,7 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
     if(!isPlaceholder)
      dstValue=[binder transformedObject:dstValue];
     
-    allValues[i]=dstValue;
+   allValues[i]=dstValue;
    }
    
    NSString *pattern=[[allBinders[0] options] objectForKey:NSDisplayPatternBindingOption];

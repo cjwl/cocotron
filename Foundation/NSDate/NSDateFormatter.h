@@ -42,6 +42,7 @@ typedef enum {
 
 -(NSString *)dateFormat;
 -(BOOL)allowsNaturalLanguage;
+-(NSDateFormatterBehavior)formatterBehavior;
 
 -(NSDictionary *)locale;
 
@@ -52,6 +53,7 @@ typedef enum {
 - (NSArray *)standaloneWeekdaySymbols;
 
 -(void)setLenient:(BOOL)value;
+-(void)setFormatterBehavior:(NSDateFormatterBehavior)value;
 
 @end
 

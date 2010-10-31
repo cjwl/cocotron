@@ -243,6 +243,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isFlipped;
 }
 
+-(BOOL)isTemplate {
+   return _isTemplate;
+}
+
 -(BOOL)scalesWhenResized {
    return _scalesWhenResized;
 }
@@ -307,6 +311,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setFlipped:(BOOL)value {
    _isFlipped=value;
+}
+
+-(void)setTemplate:(BOOL)value {
+   _isTemplate=value;
 }
 
 -(void)setScalesWhenResized:(BOOL)value {

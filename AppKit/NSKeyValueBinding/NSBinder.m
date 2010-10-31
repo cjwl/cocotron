@@ -144,13 +144,10 @@ static void* NSBinderChangeContext;
     return _destination;
 }
 
-- (void)setDestination:(id)value 
-{
-    if (_destination != value) 
-	{
-		[_destination release];
-        _destination = [value retain];
-    }
+- (void)setDestination:(id)value  {
+   value=[value retain];
+   [_destination release];
+   _destination=value;
 }
 
 - (NSString*)keyPath {
@@ -243,7 +240,7 @@ static void* NSBinderChangeContext;
 	[_binding release];
 	[_options release];
 	[_bindingPath release];
-	[_destination retain];
+    [_destination release];
 	[super dealloc];
 }
 

@@ -150,8 +150,11 @@ static unsigned addressResolverThread(void *arg){
      queueEmpty=(info->queueCount==0)?TRUE:FALSE;
     LeaveCriticalSection(&(info->queueLock));
     
-    if(queueEmpty)
+    if(queueEmpty){
+     NSCooperativeThreadBlocking();
      WaitForSingleObject(info->queueEvent,INFINITE);
+     NSCooperativeThreadWaiting();
+    }
     
     CFHostRequest *request=NULL;
     
