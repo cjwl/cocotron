@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContext.h>
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSWindow-Private.h>
 
 @implementation NSCachedImageRep
