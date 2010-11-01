@@ -390,6 +390,343 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
    return result;
 }
 
+#define kVK_ANSI_A 0x00
+#define kVK_ANSI_S 0x01
+#define kVK_ANSI_D 0x02
+#define kVK_ANSI_F 0x03
+#define kVK_ANSI_H 0x04
+#define kVK_ANSI_G 0x05
+#define kVK_ANSI_Z 0x06
+#define kVK_ANSI_X 0x07
+#define kVK_ANSI_C 0x08
+#define kVK_ANSI_V 0x09
+#define kVK_ANSI_B 0x0B
+#define kVK_ANSI_Q 0x0C
+#define kVK_ANSI_W 0x0D
+#define kVK_ANSI_E 0x0E
+#define kVK_ANSI_R 0x0F
+#define kVK_ANSI_Y 0x10
+#define kVK_ANSI_T 0x11
+#define kVK_ANSI_1 0x12
+#define kVK_ANSI_2 0x13
+#define kVK_ANSI_3 0x14
+#define kVK_ANSI_4 0x15
+#define kVK_ANSI_6 0x16
+#define kVK_ANSI_5 0x17
+#define kVK_ANSI_Equal 0x18
+#define kVK_ANSI_9 0x19
+#define kVK_ANSI_7 0x1A
+#define kVK_ANSI_Minus 0x1B
+#define kVK_ANSI_8 0x1C
+#define kVK_ANSI_0 0x1D
+#define kVK_ANSI_RightBracket 0x1E
+#define kVK_ANSI_O 0x1F
+#define kVK_ANSI_U 0x20
+#define kVK_ANSI_LeftBracket 0x21
+#define kVK_ANSI_I 0x22
+#define kVK_ANSI_P 0x23
+#define kVK_ANSI_L 0x25
+#define kVK_ANSI_J 0x26
+#define kVK_ANSI_Quote 0x27
+#define kVK_ANSI_K 0x28
+#define kVK_ANSI_Semicolon 0x29
+#define kVK_ANSI_Backslash 0x2A
+#define kVK_ANSI_Comma 0x2B
+#define kVK_ANSI_Slash 0x2C
+#define kVK_ANSI_N 0x2D
+#define kVK_ANSI_M 0x2E
+#define kVK_ANSI_Period 0x2F
+#define kVK_ANSI_Grave 0x32
+#define kVK_ANSI_KeypadDecimal 0x41
+#define kVK_ANSI_KeypadMultiply 0x43
+#define kVK_ANSI_KeypadPlus 0x45
+#define kVK_ANSI_KeypadClear 0x47
+#define kVK_ANSI_KeypadDivide 0x4B
+#define kVK_ANSI_KeypadEnter 0x4C
+#define kVK_ANSI_KeypadMinus 0x4E
+#define kVK_ANSI_KeypadEquals 0x51
+#define kVK_ANSI_Keypad0 0x52
+#define kVK_ANSI_Keypad1 0x53
+#define kVK_ANSI_Keypad2 0x54
+#define kVK_ANSI_Keypad3 0x55
+#define kVK_ANSI_Keypad4 0x56
+#define kVK_ANSI_Keypad5 0x57
+#define kVK_ANSI_Keypad6 0x58
+#define kVK_ANSI_Keypad7 0x59
+#define kVK_ANSI_Keypad8 0x5B
+#define kVK_ANSI_Keypad9 0x5C
+
+#define kVK_Return 0x24
+#define kVK_Tab 0x30
+#define kVK_Space 0x31
+#define kVK_Delete 0x33
+#define kVK_Escape 0x35
+#define kVK_Command 0x37
+#define kVK_Shift 0x38
+#define kVK_CapsLock 0x39
+#define kVK_Option 0x3A
+#define kVK_Control 0x3B
+#define kVK_RightShift 0x3C
+#define kVK_RightOption 0x3D
+#define kVK_RightControl 0x3E
+#define kVK_Function 0x3F
+#define kVK_F17 0x40
+#define kVK_VolumeUp 0x48
+#define kVK_VolumeDown 0x49
+#define kVK_Mute 0x4A
+#define kVK_F18 0x4F
+#define kVK_F19 0x50
+#define kVK_F20 0x5A
+#define kVK_F5 0x60
+#define kVK_F6 0x61
+#define kVK_F7 0x62
+#define kVK_F3 0x63
+#define kVK_F8 0x64
+#define kVK_F9 0x65
+#define kVK_F11 0x67
+#define kVK_F13 0x69
+#define kVK_F16 0x6A
+#define kVK_F14 0x6B
+#define kVK_F10 0x6D
+#define kVK_F12 0x6F
+#define kVK_F15 0x71
+#define kVK_Help 0x72
+#define kVK_Home 0x73
+#define kVK_PageUp 0x74
+#define kVK_ForwardDelete 0x75
+#define kVK_F4 0x76
+#define kVK_End 0x77
+#define kVK_F2 0x78
+#define kVK_PageDown 0x79
+#define kVK_F1 0x7A
+#define kVK_LeftArrow 0x7B
+#define kVK_RightArrow 0x7C
+#define kVK_DownArrow 0x7D
+#define kVK_UpArrow 0x7E
+#define kVK_ISO_Section 0x0A
+#define kVK_JIS_Yen 0x5D
+#define kVK_JIS_Underscore 0x5E
+#define kVK_JIS_KeypadComma 0x5F
+#define kVK_JIS_Eisu 0x66
+#define kVK_JIS_Kana 0x68
+
+#define kVK_UNMAPPED 0xFFFF
+
+unsigned appleKeyCodeForWindowsKeyCode(unsigned wParam,unsigned lParam,BOOL *isKeypad){
+   unsigned scanCode=(lParam>>16)&0xFF;
+
+   *isKeypad=NO;
+
+   if(lParam&0x01000000){
+    *isKeypad=YES;
+
+    switch(scanCode){
+     case 0x35: return kVK_ANSI_KeypadDivide; // /
+     case 0x1C: return kVK_ANSI_KeypadEnter; // Enter
+
+     case 0x52: return kVK_Help;  // Insert
+     case 0x47: return kVK_Home;  // Home
+     case 0x49: return kVK_PageUp;  // PageUp
+
+     case 0x53: return kVK_ForwardDelete;  // Delete
+     case 0x4F: return kVK_End;  // End
+     case 0x51: return kVK_PageDown;  // PageDown
+
+     case 0x48: return kVK_UpArrow;  // Up
+     case 0x4B: return kVK_LeftArrow;  // Left
+     case 0x50: return kVK_DownArrow;  // Down
+     case 0x4D: return kVK_RightArrow;  // Right
+
+     case 0x38: return kVK_RightOption; // Right Alternate
+     case 0x1D: return kVK_RightControl; // Right Control
+    }
+   }
+
+NSLog(@"%d %x",wParam,wParam);
+   switch(wParam){
+    case '0': return kVK_ANSI_0;
+    case '1': return kVK_ANSI_1;
+    case '2': return kVK_ANSI_2;
+    case '3': return kVK_ANSI_3;
+    case '4': return kVK_ANSI_4;
+    case '5': return kVK_ANSI_5;
+    case '6': return kVK_ANSI_6;
+    case '7': return kVK_ANSI_7;
+    case '8': return kVK_ANSI_8;
+    case '9': return kVK_ANSI_9;
+
+    case 'A': return kVK_ANSI_A;
+    case 'B': return kVK_ANSI_B;
+    case 'C': return kVK_ANSI_C;
+    case 'D': return kVK_ANSI_D;
+    case 'E': return kVK_ANSI_E;
+    case 'F': return kVK_ANSI_F;
+    case 'G': return kVK_ANSI_G;
+    case 'H': return kVK_ANSI_H;
+    case 'I': return kVK_ANSI_I;
+    case 'J': return kVK_ANSI_J;
+    case 'K': return kVK_ANSI_K;
+    case 'L': return kVK_ANSI_L;
+    case 'M': return kVK_ANSI_M;
+    case 'N': return kVK_ANSI_N;
+    case 'O': return kVK_ANSI_O;
+    case 'P': return kVK_ANSI_P;
+    case 'Q': return kVK_ANSI_Q;
+    case 'R': return kVK_ANSI_R;
+    case 'S': return kVK_ANSI_S;
+    case 'T': return kVK_ANSI_T;
+    case 'U': return kVK_ANSI_U;
+    case 'V': return kVK_ANSI_V;
+    case 'W': return kVK_ANSI_W;
+    case 'X': return kVK_ANSI_X;
+    case 'Y': return kVK_ANSI_Y;
+    case 'Z': return kVK_ANSI_Z;
+
+    case VK_LBUTTON: return kVK_UNMAPPED;
+    case VK_RBUTTON: return kVK_UNMAPPED;
+    case VK_CANCEL: return kVK_UNMAPPED;
+    case VK_MBUTTON: return kVK_UNMAPPED;
+    case VK_XBUTTON1: return kVK_UNMAPPED;
+    case VK_XBUTTON2: return kVK_UNMAPPED;
+    case VK_BACK: return kVK_Delete;
+    case VK_TAB: return kVK_Tab;
+    case VK_CLEAR: *isKeypad=YES; return kVK_ANSI_KeypadClear;
+    case VK_RETURN: return kVK_Return;
+    case VK_SHIFT: return kVK_Shift;
+    case VK_CONTROL: return kVK_Control;
+    case VK_MENU: return kVK_UNMAPPED;
+    case VK_PAUSE: return kVK_UNMAPPED;
+    case VK_CAPITAL: return kVK_CapsLock;
+#if 0
+    case VK_KANA: return kVK_UNMAPPED;
+    case VK_HANGEUL: return kVK_UNMAPPED;
+    case VK_HANGUL: return kVK_UNMAPPED;
+    case VK_JUNJA: return kVK_UNMAPPED;
+    case VK_FINAL: return kVK_UNMAPPED;
+    case VK_HANJA: return kVK_UNMAPPED;
+    case VK_KANJI: return kVK_UNMAPPED;
+#endif
+    case VK_ESCAPE: return kVK_Escape;
+    case VK_CONVERT: return kVK_UNMAPPED;
+    case VK_NONCONVERT: return kVK_UNMAPPED;
+    case VK_ACCEPT: return kVK_UNMAPPED;
+    case VK_MODECHANGE: return kVK_UNMAPPED;
+    case VK_SPACE: return kVK_Space;
+    case VK_PRIOR: return kVK_PageUp;
+    case VK_NEXT: return kVK_PageDown;
+    case VK_END: return kVK_End;
+    case VK_HOME: return kVK_Home;
+    case VK_LEFT: return kVK_LeftArrow;
+    case VK_UP: return kVK_UpArrow;
+    case VK_RIGHT: return kVK_RightArrow;
+    case VK_DOWN: return kVK_DownArrow;
+    case VK_SELECT: return kVK_UNMAPPED;
+    case VK_PRINT: return kVK_UNMAPPED;
+    case VK_EXECUTE: return kVK_UNMAPPED;
+    case VK_SNAPSHOT: return kVK_UNMAPPED;
+    case VK_INSERT: return kVK_UNMAPPED;
+    case VK_DELETE: return kVK_ForwardDelete;
+    case VK_HELP: return kVK_Help;
+    case VK_LWIN: return kVK_UNMAPPED;
+    case VK_RWIN: return kVK_UNMAPPED;
+    case VK_APPS: return kVK_UNMAPPED;
+    case VK_SLEEP: return kVK_UNMAPPED;
+    case VK_NUMPAD0: *isKeypad=YES;return kVK_ANSI_Keypad0;
+    case VK_NUMPAD1: *isKeypad=YES;return kVK_ANSI_Keypad1;
+    case VK_NUMPAD2: *isKeypad=YES;return kVK_ANSI_Keypad2;
+    case VK_NUMPAD3: *isKeypad=YES;return kVK_ANSI_Keypad3;
+    case VK_NUMPAD4: *isKeypad=YES;return kVK_ANSI_Keypad4;
+    case VK_NUMPAD5: *isKeypad=YES;return kVK_ANSI_Keypad5;
+    case VK_NUMPAD6: *isKeypad=YES;return kVK_ANSI_Keypad6;
+    case VK_NUMPAD7: *isKeypad=YES;return kVK_ANSI_Keypad7;
+    case VK_NUMPAD8: *isKeypad=YES;return kVK_ANSI_Keypad8;
+    case VK_NUMPAD9: *isKeypad=YES;return kVK_ANSI_Keypad9;
+    case VK_MULTIPLY: *isKeypad=YES;return kVK_ANSI_KeypadMultiply;
+    case VK_ADD: *isKeypad=YES;return kVK_ANSI_KeypadPlus;
+    case VK_SEPARATOR: *isKeypad=YES;return kVK_ANSI_KeypadEnter;
+    case VK_SUBTRACT: *isKeypad=YES;return kVK_ANSI_KeypadMinus;
+    case VK_DECIMAL: *isKeypad=YES;return kVK_ANSI_KeypadDecimal;
+    case VK_DIVIDE: *isKeypad=YES;return kVK_ANSI_KeypadDivide;
+    case VK_F1: return kVK_F1;
+    case VK_F2: return kVK_F2;
+    case VK_F3: return kVK_F3;
+    case VK_F4: return kVK_F4;
+    case VK_F5: return kVK_F5;
+    case VK_F6: return kVK_F6;
+    case VK_F7: return kVK_F7;
+    case VK_F8: return kVK_F8;
+    case VK_F9: return kVK_F9;
+    case VK_F10: return kVK_F10;
+    case VK_F11: return kVK_F11;
+    case VK_F12: return kVK_F12;
+    case VK_F13: return kVK_F13;
+    case VK_F14: return kVK_F14;
+    case VK_F15: return kVK_F15;
+    case VK_F16: return kVK_F16;
+    case VK_F17: return kVK_F17;
+    case VK_F18: return kVK_F18;
+    case VK_F19: return kVK_F19;
+    case VK_F20: return kVK_F20;
+    case VK_F21: return kVK_UNMAPPED;
+    case VK_F22: return kVK_UNMAPPED;
+    case VK_F23: return kVK_UNMAPPED;
+    case VK_F24: return kVK_UNMAPPED;
+    case VK_NUMLOCK: return kVK_UNMAPPED;
+    case VK_SCROLL: return kVK_UNMAPPED;
+    case VK_LSHIFT: return kVK_UNMAPPED;
+    case VK_RSHIFT: return kVK_UNMAPPED;
+    case VK_LCONTROL: return kVK_UNMAPPED;
+    case VK_RCONTROL: return kVK_UNMAPPED;
+    case VK_LMENU: return kVK_UNMAPPED;
+    case VK_RMENU: return kVK_UNMAPPED;
+    case VK_BROWSER_BACK: return kVK_UNMAPPED;
+    case VK_BROWSER_FORWARD: return kVK_UNMAPPED;
+    case VK_BROWSER_REFRESH: return kVK_UNMAPPED;
+    case VK_BROWSER_STOP: return kVK_UNMAPPED;
+    case VK_BROWSER_SEARCH: return kVK_UNMAPPED;
+    case VK_BROWSER_FAVORITES: return kVK_UNMAPPED;
+    case VK_BROWSER_HOME: return kVK_UNMAPPED;
+    case VK_VOLUME_MUTE: return kVK_Mute;
+    case VK_VOLUME_DOWN: return kVK_VolumeDown;
+    case VK_VOLUME_UP: return kVK_VolumeUp;
+    case VK_MEDIA_NEXT_TRACK: return kVK_UNMAPPED;
+    case VK_MEDIA_PREV_TRACK: return kVK_UNMAPPED;
+    case VK_MEDIA_STOP: return kVK_UNMAPPED;
+    case VK_MEDIA_PLAY_PAUSE: return kVK_UNMAPPED;
+    case VK_LAUNCH_MAIL: return kVK_UNMAPPED;
+    case VK_LAUNCH_MEDIA_SELECT: return kVK_UNMAPPED;
+    case VK_LAUNCH_APP1: return kVK_UNMAPPED;
+    case VK_LAUNCH_APP2: return kVK_UNMAPPED;
+    
+    case VK_OEM_1: return kVK_ANSI_Semicolon;
+    case VK_OEM_PLUS: return kVK_ANSI_Equal;
+    case VK_OEM_COMMA: return kVK_ANSI_Comma;
+    case VK_OEM_MINUS: return kVK_ANSI_Minus;
+    case VK_OEM_PERIOD: return kVK_ANSI_Period;
+    case VK_OEM_2: return kVK_ANSI_Slash;
+    case VK_OEM_3: return kVK_ANSI_Grave;
+    case VK_OEM_4: return kVK_ANSI_LeftBracket;
+    case VK_OEM_5: return kVK_ANSI_Backslash;
+    case VK_OEM_6: return kVK_ANSI_RightBracket;
+    case VK_OEM_7: return kVK_ANSI_Quote;
+    case VK_OEM_8: return kVK_UNMAPPED;
+    case VK_OEM_102: return kVK_UNMAPPED;
+    case VK_PROCESSKEY: return kVK_UNMAPPED;
+    case VK_PACKET: return kVK_UNMAPPED;
+    case VK_ATTN: return kVK_UNMAPPED;
+    case VK_CRSEL: return kVK_UNMAPPED;
+    case VK_EXSEL: return kVK_UNMAPPED;
+    case VK_EREOF: return kVK_UNMAPPED;
+    case VK_PLAY: return kVK_UNMAPPED;
+    case VK_ZOOM: return kVK_UNMAPPED;
+    case VK_NONAME: return kVK_UNMAPPED;
+    case VK_PA1: return kVK_UNMAPPED;
+    case VK_OEM_CLEAR: return kVK_UNMAPPED;
+   }
+   
+   return kVK_UNMAPPED;
+}
+
 /* Windows does not use different scan codes for keypad keys, there is a seperate bit in lParam to distinguish this. YellowBox does not pass this extra bit of information on via NSEvent which is a real nuisance if you actually need it. This remaps the extended keys to the keyCode's used on NEXTSTEP/OPENSTEP.
 
 The values should be upgraded to something which is more generic to implement, perhaps passing the windows values through.
@@ -588,7 +925,8 @@ The values should be upgraded to something which is more generic to implement, p
     characters=[NSString stringWithCharacters:buffer length:bufferSize];
     charactersIgnoringModifiers=[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize];
 
-    keyCode=[self keyCodeForLParam:msg.lParam isKeypad:&isKeypad];
+    keyCode=appleKeyCodeForWindowsKeyCode(msg.wParam,msg.lParam,&isKeypad);
+    
     if(isKeypad)
      modifierFlags|=NSNumericPadKeyMask;
 
