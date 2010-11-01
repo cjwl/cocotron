@@ -542,7 +542,6 @@ unsigned appleKeyCodeForWindowsKeyCode(unsigned wParam,unsigned lParam,BOOL *isK
     }
    }
 
-NSLog(@"%d %x",wParam,wParam);
    switch(wParam){
     case '0': return kVK_ANSI_0;
     case '1': return kVK_ANSI_1;
