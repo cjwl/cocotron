@@ -574,8 +574,8 @@ NSLog(@"parse error %d",__LINE__);
     
     [sslProperties setObject:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey];
     
-    [_inputStream setProperty:sslProperties forKey:kCFStreamPropertySSLSettings];
-    [_outputStream setProperty:sslProperties forKey:kCFStreamPropertySSLSettings];
+    [_inputStream setProperty:sslProperties forKey:(NSString *)kCFStreamPropertySSLSettings];
+    [_outputStream setProperty:sslProperties forKey:(NSString *)kCFStreamPropertySSLSettings];
    }
    
    [_inputStream setDelegate:self];

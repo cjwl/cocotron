@@ -13,9 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 enum {
 	NSXMLDocumentXMLKind = 0,
-   NSXMLDocumentXHTMLKind=1,
-   NSXMLDocumentHTMLKind=2,
-   NSXMLDocumentTextKind=3,
+    NSXMLDocumentXHTMLKind=1,
+    NSXMLDocumentHTMLKind=2,
+    NSXMLDocumentTextKind=3,
 };
 
 typedef NSUInteger NSXMLDocumentContentKind;

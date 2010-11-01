@@ -23,10 +23,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [super resignFirstResponder];
 }
 
+#if 0
+// This results in no button being drawn if there's no image.
 -(BOOL)isFlipped {
    return YES;
 }
-
+#endif
 -(BOOL)isOpaque {
    return [_cell isOpaque];
 }

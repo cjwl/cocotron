@@ -8,4 +8,6 @@
    return self;
 }
 
+-(void)encodeWithCoder:(NSCoder*)coder {
+}
 @end

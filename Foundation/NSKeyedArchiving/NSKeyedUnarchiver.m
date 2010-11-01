@@ -246,6 +246,15 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    return [number intValue];
 }
 
+-(NSInteger)decodeIntegerForKey:(NSString *)key {
+	NSNumber *number=_numberForKey(self,key);
+	
+	if(number==nil)
+		return 0;
+    
+	return [number intValue];
+}
+
 // not a lot of validation
 -(NSUInteger)decodeArrayOfFloats:(float *)result forKey:(NSString *)key {
    NSString *string=[self decodeObjectForKey:key];

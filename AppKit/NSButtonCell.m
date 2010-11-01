@@ -1018,7 +1018,7 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 
    if(drawTitle){
     if (isTextured && [title length]) {
-#warning FIXME: use shadow in attributed string and implement shadow text drawing
+// FIXME: use shadow in attributed string and implement shadow text drawing
         const BOOL pressed=[self state] && ([self showsStateBy] & NSChangeBackgroundCellMask);
         const CGFloat fgGray = (pressed) ? 0.98 : 0.0;
         const CGFloat shadowGray = (pressed) ? 0.07 : 0.93;

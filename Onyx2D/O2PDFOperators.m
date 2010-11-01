@@ -1029,7 +1029,7 @@ void O2PDF_render_Tf(O2PDFScanner *scanner,void *info) {
    }
    
    if([resource objectType]==O2PDFObjectTypeCached)
-    pdfFont=resource;
+    pdfFont=(O2PDFFont*)resource;
    else {
     
     if(![resource checkForType:kO2PDFObjectTypeDictionary value:&dictionary]){
