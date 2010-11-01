@@ -166,7 +166,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol {
    if(_storagePolicy==NSURLCacheStorageNotAllowed){
-    [[NSURLCache sharedURLCache] removeCachedResponseForRequest:_response];
+    [[NSURLCache sharedURLCache] removeCachedResponseForRequest:_request];
    }
    else {
     NSCachedURLResponse *cachedResponse=[[NSCachedURLResponse alloc] initWithResponse:_response data:_mutableData userInfo:nil storagePolicy:_storagePolicy];

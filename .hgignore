@@ -5,3 +5,11 @@ syntax: glob
 *.perspectivev3
 *.mode2v3
 build
+
+.svn
+.DS_Store
+*.pyc
+*.swp
+*~.nib
+
+*.orig

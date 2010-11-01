@@ -141,7 +141,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    DWORD       length=[provider length];
    DWORD       numberOfFonts=1;
 
-   _fontMemResource=AddFontMemResourceEx(bytes,length,0,&numberOfFonts);
+   _fontMemResource=AddFontMemResourceEx((PVOID)bytes,length,0,&numberOfFonts);
    NSLog(@"FAILURE AddFontMemResourceEx bytes=%p length=%d numberOfFonts=%d,result=%x",bytes,length,numberOfFonts,_fontMemResource);
 
    return self;

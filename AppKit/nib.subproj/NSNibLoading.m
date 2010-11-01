@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <AppKit/NSRaise.h>
+#import <Foundation/NSPlatform.h>
 
 @implementation NSObject(NSNibLoading)
 
@@ -35,11 +36,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDictionary *nameTable=[NSDictionary dictionaryWithObject:owner forKey:NSNibOwner];
    NSBundle     *bundle=[NSBundle bundleForClass:[owner class]];
    NSString     *path;
-
-   path=[bundle pathForResource:name ofType:@"nib"];
+	NSString     *platformName=[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix];
+	
+   path=[bundle pathForResource:platformName ofType:@"nib"];
+   if(path==nil)
+    path=[[NSBundle mainBundle] pathForResource:platformName ofType:@"nib"];
+   if(path==nil)
+    path=[bundle pathForResource:name ofType:@"nib"];
    if(path==nil)
     path=[[NSBundle mainBundle] pathForResource:name ofType:@"nib"];
-
+	
    if(path==nil)
     return NO;
 

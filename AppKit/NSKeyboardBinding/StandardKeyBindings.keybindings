@@ -1,6 +1,6 @@
 {
 	/* let's try this format! (Apple is using a gigantic XML database...) */
-	"0x0008" = "deleteBackward:";			/* <- (backspace? heh) */
+	"0x0008" = "deleteBackward:";			/* (backspace? heh) */
 	"0x001B" = "cancel:";				/* Escape */
 	"0x0009" = "insertTab:";
 	"shift,0x0009" = "insertBacktab:";

@@ -155,7 +155,7 @@ static NSMutableArray *possibleContextClasses=nil;
    _allowsAntialiasing=YES;
    _textMatrix=O2AffineTransformIdentity;
    _showTextFunction=O2ContextDefaultShowText;
-   _showGlyphsFunction=[self methodForSelector:@selector(showGlyphs:advances:count:)];
+   _showGlyphsFunction=(O2ContextShowGlyphsFunction)[self methodForSelector:@selector(showGlyphs:advances:count:)];
    return self;
 }
 
