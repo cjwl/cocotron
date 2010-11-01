@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithCoder:coder];
    _searchButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSSearchGlass"]];
    [_searchButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
-   _cancelButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSSearchClose"]];
+   _cancelButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSStopProgressFreestandingTemplate"]];
    [_cancelButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
    return self;  
 }
@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initTextCell:string];
    _searchButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSSearchGlass"]];
    [_searchButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
-   _cancelButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSSearchClose"]];
+   _cancelButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSStopProgressFreestandingTemplate"]];
    [_cancelButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
    return self;
 }
