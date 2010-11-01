@@ -11,7 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSXMLDTDNode,NSURL,NSData,NSMutableArray;
 
 @interface NSXMLDTD : NSXMLNode {
-   NSMutableArray *_children;
    NSString       *_publicID;
    NSString       *_systemID;
 }

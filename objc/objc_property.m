@@ -4,6 +4,8 @@
 #import <stdlib.h>
 #import <ctype.h>
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRaiseException.h>
+
 
 const char *property_getAttributes(objc_property_t property){
    return property->attributes;
