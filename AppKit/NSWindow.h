@@ -176,10 +176,6 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    BOOL      _autorecalculatesKeyViewLoop;
    
    BOOL      _preservesContentDuringLiveResize;
-   BOOL      _useAspectRatio;
-   BOOL      _aspectRatioIsContent;
-   NSSize    _aspectRatio;
-   NSSize    _contentAspectRatio;
    NSSize    _resizeIncrements;
    NSSize    _contentResizeIncrements;
    

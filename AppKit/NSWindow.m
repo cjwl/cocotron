@@ -198,6 +198,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _viewsNeedDisplay=YES;
    _flushNeeded=YES;
 
+   _resizeIncrements=NSMakeSize(1,1);
+   _contentResizeIncrements=NSMakeSize(1,1);
+   
    _autosaveFrameName=nil;
 
    _platformWindow=nil;
@@ -470,11 +473,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSSize)aspectRatio {
-   return _aspectRatio;
+   return NSMakeSize(1.0,_resizeIncrements.height/_resizeIncrements.width);
 }
 
 -(NSSize)contentAspectRatio {
-   return _contentAspectRatio;
+   return NSMakeSize(1.0,_contentResizeIncrements.height/_contentResizeIncrements.width);
 }
 
 -(BOOL)autorecalculatesKeyViewLoop {
@@ -814,7 +817,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setContentBorderThickness:(CGFloat)thickness forEdge:(NSRectEdge)edge {
-   NSUnimplementedMethod();
+// FIXME: should warn, but low priority cosmetic, so we dont, still needs to be implemented
+//   NSUnimplementedMethod();
 }
 
 -(void)setMovable:(BOOL)movable {
@@ -855,7 +859,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAutorecalculatesContentBorderThickness:(BOOL)automatic forEdge:(NSRectEdge)edge {
-   NSUnimplementedMethod();
+// FIXME: should warn, but low priority cosmetic, so we dont, still needs to be implemented
+//   NSUnimplementedMethod();
 }
 
 -(BOOL)_isApplicationWindow {
@@ -994,10 +999,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setContentAspectRatio:(NSSize)value {
-   _useAspectRatio=YES;
-   _aspectRatioIsContent=YES;
-   _aspectRatio=value;
-   NSUnimplementedMethod();
+   _resizeIncrements.width=1.0;
+   _resizeIncrements.height=value.height/value.width;
 }
 
 -(void)setHasShadow:(BOOL)value {
@@ -1010,10 +1013,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAspectRatio:(NSSize)value {
-   _useAspectRatio=YES;
-   _aspectRatioIsContent=NO;
-   _aspectRatio=value;
-   NSUnimplementedMethod();
+   _resizeIncrements.width=1.0;
+   _resizeIncrements.height=value.height/value.width;
 }
 
 -(void)setAutorecalculatesKeyViewLoop:(BOOL)value {
@@ -1025,7 +1026,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setCanBecomeVisibleWithoutLogin:(BOOL)flag {
-   NSUnimplementedMethod();
+//   NSUnimplementedMethod();
 }
 
 -(void)setCollectionBehavior:(NSWindowCollectionBehavior)behavior {
@@ -1620,7 +1621,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)invalidateShadow {
-   NSUnimplementedMethod();
+   // Do nothing
 }
 
 -(void)cacheImageInRect:(NSRect)rect {
@@ -2503,6 +2504,19 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSSize)platformWindow:(CGWindow *)window frameSizeWillChange:(NSSize)size {
+   if(_resizeIncrements.width!=1 || _resizeIncrements.height!=1){
+    NSSize vertical=size;
+    NSSize horizontal=size;
+    
+    vertical.width=vertical.height*(_resizeIncrements.width/_resizeIncrements.height);
+    horizontal.height=horizontal.width*(_resizeIncrements.height/_resizeIncrements.width);
+    if(vertical.width*vertical.height>horizontal.width*horizontal.height)
+     size=vertical;
+    else
+     size=horizontal;
+   }
+   
+
    if([_delegate respondsToSelector:@selector(windowWillResize:toSize:)])
     size=[_delegate windowWillResize:self toSize:size];
 
