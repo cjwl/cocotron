@@ -28,8 +28,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     static NSToolTipWindow *singleton = nil;
     
-    if (singleton == nil)
+    if (singleton == nil){
         singleton = [[NSToolTipWindow alloc] initWithContentRect:NSMakeRect(0, 0, 20, 20) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+        [singleton setLevel:NSPopUpMenuWindowLevel];
+    }
     
     return singleton;
 }

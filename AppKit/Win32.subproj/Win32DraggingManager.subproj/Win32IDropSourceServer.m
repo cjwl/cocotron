@@ -31,7 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSView *view=[[[NSDragView alloc] initWithImage:image] autorelease];
 
     _window=[[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height)
-       styleMask:NSBorderlessWindowMask backing:NSBackingStoreRetained defer:NO];
+       styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    [_window setLevel:NSPopUpMenuWindowLevel];
     [[_window contentView] addSubview:view];
 
     [(Win32Window *)[_window platformWindow] showWindowWithoutActivation];

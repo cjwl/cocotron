@@ -186,6 +186,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
    _frame=frame;
+   _level=kCGNormalWindowLevel;
    _isOpaque=YES;
    _hasShadow=YES;
    _alphaValue=1.0;
@@ -297,6 +298,10 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    return _styleMask;
 }
 
+-(void)setLevel:(int)value {
+   _level=value;
+}
+
 -(void)setStyleMask:(unsigned)mask {
    _styleMask=mask;
    [self destroyWindowHandle];
@@ -401,19 +406,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)bringToTop {
-   if(_styleMask==NSBorderlessWindowMask){
-    SetWindowPos(_handle,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+   SetWindowPos(_handle,(_level>kCGNormalWindowLevel)?HWND_TOPMOST:HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    }
-   else {
-    SetWindowPos(_handle,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
-   }
-}
 
 -(void)placeAboveWindow:(Win32Window *)other {
    HWND otherHandle=[other windowHandle];
 
    if(otherHandle==NULL)
-    otherHandle=(_styleMask==NSBorderlessWindowMask)?HWND_TOPMOST:HWND_TOP;
+    otherHandle=(_level>kCGNormalWindowLevel)?HWND_TOPMOST:HWND_TOP;
 
    SetWindowPos(_handle,otherHandle,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
 }

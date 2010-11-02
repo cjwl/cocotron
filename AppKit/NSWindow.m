@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSEvent_CoreGraphics.h>
 #import <AppKit/NSColor.h>
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSMenu.h>
@@ -143,7 +143,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	
    _styleMask=styleMask;
    _backingType=backing;
-
+   _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
    _maxSize=NSMakeSize(0,0);
 
@@ -269,6 +269,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      _platformWindow=[[[NSDisplay currentDisplay] windowWithFrame: _frame styleMask:_styleMask backingType:_backingType] retain];
 
     [_platformWindow setDelegate:self];
+    [_platformWindow setLevel:_level];
 
     [self _updatePlatformWindowTitle];
 
@@ -1033,7 +1034,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setLevel:(int)value {
    _level=value;
-   NSUnimplementedMethod();
+   [[self platformWindow] setLevel:_level];
 }
 
 -(void)setOpaque:(BOOL)value {
