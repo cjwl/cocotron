@@ -219,6 +219,12 @@ static NSMutableArray *_registeredClasses=nil;
    return nil;
 }
 
+-copyWithZone:(NSZone *)zone {
+   NSImageRep *result=NSCopyObject(self,0,zone);
+   result->_colorSpaceName=[_colorSpaceName copy];
+   return result;
+}
+
 -(NSSize)size {
    return _size;
 }
