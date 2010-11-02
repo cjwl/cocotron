@@ -34,6 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSToolbarItem(private)
 -(NSSize)constrainedSize;
+-(void)_setItemViewFrame:(NSRect)rect;
 -(CGFloat)_expandWidth:(CGFloat)try;
 -(NSView *)_enclosingView;
 -(void)drawInRect:(NSRect)rect;
@@ -109,7 +110,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL      notSpace[count];
    BOOL      visible[count];
    NSSize    overflowSize=[self overflowImageSizeWithMargins];
-   CGFloat   consumedWidth=0,resultHeight=overflowSize.height;
+   CGFloat   leftMargin=5,rightMargin=5;
+   CGFloat   consumedWidth=leftMargin+rightMargin,resultHeight=overflowSize.height;
    NSInteger totalNonSpace=0,totalVisibleNonSpace=0;
    NSInteger totalVisible=0;
    
@@ -216,7 +218,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self setFrame:NSMakeRect(frame.origin.x,frame.origin.y,desiredWidth,resultHeight)];
    }
     
-   CGFloat x=0;
+   CGFloat x=leftMargin;
+   
    for(i=0;i<count;i++){
     NSToolbarItem *item=[items objectAtIndex:i];
     if(!visible[i])
@@ -224,7 +227,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else {
      
      frames[i].origin.x=x;
-     [[item _enclosingView] setFrame:frames[i]];
+     [item _setItemViewFrame:frames[i]];
      if([item _enclosingView]!=self)
       [self addSubview:[item _enclosingView]];
      x+=frames[i].size.width;

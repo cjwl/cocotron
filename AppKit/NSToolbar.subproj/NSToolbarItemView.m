@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSToolbarItem(private)
 -(void)drawInRect:(NSRect)bounds highlighted:(BOOL)highlighted;
+-(NSSize)_labelSize;
 @end
 
 @implementation NSToolbarItemView
@@ -49,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super setFrame:frame];
 
    NSRect bounds=[self bounds];
-   CGFloat labelHeight=0;
+   CGFloat labelHeight=[_toolbarItem _labelSize].height;
    NSRect viewRect;
    viewRect.origin.y=bounds.origin.y+labelHeight;
    viewRect.origin.x=bounds.origin.x;
