@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSWindow-Private.h>
-#import <AppKit/NSWindowBackgroundView.h>
+#import <AppKit/NSThemeFrame.h>
 #import <AppKit/NSMainMenuView.h>
 #import <AppKit/NSSheetContext.h>
 #import <AppKit/NSApplication.h>
@@ -160,7 +160,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [_menuView setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
    }
 
-   _backgroundView=[[NSWindowBackgroundView alloc] initWithFrame:backgroundFrame];
+   _backgroundView=[[NSThemeFrame alloc] initWithFrame:backgroundFrame];
    [_backgroundView setAutoresizesSubviews:YES];
    [_backgroundView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    [_backgroundView _setWindow:self];
@@ -2369,7 +2369,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_sheetContext autorelease];
    _sheetContext=[sheetContext retain];
 
-   [(NSWindowBackgroundView *)[sheet _backgroundView] setWindowBorderType:NSWindowSheetBorderType];
+   [(NSThemeFrame *)[sheet _backgroundView] setWindowBorderType:NSWindowSheetBorderType];
    
    [self _setSheetOrigin];
    sheetFrame = [sheet frame];   

@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSAttributedString.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSColor.h>
-#import <AppKit/NSWindowBackgroundView.h>
+#import <AppKit/NSThemeFrame.h>
 #import <AppKit/NSTrackingArea.h>
 
 // Note: This file contains a few minor adjustments to get it pixel-accurate on Win32.

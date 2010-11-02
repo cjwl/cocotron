@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSToolbarCustomizationPalette.h>
 #import <AppKit/NSView.h>
 #import <AppKit/NSWindow-Private.h>
-#import <AppKit/NSWindowBackgroundView.h>
+#import <AppKit/NSThemeFrame.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSAttributedString.h>

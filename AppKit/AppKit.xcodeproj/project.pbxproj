@@ -143,7 +143,7 @@
 		C88974840EA0BF3100D0A0A2 /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974850EA0BF3100D0A0A2 /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974860EA0BF3100D0A0A2 /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C88974870EA0BF3100D0A0A2 /* NSWindowBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		C88974870EA0BF3100D0A0A2 /* NSThemeFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSThemeFrame.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974880EA0BF3100D0A0A2 /* NSWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C60976075300DA0954 /* NSWindowController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974890EA0BF3100D0A0A2 /* NSWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C80976075300DA0954 /* NSWorkspace.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C889748A0EA0BF3100D0A0A2 /* NSOutlineMarkerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -464,7 +464,7 @@
 		C88975D80EA0BF3100D0A0A2 /* NSTrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DD0976075200DA0954 /* NSTrackingArea.m */; settings = {ATTRIBUTES = (); }; };
 		C88975D90EA0BF3100D0A0A2 /* NSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DF0976075200DA0954 /* NSView.m */; settings = {ATTRIBUTES = (); }; };
 		C88975DA0EA0BF3100D0A0A2 /* NSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E10976075200DA0954 /* NSWindow.m */; settings = {ATTRIBUTES = (); }; };
-		C88975DB0EA0BF3100D0A0A2 /* NSWindowBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */; settings = {ATTRIBUTES = (); }; };
+		C88975DB0EA0BF3100D0A0A2 /* NSThemeFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSThemeFrame.m */; settings = {ATTRIBUTES = (); }; };
 		C88975DC0EA0BF3100D0A0A2 /* NSWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E50976075200DA0954 /* NSWindowController.m */; settings = {ATTRIBUTES = (); }; };
 		C88975DD0EA0BF3100D0A0A2 /* NSWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E70976075200DA0954 /* NSWorkspace.m */; settings = {ATTRIBUTES = (); }; };
 		C88975DE0EA0BF3100D0A0A2 /* NSOutlineMarkerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */; settings = {ATTRIBUTES = (); }; };
@@ -804,7 +804,7 @@
 		C8A2E3050F07EA1F0054397C /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3060F07EA1F0054397C /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3070F07EA1F0054397C /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C8A2E3080F07EA1F0054397C /* NSWindowBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		C8A2E3080F07EA1F0054397C /* NSThemeFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSThemeFrame.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E3090F07EA1F0054397C /* NSWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C60976075300DA0954 /* NSWindowController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E30A0F07EA1F0054397C /* NSWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C80976075300DA0954 /* NSWorkspace.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E30B0F07EA1F0054397C /* NSOutlineMarkerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1130,7 +1130,7 @@
 		C8A2E4610F07EA1F0054397C /* NSTrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DD0976075200DA0954 /* NSTrackingArea.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4620F07EA1F0054397C /* NSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DF0976075200DA0954 /* NSView.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4630F07EA1F0054397C /* NSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E10976075200DA0954 /* NSWindow.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4640F07EA1F0054397C /* NSWindowBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */; settings = {ATTRIBUTES = (); }; };
+		C8A2E4640F07EA1F0054397C /* NSThemeFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSThemeFrame.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4650F07EA1F0054397C /* NSWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E50976075200DA0954 /* NSWindowController.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4660F07EA1F0054397C /* NSWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E70976075200DA0954 /* NSWorkspace.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4670F07EA1F0054397C /* NSOutlineMarkerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */; settings = {ATTRIBUTES = (); }; };
@@ -1491,7 +1491,7 @@
 		FE01A86B0C5D9BCB00AEA51A /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A86C0C5D9BCB00AEA51A /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A86D0C5D9BCB00AEA51A /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE01A86E0C5D9BCB00AEA51A /* NSWindowBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A86E0C5D9BCB00AEA51A /* NSThemeFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSThemeFrame.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A86F0C5D9BCB00AEA51A /* NSWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C60976075300DA0954 /* NSWindowController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8700C5D9BCB00AEA51A /* NSWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C80976075300DA0954 /* NSWorkspace.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8710C5D9BCB00AEA51A /* NSOutlineMarkerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1775,7 +1775,7 @@
 		FE01A9AE0C5D9BCB00AEA51A /* NSTrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DD0976075200DA0954 /* NSTrackingArea.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9AF0C5D9BCB00AEA51A /* NSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DF0976075200DA0954 /* NSView.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9B00C5D9BCB00AEA51A /* NSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E10976075200DA0954 /* NSWindow.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9B10C5D9BCB00AEA51A /* NSWindowBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B10C5D9BCB00AEA51A /* NSThemeFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSThemeFrame.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9B20C5D9BCB00AEA51A /* NSWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E50976075200DA0954 /* NSWindowController.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9B30C5D9BCB00AEA51A /* NSWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E70976075200DA0954 /* NSWorkspace.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9B40C5D9BCB00AEA51A /* NSOutlineMarkerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */; settings = {ATTRIBUTES = (); }; };
@@ -2337,7 +2337,7 @@
 		FE5A893B10C6F50E005E348A /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A893C10C6F50E005E348A /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A893D10C6F50E005E348A /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE5A893E10C6F50E005E348A /* NSWindowBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE5A893E10C6F50E005E348A /* NSThemeFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSThemeFrame.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE5A893F10C6F50E005E348A /* NSWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C60976075300DA0954 /* NSWindowController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A894010C6F50E005E348A /* NSWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C80976075300DA0954 /* NSWorkspace.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE5A894110C6F50E005E348A /* NSOutlineMarkerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2696,7 +2696,7 @@
 		FE5A8AB110C6F50E005E348A /* NSTrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DD0976075200DA0954 /* NSTrackingArea.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AB210C6F50E005E348A /* NSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DF0976075200DA0954 /* NSView.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AB310C6F50E005E348A /* NSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E10976075200DA0954 /* NSWindow.m */; settings = {ATTRIBUTES = (); }; };
-		FE5A8AB410C6F50E005E348A /* NSWindowBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */; settings = {ATTRIBUTES = (); }; };
+		FE5A8AB410C6F50E005E348A /* NSThemeFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSThemeFrame.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AB510C6F50E005E348A /* NSWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E50976075200DA0954 /* NSWindowController.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AB610C6F50E005E348A /* NSWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E70976075200DA0954 /* NSWorkspace.m */; settings = {ATTRIBUTES = (); }; };
 		FE5A8AB710C6F50E005E348A /* NSOutlineMarkerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */; settings = {ATTRIBUTES = (); }; };
@@ -3178,7 +3178,7 @@
 		FEA313D90FD5667D00F480D4 /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313DA0FD5667D00F480D4 /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313DB0FD5667D00F480D4 /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FEA313DC0FD5667D00F480D4 /* NSWindowBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FEA313DC0FD5667D00F480D4 /* NSThemeFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSThemeFrame.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FEA313DD0FD5667D00F480D4 /* NSWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C60976075300DA0954 /* NSWindowController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313DE0FD5667D00F480D4 /* NSWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C80976075300DA0954 /* NSWorkspace.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313DF0FD5667D00F480D4 /* NSOutlineMarkerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3437,7 +3437,7 @@
 		FEA315350FD5667D00F480D4 /* NSTrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DD0976075200DA0954 /* NSTrackingArea.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315360FD5667D00F480D4 /* NSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DF0976075200DA0954 /* NSView.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315370FD5667D00F480D4 /* NSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E10976075200DA0954 /* NSWindow.m */; settings = {ATTRIBUTES = (); }; };
-		FEA315380FD5667D00F480D4 /* NSWindowBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */; settings = {ATTRIBUTES = (); }; };
+		FEA315380FD5667D00F480D4 /* NSThemeFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSThemeFrame.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315390FD5667D00F480D4 /* NSWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E50976075200DA0954 /* NSWindowController.m */; settings = {ATTRIBUTES = (); }; };
 		FEA3153A0FD5667D00F480D4 /* NSWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E70976075200DA0954 /* NSWorkspace.m */; settings = {ATTRIBUTES = (); }; };
 		FEA3153B0FD5667D00F480D4 /* NSOutlineMarkerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */; settings = {ATTRIBUTES = (); }; };
@@ -4205,7 +4205,7 @@
 		6E2B53DD0976075200DA0954 /* NSTrackingArea.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSTrackingArea.m; sourceTree = "<group>"; };
 		6E2B53DF0976075200DA0954 /* NSView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSView.m; sourceTree = "<group>"; };
 		6E2B53E10976075200DA0954 /* NSWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSWindow.m; sourceTree = "<group>"; };
-		6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSWindowBackgroundView.m; sourceTree = "<group>"; };
+		6E2B53E30976075200DA0954 /* NSThemeFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSThemeFrame.m; sourceTree = "<group>"; };
 		6E2B53E50976075200DA0954 /* NSWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSWindowController.m; sourceTree = "<group>"; };
 		6E2B53E70976075200DA0954 /* NSWorkspace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSWorkspace.m; sourceTree = "<group>"; };
 		6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSOutlineMarkerCell.m; sourceTree = "<group>"; };
@@ -4314,7 +4314,7 @@
 		6E2B54BE0976075300DA0954 /* NSView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSView.h; sourceTree = "<group>"; };
 		6E2B54C00976075300DA0954 /* NSWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSWindow.h; sourceTree = "<group>"; };
 		6E2B54C20976075300DA0954 /* NSWindow-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSWindow-Private.h"; sourceTree = "<group>"; };
-		6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSWindowBackgroundView.h; sourceTree = "<group>"; };
+		6E2B54C40976075300DA0954 /* NSThemeFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSThemeFrame.h; sourceTree = "<group>"; };
 		6E2B54C60976075300DA0954 /* NSWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSWindowController.h; sourceTree = "<group>"; };
 		6E2B54C80976075300DA0954 /* NSWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSWorkspace.h; sourceTree = "<group>"; };
 		6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSOutlineMarkerCell.h; sourceTree = "<group>"; };
@@ -5345,8 +5345,8 @@
 				6E2B53E10976075200DA0954 /* NSWindow.m */,
 				6E2B54D80976075300DA0954 /* NSWindowAnimationContext.h */,
 				6E2B53F30976075200DA0954 /* NSWindowAnimationContext.m */,
-				6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */,
-				6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */,
+				6E2B54C40976075300DA0954 /* NSThemeFrame.h */,
+				6E2B53E30976075200DA0954 /* NSThemeFrame.m */,
 				6E2B54C60976075300DA0954 /* NSWindowController.h */,
 				6E2B53E50976075200DA0954 /* NSWindowController.m */,
 				6E2B54C80976075300DA0954 /* NSWorkspace.h */,
@@ -6341,7 +6341,7 @@
 				C88974840EA0BF3100D0A0A2 /* NSView.h in Headers */,
 				C88974850EA0BF3100D0A0A2 /* NSWindow.h in Headers */,
 				C88974860EA0BF3100D0A0A2 /* NSWindow-Private.h in Headers */,
-				C88974870EA0BF3100D0A0A2 /* NSWindowBackgroundView.h in Headers */,
+				C88974870EA0BF3100D0A0A2 /* NSThemeFrame.h in Headers */,
 				C88974880EA0BF3100D0A0A2 /* NSWindowController.h in Headers */,
 				C88974890EA0BF3100D0A0A2 /* NSWorkspace.h in Headers */,
 				C889748A0EA0BF3100D0A0A2 /* NSOutlineMarkerCell.h in Headers */,
@@ -6735,7 +6735,7 @@
 				C8A2E3050F07EA1F0054397C /* NSView.h in Headers */,
 				C8A2E3060F07EA1F0054397C /* NSWindow.h in Headers */,
 				C8A2E3070F07EA1F0054397C /* NSWindow-Private.h in Headers */,
-				C8A2E3080F07EA1F0054397C /* NSWindowBackgroundView.h in Headers */,
+				C8A2E3080F07EA1F0054397C /* NSThemeFrame.h in Headers */,
 				C8A2E3090F07EA1F0054397C /* NSWindowController.h in Headers */,
 				C8A2E30A0F07EA1F0054397C /* NSWorkspace.h in Headers */,
 				C8A2E30B0F07EA1F0054397C /* NSOutlineMarkerCell.h in Headers */,
@@ -7128,7 +7128,7 @@
 				FE01A86B0C5D9BCB00AEA51A /* NSView.h in Headers */,
 				FE01A86C0C5D9BCB00AEA51A /* NSWindow.h in Headers */,
 				FE01A86D0C5D9BCB00AEA51A /* NSWindow-Private.h in Headers */,
-				FE01A86E0C5D9BCB00AEA51A /* NSWindowBackgroundView.h in Headers */,
+				FE01A86E0C5D9BCB00AEA51A /* NSThemeFrame.h in Headers */,
 				FE01A86F0C5D9BCB00AEA51A /* NSWindowController.h in Headers */,
 				FE01A8700C5D9BCB00AEA51A /* NSWorkspace.h in Headers */,
 				FE01A8710C5D9BCB00AEA51A /* NSOutlineMarkerCell.h in Headers */,
@@ -7516,7 +7516,7 @@
 				FE5A893B10C6F50E005E348A /* NSView.h in Headers */,
 				FE5A893C10C6F50E005E348A /* NSWindow.h in Headers */,
 				FE5A893D10C6F50E005E348A /* NSWindow-Private.h in Headers */,
-				FE5A893E10C6F50E005E348A /* NSWindowBackgroundView.h in Headers */,
+				FE5A893E10C6F50E005E348A /* NSThemeFrame.h in Headers */,
 				FE5A893F10C6F50E005E348A /* NSWindowController.h in Headers */,
 				FE5A894010C6F50E005E348A /* NSWorkspace.h in Headers */,
 				FE5A894110C6F50E005E348A /* NSOutlineMarkerCell.h in Headers */,
@@ -7911,7 +7911,7 @@
 				FEA313D90FD5667D00F480D4 /* NSView.h in Headers */,
 				FEA313DA0FD5667D00F480D4 /* NSWindow.h in Headers */,
 				FEA313DB0FD5667D00F480D4 /* NSWindow-Private.h in Headers */,
-				FEA313DC0FD5667D00F480D4 /* NSWindowBackgroundView.h in Headers */,
+				FEA313DC0FD5667D00F480D4 /* NSThemeFrame.h in Headers */,
 				FEA313DD0FD5667D00F480D4 /* NSWindowController.h in Headers */,
 				FEA313DE0FD5667D00F480D4 /* NSWorkspace.h in Headers */,
 				FEA313DF0FD5667D00F480D4 /* NSOutlineMarkerCell.h in Headers */,
@@ -8814,7 +8814,7 @@
 				C88975D80EA0BF3100D0A0A2 /* NSTrackingArea.m in Sources */,
 				C88975D90EA0BF3100D0A0A2 /* NSView.m in Sources */,
 				C88975DA0EA0BF3100D0A0A2 /* NSWindow.m in Sources */,
-				C88975DB0EA0BF3100D0A0A2 /* NSWindowBackgroundView.m in Sources */,
+				C88975DB0EA0BF3100D0A0A2 /* NSThemeFrame.m in Sources */,
 				C88975DC0EA0BF3100D0A0A2 /* NSWindowController.m in Sources */,
 				C88975DD0EA0BF3100D0A0A2 /* NSWorkspace.m in Sources */,
 				C88975DE0EA0BF3100D0A0A2 /* NSOutlineMarkerCell.m in Sources */,
@@ -9188,7 +9188,7 @@
 				C8A2E4610F07EA1F0054397C /* NSTrackingArea.m in Sources */,
 				C8A2E4620F07EA1F0054397C /* NSView.m in Sources */,
 				C8A2E4630F07EA1F0054397C /* NSWindow.m in Sources */,
-				C8A2E4640F07EA1F0054397C /* NSWindowBackgroundView.m in Sources */,
+				C8A2E4640F07EA1F0054397C /* NSThemeFrame.m in Sources */,
 				C8A2E4650F07EA1F0054397C /* NSWindowController.m in Sources */,
 				C8A2E4660F07EA1F0054397C /* NSWorkspace.m in Sources */,
 				C8A2E4670F07EA1F0054397C /* NSOutlineMarkerCell.m in Sources */,
@@ -9561,7 +9561,7 @@
 				FE01A9AE0C5D9BCB00AEA51A /* NSTrackingArea.m in Sources */,
 				FE01A9AF0C5D9BCB00AEA51A /* NSView.m in Sources */,
 				FE01A9B00C5D9BCB00AEA51A /* NSWindow.m in Sources */,
-				FE01A9B10C5D9BCB00AEA51A /* NSWindowBackgroundView.m in Sources */,
+				FE01A9B10C5D9BCB00AEA51A /* NSThemeFrame.m in Sources */,
 				FE01A9B20C5D9BCB00AEA51A /* NSWindowController.m in Sources */,
 				FE01A9B30C5D9BCB00AEA51A /* NSWorkspace.m in Sources */,
 				FE01A9B40C5D9BCB00AEA51A /* NSOutlineMarkerCell.m in Sources */,
@@ -9965,7 +9965,7 @@
 				FE5A8AB110C6F50E005E348A /* NSTrackingArea.m in Sources */,
 				FE5A8AB210C6F50E005E348A /* NSView.m in Sources */,
 				FE5A8AB310C6F50E005E348A /* NSWindow.m in Sources */,
-				FE5A8AB410C6F50E005E348A /* NSWindowBackgroundView.m in Sources */,
+				FE5A8AB410C6F50E005E348A /* NSThemeFrame.m in Sources */,
 				FE5A8AB510C6F50E005E348A /* NSWindowController.m in Sources */,
 				FE5A8AB610C6F50E005E348A /* NSWorkspace.m in Sources */,
 				FE5A8AB710C6F50E005E348A /* NSOutlineMarkerCell.m in Sources */,
@@ -10340,7 +10340,7 @@
 				FEA315350FD5667D00F480D4 /* NSTrackingArea.m in Sources */,
 				FEA315360FD5667D00F480D4 /* NSView.m in Sources */,
 				FEA315370FD5667D00F480D4 /* NSWindow.m in Sources */,
-				FEA315380FD5667D00F480D4 /* NSWindowBackgroundView.m in Sources */,
+				FEA315380FD5667D00F480D4 /* NSThemeFrame.m in Sources */,
 				FEA315390FD5667D00F480D4 /* NSWindowController.m in Sources */,
 				FEA3153A0FD5667D00F480D4 /* NSWorkspace.m in Sources */,
 				FEA3153B0FD5667D00F480D4 /* NSOutlineMarkerCell.m in Sources */,

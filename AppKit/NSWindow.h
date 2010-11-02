@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class NSView, NSEvent, NSColor, NSColorSpace, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton, NSButtonCell, NSDrawer, NSDockTile, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSWindowBackgroundView, NSWindowController, NSMenuItem;
+@class NSView, NSEvent, NSColor, NSColorSpace, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton, NSButtonCell, NSDrawer, NSDockTile, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSThemeFrame, NSWindowController, NSMenuItem;
 
 enum {
    NSBorderlessWindowMask=0x00,
@@ -119,7 +119,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    NSString *_miniwindowTitle;
    NSImage  *_miniwindowImage;
 
-   NSWindowBackgroundView *_backgroundView;
+   NSThemeFrame *_backgroundView;
    NSMenu   *_menu;
    NSView   *_menuView;
    NSView   *_contentView;
