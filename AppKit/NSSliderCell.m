@@ -161,14 +161,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(double)tickMarkValueAtIndex:(NSInteger)index {
-   double  length=(_isVertical?_lastRect.size.height:_lastRect.size.width)-2*PIXELINSET;
+   double scale=(_numberOfTickMarks==1)?0.5:(((double)index)/((double)(_numberOfTickMarks-1)));
 
-   return (_numberOfTickMarks==1)?length/2:index*(length/(_numberOfTickMarks-1));
+   return _minValue+(_maxValue-_minValue)*scale;
 }
 
 -(double)closestTickMarkValueToValue:(double)value {
-   NSUnimplementedMethod();
-   return 0;
+   double closestValue=[self tickMarkValueAtIndex:0];
+   NSInteger i;
+   
+   for(i=1;i<_numberOfTickMarks;i++){
+    double check=[self tickMarkValueAtIndex:i];
+    
+    if(ABS(value-check)<ABS(value-closestValue))
+     closestValue=check;
+}
+
+   return closestValue;
 }
 
 -(NSRect)trackRect {
@@ -296,6 +305,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         NSDottedFrameRect(NSInsetRect(frame,1,1)); // fugly
 }
 
+-(void)setClosestDoubleValue:(double)value {
+   if([self allowsTickMarkValuesOnly])
+    value=[self closestTickMarkValueToValue:value];
+    
+   [self setDoubleValue:value];
+}
+
+
 // just a guess, but we'll try moving it 10% of its total range of values...
 - (void)_incrementByPercentageAndConstrain:(CGFloat)percentage decrement:(BOOL)decrement {
     double originalValue = [self doubleValue];
@@ -310,7 +327,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else if (originalValue < _minValue)
         originalValue = _minValue;
 
-    [self setDoubleValue:originalValue];
+    [self setClosestDoubleValue:originalValue];
 }
 
 - (void)moveUp:(id)sender {
@@ -363,7 +380,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (percentPixels < 0.0)
         percentPixels = 0.0;
 
-    [self setDoubleValue:(percentPixels*(_maxValue-_minValue))+_minValue];
+    [self setClosestDoubleValue:(percentPixels*(_maxValue-_minValue))+_minValue];
 }
 
 -(BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView
