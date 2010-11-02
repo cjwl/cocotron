@@ -179,7 +179,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawRect:(NSRect)rect {
    if([_docView isOpaque]){
-	   NSLog(@"[_docView isOpaque]");
     NSRect bounds=[self bounds];
     NSRect frame=[_docView frame];
     NSRect intersection=NSIntersectionRect(bounds,frame);

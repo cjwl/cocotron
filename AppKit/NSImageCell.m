@@ -80,13 +80,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _imageScaling = imageScaling;
 }
 
--(NSSize)_scaledImageSizeInFrame:(NSRect)frame {
-   NSSize imageSize=[[self _imageValue] size];
+// This function is duplicated in NSButtonCell, consolidate
+static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSImageScaling scaling){
       
-   switch(_imageScaling){
+   switch(scaling){
     case NSImageScaleProportionallyDown:{
-     float xscale=frame.size.width/imageSize.width;
-     float yscale=frame.size.height/imageSize.height;
+     float xscale=frameSize.width/imageSize.width;
+     float yscale=frameSize.height/imageSize.height;
      float scale=MIN(1.0,MIN(xscale,yscale));
       
      imageSize.width*=scale;
@@ -96,11 +96,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      }
      
     case NSImageScaleAxesIndependently:
-     return frame.size;
+     return frameSize;
      
     case NSImageScaleProportionallyUpOrDown:{
-     float xscale=frame.size.width/imageSize.width;
-     float yscale=frame.size.height/imageSize.height;
+     float xscale=frameSize.width/imageSize.width;
+     float yscale=frameSize.height/imageSize.height;
      float scale=MIN(xscale,yscale);
       
      imageSize.width*=scale;
@@ -113,11 +113,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case NSImageScaleNone:
      return imageSize;
    }
-   
 }
 
 -(NSRect)_scaledAndAlignedImageFrame:(NSRect)frame {
-    NSSize imageSize = [self _scaledImageSizeInFrame:frame];
+    NSSize imageSize=scaledImageSizeInFrameSize([[self _imageValue] size],frame.size,_imageScaling);
         
     switch (_imageAlignment) {
         default:

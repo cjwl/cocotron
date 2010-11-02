@@ -14,7 +14,7 @@ typedef enum {
  NSWindowToolTipBorderType,
 } NSWindowBorderType;
 
-@interface NSWindowBackgroundView : NSView  {
+@interface NSThemeFrame : NSView  {
    NSWindowBorderType _borderType;
 }
 - (NSWindowBorderType)windowBorderType;

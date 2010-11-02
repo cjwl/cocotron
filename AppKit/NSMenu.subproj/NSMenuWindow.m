@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect         contentRect=[view frame];
 
    [self initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+   [self setLevel:NSSubmenuWindowLevel];
 
    _releaseWhenClosed=YES;
 
@@ -31,6 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect              contentRect=[view frame];
 
    [self initWithContentRect: contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+   [self setLevel:NSSubmenuWindowLevel];
 
    _releaseWhenClosed=YES;
 

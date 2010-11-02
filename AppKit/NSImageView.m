@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setAnimates:(BOOL)flag {
    if(flag!=NO)
-    NSUnimplementedMethod();
+    ;// NSUnimplementedMethod(); ignore until implemented
 }
 
 -(void)setEditable:(BOOL)flag {

@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSWorkspace.h>
 #import <AppKit/NSDockTile.h>
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSRaise.h>
 #import <objc/message.h>
 
@@ -95,6 +95,8 @@ id NSApp=nil;
    if(image!=nil){
     NSSize    imageSize=[image size];
     NSWindow *splash=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,imageSize.width,imageSize.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    [splash setLevel:NSFloatingWindowLevel];
+    
     NSImageView *view=[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,imageSize.width,imageSize.height)];
     
     [view setImage:image];

@@ -31,7 +31,7 @@
     case kCTFontMenuItemFontType:
      if(size==0)
       size=12;
-     font=[O2Font createWithFontName:@"Arial"];
+     font=O2FontCreateWithFontName(@"Arial");
      break;
  
     default:

@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSDrawerWindow.h>
 #import <AppKit/NSDrawer.h>
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 
 @implementation NSDrawerWindow
 

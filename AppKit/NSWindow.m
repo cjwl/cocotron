@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSWindow-Private.h>
-#import <AppKit/NSWindowBackgroundView.h>
+#import <AppKit/NSThemeFrame.h>
 #import <AppKit/NSMainMenuView.h>
 #import <AppKit/NSSheetContext.h>
 #import <AppKit/NSApplication.h>
@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSEvent_CoreGraphics.h>
 #import <AppKit/NSColor.h>
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSMenu.h>
@@ -143,7 +143,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	
    _styleMask=styleMask;
    _backingType=backing;
-
+   _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
    _maxSize=NSMakeSize(0,0);
 
@@ -160,7 +160,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [_menuView setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
    }
 
-   _backgroundView=[[NSWindowBackgroundView alloc] initWithFrame:backgroundFrame];
+   _backgroundView=[[NSThemeFrame alloc] initWithFrame:backgroundFrame];
    [_backgroundView setAutoresizesSubviews:YES];
    [_backgroundView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    [_backgroundView _setWindow:self];
@@ -198,6 +198,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _viewsNeedDisplay=YES;
    _flushNeeded=YES;
 
+   _resizeIncrements=NSMakeSize(1,1);
+   _contentResizeIncrements=NSMakeSize(1,1);
+   
    _autosaveFrameName=nil;
 
    _platformWindow=nil;
@@ -269,6 +272,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      _platformWindow=[[[NSDisplay currentDisplay] windowWithFrame: _frame styleMask:_styleMask backingType:_backingType] retain];
 
     [_platformWindow setDelegate:self];
+    [_platformWindow setLevel:_level];
 
     [self _updatePlatformWindowTitle];
 
@@ -469,11 +473,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSSize)aspectRatio {
-   return _aspectRatio;
+   return NSMakeSize(1.0,_resizeIncrements.height/_resizeIncrements.width);
 }
 
 -(NSSize)contentAspectRatio {
-   return _contentAspectRatio;
+   return NSMakeSize(1.0,_contentResizeIncrements.height/_contentResizeIncrements.width);
 }
 
 -(BOOL)autorecalculatesKeyViewLoop {
@@ -813,7 +817,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setContentBorderThickness:(CGFloat)thickness forEdge:(NSRectEdge)edge {
-   NSUnimplementedMethod();
+// FIXME: should warn, but low priority cosmetic, so we dont, still needs to be implemented
+//   NSUnimplementedMethod();
 }
 
 -(void)setMovable:(BOOL)movable {
@@ -854,7 +859,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAutorecalculatesContentBorderThickness:(BOOL)automatic forEdge:(NSRectEdge)edge {
-   NSUnimplementedMethod();
+// FIXME: should warn, but low priority cosmetic, so we dont, still needs to be implemented
+//   NSUnimplementedMethod();
 }
 
 -(BOOL)_isApplicationWindow {
@@ -993,10 +999,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setContentAspectRatio:(NSSize)value {
-   _useAspectRatio=YES;
-   _aspectRatioIsContent=YES;
-   _aspectRatio=value;
-   NSUnimplementedMethod();
+   _resizeIncrements.width=1.0;
+   _resizeIncrements.height=value.height/value.width;
 }
 
 -(void)setHasShadow:(BOOL)value {
@@ -1009,10 +1013,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAspectRatio:(NSSize)value {
-   _useAspectRatio=YES;
-   _aspectRatioIsContent=NO;
-   _aspectRatio=value;
-   NSUnimplementedMethod();
+   _resizeIncrements.width=1.0;
+   _resizeIncrements.height=value.height/value.width;
 }
 
 -(void)setAutorecalculatesKeyViewLoop:(BOOL)value {
@@ -1024,7 +1026,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setCanBecomeVisibleWithoutLogin:(BOOL)flag {
-   NSUnimplementedMethod();
+//   NSUnimplementedMethod();
 }
 
 -(void)setCollectionBehavior:(NSWindowCollectionBehavior)behavior {
@@ -1033,7 +1035,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setLevel:(int)value {
    _level=value;
-   NSUnimplementedMethod();
+   [[self platformWindow] setLevel:_level];
 }
 
 -(void)setOpaque:(BOOL)value {
@@ -1619,7 +1621,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)invalidateShadow {
-   NSUnimplementedMethod();
+   // Do nothing
 }
 
 -(void)cacheImageInRect:(NSRect)rect {
@@ -2367,7 +2369,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_sheetContext autorelease];
    _sheetContext=[sheetContext retain];
 
-   [(NSWindowBackgroundView *)[sheet _backgroundView] setWindowBorderType:NSWindowSheetBorderType];
+   [(NSThemeFrame *)[sheet _backgroundView] setWindowBorderType:NSWindowSheetBorderType];
    
    [self _setSheetOrigin];
    sheetFrame = [sheet frame];   
@@ -2502,6 +2504,19 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSSize)platformWindow:(CGWindow *)window frameSizeWillChange:(NSSize)size {
+   if(_resizeIncrements.width!=1 || _resizeIncrements.height!=1){
+    NSSize vertical=size;
+    NSSize horizontal=size;
+    
+    vertical.width=vertical.height*(_resizeIncrements.width/_resizeIncrements.height);
+    horizontal.height=horizontal.width*(_resizeIncrements.height/_resizeIncrements.width);
+    if(vertical.width*vertical.height>horizontal.width*horizontal.height)
+     size=vertical;
+    else
+     size=horizontal;
+   }
+   
+
    if([_delegate respondsToSelector:@selector(windowWillResize:toSize:)])
     size=[_delegate windowWillResize:self toSize:size];
 

@@ -15,8 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithFrame:(NSRect)frame {
    NSRect rect=NSZeroRect;
 
-   [self initWithContentRect:frame styleMask:NSBorderlessWindowMask
-          backing:NSBackingStoreRetained defer:NO];
+   [self initWithContentRect:frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+   [self setLevel:NSPopUpMenuWindowLevel];
    _releaseWhenClosed=YES;
 
    rect.size=frame.size;

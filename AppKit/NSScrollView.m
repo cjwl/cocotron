@@ -244,7 +244,7 @@ static Class _rulerViewClass = nil;
    result.origin.y=bounds.origin.y;
 
    result.size.width=bounds.size.width;
-   if([self hasVerticalScroller])
+   if([self hasVerticalScroller] && ![_verticalScroller isHidden])
     result.size.width-=[NSScroller scrollerWidth];
    if([self rulersVisible] && [self hasVerticalRuler]) {
     result.origin.x+=[self verticalRulerFrame].size.width;
@@ -252,7 +252,7 @@ static Class _rulerViewClass = nil;
    }
 
    result.size.height=bounds.size.height;
-   if([self hasHorizontalScroller]){
+   if([self hasHorizontalScroller] && ![_horizontalScroller isHidden]){
     result.size.height-=[NSScroller scrollerWidth];
    }
    if([self rulersVisible] && [self hasHorizontalRuler]) {
@@ -557,11 +557,31 @@ static Class _rulerViewClass = nil;
 }
 
 -(void)setVerticalScroller:(NSScroller *)scroller {
-   NSUnimplementedMethod();
+   scroller=[scroller retain];
+   [_verticalScroller removeFromSuperview];
+   [_verticalScroller release];
+   _verticalScroller=scroller;
+   [_verticalScroller setTarget:self];
+   [_verticalScroller setAction:@selector(_verticalScroll:)];
+
+   if(_hasVerticalScroller)
+    [self addSubview:_verticalScroller];
+   
+   [self tile];
 }
 
 -(void)setHorizontalScroller:(NSScroller *)scroller {
-   NSUnimplementedMethod();
+   scroller=[scroller retain];
+   [_horizontalScroller removeFromSuperview];
+   [_horizontalScroller release];
+   _horizontalScroller=scroller;
+   [_horizontalScroller setTarget:self];
+   [_horizontalScroller setAction:@selector(_horizontalScroll:)];
+
+   if(_hasHorizontalScroller)
+    [self addSubview:_horizontalScroller];
+    
+   [self tile];
 }
 
 -(void)setHasVerticalScroller:(BOOL)flag {
@@ -679,14 +699,9 @@ static Class _rulerViewClass = nil;
    frame=[self cornerViewFrame];
    [_cornerView setFrame:frame];
 
-   frame=[self verticalScrollerFrame];
-   [_verticalScroller setFrame:frame];
-
-   frame=[self horizontalScrollerFrame];
-   [_horizontalScroller setFrame:frame];
-
-   frame=[self clipViewFrame];
-   [_clipView setFrame:frame];
+   [_verticalScroller setFrame:[self verticalScrollerFrame]];
+   [_horizontalScroller setFrame:[self horizontalScrollerFrame]];
+   [_clipView setFrame:[self clipViewFrame]];
 
    frame=[self horizontalRulerFrame];
    [_horizontalRuler setFrame:frame];
@@ -752,6 +767,11 @@ static Class _rulerViewClass = nil;
       [_horizontalScroller setFloatValue:value knobProportion:clipRect.size.width/docRect.size.width];
      }
     }
+
+    [_verticalScroller setFrame:[self verticalScrollerFrame]];
+    [_horizontalScroller setFrame:[self horizontalScrollerFrame]];
+    [_clipView setFrame:[self clipViewFrame]];
+
 
     // keep the header in line with the document
     // using scrollToPoint: ran into some ordering issues, since scrollToPoint calls

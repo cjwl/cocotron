@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSData,NSPasteboard,NSURL;
 
-@interface NSImageRep : NSObject {
+@interface NSImageRep : NSObject <NSCopying> {
    NSSize    _size;
    NSString *_colorSpaceName;
    NSInteger _bitsPerSample;
