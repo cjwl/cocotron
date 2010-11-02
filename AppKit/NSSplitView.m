@@ -85,18 +85,6 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
    [self adjustSubviews];
 }
 
--(BOOL)isOpaque {
-   NSArray *subviews=[self subviews];
-   int      i,count=[subviews count];
-
-   for(i=0;i<count;i++){
-    if(![[subviews objectAtIndex:i] isOpaque])
-     return NO;
-   }
-
-   return YES;
-}
-
 -(BOOL)isFlipped {
    return YES;
 }
