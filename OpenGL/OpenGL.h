@@ -1,6 +1,7 @@
 #import <OpenGL/gl.h>
 #ifdef WINDOWS
 #import <OpenGL/glext.h>
+#import <OpenGL/glweak.h>
 #endif
 
 #import <OpenGL/CGLTypes.h>
