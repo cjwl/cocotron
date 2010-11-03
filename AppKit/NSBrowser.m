@@ -806,10 +806,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setNeedsDisplay:YES];
 }
 
--(BOOL)isOpaque {
-   return YES;
-}
-
 -(void)drawRect:(NSRect)rect {
    NSInteger i;
 
