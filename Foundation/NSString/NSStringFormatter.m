@@ -36,8 +36,7 @@ static inline void makeRoomForNcharacters(NSStringBuffer *buffer,NSUInteger n){
     while(buffer->length+n>buffer->max)
      buffer->max*=2;
 
-    buffer->characters=NSZoneRealloc(buffer->zone,buffer->characters,
-       sizeof(unichar)*buffer->max);
+    buffer->characters=NSZoneRealloc(buffer->zone,buffer->characters,sizeof(unichar)*buffer->max);
    }
 }
 
@@ -639,7 +638,7 @@ NSString *NSStringNewWithFormat(NSString *format,NSDictionary *locale,
 
    unicode=NSCharactersNewWithFormat(format,locale,arguments,&length,NULL);
 
-   return NSString_unicodePtrNewNoCopy(zone,unicode,length);
+   return NSString_unicodePtrNewNoCopy(zone,unicode,length,YES);
 }
 
 NSString *NSStringWithFormat(NSString *format,...) {

@@ -35,14 +35,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return @"";
 }
 
--initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
-             freeWhenDone:(BOOL)freeWhenDone {
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
    NSDeallocateObject(self);
 
-   if(freeWhenDone)
-    return NSString_unicodePtrNewNoCopy(NULL,characters,length);
-   else
-    return NSString_unicodeNew(NULL,characters,length);
+   return NSString_unicodePtrNewNoCopy(NULL,characters,length,freeWhenDone);
 }
 
 // Copied from former -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
@@ -58,7 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case NSUnicodeStringEncoding:
      characters=NSUnicodeFromBytes(bytes,length,&resultLength);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
 
     case NSNEXTSTEPStringEncoding:
      return NSNEXTSTEPStringNewWithBytes(NULL,bytes,length);
@@ -73,11 +69,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case NSSymbolStringEncoding:
      characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
 
     case NSUTF8StringEncoding:
      characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
 
 	 case NSWindowsCP1252StringEncoding:
      return NSString_win1252NewWithBytes(NULL,bytes,length);
@@ -87,7 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          
       case NSUTF16BigEndianStringEncoding:
      characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
 
     default:
       NSRaiseException(NSInvalidArgumentException,nil,_cmd,@"encoding %d not (yet) implemented",encoding); 
@@ -97,8 +93,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   return nil;
 }
 
--initWithFormat:(NSString *)format
-             locale:(NSDictionary *)locale arguments:(va_list)arguments {
+-initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments {
    NSDeallocateObject(self);
 
    return NSStringNewWithFormat(format,locale,arguments,NULL);

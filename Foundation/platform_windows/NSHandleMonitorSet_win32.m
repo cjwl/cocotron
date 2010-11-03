@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
+#import <Foundation/NSDebug.h>
 
 #import <windows.h>
 
@@ -96,6 +97,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    msec=interval*1000;
 
+   NSCooperativeThreadBlocking();
+
    if(_eventInputSource!=nil){
     waitResult=[_eventInputSource waitForEventsAndMultipleObjects:objectList count:objectCount milliseconds:msec];
    }
@@ -109,6 +112,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
 
+   NSCooperativeThreadWaiting();
+   
    if(waitResult==WAIT_FAILED)
     Win32Assert("WaitForMultipleObjects");
 

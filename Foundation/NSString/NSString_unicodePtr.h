@@ -10,10 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSString_unicodePtr : NSString {
    NSUInteger       _length;
+   BOOL           _freeWhenDone;
    const unichar *_unicode;
 }
 
 @end
 
-NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
- const unichar *unicode,NSUInteger length);
+NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,const unichar *unicode,NSUInteger length,BOOL freeWhenDone);
+NSString *NSString_unicodePtrNew(NSZone *zone,const unichar *unicode,NSUInteger length);

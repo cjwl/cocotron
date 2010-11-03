@@ -8,14 +8,9 @@
 
 #import "NSCondition_win32.h"
 
-
 @implementation NSCondition_win32
 
-#pragma mark -
-#pragma mark NSObject methods
-
-- init;
-{
+-init {
 	if (nil == [super init]) return nil;
 
 	InitializeCriticalSection( &lock );
@@ -27,8 +22,7 @@
 	return self;
 }
 
-- (void) dealloc;
-{
+-(void) dealloc {
 	[self lock];
 	CloseHandle( events[Event_Signal] );
 	CloseHandle( events[Event_Broadcast] );
@@ -38,28 +32,24 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark <NSLocking> methods
-
-- (void) lock;
-{
+-(void) lock {
 	EnterCriticalSection( &lock );
 }
 
-- (void) unlock;
-{
+-(void) unlock {
 	LeaveCriticalSection( &lock );
 }
 
-#pragma mark -
-#pragma mark NSCondition methods
-
-- (void) wait;
-{
+-(void) wait {
 	InterlockedIncrement( &waitersCount );
 	
 	[self unlock];
+    
+    NSCooperativeThreadBlocking();
+    
 	int result = WaitForMultipleObjects( Event_Count, events, FALSE, INFINITE );
+
+    NSCooperativeThreadWaiting();
 
 	LONG newWaitersCount = InterlockedDecrement( &waitersCount );
 	BOOL lastWaiter = (result == WAIT_OBJECT_0 + Event_Broadcast) && (0 == newWaitersCount);
