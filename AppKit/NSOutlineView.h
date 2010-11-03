@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDragging.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSTableColumn, NSCell;
+@class NSTableColumn, NSButtonCell;
 
 APPKIT_EXPORT NSString * const NSOutlineViewItemWillExpandNotification;
 APPKIT_EXPORT NSString * const NSOutlineViewItemDidExpandNotification;
@@ -33,7 +33,7 @@ APPKIT_EXPORT NSString * const NSOutlineViewSelectionIsChangingNotification;
     NSMapTable *_itemToNumberOfChildren;
 
     unsigned _numberOfCachedRows;
-    NSCell *_markerCell;
+    NSButtonCell *_markerCell;
     NSSize _markerSize;
     id _clickedItem;
     float _widestColumnWidth;

@@ -519,7 +519,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)unloadLastColumn {
    NSMatrix *matrix=[_matrices lastObject];
 
-   [[matrix superview] setDocumentView:nil];
+   [(NSClipView *)[matrix superview] setDocumentView:nil];
    [_matrices removeLastObject];
    [_titles removeLastObject];
    [self setNeedsDisplay:YES];

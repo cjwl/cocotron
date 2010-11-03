@@ -36,7 +36,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawPopUpButtonWindowBackgroundInRect:(NSRect)rect;
 
--(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded;
 -(void)drawOutlineViewGridInRect:(NSRect)rect;
 
 -(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled;

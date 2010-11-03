@@ -294,11 +294,6 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 #endif
 }
 
--(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded {
-   if(![self drawPartId:TVP_GLYPH stateId:expanded?GLPS_OPENED:GLPS_CLOSED uxthClassId:uxthTREEVIEW inRect:rect])
-    [super drawOutlineViewBranchInRect:rect expanded:expanded];
-}
-
 -(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
    if(bezeled){
     if([self drawPartId:PP_BAR stateId:0 uxthClassId:uxthPROGRESS inRect:rect])

@@ -20,5 +20,4 @@ void NSInterfaceDrawDepressedScrollerButton(NSRect rect,NSRect clipRect);
 void NSInterfaceDrawBrowserHeader(NSRect rect,NSRect clipRect);
 void NSInterfaceDrawProgressIndicatorBezel(NSRect rect,NSRect clipRect);
 
-void NSInterfaceDrawOutlineMarker(NSRect rect,NSRect clipRect, BOOL state);
 void NSInterfaceDrawOutlineGrid(NSRect rect,CGContextRef context);
