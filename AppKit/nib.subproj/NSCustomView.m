@@ -28,8 +28,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             frame.size=[keyed decodeSizeForKey:@"NSFrameSize"];
 
          NSView *newView=[[class alloc] initWithFrame:frame];
-         if([keyed containsValueForKey:@"NSvFlags"])
-             newView->_autoresizingMask=((unsigned int)[keyed decodeIntForKey:@"NSvFlags"])&0x3F;
+         if([keyed containsValueForKey:@"NSvFlags"]){
+          unsigned vFlags=[keyed decodeIntForKey:@"NSvFlags"];
+          
+          newView->_autoresizingMask=vFlags&0x3F;
+          newView->_autoresizesSubviews=(vFlags&0x100)?YES:NO;
+          newView->_isHidden=(vFlags&0x80000000)?YES:NO;
+         }
+// Despite the fact it appears _autoresizesSubviews is encoded in the flags, it should always be on
+         newView->_autoresizesSubviews=YES;
+         
          if([keyed containsValueForKey:@"NSTag"])
              newView->_tag=[keyed decodeIntForKey:@"NSTag"];
          [newView->_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
