@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithCoder:coder];
 
    if([coder allowsKeyedCoding]){
-    _isVertical=(_bounds.size.width<_bounds.size.height)?YES:NO;
+    sFlags.isHoriz=(_bounds.size.width<_bounds.size.height)?NO:YES;
     _floatValue=0;
     _knobProportion=0;
     [self checkSpaceForParts];
@@ -44,7 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
-   _isVertical=(_bounds.size.width<_bounds.size.height)?YES:NO;
+   sFlags.isHoriz=(_bounds.size.width<_bounds.size.height)?NO:YES;
    _floatValue=0;
    _knobProportion=0;
    [self checkSpaceForParts];
@@ -98,7 +98,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isVertical {
-   return _isVertical;
+   return sFlags.isHoriz?NO:YES;
 }
 
 -(float)floatValue {
@@ -202,11 +202,26 @@ static inline float roundFloat(float value){
       decLine.size.height=floor(bounds.size.height/2);
 
      incLine=decLine;
-     incLine.origin.y=bounds.size.height-incLine.size.height;
-    }
 
+     if([self class]==[NSScroller class]){
+     incLine.origin.y=bounds.size.height-incLine.size.height;
     knobSlot.origin.y+=decLine.size.height;
     knobSlot.size.height-=decLine.size.height+incLine.size.height;
+     }
+     else {
+      knobSlot.size.height-=decLine.size.height+incLine.size.height;
+
+      if(_arrowsPosition==NSScrollerArrowsMaxEnd){
+       incLine.origin.y=bounds.size.height-incLine.size.height;
+       decLine.origin.y=incLine.origin.y-decLine.size.height;
+      }
+      else if(_arrowsPosition==NSScrollerArrowsMinEnd){
+       incLine.origin.y=NSMaxY(decLine);
+       knobSlot.origin.y=NSMaxY(incLine);
+      }
+     }
+    }
+
 
     knob=knobSlot;
     knob.size.height=roundFloat(knobSlot.size.height*_knobProportion);
@@ -279,11 +294,11 @@ static inline float roundFloat(float value){
 }
 
 -(void)checkSpaceForParts {
-   _usableParts=NSAllScrollerParts;
+   sFlags.partsUsable=NSAllScrollerParts;
 }
 
 -(NSUsableScrollerParts)usableParts {
-   return _usableParts;
+   return sFlags.partsUsable;
 }
 
 -(void)highlight:(BOOL)flag {
@@ -293,6 +308,8 @@ static inline float roundFloat(float value){
    }
 }
 
+-(void)drawKnobSlotInRect:(NSRect)rect highlight:(BOOL)flag {
+}
 
 -(void)drawParts {
    // do nothing

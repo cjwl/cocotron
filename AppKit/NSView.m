@@ -287,7 +287,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _window;
 }
 
--superview {
+-(NSView *)superview {
    return _superview;
 }
 
@@ -711,6 +711,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    _window=window;
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
    _validTrackingAreas=NO;
+   [_window _invalidateTrackingAreas];
 
    [self viewDidMoveToWindow];
 }
@@ -746,6 +747,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)addSubview:(NSView *)view {
+   if(view==nil) // yes, this is silently ignored
+    return;
+   
    [self _insertSubview:view atIndex:NSNotFound];
 }
 
@@ -769,8 +773,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [oldView release];
 }
 
--(void)setSubviews:(NSArray *)newSubviews {
-   NSUnimplementedMethod();
+-(void)setSubviews:(NSArray *)array {
+// This method marks as needing display per doc.s
+
+   while([_subviews count])
+    [[_subviews lastObject] removeFromSuperview];
+   
+   for(NSView *view in array){
+    [self addSubview:view];
+    [view setNeedsDisplay:YES];
+}
 }
 
 -(void)sortSubviewsUsingFunction:(NSComparisonResult (*)(id, id, void *))compareFunction context:(void *)context {
@@ -903,8 +915,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    while(--count>=0){
     NSTrackingArea *area=[_trackingAreas objectAtIndex:count];
 
-    if([area _isLegacy]==YES &&
-       [area options]&NSTrackingCursorUpdate){
+    if([area _isLegacy]==YES && ([area options]&NSTrackingCursorUpdate)){
      [_trackingAreas removeObjectAtIndex:count];
     }
    }
@@ -923,7 +934,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     NSUInteger  i,count;
 
     if(!_validTrackingAreas){
-     [_trackingAreas removeAllObjects];
+     /* We don't clear the tracking areas, they are managed by the view with add/remove
+      */
      [self updateTrackingAreas];
      _validTrackingAreas=YES;
     }
@@ -1020,9 +1032,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)removeFromSuperview {
-   NSView *removeFrom=_superview;
-
-   [removeFrom setNeedsDisplayInRect:[self frame]];
+   [_superview setNeedsDisplayInRect:[self frame]];
    [self removeFromSuperviewWithoutNeedingDisplay];
 }
 
@@ -1339,7 +1349,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setBackgroundFilters:(NSArray *)filters {
-   NSUnimplementedMethod();
+// FIXME: implement but dont warn
+//   NSUnimplementedMethod();
 }
 
 -(NSArray *)contentFilters {
@@ -1870,6 +1881,30 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 -(void)showDefinitionForAttributedString:(NSAttributedString *)string atPoint:(NSPoint)origin {
    NSUnimplementedMethod();
+}
+
++defaultAnimationForKey:(NSString *)key {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-animator {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDictionary *)animations {
+   return _animations;
+}
+
+-animationForKey:(NSString *)key {
+   return [_animations objectForKey:key];
+}
+
+-(void)setAnimations:(NSDictionary *)dictionary {
+   dictionary=[dictionary copy];
+   [_animations release];
+   _animations=dictionary;
 }
 
 // Blocks aren't supported by the compiler yet.

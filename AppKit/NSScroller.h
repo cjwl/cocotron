@@ -24,26 +24,31 @@ typedef enum {
 } NSScrollerArrow;
 
 typedef enum {
- NSScrollerArrowsNone=1,
- NSScrollerArrowsMinEnd,
- NSScrollerArrowsMaxEnd,
+   NSScrollerArrowsMaxEnd        =0,
+   NSScrollerArrowsMinEnd        =1,
+   NSScrollerArrowsNone          =2,
+   NSScrollerArrowsDefaultSetting=NSScrollerArrowsMaxEnd,
 } NSScrollArrowPosition;
 
-typedef enum {
- NSNoScrollerParts,
- NSAllScrollerParts,
- NSOnlyScrollerArrows
-} NSUsableScrollerParts;
+enum {
+ NSNoScrollerParts=0,
+ NSOnlyScrollerArrows=1,
+ NSAllScrollerParts=2,
+};
+typedef NSUInteger NSUsableScrollerParts;
 
 @interface NSScroller : NSControl {
    id    _target;
    SEL   _action;
-   BOOL  _isVertical;
+   struct {
+    unsigned isHoriz:1;
+    NSUsableScrollerParts partsUsable:2;
+   } sFlags;
+   
    float _floatValue;
    float _knobProportion;
    NSScrollArrowPosition  _arrowsPosition;
 
-   NSUsableScrollerParts _usableParts;
    NSScrollerPart        _hitPart;
    BOOL                  _isEnabled;
    BOOL                  _isHighlighted;
@@ -63,6 +68,7 @@ typedef enum {
 
 -(void)highlight:(BOOL)flag;
 
+-(void)drawKnobSlotInRect:(NSRect)rect highlight:(BOOL)flag;
 -(void)drawParts;
 -(void)drawArrow:(NSScrollerArrow)arrow highlight:(BOOL)flag;
 -(void)drawKnob;
