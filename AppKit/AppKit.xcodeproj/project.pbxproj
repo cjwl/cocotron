@@ -2099,10 +2099,6 @@
 		FE25FF640EE58712009C91B1 /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE25FF650EE58712009C91B1 /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		FE2A4FE110CCAACC00458F2E /* O2Font_FT.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34054910CAB38F00A989F0 /* O2Font_FT.m */; };
-		FE2C7F550FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
-		FE2C7F560FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
-		FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
-		FE2C7F580FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
 		FE311FA80CCC430200EBD696 /* KTFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE311FA40CCC430200EBD696 /* KTFont_gdi.h */; };
 		FE311FA90CCC430200EBD696 /* KTFont_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE311FA50CCC430200EBD696 /* KTFont_gdi.m */; };
 		FE337FCA0EE77A6C00D4A751 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE337FC90EE77A6C00D4A751 /* CTFont.m */; };
@@ -2579,7 +2575,6 @@
 		FE5A8A3B10C6F50E005E348A /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317C10FD5893300F480D4 /* NSRaise.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A8A3C10C6F50E005E348A /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FE5A8A3D10C6F50E005E348A /* O2DataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED79C0FD6C96E0043F915 /* O2DataConsumer.h */; };
-		FE5A8A3E10C6F50E005E348A /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
 		FE5A8A3F10C6F50E005E348A /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5B75100D851500F64C71 /* O2LZW.h */; };
 		FE5A8A4010C6F50E005E348A /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		FE5A8A4110C6F50E005E348A /* NSTextFieldBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC70401005371100DB9974 /* NSTextFieldBinder.h */; };
@@ -3836,6 +3831,16 @@
 		FEF9CBC50E13EB8E003502ED /* O2Shading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9E0E13EB8E003502ED /* O2Shading+PDF.m */; };
 		FEF9CCC30E1416C4003502ED /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */; };
 		FEF9CCC40E1416C4003502ED /* O2Context_builtin_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CCC20E1416C4003502ED /* O2Context_builtin_gdi.m */; };
+		FEFC2E7E128116CF003E144A /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFC2E7C128116CF003E144A /* _NSControllerArray.h */; };
+		FEFC2E7F128116CF003E144A /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFC2E7D128116CF003E144A /* _NSControllerArray.m */; };
+		FEFC2E80128116CF003E144A /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFC2E7C128116CF003E144A /* _NSControllerArray.h */; };
+		FEFC2E81128116CF003E144A /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFC2E7D128116CF003E144A /* _NSControllerArray.m */; };
+		FEFC2E82128116CF003E144A /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFC2E7C128116CF003E144A /* _NSControllerArray.h */; };
+		FEFC2E83128116CF003E144A /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFC2E7D128116CF003E144A /* _NSControllerArray.m */; };
+		FEFC2E84128116CF003E144A /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFC2E7C128116CF003E144A /* _NSControllerArray.h */; };
+		FEFC2E85128116CF003E144A /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFC2E7D128116CF003E144A /* _NSControllerArray.m */; };
+		FEFC2E86128116CF003E144A /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFC2E7C128116CF003E144A /* _NSControllerArray.h */; };
+		FEFC2E87128116CF003E144A /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFC2E7D128116CF003E144A /* _NSControllerArray.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -4673,7 +4678,6 @@
 		FE2A11530B45C65E006C03DE /* NSTokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenField.m; sourceTree = "<group>"; };
 		FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTokenFieldCell.h; sourceTree = "<group>"; };
 		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
-		FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringKVCFunctions.h; sourceTree = "<group>"; };
 		FE311FA40CCC430200EBD696 /* KTFont_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KTFont_gdi.h; sourceTree = "<group>"; };
 		FE311FA50CCC430200EBD696 /* KTFont_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KTFont_gdi.m; sourceTree = "<group>"; };
 		FE337FC90EE77A6C00D4A751 /* CTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFont.m; sourceTree = "<group>"; };
@@ -4961,6 +4965,8 @@
 		FEF9CB9E0E13EB8E003502ED /* O2Shading+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2Shading+PDF.m"; sourceTree = "<group>"; };
 		FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_builtin_gdi.h; sourceTree = "<group>"; };
 		FEF9CCC20E1416C4003502ED /* O2Context_builtin_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_builtin_gdi.m; sourceTree = "<group>"; };
+		FEFC2E7C128116CF003E144A /* _NSControllerArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _NSControllerArray.h; sourceTree = "<group>"; };
+		FEFC2E7D128116CF003E144A /* _NSControllerArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _NSControllerArray.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5884,7 +5890,8 @@
 		FE2A10250B44A239006C03DE /* NSController */ = {
 			isa = PBXGroup;
 			children = (
-				FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */,
+				FEFC2E7C128116CF003E144A /* _NSControllerArray.h */,
+				FEFC2E7D128116CF003E144A /* _NSControllerArray.m */,
 				C85D91930EE6A806004EBAEA /* NSDictionaryController.h */,
 				C85D91940EE6A806004EBAEA /* NSDictionaryController.m */,
 				C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */,
@@ -6583,7 +6590,6 @@
 				FEA317C30FD5893300F480D4 /* NSRaise.h in Headers */,
 				FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A00FD6C96E0043F915 /* O2DataConsumer.h in Headers */,
-				FE2C7F560FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 				FEBF5B79100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC701D100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70441005371100DB9974 /* NSTextFieldBinder.h in Headers */,
@@ -6630,6 +6636,7 @@
 				FEEC06E71271DDDA00C74EB0 /* O2PDFFont.h in Headers */,
 				FEEC06E91271DDDA00C74EB0 /* O2PDFFunction_Type0.h in Headers */,
 				FEEC06EB1271DDDA00C74EB0 /* O2PDFFunction_Type4.h in Headers */,
+				FEFC2E80128116CF003E144A /* _NSControllerArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6975,7 +6982,6 @@
 				FEA317C40FD5893300F480D4 /* NSRaise.h in Headers */,
 				FE9DB3D70FD6BD5B00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED79E0FD6C96E0043F915 /* O2DataConsumer.h in Headers */,
-				FE2C7F550FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 				FEBF5B7B100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC701F100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70421005371100DB9974 /* NSTextFieldBinder.h in Headers */,
@@ -7023,6 +7029,7 @@
 				FEEC07021271DDDA00C74EB0 /* O2PDFFont.h in Headers */,
 				FEEC07041271DDDA00C74EB0 /* O2PDFFunction_Type0.h in Headers */,
 				FEEC07061271DDDA00C74EB0 /* O2PDFFunction_Type4.h in Headers */,
+				FEFC2E82128116CF003E144A /* _NSControllerArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7367,7 +7374,6 @@
 				FEA317C20FD5893300F480D4 /* NSRaise.h in Headers */,
 				FE9DB3D50FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A20FD6C96E0043F915 /* O2DataConsumer.h in Headers */,
-				FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 				FEA661230FF5C6F200E2C03B /* O2Font_gdi.h in Headers */,
 				FEBF5B77100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */,
@@ -7411,6 +7417,7 @@
 				FEEC06CC1271DDDA00C74EB0 /* O2PDFFont.h in Headers */,
 				FEEC06CE1271DDDA00C74EB0 /* O2PDFFunction_Type0.h in Headers */,
 				FEEC06D01271DDDA00C74EB0 /* O2PDFFunction_Type4.h in Headers */,
+				FEFC2E7E128116CF003E144A /* _NSControllerArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7758,7 +7765,6 @@
 				FE5A8A3B10C6F50E005E348A /* NSRaise.h in Headers */,
 				FE5A8A3C10C6F50E005E348A /* NSRangeEntries.h in Headers */,
 				FE5A8A3D10C6F50E005E348A /* O2DataConsumer.h in Headers */,
-				FE5A8A3E10C6F50E005E348A /* NSStringKVCFunctions.h in Headers */,
 				FE5A8A3F10C6F50E005E348A /* O2LZW.h in Headers */,
 				FE5A8A4010C6F50E005E348A /* NSCachingBinder.h in Headers */,
 				FE5A8A4110C6F50E005E348A /* NSTextFieldBinder.h in Headers */,
@@ -7806,6 +7812,7 @@
 				FEEC07381271DDDA00C74EB0 /* O2PDFFont.h in Headers */,
 				FEEC073A1271DDDA00C74EB0 /* O2PDFFunction_Type0.h in Headers */,
 				FEEC073C1271DDDA00C74EB0 /* O2PDFFunction_Type4.h in Headers */,
+				FEFC2E86128116CF003E144A /* _NSControllerArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8079,7 +8086,6 @@
 				FEA314D90FD5667D00F480D4 /* NSControllerMarker.h in Headers */,
 				FEA317C50FD5893300F480D4 /* NSRaise.h in Headers */,
 				FEA3182B0FD5961100F480D4 /* NSRangeEntries.h in Headers */,
-				FE2C7F580FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 				A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70461005371100DB9974 /* NSTextFieldBinder.h in Headers */,
 				FE6D9192101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
@@ -8118,6 +8124,7 @@
 				FEEC071D1271DDDA00C74EB0 /* O2PDFFont.h in Headers */,
 				FEEC071F1271DDDA00C74EB0 /* O2PDFFunction_Type0.h in Headers */,
 				FEEC07211271DDDA00C74EB0 /* O2PDFFunction_Type4.h in Headers */,
+				FEFC2E84128116CF003E144A /* _NSControllerArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9088,6 +9095,7 @@
 				FEEC06E81271DDDA00C74EB0 /* O2PDFFont.m in Sources */,
 				FEEC06EA1271DDDA00C74EB0 /* O2PDFFunction_Type0.m in Sources */,
 				FEEC06EC1271DDDA00C74EB0 /* O2PDFFunction_Type4.m in Sources */,
+				FEFC2E81128116CF003E144A /* _NSControllerArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9461,6 +9469,7 @@
 				FEEC07031271DDDA00C74EB0 /* O2PDFFont.m in Sources */,
 				FEEC07051271DDDA00C74EB0 /* O2PDFFunction_Type0.m in Sources */,
 				FEEC07071271DDDA00C74EB0 /* O2PDFFunction_Type4.m in Sources */,
+				FEFC2E83128116CF003E144A /* _NSControllerArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9865,6 +9874,7 @@
 				FEEC06CD1271DDDA00C74EB0 /* O2PDFFont.m in Sources */,
 				FEEC06CF1271DDDA00C74EB0 /* O2PDFFunction_Type0.m in Sources */,
 				FEEC06D11271DDDA00C74EB0 /* O2PDFFunction_Type4.m in Sources */,
+				FEFC2E7F128116CF003E144A /* _NSControllerArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10240,6 +10250,7 @@
 				FEEC07391271DDDA00C74EB0 /* O2PDFFont.m in Sources */,
 				FEEC073B1271DDDA00C74EB0 /* O2PDFFunction_Type0.m in Sources */,
 				FEEC073D1271DDDA00C74EB0 /* O2PDFFunction_Type4.m in Sources */,
+				FEFC2E87128116CF003E144A /* _NSControllerArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10510,6 +10521,7 @@
 				FEEC071E1271DDDA00C74EB0 /* O2PDFFont.m in Sources */,
 				FEEC07201271DDDA00C74EB0 /* O2PDFFunction_Type0.m in Sources */,
 				FEEC07221271DDDA00C74EB0 /* O2PDFFunction_Type4.m in Sources */,
+				FEFC2E85128116CF003E144A /* _NSControllerArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

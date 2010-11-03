@@ -12,19 +12,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSPredicate,NSIndexSet,NSMutableIndexSet;
 
 @interface NSArrayController : NSObjectController {
-	struct
-	{
-		long avoidsEmptySelection:1;
-		long clearsFilterPredicateOnInsertion:1;
-		long filterRestrictsInsertion:1;
-		long preservesSelection:1;
-		long selectsInsertedObjects:1;
-		long alwaysUsesMultipleValuesMarker:1;
+	struct {
+		NSUInteger avoidsEmptySelection:1;
+		NSUInteger clearsFilterPredicateOnInsertion:1;
+		NSUInteger filterRestrictsInsertion:1;
+		NSUInteger preservesSelection:1;
+		NSUInteger selectsInsertedObjects:1;
+		NSUInteger alwaysUsesMultipleValuesMarker:1;
 	} _flags;
 	NSMutableIndexSet *_selectionIndexes;
-	id _sortDescriptors;
+	NSArray *_sortDescriptors;
 	id _filterPredicate;
-	id _arrangedObjects;
+	NSMutableArray *_arrangedObjects;
 }
 
 -(NSArray *)sortDescriptors;
