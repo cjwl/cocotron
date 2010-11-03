@@ -1,6 +1,11 @@
 #import <CoreFoundation/CFBase.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSFileManager.h>
+#ifdef WINDOWS
+#import <windows.h>
+#endif
 
 const CFAllocatorRef kCFAllocatorDefault;
 const CFAllocatorRef kCFAllocatorSystemDefault;
@@ -89,6 +94,7 @@ CFTypeRef CFMakeCollectable(CFTypeRef self){
    return 0;
 }
 
+#ifdef WINDOWS
 unsigned int sleep(unsigned int seconds) {
    NSUnimplementedFunction();
    return 0;
@@ -128,4 +134,56 @@ int bcmp(const void *s1, void *s2, size_t n) {
    
    return 0;
 }
+
+int mkstemps(char *template,int suffixlen) {
+   HANDLE result=NULL;
+   const char *table="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+   int       modulo=strlen(table);
+   int       counter=GetTickCount();
+   NSString *check;
+   int       length=strlen(template),pos=length-suffixlen;
+   
+   while(--pos>=0){
+    if(template[pos]!='X'){
+     pos++;
+     break;
+    }
+   }
+   
+   int i,failSafe=0;
+   char try[length+1];
+   
+   do {
+    
+    for(i=0;i<length;i++)
+     if(i<pos || i>=length-suffixlen)
+      try[i]=template[i];
+     else {
+      try[i]=table[counter%modulo];
+      counter+=i;
+     }
+     
+    try[i]=0;
+    
+    check=[NSString stringWithUTF8String:try];
+    
+    NSLog(@"mkstemps try=%@",check);
+    
+    result=CreateFileW([check fileSystemRepresentationW],GENERIC_WRITE|GENERIC_READ,0,NULL,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,NULL);
+    
+    failSafe++;
+    
+   }while(result==NULL && failSafe<100);
+
+   if(result!=NULL){
+    for(i=0;i<length;i++)
+     template[i]=try[i];
+    template[i]=0;
+   }
+   
+   return (int)result;
+}
+
+#endif
+
 
