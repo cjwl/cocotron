@@ -21,6 +21,7 @@ typedef enum {
    NSInteger            _selectedIndex;
    BOOL                 _pullsDown;
    BOOL                 _autoenablesItems;
+   BOOL                 _usesItemFromMenu;
    NSPopUpArrowPosition _arrowPosition;
    NSRectEdge           _preferredEdge;
 }
