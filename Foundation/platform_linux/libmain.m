@@ -55,37 +55,3 @@ FOUNDATION_EXPORT void __attribute__ ((constructor)) libmain(void)
     
     __NSInitializeProcess(argCount, (const char **)nArgValues);
 }
-
-/*
-
-void libmain(void)
-{
-    
-    extern char **environ;
-    static char **argValues=NULL;
-    char        ***argvp;
-    void        *p;
-    int         i = -1;
-    
-    asm ("mov %%esp, %0" : "=r" (p));
-    argvp = p;
-    
-    //loop until environment
-    while (*argvp != environ) {
-        argvp++;
-    }
-    argvp--;
-    argValues = *argvp;
-    
-    while(1) {
-        if(argValues[i + 1] != NULL) {
-            i++;
-        }
-        else {
-            i++;
-            break;
-        }
-    }            
-    
-    __NSInitializeProcess(i, (const char **)argValues);
-}*/
