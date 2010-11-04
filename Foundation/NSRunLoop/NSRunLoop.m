@@ -144,16 +144,16 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 -(NSDate *)limitDateForMode:(NSString *)mode {
    NSRunLoopState *state=[self stateForMode:mode];
    
-   if(![mode isEqualToString:_currentMode]){
+   mode=[mode retain];   
     [_currentMode release];
-    _currentMode=[mode retain];
-    [state changingIntoMode:mode];
-   }
+   _currentMode=mode;
+   
+   [state startingInMode:mode];
    
    if([self _orderedPerforms])
-      [self _wakeUp];
+      ;//[self _wakeUp];
    if([state fireFirstTimer])
-      [self _wakeUp];
+      ;//[self _wakeUp];
    [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
    return [state limitDateForMode:mode];
@@ -167,7 +167,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
      [[NSNotificationQueue defaultQueue] idleProcessMode:mode];
    }
    else {
-    [state acceptInputForMode:mode beforeDate:date];
+    [state waitForSingleInputForMode:mode beforeDate:date];
    }
 }
 
@@ -183,17 +183,39 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 @class NSSelectInputSource, NSSocket;
 
 -(BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)date {
+   BOOL didProcessAnything=NO;
+
+   do {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    NSDate            *limitDate=[self limitDateForMode:mode];
 
-  if(limitDate!=nil){
+    if(limitDate==nil){
+     [pool release];
+     return didProcessAnything;
+    }
+    
     limitDate=[limitDate earlierDate:date];
-    [self acceptInputForMode:mode beforeDate:limitDate];
+    
+    didProcessAnything=YES;
+    
+    NSRunLoopState *state=[self stateForMode:mode];
+
+    if([[NSNotificationQueue defaultQueue] hasIdleNotificationsInMode:mode]){
+
+     if(![state pollInputForMode:mode])
+      [[NSNotificationQueue defaultQueue] idleProcessMode:mode];
    }
+    else {
+     [state waitForSingleInputForMode:mode beforeDate:limitDate];
+     [pool release];
+     return YES;
+    }
    
    [pool release];
 
-   return (limitDate!=nil);
+   }while([date timeIntervalSinceNow]>0);
+   
+   return YES;
 }
 
 -(void)runUntilDate:(NSDate *)date {

@@ -9,7 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/Win32EventInputSource.h>
 #import <AppKit/Win32Display.h>
+#import <AppKit/Win32Event.h>
 #import <AppKit/NSEvent_periodic.h>
+#import <AppKit/NSEvent_CoreGraphics.h>
 
 @implementation Win32EventInputSource
 
@@ -23,8 +25,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
-    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg])
-     DispatchMessage(&msg);
+    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg]){
+     Win32Event *cgEvent=[Win32Event eventWithMSG:msg];
+     NSEvent    *event=[[[NSEvent_CoreGraphics alloc] initWithDisplayEvent:cgEvent] autorelease];
+
+     [[Win32Display currentDisplay] postEvent:event atStart:NO];
+    }
 
     [pool release];
     return YES;
