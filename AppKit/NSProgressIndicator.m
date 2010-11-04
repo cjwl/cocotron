@@ -1,14 +1,14 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
 #import <AppKit/NSProgressIndicator.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSWindow.h>
+#import <AppKit/NSApplication.h>
 #import <AppKit/NSGraphicsStyle.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
@@ -37,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _animationValue=0;
     _style=(flags&0x1000)?NSProgressIndicatorSpinningStyle:NSProgressIndicatorBarStyle;
     _size=(flags&0x100)?NSSmallControlSize:NSRegularControlSize;
-    _displayWhenStopped=(flags&0x2000)?YES:NO;
+    _displayWhenStopped=(flags&0x2000)?NO:YES; // inverted 
     _isBezeled=YES;    
     _isIndeterminate=(flags&0x02)?YES:NO;
     _usesThreadedAnimation=NO;
@@ -86,6 +86,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                                                       selector:@selector(animate:)
                                                       userInfo:nil
                                                        repeats:YES] retain];
+
+// FIXME: does it do this? Or does it add it to the current mode?
+// Apple's does work in a modal panel (right?)_                                                 
+    [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSModalPanelRunLoopMode];
+    
     [self didChangeValueForKey:@"animate"];
    }
 }
@@ -141,7 +146,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawRect:(NSRect)clipRect {
    if(_style==NSProgressIndicatorBarStyle){
     if(_isIndeterminate){
-     [[self graphicsStyle] drawProgressIndicatorIndeterminate:_bounds clipRect:clipRect bezeled:_isBezeled animation:_animationValue];
+     if([self isDisplayedWhenStopped] || (_animationTimer!=nil)){
+      [[self graphicsStyle] drawProgressIndicatorIndeterminate:_bounds clipRect:clipRect bezeled:_isBezeled animation:_animationValue];
+     }
     }
     else {
      double value=(_value-_minValue)/(_maxValue-_minValue);
@@ -150,7 +157,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
    else {
-    [self drawIndeterminateCircular];
+    if([self isIndeterminate]){
+     if([self isDisplayedWhenStopped] || (_animationTimer!=nil)){
+      [self drawIndeterminateCircular];
+     }
+    }
+    else {
+     // FIXME
+     [[NSColor redColor] set];
+     NSRectFill([self bounds]);
+    }
    }   
 }
 
