@@ -78,6 +78,9 @@ APPKIT_EXPORT NSString * const NSOutlineViewSelectionIsChangingNotification;
 -(void)setDropItem:item dropChildIndex:(int)index;
 -(BOOL)shouldCollapseAutoExpandedItemsForDeposited:(BOOL)collapse;
 
+-(NSRect)frameOfOutlineCellAtRow:(NSInteger)row;
+
+
 @end
 
 @interface NSObject(NSOutlineView_dataSource)
