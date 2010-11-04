@@ -764,16 +764,29 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setFrame:(NSRect)newFrame display:(BOOL)display animate:(BOOL)animate  {
+   BOOL didSize=NSEqualSizes(newFrame.size,_frame.size)?NO:YES;
+   BOOL didMove=NSEqualPoints(newFrame.origin,_frame.origin)?NO:YES;
+   
    _frame=newFrame;
    _makeSureIsOnAScreen=YES;
 
    [_backgroundView setFrameSize:_frame.size];
    [[self platformWindow] setFrame:_frame];
 
+   if(didSize)
    [self _invalidateTrackingAreas];
 
+   if(didSize)
+    [self postNotificationName:NSWindowDidResizeNotification];
+    
+   if(didMove)
+    [self postNotificationName:NSWindowDidMoveNotification];
+
+// If you setFrame:display:YES before rearranging views with only setFrame: calls (which do not mark the view for display)
+// Cocoa will properly redisplay the views
+// So, doing a hard display right here is not the right thing to do, delay it 
    if(display)
-    [self display];
+    [_backgroundView setNeedsDisplay:YES];
 
    if(animate){
      NSWindowAnimationContext *context;
