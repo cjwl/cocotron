@@ -142,8 +142,6 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 
    BOOL      _isOpaque;
    BOOL      _isVisible;
-   BOOL      _isKeyWindow;
-   BOOL      _isMainWindow;
    BOOL      _isDocumentEdited;
    BOOL      _makeSureIsOnAScreen;
 
@@ -174,6 +172,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    BOOL      _allowsToolTipsWhenApplicationIsInactive;
    BOOL      _defaultButtonCellKeyEquivalentDisabled;
    BOOL      _autorecalculatesKeyViewLoop;
+   BOOL      _hasBeenOnScreen;
    
    BOOL      _preservesContentDuringLiveResize;
    NSSize    _resizeIncrements;
@@ -355,7 +354,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 -(NSButtonCell *)defaultButtonCell;
 -(NSWindow *)attachedSheet;
 
--(NSWindowController *)windowController;
+-(id)windowController;
 -(NSArray *)drawers;
 
 -(int)windowNumber;

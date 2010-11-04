@@ -188,23 +188,19 @@ id NSApp=nil;
 }
 
 -(NSWindow *)mainWindow {
-   int i,count=[_windows count];
+   return _mainWindow;
+}
 
-   for(i=0;i<count;i++)
-    if([[_windows objectAtIndex:i] isMainWindow])
-     return [_windows objectAtIndex:i];
-
-   return nil;
+-(void)_setMainWindow:(NSWindow *)window {
+   _mainWindow=window;
 }
 
 -(NSWindow *)keyWindow {
-   int i,count=[_windows count];
+   return _keyWindow;
+}
 
-   for(i=0;i<count;i++)
-    if([[_windows objectAtIndex:i] isKeyWindow])
-     return [_windows objectAtIndex:i];
-
-   return nil;
+-(void)_setKeyWindow:(NSWindow *)window {
+   _keyWindow=window;
 }
 
 -(NSImage *)applicationIconImage {
@@ -319,7 +315,6 @@ id NSApp=nil;
 }
 
 -(void)setWindowsMenu:(NSMenu *)menu {
-//NSLog(@"%s %@",sel_getName(_cmd),menu);
    [_windowsMenu autorelease];
    _windowsMenu=[menu retain];
 }
@@ -444,9 +439,17 @@ id NSApp=nil;
    while(--count>=0){
     NSWindow *check=[_windows objectAtIndex:count];
 
-    if([check retainCount]==1)
+    if([check retainCount]==1){
+    
+     if(check==_keyWindow)
+      _keyWindow=nil;
+      
+     if(check==_mainWindow)
+      _mainWindow=nil;
+      
      [_windows removeObjectAtIndex:count];
    }
+}
 }
 
 -(void)_checkForTerminate {
@@ -484,8 +487,7 @@ id NSApp=nil;
        pool = [NSAutoreleasePool new];
        NSEvent           *event;
 
-    event=[self nextEventMatchingMask:NSAnyEventMask
-     untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+    event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 
     NS_DURING
      [self sendEvent:event];
@@ -561,33 +563,46 @@ id NSApp=nil;
    [_display postEvent:event atStart:atStart];
 }
 
--_sameWindowTargetForAction:(SEL)action to:target {
-  // Search just one window's responder chain.
-  
-  if ([target respondsToSelector:action])
-    return target;
-  
-  if ([target respondsToSelector:@selector(nextResponder)]) 
-    {
-      target = [target nextResponder];
-      while (target != nil) 
-        {
-          if ([target respondsToSelector:action])
-            return target;
+-_searchForAction:(SEL)action responder:target {
+  // Search a responder chain 
+
+   while (target != nil) {
+
+    if ([target respondsToSelector:action])
+     return target;
           
-          if ([target isKindOfClass:[NSWindow class]]) 
-            {
-              if ([[target delegate] respondsToSelector:action])
-                return [target delegate];
-              if ([[target windowController] respondsToSelector:action])
-                return [target windowController];
-            }
-          
-          target = [target nextResponder];
-        }
-    }
+    if([target respondsToSelector:@selector(nextResponder)])
+     target = [target nextResponder];
+    else
+     break;
+   }
   
-  return nil;
+   return nil;
+}
+
+-_searchForAction:(SEL)action window:(NSWindow *)window {
+ // Search a windows responder chain and window
+ // The window check is done seperately from the responder chain
+ // in case the responder chain is broken
+
+// FIXME: should a windows delegate and windowController be checked if a window is found in a responder chain too ?
+// Document based facts:
+//  An NSWindow's next responder should be the window controller
+//  An NSWindow's delegate should be the document
+// - This probably means the windowController check is duplicative, but need to make the next responder is window controller
+
+   id check=[self _searchForAction:action responder:[window firstResponder]];
+   
+   if(check!=nil)
+    return check;
+
+   if ([[window delegate] respondsToSelector:action])
+    return [window delegate];
+    
+   if ([[window windowController] respondsToSelector:action])
+    return [window windowController];
+
+   return nil;
 }
 
 -targetForAction:(SEL)action {
@@ -597,20 +612,20 @@ id NSApp=nil;
 -targetForAction:(SEL)action to:target from:sender {
   if (target == nil) 
     {
-      target = [self _sameWindowTargetForAction:action to:[[self keyWindow] firstResponder]];
+      target = [self _searchForAction:action window:[self keyWindow]];
       if (target)
         return target;
       
       if ([self mainWindow] != [self keyWindow]) 
         {
-          target = [self _sameWindowTargetForAction:action to:[[self mainWindow] firstResponder]];
+          target = [self _searchForAction:action window:[self mainWindow]];
           if (target)
             return target;
         }
     }
   else 
     {
-      target = [self _sameWindowTargetForAction:action to:target];
+      target = [self _searchForAction:action responder:target];
       if (target)
         return target;
     }
@@ -1044,7 +1059,7 @@ standardAboutPanel] retain];
   NSWindowController *controller = [window windowController];
   NSDocument *document = [controller document];
 
-  [_orderedWindows removeObject: window];
+  [_orderedWindows removeObjectIdenticalTo: window];
   
   switch (place) {
   case NSWindowAbove:

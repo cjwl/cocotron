@@ -84,4 +84,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [contentView setFrame:contentFrame];
 }
 
+-(void)mouseDown:(NSEvent *)event {
+   if(![[self window] isMovableByWindowBackground])
+    return;
+   
+   NSPoint origin=[[self window] frame].origin;
+   NSPoint firstLocation=[[self window] convertBaseToScreen:[event locationInWindow]];
+   do {
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
+    
+    NSPoint delta=[[self window] convertBaseToScreen:[event locationInWindow]];
+    
+    delta.x-=firstLocation.x;
+    delta.y-=firstLocation.y;
+    
+    [[self window] setFrameOrigin:NSMakePoint(origin.x+delta.x,origin.y+delta.y)];
+    
+   }while([event type]!=NSLeftMouseUp);   
+}
+
 @end

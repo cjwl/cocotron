@@ -431,6 +431,9 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    SetActiveWindow(_handle);
 }
 
+-(void)makeMain {
+}
+
 -(void)captureEvents {
    SetCapture(_handle);
 }

@@ -181,10 +181,6 @@ pointSize:10 color:color] autorelease];
    NSDrawButton(rect,rect);
 }
 
--(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded {
-   NSInterfaceDrawOutlineMarker(rect,rect,expanded);
-}
-
 -(void)drawOutlineViewGridInRect:(NSRect)rect {
    NSInterfaceDrawOutlineGrid(rect,NSCurrentGraphicsPort());
 }

@@ -197,43 +197,6 @@ void NSInterfaceDrawProgressIndicatorBezel(NSRect rect,NSRect clipRect) {
    NSInterfaceDrawBrowserHeader(rect,clipRect);
 }
 
-// Scrutinizing the Explorer tree view, it looks as though, given the frame rect, MS does:
-// - 4 pixels worth of dotted lines above the box
-// - 2 pixels worth of dotted lines below the box
-// - 6 pixels worth of dotted lines to the right of the box
-// - the + is inset 1 pixel within the box.
-void NSInterfaceDrawOutlineMarker(NSRect rect,NSRect clipRect, BOOL state) {
-   NSRect rects[4];
-   NSColor *colors[4];
-   int i, numDrawnRects=4;
-
-   if (state)
-       numDrawnRects--;
-
-   rect.size.height--;
-   rect.size.width--;
-   for (i = 0; i < 4; ++i)
-       rects[i]=rect;
-
-   colors[0] = [NSColor darkGrayColor];
-   colors[1] = [NSColor controlBackgroundColor];
-   rects[1].origin.x++;
-   rects[1].origin.y++;
-   rects[1].size.width-=2;
-   rects[1].size.height-=2;
-   colors[2] = [NSColor blackColor];
-   rects[2].origin.x += 2;
-   rects[2].origin.y += (rect.size.height/2);
-   rects[2].size.width -= 4;
-   rects[2].size.height = 1;
-   colors[3] = [NSColor blackColor];
-   rects[3].origin.x += (rect.size.width/2);
-   rects[3].origin.y += 2;
-   rects[3].size.width = 1;
-   rects[3].size.height -= 4;
-
-   NSInterfaceDrawRects(rect,clipRect,rects,colors,numDrawnRects);
-}
 
 void NSInterfaceDrawOutlineGrid(NSRect rect,CGContextRef context) {
 /* Win32 has poor dashed line support...

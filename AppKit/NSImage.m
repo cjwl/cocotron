@@ -93,7 +93,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
 
-   return image;
+// Must use copy here, the caller may modify the image, e.g. size, and you don't want
+// to wreck the cache values. 
+   return [[image copy] autorelease];
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -186,8 +188,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfURL:(NSURL *)url {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[NSData dataWithContentsOfURL:url];
+   
+   if(data==nil){
+    [self dealloc];
+    return nil;
+}
+
+   return [self initWithData:data];
 }
 
 -initWithPasteboard:(NSPasteboard *)pasteboard {
@@ -196,8 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initByReferencingFile:(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+   return [self initWithContentsOfFile:path];
 }
 
 -initByReferencingURL:(NSURL *)url {
@@ -207,12 +214,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_name release];
+   [_backgroundColor release];
    [_representations release];
    [super dealloc];
 }
 
 -copyWithZone:(NSZone *)zone {
-   return [self retain];
+   NSImage *result=NSCopyObject(self,0,zone);
+   
+   result->_name=[_name copy];
+   result->_backgroundColor=[_backgroundColor copy];
+   result->_representations=[_representations mutableCopy];
+   
+   return result;
 }
 
 -(NSString *)name {
@@ -491,8 +505,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      rect.origin.y=0;
      rect.size=[self size];
      
-     if([self scalesWhenResized])
-      [uncached drawInRect:rect];
+     if([self scalesWhenResized]){
+      [self drawRepresentation:uncached inRect:rect];
+     }
      else
       [uncached drawAtPoint:rect.origin];
       
@@ -557,6 +572,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextRef       graphicsPort;
 
    if(representation==nil){
+// FIXME: Cocoa doesn't add the cached rep until the unlockFocus, it just creates the drawing context 
+// then snaps the image during unlock and adds it
     representation=[self _cachedImageRepCreateIfNeeded];
       
       [self lockFocusOnRepresentation:representation];
@@ -609,8 +626,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)drawRepresentation:(NSImageRep *)representation inRect:(NSRect)rect {
-   [[self backgroundColor] setFill];
+   NSColor *bg=[self backgroundColor];
+   
+   if(bg!=nil){
+    [bg setFill];
    NSRectFill(rect);
+   }
    
    return [representation drawInRect:rect];
 }
@@ -620,7 +641,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
-#if 1
    /* Compositing is a blitting operation. We simulate it using the draw operation.
    
       Compositing does not honor all aspects of the CTM, e.g. it will keep an image upright regardless of the orientation of CTM.
@@ -641,22 +661,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [self drawInRect:rect fromRect:source operation:operation fraction:fraction];
    CGContextRestoreGState(context);   
-#else
-   CGContextRef context=NSCurrentGraphicsPort();
-   
-   CGContextSaveGState(context);
-// fraction is accomplished with a 1x1 alpha mask
-   uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
-   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
-   CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
-   
-//   CGContextClipToMask(context,rect,mask);
-   CGImageRelease(mask);
-   CGDataProviderRelease(provider);
-   
-   [[self bestRepresentationForDevice:nil] drawAtPoint:point];
-   CGContextRestoreGState(context);
-#endif
 }
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation {
@@ -708,7 +712,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      CGContextTranslateCTM(context,-source.origin.x,-source.origin.y);
     }
    
-    [uncached drawInRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
+    [self drawRepresentation:uncached inRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
+
     [self unlockFocus];
     
     drawRep=cached;
@@ -732,7 +737,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [[NSGraphicsContext currentContext] setCompositingOperation:operation];
       
-   [drawRep drawInRect:rect];
+   [self drawRepresentation:drawRep inRect:rect];
    
    CGContextRestoreGState(context);
 
@@ -741,7 +746,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)description {
-    return [NSString stringWithFormat:@"<%@[0x%lx] name: %@ size: { %f, %f } representations: %@>", [self class], self, _name, _size.width, _size.height, _representations];
+   NSSize size=[self size];
+   
+   return [NSString stringWithFormat:@"<%@[0x%lx] name: %@ size: { %f, %f } representations: %@>", [self class], self, _name, size.width, size.height, _representations];
 }
 
 @end

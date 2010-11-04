@@ -18,6 +18,7 @@
 		FE5A875B10C6F244005E348A /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8C3C10C776B0005E348A /* CGLCurrent.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B65104DF7F80038ED7C /* CGLCurrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A8C3D10C776B5005E348A /* CGLTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B66104DF7F80038ED7C /* CGLTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAEFF7111E4D09900CA0912 /* glweak.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEFF7011E4D09900CA0912 /* glweak.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED35B67104DF7F80038ED7C /* CGLCurrent.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B65104DF7F80038ED7C /* CGLCurrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED35B68104DF7F80038ED7C /* CGLTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B66104DF7F80038ED7C /* CGLTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEE7E14B10E27255004A50F8 /* CGLCurrent.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B65104DF7F80038ED7C /* CGLCurrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,6 +62,7 @@
 		C8E0BE8A0F0E544700677729 /* OpenGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE3B34A90D55939B009E0AA5 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
 		FE5A876310C6F244005E348A /* OpenGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEAEFF7011E4D09900CA0912 /* glweak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glweak.h; sourceTree = "<group>"; };
 		FED35B65104DF7F80038ED7C /* CGLCurrent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLCurrent.h; sourceTree = "<group>"; };
 		FED35B66104DF7F80038ED7C /* CGLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLTypes.h; sourceTree = "<group>"; };
 		FEF2EB220C878C88001FC5A8 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		0867D691FE84028FC02AAC07 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				FEAEFF7011E4D09900CA0912 /* glweak.h */,
 				FED35B65104DF7F80038ED7C /* CGLCurrent.h */,
 				FED35B66104DF7F80038ED7C /* CGLTypes.h */,
 				FE3B34A90D55939B009E0AA5 /* glext.h */,
@@ -180,6 +183,7 @@
 				FE3B34AA0D55939B009E0AA5 /* glext.h in Headers */,
 				FED35B67104DF7F80038ED7C /* CGLCurrent.h in Headers */,
 				FED35B68104DF7F80038ED7C /* CGLTypes.h in Headers */,
+				FEAEFF7111E4D09900CA0912 /* glweak.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

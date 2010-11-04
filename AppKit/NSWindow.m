@@ -68,6 +68,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 @end
 
+@interface NSApplication(private)
+-(void)_setMainWindow:(NSWindow *)window;
+-(void)_setKeyWindow:(NSWindow *)window;
+@end
+
 @implementation NSWindow
 
 +(NSWindowDepth)defaultDepthLimit {
@@ -124,6 +129,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSUnimplementedMethod();
 }
 
+// This is Apple private API
++(Class)frameViewClassForStyleMask:(unsigned int)styleMask {
+   return [NSThemeFrame class];
+}
+
 -initWithCoder:(NSCoder *)coder {
   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
    return self;
@@ -160,7 +170,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [_menuView setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
    }
 
-   _backgroundView=[[NSThemeFrame alloc] initWithFrame:backgroundFrame];
+   _backgroundView=[[[isa frameViewClassForStyleMask:styleMask] alloc] initWithFrame:backgroundFrame];
    [_backgroundView setAutoresizesSubviews:YES];
    [_backgroundView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    [_backgroundView _setWindow:self];
@@ -754,16 +764,29 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setFrame:(NSRect)newFrame display:(BOOL)display animate:(BOOL)animate  {
+   BOOL didSize=NSEqualSizes(newFrame.size,_frame.size)?NO:YES;
+   BOOL didMove=NSEqualPoints(newFrame.origin,_frame.origin)?NO:YES;
+   
    _frame=newFrame;
    _makeSureIsOnAScreen=YES;
 
    [_backgroundView setFrameSize:_frame.size];
    [[self platformWindow] setFrame:_frame];
 
+   if(didSize)
    [self _invalidateTrackingAreas];
 
+   if(didSize)
+    [self postNotificationName:NSWindowDidResizeNotification];
+    
+   if(didMove)
+    [self postNotificationName:NSWindowDidMoveNotification];
+
+// If you setFrame:display:YES before rearranging views with only setFrame: calls (which do not mark the view for display)
+// Cocoa will properly redisplay the views
+// So, doing a hard display right here is not the right thing to do, delay it 
    if(display)
-    [self display];
+    [_backgroundView setNeedsDisplay:YES];
 
    if(animate){
      NSWindowAnimationContext *context;
@@ -1197,7 +1220,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return [_sheetContext sheet];
 }
 
--(NSWindowController *)windowController {
+-(id)windowController {
    return _windowController;
 }
 
@@ -1275,11 +1298,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)isKeyWindow {
-   return _isKeyWindow;
+   return ([NSApp keyWindow]==self)?YES:NO;
 }
 
 -(BOOL)isMainWindow {
-   return _isMainWindow;
+   return ([NSApp mainWindow]==self)?YES:NO;
 }
 
 -(BOOL)isMiniaturized {
@@ -1438,7 +1461,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)makeKeyWindow {
    [[self platformWindow] makeKey];
+   
+   if(!_hasBeenOnScreen){
+    _hasBeenOnScreen=YES;
    [self makeFirstResponder:[self initialFirstResponder]];
+}
 }
 
 -(void)makeMainWindow {
@@ -1446,8 +1473,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)becomeKeyWindow {
-   [[NSApp keyWindow] resignKeyWindow];
-   _isKeyWindow=YES;
+   if([self isKeyWindow]) // if we don't return early we may resign ourself
+    return;
+
+// Become key window before the previous key window resigns so that the new key window is valid
+// before NSWindowDidResignKeyNotification is sent.
+   NSWindow *keyWindow=[NSApp keyWindow];
+   
+   [NSApp _setKeyWindow:self];
+      
+   [keyWindow resignKeyWindow];
 
    if(_firstResponder!=self && [_firstResponder respondsToSelector:_cmd])
     [_firstResponder performSelector:_cmd];
@@ -1456,8 +1491,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)resignKeyWindow {
-   _isKeyWindow=NO;
-
    if(_firstResponder!=self && [_firstResponder respondsToSelector:_cmd])
     [_firstResponder performSelector:_cmd];
 
@@ -1465,13 +1498,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)becomeMainWindow {
-   [[NSApp mainWindow] resignMainWindow];
-   _isMainWindow=YES;
+   if([self isMainWindow])
+    return;
+
+   NSWindow *mainWindow=[NSApp mainWindow];
+   
+   [[self platformWindow] makeMain];
+   [NSApp _setMainWindow:self];
+   
+   [mainWindow resignMainWindow];
+   
    [self postNotificationName:NSWindowDidBecomeMainNotification];
 }
 
 -(void)resignMainWindow {
-   _isMainWindow=NO;
    [self postNotificationName:NSWindowDidResignMainNotification];
 }
 
@@ -1917,8 +1957,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
      break;
 
-    case NSMouseMoved:
-     [[_backgroundView hitTest:[event locationInWindow]] mouseMoved:event];
+    case NSMouseMoved:{
+      NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
+      
+      if(hit==nil)
+       [self mouseMoved:event];
+      else
+       [hit mouseMoved:event];
+     }
      break;
 
     case NSLeftMouseDragged:    
@@ -1954,7 +2000,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      break;
 
     case NSScrollWheel:
-     [_firstResponder scrollWheel:event];
+     [[_backgroundView hitTest:[event locationInWindow]] scrollWheel:event];
      break;
 
     default:
@@ -2056,12 +2102,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    if ([self isMiniaturized])
     [_platformWindow deminiaturize];
 
-   [self makeKeyWindow];
-
-   if(![self isKindOfClass:[NSPanel class]])
-    [self makeMainWindow];
+// Order window before making it key, per doc.s and behavior
 
    [self orderWindow:NSWindowAbove relativeTo:0];
+
+   [self makeKeyWindow];
+
+   if([self canBecomeMainWindow])
+    [self makeMainWindow];
 }
 
 -(void)orderFront:sender {
@@ -2377,7 +2425,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    sheet->_isVisible=YES;
    [sheet display];
    [[sheet platformWindow] sheetOrderFrontFromFrame:NSMakeRect(sheetFrame.origin.x,NSMaxY(sheetFrame),sheetFrame.size.width,0) aboveWindow:[self platformWindow]];
-   [[sheet platformWindow] makeKey];
+   [self makeKeyWindow];
 }
 
 -(NSSheetContext *)_sheetContext {
@@ -2429,10 +2477,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidDeactivate:) withObject:self];
 
    _isActive=NO;
-   if([self isMainWindow])
-    [self resignMainWindow];
-   if([self isKeyWindow])
-    [self resignKeyWindow];
 
    [_menuView setNeedsDisplay:YES];
    [self displayIfNeeded];

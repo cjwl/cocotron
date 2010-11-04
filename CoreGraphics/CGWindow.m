@@ -108,6 +108,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+-(void)makeMain {
+   O2InvalidAbstractInvocation();
+}
+
 -(void)captureEvents {
    O2InvalidAbstractInvocation();
 }

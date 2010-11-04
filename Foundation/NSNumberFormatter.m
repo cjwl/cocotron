@@ -968,7 +968,7 @@ static NSString *stringWithFormatGrouping(NSString *format,id locale,NSString *g
 
    unichar *unicode=NSCharactersNewWithFormatAndGrouping(format,locale,arguments,&length,NULL,groupingSeparator,groupingSize);
 
-   return [NSString_unicodePtrNewNoCopy(NULL,unicode,length) autorelease];
+   return [NSString_unicodePtrNewNoCopy(NULL,unicode,length,YES) autorelease];
 }
 
 -(NSString *)_stringFromNumber:(NSNumber *)number  {

@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSResponder.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSAnimation.h>
 #import <AppKit/AppKitExport.h>
 #import <ApplicationServices/ApplicationServices.h>
 
@@ -96,6 +97,7 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
    CALayer *_backingLayer;
    CALayer *_layer;
    NSArray *_contentFilters;
+   NSDictionary *_animations;
 }
 
 +(NSView *)focusView;
@@ -119,7 +121,7 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
 -(void)scaleUnitSquareToSize:(NSSize)size;
 
 -(NSWindow *)window;
--superview;
+-(NSView *)superview;
 -(BOOL)isDescendantOf:(NSView *)other;
 -(NSView *)ancestorSharedWithView:(NSView *)view;
 -(NSScrollView *)enclosingScrollView;

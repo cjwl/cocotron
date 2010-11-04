@@ -9,8 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 /* For maximum subclassing compatibility with Mac OS X, this class should depend on the following NSString methods only:
 
--initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
-freeWhenDone:(BOOL)freeWhenDone;
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone;
 
 -initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding;
 
@@ -76,23 +75,26 @@ int __CFConstantStringClassReference[1];
    return NSAllocateObject(self,0,zone);
 }
 
--initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
-             freeWhenDone:(BOOL)freeWhenDone {
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
 -initWithCharacters:(const unichar *)characters length:(NSUInteger)length {
-   // Casting to (unicode *) isn't pretty, but safe with freeWhenDone:NO.
-   return [self initWithCharactersNoCopy:(unichar *)characters length:length freeWhenDone:NO];
+   unichar *copy=NSZoneMalloc(NULL,length*sizeof(unichar));
+   NSInteger i;
+   
+   for(i=0;i<length;i++)
+    copy[i]=characters[i];
+    
+   return [self initWithCharactersNoCopy:copy length:length freeWhenDone:YES];
 }
 
 -init {
    return self;
 }
 
--initWithCStringNoCopy:(char *)cString length:(NSUInteger)length
-          freeWhenDone:(BOOL)freeWhenDone {
+-initWithCStringNoCopy:(char *)cString length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=[self initWithBytes:cString length:length encoding:defaultEncoding()];
 
    if(freeWhenDone)
@@ -210,7 +212,7 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   return [self initWithContentsOfFile:path usedEncoding:NULL error:nil];
+   return [self initWithContentsOfFile:path usedEncoding:NULL error:NULL];
 }
 
 -initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error {
@@ -373,7 +375,7 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+   if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     NSString          *string=[keyed decodeObjectForKey:@"NS.string"];
     
@@ -393,7 +395,7 @@ int __CFConstantStringClassReference[1];
      NSUInteger resultLength;
      unichar *characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
 
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
     }
    }
 }
@@ -1257,8 +1259,10 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSString *)stringByReplacingCharactersInRange:(NSRange)range withString:(NSString *)substitute {
-   NSUnimplementedMethod();
-   return 0;
+   NSString *first=[self substringToIndex:range.location];
+   NSString *last=[self substringFromIndex:NSMaxRange(range)];
+   
+   return [[first stringByAppendingString:substitute] stringByAppendingString:last];
 }
 
 -(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute {
@@ -1370,8 +1374,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 // FIX, not complete
--(NSData *)dataUsingEncoding:(NSStringEncoding)encoding
-        allowLossyConversion:(BOOL)lossy {
+-(NSData *)dataUsingEncoding:(NSStringEncoding)encoding allowLossyConversion:(BOOL)lossy {
    NSZone  *zone=[self zone];
    NSUInteger length=[self length];
    unichar  buffer[1+length],*unicode=buffer+1;
@@ -1416,13 +1419,103 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
- //  NSUnimplementedMethod();
+// FIXME: this ignores the encoding argument
+
+   NSUInteger i,length=[self length],resultLength=0;
+   unichar    buffer[length];
+   unichar    result[length], firstCharacter=0,firstNibble=0;
+   enum {
+    STATE_NORMAL,
+    STATE_PERCENT,
+    STATE_HEX1,
+   } state=STATE_NORMAL;
+   
+   [self getCharacters:buffer];
+   
+   for(i=0;i<length;i++){
+    unichar check=buffer[i];
+    
+    switch(state){
+
+     case STATE_NORMAL:
+      if(check=='%')
+       state=STATE_PERCENT;
+      else
+       result[resultLength++]=check;
+      break;
+
+     case STATE_PERCENT:
+      state=STATE_HEX1;
+      if(check>='0' && check<='9'){
+       firstCharacter=check;
+       firstNibble=(firstCharacter-'0');
+      }
+      else if(check>='a' && check<='f'){
+       firstCharacter=check;
+       firstNibble=(firstCharacter-'a')+10;
+      }
+      else if(check>='A' && check<='F'){
+       firstCharacter=check;
+       firstNibble=(firstCharacter-'A')+10;
+      }
+      else {
+       result[resultLength++]='%';
+       result[resultLength++]=check;
+       state=STATE_NORMAL;
+      }
+      break;
+
+     case STATE_HEX1:
+      if(check>='0' && check<='9')
+       result[resultLength++]=firstNibble*16+check-'0';
+      else if(check>='a' && check<='f')
+       result[resultLength++]=firstNibble*16+(check-'a')+10;
+      else if(check>='A' && check<='F')
+       result[resultLength++]=firstNibble*16+(check-'A')+10;
+      else {
+       result[resultLength++]='%';
+       result[resultLength++]=firstCharacter;
+       result[resultLength++]=check;
+      }
+      state=STATE_NORMAL;
+      break;
+    }
+    
+   }
+
+   if(resultLength==length)
    return self;
+   
+   return [NSString stringWithCharacters:result length:resultLength];
 }
 
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
-  // NSUnimplementedMethod();
+   NSUInteger i,length=[self length],resultLength=0;
+   unichar    unicode[length];
+   unichar    result[length*3];
+   const char *hex="0123456789ABCDEF";
+      
+   [self getCharacters:unicode];
+   
+   for(i=0;i<length;i++){
+    unichar code=unicode[i];
+
+    if((code<=0x20) || (code==0x22) || (code==0x23) || (code==0x25) || (code==0x3C) ||
+       (code==0x3E) || (code==0x5B) || (code==0x5C) || (code==0x5D) || (code==0x5E) ||
+       (code==0x60) || (code==0x7B) || (code==0x7C) || (code==0x7D)){
+     result[resultLength++]='%';
+     result[resultLength++]=hex[(code>>4)&0xF];
+     result[resultLength++]=hex[code&0xF];
+    }
+    else {
+     result[resultLength++]=code;
+    }
+   }
+   
+   if(length==resultLength)
    return self;
+    
+   return [NSString stringWithCharacters:result length:resultLength];
 }
 
 -(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set {

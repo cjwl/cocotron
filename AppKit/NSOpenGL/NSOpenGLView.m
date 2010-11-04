@@ -65,7 +65,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if (_context == nil) {
 		_context = [[NSOpenGLContext alloc] initWithFormat:_pixelFormat shareContext:nil];
 		[_context setView:self];
-		_needsPrepare=YES;
 	}
 
 	return _context;
@@ -100,7 +99,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (BOOL)isOpaque {
 // Cocoa always return YES, until the compositing is improved for transparent surfaces we need to do this
-   long value=YES;
+   GLint value=YES;
    
    [[self openGLContext] getValues:&value forParameter:NSOpenGLCPSurfaceOpacity];
 
@@ -111,11 +110,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super lockFocus];
 
 	[[self openGLContext] makeCurrentContext];
-
-	if (_needsPrepare){
-		[self prepareOpenGL];
-		_needsPrepare = NO;
-	}
 
 	if (_needsReshape){
 		[self reshape];

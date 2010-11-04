@@ -7,7 +7,6 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSOutlineView.h>
-#import <AppKit/NSOutlineMarkerCell.h>
 #import <AppKit/NSInterfaceStyle.h>
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSImage.h>
@@ -16,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextFieldCell.h>
 #import <AppKit/NSTableColumn.h>
 #import <AppKit/NSStringDrawing.h>
+#import <AppKit/NSButtonCell.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
@@ -87,13 +87,6 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
     NSUnimplementedMethod();
 }
 
--(Class)_outlineMarkerCellClass {
-   if (NSInterfaceStyleForKey(nil, nil)==NSMacintoshInterfaceStyle)
-    return [NSMacintoshOutlineMarkerCell class];
-   else
-    return [NSWindowsOutlineMarkerCell class];
-}
-
 -(void)invalidateRowCache {
     _numberOfCachedRows = 0;
 }
@@ -111,7 +104,8 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
     _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
     _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
 
-    _markerCell = [[[self _outlineMarkerCellClass] alloc] initImageCell:nil];
+    _markerCell = [[NSButtonCell alloc] initImageCell:nil];
+    [_markerCell setBezelStyle:NSDisclosureBezelStyle];
         
     [self setIndentationPerLevel:_standardRowHeight];	// square it off
         
@@ -140,7 +134,8 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
     _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
     _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
 
-    _markerCell = [[[self _outlineMarkerCellClass] alloc] initImageCell:nil];
+    _markerCell = [[NSButtonCell alloc] initImageCell:nil];
+    [_markerCell setBezelStyle:NSDisclosureBezelStyle];
         
     [self setIndentationPerLevel:_standardRowHeight];	// square it off
         

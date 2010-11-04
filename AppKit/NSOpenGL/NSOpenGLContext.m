@@ -83,15 +83,18 @@ static inline void _clearCurrentContext(){
    return _glContext;
 }
 
--(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter {   
-   CGLGetParameter(_glContext,parameter,(GLint *)vals);
+-(void)getValues:(GLint *)vals forParameter:(NSOpenGLContextParameter)parameter {   
+   CGLGetParameter(_glContext,parameter,vals);
 }
 
--(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter {   
-   CGLSetParameter(_glContext,parameter,(const GLint *)vals);
+-(void)setValues:(const GLint *)vals forParameter:(NSOpenGLContextParameter)parameter {   
+   CGLSetParameter(_glContext,parameter,vals);
 }
 
 -(void)setView:(NSView *)view {
+   if(_view!=view)
+    _hasPrepared=NO;
+    
    _view=view;
    [self update];
 }
@@ -103,6 +106,15 @@ static inline void _clearCurrentContext(){
     NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
     
    _setCurrentContext(self);
+      
+   if(!_hasPrepared){
+    _hasPrepared=YES;
+
+// NSOpenGLContext will call prepareOpenGL on any view, not just NSOpenGLView    
+    if([_view respondsToSelector:@selector(prepareOpenGL)])
+     [_view performSelector:@selector(prepareOpenGL)];
+   }
+   
 }
 
 -(void)_clearCurrentContext {

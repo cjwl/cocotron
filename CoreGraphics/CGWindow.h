@@ -63,6 +63,7 @@ enum {
 -(void)placeBelowWindow:(int)otherNumber;
 
 -(void)makeKey;
+-(void)makeMain;
 -(void)captureEvents;
 -(void)miniaturize;
 -(void)deminiaturize;
