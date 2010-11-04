@@ -188,23 +188,19 @@ id NSApp=nil;
 }
 
 -(NSWindow *)mainWindow {
-   int i,count=[_windows count];
+   return _mainWindow;
+}
 
-   for(i=0;i<count;i++)
-    if([[_windows objectAtIndex:i] isMainWindow])
-     return [_windows objectAtIndex:i];
-
-   return nil;
+-(void)_setMainWindow:(NSWindow *)window {
+   _mainWindow=window;
 }
 
 -(NSWindow *)keyWindow {
-   int i,count=[_windows count];
+   return _keyWindow;
+}
 
-   for(i=0;i<count;i++)
-    if([[_windows objectAtIndex:i] isKeyWindow])
-     return [_windows objectAtIndex:i];
-
-   return nil;
+-(void)_setKeyWindow:(NSWindow *)window {
+   _keyWindow=window;
 }
 
 -(NSImage *)applicationIconImage {
@@ -443,9 +439,17 @@ id NSApp=nil;
    while(--count>=0){
     NSWindow *check=[_windows objectAtIndex:count];
 
-    if([check retainCount]==1)
+    if([check retainCount]==1){
+    
+     if(check==_keyWindow)
+      _keyWindow=nil;
+      
+     if(check==_mainWindow)
+      _mainWindow=nil;
+      
      [_windows removeObjectAtIndex:count];
    }
+}
 }
 
 -(void)_checkForTerminate {

@@ -68,6 +68,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 @end
 
+@interface NSApplication(private)
+-(void)_setMainWindow:(NSWindow *)window;
+-(void)_setKeyWindow:(NSWindow *)window;
+@end
+
 @implementation NSWindow
 
 +(NSWindowDepth)defaultDepthLimit {
@@ -1280,11 +1285,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)isKeyWindow {
-   return _isKeyWindow;
+   return ([NSApp keyWindow]==self)?YES:NO;
 }
 
 -(BOOL)isMainWindow {
-   return _isMainWindow;
+   return ([NSApp mainWindow]==self)?YES:NO;
 }
 
 -(BOOL)isMiniaturized {
@@ -1455,8 +1460,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)becomeKeyWindow {
-   [[NSApp keyWindow] resignKeyWindow];
-   _isKeyWindow=YES;
+   if([self isKeyWindow]) // if we don't return early we may resign ourself
+    return;
+
+// Become key window before the previous key window resigns so that the new key window is valid
+// before NSWindowDidResignKeyNotification is sent.
+   NSWindow *keyWindow=[NSApp keyWindow];
+   
+   [NSApp _setKeyWindow:self];
+      
+   [keyWindow resignKeyWindow];
 
    if(_firstResponder!=self && [_firstResponder respondsToSelector:_cmd])
     [_firstResponder performSelector:_cmd];
@@ -1465,8 +1478,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)resignKeyWindow {
-   _isKeyWindow=NO;
-
    if(_firstResponder!=self && [_firstResponder respondsToSelector:_cmd])
     [_firstResponder performSelector:_cmd];
 
@@ -1474,13 +1485,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)becomeMainWindow {
-   [[NSApp mainWindow] resignMainWindow];
-   _isMainWindow=YES;
+   if([self isMainWindow])
+    return;
+
+   NSWindow *mainWindow=[NSApp mainWindow];
+   
+   [[self platformWindow] makeMain];
+   [NSApp _setMainWindow:self];
+   
+   [mainWindow resignMainWindow];
+   
    [self postNotificationName:NSWindowDidBecomeMainNotification];
 }
 
 -(void)resignMainWindow {
-   _isMainWindow=NO;
    [self postNotificationName:NSWindowDidResignMainNotification];
 }
 
@@ -2071,12 +2089,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    if ([self isMiniaturized])
     [_platformWindow deminiaturize];
 
-   [self makeKeyWindow];
-
-   if(![self isKindOfClass:[NSPanel class]])
-    [self makeMainWindow];
+// Order window before making it key, per doc.s and behavior
 
    [self orderWindow:NSWindowAbove relativeTo:0];
+
+   [self makeKeyWindow];
+
+   if([self canBecomeMainWindow])
+    [self makeMainWindow];
 }
 
 -(void)orderFront:sender {
@@ -2392,7 +2412,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    sheet->_isVisible=YES;
    [sheet display];
    [[sheet platformWindow] sheetOrderFrontFromFrame:NSMakeRect(sheetFrame.origin.x,NSMaxY(sheetFrame),sheetFrame.size.width,0) aboveWindow:[self platformWindow]];
-   [[sheet platformWindow] makeKey];
+   [self makeKeyWindow];
 }
 
 -(NSSheetContext *)_sheetContext {
@@ -2444,10 +2464,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidDeactivate:) withObject:self];
 
    _isActive=NO;
-   if([self isMainWindow])
-    [self resignMainWindow];
-   if([self isKeyWindow])
-    [self resignKeyWindow];
 
    [_menuView setNeedsDisplay:YES];
    [self displayIfNeeded];

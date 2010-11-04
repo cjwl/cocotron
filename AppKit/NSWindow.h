@@ -142,8 +142,6 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 
    BOOL      _isOpaque;
    BOOL      _isVisible;
-   BOOL      _isKeyWindow;
-   BOOL      _isMainWindow;
    BOOL      _isDocumentEdited;
    BOOL      _makeSureIsOnAScreen;
 
