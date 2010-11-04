@@ -14,23 +14,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef enum {
    NSLeftMouseDown=1,
-   NSLeftMouseUp,
-   NSRightMouseDown,
-   NSRightMouseUp,
-   NSMouseMoved,
-   NSLeftMouseDragged,
-   NSRightMouseDragged,
-   NSMouseEntered,
-   NSMouseExited,
-   NSKeyDown,
-   NSKeyUp,
-   NSFlagsChanged,
-   NSPeriodic,
-   NSCursorUpdate,
-   NSPlatformSpecific,
-   NSAppKitSystem,
-   NSScrollWheel,
-   NSApplicationDefined
+   NSLeftMouseUp=2,
+   NSRightMouseDown=3,
+   NSRightMouseUp=4,
+   NSMouseMoved=5,
+   NSLeftMouseDragged=6,
+   NSRightMouseDragged=7,
+   NSMouseEntered=8,
+   NSMouseExited=9,
+   NSKeyDown=10,
+   NSKeyUp=11,
+   NSFlagsChanged=12,
+   NSPeriodic=13,
+   NSCursorUpdate=14,
+   NSPlatformSpecific=15,
+   NSPlatformSpecificDisplayEvent=16,
+   NSAppKitSystem=17,
+   NSScrollWheel=18,
+   NSApplicationDefined=19
 } NSEventType;
 
 enum {
@@ -50,7 +51,9 @@ enum {
    NSCursorUpdateMask=1<<NSCursorUpdate,
    NSScrollWheelMask=1<<NSScrollWheel,
    NSApplicationDefinedMask=1<<NSApplicationDefined,
-   NSAnyEventMask=0xffffffff
+   NSAnyEventMask=0xffffffff,
+   
+   NSPlatformSpecificDisplayMask=1<<NSPlatformSpecificDisplayEvent,
 };
 
 enum {
