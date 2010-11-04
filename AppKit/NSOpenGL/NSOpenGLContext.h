@@ -25,6 +25,7 @@ typedef enum {
    NSOpenGLPixelFormat *_pixelFormat;
    NSView              *_view;
    void                *_glContext;
+   BOOL                 _hasPrepared;
 }
 
 +(NSOpenGLContext *)currentContext;
