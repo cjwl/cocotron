@@ -2154,6 +2154,14 @@
 		6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
+		C6B0504F1282F26F00897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B0504B1282F26F00897472 /* libmain.m */; };
+		C6B0505C1282F2D900897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B0504B1282F26F00897472 /* libmain.m */; };
+		C6B051B31283156F00897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B050701282F3BB00897472 /* libmain.m */; };
+		C6B051F112831AA400897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B050701282F3BB00897472 /* libmain.m */; };
+		C6B051F212831AA500897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B050701282F3BB00897472 /* libmain.m */; };
+		C6B05275128327AD00897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B052721283275900897472 /* libmain.m */; };
+		C6B05278128328C000897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B0504B1282F26F00897472 /* libmain.m */; };
+		C6B052B812832AB500897472 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B052B612832AB500897472 /* libmain.m */; };
 		C6BC3CB11162303400DFC16C /* NSTimeZone_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6BC3CB21162303400DFC16C /* NSTimeZone_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */; };
 		C6BC3CB51162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -7168,6 +7176,10 @@
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C6B0504B1282F26F00897472 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = libmain.m; sourceTree = "<group>"; };
+		C6B050701282F3BB00897472 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = libmain.m; path = platform_linux/libmain.m; sourceTree = "<group>"; };
+		C6B052721283275900897472 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = libmain.m; sourceTree = "<group>"; };
+		C6B052B612832AB500897472 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = libmain.m; path = platform_solaris/libmain.m; sourceTree = "<group>"; };
 		C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTimeZone_win32.h; sourceTree = "<group>"; };
 		C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTimeZone_win32.m; sourceTree = "<group>"; };
 		C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTimeZone_posix.h; path = platform_posix/NSTimeZone_posix.h; sourceTree = "<group>"; };
@@ -8314,6 +8326,7 @@
 		6E28034709747A4900EC542B /* platform_linux */ = {
 			isa = PBXGroup;
 			children = (
+				C6B050701282F3BB00897472 /* libmain.m */,
 				6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */,
 				6E28056C09747CE100EC542B /* NSPlatform_linux.h */,
 				6E28056D09747CE100EC542B /* NSPlatform_linux.m */,
@@ -8363,6 +8376,7 @@
 		6E28034909747A6B00EC542B /* platform_solaris */ = {
 			isa = PBXGroup;
 			children = (
+				C6B052B612832AB500897472 /* libmain.m */,
 				6E28059509747CF900EC542B /* NSPlatform_solaris.h */,
 				6E28059609747CF900EC542B /* NSPlatform_solaris.m */,
 				6E28059709747CF900EC542B /* NSTask_solaris.h */,
@@ -8682,6 +8696,7 @@
 				FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */,
 				FE5EA8040FA3896500536850 /* NSTask_bsd.h */,
 				FE5EA8050FA3896500536850 /* NSTask_bsd.m */,
+				C6B052721283275900897472 /* libmain.m */,
 			);
 			path = platform_bsd;
 			sourceTree = "<group>";
@@ -8937,6 +8952,7 @@
 				FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */,
 				FED70B020C3B4255000CBE5B /* NSTask_darwin.h */,
 				FED70B030C3B4255000CBE5B /* NSTask_darwin.m */,
+				C6B0504B1282F26F00897472 /* libmain.m */,
 			);
 			path = platform_darwin;
 			sourceTree = "<group>";
@@ -12832,6 +12848,7 @@
 				26924AC01157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FE5124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721036124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B051F212831AA500897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13197,6 +13214,7 @@
 				26924AC21157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FE3124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721034124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B051F112831AA400897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13563,6 +13581,7 @@
 				26924AB81157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FDB124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE72102C124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B052B812832AB500897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13930,6 +13949,7 @@
 				26924AB61157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FD9124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE72102A124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B051B31283156F00897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14670,6 +14690,7 @@
 				26924ABE1157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FE7124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721038124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B05275128327AD00897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15040,6 +15061,7 @@
 				26924AC41157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FE1124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721032124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B0505C1282F2D900897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15411,6 +15433,7 @@
 				26924ABA1157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FDD124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE72102E124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B0504F1282F26F00897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15782,6 +15805,7 @@
 				26924ABC1157BF7600A96CEB /* NSCondition_posix.m in Sources */,
 				FE720FDF124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721030124CE420009B690D /* NSKeyObserver.m in Sources */,
+				C6B05278128328C000897472 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

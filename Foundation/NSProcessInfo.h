@@ -51,4 +51,4 @@ enum {
 
 @end
 
-FOUNDATION_EXPORT void NSInitializeProcess(int argc,const char *argv[]);
+void __NSInitializeProcess(int argc,const char *argv[]);

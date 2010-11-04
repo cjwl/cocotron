@@ -8,10 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 #import <stdio.h>
+#import <Foundation/NSProcessInfo.h>
 
 int OBJCRegisterDLL(HINSTANCE handle);
 
 int APIENTRY DllMain(HINSTANCE handle,DWORD reason,LPVOID _reserved) {
+    
+    __NSInitializeProcess(__argc, (const char **)__argv);
 
    if(reason==DLL_PROCESS_ATTACH)
     return OBJCRegisterDLL(handle);

@@ -134,7 +134,7 @@ const char * const *NSProcessInfoArgv=NULL;
 
 @end
 
-FOUNDATION_EXPORT void NSInitializeProcess(int argc,const char *argv[]) {
+FOUNDATION_EXPORT void __NSInitializeProcess(int argc,const char *argv[]) {
    NSProcessInfoArgc=argc;
    NSProcessInfoArgv=argv;
    OBJCInitializeProcess();
