@@ -676,10 +676,8 @@
 		C88976E80EA0BF3100D0A0A2 /* NSPopUpButtonCellPopUp.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */; };
 		C88976E90EA0BF3100D0A0A2 /* NSPopUpButtonCellPullDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */; };
 		C88976EA0EA0BF3100D0A0A2 /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
-		C88976EB0EA0BF3100D0A0A2 /* NSOutlineViewOpen.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */; };
 		C88976EC0EA0BF3100D0A0A2 /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		C88976ED0EA0BF3100D0A0A2 /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		C88976EE0EA0BF3100D0A0A2 /* NSOutlineViewClosed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */; };
 		C88976EF0EA0BF3100D0A0A2 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		C88976F00EA0BF3100D0A0A2 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */; };
 		C88976F10EA0BF3100D0A0A2 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */; };
@@ -1346,10 +1344,8 @@
 		C8A2E54E0F07EA1F0054397C /* NSPopUpButtonCellPopUp.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */; };
 		C8A2E54F0F07EA1F0054397C /* NSPopUpButtonCellPullDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */; };
 		C8A2E5500F07EA1F0054397C /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
-		C8A2E5510F07EA1F0054397C /* NSOutlineViewOpen.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */; };
 		C8A2E5520F07EA1F0054397C /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		C8A2E5530F07EA1F0054397C /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		C8A2E5540F07EA1F0054397C /* NSOutlineViewClosed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */; };
 		C8A2E5550F07EA1F0054397C /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		C8A2E5560F07EA1F0054397C /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */; };
 		C8A2E5570F07EA1F0054397C /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */; };
@@ -1989,10 +1985,8 @@
 		FE01AAA00C5D9BCB00AEA51A /* NSPopUpButtonCellPopUp.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */; };
 		FE01AAA10C5D9BCB00AEA51A /* NSPopUpButtonCellPullDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */; };
 		FE01AAA20C5D9BCB00AEA51A /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
-		FE01AAA30C5D9BCB00AEA51A /* NSOutlineViewOpen.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */; };
 		FE01AAA40C5D9BCB00AEA51A /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		FE01AAA50C5D9BCB00AEA51A /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		FE01AAA60C5D9BCB00AEA51A /* NSOutlineViewClosed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */; };
 		FE01AAA70C5D9BCB00AEA51A /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		FE01AAA80C5D9BCB00AEA51A /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */; };
 		FE01AAA90C5D9BCB00AEA51A /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */; };
@@ -2938,10 +2932,8 @@
 		FE5A8BBD10C6F50E005E348A /* NSPopUpButtonCellPopUp.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */; };
 		FE5A8BBE10C6F50E005E348A /* NSPopUpButtonCellPullDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */; };
 		FE5A8BBF10C6F50E005E348A /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
-		FE5A8BC010C6F50E005E348A /* NSOutlineViewOpen.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */; };
 		FE5A8BC110C6F50E005E348A /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		FE5A8BC210C6F50E005E348A /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		FE5A8BC310C6F50E005E348A /* NSOutlineViewClosed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */; };
 		FE5A8BC410C6F50E005E348A /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		FE5A8BC510C6F50E005E348A /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */; };
 		FE5A8BC610C6F50E005E348A /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */; };
@@ -3562,10 +3554,8 @@
 		FEA316270FD5667D00F480D4 /* NSPopUpButtonCellPopUp.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */; };
 		FEA316280FD5667D00F480D4 /* NSPopUpButtonCellPullDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */; };
 		FEA316290FD5667D00F480D4 /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
-		FEA3162A0FD5667D00F480D4 /* NSOutlineViewOpen.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */; };
 		FEA3162B0FD5667D00F480D4 /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		FEA3162C0FD5667D00F480D4 /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		FEA3162D0FD5667D00F480D4 /* NSOutlineViewClosed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */; };
 		FEA3162E0FD5667D00F480D4 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		FEA3162F0FD5667D00F480D4 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */; };
 		FEA316300FD5667D00F480D4 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */; };
@@ -4332,10 +4322,8 @@
 		6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSPopUpButtonCellPopUp.tiff; sourceTree = "<group>"; };
 		6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSPopUpButtonCellPullDown.tiff; sourceTree = "<group>"; };
 		6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSHighlightedRadioButton.tiff; sourceTree = "<group>"; };
-		6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSOutlineViewOpen.tiff; sourceTree = "<group>"; };
 		6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSSplitViewHDimple.tiff; sourceTree = "<group>"; };
 		6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSBrowserCellArrow.tiff; sourceTree = "<group>"; };
-		6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSOutlineViewClosed.tiff; sourceTree = "<group>"; };
 		6E2B55080976075300DA0954 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = English; path = English.lproj/NSMenu.plist; sourceTree = "<group>"; };
 		6E2B55180976075300DA0954 /* NSNibOutletConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibOutletConnector.m; sourceTree = "<group>"; };
 		6E2B551A0976075300DA0954 /* NSNibControlConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibControlConnector.m; sourceTree = "<group>"; };
@@ -5383,10 +5371,8 @@
 				6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */,
 				6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */,
 				6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */,
-				6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */,
 				6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */,
 				6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */,
-				6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -8431,10 +8417,8 @@
 				C88976E80EA0BF3100D0A0A2 /* NSPopUpButtonCellPopUp.tiff in Resources */,
 				C88976E90EA0BF3100D0A0A2 /* NSPopUpButtonCellPullDown.tiff in Resources */,
 				C88976EA0EA0BF3100D0A0A2 /* NSHighlightedRadioButton.tiff in Resources */,
-				C88976EB0EA0BF3100D0A0A2 /* NSOutlineViewOpen.tiff in Resources */,
 				C88976EC0EA0BF3100D0A0A2 /* NSSplitViewHDimple.tiff in Resources */,
 				C88976ED0EA0BF3100D0A0A2 /* NSBrowserCellArrow.tiff in Resources */,
-				C88976EE0EA0BF3100D0A0A2 /* NSOutlineViewClosed.tiff in Resources */,
 				C88976EF0EA0BF3100D0A0A2 /* NSMenu.plist in Resources */,
 				C88976F00EA0BF3100D0A0A2 /* NSColorPickerColorList.nib in Resources */,
 				C88976F10EA0BF3100D0A0A2 /* NSColorPickerSliders.nib in Resources */,
@@ -8481,10 +8465,8 @@
 				C8A2E54E0F07EA1F0054397C /* NSPopUpButtonCellPopUp.tiff in Resources */,
 				C8A2E54F0F07EA1F0054397C /* NSPopUpButtonCellPullDown.tiff in Resources */,
 				C8A2E5500F07EA1F0054397C /* NSHighlightedRadioButton.tiff in Resources */,
-				C8A2E5510F07EA1F0054397C /* NSOutlineViewOpen.tiff in Resources */,
 				C8A2E5520F07EA1F0054397C /* NSSplitViewHDimple.tiff in Resources */,
 				C8A2E5530F07EA1F0054397C /* NSBrowserCellArrow.tiff in Resources */,
-				C8A2E5540F07EA1F0054397C /* NSOutlineViewClosed.tiff in Resources */,
 				C8A2E5550F07EA1F0054397C /* NSMenu.plist in Resources */,
 				C8A2E5560F07EA1F0054397C /* NSColorPickerColorList.nib in Resources */,
 				C8A2E5570F07EA1F0054397C /* NSColorPickerSliders.nib in Resources */,
@@ -8531,10 +8513,8 @@
 				FE01AAA00C5D9BCB00AEA51A /* NSPopUpButtonCellPopUp.tiff in Resources */,
 				FE01AAA10C5D9BCB00AEA51A /* NSPopUpButtonCellPullDown.tiff in Resources */,
 				FE01AAA20C5D9BCB00AEA51A /* NSHighlightedRadioButton.tiff in Resources */,
-				FE01AAA30C5D9BCB00AEA51A /* NSOutlineViewOpen.tiff in Resources */,
 				FE01AAA40C5D9BCB00AEA51A /* NSSplitViewHDimple.tiff in Resources */,
 				FE01AAA50C5D9BCB00AEA51A /* NSBrowserCellArrow.tiff in Resources */,
-				FE01AAA60C5D9BCB00AEA51A /* NSOutlineViewClosed.tiff in Resources */,
 				FE01AAA70C5D9BCB00AEA51A /* NSMenu.plist in Resources */,
 				FE01AAA80C5D9BCB00AEA51A /* NSColorPickerColorList.nib in Resources */,
 				FE01AAA90C5D9BCB00AEA51A /* NSColorPickerSliders.nib in Resources */,
@@ -8582,10 +8562,8 @@
 				FE5A8BBD10C6F50E005E348A /* NSPopUpButtonCellPopUp.tiff in Resources */,
 				FE5A8BBE10C6F50E005E348A /* NSPopUpButtonCellPullDown.tiff in Resources */,
 				FE5A8BBF10C6F50E005E348A /* NSHighlightedRadioButton.tiff in Resources */,
-				FE5A8BC010C6F50E005E348A /* NSOutlineViewOpen.tiff in Resources */,
 				FE5A8BC110C6F50E005E348A /* NSSplitViewHDimple.tiff in Resources */,
 				FE5A8BC210C6F50E005E348A /* NSBrowserCellArrow.tiff in Resources */,
-				FE5A8BC310C6F50E005E348A /* NSOutlineViewClosed.tiff in Resources */,
 				FE5A8BC410C6F50E005E348A /* NSMenu.plist in Resources */,
 				FE5A8BC510C6F50E005E348A /* NSColorPickerColorList.nib in Resources */,
 				FE5A8BC610C6F50E005E348A /* NSColorPickerSliders.nib in Resources */,
@@ -8632,10 +8610,8 @@
 				FEA316270FD5667D00F480D4 /* NSPopUpButtonCellPopUp.tiff in Resources */,
 				FEA316280FD5667D00F480D4 /* NSPopUpButtonCellPullDown.tiff in Resources */,
 				FEA316290FD5667D00F480D4 /* NSHighlightedRadioButton.tiff in Resources */,
-				FEA3162A0FD5667D00F480D4 /* NSOutlineViewOpen.tiff in Resources */,
 				FEA3162B0FD5667D00F480D4 /* NSSplitViewHDimple.tiff in Resources */,
 				FEA3162C0FD5667D00F480D4 /* NSBrowserCellArrow.tiff in Resources */,
-				FEA3162D0FD5667D00F480D4 /* NSOutlineViewClosed.tiff in Resources */,
 				FEA3162E0FD5667D00F480D4 /* NSMenu.plist in Resources */,
 				FEA3162F0FD5667D00F480D4 /* NSColorPickerColorList.nib in Resources */,
 				FEA316300FD5667D00F480D4 /* NSColorPickerSliders.nib in Resources */,
