@@ -199,15 +199,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (void)setFilterPredicate:(NSPredicate *)value {
-    if (_filterPredicate != value) {
+   value=[value copy];
         [_filterPredicate release];
    _filterPredicate = value;
 		[self rearrangeObjects];
     }
-}
 
--(BOOL)alwaysUsesMultipleValuesMarker
-{
+-(BOOL)alwaysUsesMultipleValuesMarker {
 	return _flags.alwaysUsesMultipleValuesMarker;
 }
 

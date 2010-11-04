@@ -26,11 +26,3 @@
 
 void NSStringKVCSplitOnDot(NSString *self,NSString **before,NSString **after);
 
-@interface _NSObservableArray : NSMutableArray
-{
-	NSMutableArray *_array;
-	NSMutableArray *_observationProxies;
-   NSMutableIndexSet *_roi;
-}
-@end
-
