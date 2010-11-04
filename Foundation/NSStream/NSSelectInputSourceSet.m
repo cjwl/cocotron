@@ -20,7 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init {
    [super init];
-   _outputSources=[NSMutableSet new];
    _outputSet=nil;
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectSetOutputNotification:) name:NSSelectSetOutputNotification object:nil];
    return self;
@@ -28,7 +27,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [[NSNotificationCenter defaultCenter] removeObserver:self];
-   [_outputSources release];
    [_outputSet release];
    [super dealloc];
 }
@@ -37,25 +35,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [source isKindOfClass:[NSSelectInputSource class]];
 }
 
--(void)changingIntoMode:(NSString *)mode {
-   [_outputSources removeAllObjects];
-   [_outputSet autorelease];
-   _outputSet=nil;
+/* The old logic was to remove all output when starting a different mode to prevent
+   stale triggers. However, when switching back and forth between modes the output
+   from the previous run was cleared when switching modes, causing the sockets to
+   never fire since they are a two times through event (one to fire the handle, one to fire the socket).
+   
+   At this point, sockets always check their status with a select before firing, so staleness
+   shouldnt be a problem anymore.
+   
+   Perfect solution is to probably make sockets a one time fire event.
+   
+ */
+-(void)startingInMode:(NSString *)mode {   
 }
 
--(BOOL)immediateInputInMode:(NSString *)mode {
-   NSArray *sources=[_outputSources allObjects];
+-(BOOL)fireSingleImmediateInputInMode:(NSString *)mode {
    NSSet   *validInputSources=[self validInputSources];
+   NSArray   *sources=[validInputSources allObjects];
    NSInteger      i,count=[sources count];
 
    for(i=0;i<count;i++){   
     NSSelectInputSource *check=[sources objectAtIndex:i];
-    
-    [_outputSources removeObject:check];
-    
-    if([validInputSources containsObject:check]){
      NSSocket *socket=[check socket];
-     unsigned  event=0;
+    NSUInteger event=0,remove;
     
      if([_outputSet containsObjectForRead:socket])
       event|=NSSelectReadEvent;
@@ -64,14 +66,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      if([_outputSet containsObjectForException:socket])
       event|=NSSelectExceptEvent;
      
-     if([check processImmediateEvents:event])
+    if((remove=[check processImmediateEvents:event])){
+     if(remove&NSSelectReadEvent)
+      [_outputSet removeObjectForRead:socket];
+     if(remove&NSSelectWriteEvent)
+      [_outputSet removeObjectForWrite:socket];
+     if(remove&NSSelectExceptEvent)
+      [_outputSet removeObjectForException:socket];
       return YES;
     }
    }
-   
-   [_outputSources removeAllObjects];
-   [_outputSet autorelease];
-   _outputSet=nil;
    
    return NO;
 }
@@ -106,7 +110,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)waitInBackgroundInMode:(NSString *)mode {
    NSSelectSet *selectSet=[self inputSelectSet];
    
-   [_outputSources setSet:[self validInputSources]];
    [_outputSet autorelease];
    _outputSet=nil;
    
@@ -117,7 +120,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSelectSet *selectSet=[self inputSelectSet];
    NSError     *error;
       
-   [_outputSources setSet:[self validInputSources]];
    [_outputSet autorelease];
    _outputSet=nil;
    
@@ -130,7 +132,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else {
     [_outputSet retain];
    
-    return [self immediateInputInMode:mode];
+    return [self fireSingleImmediateInputInMode:mode];
    }
 }
 

@@ -35,7 +35,7 @@ enum {
 -(NSUInteger)selectEventMask;
 -(void)setSelectEventMask:(NSUInteger)mask;
 
--(BOOL)processImmediateEvents:(NSUInteger)selectEvent;
+-(NSUInteger)processImmediateEvents:(NSUInteger)selectEvent;
 
 @end
 

@@ -527,8 +527,10 @@ id NSApp=nil;
 }
 
 -(NSEvent *)nextEventMatchingMask:(unsigned int)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
+   NSEvent *nextEvent=nil;
+   
+   do {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSEvent           *nextEvent;
 
    NS_DURING
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(createRunningCopyPipe)];
@@ -538,17 +540,26 @@ id NSApp=nil;
     [self _checkForAppActivation];
     [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
 
-    nextEvent=[_display nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
+     nextEvent=[[_display nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue] retain];
 
-    [_currentEvent release];
-    _currentEvent=[nextEvent retain];
+     if([nextEvent type]==NSAppKitSystem){
+      [nextEvent release];
+      nextEvent=nil;
+     }
+     
    NS_HANDLER
     [self reportException:localException];
    NS_ENDHANDLER
 
    [pool release];
+   }while(nextEvent==nil && [untilDate timeIntervalSinceNow]>0);
 
-   return [[_currentEvent retain] autorelease];
+   if(nextEvent!=nil){
+    [_currentEvent release];
+    _currentEvent=[nextEvent retain];
+}
+
+   return [nextEvent autorelease];
 }
 
 -(NSEvent *)currentEvent {
@@ -713,10 +724,14 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
+
+   while([session stopCode]==NSRunContinuesResponse) {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSDate            *future=[NSDate distantFuture];
-   NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask
-      untilDate:future inMode:NSModalPanelRunLoopMode dequeue:YES];
+    NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
+        
+    if(event==nil)
+     break;
+     
    NSWindow          *window=[event window];
 
    // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
@@ -729,6 +744,7 @@ id NSApp=nil;
     [[session modalWindow] makeKeyAndOrderFront:self];
 
    [pool release];
+   }
 
    return [session stopCode];
 }
@@ -755,7 +771,7 @@ id NSApp=nil;
 
 
    while((result=[NSApp runModalSession:session])==NSRunContinuesResponse)
-    ;
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 
    [self endModalSession:session];
 

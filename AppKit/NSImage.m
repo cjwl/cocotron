@@ -121,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     
     _name=nil;
-    _size=[rep size];
+    _size=NSMakeSize(0,0);
     _representations=[NSMutableArray new];
 
     [_representations addObject:rep];
@@ -162,7 +162,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	
 	_name=nil;
-	_size=[[reps lastObject] size];
+    _size=NSMakeSize(0,0);
 	_representations=[NSMutableArray new];
 	
 	[_representations addObjectsFromArray:reps];
@@ -179,7 +179,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    _name=nil;
-   _size=[[reps lastObject] size];
+   _size=NSMakeSize(0,0);
    _representations=[NSMutableArray new];
 
    [_representations addObjectsFromArray:reps];
@@ -236,14 +236,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)size {
    if(_size.width==0.0 && _size.height==0.0){
     int i,count=[_representations count];
+    NSSize  largestSize=NSMakeSize(0,0);
     
     for(i=0;i<count;i++){
      NSImageRep *check=[_representations objectAtIndex:i];
      NSSize      checkSize=[check size];
     
-     if(checkSize.width!=0.0 && checkSize.height!=0.0)
-      return checkSize;
+     if(checkSize.width*checkSize.height>largestSize.width*largestSize.height)
+      largestSize=checkSize;
     }
+
+    return largestSize;
    }
    
    return _size;
@@ -393,16 +396,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSCachedImageRep *)_cachedImageRepCreateIfNeeded {
-   int i,count=[_representations count];
+   int count=[_representations count];
 
-   for(i=0;i<count;i++){
-    NSCachedImageRep *check=[_representations objectAtIndex:i];
+   while(--count>=0){
+    NSCachedImageRep *check=[_representations objectAtIndex:count];
 
-    if([check isKindOfClass:[NSCachedImageRep class]])
+    if([check isKindOfClass:[NSCachedImageRep class]]){
+    
+     if(_cacheIsValid)
      return check;
+
+     [_representations removeObjectAtIndex:count];
+   }
    }
    
-   NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:_size depth:0 separate:_isCachedSeparately alpha:YES];
+   NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:[self size] depth:0 separate:_isCachedSeparately alpha:YES];
    [self addRepresentation:cached];
    [cached release];
    return cached;
@@ -423,17 +431,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
 }
 
--(NSImageRep *)_bestUncachedFallbackCachedRepresentationForDevice:(NSDictionary *)device {
+-(NSImageRep *)_bestUncachedFallbackCachedRepresentationForDevice:(NSDictionary *)device size:(NSSize)size {
    int i,count=[_representations count];
+   NSImageRep *best=nil;
 
+   size.width=ABS(size.width);
+   size.height=ABS(size.height);
+      
    for(i=0;i<count;i++){
     NSImageRep *check=[_representations objectAtIndex:i];
       
     if(![check isKindOfClass:[NSCachedImageRep class]]){
-     return check;
+     if(best==nil)
+      best=check;
+     else {
+      NSSize checkSize=[check size];
+      NSSize bestSize=[best size];
+      float  checkArea=checkSize.width*checkSize.height;
+      float  bestArea=bestSize.width*bestSize.height;
+      float  desiredArea=size.width*size.height;
+      
+      // downsampling is better than upsampling
+      if(bestArea<desiredArea && checkArea>=desiredArea)
+       best=check;
+      // downsampling a closer image is better
+      if(checkArea<bestArea && checkArea>=desiredArea)
+       best=check;
+      // if we have to upsample, biggest is better
+      if(checkArea>bestArea && bestArea<desiredArea)
+       best=check;
     }
    }
+   }
    
+   if(best!=nil)
+    return best;
+    
    for(i=0;i<count;i++){
     NSImageRep *check=[_representations objectAtIndex:i];
       
@@ -483,7 +516,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      
      case NSImageCacheBySize:
       if([[uncached colorSpaceName] isEqual:[device objectForKey:NSDeviceColorSpaceName]]){
-       if((_size.width==[uncached pixelsWide]) && (_size.height==[uncached pixelsHigh])){
+       NSSize size=[self size];
+       
+       if((size.width==[uncached pixelsWide]) && (size.height==[uncached pixelsHigh])){
         int deviceBPS=[[device objectForKey:NSDeviceBitsPerSample] intValue];
        
         if(deviceBPS==[uncached bitsPerSample])
@@ -522,14 +557,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)recache {
-   int count=[_representations count];
-   
-   while(--count>=0){
-    NSImageRep *check=[_representations objectAtIndex:count];
-    
-    if([check isKindOfClass:[NSCachedImageRep class]])
-     [_representations removeObjectAtIndex:count];
-   }
+// This doesn't actually remove the cache, it just marks it as invalid
+// This is important because you can change the size of a drawn image
+// and it doesn't destroy the cache. It is recached next time it is drawn.
    _cacheIsValid=NO;
 }
 
@@ -583,10 +613,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       rect.origin.y=0;
       rect.size=[self size];
       
-      if([self scalesWhenResized])
+  //    if([self scalesWhenResized])
          [uncached drawInRect:rect];
-      else
-         [uncached drawAtPoint:rect.origin];
+         // drawAtPoint: is not working with NSPDFImageRep
+         // Should probably ditch all the caching stuff anyway as it is deprecated
+    //   else
+      //   [uncached drawAtPoint:rect.origin];
          
       [self unlockFocus];
       _cacheIsValid=YES;
@@ -687,7 +719,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil];
+   NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil size:rect.size];
    NSImageRep        *drawRep=nil;
    CGContextRef       context;
       

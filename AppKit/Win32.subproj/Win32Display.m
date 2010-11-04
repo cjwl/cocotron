@@ -379,13 +379,28 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 }
 
 -(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
-   NSEvent *result;
+   NSEvent *result=nil;
 
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:mode];
    [self stopWaitCursor];
-   result=[super nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
+   
+   while([untilDate timeIntervalSinceNow]>0){
+    result=[super nextEventMatchingMask:mask|NSPlatformSpecificDisplayMask untilDate:untilDate inMode:mode dequeue:dequeue];
+    
+    if([result type]==NSPlatformSpecificDisplayEvent){
+     Win32Event *win32Event=[(NSEvent_CoreGraphics *)result coreGraphicsEvent];
+     MSG msg=[win32Event msg];
+     
+     DispatchMessage(&msg);
+     result=nil;
+    }
+    
+    if(result!=nil)
+     break;
+   }
    [self startWaitCursor];
-   [[NSRunLoop currentRunLoop] removeInputSource:_eventInputSource forMode:mode];
+   
+//   [[NSRunLoop currentRunLoop] removeInputSource:_eventInputSource forMode:mode];
 
    return result;
 }

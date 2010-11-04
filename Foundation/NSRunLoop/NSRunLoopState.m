@@ -47,13 +47,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_timers addObject:timer];
 }
 
--(void)changingIntoMode:(NSString *)mode {
+-(void)startingInMode:(NSString *)mode {
    NSInteger i,count=[_asyncInputSourceSets count];
 
-   [_inputSourceSet changingIntoMode:mode];
+   [_inputSourceSet startingInMode:mode];
 
    for(i=0;i<count;i++)
-    [[_asyncInputSourceSets objectAtIndex:i] changingIntoMode:mode];
+    [[_asyncInputSourceSets objectAtIndex:i] startingInMode:mode];
 }
 
 -(BOOL)fireFirstTimer {
@@ -114,6 +114,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSInputSourceSet *)inputSourceSetForInputSource:(NSInputSource *)source {
+
    if([_inputSourceSet recognizesInputSource:source])
     return _inputSourceSet;
    else {
@@ -126,6 +127,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return check;
     }
    }
+
    return nil;
 }
 
@@ -151,33 +153,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(BOOL)immediateInputInMode:(NSString *)mode {
-   if([_inputSourceSet immediateInputInMode:mode])
+-(BOOL)fireSingleImmediateInputInMode:(NSString *)mode {
+    NSInteger i,count=[_asyncInputSourceSets count];
+    
+    for(i=0;i<count;i++)
+    if([[_asyncInputSourceSets objectAtIndex:i] fireSingleImmediateInputInMode:mode])
+      return YES;
+      
+   return [_inputSourceSet fireSingleImmediateInputInMode:mode];
+   }
+
+-(BOOL)waitForSingleInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
+   if([self fireSingleImmediateInputInMode:mode])
     return YES;
    else {
     NSInteger i,count=[_asyncInputSourceSets count];
     
     for(i=0;i<count;i++)
-     if([[_asyncInputSourceSets objectAtIndex:i] immediateInputInMode:mode])
-      return YES;
-      
-    return NO;
-   }
-}
-
--(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
-   if(![self immediateInputInMode:mode]){
-    NSInteger i,count=[_asyncInputSourceSets count];
-    
-    for(i=0;i<count;i++)
      [[_asyncInputSourceSets objectAtIndex:i] waitInBackgroundInMode:mode];
       
-    [_inputSourceSet waitForInputInMode:mode beforeDate:date];
+    return [_inputSourceSet waitForInputInMode:mode beforeDate:date];
    }
 }
 
 -(BOOL)pollInputForMode:(NSString *)mode {
-   if([self immediateInputInMode:mode])
+   if([self fireSingleImmediateInputInMode:mode])
     return YES;
 
    return [_inputSourceSet waitForInputInMode:mode beforeDate:[NSDate date]];

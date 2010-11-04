@@ -420,10 +420,11 @@ static float rowHeightAtIndex(NSTableView *self,int index){
     float width = 0.;
 
     for (i = 0; i < numberOfColumns; i++) {
-        if (width + [[_tableColumns objectAtIndex:i] width] + _intercellSpacing.width > rect.origin.x)
+     width += [[_tableColumns objectAtIndex:i] width] + _intercellSpacing.width;
+
+        if (width > rect.origin.x)
             break;
-        else
-            width += [[_tableColumns objectAtIndex:i] width] + _intercellSpacing.width;
+
     }
     if (i < numberOfColumns) {
         range.location = i;
@@ -431,7 +432,7 @@ static float rowHeightAtIndex(NSTableView *self,int index){
         for ( ; i < numberOfColumns; i++) {
             if (width > rect.origin.x + rect.size.width)
                 break;
-            else
+
                 width += [[_tableColumns objectAtIndex:i] width] + _intercellSpacing.width;
         }
         if (i < numberOfColumns)
@@ -500,6 +501,7 @@ static float rowHeightAtIndex(NSTableView *self,int index){
 
 -(void)setDataSource:dataSource {
    _dataSource=dataSource;
+   [self tile]; // documented
 }
 
 -(void)setDelegate:delegate {
@@ -719,7 +721,8 @@ _dataSource);
       [NSException raise:NSInternalInconsistencyException
                   format:@"data source does not respond to tableView:setObjectValue:forTableColumn:row: and binding is read-only"];
    
-   editingCell = [[editingColumn dataCellForRow:row] copy];
+   editingCell=[[self preparedCellAtColumn:column row:row] copy];
+   
    [_editingCell release];
    _editingCell = nil;
    _editedColumn = column;
@@ -733,13 +736,9 @@ _dataSource);
    if ([editingCell isKindOfClass:[NSTextFieldCell class]])
    {
       _editingCell = editingCell;
-      [_editingCell setControlView:self];
       
       [_editingCell setDrawsBackground:YES];
       [_editingCell setBackgroundColor:_backgroundColor];
-      [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
-      
-      [editingColumn prepareCell:_editingCell inRow:row];
       
       NSText *oldEditor = _currentEditor;
       _currentEditor=[[self window] fieldEditor:YES forObject:self];
@@ -788,6 +787,12 @@ _dataSource);
    value=[value copy];
    [_selectedRowIndexes release];
    _selectedRowIndexes = value;
+
+   if([_selectedRowIndexes count]==0 && !_allowsEmptySelection){
+    [_selectedRowIndexes release];
+    _selectedRowIndexes=[[NSIndexSet alloc] initWithIndex:0];
+   }
+
     [self noteSelectionDidChange];
 }
 
@@ -1029,6 +1034,26 @@ _dataSource);
 
     [self setFrameSize:size];
     [_headerView setFrameSize:headerSize];
+
+    NSMutableIndexSet *selection=[[_selectedRowIndexes mutableCopy] autorelease];
+    NSInteger count=[selection count];
+    NSUInteger indexes[count];
+    [selection getIndexes:indexes maxCount:count inIndexRange:NULL];
+    
+    while(--count>=0){
+     if(indexes[count]>=numberOfRows)
+      [selection removeIndex:indexes[count]];
+}
+
+/* Do not change the selection if it didnt change. _setSelectedRowIndexes posts a notification and doing it
+   unnecessarily can cause performance and behavior problems. For example, if there is no selection in a newly
+   created tableview and you post the notification indirectly with setDataSource:, an application which expects
+   a non-empty selection will have problems.
+   
+   FIXME: investigate whether _setSelectedRowIndexes: should do this check or not.
+  */    
+    if(![selection isEqualToIndexSet:_selectedRowIndexes])
+     [self _setSelectedRowIndexes:selection];
 }
 
 -(void)reloadData {
@@ -1053,7 +1078,7 @@ _dataSource);
 }
 
 -(void)sizeLastColumnToFit {
-    NSClipView *clipView = [self superview];
+    NSClipView *clipView = (NSClipView *)[self superview];
         
     if ([clipView isKindOfClass:[NSClipView class]]) {
         NSSize size = [clipView bounds].size;
@@ -1098,14 +1123,19 @@ _dataSource);
    [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
    
    if ([dataCell respondsToSelector:@selector(setTextColor:)]) {
-      if ([self isRowSelected:row] || [self isColumnSelected:columnNumber])
+      if ([self isRowSelected:row] || [self isColumnSelected:columnNumber]){
+       [(NSTextFieldCell *)dataCell setDrawsBackground:NO]; // so the selection shows properly, dont just set the color so custom background works
          [(NSTextFieldCell *)dataCell setTextColor:[NSColor selectedTextColor]];
+      }
       else 
          [(NSTextFieldCell *)dataCell setTextColor:[NSColor textColor]];
    }
    
    [column prepareCell:dataCell inRow:row];
    
+   if([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
+    [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
+
    return dataCell;
 }
 
@@ -1118,18 +1148,24 @@ _dataSource);
     if (row < 0 || row >= numberOfRows)
         [NSException raise:NSInvalidArgumentException format:@"invalid row in drawRow:clipRect:"];
 
-    while (drawThisColumn < NSMaxRange(visibleColumns)) {
+   for(;drawThisColumn < NSMaxRange(visibleColumns);drawThisColumn++) {
 
-       if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
+    if (row == _editedRow && drawThisColumn == _editedColumn  && _editingCell!=nil){
+     [_backgroundColor setFill];
+     NSRectFill(_editingBorder);
+     [_editingCell setControlView:self];
+     [_editingCell drawWithFrame:_editingFrame inView:self];
+     if ([_editingCell focusRingType] != NSFocusRingTypeNone){
+      [[NSColor keyboardFocusIndicatorColor] setStroke];
+      NSFrameRectWithWidth(_editingBorder, 2.0);
+     }
+    }
+    else {
           NSCell *dataCell=[self preparedCellAtColumn:drawThisColumn row:row];
-          NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
           NSRect cellRect = [self _adjustedFrame:[self frameOfCellAtColumn:drawThisColumn row:row] forCell:dataCell];
-          if ([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
-             [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
           
           [dataCell drawWithFrame:cellRect inView:self];
        }
-       drawThisColumn++;
     }
 }
 
@@ -1253,11 +1289,6 @@ _dataSource);
    [self tile];
 }
 
-
--(BOOL)isOpaque {
-    return NO;
-}
-
 -(BOOL)isFlipped {
    return YES;
 }
@@ -1281,6 +1312,7 @@ _dataSource);
 
 -(void)dataSourceSetObjectValue:object forTableColumn:(NSTableColumn *)tableColumn row:(int)row
 {
+   if([_dataSource respondsToSelector:@selector(tableView:setObjectValue:forTableColumn:)])
     [_dataSource tableView:self setObjectValue:object forTableColumn:tableColumn row:row];
 }
 
@@ -1406,19 +1438,6 @@ _dataSource);
       }     
    }
    
-   if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
-   {
-      [_backgroundColor setFill];
-      NSRectFill(_editingBorder);
-      [_editingCell setControlView:self];
-      [_editingCell drawWithFrame:_editingFrame inView:self];
-      if ([_editingCell focusRingType] != NSFocusRingTypeNone)
-      {
-         [[NSColor keyboardFocusIndicatorColor] setStroke];
-         NSFrameRectWithWidth(_editingBorder, 2.0);
-      }
-   }
-   
    if ([self drawsGrid])
       [self drawGridInClipRect:clipRect];
    
@@ -1489,13 +1508,25 @@ _dataSource);
     }
 
     NSTableColumn *clickedColumnObject = [_tableColumns objectAtIndex:_clickedColumn];
+    
+    if(![self delegateShouldSelectTableColumn:clickedColumnObject])
+     return;
+    if(![self delegateShouldSelectRow:_clickedRow])
+     return;
+     
     NSCell *clickedCell = [clickedColumnObject dataCellForRow:_clickedRow];
+
     [clickedCell setControlView:self];
     if ([clickedCell isKindOfClass:[NSButtonCell class]])
     {
        [clickedCell setObjectValue:[self dataSourceObjectValueForTableColumn:clickedColumnObject row:_clickedRow]];
+     
+     if([clickedCell trackMouse:event inRect:[self frameOfCellAtColumn:_clickedColumn row:_clickedRow] ofView:self untilMouseUp:YES]){
        [clickedCell setNextState];
        [self dataSourceSetObjectValue:[NSNumber numberWithInt:[clickedCell state]] forTableColumn:clickedColumnObject row:_clickedRow];
+      [self sendAction:[clickedCell action] to:[clickedCell target]];
+     }
+
        [self setNeedsDisplay:YES];
 
        return;
@@ -1693,10 +1724,14 @@ _dataSource);
 - (unsigned)_validateDraggedRow:(id <NSDraggingInfo>)info { 
         BOOL result; 
         int proposedRow = [self _getDraggedRow:info]; 
+        
+        if([_dataSource respondsToSelector:@selector( tableView:validateDrop:proposedRow:proposedDropOperation:)]){
         if((result = [_dataSource tableView:self validateDrop:info proposedRow:proposedRow proposedDropOperation:NSTableViewDropAbove])) 
                 _draggingRow = proposedRow; 
         else 
                 _draggingRow = -1; 
+        }
+        
         [self display]; 
 
         return result; 

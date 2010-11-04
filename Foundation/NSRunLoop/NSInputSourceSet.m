@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_inputSources removeObject:source];
 }
 
--(void)changingIntoMode:(NSString *)mode {
+-(void)startingInMode:(NSString *)mode {
   // do nothing
 }
 
@@ -67,7 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _inputSources;
 }
 
--(BOOL)immediateInputInMode:(NSString *)mode {
+-(BOOL)fireSingleImmediateInputInMode:(NSString *)mode {
    NSEnumerator   *state=[[self validInputSources] objectEnumerator];
    NSInputSource  *check;
 
