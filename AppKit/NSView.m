@@ -1575,6 +1575,9 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
     return;
     
    if([self canDraw]){
+
+// This view must be locked/unlocked prior to drawing subviews otherwise gState changes may affect
+// subviews.
     [self lockFocus];
     NSGraphicsContext *context=[NSGraphicsContext currentContext];
     CGContextRef       graphicsPort=[context graphicsPort];
@@ -1582,8 +1585,9 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
     CGContextClipToRect(graphicsPort,rect);
 
     [self drawRect:rect];
+    [self unlockFocus];
 
-    int i,count=[_subviews count];
+    NSInteger i,count=[_subviews count];
     
     for(i=0;i<count;i++){
      NSView *view=[_subviews objectAtIndex:i];
@@ -1595,7 +1599,6 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
       [view displayRectIgnoringOpacity:check];
      }
     }
-    [self unlockFocus];
    }
 
 /*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
