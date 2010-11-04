@@ -124,6 +124,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSUnimplementedMethod();
 }
 
+// This is Apple private API
++(Class)frameViewClassForStyleMask:(unsigned int)styleMask {
+   return [NSThemeFrame class];
+}
+
 -initWithCoder:(NSCoder *)coder {
   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
    return self;
@@ -160,7 +165,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [_menuView setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
    }
 
-   _backgroundView=[[NSThemeFrame alloc] initWithFrame:backgroundFrame];
+   _backgroundView=[[[isa frameViewClassForStyleMask:styleMask] alloc] initWithFrame:backgroundFrame];
    [_backgroundView setAutoresizesSubviews:YES];
    [_backgroundView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    [_backgroundView _setWindow:self];
@@ -1197,7 +1202,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return [_sheetContext sheet];
 }
 
--(NSWindowController *)windowController {
+-(id)windowController {
    return _windowController;
 }
 
@@ -1438,7 +1443,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)makeKeyWindow {
    [[self platformWindow] makeKey];
+   
+   if(!_hasBeenOnScreen){
+    _hasBeenOnScreen=YES;
    [self makeFirstResponder:[self initialFirstResponder]];
+}
 }
 
 -(void)makeMainWindow {
@@ -1917,8 +1926,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      _mouseDownLocationInWindow=NSMakePoint(NAN,NAN);
      break;
 
-    case NSMouseMoved:
-     [[_backgroundView hitTest:[event locationInWindow]] mouseMoved:event];
+    case NSMouseMoved:{
+      NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
+      
+      if(hit==nil)
+       [self mouseMoved:event];
+      else
+       [hit mouseMoved:event];
+     }
      break;
 
     case NSLeftMouseDragged:    
@@ -1954,7 +1969,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      break;
 
     case NSScrollWheel:
-     [_firstResponder scrollWheel:event];
+     [[_backgroundView hitTest:[event locationInWindow]] scrollWheel:event];
      break;
 
     default:
