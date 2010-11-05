@@ -14,13 +14,12 @@ int OBJCRegisterDLL(HINSTANCE handle);
 
 int APIENTRY DllMain(HINSTANCE handle,DWORD reason,LPVOID _reserved) {
     
-    __NSInitializeProcess(__argc, (const char **)__argv);
-
-   if(reason==DLL_PROCESS_ATTACH)
-    return OBJCRegisterDLL(handle);
-
-   if(reason==DLL_THREAD_DETACH){
-     return TRUE;
-   }
-   return TRUE;
+    if(reason==DLL_PROCESS_ATTACH) {
+        __NSInitializeProcess(__argc, (const char **)__argv);
+        return OBJCRegisterDLL(handle);
+    }
+    if(reason==DLL_THREAD_DETACH){
+        return TRUE;
+    }
+    return TRUE;
 }
