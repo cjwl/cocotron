@@ -8,9 +8,12 @@
 
 #import <Foundation/NSProcessInfo.h>
 
+extern int *_NSGetArgc(void);
+extern char ***_NSGetArgv(void);
+
 FOUNDATION_EXPORT void __attribute__ ((constructor)) libmain(void)
 {
     int *i = _NSGetArgc();
     char ***v=_NSGetArgv();
-    __NSInitializeProcess(*i, *v);
+    __NSInitializeProcess(*i, (const char **)*v);
 }
