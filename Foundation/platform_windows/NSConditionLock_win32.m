@@ -9,6 +9,7 @@
 #import <Foundation/NSConditionLock_win32.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSDebug.h>
 
 #define UPDATE_TIME time=MIN(MAX([date timeIntervalSinceNow]*1000.0, 0), INFINITE)
 

@@ -1405,7 +1405,7 @@ ONYX2D_STATIC_INLINE void O2RGBPremultiplySpan(O2argb32f *span,int length){
    }
 }
 
-O2argb8u *O2ImageReadSpan_largb8u_PRE(O2Image *self,int x,int y,O2argb8u *span,int length){
+O2argb8u *O2Image_read_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length){
    return self->_read_argb8u(self,x,y,span,length);
 }
    
@@ -1438,7 +1438,7 @@ void O2ImageReadTexelTileRepeat_largb8u_PRE(O2Image *self,int u,int v,O2argb8u *
    for(i=0;i<length;i++,u++){
     u = RI_INT_MOD(u,self->_width);
 
-    O2argb8u *direct=O2ImageReadSpan_largb8u_PRE(self,u,v,span+i,1);
+    O2argb8u *direct=O2Image_read_argb8u(self,u,v,span+i,1);
     
     if(direct!=NULL)
      span[i]=direct[0];
