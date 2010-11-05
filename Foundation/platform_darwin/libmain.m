@@ -10,31 +10,7 @@
 
 FOUNDATION_EXPORT void __attribute__ ((constructor)) libmain(void)
 {
-    char        ***env = _NSGetEnviron();
-    static char **argValues=NULL;
-    char        ***argvp;
-    void        *p;
-    int         i = -1;
-    
-    asm ("mov %%esp, %0" : "=r" (p));
-    argvp = p;
-    
-    //loop until environment
-    while (argvp != env) {
-        argvp++;
-    }
-    argvp--;
-    argValues = *argvp;
-    
-    while(1) {
-        if(argValues[i + 1] != NULL) {
-            i++;
-        }
-        else {
-            i++;
-            break;
-        }
-    }
-    
-    __NSInitializeProcess(i, (const char **)argValues);
+    int *i = _NSGetArgc();
+    char ***v=_NSGetArgv();
+    __NSInitializeProcess(*i, *v);
 }
