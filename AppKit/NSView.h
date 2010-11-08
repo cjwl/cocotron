@@ -84,7 +84,9 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
    int             _tag;
    NSArray        *_draggedTypes;
    NSMutableArray *_trackingAreas;
-   NSRect          _invalidRect;
+   BOOL            _needsDisplay;
+   NSUInteger      _invalidRectCount;
+   NSRect         *_invalidRects;
 
    BOOL              _validTrackingAreas;
    BOOL              _validTransforms;

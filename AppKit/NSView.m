@@ -90,7 +90,9 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
      _tag=[keyed decodeIntForKey:@"NSTag"];
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
-    _invalidRect=_bounds;
+    _needsDisplay=YES;
+    _invalidRectCount=0;
+    _invalidRects=NULL;
     _trackingAreas=[[NSMutableArray alloc] init];
     _wantsLayer=[keyed decodeBoolForKey:@"NSViewIsLayerTreeHost"];
     _contentFilters=[[keyed decodeObjectForKey:@"NSViewContentFilters"] retain];
@@ -119,7 +121,9 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
    _autoresizesSubviews=YES;
    _autoresizingMask=NSViewNotSizable;
    _tag=-1;
-   _invalidRect=_bounds;
+   _needsDisplay=YES;
+   _invalidRectCount=0;
+   _invalidRects=NULL;
    _trackingAreas=[[NSMutableArray alloc] init];
    
    _validTransforms=NO;
@@ -142,6 +146,9 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
    [self _unbindAllBindings];
    [_contentFilters release];
 
+   if(_invalidRects!=NULL)
+    NSZoneFree(NULL,_invalidRects);
+   
    [super dealloc];
 }
 
@@ -1381,18 +1388,90 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)needsDisplay {
-   return !NSIsEmptyRect(_invalidRect);
+   return _needsDisplay;
+}
+
+/*
+   If _needsDisplay is YES and there are no _invalidRects, invalid rect is bounds
+   If _needsDisplay is YES and there are _invalidRects, invalid rect is union
+   You can't just keep a running invalid rect because setting YES then changing the
+   bounds should redraw the new bounds, but changing the bounds should not alter the
+   invalidated rects.
+ */
+ 
+ static NSRect unionOfInvalidRects(NSView *self){
+   NSRect result;
+
+   if(self->_invalidRectCount==0)
+    result=[self visibleRect];
+   else {
+    int i;
+    
+    result=self->_invalidRects[0];
+    
+    for(i=1;i<self->_invalidRectCount;i++)
+     result=NSUnionRect(result,self->_invalidRects[i]);
+   }
+   
+   return result;
+}
+
+static void removeRectFromInvalidInVisibleRect(NSView *self,NSRect rect,NSRect visibleRect) {
+   int count=self->_invalidRectCount;
+   
+   while(--count>=0){
+    self->_invalidRects[count]=NSIntersectionRect(self->_invalidRects[count],visibleRect);
+    
+    if(NSContainsRect(rect,self->_invalidRects[count])){
+     int i;
+     
+     self->_invalidRectCount--;
+     for(i=count;i<self->_invalidRectCount;i++)
+      self->_invalidRects[i]=self->_invalidRects[i+1];
+    }
+   }
+   if(self->_invalidRectCount==0){
+    if(self->_invalidRects!=NULL)
+     NSZoneFree(NULL,self->_invalidRects);
+    self->_invalidRects=NULL;
+   }
+   
+   if((self->_invalidRectCount==0) && NSEqualRects(visibleRect,rect)){
+    self->_needsDisplay=NO;
+   }
+}
+
+static void clearInvalidRects(NSView *self){
+   if(self->_invalidRects!=NULL)
+    NSZoneFree(NULL,self->_invalidRects);
+   self->_invalidRects=NULL;
+   self->_invalidRectCount=0;
+}
+
+static void clearNeedsDisplay(NSView *self){
+   clearInvalidRects(self);
+   self->_needsDisplay=NO;
 }
 
 -(void)setNeedsDisplay:(BOOL)flag {
-   [self setNeedsDisplayInRect:[self bounds]];
+   _needsDisplay=flag;
+
+// We removed them for YES to indicate entire view, and NO for obvious reasons   
+   clearInvalidRects(self);
+   
+   if(_needsDisplay)
+    [[self window] setViewsNeedDisplay:YES];
 }
 
 -(void)setNeedsDisplayInRect:(NSRect)rect {
-   if(NSIsEmptyRect(_invalidRect))
-    _invalidRect=rect;
-   else
-    _invalidRect=NSUnionRect(_invalidRect,rect);
+// We only add rects if its not the entire view
+   if(!_needsDisplay || _invalidRects!=NULL){
+    _invalidRectCount++;
+    _invalidRects=NSZoneRealloc(NULL,_invalidRects,sizeof(NSRect)*_invalidRectCount);
+    _invalidRects[_invalidRectCount-1]=rect;
+   }
+   
+   _needsDisplay=YES;
    [[self window] setViewsNeedDisplay:YES];
 }
 
@@ -1503,8 +1582,8 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    int i,count=[_subviews count];
   
    if([self needsDisplay]){
-     [self displayRect:_invalidRect];
-    _invalidRect=NSZeroRect;
+    [self displayRect:unionOfInvalidRects(self)];
+    clearNeedsDisplay(self);
    }
 
    for(i=0;i<count;i++) // back to front
@@ -1514,7 +1593,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 -(void)displayIfNeededInRect:(NSRect)rect {
    int i,count=[_subviews count];
    
-   rect=NSIntersectionRect(_invalidRect, rect);
+   rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
 
    if([self needsDisplay])
     [self displayRect:rect];
@@ -1531,7 +1610,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 -(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {
    int i,count=[_subviews count];
    
-   rect=NSIntersectionRect(_invalidRect, rect);
+   rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
 
    if([self needsDisplay])
     [self displayRectIgnoringOpacity:rect];
@@ -1549,7 +1628,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    int i,count=[_subviews count];
 
    if([self needsDisplay])
-    [self displayRectIgnoringOpacity:_invalidRect];
+    [self displayRectIgnoringOpacity:unionOfInvalidRects(self)];
 
    for(i=0;i<count;i++) // back to front
     [[_subviews objectAtIndex:i] displayIfNeededIgnoringOpacity];
@@ -1565,11 +1644,10 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)displayRectIgnoringOpacity:(NSRect)rect {   
-   if(NSContainsRect(rect,_invalidRect)){
-    _invalidRect=NSZeroRect;
-   }
+   NSRect visibleRect=[self visibleRect];
 
-   rect=NSIntersectionRect(rect,[self visibleRect]);
+   rect=NSIntersectionRect(rect,visibleRect);
+   removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
 
    if(NSIsEmptyRect(rect))
     return;
