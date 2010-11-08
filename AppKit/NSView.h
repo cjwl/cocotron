@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class NSWindow, NSMenu, NSMenuItem, NSCursor, NSClipView, NSPasteboard, NSTextInputContext, NSImage, NSBitmapImageRep, NSScrollView, NSTrackingArea, NSShadow, NSScreen, CALayer, CIFilter;
+@class NSWindow, NSMenu, NSMenuItem, NSCursor, NSClipView, NSPasteboard, NSTextInputContext, NSImage, NSBitmapImageRep, NSScrollView, NSTrackingArea, NSShadow, NSScreen, CALayer, CIFilter, CGOverlay;
 
 // See Cocoa Event Handling Guide : Using Tracking-Area Objects : Compatibility Issues
 typedef NSTrackingArea *NSTrackingRectTag;
@@ -66,7 +66,7 @@ APPKIT_EXPORT NSString * const NSViewFrameDidChangeNotification;
 APPKIT_EXPORT NSString * const NSViewBoundsDidChangeNotification;
 APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
 
-@interface NSView : NSResponder {
+@interface NSView : NSResponder <NSAnimatablePropertyContainer> {
    NSRect          _frame;
    NSRect          _bounds;
    NSWindow       *_window;
@@ -100,6 +100,8 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
    CALayer *_layer;
    NSArray *_contentFilters;
    NSDictionary *_animations;
+   
+   CGOverlay *_overlay;
 }
 
 +(NSView *)focusView;

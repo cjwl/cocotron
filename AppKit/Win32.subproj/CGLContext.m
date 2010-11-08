@@ -3,10 +3,9 @@
 #import <Foundation/NSRaise.h>
 #import <stdbool.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <CoreGraphics/CGOverlay.h>
 #import "Win32Window.h"
-#import "O2Context_gdi.h"
 #import "O2Surface_DIBSection.h"
-#import "O2DeviceContext_gdiDIBSection.h"
 
 #import "opengl_dll.h"
 
@@ -20,11 +19,14 @@ struct _CGLContextObj {
    HWND             window;
    HDC              dc;
    HGLRC            glContext;
-   int              x,y,w,h;
+   int              w,h;
    GLint            opacity;
-   int              windowNumber;
-   O2DeviceContext_gdiDIBSection *dibSection;
-   void            *imagePixelData;
+   bool             windowInParent;
+   CGOverlay       *overlay;
+   bool             usePixelBuffer;
+   int              numberOfBuffers;
+   int              currentBuffer;
+   GLuint          *bufferObjects;
 };
 
 struct _CGLPixelFormatObj {
@@ -49,17 +51,17 @@ static DWORD cglThreadStorageIndex(){
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
    if(message==WM_PAINT){    
     ValidateRect(handle, NULL);
-    return 1;
+    return 0;
    }
    
    if(message==WM_MOUSEACTIVATE)
     return MA_NOACTIVATE;
 
-   if(message==WM_ACTIVATE)
-    return 1;
+//   if(message==WM_ACTIVATE)
+  //  return 1;
 
-   if(message==WM_ERASEBKGND)
-    return 1;
+ //  if(message==WM_ERASEBKGND)
+   // return 1;
         
    return DefWindowProc(handle,message,wParam,lParam);
 }
@@ -100,8 +102,9 @@ CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
    TlsSetValue(cglThreadStorageIndex(),context);
    if(context==NULL)
     opengl_wglMakeCurrent(NULL,NULL);
-   else
+   else {
     opengl_wglMakeCurrent(context->dc,context->glContext);
+   }
    return kCGLNoError;
 }
 
@@ -126,9 +129,9 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    int  i,virtualScreen=0;
    
    memset(pfd,0,sizeof(PIXELFORMATDESCRIPTOR));
+   
    pfd->nSize=sizeof(PIXELFORMATDESCRIPTOR);
    pfd->nVersion=1;
-   
    pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
    pfd->iLayerType=PFD_MAIN_PLANE;
    pfd->iPixelType=PFD_TYPE_RGBA;
@@ -137,7 +140,8 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    pfd->cGreenBits=8;
    pfd->cBlueBits=8;
    pfd->cAlphaBits=8;
-
+   pfd->cDepthBits=32;
+return;
    for(i=0;pixelFormat->attributes[i]!=0;i++){
     CGLPixelFormatAttribute attribute=pixelFormat->attributes[i];
 
@@ -175,37 +179,57 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
 }
 
 CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLContextObj *resultp) {
-   CGLContextObj         result=NSZoneCalloc(NULL,1,sizeof(struct _CGLContextObj));
+   CGLContextObj         context=NSZoneCalloc(NULL,1,sizeof(struct _CGLContextObj));
    PIXELFORMATDESCRIPTOR pfd;
    int                   pfIndex;
    
    CGLInitializeIfNeeded();
 
-   result->retainCount=1;
+   context->retainCount=1;
    
    pfdFromPixelFormat(&pfd,pixelFormat);
 
-   InitializeCriticalSection(&(result->lock));
+   InitializeCriticalSection(&(context->lock));
    
-   result->window=CreateWindowEx(0,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,1,1,NULL,NULL,GetModuleHandle(NULL),NULL);
-   SetWindowPos(result->window,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+   context->w=32;
+   context->h=32;
 
-   result->dc=GetDC(result->window);
+   context->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,NULL,NULL,GetModuleHandle(NULL),NULL);
    
-   pfIndex=ChoosePixelFormat(result->dc,&pfd); 
+   context->dc=GetDC(context->window);
 
-   if(!SetPixelFormat(result->dc,pfIndex,&pfd))
+   pfIndex=ChoosePixelFormat(context->dc,&pfd); 
+
+   if(!SetPixelFormat(context->dc,pfIndex,&pfd))
     NSLog(@"SetPixelFormat failed");
 
-   result->glContext=opengl_wglCreateContext(result->dc);
-   result->opacity=1;
+   context->glContext=opengl_wglCreateContext(context->dc);
    
    if(share!=NULL){
-    if(!opengl_wglShareLists(share->glContext,result->glContext))
+    if(!opengl_wglShareLists(share->glContext,context->glContext))
      NSLog(@"opengl_wglShareLists failed");
    }
 
-   *resultp=result;
+   context->opacity=1;
+   context->overlay=[[CGOverlay alloc] initWithFrame:O2RectMake(0,0,context->w,context->h)];
+   [context->overlay setOpaque:YES];
+   
+   context->usePixelBuffer=FALSE;
+   if(context->usePixelBuffer){
+    context->numberOfBuffers=1;
+    context->currentBuffer=0;
+    context->bufferObjects=malloc(sizeof(GLuint)*context->numberOfBuffers);
+    CGLSetCurrentContext(context);
+    CGLGenBuffers(context->numberOfBuffers,context->bufferObjects);
+    CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, context->bufferObjects[0]);
+    CGLBufferData(GL_PIXEL_PACK_BUFFER_ARB, context->w*context->h*4, NULL,GL_STREAM_READ);
+    CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+   }
+   
+   *resultp=context;
+
+   if([[NSUserDefaults standardUserDefaults] boolForKey:@"CGLContextShowWindow"])
+    SetWindowPos(context->window,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    
    return kCGLNoError;
 }
@@ -231,7 +255,7 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
     ReleaseDC(context->window,context->dc);
     DestroyWindow(context->window);
     
-    [context->dibSection release];
+    [context->overlay release];
 
     DeleteCriticalSection(&(context->lock));
     opengl_wglDeleteContext(context->glContext);
@@ -263,51 +287,11 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
    return kCGLNoError;
 }
 
-static bool usesChildWindow(CGLContextObj context){
-   return (context->opacity!=0)?TRUE:FALSE;
-}
-
-static void adjustFrameInParent(CGLContextObj context,Win32Window *parentWindow,GLint *x,GLint *y,GLint *w,GLint *h){
-   if(parentWindow!=nil){
-    CGFloat top,left,bottom,right;
-
-    CGNativeBorderFrameWidthsForStyle([parentWindow styleMask],&top,&left,&bottom,&right);
-
-    *y=[parentWindow frame].size.height-(*y+*h);
-
-    *y-=top;
-    *x-=left;
-   }
-}
-
-static void adjustInParentForSurfaceOpacity(CGLContextObj context){
-   GLint x=context->x;
-   GLint y=context->y;
-   GLint w=context->w;
-   GLint h=context->h;
-
-   if(usesChildWindow(context)){
-    Win32Window *parentWindow=[Win32Window windowWithWindowNumber:context->windowNumber];
-    HWND         parentHandle=[parentWindow windowHandle];
-   
-    SetProp(context->window,"self",parentWindow);
-    SetParent(context->window,parentHandle);
-    ShowWindow(context->window,SW_SHOWNOACTIVATE);
-
-    adjustFrameInParent(context,parentWindow,&x,&y,&w,&h);
-   }
-   else {
-    ShowWindow(context->window,SW_HIDE);
-    SetProp(context->window,"self",NULL);
-    SetParent(context->window,NULL);
-   }
-
-   MoveWindow(context->window,x,y,w,h,NO);
-}
-
 CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
    switch(parameter){
     case kCGLCPSwapInterval:;
+     CGLSetCurrentContext(context);
+     
      typedef BOOL (WINAPI * PFNWGLSWAPINTERVALEXTPROC)(int interval); 
      PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)opengl_wglGetProcAddress("wglSwapIntervalEXT"); 
      if(wglSwapIntervalEXT==NULL){
@@ -318,30 +302,34 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      wglSwapIntervalEXT(*value); 
      break;
     
-    case kCGLCPSurfaceFrame:;
-     context->x=value[0];
-     context->y=value[1];
-     context->w=value[2];
-     context->h=value[3];
-
-     if(context->imagePixelData!=NULL){
-      [context->dibSection release];
-      context->imagePixelData=NULL;
-     }
-     
-     context->dibSection=[[O2DeviceContext_gdiDIBSection alloc] initARGB32WithWidth:context->w height:-context->h deviceContext:nil];
-     context->imagePixelData=[context->dibSection bitmapBytes];
-     adjustInParentForSurfaceOpacity(context);     
-     break;
-    
     case kCGLCPSurfaceOpacity:
      context->opacity=*value;
-     adjustInParentForSurfaceOpacity(context);
+     
+     [context->overlay setOpaque:context->opacity?YES:NO];
      break;
     
-    case kCGLCPWindowNumber:
-     context->windowNumber=*value;
-     adjustInParentForSurfaceOpacity(context);
+    case kCGLCPSurfaceBackingSize:;
+     BOOL sizeChanged=(context->w!=value[0] || context->h!=value[1])?YES:NO;
+     
+     context->w=value[0];
+     context->h=value[1];
+
+     if(sizeChanged){
+      O2Surface_DIBSection *surface=[[O2Surface_DIBSection alloc] initWithWidth:context->w height:-context->h compatibleWithDeviceContext:nil];
+            
+      [context->overlay setSurface:surface];
+      
+      [surface release];
+
+      MoveWindow(context->window,0,0,context->w,context->h,NO);
+
+      if(context->usePixelBuffer){
+       CGLSetCurrentContext(context);
+       CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, context->bufferObjects[0]);
+       CGLBufferData(GL_PIXEL_PACK_BUFFER_ARB, context->w*context->h*4, NULL,GL_STREAM_READ);
+       CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+      }
+     }
      break;
      
     default:
@@ -359,6 +347,10 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
      *value=context->opacity;
      break;
     
+    case kCGLCPOverlayPointer:
+     *((CGOverlay **)value)=context->overlay;
+     break;
+     
     default:
      break;
    }
@@ -366,13 +358,22 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
    return kCGLNoError;
 }
 
+static inline uint32_t premultiplyPixel(uint32_t value){
+   unsigned int a=(value>>24)&0xFF;
+   unsigned int r=(value>>16)&0xFF;
+   unsigned int g=(value>>8)&0xFF;
+   unsigned int b=(value>>0)&0xFF;
+   
+   value&=0xFF000000;
+   value|=O2Image_8u_mul_8u_div_255(r,a)<<16;
+   value|=O2Image_8u_mul_8u_div_255(g,a)<<8;
+   value|=O2Image_8u_mul_8u_div_255(b,a);
+          
+   return value;
+}
+
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   if(usesChildWindow(context))
-    SwapBuffers(context->dc);
-   else if(context->windowNumber!=0 && context->imagePixelData!=NULL){
-    Win32Window *parentWindow=[Win32Window windowWithWindowNumber:context->windowNumber];
-    HWND         parentHandle=[parentWindow windowHandle];
-    O2Context   *o2Context=[parentWindow cgContext];
+   if([context->overlay surface]!=NULL){
     GLint  pixelsWide=context->w;
     GLint  pixelsHigh=context->h;
     int    bitsPerPixel=32;
@@ -382,50 +383,67 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
 
     GLint mode;
 
-    opengl_glGetIntegerv(GL_DRAW_BUFFER,&mode);
-    opengl_glReadBuffer(mode);
+/*
+  If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
+  complete. Reading from GL_BACK works .
+ */
+    CGLSetCurrentContext(context);
 
-// GL_UNSIGNED_INT_8_8_8_8_REV does not work on Vista, bad enumeration (??).
-//  opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,context->imagePixelData);
-    opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_BYTE,context->imagePixelData);
+    opengl_glReadBuffer(GL_BACK);
 
-    int r,c;
-    unsigned char *imageRow=context->imagePixelData;
+// For some reason glReadBuffer errors the first time it is used (??)
+   if(glGetError()!=GL_NO_ERROR)
+    return kCGLNoError;
     
-    for(r=0;r<pixelsHigh;r++,imageRow+=bytesPerRow){
-     for(c=0;c<bytesPerRow;c+=4){
-      unsigned int b=imageRow[c+0];
-      unsigned int g=imageRow[c+1];
-      unsigned int r=imageRow[c+2];
-      unsigned int a=imageRow[c+3];
+    GLubyte *inputBytes;
+    GLubyte *outputBytes;
       
-      imageRow[c+2]=O2Image_8u_mul_8u_div_255(r,a);
-      imageRow[c+1]=O2Image_8u_mul_8u_div_255(g,a);
-      imageRow[c+0]=O2Image_8u_mul_8u_div_255(b,a);
+    if(context->usePixelBuffer){
+     
+     CGLBindBuffer(GL_PIXEL_PACK_BUFFER,context->bufferObjects[context->currentBuffer]);
+
+     opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_BYTE, 0);
+
+     inputBytes=(GLubyte*)CGLMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
+     outputBytes=[[context->overlay surface] pixelBytes];
+    }
+    else {
+       
+// GL_UNSIGNED_INT_8_8_8_8_REV does not work on Vista, bad enumeration (??).
+//  opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,pixelData);
+//NSLog(@"%d %d, pixeldata=%p",pixelsWide,pixelsHigh,context->imagePixelData);
+     inputBytes=[[context->overlay surface] pixelBytes];
+     outputBytes=inputBytes;
+     
+     opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_BYTE,inputBytes);
+    }
+
+    
+    if(inputBytes!=NULL){
+     int r,c;
+     unsigned char *inputRow=inputBytes;
+     unsigned char *outputRow=outputBytes;
+
+     for(r=0;r<pixelsHigh;r++,inputRow+=bytesPerRow,outputRow+=bytesPerRow){
+      for(c=0;c<bytesPerRow;c+=4){
+       uint32_t pixel=*((uint32_t *)(inputRow+c));
+
+       pixel=premultiplyPixel(pixel);
+
+       *((uint32_t *)(outputRow+c))=pixel;
+       
+   }
+     }
+     [context->overlay flushBuffer];
+     
+    }
+    
+    if(context->usePixelBuffer){
+   //  CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);
+     if(inputBytes!=NULL){
+      CGLUnmapBuffer(GL_PIXEL_PACK_BUFFER);
      }
     }
-
-    O2DeviceContext_gdi *deviceContext=nil;
-
-    if([o2Context isKindOfClass:[O2Context_gdi class]])
-     deviceContext=[(O2Context_gdi *)o2Context deviceContext];
-    else {
-     O2Surface *surface=[o2Context surface];
-       
-     if([surface isKindOfClass:[O2Surface_DIBSection class]])
-      deviceContext=[(O2Surface_DIBSection *)surface deviceContext];
-    }
-
-    BLENDFUNCTION blend;
-    
-    blend.BlendOp=AC_SRC_OVER;
-    blend.BlendFlags=0;
-    blend.SourceConstantAlpha=255;
-    blend.AlphaFormat=AC_SRC_ALPHA;
-
-    int y=[parentWindow frame].size.height-(context->y+context->h);
-
-    AlphaBlend([deviceContext dc],context->x,y,context->w,context->h,[context->dibSection dc],0,0,context->w,context->h,blend);
 
    }
    return kCGLNoError;

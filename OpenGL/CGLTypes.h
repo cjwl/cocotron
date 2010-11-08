@@ -97,8 +97,7 @@ typedef enum {
    kCGLCPSurfaceBackingSize=304,
 
 // internal, do not use   
-   kCGLCPSurfaceFrame=500,
-   kCGLCPWindowNumber=501,
+   kCGLCPOverlayPointer=502,
 } CGLContextParameter;
 
 typedef struct _CGLContextObj *CGLContextObj;

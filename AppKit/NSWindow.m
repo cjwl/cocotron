@@ -1604,10 +1604,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)disableFlushWindow {
    _flushDisabled++;
+   [[self platformWindow] disableFlushWindow];
 }
 
 -(void)enableFlushWindow {
    _flushDisabled--;
+   [[self platformWindow] enableFlushWindow];
 }
 
 -(void)flushWindow {

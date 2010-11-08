@@ -81,7 +81,7 @@ static void ClearList( NSAtomicListRef *listPtr )
 	[workAvailable release];
 	[suspendedCondition release];
 	
-	ClearList( queues );
+	ClearList((NSAtomicListRef *) queues );
 	
 	[super dealloc];
 }
@@ -92,7 +92,7 @@ static void ClearList( NSAtomicListRef *listPtr )
 	if ([op queuePriority] < NSOperationQueuePriorityNormal) priority = 2;
 	else if ([op queuePriority] > NSOperationQueuePriorityNormal) priority = 0;
 	
-	NSAtomicListInsert( &queues[priority], [op retain] );
+	NSAtomicListInsert( (NSAtomicListRef *)(&queues[priority]), [op retain] );
 	[workAvailable signal];
 }
 
@@ -228,7 +228,7 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 		}
 		
 		for (int i = 0; i < NSOperationQueuePriority_Count; i++) {
-			didRun = RunOperationFromLists( &myQueues[i], &queues[i] );
+			didRun = RunOperationFromLists( &myQueues[i], ( NSAtomicListRef *)(&queues[i] ));
 			if (didRun)
               break;
 		}
@@ -244,7 +244,7 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 	for (int i = 0; i < NSOperationQueuePriority_Count; i++) {
 		id op = 0;
 		while ((op = (id)NSAtomicListPop( &myQueues[i] ))) {
-			NSAtomicListInsert( &queues[i], op );
+			NSAtomicListInsert((NSAtomicListRef *)( &queues[i]), op );
 		}
 	}
 	

@@ -29,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObject+BindingSupport.h>
 #import <Onyx2D/O2Context.h>
 #import <AppKit/NSRaise.h>
+#import <CoreGraphics/CGOverlay.h>
 
 NSString * const NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
 NSString * const NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";
@@ -148,6 +149,8 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
 
    if(_invalidRects!=NULL)
     NSZoneFree(NULL,_invalidRects);
+   
+   [_overlay release];
    
    [super dealloc];
 }
@@ -643,10 +646,15 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    _frame=frame;
    _bounds.size=frame.size;
+
    if(_autoresizesSubviews){
     [self resizeSubviewsWithOldSize:oldSize];
    }
 
+   if(_superview==nil)
+    [_overlay setFrame:_frame];
+   else
+    [_overlay setFrame:[_superview convertRect:_frame toView:nil]];
    
    invalidateTransform(self);
 
@@ -715,7 +723,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)_setWindow:(NSWindow *)window {
    [self viewWillMoveToWindow:window];
 
+   if(_overlay!=nil)
+    [[_window platformWindow] removeOverlay:_overlay];
+    
    _window=window;
+   
+   if(_overlay!=nil)
+    [[_window platformWindow] addOverlay:_overlay];
+    
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
    _validTrackingAreas=NO;
    [_window _invalidateTrackingAreas];
@@ -1995,6 +2010,24 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%lx] frame: %@>", [self class], self, NSStringFromRect(_frame)];
+}
+
+-(void)_setOverlay:(CGOverlay *)overlay {
+   if(overlay!=_overlay){
+    [[[self window] platformWindow] removeOverlay:_overlay];
+    
+
+    overlay=[overlay retain];
+    [_overlay release];
+    _overlay=overlay;
+    
+    if(_superview==nil)
+     [_overlay setFrame:[self frame]];
+    else
+     [_overlay setFrame:[_superview convertRect:[self frame] toView:nil]];
+     
+    [[[self window] platformWindow] addOverlay:_overlay];
+   }
 }
 
 @end
