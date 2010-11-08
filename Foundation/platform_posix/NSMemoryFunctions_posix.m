@@ -99,6 +99,17 @@ NSThread *NSPlatformCurrentThread() {
 		// maybe NSThread is not +initialize'd
 		[NSThread class];
 		thread=pthread_getspecific(_NSThreadInstanceKey());
+        if(!thread) {
+            thread = [NSThread alloc];
+            if(thread) {
+                NSPlatformSetCurrentThread(thread);
+                {
+                    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+                    [thread init];
+                    [pool release];
+                }
+            }
+        }        
 		if(!thread)
 		{
 			[NSException raise:NSInternalInconsistencyException format:@"No current thread"];
