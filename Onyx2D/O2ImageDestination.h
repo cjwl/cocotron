@@ -13,7 +13,7 @@ const CFStringRef kO2ImageDestinationBackgroundColor;
 @interface O2ImageDestination : NSObject {
 @public
    O2DataConsumerRef _consumer;
-   CFStringRef       _type;
+   int               _type;
    size_t            _imageCount;
    CFDictionaryRef   _options;
    void             *_encoder;

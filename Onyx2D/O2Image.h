@@ -200,6 +200,7 @@ O2argb32f *O2ImageRead_ANY_to_argb8u_to_argb32f(O2Image *self,int x,int y,O2argb
 O2argb32f *O2ImageRead_argb32fLittle_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length);
 O2argb32f *O2ImageRead_argb32fBig_to_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length);
 
+O2argb8u   *O2Image_read_argb8u(O2Image *self,int x,int y,O2argb8u *span,int length);
 O2argb32f  *O2Image_read_argb32f(O2Image *self,int x,int y,O2argb32f *span,int length);
 uint8_t    *O2Image_read_a8u(O2Image *self,int x,int y,uint8_t *coverage,int length);
 O2Float    *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int length);

@@ -88,8 +88,9 @@ NSString * const NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppe
    _loadDefaultItems=YES;
    
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarChangedAppearance:) name:NSToolbarChangeAppearanceNotification object:nil];
-   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarWillAddItem:) name:NSToolbarWillAddItemNotification object:nil];
-   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarDidRemoveItem:) name:NSToolbarDidRemoveItemNotification object:nil];
+   // these cause notification loops
+//   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarWillAddItem:) name:NSToolbarWillAddItemNotification object:nil];
+//   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarDidRemoveItem:) name:NSToolbarDidRemoveItemNotification object:nil];
    
    return self;
 }
@@ -281,8 +282,12 @@ static BOOL isStandardItemIdentifier(NSString *identifier){
     return;
    if(![[toolbar identifier] isEqualToString:_identifier])
     return;
-    
+
    NSToolbarItem *item=[[note userInfo] objectForKey:@"item"];
+
+   if([_items containsObject:item])
+    return;
+    
    NSInteger      index=[[[note userInfo] objectForKey:@"index"] integerValue];
    
    [self _insertItem:item atIndex:index];

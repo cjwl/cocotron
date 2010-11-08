@@ -515,8 +515,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)representationUsingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties {
-   NSUnimplementedMethod();
-   return nil;
+   CFStringRef uti;
+   
+   switch(type){
+   
+    case NSTIFFFileType:
+     uti=(CFStringRef)@"public.tiff";
+     break;
+     
+    case NSBMPFileType:
+     uti=(CFStringRef)@"com.microsoft.bmp";
+     break;
+     
+    case NSGIFFileType:
+     uti=(CFStringRef)@"com.compuserve.gif";
+     break;
+     
+    case NSJPEGFileType:
+     uti=(CFStringRef)@"public.jpeg";
+     break;
+     
+    case NSPNGFileType:
+     uti=(CFStringRef)@"public.png";
+     break;
+     
+    case NSJPEG2000FileType:
+     uti=(CFStringRef)@"public.jpeg-2000";
+     break;
+    
+    default:
+     return nil;
+   }
+
+   NSMutableData        *result=[NSMutableData data];
+   CGImageDestinationRef dest=CGImageDestinationCreateWithData((CFMutableDataRef)result,uti,1,NULL);
+   
+   CGImageDestinationAddImage(dest,[self CGImage],NULL);
+
+   CGImageDestinationFinalize(dest);
+   CFRelease(dest);
+   
+   return result;
 }
 
 -(NSData *)TIFFRepresentation {
