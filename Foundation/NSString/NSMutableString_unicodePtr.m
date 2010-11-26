@@ -337,31 +337,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding {
-#if 0
-   if(encoding==NSString_cStringEncoding)
-    return NSString_cStringInitWithBytes(NULL,[data bytes],[data length]);
-
-   switch(encoding){
-
-    case NSString_unicodeEncoding:
-     return NSString_unicodeInit(NULL,[data bytes],[data length]);
-
-    case NSNEXTSTEPStringEncoding:
-     return NSNEXTSTEPStringInitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSISOLatin1StringEncoding:
-     return NSString_isoLatin1InitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSSymbolStringEncoding:
-     break;
-
-    default:
-     break;
-   }
-#endif
-
-   NSInvalidAbstractInvocation();
-   return nil;
+    return [self initWithBytes:[data bytes] length:[data length] encoding:encoding];
 }
 
 -initWithContentsOfFile:(NSString *)path {
