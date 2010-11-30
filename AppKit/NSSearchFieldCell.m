@@ -153,7 +153,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)frame ofView:(NSView *)view untilMouseUp:(BOOL)untilMouseUp {
    if([_cancelButtonCell trackMouse:event inRect:[self cancelButtonRectForBounds:frame] ofView:view untilMouseUp:YES]){
-    [self setStringValue:@""];
+    [view setStringValue:@""];
+    [view selectText:nil];
     return YES;
    }
 

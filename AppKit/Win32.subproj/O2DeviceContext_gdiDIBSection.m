@@ -67,8 +67,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    struct {
     BITMAPV4HEADER bitmapInfo;
     RGBQUAD        colors[256+3];
-   } dibInfo={0};
-   
+   } dibInfo;
+
+   memset(&dibInfo,0,sizeof(dibInfo));
+
    dibInfo.bitmapInfo.bV4Size=sizeof(BITMAPV4HEADER);
    dibInfo.bitmapInfo.bV4Width=width;
    dibInfo.bitmapInfo.bV4Height=-(int)height;

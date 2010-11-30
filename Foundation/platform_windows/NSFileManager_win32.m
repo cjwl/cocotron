@@ -106,6 +106,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error {
+   NSDictionary *srcAttributes=[self attributesOfItemAtPath:fromPath error:error];
+
+   if(srcAttributes==nil)
+    return NO;
+
+   if(![[srcAttributes fileType] isEqualTo:NSFileTypeRegular])
+    return NO;
+    
+   NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];
+   
+   if(dstAttributes!=nil){
+    if(error!=NULL){
+     NSDictionary *userInfo=[NSDictionary dictionaryWithObject:@"File exists" forKey:NSLocalizedDescriptionKey];
+     
+     *error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
+    }
+    
+    return NO;
+   }
+   
+   if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES))
+    return NO;
+
+   return YES;
+}
+
 -(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data attributes:(NSDictionary *)attributes {
    return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[data bytes] length:[data length] atomically:YES];
 }

@@ -129,6 +129,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(void)disableFlushWindow {
+}
+
+-(void)enableFlushWindow {
+}
+
 -(void)flushBuffer {
    O2InvalidAbstractInvocation();
 }
@@ -150,6 +156,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)flashWindow {
    O2InvalidAbstractInvocation();
+}
+
+-(void)addOverlay:(CGOverlay *)overlay {
+}
+
+-(void)removeOverlay:(CGOverlay *)overlay{
 }
 
 

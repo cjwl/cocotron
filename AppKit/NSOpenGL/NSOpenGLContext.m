@@ -18,6 +18,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_clearCurrentContext;
 @end
 
+@interface NSView(private)
+-(void)_setOverlay:(CGOverlay *)overlay;
+@end
+
 @implementation NSOpenGLContext
 
 static inline NSOpenGLContext *_currentContext(){
@@ -91,11 +95,29 @@ static inline void _clearCurrentContext(){
    CGLSetParameter(_glContext,parameter,vals);
 }
 
+-(void)updateViewParameters {
+   NSRect rect=[_view convertRect:[_view bounds] toView:nil];
+   
+   GLint size[2]={
+    rect.size.width,
+    rect.size.height };
+    
+   CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,size);
+}
+
 -(void)setView:(NSView *)view {
    if(_view!=view)
     _hasPrepared=NO;
     
+   [_view _setOverlay:nil];
    _view=view;
+   
+   CGOverlay *overlay=nil;
+   
+   CGLGetParameter(_glContext,kCGLCPOverlayPointer,(GLint *)&overlay);
+   
+   [_view _setOverlay:overlay];
+   
    [self update];
 }
 
@@ -107,6 +129,12 @@ static inline void _clearCurrentContext(){
     
    _setCurrentContext(self);
       
+/*
+   We need to reload the view values when becoming current because it may
+   have moved windows since the last make current
+ */
+   [self updateViewParameters];
+   
    if(!_hasPrepared){
     _hasPrepared=YES;
 
@@ -153,22 +181,12 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)update {
-   if(_view!=nil){
-    NSRect rect=[_view convertRect:[_view bounds] toView:nil];
-    GLint frame[4]={
-     rect.origin.x,
-     rect.origin.y,
-     rect.size.width,
-     rect.size.height };
-    GLint number[1]={[[_view window] windowNumber]};
-   
-    CGLSetParameter(_glContext,kCGLCPSurfaceFrame,frame);
-    CGLSetParameter(_glContext,kCGLCPWindowNumber,number);
+   [self updateViewParameters];
    }
-}
 
 -(void)clearDrawable {
    _view=nil;
+   [self updateViewParameters];
 }
 
 -(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {

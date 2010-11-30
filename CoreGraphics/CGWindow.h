@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class O2Context,CGEvent;
+@class O2Context,CGEvent,CGOverlay;
 
 typedef enum {
    CGSBackingStoreRetained=0,
@@ -69,6 +69,8 @@ enum {
 -(void)deminiaturize;
 -(BOOL)isMiniaturized;
 
+-(void)disableFlushWindow;
+-(void)enableFlushWindow;
 -(void)flushBuffer;
 
 -(NSPoint)mouseLocationOutsideOfEventStream;
@@ -77,6 +79,10 @@ enum {
 
 -(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
 -(void)flashWindow;
+
+-(void)addOverlay:(CGOverlay *)overlay;
+-(void)removeOverlay:(CGOverlay *)overlay;
+-(void)flushOverlay:(CGOverlay *)overlay;
 
 @end
 

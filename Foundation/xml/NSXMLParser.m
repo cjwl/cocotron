@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSMutableDictionary.h>
 #import <Foundation/NSMutableArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 #include <string.h>
 
@@ -57,7 +58,6 @@ enum {
 
    _state=STATE_content;
    _elementNameStack=[[NSMutableArray alloc] init];
-   _strings=NSCreateHashTable(NSObjectHashCallBacks,0);
 
    return self;
 }
@@ -77,7 +77,6 @@ enum {
    [_data release];
    [_entityRefContents release];
    [_elementNameStack release];
-   NSFreeHashTable(_strings);
    [_currentAttributes release];
    [super dealloc];
 }
@@ -186,19 +185,9 @@ enum {
    _currentAttributeName=nil;
 }
 
--(NSString *)uniqueSelf {
-   NSString *string=[self createCurrentString];
-   NSString *result;
-
-   if((result=NSHashGet(_strings,string))==nil){
-    NSHashInsert(_strings,string);
-    result=string;
+-(NSString *)currentString {
+   return [[self createCurrentString] autorelease];
    }
-
-   [string release];
-
-   return result;
-}
 
 static inline BOOL codeIsIgnoreableWhitespace(uint8_t code){
    if(code==0x0A || code==0x0D || code==0x09)
@@ -240,8 +229,14 @@ static inline BOOL codeIsNameContinue(uint8_t code){
 }
 
 -(BOOL)parse {
+   int createNewPool=0;
+   NSAutoreleasePool *pool=nil;
 
    while(NSMaxRange(_range)<_length){
+    
+    if(pool==nil)
+     pool=[NSAutoreleasePool new];
+    
     uint8_t code=_bytes[NSMaxRange(_range)];
     enum  {
      extendLength,
@@ -254,19 +249,19 @@ static inline BOOL codeIsNameContinue(uint8_t code){
      case STATE_content:
       if(code=='&'){
        if(_range.length>0)
-        [self content:[self uniqueSelf]];
+        [self content:[self currentString]];
        _state=STATE_Reference;
        rangeAction=advanceLocationToNext;
       }
       else if(code=='<'){
        if(_range.length>0)
-        [self content:[self uniqueSelf]];
+        [self content:[self currentString]];
        _state=STATE_Tag;
        rangeAction=advanceLocationToNext;
       }
       else if(codeIsIgnoreableWhitespace(code)){
        if(_range.length>0)
-        [self content:[self uniqueSelf]];
+        [self content:[self currentString]];
        _state=STATE_ignoreable_content;
        rangeAction=advanceLocationToCurrent;
       }
@@ -278,7 +273,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
      case STATE_ignoreable_content:
       if(!codeIsIgnoreableWhitespace(code)){
        if(_range.length>0)
-        [self ignoreableWhitespace:[self uniqueSelf]];
+        [self ignoreableWhitespace:[self currentString]];
        _state=STATE_content;
        rangeAction=advanceLocationToCurrent;
       }
@@ -360,7 +355,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       if(codeIsNameContinue(code))
        _state=STATE_EntityRef_Name;
       else if(code==';'){
-       [self entityRef:[self uniqueSelf]];
+       [self entityRef:[self currentString]];
        _state=STATE_content;
        rangeAction=advanceLocationToNext;
       }
@@ -406,7 +401,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       if (code==']' && NSMaxRange(_range)+3 < _length) {
         if (0 == memcmp(_bytes + NSMaxRange(_range), "]]>", 3)) {
           if(_range.length>0)
-            [self content:[self uniqueSelf]];
+            [self content:[self currentString]];
         
           _state = STATE_content;
           _range.length += 3;
@@ -425,7 +420,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       if(codeIsNameContinue(code))
        _state=STATE_STag;
       else {
-       [self sTag:[self uniqueSelf]];
+       [self sTag:[self currentString]];
        _state=STATE_Attributes;
        rangeAction=advanceLocationToCurrent;
       }
@@ -435,7 +430,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       if(codeIsNameContinue(code))
        _state=STATE_ETag;
       else {
-       [self eTag:[self uniqueSelf]];
+       [self eTag:[self currentString]];
        _state=STATE_ETag_whitespace;
        rangeAction=advanceLocationToCurrent;
       }
@@ -487,7 +482,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       if(codeIsNameContinue(code))
        _state=STATE_Attribute_Name;
       else {
-       [self attributeName:[self uniqueSelf]];
+       [self attributeName:[self currentString]];
        _state=STATE_Attribute_Name_whitespace;
        rangeAction=advanceLocationToCurrent;
       }
@@ -526,7 +521,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
 
      case STATE_Attribute_Value_DoubleQuote:
       if(code=='\"'){
-       [self attributeValue:[self uniqueSelf]];
+       [self attributeValue:[self currentString]];
        _state=STATE_Attributes;
        rangeAction=advanceLocationToNext;
       }
@@ -534,7 +529,7 @@ static inline BOOL codeIsNameContinue(uint8_t code){
 
      case STATE_Attribute_Value_SingleQuote:
       if(code=='\''){
-        [self attributeValue:[self uniqueSelf]];
+        [self attributeValue:[self currentString]];
        _state=STATE_Attributes;
        rangeAction=advanceLocationToNext;
       }
@@ -556,6 +551,12 @@ static inline BOOL codeIsNameContinue(uint8_t code){
       _range.length=0;
       break;
     }
+    createNewPool++;
+    
+    if((createNewPool%1000)==0){
+     [pool release];
+     pool=nil;
+   }
    }
    return YES;
 }

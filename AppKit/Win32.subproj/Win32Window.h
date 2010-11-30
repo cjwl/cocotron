@@ -9,12 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSDragging.h>
 #import <OpenGL/OpenGL.h>
+#import <Onyx2D/O2Geometry.h>
+
 #undef WINVER
 #define WINVER 0x501 // XP drop shadow constants
 #import <windows.h>
 
-@class O2Context_gdi;
-
+@class O2Context_gdi,O2Surface,O2Surface_DIBSection;
 
 @interface Win32Window : CGWindow {
    CGRect                 _frame;
@@ -29,6 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2Context             *_backingContext;
    CGLContextObj          _cglContext;
 
+   NSMutableArray        *_overlays;
+   O2Surface_DIBSection  *_overlayResult;
+   
+   int                    _disableFlushWindow;
    NSString              *_title;
    BOOL                  _isLayered;
    BOOL                  _ignoreMinMaxMessage;
