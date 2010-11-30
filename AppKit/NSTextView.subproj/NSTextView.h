@@ -84,7 +84,7 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    NSSelectionGranularity _selectionGranularity;
    NSDictionary          *_selectedTextAttributes;
 
-   int                    _textMovement;
+   BOOL                   _didSendTextDidEndNotification;
    unsigned               _selectionOrigin;		// for keyboard selection sanity.
    id                     _killBuffer;			// NSString for Emacs-style, NSMutableString for additive
    BOOL                   _killBufferIsAdditive;	// .. additive == pine/pico style, but possible memory hog

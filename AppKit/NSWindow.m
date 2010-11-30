@@ -1424,38 +1424,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)makeFirstResponder:(NSResponder *)responder {
-   NSResponder *previous=_firstResponder;
-
-   if(responder==nil)
-    responder=self;
 
    if(_firstResponder==responder)
     return YES;
 
-   if(![responder acceptsFirstResponder])
+   if(![_firstResponder resignFirstResponder])
     return NO;
 
-/* the firstResponder needs to be set here because
-   resignFirstResponder may nest makeFirstResponder's e.g. 
-     field editor <tab>
-     makeFirstResponder:[self window]
-      field editor resignFirstResponder
-       textDidEnd:
-        field editor assigned to nextKeyView
-         makeFirstResponder:field editor  */
    _firstResponder=responder;
-
-   if(previous!=nil){
-    if(![previous resignFirstResponder]){
-     _firstResponder=previous;
-     return NO;
-    }
-   }
 
    if([_firstResponder becomeFirstResponder])
     return YES;
 
    _firstResponder=self;
+   
    return NO;
 }
 
@@ -1936,7 +1918,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     case NSLeftMouseDown:{
       NSView *view=[_backgroundView hitTest:[event locationInWindow]];
 
+      if([view acceptsFirstResponder])
       [self makeFirstResponder:view];
+       
 // Doing this again seems correct for control cells which put a field editor up when they become first responder but I'm not sure
       view=[_backgroundView hitTest:[event locationInWindow]];
       _mouseDownLocationInWindow=[event locationInWindow];
