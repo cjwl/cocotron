@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class O2Context,CGEvent,CGOverlay;
+@class O2Context,CGEvent,CGLPixelSurface;
 
 typedef enum {
    CGSBackingStoreRetained=0,
@@ -80,9 +80,8 @@ enum {
 -(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
 -(void)flashWindow;
 
--(void)addOverlay:(CGOverlay *)overlay;
--(void)removeOverlay:(CGOverlay *)overlay;
--(void)flushOverlay:(CGOverlay *)overlay;
+-(void)addOverlay:(CGLPixelSurface *)overlay;
+-(void)removeOverlay:(CGLPixelSurface *)overlay;
 
 @end
 

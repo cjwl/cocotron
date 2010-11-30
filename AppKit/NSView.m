@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObject+BindingSupport.h>
 #import <Onyx2D/O2Context.h>
 #import <AppKit/NSRaise.h>
-#import <CoreGraphics/CGOverlay.h>
+#import <CoreGraphics/CGLPixelSurface.h>
 
 NSString * const NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
 NSString * const NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";
@@ -2012,7 +2012,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
     return [NSString stringWithFormat:@"<%@[0x%lx] frame: %@>", [self class], self, NSStringFromRect(_frame)];
 }
 
--(void)_setOverlay:(CGOverlay *)overlay {
+-(void)_setOverlay:(CGLPixelSurface *)overlay {
    if(overlay!=_overlay){
     [[[self window] platformWindow] removeOverlay:_overlay];
     

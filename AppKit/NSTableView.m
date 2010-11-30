@@ -1312,7 +1312,7 @@ _dataSource);
 
 -(void)dataSourceSetObjectValue:object forTableColumn:(NSTableColumn *)tableColumn row:(int)row
 {
-   if([_dataSource respondsToSelector:@selector(tableView:setObjectValue:forTableColumn:)])
+   if([_dataSource respondsToSelector:@selector(tableView:setObjectValue:forTableColumn:row:)])
     [_dataSource tableView:self setObjectValue:object forTableColumn:tableColumn row:row];
 }
 

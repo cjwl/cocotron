@@ -3,9 +3,7 @@
 #import <Foundation/NSRaise.h>
 #import <stdbool.h>
 #import <CoreGraphics/CoreGraphics.h>
-#import <CoreGraphics/CGOverlay.h>
-#import "Win32Window.h"
-#import "O2Surface_DIBSection.h"
+#import <CoreGraphics/CGLPixelSurface.h>
 
 #import "opengl_dll.h"
 
@@ -21,12 +19,7 @@ struct _CGLContextObj {
    HGLRC            glContext;
    int              w,h;
    GLint            opacity;
-   bool             windowInParent;
-   CGOverlay       *overlay;
-   bool             usePixelBuffer;
-   int              numberOfBuffers;
-   int              currentBuffer;
-   GLuint          *bufferObjects;
+   CGLPixelSurface  *overlay;
 };
 
 struct _CGLPixelFormatObj {
@@ -98,14 +91,20 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
    return result;
 }
 
-CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
-   TlsSetValue(cglThreadStorageIndex(),context);
+static CGLError _CGLSetCurrentContextFromThreadLocal(){
+   CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
+   
    if(context==NULL)
     opengl_wglMakeCurrent(NULL,NULL);
-   else {
+   else
     opengl_wglMakeCurrent(context->dc,context->glContext);
-   }
+   
    return kCGLNoError;
+}
+
+CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
+   TlsSetValue(cglThreadStorageIndex(),context);
+   return _CGLSetCurrentContextFromThreadLocal();
 }
 
 static inline bool attributeHasArgument(CGLPixelFormatAttribute attribute){
@@ -211,20 +210,9 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    }
 
    context->opacity=1;
-   context->overlay=[[CGOverlay alloc] initWithFrame:O2RectMake(0,0,context->w,context->h)];
+
+   context->overlay=[[CGLPixelSurface alloc] initWithFrame:O2RectMake(0,0,context->w,context->h)];
    [context->overlay setOpaque:YES];
-   
-   context->usePixelBuffer=FALSE;
-   if(context->usePixelBuffer){
-    context->numberOfBuffers=1;
-    context->currentBuffer=0;
-    context->bufferObjects=malloc(sizeof(GLuint)*context->numberOfBuffers);
-    CGLSetCurrentContext(context);
-    CGLGenBuffers(context->numberOfBuffers,context->bufferObjects);
-    CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, context->bufferObjects[0]);
-    CGLBufferData(GL_PIXEL_PACK_BUFFER_ARB, context->w*context->h*4, NULL,GL_STREAM_READ);
-    CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
-   }
    
    *resultp=context;
 
@@ -311,25 +299,15 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
     case kCGLCPSurfaceBackingSize:;
      BOOL sizeChanged=(context->w!=value[0] || context->h!=value[1])?YES:NO;
      
+     if(sizeChanged){
      context->w=value[0];
      context->h=value[1];
 
-     if(sizeChanged){
-      O2Surface_DIBSection *surface=[[O2Surface_DIBSection alloc] initWithWidth:context->w height:-context->h compatibleWithDeviceContext:nil];
-            
-      [context->overlay setSurface:surface];
-      
-      [surface release];
-
       MoveWindow(context->window,0,0,context->w,context->h,NO);
 
-      if(context->usePixelBuffer){
        CGLSetCurrentContext(context);
-       CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, context->bufferObjects[0]);
-       CGLBufferData(GL_PIXEL_PACK_BUFFER_ARB, context->w*context->h*4, NULL,GL_STREAM_READ);
-       CGLBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+      [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
       }
-     }
      break;
      
     default:
@@ -348,7 +326,7 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
      break;
     
     case kCGLCPOverlayPointer:
-     *((CGOverlay **)value)=context->overlay;
+     *((CGLPixelSurface **)value)=context->overlay;
      break;
      
     default:
@@ -358,97 +336,17 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
    return kCGLNoError;
 }
 
-static inline uint32_t premultiplyPixel(uint32_t value){
-   unsigned int a=(value>>24)&0xFF;
-   unsigned int r=(value>>16)&0xFF;
-   unsigned int g=(value>>8)&0xFF;
-   unsigned int b=(value>>0)&0xFF;
-   
-   value&=0xFF000000;
-   value|=O2Image_8u_mul_8u_div_255(r,a)<<16;
-   value|=O2Image_8u_mul_8u_div_255(g,a)<<8;
-   value|=O2Image_8u_mul_8u_div_255(b,a);
-          
-   return value;
-}
-
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   if([context->overlay surface]!=NULL){
-    GLint  pixelsWide=context->w;
-    GLint  pixelsHigh=context->h;
-    int    bitsPerPixel=32;
-    int    samplesPerPixel=4;
-    int    bytesPerRow=pixelsWide*4;
-    GLuint bufferId;
-
-    GLint mode;
-
 /*
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
-  complete. Reading from GL_BACK works .
+  complete. Read from GL_BACK.
  */
     CGLSetCurrentContext(context);
 
-    opengl_glReadBuffer(GL_BACK);
-
-// For some reason glReadBuffer errors the first time it is used (??)
-   if(glGetError()!=GL_NO_ERROR)
-    return kCGLNoError;
-    
-    GLubyte *inputBytes;
-    GLubyte *outputBytes;
-      
-    if(context->usePixelBuffer){
-     
-     CGLBindBuffer(GL_PIXEL_PACK_BUFFER,context->bufferObjects[context->currentBuffer]);
-
-     opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_BYTE, 0);
-
-     inputBytes=(GLubyte*)CGLMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
-     outputBytes=[[context->overlay surface] pixelBytes];
-    }
-    else {
-       
-// GL_UNSIGNED_INT_8_8_8_8_REV does not work on Vista, bad enumeration (??).
-//  opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,pixelData);
-//NSLog(@"%d %d, pixeldata=%p",pixelsWide,pixelsHigh,context->imagePixelData);
-     inputBytes=[[context->overlay surface] pixelBytes];
-     outputBytes=inputBytes;
-     
-     opengl_glReadPixels(0,0,pixelsWide,pixelsHigh,GL_BGRA,GL_UNSIGNED_BYTE,inputBytes);
-    }
-
-    
-    if(inputBytes!=NULL){
-     int r,c;
-     unsigned char *inputRow=inputBytes;
-     unsigned char *outputRow=outputBytes;
-
-     for(r=0;r<pixelsHigh;r++,inputRow+=bytesPerRow,outputRow+=bytesPerRow){
-      for(c=0;c<bytesPerRow;c+=4){
-       uint32_t pixel=*((uint32_t *)(inputRow+c));
-
-       pixel=premultiplyPixel(pixel);
-
-       *((uint32_t *)(outputRow+c))=pixel;
-       
-   }
-     }
      [context->overlay flushBuffer];
      
-    }
-    
-    if(context->usePixelBuffer){
-   //  CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);
-     if(inputBytes!=NULL){
-      CGLUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-     }
-    }
-
-   }
    return kCGLNoError;
 }
-
 
 static int attributesCount(const CGLPixelFormatAttribute *attributes){
    int result;

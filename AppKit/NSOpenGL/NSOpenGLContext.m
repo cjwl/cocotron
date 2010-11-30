@@ -18,10 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_clearCurrentContext;
 @end
 
-@interface NSView(private)
--(void)_setOverlay:(CGOverlay *)overlay;
-@end
-
 @implementation NSOpenGLContext
 
 static inline NSOpenGLContext *_currentContext(){
@@ -112,7 +108,7 @@ static inline void _clearCurrentContext(){
    [_view _setOverlay:nil];
    _view=view;
    
-   CGOverlay *overlay=nil;
+   CGLPixelSurface *overlay=nil;
    
    CGLGetParameter(_glContext,kCGLCPOverlayPointer,(GLint *)&overlay);
    
