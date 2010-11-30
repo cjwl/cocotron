@@ -198,8 +198,23 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
 }
 
 -(BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)intermediates attributes:(NSDictionary *)attributes error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+	BOOL result = YES;
+	BOOL isDirectory = NO;
+	if (intermediates) {
+		NSArray *components = [path pathComponents];
+		int i, count = [components count];
+		for (i=1; i<=count && result; i++) {
+			NSString *makePath = [NSString pathWithComponents:[components subarrayWithRange:NSMakeRange(0,i)]];
+			if (![self fileExistsAtPath:makePath isDirectory:&isDirectory]) {
+				result = [self createDirectoryAtPath:makePath attributes:attributes];
+			}
+		}
+	}
+	else {
+		result = [self createDirectoryAtPath:path attributes:attributes];
+	}
+	// TODO: fill error
+	return result;
 }
 
 -(BOOL)createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)destination {

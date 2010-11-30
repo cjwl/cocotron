@@ -204,6 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAllItems {
    [_menu removeAllItems];
+	_selectedIndex = -1;
 }
 
 -(void)removeItemAtIndex:(NSInteger)index {
