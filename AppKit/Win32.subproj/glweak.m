@@ -25,6 +25,16 @@ void CGLGenBuffers(GLsizei n,GLuint *buffers) {
    function(n,buffers);
 }
 
+void CGLDeleteBuffers(GLsizei n,const GLuint *buffers) {
+   PFNGLDELETEBUFFERSPROC function=(PFNGLGENBUFFERSPROC)wglGetProcAddress("glDeleteBuffers");
+   
+   if(function==NULL){
+    NSLog(@"wglGetProcAddress(glDeleteBuffers) failed");
+    return;
+   }
+   function(n,buffers);
+}
+
 void CGLBindBuffer(GLenum target,GLuint buffer) {
    PFNGLBINDBUFFERPROC function=(PFNGLBINDBUFFERPROC)wglGetProcAddress("glBindBuffer");
 

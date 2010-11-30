@@ -4,6 +4,7 @@
 
 CGL_EXPORT void CGLBufferData(GLenum target,GLsizeiptr size,const GLvoid *data,GLenum usage);
 CGL_EXPORT void CGLGenBuffers(GLsizei n,GLuint *buffers);
+CGL_EXPORT void CGLDeleteBuffers(GLsizei n,const GLuint *buffers);
 CGL_EXPORT void CGLBindBuffer(GLenum target,GLuint buffer);
 CGL_EXPORT void CGLBufferSubData(GLenum target,GLintptr offset,GLsizeiptr size,const GLvoid *data);
 CGL_EXPORT void *CGLMapBuffer(GLenum target,GLenum access);

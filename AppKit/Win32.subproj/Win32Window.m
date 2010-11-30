@@ -16,11 +16,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
-#import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
 #import <QuartzCore/CAWindowOpenGLContext.h>
 #import "O2Surface_DIBSection.h"
-#import <CoreGraphics/CGOverlay.h>
+#import <CoreGraphics/CGLPixelSurface.h>
 
 @implementation Win32Window
 
@@ -519,7 +518,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
    BOOL allOpaque=YES;
    
-   for(CGOverlay *check in _overlays)
+   for(CGLPixelSurface *check in _overlays)
     if(![check isOpaque]){
      allOpaque=NO;
      break;
@@ -537,7 +536,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     // For the case where there is one overlay and it intersects the whole window
     // we check if the window backing is 0 and we just return the overlay for the window's contents
     // It would be better if the surface kept a flag if cleared.
-     CGOverlay *check=[_overlays objectAtIndex:0];
+     CGLPixelSurface *check=[_overlays objectAtIndex:0];
      O2Rect     checkFrame=[check frame];
      O2Rect     intersect=O2RectIntersection(checkFrame,O2RectMake(0,0,resultWidth,resultHeight));
      
@@ -554,7 +553,7 @@ i=count;
       if(i==count){
        fromPoint->x=-checkFrame.origin.x;
        fromPoint->y=-checkFrame.origin.y;
-       return [check surface];
+       return [check validSurface];
    }
      }
     }
@@ -575,12 +574,12 @@ i=count;
     result=_overlayResult;
    }
    
-   for(CGOverlay *overlay in _overlays){
+   for(CGLPixelSurface *overlay in _overlays){
     if([overlay isOpaque])
      continue;
      
     O2Rect                overFrame=[overlay frame];
-    O2Surface_DIBSection *overSurface=[overlay surface];
+    O2Surface_DIBSection *overSurface=[overlay validSurface];
     
     if(overSurface!=nil){
      BLENDFUNCTION blend;
@@ -600,11 +599,11 @@ i=count;
    return result;
 }
 
--(void)flushOverlay:(CGOverlay *)overlay {
+-(void)flushOverlay:(CGLPixelSurface *)overlay {
    if([overlay isOpaque]){
     O2Surface_DIBSection *backingSurface=[_backingContext surface];
     O2Rect                overFrame=[overlay frame];
-    O2Surface_DIBSection *overSurface=[overlay surface];
+    O2Surface_DIBSection *overSurface=[overlay validSurface];
     
     if(backingSurface!=nil){
      BLENDFUNCTION blend;
@@ -1036,14 +1035,14 @@ static void initializeWindowClass(WNDCLASS *class){
    }
 }
 
--(void)addOverlay:(CGOverlay *)overlay {
+-(void)addOverlay:(CGLPixelSurface *)overlay {
    [overlay setWindow:self];
    
    if(![_overlays containsObject:overlay])
     [_overlays addObject:overlay];
 }
 
--(void)removeOverlay:(CGOverlay *)overlay {
+-(void)removeOverlay:(CGLPixelSurface *)overlay {
    [overlay setWindow:nil];
    
    [_overlays removeObjectIdenticalTo:overlay];

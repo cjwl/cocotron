@@ -112,7 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(srcAttributes==nil)
     return NO;
 
-   if(![[srcAttributes fileType] isEqualTo:NSFileTypeRegular])
+   if(![[srcAttributes fileType] isEqual:NSFileTypeRegular])
     return NO;
     
    NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];

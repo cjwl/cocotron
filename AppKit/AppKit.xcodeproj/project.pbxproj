@@ -2112,11 +2112,11 @@
 		FE25FF630EE58712009C91B1 /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		FE25FF640EE58712009C91B1 /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* O2Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE25FF650EE58712009C91B1 /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
-		FE2752F11230201B00BD6643 /* CGOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGOverlay.m */; };
-		FE2752F21230201B00BD6643 /* CGOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGOverlay.m */; };
-		FE2752F31230201B00BD6643 /* CGOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGOverlay.m */; };
-		FE2752F41230201B00BD6643 /* CGOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGOverlay.m */; };
-		FE2752F51230201B00BD6643 /* CGOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGOverlay.m */; };
+		FE2752F11230201B00BD6643 /* CGLPixelSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGLPixelSurface.m */; };
+		FE2752F21230201B00BD6643 /* CGLPixelSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGLPixelSurface.m */; };
+		FE2752F31230201B00BD6643 /* CGLPixelSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGLPixelSurface.m */; };
+		FE2752F41230201B00BD6643 /* CGLPixelSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGLPixelSurface.m */; };
+		FE2752F51230201B00BD6643 /* CGLPixelSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2752F01230201B00BD6643 /* CGLPixelSurface.m */; };
 		FE2759A412341F3A00BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2759A312341F3A00BD6643 /* O2Context_distill.m */; };
 		FE2759A512341F3A00BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2759A312341F3A00BD6643 /* O2Context_distill.m */; };
 		FE2759A612341F3A00BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2759A312341F3A00BD6643 /* O2Context_distill.m */; };
@@ -4024,7 +4024,7 @@
 		FEF5A7E211E4EB0A009B0041 /* CAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5A7C911E4EB0A009B0041 /* CAMediaTimingFunction.m */; };
 		FEF5A7E311E4EB0A009B0041 /* CAPropertyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5A7CA11E4EB0A009B0041 /* CAPropertyAnimation.m */; };
 		FEF5A7E411E4EB0A009B0041 /* CATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5A7CB11E4EB0A009B0041 /* CATransition.m */; };
-		FEF9CAE90E133FF2003502ED /* O2Surface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */; };
+		FEF9CAE90E133FF2003502ED /* O2Surface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF9CAEA0E133FF2003502ED /* O2Surface_DIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CAE80E133FF2003502ED /* O2Surface_DIBSection.m */; };
 		FEF9CB9F0E13EB8E003502ED /* O2ColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB780E13EB8E003502ED /* O2ColorSpace+PDF.h */; };
 		FEF9CBA00E13EB8E003502ED /* O2ColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB790E13EB8E003502ED /* O2ColorSpace+PDF.m */; };
@@ -4828,7 +4828,7 @@
 		FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGBitmapContext.m; sourceTree = "<group>"; };
 		FE267EB50B8BD2690000DDC0 /* O2BitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2BitmapContext.h; sourceTree = "<group>"; };
 		FE267EB60B8BD2690000DDC0 /* O2BitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2BitmapContext.m; sourceTree = "<group>"; };
-		FE2752F01230201B00BD6643 /* CGOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGOverlay.m; sourceTree = "<group>"; };
+		FE2752F01230201B00BD6643 /* CGLPixelSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGLPixelSurface.m; sourceTree = "<group>"; };
 		FE2759A312341F3A00BD6643 /* O2Context_distill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_distill.m; sourceTree = "<group>"; };
 		FE27AC140BE9038000136B43 /* NSTextInput.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextInput.h; sourceTree = "<group>"; };
 		FE2A101D0B44A201006C03DE /* NSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAlert.h; sourceTree = "<group>"; };
@@ -5791,7 +5791,7 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				FE2752F01230201B00BD6643 /* CGOverlay.m */,
+				FE2752F01230201B00BD6643 /* CGLPixelSurface.m */,
 				FEF5A75D11E4E82F009B0041 /* CGDirectDisplay.m */,
 				FED56E6411A2D87100D6D09B /* CGGradient.m */,
 				FEF0889E10C5B06400D38A2F /* CGImageDestination.m */,
@@ -9547,7 +9547,7 @@
 				FE4A25BE1222C4D8009058C1 /* _NSRuleEditorViewSliceHolder.m in Sources */,
 				FE4A25CE1222C4E9009058C1 /* NSRuleEditorButtonCell.m in Sources */,
 				FE4A25D01222C4E9009058C1 /* NSRuleEditorViewSliceRow.m in Sources */,
-				FE2752F21230201B00BD6643 /* CGOverlay.m in Sources */,
+				FE2752F21230201B00BD6643 /* CGLPixelSurface.m in Sources */,
 				FE2759A512341F3A00BD6643 /* O2Context_distill.m in Sources */,
 				FE069E261245A4B90040F165 /* O2GlyphStencil.m in Sources */,
 				FE14436D1256D43D007FE685 /* _NSControllerArray.m in Sources */,
@@ -9939,7 +9939,7 @@
 				FE4A25C01222C4D8009058C1 /* _NSRuleEditorViewSliceHolder.m in Sources */,
 				FE4A25D21222C4E9009058C1 /* NSRuleEditorButtonCell.m in Sources */,
 				FE4A25D41222C4E9009058C1 /* NSRuleEditorViewSliceRow.m in Sources */,
-				FE2752F31230201B00BD6643 /* CGOverlay.m in Sources */,
+				FE2752F31230201B00BD6643 /* CGLPixelSurface.m in Sources */,
 				FE2759A612341F3A00BD6643 /* O2Context_distill.m in Sources */,
 				FE069E281245A4B90040F165 /* O2GlyphStencil.m in Sources */,
 				FE14436F1256D43D007FE685 /* _NSControllerArray.m in Sources */,
@@ -10361,7 +10361,7 @@
 				FE4A25BC1222C4D8009058C1 /* _NSRuleEditorViewSliceHolder.m in Sources */,
 				FE4A25CA1222C4E9009058C1 /* NSRuleEditorButtonCell.m in Sources */,
 				FE4A25CC1222C4E9009058C1 /* NSRuleEditorViewSliceRow.m in Sources */,
-				FE2752F11230201B00BD6643 /* CGOverlay.m in Sources */,
+				FE2752F11230201B00BD6643 /* CGLPixelSurface.m in Sources */,
 				FE2759A412341F3A00BD6643 /* O2Context_distill.m in Sources */,
 				FE069E241245A4B90040F165 /* O2GlyphStencil.m in Sources */,
 				FE14436B1256D43D007FE685 /* _NSControllerArray.m in Sources */,
@@ -10755,7 +10755,7 @@
 				FE4A25C41222C4D8009058C1 /* _NSRuleEditorViewSliceHolder.m in Sources */,
 				FE4A25DA1222C4E9009058C1 /* NSRuleEditorButtonCell.m in Sources */,
 				FE4A25DC1222C4E9009058C1 /* NSRuleEditorViewSliceRow.m in Sources */,
-				FE2752F51230201B00BD6643 /* CGOverlay.m in Sources */,
+				FE2752F51230201B00BD6643 /* CGLPixelSurface.m in Sources */,
 				FE2759A812341F3A00BD6643 /* O2Context_distill.m in Sources */,
 				FE069E2C1245A4B90040F165 /* O2GlyphStencil.m in Sources */,
 				FE1443731256D43D007FE685 /* _NSControllerArray.m in Sources */,
@@ -11044,7 +11044,7 @@
 				FE4A25C21222C4D8009058C1 /* _NSRuleEditorViewSliceHolder.m in Sources */,
 				FE4A25D61222C4E9009058C1 /* NSRuleEditorButtonCell.m in Sources */,
 				FE4A25D81222C4E9009058C1 /* NSRuleEditorViewSliceRow.m in Sources */,
-				FE2752F41230201B00BD6643 /* CGOverlay.m in Sources */,
+				FE2752F41230201B00BD6643 /* CGLPixelSurface.m in Sources */,
 				FE2759A712341F3A00BD6643 /* O2Context_distill.m in Sources */,
 				FE069E2A1245A4B90040F165 /* O2GlyphStencil.m in Sources */,
 				FE1443711256D43D007FE685 /* _NSControllerArray.m in Sources */,

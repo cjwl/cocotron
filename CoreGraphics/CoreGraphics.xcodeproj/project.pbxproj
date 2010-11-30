@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FE2752DC12301F4500BD6643 /* CGOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGOverlay.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE2752DE12301F4500BD6643 /* CGOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGOverlay.h */; };
-		FE2752E012301F4500BD6643 /* CGOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGOverlay.h */; };
-		FE2752E212301F4500BD6643 /* CGOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGOverlay.h */; };
+		FE2752DC12301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2752DE12301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; };
+		FE2752E012301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; };
+		FE2752E212301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; };
 		FE39C40E120357EA00A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C40C120357EA00A80A71 /* O2ClipState.h */; };
 		FE39C410120357EA00A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C40C120357EA00A80A71 /* O2ClipState.h */; };
 		FE39C412120357EA00A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C40C120357EA00A80A71 /* O2ClipState.h */; };
@@ -706,8 +706,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE2752DA12301F4500BD6643 /* CGOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGOverlay.h; sourceTree = "<group>"; };
-		FE2752DB12301F4500BD6643 /* CGOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGOverlay.m; sourceTree = "<group>"; };
+		FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLPixelSurface.h; sourceTree = "<group>"; };
+		FE2752DB12301F4500BD6643 /* CGLPixelSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGLPixelSurface.m; sourceTree = "<group>"; };
 		FE39C40C120357EA00A80A71 /* O2ClipState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ClipState.h; sourceTree = "<group>"; };
 		FE39C40D120357EA00A80A71 /* O2ClipState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ClipState.m; sourceTree = "<group>"; };
 		FE3C8539108779410018252A /* O2AffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O2AffineTransform.h; path = ../Onyx2D/O2AffineTransform.h; sourceTree = "<group>"; };
@@ -977,8 +977,8 @@
 		0867D691FE84028FC02AAC07 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				FE2752DA12301F4500BD6643 /* CGOverlay.h */,
-				FE2752DB12301F4500BD6643 /* CGOverlay.m */,
+				FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */,
+				FE2752DB12301F4500BD6643 /* CGLPixelSurface.m */,
 				FEF5A70611E4E782009B0041 /* CGError.h */,
 				FEAE004211E4E6AD00CA0912 /* CGDirectDisplay.h */,
 				FEAE004311E4E6AD00CA0912 /* CGDirectDisplay.m */,
@@ -1400,7 +1400,7 @@
 				FE71F41311FDD43700E6F801 /* O2TTFDecoder.h in Headers */,
 				FE43BE4711FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C40E120357EA00A80A71 /* O2ClipState.h in Headers */,
-				FE2752DC12301F4500BD6643 /* CGOverlay.h in Headers */,
+				FE2752DC12301F4500BD6643 /* CGLPixelSurface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1518,7 +1518,7 @@
 				FE71F41911FDD43700E6F801 /* O2TTFDecoder.h in Headers */,
 				FE43BE4D11FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C414120357EA00A80A71 /* O2ClipState.h in Headers */,
-				FE2752E212301F4500BD6643 /* CGOverlay.h in Headers */,
+				FE2752E212301F4500BD6643 /* CGLPixelSurface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1636,7 +1636,7 @@
 				FE71F41511FDD43700E6F801 /* O2TTFDecoder.h in Headers */,
 				FE43BE4911FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C410120357EA00A80A71 /* O2ClipState.h in Headers */,
-				FE2752DE12301F4500BD6643 /* CGOverlay.h in Headers */,
+				FE2752DE12301F4500BD6643 /* CGLPixelSurface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1754,7 +1754,7 @@
 				FE71F41711FDD43700E6F801 /* O2TTFDecoder.h in Headers */,
 				FE43BE4B11FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C412120357EA00A80A71 /* O2ClipState.h in Headers */,
-				FE2752E012301F4500BD6643 /* CGOverlay.h in Headers */,
+				FE2752E012301F4500BD6643 /* CGLPixelSurface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

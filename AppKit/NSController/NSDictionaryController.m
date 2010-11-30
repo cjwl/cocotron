@@ -85,19 +85,29 @@
    [super dealloc];
 }
 
+-(void)prepareContent {
+// do nothing ?
+}
+
+
 -(id)contentDictionary {
    return _contentDictionary;
 }
 
--(void)setContent:(id)dict {
-   if(dict!=_contentDictionary) {
+-(void)setContent:(id)value {
+   if(value==_contentDictionary)
+    return;
+    
       [_contentDictionary release];
+   _contentDictionary=nil;
       
-      if(NSIsControllerMarker(dict)) {
-         dict=nil;
+   if(NSIsControllerMarker(value)) {
+    [super setContent:[NSMutableArray array]];
+    return;
       }
       
-      _contentDictionary=[dict retain];
+   if([value isKindOfClass:[NSDictionary class]]){
+      _contentDictionary=[value retain];
 
       id contentArray=[NSMutableArray array];
 
