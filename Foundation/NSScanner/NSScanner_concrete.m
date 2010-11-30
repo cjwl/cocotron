@@ -69,7 +69,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isAtEnd {
-    return _location == [_string length];
+    NSUInteger length = [_string length];
+    if (_location == length) {
+        return YES;
+    }
+    
+    NSUInteger currentLocation = _location;
+    for(;currentLocation < length;currentLocation++){
+        if([_skipSet characterIsMember:[_string characterAtIndex:currentLocation]] == YES) {
+            continue;
+        }
+        else {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 -(NSUInteger)scanLocation {
