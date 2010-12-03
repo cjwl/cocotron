@@ -436,8 +436,34 @@ Ivar *class_copyIvarList(Class cls,unsigned int *countp) {
 }
 
 Method *class_copyMethodList(Class cls,unsigned int *countp) {
-   // UNIMPLEMENTED
-   return NULL;
+    int methodCount = 0;
+    void *iterator = 0;
+    struct objc_method_list *list;
+    Method *result = NULL;
+    int j = 0;
+    
+    while((list = class_nextMethodList(cls, &iterator)) != NULL)
+    {
+        methodCount += list->method_count;
+    }
+    
+    if(countp != NULL) {
+        *countp = methodCount;
+    }
+    
+    result=malloc(sizeof(Method)*methodCount);
+    iterator = 0;
+    
+    while((list = class_nextMethodList(cls, &iterator)) != NULL)
+    {
+        int mCount = list->method_count;
+        for(int i = 0;i < mCount; i++) {
+            result[j] = &list->method_list[i];
+            j++;
+        }
+    }
+    
+    return result;
 }
 
 objc_property_t *class_copyPropertyList(Class cls,unsigned int *countp) {
