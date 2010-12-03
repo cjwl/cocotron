@@ -7,9 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "O2Context_builtin_gdi.h"
 #import <Onyx2D/O2GraphicsState.h>
-#import "O2Surface_DIBSection.h"
+#import <Onyx2D/O2Surface_DIBSection.h>
 #import "O2DeviceContext_gdi.h"
-#import "O2Font_gdi.h"
+#import <Onyx2D/O2Font_gdi.h>
 #if 0
 #import <Onyx2D/O2Font_freetype.h>
 #endif
@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2Color.h>
 #import <Onyx2D/O2Paint_color.h>
-#import <AppKit/Win32Font.h>
+#import <Onyx2D/Win32Font.h>
 
 @implementation O2Context_builtin_gdi
 

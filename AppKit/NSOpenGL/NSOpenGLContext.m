@@ -14,6 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <OpenGL/OpenGL.h>
 #import <Foundation/NSThread-Private.h>
 
+@interface NSView(private)
+-(void)_setOverlay:(CGLPixelSurface *)overlay;
+@end
+
 @interface NSOpenGLContext(private)
 -(void)_clearCurrentContext;
 @end

@@ -1,4 +1,4 @@
-#import "O2Font_gdi.h"
+#import <Onyx2D/O2Font_gdi.h>
 #import <windows.h>
 #import <Foundation/NSString_win32.h>
 #import "Win32Font.h"

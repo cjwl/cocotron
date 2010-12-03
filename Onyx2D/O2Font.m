@@ -334,12 +334,15 @@ NSString *O2MacRomanGlyphNames[256]={
    return [[O2Encoding alloc] initWithGlyphs:glyphs unicode:unicode];
 }
 
+extern O2FontRef O2FontCreateWithFontName_platform(NSString *name);
+extern O2FontRef O2FontCreateWithDataProvider_platform(NSString *name);
+
 O2FontRef O2FontCreateWithFontName(NSString *name) {
-   return (O2FontRef)O2FontCreateWithFontName_platform(name);
+   return O2FontCreateWithFontName_platform(name);
 }
 
 O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider) {
-   return (O2FontRef)O2FontCreateWithDataProvider_platform(provider);
+   return O2FontCreateWithDataProvider_platform(provider);
 }
 
 O2FontRef O2FontRetain(O2FontRef self) {

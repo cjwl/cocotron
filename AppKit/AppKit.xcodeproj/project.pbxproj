@@ -3155,6 +3155,8 @@
 		FE5A8BDD10C6F50E005E348A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FE5C69A10D76039F00098551 /* O2DeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* O2DeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C69A20D76039F00098551 /* O2DeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */; };
+		FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */; };
+		FE5F4CA912A860BA00F5F334 /* O2Context_gdi+AppKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5F4CA712A860BA00F5F334 /* O2Context_gdi+AppKit.m */; };
 		FE669C920F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
 		FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
 		FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
@@ -4975,6 +4977,8 @@
 		FE5A8BE310C6F50E005E348A /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE5C699F0D76039F00098551 /* O2DeviceContext_gdiDIBSection.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2DeviceContext_gdiDIBSection.h; sourceTree = "<group>"; };
 		FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2DeviceContext_gdiDIBSection.m; sourceTree = "<group>"; };
+		FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O2Context_gdi+AppKit.h"; sourceTree = "<group>"; };
+		FE5F4CA712A860BA00F5F334 /* O2Context_gdi+AppKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2Context_gdi+AppKit.m"; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
 		FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableParagraphStyle.m; sourceTree = "<group>"; };
 		FE64B8A70B81239D007EE513 /* O2ColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2ColorSpace.h; sourceTree = "<group>"; };
@@ -5866,6 +5870,8 @@
 		6E2B56060976075300DA0954 /* Win32 */ = {
 			isa = PBXGroup;
 			children = (
+				FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */,
+				FE5F4CA712A860BA00F5F334 /* O2Context_gdi+AppKit.m */,
 				FEAEFF7911E4D1B600CA0912 /* glweak.m */,
 				FED35B6E104DF8C10038ED7C /* CGLContext.m */,
 				6E2B56620976075400DA0954 /* dllmain.m */,
@@ -5879,18 +5885,6 @@
 				6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */,
 				FEA25F960EECCE4D008750D0 /* NSSound_win32.h */,
 				FEA25F970EECCE4D008750D0 /* NSSound_win32.m */,
-				FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */,
-				FEF9CCC20E1416C4003502ED /* O2Context_builtin_gdi.m */,
-				FEABD6030CB9D0C90035F828 /* O2Context_gdi.h */,
-				FEABD6040CB9D0C90035F828 /* O2Context_gdi.m */,
-				FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */,
-				FE57F8D10C46B68C0078FFC1 /* O2DeviceContext_gdi.m */,
-				FE5C699F0D76039F00098551 /* O2DeviceContext_gdiDIBSection.h */,
-				FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */,
-				FEA661210FF5C6F200E2C03B /* O2Font_gdi.h */,
-				FEA661220FF5C6F200E2C03B /* O2Font_gdi.m */,
-				FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */,
-				FEF9CAE80E133FF2003502ED /* O2Surface_DIBSection.m */,
 				FE1CEA6B0C8F12F800184630 /* opengl_dll.h */,
 				FE1CEA6C0C8F12F800184630 /* opengl_dll.m */,
 				6E2B56370976075400DA0954 /* Win32Cursor.h */,
@@ -5906,8 +5900,6 @@
 				6E2B56160976075300DA0954 /* Win32Event.m */,
 				6E2B56550976075400DA0954 /* Win32EventInputSource.h */,
 				6E2B56280976075400DA0954 /* Win32EventInputSource.m */,
-				6E2B56450976075400DA0954 /* Win32Font.h */,
-				6E2B56180976075400DA0954 /* Win32Font.m */,
 				6E2B56530976075400DA0954 /* Win32RunningCopyPipe.h */,
 				6E2B56260976075400DA0954 /* Win32RunningCopyPipe.m */,
 				6E2B564D0976075400DA0954 /* Win32Window.h */,
@@ -6250,6 +6242,7 @@
 		FE5C0EE511638FC600065D1C /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE5F4BF712A83CA600F5F334 /* platform_Windows */,
 				FE99DA72128396B6006D789F /* O2Encoder_PNG.h */,
 				FE99DA73128396B6006D789F /* O2Encoder_PNG.m */,
 				FE587952126961BC009B9EDF /* O2ClipMask.h */,
@@ -6429,6 +6422,27 @@
 			);
 			name = Onyx2D;
 			path = ../Onyx2D;
+			sourceTree = "<group>";
+		};
+		FE5F4BF712A83CA600F5F334 /* platform_Windows */ = {
+			isa = PBXGroup;
+			children = (
+				FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */,
+				FEF9CCC20E1416C4003502ED /* O2Context_builtin_gdi.m */,
+				FEABD6030CB9D0C90035F828 /* O2Context_gdi.h */,
+				FEABD6040CB9D0C90035F828 /* O2Context_gdi.m */,
+				FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */,
+				FE57F8D10C46B68C0078FFC1 /* O2DeviceContext_gdi.m */,
+				FE5C699F0D76039F00098551 /* O2DeviceContext_gdiDIBSection.h */,
+				FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */,
+				FEA661210FF5C6F200E2C03B /* O2Font_gdi.h */,
+				FEA661220FF5C6F200E2C03B /* O2Font_gdi.m */,
+				FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */,
+				FEF9CAE80E133FF2003502ED /* O2Surface_DIBSection.m */,
+				6E2B56450976075400DA0954 /* Win32Font.h */,
+				6E2B56180976075400DA0954 /* Win32Font.m */,
+			);
+			path = platform_Windows;
 			sourceTree = "<group>";
 		};
 		FE71E83611FA88BE00E6F801 /* English.lproj */ = {
@@ -7761,6 +7775,7 @@
 				FE58788112694AD2009B9EDF /* O2argb32f.h in Headers */,
 				FE587954126961BD009B9EDF /* O2ClipMask.h in Headers */,
 				FE99DA74128396B6006D789F /* O2Encoder_PNG.h in Headers */,
+				FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10369,6 +10384,7 @@
 				FE58791512695E21009B9EDF /* O2argb32f.m in Sources */,
 				FE587955126961BD009B9EDF /* O2ClipMask.m in Sources */,
 				FE99DA75128396B6006D789F /* O2Encoder_PNG.m in Sources */,
+				FE5F4CA912A860BA00F5F334 /* O2Context_gdi+AppKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
