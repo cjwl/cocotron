@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Cursor.h>
-#import <AppKit/O2Context_gdi.h>
+#import <Onyx2D/O2Context_gdi.h>
 #import <AppKit/Win32DeviceContextWindow.h>
-#import <Onyx2D/O2GraphicsState.h>
+#import "O2Context_gdi+AppKit.h"
 #import <AppKit/Win32EventInputSource.h>
 
 #import <AppKit/NSScreen.h>

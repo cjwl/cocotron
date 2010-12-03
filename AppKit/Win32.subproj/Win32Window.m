@@ -12,13 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_win32.h>
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2Surface.h>
-#import <AppKit/O2Context_gdi.h>
+#import <Onyx2D/O2Context_gdi.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSDrawerWindow.h>
 #import <QuartzCore/CAWindowOpenGLContext.h>
-#import "O2Surface_DIBSection.h"
+#import <Onyx2D/O2Surface_DIBSection.h>
 #import <CoreGraphics/CGLPixelSurface.h>
 
 @implementation Win32Window

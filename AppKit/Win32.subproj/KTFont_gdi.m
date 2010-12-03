@@ -1,9 +1,9 @@
 #import "KTFont_gdi.h"
 #import <Onyx2D/O2Font.h>
-#import "O2Context_gdi.h"
+#import <Onyx2D/O2Context_gdi.h>
 #import "Win32Display.h"
-#import "Win32Font.h"
-#import "O2Font_gdi.h"
+#import <Onyx2D/Win32Font.h>
+#import <Onyx2D/O2Font_gdi.h>
 #import <Onyx2D/O2MutablePath.h>
 #import <AppKit/NSRaise.h>
 

@@ -5,14 +5,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "O2Context_gdi.h"
-#import "Win32Window.h"
-#import "Win32DeviceContextPrinter.h"
+#import <Onyx2D/O2Context_gdi.h>
 #import "O2DeviceContext_gdiDIBSection.h"
-#import "O2Surface_DIBSection.h"
-#import "Win32DeviceContextWindow.h"
+#import <Onyx2D/O2Surface_DIBSection.h>
 #import <Onyx2D/O2GraphicsState.h>
-#import <AppKit/O2DeviceContext_gdi.h>
+#import <Onyx2D/O2DeviceContext_gdi.h>
 #import <Onyx2D/O2MutablePath.h>
 #import <Onyx2D/O2Color.h>
 #import <Onyx2D/O2ColorSpace.h>
@@ -21,12 +18,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Function.h>
 #import <Onyx2D/O2Context_builtin.h>
 #import <Onyx2D/O2PDFContext.h>
-#import "O2Font_gdi.h"
+#import <Onyx2D/O2Font_gdi.h>
 #import <Onyx2D/O2Image.h>
 #import <Onyx2D/O2ClipState.h>
 #import <Onyx2D/O2ClipPhase.h>
-#import <AppKit/Win32Font.h>
-#import <AppKit/NSRaise.h>
+#import <Onyx2D/Win32Font.h>
+#import <Foundation/NSRaise.h>
 
 static inline int float2int(float coord){
    return floorf(coord);
@@ -123,55 +120,6 @@ static RECT NSRectToRECT(NSRect rect) {
    return self;
 }
 
--initWithHWND:(HWND)handle {
-   O2DeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
-   NSSize                  size=[deviceContext pixelSize];
-   O2GState        *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
-
-   return [self initWithGraphicsState:gState deviceContext:deviceContext];
-}
-
--initWithPrinterDC:(HDC)printer auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
-   O2DeviceContext_gdi    *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:printer] autorelease];
-   NSSize                  pointSize=[deviceContext pointSize];
-   NSSize                  pixelsPerInch=[deviceContext pixelsPerInch];
-
-   O2AffineTransform       scale=O2AffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0);
-   O2GState              *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:pointSize.height concat:scale] autorelease];
-      
-   if([self initWithGraphicsState:gState deviceContext:deviceContext]==nil)
-    return nil;
-   
-   NSString *title=[auxiliaryInfo objectForKey:kO2PDFContextTitle];
-   
-   if(title==nil)
-    title=@"Untitled";
-
-   [[self deviceContext] beginPrintingWithDocumentName:title];
-   
-   return self;
-}
-
--initWithSize:(NSSize)size window:(CGWindow *)window {
-   O2GState        *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
-   HWND                    handle=[(Win32Window *)window windowHandle];
-   O2DeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
-
-   return [self initWithGraphicsState:gState deviceContext:deviceContext];
-}
-
--initWithSize:(NSSize)size context:(O2Context *)otherX {
-   O2GState         *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
-   O2Context_gdi    *other=(O2Context_gdi *)otherX;
-   O2Surface_DIBSection *surface=[[O2Surface_DIBSection alloc] initWithWidth:size.width height:size.height compatibleWithDeviceContext:[other deviceContext]];
-
-   self=[self initWithGraphicsState:gState deviceContext:[surface deviceContext]];
-   
-   _surface=surface;
-   
-   return self;
-}
-
 -(void)dealloc {
    [_deviceContext release];
    [_gdiFont release];
@@ -188,10 +136,6 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(HDC)dc {
    return _dc;
-}
-
--(HWND)windowHandle {
-   return [[[self deviceContext] windowDeviceContext] windowHandle];
 }
 
 -(HFONT)fontHandle {

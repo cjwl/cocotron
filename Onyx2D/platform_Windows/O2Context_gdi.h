@@ -6,26 +6,27 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/O2DeviceContext_gdi.h>
-#import <Foundation/NSGeometry.h>
+#import <Onyx2D/O2Context.h>
+#import <windows.h>
 
-@interface O2DeviceContext_gdiDIBSection : O2DeviceContext_gdi {
-   O2DeviceContext_gdi *_compatible;
-   HBITMAP              _bitmap;
-   int                  _bitsPerPixel;
-   size_t               _bitsPerComponent;
-   size_t               _bytesPerRow;
-   void                *_bits;
+@class O2DeviceContext_gdi,Win32Font;
+
+@interface O2Context_gdi : O2Context {
+   O2DeviceContext_gdi *_deviceContext;
+   O2Surface           *_surface;
+   HDC  _dc;
+   BOOL _isAdvanced;
+   Win32Font *_gdiFont;
 }
 
--initARGB32WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
--initGray8WithWidth:(size_t)width height:(size_t)height deviceContext:(O2DeviceContext_gdi *)compatible;
+-initWithGraphicsState:(O2GState *)state deviceContext:(O2DeviceContext_gdi *)deviceContext;
 
--(void *)bitmapBytes;
+-(NSSize)pointSize;
 
--(size_t)bitsPerComponent;
--(size_t)bytesPerRow;
+-(HDC)dc;
+-(HFONT)fontHandle;
 
--(int)bitsPerPixel;
+-(O2DeviceContext_gdi *)deviceContext;
 
 @end
+
