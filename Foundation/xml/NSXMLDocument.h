@@ -21,7 +21,6 @@ enum {
 typedef NSUInteger NSXMLDocumentContentKind;
 
 @interface NSXMLDocument : NSXMLNode {
-   NSUInteger _options;
    NSXMLDocumentContentKind _contentKind;
    NSString     *_version;
    NSString     *_characterEncoding;

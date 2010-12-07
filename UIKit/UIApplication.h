@@ -69,7 +69,7 @@ UIKIT_EXPORT NSString *const UIApplicationWillEnterForegroundNotification;
 UIKIT_EXPORT NSString *const UIApplicationWillResignActiveNotification;
 UIKIT_EXPORT NSString *const UIApplicationWillTerminateNotification;
 
-int UIApplicationMain (int argc,char *argv[],NSString *applicationClassName,NSString *appDelegateClassName);
+UIKIT_EXPORT int UIApplicationMain (int argc,char *argv[],NSString *applicationClassName,NSString *appDelegateClassName);
 
 
 @protocol UIApplicationDelegate
@@ -77,6 +77,9 @@ int UIApplicationMain (int argc,char *argv[],NSString *applicationClassName,NSSt
 
 
 @interface UIApplication : UIResponder {
+   id              _delegate;
+   NSMutableArray *_windows;
+   UIWindow       *_keyWindow;
 }
 
 @property(nonatomic,assign) id<UIApplicationDelegate> delegate;

@@ -1,6 +1,9 @@
 #import <UIKit/UIView.h>
+#import <UIKit/UIInterface.h>
 
-@interace UINavigationBar : UIView {
+@class UINavigationItem,UIBarButtonItem;
+
+@interface UINavigationBar : UIView {
 }
 
 @property(nonatomic,assign) UIBarStyle barStyle;
