@@ -13,117 +13,88 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSubmenuView
 
-#define TITLE_TOP_MARGIN 2
-#define TITLE_BOTTOM_MARGIN 2
-#define TITLE_KEY_GAP 8
-#define RIGHT_ARROW_LEFT_MARGIN 0
-#define RIGHT_ARROW_RIGHT_MARGIN 2
+#define MIN_TITLE_KEY_GAP 8
 #define WINDOW_BORDER_THICKNESS 3
 
--(NSSize)sizeForMenuItemTitle:(NSMenuItem *)item {
-   NSString     *title=[item title];
-// FIXME: This is expensive and is used on each mouse movement for each menu item.
-   NSSize        size=[title sizeWithAttributes: _itemBlackAttributes];
-
-   size.height+=TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
-
-   return size;
-}
-
--(NSSize)sizeForMenuItemKeyEquivalent:(NSMenuItem *)item {
-   NSString     *keyString=[item _keyEquivalentDescription];
-
-   if([[item keyEquivalent] length]==0)
-    return NSZeroSize;
-
-   return [keyString sizeWithAttributes: _itemBlackAttributes];
-}
-
--(NSSize)separatorSize {
-// the separator is two pixels high with 3 pixels on top, 4 on bottom
-  return NSMakeSize(0,9);
-}
-
--(NSSize)checkMarkSize {
-// not implemented
-// The width is icon width + margins
-// The height is the height of the actual icon
-   return NSMakeSize(17,7);
-}
-
--(NSSize)rightArrowSize {
-   NSSize result=[[self graphicsStyle] sizeOfMenuBranchArrow];
- 
-   result.height+=TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
-   result.width+=RIGHT_ARROW_LEFT_MARGIN;
-   result.width+=RIGHT_ARROW_RIGHT_MARGIN;
-
-   return result;
-}
-
--(NSSize)titleSizeForMenuItem:(NSMenuItem *)item {
-   if([item isSeparatorItem])
-    return [self separatorSize];
-   else {
-    NSSize checkMarkSize=[self checkMarkSize];
-    NSSize rightArrowSize=[self rightArrowSize];
-    NSSize titleSize=[self sizeForMenuItemTitle:item];
-    NSSize keySize=[self sizeForMenuItemKeyEquivalent:item];
-    float  height=MAX(titleSize.height,keySize.height);
-
-    height=MAX(height,checkMarkSize.height);
-
-    if([item hasSubmenu])
-     height=MAX(height,rightArrowSize.height);
-
-    return NSMakeSize(titleSize.width,height);
-   }
-}
-
--(NSSize)titleAreaSizeWithMenuItems:(NSArray *)items {
-   int      i,count=[items count];
-   NSSize   result=NSZeroSize;
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[items objectAtIndex:i];
-    NSSize      size=[self titleSizeForMenuItem:item];
-
-    result.height+=size.height;
-    result.width=MAX(result.width,size.width);
-   }
-
-   return result;
+-(NSSize)contentSizeForItem:(NSMenuItem *)item {
+	if ([item isSeparatorItem])	{
+		return [[self graphicsStyle] menuItemSeparatorSize];
+	}
+	else {
+#define ITEM_MAX(size) height = MAX(height,size.height); width += size.width;
+		float width = 0;
+		float height = 0;
+		NSSize size;
+		
+		size = [[self graphicsStyle] menuItemGutterSize];
+		ITEM_MAX(size);
+		size = [[self graphicsStyle] menuItemTextSize:[item title]];
+		ITEM_MAX(size);
+		if ([[item keyEquivalent] length] == 0)
+		{
+			size = [[self graphicsStyle] menuItemTextSize:[item _keyEquivalentDescription]];
+			ITEM_MAX(size);
+		}
+		if ([item hasSubmenu])
+		{
+			size = [[self graphicsStyle] menuItemBranchArrowSize];
+			ITEM_MAX(size);
+		}
+		return NSMakeSize(width,height);
+	}
 }
 
 -(NSSize)sizeForMenuItems:(NSArray *)items {
-   NSSize   result=NSZeroSize;
-   NSSize   checkMarkSize=[self checkMarkSize];
-   NSSize   rightArrowSize=[self rightArrowSize];
-   int      i,count=[items count];
-   NSSize   titleAreaSize=[self titleAreaSizeWithMenuItems:items];
-   float    keysWidth=0;
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[items objectAtIndex:i];
-    NSSize      size=[self sizeForMenuItemKeyEquivalent:item];
-
-    keysWidth=MAX(keysWidth,size.width);
-   }
-
-   result.height=titleAreaSize.height;
-   result.width=checkMarkSize.width;
-   result.width+=titleAreaSize.width;
-   result.width+= TITLE_KEY_GAP;
-   result.width+=keysWidth;
-   result.width+=rightArrowSize.width;
-
-// border
-   result.width+=6;
-   result.height+=6;
-
-   return result;
+	NSSize   result=NSZeroSize;
+	float    maxTitleWidth = 0.0f;
+	float    maxKeyWidth = 0.0f; 
+	float    totalHeight = 0.0f;
+	NSSize   gutterSize = [[self graphicsStyle] menuItemGutterSize];
+	NSSize   rightArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+	unsigned i,count=[items count];
+	
+	for (i = 0;i<count;i++)
+	{
+		NSMenuItem *item = [items objectAtIndex:i];
+		if ([item isSeparatorItem])
+		{
+			totalHeight += [[self graphicsStyle] menuItemSeparatorSize].height;
+		}
+		else
+		{
+			NSSize     size = [[self graphicsStyle] menuItemTextSize:[item title]];
+			float      height = 0.0f;
+			
+			maxTitleWidth = MAX(maxTitleWidth,size.width);
+			height = MAX(height,size.height);
+			
+			if ([[item keyEquivalent] length] != 0)
+			{
+				size = [[self graphicsStyle] menuItemTextSize:[item _keyEquivalentDescription]];
+				maxKeyWidth=MAX(maxKeyWidth,size.width);
+				height = MAX(height,size.height);
+			}
+			height = MAX(height,gutterSize.height);
+			height = MAX(height,rightArrowSize.height);
+			
+			totalHeight += height;
+		}
+	}
+	
+	result.height = totalHeight;
+	result.width = gutterSize.width;
+	result.width += maxTitleWidth;
+	result.width += MIN_TITLE_KEY_GAP;
+	result.width += maxKeyWidth;
+	result.width += rightArrowSize.width;
+	
+	// border. Magic constants that may not be right for Win7 vs XP
+	result.width += WINDOW_BORDER_THICKNESS*2;
+	result.height += WINDOW_BORDER_THICKNESS*2;
+	
+	return result;
 }
-
+	
 -initWithMenu:(NSMenu *)menu {
    NSRect frame=NSZeroRect;
 
@@ -132,33 +103,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _menu=[menu retain];
    _selectedItemIndex=NSNotFound;
 
-   _itemFont=[[NSFont menuFontOfSize:0] retain];
-   _itemBlackAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
-     _itemFont,NSFontAttributeName,
-     [NSColor menuItemTextColor],NSForegroundColorAttributeName,
-     nil] retain];
-   _itemWhiteAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
-     _itemFont,NSFontAttributeName,
-     [NSColor selectedMenuItemTextColor],NSForegroundColorAttributeName,
-     nil] retain];
-   _itemGrayAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
-     _itemFont,NSFontAttributeName,
-     [NSColor disabledControlTextColor],NSForegroundColorAttributeName,
-     nil] retain];
-
    frame.size=[self sizeForMenuItems:[self visibleItemArray]];
    [self setFrame:frame];
 
    return self;
-}
-
--(void)dealloc {
-   // [_menu release]; NSView does this
-   [_itemFont release];
-   [_itemBlackAttributes release];
-   [_itemWhiteAttributes release];
-   [_itemGrayAttributes release];
-   [super dealloc];
 }
 
 -(BOOL)isFlipped {
@@ -169,97 +117,88 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
    return NSInsetRect(rect, WINDOW_BORDER_THICKNESS, WINDOW_BORDER_THICKNESS);
 }
 
--(NSRect)drawSubmenuBackground {
-   NSRect rect=[self bounds];
-   
-   [[self graphicsStyle] drawMenuWindowBackgroundInRect:rect];
-
-   return boundsToTitleAreaRect(rect);
-}
-
--(float)drawSeparatorItemAtPoint:(NSPoint)point width:(float)width {   
-   point.x+=1;
-   point.y+=3;
-   width-=2;
-
-   [[self graphicsStyle] drawMenuSeparatorInRect:NSMakeRect(point.x,point.y,width,2)];
-   
-   return [self separatorSize].height;
-}
-
--(void)drawRect:(NSRect)rect {
-   NSRect   itemArea=[self drawSubmenuBackground];
-   NSArray *items=[self visibleItemArray];
-   unsigned i,count=[items count];
-   NSSize   titleAreaSize=[self titleAreaSizeWithMenuItems:items];
-   NSPoint  origin=itemArea.origin;
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[items objectAtIndex:i];
-
-    if([item isSeparatorItem]){
-     origin.y+=[self drawSeparatorItemAtPoint:origin width:itemArea.size.width];
-    }
-    else {
-     BOOL          selected=(i==_selectedItemIndex)?YES:NO;
-     NSPoint       point=origin;
-     NSDictionary *attributes=selected?_itemWhiteAttributes:_itemBlackAttributes;
-     NSString     *title=[item title];
-     NSString     *keyString=[item _keyEquivalentDescription];
-     float         itemHeight=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
-
-     if(selected){
-      NSRect fill=NSMakeRect(origin.x,origin.y,itemArea.size.width,itemHeight);
-      [[NSColor selectedMenuItemColor] setFill];
-      NSRectFill(fill);
-     }
-
-     point.x+=[self checkMarkSize].width;
-     point.y+=TITLE_TOP_MARGIN;
-
-     if([item isEnabled] || [item hasSubmenu])
-      [title drawAtPoint:point withAttributes:attributes];
-     else {
-      if(!selected)
-       [title drawAtPoint:NSMakePoint(point.x+1,point.y+1) withAttributes:_itemWhiteAttributes];
-
-      [title drawAtPoint:point withAttributes:_itemGrayAttributes];
-     }
-
-     if([[item keyEquivalent] length]>0){
-      point.x+=titleAreaSize.width+TITLE_KEY_GAP;
-      if([item isEnabled] || [item hasSubmenu])
-       [keyString drawAtPoint:point withAttributes:attributes];
-      else {
-       if(!selected)
-        [keyString drawAtPoint:NSMakePoint(point.x+1,point.y+1) withAttributes:_itemWhiteAttributes];
-
-       [keyString drawAtPoint:point withAttributes:_itemGrayAttributes];
-      }
-     }
-
-     if([item hasSubmenu]){
-      NSSize size=[[self graphicsStyle] sizeOfMenuBranchArrow];
-
-      point.x=NSMaxX(itemArea)-RIGHT_ARROW_RIGHT_MARGIN-size.width;
-      [[self graphicsStyle] drawMenuBranchArrowAtPoint:point selected:selected];
-     }
-
-	if([item state]){		
-		point.y--;
-		point.x=origin.x+2;
-		[[self graphicsStyle] drawMenuCheckmarkAtPoint:point selected:selected];
-	}
-
-     origin.y+=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
-    }
-   }
-}
-
 -(float)heightOfMenuItem:(NSMenuItem *)item {
-   NSSize titleSize=[self titleSizeForMenuItem:item];
+	NSSize titleSize=[self contentSizeForItem:item];
+	
+	return titleSize.height;
+}
 
-   return titleSize.height;
+-(void)drawRect:(NSRect)rect 
+{
+	NSRect   bounds = [self bounds];
+	NSRect   itemArea=boundsToTitleAreaRect(bounds);
+	NSArray *items=[self visibleItemArray];
+	unsigned i,count=[items count];
+	NSPoint  origin=itemArea.origin;
+	
+	[[self graphicsStyle] drawMenuWindowBackgroundInRect:rect];
+	
+	for(i=0;i<count;i++)
+	{
+		NSMenuItem *item=[items objectAtIndex:i];
+		
+		if ([item isSeparatorItem])
+		{
+			NSRect separatorRect = NSMakeRect(origin.x,origin.y,NSWidth(itemArea),[[self graphicsStyle] menuItemSeparatorSize].height);
+			
+			[[self graphicsStyle] drawMenuSeparatorInRect:separatorRect];
+			
+			origin.y += NSHeight(separatorRect);
+		}
+		else 
+		{
+#define CENTER_PART_RECT_VERTICALLY(partSize)                          \
+{                                                                      \
+	NSSize __partSize = (partSize);                                    \
+	partRect.origin.y = origin.y + (itemHeight - partSize.height) / 2; \
+	partRect.size.height = partSize.height;                            \
+	partRect.size.width = partSize.width;                              \
+}
+			BOOL         selected = (i ==_selectedItemIndex) ? YES : NO;
+			NSString     *title = [item title];
+			NSString     *keyString = [item _keyEquivalentDescription];
+			float        itemHeight = [self heightOfMenuItem:item];
+			NSRect       partRect;
+			NSSize       partSize;
+			
+			partRect = NSMakeRect(origin.x,origin.y,itemArea.size.width,itemHeight);
+
+			if (selected)
+				[[self graphicsStyle] drawMenuSelectionInRect:partRect enabled:([item isEnabled] || [item hasSubmenu])];
+			
+			CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemGutterSize]);
+			if ([item state])
+			{
+				[[self graphicsStyle] drawMenuGutterInRect:partRect];			
+				[[self graphicsStyle] drawMenuCheckmarkInRect:partRect selected:selected];
+			}
+			
+			partRect.origin.x += partRect.size.width;
+			CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:title]);
+			[[self graphicsStyle] drawMenuItemText:title inRect:partRect enabled:([item isEnabled] || [item hasSubmenu]) selected:selected];
+			
+			if ([keyString length] > 0)
+			{
+				NSSize branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+				NSSize keyEquivalentSize = [[self graphicsStyle] menuItemTextSize:keyString];
+				
+				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width - keyEquivalentSize.width;
+				CENTER_PART_RECT_VERTICALLY(keyEquivalentSize);
+				[[self graphicsStyle] drawMenuItemText:keyString inRect:partRect enabled:([item isEnabled] || [item hasSubmenu]) selected:selected];
+			}
+			
+			if([item hasSubmenu])
+			{
+				NSSize branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width;
+				partRect.size.width = branchArrowSize.width;
+				CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:keyString]);
+				[[self graphicsStyle] drawMenuBranchArrowInRect:partRect selected:selected];
+			}
+			
+			origin.y += itemHeight;
+		}
+	}
 }
 
 -(unsigned)itemIndexAtPoint:(NSPoint)point {
@@ -353,5 +292,80 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
    return nil;
 }
 
+@end
+
+/*@implementation MenuMetrics
+
+-(id)initWithStyle:(NSGraphicsStyle *)style
+{
+	checkBoxMargins = [style menuItemCheckBoxMargins];
+	checkBoxBackgroundMargins = [style menuItemCheckBoxBackgroundMargins];
+	itemMargins = [style menuItemMargins];
+    keyEquivalentMargins = [style menuItemKeyEquivalentMargins];
+	
+	checkMarkSize = [style menuItemCheckMarkSize];
+	separatorSize = [style menuItemSeparatorSize];
+	
+	minTitleKeyEquivalentWidth = [style minimumTitleKeyEquivalentWidth];
+	extraTitleGutterMargin = [style extraTitleGutterMargin];
+	
+	titleMargins = itemMargins;
+	titleMargins.left = [style menuBorderBackgroundSize].width;
+	titleMargins.right = [style menuBorderSize].width;
+	
+	extraCheckMarkHeight = checkBoxBackgroundMargins.top + checkBoxBackgroundMargins.bottom;
+}
+
+-(Margins)checkMarkMargins
+{
+	return checkMarkMargins;
+}
+
+-(Margins)checkMarkBackgroundMargins
+{
+	return checkMarkBackgroundMargins;
+}
+
+-(Margins)itemMargins
+{
+	return itemMargins;
+}
+
+-(Margins)titleMargins
+{
+	return titleMargins;
+}
+
+-(Margins)keyEquivalentMargins
+{
+	return keyEquivalentMargins;
+}
+
+-(NSSize)checkMarkSize
+{
+	return checkMarkSize;
+}
+
+-(NSSize)separatorSize
+{
+	return separatorSize;
+}
+
+-(float)minTitleKeyEquivalentWidth
+{
+	return minTitleKeyEquivalentWidth;
+}
+
+-(float)extraTitleGutterMargin
+{
+	return extraTitleGutterMargin;
+}
+
+-(float)extraCheckMarkHeight
+{
+	return extraCheckMarkHeight;
+}
+
 
 @end
+*/
