@@ -36,6 +36,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithObjectType:kO2PDFObjectTypeNull] autorelease];
 }
 
++pdfObjectProcMark {
+   return [[[self alloc] initWithObjectType:O2PDFObjectTypeMark_proc_open] autorelease];
+}
+
++pdfObjectProcMarkEnd {
+   return [[[self alloc] initWithObjectType:O2PDFObjectTypeMark_proc_close] autorelease];
+}
 
 -(O2PDFObjectType)objectType {
    return _objectType;

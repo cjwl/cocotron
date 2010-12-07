@@ -8,6 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/O2PDFObject.h>
 
+@class O2PDFString;
+
+typedef O2PDFString *O2PDFStringRef;
+
 @interface O2PDFString : O2PDFObject {
    unsigned _length:31;
    unsigned _noCopyNoFree:1;
@@ -21,5 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)length;
 -(const char *)bytes;
+
+size_t O2PDFStringGetLength(O2PDFStringRef string);
+const unsigned char *O2PDFStringGetBytePtr(O2PDFStringRef string);
 
 @end

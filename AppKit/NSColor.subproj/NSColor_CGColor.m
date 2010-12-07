@@ -230,10 +230,12 @@ static inline CGFloat calibratedWhiteFromRGB(CGFloat r, CGFloat g, CGFloat b) {
     if([otherSpaceName isEqualToString:NSCalibratedWhiteColorSpace])
      return [NSColor colorWithCalibratedWhite:calibratedWhiteFromRGB(red, green, blue) alpha:alpha];
 
-    if([otherSpaceName isEqualToString:NSCalibratedRGBColorSpace])
-     return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
+    if([otherSpaceName isEqualToString:NSDeviceRGBColorSpace])
+     return [NSColor colorWithDeviceRed:red green:green blue:blue alpha:alpha];
    }
     
+   if(NSDebugEnabled)
+    NSLog(@"Unable to convert color to space %@",otherSpaceName);
    return nil;
 }
 

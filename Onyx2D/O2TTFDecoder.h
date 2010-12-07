@@ -20,11 +20,14 @@ typedef O2TTFDecoder *O2TTFDecoderRef;
 O2TTFDecoderRef O2TTFDecoderCreate(O2DataProviderRef dataProvider);
 
 O2TTFDecoderRef O2TTFDecoderRetain(O2TTFDecoderRef self);
+void O2TTFDecoderRelease(O2TTFDecoderRef self);
 
 NSMapTable *O2TTFDecoderGetPostScriptNameMapTable(O2TTFDecoderRef self,int *numberOfGlyphs);
 
 int *O2TTFDecoderGetGlyphLocations(O2TTFDecoderRef self,int numberOfGlyphs);
 
 O2PathRef O2TTFDecoderGetGlyphOutline(O2TTFDecoderRef self,int glyphLocation);
+
+void O2TTFDecoderGetNameTable(O2TTFDecoderRef self);
 
 @end

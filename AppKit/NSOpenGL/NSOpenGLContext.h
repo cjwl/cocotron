@@ -7,8 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <OpenGL/gl.h>
 
-@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView;
+@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView,CGLPixelSurface;
 
 typedef enum {
    NSOpenGLCPSwapRectangle      =200,
@@ -24,6 +25,8 @@ typedef enum {
    NSOpenGLPixelFormat *_pixelFormat;
    NSView              *_view;
    void                *_glContext;
+   CGLPixelSurface           *_overlay;
+   BOOL                 _hasPrepared;
 }
 
 +(NSOpenGLContext *)currentContext;
@@ -37,8 +40,8 @@ typedef enum {
 -(long)pixelBufferMipMapLevel;
 -(void *)CGLContextObj;
 
--(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter;
--(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter;
+-(void)getValues:(GLint *)vals forParameter:(NSOpenGLContextParameter)parameter;
+-(void)setValues:(const GLint *)vals forParameter:(NSOpenGLContextParameter)parameter;
 -(void)setView:(NSView *)view;
 
 -(void)makeCurrentContext;

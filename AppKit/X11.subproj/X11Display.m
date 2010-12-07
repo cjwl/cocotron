@@ -591,11 +591,12 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
 #import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSGraphicsStyle (Overrides) 
--(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected {
+-(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {
    NSImage* arrow=[NSImage imageNamed:@"NSMenuArrow"];
-   point.y+=5;
-   point.x-=2;
-   [arrow compositeToPoint:point operation:NSCompositeSourceOver];
+   // ??? magic numbers
+   rect.origin.y+=5;
+   rect.origin.x-=2;
+   [arrow drawInRect:rect operation:NSCompositeSourceOver];
 }
 
 @end

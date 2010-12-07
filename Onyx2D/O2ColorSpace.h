@@ -12,6 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef O2ColorSpace *O2ColorSpaceRef;
 
+#import <Onyx2D/O2Function.h>
+
 typedef enum {
    kO2RenderingIntentDefault,
    kO2RenderingIntentAbsoluteColorimetric,
@@ -43,6 +45,8 @@ void            O2ColorSpaceRelease(O2ColorSpaceRef self);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void);
 O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void);
+O2ColorSpaceRef O2ColorSpaceCreatePattern(O2ColorSpaceRef baseSpace);
+O2ColorSpaceRef O2ColorSpaceCreateDeviceN(const char **names,O2ColorSpaceRef alternateSpace,O2FunctionRef tintTransform);
 
 O2ColorSpaceRef O2ColorSpaceCreatePlatformRGB(void);
 BOOL            O2ColorSpaceIsPlatformRGB(O2ColorSpaceRef self);
@@ -67,6 +71,22 @@ O2ColorSpaceModel O2ColorSpaceGetModel(O2ColorSpaceRef self);
 -(O2ColorSpaceRef)baseColorSpace;
 -(unsigned)hival;
 -(const unsigned char *)paletteBytes;
+
+@end
+
+@interface O2ColorSpace_DeviceN : O2ColorSpace {
+@public
+   unsigned        _numberOfComponents;
+@protected
+   char          **_names;
+   O2ColorSpaceRef _alternateSpace;
+   O2FunctionRef   _tintTransform;
+}
+
+-initWithComponentNames:(const char **)names alternateSpace:(O2ColorSpaceRef)altSpace tintTransform:(O2FunctionRef)tintTransform;
+
+-(O2ColorSpaceRef)alternateSpace;
+-(O2FunctionRef)tintTransform;
 
 @end
 

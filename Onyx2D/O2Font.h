@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2Geometry.h>
 
-@class O2Font;
+@class O2Font,O2Encoding;
 
 typedef O2Font *O2FontRef;
 
@@ -16,12 +16,19 @@ typedef uint16_t O2Glyph;
 
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2DataProvider.h>
-#import <Onyx2D/O2Image.h>
+//#import <Onyx2D/O2Image.h>
 
 @class NSData;
 
+typedef enum {
+ O2FontPlatformTypeGDI,
+ O2FontPlatformTypeFreeType,
+} O2FontPlatformType;
+
 @interface O2Font : NSObject {
+   O2FontPlatformType _platformType;
    NSString *_name;
+   O2DataProviderRef _provider;
    int       _unitsPerEm;
    int       _ascent;
    int       _descent;
@@ -36,8 +43,6 @@ typedef uint16_t O2Glyph;
    O2Glyph  *_MacRomanEncoding;
 }
 
-+(O2Font *)createWithFontName:(NSString *)name;
-
 -initWithFontName:(NSString *)name;
 -initWithDataProvider:(O2DataProviderRef)provider;
 
@@ -48,14 +53,14 @@ typedef uint16_t O2Glyph;
 
 -(void)fetchAdvances;
 
--(O2Glyph *)MacRomanEncoding;
--(O2Glyph *)glyphTableForEncoding:(O2TextEncoding)encoding;
+-(O2Encoding *)createEncodingForTextEncoding:(O2TextEncoding)encoding;
 
 O2FontRef O2FontCreateWithFontName(NSString *name);
 O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider);
 O2FontRef O2FontRetain(O2FontRef self);
 void      O2FontRelease(O2FontRef self);
 
+O2FontPlatformType O2FontGetPlatformType(O2Font *self);
 CFStringRef O2FontCopyFullName(O2FontRef self);
 int       O2FontGetUnitsPerEm(O2FontRef self);
 int       O2FontGetAscent(O2FontRef self);
@@ -75,5 +80,6 @@ NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,O2Glyph glyph);
 
 NSData   *O2FontCopyTableForTag(O2FontRef self,uint32_t tag);
 
+uint16_t  O2FontUnicodeForGlyphName(NSString *name);
 
 @end

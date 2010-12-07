@@ -18,6 +18,7 @@
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSDateFormatter.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 #define MAX_KEY_LENGTH 255
 #define MAX_VALUE_NAME 16383
@@ -79,8 +80,9 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
 @implementation NSTimeZone_win32
 
 -initWithCoder:(NSCoder *)coder {
-    NSInvalidAbstractInvocation();
-    return nil;
+    NSString *name=[coder decodeObjectForKey:@"NS.name"];
+    
+    return [self initWithName:name data:nil];
 }
 
 -initWithName:(NSString *)name data:(NSData *)data {
@@ -132,7 +134,13 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
 }
 
 -copyWithZone:(NSZone *)zone {
-	return [self retain];
+   NSTimeZone_win32 *result=NSCopyObject(self,0,zone);
+   
+   result->_data=[_data copy];
+   result->_name=[_name copy];
+   result->_abbreviation=[_abbreviation copy];
+
+   return result;
 }
 
 +(NSTimeZone *)systemTimeZone {

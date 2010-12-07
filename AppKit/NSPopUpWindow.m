@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithFrame:(NSRect)frame {
    [self initWithContentRect:frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+   [self setLevel:NSPopUpMenuWindowLevel];
    _releaseWhenClosed=YES;
 
    _view=[[NSPopUpView alloc] initWithFrame:NSMakeRect(0,0,frame.size.width,frame.size.height)];

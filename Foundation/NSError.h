@@ -13,6 +13,8 @@ FOUNDATION_EXPORT NSString * const NSPOSIXErrorDomain;
 FOUNDATION_EXPORT NSString * const NSOSStatusErrorDomain;
 // temporary until we can map it
 FOUNDATION_EXPORT NSString * const NSWINSOCKErrorDomain;
+FOUNDATION_EXPORT NSString * const NSWin32ErrorDomain;
+
 FOUNDATION_EXPORT NSString * const NSCocoaErrorDomain;
 
 FOUNDATION_EXPORT NSString * const NSUnderlyingErrorKey;

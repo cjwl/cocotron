@@ -15,9 +15,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSHost.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSHTTPURLResponse.h>
+#import <Foundation/NSError.h>
+#import <Foundation/NSURLError.h>
+#import <Foundation/NSCachedURLResponse.h>
+#import <Foundation/NSDebug.h>
+#import <Foundation/NSTimer.h>
+#import <CFNetwork/CFNetwork.h>
+
 #import <string.h>
 
 enum {
+ STATE_waitingForStatusVersion,
+ STATE_waitingForStatusCode,
+ STATE_waitingForStatusReport,
  STATE_waitingForStatusCR,
  STATE_waitingForStatusLF,
  STATE_waitingForHeader,
@@ -32,35 +44,55 @@ enum {
  STATE_waitingForChunkSizeLF,
  STATE_waitingForChunkCompletion,
  STATE_waitingForChunkCompletionLF,
+ STATE_entity_body_check_for_lf,
  STATE_entity_body,
- STATE_done,
+ STATE_didFinishLoading,
 };
+
+@interface NSHTTPURLResponse(private)
+-initWithURL:(NSURL *)url statusCode:(NSInteger)statusCode headers:(NSDictionary *)headers;
+@end
 
 @implementation NSURLProtocol_http
 
--(void)status:(NSString *)status {
-   NSLog(@"status:  [%@]",status);
+-(void)statusVersion:(NSString *)string {
+
 }
 
 -(void)headers:(NSDictionary *)headers {
-   NSLog(@"headers: %@",headers);
+   if(NSDebugEnabled)
+    NSLog(@"statusCode=%d headers: %@",_statusCode,headers);
+   
+   if(_statusCode>=200 && _statusCode<300){
+    NSURL             *url=[_request URL];
+    NSHTTPURLResponse *response=[[[NSHTTPURLResponse alloc] initWithURL:url statusCode:_statusCode headers:headers] autorelease];
+    NSURLCacheStoragePolicy cachePolicy=NSURLCacheStorageNotAllowed;
+   
+    if([[_request HTTPMethod] isEqualToString:@"GET"]){
+     if([[url scheme] isEqualToString:@"http"])
+      cachePolicy=NSURLCacheStorageAllowed;
+     else if([[url scheme] isEqualToString:@"https"])
+      cachePolicy=NSURLCacheStorageAllowedInMemoryOnly;
 }
 
--(void)entityChunk:(NSData *)data {
-//	NSLog(@"entity chunk %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
-	if ( [data length] ) {
-		[_client URLProtocol:self didLoadData:data];
+    [_client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:cachePolicy];
 	}
-}
+   else if(_statusCode==304){
+    [_client URLProtocol:self cachedResponseIsValid:_cachedResponse];
 
--(void)entity:(NSData *)data {
-// NSLog(@"entity %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
-	NSLog(@"will send didLoadData");
-	if ( [data length] ) {
-		[_client URLProtocol:self didLoadData:data];
+    [_client URLProtocol:self didReceiveResponse:[_cachedResponse response] cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+
+    [_client URLProtocol:self didLoadData:[_cachedResponse data]];
+}
+   else {
+ //  OBJCEnableMsgTracing();
+
+    NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"HTTP status code = %d", _statusCode] forKey:NSLocalizedDescriptionKey];
+     
+    NSError *error=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo];
+    [self stopLoading];
+    [_client URLProtocol:self didFailWithError:error];
 	}
-	NSLog(@"did send didLoadData, will send finishLoading");
-	[_client URLProtocolDidFinishLoading:self];
 }
 
 -(void)_headerKey {
@@ -72,47 +104,70 @@ enum {
    NSString *value=[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1];
    NSString *oldValue;
 
-   if((oldValue=[_headers objectForKey:_currentKey])!=nil)
+   if((oldValue=[_headers objectForKey:[_currentKey lowercaseString]])!=nil)
     value=[[oldValue stringByAppendingString:@" "] stringByAppendingString:value];
 
-   [_headers setObject:value forKey:_currentKey];
+   [_rawHeaders setObject:value forKey:_currentKey];
+   [_headers setObject:value forKey:[_currentKey lowercaseString]];
 }
 
 -(void)_continuation {
    NSString *value=[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1];
-   NSString *oldValue=[_headers objectForKey:_currentKey];
+   NSString *oldValue=[_headers objectForKey:[_currentKey lowercaseString]];
 
    value=[[oldValue stringByAppendingString:@" "] stringByAppendingString:value];
 
-   [_headers setObject:value forKey:_currentKey];
-}
-
--(void)_entity {
-	NSLog(@"_entity");
-	id data=[NSData dataWithBytes:_bytes+_range.location length:_range.length];
-	NSLog(@"_entity  - data with length: %d",[data length]);
-   [self entity:data];
-	NSLog(@"_entity did send data");
-	
-}
-
--(void)_entityChunk {
-	NSLog(@"_entityChunk");
-   [self entityChunk:[NSData dataWithBytes:_bytes+_range.location length:_range.length]];
-	_range.location=NSMaxRange(_range);
-	_range.length=0;
-	NSLog(@"did pass to entityChunk");
+   [_rawHeaders setObject:value forKey:_currentKey];
+   [_headers setObject:value forKey:[_currentKey lowercaseString]];
 }
 
 -(BOOL)contentIsChunked {
-   return [[_headers objectForKey:@"Transfer-Encoding"] isEqual:@"chunked"];
+   return [[_headers objectForKey:@"transfer-encoding"] isEqual:@"chunked"];
+}
+	
+-(NSInteger)contentLength {
+   return [[_headers objectForKey:@"content-length"] integerValue];
 }
 
--(unsigned)contentLength {
-   return [[_headers objectForKey:@"Content-Length"] intValue];
+-(void)didFinishLoading {
+   if(_state==STATE_didFinishLoading)
+    return;
+    
+   _state=STATE_didFinishLoading;
+   [self stopLoading];
+   [_client URLProtocolDidFinishLoading:self];
 }
 
--(BOOL)advanceIsEndOfReply {
+-(void)didLoadData:(NSData *)data {
+// NSLog(@"didLoadData %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+
+   _totalContentReceived+=[data length];
+
+   [_client URLProtocol:self didLoadData:data];
+   
+   if(_totalContentReceived>=_expectedContentLength)
+    [self didFinishLoading];
+}
+
+-(void)advanceStateWithData:(NSData *)data {
+
+   if(_state==STATE_didFinishLoading)
+    return;
+
+   if([data length]==0){
+    [self didFinishLoading];
+    return;
+}
+
+   if(_state==STATE_entity_body){
+    [self didLoadData:data];
+    return;
+   }
+   
+   [_data appendData:data];
+   _bytes=[_data bytes];
+   _length=[_data length];
+   
    while(NSMaxRange(_range)<_length){
     uint8_t code=_bytes[NSMaxRange(_range)];
     enum  {
@@ -123,6 +178,37 @@ enum {
 
     switch(_state){
 
+     case STATE_waitingForStatusVersion:
+      if(code==' '){
+       [self statusVersion:[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1]];
+       rangeAction=advanceLocationToNext;
+       _state=STATE_waitingForStatusCode;
+       _statusCode=0;
+      }
+      else if(code=='\015'){
+       [self statusVersion:[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1]];
+       _state=STATE_waitingForStatusLF;
+      }
+      break;
+     
+     case STATE_waitingForStatusCode:
+      if(code>='0' && code<='9')
+       _statusCode=_statusCode*10+code-'0';
+      else if(code=='\015'){
+       _state=STATE_waitingForStatusLF;
+      }
+      else {
+       _state=STATE_waitingForStatusReport;
+       rangeAction=advanceLocationToNext;
+      }
+      break;
+      
+     case STATE_waitingForStatusReport:
+      if(code=='\015'){
+       _state=STATE_waitingForStatusLF;
+      }
+      break;
+      
      case STATE_waitingForStatusCR:
        if(code=='\015')
        _state=STATE_waitingForStatusLF;
@@ -132,7 +218,6 @@ enum {
       if(code!='\012')
        _state=STATE_waitingForStatusCR;
       else {
-       [self status:[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1]];
        _state=STATE_waitingForHeader;
        rangeAction=advanceLocationToNext;
       }
@@ -202,19 +287,15 @@ enum {
        break;
       }
       else if([self contentLength]==0){
-       _state=STATE_done;
-       return YES;
+       [self didFinishLoading];
+       return;
       }
       else {
-       _state=STATE_entity_body;
+       _expectedContentLength=[self contentLength];
+       _totalContentReceived=0;
+       _state=STATE_entity_body_check_for_lf;
        rangeAction=advanceLocationToCurrent;
-		  NSLog(@"will try to check for extra <lf>");
-		  if ( NSMaxRange(_range)<_length && _bytes[NSMaxRange(_range)] == '\012' ) {
-			  NSLog(@"=== advance over trailing <lf> before body === ");
-			  _range.length++;
 		  }
-		  NSLog(@"after <lf> check");
-      }
       break;
 
      case STATE_waitingForChunkSize:
@@ -234,8 +315,8 @@ NSLog(@"parse error %d %o",__LINE__,code);
      case STATE_waitingForChunkSizeLF:
       if(code=='\012'){
        if(_chunkSize==0){
-        _state=STATE_done;
-        return YES;
+        [self didFinishLoading];
+        return;
 NSLog(@"zero chunk");
        }
        else {
@@ -256,7 +337,9 @@ NSLog(@"parse error %d",__LINE__);
        if(code=='\015')
         NSLog(@"got cr");
 		  NSLog(@"chunk done");
-       [self _entityChunk];
+       [self didLoadData:[NSData dataWithBytes:_bytes+_range.location length:_range.length]];
+	   _range.location=NSMaxRange(_range);
+	   _range.length=0;
       }
       break;
 
@@ -266,17 +349,23 @@ NSLog(@"parse error %d",__LINE__);
       _state=STATE_waitingForChunkSize;
       break;
 
-     case STATE_entity_body:
-      if(_range.length>=[self contentLength]){
-		  NSLog(@"transfer completed");
-       [self _entity];
-       _state=STATE_done;
-       return YES;
+     case STATE_entity_body_check_for_lf:
+      if(code=='\012'){
+       _state=STATE_entity_body;
+       rangeAction=advanceLocationToNext;
+     //  _expectedContentLength--;
+       break;
       }
-      break;
+      // fallthrough
 
-     case STATE_done:
-      return YES;
+     case STATE_entity_body:;
+      NSInteger pieceLength=_length-_range.location;
+      
+      _totalContentReceived+=pieceLength;
+      _range.length=pieceLength;
+      
+      [self didLoadData:[NSData dataWithBytes:_bytes+_range.location length:pieceLength]];
+      return;
     }
 
     switch(rangeAction){
@@ -295,84 +384,144 @@ NSLog(@"parse error %d",__LINE__);
       break;
     }
    }
-
-   return NO;
 }
 
--(void)appendData:(NSData *)data {
-   [_data appendData:data];
-   _bytes=[_data bytes];
-   _length=[_data length];
-//   NSLog(@"length=%d",_length);
+-(void)loadOutputQueue {
+   NSURL    *url=[_request URL];
+   NSString *path=[url relativePath];
+   NSString *query=[url query];
+   
+   if([query length])
+    path=[NSString stringWithFormat:@"%@?%@",path,query];
+		
+   NSString        *host=[url host];
+   NSMutableString *string=[NSMutableString string];
+   
+   [string appendFormat:@"%@ %@ HTTP/1.1\015\012",[_request HTTPMethod],path];
+   [string appendFormat:@"Host: %@\015\012",host];
+   [string appendFormat:@"Accept: */*\015\012"];
+   
+   NSMutableDictionary *headers=[[[_request allHTTPHeaderFields] mutableCopy] autorelease];
+   NSEnumerator *state=[headers keyEnumerator];
+   NSString     *key;
+       
+   while((key=[state nextObject])!=nil){     
+    NSString *value=[headers objectForKey:key];
+    [string appendFormat:@"%@: %@\015\012",key,value];
 }
+
+   if(_cachedResponse!=nil){
+    NSHTTPURLResponse *response=(NSHTTPURLResponse *)[_cachedResponse response];
+    NSDictionary      *headers=[response allHeaderFields];
+    NSString          *lastModified=nil;
+    NSString          *etag=nil;
+    
+    for(NSString *key in headers){
+     if([key caseInsensitiveCompare:@"last-modified"]==NSOrderedSame)
+      lastModified=[headers objectForKey:key];
+      
+     if([key caseInsensitiveCompare:@"etag"]==NSOrderedSame)
+      etag=[headers objectForKey:key];
+}
+
+    if(lastModified!=nil)
+     [string appendFormat:@"If-Modified-Since: %@\015\012",lastModified];
+    
+    if(etag!=nil)
+     [string appendFormat:@"If-None-Match: %@\015\012",etag];
+}
+
+   [string appendString:@"\015\012"];
+
+   if(NSDebugEnabled){
+    NSLog(@"HTTP request=%@",string);
+    NSLog(@"body=%@",[[[NSString alloc] initWithData:[_request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);
+}
+   NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
+
+   [_outputQueue addObject:data];
+   if([[_request HTTPBody] length]){
+    [_outputQueue addObject:[_request HTTPBody]];
+		}
+		}
 
 -(void)startLoading {
-   _data=[NSMutableData new];
-   _range=NSMakeRange(0,0);
-   _headers=[NSMutableDictionary new];
-}
+   [self loadOutputQueue];
+		}
 
 -(void)stopLoading {
-
+   [_inputStream setDelegate:nil];
+   [_outputStream setDelegate:nil];
+   for(NSString *mode in _modes){
+    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+	}
+   [_inputStream close];
+   [_inputStream release];
+   _inputStream=nil;
+   [_outputStream close];
+   [_outputStream release];
+   _outputStream=nil;
+	
+   [_timeout invalidate];
+   [_timeout release];
+   _timeout=nil;
+}
+		
+-(void)timeout:(NSTimer *)timer {
+    NSDictionary *userInfo=[NSDictionary dictionaryWithObject:@"Connection timed out" forKey:NSLocalizedDescriptionKey];
+    NSError *error=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorTimedOut userInfo:userInfo];
+    
+    [self stopLoading];
+    
+    [_client URLProtocol:self didFailWithError:error];
 }
 
--(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
-{
-	uint8_t buffer[1024];
-	NSInteger size=[stream read:buffer maxLength:sizeof(buffer)];
-//	NSLog(@"stream event: %d bytes read: %d",streamEvent,size);
-	if (size>0)
-	{
-		[self appendData:[NSData dataWithBytes:buffer length:size]];
-		if ([self advanceIsEndOfReply])
-		{
-			NSLog(@"done");
-//			[_client URLProtocol:self didLoadData:[NSData dataWithBytes:buffer length:size] ];
-//			[_client URLProtocolDidFinishLoading:self];
-		}
-		else
-		{
-//			NSLog(@"not done yet");
-			//[_client URLProtocol:didLoadData:];
-//			[_client URLProtocolDidFinishLoading:self];
-		}
-	} else {
-		if ( streamEvent == 16 ) {
-			[self _entity];
-//			[_client URLProtocolDidFinishLoading:self];
-			[self stopLoading];
-		}
-	}
-	
-		
+
+-(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent  {
+    switch(streamEvent){
+    
+     case NSStreamEventHasBytesAvailable:;
+	  uint8_t   buffer[8192];
+	  NSInteger size=[stream read:buffer maxLength:8192];
+
+      [self advanceStateWithData:[NSData dataWithBytes:buffer length:size]];
+      
+      break;
+     
+     case NSStreamEventEndEncountered:
+      [self advanceStateWithData:[NSData data]];
+      break;
+    
+     default:
+      break;
+    }
 }
 
 -(void)outputStream:(NSOutputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
 {
-	if(streamEvent==NSStreamEventHasSpaceAvailable && sentrequest==NO)
-	{
-		NSURL* url=[_request URL];
-		NSLog(@"will get path");
-		NSString* path=[url relativePath];
-		if ( [[url query] length] ) {
-			path=[NSString stringWithFormat:@"%@?%@",path,[url query]];
+	if(streamEvent==NSStreamEventHasSpaceAvailable) {
+     if([_outputQueue count]==0){
 		}
+     else {
+      NSData   *data=[_outputQueue objectAtIndex:0];
+      uint8_t   buffer[8192];
+      NSInteger length=[data length]-_outputNextOffset;
 		
+      length=MIN(length,8192);
 		
-		NSString* host=[url host];
-		NSMutableString* httprequest=[NSMutableString string];
-		[httprequest appendFormat:@"GET %@ HTTP/1.1\r\n",path];
-		[httprequest appendFormat:@"Host: %@\r\n",host];
-		[httprequest appendFormat:@"Accept: */*\r\n"];
-		[httprequest appendFormat:@"User-Agent: Cocotron\r\n"];
-		[httprequest appendString:@"\r\n"];
-		NSLog(@"request %@ ",httprequest);
-		const char* crequest=[httprequest UTF8String];
-		[stream write:(uint8_t *)crequest maxLength:strlen(crequest)];
-		sentrequest=YES;
+      [data getBytes:buffer range:NSMakeRange(_outputNextOffset,length)];
 		
+      _outputNextOffset+=length;
+      if(([data length]-_outputNextOffset)==0){
+       [_outputQueue removeObjectAtIndex:0];
+       _outputNextOffset=0;
 	}
 	
+      [stream write:buffer maxLength:length];
+}
+	}
+
 }
 
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
@@ -383,15 +532,102 @@ NSLog(@"parse error %d",__LINE__);
 }
 
 +(BOOL)canInitWithRequest:(NSURLRequest *)request {
-	if( [[[request URL]scheme] isEqual:@"http"]) return YES;
-	return 0;
+   NSString *scheme=[[request URL] scheme];
+      
+   if([scheme isEqualToString:@"http"])
+    return YES;
+   if([scheme isEqualToString:@"https"])
+    return YES;
+
+   return NO;
 }
 -initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id <NSURLProtocolClient>)client {
-	_request=[request retain];
-	_response=[response retain];
-	_client=[(id)client retain];
-	sentrequest=NO;
+   [super initWithRequest:request cachedResponse:response client:client];
+   
+   _modes=[[NSMutableArray arrayWithObject:NSDefaultRunLoopMode] retain];
+   _outputQueue=[[NSMutableArray alloc] init];
+   _outputNextOffset=0;
+
+   NSURL    *url=[_request URL];
+   NSString *scheme=[url scheme];
+   NSString *hostName=[url host];
+   NSNumber *portNumber=[url port];
+   
+   if(portNumber==nil){
+    if([scheme isEqualToString:@"https"])
+     portNumber=[NSNumber numberWithInt:443];
+    else
+     portNumber=[NSNumber numberWithInt:80];
+   }
+   
+   NSHost *host=[NSHost hostWithName:hostName];
+   
+   [NSStream getStreamsToHost:host port:[portNumber intValue] inputStream:&_inputStream outputStream:&_outputStream];
+   
+   if(_inputStream==nil || _outputStream==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   if([scheme isEqualToString:@"https"]){
+    NSMutableDictionary *sslProperties=[NSMutableDictionary new];
+    
+    [sslProperties setObject:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey];
+    
+    [_inputStream setProperty:sslProperties forKey:(NSString *)kCFStreamPropertySSLSettings];
+    [_outputStream setProperty:sslProperties forKey:(NSString *)kCFStreamPropertySSLSettings];
+   }
+   
+   [_inputStream setDelegate:self];
+   [_outputStream setDelegate:self];
+   
+   _timeout=[[NSTimer timerWithTimeInterval:[request timeoutInterval] target:self selector:@selector(timeout:) userInfo:nil repeats:NO] retain];
+   
+   for(NSString *mode in _modes){
+    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    [[NSRunLoop currentRunLoop] addTimer:_timeout forMode:mode];
+   }
+    
+	[_inputStream retain];
+	[_outputStream retain];
+	[_inputStream open];
+	[_outputStream open];
+
+   _data=[NSMutableData new];
+   _range=NSMakeRange(0,0);
+   _rawHeaders=[NSMutableDictionary new];
+   _headers=[NSMutableDictionary new];
 	return self;
+}
+
+-(void)dealloc {
+   [_modes release];
+   [_inputStream close];
+   [_inputStream release];
+   [_outputStream close];
+   [_outputStream release];
+   
+   [_timeout invalidate];
+   [_timeout release];
+   
+   [_data release];
+   [_rawHeaders release];
+   [_headers release];
+   
+   [super dealloc];
+}
+
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   [_inputStream scheduleInRunLoop:runLoop forMode:mode];
+   [_outputStream scheduleInRunLoop:runLoop forMode:mode];
+   [[NSRunLoop currentRunLoop] addTimer:_timeout forMode:mode];
+}
+
+-(void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   [_inputStream removeFromRunLoop:runLoop forMode:mode];
+   [_outputStream removeFromRunLoop:runLoop forMode:mode];
+//  FIXME: no official way to remove timer
 }
 
 @end

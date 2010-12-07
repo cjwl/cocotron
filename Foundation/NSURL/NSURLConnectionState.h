@@ -12,15 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSURLConnectionState : NSObject {
    BOOL           _isRunning;
-   NSURLResponse *_response;
    NSError       *_error;
-   NSMutableData *_data;
 }
 
 -(BOOL)isRunning;
 -(void)receiveAllDataInMode:(NSString *)mode;
--(NSURLResponse *)response;
 -(NSError *)error;
--(NSMutableData *)data;
 
 @end

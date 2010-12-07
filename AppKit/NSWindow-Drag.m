@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSWindow-Drag.h>
 #import <AppKit/NSWindow-Private.h>
-#import <AppKit/NSWindowBackgroundView.h>
+#import <AppKit/NSThemeFrame.h>
 
 @interface NSView(NSView_drag)
 -(NSArray *)_dragHitTest:(NSPoint)point;

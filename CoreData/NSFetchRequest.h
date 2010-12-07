@@ -5,41 +5,76 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <Foundation/Foundation.h>
+#import <Foundation/NSObject.h>
 
-@class NSEntityDescription;
-@class NSPredicate;
-@class NSManagedObjectContext;
+@class NSEntityDescription,NSPredicate,NSArray;
+
+enum {
+   NSManagedObjectResultType        = 0x00,
+   NSManagedObjectIDResultType      = 0x01,
+   NSDictionaryResultType           = 0x02
+};
+typedef NSUInteger NSFetchRequestResultType;
+
 @interface NSFetchRequest : NSObject <NSCoding,NSCopying> {
-    NSEntityDescription *_entity;
-    NSPredicate *_predicate;
-    NSMutableArray *_sortDescriptors;
-    NSMutableArray *_affectedStores;
-    unsigned _fetchLimit;
-
-    NSManagedObjectContext *_cachedContext;
-    NSMutableArray *_cachedResults;
-    id _owner;
+   NSFetchRequestResultType _resultType;
+   NSEntityDescription *_entity;
+   NSPredicate         *_predicate;
+   NSArray             *_sortDescriptors;
+   NSArray             *_affectedStores;
+   NSUInteger           _fetchLimit;
+   NSUInteger           _fetchBatchSize;
+   NSUInteger           _fetchOffset;
+   BOOL                 _includesPendingChanges;
+   BOOL                 _includesPropertyValues;
+   BOOL                 _includesSubentities;
+   BOOL                 _returnsDistinctResults;
+   BOOL                 _returnsObjectsAsFaults;
+   NSArray             *_propertiesToFetch;
+   NSArray             *_relationshipKeyPathsForPrefetching;
 }
 
-- (void) _refresh;
-- (void) _setOwner: (id) owner;
-- (void) _invalidateCache;
-- (BOOL) _cacheIsValidForContext: (NSManagedObjectContext *) context;
-- (void) _performInContext: (NSManagedObjectContext *) context;
-- (NSUInteger) _countInContext: (NSManagedObjectContext *) context;
-- (NSArray *) _resultsInContext: (NSManagedObjectContext *) context;
+-(NSFetchRequestResultType)resultType;
 
-- (NSEntityDescription *) entity;
-- (NSPredicate *) predicate;
-- (NSArray *) sortDescriptors;
-- (NSArray *) affectedStores;
-- (unsigned) fetchLimit;
+-(NSEntityDescription *)entity;
+-(NSPredicate *)predicate;
+-(NSArray *)sortDescriptors;
+-(NSArray *)affectedStores;
 
-- (void) setEntity: (NSEntityDescription *) value;
-- (void) setPredicate: (NSPredicate *) value;
-- (void) setSortDescriptors: (NSArray *) value;
-- (void) setAffectedStores: (NSArray *) value;
-- (void) setFetchLimit: (unsigned) value;
+-(NSUInteger)fetchLimit;
+-(NSUInteger)fetchBatchSize;
+-(NSUInteger)fetchOffset;
+
+-(BOOL)includesPendingChanges;
+-(BOOL)includesPropertyValues;
+-(BOOL)includesSubentities;
+
+-(BOOL)returnsDistinctResults;
+-(BOOL)returnsObjectsAsFaults;
+
+-(NSArray *)propertiesToFetch;
+
+-(NSArray *)relationshipKeyPathsForPrefetching;
+
+-(void)setResultType:(NSFetchRequestResultType)type;
+-(void)setEntity:(NSEntityDescription *)value;
+-(void)setPredicate:(NSPredicate *)value;
+-(void)setSortDescriptors:(NSArray *)value;
+-(void)setAffectedStores:(NSArray *)value;
+
+-(void)setFetchLimit:(NSUInteger)value;
+-(void)setFetchBatchSize:(NSUInteger)value;
+-(void)setFetchOffset:(NSUInteger)value;
+
+-(void)setIncludesPendingChanges:(BOOL)value;
+-(void)setIncludesPropertyValues:(BOOL)value;
+-(void)setIncludesSubentities:(BOOL)value;
+
+-(void)setReturnsDistinctResults:(BOOL)value;
+-(void)setReturnsObjectsAsFaults:(BOOL)value;
+
+-(void)setPropertiesToFetch:(NSArray *)value;
+
+-(void)setRelationshipKeyPathsForPrefetching:(NSArray *)value;
 
 @end

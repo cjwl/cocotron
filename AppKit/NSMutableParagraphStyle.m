@@ -26,6 +26,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSParagraphStyle alloc] initWithParagraphStyle:self];
 }
 
+-(void)setParagraphStyle:(NSParagraphStyle *)other {
+   _writingDirection=other->_writingDirection;
+   _paragraphSpacing=other->_paragraphSpacing;
+   _paragraphSpacingBefore=other->_paragraphSpacingBefore;
+   [self setTextBlocks:[other textBlocks]];
+   [self setTextLists:[other textLists]];
+   _headerLevel=other->_headerLevel;
+   _firstLineHeadIndent=other->_firstLineHeadIndent;
+   _headIndent=other->_headIndent;
+   _tailIndent=other->_tailIndent;
+   _alignment=other->_alignment;
+   _lineBreakMode=other->_lineBreakMode;
+   _minimumLineHeight=other->_minimumLineHeight;
+   _maximumLineHeight=other->_maximumLineHeight;
+   _lineHeightMultiple=other->_lineHeightMultiple;
+   _lineSpacing=other->_lineSpacing;
+   _defaultTabInterval=other->_defaultTabInterval;
+   [self setTabStops:[other tabStops]];
+   _hyphenationFactor=other->_hyphenationFactor;
+   _tighteningFactorForTruncation=other->_tighteningFactorForTruncation;
+}
+
 -(void)setBaseWritingDirection:(NSWritingDirection)direction {
    _writingDirection=direction;
 }

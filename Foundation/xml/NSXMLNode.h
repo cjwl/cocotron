@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSXMLNodeOptions.h>
 
-@class NSArray,NSError,NSDictionary,NSXMLElement,NSXMLNode,NSXMLDocument;
+@class NSArray,NSError,NSDictionary,NSXMLElement,NSXMLNode,NSXMLDocument,NSMutableArray;
 
 typedef enum {
    NSXMLInvalidKind,
@@ -50,6 +50,7 @@ enum {
 
 @interface NSXMLNode : NSObject <NSCopying> {
    NSXMLNode    *_parent;
+   NSMutableArray *_children;
    NSUInteger      _index;
    NSXMLNodeKind _kind;
    NSUInteger      _options;

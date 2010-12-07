@@ -9,9 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSURLProtocol.h>
 #import <Foundation/NSRange.h>
 
-@class NSInputStream,NSOutputStream,NSMutableData,NSMutableDictionary;
+@class NSInputStream,NSOutputStream,NSMutableData,NSMutableDictionary,NSMutableArray,NSTimer;
 
 @interface NSURLProtocol_http : NSURLProtocol {
+   NSMutableArray *_modes;
+   NSInputStream  *_inputStream;
+   NSOutputStream *_outputStream;
+   NSTimer        *_timeout;
+   
+   NSCachedURLResponse *_cachedResponse;
+
+// output state
+   NSMutableArray *_outputQueue;
+   NSInteger       _outputNextOffset;
+   
+   
 // parsing state
    NSMutableData *_data;
    const uint8_t *_bytes;
@@ -19,11 +31,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int       _state;
    NSRange   _range;
 
+   NSInteger            _statusCode;
    NSString            *_currentKey;
+   NSMutableDictionary *_rawHeaders;
    NSMutableDictionary *_headers;
+   NSInteger            _expectedContentLength;
+   NSInteger            _totalContentReceived;
 
    NSInteger _chunkSize;
-	BOOL sentrequest;
 }
 
 @end

@@ -9,13 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2Geometry.h>
 
-@class O2Context,O2Color,O2Shading,O2Image,O2GState,O2MutablePath,O2Path,O2Pattern,O2Layer,O2PDFPage,NSMutableArray,CGWindow,O2Surface,NSDictionary,NSData,O2Font;
+@class O2Context,O2Color,O2Shading,O2Image,O2GState,O2MutablePath,O2Path,O2Pattern,O2Layer,O2PDFPage,NSMutableArray,CGWindow,O2Surface,NSDictionary,NSData,O2Font,O2Encoding,O2PDFCharWidths,O2ClipState;
 
 typedef O2Context *O2ContextRef;
 
 typedef enum {
    kO2EncodingFontSpecific,
    kO2EncodingMacRoman,
+// private
+   kO2EncodingMacExpert,
+   kO2EncodingWinAnsi,
+   kO2EncodingUnicode,
 } O2TextEncoding;
 
 typedef enum {
@@ -79,7 +83,17 @@ typedef enum {
    kO2BlendModePlusLighter,
 } O2BlendMode;
 
-typedef int O2TextDrawingMode;
+typedef enum {
+// These correspond directly to PDF spec. values
+   kO2TextFill=0,
+   kO2TextStroke=1,
+   kO2TextFillStroke=2,
+   kO2TextInvisible=3,
+   kO2TextFillClip=4,
+   kO2TextStrokeClip=5,
+   kO2TextFillStrokeClip=6,
+   kO2TextClip=7,
+} O2TextDrawingMode;
 
 #import <Onyx2D/O2Font.h>
 #import <Onyx2D/O2Layer.h>
@@ -91,12 +105,21 @@ typedef int O2TextDrawingMode;
 #import <Onyx2D/O2Shading.h>
 #import <Onyx2D/O2PDFPage.h>
 
+typedef void (*O2ContextShowTextFunction)(O2ContextRef,const char *,unsigned);
+typedef void (*O2ContextShowGlyphsFunction)(O2ContextRef,SEL,const O2Glyph *,const O2Size *,unsigned);
+
 @interface O2Context : NSObject {
    O2AffineTransform _userToDeviceTransform;
    NSMutableArray   *_layerStack;
    NSMutableArray   *_stateStack;
+   O2GState         *_currentState;
    O2MutablePath    *_path;
    BOOL              _allowsAntialiasing;
+   O2AffineTransform _textMatrix;
+   O2AffineTransform _textLineMatrix;
+   
+   O2ContextShowTextFunction _showTextFunction;
+   O2ContextShowGlyphsFunction _showGlyphsFunction;
 }
 
 +(O2Context *)createContextWithSize:(O2Size)size window:(CGWindow *)window;
@@ -118,7 +141,7 @@ typedef int O2TextDrawingMode;
 -(void)beginTransparencyLayerWithInfo:(NSDictionary *)unused;
 -(void)endTransparencyLayer;
 
--(O2ColorRef )strokeColor;
+O2ColorRef O2ContextStrokeColor(O2ContextRef self);
 O2ColorRef O2ContextFillColor(O2ContextRef self);
    
 -(void)setStrokeAlpha:(O2Float)alpha;
@@ -133,8 +156,7 @@ O2ColorRef O2ContextFillColor(O2ContextRef self);
 
 -(void)drawPath:(O2PathDrawingMode)pathMode;
 
--(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count;
--(void)showText:(const char *)text length:(unsigned)length;
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count;
 
 -(void)drawShading:(O2Shading *)shading;
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect;
@@ -156,18 +178,10 @@ O2ColorRef O2ContextFillColor(O2ContextRef self);
 // temporary
 
 -(void)setAntialiasingQuality:(int)value;
--(void)setWordSpacing:(O2Float)spacing;
--(void)setTextLeading:(O2Float)leading;
 
 -(void)copyBitsInRect:(O2Rect)rect toPoint:(O2Point)point gState:(int)gState;
 
--(NSData *)captureBitmapInRect:(O2Rect)rect;
-
--(void)deviceClipReset;
--(void)deviceClipToNonZeroPath:(O2Path *)path;
--(void)deviceClipToEvenOddPath:(O2Path *)path;
--(void)deviceClipToMask:(O2Image *)mask inRect:(O2Rect)rect;
-
+-(void)clipToState:(O2ClipState *)clipState;
 
 O2ContextRef O2ContextRetain(O2ContextRef self);
 void         O2ContextRelease(O2ContextRef self);
@@ -325,14 +339,31 @@ void O2ContextSynchronize(O2ContextRef self);
 void O2ContextBeginPage(O2ContextRef self,const O2Rect *mediaBox);
 void O2ContextEndPage(O2ContextRef self);
 
+
+void O2ContextSetTextLineMatrix(O2ContextRef self,O2AffineTransform matrix);
+O2AffineTransform O2ContextGetTextLineMatrix(O2ContextRef self);
+O2Float O2ContextGetTextLeading(O2ContextRef self);
+void O2ContextSetTextLeading(O2ContextRef self,O2Float value);
+void O2ContextSetWordSpacing(O2ContextRef self,O2Float value);
+void O2ContextSetTextRise(O2ContextRef self,O2Float value);
+void O2ContextSetTextHorizontalScaling(O2ContextRef self,O2Float value);
+void O2ContextSetEncoding(O2ContextRef self,O2Encoding *value);
+void O2ContextSetPDFCharWidths(O2ContextRef self,O2PDFCharWidths *value);
+
 // **PRIVATE** These are private in Apple's implementation as well as ours.
 
 void O2ContextSetCTM(O2ContextRef self,O2AffineTransform matrix);
 void O2ContextResetClip(O2ContextRef self);
 
+O2AffineTransform O2ContextGetTextRenderingMatrix(O2ContextRef self);
+
+void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size *advances,size_t count);
+void O2ContextConcatAdvancesToTextMatrix(O2ContextRef self,const O2Size *advances,size_t count);
+
+O2GState *O2ContextCurrentGState(O2ContextRef self);
+
 // Temporary hacks
 
-NSData *O2ContextCaptureBitmap(O2ContextRef self,O2Rect rect);
 void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState);
 
 @end

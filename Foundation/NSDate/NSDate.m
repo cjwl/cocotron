@@ -111,10 +111,14 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSTimeInterval interval;
-
-   [coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&interval];
-
+   NSTimeInterval interval=0;
+   
+   if(![coder allowsKeyedCoding]){
+    [coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&interval];
+   }
+   else {
+    interval=[coder decodeDoubleForKey:@"NS.time"];
+   }
    return [self initWithTimeIntervalSinceReferenceDate:interval];
 }
 

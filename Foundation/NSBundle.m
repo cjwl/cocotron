@@ -77,11 +77,25 @@ void OBJCRaiseWin32Failure(const char *name,const char *format,...) {
 
 // only frameworks need to call this from DllMain, NSLoadModule will do it for loaded object files (i.e. bundles)
 int OBJCRegisterDLL(HINSTANCE handle){
-   char path[MAX_PATH+1];
+   int        i,bufferCapacity=32767;
+   uint16_t   buffer[bufferCapacity+1];
+   DWORD      bufferSize=GetModuleFileNameW(handle,buffer,bufferCapacity);
 
-   if(!GetModuleFileName(handle,path,MAX_PATH))
+   if(bufferSize==0){
     OBJCRaiseWin32Failure("OBJCModuleFailed","OBJCInitializeModule, GetModuleFileName failed");
-   else
+    return 1;
+   }
+   
+   for(i=0;i<bufferSize;i++)
+    if(buffer[i]=='\\')
+     buffer[i]='/';
+     
+   int        size=WideCharToMultiByte(CP_UTF8,0,buffer,bufferSize,NULL,0,NULL,NULL);
+   char       path[size+1];
+   
+   size=WideCharToMultiByte(CP_UTF8,0,buffer,bufferSize,path,size,NULL,NULL);
+   path[size]='\0';
+
     OBJCLinkQueuedModulesToObjectFileWithPath(path);
 
    return 1;
@@ -91,7 +105,6 @@ NSModuleHandle NSLoadModule(const char *path) {
    NSModuleHandle handle;
    
    OBJCResetModuleQueue();
-   
    
    handle=LoadLibrary(path);
 
@@ -240,7 +253,7 @@ static NSMapTable *pathToObject=NULL;
    const char   **array=objc_copyImageNames(&count);
 
    for(i=0;i<count;i++){
-    NSString *path=[NSString stringWithCString:array[i]];
+    NSString *path=[NSString stringWithUTF8String:array[i]];
     NSBundle *bundle=[NSBundle bundleWithModulePath:path];
 
     [_allFrameworks addObject:bundle];
@@ -251,8 +264,8 @@ static NSMapTable *pathToObject=NULL;
 +(void)initialize {
    if(self==[NSBundle class]){
     const char *override=getenv("CFProcessPath");
-    const char *module=override ? override : OBJCModulePathForProcess();
-    NSString   *path=[NSString stringWithCString:module];
+    const char *module=override ? override : objc_mainImageName();
+    NSString   *path=[NSString stringWithUTF8String:module];
 
     if(module==NULL)
      NSCLog("+[NSBundle initialize]: module path for process is NULL");
@@ -292,7 +305,7 @@ static NSMapTable *pathToObject=NULL;
     if(module==NULL)
      return [self mainBundle]; // this is correct behaviour for Nil class
     else {
-     NSString   *path=[NSString stringWithCString:module];
+     NSString   *path=[NSString stringWithUTF8String:module];
 
      bundle=[NSBundle bundleWithModulePath:path];
      NSMapInsert(nameToBundle,NSStringFromClass(class),bundle);
@@ -445,7 +458,7 @@ static NSMapTable *pathToObject=NULL;
       return path;
 
    // Try to enhance compatibility with Unix-ish code.
-   if (![NSPlatformExecutableFileExtension isEqualToString:@""]) {
+   if ([NSPlatformExecutableFileExtension length]) {
       path=[path stringByAppendingPathExtension:NSPlatformExecutableFileExtension];
       if ([fm isExecutableFileAtPath:path])
          return path;

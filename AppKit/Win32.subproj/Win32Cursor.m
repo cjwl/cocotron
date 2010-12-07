@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([name isEqualToString:@"arrowCursor"])
     idc=IDC_ARROW;
    else if([name isEqualToString:@"closedHandCursor"])
-    idc=IDC_ARROW;
+    idc=IDC_HAND;
    else if([name isEqualToString:@"crosshairCursor"])
     idc=IDC_CROSS;
    else if([name isEqualToString:@"disappearingItemCursor"])

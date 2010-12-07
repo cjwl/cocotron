@@ -1105,8 +1105,10 @@ BOOL VGPathAddCubicTo(VGPath *self,O2Point p0, O2Point p1, O2Point p2, O2Point p
 	if(!subpathHasGeometry)
 		startFlags |= START_SUBPATH;
 
-#if 1
-// This works, but does not take the CTM (i.e. scaling) into effect
+#if 0
+// This is the proper idea, subdivide until flatness tolerance is acheived
+// However, it does not compensate for the CTM/device matrix, so it can produce grossly flat curves
+// Also CRASHES under circumstances when a coordinate is NaN (view had NaN y)
 	unsigned int prevFlags = startFlags;
 	O2Point pp = p0;
 	O2Point tp = incomingTangent;

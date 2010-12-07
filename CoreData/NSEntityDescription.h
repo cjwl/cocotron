@@ -5,15 +5,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-// -*- mode: objc -*-
 #import <Foundation/Foundation.h>
-#import <stdint.h>
 
-@class NSManagedObject;
-@class NSManagedObjectContext;
-@class NSManagedObjectModel;
-@class NSPropertyDescription;
-@class NSAttributeDescription;
+@class NSManagedObject,NSManagedObjectContext,NSManagedObjectModel,NSPropertyDescription,NSAttributeDescription;
+
 @interface NSEntityDescription : NSObject {
     NSString *_className;
     NSString *_name;
@@ -24,19 +19,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSDictionary *_userInfo;
     id _versionHashModifier;
     NSMutableDictionary *_selectorPropertyMap;
+    BOOL _isAbstract;
     BOOL _hasBeenInstantiated;
 }
 
-@property (readonly) NSMutableDictionary *_selectorPropertyMap;
-
-+ (id) _selectorKey: (SEL) selector;
-- (NSPropertyDescription *) _propertyForSelector: (SEL) selector;
 - (BOOL) _hasBeenInstantiated;
 
-+ (NSEntityDescription *) entityForName: (NSString *) entityName
-		inManagedObjectContext: (NSManagedObjectContext *) moc;
-+ (NSManagedObject *) insertNewObjectForEntityForName: (NSString *) entityName
-			       inManagedObjectContext: (NSManagedObjectContext *) moc;
++(NSEntityDescription *)entityForName:(NSString *) entityName inManagedObjectContext: (NSManagedObjectContext *) moc;
+        
++insertNewObjectForEntityForName: (NSString *) entityName inManagedObjectContext: (NSManagedObjectContext *) moc;
 
 - (NSManagedObjectModel *) managedObjectModel;
 
@@ -62,8 +53,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (NSArray *) relationshipsWithDestinationEntity: (NSEntityDescription *) entity;
 
 @end
-
-
-extern id getValue(id self, SEL selector);
-extern void setValue(id self, SEL selector, id newValue);
 

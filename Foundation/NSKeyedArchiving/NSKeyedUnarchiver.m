@@ -188,8 +188,8 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    if(typeID==kNSCFTypeNumber || typeID==kNSCFTypeBoolean)
     return result;
     
-   [NSException raise:@"NSKeyedUnarchiverException" format:@"Expecting number, got %@",result];
-   return nil;
+   [NSException raise:@"NSKeyedUnarchiverException" format:@"Expecting number, got %@, for key=%@",result,key];
+   return [NSNumber numberWithInt:0];
 }
 
 -(BOOL)decodeBoolForKey:(NSString *)key {
@@ -244,6 +244,15 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
     return 0;
     
    return [number intValue];
+}
+
+-(NSInteger)decodeIntegerForKey:(NSString *)key {
+	NSNumber *number=_numberForKey(self,key);
+	
+	if(number==nil)
+		return 0;
+    
+   return [number integerValue];
 }
 
 // not a lot of validation

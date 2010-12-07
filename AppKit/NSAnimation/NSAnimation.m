@@ -11,15 +11,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSTimer.h>
+#import <Foundation/NSRunLoop.h>
 
 NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotification";
+
+NSString *NSAnimationTriggerOrderIn=@"NSAnimationTriggerOrderIn";
+NSString *NSAnimationTriggerOrderOut=@"NSAnimationTriggerOrderOut";
+
+NSString *NSAnimationRunLoopMode=@"NSAnimationRunLoopMode";
 
 @implementation NSAnimation
 
 -initWithDuration:(NSTimeInterval)duration animationCurve:(NSAnimationCurve)curve {
    _duration=duration;
    _curve=curve;
-   _frameRate=30;
+   _frameRate=10;
    _blockingMode=NSAnimationBlocking;
    _delegate=nil;
    _progressMarks=[NSMutableArray new];
@@ -32,6 +38,19 @@ NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNo
    [_progressMarks release];
    [_runLoopModes release];
    [super dealloc];
+}
+
+-copyWithZone:(NSZone *)zone {
+   NSAnimation *result=NSCopyObject(self,0,zone);
+   
+   result->_currentValue=0;
+   result->_currentProgress=0;
+   result->_progressMarks=[_progressMarks mutableCopy];
+   result->_runLoopModes=[_runLoopModes copy];
+   result->_isAnimating=NO;
+   result->_timer=nil;
+   
+   return result;
 }
 
 -(NSTimeInterval)duration {
@@ -99,8 +118,7 @@ NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNo
 }
 
 -(NSAnimationProgress)currentProgress {
-   NSUnimplementedMethod();
-   return 0;
+   return _currentProgress;
 }
 
 -(float)currentValue {
@@ -116,7 +134,7 @@ NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNo
 }
 
 -(void)setCurrentProgress:(NSAnimationProgress)progress {
-   NSUnimplementedMethod();
+   _currentProgress=progress;
 }
 
 -(void)clearStartAnimation {
@@ -127,31 +145,72 @@ NSString * const NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNo
    NSUnimplementedMethod();
 }
 
-// This isn't correct, we're just faking start/stop/end behavior w/o any real animation
--(void)timer:(NSTimer *)timer {
-   if([_delegate respondsToSelector:@selector(animationDidEnd:)])
-    [_delegate performSelector:@selector(animationDidEnd:) withObject:self];
+-(void)_setCurrentProgressAndEndIfNeeded:(NSAnimationProgress)progress {
+	if(_isAnimating){
+		progress=MAX(0.0,MIN(1.0,progress));
+		[self setCurrentProgress:progress];
+		
+		if(progress>=1.0){
+			if([_delegate respondsToSelector:@selector(animationDidEnd:)])
+				[_delegate performSelector:@selector(animationDidEnd:) withObject:self];
+			
+			[self stopAnimation];
+		}
+	}
+}
 
-   _isAnimating=NO;
-   _timer=nil;
-   [self autorelease];
+-(void)timer:(NSTimer *)timer {
+   NSTimeInterval currentTime=[NSDate timeIntervalSinceReferenceDate];
+   NSTimeInterval elapsedTime=currentTime-_startTime;
+   float          progress=elapsedTime/_duration;
+
+   [self _setCurrentProgressAndEndIfNeeded:progress];
 }
 
 -(void)startAnimation {
    if(!_isAnimating){
+   
+    if([_delegate respondsToSelector:@selector(animationShouldStart:)])
+     if(![_delegate animationShouldStart:self])
+      return;
+      
     [self retain];
     _isAnimating=YES;
-    _timer=[NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(timer:) userInfo:nil repeats:NO];
+    _startTime=[NSDate timeIntervalSinceReferenceDate];
+    
+    switch(_blockingMode){
+    
+     case NSAnimationBlocking:
+      _timer=[NSTimer timerWithTimeInterval:1.0/_frameRate target:self selector:@selector(timer:) userInfo:nil repeats:YES];
+      
+      [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSAnimationRunLoopMode];
+      
+      while(_isAnimating)
+       [[NSRunLoop currentRunLoop] runMode:NSAnimationRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:_duration]];
+      
+      [self _setCurrentProgressAndEndIfNeeded:1.0];
+      break;
+      
+     case NSAnimationNonblocking:
+      _timer=[NSTimer scheduledTimerWithTimeInterval:1.0/_frameRate target:self selector:@selector(timer:) userInfo:nil repeats:YES];
+      break;
+     
+     case NSAnimationNonblockingThreaded:
+      NSUnimplementedMethod();
+      break;
    }
+    
+}
+
 }
 
 -(void)stopAnimation {
-   if(_isAnimating){
-    _isAnimating=NO;
-    [_timer invalidate];
-    _timer=nil;
-    [self autorelease];
-   }
+	if(_isAnimating){
+		_isAnimating=NO;
+		[_timer invalidate];
+		_timer=nil;
+		[self autorelease];
+	}
 }
 
 -(void)startWhenAnimation:(NSAnimation *)animation reachesProgress:(NSAnimationProgress)progress {

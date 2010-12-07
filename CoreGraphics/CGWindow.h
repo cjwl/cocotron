@@ -8,13 +8,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class O2Context,CGEvent;
+@class O2Context,CGEvent,CGLPixelSurface;
 
 typedef enum {
    CGSBackingStoreRetained=0,
    CGSBackingStoreNonretained=1,
    CGSBackingStoreBuffered=2
 } CGSBackingStoreType;
+
+enum {
+   kCGNormalWindowLevel,
+   kCGFloatingWindowLevel,
+   kCGTornOffMenuWindowLevel,
+   kCGMainMenuWindowLevel,
+   kCGStatusWindowLevel,
+   kCGModalPanelWindowLevel,
+   kCGPopUpMenuWindowLevel,
+   kCGScreenSaverWindowLevel,
+};
 
 @interface CGWindow : NSObject
 
@@ -27,6 +38,7 @@ typedef enum {
 
 -(unsigned)styleMask;
 
+-(void)setLevel:(int)value;
 -(void)setStyleMask:(unsigned)mask;
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(CGRect)frame;
@@ -51,11 +63,14 @@ typedef enum {
 -(void)placeBelowWindow:(int)otherNumber;
 
 -(void)makeKey;
+-(void)makeMain;
 -(void)captureEvents;
 -(void)miniaturize;
 -(void)deminiaturize;
 -(BOOL)isMiniaturized;
 
+-(void)disableFlushWindow;
+-(void)enableFlushWindow;
 -(void)flushBuffer;
 
 -(NSPoint)mouseLocationOutsideOfEventStream;
@@ -64,6 +79,9 @@ typedef enum {
 
 -(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
 -(void)flashWindow;
+
+-(void)addOverlay:(CGLPixelSurface *)overlay;
+-(void)removeOverlay:(CGLPixelSurface *)overlay;
 
 @end
 

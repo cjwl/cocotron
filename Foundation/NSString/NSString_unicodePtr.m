@@ -12,19 +12,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSString_unicodePtr
 
-NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
- const unichar *unicode,NSUInteger length) {
+NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,const unichar *unicode,NSUInteger length,BOOL freeWhenDone) {
    NSString_unicodePtr *string;
 
    string=NSAllocateObject([NSString_unicodePtr class],0,zone);
 
    string->_length=length;
+   string->_freeWhenDone=freeWhenDone;
    string->_unicode=unicode;
 
    return string;
 }
 
+NSString *NSString_unicodePtrNew(NSZone *zone,const unichar *unicode,NSUInteger length) {
+   unichar *copy=malloc(length*sizeof(unichar));
+   int      i;
+   
+   for(i=0;i<length;i++)
+    copy[i]=unicode[i];
+    
+   return NSString_unicodePtrNewNoCopy(zone,copy,length,YES);
+}
+
 -(void)dealloc {
+   if(_freeWhenDone)
    NSZoneFree(NSZoneFromPointer((void *)_unicode),(void *)_unicode);
    NSDeallocateObject(self);
    return;

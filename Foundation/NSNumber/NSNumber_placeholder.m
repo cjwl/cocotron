@@ -115,6 +115,22 @@ static NSNumber_placeholder *sSharedInstance;
    return NSNumber_doubleNew(NULL,value);
 }
 
+-initWithInteger:(NSInteger)value {
+#if defined(__LP64__)
+   return NSNumber_longNew(NULL,value);
+#else
+   return NSNumber_intNew(NULL,value);
+#endif
+}
+
+-initWithUnsignedInteger:(NSUInteger)value {
+#if defined(__LP64__)
+   return NSNumber_unsignedLongNew(NULL,value);
+#else
+   return NSNumber_unsignedIntNew(NULL,value);
+#endif
+}
+
 -initWithBool:(BOOL)value {
    return NSNumber_BOOLNew(NULL,value);
 }

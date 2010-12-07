@@ -11,9 +11,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSColor,NSCalendar,NSLocale,NSTimeZone;
 
-typedef int NSDatePickerElementFlags;
-typedef int NSDatePickerMode;
-typedef int NSDatePickerStyle;
+enum {
+   NSHourMinuteDatePickerElementFlag       = 0x000c,
+   NSHourMinuteSecondDatePickerElementFlag = 0x000e,
+   NSTimeZoneDatePickerElementFlag         = 0x0010,
+   NSYearMonthDatePickerElementFlag        = 0x00c0,
+   NSYearMonthDayDatePickerElementFlag     = 0x00e0,
+   NSEraDatePickerElementFlag              = 0x0100,
+};
+typedef NSUInteger NSDatePickerElementFlags;
+
+enum {
+   NSSingleDateMode = 0,
+   NSRangeDateMode = 1
+};
+typedef NSUInteger NSDatePickerMode;
+
+enum {
+   NSTextFieldAndStepperDatePickerStyle    = 0,
+   NSClockAndCalendarDatePickerStyle       = 1,
+   NSTextFieldDatePickerStyle              = 2
+};
+typedef NSUInteger NSDatePickerStyle;
 
 @interface NSDatePickerCell : NSActionCell {
    id                       _delegate;
@@ -24,11 +43,14 @@ typedef int NSDatePickerStyle;
    NSLocale                *_locale;
    NSDate                  *_minDate;
    NSDate                  *_maxDate;
-   NSDate                  *_dateValue;
    NSTimeZone              *_timeZone;
    BOOL                     _drawsBackground;
    NSColor                 *_backgroundColor;
    NSColor                 *_textColor;
+   NSTimeInterval           _timeInterval;
+   NSUInteger               _selectedUnit;
+   BOOL                     _isUpHighlighted;
+   BOOL                     _isDownHighlighted;
 }
 
 -delegate;

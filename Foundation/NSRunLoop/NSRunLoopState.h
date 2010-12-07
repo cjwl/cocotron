@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)addTimer:(NSTimer *)timer;
 
--(void)changingIntoMode:(NSString *)mode;
+-(void)startingInMode:(NSString *)mode;
 
 -(BOOL)fireFirstTimer;
 -(NSDate *)limitDateForMode:(NSString *)mode;
@@ -30,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed;
 
--(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
+-(BOOL)waitForSingleInputForMode:(NSString *)mode beforeDate:(NSDate *)date;
 
 -(BOOL)pollInputForMode:(NSString *)mode;
 

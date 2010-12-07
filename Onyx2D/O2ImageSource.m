@@ -26,6 +26,7 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
     @"O2ImageSource_JPEG",
     @"O2ImageSource_BMP",
     @"O2ImageSource_GIF",
+    @"O2ImageSource_ICNS",
     nil
    };
    int i;

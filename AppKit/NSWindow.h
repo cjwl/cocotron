@@ -12,8 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSResponder.h>
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSView.h>
+#import <ApplicationServices/ApplicationServices.h>
 
-@class NSView, NSEvent, NSColor, NSColorSpace, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton, NSButtonCell, NSDrawer, NSDockTile, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSWindowBackgroundView, NSWindowController, NSMenuItem;
+@class NSView, NSEvent, NSColor, NSColorSpace, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton, NSButtonCell, NSDrawer, NSDockTile, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSThemeFrame, NSWindowController, NSMenuItem;
 
 enum {
    NSBorderlessWindowMask=0x00,
@@ -50,6 +51,18 @@ enum {
    NSWindowBackingLocationMainMemory=0x02
 };
 typedef NSUInteger NSWindowBackingLocation;
+
+enum {
+ NSNormalWindowLevel     =kCGNormalWindowLevel,
+ NSFloatingWindowLevel   =kCGFloatingWindowLevel,
+ NSSubmenuWindowLevel    =kCGTornOffMenuWindowLevel,
+ NSTornOffMenuWindowLevel=kCGTornOffMenuWindowLevel,
+ NSMainMenuWindowLevel   =kCGMainMenuWindowLevel,
+ NSStatusWindowLevel     =kCGStatusWindowLevel,
+ NSModalPanelWindowLevel =kCGModalPanelWindowLevel,
+ NSPopUpMenuWindowLevel  =kCGPopUpMenuWindowLevel,
+ NSScreenSaverWindowLevel=kCGScreenSaverWindowLevel,
+};
 
 enum {
    NSWindowCollectionBehaviorDefault=0x00,
@@ -91,7 +104,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    NSRect             _frame;
    unsigned           _styleMask;
    NSBackingStoreType _backingType;
-   int                _level;
+   NSInteger          _level;
    
    NSSize   _minSize;
    NSSize   _maxSize;
@@ -106,7 +119,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    NSString *_miniwindowTitle;
    NSImage  *_miniwindowImage;
 
-   NSWindowBackgroundView *_backgroundView;
+   NSThemeFrame *_backgroundView;
    NSMenu   *_menu;
    NSView   *_menuView;
    NSView   *_contentView;
@@ -129,8 +142,6 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 
    BOOL      _isOpaque;
    BOOL      _isVisible;
-   BOOL      _isKeyWindow;
-   BOOL      _isMainWindow;
    BOOL      _isDocumentEdited;
    BOOL      _makeSureIsOnAScreen;
 
@@ -161,12 +172,9 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    BOOL      _allowsToolTipsWhenApplicationIsInactive;
    BOOL      _defaultButtonCellKeyEquivalentDisabled;
    BOOL      _autorecalculatesKeyViewLoop;
+   BOOL      _hasBeenOnScreen;
    
    BOOL      _preservesContentDuringLiveResize;
-   BOOL      _useAspectRatio;
-   BOOL      _aspectRatioIsContent;
-   NSSize    _aspectRatio;
-   NSSize    _contentAspectRatio;
    NSSize    _resizeIncrements;
    NSSize    _contentResizeIncrements;
    
@@ -217,7 +225,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 -(NSString *)representedFilename;
 -(NSURL *)representedURL;
 
--(int)level;
+-(NSInteger)level;
 -(NSRect)frame;
 -(unsigned)styleMask;
 -(NSBackingStoreType)backingType;
@@ -316,7 +324,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 -(void)setCanHide:(BOOL)value;
 -(void)setCanBecomeVisibleWithoutLogin:(BOOL)flag;
 -(void)setCollectionBehavior:(NSWindowCollectionBehavior)behavior;
--(void)setLevel:(int)value;
+-(void)setLevel:(NSInteger)value;
 -(void)setOpaque:(BOOL)value;
 -(void)setParentWindow:(NSWindow *)value;
 -(void)setPreservesContentDuringLiveResize:(BOOL)value;
@@ -346,7 +354,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 -(NSButtonCell *)defaultButtonCell;
 -(NSWindow *)attachedSheet;
 
--(NSWindowController *)windowController;
+-(id)windowController;
 -(NSArray *)drawers;
 
 -(int)windowNumber;

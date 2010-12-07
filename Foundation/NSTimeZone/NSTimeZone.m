@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSCoder.h>
 #import <Foundation/NSPlatform.h>
 #include <stdio.h>
 
@@ -120,12 +121,25 @@ static NSTimeZone *_localTimeZone=nil;
 }
 
 -initWithCoder:(NSCoder *)coder {
+   if([coder allowsKeyedCoding]){
+    _name=[[coder decodeObjectForKey:@"NS.name"] copy];
+    _data=[[coder decodeObjectForKey:@"NS.data"] copy];
+   }
+   else {
     NSInvalidAbstractInvocation();
     return nil;
 }
+   return self;
+}
 
 -(void)encodeWithCoder:(NSCoder *)coder {
+   if([coder allowsKeyedCoding]){
+    [coder encodeObject:[self name] forKey:@"NS.name"];
+    [coder encodeObject:[self data] forKey:@"NS.data"];
+   }
+   else {
     NSInvalidAbstractInvocation();
+}
 }
 
 -copyWithZone:(NSZone *)zone {

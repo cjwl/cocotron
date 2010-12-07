@@ -29,20 +29,20 @@ enum {
 };
 
 typedef enum {
-   NSNoImage,
-   NSImageOnly,
-   NSImageLeft,
-   NSImageRight,
-   NSImageBelow,
-   NSImageAbove,
-   NSImageOverlaps
+   NSNoImage=0,
+   NSImageOnly=1,
+   NSImageLeft=2,
+   NSImageRight=3,
+   NSImageBelow=4,
+   NSImageAbove=5,
+   NSImageOverlaps=6,
 } NSCellImagePosition;
 
 typedef enum {
    NSImageScaleProportionallyDown = 0,
-   NSImageScaleAxesIndependently,
-   NSImageScaleNone,
-   NSImageScaleProportionallyUpOrDown,
+   NSImageScaleAxesIndependently=1,
+   NSImageScaleNone=2,
+   NSImageScaleProportionallyUpOrDown=3,
    
 // deprecated
    NSScaleProportionally=NSImageScaleProportionallyDown,
@@ -65,6 +65,21 @@ typedef enum {
 
 typedef NSUInteger NSControlTint;
 
+enum {
+   NSBackgroundStyleLight  =0,
+   NSBackgroundStyleDark   =1,
+   NSBackgroundStyleRaised =2,
+   NSBackgroundStyleLowered=3,
+};
+typedef NSInteger NSBackgroundStyle;
+
+enum {
+   NSCellHitNone            = 0x00,
+   NSCellHitContentArea     = 0x01,
+   NSCellHitEditableTextArea= 0x02,
+   NSCellHitTrackableArea   = 0x04,
+};
+
 @interface NSCell : NSObject <NSCopying,NSCoding> {
    int       _state;
    NSFont   *_font;
@@ -80,6 +95,7 @@ typedef NSUInteger NSControlTint;
    NSControlSize _controlSize;
    NSFocusRingType _focusRingType;
    NSLineBreakMode _lineBreakMode;
+   NSBackgroundStyle _backgroundStyle;
    
    BOOL      _isEnabled;
    BOOL      _isEditable;
@@ -88,6 +104,7 @@ typedef NSUInteger NSControlTint;
    BOOL      _isBordered;
    BOOL      _isBezeled;
    BOOL      _isHighlighted;
+   BOOL      _showsFirstResponder;
    BOOL      _refusesFirstResponder;
    BOOL	     _isContinuous;
    BOOL      _allowsMixedState;
@@ -111,6 +128,7 @@ typedef NSUInteger NSControlTint;
 -(NSFont *)font;
 -(NSImage *)image;
 -(NSTextAlignment)alignment;
+-(NSLineBreakMode)lineBreakMode;
 -(NSWritingDirection)baseWritingDirection;
 -(BOOL)wraps;
 -(NSString *)title;
@@ -122,6 +140,7 @@ typedef NSUInteger NSControlTint;
 -(BOOL)isBordered;
 -(BOOL)isBezeled;
 -(BOOL)isContinuous;
+-(BOOL)showsFirstResponder;
 -(BOOL)refusesFirstResponder;
 -(BOOL)isHighlighted;
 
@@ -134,6 +153,7 @@ typedef NSUInteger NSControlTint;
 -(id)representedObject;
 -(NSControlSize)controlSize;
 -(NSFocusRingType)focusRingType;
+-(NSBackgroundStyle)backgroundStyle;
 
 -(void)setControlView:(NSView *)view;
 -(void)setType:(NSCellType)type;
@@ -152,6 +172,7 @@ typedef NSUInteger NSControlTint;
 -(void)setFont:(NSFont *)font;
 -(void)setImage:(NSImage *)image;
 -(void)setAlignment:(NSTextAlignment)alignment;
+-(void)setLineBreakMode:(NSLineBreakMode)value;
 -(void)setBaseWritingDirection:(NSWritingDirection)value;
 -(void)setWraps:(BOOL)wraps;
 -(void)setTitle:(NSString *)title;
@@ -163,6 +184,7 @@ typedef NSUInteger NSControlTint;
 -(void)setBordered:(BOOL)flag;
 -(void)setBezeled:(BOOL)flag;
 -(void)setContinuous:(BOOL)flag;
+-(void)setShowsFirstResponder:(BOOL)value;
 -(void)setRefusesFirstResponder:(BOOL)flag;
 -(void)setHighlighted:(BOOL)flag;
 
@@ -177,6 +199,7 @@ typedef NSUInteger NSControlTint;
 -(void)setRepresentedObject:(id)object;
 -(void)setControlSize:(NSControlSize)size;
 -(void)setFocusRingType:(NSFocusRingType)focusRingType;
+-(void)setBackgroundStyle:(NSBackgroundStyle)value;
 
 -(void)takeObjectValueFrom:sender;
 -(void)takeStringValueFrom:sender;
@@ -184,6 +207,7 @@ typedef NSUInteger NSControlTint;
 -(void)takeFloatValueFrom:sender;
 
 -(NSSize)cellSize;
+-(NSSize)cellSizeForBounds:(NSRect)rect;
 
 -(NSRect)imageRectForBounds:(NSRect)rect;
 -(NSRect)titleRectForBounds:(NSRect)rect;
@@ -211,3 +235,5 @@ typedef NSUInteger NSControlTint;
 - (BOOL)sendsActionOnEndEditing;
 
 @end
+
+void NSDrawThreePartImage(NSRect frame,NSImage *startCap,NSImage *centerFill,NSImage *endCap,BOOL vertical,NSCompositingOperation operation,CGFloat alpha,BOOL flipped);

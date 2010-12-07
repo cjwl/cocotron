@@ -11,14 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "CGConversions.h"
 
 CGPatternRef CGPatternRetain(CGPatternRef self) {
-   return [self retain];
+   return O2PatternRetain(self);
 }
 
 void CGPatternRelease(CGPatternRef self) {
-   [self release];
+   O2PatternRelease(self);
 }
 
 CGPatternRef CGPatternCreate(void *info,CGRect bounds,CGAffineTransform matrix,CGFloat xstep,CGFloat ystep,CGPatternTiling tiling,bool isColored,const CGPatternCallbacks *callbacks) {
-   return [[O2Pattern alloc] initWithInfo:info bounds:bounds matrix:O2AffineTransformFromCG(matrix) xstep:xstep ystep:ystep tiling:tiling isColored:isColored callbacks:O2PatternCallbacksFromCG(callbacks)];
+   return O2PatternCreate(info,bounds,O2AffineTransformFromCG(matrix),xstep,ystep,tiling,isColored,O2PatternCallbacksFromCG(callbacks));
 }
 

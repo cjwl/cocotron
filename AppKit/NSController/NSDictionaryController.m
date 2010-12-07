@@ -12,6 +12,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyedArchiver.h>
+#import <Foundation/NSSortDescriptor.h>
 
 @interface NSDictionaryControllerProxy : NSObject
 {
@@ -52,14 +53,26 @@
 @end
 
 @implementation NSDictionaryController
--(id)initWithCoder:(NSCoder*)coder
-{
-	if((self = [super initWithCoder:coder]))
-	{
+
+-init {
+   [super init];
+   // NSDictionaryController has a default sort descriptor, NSArrayController does not
+   [self setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES]]];
+   _initialKey=@"key";
+   _initialValue=@"value";
+   return self;
+}
+
+-initWithCoder:(NSCoder*)coder {
+   if([super initWithCoder:coder]==nil)
+    return nil;
+    
       _includedKeys=[[coder decodeObjectForKey:@"NSIncludedKeys"] retain];
       _excludedKeys=[[coder decodeObjectForKey:@"NSExcludedKeys"] retain];
+   [self setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES]]];
+   _initialKey=@"key";
+   _initialValue=@"value";
       
-	}
 	return self;
 }
 
@@ -67,22 +80,34 @@
    [_contentDictionary release];
    [_includedKeys release];
    [_excludedKeys release];
+   [_initialKey release];
+   [_initialValue release];
    [super dealloc];
 }
+
+-(void)prepareContent {
+// do nothing ?
+}
+
 
 -(id)contentDictionary {
    return _contentDictionary;
 }
 
--(void)setContentDictionary:(id)dict {
-   if(dict!=_contentDictionary) {
+-(void)setContent:(id)value {
+   if(value==_contentDictionary)
+    return;
+    
       [_contentDictionary release];
+   _contentDictionary=nil;
       
-      if(NSIsControllerMarker(dict)) {
-         dict=nil;
+   if(NSIsControllerMarker(value)) {
+    [super setContent:[NSMutableArray array]];
+    return;
       }
       
-      _contentDictionary=[dict retain];
+   if([value isKindOfClass:[NSDictionary class]]){
+      _contentDictionary=[value retain];
 
       id contentArray=[NSMutableArray array];
 
@@ -96,7 +121,41 @@
          }
       }
       
-      [self setContent:contentArray];
+      [super setContent:contentArray];
    }
 }
+
+-(void)_setContentDictionary:value {
+   [self setContent:value];
+}
+
+-(id)newObject {
+   NSDictionaryControllerProxy *result=[NSDictionaryControllerProxy new];
+   
+   result.key=_initialKey;
+   result.dictionary=_contentDictionary;
+   
+   return result;
+}
+
+-(NSString *)initialKey {
+   return _initialKey;
+}
+
+-initialValue {
+   return _initialValue;
+}
+
+-(void)setInitialKey:(NSString *)key {
+   key=[key copy];
+   [_initialKey release];
+   _initialKey=key;
+}
+
+-(void)setInitialValue:value {
+   value=[value retain];
+   [_initialValue release];
+   _initialValue=value;
+}
+
 @end

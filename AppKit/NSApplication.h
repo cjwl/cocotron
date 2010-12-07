@@ -73,6 +73,8 @@ typedef enum {
    NSDisplay      *_display;
    id              _delegate;
    NSMutableArray *_windows;
+   NSWindow       *_keyWindow;
+   NSWindow       *_mainWindow;
    NSMenu         *_mainMenu;
    NSMenu         *_windowsMenu;
 

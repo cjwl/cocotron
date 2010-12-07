@@ -9,6 +9,7 @@
 #import <Foundation/NSConditionLock_win32.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSDebug.h>
 
 #define UPDATE_TIME time=MIN(MAX([date timeIntervalSinceNow]*1000.0, 0), INFINITE)
 
@@ -43,16 +44,22 @@
    
    if(wereLast)
    {
-      if(SignalObjectAndWait(_waitersDone, _mutex, time, NO)) {
+    NSCooperativeThreadBlocking();
+    DWORD result=SignalObjectAndWait(_waitersDone, _mutex, time, NO);
+    NSCooperativeThreadWaiting();
+    
+    if(result)
          return NO;
       }
-   }
    else
    {
-      if(WaitForSingleObject(_mutex, time)) {
+    NSCooperativeThreadBlocking();
+    DWORD result=WaitForSingleObject(_mutex, time);
+    NSCooperativeThreadWaiting();
+    
+    if(result)
          return NO;
       }
-   }
    return YES;
 }
 
@@ -63,7 +70,9 @@
    if(_conditionWasBroadcast) {
       ReleaseSemaphore(_semaphore, _numberOfWaiters, 0);
       LeaveCriticalSection(&_waitersNumber);
+      NSCooperativeThreadBlocking();
       WaitForSingleObject(_waitersDone, INFINITE);
+      NSCooperativeThreadWaiting();
       _conditionWasBroadcast=NO;
    }
    else
@@ -82,10 +91,14 @@
    NSUInteger time=0;
    UPDATE_TIME;
 
-   HRESULT res;
-   if((res=WaitForSingleObject(_mutex, time))!=0) {
+   DWORD result;
+   
+   NSCooperativeThreadBlocking();
+   result=WaitForSingleObject(_mutex,time);
+   NSCooperativeThreadWaiting();
+    
+   if(result!=0)
       return NO;
-   }
 
    while(_value!=condition) {
       if(![self _waitForConditionBeforeDate:date]) {
@@ -99,10 +112,14 @@
     NSUInteger time=0;
     UPDATE_TIME;
 
-    HRESULT res;
-    if((res=WaitForSingleObject(_mutex, time))!=0) {
+    DWORD result;
+    
+    NSCooperativeThreadBlocking();
+    result=WaitForSingleObject(_mutex, time);
+    NSCooperativeThreadWaiting();
+    
+    if(result!=0)
         return NO;
-    }
 
     return YES;
 }

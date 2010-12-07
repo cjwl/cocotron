@@ -5,37 +5,38 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-// -*- mode: objc -*-
 #import <Foundation/Foundation.h>
 
 @class NSFetchRequest;
+
 @interface NSManagedObjectModel : NSObject {
     NSMutableDictionary *_entities;
-    id _fetchRequestTemplates;
+    NSMutableDictionary *_fetchRequestTemplates;
     NSSet *_versionIdentifiers;
+    NSDictionary *_localizationDictionary;
+    NSMutableDictionary *_configurations;
 }
 
-+ (NSManagedObjectModel *) mergedModelFromBundles: (NSArray *) bundles;
-+ (NSManagedObjectModel *) modelByMergingModels: (NSArray *) models;
++(NSManagedObjectModel *)modelByMergingModels:(NSArray *)models;
 
-- (id) initWithContentsOfURL: (NSURL *) url;
++(NSManagedObjectModel *)mergedModelFromBundles:(NSArray *)bundles;
 
-- (NSArray *) configurations;
+-initWithContentsOfURL:(NSURL *)url;
 
-- (NSArray *) entities;
-- (NSArray *) entitiesForConfiguration: (NSString *) configuration;
-- (NSDictionary *) localizationDictionary;
-- (NSFetchRequest *) fetchRequestTemplateForName: (NSString *) name;
+-(NSArray *)entities;
+-(NSDictionary *)entitiesByName;
+-(NSDictionary *)localizationDictionary;
 
-- (void) setEntities: (NSArray *) entities;
-- (void) setEntities: (NSArray *) entities forConfiguration: (NSString *) configuration;
-- (void) setLocalizationDictionary: (NSDictionary *) dictionary;
-- (void) setFetchRequestTemplate: (NSFetchRequest *) fetchRequest
-			 forName: (NSString *) name;
+-(void)setEntities:(NSArray *)entities;
+-(void)setLocalizationDictionary:(NSDictionary *)dictionary;
 
-- (NSDictionary *) entitiesByName;
+-(NSArray *)configurations;
+-(NSArray *)entitiesForConfiguration:(NSString *)configuration;
+-(void)setEntities:(NSArray *)entities forConfiguration:(NSString *)configuration;
 
-- (NSFetchRequest *) fetchRequestFromTemplateWithName: (NSString *) name
-				substitutionVariables: (NSDictionary *) variables;
+-(NSFetchRequest *)fetchRequestTemplateForName:(NSString *)name;
+-(NSFetchRequest *)fetchRequestFromTemplateWithName:(NSString *)name substitutionVariables:(NSDictionary *)variables;
+
+-(void)setFetchRequestTemplate:(NSFetchRequest *)fetchRequest forName:(NSString *)name;
 
 @end

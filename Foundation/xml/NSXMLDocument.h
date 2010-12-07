@@ -7,19 +7,21 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSXMLNode.h>
+#import <Foundation/NSXMLNodeOptions.h>
 
 @class NSXMLDTD,NSURL,NSData,NSMutableArray;
 
 enum {
 	NSXMLDocumentXMLKind = 0,
-	NSXMLDocumentXHTMLKind,
-	NSXMLDocumentHTMLKind,
-	NSXMLDocumentTextKind
+    NSXMLDocumentXHTMLKind=1,
+    NSXMLDocumentHTMLKind=2,
+    NSXMLDocumentTextKind=3,
 };
-typedef int NSXMLDocumentContentKind;
+
+typedef NSUInteger NSXMLDocumentContentKind;
 
 @interface NSXMLDocument : NSXMLNode {
-   NSMutableArray *_children;
+   NSUInteger _options;
    NSXMLDocumentContentKind _contentKind;
    NSString     *_version;
    NSString     *_characterEncoding;
@@ -29,6 +31,9 @@ typedef int NSXMLDocumentContentKind;
    NSXMLElement *_rootElement;
    NSXMLDTD     *_dtd;
    NSString     *_uri;
+
+// parsing state, should be moved out
+   NSMutableArray *_elementStack;
 }
 
 +(Class)replacementClassForClass:(Class)aClass;

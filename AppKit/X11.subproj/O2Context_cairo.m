@@ -24,10 +24,6 @@
 
 @implementation O2Context_cairo
 
-static inline O2GState *currentState(O2Context *self){        
-   return [self->_stateStack lastObject];
-}
-
 +(BOOL)canInitWithWindow:(CGWindow *)window {
    return YES;
 }
@@ -73,10 +69,6 @@ static inline O2GState *currentState(O2Context *self){
 
 -(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
    return [[O2Surface_cairo alloc] initWithWidth:width height:height compatibleWithContext:self];
-}
-
--(void)deviceClipReset {
-   cairo_reset_clip(_context);  
 }
 
 -(void)setCurrentColor:(O2Color*)color
@@ -138,8 +130,8 @@ static inline O2GState *currentState(O2Context *self){
 
 -(void)synchronizeFontCTM
 {
-	O2AffineTransform ctm=[currentState(self) textMatrix];
-    O2Float size=O2GStatePointSize(currentState(self));
+	O2AffineTransform ctm=[O2ContextCurrentGState(self) textMatrix];
+    O2Float size=O2GStatePointSize(O2ContextCurrentGState(self));
 
 	ctm = O2AffineTransformScale(ctm, size, -size);
 	
@@ -158,7 +150,7 @@ static inline O2GState *currentState(O2Context *self){
 
 -(void)synchronizeLineAttributes
 {
-   O2GState *gState=currentState(self);
+   O2GState *gState=O2ContextCurrentGState(self);
 	int i;
    
 	cairo_set_line_width(_context, gState->_lineWidth);
@@ -235,13 +227,36 @@ static inline O2GState *currentState(O2Context *self){
 	}
 }
 
--(void)deviceClipToNonZeroPath:(O2Path*)path
-{
+-(void)clipToState:(O2ClipState *)clipState {
+   NSArray *phases=[O2GStateClipState(gState) clipPhases];
+   int      i,count=[phases count];
+   
+   cairo_reset_clip(_context);  
+   
+   for(i=0;i<count;i++){
+    O2ClipPhase *phase=[phases objectAtIndex:i];
+    
+    switch(O2ClipPhasePhaseType(phase)){
+    
+     case O2ClipPhaseNonZeroPath:;
+      O2Path *path=O2ClipPhaseObject(phase);
 	[self setCurrentPath:path];
 	cairo_set_fill_rule(_context, CAIRO_FILL_RULE_WINDING);
 	cairo_clip(_context);
+      break;
+      
+     case O2ClipPhaseEOPath:{
+       O2Path *path=O2ClipPhaseObject(phase);
+// not handled
 }
+      break;
 
+     case O2ClipPhaseMask:
+      break;
+    }
+
+   }
+}
 
 -(void)drawPath:(O2PathDrawingMode)mode
 {
@@ -251,7 +266,7 @@ static inline O2GState *currentState(O2Context *self){
 	switch(mode)
 	{
 		case kCGPathStroke:
-         [self setCurrentColor:[self strokeColor]];
+         [self setCurrentColor:O2ContextStrokeColor(self)];
 			[self synchronizeLineAttributes];
 			cairo_stroke_preserve(_context);
 			break;
@@ -273,7 +288,7 @@ static inline O2GState *currentState(O2Context *self){
          [self setCurrentColor:O2ContextFillColor(self)];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_WINDING);
 			cairo_fill_preserve(_context);
-         [self setCurrentColor:[self strokeColor]];
+         [self setCurrentColor:O2ContextStrokeColor(self)];
 			[self synchronizeLineAttributes];
 			cairo_stroke_preserve(_context);
 			break;
@@ -282,7 +297,7 @@ static inline O2GState *currentState(O2Context *self){
          [self setCurrentColor:O2ContextFillColor(self)];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_EVEN_ODD);
 			cairo_fill_preserve(_context);
-         [self setCurrentColor:[self strokeColor]];
+         [self setCurrentColor:O2ContextStrokeColor(self)];
 			[self synchronizeLineAttributes];
 			cairo_stroke_preserve(_context);
 			break;
@@ -370,12 +385,12 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(void)establishFontStateInDeviceIfDirty {
-   O2GState *gState=currentState(self);
+   O2GState *gState=O2ContextCurrentGState(self);
    
    if(gState->_fontIsDirty){
     O2GStateClearFontIsDirty(gState);
 
-    O2Font_FT *cgFont=(O2Font_FT *)[gState font];
+    O2Font_FT *cgFont=(O2Font_FT *)O2GStateFont(gState);
     KTFont *fontState=[[O2FontState_cairo alloc] initWithFreeTypeFont:cgFont size:O2GStatePointSize(gState)];
    
     [gState setFontState:fontState];
@@ -384,11 +399,13 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 
--(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
+// FIXME: use advances if not NULL
+
    [self establishFontStateInDeviceIfDirty];
    
-   O2GState          *gState=currentState(self);
-   O2Font            *font=[gState font];
+   O2GState          *gState=O2ContextCurrentGState(self);
+   O2Font            *font=O2GStateFont(gState);
    O2FontState_cairo *fontState=[gState fontState];
    cairo_font_face_t *face=[fontState cairo_font_face];
    cairo_glyph_t     *cg=alloca(sizeof(cairo_glyph_t)*count);
@@ -436,26 +453,6 @@ cairo_status_t writeToData(void		  *closure,
    id obj=(id)closure;
    [obj appendBytes:data length:length];
    return CAIRO_STATUS_SUCCESS;
-}
-
--(NSData *)captureBitmapInRect:(CGRect)rect {
-   id ret=[NSMutableData data];
-   
-   cairo_surface_t *surf=cairo_image_surface_create(CAIRO_FORMAT_ARGB32, rect.size.width, rect.size.height);
-   cairo_t *ctx=cairo_create(surf);
-   
-   cairo_identity_matrix(ctx);
-   cairo_reset_clip(ctx);
-
-   cairo_set_source_surface (ctx, _surface, -rect.origin.x, -rect.origin.y);
-   
-	cairo_paint(ctx);   
-   
-   cairo_destroy(ctx);
-   cairo_surface_write_to_png_stream(surf, writeToData, ret);
-   
-   cairo_surface_destroy(surf);
-   return ret;   
 }
 
 -(void)drawBackingContext:(O2Context *)other size:(NSSize)size {

@@ -382,6 +382,20 @@ extern NSSize _NSToolbarIconSizeSmall;
     [self setEnabled:NO];
 }
 
+-(NSSize)_labelSize {
+   switch ([_toolbar displayMode]) {
+    case NSToolbarDisplayModeIconOnly:
+     return NSZeroSize;
+            
+    case NSToolbarDisplayModeLabelOnly:
+    case NSToolbarDisplayModeIconAndLabel: 
+    case NSToolbarDisplayModeDefault:
+    default:
+     return [_label sizeWithAttributes:[_toolbar _labelAttributesForSizeMode:[_toolbar sizeMode]]];
+   }
+
+}
+
 -(NSSize)sizeForSizeMode:(NSToolbarSizeMode)sizeMode displayMode:(NSToolbarDisplayMode)displayMode minSize:(NSSize)minSize maxSize:(NSSize)maxSize {
    NSSize result;
    
@@ -437,6 +451,10 @@ extern NSSize _NSToolbarIconSizeSmall;
 
 -(NSSize)constrainedSize {
    return [self sizeForSizeMode:[_toolbar sizeMode] displayMode:[_toolbar displayMode] minSize:_minSize maxSize:_maxSize];
+}
+
+-(void)_setItemViewFrame:(NSRect)rect {
+   [_enclosingView setFrame:rect];
 }
 
 -(CGFloat)_expandWidth:(CGFloat)width {

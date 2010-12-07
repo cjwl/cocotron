@@ -93,7 +93,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
 
-   return image;
+// Must use copy here, the caller may modify the image, e.g. size, and you don't want
+// to wreck the cache values. 
+   return [[image copy] autorelease];
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -119,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     
     _name=nil;
-    _size=[rep size];
+    _size=NSMakeSize(0,0);
     _representations=[NSMutableArray new];
 
     [_representations addObject:rep];
@@ -160,7 +162,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	
 	_name=nil;
-	_size=[[reps lastObject] size];
+    _size=NSMakeSize(0,0);
 	_representations=[NSMutableArray new];
 	
 	[_representations addObjectsFromArray:reps];
@@ -177,7 +179,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    _name=nil;
-   _size=[[reps lastObject] size];
+   _size=NSMakeSize(0,0);
    _representations=[NSMutableArray new];
 
    [_representations addObjectsFromArray:reps];
@@ -186,8 +188,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfURL:(NSURL *)url {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[NSData dataWithContentsOfURL:url];
+   
+   if(data==nil){
+    [self dealloc];
+    return nil;
+}
+
+   return [self initWithData:data];
 }
 
 -initWithPasteboard:(NSPasteboard *)pasteboard {
@@ -196,8 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initByReferencingFile:(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+   return [self initWithContentsOfFile:path];
 }
 
 -initByReferencingURL:(NSURL *)url {
@@ -207,12 +214,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_name release];
+   [_backgroundColor release];
    [_representations release];
    [super dealloc];
 }
 
 -copyWithZone:(NSZone *)zone {
-   return [self retain];
+   NSImage *result=NSCopyObject(self,0,zone);
+   
+   result->_name=[_name copy];
+   result->_backgroundColor=[_backgroundColor copy];
+   result->_representations=[_representations mutableCopy];
+   
+   return result;
 }
 
 -(NSString *)name {
@@ -222,14 +236,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)size {
    if(_size.width==0.0 && _size.height==0.0){
     int i,count=[_representations count];
+    NSSize  largestSize=NSMakeSize(0,0);
     
     for(i=0;i<count;i++){
      NSImageRep *check=[_representations objectAtIndex:i];
      NSSize      checkSize=[check size];
     
-     if(checkSize.width!=0.0 && checkSize.height!=0.0)
-      return checkSize;
+     if(checkSize.width*checkSize.height>largestSize.width*largestSize.height)
+      largestSize=checkSize;
     }
+
+    return largestSize;
    }
    
    return _size;
@@ -241,6 +258,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isFlipped {
    return _isFlipped;
+}
+
+-(BOOL)isTemplate {
+   return _isTemplate;
 }
 
 -(BOOL)scalesWhenResized {
@@ -309,6 +330,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isFlipped=value;
 }
 
+-(void)setTemplate:(BOOL)value {
+   _isTemplate=value;
+}
+
 -(void)setScalesWhenResized:(BOOL)value {
    _scalesWhenResized=value;
 }
@@ -371,16 +396,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSCachedImageRep *)_cachedImageRepCreateIfNeeded {
-   int i,count=[_representations count];
+   int count=[_representations count];
 
-   for(i=0;i<count;i++){
-    NSCachedImageRep *check=[_representations objectAtIndex:i];
+   while(--count>=0){
+    NSCachedImageRep *check=[_representations objectAtIndex:count];
 
-    if([check isKindOfClass:[NSCachedImageRep class]])
+    if([check isKindOfClass:[NSCachedImageRep class]]){
+    
+     if(_cacheIsValid)
      return check;
+
+     [_representations removeObjectAtIndex:count];
+   }
    }
    
-   NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:_size depth:0 separate:_isCachedSeparately alpha:YES];
+   NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:[self size] depth:0 separate:_isCachedSeparately alpha:YES];
    [self addRepresentation:cached];
    [cached release];
    return cached;
@@ -401,17 +431,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
 }
 
--(NSImageRep *)_bestUncachedFallbackCachedRepresentationForDevice:(NSDictionary *)device {
+-(NSImageRep *)_bestUncachedFallbackCachedRepresentationForDevice:(NSDictionary *)device size:(NSSize)size {
    int i,count=[_representations count];
+   NSImageRep *best=nil;
 
+   size.width=ABS(size.width);
+   size.height=ABS(size.height);
+      
    for(i=0;i<count;i++){
     NSImageRep *check=[_representations objectAtIndex:i];
       
     if(![check isKindOfClass:[NSCachedImageRep class]]){
-     return check;
+     if(best==nil)
+      best=check;
+     else {
+      NSSize checkSize=[check size];
+      NSSize bestSize=[best size];
+      float  checkArea=checkSize.width*checkSize.height;
+      float  bestArea=bestSize.width*bestSize.height;
+      float  desiredArea=size.width*size.height;
+      
+      // downsampling is better than upsampling
+      if(bestArea<desiredArea && checkArea>=desiredArea)
+       best=check;
+      // downsampling a closer image is better
+      if(checkArea<bestArea && checkArea>=desiredArea)
+       best=check;
+      // if we have to upsample, biggest is better
+      if(checkArea>bestArea && bestArea<desiredArea)
+       best=check;
     }
    }
+   }
    
+   if(best!=nil)
+    return best;
+    
    for(i=0;i<count;i++){
     NSImageRep *check=[_representations objectAtIndex:i];
       
@@ -461,7 +516,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      
      case NSImageCacheBySize:
       if([[uncached colorSpaceName] isEqual:[device objectForKey:NSDeviceColorSpaceName]]){
-       if((_size.width==[uncached pixelsWide]) && (_size.height==[uncached pixelsHigh])){
+       NSSize size=[self size];
+       
+       if((size.width==[uncached pixelsWide]) && (size.height==[uncached pixelsHigh])){
         int deviceBPS=[[device objectForKey:NSDeviceBitsPerSample] intValue];
        
         if(deviceBPS==[uncached bitsPerSample])
@@ -483,8 +540,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      rect.origin.y=0;
      rect.size=[self size];
      
-     if([self scalesWhenResized])
-      [uncached drawInRect:rect];
+     if([self scalesWhenResized]){
+      [self drawRepresentation:uncached inRect:rect];
+     }
      else
       [uncached drawAtPoint:rect.origin];
       
@@ -499,14 +557,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)recache {
-   int count=[_representations count];
-   
-   while(--count>=0){
-    NSImageRep *check=[_representations objectAtIndex:count];
-    
-    if([check isKindOfClass:[NSCachedImageRep class]])
-     [_representations removeObjectAtIndex:count];
-   }
+// This doesn't actually remove the cache, it just marks it as invalid
+// This is important because you can change the size of a drawn image
+// and it doesn't destroy the cache. It is recached next time it is drawn.
    _cacheIsValid=NO;
 }
 
@@ -549,6 +602,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextRef       graphicsPort;
 
    if(representation==nil){
+// FIXME: Cocoa doesn't add the cached rep until the unlockFocus, it just creates the drawing context 
+// then snaps the image during unlock and adds it
     representation=[self _cachedImageRepCreateIfNeeded];
       
       [self lockFocusOnRepresentation:representation];
@@ -558,10 +613,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       rect.origin.y=0;
       rect.size=[self size];
       
-      if([self scalesWhenResized])
+  //    if([self scalesWhenResized])
          [uncached drawInRect:rect];
-      else
-         [uncached drawAtPoint:rect.origin];
+         // drawAtPoint: is not working with NSPDFImageRep
+         // Should probably ditch all the caching stuff anyway as it is deprecated
+    //   else
+      //   [uncached drawAtPoint:rect.origin];
          
       [self unlockFocus];
       _cacheIsValid=YES;
@@ -601,8 +658,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)drawRepresentation:(NSImageRep *)representation inRect:(NSRect)rect {
-   [[self backgroundColor] setFill];
+   NSColor *bg=[self backgroundColor];
+   
+   if(bg!=nil){
+    [bg setFill];
    NSRectFill(rect);
+   }
    
    return [representation drawInRect:rect];
 }
@@ -612,7 +673,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
-#if 1
    /* Compositing is a blitting operation. We simulate it using the draw operation.
    
       Compositing does not honor all aspects of the CTM, e.g. it will keep an image upright regardless of the orientation of CTM.
@@ -633,22 +693,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [self drawInRect:rect fromRect:source operation:operation fraction:fraction];
    CGContextRestoreGState(context);   
-#else
-   CGContextRef context=NSCurrentGraphicsPort();
-   
-   CGContextSaveGState(context);
-// fraction is accomplished with a 1x1 alpha mask
-   uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
-   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
-   CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
-   
-//   CGContextClipToMask(context,rect,mask);
-   CGImageRelease(mask);
-   CGDataProviderRelease(provider);
-   
-   [[self bestRepresentationForDevice:nil] drawAtPoint:point];
-   CGContextRestoreGState(context);
-#endif
 }
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation {
@@ -675,7 +719,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil];
+   NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil size:rect.size];
    NSImageRep        *drawRep=nil;
    CGContextRef       context;
       
@@ -700,7 +744,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      CGContextTranslateCTM(context,-source.origin.x,-source.origin.y);
     }
    
-    [uncached drawInRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
+    [self drawRepresentation:uncached inRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
+
     [self unlockFocus];
     
     drawRep=cached;
@@ -724,7 +769,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [[NSGraphicsContext currentContext] setCompositingOperation:operation];
       
-   [drawRep drawInRect:rect];
+   [self drawRepresentation:drawRep inRect:rect];
    
    CGContextRestoreGState(context);
 
@@ -733,7 +778,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)description {
-    return [NSString stringWithFormat:@"<%@[0x%lx] name: %@ size: { %f, %f } representations: %@>", [self class], self, _name, _size.width, _size.height, _representations];
+   NSSize size=[self size];
+   
+   return [NSString stringWithFormat:@"<%@[0x%lx] name: %@ size: { %f, %f } representations: %@>", [self class], self, _name, size.width, size.height, _representations];
 }
 
 @end

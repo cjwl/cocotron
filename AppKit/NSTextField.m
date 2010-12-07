@@ -177,6 +177,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(![cell isEnabled])
     return;
 
+   NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
+   NSRect  editingFrame=[cell titleRectForBounds:[self bounds]];
+   
+   if(!NSMouseInRect(point,editingFrame,[self isFlipped]))
+    [super mouseDown:event];
+   else {
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
      _currentEditor=[[self window] fieldEditor:YES forObject:self];
@@ -186,6 +192,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [cell editWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self event:event];
    }
+}
 }
 
 -(BOOL)textShouldBeginEditing:(NSText *)text {
@@ -245,5 +252,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super doCommandBySelector:selector];
 }
 
+-(void)setTitleWithMnemonic:(NSString *)value {
+   [self setStringValue:value];
+}
 
 @end

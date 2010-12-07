@@ -5,7 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
 #import <AppKit/NSBox.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSGraphics.h>
@@ -42,6 +41,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _titlePosition=[keyed decodeIntForKey:@"NSTitlePosition"];
     _contentViewMargins=[keyed decodeSizeForKey:@"NSOffsets"];
     _titleCell=[[keyed decodeObjectForKey:@"NSTitleCell"] retain];
+    // There is a key NSTransparent, but as far as I can tell it is always NO
+    _isTransparent=[keyed decodeBoolForKey:@"NSFullyTransparent"];
+    
     [[_subviews lastObject] setAutoresizingMask: NSViewWidthSizable| NSViewHeightSizable];
     [[_subviews lastObject] setAutoresizesSubviews:YES];
 	   
@@ -78,6 +80,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   NSView *contentview;
 
   [super initWithFrame: frame];
+   _isTransparent=YES;
+
   contentview = [[NSView alloc] initWithFrame:NSMakeRect(0,0,NSWidth(frame),NSHeight(frame))];
   [contentview  setAutoresizingMask: NSViewWidthSizable| NSViewHeightSizable];
   [self addSubview: contentview];
@@ -120,6 +124,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _titlePosition;
 }
 
+-(BOOL)isTransparent {
+   return _isTransparent;
+}
+
 -(void)setBoxType:(NSBoxType)value {
    _boxType=value;
    [self setNeedsDisplay:YES];
@@ -154,6 +162,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTitlePosition:(NSTitlePosition)value {
    _titlePosition=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTransparent:(BOOL)value {
+   _isTransparent=value;
    [self setNeedsDisplay:YES];
 }
 
@@ -249,6 +262,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect              titleRect=[self titleRect];
    BOOL                drawTitle=YES;
 
+   if([self isTransparent])
+    return;
+    
    switch(_titlePosition){
 
     case NSNoTitle:
@@ -280,8 +296,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
    }
 
-//   [[NSColor controlColor] setFill];
-  // NSRectFill(rect);
+   [[NSColor controlColor] setFill];
+   NSRectFill(rect);
 
 	if (_boxType == NSBoxCustom){
 		

@@ -9,10 +9,6 @@
    return YES;
 }
 
-static inline O2GState *currentState(O2Context *self){        
-   return [self->_stateStack lastObject];
-}
-
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    if([super initWithSurface:surface flipped:flipped]==nil)
     return nil;
@@ -26,7 +22,7 @@ static inline O2GState *currentState(O2Context *self){
 }
 
 -(void)establishFontStateInDeviceIfDirty {
-   O2GState *gState=currentState(self);
+   O2GState *gState=O2ContextCurrentGState(self);
    
    if(gState->_fontIsDirty){
     O2GStateClearFontIsDirty(gState);
@@ -107,9 +103,11 @@ static void drawFreeTypeBitmap(O2Context_builtin_FT *self,O2Surface *surface,FT_
     
 }
 
--(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
+// FIXME: use advances if not NULL
+
    O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
-   O2GState         *gState=currentState(self);
+   O2GState         *gState=O2ContextCurrentGState(self);
    O2Paint          *paint=paintFromColor(gState->_fillColor);
    O2AffineTransform Trm=O2AffineTransformConcat(gState->_textTransform,transformToDevice);
    O2Point           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
@@ -163,8 +161,8 @@ static void drawFreeTypeBitmap(O2Context_builtin_FT *self,O2Surface *surface,FT_
     
    total=(total/O2FontGetUnitsPerEm(font))*gState->_pointSize;
       
-   currentState(self)->_textTransform.tx+=total;
-   currentState(self)->_textTransform.ty+=0;
+   O2ContextCurrentGState(self)->_textTransform.tx+=total;
+   O2ContextCurrentGState(self)->_textTransform.ty+=0;
 }
 
 @end

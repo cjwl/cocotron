@@ -34,6 +34,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
+-(void)setLevel:(int)value {
+   O2InvalidAbstractInvocation();
+}
+
 -(void)setStyleMask:(unsigned)mask {
    O2InvalidAbstractInvocation();
 }
@@ -104,6 +108,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+-(void)makeMain {
+   O2InvalidAbstractInvocation();
+}
+
 -(void)captureEvents {
    O2InvalidAbstractInvocation();
 }
@@ -119,6 +127,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isMiniaturized {
    O2InvalidAbstractInvocation();
    return NO;
+}
+
+-(void)disableFlushWindow {
+}
+
+-(void)enableFlushWindow {
 }
 
 -(void)flushBuffer {
@@ -143,6 +157,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)flashWindow {
    O2InvalidAbstractInvocation();
 }
+
+-(void)addOverlay:(CGLPixelSurface *)overlay {
+}
+
+-(void)removeOverlay:(CGLPixelSurface *)overlay {
+}
+
 
 
 @end

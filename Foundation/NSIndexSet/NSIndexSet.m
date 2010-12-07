@@ -289,7 +289,7 @@ static NSUInteger positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,NSUIn
 
 -(id)initWithCoder:(NSCoder *)coder {
 	//Structure of this method is based on what I saw in NSSortDescriptor r662
-	if ([coder isKindOfClass:[NSKeyedUnarchiver class]]) {
+	if ([coder allowsKeyedCoding]) {
 		NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder;
 		_length = [[keyed decodeObjectForKey:@"length"] intValue];
 		NSUInteger length;

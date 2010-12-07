@@ -43,6 +43,7 @@ APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 
 -objectValue;
 -(NSString *)stringValue;
+-(NSAttributedString *)attributedStringValue;
 -(int)intValue;
 -(float)floatValue;
 -(double)doubleValue;

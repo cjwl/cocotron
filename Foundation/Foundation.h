@@ -71,6 +71,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSHashTable.h>
 #import <Foundation/NSHost.h>
 #import <Foundation/NSHTTPURLResponse.h>
+#import <Foundation/NSHTTPCookie.h>
+#import <Foundation/NSHTTPCookieStorage.h>
 #import <Foundation/NSIndexPath.h>
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSInvocation.h>

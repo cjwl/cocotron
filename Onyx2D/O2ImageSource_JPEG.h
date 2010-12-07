@@ -97,4 +97,6 @@ typedef struct
    char *failure_reason;
 }
 
+NSData *O2DCTDecode(NSData *data);
+
 @end

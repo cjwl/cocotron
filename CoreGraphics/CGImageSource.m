@@ -8,6 +8,10 @@ CGImageSourceRef CGImageSourceCreateWithData(CFDataRef data,CFDictionaryRef opti
    return (CGImageSourceRef)[O2ImageSource newImageSourceWithData:data options:options];
 }
 
+size_t CGImageSourceGetCount(CGImageSourceRef self) {
+   return [self count];
+}
+
 CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,CFDictionaryRef options) {
    return [self createImageAtIndex:index options:options];
 }

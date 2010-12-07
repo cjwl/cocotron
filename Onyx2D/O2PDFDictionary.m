@@ -133,7 +133,7 @@ NSMapTableKeyCallBacks O2PDFOwnedCStringKeyCallBacks={
 -(BOOL)getObjectForKey:(const char *)key value:(O2PDFObject **)objectp {
    *objectp=[self objectForCStringKey:key];
    
-   return YES;
+   return (*objectp!=NULL)?YES:NO;
 }
 
 -(BOOL)getNullForKey:(const char *)key {

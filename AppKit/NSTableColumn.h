@@ -10,6 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTableView, NSCell;
 
+enum {
+   NSTableColumnNoResizing      = 0x00,
+   NSTableColumnAutoresizingMask= 0x01,
+   NSTableColumnUserResizingMask= 0x02,
+};
+
 @interface NSTableColumn : NSObject {
    id           _identifier;
    NSTableView *_tableView;
@@ -21,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float        _maxWidth;
    BOOL         _isResizable;
    BOOL         _isEditable;
+   NSUInteger   _resizingMask;
    NSSortDescriptor *_sortDescriptorPrototype;
 }
 
@@ -28,8 +35,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -identifier;
 -(NSTableView *)tableView;
--(NSCell *)headerCell;
--(NSCell *)dataCell;
+-(id)headerCell;
+-(id)dataCell;
 -(NSString *)headerToolTip;
 
 -(float)width;
@@ -37,6 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(float)maxWidth;
 -(BOOL)isResizable;
 -(BOOL)isEditable;
+-(NSUInteger)resizingMask;
 
 -(void)setIdentifier:identifier;
 -(void)setTableView:(NSTableView *)tableView;
@@ -49,6 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setMaxWidth:(float)width;
 -(void)setResizable:(BOOL)flag;
 -(void)setEditable:(BOOL)flag;
+-(void)setResizingMask:(NSUInteger)value;
 
 -(NSCell *)dataCellForRow:(int)row;
 

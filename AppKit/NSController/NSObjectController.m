@@ -58,6 +58,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(void)prepareContent {
+}
+
+-(void)awakeFromNib {
+   if([self automaticallyPreparesContent]){
+    [self prepareContent];
+   }
+}
+
 
 - (id)content {
     return [[_content retain] autorelease];

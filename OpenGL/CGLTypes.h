@@ -23,8 +23,9 @@
 #define CGL_EXPORT extern
 #endif
 
-
 #endif // __cplusplus
+
+#import <stdint.h>
 
 typedef enum {
    kCGLNoError=0,
@@ -93,10 +94,10 @@ typedef uint32_t CGLPixelFormatAttribute;
 typedef enum {
    kCGLCPSwapInterval  =222,
    kCGLCPSurfaceOpacity=236,
+   kCGLCPSurfaceBackingSize=304,
 
 // internal, do not use   
-   kCGLCPSurfaceFrame=500,
-   kCGLCPWindowNumber=501,
+   kCGLCPOverlayPointer=502,
 } CGLContextParameter;
 
 typedef struct _CGLContextObj *CGLContextObj;

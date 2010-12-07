@@ -70,6 +70,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case 8:
      [self performTest:@selector(drawLayers) withObject:nil];
      break;
+     
+    case 9:
+     [self performTest:@selector(drawPattern) withObject:nil];
+     break;
    }
    
    CGDataProviderRef provider;
@@ -298,6 +302,18 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
 -(void)selectInterpolationQuality:sender {
    [self setInterpolationQuality:(CGInterpolationQuality)[sender selectedTag]];
    [self setNeedsDisplay];
+}
+
+-(void)selectImagePath:sender {
+   NSOpenPanel *openPanel=[NSOpenPanel openPanel];
+   
+   if([openPanel runModalForTypes:[NSImage imageFileTypes]]){
+    NSData *data=[NSData dataWithContentsOfFile:[openPanel filename]];
+   [_cgContext setImageData:data];
+   [_kgContext setImageData:data];
+   [self setNeedsDisplay];
+   }
+   
 }
 
 -(void)selectPDFPath:sender {

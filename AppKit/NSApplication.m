@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSWorkspace.h>
 #import <AppKit/NSDockTile.h>
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSRaise.h>
 #import <objc/message.h>
 
@@ -95,6 +95,8 @@ id NSApp=nil;
    if(image!=nil){
     NSSize    imageSize=[image size];
     NSWindow *splash=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,imageSize.width,imageSize.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    [splash setLevel:NSFloatingWindowLevel];
+    
     NSImageView *view=[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,imageSize.width,imageSize.height)];
     
     [view setImage:image];
@@ -186,23 +188,19 @@ id NSApp=nil;
 }
 
 -(NSWindow *)mainWindow {
-   int i,count=[_windows count];
+   return _mainWindow;
+}
 
-   for(i=0;i<count;i++)
-    if([[_windows objectAtIndex:i] isMainWindow])
-     return [_windows objectAtIndex:i];
-
-   return nil;
+-(void)_setMainWindow:(NSWindow *)window {
+   _mainWindow=window;
 }
 
 -(NSWindow *)keyWindow {
-   int i,count=[_windows count];
+   return _keyWindow;
+}
 
-   for(i=0;i<count;i++)
-    if([[_windows objectAtIndex:i] isKeyWindow])
-     return [_windows objectAtIndex:i];
-
-   return nil;
+-(void)_setKeyWindow:(NSWindow *)window {
+   _keyWindow=window;
 }
 
 -(NSImage *)applicationIconImage {
@@ -317,7 +315,6 @@ id NSApp=nil;
 }
 
 -(void)setWindowsMenu:(NSMenu *)menu {
-//NSLog(@"%s %@",sel_getName(_cmd),menu);
    [_windowsMenu autorelease];
    _windowsMenu=[menu retain];
 }
@@ -442,9 +439,17 @@ id NSApp=nil;
    while(--count>=0){
     NSWindow *check=[_windows objectAtIndex:count];
 
-    if([check retainCount]==1)
+    if([check retainCount]==1){
+    
+     if(check==_keyWindow)
+      _keyWindow=nil;
+      
+     if(check==_mainWindow)
+      _mainWindow=nil;
+      
      [_windows removeObjectAtIndex:count];
    }
+}
 }
 
 -(void)_checkForTerminate {
@@ -482,8 +487,7 @@ id NSApp=nil;
        pool = [NSAutoreleasePool new];
        NSEvent           *event;
 
-    event=[self nextEventMatchingMask:NSAnyEventMask
-     untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+    event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 
     NS_DURING
      [self sendEvent:event];
@@ -523,8 +527,10 @@ id NSApp=nil;
 }
 
 -(NSEvent *)nextEventMatchingMask:(unsigned int)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
+   NSEvent *nextEvent=nil;
+   
+   do {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSEvent           *nextEvent;
 
    NS_DURING
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(createRunningCopyPipe)];
@@ -534,17 +540,26 @@ id NSApp=nil;
     [self _checkForAppActivation];
     [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
 
-    nextEvent=[_display nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
+     nextEvent=[[_display nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue] retain];
 
-    [_currentEvent release];
-    _currentEvent=[nextEvent retain];
+     if([nextEvent type]==NSAppKitSystem){
+      [nextEvent release];
+      nextEvent=nil;
+     }
+     
    NS_HANDLER
     [self reportException:localException];
    NS_ENDHANDLER
 
    [pool release];
+   }while(nextEvent==nil && [untilDate timeIntervalSinceNow]>0);
 
-   return [[_currentEvent retain] autorelease];
+   if(nextEvent!=nil){
+    [_currentEvent release];
+    _currentEvent=[nextEvent retain];
+}
+
+   return [nextEvent autorelease];
 }
 
 -(NSEvent *)currentEvent {
@@ -559,33 +574,46 @@ id NSApp=nil;
    [_display postEvent:event atStart:atStart];
 }
 
--_sameWindowTargetForAction:(SEL)action to:target {
-  // Search just one window's responder chain.
-  
-  if ([target respondsToSelector:action])
-    return target;
-  
-  if ([target respondsToSelector:@selector(nextResponder)]) 
-    {
-      target = [target nextResponder];
-      while (target != nil) 
-        {
-          if ([target respondsToSelector:action])
-            return target;
+-_searchForAction:(SEL)action responder:target {
+  // Search a responder chain 
+
+   while (target != nil) {
+
+    if ([target respondsToSelector:action])
+     return target;
           
-          if ([target isKindOfClass:[NSWindow class]]) 
-            {
-              if ([[target delegate] respondsToSelector:action])
-                return [target delegate];
-              if ([[target windowController] respondsToSelector:action])
-                return [target windowController];
-            }
-          
-          target = [target nextResponder];
-        }
-    }
+    if([target respondsToSelector:@selector(nextResponder)])
+     target = [target nextResponder];
+    else
+     break;
+   }
   
-  return nil;
+   return nil;
+}
+
+-_searchForAction:(SEL)action window:(NSWindow *)window {
+ // Search a windows responder chain and window
+ // The window check is done seperately from the responder chain
+ // in case the responder chain is broken
+
+// FIXME: should a windows delegate and windowController be checked if a window is found in a responder chain too ?
+// Document based facts:
+//  An NSWindow's next responder should be the window controller
+//  An NSWindow's delegate should be the document
+// - This probably means the windowController check is duplicative, but need to make the next responder is window controller
+
+   id check=[self _searchForAction:action responder:[window firstResponder]];
+   
+   if(check!=nil)
+    return check;
+
+   if ([[window delegate] respondsToSelector:action])
+    return [window delegate];
+    
+   if ([[window windowController] respondsToSelector:action])
+    return [window windowController];
+
+   return nil;
 }
 
 -targetForAction:(SEL)action {
@@ -595,20 +623,20 @@ id NSApp=nil;
 -targetForAction:(SEL)action to:target from:sender {
   if (target == nil) 
     {
-      target = [self _sameWindowTargetForAction:action to:[[self keyWindow] firstResponder]];
+      target = [self _searchForAction:action window:[self keyWindow]];
       if (target)
         return target;
       
       if ([self mainWindow] != [self keyWindow]) 
         {
-          target = [self _sameWindowTargetForAction:action to:[[self mainWindow] firstResponder]];
+          target = [self _searchForAction:action window:[self mainWindow]];
           if (target)
             return target;
         }
     }
   else 
     {
-      target = [self _sameWindowTargetForAction:action to:target];
+      target = [self _searchForAction:action responder:target];
       if (target)
         return target;
     }
@@ -696,10 +724,14 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
+
+   while([session stopCode]==NSRunContinuesResponse) {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSDate            *future=[NSDate distantFuture];
-   NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask
-      untilDate:future inMode:NSModalPanelRunLoopMode dequeue:YES];
+    NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
+        
+    if(event==nil)
+     break;
+     
    NSWindow          *window=[event window];
 
    // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
@@ -712,6 +744,7 @@ id NSApp=nil;
     [[session modalWindow] makeKeyAndOrderFront:self];
 
    [pool release];
+   }
 
    return [session stopCode];
 }
@@ -738,7 +771,7 @@ id NSApp=nil;
 
 
    while((result=[NSApp runModalSession:session])==NSRunContinuesResponse)
-    ;
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 
    [self endModalSession:session];
 
@@ -1042,7 +1075,7 @@ standardAboutPanel] retain];
   NSWindowController *controller = [window windowController];
   NSDocument *document = [controller document];
 
-  [_orderedWindows removeObject: window];
+  [_orderedWindows removeObjectIdenticalTo: window];
   
   switch (place) {
   case NSWindowAbove:

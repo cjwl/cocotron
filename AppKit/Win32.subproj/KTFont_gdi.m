@@ -1,9 +1,9 @@
 #import "KTFont_gdi.h"
 #import <Onyx2D/O2Font.h>
-#import "O2Context_gdi.h"
+#import <Onyx2D/O2Context_gdi.h>
 #import "Win32Display.h"
-#import "Win32Font.h"
-#import "O2Font_gdi.h"
+#import <Onyx2D/Win32Font.h>
+#import <Onyx2D/O2Font_gdi.h>
 #import <Onyx2D/O2MutablePath.h>
 #import <AppKit/NSRaise.h>
 
@@ -407,7 +407,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     case kCTFontMenuItemFontType:
      if(size==0)
       size=10;
-     font=[O2Font createWithFontName:@"Tahoma"];
+     font=O2FontCreateWithFontName(@"Tahoma");
      
 #if 0
 // We should be able to get the menu font but this doesnt work

@@ -152,7 +152,6 @@
 				8DC2EF5B0486A6940098B216 /* CoreServices.framework */,
 				FEC32E52115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6311590A130008ECE5 /* CoreServices.framework */,
-				FE8492F1119A5EA000E252CC /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -298,7 +297,6 @@
 			name = "CoreServices-FreeBSD-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreServices;
-			productReference = FE8492F1119A5EA000E252CC /* CoreServices.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FEC32E45115909F00008ECE5 /* CoreServices-Darwin-i386 */ = {

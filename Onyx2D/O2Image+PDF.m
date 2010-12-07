@@ -78,10 +78,10 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
    O2PDFDictionary *dictionary=[stream dictionary];
    O2PDFInteger width;
    O2PDFInteger height;
-   O2PDFObject *colorSpaceObject;
+   O2PDFObject *colorSpaceObject=NULL;
    O2PDFInteger bitsPerComponent;
    const char  *intent;
-   O2PDFBoolean isImageMask;
+   O2PDFBoolean isImageMask=NO;
    O2PDFObject *imageMaskObject=NULL;
    O2ColorSpaceRef colorSpace=NULL;
     int               componentsPerPixel;
@@ -91,71 +91,74 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
    O2PDFStream *softMaskStream=nil;
    O2Image *softMask=NULL;
     
-   // NSLog(@"Image=%@",dictionary);
+   NSLog(@"PDF Image=%@",dictionary);
     
    if(![dictionary getIntegerForKey:"Width" value:&width]){
-    NSLog(@"Image has no Width");
+    O2PDFError(__FILE__,__LINE__,@"Image has no Width");
     return NULL;
    }
    if(![dictionary getIntegerForKey:"Height" value:&height]){
-    NSLog(@"Image has no Height");
+    O2PDFError(__FILE__,__LINE__,@"Image has no Height");
     return NULL;
    }
-    
-   if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
-    NSLog(@"Image has no ColorSpace");
-    return NULL;
-   }
-   if((colorSpace=[O2ColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
-    return NULL;
-          
-   componentsPerPixel=O2ColorSpaceGetNumberOfComponents(colorSpace);
     
    if(![dictionary getIntegerForKey:"BitsPerComponent" value:&bitsPerComponent]){
-    NSLog(@"Image has no BitsPerComponent");
+    O2PDFError(__FILE__,__LINE__,@"Image has no BitsPerComponent");
     return NULL;
    }
+          
    if(![dictionary getNameForKey:"Intent" value:&intent])
     intent=NULL;
-   if(![dictionary getBooleanForKey:"ImageMask" value:&isImageMask])
-    isImageMask=NO;
      
-   if(!isImageMask && [dictionary getObjectForKey:"Mask" value:&imageMaskObject]){
+   [dictionary getBooleanForKey:"ImageMask" value:&isImageMask];
     
+   if(isImageMask)
+    O2PDFFix(__FILE__,__LINE__,@"ImageMask present");
     
+   if([dictionary getObjectForKey:"Mask" value:&imageMaskObject]){
+    O2PDFFix(__FILE__,__LINE__,@"Mask present");
    }
+
+   if([dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
+    if((colorSpace=[O2ColorSpace createColorSpaceFromPDFObject:colorSpaceObject])==NULL){
+     O2PDFError(__FILE__,__LINE__,@"Unable to create ColorSpace %@",colorSpaceObject);
+     return NULL;
+    }
+   }
+   
+   if(!isImageMask && colorSpace==NULL){
+    O2PDFError(__FILE__,__LINE__,@"Image has no ColorSpace %@",dictionary);
+    return NULL;
+   }
+  
+   if(colorSpace==NULL)
+    componentsPerPixel=1;
+   else
+    componentsPerPixel=O2ColorSpaceGetNumberOfComponents(colorSpace);
 
    if(![dictionary getArrayForKey:"Decode" value:&decodeArray])
     decode=NULL;
    else {
-    int i,count=[decodeArray count];
+    unsigned count;
      
-    if(count!=componentsPerPixel*2){
-     NSLog(@"Invalid decode array, count=%d, should be %d",count,componentsPerPixel*2);
+    if(![decodeArray getNumbers:&decode count:&count]){
+     O2PDFError(__FILE__,__LINE__,@"Unable to read decode array %@",decodeArray);
      return NULL;
     }
     
-    decode=__builtin_alloca(sizeof(float)*count);
-    for(i=0;i<count;i++){
-     O2PDFReal number;
-      
-     if(![decodeArray getNumberAtIndex:i value:&number]){
-      NSLog(@"Invalid decode array entry at %d",i);
+    if(count!=componentsPerPixel*2){
+     O2PDFError(__FILE__,__LINE__,@"Invalid decode array, count=%d, should be %d",count,componentsPerPixel*2);
       return NULL;
      }
-     decode[i]=number;
     }
-   }
     
    if(![dictionary getBooleanForKey:"Interpolate" value:&interpolate])
     interpolate=NO;
     
    if([dictionary getStreamForKey:"SMask" value:&softMaskStream]){
-//    NSLog(@"SMask=%@",[softMaskStream dictionary]);
     softMask=[self imageWithPDFObject:softMaskStream];
    }
     
-   if(colorSpace!=NULL){
     int               bitsPerPixel=componentsPerPixel*bitsPerComponent;
     int               bytesPerRow=((width*bitsPerPixel)+7)/8;
     NSData           *data=[stream data];
@@ -165,16 +168,20 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
 //     NSLog(@"width=%d,height=%d,bpc=%d,bpp=%d,bpr=%d,cpp=%d",width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,componentsPerPixel);
      
     if(height*bytesPerRow!=[data length]){
+    O2PDFError(__FILE__,__LINE__,@"Invalid data length=%d,should be %d=%d",[data length],height*bytesPerRow,[data length]-height*bytesPerRow);
+   }
+   
+   if(height*bytesPerRow>[data length]){
+    // provide some gray data
      NSMutableData *mutable=[NSMutableData dataWithLength:height*bytesPerRow];
      char *mbytes=[mutable mutableBytes];
       int i;
       for(i=0;i<height*bytesPerRow;i++)
-       mbytes[i]=0x33;
+     mbytes[i]=i;
        
-     NSLog(@"Invalid data length=%d,should be %d=%d",[data length],height*bytesPerRow,[data length]-height*bytesPerRow);
      data=mutable;
-      //return NULL;
     }
+        
     provider=[[O2DataProvider alloc] initWithData:data];
     if(isImageMask){      
      image=[[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
@@ -183,13 +190,19 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
      image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:O2ImageRenderingIntentWithName(intent)];
 
      if(softMask!=NULL)
-      [image addMask:softMask];
+     [image setMask:softMask];
     }
 
+   if(decode!=NULL)
+    NSZoneFree(NULL,decode);
+    
+   O2DataProviderRelease(provider);
+   O2ColorSpaceRelease(colorSpace);
+   
+   NSLog(@"image=%@",image);
     return image;
+
    }
-   return nil;
-}
 
 @end
 

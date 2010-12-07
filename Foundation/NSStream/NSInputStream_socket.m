@@ -142,7 +142,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      result=[_socket hasBytesAvailable];
     else {
      if([_socket hasBytesAvailable])
-      [sslHandler transferOneBufferFromSocketToSSL:_socket];
+      if([sslHandler transferOneBufferFromSocketToSSL:_socket]<=0){
+       // If the read failed we want to return YES so that the end of stream can be read
+       return YES;
+      }
       
      result=([sslHandler readBytesAvailable]>0)?YES:NO;
     }

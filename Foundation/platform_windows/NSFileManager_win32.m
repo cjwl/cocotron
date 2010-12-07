@@ -106,8 +106,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data 
-             attributes:(NSDictionary *)attributes {
+-(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error {
+   NSDictionary *srcAttributes=[self attributesOfItemAtPath:fromPath error:error];
+
+   if(srcAttributes==nil)
+    return NO;
+
+   if(![[srcAttributes fileType] isEqual:NSFileTypeRegular])
+    return NO;
+    
+   NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];
+   
+   if(dstAttributes!=nil){
+    if(error!=NULL){
+     NSDictionary *userInfo=[NSDictionary dictionaryWithObject:@"File exists" forKey:NSLocalizedDescriptionKey];
+     
+     *error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
+    }
+    
+    return NO;
+   }
+   
+   if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES))
+    return NO;
+
+   return YES;
+}
+
+-(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data attributes:(NSDictionary *)attributes {
    return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[data bytes] length:[data length] atomically:YES];
 }
 
@@ -135,9 +161,136 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(BOOL)createDirectoryAtPath:(NSString *)path
-                  attributes:(NSDictionary *)attributes {
+-(BOOL)moveItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error {
+   if(fromPath==nil || toPath==nil)
+    return NO;
+
+   return MoveFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW])?YES:NO;
+}
+
+-(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes {
    return CreateDirectoryW([path fileSystemRepresentationW],NULL)?YES:NO;
+}
+
+static NSError *NSErrorForGetLastErrorCode(DWORD code){
+   NSString *localizedDescription=@"NSErrorForGetLastError localizedDescription";
+   unichar  *message;
+   
+   FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,NULL,code,MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPWSTR) &message,0, NULL );
+   localizedDescription=NSStringFromNullTerminatedUnicode(message);
+   
+   LocalFree(message);
+   
+   return [NSError errorWithDomain:NSWin32ErrorDomain code:code userInfo:[NSDictionary dictionaryWithObject:localizedDescription forKey:NSLocalizedDescriptionKey]];
+}
+
+static NSError *NSErrorForGetLastError(){
+   return NSErrorForGetLastErrorCode(GetLastError());
+}
+
+// we dont want to use fileExists... because it chases links 
+-(BOOL)_isDirectory:(NSString *)path {
+   if(path == nil) {
+    return NO;
+   }
+   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
+
+   if(attributes==0xFFFFFFFF)
+    return NO;
+
+   return (attributes&FILE_ATTRIBUTE_DIRECTORY)?YES:NO;
+}
+
+
+-(BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error {
+   if(path == nil) {
+    return NO;
+   }
+   
+   const unichar *fsrep=[path fileSystemRepresentationW];
+   DWORD       attribute=GetFileAttributesW(fsrep);
+
+   if([path isEqualToString:@"."] || [path isEqualToString:@".."]){
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] path should not be . or ..",isa,sel_getName(_cmd)];
+    return NO;
+   }
+
+   if(attribute==0xFFFFFFFF){
+    if(error!=NULL)
+     *error=NSErrorForGetLastError();
+    return NO;
+   }
+
+   if(attribute&FILE_ATTRIBUTE_READONLY){
+    attribute&=~FILE_ATTRIBUTE_READONLY;
+    if(!SetFileAttributesW(fsrep,attribute)){
+     if(error!=NULL)
+      *error=NSErrorForGetLastError();
+     return NO;
+    }
+   }
+
+   if(![self _isDirectory:path]){
+    if(!DeleteFileW(fsrep)){
+     if(error!=NULL)
+      *error=NSErrorForGetLastError();
+    return NO;
+    }
+   }
+   else {
+    NSArray *contents=[self directoryContentsAtPath:path];
+    NSInteger      i,count=[contents count];
+
+    for(i=0;i<count;i++){
+     NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
+     if(![_delegate fileManager:self shouldRemoveItemAtPath:fullPath ]){
+      if(error!=NULL)
+       *error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
+      return NO;
+     }
+    }
+
+    if(!RemoveDirectoryW(fsrep)){
+     if(error!=NULL)
+      *error=NSErrorForGetLastError();
+     return NO;
+    }
+   }
+   
+   return YES;
+}
+
+
+static BOOL _NSCreateDirectory(NSString *path,NSError **errorp){
+   if(CreateDirectoryW([path fileSystemRepresentationW],NULL)==0){
+    DWORD error=GetLastError();
+    
+    if(error!=ERROR_ALREADY_EXISTS){
+     if(errorp!=nil)
+      *errorp=NSErrorForGetLastError();
+       
+     return NO;
+    }
+   }
+
+   return YES;
+}
+
+-(BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)intermediates attributes:(NSDictionary *)attributes error:(NSError **)error {
+
+   if(intermediates){
+    NSArray  *components=[path pathComponents];
+    NSInteger i,count=[components count];
+    NSString *check=@"";
+   
+    for(i=0;i<count-1;i++){
+     check=[check stringByAppendingPathComponent:[components objectAtIndex:i]];
+     // ignore errors on intermediates since we're not handling all possible error codes.
+     _NSCreateDirectory(check,NULL);
+    }
+   }
+
+   return _NSCreateDirectory(path,error);
 }
 
 -(BOOL)fileExistsAtPath:(NSString *)path isDirectory:(BOOL *)isDirectory {
@@ -169,19 +322,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 }
 
-
-// we dont want to use fileExists... because it chases links 
--(BOOL)_isDirectory:(NSString *)path {
-   if(path == nil) {
-    return NO;
-   }
-   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
-
-   if(attributes==0xFFFFFFFF)
-    return NO;
-
-   return (attributes&FILE_ATTRIBUTE_DIRECTORY)?YES:NO;
-}
 
 -(BOOL)removeFileAtPath:(NSString *)path handler:handler {
    if(path == nil) {
@@ -350,42 +490,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithCString:string length:length];
 }
 
-static NSString *TranslatePath( NSString *path )
-{
-    NSUInteger length = [path length];
-    if (0 == length) return path;
-    
-    unichar buffer[length];
+static NSString *TranslatePath( NSString *path ){
+   NSInteger i,length=[path length],resultLength=0;
+   unichar    buffer[length],result[length];
     
     [path getCharacters:buffer];
 
-    BOOL converted=NO;
+   for(i=0;i<length;i++){
 
-    for (NSUInteger i = 0; i < length; i++ ) {
-        if (buffer[i] == '/') {
-            buffer[i] = '\\';
-            converted = YES;
+    if(i==0){
+     if(buffer[i]=='/' || buffer[i]=='\\')
+      continue;
         }
-    }
     
-    unichar *begin = buffer;
-    if (length >= 4 && begin[0] == '\\' && (begin[2] == ':' || begin[2] == '|') && begin[3] == '\\') {
-        // Begin of path matches URL style drive spec \c:\path or \c|\path, both need to be translated to c:\path
-        begin[2] = ':';
-        converted = YES;
-        ++begin; 
-        --length;
+    if(resultLength==1 && buffer[i]=='|'){
+     result[resultLength++]=':';
+     continue;
     }
 
-    if (converted) {
-        path = [NSString stringWithCharacters:begin length:length];
+    if(buffer[i]=='/')
+     result[resultLength++]='\\';
+    else
+     result[resultLength++]=buffer[i];
     }
     
-    return path;
+   return [NSString stringWithCharacters:result length:resultLength];
 }
 
 -(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
     path = TranslatePath( path );
+
     return (const unichar *)[path cStringUsingEncoding:NSUnicodeStringEncoding];
 }
 

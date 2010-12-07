@@ -23,9 +23,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSet *)validInputSources;
 
--(BOOL)immediateInputInMode:(NSString *)mode;
+-(BOOL)fireSingleImmediateInputInMode:(NSString *)mode;
 
--(void)changingIntoMode:(NSString *)mode;
+-(void)startingInMode:(NSString *)mode;
 
 -(void)waitInBackgroundInMode:(NSString *)mode;
 

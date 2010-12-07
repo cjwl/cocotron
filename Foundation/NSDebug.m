@@ -8,9 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSString.h>
+#ifdef WINDOWS
+#import <windows.h>
+#endif
 
 BOOL NSZombieEnabled=NO;
 BOOL NSDebugEnabled=YES;
+BOOL NSCooperativeThreadsEnabled=YES;
 
 const char* _NSPrintForDebugger(id object) {
 	if(object && [object respondsToSelector:@selector(description)]) {
@@ -18,3 +22,34 @@ const char* _NSPrintForDebugger(id object) {
 	}
 	return NULL;
 }
+
+#ifndef WINDOWS
+void NSCooperativeThreadBlocking() {
+}
+
+void NSCooperativeThreadWaiting() {
+}
+#else
+
+
+static HANDLE NSCooperativeEvent(){
+   static HANDLE handle=NULL;
+   
+   if(handle==NULL)
+    handle=CreateEvent(NULL,FALSE,FALSE,NULL);
+   
+   return handle;
+}
+
+void NSCooperativeThreadBlocking() {
+   if(NSCooperativeThreadsEnabled){
+    SetEvent(NSCooperativeEvent());
+   }
+}
+
+void NSCooperativeThreadWaiting() {
+   if(NSCooperativeThreadsEnabled){
+    WaitForSingleObject(NSCooperativeEvent(),0);
+   }
+}
+#endif

@@ -208,6 +208,10 @@ NSMutableArray *NSCurrentFocusStack() {
    CGContextSetBlendMode(_graphicsPort,blendMode[value]);
 }
 
+-(void)setPatternPhase:(NSPoint)phase {
+   CGContextSetPatternPhase(_graphicsPort,CGSizeMake(phase.x,phase.y));
+}
+
 -(CIContext *)CIContext {
    if(_ciContext==nil)
     _ciContext=[[CIContext contextWithCGContext:_graphicsPort options:nil] retain];

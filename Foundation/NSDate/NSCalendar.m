@@ -17,13 +17,17 @@ NSString * const NSGregorianCalendar=@"NSGregorianCalendar";
 @implementation NSCalendar 
 
 -copyWithZone:(NSZone *)zone {
-   NSUnimplementedMethod();
-   // this is wrong, need to actually copy;
-   return [self retain];
+   NSCalendar *result=NSCopyObject(self,0,zone);
+   
+   result->_identifier=[_identifier copy];
+   result->_timeZone=[_timeZone copy];
+   result->_locale=[_locale copy];
+   
+   return result;
 }
 
 +currentCalendar {
-   return nil;
+   return [[[self alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
 }
 
 -initWithCalendarIdentifier:(NSString *)identifier {
@@ -99,8 +103,37 @@ NSString * const NSGregorianCalendar=@"NSGregorianCalendar";
 }
 
 -(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)date {
-   NSUnimplementedMethod();
-   return nil;
+   NSDateComponents *result=[[[NSDateComponents alloc] init] autorelease];
+   NSTimeInterval interval=[date timeIntervalSinceReferenceDate];
+   
+  interval=NSMoveIntervalFromTimeZoneToGMT(interval,[NSTimeZone localTimeZone]);
+   
+   if(flags&NSEraCalendarUnit)
+    NSUnimplementedMethod();
+   if(flags&NSYearCalendarUnit)
+    [result setYear:NSYearFromTimeInterval(interval)];
+   if(flags&NSMonthCalendarUnit)
+    [result setMonth:NSMonthFromTimeInterval(interval)];
+   if(flags&NSDayCalendarUnit)
+    [result setDay:NSDayOfMonthFromTimeInterval(interval)];
+   if(flags&NSHourCalendarUnit)
+    [result setHour:NS24HourFromTimeInterval(interval)];
+   if(flags&NSMinuteCalendarUnit)
+    [result setMinute:NSMinuteFromTimeInterval(interval)];
+   if(flags&NSSecondCalendarUnit)
+    [result setSecond:NSSecondFromTimeInterval(interval)];
+   if(flags&NSWeekCalendarUnit)
+    NSUnimplementedMethod();
+   if(flags&NSWeekdayCalendarUnit)
+    [result setWeekday:NSWeekdayFromTimeInterval(interval)];
+   if(flags&NSWeekdayOrdinalCalendarUnit)
+    NSUnimplementedMethod();
+#if 0
+   if(flags&NSQuarterCalendarUnit)
+    NSUnimplementedMethod();
+#endif
+    
+   return result;
 }
 
 -(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(NSUInteger)options {
@@ -139,6 +172,8 @@ NSString * const NSGregorianCalendar=@"NSGregorianCalendar";
     second=check;
     
    NSTimeInterval interval=NSTimeIntervalWithComponents(year,month,day,hour,minute,second,milliseconds);
+
+   interval=NSMoveIntervalFromGMTToTimeZone(interval,[NSTimeZone localTimeZone]);
 
    return [NSDate dateWithTimeIntervalSinceReferenceDate:interval];
 }

@@ -9,9 +9,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSearchFieldCell.h>
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSMenu.h>
+#import <AppKit/NSImage.h>
+#import <AppKit/NSControl.h>
 #import <AppKit/NSRaise.h>
 
 @implementation NSSearchFieldCell
+
+-initWithCoder:(NSCoder *)coder {
+   [super initWithCoder:coder];
+   _searchButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSSearchGlass"]];
+   [_searchButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
+   _cancelButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSStopProgressFreestandingTemplate"]];
+   [_cancelButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
+   return self;  
+}
+
+-initTextCell:(NSString *)string {
+   [super initTextCell:string];
+   _searchButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSSearchGlass"]];
+   [_searchButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
+   _cancelButtonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSStopProgressFreestandingTemplate"]];
+   [_cancelButtonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
+   return self;
+}
+
+-(void)dealloc {
+   [_searchButtonCell release];
+   [_cancelButtonCell release];
+   [super dealloc];
+}
 
 -(NSArray *)recentSearches {
    return _recentSearches;
@@ -88,18 +114,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSRect)searchTextRectForBounds:(NSRect)rect {
-   NSUnimplementedMethod();
-   return NSZeroRect;
+   return [self titleRectForBounds:rect];
 }
 
 -(NSRect)searchButtonRectForBounds:(NSRect)rect {
-   NSUnimplementedMethod();
-   return NSZeroRect;
+   NSRect result=[self titleRectForBounds:rect];
+   
+   result.size.width=result.size.height;
+   result.origin.x-=result.size.width;
+   
+   return result;
 }
 
 -(NSRect)cancelButtonRectForBounds:(NSRect)rect {
-   NSUnimplementedMethod();
-   return NSZeroRect;
+   NSRect result=[self titleRectForBounds:rect];
+   
+   result.origin.x+=result.size.width;
+   result.size.width=result.size.height;
+   
+   return result;
 }
 
 -(void)resetCancelButtonCell {
@@ -108,6 +141,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)resetSearchButtonCell {
    NSUnimplementedMethod();
+}
+
+-(NSRect)titleRectForBounds:(NSRect)rect {
+   CGFloat radius=rect.size.height/2;
+   NSRect  result=[super titleRectForBounds:rect];
+   
+   result=NSInsetRect(result,radius,0);
+  
+   return result;
+}
+
+-(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)frame ofView:(NSView *)view untilMouseUp:(BOOL)untilMouseUp {
+   if([_cancelButtonCell trackMouse:event inRect:[self cancelButtonRectForBounds:frame] ofView:view untilMouseUp:YES]){
+    [(NSControl *)view setStringValue:@""];
+    [(NSControl *)view selectText:nil];
+    return YES;
+   }
+
+   return [super trackMouse:event inRect:frame ofView:view untilMouseUp:untilMouseUp];
+}
+
+-(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
+   [super drawWithFrame:frame inView:control];
+   
+   [_searchButtonCell drawWithFrame:[self searchButtonRectForBounds:frame] inView:control];
+   if([[self attributedStringValue] length]>0)
+    [_cancelButtonCell drawWithFrame:[self cancelButtonRectForBounds:frame] inView:control];
 }
 
 @end

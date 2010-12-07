@@ -101,7 +101,7 @@ O2Shading *axialShading(O2PDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
     NSLog(@"No Function entry in axial shader");
     return NULL;
    }
-   if((function=[O2Function pdfFunctionWithDictionary:fnDictionary])==NULL)
+   if((function=[O2Function createFunctionWithDictionary:fnDictionary])==NULL)
     return NULL;
     
    if([dictionary getArrayForKey:"Extend" value:&extendArray]){
@@ -182,7 +182,7 @@ O2Shading *radialShading(O2PDFDictionary *dictionary,O2ColorSpaceRef colorSpace)
     NSLog(@"No Function entry in radial shader");
     return NULL;
    }
-   if((function=[O2Function pdfFunctionWithDictionary:fnDictionary])==NULL)
+   if((function=[O2Function createFunctionWithDictionary:fnDictionary])==NULL)
     return NULL;
     
    if([dictionary getArrayForKey:"Extend" value:&extendArray]){
@@ -211,14 +211,15 @@ O2Shading *radialShading(O2PDFDictionary *dictionary,O2ColorSpaceRef colorSpace)
    
   // NSLog(@"sh=%@",dictionary);
    if(![dictionary getIntegerForKey:"ShadingType" value:&shadingType]){
-    NSLog(@"required ShadingType missing");
+    O2PDFError(__FILE__,__LINE__,@"required ShadingType missing");
     return nil;
    }
    if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
-    NSLog(@"required ColorSpace missing");
+    O2PDFError(__FILE__,__LINE__,@"required ColorSpace missing");
     return nil;
    }
-   if((colorSpace=[O2ColorSpace colorSpaceFromPDFObject:colorSpaceObject])==nil)
+
+   if((colorSpace=[O2ColorSpace createColorSpaceFromPDFObject:colorSpaceObject])==nil)
     return nil;
     
    switch(shadingType){

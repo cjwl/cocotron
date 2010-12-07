@@ -106,17 +106,32 @@ second, 0);
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
+   if([coder allowsKeyedCoding]){
+    [coder encodeDouble:_timeInterval forKey:@"NS.time"];
+    [coder encodeObject:_timeZone forKey:@"NS.timezone"];
+    [coder encodeObject:_format forKey:@"NS.format"];
+   }
+   else {
     [coder encodeValueOfObjCType:@encode(double) at:&_timeInterval];
     [coder encodeObject:_timeZone];
     [coder encodeObject:_format];
+   }
 }
 
 -initWithCoder:(NSCoder *)coder {
+
+   if([coder allowsKeyedCoding]){
+    _timeInterval=[coder decodeDoubleForKey:@"NS.time"];
+    _timeZone=[[coder decodeObjectForKey:@"NS.timezone"] copy];
+    _format=[[coder decodeObjectForKey:@"NS.format"] copy];
+   }
+   else {
     [coder decodeValueOfObjCType:@encode(double) at:&_timeInterval];
     _timeZone = [[coder decodeObject] retain];
     _format = [[coder decodeObject] retain];
-
-    return self;
+   }
+   
+   return self;
 }
 
 -(NSString *)calendarFormat {
@@ -141,7 +156,7 @@ second, 0);
 }
 
 -(NSTimeInterval)timeZoneAdjustedInterval {
-   return NSAdjustTimeIntervalWithTimeZone(_timeInterval,_timeZone);
+   return NSMoveIntervalFromTimeZoneToGMT(_timeInterval,_timeZone);
 }
 
 -(NSInteger)secondOfMinute {

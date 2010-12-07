@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSortDescriptor.h>
 #import <AppKit/NSRaise.h>
 #import "NSObservationProxy.h"
+#import "_NSControllerArray.h"
 
 @interface NSObjectController(private)
 -(id)_defaultNewObject;
@@ -37,29 +38,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSArrayController
 
-+(void)initialize
-{
-   [self setKeys:[NSArray arrayWithObjects:@"content", nil]
-triggerChangeNotificationsForDependentKey:@"contentArray"];
-	[self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", nil]
- triggerChangeNotificationsForDependentKey:@"selection"];
-	[self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", @"selection", nil]
-triggerChangeNotificationsForDependentKey:@"selectionIndex"];
-	[self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", @"selection", nil]
- triggerChangeNotificationsForDependentKey:@"selectedObjects"];
++(void)initialize {
+   [self setKeys:[NSArray arrayWithObjects:@"content", nil] triggerChangeNotificationsForDependentKey:@"contentArray"];
+   [self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", nil] triggerChangeNotificationsForDependentKey:@"selection"];
+   [self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", @"selection", nil]triggerChangeNotificationsForDependentKey:@"selectionIndex"];
+   [self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", @"selection", nil] triggerChangeNotificationsForDependentKey:@"selectedObjects"];
 	
-	[self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil]
- triggerChangeNotificationsForDependentKey:@"canRemove"];
-	[self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil]
- triggerChangeNotificationsForDependentKey:@"canSelectNext"];
-	[self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil]
- triggerChangeNotificationsForDependentKey:@"canSelectPrevious"];
+   [self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil] triggerChangeNotificationsForDependentKey:@"canRemove"];
+   [self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil] triggerChangeNotificationsForDependentKey:@"canSelectNext"];
+   [self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil] triggerChangeNotificationsForDependentKey:@"canSelectPrevious"];
 }
 
--(id)initWithCoder:(NSCoder*)coder
-{
-	if((self = [super initWithCoder:coder]))
-	{
+-initWithCoder:(NSCoder*)coder {
+	if((self = [super initWithCoder:coder])) {
 		_flags.avoidsEmptySelection = [coder decodeBoolForKey:@"NSAvoidsEmptySelection"];
 		_flags.clearsFilterPredicateOnInsertion = [coder decodeBoolForKey:@"NSClearsFilterPredicateOnInsertion"];
 		_flags.filterRestrictsInsertion = [coder decodeBoolForKey:@"NSFilterRestrictsInsertion"];
@@ -122,13 +113,11 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	return _flags.preservesSelection;
 }
 
--(void)setPreservesSelection:(BOOL)value
-{
+-(void)setPreservesSelection:(BOOL)value {
 	_flags.preservesSelection=value;
 }
 
--(void)setContent:(id)value
-{
+-(void)setContent:(id)value {
    if(value!=nil && ![value isKindOfClass:[NSArray class]])
        value=[NSArray arrayWithObject:value];
     
@@ -138,6 +127,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 		oldSelection=[self selectedObjects];
    
 	[super setContent:[[value mutableCopy] autorelease]];
+   
    if(_flags.clearsFilterPredicateOnInsertion)
       [self setFilterPredicate:nil];
    
@@ -180,55 +170,46 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	return sortedObjects;
 }
 
-- (void)rearrangeObjects
-{
+-(void)rearrangeObjects {
 	[self _setArrangedObjects:[self arrangeObjects:[self contentArray]]];
 }
 
 - (void)_setArrangedObjects:(id)value {
    [_arrangedObjects autorelease];
-   _arrangedObjects = [[_NSObservableArray alloc] initWithArray:value];
+   _arrangedObjects = [[_NSControllerArray alloc] initWithArray:value];
 }
 
 -arrangedObjects {
 	return _arrangedObjects;
 }
 
-
 - (NSArray *)sortDescriptors {
-    return [[_sortDescriptors retain] autorelease];
+   return _sortDescriptors;
 }
 
 - (void)setSortDescriptors:(NSArray *)value {
-    if (_sortDescriptors != value) {
+   value=[value copy];
         [_sortDescriptors release];
-        _sortDescriptors = [value copy];
+   _sortDescriptors=value;
 		[self rearrangeObjects];
-    }
 }
 
 - (NSPredicate *)filterPredicate {
-    return [[_filterPredicate retain] autorelease];
+   return _filterPredicate;
 }
 
 - (void)setFilterPredicate:(NSPredicate *)value {
-    if (_filterPredicate != value) {
+   value=[value copy];
         [_filterPredicate release];
-        _filterPredicate = [value copy];
+   _filterPredicate = value;
 		[self rearrangeObjects];
     }
-}
 
--(BOOL)alwaysUsesMultipleValuesMarker
-{
+-(BOOL)alwaysUsesMultipleValuesMarker {
 	return _flags.alwaysUsesMultipleValuesMarker;
 }
 
-#pragma mark -
-#pragma mark Selection
-
--(NSUInteger)selectionIndex
-{
+-(NSUInteger)selectionIndex {
 	return [_selectionIndexes firstIndex];
 }
 
@@ -249,7 +230,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
     
 	[mutableValue removeIndexesInRange:NSMakeRange([[self arrangedObjects] count]+1, NSNotFound)];
 	
-    if (![_selectionIndexes isEqual:mutableValue]) {
+    if (![_selectionIndexes isEqualToIndexSet: mutableValue]) {
 		[self willChangeValueForKey:@"selectionIndexes"];
        [self _selectionWillChange];
        
@@ -321,8 +302,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 		[self setSelectionIndexes:idxs];
 }
 
--(void)selectPrevious:(id)sender
-{
+-(void)selectPrevious:(id)sender {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
 	if(!idxs){
 		[self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
@@ -336,13 +316,11 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	}
 }
 
--(id)_contentSet
-{
+-(id)_contentSet {
    return [NSSet setWithArray:_content];
 }
 
--(void)_setContentSet:(NSSet*)set
-{
+-(void)_setContentSet:(NSSet *)set {
    [self setContent:[set allObjects]];
 }
 

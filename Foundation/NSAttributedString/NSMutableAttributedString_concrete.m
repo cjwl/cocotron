@@ -65,6 +65,8 @@ NSRangeEntriesVerify(_rangeToAttributes,[self length]);
 -(void)setAttributes:(NSDictionary *)attributes range:(NSRange)range {
    if(attributes==nil)
     attributes=[NSDictionary dictionary];
+   else
+    attributes=[[attributes copy] autorelease];
 
    if([_string length]==0){
     NSResetRangeEntries(_rangeToAttributes);

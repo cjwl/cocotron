@@ -58,12 +58,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _eventMask=eventMask;
 }
 
--(BOOL)processImmediateEvents:(NSUInteger)selectEvent {
+-(NSUInteger)processImmediateEvents:(NSUInteger)selectEvent {
+
    if((selectEvent&=_eventMask)==0)
-    return NO;
+    return 0;
 
    [_delegate selectInputSource:self selectEvent:selectEvent];
-   return YES;
+   
+   return selectEvent;
 }
 
 @end

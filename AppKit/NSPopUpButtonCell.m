@@ -40,6 +40,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _selectedIndex=[coder decodeIntForKey:@"NSSelectedIndex"];
     _arrowPosition = [coder decodeIntForKey: @"NSArrowPosition"];
     _preferredEdge = [coder decodeIntForKey: @"NSPreferredEdge"];
+    _usesItemFromMenu=[coder decodeBoolForKey:@"NSUsesItemFromMenu"];
+    
+    [self synchronizeTitleAndSelectedItem];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -68,6 +71,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_menu release];
    [super dealloc];
+}
+
+-(BOOL)isOpaque {
+   return NO;
 }
 
 -(BOOL)pullsDown {
@@ -197,6 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAllItems {
    [_menu removeAllItems];
+	_selectedIndex = -1;
 }
 
 -(void)removeItemAtIndex:(NSInteger)index {
@@ -307,6 +315,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		otherFrame.size =  arrowSize;
 		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:otherFrame enabled:YES mixed:YES];
 	}
+}
+
+-(NSSize)cellSize  {
+   NSSize result=[super cellSize];
+   
+   switch([self controlSize]){
+   
+    case NSRegularControlSize:
+     result.height=22;
+     break;
+			
+    case NSSmallControlSize:
+     result.height=19;
+     break;
+			
+    case NSMiniControlSize:
+     result.height=15;
+     break;
+   }
+
+   return result;
 }
 
 -(void)setTitle:(NSString *)title {

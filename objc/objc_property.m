@@ -6,13 +6,17 @@
 #import <Foundation/NSObject.h>
 
 const char *property_getAttributes(objc_property_t property){
-   // UNIMPLEMENTED
-   return NULL;
+   return property->attributes;
 }
 
 const char *property_getName(objc_property_t property) {
-   // UNIMPLEMENTED
-   return NULL;
+   return property->name;
+}
+
+id objc_assign_ivar(id self,id value,unsigned int offset){
+//   NSCLog("objc_assign_ivar(%x,%s,%x,%s,%d)",self,(self!=nil)?self->isa->name:"nil",value,(value!=nil)?value->isa->name:"nil",offset);
+   id *ivar=(id *)(((uint8_t *)self)+offset);
+   return *ivar=value;
 }
 
 void objc_copyStruct(void *dest, const void *src, size_t size, BOOL atomic,BOOL hasStrong) {
@@ -29,14 +33,15 @@ void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic
 	{
 	//	NSUnimplementedFunction();
 	}
-		
 	void *buffer=(void*)self+offset;
 	id oldValue=*(id*)buffer;
 	
 	if(shouldCopy)
-		*(id*)buffer=[value copy];
+     value=[value copy];
 	else
-		*(id*)buffer=[value retain];
+     value=[value retain];
+	
+    *(id*)buffer=value;
 	
 	[oldValue release];
 }

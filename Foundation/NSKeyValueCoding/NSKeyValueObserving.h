@@ -26,10 +26,10 @@ enum {
 typedef NSUInteger NSKeyValueObservingOptions;
 
 enum {
-	NSKeyValueChangeSetting,
-	NSKeyValueChangeInsertion,
-	NSKeyValueChangeRemoval,
-	NSKeyValueChangeReplacement	
+	NSKeyValueChangeSetting=1,
+	NSKeyValueChangeInsertion=2,
+	NSKeyValueChangeRemoval=3,
+	NSKeyValueChangeReplacement=4,	
 };
 typedef NSUInteger NSKeyValueChange;
 

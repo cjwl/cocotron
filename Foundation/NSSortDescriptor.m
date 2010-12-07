@@ -15,13 +15,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSortDescriptor
 
++sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending {
+   return [[[NSSortDescriptor allocWithZone:NULL] initWithKey:key ascending:ascending selector:NULL] autorelease];
+}
+
++sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector {
+   return [[[NSSortDescriptor allocWithZone:NULL] initWithKey:key ascending:ascending selector:selector] autorelease];
+}
+
 -initWithKey:(NSString *)key ascending:(BOOL)ascending {
-   return [self initWithKey:key ascending:ascending selector:@selector(compare:)];
+   return [self initWithKey:key ascending:ascending selector:NULL];
 }
 
 -initWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector {
    _key=[key copy];
    _ascending=ascending;
+   
+   if(selector==NULL) // Yes it does this
+    _selector=@selector(compare:);
+   else
    _selector=selector;
    return self;
 }
@@ -50,18 +62,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSComparisonResult)compareObject:first toObject:second {
    id checkFirst=[first valueForKeyPath:_key];
    id checkSecond=[second valueForKeyPath:_key];
+   NSComparisonResult result;
 
    if(_ascending)
-    return (NSComparisonResult)[checkFirst performSelector:_selector withObject:checkSecond];
+    result=(NSComparisonResult)[checkFirst performSelector:_selector withObject:checkSecond];
    else
-    return (NSComparisonResult)[checkSecond performSelector:_selector withObject:checkFirst];
+    result=(NSComparisonResult)[checkSecond performSelector:_selector withObject:checkFirst];
+   
+   return result;
 }
 
 -reversedSortDescriptor {
    return [[[isa alloc] initWithKey:_key ascending:!_ascending selector:_selector] autorelease];
 }
-
-// NSCoding protocol 
 
 - (void)encodeWithCoder:(NSCoder *)coder { 
    if ([coder allowsKeyedCoding]) 
@@ -79,7 +92,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 } 
 
 - (id)initWithCoder:(NSCoder *)coder { 
-   if ([coder isKindOfClass:[NSKeyedUnarchiver class]]) 
+   if ([coder allowsKeyedCoding]) 
    { 
       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder; 
       _key = [[keyed decodeObjectForKey:@"Key"] copy]; 

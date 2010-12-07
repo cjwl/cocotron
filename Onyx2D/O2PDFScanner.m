@@ -30,6 +30,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <stddef.h>
 
+static BOOL O2PDFScannerDumpStream=NO;
+
 #define LF 10
 #define FF 12
 #define CR 13
@@ -37,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct {
    unsigned       capacity;
    unsigned       length;
-    char *bytes;
+   uint8_t   *bytes;
 } O2PDFByteBuffer;
 
 static inline O2PDFByteBuffer *O2PDFByteBufferCreate(){
@@ -98,21 +100,22 @@ static inline BOOL O2PDFByteBufferAppendLowNibble(O2PDFByteBuffer *buffer,unsign
    if((nibble=O2PDFByteBufferDecodeNibble(nibble))==0xFF)
     return NO;
     
-   buffer->bytes[buffer->length]|=nibble;
+   buffer->bytes[buffer->length-1]|=nibble;
 
    return YES;
 }
 
-static inline BOOL O2PDFByteBufferAppendOctal(O2PDFByteBuffer *buffer,char octal){
+static inline BOOL O2PDFByteBufferAppendOctal(O2PDFByteBuffer *buffer,uint8_t octal){
    octal-='0';
    O2PDFByteBufferAppend(buffer,octal);
 
    return YES;
 }
-static inline BOOL O2PDFByteBufferAddOctal(O2PDFByteBuffer *buffer,char octal){
+
+static inline BOOL O2PDFByteBufferAddOctal(O2PDFByteBuffer *buffer,uint8_t octal){
    octal-='0';
-   buffer->bytes[buffer->length]<<=3;
-   buffer->bytes[buffer->length]|=octal;
+   buffer->bytes[buffer->length-1]*=8;
+   buffer->bytes[buffer->length-1]|=octal;
 
    return YES;
 }
@@ -138,6 +141,62 @@ static BOOL debugError(const char *bytes,unsigned length,O2PDFInteger position,N
    va_start(arguments,format);
    debugTracev(bytes,length,position,format,arguments);
    [NSException raise:@"" format:@""];;
+   return NO;
+}
+
+BOOL O2PDFScanBackwardsToEOF(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition) {
+   enum {
+    STATE_F,
+    STATE_O,
+    STATE_E,
+    STATE_PERCENT,
+    STATE_PERCENT_PERCENT,
+   } state=STATE_F;
+   
+   while(--position>=0){
+    char c=bytes[position];
+    
+    *lastPosition=position;
+    
+    switch(state){
+    
+     case STATE_F:
+      if(c=='F')
+       state=STATE_O;
+      else if(c>=' ')
+       return NO;
+      break;
+
+     case STATE_O:
+      if(c=='O')
+       state=STATE_E;
+      else
+       return NO;
+      break;
+
+     case STATE_E:
+      if(c=='E')
+       state=STATE_PERCENT;
+      else
+       return NO;
+      break;
+
+     case STATE_PERCENT:
+      if(c=='%')
+       state=STATE_PERCENT_PERCENT;
+      else
+       return NO;
+      break;
+
+     case STATE_PERCENT_PERCENT:
+      if(c=='%')
+       return YES;
+      else
+       return NO;
+      break;
+    }
+    
+   }
    return NO;
 }
 
@@ -224,19 +283,19 @@ BOOL O2PDFScanVersion(const char *bytes,unsigned length,O2PDFString **versionp) 
     return NO;
    
    if(strncmp(bytes,"%PDF-",5)!=0)
-    return debugError(bytes,length,position,@"Does not begin with %PDF-");
+    return debugError(bytes,length,0,@"Does not begin with %%PDF-");
    
    *versionp=[O2PDFString pdfObjectWithBytes:bytes+5 length:3];
    
-   if(!O2PDFScanBackwardsByLines(bytes,length,position,&position,1))
-    return debugError(bytes,length,position,@"Unable to back up one line");
+   position=length;
    
-   if(strncmp(bytes+position,"%%EOF",5)!=0)
+   if(!O2PDFScanBackwardsToEOF(bytes,length,position,&position))
     return debugError(bytes,length,position,@"Does not end with %%EOF");
 
    return YES;
 }
 
+// Returns YES and *objectp==NULL on end of stream
 BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject **objectp) {
    O2PDFInteger     currentSign=1,currentInt=0;
    O2PDFReal        currentReal=0,currentFraction=0;
@@ -263,10 +322,11 @@ BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2P
    
     debugTrace(bytes,length,position,@"O2PDFScanObject");
 
+   *objectp=NULL;
+   
    for(;position<length;position++){
     unsigned char code=bytes[position];
 	
-	      //NSLog(@"state=%d,code=%c",state,code);
 	switch(state){
           
 	 case STATE_SCANNING:
@@ -452,7 +512,7 @@ BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2P
        state=STATE_STRING_FREE;
       else if(code==LF)
        state=STATE_STRING_FREE;
-      else if(code>='0' || code<='7'){
+      else if(code>='0' && code<='7'){
        O2PDFByteBufferAppendOctal(byteBuffer,code);
        state=STATE_STRING_0XX;
       }
@@ -463,7 +523,7 @@ BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2P
       break;
 
      case STATE_STRING_0XX:
-      if(code>='0' || code<='7'){
+      if(code>='0' && code<='7'){
        O2PDFByteBufferAddOctal(byteBuffer,code);
        state=STATE_STRING_00X;
       }
@@ -474,8 +534,9 @@ BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2P
       break;
 
      case STATE_STRING_00X:
-      if(code>='0' || code<='7')
+      if(code>='0' && code<='7'){
        O2PDFByteBufferAddOctal(byteBuffer,code);
+      }
       else
        position--;
        
@@ -569,7 +630,10 @@ BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2P
    
    if(byteBuffer!=NULL)
     O2PDFByteBufferFree(byteBuffer);
-   return NO;
+    
+   *lastPosition=position;
+    
+   return (state==STATE_SCANNING)?YES:NO;
 }
 
 BOOL O2PDFScanIdentifier(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject_identifier **identifier) {
@@ -578,6 +642,9 @@ BOOL O2PDFScanIdentifier(const char *bytes,unsigned length,O2PDFInteger position
    if(!O2PDFScanObject(bytes,length,position,lastPosition,&object))
     return NO;
    
+   if(object==NULL)
+    return NO;
+    
    if([object objectType]!=O2PDFObjectType_identifier)
     return NO;
    
@@ -591,6 +658,9 @@ BOOL O2PDFScanInteger(const char *bytes,unsigned length,O2PDFInteger position,O2
    if(!O2PDFScanObject(bytes,length,position,lastPosition,&object))
     return NO;
 
+   if(object==NULL)
+    return NO;
+    
    return [object checkForType:kO2PDFObjectTypeInteger value:value];
 }
 
@@ -605,6 +675,12 @@ BOOL O2PDFParseObject(const char *bytes,unsigned length,O2PDFInteger position,O2
     if(!O2PDFScanObject(bytes,length,position,&position,&check))
      return NO;
     
+   if(check==NULL){
+    *objectp=NULL;
+    *lastPosition=position;
+    return (stack==nil)?YES:NO;
+   }
+        
     debugTrace(bytes,length,position,@"check=%@",check);
     
     switch([check objectType]){
@@ -743,6 +819,9 @@ BOOL O2PDFParseDictionary(const char *bytes,unsigned length,O2PDFInteger positio
    if(!O2PDFParseObject(bytes,length,position,lastPosition,&object,xref))
     return NO;
    
+   if(object==NULL)
+    return NO;
+    
    return [object checkForType:kO2PDFObjectTypeDictionary value:dictionaryp];
 }
 
@@ -768,6 +847,9 @@ BOOL O2PDFParse_xrefAtPosition(NSData *data,O2PDFInteger position,O2PDFxref **xr
     if(!O2PDFScanObject(bytes,length,position,&position,&object))
      return debugError(bytes,length,position,@"Expecting object");
     
+    if(object==NULL)
+     return debugError(bytes,length,position,@"Expecting object");
+
     if([object objectType]==O2PDFObjectType_identifier){
      if([(O2PDFObject_identifier *)object identifier]!=O2PDFIdentifier_trailer)
       return debugError(bytes,length,position,@"Expecting trailer identifier,got %@",object);
@@ -820,6 +902,9 @@ BOOL O2PDFParse_xref(NSData *data,O2PDFxref **xrefp) {
    O2PDFObject_identifier *identifier;
    O2PDFxref         *lastTable=nil;
     
+   if(!O2PDFScanBackwardsToEOF(bytes,length,length,&position))
+    return debugError(bytes,length,position,@"Unable to back up over %%EOF");
+
    if(!O2PDFScanBackwardsByLines(bytes,length,length,&position,3))
     return debugError(bytes,length,position,@"Unable to back up 3 lines to find startxref");
 
@@ -880,6 +965,9 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
    if(!O2PDFParseObject(bytes,length,position,&position,&object,xref))
     return debugError(bytes,length,position,@"Expecting object");
    
+   if(object==NULL)
+    return debugError(bytes,length,position,@"Expecting object, got end of stream");
+    
    if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
     return debugError(bytes,length,position,@"Expecting identifier");
     
@@ -920,6 +1008,10 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 
 @implementation O2PDFScanner
 
++(void)initialize {
+   O2PDFScannerDumpStream=[[NSUserDefaults standardUserDefaults] boolForKey:@"O2PDFScannerDumpStream"];
+}
+
 -initWithContentStream:(O2PDFContentStream *)stream operatorTable:(O2PDFOperatorTable *)operatorTable info:(void *)info {
    _stack=[NSMutableArray new];
    _stream=[stream retain];
@@ -939,95 +1031,95 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
    return _stream;
 }
 
--(BOOL)popObject:(O2PDFObject **)value {
-   id lastObject=[[[_stack lastObject] retain] autorelease];
+BOOL O2PDFScannerPopObject(O2PDFScanner *self,O2PDFObject **value) {
+   id lastObject=[[[self->_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
     return NO;
    
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
    
    *value=lastObject;
    return YES;
 }
 
--(BOOL)popBoolean:(O2PDFBoolean *)value {
-   BOOL result=[[_stack lastObject] checkForType:kO2PDFObjectTypeBoolean value:value];
+BOOL O2PDFScannerPopBoolean(O2PDFScanner *self,O2PDFBoolean *value) {
+   BOOL result=[[self->_stack lastObject] checkForType:kO2PDFObjectTypeBoolean value:value];
    
-   [_stack removeLastObject];
-   
-   return result;
-}
-
--(BOOL)popInteger:(O2PDFInteger *)value {
-   BOOL result=[[_stack lastObject] checkForType:kO2PDFObjectTypeInteger value:value];
-   
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
    
    return result;
 }
 
--(BOOL)popNumber:(O2PDFReal *)value {
-   BOOL result=[[_stack lastObject] checkForType:kO2PDFObjectTypeReal value:value];
-
-   [_stack removeLastObject];
+BOOL O2PDFScannerPopInteger(O2PDFScanner *self,O2PDFInteger *value) {
+   BOOL result=[[self->_stack lastObject] checkForType:kO2PDFObjectTypeInteger value:value];
+   
+   [self->_stack removeLastObject];
    
    return result;
 }
 
--(BOOL)popName:(const char **)value {
-   id lastObject=[[[_stack lastObject] retain] autorelease];
+BOOL O2PDFScannerPopNumber(O2PDFScanner *self,O2PDFReal *value) {
+   BOOL result=[[self->_stack lastObject] checkForType:kO2PDFObjectTypeReal value:value];
+
+   [self->_stack removeLastObject];
+   
+   return result;
+}
+
+BOOL O2PDFScannerPopName(O2PDFScanner *self,const char **value) {
+   id lastObject=[[[self->_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
     return NO;
 
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
 
    return [lastObject checkForType:kO2PDFObjectTypeName value:value];
 }
 
--(BOOL)popString:(O2PDFString **)stringp {
-   id lastObject=[[[_stack lastObject] retain] autorelease];
+BOOL O2PDFScannerPopString(O2PDFScanner *self,O2PDFString **value) {
+   id lastObject=[[[self->_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
     return NO;
 
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
 
-   return [lastObject checkForType:kO2PDFObjectTypeString value:stringp];
+   return [lastObject checkForType:kO2PDFObjectTypeString value:value];
 }
 
--(BOOL)popArray:(O2PDFArray **)arrayp {
-   id lastObject=[[[_stack lastObject] retain] autorelease];
+BOOL O2PDFScannerPopArray(O2PDFScanner *self,O2PDFArray **value) {
+   id lastObject=[[[self->_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
     return NO;
 
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
 
-   return [lastObject checkForType:kO2PDFObjectTypeArray value:arrayp];
+   return [lastObject checkForType:kO2PDFObjectTypeArray value:value];
 }
 
--(BOOL)popDictionary:(O2PDFDictionary **)dictionaryp {
-   id lastObject=[[[_stack lastObject] retain] autorelease];
+BOOL O2PDFScannerPopDictionary(O2PDFScanner *self,O2PDFDictionary **value) {
+   id lastObject=[[[self->_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
     return NO;
 
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
 
-   return [lastObject checkForType:kO2PDFObjectTypeDictionary value:dictionaryp];
+   return [lastObject checkForType:kO2PDFObjectTypeDictionary value:value];
 }
 
--(BOOL)popStream:(O2PDFStream **)streamp {
-   id lastObject=[[[_stack lastObject] retain] autorelease];
+BOOL O2PDFScannerPopStream(O2PDFScanner *self,O2PDFStream **value) {
+   id lastObject=[[[self->_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
     return NO;
 
-   [_stack removeLastObject];
+   [self->_stack removeLastObject];
 
-   return [lastObject checkForType:kO2PDFObjectTypeStream value:streamp];
+   return [lastObject checkForType:kO2PDFObjectTypeStream value:value];
 }
 
 -(BOOL)scanStream:(O2PDFStream *)stream {
@@ -1037,7 +1129,8 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
    unsigned     length=[data length];
    O2PDFInteger position=0;
    
-   //NSLog(@"data[%d]=%@",[data length],[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]);
+   if(O2PDFScannerDumpStream)
+    NSLog(@"data[%d]=%@",[data length],[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]);
    
    while(position<length) {
     O2PDFObject *object;
@@ -1045,13 +1138,14 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
     if(!O2PDFParseObject(bytes,length,position,&position,&object,xref))
      return NO;
 
+    if(object==NULL)
+     return YES;
+     
     if([object objectTypeNoParsing]!=O2PDFObjectType_identifier)
      [_stack addObject:object];
      else {
       O2PDFOperatorCallback callback=[_operatorTable callbackForName:[(O2PDFObject_identifier *)object name]];
       
-      //NSLog(@"op=[%s]",[object name]);
-
       if(callback!=NULL){
        callback(self,_info);
       }

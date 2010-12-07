@@ -84,22 +84,36 @@ OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
 #endif
 }
 
-// FIXME: these implementations do not return the size needed
 #if defined(WIN32)
 
-#define MAXPATHLEN MAX_PATH
+#define MAXPATHLEN 8192
 
 int _NSGetExecutablePath(char *path,uint32_t *capacity) {
-// FIXME, this should use the unicode version and return a utf8 path
-   DWORD size=GetModuleFileName(GetModuleHandle(NULL),path,*capacity);
+   int        bufferCapacity=MAXPATHLEN;
+   uint16_t   buffer[bufferCapacity+1];
+   DWORD      i,bufferSize=GetModuleFileNameW(GetModuleHandle(NULL),buffer,bufferCapacity);
       
-   if(size==*capacity)
+   for(i=0;i<bufferSize;i++)
+    if(buffer[i]=='\\')
+     buffer[i]='/';
+
+   int size=WideCharToMultiByte(CP_UTF8,0,buffer,bufferSize,NULL,0,NULL,NULL);
+
+   if(size+1>*capacity){
+    *capacity=size+1;
     return -1;
+   }
+    
+   size=WideCharToMultiByte(CP_UTF8,0,buffer,bufferSize,path,*capacity,NULL,NULL);
+   path[size]='\0';
+   size++;
     
    *capacity=size;
        
    return 0;
 }
+
+// FIXME: these implementations do not return the size needed
 
 #elif defined(LINUX)
 
@@ -165,20 +179,6 @@ int _NSGetExecutablePath(char *path,uint32_t *capacity) {
 }
 #endif
 
-
-OBJCObjectFile *OBJCCreateMainObjectFile(){
-   uint32_t length=MAXPATHLEN;
-   char     path[length+1];
-
-   if(_NSGetExecutablePath(path,&length)<0)
-    path[0]='\0';
-   else
-    path[length]='\0';
-
-   return OBJCUniqueObjectFileWithPath(path);
-}
-
-
 void OBJCInitializeProcess() {
 #ifdef __APPLE__
 extern void OBJCInitializeProcess_Darwin(void);
@@ -190,8 +190,17 @@ extern void OBJCInitializeProcess_Darwin(void);
 OBJCObjectFile *OBJCMainObjectFile(){
    static OBJCObjectFile *mainObjectFile=NULL;
    
-   if(mainObjectFile==NULL)
-    mainObjectFile=OBJCCreateMainObjectFile();
+   if(mainObjectFile==NULL){
+    uint32_t length=MAXPATHLEN;
+    char     path[length+1];
+   
+    if(_NSGetExecutablePath(path,&length)<0)
+     path[0]='\0';
+    else
+     path[length]='\0';
+
+    mainObjectFile=OBJCUniqueObjectFileWithPath(path);
+   }
    
    return mainObjectFile;
 }
@@ -409,7 +418,7 @@ const char *class_getImageName(Class cls) {
     return NULL;
 }
 
-const char *OBJCModulePathForProcess(){
+const char *objc_mainImageName(){
    OBJCObjectFile *file=OBJCMainObjectFile();
    
    if(file!=NULL)

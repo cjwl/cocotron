@@ -22,9 +22,10 @@ enum {
 	NSSecondCalendarUnit = kCFCalendarUnitSecond,
 	NSWeekCalendarUnit = kCFCalendarUnitWeek,
 	NSWeekdayCalendarUnit = kCFCalendarUnitWeekday,
-	NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal
+    NSWeekdayOrdinalCalendarUnit = kCFCalendarUnitWeekdayOrdinal,
+//   NSQuarterCalendarUnit = kCFCalendarUnitQuarter,
 };
-typedef int NSCalendarUnit;
+typedef NSUInteger NSCalendarUnit;
 
 FOUNDATION_EXPORT NSString * const NSGregorianCalendar;
 

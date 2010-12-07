@@ -7,38 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FE4B804510B483A50045407A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
-		FE4B804610B483A50045407A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
-		FE4B804710B483A60045407A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
 		FE5A888010C6F2F5005E348A /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920B0FFB217F007AECF1 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A888110C6F2F5005E348A /* CoreTextExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920C0FFB217F007AECF1 /* CoreTextExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A888210C6F2F5005E348A /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920D0FFB217F007AECF1 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A888310C6F2F5005E348A /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920F0FFB217F007AECF1 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A888610C6F2F5005E348A /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF920E0FFB217F007AECF1 /* CTFont.m */; };
-		FE5A888710C6F2F5005E348A /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF92100FFB217F007AECF1 /* KTFont.m */; };
-		FE5A888910C6F2F5005E348A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
-		FE5A888A10C6F2F5005E348A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECF928B0FFB2C5C007AECF1 /* CoreGraphics.framework */; };
 		FECF92110FFB217F007AECF1 /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920B0FFB217F007AECF1 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92120FFB217F007AECF1 /* CoreTextExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920C0FFB217F007AECF1 /* CoreTextExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92130FFB217F007AECF1 /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920D0FFB217F007AECF1 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FECF92140FFB217F007AECF1 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF920E0FFB217F007AECF1 /* CTFont.m */; };
 		FECF92150FFB217F007AECF1 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920F0FFB217F007AECF1 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FECF92160FFB217F007AECF1 /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF92100FFB217F007AECF1 /* KTFont.m */; };
 		FECF92330FFB29FF007AECF1 /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920B0FFB217F007AECF1 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92340FFB29FF007AECF1 /* CoreTextExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920C0FFB217F007AECF1 /* CoreTextExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92350FFB29FF007AECF1 /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920D0FFB217F007AECF1 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92360FFB29FF007AECF1 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920F0FFB217F007AECF1 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FECF923A0FFB29FF007AECF1 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF920E0FFB217F007AECF1 /* CTFont.m */; };
-		FECF923B0FFB29FF007AECF1 /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF92100FFB217F007AECF1 /* KTFont.m */; };
 		FECF92430FFB2A0D007AECF1 /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920B0FFB217F007AECF1 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92440FFB2A0D007AECF1 /* CoreTextExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920C0FFB217F007AECF1 /* CoreTextExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92450FFB2A0D007AECF1 /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920D0FFB217F007AECF1 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECF92460FFB2A0D007AECF1 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECF920F0FFB217F007AECF1 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FECF924A0FFB2A0D007AECF1 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF920E0FFB217F007AECF1 /* CTFont.m */; };
-		FECF924B0FFB2A0D007AECF1 /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FECF92100FFB217F007AECF1 /* KTFont.m */; };
-		FECF92870FFB2C32007AECF1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
-		FECF92880FFB2C3A007AECF1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
-		FECF92890FFB2C3B007AECF1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -149,8 +133,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECF92870FFB2C32007AECF1 /* Foundation.framework in Frameworks */,
-				FE4B804510B483A50045407A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,8 +140,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5A888910C6F2F5005E348A /* Foundation.framework in Frameworks */,
-				FE5A888A10C6F2F5005E348A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,8 +147,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECF92880FFB2C3A007AECF1 /* Foundation.framework in Frameworks */,
-				FE4B804610B483A50045407A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,8 +154,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECF92890FFB2C3B007AECF1 /* Foundation.framework in Frameworks */,
-				FE4B804710B483A60045407A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,8 +475,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECF92140FFB217F007AECF1 /* CTFont.m in Sources */,
-				FECF92160FFB217F007AECF1 /* KTFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,8 +482,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5A888610C6F2F5005E348A /* CTFont.m in Sources */,
-				FE5A888710C6F2F5005E348A /* KTFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,8 +489,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECF923A0FFB29FF007AECF1 /* CTFont.m in Sources */,
-				FECF923B0FFB29FF007AECF1 /* KTFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,8 +496,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECF924A0FFB2A0D007AECF1 /* CTFont.m in Sources */,
-				FECF924B0FFB2A0D007AECF1 /* KTFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

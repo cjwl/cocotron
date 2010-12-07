@@ -43,5 +43,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)getStreamAtIndex:(unsigned)index value:(O2PDFStream **)streamp;
 
 -(BOOL)getNumbers:(O2PDFReal **)numbersp count:(unsigned *)count;
+-(BOOL)getIntegers:(O2PDFInteger **)intsp count:(unsigned *)count;
 
 @end

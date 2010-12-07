@@ -6,18 +6,20 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/CGWindow.h>
+#import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSDragging.h>
 #import <OpenGL/OpenGL.h>
+#import <Onyx2D/O2Geometry.h>
+
 #undef WINVER
 #define WINVER 0x501 // XP drop shadow constants
 #import <windows.h>
 
-@class O2Context_gdi;
-
+@class O2Context_gdi,O2Surface,O2Surface_DIBSection;
 
 @interface Win32Window : CGWindow {
    CGRect                 _frame;
+   int                    _level;
    BOOL                   _isOpaque;
    BOOL                   _hasShadow;
    CGFloat                _alphaValue;
@@ -28,6 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2Context             *_backingContext;
    CGLContextObj          _cglContext;
 
+   NSMutableArray        *_overlays;
+   O2Surface_DIBSection  *_overlayResult;
+   
+   int                    _disableFlushWindow;
    NSString              *_title;
    BOOL                  _isLayered;
    BOOL                  _ignoreMinMaxMessage;

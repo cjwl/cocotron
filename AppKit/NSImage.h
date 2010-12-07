@@ -25,6 +25,7 @@ typedef enum {
    NSMutableArray *_representations;
    id              _delegate;
    BOOL            _isFlipped;
+   BOOL            _isTemplate;
    BOOL            _scalesWhenResized;
    BOOL            _matchesOnMultipleResolution;
    BOOL            _usesEPSOnResolutionMismatch;
@@ -58,6 +59,7 @@ typedef enum {
 -(NSSize)size;
 -(NSColor *)backgroundColor;
 -(BOOL)isFlipped;
+-(BOOL)isTemplate;
 -(BOOL)scalesWhenResized;
 -(BOOL)matchesOnMultipleResolution;
 -(BOOL)usesEPSOnResolutionMismatch;
@@ -72,6 +74,7 @@ typedef enum {
 -(void)setSize:(NSSize)value;
 -(void)setBackgroundColor:(NSColor *)value;
 -(void)setFlipped:(BOOL)value;
+-(void)setTemplate:(BOOL)value;
 -(void)setScalesWhenResized:(BOOL)value;
 -(void)setMatchesOnMultipleResolution:(BOOL)value;
 -(void)setUsesEPSOnResolutionMismatch:(BOOL)value;

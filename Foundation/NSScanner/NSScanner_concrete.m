@@ -81,35 +81,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanInt:(int *)valuep {
-   long long scanValue=0;
-
-   // This assumes sizeof(long long) >= sizeof(int).
-   if(![self scanLongLong:&scanValue])
-    return NO;
-   else if(scanValue>INT_MAX)
-    *valuep=INT_MAX;
-   else if(scanValue<INT_MIN)
-    *valuep=INT_MIN;
-   else
-    *valuep=(int)scanValue;
-
-   return YES;
+	long long scanValue=0;
+	
+	// This assumes sizeof(long long) >= sizeof(int).
+	if(![self scanLongLong:&scanValue])
+		return NO;
+	else if (NULL != valuep) {
+		if(scanValue>INT_MAX)
+			*valuep=INT_MAX;
+		else if(scanValue<INT_MIN)
+			*valuep=INT_MIN;
+		else
+			*valuep=(int)scanValue;
+	}
+	
+	return YES;
 }
 
 -(BOOL)scanInteger:(NSInteger *)valuep{
-   long long scanValue=0;
-
-   // This assumes sizeof(long long) >= sizeof(NSInteger).
-   if(![self scanLongLong:&scanValue])
-    return NO;
-   else if(scanValue>NSIntegerMax)
-    *valuep=NSIntegerMax;
-   else if(scanValue<NSIntegerMin)
-    *valuep=NSIntegerMin;
-   else
-    *valuep=(NSInteger)scanValue;
-
-   return YES;
+	long long scanValue=0;
+	
+	// This assumes sizeof(long long) >= sizeof(NSInteger).
+	if(![self scanLongLong:&scanValue])
+		return NO;
+	else if (NULL != valuep) {
+		if(scanValue>NSIntegerMax)
+			*valuep=NSIntegerMax;
+		else if(scanValue<NSIntegerMin)
+			*valuep=NSIntegerMin;
+		else
+			*valuep=(NSInteger)scanValue;
+	}
+	
+	return YES;
 }
 
 -(BOOL)scanLongLong:(long long *)valuep {
@@ -155,14 +159,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(hasOverflow){
-    if(sign>0)
-     *valuep=long_long_MAX;
-    else
-     *valuep=long_long_MIN;
+	   if (NULL != valuep) {
+		   if(sign>0)
+			   *valuep=long_long_MAX;
+		   else
+			   *valuep=long_long_MIN;
+	   }
     return YES;
    }
    else if(hasValue){
-    *valuep=sign*value;
+	   if (NULL != valuep)
+		   *valuep=sign*value;
     return YES;
    }
 
@@ -174,12 +181,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     BOOL r;
 
     r = [self scanDouble:&d];
-    *valuep = (float)d;
+	if (NULL != valuep)
+		*valuep = (float)d;
     return r;
 }
 
 // "...returns HUGE_VAL or -HUGE_VAL on overflow, 0.0 on underflow." hmm...
 -(BOOL)scanDouble:(double *)valuep {
+	double value;
    NSString *seperatorString;
    unichar   decimalSeperator;
    if(_locale)
@@ -201,7 +210,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    p[i] = '\0';
 
-   *valuep = strtod(p, &q);
+	value = strtod(p, &q);
+	if (NULL != valuep)
+		*valuep = value;
    _location += (q - p);
    return (q > p);
 

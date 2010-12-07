@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSRaise.h>
 
@@ -276,19 +277,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(const char *)fileSystemRepresentation {
-   return [[NSFileManager defaultManager]
-                       fileSystemRepresentationWithPath:self];
+   return [[NSFileManager defaultManager] fileSystemRepresentationWithPath:self];
 }
 
 -(const uint16_t *)fileSystemRepresentationW {
-   return [[NSFileManager defaultManager]
-                       fileSystemRepresentationWithPathW:self];
+   return [[NSFileManager defaultManager] fileSystemRepresentationWithPathW:self];
 }
 
 @end
 
-NSArray *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory d,NSSearchPathDomainMask mask,BOOL expand) {
+NSArray *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory,NSSearchPathDomainMask mask,BOOL expand) {
+   if(mask!=NSUserDomainMask)
     NSUnimplementedFunction();
+    
+   if(directory==NSCachesDirectory){
+    NSString *path=[[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Caches"] stringByAppendingPathComponent:[[NSProcessInfo processInfo] processName]];
+    
+    return [NSArray arrayWithObject:path];
+   }
+   
+   if(directory==NSApplicationSupportDirectory){
+    NSString *path=[[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Application Support"] stringByAppendingPathComponent:[[NSProcessInfo processInfo] processName]];
+    
+    return [NSArray arrayWithObject:path];
+   }
+
     return nil;
 }
 

@@ -10,7 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDictionary;
 
 @interface NSHTTPURLResponse : NSURLResponse {
-
+   NSInteger     _statusCode;
+   NSDictionary *_allHeaderFields;
 }
 
 +(NSString *)localizedStringForStatusCode:(NSInteger)statusCode;

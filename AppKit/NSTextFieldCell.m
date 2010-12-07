@@ -36,6 +36,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _drawsBackground=[keyed decodeBoolForKey:@"NSDrawsBackground"];
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];
     _textColor=[[keyed decodeObjectForKey:@"NSTextColor"] retain];
+    _bezelStyle=[keyed decodeIntegerForKey:@"NSTextBezelStyle"];
+    _placeholder=[[keyed decodeObjectForKey:@"NSPlaceholderString"] retain];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -46,10 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initTextCell:(NSString *)string {
   [super initTextCell:string];
-
-  _isEditable=YES;
-  _isSelectable=YES;
-  _isBezeled=YES;
+  _isBezeled=NO;
 
   return self;
 }
@@ -63,8 +62,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -copyWithZone:(NSZone *)zone {
     NSTextFieldCell *cell = [super copyWithZone:zone];
 
-    cell->_backgroundColor=[_backgroundColor retain];
-    cell->_textColor=[_textColor retain];
+    cell->_backgroundColor=[_backgroundColor copy];
+    cell->_textColor=[_textColor copy];
 
     return cell;
 }
@@ -85,6 +84,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _drawsBackground;
 }
 
+-(BOOL)isBezeled {
+   return _isBezeled;
+}
+
+-(NSTextFieldBezelStyle)bezelStyle {
+   return _bezelStyle;
+}
+
+-(NSString *)placeholderString {
+   if([_placeholder isKindOfClass:[NSString class]])
+    return _placeholder;
+    
+   return nil;
+}
+
+-(NSAttributedString *)placeholderAttributedString {
+   if([_placeholder isKindOfClass:[NSAttributedString class]])
+    return _placeholder;
+    
+   return nil;
+}
+
 -(void)setBackgroundColor:(NSColor *)color {
    color=[color retain];
    [_backgroundColor release];
@@ -101,9 +122,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _drawsBackground=flag;
 }
 
--(NSRect)titleRectForBounds:(NSRect)rect {
-   if([self isBezeled])
+-(void)setBezeled:(BOOL)value {
+   _isBezeled=value;
+}
+
+-(void)setBezelStyle:(NSTextFieldBezelStyle)value {
+   _bezelStyle=value;
+}
+
+-(void)setPlaceholderString:(NSString *)value {
+   value=[value copy];
+   [_placeholder release];
+   _placeholder=value;
+}
+
+-(void)setPlaceholderAttributedString:(NSAttributedString *)value {
+   value=[value copy];
+   [_placeholder release];
+   _placeholder=value;
+}
+
+// titleRectForBounds is not used for generating the value rect in a text field
+-(NSRect)_valueRectForBounds:(NSRect)rect {
+   if([self isBezeled]){
+   
+    switch([self bezelStyle]){
+     default:
+     case NSTextFieldSquareBezel:
     rect=NSInsetRect(rect,3,3);
+      break;
+
+     case NSTextFieldRoundedBezel:;
+      CGFloat radius=rect.size.height/2;
+      rect=NSInsetRect(rect,radius,3);
+      break;
+    }
+   }
    else if([self isBordered])
     rect=NSInsetRect(rect,2,2);
    else 
@@ -112,8 +166,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return rect;
 }
 
+-(NSRect)titleRectForBounds:(NSRect)rect {
+   return [self _valueRectForBounds:rect];
+}
+
 -(NSRect)drawingRectForBounds:(NSRect)rect {
-   return [self titleRectForBounds:rect];
+   return [self _valueRectForBounds:rect];
 }
 
 -(NSAttributedString *)attributedStringValue {
@@ -183,19 +241,76 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return size;
 }
 
+-(void)editWithFrame:(NSRect)frame inView:(NSView *)view editor:(NSText *)editor delegate:(id)delegate event:(NSEvent *)event {
+   frame=[self titleRectForBounds:frame];
+   [super editWithFrame:frame inView:view editor:editor delegate:delegate event:event];
+}
+
+-(void)selectWithFrame:(NSRect)frame inView:(NSView *)view editor:(NSText *)editor delegate:(id)delegate start:(int)location length:(int)length {
+   frame=[self titleRectForBounds:frame];
+   [super selectWithFrame:frame inView:view editor:editor delegate:delegate start:location length:length];
+}
+
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
-   [[self attributedStringValue] _clipAndDrawInRect:frame];
+   NSRect titleRect=[self titleRectForBounds:frame];
+
+   NSAttributedString *drawValue=[self attributedStringValue];
+   
+   if([drawValue length]==0 && [_placeholder length]>0){
+    if([_placeholder isKindOfClass:[NSAttributedString class]])
+      drawValue=_placeholder;
+    else if([_placeholder isKindOfClass:[NSString class]]){
+     NSMutableAttributedString *placeString=[[drawValue mutableCopy] autorelease];
+     [[placeString mutableString] setString:_placeholder];
+     [placeString addAttribute:NSForegroundColorAttributeName value:[NSColor disabledControlTextColor] range:NSMakeRange(0,[placeString length])];
+     drawValue=placeString;
+}
+   }
+
+   [drawValue _clipAndDrawInRect:titleRect];
+}
+
+static void drawRoundedBezel(CGContextRef context,CGRect frame){
+   CGFloat radius=frame.size.height/2;
+   
+   CGContextBeginPath(context);
+   CGContextAddArc(context,CGRectGetMaxX(frame)-radius,CGRectGetMinY(frame)+radius,radius,M_PI_2,M_PI_2*3,YES);
+   CGContextAddArc(context,CGRectGetMinX(frame)+radius,CGRectGetMinY(frame)+radius,radius,M_PI_2*3,M_PI_2,YES);
+   CGContextClosePath(context);
+   CGContextFillPath(context);
 }
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
-   NSRect titleRect=[self titleRectForBounds:frame];
-   NSRect backRect=titleRect;
+   NSRect backRect=[self drawingRectForBounds:frame];
 
    _controlView=control;
 
    if([self isBezeled]){
+    switch([self bezelStyle]){
+     default:
+     case NSTextFieldSquareBezel:
     [[control graphicsStyle] drawTextFieldBorderInRect:frame bezeledNotLine:YES];
     backRect=NSInsetRect(backRect,-1,-1);
+      break;
+
+     case NSTextFieldRoundedBezel:;
+      CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+      NSRect roundedFrame=frame;
+      
+      roundedFrame.size.height--;
+      [[NSColor darkGrayColor] setFill];
+      drawRoundedBezel(context,roundedFrame);
+      
+      roundedFrame.origin.y+=1;
+      [[NSColor lightGrayColor] setFill];
+      drawRoundedBezel(context,roundedFrame);
+
+      roundedFrame=NSInsetRect(roundedFrame,1,1);
+      [[NSColor whiteColor] setFill];
+      drawRoundedBezel(context,roundedFrame);
+      break;
+   }
+    
    }
    else {
     if([self isBordered]){
@@ -205,13 +320,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if([self drawsBackground]){
+    if(!([self isBezeled] && [self bezelStyle]==NSTextFieldRoundedBezel)){
     NSColor *color=(_backgroundColor==nil)?[NSColor controlColor]:_backgroundColor;
 
     [color setFill];
     NSRectFill(backRect);
    }
+   }
 
-   [self drawInteriorWithFrame:titleRect inView:control];
+   [self drawInteriorWithFrame:frame inView:control];
 }
 
 -(id)_replacementKeyPathForBinding:(id)binding {

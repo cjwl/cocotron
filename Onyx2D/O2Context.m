@@ -18,6 +18,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Exceptions.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSArray.h>
+#import "O2Encoding.h"
+#import "O2PDFCharWidths.h"
+
+void O2ContextDefaultShowText(O2ContextRef self,const char *text,unsigned length);
 
 @implementation O2Context
 
@@ -146,8 +150,12 @@ static NSMutableArray *possibleContextClasses=nil;
    _layerStack=[NSMutableArray new];
    _stateStack=[NSMutableArray new];
    [_stateStack addObject:state];
+   _currentState=state;
    _path=[[O2MutablePath alloc] init];
    _allowsAntialiasing=YES;
+   _textMatrix=O2AffineTransformIdentity;
+   _showTextFunction=O2ContextDefaultShowText;
+   _showGlyphsFunction=(O2ContextShowGlyphsFunction)[self methodForSelector:@selector(showGlyphs:advances:count:)];
    return self;
 }
 
@@ -160,10 +168,6 @@ static NSMutableArray *possibleContextClasses=nil;
    [_stateStack release];
    [_path release];
    [super dealloc];
-}
-
-static inline O2GState *currentState(O2Context *self){        
-   return [self->_stateStack lastObject];
 }
 
 -(O2Surface *)surface {
@@ -180,33 +184,33 @@ static inline O2GState *currentState(O2Context *self){
 -(void)endTransparencyLayer {
 }
 
--(O2ColorRef )strokeColor {
-   return O2GStateStrokeColor(currentState(self));
+O2ColorRef O2ContextStrokeColor(O2ContextRef self) {
+   return O2GStateStrokeColor(O2ContextCurrentGState(self));
 }
 
 O2ColorRef O2ContextFillColor(O2ContextRef self) {
-   return O2GStateFillColor(currentState(self));
+   return O2GStateFillColor(O2ContextCurrentGState(self));
 }
 
 -(void)setStrokeAlpha:(O2Float)alpha {
-   O2ColorRef color=O2ColorCreateCopyWithAlpha([self strokeColor],alpha);
+   O2ColorRef color=O2ColorCreateCopyWithAlpha(O2ContextStrokeColor(self),alpha);
    O2ContextSetStrokeColorWithColor(self,color);
    O2ColorRelease(color);
 }
 
 -(void)setGrayStrokeColor:(O2Float)gray {
-   O2Float alpha=O2ColorGetAlpha([self strokeColor]);
+   O2Float alpha=O2ColorGetAlpha(O2ContextStrokeColor(self));
    
    O2ContextSetGrayStrokeColor(self,gray,alpha);
 }
 
 -(void)setRGBStrokeColor:(O2Float)r:(O2Float)g:(O2Float)b {
-   O2Float alpha=O2ColorGetAlpha([self strokeColor]);
+   O2Float alpha=O2ColorGetAlpha(O2ContextStrokeColor(self));
    O2ContextSetRGBStrokeColor(self,r,g,b,alpha);
 }
 
 -(void)setCMYKStrokeColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k {
-   O2Float alpha=O2ColorGetAlpha([self strokeColor]);
+   O2Float alpha=O2ColorGetAlpha(O2ContextStrokeColor(self));
    O2ContextSetCMYKStrokeColor(self,c,m,y,k,alpha);
 }
 
@@ -234,21 +238,6 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 -(void)drawPath:(O2PathDrawingMode)pathMode {
    O2InvalidAbstractInvocation();
 // reset path in subclass
-}
-
--(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
-   O2InvalidAbstractInvocation();
-}
-
--(void)showText:(const char *)text length:(unsigned)length {
-   O2Glyph *encoding=[currentState(self) glyphTableForTextEncoding];
-   O2Glyph  glyphs[length];
-   int      i;
-   
-   for(i=0;i<length;i++)
-    glyphs[i]=encoding[(uint8_t)text[i]];
-    
-   [self showGlyphs:glyphs count:length];
 }
 
 -(void)drawShading:(O2Shading *)shading {
@@ -302,24 +291,11 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 // temporary
 
 -(void)setAntialiasingQuality:(int)value {
-   [currentState(self) setAntialiasingQuality:value];
-}
-
--(void)setWordSpacing:(O2Float)spacing {
-   [currentState(self) setWordSpacing:spacing];
-}
-
--(void)setTextLeading:(O2Float)leading {
-   [currentState(self) setTextLeading:leading];
+   [O2ContextCurrentGState(self) setAntialiasingQuality:value];
 }
 
 -(void)copyBitsInRect:(O2Rect)rect toPoint:(O2Point)point gState:(int)gState {
    O2InvalidAbstractInvocation();
-}
-
--(NSData *)captureBitmapInRect:(O2Rect)rect {
-   O2InvalidAbstractInvocation();
-   return nil;
 }
 
 /*
@@ -327,20 +303,8 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
     
  */
  
--(void)deviceClipReset {
-   // do nothing
-}
-
--(void)deviceClipToNonZeroPath:(O2Path *)path {
-   // do nothing
-}
-
--(void)deviceClipToEvenOddPath:(O2Path *)path {
-   // do nothing
-}
-
--(void)deviceClipToMask:(O2Image *)mask inRect:(O2Rect)rect {
-   // do nothing
+-(void)clipToState:(O2ClipState *)clipState {
+   O2InvalidAbstractInvocation();
 }
 
 O2ContextRef O2ContextRetain(O2ContextRef self) {
@@ -401,7 +365,7 @@ BOOL    O2ContextPathContainsPoint(O2ContextRef self,O2Point point,O2PathDrawing
    if(self==nil)
     return NO;
 
-   O2AffineTransform ctm=currentState(self)->_deviceSpaceTransform;
+   O2AffineTransform ctm=O2ContextCurrentGState(self)->_deviceSpaceTransform;
 
 // FIX  evenOdd
    return O2PathContainsPoint(self->_path,&ctm,point,NO);
@@ -430,7 +394,7 @@ void O2ContextMoveToPoint(O2ContextRef self,O2Float x,O2Float y) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathMoveToPoint(self->_path,&ctm,x,y);
 }
@@ -439,7 +403,7 @@ void O2ContextAddLineToPoint(O2ContextRef self,O2Float x,O2Float y) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddLineToPoint(self->_path,&ctm,x,y);
 }
@@ -448,7 +412,7 @@ void O2ContextAddCurveToPoint(O2ContextRef self,O2Float cx1,O2Float cy1,O2Float 
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddCurveToPoint(self->_path,&ctm,cx1,cy1,cx2,cy2,x,y);
 }
@@ -457,7 +421,7 @@ void O2ContextAddQuadCurveToPoint(O2ContextRef self,O2Float cx1,O2Float cy1,O2Fl
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddQuadCurveToPoint(self->_path,&ctm,cx1,cy1,x,y);
 }
@@ -466,7 +430,7 @@ void O2ContextAddLines(O2ContextRef self,const O2Point *points,unsigned count) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddLines(self->_path,&ctm,points,count);
 }
@@ -475,7 +439,7 @@ void O2ContextAddRect(O2ContextRef self,O2Rect rect) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddRect(self->_path,&ctm,rect);
 }
@@ -484,7 +448,7 @@ void O2ContextAddRects(O2ContextRef self,const O2Rect *rects,unsigned count) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddRects(self->_path,&ctm,rects,count);
 }
@@ -493,7 +457,7 @@ void O2ContextAddArc(O2ContextRef self,O2Float x,O2Float y,O2Float radius,O2Floa
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddArc(self->_path,&ctm,x,y,radius,startRadian,endRadian,clockwise);
 }
@@ -502,7 +466,7 @@ void O2ContextAddArcToPoint(O2ContextRef self,O2Float x1,O2Float y1,O2Float x2,O
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddArcToPoint(self->_path,&ctm,x1,y1,x2,y2,radius);
 }
@@ -511,7 +475,7 @@ void O2ContextAddEllipseInRect(O2ContextRef self,O2Rect rect) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddEllipseInRect(self->_path,&ctm,rect);
 }
@@ -520,7 +484,7 @@ void O2ContextAddPath(O2ContextRef self,O2PathRef path) {
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathAddPath(self->_path,&ctm,path);
 }
@@ -539,10 +503,11 @@ void O2ContextSaveGState(O2ContextRef self) {
     return;
    }
 
-   O2GState *current=currentState(self),*next;
+   O2GState *current=O2ContextCurrentGState(self),*next;
 
    next=O2GStateCopyWithZone(current,NULL);
    [self->_stateStack addObject:next];
+   self->_currentState=next;
    [next release];
 }
 
@@ -552,130 +517,107 @@ void O2ContextRestoreGState(O2ContextRef self) {
    }
     
    [self->_stateStack removeLastObject];
+   self->_currentState=[self->_stateStack lastObject];
 
-   O2GState *gState=currentState(self);
+   O2GState *gState=O2ContextCurrentGState(self);
 
 // FIXME, this could be conditional by comparing to previous font
    gState->_fontIsDirty=YES;
+   gState->_fillColorIsDirty=YES;
    
-   NSArray *phases=O2GStateClipPhases(gState);
-   int      i,count=[phases count];
-   
-   [self deviceClipReset];
-   
-   for(i=0;i<count;i++){
-    O2ClipPhase *phase=[phases objectAtIndex:i];
-    
-    switch(O2ClipPhasePhaseType(phase)){
-    
-     case O2ClipPhaseNonZeroPath:{
-       O2Path *path=O2ClipPhaseObject(phase);
-       [self deviceClipToNonZeroPath:path];
+   [self clipToState:O2GStateClipState(gState)];
       }
-      break;
       
-     case O2ClipPhaseEOPath:{
-       O2Path *path=O2ClipPhaseObject(phase);
-       [self deviceClipToEvenOddPath:path];
-      }
-      break;
-      
-     case O2ClipPhaseMask:
-      break;
-    }
-    
-   }
-}
-
 O2AffineTransform      O2ContextGetUserSpaceToDeviceSpaceTransform(O2ContextRef self) {
    if(self==nil)
     return O2AffineTransformIdentity;
 
-   return currentState(self)->_deviceSpaceTransform;
+   return O2ContextCurrentGState(self)->_deviceSpaceTransform;
 }
 
 O2AffineTransform      O2ContextGetCTM(O2ContextRef self){
    if(self==nil)
     return O2AffineTransformIdentity;
 
-   return O2GStateUserSpaceTransform(currentState(self));
+   return O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 }
 
 O2Rect                 O2ContextGetClipBoundingBox(O2ContextRef self) {
    if(self==nil)
     return O2RectZero;
 
-   return [currentState(self) clipBoundingBox];
+   return [O2ContextCurrentGState(self) clipBoundingBox];
 }
 
 O2AffineTransform      O2ContextGetTextMatrix(O2ContextRef self) {
    if(self==nil)
     return O2AffineTransformIdentity;
 
-   return [currentState(self) textMatrix];
+   return self->_textMatrix;
 }
 
 O2InterpolationQuality O2ContextGetInterpolationQuality(O2ContextRef self) {
    if(self==nil)
     return 0;
 
-   return [currentState(self) interpolationQuality];
+   return [O2ContextCurrentGState(self) interpolationQuality];
 }
 
 O2Point O2ContextGetTextPosition(O2ContextRef self){
    if(self==nil)
     return O2PointZero;
 
-   return [currentState(self) textPosition];
+   O2Point result={self->_textMatrix.tx,self->_textMatrix.ty};
+   return result;
 }
 
 O2Point O2ContextConvertPointToDeviceSpace(O2ContextRef self,O2Point point) {
    if(self==nil)
     return O2PointZero;
 
-   return [currentState(self) convertPointToDeviceSpace:point];
+   return [O2ContextCurrentGState(self) convertPointToDeviceSpace:point];
 }
 
 O2Point O2ContextConvertPointToUserSpace(O2ContextRef self,O2Point point) {
    if(self==nil)
     return O2PointZero;
 
-   return [currentState(self) convertPointToUserSpace:point];
+   return [O2ContextCurrentGState(self) convertPointToUserSpace:point];
 }
 
 O2Size  O2ContextConvertSizeToDeviceSpace(O2ContextRef self,O2Size size) {
    if(self==nil)
     return O2SizeZero;
 
-   return [currentState(self) convertSizeToDeviceSpace:size];
+   return [O2ContextCurrentGState(self) convertSizeToDeviceSpace:size];
 }
 
 O2Size  O2ContextConvertSizeToUserSpace(O2ContextRef self,O2Size size) {
    if(self==nil)
     return O2SizeZero;
 
-   return [currentState(self) convertSizeToUserSpace:size];
+   return [O2ContextCurrentGState(self) convertSizeToUserSpace:size];
 }
 
 O2Rect  O2ContextConvertRectToDeviceSpace(O2ContextRef self,O2Rect rect) {
    if(self==nil)
     return O2RectZero;
 
-   return [currentState(self) convertRectToDeviceSpace:rect];
+   return [O2ContextCurrentGState(self) convertRectToDeviceSpace:rect];
 }
 
 O2Rect  O2ContextConvertRectToUserSpace(O2ContextRef self,O2Rect rect) {
    if(self==nil)
     return O2RectZero;
 
-   return [currentState(self) convertRectToUserSpace:rect];
+   return [O2ContextCurrentGState(self) convertRectToUserSpace:rect];
 }
 
 void O2ContextConcatCTM(O2ContextRef self,O2AffineTransform matrix) {
    if(self==nil)
     return;
 
-   O2GStateConcatCTM(currentState(self),matrix);
+   O2GStateConcatCTM(O2ContextCurrentGState(self),matrix);
 }
 
 void O2ContextTranslateCTM(O2ContextRef self,O2Float translatex,O2Float translatey) {
@@ -706,9 +648,16 @@ void O2ContextClip(O2ContextRef self) {
    if(O2PathIsEmpty(self->_path))
     return;
    
-   O2GStateAddClipToPath(currentState(self),self->_path);
-   [self deviceClipToNonZeroPath:self->_path];
+   O2GState *gState=O2ContextCurrentGState(self);
+
+   O2PathApplyTransform(self->_path,O2AffineTransformInvert(gState->_userSpaceTransform));
+   O2PathApplyTransform(self->_path,gState->_deviceSpaceTransform);
+
+   O2GStateAddClipToPath(gState,self->_path);
+   
    O2PathReset(self->_path);
+   
+   [self clipToState:O2GStateClipState(gState)];
 }
 
 void O2ContextEOClip(O2ContextRef self) {
@@ -718,24 +667,34 @@ void O2ContextEOClip(O2ContextRef self) {
    if(O2PathIsEmpty(self->_path))
     return;
 
-   [currentState(self) addEvenOddClipToPath:self->_path];
-   [self deviceClipToEvenOddPath:self->_path];
+   O2GState *gState=O2ContextCurrentGState(self);
+
+   O2PathApplyTransform(self->_path,O2AffineTransformInvert(gState->_userSpaceTransform));
+   O2PathApplyTransform(self->_path,gState->_deviceSpaceTransform);
+
+   O2GStateAddEvenOddClipToPath(gState,self->_path);
+   
    O2PathReset(self->_path);
+   
+   [self clipToState:O2GStateClipState(gState)];
 }
 
 void O2ContextClipToMask(O2ContextRef self,O2Rect rect,O2ImageRef image) {
    if(self==nil)
     return;
 
-   [currentState(self) addClipToMask:image inRect:rect];
-   [self deviceClipToMask:image inRect:rect];
+   O2GState *gState=O2ContextCurrentGState(self);
+   
+   O2GStateAddClipToMask(gState,image,rect);
+   
+   [self clipToState:O2GStateClipState(gState)];
 }
 
 void O2ContextClipToRect(O2ContextRef self,O2Rect rect) {
    if(self==nil)
     return;
     
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathReset(self->_path);
    O2PathAddRect(self->_path,&ctm,rect);
@@ -746,7 +705,7 @@ void O2ContextClipToRects(O2ContextRef self,const O2Rect *rects,unsigned count) 
    if(self==nil)
     return;
 
-   O2AffineTransform ctm=O2GStateUserSpaceTransform(currentState(self));
+   O2AffineTransform ctm=O2GStateUserSpaceTransform(O2ContextCurrentGState(self));
 
    O2PathReset(self->_path);
    O2PathAddRects(self->_path,&ctm,rects,count);
@@ -793,7 +752,7 @@ void O2ContextSetStrokeColor(O2ContextRef self,const O2Float *components) {
    if(self==nil)
     return;
 
-   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace([self strokeColor]);
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(O2ContextStrokeColor(self));
    O2ColorRef color=O2ColorCreate(colorSpace,components);
    
    O2ContextSetStrokeColorWithColor(self,color);
@@ -805,7 +764,7 @@ void O2ContextSetStrokeColorWithColor(O2ContextRef self,O2ColorRef color) {
    if(self==nil)
     return;
 
-   O2GStateSetStrokeColor(currentState(self),color);
+   O2GStateSetStrokeColor(O2ContextCurrentGState(self),color);
 }
 
 void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha) {
@@ -866,7 +825,7 @@ void O2ContextSetFillColorWithColor(O2ContextRef self,O2ColorRef color) {
    if(self==nil)
     return;
 
-   O2GStateSetFillColor(currentState(self),color);
+   O2GStateSetFillColor(O2ContextCurrentGState(self),color);
 }
 
 void O2ContextSetGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha) {
@@ -923,161 +882,163 @@ void O2ContextSetPatternPhase(O2ContextRef self,O2Size phase) {
    if(self==nil)
     return;
 
-   [currentState(self) setPatternPhase:phase];
+   O2GStateSetPatternPhase(O2ContextCurrentGState(self),phase);
 }
 
 void O2ContextSetStrokePattern(O2ContextRef self,O2PatternRef pattern,const O2Float *components) {
    if(self==nil)
     return;
 
-   [currentState(self) setStrokePattern:pattern components:components];
+   [O2ContextCurrentGState(self) setStrokePattern:pattern components:components];
 }
 
 void O2ContextSetFillPattern(O2ContextRef self,O2PatternRef pattern,const O2Float *components) {
    if(self==nil)
     return;
 
-   [currentState(self) setFillPattern:pattern components:components];
+   [O2ContextCurrentGState(self) setFillPattern:pattern components:components];
 }
 
 void O2ContextSetTextMatrix(O2ContextRef self,O2AffineTransform matrix) {
    if(self==nil)
     return;
 
-   O2GStateSetTextMatrix(currentState(self),matrix);
+   self->_textMatrix=matrix;
+   O2ContextCurrentGState(self)->_fontIsDirty=YES;
 }
 
 void O2ContextSetTextPosition(O2ContextRef self,O2Float x,O2Float y) {
    if(self==nil)
     return;
 
-   O2GStateSetTextPosition(currentState(self),x,y);
+   self->_textMatrix.tx=x;
+   self->_textMatrix.ty=y;
 }
 
 void O2ContextSetCharacterSpacing(O2ContextRef self,O2Float spacing) {
    if(self==nil)
     return;
 
-   [currentState(self) setCharacterSpacing:spacing];
+   O2GStateSetCharacterSpacing(O2ContextCurrentGState(self),spacing);
 }
 
 void O2ContextSetTextDrawingMode(O2ContextRef self,O2TextDrawingMode textMode) {
    if(self==nil)
     return;
 
-   [currentState(self) setTextDrawingMode:textMode];
+   [O2ContextCurrentGState(self) setTextDrawingMode:textMode];
 }
 
 void O2ContextSetFont(O2ContextRef self,O2FontRef font) {
    if(self==nil)
     return;
 
-   O2GStateSetFont(currentState(self),font);
+   O2GStateSetFont(O2ContextCurrentGState(self),font);
 }
 
 void O2ContextSetFontSize(O2ContextRef self,O2Float size) {
    if(self==nil)
     return;
 
-   O2GStateSetFontSize(currentState(self),size);
+   O2GStateSetFontSize(O2ContextCurrentGState(self),size);
 }
 
 void O2ContextSelectFont(O2ContextRef self,const char *name,O2Float size,O2TextEncoding encoding) {
    if(self==nil)
     return;
 
-   [currentState(self) selectFontWithName:name size:size encoding:encoding];
+   [O2ContextCurrentGState(self) selectFontWithName:name size:size encoding:encoding];
 }
 
 void O2ContextSetShouldSmoothFonts(O2ContextRef self,BOOL yesOrNo) {
    if(self==nil)
     return;
 
-   [currentState(self) setShouldSmoothFonts:yesOrNo];
+   [O2ContextCurrentGState(self) setShouldSmoothFonts:yesOrNo];
 }
 
 void O2ContextSetLineWidth(O2ContextRef self,O2Float width) {
    if(self==nil)
     return;
 
-   O2GStateSetLineWidth(currentState(self),width);
+   O2GStateSetLineWidth(O2ContextCurrentGState(self),width);
 }
 
 void O2ContextSetLineCap(O2ContextRef self,O2LineCap lineCap) {
    if(self==nil)
     return;
 
-   O2GStateSetLineCap(currentState(self),lineCap);
+   O2GStateSetLineCap(O2ContextCurrentGState(self),lineCap);
 }
 
 void O2ContextSetLineJoin(O2ContextRef self,O2LineJoin lineJoin) {
     if(self==nil)
     return;
 
-   O2GStateSetLineJoin(currentState(self),lineJoin);
+   O2GStateSetLineJoin(O2ContextCurrentGState(self),lineJoin);
 }
 
 void O2ContextSetMiterLimit(O2ContextRef self,O2Float miterLimit) {
    if(self==nil)
     return;
 
-   O2GStateSetMiterLimit(currentState(self),miterLimit);
+   O2GStateSetMiterLimit(O2ContextCurrentGState(self),miterLimit);
 }
 
 void O2ContextSetLineDash(O2ContextRef self,O2Float phase,const O2Float *lengths,unsigned count) {
    if(self==nil)
     return;
 
-   O2GStateSetLineDash(currentState(self),phase,lengths,count);
+   O2GStateSetLineDash(O2ContextCurrentGState(self),phase,lengths,count);
 }
 
 void O2ContextSetRenderingIntent(O2ContextRef self,O2ColorRenderingIntent renderingIntent) {
    if(self==nil)
     return;
 
-   [currentState(self) setRenderingIntent:renderingIntent];
+   [O2ContextCurrentGState(self) setRenderingIntent:renderingIntent];
 }
 
 void O2ContextSetBlendMode(O2ContextRef self,O2BlendMode blendMode) {
    if(self==nil)
     return;
 
-   O2GStateSetBlendMode(currentState(self),blendMode);
+   O2GStateSetBlendMode(O2ContextCurrentGState(self),blendMode);
 }
 
 void O2ContextSetFlatness(O2ContextRef self,O2Float flatness) {
    if(self==nil)
     return;
 
-   [currentState(self) setFlatness:flatness];
+   [O2ContextCurrentGState(self) setFlatness:flatness];
 }
 
 void O2ContextSetInterpolationQuality(O2ContextRef self,O2InterpolationQuality quality) {
    if(self==nil)
     return;
 
-   [currentState(self) setInterpolationQuality:quality];
+   [O2ContextCurrentGState(self) setInterpolationQuality:quality];
 }
 
 void O2ContextSetShadowWithColor(O2ContextRef self,O2Size offset,O2Float blur,O2ColorRef color) {
    if(self==nil)
     return;
 
-   [currentState(self) setShadowOffset:offset blur:blur color:color];
+   [O2ContextCurrentGState(self) setShadowOffset:offset blur:blur color:color];
 }
 
 void O2ContextSetShadow(O2ContextRef self,O2Size offset,O2Float blur) {
    if(self==nil)
     return;
 
-   [currentState(self) setShadowOffset:offset blur:blur];
+   [O2ContextCurrentGState(self) setShadowOffset:offset blur:blur];
 }
 
 void O2ContextSetShouldAntialias(O2ContextRef self,BOOL yesOrNo) {
    if(self==nil)
     return;
 
-   [currentState(self) setShouldAntialias:yesOrNo];
+   [O2ContextCurrentGState(self) setShouldAntialias:yesOrNo];
 }
 
 // drawing
@@ -1194,22 +1155,19 @@ void O2ContextShowGlyphs(O2ContextRef self,const O2Glyph *glyphs,unsigned count)
    if(self==nil)
     return;
 
-   [self showGlyphs:glyphs count:count];
+   self->_showGlyphsFunction(self,NULL,glyphs,NULL,count);
 }
 
 void O2ContextShowGlyphsAtPoint(O2ContextRef self,O2Float x,O2Float y,const O2Glyph *glyphs,unsigned count) {
-   if(self==nil)
-    return;
-
    O2ContextSetTextPosition(self,x,y);
    O2ContextShowGlyphs(self,glyphs,count);
 }
 
-void O2ContextShowGlyphsWithAdvances(O2ContextRef self,const O2Glyph *glyphs,const O2Size *advances,unsigned count) {
-   if(self==nil)
-    return;
-
-   O2AffineTransform textMatrix=[currentState(self) textMatrix];
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
+#if 1
+   O2InvalidAbstractInvocation();
+#else
+   O2AffineTransform textMatrix=O2ContextGetTextMatrix(self);
    O2Float             x=textMatrix.tx;
    O2Float             y=textMatrix.ty;
    int i;
@@ -1217,17 +1175,54 @@ void O2ContextShowGlyphsWithAdvances(O2ContextRef self,const O2Glyph *glyphs,con
    for(i=0;i<count;i++){
     [self showGlyphs:glyphs+i count:1];
     
-    x+=advances[i].width;
-    y+=advances[i].height;
+    O2Size advance=O2SizeApplyAffineTransform(advances[i],textMatrix);
+    
+    x+=advance.width;
+    y+=advance.height;
     O2ContextSetTextPosition(self,x,y);
    }
+#endif
 }
 
-void O2ContextShowText(O2ContextRef self,const char *text,unsigned count) {
+void O2ContextShowGlyphsWithAdvances(O2ContextRef self,const O2Glyph *glyphs,const O2Size *advances,unsigned count) {
    if(self==nil)
     return;
 
-   [self showText:text length:count];
+   self->_showGlyphsFunction(self,NULL,glyphs,advances,count);
+}
+
+void O2ContextDefaultShowText(O2ContextRef self,const char *text,unsigned length) {
+   O2GState        *gState=O2ContextCurrentGState(self);
+   O2Encoding      *encoding=O2GStateEncoding(gState);
+   O2PDFCharWidths *widths=O2GStateCharWidths(gState);
+   O2Glyph          glyphs[length];
+   
+   O2EncodingGetGlyphsForBytes(encoding,glyphs,text,length);
+   if(widths==nil && gState->_characterSpacing==0)
+    self->_showGlyphsFunction(self,NULL,glyphs,NULL,length);
+   else {
+    O2Size advances[length];
+    int    i;
+    
+    if(widths!=nil)
+     O2PDFCharWidthsGetAdvances(widths,advances,text,length);
+    else
+     O2ContextGetDefaultAdvances(self,glyphs,advances,length);
+    
+    for(i=0;i<length;i++){
+     advances[i].width+=gState->_characterSpacing;
+    }
+    
+    self->_showGlyphsFunction(self,NULL,glyphs,advances,length);
+   }
+}
+
+
+void O2ContextShowText(O2ContextRef self,const char *text,unsigned length) {
+   if(self==nil)
+    return;
+
+   self->_showTextFunction(self,text,length);
 }
 
 void O2ContextShowTextAtPoint(O2ContextRef self,O2Float x,O2Float y,const char *text,unsigned count) {
@@ -1273,7 +1268,19 @@ void O2ContextDrawPDFPage(O2ContextRef self,O2PDFPageRef page) {
    if(self==nil)
     return;
 
+// Per doc.s, these are initialized at the beginning of each page only
+
+   O2ContextSetCharacterSpacing(self,0);
+   O2ContextSetWordSpacing(self,0);
+   O2ContextSetTextHorizontalScaling(self,100);
+   O2ContextSetTextLeading(self,0);
+   O2ContextSetTextDrawingMode(self,0);
+   O2ContextSetTextRise(self,0);
+
    [page drawInContext:self];
+   
+   O2ContextSetTextLineMatrix(self,O2AffineTransformIdentity);
+   O2ContextSetTextMatrix(self,O2AffineTransformIdentity);
 }
 
 void O2ContextFlush(O2ContextRef self) {
@@ -1308,6 +1315,42 @@ void O2ContextEndPage(O2ContextRef self) {
 
 // **PRIVATE** These are private in Apple's implementation as well as ours.
 
+void O2ContextSetTextLineMatrix(O2ContextRef self,O2AffineTransform matrix) {
+   self->_textLineMatrix=matrix;
+}
+
+O2AffineTransform O2ContextGetTextLineMatrix(O2ContextRef self) {
+   return self->_textLineMatrix;
+}
+
+O2Float O2ContextGetTextLeading(O2ContextRef self) {
+   return O2GStateTextLeading(O2ContextCurrentGState(self));
+}
+
+void O2ContextSetTextLeading(O2ContextRef self,O2Float value) {
+   O2GStateSetTextLeading(O2ContextCurrentGState(self),value);
+}
+
+void O2ContextSetWordSpacing(O2ContextRef self,O2Float value) {
+   O2GStateSetWordSpacing(O2ContextCurrentGState(self),value);
+}
+
+void O2ContextSetTextRise(O2ContextRef self,O2Float value) {
+   O2GStateSetTextRise(O2ContextCurrentGState(self),value);
+}
+
+void O2ContextSetTextHorizontalScaling(O2ContextRef self,O2Float value) {
+   O2GStateSetTextHorizontalScaling(O2ContextCurrentGState(self),value);
+}
+
+void O2ContextSetEncoding(O2ContextRef self,O2Encoding *value) {
+   O2GStateSetFontEncoding(O2ContextCurrentGState(self),value);
+}
+
+void O2ContextSetPDFCharWidths(O2ContextRef self,O2PDFCharWidths *value) {
+   [O2ContextCurrentGState(self) setPDFCharWidths:value];
+}
+
 void O2ContextSetCTM(O2ContextRef self,O2AffineTransform matrix) {
    if(self==nil)
     return;
@@ -1316,27 +1359,70 @@ void O2ContextSetCTM(O2ContextRef self,O2AffineTransform matrix) {
    
    deviceTransform=O2AffineTransformConcat(matrix,deviceTransform);
    
-   O2GStateSetDeviceSpaceCTM(currentState(self),deviceTransform);
+   O2GStateSetDeviceSpaceCTM(O2ContextCurrentGState(self),deviceTransform);
 
-   O2GStateSetUserSpaceCTM(currentState(self),matrix);
+   O2GStateSetUserSpaceCTM(O2ContextCurrentGState(self),matrix);
 }
 
 void O2ContextResetClip(O2ContextRef self) {
    if(self==nil)
     return;
     
-   [currentState(self) removeAllClipPhases];
-   [self deviceClipReset];
+   O2GState *gState=O2ContextCurrentGState(self);
+   
+   O2GStateResetClip(gState);
+   
+   [self clipToState:O2GStateClipState(gState)];
+}
+
+O2AffineTransform O2ContextGetTextRenderingMatrix(O2ContextRef self) {
+   O2GState *gState=O2ContextCurrentGState(self);
+
+   O2AffineTransform transformToDevice=gState->_deviceSpaceTransform;
+   O2AffineTransform Tm=self->_textMatrix;
+
+   return O2AffineTransformConcat(Tm,transformToDevice);
+}
+
+void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size *advances,size_t count) {
+   O2GState         *gState=O2ContextCurrentGState(self);
+   O2Font           *font=O2GStateFont(gState);
+   int               intAdvances[count];
+   O2Float           unitsPerEm=O2FontGetUnitsPerEm(font);
+   O2Float           pointSize=O2GStatePointSize(gState);
+   size_t            i;
+   
+   O2FontGetGlyphAdvances(font,glyphs,count,intAdvances);
+    
+   for(i=0;i<count;i++){
+    advances[i].width=intAdvances[i];
+    advances[i].height=0;
+    
+    advances[i].width=(advances[i].width/unitsPerEm)/pointSize;
+   }
+}
+
+void O2ContextConcatAdvancesToTextMatrix(O2ContextRef self,const O2Size *advances,size_t count){
+   O2AffineTransform Tm=self->_textMatrix;
+   O2Size            totalAdvance=O2SizeMake(0,0);
+   size_t            i;
+   
+   for(i=0;i<count;i++){
+    O2Size advance=O2SizeApplyAffineTransform(advances[i],Tm);
+    
+    totalAdvance.width+=advance.width;
+    totalAdvance.height+=advance.height;
+   }
+      
+   self->_textMatrix.tx+=totalAdvance.width;
+   self->_textMatrix.ty+=totalAdvance.height;
+}
+
+O2GState *O2ContextCurrentGState(O2ContextRef self) {
+   return self->_currentState;
 }
 
 // Temporary hacks
-
-NSData *O2ContextCaptureBitmap(O2ContextRef self,O2Rect rect) {
-   if(self==nil)
-    return nil;
-
-   return [self captureBitmapInRect:rect];
-}
 
 void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
    if(self==nil)

@@ -19,6 +19,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define RIGHT_ARROW_LEFT_MARGIN 0
 #define RIGHT_ARROW_RIGHT_MARGIN 2
 #define WINDOW_BORDER_THICKNESS 3
+#define IMAGE_TITLE_GAP 8
+
+-(NSSize)sizeForMenuItemImage:(NSMenuItem *)item {
+   NSSize result=NSZeroSize;
+   
+   if([item image]!=nil)
+    result=[[item image] size];
+   
+   return result;
+}
 
 -(NSSize)sizeForMenuItemTitle:(NSMenuItem *)item {
    NSString     *title=[item title];
@@ -67,16 +77,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else {
     NSSize checkMarkSize=[self checkMarkSize];
     NSSize rightArrowSize=[self rightArrowSize];
+    NSSize imageSize=[self sizeForMenuItemImage:item];
     NSSize titleSize=[self sizeForMenuItemTitle:item];
     NSSize keySize=[self sizeForMenuItemKeyEquivalent:item];
-    float  height=MAX(titleSize.height,keySize.height);
-
+    float  height=MAX(imageSize.height,titleSize.height);
+    
+    height=MAX(height,keySize.height);
     height=MAX(height,checkMarkSize.height);
 
     if([item hasSubmenu])
      height=MAX(height,rightArrowSize.height);
 
-    return NSMakeSize(titleSize.width,height);
+    NSSize result=NSMakeSize(titleSize.width,height);
+    
+    if(imageSize.width>0)
+     result.width+=imageSize.width+IMAGE_TITLE_GAP;
+     
+    return result;
    }
 }
 
@@ -204,10 +221,13 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
      BOOL          selected=(i==_selectedItemIndex)?YES:NO;
      NSPoint       point=origin;
      NSDictionary *attributes=selected?_itemWhiteAttributes:_itemBlackAttributes;
+     NSImage      *image=[item image];
      NSString     *title=[item title];
      NSString     *keyString=[item _keyEquivalentDescription];
-     float         itemHeight=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
-
+     CGFloat       titleHeight=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
+     CGFloat       imageHeight=(image==nil)?0:[image size].height;
+     float         itemHeight=MAX(titleHeight,imageHeight);
+     
      if(selected){
       NSRect fill=NSMakeRect(origin.x,origin.y,itemArea.size.width,itemHeight);
       [[NSColor selectedMenuItemColor] setFill];
@@ -215,6 +235,17 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
      }
 
      point.x+=[self checkMarkSize].width;
+     
+     if(image!=nil){
+      NSRect imageRect;
+      
+      imageRect.origin=point;
+      imageRect.size=[image size];
+            
+      [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+      point.x+=imageRect.size.width;
+      point.x+=IMAGE_TITLE_GAP;
+     }
      point.y+=TITLE_TOP_MARGIN;
 
      if([item isEnabled] || [item hasSubmenu])
@@ -239,10 +270,16 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
      }
 
      if([item hasSubmenu]){
-      NSSize size=[[self graphicsStyle] sizeOfMenuBranchArrow];
-
-      point.x=NSMaxX(itemArea)-RIGHT_ARROW_RIGHT_MARGIN-size.width;
-      [[self graphicsStyle] drawMenuBranchArrowAtPoint:point selected:selected];
+      NSSize arrowSize=[[self graphicsStyle] sizeOfMenuBranchArrow];
+      NSRect arrowRect;
+      
+      arrowRect.origin=point;
+      arrowRect.size=arrowSize;
+      
+      arrowRect.origin.x=NSMaxX(itemArea)-RIGHT_ARROW_RIGHT_MARGIN-arrowRect.size.width;
+      arrowRect.origin.y=origin.y+(itemHeight-arrowSize.height)/2;
+      
+      [[self graphicsStyle] drawMenuBranchArrowInRect:arrowRect selected:selected];
      }
 
 	if([item state]){		
@@ -251,7 +288,8 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 		[[self graphicsStyle] drawMenuCheckmarkAtPoint:point selected:selected];
 	}
 
-     origin.y+=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
+     
+     origin.y+=itemHeight;
     }
    }
 }

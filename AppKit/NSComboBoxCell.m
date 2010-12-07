@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
-    _dataSource=[[keyed decodeObjectForKey:@"NSDataSource"] retain];
+    _dataSource=[keyed decodeObjectForKey:@"NSDataSource"];
     _objectValues=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSPopUpListData"]];
     _numberOfVisibleItems=[keyed decodeIntForKey:@"NSVisibleItemCount"];
     _usesDataSource=[keyed decodeBoolForKey:@"NSUsesDataSource"];

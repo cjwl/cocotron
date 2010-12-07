@@ -7,153 +7,134 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		FE051C6D1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE051C6E1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE051C6F1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE051C701221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE06A0131245A9270040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE06A0D41245A9270040F165 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE069F4D1245A9260040F165 /* InfoPlist.strings */; };
+		FE06A0D51245A9270040F165 /* O2Font_freetype.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069F4F1245A9260040F165 /* O2Font_freetype.m */; };
+		FE06A0D61245A9270040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE06A0D71245A9270040F165 /* O2GlyphStencil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069F511245A9260040F165 /* O2GlyphStencil.m */; };
+		FE06A1971245A9270040F165 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE069F4D1245A9260040F165 /* InfoPlist.strings */; };
+		FE06A1981245A9270040F165 /* O2Font_freetype.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069F4F1245A9260040F165 /* O2Font_freetype.m */; };
+		FE06A1991245A9270040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE06A19A1245A9270040F165 /* O2GlyphStencil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069F511245A9260040F165 /* O2GlyphStencil.m */; };
+		FE06A25A1245A9280040F165 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE069F4D1245A9260040F165 /* InfoPlist.strings */; };
+		FE06A25B1245A9280040F165 /* O2Font_freetype.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069F4F1245A9260040F165 /* O2Font_freetype.m */; };
+		FE06A25C1245A9280040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE06A25D1245A9280040F165 /* O2GlyphStencil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069F511245A9260040F165 /* O2GlyphStencil.m */; };
+		FE2759401234039700BD6643 /* O2Context_distill.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27593E1234039700BD6643 /* O2Context_distill.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE2759421234039700BD6643 /* O2Context_distill.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27593E1234039700BD6643 /* O2Context_distill.h */; };
+		FE2759431234039700BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE27593F1234039700BD6643 /* O2Context_distill.m */; };
+		FE2759441234039700BD6643 /* O2Context_distill.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27593E1234039700BD6643 /* O2Context_distill.h */; };
+		FE2759451234039700BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE27593F1234039700BD6643 /* O2Context_distill.m */; };
+		FE2759461234039700BD6643 /* O2Context_distill.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27593E1234039700BD6643 /* O2Context_distill.h */; };
+		FE2759471234039700BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE27593F1234039700BD6643 /* O2Context_distill.m */; };
+		FE39C1EF1202829900A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C1ED1202829900A80A71 /* O2ClipState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE39C1F11202829900A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C1ED1202829900A80A71 /* O2ClipState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE39C1F21202829900A80A71 /* O2ClipState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C1EE1202829900A80A71 /* O2ClipState.m */; };
+		FE39C1F31202829900A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C1ED1202829900A80A71 /* O2ClipState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE39C1F41202829900A80A71 /* O2ClipState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C1EE1202829900A80A71 /* O2ClipState.m */; };
+		FE39C1F51202829900A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C1ED1202829900A80A71 /* O2ClipState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE39C1F61202829900A80A71 /* O2ClipState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C1EE1202829900A80A71 /* O2ClipState.m */; };
+		FE43BE7411FFBAD200119833 /* O2PDFBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43BE7211FFBAD200119833 /* O2PDFBlock.h */; };
+		FE43BE7611FFBAD200119833 /* O2PDFBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43BE7211FFBAD200119833 /* O2PDFBlock.h */; };
+		FE43BE7711FFBAD200119833 /* O2PDFBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FE43BE7311FFBAD200119833 /* O2PDFBlock.m */; };
+		FE43BE7811FFBAD200119833 /* O2PDFBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43BE7211FFBAD200119833 /* O2PDFBlock.h */; };
+		FE43BE7911FFBAD200119833 /* O2PDFBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FE43BE7311FFBAD200119833 /* O2PDFBlock.m */; };
+		FE43BE7A11FFBAD200119833 /* O2PDFBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43BE7211FFBAD200119833 /* O2PDFBlock.h */; };
+		FE43BE7B11FFBAD200119833 /* O2PDFBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FE43BE7311FFBAD200119833 /* O2PDFBlock.m */; };
+		FE44BDB311EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */ = {isa = PBXBuildFile; fileRef = FE44BDB111EBA03700762BF1 /* O2ImageSource_ICNS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE44BDB511EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */ = {isa = PBXBuildFile; fileRef = FE44BDB111EBA03700762BF1 /* O2ImageSource_ICNS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE44BDB611EBA03700762BF1 /* O2ImageSource_ICNS.m in Sources */ = {isa = PBXBuildFile; fileRef = FE44BDB211EBA03700762BF1 /* O2ImageSource_ICNS.m */; };
+		FE44BDB711EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */ = {isa = PBXBuildFile; fileRef = FE44BDB111EBA03700762BF1 /* O2ImageSource_ICNS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE44BDB811EBA03700762BF1 /* O2ImageSource_ICNS.m in Sources */ = {isa = PBXBuildFile; fileRef = FE44BDB211EBA03700762BF1 /* O2ImageSource_ICNS.m */; };
+		FE44BDB911EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */ = {isa = PBXBuildFile; fileRef = FE44BDB111EBA03700762BF1 /* O2ImageSource_ICNS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE44BDBA11EBA03700762BF1 /* O2ImageSource_ICNS.m in Sources */ = {isa = PBXBuildFile; fileRef = FE44BDB211EBA03700762BF1 /* O2ImageSource_ICNS.m */; };
+		FE587852126949AA009B9EDF /* O2argb8u.h in Headers */ = {isa = PBXBuildFile; fileRef = FE587851126949AA009B9EDF /* O2argb8u.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE587853126949AA009B9EDF /* O2argb8u.h in Headers */ = {isa = PBXBuildFile; fileRef = FE587851126949AA009B9EDF /* O2argb8u.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE587854126949AA009B9EDF /* O2argb8u.h in Headers */ = {isa = PBXBuildFile; fileRef = FE587851126949AA009B9EDF /* O2argb8u.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE587855126949AA009B9EDF /* O2argb8u.h in Headers */ = {isa = PBXBuildFile; fileRef = FE587851126949AA009B9EDF /* O2argb8u.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE58789412694AE4009B9EDF /* O2argb32f.h in Headers */ = {isa = PBXBuildFile; fileRef = FE58789312694AE4009B9EDF /* O2argb32f.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE58789512694AE4009B9EDF /* O2argb32f.h in Headers */ = {isa = PBXBuildFile; fileRef = FE58789312694AE4009B9EDF /* O2argb32f.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE58789612694AE4009B9EDF /* O2argb32f.h in Headers */ = {isa = PBXBuildFile; fileRef = FE58789312694AE4009B9EDF /* O2argb32f.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE58789712694AE4009B9EDF /* O2argb32f.h in Headers */ = {isa = PBXBuildFile; fileRef = FE58789312694AE4009B9EDF /* O2argb32f.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0A4A116297FA00065D1C /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A47116297FA00065D1C /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0A4B116297FA00065D1C /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A48116297FA00065D1C /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0A4C116297FA00065D1C /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A49116297FA00065D1C /* VGPath.m */; };
 		FE5C0ADD1162981200065D1C /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4D1162981100065D1C /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0ADE1162981200065D1C /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A4E1162981100065D1C /* gif_lib.m */; };
 		FE5C0ADF1162981200065D1C /* O2TIFFImageDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AE01162981200065D1C /* O2TIFFImageDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */; };
 		FE5C0AE11162981200065D1C /* O2AffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A511162981100065D1C /* O2AffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AE21162981200065D1C /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A521162981100065D1C /* O2AffineTransform.m */; };
 		FE5C0AE31162981200065D1C /* O2BitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A531162981100065D1C /* O2BitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AE41162981200065D1C /* O2BitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A541162981100065D1C /* O2BitmapContext.m */; };
 		FE5C0AE51162981200065D1C /* O2Blending.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A551162981100065D1C /* O2Blending.h */; };
 		FE5C0AE61162981200065D1C /* O2ClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A561162981100065D1C /* O2ClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AE71162981200065D1C /* O2ClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A571162981100065D1C /* O2ClipPhase.m */; };
 		FE5C0AE81162981200065D1C /* O2Color.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A581162981100065D1C /* O2Color.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AE91162981200065D1C /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A591162981100065D1C /* O2Color.m */; };
 		FE5C0AEA1162981200065D1C /* O2ColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A5A1162981100065D1C /* O2ColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AEB1162981200065D1C /* O2ColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A5B1162981100065D1C /* O2ColorSpace.m */; };
 		FE5C0AEC1162981200065D1C /* O2ColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A5C1162981100065D1C /* O2ColorSpace+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AED1162981200065D1C /* O2ColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A5D1162981100065D1C /* O2ColorSpace+PDF.m */; };
 		FE5C0AEE1162981200065D1C /* O2Context_builtin.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A5E1162981100065D1C /* O2Context_builtin.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AEF1162981200065D1C /* O2Context_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A5F1162981100065D1C /* O2Context_builtin.m */; };
 		FE5C0AF01162981200065D1C /* O2Context.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A601162981100065D1C /* O2Context.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AF11162981200065D1C /* O2Context.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A611162981100065D1C /* O2Context.m */; };
 		FE5C0AF21162981200065D1C /* O2DataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A621162981100065D1C /* O2DataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AF31162981200065D1C /* O2DataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A631162981100065D1C /* O2DataConsumer.m */; };
 		FE5C0AF41162981200065D1C /* O2DataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A641162981100065D1C /* O2DataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AF51162981200065D1C /* O2DataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A651162981100065D1C /* O2DataProvider.m */; };
 		FE5C0AF61162981200065D1C /* O2Decoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A661162981100065D1C /* O2Decoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AF71162981200065D1C /* O2Decoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A671162981100065D1C /* O2Decoder_TIFF.m */; };
 		FE5C0AF81162981200065D1C /* O2Encoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A681162981100065D1C /* O2Encoder_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0AF91162981200065D1C /* O2Encoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A691162981100065D1C /* O2Encoder_TIFF.m */; };
 		FE5C0AFA1162981200065D1C /* O2Exceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A6A1162981100065D1C /* O2Exceptions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0AFB1162981200065D1C /* O2Font_ttf.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A6B1162981100065D1C /* O2Font_ttf.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0AFD1162981200065D1C /* O2Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A6D1162981100065D1C /* O2Font.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0AFE1162981200065D1C /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A6E1162981200065D1C /* O2Font.m */; };
 		FE5C0AFF1162981200065D1C /* O2Font+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A6F1162981200065D1C /* O2Font+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B001162981200065D1C /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A701162981200065D1C /* O2Font+PDF.m */; };
 		FE5C0B011162981200065D1C /* O2Function.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A711162981200065D1C /* O2Function.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B021162981200065D1C /* O2Function.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A721162981200065D1C /* O2Function.m */; };
 		FE5C0B031162981200065D1C /* O2Function+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A731162981200065D1C /* O2Function+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B041162981200065D1C /* O2Function+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A741162981200065D1C /* O2Function+PDF.m */; };
 		FE5C0B051162981200065D1C /* O2Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A751162981200065D1C /* O2Geometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B061162981200065D1C /* O2Geometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A761162981200065D1C /* O2Geometry.m */; };
 		FE5C0B071162981200065D1C /* O2GraphicsState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A771162981200065D1C /* O2GraphicsState.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B081162981200065D1C /* O2GraphicsState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A781162981200065D1C /* O2GraphicsState.m */; };
 		FE5C0B091162981200065D1C /* O2Image.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A791162981200065D1C /* O2Image.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B0A1162981200065D1C /* O2Image.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A7A1162981200065D1C /* O2Image.m */; };
 		FE5C0B0B1162981200065D1C /* O2Image+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A7B1162981200065D1C /* O2Image+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B0C1162981200065D1C /* O2Image+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A7C1162981200065D1C /* O2Image+PDF.m */; };
 		FE5C0B0D1162981200065D1C /* O2ImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A7D1162981200065D1C /* O2ImageDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B0E1162981200065D1C /* O2ImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A7E1162981200065D1C /* O2ImageDestination.m */; };
 		FE5C0B0F1162981200065D1C /* O2ImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A7F1162981200065D1C /* O2ImageSource_BMP.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B101162981200065D1C /* O2ImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A801162981200065D1C /* O2ImageSource_BMP.m */; };
 		FE5C0B111162981200065D1C /* O2ImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A811162981200065D1C /* O2ImageSource_GIF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B121162981200065D1C /* O2ImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A821162981200065D1C /* O2ImageSource_GIF.m */; };
 		FE5C0B131162981200065D1C /* O2ImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A831162981200065D1C /* O2ImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B141162981200065D1C /* O2ImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A841162981200065D1C /* O2ImageSource_JPEG.m */; };
 		FE5C0B151162981200065D1C /* O2ImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A851162981200065D1C /* O2ImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B161162981200065D1C /* O2ImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A861162981200065D1C /* O2ImageSource_PNG.m */; };
 		FE5C0B171162981200065D1C /* O2ImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A871162981200065D1C /* O2ImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B181162981200065D1C /* O2ImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A881162981200065D1C /* O2ImageSource_TIFF.m */; };
 		FE5C0B191162981200065D1C /* O2ImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A891162981200065D1C /* O2ImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B1A1162981200065D1C /* O2ImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A8A1162981200065D1C /* O2ImageSource.m */; };
 		FE5C0B1B1162981200065D1C /* O2Layer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A8B1162981200065D1C /* O2Layer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B1C1162981200065D1C /* O2Layer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A8C1162981200065D1C /* O2Layer.m */; };
 		FE5C0B1D1162981200065D1C /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A8D1162981200065D1C /* O2LZW.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B1E1162981200065D1C /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A8E1162981200065D1C /* O2LZW.m */; };
 		FE5C0B1F1162981200065D1C /* O2MutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A8F1162981200065D1C /* O2MutablePath.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B201162981200065D1C /* O2MutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A901162981200065D1C /* O2MutablePath.m */; };
 		FE5C0B211162981200065D1C /* O2Paint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A911162981200065D1C /* O2Paint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B221162981200065D1C /* O2Paint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A921162981200065D1C /* O2Paint_axialGradient.m */; };
 		FE5C0B231162981200065D1C /* O2Paint_color.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A931162981200065D1C /* O2Paint_color.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B241162981200065D1C /* O2Paint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A941162981200065D1C /* O2Paint_color.m */; };
 		FE5C0B251162981200065D1C /* O2Paint_image.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A951162981200065D1C /* O2Paint_image.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B261162981200065D1C /* O2Paint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A961162981200065D1C /* O2Paint_image.m */; };
 		FE5C0B271162981200065D1C /* O2Paint_pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A971162981200065D1C /* O2Paint_pattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B281162981200065D1C /* O2Paint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A981162981200065D1C /* O2Paint_pattern.m */; };
 		FE5C0B291162981200065D1C /* O2Paint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A991162981200065D1C /* O2Paint_radialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B2A1162981200065D1C /* O2Paint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A9A1162981200065D1C /* O2Paint_radialGradient.m */; };
 		FE5C0B2B1162981200065D1C /* O2Paint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A9B1162981200065D1C /* O2Paint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B2C1162981200065D1C /* O2Paint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A9C1162981200065D1C /* O2Paint_ramp.m */; };
 		FE5C0B2D1162981200065D1C /* O2Paint.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A9D1162981200065D1C /* O2Paint.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B2E1162981200065D1C /* O2Paint.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A9E1162981200065D1C /* O2Paint.m */; };
 		FE5C0B2F1162981200065D1C /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A9F1162981200065D1C /* O2Path.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B301162981200065D1C /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AA01162981200065D1C /* O2Path.m */; };
 		FE5C0B311162981200065D1C /* O2Pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AA11162981200065D1C /* O2Pattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B321162981200065D1C /* O2Pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AA21162981200065D1C /* O2Pattern.m */; };
 		FE5C0B331162981200065D1C /* O2PDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AA31162981200065D1C /* O2PDFArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B341162981200065D1C /* O2PDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AA41162981200065D1C /* O2PDFArray.m */; };
 		FE5C0B351162981200065D1C /* O2PDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AA51162981200065D1C /* O2PDFContentStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B361162981200065D1C /* O2PDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AA61162981200065D1C /* O2PDFContentStream.m */; };
 		FE5C0B371162981200065D1C /* O2PDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AA71162981200065D1C /* O2PDFContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B381162981200065D1C /* O2PDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AA81162981200065D1C /* O2PDFContext.m */; };
 		FE5C0B391162981200065D1C /* O2PDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AA91162981200065D1C /* O2PDFDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B3A1162981200065D1C /* O2PDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AAA1162981200065D1C /* O2PDFDictionary.m */; };
 		FE5C0B3B1162981200065D1C /* O2PDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AAB1162981200065D1C /* O2PDFDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B3C1162981200065D1C /* O2PDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AAC1162981200065D1C /* O2PDFDocument.m */; };
 		FE5C0B3D1162981200065D1C /* O2PDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AAD1162981200065D1C /* O2PDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B3E1162981200065D1C /* O2PDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AAE1162981200065D1C /* O2PDFFilter.m */; };
 		FE5C0B3F1162981200065D1C /* O2PDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AAF1162981200065D1C /* O2PDFFunction_Type2.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B401162981200065D1C /* O2PDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AB01162981200065D1C /* O2PDFFunction_Type2.m */; };
 		FE5C0B411162981200065D1C /* O2PDFFunction_Type3.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AB11162981200065D1C /* O2PDFFunction_Type3.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B421162981200065D1C /* O2PDFFunction_Type3.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AB21162981200065D1C /* O2PDFFunction_Type3.m */; };
 		FE5C0B431162981200065D1C /* O2PDFObject_Boolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AB31162981200065D1C /* O2PDFObject_Boolean.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B441162981200065D1C /* O2PDFObject_Boolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AB41162981200065D1C /* O2PDFObject_Boolean.m */; };
 		FE5C0B451162981200065D1C /* O2PDFObject_const.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AB51162981200065D1C /* O2PDFObject_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B461162981200065D1C /* O2PDFObject_const.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AB61162981200065D1C /* O2PDFObject_const.m */; };
 		FE5C0B471162981200065D1C /* O2PDFObject_identifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AB71162981200065D1C /* O2PDFObject_identifier.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B481162981200065D1C /* O2PDFObject_identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AB81162981200065D1C /* O2PDFObject_identifier.m */; };
 		FE5C0B491162981200065D1C /* O2PDFObject_Integer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AB91162981200065D1C /* O2PDFObject_Integer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B4A1162981200065D1C /* O2PDFObject_Integer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ABA1162981200065D1C /* O2PDFObject_Integer.m */; };
 		FE5C0B4B1162981200065D1C /* O2PDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ABB1162981200065D1C /* O2PDFObject_Name.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B4C1162981200065D1C /* O2PDFObject_Name.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ABC1162981200065D1C /* O2PDFObject_Name.m */; };
 		FE5C0B4D1162981200065D1C /* O2PDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ABD1162981200065D1C /* O2PDFObject_R.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B4E1162981200065D1C /* O2PDFObject_R.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ABE1162981200065D1C /* O2PDFObject_R.m */; };
 		FE5C0B4F1162981200065D1C /* O2PDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ABF1162981200065D1C /* O2PDFObject_Real.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B501162981200065D1C /* O2PDFObject_Real.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AC01162981200065D1C /* O2PDFObject_Real.m */; };
 		FE5C0B511162981200065D1C /* O2PDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AC11162981200065D1C /* O2PDFObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B521162981200065D1C /* O2PDFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AC21162981200065D1C /* O2PDFObject.m */; };
 		FE5C0B531162981200065D1C /* O2PDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AC31162981200065D1C /* O2PDFOperators.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B541162981200065D1C /* O2PDFOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AC41162981200065D1C /* O2PDFOperators.m */; };
 		FE5C0B551162981200065D1C /* O2PDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AC51162981200065D1C /* O2PDFOperatorTable.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B561162981200065D1C /* O2PDFOperatorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AC61162981200065D1C /* O2PDFOperatorTable.m */; };
 		FE5C0B571162981200065D1C /* O2PDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AC71162981200065D1C /* O2PDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B581162981200065D1C /* O2PDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AC81162981200065D1C /* O2PDFPage.m */; };
 		FE5C0B591162981200065D1C /* O2PDFScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AC91162981200065D1C /* O2PDFScanner.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B5A1162981200065D1C /* O2PDFScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ACA1162981200065D1C /* O2PDFScanner.m */; };
 		FE5C0B5B1162981200065D1C /* O2PDFStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ACB1162981200065D1C /* O2PDFStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B5C1162981200065D1C /* O2PDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ACC1162981200065D1C /* O2PDFStream.m */; };
 		FE5C0B5D1162981200065D1C /* O2PDFString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ACD1162981200065D1C /* O2PDFString.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B5E1162981200065D1C /* O2PDFString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ACE1162981200065D1C /* O2PDFString.m */; };
 		FE5C0B5F1162981200065D1C /* O2PDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ACF1162981200065D1C /* O2PDFxref.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B601162981200065D1C /* O2PDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD01162981200065D1C /* O2PDFxref.m */; };
 		FE5C0B611162981200065D1C /* O2PDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AD11162981200065D1C /* O2PDFxrefEntry.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B621162981200065D1C /* O2PDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD21162981200065D1C /* O2PDFxrefEntry.m */; };
 		FE5C0B631162981200065D1C /* O2Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AD31162981200065D1C /* O2Shading.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE5C0B641162981200065D1C /* O2Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD41162981200065D1C /* O2Shading.m */; };
 		FE5C0B651162981200065D1C /* O2Shading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AD51162981200065D1C /* O2Shading+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B661162981200065D1C /* O2Shading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD61162981200065D1C /* O2Shading+PDF.m */; };
 		FE5C0B671162981200065D1C /* O2Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AD71162981200065D1C /* O2Surface.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B681162981200065D1C /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD81162981200065D1C /* O2Surface.m */; };
 		FE5C0B691162981200065D1C /* O2TTFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0AD91162981200065D1C /* O2TTFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0B6B1162981200065D1C /* O2zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0ADB1162981200065D1C /* O2zlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5C0B6C1162981200065D1C /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADC1162981200065D1C /* O2zlib.m */; };
-		FE5C0BD811629F9600065D1C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE5C0C0A1162A99A00065D1C /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A47116297FA00065D1C /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0C0B1162A99A00065D1C /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A48116297FA00065D1C /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C0C0C1162A99A00065D1C /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C0A4D1162981100065D1C /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -593,8 +574,59 @@
 		FE5C0DFF1162AF0100065D1C /* O2Surface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0AD81162981200065D1C /* O2Surface.m */; };
 		FE5C0E011162AF0100065D1C /* O2zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADC1162981200065D1C /* O2zlib.m */; };
 		FE5C0E021162AF0100065D1C /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A49116297FA00065D1C /* VGPath.m */; };
+		FE5F4C7A12A853D000F5F334 /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C6C12A853D000F5F334 /* O2Context_builtin_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5F4C7C12A853D000F5F334 /* O2Context_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C6E12A853D000F5F334 /* O2Context_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5F4C7E12A853D000F5F334 /* O2DeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C7012A853D000F5F334 /* O2DeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5F4C8012A853D000F5F334 /* O2DeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C7212A853D000F5F334 /* O2DeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5F4C8212A853D000F5F334 /* O2Font_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C7412A853D000F5F334 /* O2Font_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5F4C8412A853D000F5F334 /* O2Surface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C7612A853D000F5F334 /* O2Surface_DIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE5F4C8612A853D000F5F334 /* Win32Font.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4C7812A853D000F5F334 /* Win32Font.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE71EDAB11FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */; };
+		FE71EDAD11FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */; };
+		FE71EDAE11FA890300E6F801 /* O2PDFFunction_Type4.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71EDAA11FA890300E6F801 /* O2PDFFunction_Type4.m */; };
+		FE71EDAF11FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */; };
+		FE71EDB011FA890300E6F801 /* O2PDFFunction_Type4.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71EDAA11FA890300E6F801 /* O2PDFFunction_Type4.m */; };
+		FE71EDB111FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */; };
+		FE71EDB211FA890300E6F801 /* O2PDFFunction_Type4.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71EDAA11FA890300E6F801 /* O2PDFFunction_Type4.m */; };
+		FE71EF2811FBCA7E00E6F801 /* O2Encoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE71EF2A11FBCA7E00E6F801 /* O2Encoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE71EF2B11FBCA7E00E6F801 /* O2Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71EF2711FBCA7E00E6F801 /* O2Encoding.m */; };
+		FE71EF2C11FBCA7E00E6F801 /* O2Encoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE71EF2D11FBCA7E00E6F801 /* O2Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71EF2711FBCA7E00E6F801 /* O2Encoding.m */; };
+		FE71EF2E11FBCA7E00E6F801 /* O2Encoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE71EF2F11FBCA7E00E6F801 /* O2Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71EF2711FBCA7E00E6F801 /* O2Encoding.m */; };
+		FE71F0CB11FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F0C911FC7CD200E6F801 /* O2PDFCharWidths.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE71F0CD11FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F0C911FC7CD200E6F801 /* O2PDFCharWidths.h */; };
+		FE71F0CE11FC7CD200E6F801 /* O2PDFCharWidths.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F0CA11FC7CD200E6F801 /* O2PDFCharWidths.m */; };
+		FE71F0CF11FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F0C911FC7CD200E6F801 /* O2PDFCharWidths.h */; };
+		FE71F0D011FC7CD200E6F801 /* O2PDFCharWidths.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F0CA11FC7CD200E6F801 /* O2PDFCharWidths.m */; };
+		FE71F0D111FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F0C911FC7CD200E6F801 /* O2PDFCharWidths.h */; };
+		FE71F0D211FC7CD200E6F801 /* O2PDFCharWidths.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F0CA11FC7CD200E6F801 /* O2PDFCharWidths.m */; };
+		FE71F1B911FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F1B711FCB6DF00E6F801 /* O2PDFFunction_Type0.h */; };
+		FE71F1BB11FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F1B711FCB6DF00E6F801 /* O2PDFFunction_Type0.h */; };
+		FE71F1BC11FCB6DF00E6F801 /* O2PDFFunction_Type0.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F1B811FCB6DF00E6F801 /* O2PDFFunction_Type0.m */; };
+		FE71F1BD11FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F1B711FCB6DF00E6F801 /* O2PDFFunction_Type0.h */; };
+		FE71F1BE11FCB6DF00E6F801 /* O2PDFFunction_Type0.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F1B811FCB6DF00E6F801 /* O2PDFFunction_Type0.m */; };
+		FE71F1BF11FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F1B711FCB6DF00E6F801 /* O2PDFFunction_Type0.h */; };
+		FE71F1C011FCB6DF00E6F801 /* O2PDFFunction_Type0.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F1B811FCB6DF00E6F801 /* O2PDFFunction_Type0.m */; };
+		FE71F28811FD221B00E6F801 /* O2PDFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F28611FD221B00E6F801 /* O2PDFFont.h */; };
+		FE71F28A11FD221B00E6F801 /* O2PDFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F28611FD221B00E6F801 /* O2PDFFont.h */; };
+		FE71F28B11FD221B00E6F801 /* O2PDFFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F28711FD221B00E6F801 /* O2PDFFont.m */; };
+		FE71F28C11FD221B00E6F801 /* O2PDFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F28611FD221B00E6F801 /* O2PDFFont.h */; };
+		FE71F28D11FD221B00E6F801 /* O2PDFFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F28711FD221B00E6F801 /* O2PDFFont.m */; };
+		FE71F28E11FD221B00E6F801 /* O2PDFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F28611FD221B00E6F801 /* O2PDFFont.h */; };
+		FE71F28F11FD221B00E6F801 /* O2PDFFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F28711FD221B00E6F801 /* O2PDFFont.m */; };
+		FE71F41E11FDD47300E6F801 /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADA1162981200065D1C /* O2TTFDecoder.m */; };
+		FE71F41F11FDD47300E6F801 /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADA1162981200065D1C /* O2TTFDecoder.m */; };
 		FE8EBE7B11658E5300BC0ED6 /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0ADA1162981200065D1C /* O2TTFDecoder.m */; };
 		FE8EBE7E11658E6200BC0ED6 /* O2Font_ttf.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C0A6C1162981100065D1C /* O2Font_ttf.m */; };
+		FE99DB1912843F74006D789F /* O2Encoder_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE99DB1712843F74006D789F /* O2Encoder_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE99DB1B12843F74006D789F /* O2Encoder_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE99DB1712843F74006D789F /* O2Encoder_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE99DB1C12843F74006D789F /* O2Encoder_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE99DB1812843F74006D789F /* O2Encoder_PNG.m */; };
+		FE99DB1D12843F74006D789F /* O2Encoder_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE99DB1712843F74006D789F /* O2Encoder_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE99DB1E12843F74006D789F /* O2Encoder_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE99DB1812843F74006D789F /* O2Encoder_PNG.m */; };
+		FE99DB1F12843F74006D789F /* O2Encoder_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE99DB1712843F74006D789F /* O2Encoder_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE99DB2012843F74006D789F /* O2Encoder_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE99DB1812843F74006D789F /* O2Encoder_PNG.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -710,7 +742,22 @@
 		32DBCF5E0370ADEE00C91783 /* Onyx2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Onyx2D_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE051C6C1221A7440097BA92 /* O2Font_freetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_freetype.h; sourceTree = "<group>"; };
+		FE069F4E1245A9260040F165 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
+		FE069F4F1245A9260040F165 /* O2Font_freetype.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_freetype.m; sourceTree = "<group>"; };
+		FE069F501245A9260040F165 /* O2GlyphStencil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2GlyphStencil.h; sourceTree = "<group>"; };
+		FE069F511245A9260040F165 /* O2GlyphStencil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2GlyphStencil.m; sourceTree = "<group>"; };
 		FE081BAA118A165F0026A20E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE27593E1234039700BD6643 /* O2Context_distill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_distill.h; sourceTree = "<group>"; };
+		FE27593F1234039700BD6643 /* O2Context_distill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_distill.m; sourceTree = "<group>"; };
+		FE39C1ED1202829900A80A71 /* O2ClipState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ClipState.h; sourceTree = "<group>"; };
+		FE39C1EE1202829900A80A71 /* O2ClipState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ClipState.m; sourceTree = "<group>"; };
+		FE43BE7211FFBAD200119833 /* O2PDFBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFBlock.h; sourceTree = "<group>"; };
+		FE43BE7311FFBAD200119833 /* O2PDFBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFBlock.m; sourceTree = "<group>"; };
+		FE44BDB111EBA03700762BF1 /* O2ImageSource_ICNS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ImageSource_ICNS.h; sourceTree = "<group>"; };
+		FE44BDB211EBA03700762BF1 /* O2ImageSource_ICNS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageSource_ICNS.m; sourceTree = "<group>"; };
+		FE587851126949AA009B9EDF /* O2argb8u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2argb8u.h; sourceTree = "<group>"; };
+		FE58789312694AE4009B9EDF /* O2argb32f.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2argb32f.h; sourceTree = "<group>"; };
 		FE5C0A47116297FA00065D1C /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
 		FE5C0A48116297FA00065D1C /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE5C0A49116297FA00065D1C /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
@@ -861,17 +908,35 @@
 		FE5C0CA61162A99A00065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE5C0D461162A9AB00065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE5C0D571162A9D600065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE5F4C6C12A853D000F5F334 /* O2Context_builtin_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_builtin_gdi.h; sourceTree = "<group>"; };
+		FE5F4C6D12A853D000F5F334 /* O2Context_builtin_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_builtin_gdi.m; sourceTree = "<group>"; };
+		FE5F4C6E12A853D000F5F334 /* O2Context_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_gdi.h; sourceTree = "<group>"; };
+		FE5F4C6F12A853D000F5F334 /* O2Context_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_gdi.m; sourceTree = "<group>"; };
+		FE5F4C7012A853D000F5F334 /* O2DeviceContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2DeviceContext_gdi.h; sourceTree = "<group>"; };
+		FE5F4C7112A853D000F5F334 /* O2DeviceContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2DeviceContext_gdi.m; sourceTree = "<group>"; };
+		FE5F4C7212A853D000F5F334 /* O2DeviceContext_gdiDIBSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2DeviceContext_gdiDIBSection.h; sourceTree = "<group>"; };
+		FE5F4C7312A853D000F5F334 /* O2DeviceContext_gdiDIBSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2DeviceContext_gdiDIBSection.m; sourceTree = "<group>"; };
+		FE5F4C7412A853D000F5F334 /* O2Font_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_gdi.h; sourceTree = "<group>"; };
+		FE5F4C7512A853D000F5F334 /* O2Font_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_gdi.m; sourceTree = "<group>"; };
+		FE5F4C7612A853D000F5F334 /* O2Surface_DIBSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Surface_DIBSection.h; sourceTree = "<group>"; };
+		FE5F4C7712A853D000F5F334 /* O2Surface_DIBSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Surface_DIBSection.m; sourceTree = "<group>"; };
+		FE5F4C7812A853D000F5F334 /* Win32Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win32Font.h; sourceTree = "<group>"; };
+		FE5F4C7912A853D000F5F334 /* Win32Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Win32Font.m; sourceTree = "<group>"; };
+		FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFFunction_Type4.h; sourceTree = "<group>"; };
+		FE71EDAA11FA890300E6F801 /* O2PDFFunction_Type4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFFunction_Type4.m; sourceTree = "<group>"; };
+		FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoding.h; sourceTree = "<group>"; };
+		FE71EF2711FBCA7E00E6F801 /* O2Encoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoding.m; sourceTree = "<group>"; };
+		FE71F0C911FC7CD200E6F801 /* O2PDFCharWidths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFCharWidths.h; sourceTree = "<group>"; };
+		FE71F0CA11FC7CD200E6F801 /* O2PDFCharWidths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFCharWidths.m; sourceTree = "<group>"; };
+		FE71F1B711FCB6DF00E6F801 /* O2PDFFunction_Type0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFFunction_Type0.h; sourceTree = "<group>"; };
+		FE71F1B811FCB6DF00E6F801 /* O2PDFFunction_Type0.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFFunction_Type0.m; sourceTree = "<group>"; };
+		FE71F28611FD221B00E6F801 /* O2PDFFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFFont.h; sourceTree = "<group>"; };
+		FE71F28711FD221B00E6F801 /* O2PDFFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFFont.m; sourceTree = "<group>"; };
+		FE99DB1712843F74006D789F /* O2Encoder_PNG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_PNG.h; sourceTree = "<group>"; };
+		FE99DB1812843F74006D789F /* O2Encoder_PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_PNG.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8DC2EF560486A6940098B216 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FE5C0BD811629F9600065D1C /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FE5C0CA01162A99A00065D1C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -912,11 +977,34 @@
 		0867D691FE84028FC02AAC07 /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE5F4C6B12A853B800F5F334 /* platform_Windows */,
+				FE99DB1712843F74006D789F /* O2Encoder_PNG.h */,
+				FE99DB1812843F74006D789F /* O2Encoder_PNG.m */,
+				FE58789312694AE4009B9EDF /* O2argb32f.h */,
+				FE587851126949AA009B9EDF /* O2argb8u.h */,
+				FE069F4C1245A9260040F165 /* English.lproj */,
+				FE069F4F1245A9260040F165 /* O2Font_freetype.m */,
+				FE069F501245A9260040F165 /* O2GlyphStencil.h */,
+				FE069F511245A9260040F165 /* O2GlyphStencil.m */,
+				FE27593E1234039700BD6643 /* O2Context_distill.h */,
+				FE27593F1234039700BD6643 /* O2Context_distill.m */,
+				FE051C6C1221A7440097BA92 /* O2Font_freetype.h */,
+				FE39C1ED1202829900A80A71 /* O2ClipState.h */,
+				FE39C1EE1202829900A80A71 /* O2ClipState.m */,
+				FE43BE7211FFBAD200119833 /* O2PDFBlock.h */,
+				FE43BE7311FFBAD200119833 /* O2PDFBlock.m */,
+				FE71F28611FD221B00E6F801 /* O2PDFFont.h */,
+				FE71F28711FD221B00E6F801 /* O2PDFFont.m */,
+				FE71F1B711FCB6DF00E6F801 /* O2PDFFunction_Type0.h */,
+				FE71F1B811FCB6DF00E6F801 /* O2PDFFunction_Type0.m */,
+				FE71F0C911FC7CD200E6F801 /* O2PDFCharWidths.h */,
+				FE71F0CA11FC7CD200E6F801 /* O2PDFCharWidths.m */,
+				FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */,
+				FE71EF2711FBCA7E00E6F801 /* O2Encoding.m */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				FE081BAA118A165F0026A20E /* Foundation.xcodeproj */,
 				FE5C0A4D1162981100065D1C /* gif_lib.h */,
 				FE5C0A4E1162981100065D1C /* gif_lib.m */,
-				FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */,
-				FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */,
 				FE5C0A511162981100065D1C /* O2AffineTransform.h */,
 				FE5C0A521162981100065D1C /* O2AffineTransform.m */,
 				FE5C0A531162981100065D1C /* O2BitmapContext.h */,
@@ -926,14 +1014,14 @@
 				FE5C0A571162981100065D1C /* O2ClipPhase.m */,
 				FE5C0A581162981100065D1C /* O2Color.h */,
 				FE5C0A591162981100065D1C /* O2Color.m */,
-				FE5C0A5A1162981100065D1C /* O2ColorSpace.h */,
-				FE5C0A5B1162981100065D1C /* O2ColorSpace.m */,
 				FE5C0A5C1162981100065D1C /* O2ColorSpace+PDF.h */,
 				FE5C0A5D1162981100065D1C /* O2ColorSpace+PDF.m */,
-				FE5C0A5E1162981100065D1C /* O2Context_builtin.h */,
-				FE5C0A5F1162981100065D1C /* O2Context_builtin.m */,
+				FE5C0A5A1162981100065D1C /* O2ColorSpace.h */,
+				FE5C0A5B1162981100065D1C /* O2ColorSpace.m */,
 				FE5C0A601162981100065D1C /* O2Context.h */,
 				FE5C0A611162981100065D1C /* O2Context.m */,
+				FE5C0A5E1162981100065D1C /* O2Context_builtin.h */,
+				FE5C0A5F1162981100065D1C /* O2Context_builtin.m */,
 				FE5C0A621162981100065D1C /* O2DataConsumer.h */,
 				FE5C0A631162981100065D1C /* O2DataConsumer.m */,
 				FE5C0A641162981100065D1C /* O2DataProvider.h */,
@@ -943,44 +1031,48 @@
 				FE5C0A681162981100065D1C /* O2Encoder_TIFF.h */,
 				FE5C0A691162981100065D1C /* O2Encoder_TIFF.m */,
 				FE5C0A6A1162981100065D1C /* O2Exceptions.h */,
-				FE5C0A6B1162981100065D1C /* O2Font_ttf.h */,
-				FE5C0A6C1162981100065D1C /* O2Font_ttf.m */,
-				FE5C0A6D1162981100065D1C /* O2Font.h */,
-				FE5C0A6E1162981200065D1C /* O2Font.m */,
 				FE5C0A6F1162981200065D1C /* O2Font+PDF.h */,
 				FE5C0A701162981200065D1C /* O2Font+PDF.m */,
-				FE5C0A711162981200065D1C /* O2Function.h */,
-				FE5C0A721162981200065D1C /* O2Function.m */,
+				FE5C0A6D1162981100065D1C /* O2Font.h */,
+				FE5C0A6E1162981200065D1C /* O2Font.m */,
+				FE5C0A6B1162981100065D1C /* O2Font_ttf.h */,
+				FE5C0A6C1162981100065D1C /* O2Font_ttf.m */,
 				FE5C0A731162981200065D1C /* O2Function+PDF.h */,
 				FE5C0A741162981200065D1C /* O2Function+PDF.m */,
+				FE5C0A711162981200065D1C /* O2Function.h */,
+				FE5C0A721162981200065D1C /* O2Function.m */,
 				FE5C0A751162981200065D1C /* O2Geometry.h */,
 				FE5C0A761162981200065D1C /* O2Geometry.m */,
 				FE5C0A771162981200065D1C /* O2GraphicsState.h */,
 				FE5C0A781162981200065D1C /* O2GraphicsState.m */,
-				FE5C0A791162981200065D1C /* O2Image.h */,
-				FE5C0A7A1162981200065D1C /* O2Image.m */,
 				FE5C0A7B1162981200065D1C /* O2Image+PDF.h */,
 				FE5C0A7C1162981200065D1C /* O2Image+PDF.m */,
+				FE5C0A791162981200065D1C /* O2Image.h */,
+				FE5C0A7A1162981200065D1C /* O2Image.m */,
 				FE5C0A7D1162981200065D1C /* O2ImageDestination.h */,
 				FE5C0A7E1162981200065D1C /* O2ImageDestination.m */,
+				FE5C0A891162981200065D1C /* O2ImageSource.h */,
+				FE5C0A8A1162981200065D1C /* O2ImageSource.m */,
 				FE5C0A7F1162981200065D1C /* O2ImageSource_BMP.h */,
 				FE5C0A801162981200065D1C /* O2ImageSource_BMP.m */,
 				FE5C0A811162981200065D1C /* O2ImageSource_GIF.h */,
 				FE5C0A821162981200065D1C /* O2ImageSource_GIF.m */,
+				FE44BDB111EBA03700762BF1 /* O2ImageSource_ICNS.h */,
+				FE44BDB211EBA03700762BF1 /* O2ImageSource_ICNS.m */,
 				FE5C0A831162981200065D1C /* O2ImageSource_JPEG.h */,
 				FE5C0A841162981200065D1C /* O2ImageSource_JPEG.m */,
 				FE5C0A851162981200065D1C /* O2ImageSource_PNG.h */,
 				FE5C0A861162981200065D1C /* O2ImageSource_PNG.m */,
 				FE5C0A871162981200065D1C /* O2ImageSource_TIFF.h */,
 				FE5C0A881162981200065D1C /* O2ImageSource_TIFF.m */,
-				FE5C0A891162981200065D1C /* O2ImageSource.h */,
-				FE5C0A8A1162981200065D1C /* O2ImageSource.m */,
 				FE5C0A8B1162981200065D1C /* O2Layer.h */,
 				FE5C0A8C1162981200065D1C /* O2Layer.m */,
 				FE5C0A8D1162981200065D1C /* O2LZW.h */,
 				FE5C0A8E1162981200065D1C /* O2LZW.m */,
 				FE5C0A8F1162981200065D1C /* O2MutablePath.h */,
 				FE5C0A901162981200065D1C /* O2MutablePath.m */,
+				FE5C0A9D1162981200065D1C /* O2Paint.h */,
+				FE5C0A9E1162981200065D1C /* O2Paint.m */,
 				FE5C0A911162981200065D1C /* O2Paint_axialGradient.h */,
 				FE5C0A921162981200065D1C /* O2Paint_axialGradient.m */,
 				FE5C0A931162981200065D1C /* O2Paint_color.h */,
@@ -993,8 +1085,6 @@
 				FE5C0A9A1162981200065D1C /* O2Paint_radialGradient.m */,
 				FE5C0A9B1162981200065D1C /* O2Paint_ramp.h */,
 				FE5C0A9C1162981200065D1C /* O2Paint_ramp.m */,
-				FE5C0A9D1162981200065D1C /* O2Paint.h */,
-				FE5C0A9E1162981200065D1C /* O2Paint.m */,
 				FE5C0A9F1162981200065D1C /* O2Path.h */,
 				FE5C0AA01162981200065D1C /* O2Path.m */,
 				FE5C0AA11162981200065D1C /* O2Pattern.h */,
@@ -1015,6 +1105,10 @@
 				FE5C0AB01162981200065D1C /* O2PDFFunction_Type2.m */,
 				FE5C0AB11162981200065D1C /* O2PDFFunction_Type3.h */,
 				FE5C0AB21162981200065D1C /* O2PDFFunction_Type3.m */,
+				FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */,
+				FE71EDAA11FA890300E6F801 /* O2PDFFunction_Type4.m */,
+				FE5C0AC11162981200065D1C /* O2PDFObject.h */,
+				FE5C0AC21162981200065D1C /* O2PDFObject.m */,
 				FE5C0AB31162981200065D1C /* O2PDFObject_Boolean.h */,
 				FE5C0AB41162981200065D1C /* O2PDFObject_Boolean.m */,
 				FE5C0AB51162981200065D1C /* O2PDFObject_const.h */,
@@ -1029,8 +1123,6 @@
 				FE5C0ABE1162981200065D1C /* O2PDFObject_R.m */,
 				FE5C0ABF1162981200065D1C /* O2PDFObject_Real.h */,
 				FE5C0AC01162981200065D1C /* O2PDFObject_Real.m */,
-				FE5C0AC11162981200065D1C /* O2PDFObject.h */,
-				FE5C0AC21162981200065D1C /* O2PDFObject.m */,
 				FE5C0AC31162981200065D1C /* O2PDFOperators.h */,
 				FE5C0AC41162981200065D1C /* O2PDFOperators.m */,
 				FE5C0AC51162981200065D1C /* O2PDFOperatorTable.h */,
@@ -1047,23 +1139,24 @@
 				FE5C0AD01162981200065D1C /* O2PDFxref.m */,
 				FE5C0AD11162981200065D1C /* O2PDFxrefEntry.h */,
 				FE5C0AD21162981200065D1C /* O2PDFxrefEntry.m */,
-				FE5C0AD31162981200065D1C /* O2Shading.h */,
-				FE5C0AD41162981200065D1C /* O2Shading.m */,
 				FE5C0AD51162981200065D1C /* O2Shading+PDF.h */,
 				FE5C0AD61162981200065D1C /* O2Shading+PDF.m */,
+				FE5C0AD31162981200065D1C /* O2Shading.h */,
+				FE5C0AD41162981200065D1C /* O2Shading.m */,
 				FE5C0AD71162981200065D1C /* O2Surface.h */,
 				FE5C0AD81162981200065D1C /* O2Surface.m */,
+				FE5C0A4F1162981100065D1C /* O2TIFFImageDirectory.h */,
+				FE5C0A501162981100065D1C /* O2TIFFImageDirectory.m */,
 				FE5C0AD91162981200065D1C /* O2TTFDecoder.h */,
 				FE5C0ADA1162981200065D1C /* O2TTFDecoder.m */,
 				FE5C0ADB1162981200065D1C /* O2zlib.h */,
 				FE5C0ADC1162981200065D1C /* O2zlib.m */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				089C1665FE841158C02AAC07 /* Resources */,
 				FE5C0A47116297FA00065D1C /* VGmath.h */,
 				FE5C0A48116297FA00065D1C /* VGPath.h */,
 				FE5C0A49116297FA00065D1C /* VGPath.m */,
-				32C88DFF0371C24200C91783 /* Other Sources */,
-				089C1665FE841158C02AAC07 /* Resources */,
-				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
-				034768DFFF38A50411DB9C8B /* Products */,
 			);
 			name = Onyx2D;
 			sourceTree = "<group>";
@@ -1109,6 +1202,14 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
+		FE069F4C1245A9260040F165 /* English.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				FE069F4D1245A9260040F165 /* InfoPlist.strings */,
+			);
+			path = English.lproj;
+			sourceTree = "<group>";
+		};
 		FE081BAB118A165F0026A20E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1123,6 +1224,27 @@
 				FE081BC8118A165F0026A20E /* Foundation.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FE5F4C6B12A853B800F5F334 /* platform_Windows */ = {
+			isa = PBXGroup;
+			children = (
+				FE5F4C6C12A853D000F5F334 /* O2Context_builtin_gdi.h */,
+				FE5F4C6D12A853D000F5F334 /* O2Context_builtin_gdi.m */,
+				FE5F4C6E12A853D000F5F334 /* O2Context_gdi.h */,
+				FE5F4C6F12A853D000F5F334 /* O2Context_gdi.m */,
+				FE5F4C7012A853D000F5F334 /* O2DeviceContext_gdi.h */,
+				FE5F4C7112A853D000F5F334 /* O2DeviceContext_gdi.m */,
+				FE5F4C7212A853D000F5F334 /* O2DeviceContext_gdiDIBSection.h */,
+				FE5F4C7312A853D000F5F334 /* O2DeviceContext_gdiDIBSection.m */,
+				FE5F4C7412A853D000F5F334 /* O2Font_gdi.h */,
+				FE5F4C7512A853D000F5F334 /* O2Font_gdi.m */,
+				FE5F4C7612A853D000F5F334 /* O2Surface_DIBSection.h */,
+				FE5F4C7712A853D000F5F334 /* O2Surface_DIBSection.m */,
+				FE5F4C7812A853D000F5F334 /* Win32Font.h */,
+				FE5F4C7912A853D000F5F334 /* Win32Font.m */,
+			);
+			path = platform_Windows;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1207,6 +1329,27 @@
 				FE5C0B671162981200065D1C /* O2Surface.h in Headers */,
 				FE5C0B691162981200065D1C /* O2TTFDecoder.h in Headers */,
 				FE5C0B6B1162981200065D1C /* O2zlib.h in Headers */,
+				FE44BDB311EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */,
+				FE71EDAB11FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */,
+				FE71EF2811FBCA7E00E6F801 /* O2Encoding.h in Headers */,
+				FE71F0CB11FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */,
+				FE71F1B911FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */,
+				FE71F28811FD221B00E6F801 /* O2PDFFont.h in Headers */,
+				FE43BE7411FFBAD200119833 /* O2PDFBlock.h in Headers */,
+				FE39C1EF1202829900A80A71 /* O2ClipState.h in Headers */,
+				FE051C6D1221A7440097BA92 /* O2Font_freetype.h in Headers */,
+				FE2759401234039700BD6643 /* O2Context_distill.h in Headers */,
+				FE06A0131245A9270040F165 /* O2GlyphStencil.h in Headers */,
+				FE587852126949AA009B9EDF /* O2argb8u.h in Headers */,
+				FE58789412694AE4009B9EDF /* O2argb32f.h in Headers */,
+				FE99DB1912843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				FE5F4C7A12A853D000F5F334 /* O2Context_builtin_gdi.h in Headers */,
+				FE5F4C7C12A853D000F5F334 /* O2Context_gdi.h in Headers */,
+				FE5F4C7E12A853D000F5F334 /* O2DeviceContext_gdi.h in Headers */,
+				FE5F4C8012A853D000F5F334 /* O2DeviceContext_gdiDIBSection.h in Headers */,
+				FE5F4C8212A853D000F5F334 /* O2Font_gdi.h in Headers */,
+				FE5F4C8412A853D000F5F334 /* O2Surface_DIBSection.h in Headers */,
+				FE5F4C8612A853D000F5F334 /* Win32Font.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1289,6 +1432,20 @@
 				FE5C0C521162A99A00065D1C /* O2Surface.h in Headers */,
 				FE5C0C531162A99A00065D1C /* O2TTFDecoder.h in Headers */,
 				FE5C0C541162A99A00065D1C /* O2zlib.h in Headers */,
+				FE44BDB511EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */,
+				FE71EDAD11FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */,
+				FE71EF2A11FBCA7E00E6F801 /* O2Encoding.h in Headers */,
+				FE71F0CD11FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */,
+				FE71F1BB11FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */,
+				FE71F28A11FD221B00E6F801 /* O2PDFFont.h in Headers */,
+				FE43BE7611FFBAD200119833 /* O2PDFBlock.h in Headers */,
+				FE39C1F11202829900A80A71 /* O2ClipState.h in Headers */,
+				FE051C6E1221A7440097BA92 /* O2Font_freetype.h in Headers */,
+				FE2759421234039700BD6643 /* O2Context_distill.h in Headers */,
+				FE06A0D61245A9270040F165 /* O2GlyphStencil.h in Headers */,
+				FE587853126949AA009B9EDF /* O2argb8u.h in Headers */,
+				FE58789512694AE4009B9EDF /* O2argb32f.h in Headers */,
+				FE99DB1B12843F74006D789F /* O2Encoder_PNG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1371,6 +1528,20 @@
 				FE5C0CF21162A9AB00065D1C /* O2Surface.h in Headers */,
 				FE5C0CF31162A9AB00065D1C /* O2TTFDecoder.h in Headers */,
 				FE5C0CF41162A9AB00065D1C /* O2zlib.h in Headers */,
+				FE44BDB711EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */,
+				FE71EDAF11FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */,
+				FE71EF2C11FBCA7E00E6F801 /* O2Encoding.h in Headers */,
+				FE71F0CF11FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */,
+				FE71F1BD11FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */,
+				FE71F28C11FD221B00E6F801 /* O2PDFFont.h in Headers */,
+				FE43BE7811FFBAD200119833 /* O2PDFBlock.h in Headers */,
+				FE39C1F31202829900A80A71 /* O2ClipState.h in Headers */,
+				FE051C6F1221A7440097BA92 /* O2Font_freetype.h in Headers */,
+				FE2759441234039700BD6643 /* O2Context_distill.h in Headers */,
+				FE06A1991245A9270040F165 /* O2GlyphStencil.h in Headers */,
+				FE587854126949AA009B9EDF /* O2argb8u.h in Headers */,
+				FE58789612694AE4009B9EDF /* O2argb32f.h in Headers */,
+				FE99DB1D12843F74006D789F /* O2Encoder_PNG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1453,6 +1624,20 @@
 				FE5C0DB71162AEF500065D1C /* O2zlib.h in Headers */,
 				FE5C0DB81162AEF500065D1C /* VGmath.h in Headers */,
 				FE5C0DB91162AEF500065D1C /* VGPath.h in Headers */,
+				FE44BDB911EBA03700762BF1 /* O2ImageSource_ICNS.h in Headers */,
+				FE71EDB111FA890300E6F801 /* O2PDFFunction_Type4.h in Headers */,
+				FE71EF2E11FBCA7E00E6F801 /* O2Encoding.h in Headers */,
+				FE71F0D111FC7CD200E6F801 /* O2PDFCharWidths.h in Headers */,
+				FE71F1BF11FCB6DF00E6F801 /* O2PDFFunction_Type0.h in Headers */,
+				FE71F28E11FD221B00E6F801 /* O2PDFFont.h in Headers */,
+				FE43BE7A11FFBAD200119833 /* O2PDFBlock.h in Headers */,
+				FE39C1F51202829900A80A71 /* O2ClipState.h in Headers */,
+				FE051C701221A7440097BA92 /* O2Font_freetype.h in Headers */,
+				FE2759461234039700BD6643 /* O2Context_distill.h in Headers */,
+				FE06A25C1245A9280040F165 /* O2GlyphStencil.h in Headers */,
+				FE587855126949AA009B9EDF /* O2argb8u.h in Headers */,
+				FE58789712694AE4009B9EDF /* O2argb32f.h in Headers */,
+				FE99DB1F12843F74006D789F /* O2Encoder_PNG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1466,7 +1651,6 @@
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
-				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
 				FE5C0B9411629AE600065D1C /* PBXBuildRule */,
@@ -1546,7 +1730,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Onyx2D" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* Onyx2D */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -1637,7 +1828,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1646,6 +1836,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0C561162A99A00065D1C /* InfoPlist.strings in Resources */,
+				FE06A0D41245A9270040F165 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1654,6 +1845,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0CF61162A9AB00065D1C /* InfoPlist.strings in Resources */,
+				FE06A1971245A9270040F165 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,6 +1853,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE06A25A1245A9280040F165 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1671,76 +1864,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5C0A4C116297FA00065D1C /* VGPath.m in Sources */,
-				FE5C0ADE1162981200065D1C /* gif_lib.m in Sources */,
-				FE5C0AE01162981200065D1C /* O2TIFFImageDirectory.m in Sources */,
-				FE5C0AE21162981200065D1C /* O2AffineTransform.m in Sources */,
-				FE5C0AE41162981200065D1C /* O2BitmapContext.m in Sources */,
-				FE5C0AE71162981200065D1C /* O2ClipPhase.m in Sources */,
-				FE5C0AE91162981200065D1C /* O2Color.m in Sources */,
-				FE5C0AEB1162981200065D1C /* O2ColorSpace.m in Sources */,
-				FE5C0AED1162981200065D1C /* O2ColorSpace+PDF.m in Sources */,
-				FE5C0AEF1162981200065D1C /* O2Context_builtin.m in Sources */,
-				FE5C0AF11162981200065D1C /* O2Context.m in Sources */,
-				FE5C0AF31162981200065D1C /* O2DataConsumer.m in Sources */,
-				FE5C0AF51162981200065D1C /* O2DataProvider.m in Sources */,
-				FE5C0AF71162981200065D1C /* O2Decoder_TIFF.m in Sources */,
-				FE5C0AF91162981200065D1C /* O2Encoder_TIFF.m in Sources */,
-				FE5C0AFE1162981200065D1C /* O2Font.m in Sources */,
-				FE5C0B001162981200065D1C /* O2Font+PDF.m in Sources */,
-				FE5C0B021162981200065D1C /* O2Function.m in Sources */,
-				FE5C0B041162981200065D1C /* O2Function+PDF.m in Sources */,
-				FE5C0B061162981200065D1C /* O2Geometry.m in Sources */,
-				FE5C0B081162981200065D1C /* O2GraphicsState.m in Sources */,
-				FE5C0B0A1162981200065D1C /* O2Image.m in Sources */,
-				FE5C0B0C1162981200065D1C /* O2Image+PDF.m in Sources */,
-				FE5C0B0E1162981200065D1C /* O2ImageDestination.m in Sources */,
-				FE5C0B101162981200065D1C /* O2ImageSource_BMP.m in Sources */,
-				FE5C0B121162981200065D1C /* O2ImageSource_GIF.m in Sources */,
-				FE5C0B141162981200065D1C /* O2ImageSource_JPEG.m in Sources */,
-				FE5C0B161162981200065D1C /* O2ImageSource_PNG.m in Sources */,
-				FE5C0B181162981200065D1C /* O2ImageSource_TIFF.m in Sources */,
-				FE5C0B1A1162981200065D1C /* O2ImageSource.m in Sources */,
-				FE5C0B1C1162981200065D1C /* O2Layer.m in Sources */,
-				FE5C0B1E1162981200065D1C /* O2LZW.m in Sources */,
-				FE5C0B201162981200065D1C /* O2MutablePath.m in Sources */,
-				FE5C0B221162981200065D1C /* O2Paint_axialGradient.m in Sources */,
-				FE5C0B241162981200065D1C /* O2Paint_color.m in Sources */,
-				FE5C0B261162981200065D1C /* O2Paint_image.m in Sources */,
-				FE5C0B281162981200065D1C /* O2Paint_pattern.m in Sources */,
-				FE5C0B2A1162981200065D1C /* O2Paint_radialGradient.m in Sources */,
-				FE5C0B2C1162981200065D1C /* O2Paint_ramp.m in Sources */,
-				FE5C0B2E1162981200065D1C /* O2Paint.m in Sources */,
-				FE5C0B301162981200065D1C /* O2Path.m in Sources */,
-				FE5C0B321162981200065D1C /* O2Pattern.m in Sources */,
-				FE5C0B341162981200065D1C /* O2PDFArray.m in Sources */,
-				FE5C0B361162981200065D1C /* O2PDFContentStream.m in Sources */,
-				FE5C0B381162981200065D1C /* O2PDFContext.m in Sources */,
-				FE5C0B3A1162981200065D1C /* O2PDFDictionary.m in Sources */,
-				FE5C0B3C1162981200065D1C /* O2PDFDocument.m in Sources */,
-				FE5C0B3E1162981200065D1C /* O2PDFFilter.m in Sources */,
-				FE5C0B401162981200065D1C /* O2PDFFunction_Type2.m in Sources */,
-				FE5C0B421162981200065D1C /* O2PDFFunction_Type3.m in Sources */,
-				FE5C0B441162981200065D1C /* O2PDFObject_Boolean.m in Sources */,
-				FE5C0B461162981200065D1C /* O2PDFObject_const.m in Sources */,
-				FE5C0B481162981200065D1C /* O2PDFObject_identifier.m in Sources */,
-				FE5C0B4A1162981200065D1C /* O2PDFObject_Integer.m in Sources */,
-				FE5C0B4C1162981200065D1C /* O2PDFObject_Name.m in Sources */,
-				FE5C0B4E1162981200065D1C /* O2PDFObject_R.m in Sources */,
-				FE5C0B501162981200065D1C /* O2PDFObject_Real.m in Sources */,
-				FE5C0B521162981200065D1C /* O2PDFObject.m in Sources */,
-				FE5C0B541162981200065D1C /* O2PDFOperators.m in Sources */,
-				FE5C0B561162981200065D1C /* O2PDFOperatorTable.m in Sources */,
-				FE5C0B581162981200065D1C /* O2PDFPage.m in Sources */,
-				FE5C0B5A1162981200065D1C /* O2PDFScanner.m in Sources */,
-				FE5C0B5C1162981200065D1C /* O2PDFStream.m in Sources */,
-				FE5C0B5E1162981200065D1C /* O2PDFString.m in Sources */,
-				FE5C0B601162981200065D1C /* O2PDFxref.m in Sources */,
-				FE5C0B621162981200065D1C /* O2PDFxrefEntry.m in Sources */,
-				FE5C0B641162981200065D1C /* O2Shading.m in Sources */,
-				FE5C0B661162981200065D1C /* O2Shading+PDF.m in Sources */,
-				FE5C0B681162981200065D1C /* O2Surface.m in Sources */,
-				FE5C0B6C1162981200065D1C /* O2zlib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1818,6 +1941,19 @@
 				FE5C0C9C1162A99A00065D1C /* O2Shading+PDF.m in Sources */,
 				FE5C0C9D1162A99A00065D1C /* O2Surface.m in Sources */,
 				FE5C0C9F1162A99A00065D1C /* O2zlib.m in Sources */,
+				FE44BDB611EBA03700762BF1 /* O2ImageSource_ICNS.m in Sources */,
+				FE71EDAE11FA890300E6F801 /* O2PDFFunction_Type4.m in Sources */,
+				FE71EF2B11FBCA7E00E6F801 /* O2Encoding.m in Sources */,
+				FE71F0CE11FC7CD200E6F801 /* O2PDFCharWidths.m in Sources */,
+				FE71F1BC11FCB6DF00E6F801 /* O2PDFFunction_Type0.m in Sources */,
+				FE71F28B11FD221B00E6F801 /* O2PDFFont.m in Sources */,
+				FE71F41F11FDD47300E6F801 /* O2TTFDecoder.m in Sources */,
+				FE43BE7711FFBAD200119833 /* O2PDFBlock.m in Sources */,
+				FE39C1F21202829900A80A71 /* O2ClipState.m in Sources */,
+				FE2759431234039700BD6643 /* O2Context_distill.m in Sources */,
+				FE06A0D51245A9270040F165 /* O2Font_freetype.m in Sources */,
+				FE06A0D71245A9270040F165 /* O2GlyphStencil.m in Sources */,
+				FE99DB1C12843F74006D789F /* O2Encoder_PNG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1895,6 +2031,19 @@
 				FE5C0D3C1162A9AB00065D1C /* O2Shading+PDF.m in Sources */,
 				FE5C0D3D1162A9AB00065D1C /* O2Surface.m in Sources */,
 				FE5C0D3F1162A9AB00065D1C /* O2zlib.m in Sources */,
+				FE44BDB811EBA03700762BF1 /* O2ImageSource_ICNS.m in Sources */,
+				FE71EDB011FA890300E6F801 /* O2PDFFunction_Type4.m in Sources */,
+				FE71EF2D11FBCA7E00E6F801 /* O2Encoding.m in Sources */,
+				FE71F0D011FC7CD200E6F801 /* O2PDFCharWidths.m in Sources */,
+				FE71F1BE11FCB6DF00E6F801 /* O2PDFFunction_Type0.m in Sources */,
+				FE71F28D11FD221B00E6F801 /* O2PDFFont.m in Sources */,
+				FE71F41E11FDD47300E6F801 /* O2TTFDecoder.m in Sources */,
+				FE43BE7911FFBAD200119833 /* O2PDFBlock.m in Sources */,
+				FE39C1F41202829900A80A71 /* O2ClipState.m in Sources */,
+				FE2759451234039700BD6643 /* O2Context_distill.m in Sources */,
+				FE06A1981245A9270040F165 /* O2Font_freetype.m in Sources */,
+				FE06A19A1245A9270040F165 /* O2GlyphStencil.m in Sources */,
+				FE99DB1E12843F74006D789F /* O2Encoder_PNG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1974,6 +2123,18 @@
 				FE5C0E021162AF0100065D1C /* VGPath.m in Sources */,
 				FE8EBE7B11658E5300BC0ED6 /* O2TTFDecoder.m in Sources */,
 				FE8EBE7E11658E6200BC0ED6 /* O2Font_ttf.m in Sources */,
+				FE44BDBA11EBA03700762BF1 /* O2ImageSource_ICNS.m in Sources */,
+				FE71EDB211FA890300E6F801 /* O2PDFFunction_Type4.m in Sources */,
+				FE71EF2F11FBCA7E00E6F801 /* O2Encoding.m in Sources */,
+				FE71F0D211FC7CD200E6F801 /* O2PDFCharWidths.m in Sources */,
+				FE71F1C011FCB6DF00E6F801 /* O2PDFFunction_Type0.m in Sources */,
+				FE71F28F11FD221B00E6F801 /* O2PDFFont.m in Sources */,
+				FE43BE7B11FFBAD200119833 /* O2PDFBlock.m in Sources */,
+				FE39C1F61202829900A80A71 /* O2ClipState.m in Sources */,
+				FE2759471234039700BD6643 /* O2Context_distill.m in Sources */,
+				FE06A25B1245A9280040F165 /* O2Font_freetype.m in Sources */,
+				FE06A25D1245A9280040F165 /* O2GlyphStencil.m in Sources */,
+				FE99DB2012843F74006D789F /* O2Encoder_PNG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1997,6 +2158,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				089C1667FE841158C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FE069F4D1245A9260040F165 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE069F4E1245A9260040F165 /* English */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

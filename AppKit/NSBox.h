@@ -34,7 +34,7 @@ typedef enum {
    NSTitlePosition _titlePosition;
    id              _titleCell;
    NSSize          _contentViewMargins;
-
+   BOOL            _isTransparent;
    id              _customData;
 }
 
@@ -45,6 +45,7 @@ typedef enum {
 -contentView;
 -(NSSize)contentViewMargins;
 -(NSTitlePosition)titlePosition;
+-(BOOL)isTransparent;
 
 -(void)setBoxType:(NSBoxType)value;
 -(void)setBorderType:(NSBorderType)value;
@@ -53,6 +54,7 @@ typedef enum {
 -(void)setContentView:(NSView *)view;
 -(void)setContentViewMargins:(NSSize)value;
 -(void)setTitlePosition:(NSTitlePosition)value;
+-(void)setTransparent:(BOOL)value;
 -(void)setTitleWithMnemonic:(NSString *)value;
 
 -(NSRect)titleRect;

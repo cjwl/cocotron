@@ -6,9 +6,46 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSHTTPURLResponse.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSHTTPURLResponse
+
+static NSString *valueInHeaders(NSDictionary *headers,NSString *key){
+   NSEnumerator *state=[headers keyEnumerator];
+   NSString     *checkKey;
+   
+   key=[key lowercaseString];
+   
+   while((checkKey=[state nextObject])!=nil){
+    if([[checkKey lowercaseString] isEqualToString:key])
+     return [headers objectForKey:checkKey];
+   }
+   
+   return nil;
+}
+
+static NSString *mimeTypeFromContentType(NSString *contentType){
+   return nil;
+}
+
+static NSString *textEncodingNameFromContentType(NSString *contentType){
+   return nil;
+}
+
+-initWithURL:(NSURL *)url statusCode:(NSInteger)statusCode headers:(NSDictionary *)headers {
+   NSString *contentType=valueInHeaders(headers,@"content-type");
+   NSInteger contentLength=[valueInHeaders(headers,@"content-length") integerValue];
+   NSString *mimeType=mimeTypeFromContentType(contentType);
+   NSString *textEncodingName=textEncodingNameFromContentType(contentType);
+   
+   [super initWithURL:url MIMEType:mimeType expectedContentLength:contentLength textEncodingName:textEncodingName];
+   
+   _statusCode=statusCode;
+   _allHeaderFields=[headers retain];
+   return self;
+}
 
 +(NSString *)localizedStringForStatusCode:(NSInteger)statusCode {
    NSUnimplementedMethod();
@@ -16,13 +53,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)allHeaderFields {
-   NSUnimplementedMethod();
-   return nil;
+   return _allHeaderFields;
 }
 
 -(NSInteger)statusCode {
-   NSUnimplementedMethod();
-   return 0;
+   return _statusCode;
 }
 
 @end

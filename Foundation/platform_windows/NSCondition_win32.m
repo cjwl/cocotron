@@ -7,15 +7,11 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "NSCondition_win32.h"
-
+#import <Foundation/NSDebug.h>
 
 @implementation NSCondition_win32
 
-#pragma mark -
-#pragma mark NSObject methods
-
-- init;
-{
+-init {
 	if (nil == [super init]) return nil;
 
 	InitializeCriticalSection( &lock );
@@ -27,8 +23,7 @@
 	return self;
 }
 
-- (void) dealloc;
-{
+-(void) dealloc {
 	[self lock];
 	CloseHandle( events[Event_Signal] );
 	CloseHandle( events[Event_Broadcast] );
@@ -38,28 +33,24 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark <NSLocking> methods
-
-- (void) lock;
-{
+-(void) lock {
 	EnterCriticalSection( &lock );
 }
 
-- (void) unlock;
-{
+-(void) unlock {
 	LeaveCriticalSection( &lock );
 }
 
-#pragma mark -
-#pragma mark NSCondition methods
-
-- (void) wait;
-{
+-(void) wait {
 	InterlockedIncrement( &waitersCount );
 	
 	[self unlock];
+    
+    NSCooperativeThreadBlocking();
+    
 	int result = WaitForMultipleObjects( Event_Count, events, FALSE, INFINITE );
+
+    NSCooperativeThreadWaiting();
 
 	LONG newWaitersCount = InterlockedDecrement( &waitersCount );
 	BOOL lastWaiter = (result == WAIT_OBJECT_0 + Event_Broadcast) && (0 == newWaitersCount);

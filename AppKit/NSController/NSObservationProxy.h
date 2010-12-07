@@ -19,15 +19,10 @@
 -(id)observer;
 -(id)keyPath;
 -(void)setNotifyObject:(BOOL)val;
+-(void *)context;
+-(NSKeyValueObservingOptions)options;
 @end
 
 
-
-@interface _NSObservableArray : NSMutableArray
-{
-	NSMutableArray *_array;
-	NSMutableArray *_observationProxies;
-   NSMutableIndexSet *_roi;
-}
-@end
+void NSStringKVCSplitOnDot(NSString *self,NSString **before,NSString **after);
 

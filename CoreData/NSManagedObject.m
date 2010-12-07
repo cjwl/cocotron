@@ -5,234 +5,421 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSManagedObject.h"
-#import "NSManagedObjectContext.h"
-#import "NSEntityDescription.h"
-#import "NSPropertyDescription.h"
-#import <AppKit/NSRaise.h>
+#import <CoreData/NSManagedObject.h>
+#import "NSManagedObjectID-Private.h"
+#import "NSManagedObjectContext-Private.h"
+#import "NSEntityDescription-Private.h"
+#import <CoreData/NSAttributeDescription.h>
+#import <CoreData/NSRelationshipDescription.h>
+#import <CoreData/NSAtomicStoreCacheNode.h>
+#import <Foundation/NSRaise.h>
+#import "NSManagedObjectSet.h"
+#import "NSManagedObjectSetEnumerator.h"
+#import "NSManagedObjectMutableSet.h"
 
 @implementation NSManagedObject
 
-- (id) init {
-    NSLog(@"Error - can't initialize an NSManagedObject with [init]");
+-init {
+   NSLog(@"Error - can't initialize an NSManagedObject with -init");
+   return nil;
+}
+
+-initWithObjectID:(NSManagedObjectID *)objectID managedObjectContext:(NSManagedObjectContext *)context {
+   NSEntityDescription *entity=[objectID entity];
+   NSString            *className=[entity managedObjectClassName];
+   Class                class=NSClassFromString(className);
+ 
+   if(class==Nil){
+    NSLog(@"Unable to find class %@ specified by entity %@ in the runtime, using NSManagedObject,objectID=%@",className,[entity name],objectID);
+    
+    class=[NSManagedObject class];
+   }
+   
+   [super dealloc];
+   self=[class allocWithZone:NULL];
+   
+   _objectID=[objectID copy];
+   _context=context;
+   _committedValues = nil;
+   _changedValues = [[NSMutableDictionary alloc] init];
+   _isFault=YES;
+   return self;
+}
+
+-initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+   NSManagedObjectID *objectID=[[[NSManagedObjectID alloc] initWithEntity:entity] autorelease];
+   
+   if((self=[self initWithObjectID:objectID managedObjectContext:context])==nil)
     return nil;
+
+   NSDictionary *attributes=[entity attributesByName];
+   NSEnumerator *state=[attributes keyEnumerator];
+   NSString     *key;
+   
+   while((key=[state nextObject])!=nil){
+    id object=[attributes objectForKey:key];
+    id value=[object defaultValue];
+    
+    if(value!=nil)
+     [self setPrimitiveValue:value forKey:key]; 
+   }
+
+   [context insertObject:self];
+   
+   return self;
 }
 
-
-- (id)              initWithEntity: (NSEntityDescription *) entity
-    insertIntoManagedObjectContext: (NSManagedObjectContext *) context
-{
-    _entity = entity;
-    _context = context;
-    [context insertObject: self];
-    _changedValues = [[NSMutableDictionary dictionaryWithCapacity: 10] retain];
-    return self;
+-(void)dealloc {
+   [self didTurnIntoFault];
+   
+   [_objectID release];
+   [_changedValues release];
+   [super dealloc];
 }
 
-
-- (NSEntityDescription *) entity {
-    return _entity;
+-(NSUInteger)hash {
+   return [_objectID hash];
 }
 
-
-- (NSManagedObjectID *) objectID {
-    NSUnimplementedMethod();
-    return nil;
+-(BOOL)isEqual:otherX {
+   if(![otherX isKindOfClass:[NSManagedObject class]])
+    return NO;
+   
+   NSManagedObject *other=otherX;
+   
+   return [_objectID isEqual:other->_objectID];
 }
 
-
-- (id) self {
-    return self;
+-(NSEntityDescription *)entity {
+   return [_objectID entity];
 }
 
-
-- (NSManagedObjectContext *) managedObjectContext {
-    return _context;
+-(NSManagedObjectID *)objectID {
+   return _objectID;
 }
 
+-self {
+   return self;
+}
 
-- (BOOL) isInserted {
+-(NSManagedObjectContext *)managedObjectContext {
+   return _context;
+}
+
+-(BOOL)isInserted {
+   return _isInserted;
+}
+
+-(BOOL)isUpdated {
+   return _isUpdated;
+}
+
+-(BOOL)isDeleted {
+   return _isDeleted;
+}
+
+-(BOOL)isFault {
+   return _isFault;
+}
+
+- (BOOL) hasFaultForRelationshipNamed:(NSString *) key {
     NSUnimplementedMethod();
     return NO;
 }
-
-
-- (BOOL) isUpdated {
-    NSUnimplementedMethod();
-    return NO;
-}
-
-
-- (BOOL) isDeleted {
-    NSUnimplementedMethod();
-    return NO;
-}
-
-
-- (BOOL) isFault {
-    NSUnimplementedMethod();
-    return NO;
-}
-
-
-- (BOOL) hasFaultForRelationshipNamed: (NSString *) key {
-    NSUnimplementedMethod();
-    return NO;
-}
-
 
 - (void) awakeFromFetch {
     NSUnimplementedMethod();
 }
 
-
 - (void) awakeFromInsert {
     NSUnimplementedMethod();
 }
 
-
-- (NSDictionary *) changedValues {
-    return _changedValues;
+-(NSDictionary *)changedValues {
+   return _changedValues;
 }
 
+-(NSDictionary *)_committedValues {
 
-- (NSDictionary *) committedValuesForKeys: (NSArray *) keys {
-    NSUnimplementedMethod();
+   if([[self objectID] isTemporaryID])
     return nil;
+    
+   if(_committedValues==nil){
+    NSAtomicStoreCacheNode *node=[_context _cacheNodeForObjectID:[self objectID]];
+    NSDictionary           *propertyCache=[node propertyCache];
+    NSMutableDictionary    *storedValues=[[NSMutableDictionary alloc] init];
+    
+    NSArray *properties=[[self entity] properties];
+    
+    for(NSPropertyDescription *property in properties){
+     NSString *name=[property name];
+     
+     if([property isKindOfClass:[NSAttributeDescription class]]){
+      id value=[propertyCache objectForKey:name];
+      
+      if(value!=nil){
+       [storedValues setObject:value forKey:name];
+      }
+     }
+     else if([property isKindOfClass:[NSRelationshipDescription class]]){
+      NSRelationshipDescription *relationship=(NSRelationshipDescription *)property;
+      id                         indirectValue=[propertyCache objectForKey:name];
+ 
+      if(indirectValue!=nil){
+       id value;
+             
+       if(![relationship isToMany])
+        value=[indirectValue objectID];
+       else {
+        value=[NSMutableSet set];
+        
+        for(NSAtomicStoreCacheNode *relNode in indirectValue){
+         [value addObject:[relNode objectID]];
+        }
+       }
+       
+       [storedValues setObject:value forKey:name];
+      }
+     }
+    }
+    
+    [_committedValues release];
+    _committedValues=storedValues;
+   }
+   return _committedValues;
 }
 
-
-- (void) dealloc {
-    [_changedValues release];
-    [super dealloc];
+-(NSDictionary *)committedValuesForKeys:(NSArray *)keys {   
+   if(keys==nil)
+    return [self _committedValues];
+   else {
+    NSMutableDictionary *result=[NSMutableDictionary dictionary];
+    
+    for(NSString *key in keys){
+     id object=[[self _committedValues] objectForKey:key];
+     
+     if(object!=nil){
+      [result setObject:object forKey:key];
+     }
+    }
+    
+    return result;
+   }
 }
-
 
 - (void) didSave {
-    NSUnimplementedMethod();
 }
-
 
 - (void) willTurnIntoFault {
-    NSUnimplementedMethod();
+  // do nothing per doc.s
 }
-
 
 - (void) didTurnIntoFault {
-    NSUnimplementedMethod();
+  // do nothing also?
 }
-
 
 - (void) willSave {
-    NSUnimplementedMethod();
+
 }
 
+-valueForKey:(NSString *)key {
+   if(!key)
+    return [self valueForUndefinedKey:nil];
 
-- (id) valueForKey: (NSString *) key {
-    NSPropertyDescription *property
-	= [_entity _propertyForSelector: NSSelectorFromString(key)];
-    if(property) {
-	return [self _valueForProperty: property];
-    } else {
-	NSLog(@"Attempt to get undefined key %@.%@\n",
-	      [_entity name], key);
-	return nil;
+   NSPropertyDescription *property=[[self entity] _propertyForSelector:NSSelectorFromString(key)];
+   NSString *propertyName=[property name];
+   
+   if([property isKindOfClass:[NSAttributeDescription class]]){
+    [self willAccessValueForKey:propertyName];
+    
+    id result=[self primitiveValueForKey:propertyName];
+    
+    [self didAccessValueForKey:propertyName];
+    
+    return result;
+   }
+   else if([property isKindOfClass:[NSRelationshipDescription class]]){
+    NSRelationshipDescription *relationship=(NSRelationshipDescription *)property;
+    
+    [self willAccessValueForKey:propertyName];
+
+    id result=[self primitiveValueForKey:propertyName];
+    
+    if(result!=nil){
+     if([relationship isToMany])
+      result=[[[NSManagedObjectSet alloc] initWithManagedObjectContext:_context set:result] autorelease];
+     else
+      result=[_context objectWithID:result];
     }
+    
+    [self didAccessValueForKey:propertyName];
+    
+    return result;
+   }
+  
+   return [super valueForKey:key];
 }
 
 
-- (void) setValue: (id) value forKey: (NSString *) key {
-    NSPropertyDescription *property
-	= [_entity _propertyForSelector: NSSelectorFromString(key)];
-    if(property) {
-	[_context _requestProcessPendingChanges];
-	[self _setValue: value forProperty: property];
-    } else {
-	NSLog(@"Attempt to set undefined key %@.%@\n",
-	      [_entity name], key);
+-(void)setValue:value forKey:(NSString *) key {
+   NSPropertyDescription *property= [[self entity] _propertyForSelector:NSSelectorFromString(key)];
+   NSString              *propertyName=[property name];
+   
+   if([property isKindOfClass:[NSAttributeDescription class]]){
+    [self willChangeValueForKey:propertyName];
+    [self setPrimitiveValue:value forKey:propertyName];
+    [self didChangeValueForKey:propertyName];
+    return;
+   }
+   else if([property isKindOfClass:[NSRelationshipDescription class]]){
+    NSRelationshipDescription *relationship=(NSRelationshipDescription *)property;
+    NSRelationshipDescription *inverse=[relationship inverseRelationship];
+    NSString                  *inverseName=[inverse name];
+    id                         valueByID;
+        
+    if([relationship isToMany]){
+     NSMutableSet *set=[NSMutableSet set];
+     
+     for(NSManagedObject *object in value)
+      [set addObject:[object objectID]];
+      
+     valueByID=set;
     }
+    else {
+     valueByID=[value objectID];
+    }
+
+    if(inverse!=nil){
+     id primitivePrevious=[self primitiveValueForKey:key];
+     
+     if(primitivePrevious!=nil){
+      NSSet *allPrevious=[relationship isToMany]?primitivePrevious:[NSSet setWithObject:primitivePrevious];
+      
+      for(NSManagedObjectID *previousID in allPrevious){
+       NSManagedObject *previous=[_context objectWithID:previousID];
+
+     // FIXME: should be using set mutation notifications for to many
+       [previous willChangeValueForKey:inverseName];
+
+       if([inverse isToMany])
+        [[previous primitiveValueForKey:inverseName] removeObject:[self objectID]];
+       else
+        [previous setPrimitiveValue:nil forKey:inverseName];
+      
+       [previous didChangeValueForKey:inverseName];
+      }
+     }
+    }
+
+    [self willChangeValueForKey:propertyName];
+    [self setPrimitiveValue:valueByID forKey:propertyName];
+    [self didChangeValueForKey:propertyName];
+
+    if(inverse!=nil){     
+     NSSet *allValues=[relationship isToMany]?valueByID:[NSSet setWithObject:valueByID];
+
+     for(NSManagedObjectID *valueID in allValues){
+      NSManagedObject *value=[_context objectWithID:valueID];
+
+     // FIXME: should be using set mutation notifications for to many
+      [value willChangeValueForKey:inverseName];
+     
+      if([inverse isToMany]){
+       NSMutableSet *set=[value primitiveValueForKey:inverseName];
+    
+       if(set==nil){
+        set=[NSMutableSet set];
+        [value setPrimitiveValue:set forKey:inverseName];
+       }
+
+       [set addObject:[self objectID]];
+      }
+      else{
+       [value setPrimitiveValue:[self objectID] forKey:inverseName];
+      }
+     
+      [value didChangeValueForKey:inverseName];
+     }
+    }
+    return;
+   }
+   
+   [super setValue:value forKey:key];
 }
 
-
-- (NSMutableSet *) mutableSetValueForKey: (NSString *) key {
-    NSUnimplementedMethod();
-    return nil;
+-(NSMutableSet *) mutableSetValueForKey:(NSString *) key {
+   return [[[NSManagedObjectMutableSet alloc] initWithManagedObject:self key:key] autorelease];
 }
 
-
-- (id) primitiveValueForKey: (NSString *) key {
-    NSUnimplementedMethod();
-    return nil;
+-primitiveValueForKey:(NSString *) key {
+   id result=[_changedValues objectForKey:key];
+   
+   if(result==nil)
+    result=[[self _committedValues] objectForKey:key];
+   
+   return result;
 }
 
-
-- (void) setPrimitiveValue: (id) value forKey: (NSString *) key {
-    NSUnimplementedMethod();
+-(void)setPrimitiveValue:value forKey:(NSString *)key {
+   if(value==nil)
+    [_changedValues removeObjectForKey:key];
+   else {
+    [_changedValues setObject:value forKey:key];
+   }
 }
 
-
-- (id) _valueForProperty: (NSPropertyDescription *) property {
-    return [_changedValues objectForKey: property];
-}
-
-
-- (void) _setValue: (id) value forProperty: (NSPropertyDescription *) property {
-    [self willChangeValueForKey: [property name]];
-    [_changedValues setObject: value forKey: property];
-    NSLog(@"Set %@.%@ to %@\n", self, [property name], value);
-    [self didChangeValueForKey: [property name]];
-    [_context _requestProcessPendingChanges];
-}
-
-
-- (BOOL) validateValue: (id *) value forKey: (NSString *) key error: (NSError **) error {
+- (BOOL) validateValue:(id *) value forKey:(NSString *) key error:(NSError **) error {
     NSUnimplementedMethod();
     return YES;
 }
 
 
-- (BOOL) validateForDelete: (NSError **) error {
+- (BOOL) validateForDelete:(NSError **) error {
     NSUnimplementedMethod();
     return YES;
 }
 
 
-- (BOOL) validateForInsert: (NSError **) error {
+- (BOOL) validateForInsert:(NSError **) error {
     NSUnimplementedMethod();
     return YES;
 }
 
 
-- (BOOL) validateForUpdate: (NSError **) error {
+- (BOOL) validateForUpdate:(NSError **) error {
     NSUnimplementedMethod();
     return YES;
 }
 
 
-+ (BOOL) automaticallyNotifiesObserversForKey: (NSString *) key {
-    return NO;
++(BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
+  // FIXME: Doc.s for NSManagedObject state this returns YES for unmodeled properties.
+
+   return NO;
+}
+
+-(void)didAccessValueForKey:(NSString *) key {
+}
+
+-(void *)observationInfo {
+   return _observationInfo;
 }
 
 
-- (void) didAccessValueForKey: (NSString *) key {
-    NSUnimplementedMethod();
+-(void)setObservationInfo:(void *) value {
+   _observationInfo=value;
 }
 
-
-- (void *) observationInfo {
-    return NULL;
+-(void)willAccessValueForKey:(NSString *)key {
 }
 
-
-- (void) setObservationInfo: (void *) value {
-    NSUnimplementedMethod();
+-(NSString *)description {
+   NSMutableDictionary *values=[NSMutableDictionary dictionaryWithDictionary:[self _committedValues]];
+   
+   [values addEntriesFromDictionary:_changedValues];
+   
+   return [NSString stringWithFormat:@"<%@ %x:objectID=%@ entity name=%@, values=%@>",isa,self,_objectID,[self entity],values];
 }
-
-
-- (void) willAccessValueForKey: (NSString *) key {
-    NSUnimplementedMethod();
-}
-
 
 @end
 

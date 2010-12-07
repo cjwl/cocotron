@@ -30,22 +30,45 @@
 
 @implementation O2Paint_pattern
 
-static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+ONYX2D_STATIC int o2pattern_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
    O2Paint_pattern *self=(O2Paint_pattern *)selfX;
+   O2Image         *image=self->_image;
+      
+   O2ImageReadPatternSpan_largb8u_PRE(image,x,y,span,length,self->m_surfaceToPaintMatrix,kO2PatternTilingNoDistortion);
    
-   O2ImageReadPatternSpan_largb32f_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kO2PatternTilingConstantSpacing);
    return length;
 }
 
--initWithImage:(O2Image *)image {
-   O2PaintInitWithTransform(self,O2AffineTransformIdentity);
-   _paint_largb32f_PRE=O2PaintReadPremultipliedPatternSpan;
-   m_pattern=[image retain];
+ONYX2D_STATIC int o2pattern_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+   O2Paint_pattern *self=(O2Paint_pattern *)selfX;
+   int i;
+   
+   for(i=0;i<length;i++)
+    span[i]=O2argb32fInit(1,0,0,1);
+
+   return length;
+}
+
+#if 0
+static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
+   O2Paint_pattern *self=(O2Paint_pattern *)selfX;
+   
+   O2ImageReadPatternSpan_largb32f_PRE(self->_image,x, y,span,length, self->m_surfaceToPaintMatrix, kO2PatternTilingConstantSpacing);
+   return length;
+}
+#endif
+
+-initWithImage:(O2Image *)image surfaceToPaintTransform:(O2AffineTransform)xform phase:(O2Size)phase {   
+   O2PaintInitWithTransform(self,xform);
+   _paint_largb8u_PRE=o2pattern_largb8u_PRE;
+   _paint_largb32f_PRE=o2pattern_largb32f_PRE;
+   _image=[image retain];
+   _phase=phase;
    return self;
 }
 
 -(void)dealloc {
-   [m_pattern release];
+   [_image release];
    [super dealloc];
 }
 
