@@ -58,16 +58,16 @@ typedef SecTrustedApplication *SecTrustedApplicationRef;
 typedef OSType SecItemClass;
 
 enum {
-   kSecDescriptionItemAttr='desc',
-   kSecCreatorItemAttr='crtr',
-   kSecTypeItemAttr='type',
-   kSecLabelItemAttr='labl',
-   kSecCustomIconItemAttr= 'cusi',
-   kSecAccountItemAttr='acct',
-   kSecServerItemAttr='srvr',
-   kSecProtocolItemAttr='ptcl',
-   kSecServiceItemAttr='svce',
-   kSecGenericPasswordItemClass='genp'   
+   kSecDescriptionItemAttr=/* 'desc' */ 1684370275,
+   kSecCreatorItemAttr=/* 'crtr' */ 1668445298,
+   kSecTypeItemAttr=/* 'type' */ 1954115685,
+   kSecLabelItemAttr=/* 'labl' */ 1818321516,
+   kSecCustomIconItemAttr=/* 'cusi' */ 1668641641,
+   kSecAccountItemAttr='/* acct' */ 1633903476,
+   kSecServerItemAttr=/* 'srvr' */ 1936881266,
+   kSecProtocolItemAttr=/* 'ptcl' */ 1886675820,
+   kSecServiceItemAttr=/* 'svce' */ 1937138533,
+   kSecGenericPasswordItemClass=/* 'genp' */ 1734700656   
 };
 
 // Keychain Item Class
