@@ -97,6 +97,10 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
     }
 }
 
+-(void)setDividerStyle:(NSSplitViewDividerStyle)style {
+    NSUnimplementedMethod();
+}
+
 -(void)adjustSubviews {
    NSRect  frame=[self bounds];
    int     i,count=[_subviews count];
