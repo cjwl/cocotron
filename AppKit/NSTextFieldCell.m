@@ -331,17 +331,17 @@ static void drawRoundedBezel(CGContextRef context,CGRect frame){
    [self drawInteriorWithFrame:frame inView:control];
 }
 
-// Bindings
+@end
+
+@implementation NSTextFieldCell (Bindings)
 
 - (CGFloat) _fontSize {
     return [_font pointSize];
 }
 - (void) _setFontSize:(CGFloat)fontSize {
-    NSFontDescriptor *fontDescriptor = [[_font fontDescriptor] retain];
-    [_font release];
-    _font = [[NSFont fontWithDescriptor:fontDescriptor 
-                                   size:fontSize] retain];
-    [fontDescriptor release];
+    NSString *fontName = [_font fontName];
+    [self setFont:[NSFont fontWithName:fontName 
+                                  size:fontSize]];
 }
 - (NSString*) _fontFamilyName {
     return [_font familyName];
@@ -354,14 +354,14 @@ static void drawRoundedBezel(CGContextRef context,CGRect frame){
     NSLog(@"_setFontFamilyName: %@", familyName);
     
     CGFloat currentSize = [_font pointSize];
-    _font = [[NSFont fontWithName:familyName
-                             size:currentSize] retain];
+    [self setFont:[NSFont fontWithName:familyName 
+                                   size:currentSize]];
 }
 
 -(id)_replacementKeyPathForBinding:(id)binding {
-   if([binding isEqual:@"value"])
+    if([binding isEqual:@"value"])
 		return @"stringValue";
-   return [super _replacementKeyPathForBinding:binding];
+    return [super _replacementKeyPathForBinding:binding];
 }
 
 @end
