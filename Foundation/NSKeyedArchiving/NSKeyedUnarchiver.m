@@ -18,6 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/CFUID.h>
 #import <Foundation/NSCFTypeID.h>
 
+#import <Foundation/NSRaise.h>
+
 NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationException";
 
 @interface NSObject(NSKeyedUnarchiverPrivate)
@@ -415,6 +417,12 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
    
    return NSMakeRect(array[0],array[1],array[2],array[3]);
+}
+
+// NSCoder: Subclasses must override this method and provide an implementation to decode the value.
+-(void)decodeValueOfObjCType:(const char *)type at:(void *)data {
+    NSLog(@"! decodeValueOfObjCType:%s at:data", type);
+    NSUnimplementedMethod();
 }
 
 -_decodeObjectWithPropertyList:plist {
