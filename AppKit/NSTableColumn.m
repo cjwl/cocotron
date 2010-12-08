@@ -216,6 +216,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [_NSMultipleValueBinder class];
 }
 
+- (NSString*)_headerTitle {
+    return [_headerCell title];
+}
+- (void)_setHeaderTitle:(NSString*)title {
+    return [_headerCell setTitle:title];
+}
+
+
 - (NSSortDescriptor *)sortDescriptorPrototype {
     return [[_sortDescriptorPrototype retain] autorelease];
 }
