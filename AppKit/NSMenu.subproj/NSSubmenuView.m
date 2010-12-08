@@ -15,6 +15,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define MIN_TITLE_KEY_GAP 8
 #define WINDOW_BORDER_THICKNESS 3
+#define IMAGE_TITLE_GAP 8
+
+-(NSSize)sizeForMenuItemImage:(NSMenuItem *)item {
+	NSSize result=NSZeroSize;
+	
+	if([item image]!=nil)
+		result=[[item image] size];
+	
+	return result;
+}
 
 -(NSSize)contentSizeForItem:(NSMenuItem *)item {
 	if ([item isSeparatorItem])	{
@@ -22,12 +32,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	else {
 #define ITEM_MAX(size) height = MAX(height,size.height); width += size.width;
-		float width = 0;
-		float height = 0;
+		float width = [[self graphicsStyle] menuItemGutterGap];
+		float height = 0.0f;
 		NSSize size;
 		
 		size = [[self graphicsStyle] menuItemGutterSize];
 		ITEM_MAX(size);
+		size = [self sizeForMenuItemImage:item];
+		if (size.width > 0.0f) 
+		{
+			ITEM_MAX(size);
+			width += IMAGE_TITLE_GAP;
+		}
 		size = [[self graphicsStyle] menuItemTextSize:[item title]];
 		ITEM_MAX(size);
 		if ([[item keyEquivalent] length] == 0)
@@ -40,6 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			size = [[self graphicsStyle] menuItemBranchArrowSize];
 			ITEM_MAX(size);
 		}
+		
 		return NSMakeSize(width,height);
 	}
 }
@@ -47,6 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)sizeForMenuItems:(NSArray *)items {
 	NSSize   result=NSZeroSize;
 	float    maxTitleWidth = 0.0f;
+	BOOL     anItemHasAnImage = NO;
 	float    maxKeyWidth = 0.0f; 
 	float    totalHeight = 0.0f;
 	NSSize   gutterSize = [[self graphicsStyle] menuItemGutterSize];
@@ -62,10 +80,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 		else
 		{
-			NSSize     size = [[self graphicsStyle] menuItemTextSize:[item title]];
+			NSSize     size = NSZeroSize;
 			float      height = 0.0f;
+			float      titleAndIconWidth = 0.0f;
 			
-			maxTitleWidth = MAX(maxTitleWidth,size.width);
+			size = [self sizeForMenuItemImage:item];
+			height = MAX(height,size.height);
+			if ((titleAndIconWidth = size.width) > 0.0f)
+				anItemHasAnImage = YES;
+
+			size = [[self graphicsStyle] menuItemTextSize:[item title]];
+			titleAndIconWidth += size.width;
+			maxTitleWidth = MAX(maxTitleWidth,titleAndIconWidth);
 			height = MAX(height,size.height);
 			
 			if ([[item keyEquivalent] length] != 0)
@@ -83,9 +109,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	result.height = totalHeight;
 	result.width = gutterSize.width;
+	result.width += [[self graphicsStyle] menuItemGutterGap];
+	if (anItemHasAnImage)
+		result.width += IMAGE_TITLE_GAP;
 	result.width += maxTitleWidth;
-	result.width += MIN_TITLE_KEY_GAP;
-	result.width += maxKeyWidth;
+	if (maxKeyWidth > 0.0f)
+	{
+		result.width += MIN_TITLE_KEY_GAP;
+		result.width += maxKeyWidth;
+	}
 	result.width += rightArrowSize.width;
 	
 	// border. Magic constants that may not be right for Win7 vs XP
@@ -154,29 +186,48 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 	partRect.size.height = partSize.height;                            \
 	partRect.size.width = partSize.width;                              \
 }
+			NSImage      *image = [item image];
 			BOOL         selected = (i ==_selectedItemIndex) ? YES : NO;
 			NSString     *title = [item title];
 			NSString     *keyString = [item _keyEquivalentDescription];
 			float        itemHeight = [self heightOfMenuItem:item];
 			NSRect       partRect;
 			NSSize       partSize;
+			BOOL         showsEnabled = ([item isEnabled] || [item hasSubmenu]);
 			
 			partRect = NSMakeRect(origin.x,origin.y,itemArea.size.width,itemHeight);
 
 			if (selected)
-				[[self graphicsStyle] drawMenuSelectionInRect:partRect enabled:([item isEnabled] || [item hasSubmenu])];
-			
+				[[self graphicsStyle] drawMenuSelectionInRect:partRect enabled:showsEnabled];
+
+			// Draw the gutter and checkmark (if any)
 			CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemGutterSize]);
 			if ([item state])
 			{
 				[[self graphicsStyle] drawMenuGutterInRect:partRect];			
-				[[self graphicsStyle] drawMenuCheckmarkInRect:partRect selected:selected];
+				[[self graphicsStyle] drawMenuCheckmarkInRect:partRect enabled:showsEnabled selected:selected];
 			}
 			
+			partRect.origin.x += [[self graphicsStyle] menuItemGutterGap];;
+			
+			// Draw the image
+			if (image)
+			{
+				NSRect imageRect;
+				
+				partRect.origin.x += partRect.size.width;
+				CENTER_PART_RECT_VERTICALLY([image size]);
+				
+				[image drawInRect:partRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:showsEnabled ? 1.0f : 0.5f];
+				partRect.origin.x += IMAGE_TITLE_GAP;
+			}
+			
+			// Draw the title
 			partRect.origin.x += partRect.size.width;
 			CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:title]);
-			[[self graphicsStyle] drawMenuItemText:title inRect:partRect enabled:([item isEnabled] || [item hasSubmenu]) selected:selected];
+			[[self graphicsStyle] drawMenuItemText:title inRect:partRect enabled:showsEnabled selected:selected];
 			
+			// Draw the key equivalent
 			if ([keyString length] > 0)
 			{
 				NSSize branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
@@ -184,16 +235,17 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 				
 				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width - keyEquivalentSize.width;
 				CENTER_PART_RECT_VERTICALLY(keyEquivalentSize);
-				[[self graphicsStyle] drawMenuItemText:keyString inRect:partRect enabled:([item isEnabled] || [item hasSubmenu]) selected:selected];
+				[[self graphicsStyle] drawMenuItemText:keyString inRect:partRect enabled:showsEnabled selected:selected];
 			}
 			
+			// Draw the submenu arrow
 			if([item hasSubmenu])
 			{
 				NSSize branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
 				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width;
 				partRect.size.width = branchArrowSize.width;
-				CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:keyString]);
-				[[self graphicsStyle] drawMenuBranchArrowInRect:partRect selected:selected];
+				CENTER_PART_RECT_VERTICALLY(branchArrowSize);
+				[[self graphicsStyle] drawMenuBranchArrowInRect:partRect enabled:showsEnabled selected:selected];
 			}
 			
 			origin.y += itemHeight;

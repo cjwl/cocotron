@@ -65,8 +65,7 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 
 #define TITLE_TOP_MARGIN 2
 #define TITLE_BOTTOM_MARGIN 2
-#define TITLE_KEY_GAP 8
-#define BRANCH_ARROW_LEFT_MARGIN 0
+#define BRANCH_ARROW_LEFT_MARGIN 2
 #define BRANCH_ARROW_RIGHT_MARGIN 2
 
 -(NSInterfacePartAttributedString *)branchArrow
@@ -101,13 +100,7 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 }
 
 -(NSSize)menuItemBranchArrowSize {
-	NSSize result = [[self branchArrow] size];
-	Margins margins = [self menuItemBranchArrowMargins];
-	
-	result.height += (margins.top + margins.bottom);
-	result.width += (margins.left + margins.right);
-
-	return result;
+   return NSMakeSize(5,9);
 }
 
 -(NSSize)menuItemCheckMarkSize {
@@ -164,7 +157,6 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 
 -(float)menuBarHeight
 {
-	NSLog(@"beep");
 	NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSFont menuFontOfSize:0],NSFontAttributeName,nil];
 	float         result=[@"Menu" sizeWithAttributes:attributes].height;
@@ -175,6 +167,12 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 	
 	return result;
 }
+
+-(float)menuItemGutterGap
+{
+	return 0;
+}
+
 -(void)drawMenuSeparatorInRect:(NSRect)rect 
 {
 	NSPoint point = NSMakePoint(rect.origin.x + 1, rect.origin.y + 3);
@@ -225,13 +223,20 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 }
 
 
--(void)drawMenuCheckmarkInRect:(NSRect)rect selected:(BOOL)selected {
-	NSColor                         *color = selected ? [NSColor selectedControlTextColor] : [NSColor menuItemTextColor];
-	NSInterfacePartAttributedString *checkMark = [[NSInterfacePartAttributedString alloc] initWithCharacter:0x61 
-																								   fontName:@"Marlett" 
-																								  pointSize:10 
-																									  color:color];
-	Margins margins=[self menuItemTextMargins];
+-(void)drawMenuCheckmarkInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
+	NSColor                         *color;
+	NSInterfacePartAttributedString *checkMark;
+	Margins                         margins=[self menuItemTextMargins];
+	
+	if (enabled)
+		color = selected ? [NSColor selectedControlTextColor] : [NSColor menuItemTextColor];
+	else
+		color = [NSColor disabledControlTextColor];
+	
+	checkMark = [[NSInterfacePartAttributedString alloc] initWithCharacter:0x61 
+																  fontName:@"Marlett" 
+																 pointSize:10 
+																	 color:color];
 	rect.origin.x += margins.left;
 	rect.origin.y += margins.top;
 
@@ -239,17 +244,30 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 }
 
 
--(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {
-	NSColor                         *color = selected ? [NSColor selectedControlTextColor] : [NSColor menuItemTextColor];
-	NSInterfacePartAttributedString *arrow = [[NSInterfacePartAttributedString alloc] initWithCharacter:0x34 
-																							   fontName:@"Marlett" 
-																							  pointSize:10 
-																								  color:color];
-	Margins margins=[self menuItemTextMargins];
-	rect.origin.x += margins.left;
-	rect.origin.y += margins.top;
+-(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
+	CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+	NSColor      *color;
+	Margins      margins=[self menuItemBranchArrowMargins];
+	NSRect       themeRect = rect;
 	
-	[arrow drawAtPoint:rect.origin];
+	if (enabled)
+		color = selected ? [NSColor selectedControlTextColor] : [NSColor menuItemTextColor];
+	else
+		color = [NSColor disabledControlTextColor];
+	
+	[color set];
+	
+	themeRect.origin.x += margins.left;
+	themeRect.origin.y += margins.top;
+	themeRect.size.width -= (margins.left + margins.right);
+	themeRect.size.height -= (margins.top + margins.bottom);
+	
+	CGContextBeginPath(context);
+	CGContextMoveToPoint(context,NSMinX(themeRect),NSMaxY(themeRect));
+	CGContextAddLineToPoint(context,NSMaxX(themeRect),NSMidY(themeRect));
+	CGContextAddLineToPoint(context,NSMinX(themeRect),NSMinY(themeRect));
+	CGContextClosePath(context);
+	CGContextFillPath(context);
 }
 
 -(void)drawMenuSelectionInRect:(NSRect)rect enabled:(BOOL)enabled

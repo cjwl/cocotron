@@ -215,8 +215,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setImage:(NSImage *)image {
+   image=[image retain];
     [_image release];
-    _image = [image retain];
+    _image = image;
 }
 
 -(void)setOnStateImage:(NSImage *)image {

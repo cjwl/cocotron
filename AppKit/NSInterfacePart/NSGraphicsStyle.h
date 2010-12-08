@@ -34,6 +34,7 @@ Margins;
 -(NSSize)menuItemGutterSize;
 -(NSSize)menuItemTextSize:(NSString *)title;
 -(float)menuBarHeight;
+-(float)menuItemGutterGap;
 
 -(Margins)menuItemBranchArrowMargins;
 -(Margins)menuItemGutterMargins;
@@ -41,9 +42,9 @@ Margins;
 
 -(void)drawMenuSeparatorInRect:(NSRect)rect;
 -(void)drawMenuGutterInRect:(NSRect)rect;
--(void)drawMenuCheckmarkInRect:(NSRect)rect selected:(BOOL)selected;
+-(void)drawMenuCheckmarkInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
 -(void)drawMenuItemText:(NSString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
--(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected;
+-(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect;
 -(void)drawMenuBarBackgroundInRect:(NSRect)rect;
 -(void)drawMenuSelectionInRect:(NSRect)rect enabled:(BOOL)enabled;

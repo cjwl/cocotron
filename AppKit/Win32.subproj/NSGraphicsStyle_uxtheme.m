@@ -403,7 +403,7 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 #pragma mark -
 #pragma mark Menu Metrics
 
-#define BRANCH_ARROW_LEFT_MARGIN 0
+#define BRANCH_ARROW_LEFT_MARGIN 2
 #define BRANCH_ARROW_RIGHT_MARGIN 2
 
 -(NSSize)menuItemSeparatorSize {
@@ -437,12 +437,13 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 -(NSSize)menuItemBranchArrowSize {
 	NSSize result = NSZeroSize;
 	Margins margins = [self menuItemBranchArrowMargins];
-	
-	result = [[[[NSInterfacePartAttributedString alloc] initWithCharacter:0x34 fontName:@"Marlett" pointSize:10 color:[NSColor menuItemTextColor]] autorelease] size];
+
+	if(![self sizeOfPartId:/*MENU_POPUPSUBMENU*/16 stateId:0 uxthClassId:uxthMENU size:&result])
+		result = [super menuItemBranchArrowSize];
 
 	result.height += (margins.top + margins.bottom);
 	result.width += (margins.left + margins.right);
-	
+
 	return result;
 }
 
@@ -497,6 +498,11 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 		return (float)result;
 }
 
+-(float)menuItemGutterGap
+{
+	return 11;
+}
+
 #pragma mark -
 
 -(void)drawMenuSeparatorInRect:(NSRect)rect {
@@ -509,19 +515,26 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 		[super drawMenuGutterInRect:rect];
 }
 
--(void)drawMenuCheckmarkInRect:(NSRect)rect selected:(BOOL)selected {
+-(void)drawMenuCheckmarkInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
 	Margins margins=[self menuItemGutterMargins];
+	int     state;
 	
-	if(![self drawPartId:/*MENU_POPUPCHECKBACKGROUND*/12 stateId:selected?MS_SELECTED:MS_NORMAL uxthClassId:uxthMENU inRect:rect])
-		[super drawMenuCheckmarkInRect:rect selected:selected];
+	if (enabled)
+		state = selected ? /*MBI_HOT*/2 : /*MBI_NORMAL*/1;
+	else
+		state = selected ? /*MBI_DISABLEDHOT*/5 : /*MBI_DISABLED*/4;
+
+
+	if(![self drawPartId:/*MENU_POPUPCHECKBACKGROUND*/12 stateId:state uxthClassId:uxthMENU inRect:rect])
+		[super drawMenuCheckmarkInRect:rect enabled:enabled selected:selected];
 	
 	NSRect themeRect = rect;
 	themeRect.origin.x += margins.left;
 	themeRect.origin.y += margins.top;
 	themeRect.size.width -= (margins.left + margins.right);
 	themeRect.size.height -= (margins.top + margins.bottom);
-	if(![self drawPartId:/*MENU_POPUPCHECK*/11 stateId:selected?MS_SELECTED:MS_NORMAL uxthClassId:uxthMENU inRect:themeRect])
-		[super drawMenuCheckmarkInRect:rect selected:selected];
+	if(![self drawPartId:/*MENU_POPUPCHECK*/11 stateId:state uxthClassId:uxthMENU inRect:themeRect])
+		[super drawMenuCheckmarkInRect:rect enabled:enabled selected:selected];
 }
 
 -(void)drawMenuItemText:(NSString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
@@ -553,17 +566,18 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 		[super drawMenuItemText:string inRect:rect enabled:enabled selected:selected];
 }
 
-
--(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {
-	Margins margins=[self menuItemGutterMargins];
-	NSRect themeRect = rect;
+-(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
+	Margins margins=[self menuItemBranchArrowMargins];
+	NSRect  themeRect = rect;
+	int     state = enabled ? /*MBI_NORMAL*/1 : /*MBI_DISABLED*/4;
+	
 	themeRect.origin.x += margins.left;
 	themeRect.origin.y += margins.top;
 	themeRect.size.width -= (margins.left + margins.right);
 	themeRect.size.height -= (margins.top + margins.bottom);
 
-	if(![self drawPartId:MP_CHEVRON stateId:selected?MS_SELECTED:MS_NORMAL uxthClassId:uxthMENU inRect:themeRect])
-		[super drawMenuBranchArrowInRect:rect selected:selected];
+	if(![self drawPartId:/*MENU_POPUPSUBMENU*/16 stateId:state uxthClassId:uxthMENU inRect:themeRect])
+		[super drawMenuBranchArrowInRect:rect enabled:enabled selected:selected];
 }
 
 -(void)drawMenuSelectionInRect:(NSRect)rect enabled:(BOOL)enabled {
