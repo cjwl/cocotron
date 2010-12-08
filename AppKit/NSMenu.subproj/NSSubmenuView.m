@@ -189,7 +189,6 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 			NSImage      *image = [item image];
 			BOOL         selected = (i ==_selectedItemIndex) ? YES : NO;
 			NSString     *title = [item title];
-			NSString     *keyString = [item _keyEquivalentDescription];
 			float        itemHeight = [self heightOfMenuItem:item];
 			NSRect       partRect;
 			NSSize       partSize;
@@ -228,10 +227,11 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 			[[self graphicsStyle] drawMenuItemText:title inRect:partRect enabled:showsEnabled selected:selected];
 			
 			// Draw the key equivalent
-			if ([keyString length] > 0)
+			if ([[item keyEquivalent] length] != 0)
 			{
-				NSSize branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
-				NSSize keyEquivalentSize = [[self graphicsStyle] menuItemTextSize:keyString];
+				NSString *keyString = [item _keyEquivalentDescription];
+				NSSize   branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+				NSSize   keyEquivalentSize = [[self graphicsStyle] menuItemTextSize:keyString];
 				
 				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width - keyEquivalentSize.width;
 				CENTER_PART_RECT_VERTICALLY(keyEquivalentSize);
