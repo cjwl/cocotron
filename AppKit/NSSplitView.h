@@ -27,6 +27,8 @@ APPKIT_EXPORT NSString * const NSSplitViewWillResizeSubviewsNotification;
 -(float)dividerThickness;
 -(void)drawDividerInRect:(NSRect)rect;
 
+-(BOOL)isSubviewCollapsed:(NSView *)subview;
+
 @end
 
 // nb. it looks like the API for this is changed in MacOS X, replacing splitView:constrainMix:max:ofSubviewAt
