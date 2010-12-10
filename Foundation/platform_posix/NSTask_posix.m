@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop-InputSource.h>
 #import <Foundation/NSPlatform_posix.h>
 #import <Foundation/NSFileHandle_posix.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/Foundation.h>
 
 #include <unistd.h>
@@ -124,7 +125,33 @@ void childSignalHandler(int sig) {
         
         chdir([currentDirectoryPath fileSystemRepresentation]);
         
-        execve(path, (char**)args, NSPlatform_environ());
+        NSDictionary *env;
+        if(environment == nil) {
+            env = [[NSProcessInfo processInfo] environment];
+        }
+        else {
+            env = environment;
+        }
+        const char *cenv[[env count] + 1];
+        
+        NSString *key;
+        i = 0;
+        
+        for (key in env) {
+            id          value = [env objectForKey:key];
+            NSString    *entry;
+            if (value) {
+                entry = [NSString stringWithFormat:@"%@=%@", key, value];
+            }
+            else {
+                entry = [NSString stringWithFormat:@"%@=", key];
+            }      
+            
+            cenv[i] = [entry cString];
+            i++;
+        }
+        
+        execve(path, (char**)args, (char**)cenv);
         [NSException raise:NSInvalidArgumentException
                     format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
     }
