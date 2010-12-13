@@ -12,13 +12,6 @@
 
 @implementation NSRecursiveLock
 
-+allocWithZone:(NSZone *)zone {
-   if(self==[NSRecursiveLock class])
-    return NSAllocateObject([[NSPlatform currentPlatform] recursiveLockClass],0,zone);
-   else
-    return NSAllocateObject(self,0,zone);
-}
-
 -(id)init
 {
     if((self = [super init]))

@@ -8,6 +8,16 @@
 #import "NSRecursiveLock_win32.h"
 #import <Foundation/NSRaiseException.h>
 
+@implementation NSRecursiveLock(win32)
++allocWithZone:(NSZone *)zone {
+   if(self==[NSRecursiveLock class])
+    return NSAllocateObject([NSRecursiveLock_win32 class],0,zone);
+   else
+    return NSAllocateObject(self,0,zone);
+}
+
+@end
+
 @implementation NSRecursiveLock_win32
 
 - (id)init
