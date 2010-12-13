@@ -24,8 +24,10 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(NSInputSource *)parentDeathInputSource;
 
 -(Class)taskClass;
+-(Class)socketClass;
 -(Class)pipeClass;
 -(Class)lockClass;
+-(Class)recursiveLockClass;
 -(Class)conditionLockClass;
 -(Class)persistantDomainClass;
 -(Class)timeZoneClass;
@@ -53,6 +55,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
 @end
 
+FOUNDATION_EXPORT int NSPlatformProcessorCount();
 FOUNDATION_EXPORT int NSPlatformProcessID();
 FOUNDATION_EXPORT NSUInteger NSPlatformThreadID();
 FOUNDATION_EXPORT NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate();

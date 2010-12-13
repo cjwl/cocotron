@@ -6256,6 +6256,8 @@
 		FEE97EB90BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
 		FEE97EBA0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEE97EBB0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
+		FEEA64B512B674A200E6E2C8 /* NSRecursiveLock_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEA64B312B674A200E6E2C8 /* NSRecursiveLock_win32.h */; };
+		FEEA64B612B674A200E6E2C8 /* NSRecursiveLock_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEA64B412B674A200E6E2C8 /* NSRecursiveLock_win32.m */; };
 		FEF5B4D40BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */; };
 		FEF5B4D50BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */; };
 		FEF5B4D60BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */; };
@@ -7493,6 +7495,8 @@
 		FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bonjour.h; sourceTree = "<group>"; };
 		FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSConcreteDirectoryEnumerator.h; sourceTree = "<group>"; };
 		FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSConcreteDirectoryEnumerator.m; sourceTree = "<group>"; };
+		FEEA64B312B674A200E6E2C8 /* NSRecursiveLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRecursiveLock_win32.h; sourceTree = "<group>"; };
+		FEEA64B412B674A200E6E2C8 /* NSRecursiveLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRecursiveLock_win32.m; sourceTree = "<group>"; };
 		FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSArray+KVC.m"; sourceTree = "<group>"; };
 		FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+KVC.m"; sourceTree = "<group>"; };
 		FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSKeyValueObserving-Private.h"; sourceTree = "<group>"; };
@@ -8354,6 +8358,8 @@
 		6E28034A09747A7700EC542B /* platform_windows */ = {
 			isa = PBXGroup;
 			children = (
+				FEEA64B312B674A200E6E2C8 /* NSRecursiveLock_win32.h */,
+				FEEA64B412B674A200E6E2C8 /* NSRecursiveLock_win32.m */,
 				C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */,
 				C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */,
 				269249CA1157AD6500A96CEB /* NSCondition_win32.m */,
@@ -10557,6 +10563,7 @@
 				269249CD1157AD6500A96CEB /* NSCondition_win32.h in Headers */,
 				FE720FD6124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE721027124CE420009B690D /* NSKeyObserver.h in Headers */,
+				FEEA64B512B674A200E6E2C8 /* NSRecursiveLock_win32.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14266,6 +14273,7 @@
 				269249CC1157AD6500A96CEB /* NSCondition_win32.m in Sources */,
 				FE720FD7124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721028124CE420009B690D /* NSKeyObserver.m in Sources */,
+				FEEA64B612B674A200E6E2C8 /* NSRecursiveLock_win32.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
