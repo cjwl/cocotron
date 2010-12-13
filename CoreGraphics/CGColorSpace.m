@@ -29,6 +29,10 @@ CGColorSpaceRef CGColorSpaceCreateDeviceCMYK() {
    return O2ColorSpaceCreateDeviceCMYK();
 }
 
+CGColorSpaceRef CGColorSpaceCreatePattern(CGColorSpaceRef baseSpace) {
+   return O2ColorSpaceCreatePattern(baseSpace);
+}
+
 CGColorSpaceModel CGColorSpaceGetModel(CGColorSpaceRef self) {
    return O2ColorSpaceGetModel(self);
 }

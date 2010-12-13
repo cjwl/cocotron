@@ -34,6 +34,7 @@ COREGRAPHICS_EXPORT void CGColorSpaceRelease(CGColorSpaceRef colorSpace);
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceRGB();
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceGray();
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceCMYK();
+COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreatePattern(CGColorSpaceRef baseSpace);
 
 COREGRAPHICS_EXPORT CGColorSpaceModel CGColorSpaceGetModel(CGColorSpaceRef self);
 COREGRAPHICS_EXPORT size_t CGColorSpaceGetNumberOfComponents(CGColorSpaceRef self);
