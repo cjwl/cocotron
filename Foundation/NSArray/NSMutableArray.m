@@ -151,8 +151,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    while(--count>=0){
     id check=[self objectAtIndex:count];
 
-    if([check isEqual:object])
-     [self removeObjectAtIndex:count];
+    if([check isEqual:object]) {
+      if ([object retainCount] == 1) { 
+	    [self removeObjectAtIndex:count];
+		// break here as object is freed
+		break;
+	  }
+	  else {
+	    [self removeObjectAtIndex:count];
+	  }
+	}	
    }
 }
 
