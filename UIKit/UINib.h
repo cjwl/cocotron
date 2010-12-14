@@ -2,6 +2,8 @@
 
 @class NSData,NSBundle,NSArray,NSDictionary;
 
+#define IBOutlet
+
 @interface UINib : NSObject {
 }
 

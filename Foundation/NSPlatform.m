@@ -37,6 +37,11 @@ extern NSString *NSPlatformClassName;
    return Nil;
 }
 
+-(Class)socketClass {
+   NSInvalidAbstractInvocation();
+   return Nil;
+}
+
 -(Class)pipeClass {
    NSInvalidAbstractInvocation();
    return Nil;
@@ -47,6 +52,12 @@ extern NSString *NSPlatformClassName;
    return Nil;
 }
 
+-(Class)recursiveLockClass
+{
+    // NSRecursiveLock is an *okay* default (doesn't use atomic operations)
+   return Nil;
+}
+
 -(Class)conditionLockClass {
    NSInvalidAbstractInvocation();
    return Nil;
@@ -54,8 +65,8 @@ extern NSString *NSPlatformClassName;
 
 -(Class)conditionClass;
 {
-	NSInvalidAbstractInvocation();
-	return Nil;
+    NSInvalidAbstractInvocation();
+    return Nil;
 }
 
 -(Class)persistantDomainClass {

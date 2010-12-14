@@ -100,6 +100,9 @@
 		FE39C1E61202828A00A80A71 /* O2ClipState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C1E51202828A00A80A71 /* O2ClipState.m */; };
 		FE45EE650DC254C700F49290 /* overlay.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE640DC254C700F49290 /* overlay.jpg */; };
 		FE619A32107A56A100807E7E /* O2Font_CG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE619A31107A56A100807E7E /* O2Font_CG.m */; };
+		FE7F725A12AF4DC400FDF52D /* O2argb8u.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F725812AF4DC400FDF52D /* O2argb8u.m */; };
+		FE7F725B12AF4DC400FDF52D /* O2argb32f.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F725912AF4DC400FDF52D /* O2argb32f.m */; };
+		FE7F725F12AFFB0900FDF52D /* O2Encoder_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F725E12AFFB0900FDF52D /* O2Encoder_PNG.m */; };
 		FEA47EC2101E44CD005820F3 /* redLZWSquare.tif in Resources */ = {isa = PBXBuildFile; fileRef = FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */; };
 /* End PBXBuildFile section */
 
@@ -259,6 +262,9 @@
 		FE5C0E55116387FA00065D1C /* Onyx2D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Onyx2D.framework; path = Cocotron/MacOS/Frameworks/Onyx2D.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		FE619A30107A56A100807E7E /* O2Font_CG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_CG.h; sourceTree = "<group>"; };
 		FE619A31107A56A100807E7E /* O2Font_CG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_CG.m; sourceTree = "<group>"; };
+		FE7F725812AF4DC400FDF52D /* O2argb8u.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2argb8u.m; path = ../../Onyx2D/O2argb8u.m; sourceTree = SOURCE_ROOT; };
+		FE7F725912AF4DC400FDF52D /* O2argb32f.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2argb32f.m; path = ../../Onyx2D/O2argb32f.m; sourceTree = SOURCE_ROOT; };
+		FE7F725E12AFFB0900FDF52D /* O2Encoder_PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2Encoder_PNG.m; path = ../../Onyx2D/O2Encoder_PNG.m; sourceTree = SOURCE_ROOT; };
 		FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = redLZWSquare.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -360,6 +366,9 @@
 		FE39C12F1202721A00A80A71 /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE7F725E12AFFB0900FDF52D /* O2Encoder_PNG.m */,
+				FE7F725812AF4DC400FDF52D /* O2argb8u.m */,
+				FE7F725912AF4DC400FDF52D /* O2argb32f.m */,
 				FE39C1E51202828A00A80A71 /* O2ClipState.m */,
 				FE39C1DC120278F100A80A71 /* O2PDFBlock.m */,
 				FE39C1DA120278EC00A80A71 /* O2PDFFont.m */,
@@ -442,6 +451,7 @@
 				FE39C17C1202727200A80A71 /* VGPath.m */,
 			);
 			name = Onyx2D;
+			path = ../../Onyx2D;
 			sourceTree = "<group>";
 		};
 		FE5C0E2F1162E81000065D1C /* Products */ = {
@@ -485,7 +495,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SWRender" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SWRender */;
 			projectDirPath = "";
 			projectReferences = (
@@ -640,6 +657,9 @@
 				FE39C1DB120278EC00A80A71 /* O2PDFFont.m in Sources */,
 				FE39C1DD120278F100A80A71 /* O2PDFBlock.m in Sources */,
 				FE39C1E61202828A00A80A71 /* O2ClipState.m in Sources */,
+				FE7F725A12AF4DC400FDF52D /* O2argb8u.m in Sources */,
+				FE7F725B12AF4DC400FDF52D /* O2argb32f.m in Sources */,
+				FE7F725F12AFFB0900FDF52D /* O2Encoder_PNG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

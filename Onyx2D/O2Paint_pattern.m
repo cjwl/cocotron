@@ -59,7 +59,8 @@ static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,O2argb
 #endif
 
 -initWithImage:(O2Image *)image surfaceToPaintTransform:(O2AffineTransform)xform phase:(O2Size)phase {   
-   O2PaintInitWithTransform(self,xform);
+//   O2PaintInitWithTransform(self,O2AffineTransformMakeTranslation(phase.width,phase.height));
+   O2PaintInitWithTransform(self,O2AffineTransformIdentity);
    _paint_largb8u_PRE=o2pattern_largb8u_PRE;
    _paint_largb32f_PRE=o2pattern_largb32f_PRE;
    _image=[image retain];

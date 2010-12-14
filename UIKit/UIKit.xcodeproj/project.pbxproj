@@ -316,6 +316,15 @@
 		FEC7876E12884F8E009CBC6F /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC7875812884F8E009CBC6F /* CATransform3D.m */; };
 		FEC7876F12884F8E009CBC6F /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC7875912884F8E009CBC6F /* CATransition.h */; };
 		FEC7877012884F8E009CBC6F /* CATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC7875A12884F8E009CBC6F /* CATransition.m */; };
+		FEE66E8E12A9574E00C1EC37 /* UIInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE66E8D12A9574E00C1EC37 /* UIInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE66F4A12A9772900C1EC37 /* NSDisplay.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE66F4812A9772900C1EC37 /* NSDisplay.h */; };
+		FEE66F4B12A9772900C1EC37 /* NSDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE66F4912A9772900C1EC37 /* NSDisplay.m */; };
+		FEE66F5212A9776300C1EC37 /* Win32Display.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE66F4C12A9776300C1EC37 /* Win32Display.h */; };
+		FEE66F5312A9776300C1EC37 /* Win32Display.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE66F4D12A9776300C1EC37 /* Win32Display.m */; };
+		FEE66F5412A9776300C1EC37 /* Win32RunningCopyPipe.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE66F4E12A9776300C1EC37 /* Win32RunningCopyPipe.h */; };
+		FEE66F5512A9776300C1EC37 /* Win32RunningCopyPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE66F4F12A9776300C1EC37 /* Win32RunningCopyPipe.m */; };
+		FEE66F5612A9776300C1EC37 /* Win32Window.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE66F5012A9776300C1EC37 /* Win32Window.h */; };
+		FEE66F5712A9776300C1EC37 /* Win32Window.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE66F5112A9776300C1EC37 /* Win32Window.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -731,6 +740,15 @@
 		FEC7875812884F8E009CBC6F /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CATransform3D.m; path = ../QuartzCore/CATransform3D.m; sourceTree = SOURCE_ROOT; };
 		FEC7875912884F8E009CBC6F /* CATransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CATransition.h; path = ../QuartzCore/CATransition.h; sourceTree = SOURCE_ROOT; };
 		FEC7875A12884F8E009CBC6F /* CATransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CATransition.m; path = ../QuartzCore/CATransition.m; sourceTree = SOURCE_ROOT; };
+		FEE66E8D12A9574E00C1EC37 /* UIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInterface.h; sourceTree = "<group>"; };
+		FEE66F4812A9772900C1EC37 /* NSDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDisplay.h; sourceTree = "<group>"; };
+		FEE66F4912A9772900C1EC37 /* NSDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDisplay.m; sourceTree = "<group>"; };
+		FEE66F4C12A9776300C1EC37 /* Win32Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win32Display.h; sourceTree = "<group>"; };
+		FEE66F4D12A9776300C1EC37 /* Win32Display.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Win32Display.m; sourceTree = "<group>"; };
+		FEE66F4E12A9776300C1EC37 /* Win32RunningCopyPipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win32RunningCopyPipe.h; sourceTree = "<group>"; };
+		FEE66F4F12A9776300C1EC37 /* Win32RunningCopyPipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Win32RunningCopyPipe.m; sourceTree = "<group>"; };
+		FEE66F5012A9776300C1EC37 /* Win32Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win32Window.h; sourceTree = "<group>"; };
+		FEE66F5112A9776300C1EC37 /* Win32Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Win32Window.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -779,6 +797,7 @@
 				FEC786A312884BC6009CBC6F /* UIFont.m */,
 				FEC786A412884BC6009CBC6F /* UIImage.h */,
 				FEC786A512884BC6009CBC6F /* UIImage.m */,
+				FEE66E8D12A9574E00C1EC37 /* UIInterface.h */,
 				FEBA27421291C02200E4347B /* UINavigationBar.h */,
 				FEBA27431291C02200E4347B /* UINavigationBar.m */,
 				FEBA27441291C02200E4347B /* UINavigationItem.m */,
@@ -798,6 +817,8 @@
 				FEC786B312884BC6009CBC6F /* UIToolbar.m */,
 				FEC786B412884BC6009CBC6F /* UITouch.h */,
 				FEC786B512884BC6009CBC6F /* UITouch.m */,
+				FEE66F4812A9772900C1EC37 /* NSDisplay.h */,
+				FEE66F4912A9772900C1EC37 /* NSDisplay.m */,
 				FEC786B612884BC6009CBC6F /* UIView.h */,
 				FEC786B712884BC6009CBC6F /* UIView.m */,
 				FEC786B812884BC6009CBC6F /* UIViewController.h */,
@@ -873,6 +894,12 @@
 		FE679DCC1288879300CD9BEF /* platform_Windows */ = {
 			isa = PBXGroup;
 			children = (
+				FEE66F4C12A9776300C1EC37 /* Win32Display.h */,
+				FEE66F4D12A9776300C1EC37 /* Win32Display.m */,
+				FEE66F4E12A9776300C1EC37 /* Win32RunningCopyPipe.h */,
+				FEE66F4F12A9776300C1EC37 /* Win32RunningCopyPipe.m */,
+				FEE66F5012A9776300C1EC37 /* Win32Window.h */,
+				FEE66F5112A9776300C1EC37 /* Win32Window.m */,
 				FE679DCD128887C400CD9BEF /* dllmain.m */,
 			);
 			path = platform_Windows;
@@ -1343,6 +1370,11 @@
 				FE5F4DDD12A894FD00F5F334 /* O2Surface_DIBSection.h in Headers */,
 				FE5F4DDF12A894FD00F5F334 /* Win32Font.h in Headers */,
 				FE5F4DFD12A8A17400F5F334 /* UIGraphics.h in Headers */,
+				FEE66E8E12A9574E00C1EC37 /* UIInterface.h in Headers */,
+				FEE66F4A12A9772900C1EC37 /* NSDisplay.h in Headers */,
+				FEE66F5212A9776300C1EC37 /* Win32Display.h in Headers */,
+				FEE66F5412A9776300C1EC37 /* Win32RunningCopyPipe.h in Headers */,
+				FEE66F5612A9776300C1EC37 /* Win32Window.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1656,6 +1688,10 @@
 				FE5F4DDE12A894FD00F5F334 /* O2Surface_DIBSection.m in Sources */,
 				FE5F4DE012A894FD00F5F334 /* Win32Font.m in Sources */,
 				FE5F4DFE12A8A17400F5F334 /* UIGraphics.m in Sources */,
+				FEE66F4B12A9772900C1EC37 /* NSDisplay.m in Sources */,
+				FEE66F5312A9776300C1EC37 /* Win32Display.m in Sources */,
+				FEE66F5512A9776300C1EC37 /* Win32RunningCopyPipe.m in Sources */,
+				FEE66F5712A9776300C1EC37 /* Win32Window.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

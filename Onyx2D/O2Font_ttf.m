@@ -1,6 +1,13 @@
 #import <Onyx2D/O2Font_ttf.h>
 #import <Onyx2D/O2TTFDecoder.h>
 
+O2FontRef O2FontCreateWithFontName_platform(NSString *name) {
+   return nil;
+}
+
+O2FontRef O2FontCreateWithDataProvider_platform(NSString *name) {
+   return nil;
+}
 
 @implementation O2Font_ttf
 
