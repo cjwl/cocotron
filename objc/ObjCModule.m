@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/Protocol.h>
 #import "ObjCException.h"
 #import "objc_malloc.h"
+#import "objc_protocol.h"
  
 #import <string.h>
 
@@ -185,6 +186,28 @@ extern void OBJCInitializeProcess_Darwin(void);
 
    OBJCInitializeProcess_Darwin();
 #endif
+	
+	// Fix protocol classes where isa is not yet set. This is the case for all
+	// classes loaded before Protocol class is loaded.
+	int   i,capacity=objc_getClassList(NULL,0);
+	Class list[capacity];
+    
+	objc_getClassList(list,capacity);
+	
+	for(i=0;i<capacity;i++){
+		Class class = list[i];
+		struct objc_protocol_list *protocols;
+			
+		for(protocols=class->protocols;protocols!=NULL;protocols=protocols->next){
+			unsigned i;
+				
+			for(i=0;i<protocols->count;i++){
+				OBJCProtocolTemplate *template=(OBJCProtocolTemplate *)protocols->list[i];
+					
+				OBJCRegisterProtocol(template);
+			}
+		}
+	}
 }
 
 OBJCObjectFile *OBJCMainObjectFile(){

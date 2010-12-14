@@ -119,8 +119,9 @@ static int maxDescriptorInThreeSets(NSSet *set1,NSSet *set2,NSSet *set3){
 }
 
 void NSSelectSetShutdownForCurrentThread() {
-    NSUnimplementedFunction();
+	// nothing to do?
 }
+
 static void transferSetToNative(NSSet *set,native_set *native){
    NSEnumerator *state=[set objectEnumerator];
    NSSocket_bsd *socket;
