@@ -80,7 +80,7 @@ NSString * const NSPlatformExecutableDirectory=@"Darwin";
 NSString * const NSPlatformResourceNameSuffix=@"darwin";
 
 NSString * const NSPlatformExecutableFileExtension=@"";
-NSString * const NSPlatformLoadableObjectFileExtension=@"";
+NSString * const NSPlatformLoadableObjectFileExtension=@"dylib";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"";
 
 -(Class)taskClass {
