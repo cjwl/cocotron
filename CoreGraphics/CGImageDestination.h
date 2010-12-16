@@ -6,21 +6,21 @@ typedef struct _O2ImageDestination *CGImageDestinationRef;
 #import <CoreGraphics/CGDataConsumer.h>
 #import <CoreFoundation/CFURL.h>
 
-const CFStringRef kCGImageDestinationLossyCompressionQuality;
-const CFStringRef kCGImageDestinationBackgroundColor;
+COREGRAPHICS_EXPORT const CFStringRef kCGImageDestinationLossyCompressionQuality;
+COREGRAPHICS_EXPORT const CFStringRef kCGImageDestinationBackgroundColor;
 
-CFTypeID CGImageDestinationGetTypeID(void);
+COREGRAPHICS_EXPORT CFTypeID CGImageDestinationGetTypeID(void);
 
-CFArrayRef CGImageDestinationCopyTypeIdentifiers(void);
+COREGRAPHICS_EXPORT CFArrayRef CGImageDestinationCopyTypeIdentifiers(void);
 
-CGImageDestinationRef CGImageDestinationCreateWithData(CFMutableDataRef data,CFStringRef type,size_t imageCount,CFDictionaryRef options);
-CGImageDestinationRef CGImageDestinationCreateWithDataConsumer(CGDataConsumerRef dataConsumer,CFStringRef type,size_t imageCount,CFDictionaryRef options);
-CGImageDestinationRef CGImageDestinationCreateWithURL(CFURLRef url,CFStringRef type,size_t imageCount,CFDictionaryRef options);
+COREGRAPHICS_EXPORT CGImageDestinationRef CGImageDestinationCreateWithData(CFMutableDataRef data,CFStringRef type,size_t imageCount,CFDictionaryRef options);
+COREGRAPHICS_EXPORT CGImageDestinationRef CGImageDestinationCreateWithDataConsumer(CGDataConsumerRef dataConsumer,CFStringRef type,size_t imageCount,CFDictionaryRef options);
+COREGRAPHICS_EXPORT CGImageDestinationRef CGImageDestinationCreateWithURL(CFURLRef url,CFStringRef type,size_t imageCount,CFDictionaryRef options);
 
-void CGImageDestinationSetProperties(CGImageDestinationRef self,CFDictionaryRef properties);
+COREGRAPHICS_EXPORT void CGImageDestinationSetProperties(CGImageDestinationRef self,CFDictionaryRef properties);
 
-void CGImageDestinationAddImage(CGImageDestinationRef self,CGImageRef image,CFDictionaryRef properties);
-void CGImageDestinationAddImageFromSource(CGImageDestinationRef self,CGImageSourceRef imageSource,size_t index,CFDictionaryRef properties);
+COREGRAPHICS_EXPORT void CGImageDestinationAddImage(CGImageDestinationRef self,CGImageRef image,CFDictionaryRef properties);
+COREGRAPHICS_EXPORT void CGImageDestinationAddImageFromSource(CGImageDestinationRef self,CGImageSourceRef imageSource,size_t index,CFDictionaryRef properties);
 
-bool CGImageDestinationFinalize(CGImageDestinationRef self);
+COREGRAPHICS_EXPORT bool CGImageDestinationFinalize(CGImageDestinationRef self);
 

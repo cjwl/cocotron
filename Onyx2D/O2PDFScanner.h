@@ -8,6 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/O2PDFObject.h>
 
+@class O2PDFScanner;
+
+typedef O2PDFScanner *O2PDFScannerRef;
+
 @class NSData,NSMutableArray;
 @class O2PDFContentStream,O2PDFOperatorTable;
 @class O2PDFString,O2PDFArray,O2PDFDictionary,O2PDFStream,O2PDFxref,O2PDFObject_identifier;
@@ -26,6 +30,8 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
    O2PDFContentStream *_stream;
    O2PDFOperatorTable *_operatorTable;
    void               *_info;
+   O2PDFInteger        _currentStream;
+   O2PDFInteger        _position;
 }
 
 -initWithContentStream:(O2PDFContentStream *)stream operatorTable:(O2PDFOperatorTable *)operatorTable info:(void *)info;
@@ -41,6 +47,9 @@ BOOL O2PDFScannerPopString(O2PDFScanner *scanner,O2PDFString **value);
 BOOL O2PDFScannerPopArray(O2PDFScanner *scanner,O2PDFArray **value);
 BOOL O2PDFScannerPopDictionary(O2PDFScanner *scanner,O2PDFDictionary **value);
 BOOL O2PDFScannerPopStream(O2PDFScanner *scanner,O2PDFStream **value);
+
+NSData *O2PDFScannerCreateDataWithLength(O2PDFScanner *scanner,size_t length);
+
 
 -(BOOL)scan;
 

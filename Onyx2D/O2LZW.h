@@ -53,5 +53,4 @@ typedef struct LZWFileType {
 } LZWFileType;
 
 
- int DLZWSetupDecompress(LZWFileType * LZWFile);
-int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen);
+NSData *LZWDecodeWithExpectedResultLength(NSData *data,unsigned stripLength);

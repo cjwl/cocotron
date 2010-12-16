@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Onyx2D/O2zlib.h>
+#import <Onyx2D/O2LZW.h>
 #import <string.h>
 #import <Onyx2D/O2ImageSource_JPEG.h>
 
@@ -36,7 +37,7 @@ NSData *O2PDFFilterWithName(const char *name,NSData *data,O2PDFDictionary *param
 }
 
 +(NSData *)LZWDecode_data:(NSData *)data parameters:(O2PDFDictionary *)parameters {
-   return nil;
+   return LZWDecodeWithExpectedResultLength(data,[data length]*10);
 }
 
 +(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(O2PDFDictionary *)parameters {
@@ -44,6 +45,9 @@ NSData *O2PDFFilterWithName(const char *name,NSData *data,O2PDFDictionary *param
      data=[self FlateDecode_data:data parameters:parameters];
    else if((strcmp(name,"DCTDecode")==0) || (strcmp(name,"DCT")==0)){
     return O2DCTDecode(data);
+   }
+   else if((strcmp(name,"LZWDecode")==0) || (strcmp(name,"LZW")==0)){
+    data=LZWDecodeWithExpectedResultLength(data,[data length]*10);
    }
    else {
     O2PDFError(__FILE__,__LINE__,@"Unknown O2PDFFilter name = %s, parameters=%@",name,parameters);
