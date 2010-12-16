@@ -22,6 +22,7 @@ THE SOFTWARE.
 */
 
 #import <Onyx2D/O2LZW.h>
+#import <Onyx2D/O2DataConsumer.h>
 
 #define LZ_MAX_CODE         4095    /* Biggest code possible in 12 bits. */
 #define LZ_BITS             12
@@ -153,7 +154,7 @@ static int DLZWGetPrefixChar(LZWPrefixType *Prefix,int Code,int ClearCode) {
     return Code;
 }
 
-int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
+int DLZWDecompressLine(LZWFileType * LZWFile,O2DataConsumerRef consumer,int LineLen) {
 
     int i = 0;
     int j, CrntCode, EOFCode, ClearCode, CrntPrefix, LastCode, StackPtr;
@@ -196,7 +197,10 @@ int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
         } else {
             if (CrntCode < ClearCode) {
                 /* This is simple - its pixel scalar, so add it to output: */
-                Line[i] = CrntCode;
+                uint8_t bytes[1];
+                bytes[0]=CrntCode;
+                O2DataConsumerPutBytes(consumer,bytes,1);
+
                 i++;
             } else 
 #define RUNNING_CODE_MINUS 2
@@ -244,8 +248,11 @@ int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
 
                 /* Now lets pop all the stack into output: */
                 while (StackPtr != 0 && i < LineLen){
+                 uint8_t bytes[1];
+                 bytes[0]=Stack[--StackPtr];
+                 
+                 O2DataConsumerPutBytes(consumer,bytes,1);
                 
-                    Line[i] = Stack[--StackPtr];
                     i++;
                  }
             }
@@ -271,4 +278,25 @@ int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
 
     return GIF_OK;
 }
+
+NSData *LZWDecodeWithExpectedResultLength(NSData *data,unsigned stripLength){
+   NSMutableData    *outputData=[NSMutableData data];
+   O2DataConsumerRef consumer=O2DataConsumerCreateWithCFData(outputData);
+   LZWFileType lzwStream;
+
+   lzwStream.inputStream=[NSInputStream inputStreamWithData:data];
+   [lzwStream.inputStream open];
+   lzwStream.PixelCount=stripLength;
+   
+   DLZWSetupDecompress(&lzwStream);
+   int error;
+   
+   if((error=DLZWDecompressLine(&lzwStream,consumer,stripLength))==0)
+    NSLog(@"error=%d",error);
+   
+   O2DataConsumerRelease(consumer);
+   
+   return outputData;
+}
+
 

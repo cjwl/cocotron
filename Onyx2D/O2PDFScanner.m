@@ -1122,20 +1122,38 @@ BOOL O2PDFScannerPopStream(O2PDFScanner *self,O2PDFStream **value) {
    return [lastObject checkForType:kO2PDFObjectTypeStream value:value];
 }
 
+NSData *O2PDFScannerCreateDataWithLength(O2PDFScanner *self,size_t length) {
+   NSArray     *streams=[self->_stream streams];
+   O2PDFObject *object=[streams objectAtIndex:self->_currentStream];
+   O2PDFStream *stream;
+    
+   if(![object checkForType:kO2PDFObjectTypeStream value:&stream])
+    return nil;
+    
+   NSData *data=[stream data];
+
+   NSData *result=[data subdataWithRange:NSMakeRange(self->_position,length)];
+   
+   self->_position+=length;
+   
+   return result;
+}
+
 -(BOOL)scanStream:(O2PDFStream *)stream {
    O2PDFxref   *xref=[stream xref];
    NSData      *data=[stream data];
    const char  *bytes=[data bytes];
    unsigned     length=[data length];
-   O2PDFInteger position=0;
+   
+   _position=0;
    
    if(O2PDFScannerDumpStream)
     NSLog(@"data[%d]=%@",[data length],[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]);
    
-   while(position<length) {
+   while(_position<length) {
     O2PDFObject *object;
     
-    if(!O2PDFParseObject(bytes,length,position,&position,&object,xref))
+    if(!O2PDFParseObject(bytes,length,_position,&_position,&object,xref))
      return NO;
 
     if(object==NULL)
@@ -1162,10 +1180,10 @@ BOOL O2PDFScannerPopStream(O2PDFScanner *self,O2PDFStream **value) {
 -(BOOL)scan {
    BOOL     result=YES;
    NSArray *streams=[_stream streams];
-   int      i,count=[streams count];
+   int      count=[streams count];
    
-   for(i=0;(i<count) && result;i++){
-    O2PDFObject *object=[streams objectAtIndex:i];
+   for(_currentStream=0;(_currentStream<count) && result;_currentStream++){
+    O2PDFObject *object=[streams objectAtIndex:_currentStream];
     O2PDFStream *scan;
     
     if(![object checkForType:kO2PDFObjectTypeStream value:&scan])

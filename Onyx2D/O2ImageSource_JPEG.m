@@ -1059,14 +1059,15 @@ NSData *O2DCTDecode(NSData *data) {
    jpeg decoder;
    int  width,height;
    int  comp;
-   int  bitsPerPixel=8;
-   int  bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
-   void *bytes=stbi_jpeg_load_from_memory(&decoder,[data bytes],[data length],&width,&height,&comp,STBI_grey);
+   void *bytes=stbi_jpeg_load_from_memory(&decoder,[data bytes],[data length],&width,&height,&comp,STBI_default);
+   int  bytesPerRow=comp*width;
    
    if(bytes==NULL)
     return nil;
    
-   return [[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
+   NSData *result=[[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
+      
+   return result;
 }
 
 +(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
