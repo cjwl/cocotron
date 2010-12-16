@@ -378,11 +378,6 @@ void OBJCSendLoadMessage(Class class) {
 }
 void OBJCSendLoadMessages() {
     
-    //still unresolved classes, wait for more classes
-    /*if(messageSent == YES) {
-        return;
-    }*/
-    
     //until NSObject is not in runtime we don't need to check
     if(objc_lookUpClass("NSObject") == Nil) {
         return;
@@ -390,18 +385,13 @@ void OBJCSendLoadMessages() {
     
     for(int i= 0; i < unresolvedClassesSize; i++) {
         Class class = unresolvedClasses[i];
-        if(class == (Class)-1) {
-            continue;
-        }
-        
-        //end of list
         if(class == NULL) {
-            break;
+            continue;
         }
         
         if(OBJCCheckClassIsResolved(class) == YES) {
             //remove it from unresolved
-            unresolvedClasses[i] = (Class)-1;
+            unresolvedClasses[i] = NULL;
         }
         else {
             //still unresolved classes, wait for more classes
