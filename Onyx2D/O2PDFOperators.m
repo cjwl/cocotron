@@ -86,7 +86,7 @@ void O2PDF_render_BDC(O2PDFScanner *scanner,void *info) {
 
 // Begin inline image object
 void O2PDF_render_BI(O2PDFScanner *scanner,void *info) {
-   O2PDFFix(__FILE__,__LINE__,@"BI unimplemented");
+// do nothing, all the values are pushed on the stack and ID handles them
 }
 
 // Begin marked-content sequence
@@ -362,7 +362,7 @@ void O2PDF_render_DP(O2PDFScanner *scanner,void *info) {
 
 // End inline image object
 void O2PDF_render_EI(O2PDFScanner *scanner,void *info) {
-   O2PDFFix(__FILE__,__LINE__,@"EI unimplemented");
+// do nothing, everything is implemented by ID, EI is a formality
 }
 
 // End marked-content sequence
@@ -615,7 +615,76 @@ void O2PDF_render_i(O2PDFScanner *scanner,void *info) {
 
 // Begin inline image data
 void O2PDF_render_ID(O2PDFScanner *scanner,void *info) {
-   O2PDFFix(__FILE__,__LINE__,@"ID unimplemented");
+   O2PDFDictionary *dictionary=[O2PDFDictionary pdfDictionary];
+   
+   while(YES) {
+    O2PDFObject *value;
+    const char  *key;
+    
+    if(!O2PDFScannerPopObject(scanner,&value))
+     break;
+    
+    if(!O2PDFScannerPopName(scanner,&key)){
+     O2PDFError(__FILE__,__LINE__,@"popName failed");
+     break;
+    }
+    
+    [dictionary setObjectForKey:key value:value];
+   }
+   
+   O2PDFInteger bitsPerComponent=0;
+   O2PDFObject *colorSpace=NULL;
+   O2PDFArray  *decode=NULL;
+   O2PDFObject *decodeParms=NULL;
+   O2PDFObject *filter=NULL;
+   O2PDFInteger height=0;
+   O2PDFBoolean imageMask=NO;
+   const char  *intent=NULL;
+   O2PDFBoolean interpolate=NO;
+   O2PDFInteger width=0;
+   
+   if(![dictionary getIntegerForKey:"BPC" value:&bitsPerComponent])
+    if(![dictionary getIntegerForKey:"BitsPerComponent" value:&bitsPerComponent]){
+    }
+    
+   if(![dictionary getObjectForKey:"CS" value:&colorSpace])
+    if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpace]){
+    }
+
+   if(![dictionary getArrayForKey:"D" value:&decode])
+    if(![dictionary getArrayForKey:"Decode" value:&decode]){
+    }
+
+   if(![dictionary getObjectForKey:"DP" value:&decodeParms])
+    if(![dictionary getObjectForKey:"DecodeParms" value:&decodeParms]){
+    }
+
+   if(![dictionary getObjectForKey:"F" value:&filter])
+    if(![dictionary getObjectForKey:"Filter" value:&filter]){
+    }
+
+   if(![dictionary getIntegerForKey:"H" value:&height])
+    if(![dictionary getIntegerForKey:"Height" value:&height]){
+    }
+
+   if(![dictionary getBooleanForKey:"IM" value:&imageMask])
+    if(![dictionary getBooleanForKey:"ImageMask" value:&imageMask]){
+    }
+
+   if(![dictionary getObjectForKey:"Intent" value:&intent])
+
+   if(![dictionary getBooleanForKey:"I" value:&interpolate])
+    if(![dictionary getBooleanForKey:"Interpolate" value:&interpolate]){
+    }
+
+   if(![dictionary getIntegerForKey:"W" value:&width])
+    if(![dictionary getIntegerForKey:"Width" value:&width]){
+    }
+  
+   size_t bytesPerRow=(width*bitsPerComponent)/8;
+   
+   NSData *data=O2PDFScannerCreateDataWithLength(scanner,height*bytesPerRow);
+   
 }
 
 // setlinejoin, Set line join style

@@ -39,7 +39,7 @@ CFDataRef O2DataProviderCopyData(O2DataProviderRef self);
 
 size_t O2DataProviderRewind(O2DataProviderRef self);
 size_t O2DataProviderGetBytesAtPosition(O2DataProviderRef self,void *buffer,size_t length,size_t position);
-size_t O2DataProviderGetBytesAtPosition(O2DataProviderRef self,void *buffer,size_t length,size_t position);
+size_t O2DataProviderGetBytes(O2DataProviderRef self,void *buffer,size_t length);
 
 -(NSInputStream *)inputStream;
 

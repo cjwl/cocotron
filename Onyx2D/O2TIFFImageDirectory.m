@@ -316,23 +316,6 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
    *pixelBytesRowp=pixelBytesRow;
 }
 
-NSData *LZWDecode(NSData *data,unsigned stripLength){
-   NSMutableData *result=[NSMutableData dataWithLength:stripLength];
-   LZWFileType lzwStream;
-
-   lzwStream.inputStream=[NSInputStream inputStreamWithData:data];
-   [lzwStream.inputStream open];
-   lzwStream.PixelCount=stripLength;
-   
-   DLZWSetupDecompress(&lzwStream);
-   int error;
-   
-   if((error=DLZWDecompressLine(&lzwStream,[result mutableBytes],stripLength))==0)
-    NSLog(@"error=%d",error);
-   
-   return result;
-}
-
 void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height){
    int y;
 
@@ -430,7 +413,7 @@ void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height
       
      stripLength*=bytesPerRow;
 
-     data=LZWDecode(data,stripLength);
+     data=LZWDecodeWithExpectedResultLength(data,stripLength);
 
      if(_samplesPerPixel==4)
       decode_R8_G8_B8_A8([data bytes],stripLength,pixelBytes,_imageWidth*4,&pixelBytesRow,_imageLength);
