@@ -121,6 +121,12 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    return nil;
 }
 
++ (void)poseAsClass:(Class)aClass
+{
+    //TODO
+}
+
+
 +(NSString *)description {
    return NSStringFromClass(self);
 }
