@@ -197,27 +197,6 @@ void OBJCInitializeProcess() {
    OBJCRegisterModule_Darwin(NULL);
 #endif
 	
-	// Fix protocol classes where isa is not yet set. This is the case for all
-	// classes loaded before Protocol class is loaded.
-	int   i,capacity=objc_getClassList(NULL,0);
-	Class list[capacity];
-    
-	objc_getClassList(list,capacity);
-	
-	for(i=0;i<capacity;i++){
-		Class class = list[i];
-		struct objc_protocol_list *protocols;
-			
-		for(protocols=class->protocols;protocols!=NULL;protocols=protocols->next){
-			unsigned i;
-				
-			for(i=0;i<protocols->count;i++){
-				OBJCProtocolTemplate *template=(OBJCProtocolTemplate *)protocols->list[i];
-					
-				OBJCRegisterProtocol(template);
-			}
-		}
-	}
 }
 
 OBJCObjectFile *OBJCMainObjectFile(){
@@ -422,13 +401,37 @@ static void OBJCSymbolTableRegisterClasses(OBJCSymbolTable *symbolTable){
     
    for(i=0;i<count;i++){
       struct objc_class *class=(struct objc_class *)symbolTable->definitions[i];
-      
+             
       // mark class and metaclass as having a direct method list pointer
       class->info|=CLASS_NO_METHOD_ARRAY;
       class->isa->info|=CLASS_NO_METHOD_ARRAY;
       
       OBJCRegisterClass(class);
       OBJCAddToUnResolvedClasses(class);
+       
+       if(strcmp(class_getName(class), "Protocol") == 0) {
+           // Fix protocol classes where isa is not yet set. This is the case for all
+           // classes loaded before Protocol class is loaded.
+           int   i,capacity=objc_getClassList(NULL,0);
+           Class list[capacity];
+           
+           objc_getClassList(list,capacity);
+           
+           for(i=0;i<capacity;i++){
+               Class class = list[i];
+               struct objc_protocol_list *protocols;
+               
+               for(protocols=class->protocols;protocols!=NULL;protocols=protocols->next){
+                   unsigned i;
+                   
+                   for(i=0;i<protocols->count;i++){
+                       OBJCProtocolTemplate *template=(OBJCProtocolTemplate *)protocols->list[i];
+                       
+                       OBJCRegisterProtocol(template);
+                   }
+               }
+           }           
+       }
    }
 }
 
