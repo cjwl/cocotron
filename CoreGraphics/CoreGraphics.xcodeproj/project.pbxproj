@@ -130,6 +130,10 @@
 		FE5A87DE10C6F286005E348A /* CGImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020A10C59BB300FE4072 /* CGImageDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A87DF10C6F286005E348A /* O2Encoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020C10C59BB300FE4072 /* O2Encoder_TIFF.h */; };
 		FE5A87E010C6F286005E348A /* O2ImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020E10C59BB300FE4072 /* O2ImageDestination.h */; };
+		FE5ADA6C12BBFF8500A922A2 /* CGWindowLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5ADA6B12BBFF8500A922A2 /* CGWindowLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5ADA6D12BBFF8500A922A2 /* CGWindowLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5ADA6B12BBFF8500A922A2 /* CGWindowLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5ADA6E12BBFF8500A922A2 /* CGWindowLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5ADA6B12BBFF8500A922A2 /* CGWindowLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE5ADA6F12BBFF8500A922A2 /* CGWindowLevel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5ADA6B12BBFF8500A922A2 /* CGWindowLevel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6F7AFA0FD554A800C3244F /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A380FD4B4D600082282 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6F7AFB0FD554A800C3244F /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6F7AFC0FD554A800C3244F /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3C0FD4B4D600082282 /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -720,6 +724,7 @@
 		FE44BDE311EBA0D400762BF1 /* O2ImageSource_ICNS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ImageSource_ICNS.h; sourceTree = "<group>"; };
 		FE44BDE411EBA0D400762BF1 /* O2ImageSource_ICNS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageSource_ICNS.m; sourceTree = "<group>"; };
 		FE5A884510C6F286005E348A /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE5ADA6B12BBFF8500A922A2 /* CGWindowLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGWindowLevel.h; sourceTree = "<group>"; };
 		FE5C0BE711629FD900065D1C /* Onyx2D.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Onyx2D.xcodeproj; path = ../Onyx2D/Onyx2D.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE6F7BB30FD554A800C3244F /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -977,6 +982,7 @@
 		0867D691FE84028FC02AAC07 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE5ADA6B12BBFF8500A922A2 /* CGWindowLevel.h */,
 				FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */,
 				FE2752DB12301F4500BD6643 /* CGLPixelSurface.m */,
 				FEF5A70611E4E782009B0041 /* CGError.h */,
@@ -1401,6 +1407,7 @@
 				FE43BE4711FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C40E120357EA00A80A71 /* O2ClipState.h in Headers */,
 				FE2752DC12301F4500BD6643 /* CGLPixelSurface.h in Headers */,
+				FE5ADA6C12BBFF8500A922A2 /* CGWindowLevel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1519,6 +1526,7 @@
 				FE43BE4D11FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C414120357EA00A80A71 /* O2ClipState.h in Headers */,
 				FE2752E212301F4500BD6643 /* CGLPixelSurface.h in Headers */,
+				FE5ADA6F12BBFF8500A922A2 /* CGWindowLevel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1637,6 +1645,7 @@
 				FE43BE4911FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C410120357EA00A80A71 /* O2ClipState.h in Headers */,
 				FE2752DE12301F4500BD6643 /* CGLPixelSurface.h in Headers */,
+				FE5ADA6D12BBFF8500A922A2 /* CGWindowLevel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1755,6 +1764,7 @@
 				FE43BE4B11FFBAC100119833 /* O2PDFBlock.h in Headers */,
 				FE39C412120357EA00A80A71 /* O2ClipState.h in Headers */,
 				FE2752E012301F4500BD6643 /* CGLPixelSurface.h in Headers */,
+				FE5ADA6E12BBFF8500A922A2 /* CGWindowLevel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
