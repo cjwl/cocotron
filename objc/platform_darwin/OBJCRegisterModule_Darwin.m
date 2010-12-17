@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /*
  * Fetches all Objective-C-Modules via the mach-o/dyld.h interface and initializes them.
  */
-void OBJCInitializeProcess_Darwin(void)
+void OBJCRegisterModule_Darwin(const char * name)
 {
    int i;
    int count = _dyld_image_count();
@@ -28,6 +28,13 @@ void OBJCInitializeProcess_Darwin(void)
    //Fix up sel references
   
    for (i = 0; i < count; i++) {
+       
+       if(name != NULL) {
+           const char * dylibname = _dyld_get_image_name(i);
+           if(strcmp(dylibname, name) != 0) {
+               continue;
+           }
+       }
 #ifdef __LP64__
       const struct mach_header_64 *head = (struct mach_header_64 *) _dyld_get_image_header(i);
 
@@ -39,7 +46,7 @@ void OBJCInitializeProcess_Darwin(void)
       uint32_t size;
       char *section = getsectdatafromheader(head,"__OBJC", "__message_refs", &size);
 #endif
-      if(head->filetype == MH_DYLIB)
+      if(head->filetype == MH_DYLIB || head->filetype == MH_BUNDLE)
          section += _dyld_get_image_vmaddr_slide(i);
       
       long nmess = size / sizeof(SEL);
@@ -58,6 +65,13 @@ void OBJCInitializeProcess_Darwin(void)
    // queue each module.
    
    for (i = 0; i < count; i++) {
+       
+       if(name != NULL) {
+           const char * dylibname = _dyld_get_image_name(i);
+           if(strcmp(dylibname, name) != 0) {
+               continue;
+           }
+       }
       long nmodules = 0;
       
       OBJCModule *mods = 0;
@@ -74,7 +88,7 @@ void OBJCInitializeProcess_Darwin(void)
       uint32_t size=0;
       section = getsectdatafromheader(head,"__OBJC","__module_info",&size);
 #endif
-      if(head->filetype == MH_DYLIB)
+      if(head->filetype == MH_DYLIB || head->filetype == MH_BUNDLE)
          section += _dyld_get_image_vmaddr_slide(i);
       
       mods = (OBJCModule*)section;
@@ -96,6 +110,13 @@ void OBJCInitializeProcess_Darwin(void)
    */
    
    for (i = 0; i < count; i++) {
+       
+       if(name != NULL) {
+           const char * dylibname = _dyld_get_image_name(i);
+           if(strcmp(dylibname, name) != 0) {
+               continue;
+           }
+       }
 #ifdef __LP64__
       const struct mach_header_64 *head = (struct mach_header_64 *)_dyld_get_image_header(i);
 
@@ -109,7 +130,7 @@ void OBJCInitializeProcess_Darwin(void)
 #endif
       typeof(size) nrefs = size / sizeof(struct objc_class *);
       
-      if(head->filetype == MH_DYLIB)
+      if(head->filetype == MH_DYLIB || head->filetype == MH_BUNDLE)
          section += _dyld_get_image_vmaddr_slide(i);
 
       Class *refs = (Class*)section;
