@@ -340,14 +340,17 @@ void OBJCSendLoadMessage(Class class) {
 
     for(;i < sentLoadMessageClassesSize;i++) {
         if(sentLoadMessageClasses[i] == NULL) {
-
-            sentLoadMessageClasses[i] = class;
             break;
         }
         else if(sentLoadMessageClasses[i] == class) {
             //message already sent
             return;
         }
+    }
+	
+	if(class->super_class != 0) {
+		//send load first to the superclass
+        OBJCSendLoadMessage(class->super_class);
     }
 
     //check for space and increase size if neeeded
@@ -360,12 +363,15 @@ void OBJCSendLoadMessage(Class class) {
             newCSize = 2 * sentLoadMessageClassesSize;
         }
         sentLoadMessageClasses = (Class *)realloc(sentLoadMessageClasses, newCSize * sizeof(Class));        
-        for(i=sentLoadMessageClassesSize;i < newCSize;i++) {
-            sentLoadMessageClasses [i] = NULL;
+        for(int j=sentLoadMessageClassesSize;j < newCSize;j++) {
+            sentLoadMessageClasses [j] = NULL;
         }
         sentLoadMessageClasses[sentLoadMessageClassesSize] = class;
         sentLoadMessageClassesSize = newCSize;
     }
+	else {
+		sentLoadMessageClasses[i] = class;
+	}
     
        
     Method m = class_getClassMethod(class, @selector(load));
