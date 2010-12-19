@@ -9,12 +9,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSInterfacePartAttributedString.h>
 #import <AppKit/NSInterfacePartDisabledAttributedString.h>
 #import <AppKit/NSColor.h>
+#import <AppKit/NSFont.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import "NSInterfaceGraphics.h"
 
 @implementation NSGraphicsStyle
+
+static NSDictionary *sNormalMenuTextAttributes = nil;
+static NSDictionary *sSelectedMenuTextAttributes = nil;
+static NSDictionary *sDimmedMenuTextAttributes = nil;
+static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
+
++ (void)initialize
+{
+	if (sNormalMenuTextAttributes == nil)
+	{
+		NSFont *menuFont = [NSFont menuFontOfSize:0];
+		sNormalMenuTextAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+									  menuFont,NSFontAttributeName,
+									  [NSColor menuItemTextColor],NSForegroundColorAttributeName,
+									  nil] retain];
+		sSelectedMenuTextAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+									   menuFont,NSFontAttributeName,
+									   [NSColor selectedMenuItemTextColor],NSForegroundColorAttributeName,
+										nil] retain];
+		
+		sDimmedMenuTextAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+									  menuFont,NSFontAttributeName,
+									  [NSColor grayColor],NSForegroundColorAttributeName,
+									  nil] retain];
+
+		sDimmedMenuTextShadowAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+											menuFont,NSFontAttributeName,
+											[NSColor whiteColor],NSForegroundColorAttributeName,
+											nil] retain];
+	}
+}
 
 -initWithView:(NSView *)view {
    _view=[view retain];
@@ -26,26 +58,251 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(void)drawMenuSeparatorInRect:(NSRect)rect {
-   NSPoint point=rect.origin;
-   float   width=rect.size.width;
-     
-   [[NSColor darkGrayColor] setFill];
-   NSRectFill(NSMakeRect(point.x,point.y,width,1));
-   [[NSColor whiteColor] setFill];
-   NSRectFill(NSMakeRect(point.x,point.y+1,width,1));
+@end
+
+@implementation NSGraphicsStyle (NSMenu)
+
+
+#define TITLE_TOP_MARGIN 2
+#define TITLE_BOTTOM_MARGIN 2
+#define BRANCH_ARROW_LEFT_MARGIN 2
+#define BRANCH_ARROW_RIGHT_MARGIN 2
+
+-(NSInterfacePartAttributedString *)branchArrow
+{
+	static NSInterfacePartAttributedString *sBranchArrow = nil;
+
+	if (sBranchArrow == nil)
+		sBranchArrow = [[NSInterfacePartAttributedString alloc] initWithMarlettCharacter:0x34];
+	return sBranchArrow;
 }
 
--(void)drawMenuCheckmarkAtPoint:(NSPoint)point selected:(BOOL)selected {
-	NSColor         *color=selected?[NSColor selectedControlTextColor]:[NSColor 
-menuItemTextColor];
-	NSInterfacePart *arrow;
+- (NSInterfacePartAttributedString *)checkMark
+{
+	static NSInterfacePartAttributedString *sCheckMark = nil;
 	
-	arrow=[[[NSInterfacePartAttributedString alloc] initWithCharacter:0x61 fontName:@"Marlett" 
-pointSize:10 color:color] autorelease];
-	
-	[arrow drawAtPoint:point];
+	if (sCheckMark == nil)
+		sCheckMark = [[NSInterfacePartAttributedString alloc] initWithMarlettCharacter:0x61];
+	return sCheckMark;
 }
+
+-(NSSize)menuItemSeparatorSize {
+	return NSMakeSize(0,9);
+}
+
+-(Margins)menuItemBranchArrowMargins {
+	Margins result = [self menuItemTextMargins];
+	
+	result.left = BRANCH_ARROW_LEFT_MARGIN;
+	result.right = BRANCH_ARROW_RIGHT_MARGIN;
+	
+	return result;
+}
+
+-(NSSize)menuItemBranchArrowSize {
+   return NSMakeSize(5,9);
+}
+
+-(NSSize)menuItemCheckMarkSize {
+	NSSize result = [[self checkMark] size];
+	
+	return result;
+}
+
+-(Margins)menuItemGutterMargins {
+	Margins result;
+	
+	result.left = 0;
+	result.right = 0;
+	result.top = TITLE_TOP_MARGIN;
+	result.bottom = TITLE_BOTTOM_MARGIN;
+
+	return result;
+}
+
+-(NSSize)menuItemGutterSize {
+	NSSize result = NSZeroSize;
+	Margins margins = [self menuItemGutterMargins];
+	
+	result = [self menuItemCheckMarkSize];
+	
+	result.height += (margins.top + margins.bottom);
+	result.width += (margins.left + margins.right);
+	
+	return result;
+}
+
+-(Margins)menuItemTextMargins {
+	Margins result;
+	
+	result.left = 0;
+	result.right = 0;
+	result.top = TITLE_TOP_MARGIN;
+	result.bottom = TITLE_BOTTOM_MARGIN;
+	
+	return result;
+}
+
+-(NSSize)menuItemTextSize:(NSString *)title {
+	NSSize result = NSZeroSize;
+	Margins margins = [self menuItemTextMargins];
+	
+	result = [title sizeWithAttributes:sNormalMenuTextAttributes];
+	
+	result.height += (margins.top + margins.bottom);
+	result.width += (margins.left + margins.right);
+	
+	return result;
+}
+
+-(float)menuBarHeight
+{
+	NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:
+							  [NSFont menuFontOfSize:0],NSFontAttributeName,nil];
+	float         result=[@"Menu" sizeWithAttributes:attributes].height;
+	
+	result+=2; // border top/bottom margin
+	result+=4; // border
+	result+=1; // sunken title baseline
+	
+	return result;
+}
+
+-(float)menuItemGutterGap
+{
+	return 0;
+}
+
+-(void)drawMenuSeparatorInRect:(NSRect)rect 
+{
+	NSPoint point = NSMakePoint(rect.origin.x + 1, rect.origin.y + 3);
+	float   width = rect.size.width - 2;
+	
+	[[NSColor grayColor] setFill];
+	NSRectFill(NSMakeRect(point.x,point.y,width,1));
+	[[NSColor whiteColor] setFill];
+	NSRectFill(NSMakeRect(point.x,point.y+1,width,1));
+}
+
+-(void)drawMenuGutterInRect:(NSRect)rect
+{
+	// Nothing to do.
+}
+
+-(void)drawMenuItemText:(NSString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected
+{
+	Margins margins=[self menuItemTextMargins];
+	
+	rect.origin.x += margins.left;
+	rect.origin.y += margins.top;
+	rect.size.width -= (margins.left + margins.right);
+	rect.size.height -= (margins.top + margins.bottom);
+	
+	if (enabled)
+	{
+		if (selected)
+		{
+			[string drawInRect:rect withAttributes:sSelectedMenuTextAttributes];
+		}
+		else
+		{
+			[string drawInRect:rect withAttributes:sNormalMenuTextAttributes];
+		}
+	}
+	else
+	{
+		if (!selected)
+		{
+			NSRect offsetRect = rect;
+			offsetRect.origin.x += 1;
+			offsetRect.origin.y += 1;
+			[string drawInRect:offsetRect withAttributes:sDimmedMenuTextShadowAttributes];
+		}
+		[string drawInRect:rect withAttributes:sDimmedMenuTextAttributes];
+	}
+}
+
+
+-(void)drawMenuCheckmarkInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
+	NSColor                         *color;
+	NSInterfacePartAttributedString *checkMark;
+	Margins                         margins=[self menuItemTextMargins];
+	
+	if (enabled)
+		color = selected ? [NSColor selectedControlTextColor] : [NSColor menuItemTextColor];
+	else
+		color = [NSColor disabledControlTextColor];
+	
+	checkMark = [[NSInterfacePartAttributedString alloc] initWithCharacter:0x61 
+																  fontName:@"Marlett" 
+																 pointSize:10 
+																	 color:color];
+	rect.origin.x += margins.left;
+	rect.origin.y += margins.top;
+
+	[checkMark drawAtPoint:rect.origin];
+}
+
+
+-(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
+	CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+	NSColor      *color;
+	Margins      margins=[self menuItemBranchArrowMargins];
+	NSRect       themeRect = rect;
+	
+	if (enabled)
+		color = selected ? [NSColor selectedControlTextColor] : [NSColor menuItemTextColor];
+	else
+		color = [NSColor disabledControlTextColor];
+	
+	[color set];
+	
+	themeRect.origin.x += margins.left;
+	themeRect.origin.y += margins.top;
+	themeRect.size.width -= (margins.left + margins.right);
+	themeRect.size.height -= (margins.top + margins.bottom);
+	
+	CGContextBeginPath(context);
+	CGContextMoveToPoint(context,NSMinX(themeRect),NSMaxY(themeRect));
+	CGContextAddLineToPoint(context,NSMaxX(themeRect),NSMidY(themeRect));
+	CGContextAddLineToPoint(context,NSMinX(themeRect),NSMinY(themeRect));
+	CGContextClosePath(context);
+	CGContextFillPath(context);
+}
+
+-(void)drawMenuSelectionInRect:(NSRect)rect enabled:(BOOL)enabled
+{
+	if (enabled)
+	{
+		[[NSColor selectedMenuItemColor] setFill];
+		NSRectFill(rect);
+	}
+}
+
+-(void)drawMenuWindowBackgroundInRect:(NSRect)rect {
+    [[NSColor menuBackgroundColor] setFill];
+	NSRectFill(rect);
+	[[NSColor windowFrameColor] set];
+	NSFrameRect(rect);
+}
+
+-(void)drawMenuBarItemBorderInRect:(NSRect)rect hover:(BOOL)hovering selected:(BOOL)selected
+{
+	if (selected || hovering)
+	{
+		[[NSColor selectedMenuItemColor] setFill];
+		NSRectFill(rect);
+	}
+}
+
+-(void)drawMenuBarBackgroundInRect:(NSRect)rect {
+	[[NSColor mainMenuBarColor] setFill];
+	NSRectFill(rect);
+}
+
+@end
+
+@implementation NSGraphicsStyle (NSButton)
 
 -(void)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted {
    if(defaulted){
@@ -82,6 +339,10 @@ pointSize:10 color:color] autorelease];
    [image drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:fraction];
 }
 
+@end
+
+@implementation NSGraphicsStyle (NSBrowser)
+
 -(void)drawBrowserTitleBackgroundInRect:(NSRect)rect {
    NSInterfaceDrawBrowserHeader(rect,rect);
 }
@@ -89,6 +350,10 @@ pointSize:10 color:color] autorelease];
 -(void)drawBrowserHorizontalScrollerWellInRect:(NSRect)rect clipRect:(NSRect)clipRect {
    NSDrawGrayBezel(rect,clipRect);
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSColorWell)
 
 -(NSRect)drawColorWellBorderInRect:(NSRect)rect enabled:(BOOL)enabled bordered:(BOOL)bordered active:(BOOL)active {
    if(bordered){
@@ -111,79 +376,28 @@ pointSize:10 color:color] autorelease];
    return NSInsetRect(rect,2,2);
 }
 
--(NSSize)sizeOfMenuBranchArrow {
-   return NSMakeSize(5,9);
-}
+@end
 
--(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {
-   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
-   NSColor *color=selected?[NSColor selectedControlTextColor]:[NSColor menuItemTextColor];
-   
-   [color set];
-   
-   CGContextBeginPath(context);
-   CGContextMoveToPoint(context,NSMinX(rect),NSMaxY(rect));
-   CGContextAddLineToPoint(context,NSMaxX(rect),NSMidY(rect));
-   CGContextAddLineToPoint(context,NSMinX(rect),NSMinY(rect));
-   CGContextClosePath(context);
-   CGContextFillPath(context);
-}
-
--(void)drawMenuWindowBackgroundInRect:(NSRect)rect {
-   NSRect   rects[7];
-   NSColor *colors[7];
-
-   rects[0]=rect;
-   colors[0]=[NSColor menuBackgroundColor];
-
-   rects[1]=rect;
-   rects[1].origin.y=NSMaxY(rect)-1;
-   rects[1].size.height=1;
-   colors[1]=[NSColor blackColor];
-
-   rects[2]=rect;
-   rects[2].origin.x=NSMaxX(rect)-1;
-   rects[2].size.width=1;
-   colors[2]=[NSColor blackColor];  
-
-   rects[3]=rect;
-   rects[3].origin.x+=1;
-   rects[3].size.width=1;
-   rects[3].origin.y+=1;
-   rects[3].size.height-=2;
-   colors[3]=[NSColor whiteColor];
-
-   rects[4]=rect;
-   rects[4].origin.x+=2;
-   rects[4].size.width-=4;
-   rects[4].origin.y+=1;
-   rects[4].size.height=1;
-   colors[4]=[NSColor whiteColor];
-
-   rects[5]=rect;
-   rects[5].origin.x+=1;
-   rects[5].size.width-=2;
-   rects[5].origin.y=NSMaxY(rect)-2;
-   rects[5].size.height=1;
-   colors[5]=[NSColor darkGrayColor];
-
-   rects[6]=rect;
-   rects[6].origin.x=NSMaxX(rect)-2;
-   rects[6].size.width=1;
-   rects[6].origin.y=1;
-   rects[6].size.height-=2;
-   colors[6]=[NSColor darkGrayColor];
-
-   NSRectFillListWithColors(rects,colors,7);
-}
+@implementation NSGraphicsStyle (NSPopUpButton)
 
 -(void)drawPopUpButtonWindowBackgroundInRect:(NSRect)rect {
-   NSDrawButton(rect,rect);
+	[[NSColor menuBackgroundColor] setFill];
+	NSRectFill(rect);
+	[[NSColor blackColor] setStroke];
+	NSFrameRect(rect);
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSOutlineView)
 
 -(void)drawOutlineViewGridInRect:(NSRect)rect {
    NSInterfaceDrawOutlineGrid(rect,NSCurrentGraphicsPort());
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSProgressIndicator)
 
 -(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
    if(bezeled){
@@ -260,6 +474,10 @@ pointSize:10 color:color] autorelease];
     }
 }
 
+@end
+
+@implementation NSGraphicsStyle (NSScroller)
+
 -(void)drawScrollerButtonInRect:(NSRect)rect enabled:(BOOL)enabled pressed:(BOOL)pressed vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft {
    unichar code=vertical?(upOrLeft?0x74:0x75):(upOrLeft?0x33:0x34);
    Class   class;
@@ -302,6 +520,10 @@ pointSize:10 color:color] autorelease];
 -(void)drawScrollerTrackInRect:(NSRect)rect vertical:(BOOL)vertical {
    [self drawScrollerTrackInRect:rect vertical:vertical upOrLeft:NO];
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSSlider)
 
 -(NSSize)sliderKnobSizeForControlSize:(NSControlSize)controlSize {
 
@@ -348,6 +570,10 @@ pointSize:10 color:color] autorelease];
    NSRectFill(rect);
 }
 
+@end
+
+@implementation NSGraphicsStyle (NSStepper)
+
 -(void)drawStepperButtonInRect:(NSRect)rect clipRect:(NSRect)clipRect enabled:(BOOL)enabled highlighted:(BOOL)highlighted upNotDown:(BOOL)upNotDown {
    unichar         code=upNotDown?0x74:0x75;
    NSInterfacePart *arrow;
@@ -369,6 +595,10 @@ pointSize:10 color:color] autorelease];
    [arrow drawAtPoint:rect.origin];
 }
 
+@end
+
+@implementation NSGraphicsStyle (NSTableView)
+
 -(void)drawTableViewHeaderInRect:(NSRect)rect highlighted:(BOOL)highlighted {
    NSDrawButton(rect, rect);
     
@@ -382,6 +612,10 @@ pointSize:10 color:color] autorelease];
    NSDrawButton(rect,rect);
 }
 
+@end
+
+@implementation NSGraphicsStyle (NSBox)
+
 -(void)drawBoxWithLineInRect:(NSRect)rect {
    [[NSColor blackColor] setStroke];
    NSFrameRect(rect);
@@ -394,6 +628,10 @@ pointSize:10 color:color] autorelease];
 -(void)drawBoxWithGrooveInRect:(NSRect)rect clipRect:(NSRect)clipRect {
    NSDrawGroove(rect,clipRect);
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSComboBox)
 
 -(void)drawComboBoxButtonInRect:(NSRect)rect enabled:(BOOL)enabled bordered:(BOOL)bordered pressed:(BOOL)pressed {
    NSImage *image=[NSImage imageNamed:@"NSComboBoxCellDown"];
@@ -411,6 +649,10 @@ pointSize:10 color:color] autorelease];
    
    [self drawButtonImage:image inRect:imageRect enabled:enabled mixed:NO];
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSTabView)
 
 -(void)drawTabInRect:(NSRect)rect clipRect:(NSRect)clipRect color:(NSColor *)color selected:(BOOL)selected {
     NSRect originalRect=rect;
@@ -493,6 +735,10 @@ pointSize:10 color:color] autorelease];
 -(void)drawTabViewBackgroundInRect:(NSRect)rect {
    // do nothing
 }
+
+@end
+
+@implementation NSGraphicsStyle (NSTextField)
 
 -(void)drawTextFieldBorderInRect:(NSRect)rect bezeledNotLine:(BOOL)bezeledNotLine {
    if(bezeledNotLine)

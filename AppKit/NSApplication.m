@@ -1014,7 +1014,7 @@ id NSApp=nil;
 -(void)orderFrontStandardAboutPanelWithOptions:(NSDictionary *)options {
     NSSystemInfoPanel *standardAboutPanel = [[NSSystemInfoPanel 
 standardAboutPanel] retain]; 
-   [standardAboutPanel showInfoPanel:self]; 
+   [standardAboutPanel showInfoPanel:self withOptions:options]; 
 
 }
 

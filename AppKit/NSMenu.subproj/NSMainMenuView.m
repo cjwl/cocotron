@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenuWindow.h>
 #import <AppKit/NSSubmenuView.h>
 #import <AppKit/NSFont.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 /*
    - implement raised border on mouse over
@@ -28,11 +29,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [self menuFont],NSFontAttributeName,nil];
    float         result=[@"Menu" sizeWithAttributes:attributes].height;
 
-   result+=2; // border top/bottom margin
+   result+=3; // border top/bottom margin
    result+=4; // border
    result+=1; // sunken title baseline
 
-   return result;
+	return result;
 }
 
 -initWithFrame:(NSRect)frame menu:(NSMenu *)menu {
@@ -69,24 +70,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self sizeToFit];
 }
 
--(NSDictionary *)titleAttributes {
-   NSColor *color=[[self window] isKeyWindow]?[NSColor menuItemTextColor]:[NSColor disabledControlTextColor];
+-(NSRect)titleRectForItem:(NSMenuItem *)item previousBorderRect:(NSRect)previousBorderRect
+{
+	NSRect result;
+	NSSize titleSize = [[self graphicsStyle] menuItemTextSize:[item title]];
 
-   return [NSDictionary dictionaryWithObjectsAndKeys:
-     _font,NSFontAttributeName,
-     color,NSForegroundColorAttributeName,
-     nil];
-}
-
--(NSRect)titleRectForItem:(NSMenuItem *)item previousBorderRect:(NSRect)previousBorderRect attributes:(NSDictionary *)attributes {
-   NSRect      result;
-   NSString   *title=[item title];
-   NSSize      size=[title sizeWithAttributes:attributes];
-
-   result.origin.x=NSMaxX(previousBorderRect)+6;
-   result.size.width=size.width;
-   result.origin.y=floor(([self bounds].size.height-size.height)/2);
-   result.size.height=size.height;
+	result.origin = NSMakePoint(NSMaxX(previousBorderRect)+6,floor(([self bounds].size.height-titleSize.height)/2));
+	result.size = titleSize;
 
    return result;
 }
@@ -95,7 +85,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect result=NSInsetRect(titleRect,-6,0);
 
    result.size.height=[self bounds].size.height-2;
-   result.origin.y=1;
+   result.origin.y=0;
 
    return result;
 }
@@ -129,37 +119,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 }
 
-#if 0
-static void drawRaisedBorder(NSRect rect){
-   NSRect   rects[5];
-   NSColor *colors[5];
-
-   rects[0]=rect;
-   rects[0].origin.x=NSMaxX(rect)-1;
-   rects[0].size.width=1;
-   colors[0]=[NSColor darkGrayColor];
-   rects[1]=rect;
-   rects[1].origin.y=NSMaxY(rect)-1;
-   rects[1].size.height=1;
-   colors[1]=[NSColor darkGrayColor];
-   rects[2]=rect;
-   rects[2].size.width=1;
-   colors[2]=[NSColor whiteColor];
-   rects[3]=rect;
-   rects[3].size.height=1;
-   colors[3]=[NSColor whiteColor];
-   rects[4]=NSInsetRect(rect,1,1);
-   colors[4]=[NSColor controlColor];
-
-   NSRectFillListWithColors(rects,colors,5);
-}
-#endif
-
 static void drawSunkenBorder(NSRect rect){
    NSRect   rects[5];
    NSColor *colors[5];
 
-   rects[0]=rect;
+	rects[0]=rect;
    rects[0].size.width=1;
    colors[0]=[NSColor darkGrayColor];
    rects[1]=rect;
@@ -194,69 +158,70 @@ static void drawSunkenBorder(NSRect rect){
 
    return rect;
 }
+
 -(void)drawRect:(NSRect)rect {
-   NSRect        bounds=[self bounds];
-   NSDictionary *attributes=[self titleAttributes];
-   NSArray      *items=[[self menu] itemArray];
-   int           i,count=[items count];
-   NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
-   BOOL          overflow=NO;
-
-   [[NSColor menuBackgroundColor] setFill];
-   NSRectFill(bounds);
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[items objectAtIndex:i];
-    NSString   *title=[item title];
-    NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect attributes:attributes];
-    NSRect      borderRect=[self borderRectFromTitleRect:titleRect];
-
-    if(i==_selectedItemIndex){
-     drawSunkenBorder(borderRect);
-     titleRect.origin.x+=1;
-     titleRect.origin.y+=1;
-    }
-    [title drawInRect:titleRect withAttributes:attributes];
-    previousBorderRect=borderRect;
-
-    if(NSMaxX(borderRect)>NSMaxX(bounds)){
-     overflow=YES;
-     break;
-    }
-   }
-
-   if(overflow){
-    NSImage *image=[self overflowImage];
-    NSSize   size=[image size];
-    NSRect   rect=[self overflowRect];
-    NSPoint  origin;
-    NSRect   fill=rect;
-
-    [[NSColor controlColor] setFill];
-    fill.origin.x-=4;
-    fill.size.width+=4;
-    NSRectFill(fill);
-
-    if(_selectedItemIndex==count)
-     drawSunkenBorder(rect);
-
-    origin=rect.origin;
-    origin.x+=3;
-    origin.y+=floor((rect.size.height-size.height)/2);
-    [image compositeToPoint:origin operation:NSCompositeSourceOver];
-   }
+	NSRect        bounds=[self bounds];
+	NSArray      *items=[[self menu] itemArray];
+	int           i,count=[items count];
+	NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
+	BOOL          overflow=NO;
+	NSPoint       mouseLoc = [[NSApp currentEvent] locationInWindow];
+	
+	mouseLoc = [self convertPoint:mouseLoc fromView:nil];
+	
+	[[self graphicsStyle] drawMenuBarBackgroundInRect:bounds];
+	
+	for(i=0;i<count;i++){
+		NSMenuItem *item=[items objectAtIndex:i];
+		NSString   *title=[item title];
+		NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect];
+		NSRect      borderRect=[self borderRectFromTitleRect:titleRect];
+		
+		[[self graphicsStyle] drawMenuBarItemBorderInRect:borderRect hover:(i==_selectedItemIndex)/*NSPointInRect(mouseLoc,borderRect)*/ selected:(i==_selectedItemIndex)];
+		
+		titleRect.origin.x = borderRect.origin.x + (NSWidth(borderRect) - NSWidth(titleRect)) / 2;
+		titleRect.origin.y = borderRect.origin.y + (NSHeight(borderRect) - NSHeight(titleRect)) / 2;
+		[[self graphicsStyle] drawMenuItemText:title inRect:titleRect enabled:YES selected:(i==_selectedItemIndex)];
+		
+		previousBorderRect=borderRect;
+		
+		if(NSMaxX(borderRect)>NSMaxX(bounds)){
+			overflow=YES;
+			break;
+		}
+	}
+	
+	if(overflow){
+		NSImage *image=[self overflowImage];
+		NSSize   size=[image size];
+		NSRect   rect=[self overflowRect];
+		NSPoint  origin;
+		NSRect   fill=rect;
+		
+		[[NSColor controlColor] setFill];
+		fill.origin.x-=4;
+		fill.size.width+=4;
+		NSRectFill(fill);
+		
+		if(_selectedItemIndex==count)
+			drawSunkenBorder(rect);
+		
+		origin=rect.origin;
+		origin.x+=3;
+		origin.y+=floor((rect.size.height-size.height)/2);
+		[image compositeToPoint:origin operation:NSCompositeSourceOver];
+	}
 }
 
 -(unsigned)overflowIndex {
    NSRect        bounds=[self bounds];
    NSArray      *items=[[self menu] itemArray];
-   NSDictionary *attributes=[self titleAttributes];
    unsigned      i,count=[items count];
    NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
 
    for(i=0;i<count;i++){
     NSMenuItem *item=[items objectAtIndex:i];
-    NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect attributes:attributes];
+    NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect];
     NSRect      borderRect=[self borderRectFromTitleRect:titleRect];
 
     if(NSMaxX(borderRect)>NSMaxX(bounds))
@@ -272,14 +237,13 @@ static void drawSunkenBorder(NSRect rect){
    unsigned      result=NSNotFound;
    NSRect        bounds=[self bounds];
    NSArray      *items=[[self menu] itemArray];
-   NSDictionary *attributes=[self titleAttributes];
    unsigned      i,count=[items count];
    NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
    BOOL          overflow=NO;
 
    for(i=0;i<count;i++){
     NSMenuItem *item=[items objectAtIndex:i];
-    NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect attributes:attributes];
+    NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect];
     NSRect      borderRect=[self borderRectFromTitleRect:titleRect];
 
     if(NSMaxX(borderRect)>NSMaxX(bounds))
@@ -304,7 +268,6 @@ static void drawSunkenBorder(NSRect rect){
    NSRect        screenVisible=[screen visibleFrame];
    NSArray      *items=[[self menu] itemArray];
    unsigned      i,count=[items count];
-   NSDictionary *attributes=[self titleAttributes];
    NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
    NSRect        itemRect=NSZeroRect;
    NSPoint       topLeft=NSZeroPoint;
@@ -317,8 +280,7 @@ static void drawSunkenBorder(NSRect rect){
    else {
     for(i=0;i<count;i++){
      NSMenuItem *item=[items objectAtIndex:i];
-     NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect attributes:attributes];
-
+     NSRect      titleRect=[self titleRectForItem:item previousBorderRect:previousBorderRect];
      itemRect=[self borderRectFromTitleRect:titleRect];
  
      if(i==_selectedItemIndex){
@@ -347,7 +309,7 @@ static void drawSunkenBorder(NSRect rect){
    if(topLeft.x<NSMinX(screenVisible))
     topLeft.x=NSMinX(screenVisible);
 
-   [branch setFrameTopLeftPoint:topLeft];
+  [branch setFrameTopLeftPoint:topLeft];
 }
 
 -(NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen {
