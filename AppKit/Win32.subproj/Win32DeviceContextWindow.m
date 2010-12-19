@@ -54,19 +54,24 @@ void closeThemeData(HANDLE theme);
 -(Win32DeviceContextWindow *)windowDeviceContext {
    return self;
 }
+#if DEBUG
+#define THEME_CHECK(idx,class) if ((_theme[idx]   =openThemeData(_handle, L##class)) == NULL) { NSLog(@"%s theme data == NULL",class); }
+#else
+#define THEME_CHECK(idx,class) _theme[idx]   =openThemeData(_handle, L##class);
+#endif
 
 - (void)openTheme {
-   _theme[uxthBUTTON]   =openThemeData(_handle, L"BUTTON");
-   _theme[uxthCOMBOBOX] =openThemeData(_handle, L"COMBOBOX");
-   _theme[uxthEDIT]     =openThemeData(_handle, L"EDIT");
-   _theme[uxthHEADER]   =openThemeData(_handle, L"HEADER");
-   _theme[uxthMENU]     =openThemeData(_handle, L"MENU");
-   _theme[uxthPROGRESS] =openThemeData(_handle, L"PROGRESS");
-   _theme[uxthSCROLLBAR]=openThemeData(_handle, L"SCROLLBAR");
-   _theme[uxthSPIN]     =openThemeData(_handle, L"SPIN");
-   _theme[uxthTAB]      =openThemeData(_handle, L"TAB");
-   _theme[uxthTRACKBAR] =openThemeData(_handle, L"TRACKBAR");
-   _theme[uxthTREEVIEW] =openThemeData(_handle, L"TREEVIEW");
+   THEME_CHECK(uxthBUTTON,"BUTTON");
+   THEME_CHECK(uxthCOMBOBOX,"COMBOBOX");
+   THEME_CHECK(uxthEDIT,"EDIT");
+   THEME_CHECK(uxthHEADER,"HEADER");
+   THEME_CHECK(uxthMENU,"MENU");
+   THEME_CHECK(uxthPROGRESS,"PROGRESS");
+   THEME_CHECK(uxthSCROLLBAR,"SCROLLBAR");
+   THEME_CHECK(uxthSPIN,"SPIN");
+   THEME_CHECK(uxthTAB,"TAB");
+   THEME_CHECK(uxthTRACKBAR,"TRACKBAR");
+   THEME_CHECK(uxthTREEVIEW,"TREEVIEW");
 }
 
 - (void)closeTheme {
