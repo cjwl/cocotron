@@ -53,6 +53,10 @@ FOUNDATION_EXPORT NSString * const NSNetServicesErrorDomain;
   int  _interfaceIndex;
   
   BOOL			 _isPublishing,	_isMonitoring;
+  
+  NSInputStream  *_inputStream;
+  NSOutputStream *_outputStream;
+
 }
 
 +(NSData *)dataFromTXTRecordDictionary:(NSDictionary *)txtDictionary;

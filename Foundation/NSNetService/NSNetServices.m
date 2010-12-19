@@ -539,6 +539,10 @@ static BONJOUR_CALL void RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjou
    _netService = NULL;
    _inputSource = nil;
    _resolverTimeout = nil;
+   
+   _inputStream = nil;
+   _outputStream = nil;
+   
    return self;
 }
 
@@ -550,7 +554,9 @@ static BONJOUR_CALL void RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjou
    [_name release];
    [_host release];
    [_addresses release];
-         
+   [_inputStream release];
+   [_outputStream release];
+   
    _delegate = nil;
    [super dealloc];
 }
@@ -826,9 +832,29 @@ static BONJOUR_CALL void RegistrationCallback(bonjour_DNSServiceRef sdRef,bonjou
 - (BOOL) getInputStream:(NSInputStream **) inputStream outputStream:(NSOutputStream **) outputStream {  
    NSHost *host=[NSHost hostWithName:_host];
    
-   [NSStream getStreamsToHost:host port:_port inputStream:inputStream outputStream:outputStream];
-    
-   return ((*inputStream!=nil) && (*outputStream!=nil))?YES:NO;
+
+   if (inputStream || outputStream) 
+   {
+     if(!_inputStream || !_outputStream)
+     {
+        [NSStream getStreamsToHost:host 
+                              port:_port 
+                       inputStream:(!_inputStream ? inputStream : NULL) 
+                      outputStream:(!_outputStream ? outputStream : NULL)];
+     }
+     if(inputStream)
+     { 
+        if(!_inputStream) _inputStream = [*inputStream retain];
+        else *inputStream = _inputStream;
+     }
+     if(outputStream)
+     { 
+        if(!_outputStream) _outputStream = [*outputStream retain];
+        else *outputStream = _outputStream;
+     }
+	 return ((inputStream && _inputStream) || (outputStream && _outputStream));
+   }
+   return NO;
 }
 
 @end
