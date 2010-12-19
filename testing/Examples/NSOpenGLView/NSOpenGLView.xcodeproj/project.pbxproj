@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		FEF2EAD40C8782A4001FC5A8 /* NSOpenGLView */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FEF2EADA0C8782CE001FC5A8 /* Build configuration list for PBXAggregateTarget "NSOpenGLView" */;
+			buildPhases = (
+			);
+			dependencies = (
+				FEF2EAD60C8782A9001FC5A8 /* PBXTargetDependency */,
+				FEF2EAD80C8782AC001FC5A8 /* PBXTargetDependency */,
+			);
+			name = NSOpenGLView;
+			productName = NSOpenGLView;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE472DAE0C85A959002B72EF /* MyOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE472DAD0C85A959002B72EF /* MyOpenGLView.m */; };
+		FE472DC90C85AAA1002B72EF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE472DC80C85AAA1002B72EF /* OpenGL.framework */; };
+		FE4733530C876FA1002B72EF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		FE4733540C876FA1002B72EF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		FE4733560C876FA1002B72EF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		FE4733570C876FA1002B72EF /* MyOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE472DAD0C85A959002B72EF /* MyOpenGLView.m */; };
+		FE4733590C876FA1002B72EF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FEBEB04E0C96D3EE002C9F50 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEBEB04D0C96D3EE002C9F50 /* Localizable.strings */; };
+		FEBEB04F0C96D3EE002C9F50 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEBEB04D0C96D3EE002C9F50 /* Localizable.strings */; };
+		FEBEB0520C96D3FD002C9F50 /* Localizable-windows.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEBEB0510C96D3FD002C9F50 /* Localizable-windows.strings */; };
+		FEBEB0530C96D3FD002C9F50 /* Localizable-windows.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEBEB0510C96D3FD002C9F50 /* Localizable-windows.strings */; };
+		FEF2EB7D0C87B952001FC5A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
+		FEF2EB7E0C87B959001FC5A8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE4733600C876FDE002B72EF /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		FEF2EAD50C8782A9001FC5A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = "NSOpenGLView-MacOS";
+		};
+		FEF2EAD70C8782AC001FC5A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE4733510C876FA1002B72EF;
+			remoteInfo = "NSOpenGLView-Windows";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* NSOpenGLView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NSOpenGLView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE472DAC0C85A959002B72EF /* MyOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyOpenGLView.h; sourceTree = "<group>"; };
+		FE472DAD0C85A959002B72EF /* MyOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MyOpenGLView.m; sourceTree = "<group>"; };
+		FE472DC80C85AAA1002B72EF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		FE47335D0C876FA1002B72EF /* NSOpenGLView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NSOpenGLView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEBEB00E0C96D208002C9F50 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FEBEB0160C96D228002C9F50 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = "English.lproj/Localizable-windows.strings"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				FE472DC90C85AAA1002B72EF /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4733580C876FA1002B72EF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4733590C876FA1002B72EF /* Cocoa.framework in Frameworks */,
+				FEF2EB7D0C87B952001FC5A8 /* Foundation.framework in Frameworks */,
+				FEF2EB7E0C87B959001FC5A8 /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* NSOpenGLView.app */,
+				FE47335D0C876FA1002B72EF /* NSOpenGLView.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* NSOpenGLView */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				FEBEB04D0C96D3EE002C9F50 /* Localizable.strings */,
+				FEBEB0510C96D3FD002C9F50 /* Localizable-windows.strings */,
+			);
+			name = NSOpenGLView;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				FE472DAC0C85A959002B72EF /* MyOpenGLView.h */,
+				FE472DAD0C85A959002B72EF /* MyOpenGLView.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE472DC80C85AAA1002B72EF /* OpenGL.framework */,
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* NSOpenGLView-MacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "NSOpenGLView-MacOS" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "NSOpenGLView-MacOS";
+			productInstallPath = "$(HOME)/Applications";
+			productName = NSOpenGLView;
+			productReference = 8D1107320486CEB800E47090 /* NSOpenGLView.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FE4733510C876FA1002B72EF /* NSOpenGLView-Windows */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE47335B0C876FA1002B72EF /* Build configuration list for PBXNativeTarget "NSOpenGLView-Windows" */;
+			buildPhases = (
+				FE4733520C876FA1002B72EF /* Resources */,
+				FE4733550C876FA1002B72EF /* Sources */,
+				FE4733580C876FA1002B72EF /* Frameworks */,
+				FE2D932D0D491258005B7813 /* ShellScript */,
+			);
+			buildRules = (
+				FE4733600C876FDE002B72EF /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "NSOpenGLView-Windows";
+			productInstallPath = "$(HOME)/Applications";
+			productName = NSOpenGLView;
+			productReference = FE47335D0C876FA1002B72EF /* NSOpenGLView.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "NSOpenGLView" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* NSOpenGLView */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* NSOpenGLView-MacOS */,
+				FE4733510C876FA1002B72EF /* NSOpenGLView-Windows */,
+				FEF2EAD40C8782A4001FC5A8 /* NSOpenGLView */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				FEBEB04E0C96D3EE002C9F50 /* Localizable.strings in Resources */,
+				FEBEB0520C96D3FD002C9F50 /* Localizable-windows.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4733520C876FA1002B72EF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4733530C876FA1002B72EF /* MainMenu.nib in Resources */,
+				FE4733540C876FA1002B72EF /* InfoPlist.strings in Resources */,
+				FEBEB04F0C96D3EE002C9F50 /* Localizable.strings in Resources */,
+				FEBEB0530C96D3FD002C9F50 /* Localizable-windows.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE2D932D0D491258005B7813 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -destination $TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				FE472DAE0C85A959002B72EF /* MyOpenGLView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4733550C876FA1002B72EF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4733560C876FA1002B72EF /* main.m in Sources */,
+				FE4733570C876FA1002B72EF /* MyOpenGLView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FEF2EAD60C8782A9001FC5A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* NSOpenGLView-MacOS */;
+			targetProxy = FEF2EAD50C8782A9001FC5A8 /* PBXContainerItemProxy */;
+		};
+		FEF2EAD80C8782AC001FC5A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE4733510C876FA1002B72EF /* NSOpenGLView-Windows */;
+			targetProxy = FEF2EAD70C8782AC001FC5A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		FEBEB04D0C96D3EE002C9F50 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FEBEB00E0C96D208002C9F50 /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		FEBEB0510C96D3FD002C9F50 /* Localizable-windows.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FEBEB0160C96D228002C9F50 /* English */,
+			);
+			name = "Localizable-windows.strings";
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4C08A954540054247B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 1;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = NSOpenGLView;
+				SYMROOT = build/Mac;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Deployment;
+		};
+		C01FCF5008A954540054247B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+		FE47335C0C876FA1002B72EF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				COPY_PHASE_STRIP = YES;
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .exe;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-Wl,--enable-auto-import",
+					"-mwindows",
+					"-lopengl32",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = NSOpenGLView;
+				SDKROOT = "";
+				SYMROOT = build/Windows;
+			};
+			name = Deployment;
+		};
+		FEF2EADB0C8782CE001FC5A8 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = NSOpenGLView;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "NSOpenGLView-MacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4C08A954540054247B /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "NSOpenGLView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF5008A954540054247B /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FE47335B0C876FA1002B72EF /* Build configuration list for PBXNativeTarget "NSOpenGLView-Windows" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE47335C0C876FA1002B72EF /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FEF2EADA0C8782CE001FC5A8 /* Build configuration list for PBXAggregateTarget "NSOpenGLView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEF2EADB0C8782CE001FC5A8 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
