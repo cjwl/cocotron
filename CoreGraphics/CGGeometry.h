@@ -77,3 +77,4 @@ static inline bool CGRectIntersectsRect(CGRect a, CGRect b)
         return false;
     return true;
 }
+
