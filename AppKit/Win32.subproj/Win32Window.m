@@ -356,6 +356,12 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    SIZE sizeWnd = {_frame.size.width, 1};
    POINT ptSrc = {0, 0};
 
+   if(![NSWindow cocotronSheetAnimations])
+   {
+      SetWindowPos(_handle, [(Win32Window *)aboveWindow windowHandle], moveTo.origin.x, moveTo.origin.y, moveTo.size.width, moveTo.size.height, SWP_SHOWWINDOW);
+      return;
+   }
+
    UpdateLayeredWindow(_handle, NULL, &origin, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
    _disableDisplay=YES;
    SetWindowPos(_handle,[(Win32Window *)aboveWindow windowHandle],0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);
@@ -378,6 +384,15 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)sheetOrderOutToFrame:(CGRect)frame {
+   // odd! frame argument is ignored here
+   if(![NSWindow cocotronSheetAnimations])
+   {
+      // FIXME just close the window here?
+      SIZE sizeWnd = {_frame.size.width, 0};
+      POINT ptSrc = {0, _frame.size.height};
+      UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, NULL, ULW_OPAQUE);
+      return;
+   }
    int i;
    int interval=(_frame.size.height/400.0)*100;
    int chunk=_frame.size.height/(interval/2);
