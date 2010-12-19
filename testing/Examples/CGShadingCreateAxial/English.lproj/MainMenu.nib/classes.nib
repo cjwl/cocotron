@@ -1,0 +1,17 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                takeEndColorFromSender = id; 
+                takeExtendEndFromSender = id; 
+                takeExtendStartFromSender = id; 
+                takeStartColorFromSender = id; 
+            }; 
+            CLASS = GradientView; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}
