@@ -21,6 +21,38 @@ static NSWindingRule   _defaultWindingRule=NSNonZeroWindingRule;
 static NSLineCapStyle  _defaultLineCapStyle=NSButtLineCapStyle;
 static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
+static void CGPathConverter( void* info, const CGPathElement* element )
+{
+	NSBezierPath* bezier = (NSBezierPath*)info;
+	
+	switch( element->type )
+	{
+		case kCGPathElementMoveToPoint:
+			if (!CGPointEqualToPoint(element->points[0], bezier.currentPoint))
+				[bezier moveToPoint:*(CGPoint*) element->points];
+			break;
+			
+		case kCGPathElementAddLineToPoint:
+			[bezier lineToPoint:*(CGPoint*) element->points];
+			break;
+			
+		case kCGPathElementAddQuadCurveToPoint:
+//			[bezier quadraticCurveToPoint:*(CGPoint*) &element->points[1] controlPoint:*(CGPoint*) &element->points[0]];
+			break;
+			
+		case kCGPathElementAddCurveToPoint:
+			[bezier curveToPoint:*(CGPoint*) &element->points[2] controlPoint1:*(CGPoint*) &element->points[0] controlPoint2:*(CGPoint*) &element->points[1]];
+			break;
+			
+		case kCGPathElementCloseSubpath:
+			[bezier closePath];
+			break;
+			
+		default:
+			break;
+	}
+}
+
 -init {
    _capacityOfElements=16;
    _numberOfElements=0;
@@ -79,6 +111,17 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
    }
    
    return copy;
+}
+
++ (NSBezierPath*)bezierPathWithCGPath:(CGPathRef)path
+{
+	// given a CGPath, this converts it to the equivalent NSBezierPath by using a custom apply function
+	
+	NSAssert( path != nil, @"CG path was nil in bezierPathWithCGPath");
+	
+	NSBezierPath* newPath = [self bezierPath];
+	CGPathApply(path, newPath, CGPathConverter );
+	return newPath;
 }
 
 +(NSBezierPath *)bezierPath {
@@ -621,12 +664,42 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
    CGPathRelease(path);
 }
 
--(void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font {
-   [self appendBezierPathWithGlyphs:&glyph count:1 inFont:font];
+- (void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font
+{
+	// Create a CTFont from the NSFont
+	NSString *fontName = [font fontName];
+	CGFontRef cgFont=CGFontCreateWithFontName((CFStringRef)fontName);
+	if (cgFont) {
+		CTFontRef fontRef=CTFontCreateWithGraphicsFont(cgFont,[font pointSize],NULL,NULL);
+		if (fontRef) {
+			CGPathRef glyphPath = CTFontCreatePathForGlyph(fontRef, glyph, NULL);
+			if (glyphPath) {
+				NSBezierPath *path = [NSBezierPath bezierPathWithCGPath: glyphPath];
+				
+				// Translate the path to the current point
+				CGPoint currentPoint = [self currentPoint];
+				NSAffineTransform *transform = [NSAffineTransform transform];
+				[transform translateXBy:currentPoint.x yBy:currentPoint.y];
+				[path transformUsingAffineTransform: transform];
+				
+				[self appendBezierPath: path];
+				CGPathRelease(glyphPath);			
+			}
+			CFRelease(fontRef);
+		} else {
+			NSLog(@"Can't create CTFont %@", fontName);
+		}			
+	} else {
+		NSLog(@"Can't create CGFont %@", fontName);
+	}			
+
+	CGFontRelease(cgFont);
 }
 
 -(void)appendBezierPathWithGlyphs:(NSGlyph *)glyphs count:(unsigned)count inFont:(NSFont *)font {
-   NSUnimplementedMethod();
+	for (int i = 0; i < count; ++i) {
+		[self appendBezierPathWithGlyph:glyphs[i] inFont:font];
+	}
 }
 
 -(void)appendBezierPathWithPackedGlyphs:(const char *)packed {
@@ -699,8 +772,59 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 }
 
 -(NSBezierPath *)bezierPathByReversingPath {
-   NSUnimplementedMethod();
-   return nil;
+	// We're just taking the path segments from the end and switching their start and ends
+	// MoveTo are converted to ClosePath if the current path is closed, else to MoveTo
+	// ClosePath are converted to MoveTo and the current path is marked as closed
+	
+	NSBezierPath *path = (NSBezierPath *)[[self class] bezierPath];
+	
+	BOOL closed = NO; // state of current subpath
+	
+	for (int i = [self elementCount] - 1; i >= 0; i--) 
+    {
+		// Find the next point : it's the end of previous element in the original path
+		CGPoint nextPoint = CGPointMake(0,0);
+		CGPoint pts[3];
+		NSBezierPathElement type = [self elementAtIndex: i associatedPoints: pts];
+		if (i > 0) {
+			NSBezierPathElement prevType;
+			CGPoint prevPoints[3];
+			prevType = [self elementAtIndex: i-1 associatedPoints: prevPoints];
+			switch (prevType) {
+				case NSCurveToBezierPathElement:
+					nextPoint = prevPoints[2];
+					break;
+				default:
+					nextPoint = prevPoints[0];
+					break;
+			}
+		}
+		switch(type) 
+        {
+			case NSMoveToBezierPathElement:
+				if (closed) {
+					[path closePath];
+					// We're starting a new subpath - non-closed until we meet a ClosePath
+					closed = NO;
+				} else {
+					[path moveToPoint: nextPoint];
+				}
+				break;
+			case NSLineToBezierPathElement:
+				[path lineToPoint: nextPoint];
+				break;
+			case NSCurveToBezierPathElement:
+				[path curveToPoint:nextPoint controlPoint1:pts[1] controlPoint2: pts[0]];
+			case NSClosePathBezierPathElement:
+					[path moveToPoint: nextPoint];
+				// Current subpath is closed
+				closed = YES;
+				break;
+			default:
+				break;
+		}
+	}
+	return path;
 }
 
 static void _addPathToContext(NSBezierPath *self,CGContextRef context) {
