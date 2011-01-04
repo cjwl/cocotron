@@ -22,6 +22,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2Context_builtin_gdi
 
++(BOOL)canInitBitmap {
+   return YES;
+}
+
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
    /* FIX: we need to also override initWithBytes:... and create an O2Surface_DIBSection for the pixel format.

@@ -134,19 +134,8 @@ O2BitmapInfo O2BitmapContextGetBitmapInfo(O2ContextRef selfX) {
 
 O2ImageRef O2BitmapContextCreateImage(O2ContextRef selfX) {
    O2BitmapContextRef self=(O2BitmapContextRef)selfX;
-#if 1
-// FIXME: this needs to be either a copy or a copy on write
-   return [self->_surface retain];
-#else
-  O2DataProviderRef provider=O2DataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
-  
-  O2Image *image=O2ImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
-     _bitmapInfo,provider,NULL,NO,kO2RenderingIntentDefault);
-  
-  O2DataProviderRelease(provider);
-  
-  return image;
-#endif
+   
+   return O2SurfaceCreateImage(self->_surface);
 }
 
 @end

@@ -2,6 +2,9 @@
 #import <Foundation/Foundation.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <QuartzCore/CATransform3D.h>
+#import <QuartzCore/CAAction.h>
+
+@class CAAnimation,CALayerContext;
 
 enum {
    kCALayerNotSizable   = 0x00,
@@ -14,10 +17,12 @@ enum {
 };
 
 @interface CALayer : NSObject {
-   CALayer      *_superLayer;
+   CALayerContext *_context;
+   CALayer      *_superlayer;
    NSArray      *_sublayers;
    id            _delegate;
-   CGRect        _frame;
+   CGPoint       _anchorPoint;
+   CGPoint       _position;
    CGRect        _bounds;
    float         _opacity;
    BOOL          _opaque;
@@ -25,15 +30,18 @@ enum {
    CATransform3D _transform;
    CATransform3D _sublayerTransform;
    BOOL          _needsDisplay;
+   NSMutableDictionary *_animations;
 }
 
 +layer;
 
-@property(readonly) CALayer *superLayer;
+@property(readonly) CALayer *superlayer;
 @property(copy) NSArray *sublayers;
 @property(assign) id delegate;
-@property CGRect frame;
+@property CGPoint anchorPoint;
+@property CGPoint position;
 @property CGRect bounds;
+@property CGRect frame;
 @property float opacity;
 @property BOOL opaque;
 @property(retain) id contents;
@@ -43,6 +51,7 @@ enum {
 -init;
 
 -(void)addSublayer:(CALayer *)layer;
+-(void)replaceSublayer:(CALayer *)layer with:(CALayer *)other;
 -(void)display;
 -(void)displayIfNeeded;
 -(void)drawInContext:(CGContextRef)context;
@@ -50,6 +59,14 @@ enum {
 -(void)removeFromSuperlayer;
 -(void)setNeedsDisplay;
 -(void)setNeedsDisplayInRect:(CGRect)rect;
+
+-(void)addAnimation:(CAAnimation *)animation forKey:(NSString *)key;
+-(CAAnimation *)animationForKey:(NSString *)key;
+-(void)removeAllAnimations;
+-(void)removeAnimationForKey:(NSString *)key;
+-(NSArray *)animationKeys;
+
+-(id <CAAction>)actionForKey:(NSString *)key;
 
 @end
 

@@ -25,6 +25,9 @@
 		FE0FB9C710F9815300EBA597 /* CIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B610F9815300EBA597 /* CIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE0FB9C810F9815300EBA597 /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE255FF210F10397005CE23E /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE41B88912BEA2EE00ED6C10 /* CATransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE41B88812BEA2EE00ED6C10 /* CATransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE41B88A12BEA2EE00ED6C10 /* CATransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE41B88812BEA2EE00ED6C10 /* CATransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE41B88B12BEA2EE00ED6C10 /* CATransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE41B88812BEA2EE00ED6C10 /* CATransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4301AC11E255A500EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4301AD11E255A500EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4301AE11E255A500EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,23 +39,13 @@
 		FEA3F2141133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3F2151133089500690AA2 /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEAEF7E911E3AAD000CA0912 /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7EA11E3AAD000CA0912 /* CAAnimationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E111E3AAD000CA0912 /* CAAnimationGroup.m */; };
 		FEAEF7EB11E3AAD000CA0912 /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7EC11E3AAD000CA0912 /* CABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E311E3AAD000CA0912 /* CABasicAnimation.m */; };
 		FEAEF7ED11E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7EE11E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E511E3AAD000CA0912 /* CAPropertyAnimation.m */; };
 		FEAEF7EF11E3AAD000CA0912 /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E611E3AAD000CA0912 /* CATransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7F011E3AAD000CA0912 /* CATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E711E3AAD000CA0912 /* CATransition.m */; };
-		FEAEF7F111E3AAD000CA0912 /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E811E3AAD000CA0912 /* CIAffineTransform.m */; };
 		FEAEF7F211E3AAD000CA0912 /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7F311E3AAD000CA0912 /* CAAnimationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E111E3AAD000CA0912 /* CAAnimationGroup.m */; };
 		FEAEF7F411E3AAD000CA0912 /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7F511E3AAD000CA0912 /* CABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E311E3AAD000CA0912 /* CABasicAnimation.m */; };
 		FEAEF7F611E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7F711E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E511E3AAD000CA0912 /* CAPropertyAnimation.m */; };
 		FEAEF7F811E3AAD000CA0912 /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E611E3AAD000CA0912 /* CATransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF7F911E3AAD000CA0912 /* CATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E711E3AAD000CA0912 /* CATransition.m */; };
-		FEAEF7FA11E3AAD000CA0912 /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF7E811E3AAD000CA0912 /* CIAffineTransform.m */; };
 		FEAEF7FB11E3AAD000CA0912 /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEAEF7FD11E3AAD000CA0912 /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEAEF7FF11E3AAD000CA0912 /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,9 +57,7 @@
 		FEAEF85F11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEAEF86011E3AFEF00CA0912 /* CAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEAEF8C311E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF8C411E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */; };
 		FEAEF8C511E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEAEF8C611E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */; };
 		FEAEF8C711E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819810EBB231003472F1 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECA819910EBB231003472F1 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -82,6 +73,15 @@
 		FED38C4910E13E1000A2A651 /* CARenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38BEA10E12BAB00A2A651 /* CARenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED38C8E10E13FCC00A2A651 /* CABase.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38C8D10E13FCC00A2A651 /* CABase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED38C8F10E13FCC00A2A651 /* CABase.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38C8D10E13FCC00A2A651 /* CABase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDEAA6812C2608F008E5A59 /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDEAA6A12C2608F008E5A59 /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDEAA6C12C2608F008E5A59 /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDEABC112C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; };
+		FEDEABC212C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; };
+		FEDEABC312C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEDEB74012D2378C008E5A59 /* CAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEB73F12D2378C008E5A59 /* CAAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDEB74112D2378C008E5A59 /* CAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEB73F12D2378C008E5A59 /* CAAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDEB74212D2378C008E5A59 /* CAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEB73F12D2378C008E5A59 /* CAAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF88C2E100CC45B00B15FD7 /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF88C2F100CC45B00B15FD7 /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF88C30100CC45B00B15FD7 /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -196,6 +196,7 @@
 		FE0FB9B810F9815300EBA597 /* CIVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIVector.h; sourceTree = "<group>"; };
 		FE0FB9B910F9815300EBA597 /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIVector.m; sourceTree = "<group>"; };
 		FE255FEF10F10397005CE23E /* CoreImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreImage.h; sourceTree = "<group>"; };
+		FE41B88812BEA2EE00ED6C10 /* CATransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransaction.h; sourceTree = "<group>"; };
 		FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreVideo.xcodeproj; path = ../CoreVideo/CoreVideo.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE4301AB11E255A500EBDD56 /* CoreVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreVideo.h; sourceTree = "<group>"; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
@@ -220,6 +221,10 @@
 		FED38BEA10E12BAB00A2A651 /* CARenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARenderer.h; sourceTree = "<group>"; };
 		FED38C4D10E13E1000A2A651 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED38C8D10E13FCC00A2A651 /* CABase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABase.h; sourceTree = "<group>"; };
+		FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAValueFunction.h; sourceTree = "<group>"; };
+		FEDEAA6712C2608F008E5A59 /* CAValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAValueFunction.m; sourceTree = "<group>"; };
+		FEDEABC012C98F59008E5A59 /* CALayerContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CALayerContext.h; sourceTree = "<group>"; };
+		FEDEB73F12D2378C008E5A59 /* CAAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAction.h; sourceTree = "<group>"; };
 		FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreGraphics.xcodeproj; path = ../CoreGraphics/CoreGraphics.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAnimation.h; sourceTree = "<group>"; };
 		FEF88C2C100CC45B00B15FD7 /* CALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CALayer.h; sourceTree = "<group>"; };
@@ -267,6 +272,11 @@
 		0867D691FE84028FC02AAC07 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FEDEB73F12D2378C008E5A59 /* CAAction.h */,
+				FEDEABC012C98F59008E5A59 /* CALayerContext.h */,
+				FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */,
+				FEDEAA6712C2608F008E5A59 /* CAValueFunction.m */,
+				FE41B88812BEA2EE00ED6C10 /* CATransaction.h */,
 				FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */,
 				FEAEF8C211E3B3FF00CA0912 /* CAMediaTimingFunction.m */,
 				FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */,
@@ -411,6 +421,10 @@
 				FEAEF82311E3AB6A00CA0912 /* CoreAnimation.h in Headers */,
 				FEAEF85E11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */,
 				FEAEF8C311E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */,
+				FE41B88912BEA2EE00ED6C10 /* CATransaction.h in Headers */,
+				FEDEAA6812C2608F008E5A59 /* CAValueFunction.h in Headers */,
+				FEDEABC112C98F59008E5A59 /* CALayerContext.h in Headers */,
+				FEDEB74012D2378C008E5A59 /* CAAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +454,10 @@
 				FEAEF82511E3AB6A00CA0912 /* CoreAnimation.h in Headers */,
 				FEAEF86011E3AFEF00CA0912 /* CAMediaTiming.h in Headers */,
 				FEAEF8C711E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */,
+				FE41B88B12BEA2EE00ED6C10 /* CATransaction.h in Headers */,
+				FEDEAA6C12C2608F008E5A59 /* CAValueFunction.h in Headers */,
+				FEDEABC312C98F59008E5A59 /* CALayerContext.h in Headers */,
+				FEDEB74212D2378C008E5A59 /* CAAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +487,10 @@
 				FEAEF82411E3AB6A00CA0912 /* CoreAnimation.h in Headers */,
 				FEAEF85F11E3AFEF00CA0912 /* CAMediaTiming.h in Headers */,
 				FEAEF8C511E3B3FF00CA0912 /* CAMediaTimingFunction.h in Headers */,
+				FE41B88A12BEA2EE00ED6C10 /* CATransaction.h in Headers */,
+				FEDEAA6A12C2608F008E5A59 /* CAValueFunction.h in Headers */,
+				FEDEABC212C98F59008E5A59 /* CALayerContext.h in Headers */,
+				FEDEB74112D2378C008E5A59 /* CAAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,7 +568,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "QuartzCore" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* QuartzCore */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -636,12 +665,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEAEF7EA11E3AAD000CA0912 /* CAAnimationGroup.m in Sources */,
-				FEAEF7EC11E3AAD000CA0912 /* CABasicAnimation.m in Sources */,
-				FEAEF7EE11E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */,
-				FEAEF7F011E3AAD000CA0912 /* CATransition.m in Sources */,
-				FEAEF7F111E3AAD000CA0912 /* CIAffineTransform.m in Sources */,
-				FEAEF8C411E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,12 +672,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEAEF7F311E3AAD000CA0912 /* CAAnimationGroup.m in Sources */,
-				FEAEF7F511E3AAD000CA0912 /* CABasicAnimation.m in Sources */,
-				FEAEF7F711E3AAD000CA0912 /* CAPropertyAnimation.m in Sources */,
-				FEAEF7F911E3AAD000CA0912 /* CATransition.m in Sources */,
-				FEAEF7FA11E3AAD000CA0912 /* CIAffineTransform.m in Sources */,
-				FEAEF8C611E3B3FF00CA0912 /* CAMediaTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
