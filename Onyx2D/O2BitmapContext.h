@@ -19,6 +19,8 @@ typedef void (*O2BitmapContextReleaseDataCallback)(void *userInfo,void *data);
    O2Surface *_surface;
 }
 
+-(Class)surfaceClass;
+
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped;
 
 -(O2Surface *)surface;

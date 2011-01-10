@@ -1,6 +1,8 @@
 #import <CoreVideo/CVDisplayLink.h>
 #import <Foundation/NSRaise.h>
 
+// FIXME: use only one timer for all the display links, this will reduce run loop overhead
+
 @interface CVDisplayLink : NSObject {
    NSTimer *_timer;
    CVDisplayLinkOutputCallback _callback;

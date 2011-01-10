@@ -25,8 +25,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(Class)surfaceClass {
+   return [O2Surface class];
+}
+
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo releaseCallback:(O2BitmapContextReleaseDataCallback)releaseCallback releaseInfo:(void *)releaseInfo {
-   O2Surface *surface=[[O2Surface alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+   O2Surface *surface=[[[self surfaceClass] alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
 
    [self initWithSurface:surface flipped:NO];
    [surface release];
@@ -134,19 +138,8 @@ O2BitmapInfo O2BitmapContextGetBitmapInfo(O2ContextRef selfX) {
 
 O2ImageRef O2BitmapContextCreateImage(O2ContextRef selfX) {
    O2BitmapContextRef self=(O2BitmapContextRef)selfX;
-#if 1
-// FIXME: this needs to be either a copy or a copy on write
-   return [self->_surface retain];
-#else
-  O2DataProviderRef provider=O2DataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
-  
-  O2Image *image=O2ImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
-     _bitmapInfo,provider,NULL,NO,kO2RenderingIntentDefault);
-  
-  O2DataProviderRelease(provider);
-  
-  return image;
-#endif
+   
+   return O2SurfaceCreateImage(self->_surface);
 }
 
 @end

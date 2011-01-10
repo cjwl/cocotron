@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class NSWindow, NSMenu, NSMenuItem, NSCursor, NSClipView, NSPasteboard, NSTextInputContext, NSImage, NSBitmapImageRep, NSScrollView, NSTrackingArea, NSShadow, NSScreen, CALayer, CIFilter, CGLPixelSurface;
+@class NSWindow, NSMenu, NSMenuItem, NSCursor, NSClipView, NSPasteboard, NSTextInputContext, NSImage, NSBitmapImageRep, NSScrollView, NSTrackingArea, NSShadow, NSScreen, CALayer, CIFilter, CGLPixelSurface,CALayerContext;
 
 // See Cocoa Event Handling Guide : Using Tracking-Area Objects : Compatibility Issues
 typedef NSTrackingArea *NSTrackingRectTag;
@@ -87,20 +87,27 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
    BOOL            _needsDisplay;
    NSUInteger      _invalidRectCount;
    NSRect         *_invalidRects;
+   CGFloat         _frameRotation;
+   CGFloat         _boundsRotation;
 
    BOOL              _validTrackingAreas;
    BOOL              _validTransforms;
    CGAffineTransform _transformFromWindow;
    CGAffineTransform _transformToWindow;
+   CGAffineTransform _transformToLayer;
    NSRect            _visibleRect;
    NSFocusRingType   _focusRingType;
    
    BOOL     _wantsLayer;
-   CALayer *_backingLayer;
    CALayer *_layer;
    NSArray *_contentFilters;
+   CIFilter *_compositingFilter;
+   NSViewLayerContentsPlacement _layerContentsPlacement;
+   NSViewLayerContentsRedrawPolicy _layerContentsRedrawPolicy;
+   NSShadow *_shadow;
    NSDictionary *_animations;
    
+   CALayerContext  *_layerContext;
    CGLPixelSurface *_overlay;
 }
 

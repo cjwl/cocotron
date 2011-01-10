@@ -70,6 +70,7 @@ typedef void (*O2SurfaceWriteSpan_argb32f)(O2Surface *self,int x,int y,O2argb32f
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
 
+O2ImageRef O2SurfaceCreateImage(O2Surface *surface);
 
 BOOL O2SurfaceIsValidFormat(int format);
 
