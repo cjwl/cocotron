@@ -21,13 +21,13 @@
    [super dealloc];
 }
 
--(void)timer:(NSTimer *)timer {
+-(void)displayLinkTimer:(NSTimer *)timer {
    if(_callback!=NULL)
     _callback(self,NULL,NULL,0,NULL,_userInfo);
 }
 
 -(void)start {
-   _timer=[[NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(timer:) userInfo:nil repeats:YES] retain];
+   _timer=[[NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(displayLinkTimer:) userInfo:nil repeats:YES] retain];
 }
 
 CVReturn CVDisplayLinkCreateWithActiveCGDisplays(CVDisplayLinkRef *result) {

@@ -1164,12 +1164,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUInteger selfLength=[self length];
    NSUInteger otherLength=[other length];
    NSUInteger totalLength=selfLength+otherLength;
-   unichar  unicode[totalLength];
+   unichar    *unicode=NSZoneMalloc(NULL,sizeof(unichar)*totalLength);
 
    [self getCharacters:unicode];
    [other getCharacters:unicode+selfLength];
 
-   return [NSString stringWithCharacters:unicode length:totalLength];
+   return [[[NSString alloc] initWithCharactersNoCopy:unicode length:totalLength freeWhenDone:YES] autorelease];
 }
 
 -(NSArray *)componentsSeparatedByString:(NSString *)pattern {

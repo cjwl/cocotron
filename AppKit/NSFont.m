@@ -229,7 +229,9 @@ static NSFont **_fontCache=NULL;
    if([name isEqual:@"Symbol"])
     return name;
    if([name isEqual:@"LucidaGrande"])
-    return @"Lucida Sans Regular";
+    return @"Lucida Sans Unicode Regular";
+   if([name isEqual:@"LucidaGrande-Bold"])
+    return @"Lucida Sans Unicode Regular";
 
    if([name isEqual:@"HelveticaNeue-CondensedBold"])
     return @"Arial";    

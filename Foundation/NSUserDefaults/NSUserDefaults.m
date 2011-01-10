@@ -54,7 +54,9 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
     key=[key substringFromIndex:1];
 
     NS_DURING
-     pval=[val propertyList];
+     if((pval=[val propertyList])==nil)
+      pval=val;
+      
     NS_HANDLER
      pval=val;
     NS_ENDHANDLER

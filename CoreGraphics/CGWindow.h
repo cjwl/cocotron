@@ -73,6 +73,8 @@ typedef enum {
 -(void)addOverlay:(CGLPixelSurface *)overlay;
 -(void)removeOverlay:(CGLPixelSurface *)overlay;
 
+-(void)flushOverlay:(CGLPixelSurface *)overlay;
+
 @end
 
 @interface NSObject(CGWindow_delegate)

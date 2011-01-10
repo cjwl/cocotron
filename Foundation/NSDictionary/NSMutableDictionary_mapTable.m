@@ -201,10 +201,14 @@ static inline void setValueForKey(NSMutableDictionary_CF *self,const void *value
 }
 
 static inline void setObjectForKey(NSMutableDictionary_CF *self,id object,id key){
-   if (key==nil)
+   if (key==nil){
     NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert object with nil key");
-   else if(object==nil)
+    return;
+   }
+   else if(object==nil){
     NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert nil object for key %@", key);
+    return;
+   }
 
    setValueForKey(self,object,key);
 }

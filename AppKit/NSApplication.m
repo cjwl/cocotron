@@ -526,6 +526,11 @@ id NSApp=nil;
    [[event window] sendEvent:event];
 }
 
+// This method is used by NSWindow
+-(void)_displayAllWindowsIfNeeded {
+   [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
+}
+
 -(NSEvent *)nextEventMatchingMask:(unsigned int)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
    NSEvent *nextEvent=nil;
    
@@ -538,7 +543,7 @@ id NSApp=nil;
  
     [self _checkForReleasedWindows];
     [self _checkForAppActivation];
-    [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
+     [self _displayAllWindowsIfNeeded];
 
      nextEvent=[[_display nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue] retain];
 

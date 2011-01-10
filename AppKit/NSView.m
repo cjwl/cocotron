@@ -83,7 +83,9 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
     _autoresizingMask=vFlags&0x3F;
     if([keyed containsValueForKey:@"NSvFlags"])
      _autoresizesSubviews=(vFlags&0x100)?YES:NO;
-    else
+// Despite the fact it appears _autoresizesSubviews is encoded in the flags, it should always be ON
+// *** Do not turn off or base on the flags unless you have an alternative for enabling it when it
+// should be.
      _autoresizesSubviews=YES;
     _isHidden=(vFlags&0x80000000)?YES:NO;
     _tag=-1;

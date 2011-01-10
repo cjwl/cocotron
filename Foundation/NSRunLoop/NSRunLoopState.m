@@ -177,10 +177,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)pollInputForMode:(NSString *)mode {
-   if([self fireSingleImmediateInputInMode:mode])
-    return YES;
-
-   return [_inputSourceSet waitForInputInMode:mode beforeDate:[NSDate date]];
+   return [self waitForSingleInputForMode:mode beforeDate:[NSDate date]];
 }
 
 -(id)description {

@@ -11,6 +11,21 @@ IMAGEKIT_EXPORT NSString * const IKImageBrowserGroupStyleKey;
 
 IMAGEKIT_EXPORT NSString * const IKImageBrowserBackgroundColorKey;
 
+IMAGEKIT_EXPORT NSString * const IKImageBrowserPathRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserNSURLRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserNSImageRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserCGImageRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserCGImageSourceRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserNSDataRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserNSBitmapImageRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserQTMovieRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserQTMoviePathRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserQCCompositionRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserQCCompositionPathRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserQuickLookPathRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserIconRefPathRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserIconRefRepresentationType;
+IMAGEKIT_EXPORT NSString * const IKImageBrowserPDFPageRepresentationType;
 
 enum {
    IKGroupBezelStyle,
@@ -22,7 +37,7 @@ enum {
    IKCellsStyleShadowed          =1,
    IKCellsStyleOutlined          =2,
    IKCellsStyleTitled            =4,
-   IKCellsStyleSubtitled         =8
+   IKCellsStyleSubtitled         =8,
 };
 
 typedef enum {
@@ -45,7 +60,6 @@ typedef enum {
    BOOL _allowsReordering;
    BOOL _animates;
    BOOL _canControlQuickLookPanel;
-   
 }
 
 -initWithFrame:(NSRect)frame;
@@ -57,32 +71,52 @@ typedef enum {
 
 -(BOOL)allowsDroppingOnItems;
 -(BOOL)allowsEmptySelection;
-
 -(BOOL)allowsMultipleSelection;
-
 -(BOOL)allowsReordering;
-
 -(BOOL)animates;
-
--(CALayer *)backgroundLayer;
-
 -(BOOL)canControlQuickLookPanel;
-
--(IKImageBrowserCell *)cellForItemAtIndex:(NSUInteger)index;
-
+-(BOOL)constrainsToOriginalSize;
 -(NSSize)cellSize;
 
 -(NSUInteger)cellsStyleMask;
+
+-(CALayer *)backgroundLayer;
+-(CALayer *)foregroundLayer;
+
+-(void)setAllowsDroppingOnItems:(BOOL)value;
+-(void)setAllowsEmptySelection:(BOOL)value;
+-(void)setAllowsMultipleSelection:(BOOL)value;
+-(void)setAllowsReordering:(BOOL)value;
+-(void)setAnimates:(BOOL)value;
+-(void)setCanControlQuickLookPanel:(BOOL)value;
+-(void)setCellSize:(NSSize)value;
+-(void)setCellsStyleMask:(NSUInteger)value;
+-(void)setConstrainsToOriginalSize:(BOOL)value;
+-(void)setContentResizingMask:(NSUInteger)value;
+
+-(void)setBackgroundLayer:(CALayer *)aLayer;
+
+-(void)setDataSource:source;
+
+-(void)setDelegate:delegate;
+
+-(void)setDraggingDestinationDelegate:delegate;
+
+-(void)setForegroundLayer:(CALayer *)layer;
+
+-(void)setIntercellSpacing:(NSSize)value;
+
+
+
+-(IKImageBrowserCell *)cellForItemAtIndex:(NSUInteger)index;
+
 
 -(void)collapseGroupAtIndex:(NSUInteger)index;
 
 -(NSIndexSet *)columnIndexesInRect:(NSRect)rect;
 
--(BOOL)constrainsToOriginalSize;
 
 -(NSUInteger)contentResizingMask;
-
-
 
 -draggingDestinationDelegate;
 
@@ -90,7 +124,6 @@ typedef enum {
 
 -(void)expandGroupAtIndex:(NSUInteger)index;
 
--(CALayer *)foregroundLayer;
 
 -(NSUInteger)indexAtLocationOfDroppedItem;
 
@@ -99,57 +132,26 @@ typedef enum {
 
 -(NSRect)itemFrameAtIndex:(NSInteger)index;
 
--(IKImageBrowserCell *)newCellForRepresentedItem:(id)anItem;
-
--(NSUInteger)numberOfColumns;
+-(IKImageBrowserCell *)newCellForRepresentedItem:item;
 
 -(NSUInteger)numberOfRows;
+-(NSUInteger)numberOfColumns;
 
--(NSRect)rectOfColumn:(NSUInteger)columnIndex;
 
+-(NSRect)rectOfColumn:(NSUInteger)column;
 -(NSRect)rectOfRow:(NSUInteger)rowIndex;
 
 -(void)reloadData;
 
 -(NSIndexSet *)rowIndexesInRect:(NSRect)rect;
 
--(void)scrollIndexToVisible:(NSInteger)index;
 
 -(NSIndexSet *)selectionIndexes;
 
--(void)setAllowsDroppingOnItems:(BOOL)flag;
 
--(void)setAllowsEmptySelection:(BOOL)flag;
+-(void)setSelectionIndexes:(NSIndexSet *)value byExtendingSelection:(BOOL)extendSelection;
 
--(void)setAllowsMultipleSelection:(BOOL)flag;
-
--(void)setAllowsReordering:(BOOL)flag;
-
--(void)setAnimates:(BOOL)flag;
-
--(void)setBackgroundLayer:(CALayer *)aLayer;
-
--(void)setCanControlQuickLookPanel:(BOOL)flag;
-
--(void)setCellSize:(NSSize)size;
-
--(void)setCellsStyleMask:(NSUInteger)mask;
-
--(void)setConstrainsToOriginalSize:(BOOL)flag;
-
--(void)setContentResizingMask:(NSUInteger)mask;
-
--(void)setDataSource:source;
-
--(void)setDelegate:delegate;
-
--(void)setDraggingDestinationDelegate:(id)delegate;
-
--(void)setForegroundLayer:(CALayer *)aLayer;
-
--(void)setIntercellSpacing:(NSSize)value;
-
--(void)setSelectionIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extendSelection;
+-(void)scrollIndexToVisible:(NSInteger)index;
 
 -(NSIndexSet *)visibleItemIndexes;
 
@@ -157,3 +159,48 @@ typedef enum {
 -(void)setZoomValue:(float)value; 
 
 @end
+
+@interface NSObject(IKImageBrowserItem)
+- (id) imageRepresentation;
+- (NSString *) imageRepresentationType;
+- (NSString *) imageSubtitle;
+- (NSString *) imageTitle;
+- (NSString *) imageUID;
+- (NSUInteger) imageVersion;
+- (BOOL) isSelectable;
+
+@end
+
+@interface NSObject(IKImageBrowserDelegate)
+
+-(void)imageBrowserSelectionDidChange:(IKImageBrowserView *)browser;
+
+-(void)imageBrowser:(IKImageBrowserView *)browser backgroundWasRightClickedWithEvent:(NSEvent *)event;
+-(void)imageBrowser:(IKImageBrowserView *)browser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event;
+-(void)imageBrowser:(IKImageBrowserView *)browser cellWasDoubleClickedAtIndex:(NSUInteger)index;
+@end
+
+@interface NSObject(IKImageBrowserDataSource)
+
+-(NSDictionary *)imageBrowser:(IKImageBrowserView *)browser groupAtIndex:(NSUInteger)index;
+-imageBrowser:(IKImageBrowserView *)browser itemAtIndex:(NSUInteger)index;
+
+-(BOOL)imageBrowser:(IKImageBrowserView *)browser moveItemsAtIndexes: (NSIndexSet *)indexes toIndex:(NSUInteger)destinationIndex;
+-(void)imageBrowser:(IKImageBrowserView *)browser removeItemsAtIndexes:(NSIndexSet *)indexes;
+-(NSUInteger)imageBrowser:(IKImageBrowserView *)browser writeItemsAtIndexes:(NSIndexSet *)itemIndexes toPasteboard:(NSPasteboard *)pasteboard;
+-(NSUInteger)numberOfGroupsInImageBrowser:(IKImageBrowserView *)browser;
+-(NSUInteger)numberOfItemsInImageBrowser:(IKImageBrowserView *)browser;
+
+
+@end
+
+
+
+
+
+
+
+
+
+
+
