@@ -6,6 +6,8 @@
 
 @interface CALayer(private)
 -(void)_setContext:(CALayerContext *)context;
+-(NSNumber *)_textureId;
+-(void)_setTextureId:(NSNumber *)value;
 @end
 
 @implementation CALayerContext
@@ -71,6 +73,19 @@
 -(void)invalidate {
 }
 
+-(void)assignTextureIdsToLayerTree:(CALayer *)layer {
+
+   if([layer _textureId]==nil){
+    GLuint texture;
+    
+    glGenTextures(1,&texture);
+    [layer _setTextureId:[NSNumber numberWithUnsignedInt:texture]];
+   }
+   
+   for(CALayer *child in layer.sublayers)
+    [self assignTextureIdsToLayerTree:child];
+}
+
 -(void)renderLayer:(CALayer *)layer intoSurface:(CGLPixelSurface *)pixelSurface {
    CGLSetCurrentContext(_glContext);
 
@@ -85,6 +100,19 @@
    glMatrixMode(GL_PROJECTION);                      
    glLoadIdentity();
    glOrtho (0, width, 0, height, -1, 1);
+   
+   GLsizei i=0;
+   GLuint  deleteIds[[_deleteTextureIds count]];
+   
+   for(NSNumber *number in _deleteTextureIds)
+    deleteIds[i++]=[number unsignedIntValue];
+   
+   if(i>0)
+    glDeleteTextures(i,deleteIds);
+   
+   [_deleteTextureIds removeAllObjects];
+   
+   [self assignTextureIdsToLayerTree:layer];
    
    [_renderer render];
    
@@ -106,6 +134,10 @@
 -(void)startTimerIfNeeded {
    if(_timer==nil)
     _timer=[[NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(timer:) userInfo:nil repeats:YES] retain];
+}
+
+-(void)deleteTextureId:(NSNumber *)textureId {
+   [_deleteTextureIds addObject:textureId];
 }
 
 @end

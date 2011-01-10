@@ -122,6 +122,41 @@
 			remoteGlobalIDString = FE5A884510C6F286005E348A;
 			remoteInfo = "CoreGraphics-FreeBSD-i386";
 		};
+		FE2A2CE412D2C7410028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* OpenGL.framework */;
+			remoteInfo = "OpenGL-Windows-i386";
+		};
+		FE2A2CE612D2C7410028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8E0BE8A0F0E544700677729 /* OpenGL.framework */;
+			remoteInfo = "OpenGL-Darwin-i386";
+		};
+		FE2A2CE812D2C7410028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A876310C6F244005E348A /* OpenGL.framework */;
+			remoteInfo = "OpenGL-FreeBSD-i386";
+		};
+		FE2A2CED12D2C74E0028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* OpenGL-Windows-i386 */;
+			remoteInfo = "OpenGL-Windows-i386";
+		};
+		FE2A2CEF12D2C75A0028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5A875610C6F244005E348A /* OpenGL-FreeBSD-i386 */;
+			remoteInfo = "OpenGL-FreeBSD-i386";
+		};
 		FE4301A111E2556B00EBDD56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
@@ -196,6 +231,7 @@
 		FE0FB9B810F9815300EBA597 /* CIVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIVector.h; sourceTree = "<group>"; };
 		FE0FB9B910F9815300EBA597 /* CIVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIVector.m; sourceTree = "<group>"; };
 		FE255FEF10F10397005CE23E /* CoreImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreImage.h; sourceTree = "<group>"; };
+		FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenGL.xcodeproj; path = ../OpenGL/OpenGL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE41B88812BEA2EE00ED6C10 /* CATransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransaction.h; sourceTree = "<group>"; };
 		FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreVideo.xcodeproj; path = ../CoreVideo/CoreVideo.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE4301AB11E255A500EBDD56 /* CoreVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreVideo.h; sourceTree = "<group>"; };
@@ -272,6 +308,7 @@
 		0867D691FE84028FC02AAC07 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */,
 				FEDEB73F12D2378C008E5A59 /* CAAction.h */,
 				FEDEABC012C98F59008E5A59 /* CALayerContext.h */,
 				FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */,
@@ -371,6 +408,16 @@
 			children = (
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		FE2A2CDF12D2C7410028C06D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE2A2CE512D2C7410028C06D /* OpenGL.framework */,
+				FE2A2CE712D2C7410028C06D /* OpenGL.framework */,
+				FE2A2CE912D2C7410028C06D /* OpenGL.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FE43019E11E2556B00EBDD56 /* Products */ = {
@@ -511,6 +558,7 @@
 			);
 			dependencies = (
 				FED38C9310E13FDC00A2A651 /* PBXTargetDependency */,
+				FE2A2CF012D2C75A0028C06D /* PBXTargetDependency */,
 			);
 			name = "QuartzCore-FreeBSD-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -533,6 +581,7 @@
 			dependencies = (
 				FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */,
 				FE4301A411E2557400EBDD56 /* PBXTargetDependency */,
+				FE2A2CEE12D2C74E0028C06D /* PBXTargetDependency */,
 			);
 			name = "QuartzCore-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -588,6 +637,10 @@
 					ProductGroup = FE43019E11E2556B00EBDD56 /* Products */;
 					ProjectRef = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
 				},
+				{
+					ProductGroup = FE2A2CDF12D2C7410028C06D /* Products */;
+					ProjectRef = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -604,6 +657,27 @@
 			fileType = wrapper.framework;
 			path = CoreGraphics.framework;
 			remoteRef = FE293C5D10D984D10031C1DC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE2A2CE512D2C7410028C06D /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE2A2CE412D2C7410028C06D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE2A2CE712D2C7410028C06D /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE2A2CE612D2C7410028C06D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE2A2CE912D2C7410028C06D /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE2A2CE812D2C7410028C06D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE4301A211E2556B00EBDD56 /* CoreVideo.framework */ = {
@@ -685,6 +759,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FE2A2CEE12D2C74E0028C06D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-Windows-i386";
+			targetProxy = FE2A2CED12D2C74E0028C06D /* PBXContainerItemProxy */;
+		};
+		FE2A2CF012D2C75A0028C06D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-FreeBSD-i386";
+			targetProxy = FE2A2CEF12D2C75A0028C06D /* PBXContainerItemProxy */;
+		};
 		FE4301A411E2557400EBDD56 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreVideo-Windows-i386";

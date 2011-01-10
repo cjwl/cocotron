@@ -2,7 +2,7 @@
 #import <OpenGL/OpenGL.h>
 #import <CoreGraphics/CGGeometry.h>
 
-@class CARenderer,CALayer,CGLPixelSurface,NSTimer;
+@class CARenderer,CALayer,CGLPixelSurface,NSTimer,NSMutableArray,NSNumber;
 
 @interface CALayerContext : NSObject {
    CGLPixelFormatObj _pixelFormat;
@@ -10,6 +10,8 @@
    CGLPixelSurface  *_pixelSurface;
    CALayer          *_layer;
    CARenderer       *_renderer;
+   
+   NSMutableArray   *_deleteTextureIds;
    
    NSTimer          *_timer;
 }
@@ -25,5 +27,7 @@
 -(void)render;
 
 -(void)startTimerIfNeeded;
+
+-(void)deleteTextureId:(NSNumber *)textureId;
 
 @end

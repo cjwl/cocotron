@@ -1,4 +1,4 @@
-#import <Foundation/CAAction.h>
+#import <Foundation/NSObject.h>
 
 @protocol CAAction
 

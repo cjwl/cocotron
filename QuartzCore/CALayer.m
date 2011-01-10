@@ -4,6 +4,10 @@
 #import <QuartzCore/CATransaction.h>
 #import <Foundation/NSDictionary.h>
 
+NSString * const kCAFilterLinear=@"linear";
+NSString * const kCAFilterNearest=@"nearest";
+NSString * const kCAFilterTrilinear=@"trilinear";
+
 @implementation CALayer
 
 +layer {
@@ -16,6 +20,12 @@
 }
 
 -(void)_setContext:(CALayerContext *)context {
+   if(_context!=context){
+    [_context deleteTextureId:_textureId];
+    [_textureId release];
+    _textureId=nil;
+   }
+   
    _context=context;
    [_sublayers makeObjectsPerformSelector:@selector(_setContext:) withObject:context];
 }
@@ -163,6 +173,26 @@
    _sublayerTransform=value;
 }
 
+-(NSString *)minificationFilter {
+   return _minificationFilter;
+}
+
+-(void)setMinificationFilter:(NSString *)value {
+   value=[value copy];
+   [_minificationFilter release];
+   _minificationFilter=value;
+}
+
+-(NSString *)magnificationFilter {
+   return _magnificationFilter;
+}
+
+-(void)setMagnificationFilter:(NSString *)value {
+   value=[value copy];
+   [_magnificationFilter release];
+   _magnificationFilter=value;
+}
+
 -init {
    _superlayer=nil;
    _sublayers=[NSArray new];
@@ -175,6 +205,8 @@
    _contents=nil;
    _transform=CATransform3DIdentity;
    _sublayerTransform=CATransform3DIdentity;
+   _minificationFilter=kCAFilterLinear;
+   _magnificationFilter=kCAFilterLinear;
    _animations=[[NSMutableDictionary alloc] init];
    return self;
 }
@@ -182,6 +214,8 @@
 -(void)dealloc {
    [_sublayers release];
    [_animations release];
+   [_minificationFilter release];
+   [_magnificationFilter release];
    [super dealloc];
 }
 
@@ -259,7 +293,6 @@
     return;
     
    [_animations setObject:animation forKey:key];
-   NSLog(@"context=%@",_context);
    [_context startTimerIfNeeded];
 }
 
@@ -296,6 +329,16 @@
    [basic setFromValue:[self valueForKey:key]];
    
    return basic;
+}
+
+-(NSNumber *)_textureId {
+   return _textureId;
+}
+
+-(void)_setTextureId:(NSNumber *)value {
+   value=[value copy];
+   [_textureId release];
+   _textureId=value;
 }
 
 @end

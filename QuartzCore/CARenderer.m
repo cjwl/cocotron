@@ -180,6 +180,19 @@ static CGRect interpolateRectInLayerKey(CALayer *layer,NSString *key,CFTimeInter
    return CGRectMake(0,0,0,0);
 }
 
+static GLint interpolationFromName(NSString *name){
+   if(name==kCAFilterLinear)
+    return GL_LINEAR;
+   else if(name==kCAFilterNearest)
+    return GL_NEAREST;
+   else if([name isEqualToString:kCAFilterLinear])
+    return GL_LINEAR;
+   else if([name isEqualToString:kCAFilterNearest])
+    return GL_NEAREST;
+   else
+    return GL_LINEAR;   
+}
+
 -(void)_renderLayer:(CALayer *)layer z:(float)z currentTime:(CFTimeInterval)currentTime {
    CGImageRef image=layer.contents;
     
@@ -189,7 +202,7 @@ static CGRect interpolateRectInLayerKey(CALayer *layer,NSString *key,CFTimeInter
    
    CGDataProviderRef provider=CGImageGetDataProvider(image);
    CFDataRef         data=CGDataProviderCopyData(provider);
-   const void       *pixelBytes=CFDataGetBytePtr(data);
+   const uint8_t    *pixelBytes=CFDataGetBytePtr(data);
    
    
    GLenum glFormat=GL_BGRA;
@@ -233,31 +246,51 @@ static CGRect interpolateRectInLayerKey(CALayer *layer,NSString *key,CFTimeInter
     case kCGImageAlphaOnly:
      break;
    }
-   
-   
-   glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,imageWidth,imageHeight,0,glFormat,glType,pixelBytes);
 
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+   NSNumber *textureId=[layer _textureId];
+   GLuint    texture=[textureId unsignedIntValue];
+   GLboolean loadPixelData=GL_FALSE;
+   
+   if(texture==0)
+    loadPixelData=GL_TRUE;
+   else {
+   
+    if(glIsTexture(texture)==GL_FALSE){
+     loadPixelData=GL_TRUE;
+    }
+    glBindTexture(GL_TEXTURE_2D,texture);
+    
+   }
 
+   if(loadPixelData){
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,imageWidth,imageHeight,0,glFormat,glType,pixelBytes);
+
+    GLint minFilter=interpolationFromName(layer.minificationFilter);
+    GLint magFilter=interpolationFromName(layer.magnificationFilter);
+   
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,minFilter);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,magFilter);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+   }
+   
    CGPoint anchorPoint=interpolatePointInLayerKey(layer,@"anchorPoint",currentTime);
    CGPoint position=interpolatePointInLayerKey(layer,@"position",currentTime);
    CGRect  bounds=interpolateRectInLayerKey(layer,@"bounds",currentTime);
    float   opacity=interpolateFloatInLayerKey(layer,@"opacity",currentTime);
    
-   GLfloat texture[4*2];
+   GLfloat textureVertices[4*2];
    GLfloat vertices[4*3];
    
-   texture[0]=0;
-   texture[1]=1;
-   texture[2]=1;
-   texture[3]=1;
-   texture[4]=0;
-   texture[5]=0;
-   texture[6]=1;
-   texture[7]=0;
+   textureVertices[0]=0;
+   textureVertices[1]=1;
+   textureVertices[2]=1;
+   textureVertices[3]=1;
+   textureVertices[4]=0;
+   textureVertices[5]=0;
+   textureVertices[6]=1;
+   textureVertices[7]=0;
 
    vertices[0]=0;
    vertices[1]=0;
@@ -278,7 +311,7 @@ static CGRect interpolateRectInLayerKey(CALayer *layer,NSString *key,CFTimeInter
 
    glPushMatrix();
  //  glTranslatef(width/2,height/2,0);
-   glTexCoordPointer(2, GL_FLOAT, 0, texture);
+   glTexCoordPointer(2, GL_FLOAT, 0, textureVertices);
    glVertexPointer(3, GL_FLOAT, 0, vertices);
    
    
@@ -288,6 +321,7 @@ static CGRect interpolateRectInLayerKey(CALayer *layer,NSString *key,CFTimeInter
    
  //  glRotatef(1,0,0,1);
    glColor4f(opacity,opacity,opacity,opacity);
+
    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
    for(CALayer *child in layer.sublayers)
@@ -300,16 +334,22 @@ static CGRect interpolateRectInLayerKey(CALayer *layer,NSString *key,CFTimeInter
    glMatrixMode(GL_MODELVIEW);                                           
    glLoadIdentity();
 
-   glClearColor(1, 0, 0, 1);
+   glClearColor(0, 0, 0, 1);
    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+   glEnable(GL_DEPTH_TEST);
+   glDepthFunc(GL_LEQUAL);					
 
    glEnable( GL_TEXTURE_2D );
    glEnableClientState(GL_VERTEX_ARRAY);
    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
    glEnable (GL_BLEND);
-   glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+   glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
    
+   glAlphaFunc ( GL_GREATER, 0 ) ;
+   glEnable ( GL_ALPHA_TEST ) ;
+  
    [self _renderLayer:_rootLayer z:0 currentTime:CACurrentMediaTime()];
 
    glFlush();

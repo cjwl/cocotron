@@ -16,6 +16,10 @@ enum {
    kCALayerMaxYMargin   = 0x20,
 };
 
+CA_EXPORT NSString * const kCAFilterLinear;
+CA_EXPORT NSString * const kCAFilterNearest;
+CA_EXPORT NSString * const kCAFilterTrilinear;
+
 @interface CALayer : NSObject {
    CALayerContext *_context;
    CALayer      *_superlayer;
@@ -29,8 +33,11 @@ enum {
    id            _contents;
    CATransform3D _transform;
    CATransform3D _sublayerTransform;
+   NSString     *_minificationFilter;
+   NSString     *_magnificationFilter;
    BOOL          _needsDisplay;
    NSMutableDictionary *_animations;
+   NSNumber     *_textureId;
 }
 
 +layer;
@@ -47,6 +54,9 @@ enum {
 @property(retain) id contents;
 //@property CATransform3D transform;
 @property CATransform3D sublayerTransform;
+
+@property(copy) NSString *minificationFilter;
+@property(copy) NSString *magnificationFilter;
 
 -init;
 
