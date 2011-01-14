@@ -774,8 +774,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [[self platformWindow] setFrame:_frame];
 
    if(didSize)
-   [self _invalidateTrackingAreas];
-
+    [self resetCursorRects];
+    
    if(didSize)
     [self postNotificationName:NSWindowDidResizeNotification];
     
@@ -1707,7 +1707,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)invalidateCursorRectsForView:(NSView *)view {
    [view discardCursorRects];
-   [view resetCursorRects];
+   [self _resetCursorRectsInView:view];
    [self _invalidateTrackingAreas];
 }
 

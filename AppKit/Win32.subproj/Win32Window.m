@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2Surface.h>
 #import <Onyx2D/O2Context_gdi.h>
+#import <Foundation/NSPlatform_win32.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
@@ -1000,10 +1001,6 @@ static void initializeWindowClass(WNDCLASS *class){
     HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,16,16,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
     static WNDCLASS _standardWindowClass,_borderlessWindowClass,_borderlessWindowClassWithShadow;
-    OSVERSIONINFOEX osVersion;
-    
-    osVersion.dwOSVersionInfoSize=sizeof(osVersion);
-    GetVersionEx((OSVERSIONINFO *)&osVersion);
 
     if(icon==NULL)
      icon=LoadImage(NULL,IDI_APPLICATION,IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_SHARED);
@@ -1019,10 +1016,8 @@ static void initializeWindowClass(WNDCLASS *class){
     
     _borderlessWindowClassWithShadow.lpszClassName="Win32BorderlessWindowWithShadow";
     
-    // XP or higher
-    if((osVersion.dwMajorVersion==5 && osVersion.dwMinorVersion>=1) || osVersion.dwMajorVersion>5){
+    if(NSPlatformGreaterThanOrEqualToWindowsXP())
      _borderlessWindowClassWithShadow.style|=CS_DROPSHADOW;
-    }
         
     if(RegisterClass(&_standardWindowClass)==0)
      NSLog(@"RegisterClass failed");

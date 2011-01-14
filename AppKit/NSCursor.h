@@ -16,13 +16,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSPoint  _hotSpot;
    BOOL     _isSetOnMouseEntered;
    BOOL     _isSetOnMouseExited;
-   id _cursor;
+   id       _platformCursor;
 }
 
 +(NSCursor *)currentCursor;
++(NSCursor *)currentSystemCursor;
 
 +(NSCursor *)arrowCursor;
 +(NSCursor *)closedHandCursor;
++(NSCursor *)contextualMenuCursor;
 +(NSCursor *)crosshairCursor;
 +(NSCursor *)disappearingItemCursor;
 +(NSCursor *)IBeamCursor;
@@ -34,6 +36,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSCursor *)resizeRightCursor;
 +(NSCursor *)resizeUpCursor;
 +(NSCursor *)resizeUpDownCursor;
+
++(NSCursor *)dragCopyCursor;
++(NSCursor *)dragLinkCursor;
++(NSCursor *)operationNotAllowedCursor;
 
 +(void)hide;
 +(void)unhide;
