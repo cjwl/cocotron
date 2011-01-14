@@ -37,6 +37,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
+// Default for a NSTextFieldCell is NOT the same as NSTextField
+   [_cell setEditable:YES];
+   [_cell setSelectable:YES];
+   [_cell setBezeled:YES];
    [self registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
    return self;
 }
