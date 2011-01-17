@@ -34,7 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float cheatSheet = 0;
 
    [[[self window] backgroundColor] setFill];
-   NSRectFill([self bounds]);
+   NSRectFill(bounds);
    
     switch(_borderType){
         case NSNoBorder:
@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
    NSView *menuView=nil;
-   NSView *toolbarView=nil;
+   NSToolbarView *toolbarView=nil;
    NSView *contentView=nil;
    
 // tile the subviews, when/if we add titlebars and such do it here
@@ -71,16 +71,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if([view isKindOfClass:[NSMenuView class]])
      menuView=view;
     else if([view isKindOfClass:[NSToolbarView class]])
-     toolbarView=view;
+     toolbarView=(NSToolbarView *)view;
     else
      contentView=view;
    }
    
-   [menuView resizeWithOldSuperviewSize:oldSize];
-   [toolbarView resizeWithOldSuperviewSize:oldSize];
+   // subtracts menu height but not toolbar height
+   NSRect contentFrame=[[[self window] class] contentRectForFrameRect:[self bounds] styleMask:[[self window] styleMask]];
 
-   NSRect contentFrame=[[self window] contentRectForFrameRect:[self bounds]];
+   NSRect menuFrame=(menuView!=nil)?[menuView frame]:NSZeroRect;
+   NSRect toolbarFrame=(toolbarView!=nil)?[toolbarView frame]:NSZeroRect;
 
+   menuFrame.origin.y=NSMaxY(contentFrame);
+   menuFrame.origin.x=contentFrame.origin.x;
+   menuFrame.size.width=contentFrame.size.width;
+   [menuView setFrame:menuFrame];
+   
+   toolbarFrame.origin.y=NSMaxY(contentFrame)-toolbarFrame.size.height;
+   toolbarFrame.origin.x=contentFrame.origin.x;
+   toolbarFrame.size.width=contentFrame.size.width;
+   
+   [toolbarView setFrame:toolbarFrame];
+   [toolbarView layoutViews];
+   
+   contentFrame.size.height-=toolbarFrame.size.height;
    [contentView setFrame:contentFrame];
 }
 

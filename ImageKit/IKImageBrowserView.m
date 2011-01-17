@@ -7,7 +7,7 @@ NSString * const IKImageBrowserGroupRangeKey=@"IKImageBrowserGroupRangeKey";
 NSString * const IKImageBrowserGroupTitleKey=@"IKImageBrowserGroupTitleKey";
 NSString * const IKImageBrowserGroupStyleKey=@"IKImageBrowserGroupStyleKey";
 
-NSString * const IKImageBrowserBackgroundColorKey=@"IKImageBrowserBackgroundColorKey";
+NSString * const IKImageBrowserBackgroundColorKey=@"backgroundColor";
 
 @implementation IKImageBrowserView
 
@@ -109,7 +109,7 @@ NSString * const IKImageBrowserBackgroundColorKey=@"IKImageBrowserBackgroundColo
 }
 
 
--(id)draggingDestinationDelegate {
+-draggingDestinationDelegate {
    NSUnimplementedMethod();
    return 0;
 }
@@ -155,7 +155,7 @@ NSString * const IKImageBrowserBackgroundColorKey=@"IKImageBrowserBackgroundColo
 }
 
 
--(IKImageBrowserCell *)newCellForRepresentedItem:(id)anItem {
+-(IKImageBrowserCell *)newCellForRepresentedItem:anItem {
    NSUnimplementedMethod();
    return 0;
 }
@@ -269,12 +269,12 @@ NSString * const IKImageBrowserBackgroundColorKey=@"IKImageBrowserBackgroundColo
 }
 
 
--(void)setDelegate:(id)delegate {
+-(void)setDelegate:delegate {
    _delegate=delegate;
 }
 
 
--(void)setDraggingDestinationDelegate:(id)delegate {
+-(void)setDraggingDestinationDelegate:delegate {
    NSUnimplementedMethod();
 }
 

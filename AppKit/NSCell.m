@@ -275,7 +275,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else if([_objectValue isKindOfClass:[NSString class]])
      return _objectValue;
 
-    return [_objectValue descriptionWithLocale:[NSLocale currentLocale]];
+    if([_objectValue respondsToSelector:@selector(descriptionWithLocale:)])
+        return [_objectValue descriptionWithLocale:[NSLocale currentLocale]];
+    else if([_objectValue respondsToSelector:@selector(description)])
+        return [_objectValue description];
+    else
+        return @"";
 }
 
 -(int)intValue {

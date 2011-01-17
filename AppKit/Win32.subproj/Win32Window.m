@@ -577,7 +577,7 @@ i=count;
    for(CGLPixelSurface *overlay in _overlays){
     if([overlay isOpaque])
      continue;
-     
+    
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     

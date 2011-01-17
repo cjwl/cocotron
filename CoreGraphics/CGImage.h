@@ -21,6 +21,7 @@ typedef enum {
    kCGImageAlphaFirst,
    kCGImageAlphaNoneSkipLast,
    kCGImageAlphaNoneSkipFirst,
+   kCGImageAlphaOnly,
 } CGImageAlphaInfo;
 
 enum {

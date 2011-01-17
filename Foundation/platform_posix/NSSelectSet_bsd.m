@@ -119,7 +119,7 @@ static int maxDescriptorInThreeSets(NSSet *set1,NSSet *set2,NSSet *set3){
 }
 
 void NSSelectSetShutdownForCurrentThread() {
-	// nothing to do?
+// do nothing
 }
 
 static void transferSetToNative(NSSet *set,native_set *native){

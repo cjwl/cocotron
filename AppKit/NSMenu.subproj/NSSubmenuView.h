@@ -9,10 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenuView.h>
 
 @interface NSSubmenuView : NSMenuView {
-   NSFont       *_itemFont;
-   NSDictionary *_itemBlackAttributes;
-   NSDictionary *_itemWhiteAttributes;
-   NSDictionary *_itemGrayAttributes;
 }
 
 -initWithMenu:(NSMenu *)menu;

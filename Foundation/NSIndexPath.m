@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i;
 		
    _length  = length;
-   _indexes = malloc(length*sizeof(NSUInteger));
+   _indexes = NSZoneMalloc(NULL,length*sizeof(NSUInteger));
    
    for(i=0;i<length;i++)
     _indexes[i]=indexes[i];

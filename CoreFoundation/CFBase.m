@@ -6,6 +6,7 @@
 #ifdef WINDOWS
 #import <windows.h>
 #endif
+#import <Foundation/NSPlatform.h>
 
 const CFAllocatorRef kCFAllocatorDefault;
 const CFAllocatorRef kCFAllocatorSystemDefault;
@@ -93,6 +94,43 @@ CFTypeRef CFMakeCollectable(CFTypeRef self){
    //does nothing on cocotron
    return 0;
 }
+
+#ifndef MACH
+
+uint64_t mach_absolute_time(void) {
+#ifdef WINDOWS
+   LARGE_INTEGER value={{0}};
+
+// QueryPerformanceCounter() may jump ahead by seconds on old systems
+// http://support.microsoft.com/default.aspx?scid=KB;EN-US;Q274323&
+   
+   if(!QueryPerformanceCounter(&value))
+    return 0;
+
+   return value.QuadPart;
+#else
+   return 0;
+#endif
+}
+
+kern_return_t mach_timebase_info(mach_timebase_info_t timebase) {
+#ifdef WINDOWS
+   LARGE_INTEGER value={{0}};
+   
+   if(QueryPerformanceFrequency(&value)){
+    timebase->numer=1000000000;
+    timebase->denom=value.QuadPart;
+    return KERN_SUCCESS;
+   }
+#endif
+      
+   timebase->numer=1;
+   timebase->denom=1;
+   return KERN_FAILURE;
+}
+
+#endif
+
 
 #ifdef WINDOWS
 unsigned int sleep(unsigned int seconds) {

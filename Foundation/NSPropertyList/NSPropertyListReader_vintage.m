@@ -30,6 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bufferSize=0;
    _buffer=NSZoneMalloc(NULL,sizeof(unichar *)*_bufferCapacity);
 
+   _dataBufferCapacity=256;
+   _dataBufferSize=0;
+   _dataBuffer=NSZoneMalloc(NULL,sizeof(uint8_t *)*_dataBufferCapacity);
+
    _index=0;
    _lineNumber=1;
 
@@ -46,6 +50,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSZoneFree(NULL,_stack);
    if(_buffer!=NULL)
     NSZoneFree(NULL,_buffer);
+   if(_dataBuffer!=NULL)
+    NSZoneFree(NULL,_dataBuffer);
    [super dealloc];
 }
 
@@ -117,6 +123,14 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
    self->_buffer[self->_bufferSize++]=c;
 }
 
+static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
+   if(self->_dataBufferSize>=self->_dataBufferCapacity){
+    self->_dataBufferCapacity*=2;
+    self->_dataBuffer=NSZoneRealloc(NULL,self->_dataBuffer,self->_dataBufferCapacity*sizeof(unichar));
+   }
+   self->_dataBuffer[self->_dataBufferSize++]=c;
+}
+
 -(NSObject *)propertyListWithInfo:(NSString *)info {
    enum {
     STATE_WHITESPACE,
@@ -132,7 +146,9 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
     STATE_STRING_SLASH_U0000,
     STATE_STRING_SLASH_UX000,
     STATE_STRING_SLASH_UXX00,
-    STATE_STRING_SLASH_UXXX0
+    STATE_STRING_SLASH_UXXX0,
+    STATE_DATA_HINIBBLE,
+    STATE_DATA_LONIBBLE,
    } state=STATE_WHITESPACE;
    enum {
     EXPECT_KEY,
@@ -167,6 +183,13 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
 
        _bufferSize=0;
        state=STATE_STRING;
+      }
+      else if(code=='<'){
+       if(expect!=EXPECT_KEY && expect!=EXPECT_VAL)
+        return [self parseError:expect:code info:info];
+
+       _dataBufferSize=0;
+       state=STATE_DATA_HINIBBLE;
       }
       else if(code=='{'){
        if(expect!=EXPECT_VAL)
@@ -414,6 +437,61 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
       }
       break;
 
+     case STATE_DATA_HINIBBLE:
+     case STATE_DATA_LONIBBLE:
+      if(code=='>'){
+
+       NSData *data=[NSData dataWithBytes:_dataBuffer length:_dataBufferSize];
+       pushObject(self,[data retain]);
+
+       state=STATE_WHITESPACE;
+       if(_stackSize==1)
+        expect=EXPECT_EOF;
+       else if(expect==EXPECT_KEY)
+        expect=EXPECT_EQUAL;
+       else
+        expect=EXPECT_SEPARATOR;
+    }
+      else if(code<=' ')
+       break;
+      else if(code>='0' && code<='9'){
+       uint8_t nibble=code-'0';
+       
+       if(state==STATE_DATA_HINIBBLE){
+        appendByte(self,nibble<<4);
+        state=STATE_DATA_LONIBBLE;
+   }
+       else {
+        _dataBuffer[_dataBufferSize-1]|=nibble;
+        state=STATE_DATA_HINIBBLE;
+       }
+      }
+      else if(code>='A' && code<='F'){
+       uint8_t nibble=(code-'A')+10;
+   
+       if(state==STATE_DATA_HINIBBLE){
+        appendByte(self,nibble<<4);
+        state=STATE_DATA_LONIBBLE;
+       }
+       else {
+        _dataBuffer[_dataBufferSize-1]|=nibble;
+        state=STATE_DATA_HINIBBLE;
+       }
+      }
+      else if(code>='a' && code<='f'){
+       uint8_t nibble=(code-'a')+10;
+       
+       if(state==STATE_DATA_HINIBBLE){
+        appendByte(self,nibble<<4);
+        state=STATE_DATA_LONIBBLE;
+       }
+       else {
+        _dataBuffer[_dataBufferSize-1]|=nibble;
+        state=STATE_DATA_HINIBBLE;
+       }
+      }
+      
+      break;
 
     }
    }

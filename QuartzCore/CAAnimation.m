@@ -1,10 +1,22 @@
 #import <QuartzCore/CAAnimation.h>
+#import <QuartzCore/CATransaction.h>
 #import <AppKit/NSRaise.h>
 
 @implementation CAAnimation
 
 +animation {
    return [[[self alloc] init] autorelease];
+}
+
+-init {
+   _duration=[CATransaction animationDuration];
+   _timingFunction=[[CATransaction animationTimingFunction] retain];
+   return self;
+}
+
+-(void)dealloc {
+   [_timingFunction release];
+   [super dealloc];
 }
 
 -copyWithZone:(NSZone *)zone {

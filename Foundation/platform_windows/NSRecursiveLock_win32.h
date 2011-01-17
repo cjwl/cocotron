@@ -8,7 +8,7 @@
 #import <Foundation/NSLock.h>
 #import <windows.h>
 
-@interface NSRecursiveLock_win32 : NSRecursiveLock <NSLocking> {
+@interface NSRecursiveLock_win32 : NSObject <NSLocking> {
     CRITICAL_SECTION _lock;
     NSString *_name;
 }

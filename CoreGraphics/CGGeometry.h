@@ -65,3 +65,15 @@ static inline bool CGRectIsEmpty(CGRect rect) {
    return ((rect.size.width==0) && (rect.size.height==0))?TRUE:FALSE;
 }
 
+static inline bool CGRectIntersectsRect(CGRect a, CGRect b)
+{
+    if(b.origin.x > a.origin.x + a.size.width)
+        return false;
+    if(b.origin.y > a.origin.y + a.size.height)
+        return false;
+    if(a.origin.x > b.origin.x + b.size.width)
+        return false;
+    if(a.origin.y > b.origin.y + b.size.height)
+        return false;
+    return true;
+}

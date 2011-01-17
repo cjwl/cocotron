@@ -1,5 +1,6 @@
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/ApplicationServices.h>
+#import <CoreVideo/CoreVideo.h>
 
 @class CALayer,O2Surface;
 
@@ -14,6 +15,10 @@
 
 +(CARenderer *)rendererWithCGLContext:(void *)cglContext options:(NSDictionary *)options;
 
+-(void)beginFrameAtTime:(CFTimeInterval)currentTime timeStamp:(CVTimeStamp *)timeStamp;
+
 -(void)render;
+
+-(void)endFrame;
 
 @end

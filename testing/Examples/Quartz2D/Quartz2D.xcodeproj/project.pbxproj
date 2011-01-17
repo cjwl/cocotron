@@ -1,0 +1,462 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		256AC3DA0F4B6AC300CF3369 /* Quartz2DAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* Quartz2DAppDelegate.m */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE0B970A12B1923E00034CC9 /* DemoAntialias.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0B970912B1923E00034CC9 /* DemoAntialias.m */; };
+		FE0B973212B1A9B100034CC9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		FE0B973312B1A9B100034CC9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		FE0B973412B1A9B100034CC9 /* pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = FE7F752812B03B5B00FDF52D /* pattern.png */; };
+		FE0B973612B1A9B100034CC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		FE0B973712B1A9B100034CC9 /* Quartz2DAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* Quartz2DAppDelegate.m */; };
+		FE0B973812B1A9B100034CC9 /* Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F72BF12B0131A00FDF52D /* Demo.m */; };
+		FE0B973912B1A9B100034CC9 /* DemoPorterDuff.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F72C612B013C400FDF52D /* DemoPorterDuff.m */; };
+		FE0B973A12B1A9B100034CC9 /* DemoView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F72CE12B014A600FDF52D /* DemoView.m */; };
+		FE0B973B12B1A9B100034CC9 /* DemoAffineImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F750D12B0351C00FDF52D /* DemoAffineImages.m */; };
+		FE0B973C12B1A9B100034CC9 /* DemoGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F75A012B0862D00FDF52D /* DemoGradient.m */; };
+		FE0B973D12B1A9B100034CC9 /* DemoPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F765112B0905700FDF52D /* DemoPaths.m */; };
+		FE0B973E12B1A9B100034CC9 /* DemoAntialias.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0B970912B1923E00034CC9 /* DemoAntialias.m */; };
+		FE0B97F712B1C8FB00034CC9 /* DemoPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0B97F612B1C8FB00034CC9 /* DemoPattern.m */; };
+		FE0B99BC12B1DE0400034CC9 /* stankard.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0B99BB12B1DE0400034CC9 /* stankard.png */; };
+		FE0B99BD12B1DE0400034CC9 /* stankard.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0B99BB12B1DE0400034CC9 /* stankard.png */; };
+		FE0B99F712B1E42200034CC9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
+		FE0B99F812B1E42300034CC9 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+		FE0B9AA712B1E62000034CC9 /* DemoPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0B97F612B1C8FB00034CC9 /* DemoPattern.m */; };
+		FE0B9B0112B1E7BF00034CC9 /* DemoJoinCapDash.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0B9B0012B1E7BF00034CC9 /* DemoJoinCapDash.m */; };
+		FE0B9B0212B1E7BF00034CC9 /* DemoJoinCapDash.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0B9B0012B1E7BF00034CC9 /* DemoJoinCapDash.m */; };
+		FE7F72C012B0131A00FDF52D /* Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F72BF12B0131A00FDF52D /* Demo.m */; };
+		FE7F72C712B013C400FDF52D /* DemoPorterDuff.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F72C612B013C400FDF52D /* DemoPorterDuff.m */; };
+		FE7F72CF12B014A600FDF52D /* DemoView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F72CE12B014A600FDF52D /* DemoView.m */; };
+		FE7F750E12B0351C00FDF52D /* DemoAffineImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F750D12B0351C00FDF52D /* DemoAffineImages.m */; };
+		FE7F752912B03B5B00FDF52D /* pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = FE7F752812B03B5B00FDF52D /* pattern.png */; };
+		FE7F75A112B0862D00FDF52D /* DemoGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F75A012B0862D00FDF52D /* DemoGradient.m */; };
+		FE7F765212B0905700FDF52D /* DemoPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F765112B0905700FDF52D /* DemoPaths.m */; };
+		FE9F240712B28E41007FB405 /* DemoWindingRules.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F240612B28E41007FB405 /* DemoWindingRules.m */; };
+		FE9F240812B28E41007FB405 /* DemoWindingRules.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F240612B28E41007FB405 /* DemoWindingRules.m */; };
+		FE9F275C12B2E203007FB405 /* DemoSoftMask.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F275B12B2E203007FB405 /* DemoSoftMask.m */; };
+		FE9F275D12B2E203007FB405 /* DemoSoftMask.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F275B12B2E203007FB405 /* DemoSoftMask.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE0B9A0512B1E42900034CC9 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		256AC3D80F4B6AC300CF3369 /* Quartz2DAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quartz2DAppDelegate.h; sourceTree = "<group>"; };
+		256AC3D90F4B6AC300CF3369 /* Quartz2DAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Quartz2DAppDelegate.m; sourceTree = "<group>"; };
+		256AC3F00F4B6AF500CF3369 /* Quartz2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quartz2D_Prefix.pch; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D1107310486CEB800E47090 /* Quartz2D-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Quartz2D-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Quartz2D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quartz2D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0B970812B1923E00034CC9 /* DemoAntialias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoAntialias.h; sourceTree = "<group>"; };
+		FE0B970912B1923E00034CC9 /* DemoAntialias.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAntialias.m; sourceTree = "<group>"; };
+		FE0B974312B1A9B100034CC9 /* Quartz2D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quartz2D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0B97F512B1C8FB00034CC9 /* DemoPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoPattern.h; sourceTree = "<group>"; };
+		FE0B97F612B1C8FB00034CC9 /* DemoPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoPattern.m; sourceTree = "<group>"; };
+		FE0B99BB12B1DE0400034CC9 /* stankard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stankard.png; sourceTree = "<group>"; };
+		FE0B9AFF12B1E7BF00034CC9 /* DemoJoinCapDash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoJoinCapDash.h; sourceTree = "<group>"; };
+		FE0B9B0012B1E7BF00034CC9 /* DemoJoinCapDash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoJoinCapDash.m; sourceTree = "<group>"; };
+		FE7F72BE12B0131A00FDF52D /* Demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Demo.h; sourceTree = "<group>"; };
+		FE7F72BF12B0131A00FDF52D /* Demo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Demo.m; sourceTree = "<group>"; };
+		FE7F72C512B013C400FDF52D /* DemoPorterDuff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoPorterDuff.h; sourceTree = "<group>"; };
+		FE7F72C612B013C400FDF52D /* DemoPorterDuff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoPorterDuff.m; sourceTree = "<group>"; };
+		FE7F72CD12B014A600FDF52D /* DemoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoView.h; sourceTree = "<group>"; };
+		FE7F72CE12B014A600FDF52D /* DemoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoView.m; sourceTree = "<group>"; };
+		FE7F750C12B0351C00FDF52D /* DemoAffineImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoAffineImages.h; sourceTree = "<group>"; };
+		FE7F750D12B0351C00FDF52D /* DemoAffineImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoAffineImages.m; sourceTree = "<group>"; };
+		FE7F752812B03B5B00FDF52D /* pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pattern.png; sourceTree = "<group>"; };
+		FE7F759F12B0862D00FDF52D /* DemoGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoGradient.h; sourceTree = "<group>"; };
+		FE7F75A012B0862D00FDF52D /* DemoGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoGradient.m; sourceTree = "<group>"; };
+		FE7F765012B0905700FDF52D /* DemoPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoPaths.h; sourceTree = "<group>"; };
+		FE7F765112B0905700FDF52D /* DemoPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoPaths.m; sourceTree = "<group>"; };
+		FE9F240512B28E41007FB405 /* DemoWindingRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoWindingRules.h; sourceTree = "<group>"; };
+		FE9F240612B28E41007FB405 /* DemoWindingRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoWindingRules.m; sourceTree = "<group>"; };
+		FE9F275A12B2E203007FB405 /* DemoSoftMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSoftMask.h; sourceTree = "<group>"; };
+		FE9F275B12B2E203007FB405 /* DemoSoftMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSoftMask.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE0B973F12B1A9B100034CC9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE0B99F712B1E42200034CC9 /* Foundation.framework in Frameworks */,
+				FE0B99F812B1E42300034CC9 /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FE0B97F512B1C8FB00034CC9 /* DemoPattern.h */,
+				FE0B97F612B1C8FB00034CC9 /* DemoPattern.m */,
+				256AC3D80F4B6AC300CF3369 /* Quartz2DAppDelegate.h */,
+				256AC3D90F4B6AC300CF3369 /* Quartz2DAppDelegate.m */,
+				FE7F72BE12B0131A00FDF52D /* Demo.h */,
+				FE7F72BF12B0131A00FDF52D /* Demo.m */,
+				FE7F72C512B013C400FDF52D /* DemoPorterDuff.h */,
+				FE7F72C612B013C400FDF52D /* DemoPorterDuff.m */,
+				FE7F759F12B0862D00FDF52D /* DemoGradient.h */,
+				FE7F75A012B0862D00FDF52D /* DemoGradient.m */,
+				FE7F72CD12B014A600FDF52D /* DemoView.h */,
+				FE7F72CE12B014A600FDF52D /* DemoView.m */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				FE7F750C12B0351C00FDF52D /* DemoAffineImages.h */,
+				FE7F750D12B0351C00FDF52D /* DemoAffineImages.m */,
+				FE7F765012B0905700FDF52D /* DemoPaths.h */,
+				FE7F765112B0905700FDF52D /* DemoPaths.m */,
+				FE0B970812B1923E00034CC9 /* DemoAntialias.h */,
+				FE0B970912B1923E00034CC9 /* DemoAntialias.m */,
+				FE0B9AFF12B1E7BF00034CC9 /* DemoJoinCapDash.h */,
+				FE0B9B0012B1E7BF00034CC9 /* DemoJoinCapDash.m */,
+				FE9F275A12B2E203007FB405 /* DemoSoftMask.h */,
+				FE9F275B12B2E203007FB405 /* DemoSoftMask.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Quartz2D.app */,
+				FE0B974312B1A9B100034CC9 /* Quartz2D.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Quartz2D */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				FE9F240512B28E41007FB405 /* DemoWindingRules.h */,
+				FE9F240612B28E41007FB405 /* DemoWindingRules.m */,
+			);
+			name = Quartz2D;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				256AC3F00F4B6AF500CF3369 /* Quartz2D_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FE0B99BB12B1DE0400034CC9 /* stankard.png */,
+				FE7F752812B03B5B00FDF52D /* pattern.png */,
+				8D1107310486CEB800E47090 /* Quartz2D-Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Quartz2D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Quartz2D" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Quartz2D;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Quartz2D;
+			productReference = 8D1107320486CEB800E47090 /* Quartz2D.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FE0B973012B1A9B100034CC9 /* Quartz2D-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE0B974112B1A9B100034CC9 /* Build configuration list for PBXNativeTarget "Quartz2D-Windows-i386" */;
+			buildPhases = (
+				FE0B973112B1A9B100034CC9 /* Resources */,
+				FE0B973512B1A9B100034CC9 /* Sources */,
+				FE0B973F12B1A9B100034CC9 /* Frameworks */,
+				FE0B9A1412B1E4B500034CC9 /* ShellScript */,
+			);
+			buildRules = (
+				FE0B9A0512B1E42900034CC9 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "Quartz2D-Windows-i386";
+			productInstallPath = "$(HOME)/Applications";
+			productName = Quartz2D;
+			productReference = FE0B974312B1A9B100034CC9 /* Quartz2D.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Quartz2D" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Quartz2D */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Quartz2D */,
+				FE0B973012B1A9B100034CC9 /* Quartz2D-Windows-i386 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				FE7F752912B03B5B00FDF52D /* pattern.png in Resources */,
+				FE0B99BC12B1DE0400034CC9 /* stankard.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE0B973112B1A9B100034CC9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE0B973212B1A9B100034CC9 /* InfoPlist.strings in Resources */,
+				FE0B973312B1A9B100034CC9 /* MainMenu.xib in Resources */,
+				FE0B973412B1A9B100034CC9 /* pattern.png in Resources */,
+				FE0B99BD12B1DE0400034CC9 /* stankard.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE0B9A1412B1E4B500034CC9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework CoreData -destination $TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\ncp /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/bin/freetype6.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\ncp /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/bin/zlib1.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				256AC3DA0F4B6AC300CF3369 /* Quartz2DAppDelegate.m in Sources */,
+				FE7F72C012B0131A00FDF52D /* Demo.m in Sources */,
+				FE7F72C712B013C400FDF52D /* DemoPorterDuff.m in Sources */,
+				FE7F72CF12B014A600FDF52D /* DemoView.m in Sources */,
+				FE7F750E12B0351C00FDF52D /* DemoAffineImages.m in Sources */,
+				FE7F75A112B0862D00FDF52D /* DemoGradient.m in Sources */,
+				FE7F765212B0905700FDF52D /* DemoPaths.m in Sources */,
+				FE0B970A12B1923E00034CC9 /* DemoAntialias.m in Sources */,
+				FE0B97F712B1C8FB00034CC9 /* DemoPattern.m in Sources */,
+				FE0B9B0112B1E7BF00034CC9 /* DemoJoinCapDash.m in Sources */,
+				FE9F240712B28E41007FB405 /* DemoWindingRules.m in Sources */,
+				FE9F275C12B2E203007FB405 /* DemoSoftMask.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE0B973512B1A9B100034CC9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE0B973612B1A9B100034CC9 /* main.m in Sources */,
+				FE0B973712B1A9B100034CC9 /* Quartz2DAppDelegate.m in Sources */,
+				FE0B973812B1A9B100034CC9 /* Demo.m in Sources */,
+				FE0B973912B1A9B100034CC9 /* DemoPorterDuff.m in Sources */,
+				FE0B973A12B1A9B100034CC9 /* DemoView.m in Sources */,
+				FE0B973B12B1A9B100034CC9 /* DemoAffineImages.m in Sources */,
+				FE0B973C12B1A9B100034CC9 /* DemoGradient.m in Sources */,
+				FE0B973D12B1A9B100034CC9 /* DemoPaths.m in Sources */,
+				FE0B973E12B1A9B100034CC9 /* DemoAntialias.m in Sources */,
+				FE0B9AA712B1E62000034CC9 /* DemoPattern.m in Sources */,
+				FE0B9B0212B1E7BF00034CC9 /* DemoJoinCapDash.m in Sources */,
+				FE9F240812B28E41007FB405 /* DemoWindingRules.m in Sources */,
+				FE9F275D12B2E203007FB405 /* DemoSoftMask.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DDD58150DA1D0A300B32029 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				INFOPLIST_FILE = "Quartz2D-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Quartz2D;
+			};
+			name = Release;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		FE0B974212B1A9B100034CC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				COPY_PHASE_STRIP = YES;
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .exe;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				INFOPLIST_FILE = "Quartz2D-Info.plist";
+				OTHER_LDFLAGS = (
+					"-Wl,--enable-auto-import",
+					"-mwindows",
+					"-mconsole",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Quartz2D;
+				SYMROOT = build/Windows;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Quartz2D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Quartz2D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE0B974112B1A9B100034CC9 /* Build configuration list for PBXNativeTarget "Quartz2D-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE0B974212B1A9B100034CC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

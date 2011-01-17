@@ -1,10 +1,5 @@
 #import <CoreFoundation/CoreFoundation.h>
 
-typedef int kern_return_t;
-#define KERN_SUCCESS 0
-#define KERN_FAILURE 5
-
-
 #ifdef __cplusplus
 
 #if defined(__WIN32__)

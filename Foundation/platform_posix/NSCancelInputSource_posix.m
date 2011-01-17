@@ -28,14 +28,14 @@
    [super dealloc];
 }
 
--(BOOL)processImmediateEvents:(NSUInteger)selectEvent {
+-(NSUInteger)processImmediateEvents:(NSUInteger)selectEvent {
    if(selectEvent & NSSelectReadEvent) {
       uint8_t buf[256];
       [_cancelRead read:buf maxLength:256];
       _hasCanceled=NO;
-      return YES;
+      return NSSelectReadEvent;
    }
-   return NO;
+   return 0;
 }
 
 -(void)cancel {

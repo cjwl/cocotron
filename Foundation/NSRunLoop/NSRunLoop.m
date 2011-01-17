@@ -200,11 +200,16 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
     
     NSRunLoopState *state=[self stateForMode:mode];
 
+    
     if([[NSNotificationQueue defaultQueue] hasIdleNotificationsInMode:mode]){
-
-     if(![state pollInputForMode:mode])
+     if([state pollInputForMode:mode]){
+      [pool release];
+      return YES;
+     }
+     else {
       [[NSNotificationQueue defaultQueue] idleProcessMode:mode];
    }
+    }
     else {
      [state waitForSingleInputForMode:mode beforeDate:limitDate];
      [pool release];
