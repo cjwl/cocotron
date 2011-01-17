@@ -441,7 +441,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
    unsigned offset=symbolTable->classCount;
    unsigned i,count=symbolTable->categoryCount;
 
-   if(unlinkedCategories!=NULL){
+   if(unlinkedCategories!=NULL && objc_lookUpClass("Protocol") != Nil){
     int unlinkedIndex=unlinkedCategories->count;
    
     while(--unlinkedIndex>=0){
@@ -459,7 +459,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
     Category category=(Category)symbolTable->definitions[offset+i];
     Class         class=objc_lookUpClass(category->className);
 
-    if(class!=Nil)
+    if(class!=Nil && objc_lookUpClass("Protocol") != Nil)
      OBJCRegisterCategoryInClass(category,class);
 	else {
 	 if(unlinkedCategories==NULL)
