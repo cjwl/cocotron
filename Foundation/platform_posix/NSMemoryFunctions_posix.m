@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 #import <stdio.h>
 #import <stdlib.h>

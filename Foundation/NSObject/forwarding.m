@@ -7,6 +7,18 @@
 #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
 #define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret")
 
+static void OBJCRaiseException(const char *name,const char *format,...) {
+    va_list arguments;
+    
+    va_start(arguments,format);
+    
+    fprintf(stderr,"ObjC:%s:",name);
+    vfprintf(stderr,format,arguments);
+    fprintf(stderr,"\n");
+    fflush(stderr);
+    va_end(arguments);
+}
+
 #if !COCOTRON_DISALLOW_FORWARDING
 @interface NSObject(fastforwarding)
 -forwardingTargetForSelector:(SEL)selector;
@@ -15,18 +27,6 @@
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
-
-static void OBJCRaiseException(const char *name,const char *format,...) {
-   va_list arguments;
-
-   va_start(arguments,format);
-
-   fprintf(stderr,"ObjC:%s:",name);
-   vfprintf(stderr,format,arguments);
-   fprintf(stderr,"\n");
-   fflush(stderr);
-   va_end(arguments);
-}
 
 id NSObjCGetFastForwardTarget(id object,SEL selector){
    id check=nil;
@@ -101,12 +101,12 @@ id objc_msgForward(id object,SEL message,...){
     OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name,sel_getName(message),message);
     return nil;
    }
-   frameLength=method->method_imp(object,@selector(_frameLengthForSelector:),message);
+   frameLength=(unsigned)method->method_imp(object,@selector(_frameLengthForSelector:),message);
    frame=__builtin_alloca(frameLength);
    
    va_start(arguments,message);
-   frame[0]=object;
-   frame[1]=message;
+   frame[0]=(unsigned)object;
+   frame[1]=(unsigned)message;
    for(i=2;i<frameLength/sizeof(unsigned);i++)
     frame[i]=va_arg(arguments,unsigned);
    

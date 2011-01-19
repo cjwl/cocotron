@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <sys/sysinfo.h>
-#import <sys/unistd.h>
+#import <unistd.h>
 
 NSUInteger NSPageSize(void) {
    return getpagesize();

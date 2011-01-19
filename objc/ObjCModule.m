@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_malloc.h"
 #import "objc_protocol.h"
 #ifdef __APPLE__
-#import"OBJCRegisterModule_Darwin.h"
+#import "OBJCRegisterModule_Darwin.h"
 #endif
  
 #import <string.h>
@@ -21,7 +21,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define INITIAL_CLASS_ARRAY_SIZE 512
 
 #ifdef SOLARIS
-#define PATH_MAX 1024
+    #import <stdio.h>
+    #define PATH_MAX 1024
 #endif
 
 #ifdef WIN32

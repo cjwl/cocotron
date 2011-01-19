@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSAutoreleasePool.h>
+
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSDebug.h>
