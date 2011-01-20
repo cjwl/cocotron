@@ -2771,7 +2771,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      delay=2.;
     [[NSToolTipWindow sharedToolTipWindow] performSelector:@selector(orderFront:) withObject:nil afterDelay:delay];
    }
-
+   
+   if(!cursorIsSet){
+    [[NSCursor currentCursor] set];
+    cursorIsSet=YES;
+   }
+   
    return cursorIsSet;
 }
 
