@@ -174,8 +174,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    while(--pos>=range.location){
     id check=[self objectAtIndex:pos];
 
-    if([check isEqual:object])
-     [self removeObjectAtIndex:pos];
+	   if([check isEqual:object]){
+		if ([object retainCount] == 1){ 
+			[self removeObjectAtIndex:pos];
+			// break here as object is freed
+			break;
+		}
+		else {
+			[self removeObjectAtIndex:pos];
+		}
+	   }
    }
 }
 
@@ -185,8 +193,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    while(--count>=0){
     id check=[self objectAtIndex:count];
 
-    if(check==object)
-     [self removeObjectAtIndex:count];
+	   if(check==object){
+		if ([object retainCount] == 1) { 
+			[self removeObjectAtIndex:count];
+			// break here as object is freed
+			break;
+		}
+		else {
+			[self removeObjectAtIndex:count];
+		}
+	   }
    }
 }
 
@@ -201,8 +217,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    while(--pos>=range.location){
     id check=[self objectAtIndex:pos];
 
-    if(check==object)
-     [self removeObjectAtIndex:pos];
+	   if(check==object){
+		if ([object retainCount] == 1) { 
+			[self removeObjectAtIndex:pos];
+			// break here as object is freed
+			break;
+		}
+		else {
+			[self removeObjectAtIndex:pos];
+		}
+	   }
    }
 }
 
