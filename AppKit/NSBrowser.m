@@ -533,6 +533,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self reloadColumn:0];
 }
 
+-(void)viewWillDraw {
+   if(_hasBeenLoaded){
+    _hasBeenLoaded=YES;
+    [self loadColumnZero];
+   }
+   
+   [super viewWillDraw];
+}
+
 -(NSMatrix *)createMatrixInColumn:(NSInteger)column {
    while([_matrices count]<=column){
     NSRect    frame=[self frameOfInsideOfColumn:column];

@@ -174,19 +174,39 @@ static inline uint32_t premultiplyPixel(uint32_t value){
      inputRow=(GLubyte*)CGLMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
     }
     
-    for(r=0;r<rowCount;r++,inputRow+=bytesPerRow,outputRow+=bytesPerRow){
-     int c;
+    if(_isOpaque){
+     // Opaque contexts ignore alpha so we set it to 0xFF to get proper results when blending
+     // E.g. application clears context with color and zero alpha, this will display as the color on OS X
+     // reading back will give us 0 alpha, premultiplying will give us black, which would be wrong.
      
-     for(c=0;c<bytesPerRow;c+=4){
-      uint32_t pixel=*((uint32_t *)(inputRow+c));
+     for(r=0;r<rowCount;r++,inputRow+=bytesPerRow,outputRow+=bytesPerRow){
+      int c;
+     
+      for(c=0;c<bytesPerRow;c+=4){
+       uint32_t pixel=*((uint32_t *)(inputRow+c));
        
-      pixel=premultiplyPixel(pixel);
+       pixel|=0xFF000000;
        
-      *((uint32_t *)(outputRow+c))=pixel;
+       *((uint32_t *)(outputRow+c))=pixel;
        
+      }
      }
     }
-
+    else {
+     for(r=0;r<rowCount;r++,inputRow+=bytesPerRow,outputRow+=bytesPerRow){
+      int c;
+     
+      for(c=0;c<bytesPerRow;c+=4){
+       uint32_t pixel=*((uint32_t *)(inputRow+c));
+       
+       pixel=premultiplyPixel(pixel);
+       
+       *((uint32_t *)(outputRow+c))=pixel;
+       
+      }
+     }
+    }
+    
     if(_bufferObjects[i]!=0){
      CGLUnmapBuffer(GL_PIXEL_PACK_BUFFER);
     }

@@ -1797,25 +1797,31 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    [self displayRect:[self visibleRect]];
 }
 
--(void)displayIfNeeded {
-   int i,count=[_subviews count];
-  
+-(void)_displayIfNeededWithoutViewWillDraw {
    if([self needsDisplay]){
     [self displayRect:unionOfInvalidRects(self)];
     clearNeedsDisplay(self);
    }
 
+   int i,count=[_subviews count];
+
    for(i=0;i<count;i++) // back to front
-    [[_subviews objectAtIndex:i] displayIfNeeded];
+    [[_subviews objectAtIndex:i] _displayIfNeededWithoutViewWillDraw];
+}
+
+-(void)displayIfNeeded {
+   [self viewWillDraw];
+   [self _displayIfNeededWithoutViewWillDraw];
 }
 
 -(void)displayIfNeededInRect:(NSRect)rect {
-   int i,count=[_subviews count];
    
    rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
 
    if([self needsDisplay])
     [self displayRect:rect];
+
+   int i,count=[_subviews count];
 
    for(i=0;i<count;i++){ // back to front
     NSView *child=[_subviews objectAtIndex:i];

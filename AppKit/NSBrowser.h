@@ -32,6 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int             _firstVisibleColumn;
    int             _maxVisibleColumns;
    int             _selectedColumn;
+   BOOL            _hasBeenLoaded;
    BOOL            _reusesColumns;
    BOOL            _hasHorizontalScroller;
    BOOL            _separatesColumns;
