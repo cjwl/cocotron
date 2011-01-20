@@ -733,7 +733,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
    _validTrackingAreas=NO;
-   [_window _invalidateTrackingAreas];
+   [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
 
    [self viewDidMoveToWindow];
 }

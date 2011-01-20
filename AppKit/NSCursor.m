@@ -11,6 +11,147 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <Foundation/NSNull.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSGraphicsContext.h>
+#ifdef WINDOWS
+#import <windows.h>
+#import <AppKit/Win32Cursor.h>
+#import <Foundation/NSPlatform_win32.h>
+#endif
+
+id NSPlatformCreateCursorImpWithName(NSString *name) {
+   return [[[NSDisplay currentDisplay] cursorWithName:name] retain];
+}
+
+id NSPlatformCreateCursorImpWithImage(NSImage *image,NSPoint hotSpot) {
+#ifndef WINDOWS
+   return nil;
+#else
+/// move to the platform files
+   size_t width=[image size].width;
+   size_t height=[image size].height;
+   
+   CGColorSpaceRef    colorSpace=CGColorSpaceCreateDeviceRGB();
+   CGContextRef       context=CGBitmapContextCreate(NULL,width,height,8,0,colorSpace,kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Little);
+   CGColorSpaceRelease(colorSpace);
+
+   NSAutoreleasePool *pool=[NSAutoreleasePool new];
+   NSGraphicsContext *graphicsContext=[NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
+   
+   [NSGraphicsContext saveGraphicsState];
+   [NSGraphicsContext setCurrentContext:graphicsContext];
+
+   [image drawInRect:NSMakeRect(0,0,width,height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+   
+   [NSGraphicsContext restoreGraphicsState];
+
+   [pool release];
+
+   uint8_t *rowBytes=CGBitmapContextGetData(context);
+   size_t   bytesPerRow=CGBitmapContextGetBytesPerRow(context);
+
+   HDC displayDC=GetDC(NULL);
+   HBITMAP colorBitmap;
+   HBITMAP maskBitmap;
+   
+   if(NSPlatformGreaterThanOrEqualToWindows2000()){
+    // Cursor with alpha channel, no mask. Win2k and above 
+    BITMAPV5HEADER bi;
+    void          *lpBits;
+    uint8_t       *dibRowBytes;
+    
+    ZeroMemory(&bi,sizeof(BITMAPV5HEADER));
+    bi.bV5Size=sizeof(BITMAPV5HEADER);
+    bi.bV5Width=width;
+    bi.bV5Height=-height;
+    bi.bV5Planes=1;
+    bi.bV5BitCount=32;
+    bi.bV5Compression=BI_BITFIELDS;
+    bi.bV5RedMask=0x00FF0000;
+    bi.bV5GreenMask=0x0000FF00;
+    bi.bV5BlueMask=0x000000FF;
+    bi.bV5AlphaMask=0xFF000000;
+    
+    colorBitmap=CreateDIBSection(displayDC,(BITMAPINFO *)&bi,DIB_RGB_COLORS,&lpBits,NULL,0);
+    dibRowBytes=lpBits;
+    
+    maskBitmap=CreateBitmap(width,height,1,1,NULL);
+    int row,column;
+    
+    for(row=0;row<height;row++,rowBytes+=bytesPerRow,dibRowBytes+=width*4){    
+     for(column=0;column<width;column++){
+      dibRowBytes[column*4]=rowBytes[column*4];
+      dibRowBytes[column*4+1]=rowBytes[column*4+1];
+      dibRowBytes[column*4+2]=rowBytes[column*4+2];
+      dibRowBytes[column*4+3]=rowBytes[column*4+3];
+     }
+    }
+
+   }
+   else {
+    // This works for versions lower than 2k, not really needed, but here.
+    HDC colorDC=CreateCompatibleDC(displayDC);
+    HDC maskDC=CreateCompatibleDC(displayDC);
+
+    colorBitmap=CreateCompatibleBitmap(displayDC,width,height);
+    maskBitmap=CreateCompatibleBitmap(displayDC,width,height);
+
+   
+    HBITMAP oldColorBitmap=SelectObject(colorDC,colorBitmap);
+    HBITMAP oldMaskBitmap=SelectObject(maskDC,maskBitmap);
+
+    int      row,column;
+   
+    for(row=0;row<height;row++,rowBytes+=bytesPerRow){    
+     for(column=0;column<width;column++){
+      uint8_t b=rowBytes[column*4];
+      uint8_t g=rowBytes[column*4+1];
+      uint8_t r=rowBytes[column*4+2];
+      uint8_t a=rowBytes[column*4+3];
+     
+      if(a<255){
+       SetPixel(colorDC,column,row,RGB(r,g,b));
+       SetPixel(maskDC,column,row,RGB(255,255,255));
+      }
+      else {
+       SetPixel(colorDC,column,row,RGB(r,g,b));
+       SetPixel(maskDC,column,row,RGB(0,0,0));
+      }
+     }
+    }
+    SelectObject(colorDC,oldColorBitmap);
+    SelectObject(maskDC,oldMaskBitmap);
+    DeleteDC(colorDC);
+    DeleteDC(maskDC);
+
+   }
+   
+   CGContextRelease(context);
+   
+   ICONINFO iconInfo;
+   
+   iconInfo.fIcon=FALSE;
+   iconInfo.xHotspot=hotSpot.x;
+   iconInfo.yHotspot=hotSpot.y;
+   iconInfo.hbmMask=maskBitmap;
+   iconInfo.hbmColor=colorBitmap;
+   
+   HCURSOR hCursor=CreateIconIndirect(&iconInfo);
+
+   DeleteObject(colorBitmap);
+   DeleteObject(maskBitmap);
+   
+   return [[Win32Cursor alloc] initWithHCURSOR:hCursor];
+#endif
+}
+
+void NSPlatformReleaseCursorImp(id object){
+   [object release];
+}
+
+
+void NSPlatformSetCursorImp(id object) {
+   [[NSDisplay currentDisplay] setCursor:object];
+}
 
 @implementation NSCursor
 
@@ -26,6 +167,10 @@ static NSMutableArray *_cursorStack=nil;
    return [_cursorStack lastObject];
 }
 
++(NSCursor *)currentSystemCursor {
+   return [_cursorStack lastObject];
+}
+
 -initWithCoder:(NSCoder *)coder {
    [self dealloc];
    return [NSNull null];
@@ -36,7 +181,7 @@ static NSMutableArray *_cursorStack=nil;
 }
 
 -initWithName:(NSString *)name {
-   _cursor=[[[NSDisplay currentDisplay] cursorWithName:name] retain];
+   _platformCursor=NSPlatformCreateCursorImpWithName(name);
    return self;
 }
 
@@ -50,6 +195,15 @@ static NSMutableArray *_cursorStack=nil;
 }
 
 +(NSCursor *)closedHandCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)contextualMenuCursor {
    static NSCursor *shared=nil;
 
    if(shared==nil)
@@ -157,6 +311,33 @@ static NSMutableArray *_cursorStack=nil;
    return shared;
 }
 
++(NSCursor *)dragCopyCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)dragLinkCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)operationNotAllowedCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
 +(void)hide {
    [[NSDisplay currentDisplay] hideCursor];
 }
@@ -173,18 +354,20 @@ static NSMutableArray *_cursorStack=nil;
 }
 
 -initWithImage:(NSImage *)image foregroundColorHint:(NSColor *)foregroundHint backgroundColorHint:(NSColor *)backgroundHint hotSpot:(NSPoint)hotSpot {
-   NSUnimplementedMethod();
-   return nil;
+// the hints are unused per doc.s
+   return [self initWithImage:image hotSpot:hotSpot];
 }
 
 -initWithImage:(NSImage *)image hotSpot:(NSPoint)hotSpot {
    _image=[image retain];
    _hotSpot=hotSpot;
+   _platformCursor=NSPlatformCreateCursorImpWithImage(image,hotSpot);
    return self;
 }
 
 -(void)dealloc {
    [_image release];
+   NSPlatformReleaseCursorImp(_platformCursor);
    [super dealloc];
 }
 
@@ -229,12 +412,12 @@ static NSMutableArray *_cursorStack=nil;
     [_cursorStack removeLastObject];
     
    [_cursorStack addObject:self];
-   [[NSDisplay currentDisplay] setCursor:_cursor];
+   NSPlatformSetCursorImp(_platformCursor);
 }
 
 -(void)push {
    [_cursorStack addObject:self];
-   [[NSDisplay currentDisplay] setCursor:_cursor];
+   NSPlatformSetCursorImp(_platformCursor);
 }
 
 +(void)pop {
@@ -244,7 +427,7 @@ static NSMutableArray *_cursorStack=nil;
    [_cursorStack removeLastObject];
    
    NSCursor *cursor=[_cursorStack lastObject];
-   [[NSDisplay currentDisplay] setCursor:cursor->_cursor];
+   NSPlatformSetCursorImp(cursor->_platformCursor);
 }
 
 @end
