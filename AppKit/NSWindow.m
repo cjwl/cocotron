@@ -2602,12 +2602,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSMutableArray *moved=[NSMutableArray array];
    NSMutableArray *update=[NSMutableArray array];
    
-   NSPoint     mousePoint={-1,-1};
    BOOL        cursorIsSet=NO;
    BOOL        raiseToolTipWindow=NO;
    NSUInteger  i,count;
+   NSPoint     mousePoint=[self mouseLocationOutsideOfEventStream];
 
-   mousePoint=[self mouseLocationOutsideOfEventStream];
 
    // This collects only the active ones.
    [self _resetTrackingAreas];
@@ -2773,8 +2772,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    }
    
    if(!cursorIsSet){
-    [[NSCursor currentCursor] set];
-    cursorIsSet=YES;
+    NSPoint check=[_contentView convertPoint:mousePoint fromView:nil];
+    
+    // we set the cursor to the current cursor if it is inside the content area, this will need to be changed
+    // if we're drawing out own window frame 
+    if(NSMouseInRect(check,[_contentView bounds],[_contentView isFlipped])){
+     [[NSCursor currentCursor] set];
+     cursorIsSet=YES;
+    }
    }
    
    return cursorIsSet;
