@@ -128,9 +128,14 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 }
 
 -(void)loadPrivateFonts {
-  NSArray *ttf=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory:nil];
 
-  [self loadPrivateFontPaths:ttf];
+	// A special info plist key can specify a resource dir containing the bundled application fonts - returns nil if
+	// the path is not specified so the original code path is followed
+	NSString* fontsDir = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"ATSApplicationFontsPath"];
+
+	NSArray*  ttfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory: fontsDir];
+
+	[self loadPrivateFontPaths:ttfPaths];
 }
 
 -(id)init {
