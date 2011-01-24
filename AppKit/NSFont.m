@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSFont.h>
+#import <AppKit/NSFontDescriptor.h>
 #import <AppKit/NSFontFamily.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
@@ -310,8 +311,41 @@ static NSFont **_fontCache=NULL;
 }
 
 +(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size {
-   NSUnimplementedMethod();
-   return 0;
+	
+	NSDictionary* attributes = [descriptor fontAttributes];
+	NSString* fontName = [attributes objectForKey: NSFontNameAttribute];
+	if (fontName) {
+		return [NSFont fontWithName: fontName size: size];
+	}
+
+	NSString* fontFamily = [attributes objectForKey: NSFontFamilyAttribute];
+	
+	if (fontFamily) {
+		NSFontManager* fontMgr = [NSFontManager sharedFontManager];
+		
+		NSArray* matchingFonts = [fontMgr availableMembersOfFontFamily: fontFamily];
+		
+		if ([matchingFonts count] == 1) {
+			// won't find anything better than this
+			NSArray* members = [matchingFonts objectAtIndex: 0];
+			return [NSFont fontWithName: [members objectAtIndex: 0] size: size];
+		} else {
+			// Let's hope that we've got more to go on.
+			NSString* fontFace = [attributes objectForKey: NSFontFaceAttribute];
+			if (fontFace != nil) {
+				int i = 0;
+				for (i = 0; i < [matchingFonts count]; i++) {
+					NSArray* members = [matchingFonts objectAtIndex: 0];
+					NSString* candidateFace = [members objectAtIndex: 1];
+					if ([candidateFace isEqualToString: fontFace]) {
+						return [NSFont fontWithName: [members objectAtIndex: 0] size: size];
+					}
+				}
+			}
+		}
+	}
+	NSLog(@"unable to match font descriptor: %@", descriptor);
+	return nil;
 }
 
 +(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size textTransform:(NSAffineTransform *)transform {

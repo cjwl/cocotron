@@ -150,7 +150,8 @@ static Class _fontPanelFactory;
     NSString       *name=[typeface name];
     NSString       *traitName=[typeface traitName];
 
-    [result addObject:[NSArray arrayWithObjects:name,traitName,nil]];
+	   // Callers expect an array of four objects
+    [result addObject:[NSArray arrayWithObjects:name,traitName, [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], nil]];
    }
 
    return result;
