@@ -423,7 +423,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setReusesColumns:(BOOL)flag {
-   _reusesColumns=flag;
+    _reusesColumns=flag?YES:NO;
 }
 
 -(void)setTitle:(NSString *)title ofColumn:(NSInteger)column {
@@ -531,6 +531,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self unloadLastColumn];
 
    [self reloadColumn:0];
+}
+
+-(void)viewWillDraw {
+   if(!_hasBeenLoaded){
+    _hasBeenLoaded=YES;
+    [self loadColumnZero];
+   }
+   
+   [super viewWillDraw];
 }
 
 -(NSMatrix *)createMatrixInColumn:(NSInteger)column {
