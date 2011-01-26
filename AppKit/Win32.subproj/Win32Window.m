@@ -742,15 +742,21 @@ i=count;
 -(void)_GetWindowRectDidSize:(BOOL)didSize {
    CGRect frame=[self queryFrame];
    
-   if(frame.size.width>0 && frame.size.height>0)
+    if(frame.size.width>0 && frame.size.height>0){
     [_delegate platformWindow:self frameChanged:frame didSize:didSize];
+    }
 }
 
 -(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
 
    if(contentSize.width>0 && contentSize.height>0){
-    [self invalidateContextsWithNewSize:[self queryFrame].size];
+       NSSize checkSize=[self queryFrame].size;
+       
+       if(NSEqualSizes(checkSize,_frame.size))
+           return 0;
+       
+    [self invalidateContextsWithNewSize:checkSize];
 
     [self _GetWindowRectDidSize:YES];
 
