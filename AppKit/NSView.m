@@ -2031,8 +2031,9 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
      [_overlay setFrame:[self frame]];
     else
      [_overlay setFrame:[_superview convertRect:[self frame] toView:nil]];
-     
-    [[[self window] platformWindow] addOverlay:_overlay];
+    
+    if(_overlay!=nil)
+     [[[self window] platformWindow] addOverlay:_overlay];
    }
 }
 
