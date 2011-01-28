@@ -1918,13 +1918,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     case NSLeftMouseDown:{
       NSView *view=[_backgroundView hitTest:[event locationInWindow]];
 
-      if([view acceptsFirstResponder])
-      [self makeFirstResponder:view];
-       
-// Doing this again seems correct for control cells which put a field editor up when they become first responder but I'm not sure
-      view=[_backgroundView hitTest:[event locationInWindow]];
-      _mouseDownLocationInWindow=[event locationInWindow];
+        /* view gets mouse down event before first responder check */
       [view mouseDown:event];
+
+      if([view acceptsFirstResponder])
+       [self makeFirstResponder:view];
+    
+      _mouseDownLocationInWindow=[event locationInWindow];
      }
      break;
 
