@@ -356,12 +356,10 @@ static NSMapTable *pathToObject=NULL;
 }
 
 +(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)path {
-   NSUnimplementedMethod();
-   return 0;
+	return [[NSBundle bundleWithPath: path] pathForResource:name ofType:type];
 }
 +(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path {
-   NSUnimplementedMethod();
-   return 0;
+	return [[NSBundle bundleWithPath: path] pathsForResourcesOfType:type inDirectory: nil];
 }
 +(NSArray *)preferredLocalizationsFromArray:(NSArray *)localizations {
    NSUnimplementedMethod();

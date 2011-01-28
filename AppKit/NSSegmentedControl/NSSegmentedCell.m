@@ -14,6 +14,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSegmentedCell
 
+// For manually created segment cells
+- (id)init {
+	if (self = [super init]) {
+		_segments = [[NSMutableArray arrayWithCapacity: 5] retain];
+		_selectedSegment = NSNotFound; // initially empty
+		_trackingMode = NSSegmentSwitchTrackingSelectOne; // default
+	}
+	return self;
+}
+
+// For nib created segment cells
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
    
@@ -91,7 +102,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setSegmentCount:(NSInteger)count {
-   NSUnimplementedMethod();
+	int currentCount = [_segments count];
+	if (count == currentCount) return;
+	if (count > currentCount) {
+		while ([_segments count] < count) {
+			NSSegmentItem* item = [[[NSSegmentItem alloc] init] autorelease];
+			[_segments addObject: item];
+		}
+	} else {
+		while ([_segments count] > count) {
+			[_segments removeLastObject];
+		}
+	}
 }
 
 -(void)setSegmentStyle:(NSSegmentStyle)value {
