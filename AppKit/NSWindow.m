@@ -2676,17 +2676,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==NO && mouseIsInside==YES){
       [entered addObject:area];
      }
-     if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==YES && mouseIsInside==NO){
+     if(options&(NSTrackingMouseEnteredAndExited|NSTrackingCursorUpdate) && mouseWasInside==YES && mouseIsInside==NO){
       [exited addObject:area];
      }
      if(options&NSTrackingMouseMoved && [self acceptsMouseMovedEvents]==YES){
       [moved addObject:area];
      }
      if(options&NSTrackingCursorUpdate && mouseWasInside==NO && mouseIsInside==YES && !(options&NSTrackingActiveAlways)){
+      cursorIsSet=YES;
       [update addObject:area];
      }
+#if 0
      if(options&NSTrackingCursorUpdate && mouseIsInside==YES)
       cursorIsSet=YES;
+#endif
     } // (not) ToolTip
 
     [area _setMouseInside:mouseIsInside];
@@ -2698,6 +2701,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    for(NSTrackingArea *check in exited){
     id owner=[check owner];
     
+       if([check options]&NSTrackingCursorUpdate){
+           [[NSCursor arrowCursor] set];
+       }
+       
     if([owner respondsToSelector:@selector(mouseExited:)]){
       NSEvent *event=[NSEvent enterExitEventWithType:NSMouseExited
                                             location:mousePoint

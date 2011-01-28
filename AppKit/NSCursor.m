@@ -427,6 +427,10 @@ static NSMutableArray *_cursorStack=nil;
    [_cursorStack removeLastObject];
    
    NSCursor *cursor=[_cursorStack lastObject];
+    
+   if(cursor==nil)
+       cursor=[NSCursor arrowCursor];
+    
    NSPlatformSetCursorImp(cursor->_platformCursor);
 }
 
