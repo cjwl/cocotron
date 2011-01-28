@@ -32,71 +32,99 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */;
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
 			remoteInfo = "Foundation-Windows-i386";
 		};
 		50ACFD4C1275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 6EA04A7709E57D5F0067589C /* Foundation.framework */;
+			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
 			remoteInfo = "Foundation-Linux-i386";
 		};
 		50ACFD4E1275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 6E4D932B0A2642BD003D335C /* Foundation.framework */;
+			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
 			remoteInfo = "Foundation-Solaris-sparc";
 		};
 		50ACFD501275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B /* Foundation.framework */;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
 			remoteInfo = "Foundation-Darwin-i386";
 		};
 		50ACFD521275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B /* Foundation.framework */;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
 			remoteInfo = "Foundation-Darwin-ppc";
 		};
 		50ACFD541275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE651A870FBC844C00464BFD /* Foundation.framework */;
+			remoteGlobalIDString = FE651A870FBC844C00464BFD;
 			remoteInfo = "Foundation-Darwin-x86_64";
 		};
 		50ACFD561275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 28D487A90FE04E7100DC03EF /* Foundation.framework */;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
 			remoteInfo = "Foundation-Linux-ppc";
 		};
 		50ACFD581275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 15D921C0105E918000171406 /* Foundation.framework */;
+			remoteGlobalIDString = 15D921C0105E918000171406;
 			remoteInfo = "Foundation-Linux-arm";
 		};
 		50ACFD5A1275F6F3008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F /* Foundation.framework */;
+			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F;
 			remoteInfo = "Foundation-FreeBSD-i386";
 		};
 		50ACFD5C1275F6F8008BEDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A /* Foundation-Windows-i386 */;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
 			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE2A2D0612D2C7760028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* OpenGL.framework */;
+			remoteInfo = "OpenGL-Windows-i386";
+		};
+		FE2A2D0812D2C7760028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8E0BE8A0F0E544700677729 /* OpenGL.framework */;
+			remoteInfo = "OpenGL-Darwin-i386";
+		};
+		FE2A2D0A12D2C7760028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A876310C6F244005E348A /* OpenGL.framework */;
+			remoteInfo = "OpenGL-FreeBSD-i386";
+		};
+		FE2A2D0C12D2C77C0028C06D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* OpenGL-Windows-i386 */;
+			remoteInfo = "OpenGL-Windows-i386";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -106,6 +134,7 @@
 		50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreVideo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreVideo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenGL.xcodeproj; path = ../OpenGL/OpenGL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVDisplayLink.h; sourceTree = "<group>"; };
 		FE43015B11E2531F00EBDD56 /* CVDisplayLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVDisplayLink.m; sourceTree = "<group>"; };
 		FE43017B11E253E900EBDD56 /* CoreVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreVideo.h; sourceTree = "<group>"; };
@@ -136,6 +165,7 @@
 		0867D691FE84028FC02AAC07 /* CoreVideo */ = {
 			isa = PBXGroup;
 			children = (
+				FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */,
 				50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */,
 				FE43045A11E2779700EBDD56 /* CVReturn.h */,
 				FE43045811E2769E00EBDD56 /* CVBase.h */,
@@ -206,6 +236,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FE2A2D0112D2C7760028C06D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE2A2D0712D2C7760028C06D /* OpenGL.framework */,
+				FE2A2D0912D2C7760028C06D /* OpenGL.framework */,
+				FE2A2D0B12D2C7760028C06D /* OpenGL.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -237,6 +277,7 @@
 			);
 			dependencies = (
 				50ACFD5D1275F6F8008BEDDD /* PBXTargetDependency */,
+				FE2A2D0D12D2C77C0028C06D /* PBXTargetDependency */,
 			);
 			name = "CoreVideo-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -266,6 +307,10 @@
 				{
 					ProductGroup = 50ACFD3E1275F6F3008BEDDD /* Products */;
 					ProjectRef = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
+				},
+				{
+					ProductGroup = FE2A2D0112D2C7760028C06D /* Products */;
+					ProjectRef = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -339,6 +384,27 @@
 			remoteRef = 50ACFD5A1275F6F3008BEDDD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FE2A2D0712D2C7760028C06D /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE2A2D0612D2C7760028C06D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE2A2D0912D2C7760028C06D /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE2A2D0812D2C7760028C06D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE2A2D0B12D2C7760028C06D /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE2A2D0A12D2C7760028C06D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -368,6 +434,11 @@
 			isa = PBXTargetDependency;
 			name = "Foundation-Windows-i386";
 			targetProxy = 50ACFD5C1275F6F8008BEDDD /* PBXContainerItemProxy */;
+		};
+		FE2A2D0D12D2C77C0028C06D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-Windows-i386";
+			targetProxy = FE2A2D0C12D2C77C0028C06D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

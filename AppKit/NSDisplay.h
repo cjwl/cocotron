@@ -12,7 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, NSView, NSSavePanel, NSOpenPanel, CGWindow;
 
 @interface NSDisplay : NSObject {
-   unsigned        _eventMask;
    NSMutableArray *_eventQueue;
 }
 

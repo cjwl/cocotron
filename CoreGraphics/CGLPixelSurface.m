@@ -92,7 +92,7 @@
     _bufferObjects[i]=0;
     _readPixels[i]=NULL;
     _staticPixels[i]=NULL;
-}
+   }
 
   // CGLGenBuffers(_numberOfBuffers,_bufferObjects);
 

@@ -29,7 +29,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObject+BindingSupport.h>
 #import <Onyx2D/O2Context.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSViewBackingLayer.h>
 #import <CoreGraphics/CGLPixelSurface.h>
+#import <CoreGraphics/CGWindow.h>
+#import <QuartzCore/CALayerContext.h>
+#import <QuartzCore/CATransaction.h>
 
 NSString * const NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
 NSString * const NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";
@@ -38,10 +42,17 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
 @interface NSView(NSView_forward)
 -(CGAffineTransform)transformFromWindow;
 -(CGAffineTransform)transformToWindow;
+-(CGAffineTransform)transformToLayer;
 -(void)_trackingAreasChanged;
 @end
 
 @implementation NSView
+
+static BOOL NSViewLayersEnabled=NO;
+
++(void)initialize {
+   NSViewLayersEnabled=[[NSUserDefaults standardUserDefaults] boolForKey:@"NSViewLayersEnabled"];
+}
 
 +(NSView *)focusView {
    return [NSCurrentFocusStack() lastObject];
@@ -83,19 +94,26 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
     _autoresizingMask=vFlags&0x3F;
     if([keyed containsValueForKey:@"NSvFlags"])
      _autoresizesSubviews=(vFlags&0x100)?YES:NO;
-    else
+// Despite the fact it appears _autoresizesSubviews is encoded in the flags, it should always be ON
+// *** Do not turn off or base on the flags unless you have an alternative for enabling it when it
+// should be.
      _autoresizesSubviews=YES;
     _isHidden=(vFlags&0x80000000)?YES:NO;
     _tag=-1;
     if([keyed containsValueForKey:@"NSTag"])
      _tag=[keyed decodeIntForKey:@"NSTag"];
+     
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
+
     _needsDisplay=YES;
     _invalidRectCount=0;
     _invalidRects=NULL;
     _trackingAreas=[[NSMutableArray alloc] init];
-    _wantsLayer=[keyed decodeBoolForKey:@"NSViewIsLayerTreeHost"];
+    [self setWantsLayer:[keyed decodeBoolForKey:@"NSViewIsLayerTreeHost"]];
+         
+    _layerContentsRedrawPolicy=[keyed decodeIntegerForKey:@"NSViewLayerContentsRedrawPolicy"];
+    
     _contentFilters=[[keyed decodeObjectForKey:@"NSViewContentFilters"] retain];
    }
    else {
@@ -130,6 +148,7 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
    _validTransforms=NO;
    _transformFromWindow=CGAffineTransformIdentity;
    _transformToWindow=CGAffineTransformIdentity;
+   _transformToLayer=CGAffineTransformIdentity;
 
    return self;
 }
@@ -150,6 +169,10 @@ NSString * const NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotifica
    if(_invalidRects!=NULL)
     NSZoneFree(NULL,_invalidRects);
    
+   [_layer release];
+   
+   [_layerContext invalidate];
+   [_layerContext release];
    [_overlay release];
    
    [super dealloc];
@@ -161,6 +184,7 @@ static void invalidateTransform(NSView *self){
    
    for(NSView *check in self->_subviews)
     invalidateTransform(check);
+
 }
 
 static CGAffineTransform concatViewTransform(CGAffineTransform result,NSView *view,NSView *superview,BOOL doFrame,BOOL flip){
@@ -200,6 +224,20 @@ static CGAffineTransform concatViewTransform(CGAffineTransform result,NSView *vi
    return result;
 }
 
+-(CGAffineTransform)createTransformToLayer {
+   CGAffineTransform result=CGAffineTransformIdentity;
+   NSRect bounds=[self bounds];
+   
+   if([self isFlipped]){
+    CGAffineTransform flip=CGAffineTransformMake(1,0,0,-1,0,bounds.size.height);
+
+    result=CGAffineTransformConcat(flip,result);
+   }
+   result=CGAffineTransformTranslate(result,-bounds.origin.x,-bounds.origin.y);
+
+   return result;
+}
+
 -(NSRect)calculateVisibleRect {
    if([self isHiddenOrHasHiddenAncestor])
     return NSZeroRect;
@@ -217,13 +255,35 @@ static CGAffineTransform concatViewTransform(CGAffineTransform result,NSView *vi
    }
 }
 
+static inline void configureLayerGeometry(NSView *self){
+   CALayer *layer=self->_layer;
+   
+   if(layer==nil)
+    return;
+    
+   [CATransaction begin];
+   [CATransaction setDisableActions:YES];
+   
+   [layer setAnchorPoint:CGPointMake(0,0)];
+   
+   if([layer superlayer]==nil)
+    [layer setPosition:CGPointMake(0,0)];
+   else
+    [layer setPosition:self->_frame.origin];
+   
+   [layer setBounds:self->_bounds];
+   [CATransaction commit];
+}
+
 static inline void buildTransformsIfNeeded(NSView *self) {
    if(!self->_validTransforms){
     self->_transformToWindow=[self createTransformToWindow];
     self->_transformFromWindow=CGAffineTransformInvert(self->_transformToWindow);
+    self->_transformToLayer=[self createTransformToLayer];
     self->_validTransforms=YES;
 
     self->_visibleRect=[self calculateVisibleRect];
+    configureLayerGeometry(self);
    }
 }
 
@@ -240,13 +300,18 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 
+-(CGAffineTransform)transformToLayer {
+   buildTransformsIfNeeded(self);
+
+   return _transformToLayer;
+}
+
 -(NSRect)frame {
    return _frame;
 }
 
 -(CGFloat)frameRotation {
-   NSUnimplementedMethod();
-   return 0.;
+   return _frameRotation;
 }
 
 -(CGFloat)frameCenterRotation {
@@ -259,8 +324,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(CGFloat)boundsRotation {
-   NSUnimplementedMethod();
-   return 0.;
+   return _boundsRotation;
 }
 
 -(BOOL)isRotatedFromBase {
@@ -278,7 +342,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)rotateByAngle:(CGFloat)angle {
-   NSUnimplementedMethod();
+   [self setBoundsRotation:[self boundsRotation]+angle];
 }
 
 -(BOOL)postsFrameChangedNotifications {
@@ -635,7 +699,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return NSMakeRect(minx,miny,maxx-minx,maxy-miny);
 }
 
-
 -(void)setFrame:(NSRect)frame {
    // Cocoa does not post the notification if the frames are equal
    // Possible that resizeSubviewsWithOldSize is not called if the sizes are equal
@@ -720,6 +783,24 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    _postsNotificationOnBoundsChange=flag;
 }
 
+-(void)_setOverlay:(CGLPixelSurface *)overlay {
+   if(overlay!=_overlay){
+    [[[self window] platformWindow] removeOverlay:_overlay];
+
+    overlay=[overlay retain];
+    [_overlay release];
+    _overlay=overlay;
+    
+    if(_superview==nil)
+     [_overlay setFrame:[self frame]];
+    else
+     [_overlay setFrame:[_superview convertRect:[self frame] toView:nil]];
+     
+    if(_overlay!=nil)
+     [[[self window] platformWindow] addOverlay:_overlay];
+   }
+}
+
 -(void)_setWindow:(NSWindow *)window {
    [self viewWillMoveToWindow:window];
 
@@ -766,6 +847,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    invalidateTransform(view);
 
    [self setNeedsDisplayInRect:[view frame]];
+
+   if(_wantsLayer)
+    [view setWantsLayer:YES];
 }
 
 -(void)addSubview:(NSView *)view {
@@ -1334,36 +1418,126 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(CALayer *)makeBackingLayer {
-   NSUnimplementedMethod();
-   return nil;
+   return [NSViewBackingLayer layer];
 }
 
--(void)setWantsLayer:(BOOL)value {
-   _wantsLayer=value;
+-(void)_removeLayerFromSuperlayer {
+   [_layer removeFromSuperlayer];    
+   [self _setOverlay:nil];
+   [_layerContext invalidate];
+   [_layerContext release];
+   _layerContext=nil;
+}
+
+-(void)_createLayerContextIfNeeded {
+   if([_superview layer]==nil){
+    _layerContext=[[CALayerContext alloc] initWithFrame:[self frame]];
+    [_layerContext setLayer:_layer];
+    [self _setOverlay:[_layerContext pixelSurface]];
+   }
+}
+
+-(void)_addLayerToSuperlayer {
+   [[_superview layer] addSublayer:_layer];
+   [self _createLayerContextIfNeeded];
+}
+
+/*
+  When turning off layering, we only turn off layers below us which did not want a layer
+  Layers which did want a layer are not touched, nor are their children.
+ */
+-(void)_removeLayerBackedViewsFromTree {
+   if(_wantsLayer)
+    [self _createLayerContextIfNeeded];
+   else {
+    [self _removeLayerFromSuperlayer];
+
+// A backing layer is removed regardless of whether it was set implicitly or explicitly
+// The distinction appears to be based on the layers class, not how it was set (host vs. backing)
+    if([_layer isKindOfClass:[NSViewBackingLayer class]]){
+     [_layer release];
+     _layer=nil;
+    }
+
+    [_subviews makeObjectsPerformSelector:_cmd];
+   }
+}
+
+-(void)_createLayersInTreeIfNeeded {
+   if(!NSViewLayersEnabled)
+    return;
+    
+   if(_layer==nil){
+    _layer=[[self makeBackingLayer] retain];
+    configureLayerGeometry(self);
+   }
+   
+   [self _addLayerToSuperlayer];
+
+   [_subviews makeObjectsPerformSelector:_cmd];
+}
+
+-(void)setWantsLayer:(BOOL)value {   
+   if(!value){
+    if(_wantsLayer){
+     _wantsLayer=NO;
+     [self _removeLayerBackedViewsFromTree];
+    }
+   }
+   else {
+    if(!_wantsLayer){
+     _wantsLayer=YES;
+     [self _createLayersInTreeIfNeeded];
+    }
+   }
 }
 
 -(void)setLayer:(CALayer *)value {
-   NSUnimplementedMethod();
-}
+   if(!NSViewLayersEnabled)
+    return;
 
+   if(value!=_layer){
+    [_subviews makeObjectsPerformSelector:@selector(_removeLayerFromSuperlayer)];
+    
+    value=[value retain];  
+    
+    if(_layer==nil){
+     if(value!=nil){
+      _layer=value;
+      [self _addLayerToSuperlayer];
+     }
+    }
+    else if(value==nil){
+     [self _removeLayerFromSuperlayer];
+     [_layer release];
+     _layer=nil;
+    }
+    else {
+     [[_superview layer] replaceSublayer:_layer with:value];
+     [_layer release];
+      _layer=value;
+    }
+    
+    [_subviews makeObjectsPerformSelector:@selector(_addLayerToSuperlayer)];
+   }
+}
 
 -(NSViewLayerContentsPlacement)layerContentsPlacement {
-   NSUnimplementedMethod();
-   return nil;
+   return _layerContentsPlacement;
 }
 
--(void)setLayerContentsPlacement:(NSViewLayerContentsPlacement)newPlacement {
-   NSUnimplementedMethod();
+-(void)setLayerContentsPlacement:(NSViewLayerContentsPlacement)value {
+   _layerContentsPlacement=value;
 }
 
 -(NSViewLayerContentsRedrawPolicy)layerContentsRedrawPolicy {
-   NSUnimplementedMethod();
-   return nil;
+   return _layerContentsRedrawPolicy;
 }
 
--(void)setLayerContentsRedrawPolicy:(NSViewLayerContentsRedrawPolicy)newPolicy {
-   NSUnimplementedMethod();
+-(void)setLayerContentsRedrawPolicy:(NSViewLayerContentsRedrawPolicy)value {
+   _layerContentsRedrawPolicy=value;
 }
+
 
 -(NSArray *)backgroundFilters {
    NSUnimplementedMethod();
@@ -1376,30 +1550,33 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSArray *)contentFilters {
-   NSUnimplementedMethod();
-   return nil;
+   return _contentFilters;
 }
 
 -(void)setContentFilters:(NSArray *)filters {
-   NSUnimplementedMethod();
+   filters=[filters copy];
+   [_contentFilters release];
+   _contentFilters=filters;
 }
 
 -(CIFilter *)compositingFilter {
-   NSUnimplementedMethod();
-   return nil;
+   return _compositingFilter;
 }
 
 -(void)setCompositingFilter:(CIFilter *)filter {
-   NSUnimplementedMethod();
+   filter=[filter copy];
+   [_compositingFilter release];
+   _compositingFilter=filter;
 }
 
 -(NSShadow *)shadow {
-   NSUnimplementedMethod();
-   return nil;
+   return _shadow;
 }
 
 -(void)setShadow:(NSShadow *)shadow {
-   NSUnimplementedMethod();
+   shadow=[shadow copy];
+   [_shadow release];
+   _shadow=shadow;
 }
 
 -(BOOL)needsDisplay {
@@ -1516,6 +1693,20 @@ static void clearNeedsDisplay(NSView *self){
 }
 
 static NSGraphicsContext *graphicsContextForView(NSView *view){
+   if(view->_layer!=nil){
+    NSRect             frame=[view frame];
+    size_t             width=frame.size.width;
+    size_t             height=frame.size.height;
+    CGColorSpaceRef    colorSpace=CGColorSpaceCreateDeviceRGB();
+    CGContextRef       context=CGBitmapContextCreate(NULL,width,height,8,0,colorSpace,kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Host);
+    NSGraphicsContext *result=[NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
+    
+    CGColorSpaceRelease(colorSpace);
+    CGContextRelease(context);
+    
+    return result;
+   }
+   
    return [[view window] graphicsContext];
 }
 
@@ -1529,7 +1720,12 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
     CGContextSaveGState(graphicsPort);
     CGContextResetClip(graphicsPort);
-    CGContextSetCTM(graphicsPort,[self transformToWindow]);
+    
+    if(_layer!=nil)
+     CGContextSetCTM(graphicsPort,[self transformToLayer]);
+    else
+     CGContextSetCTM(graphicsPort,[self transformToWindow]);
+     
     CGContextClipToRect(graphicsPort,[self visibleRect]);
 
     [self setUpGState];
@@ -1555,12 +1751,20 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    return NO;
 }
 
--(void)unlockFocus {
-   NSGraphicsContext *context=[NSGraphicsContext currentContext];
-   
-   CGContextRestoreGState([context graphicsPort]);
 
-   [[context focusStack] removeLastObject];
+-(void)unlockFocus {
+   NSGraphicsContext *graphicsContext=[NSGraphicsContext currentContext];
+   CGContextRef       context=[graphicsContext graphicsPort];
+   
+   if(_layer!=nil){
+    CGImageRef image=CGBitmapContextCreateImage(context);
+    
+    [_layer setContents:image];
+   }
+   
+   CGContextRestoreGState(context);
+
+   [[graphicsContext focusStack] removeLastObject];
    [NSGraphicsContext restoreGraphicsState];
 }
 
@@ -1700,6 +1904,8 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
     }
    }
 
+   [_layerContext render];
+   
 /*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
  
    [[self window] flushWindow];
@@ -2016,25 +2222,6 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%lx] frame: %@>", [self class], self, NSStringFromRect(_frame)];
-}
-
--(void)_setOverlay:(CGLPixelSurface *)overlay {
-   if(overlay!=_overlay){
-    [[[self window] platformWindow] removeOverlay:_overlay];
-    
-
-    overlay=[overlay retain];
-    [_overlay release];
-    _overlay=overlay;
-    
-    if(_superview==nil)
-     [_overlay setFrame:[self frame]];
-    else
-     [_overlay setFrame:[_superview convertRect:[self frame] toView:nil]];
-    
-    if(_overlay!=nil)
-     [[[self window] platformWindow] addOverlay:_overlay];
-   }
 }
 
 @end

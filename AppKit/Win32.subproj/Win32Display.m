@@ -145,7 +145,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 
     _cursorDisplayCount=1;
     _cursorCache=[NSMutableDictionary new];
-	_pastLocation = NSMakePoint(FLT_MAX, FLT_MAX);
+	_pastLocation = [self mouseLocation];
     
     [self loadPrivateFonts];
    }
@@ -955,17 +955,16 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postMouseMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
 	NSEvent *event;
+/* Use mouseLocation to compute deltas, message coordinates are window based, and if the window is moving
+   with the mouse, things get messy
+ */
+    NSPoint currentLocation=[self mouseLocation];
+    CGFloat deltaX=currentLocation.x-_pastLocation.x;
+    CGFloat deltaY=-(currentLocation.y-_pastLocation.y);
 
-	if (((type == NSLeftMouseDragged) || (type == NSRightMouseDragged)) && (_pastLocation.x != FLT_MAX))
-		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:location.x - _pastLocation.x deltaY:-(location.y - _pastLocation.y)];
-	else
-		event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:0.0 deltaY:0.0];
+   event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:deltaX deltaY:deltaY];
 	
-	if ((type == NSLeftMouseDragged) || (type == NSRightMouseDragged))
-		_pastLocation = location;
-	
-	if ((type == NSLeftMouseUp) || (type == NSRightMouseUp))
-		_pastLocation = NSMakePoint(FLT_MAX, FLT_MAX);
+    _pastLocation = currentLocation;
 	
 	[self postEvent:event atStart:NO];
 	
@@ -974,9 +973,9 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postScrollWheelMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
    NSEvent *event;
-   float deltaY=((short)HIWORD(msg.wParam));
+   float deltaY=((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
 
-   deltaY/=WHEEL_DELTA;
+//   deltaY/=WHEEL_DELTA;
 
    event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaY:deltaY];
    [self postEvent:event atStart:NO];
@@ -1033,9 +1032,29 @@ The values should be upgraded to something which is more generic to implement, p
    return result;
 }
 
+static HWND findWindowForScrollWheel(POINT point){
+   HWND check=GetTopWindow(NULL);
+   
+   while(check!=NULL){
+    RECT checkRect={0};
+
+    GetWindowRect(check,&checkRect);
+    
+    if(PtInRect(&checkRect,point)){
+     if((id)GetProp(check,"self")!=nil)
+      return check;
+    }
+    
+    check=GetNextWindow(check,GW_HWNDNEXT);
+   }
+   
+   return check;
+}
+
 -(BOOL)postMSG:(MSG)msg {
    NSEventType  type;
-   id           platformWindow=(id)GetProp(msg.hwnd,"self");
+   HWND         windowHandle=msg.hwnd;
+   id           platformWindow;
    NSWindow    *window=nil;
    POINT        deviceLocation;
    NSPoint      location;
@@ -1043,6 +1062,60 @@ The values should be upgraded to something which is more generic to implement, p
    DWORD        tickCount=GetTickCount();
    int          lastClickCount=_clickCount;
 
+   deviceLocation.x=GET_X_LPARAM(msg.lParam);
+   deviceLocation.y=GET_Y_LPARAM(msg.lParam);
+
+   if(msg.message==WM_MOUSEWHEEL) {
+// Scroll wheel events go to the window under the mouse regardless of key. Win32 set hwnd to the active window
+// So we look for the window under the mouse and use that for the event.
+    POINT pt={GET_X_LPARAM(msg.lParam),GET_Y_LPARAM(msg.lParam)};
+    RECT  r;
+    
+    GetWindowRect(windowHandle,&r);
+    pt.x+=r.left;
+    pt.y+=r.top;
+    
+    HWND scrollWheelWindow=findWindowForScrollWheel(pt);
+    
+    if(scrollWheelWindow!=NULL)
+     windowHandle=scrollWheelWindow;
+     
+    platformWindow=(id)GetProp(windowHandle,"self");
+   }
+#if 0
+   else if(msg.message==WM_MOUSEMOVE){
+    if((msg.wParam&MK_LBUTTON) || (msg.wParam&MK_RBUTTON)){
+     // mouse down, normal behavior
+     platformWindow=(id)GetProp(windowHandle,"self");
+    }
+    else {
+     /* Mouse moved only goes to the key window, on Windows mouse moved is sent to the mouse under the cursor
+        or the window for SetCapture()d. So we send it to the active window
+        
+        Caveat: If SetCapture()d, you only receive mouse moved if a mouse button is down.
+      */
+     HWND activeWindow=GetActiveWindow();
+     RECT  r;
+     
+     // convert to screen
+     GetWindowRect(windowHandle,&r);
+     deviceLocation.x+=r.left;
+     deviceLocation.y+=r.top;
+
+     // convert to active window
+     GetWindowRect(activeWindow,&r);
+     deviceLocation.x-=r.left;
+     deviceLocation.y-=r.top;
+
+     platformWindow=(id)GetProp(activeWindow,"self");
+   //  NSLog(@"mapped mouse move to %@ %d %d",[platformWindow appkitWindow],deviceLocation.x,deviceLocation.y);
+    }
+   }
+#endif
+   else {
+    platformWindow=(id)GetProp(windowHandle,"self");
+   }
+   
    if([platformWindow respondsToSelector:@selector(appkitWindow)])
     window=[platformWindow performSelector:@selector(appkitWindow)];
 
@@ -1089,10 +1162,13 @@ The values should be upgraded to something which is more generic to implement, p
       else if(msg.wParam&MK_RBUTTON)
        type=NSRightMouseDragged;
       else {
-       if(window!=nil && [window acceptsMouseMovedEvents])
+       ReleaseCapture();
+       if(window!=nil && [window acceptsMouseMovedEvents]){
         type=NSMouseMoved;
-       else
+       }
+       else {
         return YES;
+      }
       }
       break;
 
@@ -1141,12 +1217,11 @@ The values should be upgraded to something which is more generic to implement, p
       return NO;
     }
 
-    deviceLocation.x=GET_X_LPARAM(msg.lParam);
-    deviceLocation.y=GET_Y_LPARAM(msg.lParam);
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
-    if(msg.hwnd!=[platformWindow windowHandle]){
+// This is used for OpenGL child windows which will interfere will scrollwheel coordinates
+    if(windowHandle!=[platformWindow windowHandle]){
      RECT child={0},parent={0};
 
 // There is no way to get a child's frame inside the parent, you have to get

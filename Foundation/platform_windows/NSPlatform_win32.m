@@ -438,28 +438,35 @@ void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
 -(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically {
    HANDLE   file;
    DWORD    wrote;
+   const uint16_t *pathW=[path fileSystemRepresentationW];
 
+   atomically=NO;
+   
    if(atomically){
     NSString *backup=[path stringByAppendingString:@"##"];
+    const uint16_t *backupW=[backup fileSystemRepresentationW];
 
-    file=CreateFileW([backup fileSystemRepresentationW],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
-    if(!WriteFile(file,bytes,length,&wrote,NULL))
+    file=CreateFileW(backupW,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+    if(!WriteFile(file,bytes,length,&wrote,NULL)){
      CloseHandle(file);
+    }
     else {
      CloseHandle(file);
 
-     if(wrote!=length)
-      DeleteFileW([backup fileSystemRepresentationW]);
+     if(wrote!=length){
+      DeleteFileW(backupW);
+     }
      else {
-      if(MoveFileExW([backup fileSystemRepresentationW],[path fileSystemRepresentationW],MOVEFILE_REPLACE_EXISTING))
+      
+      if(MoveFileExW(backupW,pathW,MOVEFILE_REPLACE_EXISTING)){
        return YES;
      }
+    }
     }
     // atomic failure drops through to non-atomic
    }
 
-   file=CreateFileW([path fileSystemRepresentationW],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
-
+   file=CreateFileW(pathW,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);   
    if(!WriteFile(file,bytes,length,&wrote,NULL)){
     CloseHandle(file);
     return NO;

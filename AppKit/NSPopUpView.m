@@ -227,13 +227,18 @@ enum {
     unsigned index=[self itemIndexForPoint:point];
     NSRect   screenVisible;
 
-    if(/*index!=NSNotFound && */_keyboardUIState == KEYBOARD_INACTIVE){
+/*
+  If the popup is activated programmatically with performClick: index may be NSNotFound because the mouse starts out
+  outside the view. We don't change _selectedIndex in this case.   
+ */
+    if(index!=NSNotFound && _keyboardUIState == KEYBOARD_INACTIVE){
      if(_selectedIndex!=index){
       unsigned previous=_selectedIndex;
 
       _selectedIndex=index;
      }
     }
+    
     [self setNeedsDisplay:YES];
     [[self window] flushWindow];
 
