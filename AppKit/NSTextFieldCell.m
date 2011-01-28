@@ -48,8 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initTextCell:(NSString *)string {
   [super initTextCell:string];
-  _isBezeled=NO;
-
+  // default for _isBezeled=NO;
   return self;
 }
 

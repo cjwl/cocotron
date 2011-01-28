@@ -21,6 +21,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSDocument
 
+static int untitled_document_number = 0;
+
 +(NSArray *)readableTypes {
    int             i;
    NSArray        *knownDocTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"];
@@ -98,7 +100,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       _fileURL=nil;
       _fileType=nil;
       _changeCount=0;
-      _untitledNumber=0;
+      _untitledNumber=untitled_document_number++;
       _hasUndoManager=YES;
       _activeEditors=[NSMutableArray new];
     }
@@ -340,7 +342,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
   if(_fileURL==nil) 
     {
-      if(_untitledNumber > 1)
+      if(_untitledNumber != 0)
         return [NSString stringWithFormat:@"Untitled %d", _untitledNumber];
       else
         return @"Untitled";

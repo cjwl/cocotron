@@ -774,8 +774,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [[self platformWindow] setFrame:_frame];
 
    if(didSize)
-   [self _invalidateTrackingAreas];
-
+    [self resetCursorRects];
+    
    if(didSize)
     [self postNotificationName:NSWindowDidResizeNotification];
     
@@ -1707,7 +1707,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)invalidateCursorRectsForView:(NSView *)view {
    [view discardCursorRects];
-   [view resetCursorRects];
+   [self _resetCursorRectsInView:view];
    [self _invalidateTrackingAreas];
 }
 
@@ -1923,13 +1923,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     case NSLeftMouseDown:{
       NSView *view=[_backgroundView hitTest:[event locationInWindow]];
 
-      if([view acceptsFirstResponder])
-      [self makeFirstResponder:view];
-       
-// Doing this again seems correct for control cells which put a field editor up when they become first responder but I'm not sure
-      view=[_backgroundView hitTest:[event locationInWindow]];
-      _mouseDownLocationInWindow=[event locationInWindow];
+        /* view gets mouse down event before first responder check */
       [view mouseDown:event];
+
+      if([view acceptsFirstResponder])
+       [self makeFirstResponder:view];
+    
+      _mouseDownLocationInWindow=[event locationInWindow];
      }
      break;
 
@@ -2607,12 +2607,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSMutableArray *moved=[NSMutableArray array];
    NSMutableArray *update=[NSMutableArray array];
    
-   NSPoint     mousePoint={-1,-1};
    BOOL        cursorIsSet=NO;
    BOOL        raiseToolTipWindow=NO;
    NSUInteger  i,count;
+   NSPoint     mousePoint=[self mouseLocationOutsideOfEventStream];
 
-   mousePoint=[self mouseLocationOutsideOfEventStream];
 
    // This collects only the active ones.
    [self _resetTrackingAreas];
@@ -2682,17 +2681,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==NO && mouseIsInside==YES){
       [entered addObject:area];
      }
-     if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==YES && mouseIsInside==NO){
+     if(options&(NSTrackingMouseEnteredAndExited|NSTrackingCursorUpdate) && mouseWasInside==YES && mouseIsInside==NO){
       [exited addObject:area];
      }
      if(options&NSTrackingMouseMoved && [self acceptsMouseMovedEvents]==YES){
       [moved addObject:area];
      }
      if(options&NSTrackingCursorUpdate && mouseWasInside==NO && mouseIsInside==YES && !(options&NSTrackingActiveAlways)){
+      cursorIsSet=YES;
       [update addObject:area];
      }
+#if 0
      if(options&NSTrackingCursorUpdate && mouseIsInside==YES)
       cursorIsSet=YES;
+#endif
     } // (not) ToolTip
 
     [area _setMouseInside:mouseIsInside];
@@ -2704,6 +2706,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    for(NSTrackingArea *check in exited){
     id owner=[check owner];
     
+       if([check options]&NSTrackingCursorUpdate){
+           [[NSCursor arrowCursor] set];
+       }
+       
     if([owner respondsToSelector:@selector(mouseExited:)]){
       NSEvent *event=[NSEvent enterExitEventWithType:NSMouseExited
                                             location:mousePoint
@@ -2776,7 +2782,21 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      delay=2.;
     [[NSToolTipWindow sharedToolTipWindow] performSelector:@selector(orderFront:) withObject:nil afterDelay:delay];
    }
-
+   
+   if(!cursorIsSet){
+    NSPoint check=[_contentView convertPoint:mousePoint fromView:nil];
+    
+    // we set the cursor to the current cursor if it is inside the content area, this will need to be changed
+    // if we're drawing out own window frame 
+    if(NSMouseInRect(check,[_contentView bounds],[_contentView isFlipped])){
+     if([NSCursor currentCursor]==nil)
+         [[NSCursor arrowCursor] set];
+    else
+        [[NSCursor currentCursor] set];
+     cursorIsSet=YES;
+    }
+   }
+   
    return cursorIsSet;
 }
 

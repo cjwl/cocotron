@@ -106,8 +106,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)lockFocus {
 	[super lockFocus];
 
+    [_context setView:self];
 	[[self openGLContext] makeCurrentContext];
-
+    
 	if (_needsReshape){
 		[self reshape];
 		_needsReshape = NO;
