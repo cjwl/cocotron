@@ -191,6 +191,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 }
 
 -(void)performClick:sender {
+
    if([_cell trackMouse:[NSApp currentEvent] inRect:[self bounds] ofView:self untilMouseUp:NO]){
     NSMenuItem *item=[self selectedItem];
     SEL         action=[item action];

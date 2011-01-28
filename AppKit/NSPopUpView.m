@@ -138,7 +138,7 @@ enum {
 -(NSRect)rectForSelectedItem {
    if(_pullsDown)
     return [self rectForItemAtIndex:0];
-   else if(_selectedIndex==NSNotFound)
+   else if(_selectedIndex==NSNotFound || _selectedIndex==-1)
     return [self rectForItemAtIndex:0];
    else
     return [self rectForItemAtIndex:_selectedIndex];

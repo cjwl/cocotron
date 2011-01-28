@@ -2777,7 +2777,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     // we set the cursor to the current cursor if it is inside the content area, this will need to be changed
     // if we're drawing out own window frame 
     if(NSMouseInRect(check,[_contentView bounds],[_contentView isFlipped])){
-     [[NSCursor currentCursor] set];
+     if([NSCursor currentCursor]==nil)
+         [[NSCursor arrowCursor] set];
+    else
+        [[NSCursor currentCursor] set];
      cursorIsSet=YES;
     }
    }
