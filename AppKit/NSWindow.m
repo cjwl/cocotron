@@ -1916,14 +1916,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    switch([event type]){
 
     case NSLeftMouseDown:{
-      NSView *view=[_backgroundView hitTest:[event locationInWindow]];
+        NSView *view=[_backgroundView hitTest:[event locationInWindow]];
+        
+        if([view acceptsFirstResponder])
+            [self makeFirstResponder:view];
 
-        /* view gets mouse down event before first responder check */
-      [view mouseDown:event];
+        // Event goes to view, not first responder
+        [view mouseDown:event];
 
-      if([view acceptsFirstResponder])
-       [self makeFirstResponder:view];
-    
       _mouseDownLocationInWindow=[event locationInWindow];
      }
      break;
