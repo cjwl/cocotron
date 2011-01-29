@@ -232,6 +232,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    return YES;
 }
 
+-(BOOL)needsPanelToBecomeKey {
+    return YES;
+}
+
 -(void)resetCursorRects {
    [self addCursorRect:[self visibleRect] cursor:[NSCursor IBeamCursor]];
 }
