@@ -440,7 +440,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)needsPanelToBecomeKey {
-   NSUnimplementedMethod();
    return NO;
 }
 

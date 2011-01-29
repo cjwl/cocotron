@@ -114,6 +114,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(BOOL)needsPanelToBecomeKey {
+    return YES;
+}
+
 -(BOOL)becomeFirstResponder {
    [self selectText:nil];
    return YES;
