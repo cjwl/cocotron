@@ -1315,3 +1315,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+
+@implementation NSMatrix (Bindings)
+
+- (int) _selectedTag {
+    return [[self selectedCell] tag];
+}
+- (void) _setSelectedTag:(int)selectedTag {
+    [self selectCellWithTag:selectedTag];
+}
+
+@end

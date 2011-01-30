@@ -367,3 +367,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+@implementation NSSegmentedCell (Bindings)
+
+-(id)_replacementKeyPathForBinding:(id)binding {
+    if([binding isEqual:@"selectedIndex"])
+		return @"selectedSegment";
+    return [super _replacementKeyPathForBinding:binding];
+}
+
+@end

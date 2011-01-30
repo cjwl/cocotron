@@ -260,8 +260,33 @@ int __CFConstantStringClassReference[1];
 }
 
 +(const NSStringEncoding *)availableStringEncodings {
-   NSUnimplementedMethod();
-   return 0;
+    static NSStringEncoding *stringEncodings = nil;
+    
+    if (!stringEncodings) {
+        NSString *path=[[NSBundle bundleForClass:self] pathForResource:@"NSStringEncodingNames" ofType:@"plist"];
+        if(path!=nil){
+            NSDictionary *plist=[[NSDictionary alloc] initWithContentsOfFile:path];
+            
+            stringEncodings = malloc(sizeof(NSStringEncoding) * [plist count] + 1);
+            
+            NSEnumerator *keyEnumerator = [plist keyEnumerator];
+            int index = 0;
+            NSString *key = nil;
+            
+            while ((key = [keyEnumerator nextObject])) {
+                stringEncodings[index++] = [key intValue];
+            }
+            
+            stringEncodings[index] = 0;
+            
+            [plist release];
+        } else {
+            stringEncodings = malloc(sizeof(NSStringEncoding) * 1);
+            stringEncodings[0] = 0;
+        }
+    }
+    
+    return stringEncodings;
 }
 
 +(NSString *)localizedNameOfStringEncoding:(NSStringEncoding)encoding {

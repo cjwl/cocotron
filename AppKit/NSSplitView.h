@@ -11,6 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 APPKIT_EXPORT NSString * const NSSplitViewDidResizeSubviewsNotification;
 APPKIT_EXPORT NSString * const NSSplitViewWillResizeSubviewsNotification;
 
+typedef enum {
+    NSSplitViewDividerStyleThick = 1,
+    NSSplitViewDividerStyleThin,
+    NSSplitViewDividerStylePaneSplitter,
+} NSSplitViewDividerStyle;
+
 @interface NSSplitView : NSView {
    id   _delegate;
    BOOL _isVertical;
@@ -26,6 +32,10 @@ APPKIT_EXPORT NSString * const NSSplitViewWillResizeSubviewsNotification;
 
 -(float)dividerThickness;
 -(void)drawDividerInRect:(NSRect)rect;
+
+-(BOOL)isSubviewCollapsed:(NSView *)subview;
+
+-(void)setDividerStyle:(NSSplitViewDividerStyle)style;
 
 @end
 

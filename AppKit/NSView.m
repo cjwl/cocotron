@@ -2199,7 +2199,8 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 -animator {
    NSUnimplementedMethod();
-   return nil;
+    // should return animating proxy. returning self does not animate.
+   return self;
 }
 
 -(NSDictionary *)animations {
