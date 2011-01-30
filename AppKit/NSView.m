@@ -847,6 +847,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    [self setNeedsDisplayInRect:[view frame]];
 
+   [view viewDidMoveToSuperview];
+    
    if(_wantsLayer)
     [view setWantsLayer:YES];
 }
@@ -1162,7 +1164,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)viewDidMoveToSuperview {
-   NSUnimplementedMethod();
+   // Intentionally empty.
 }
 
 -(void)viewWillMoveToWindow:(NSWindow *)window {
