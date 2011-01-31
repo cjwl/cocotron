@@ -21,6 +21,8 @@ FOUNDATION_EXPORT NSString* NSInvalidUnarchiveOperationException;
    NSMutableArray      *_plistStack;
    NSMapTable          *_uidToObject;
    NSMapTable          *_objectToUid;
+    
+   int                  _unnamedKeyIndex;
 }
 
 -initForReadingWithData:(NSData *)data;

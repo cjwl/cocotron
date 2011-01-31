@@ -45,6 +45,14 @@ static inline CGFloat CGRectGetMaxY(CGRect rect){
    return rect.origin.y+rect.size.height;
 }
 
+static inline CGFloat CGRectGetWidth(CGRect rect){
+        return rect.size.width;
+}
+
+static inline CGFloat CGRectGetHeight(CGRect rect){
+        return rect.size.height;
+}
+
 static inline bool CGRectContainsPoint(CGRect rect,CGPoint point) {
    return (point.x>=CGRectGetMinX(rect) && point.x<=CGRectGetMaxX(rect)) && (point.y>=CGRectGetMinY(rect) && point.y<=CGRectGetMaxY(rect));
 }

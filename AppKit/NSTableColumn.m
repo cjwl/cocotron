@@ -206,16 +206,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[[self tableView] _establishBindingsWithDestinationIfUnbound:dest];
 }
 
-+(Class)_binderClassForBinding:(id)binding
-{
-	if([binding isEqual:@"headerTitle"] ||
-	   [binding isEqual:@"maxWidth"] ||
-	   [binding isEqual:@"minWidth"] ||
-	   [binding isEqual:@"width"])
-		return [_NSKVOBinder class];
-	return [_NSMultipleValueBinder class];
-}
-
 - (NSSortDescriptor *)sortDescriptorPrototype {
     return [[_sortDescriptorPrototype retain] autorelease];
 }
@@ -256,6 +246,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[allDescs insertObject:newDescriptor atIndex:0];
 	[_tableView setSortDescriptors:allDescs];
 
+}
+
+@end
+
+@implementation NSTableColumn (Bindings) 
+
++(Class)_binderClassForBinding:(id)binding
+{
+	if([binding isEqual:@"headerTitle"] ||
+	   [binding isEqual:@"maxWidth"] ||
+	   [binding isEqual:@"minWidth"] ||
+	   [binding isEqual:@"width"])
+		return [_NSKVOBinder class];
+	return [_NSMultipleValueBinder class];
+}
+
+- (NSString*)_headerTitle {
+    return [_headerCell title];
+}
+- (void)_setHeaderTitle:(NSString*)title {
+    return [_headerCell setTitle:title];
 }
 
 @end

@@ -511,3 +511,22 @@ void Win32ThreadSleepForTimeInterval(NSTimeInterval interval) {
    }
 }
 
+BOOL NSPlatformGreaterThanOrEqualToWindowsXP(void) {
+   OSVERSIONINFOEX osVersion;
+    
+   osVersion.dwOSVersionInfoSize=sizeof(osVersion);
+   GetVersionEx((OSVERSIONINFO *)&osVersion);
+
+   return ((osVersion.dwMajorVersion==5 && osVersion.dwMinorVersion>=1) || osVersion.dwMajorVersion>5)?YES:NO;
+}
+
+BOOL NSPlatformGreaterThanOrEqualToWindows2000(void) {
+   OSVERSIONINFOEX osVersion;
+    
+   osVersion.dwOSVersionInfoSize=sizeof(osVersion);
+   GetVersionEx((OSVERSIONINFO *)&osVersion);
+
+   return (osVersion.dwMajorVersion>=5)?YES:NO;
+}
+
+

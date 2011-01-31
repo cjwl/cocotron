@@ -232,6 +232,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    return YES;
 }
 
+-(BOOL)needsPanelToBecomeKey {
+    return YES;
+}
+
 -(void)resetCursorRects {
    [self addCursorRect:[self visibleRect] cursor:[NSCursor IBeamCursor]];
 }
@@ -2240,12 +2244,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    }
 
    if(!_didSendTextDidEndNotification){
+	   // Let's remember that we've notified before it goes out - otherwise we could come back here again as a result
+	   // of the notification and end up in a death spiral.
+	   _didSendTextDidEndNotification=YES;
     NSNotification *note=[NSNotification notificationWithName:NSTextDidEndEditingNotification object:self userInfo:nil];
 
    [[NSNotificationCenter defaultCenter] postNotification:note];
    }
 
-   _didSendTextDidEndNotification=NO;
    
    return YES;
 }

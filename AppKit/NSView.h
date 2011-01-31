@@ -380,13 +380,6 @@ APPKIT_EXPORT NSString * const NSViewFocusDidChangeNotification;
 -(NSRect)convertRectFromBase:(NSRect)aRect;
 -(NSRect)convertRectToBase:(NSRect)aRect;
 
-// layer
--(BOOL)wantsLayer;
--(CALayer *)layer;
--(CALayer *)makeBackingLayer;
-
--(void)setWantsLayer:(BOOL)value;
--(void)setLayer:(CALayer *)value;
 
 -(void)showDefinitionForAttributedString:(NSAttributedString *)string atPoint:(NSPoint)origin;
 // Blocks aren't supported by the compiler yet.

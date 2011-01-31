@@ -415,6 +415,10 @@ id NSApp=nil;
        needsUntitled = [_delegate applicationShouldOpenUntitledFile: self];
    }
 
+   if(needsUntitled && _delegate && [_delegate respondsToSelector: @selector(applicationOpenUntitledFile:)]) {
+     needsUntitled = ![_delegate applicationOpenUntitledFile: self];
+   }
+
    if(needsUntitled && controller && ![controller documentClassForType:[controller defaultType]]) {
        needsUntitled = NO;
    }
@@ -477,11 +481,17 @@ id NSApp=nil;
 
 -(void)run {
     
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   [self finishLaunching];
-   [pool release];
-   
-   _isRunning=YES;
+  static BOOL didlaunch = NO;
+  NSAutoreleasePool *pool;
+
+  _isRunning=YES;
+
+  if (!didlaunch) {
+    didlaunch = YES;
+    pool=[NSAutoreleasePool new];
+    [self finishLaunching];
+    [pool release];
+  }
    
    do {
        pool = [NSAutoreleasePool new];

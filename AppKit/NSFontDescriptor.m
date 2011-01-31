@@ -38,6 +38,10 @@ NSString * const NSFontVisibleNameAttribute=@"NSFontVisibleNameAttribute";
 }
 
 
+-(NSString *)description {
+	return [NSString stringWithFormat:@"<%@ %@>",isa,_attributes];
+}
+
 +fontDescriptorWithFontAttributes:(NSDictionary *)attributes {
    return [[[self allocWithZone:NULL] initWithFontAttributes:attributes] autorelease];
 }

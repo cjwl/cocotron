@@ -31,6 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSViewBackingLayer.h>
 #import <CoreGraphics/CGLPixelSurface.h>
+#import <CoreGraphics/CGWindow.h>
 #import <QuartzCore/CALayerContext.h>
 #import <QuartzCore/CATransaction.h>
 
@@ -503,7 +504,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)needsPanelToBecomeKey {
-   NSUnimplementedMethod();
    return NO;
 }
 
@@ -813,7 +813,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
    _validTrackingAreas=NO;
-   [_window _invalidateTrackingAreas];
+   [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
 
    [self viewDidMoveToWindow];
 }
@@ -847,6 +847,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    [self setNeedsDisplayInRect:[view frame]];
 
+   [view viewDidMoveToSuperview];
+    
    if(_wantsLayer)
     [view setWantsLayer:YES];
 }
@@ -1162,7 +1164,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)viewDidMoveToSuperview {
-   NSUnimplementedMethod();
+   // Intentionally empty.
 }
 
 -(void)viewWillMoveToWindow:(NSWindow *)window {
@@ -1684,7 +1686,7 @@ static void clearNeedsDisplay(NSView *self){
 }
 
 -(void)viewWillDraw {
-   [[self subviews] makeObjectsPerformSelector:_cmd];
+    [_subviews makeObjectsPerformSelector:_cmd];
 }
 
 -(void)setCanDrawConcurrently:(BOOL)canDraw {
@@ -1796,25 +1798,31 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    [self displayRect:[self visibleRect]];
 }
 
--(void)displayIfNeeded {
-   int i,count=[_subviews count];
-  
+-(void)_displayIfNeededWithoutViewWillDraw {
    if([self needsDisplay]){
     [self displayRect:unionOfInvalidRects(self)];
     clearNeedsDisplay(self);
    }
 
+   int i,count=[_subviews count];
+
    for(i=0;i<count;i++) // back to front
-    [[_subviews objectAtIndex:i] displayIfNeeded];
+    [[_subviews objectAtIndex:i] _displayIfNeededWithoutViewWillDraw];
+}
+
+-(void)displayIfNeeded {
+   [self viewWillDraw];
+   [self _displayIfNeededWithoutViewWillDraw];
 }
 
 -(void)displayIfNeededInRect:(NSRect)rect {
-   int i,count=[_subviews count];
    
    rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
 
    if([self needsDisplay])
     [self displayRect:rect];
+
+   int i,count=[_subviews count];
 
    for(i=0;i<count;i++){ // back to front
     NSView *child=[_subviews objectAtIndex:i];
@@ -2191,7 +2199,8 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 -animator {
    NSUnimplementedMethod();
-   return nil;
+    // should return animating proxy. returning self does not animate.
+   return self;
 }
 
 -(NSDictionary *)animations {
