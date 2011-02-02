@@ -283,8 +283,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
     
     characters = NSString_anyCStringToUnicode(encoding,bytes,length,&resultLength,NSZoneFromPointer(self));
    
-    return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
+    return NSMutableString_unicodePtrInitNoCopy(self,characters,resultLength, NSZoneFromPointer(self));
 }
 
 -initWithFormat:(NSString *)format
