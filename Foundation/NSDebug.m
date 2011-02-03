@@ -13,8 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 
 BOOL NSZombieEnabled=NO;
-BOOL NSDebugEnabled=YES;
-BOOL NSCooperativeThreadsEnabled=YES;
+BOOL NSDebugEnabled=NO;
+BOOL NSCooperativeThreadsEnabled=NO;
 
 const char* _NSPrintForDebugger(id object) {
 	if(object && [object respondsToSelector:@selector(description)]) {

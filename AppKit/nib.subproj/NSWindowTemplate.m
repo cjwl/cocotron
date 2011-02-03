@@ -12,6 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMainMenuView.h>
 #import <AppKit/NSWindow-Private.h>
 
+@interface NSWindow(private)
++(BOOL)hasMainMenuForStyleMask:(NSUInteger)styleMask;
+@end
+
 @implementation NSWindowTemplate
 
 -initWithCoder:(NSCoder *)coder {
@@ -32,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	_windowAutosave=[[keyed decodeObjectForKey:@"NSFrameAutosaveName"] retain];
 
     _windowRect.origin.y -= _screenRect.size.height - [[NSScreen mainScreen] frame].size.height;
-    if (![_windowClass isEqualToString:@"NSPanel"])
+       if ([_windowClass hasMainMenuForStyleMask:_windowStyleMask])
        _windowRect.origin.y -= [NSMainMenuView menuHeight];   // compensation for the additional menu bar
    }
    else {

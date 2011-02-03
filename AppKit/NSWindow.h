@@ -102,7 +102,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 
 @interface NSWindow : NSResponder {
    NSRect             _frame;
-   unsigned           _styleMask;
+   NSUInteger         _styleMask;
    NSBackingStoreType _backingType;
    NSInteger          _level;
    
