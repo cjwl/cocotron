@@ -36,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	_windowAutosave=[[keyed decodeObjectForKey:@"NSFrameAutosaveName"] retain];
 
     _windowRect.origin.y -= _screenRect.size.height - [[NSScreen mainScreen] frame].size.height;
-       if ([_windowClass hasMainMenuForStyleMask:_windowStyleMask])
+       if ([NSClassFromString(_windowClass) hasMainMenuForStyleMask:_windowStyleMask])
        _windowRect.origin.y -= [NSMainMenuView menuHeight];   // compensation for the additional menu bar
    }
    else {

@@ -79,6 +79,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return 0;
 }
 
+/* This method is Cococtron specific and can be override by subclasses, do not change method name */
 +(BOOL)hasMainMenuForStyleMask:(NSUInteger)styleMask {
     if(styleMask&NSTitledWindowMask)
         return YES;
@@ -86,6 +87,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     return NO;
 }
 
+/* This method is Cococtron specific and can be override by subclasses, do not change method name. */
 -(BOOL)hasMainMenu {
     return [isa hasMainMenuForStyleMask:_styleMask];
 }
@@ -143,6 +145,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 // This is Apple private API
 +(Class)frameViewClassForStyleMask:(unsigned int)styleMask {
    return [NSThemeFrame class];
+}
+
+-init {
+    return [self initWithContentRect:NSMakeRect(100,100,100,100) styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:NO];
 }
 
 -initWithCoder:(NSCoder *)coder {
