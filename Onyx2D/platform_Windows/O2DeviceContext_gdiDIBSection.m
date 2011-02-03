@@ -47,6 +47,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _bitmap=CreateDIBSection(compatibleDC,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS,&_bits,NULL,0);
 
    SelectObject(_dc,_bitmap);
+
+   if(_compatible==nil)
+    ReleaseDC(NULL,compatibleDC);
+    
    return self;
 }
 
@@ -86,6 +90,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bitmap=CreateDIBSection(compatibleDC,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS,&_bits,NULL,0);
 
    SelectObject(_dc,_bitmap);
+
+   if(_compatible==nil)
+    ReleaseDC(NULL,compatibleDC);
+    
    return self;
 }
 

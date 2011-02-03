@@ -125,6 +125,8 @@ id NSPlatformCreateCursorImpWithImage(NSImage *image,NSPoint hotSpot) {
 
    }
    
+   ReleaseDC(NULL,displayDC);
+    
    CGContextRelease(context);
    
    ICONINFO iconInfo;
