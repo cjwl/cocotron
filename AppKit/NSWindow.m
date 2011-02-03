@@ -154,15 +154,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSRect backgroundFrame;
    NSRect contentViewFrame;
 
-   _frame=[isa frameRectForContentRect:contentRect styleMask:styleMask];
+   _styleMask=styleMask;
+
+    _frame=[self frameRectForContentRect:contentRect];
    
    backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
-   contentViewFrame=[isa contentRectForFrameRect:backgroundFrame styleMask:styleMask];
+   contentViewFrame=[self contentRectForFrameRect:backgroundFrame];
    
    _savedFrame = _frame;
 	
-   _styleMask=styleMask;
    _backingType=backing;
    _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
@@ -1372,13 +1373,26 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return point;
 }
 
--(NSRect)frameRectForContentRect:(NSRect)rect {
-   return [isa frameRectForContentRect:rect styleMask:[self styleMask]];
+-(NSRect)frameRectForContentRect:(NSRect)contentRect {
+/* hasMainMenu is an instance method so we can't just use the class method frameRectForContentRect:styleMask: */
+    
+   NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,[self styleMask]);
+    
+   if([self hasMainMenu])
+    result.size.height+=[NSMainMenuView menuHeight];
+    
+   if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
+    result.size.height+=[[_toolbar _view] frame].size.height;
+
+    return result;
 }
 
--(NSRect)contentRectForFrameRect:(NSRect)rect {
-   NSRect result=[isa contentRectForFrameRect:rect styleMask:[self styleMask]];
+-(NSRect)contentRectForFrameRect:(NSRect)frameRect {
+   NSRect result=CGInsetRectForNativeWindowBorder(frameRect,[self styleMask]);
        
+   if([self hasMainMenu])
+    result.size.height-=[NSMainMenuView menuHeight];
+
    if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
     result.size.height-=[[_toolbar _view] frame].size.height;
    
