@@ -2174,8 +2174,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     }
   else
     {
-      [self close];
+	// Clicking the close button on a Window generates a performClose:, in a non-modal case we just close the window. If the window is a modal window, we abort the session, but do not close the window. So far it looks like we should not close the window too.
+
+        if([NSApp modalWindow]==self)
+            [NSApp abortModal];
+        else
+           [self close];
     }
+
 }
 
 -(void)_document:(NSDocument *)document shouldClose:(BOOL)shouldClose contextInfo:(void *)context
@@ -2616,9 +2622,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowWillClose:(CGWindow *)window {
-   if([NSApp modalWindow]==self)
-    [NSApp stopModalWithCode:NSRunAbortedResponse];
-
    [self performClose:nil];
 }
 
