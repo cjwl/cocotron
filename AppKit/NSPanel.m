@@ -12,14 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPanel
 
-+(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
-   NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,styleMask);
-   return result;
-}
-
-+(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask {
-   NSRect result=CGInsetRectForNativeWindowBorder(frameRect,styleMask);
-   return result;
++(BOOL)hasMainMenuForStyleMask:(NSUInteger)styleMask {
+    return NO;
 }
 
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer {

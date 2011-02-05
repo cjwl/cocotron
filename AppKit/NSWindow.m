@@ -79,11 +79,24 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return 0;
 }
 
+/* This method is Cococtron specific and can be override by subclasses, do not change method name */
++(BOOL)hasMainMenuForStyleMask:(NSUInteger)styleMask {
+    if(styleMask&NSTitledWindowMask)
+        return YES;
+    
+    return NO;
+}
+
+/* This method is Cococtron specific and can be override by subclasses, do not change method name. */
+-(BOOL)hasMainMenu {
+    return [isa hasMainMenuForStyleMask:_styleMask];
+}
+
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
    NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,styleMask);
    
-   if(styleMask!=0)
-    result.size.height+=[NSMainMenuView menuHeight];
+    if([self hasMainMenuForStyleMask:styleMask])
+        result.size.height+=[NSMainMenuView menuHeight];
     
    return result;
 }
@@ -91,8 +104,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask {
    NSRect result=CGInsetRectForNativeWindowBorder(frameRect,styleMask);
    
-   if(styleMask!=0)
-    result.size.height-=[NSMainMenuView menuHeight];
+    if([self hasMainMenuForStyleMask:styleMask])
+        result.size.height-=[NSMainMenuView menuHeight];
     
    return result;
 }
@@ -134,6 +147,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return [NSThemeFrame class];
 }
 
+-init {
+    return [self initWithContentRect:NSMakeRect(100,100,100,100) styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:NO];
+}
+
 -initWithCoder:(NSCoder *)coder {
   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
    return self;
@@ -143,15 +160,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSRect backgroundFrame;
    NSRect contentViewFrame;
 
-   _frame=[isa frameRectForContentRect:contentRect styleMask:styleMask];
+   _styleMask=styleMask;
+
+    _frame=[self frameRectForContentRect:contentRect];
    
    backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
-   contentViewFrame=[isa contentRectForFrameRect:backgroundFrame styleMask:styleMask];
+   contentViewFrame=[self contentRectForFrameRect:backgroundFrame];
    
    _savedFrame = _frame;
 	
-   _styleMask=styleMask;
    _backingType=backing;
    _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
@@ -161,7 +179,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _miniwindowTitle=@"";
 
    _menu=nil;
-   if(![self isKindOfClass:[NSPanel class]] && styleMask!=0){
+    if([self hasMainMenu]){
     NSRect frame=NSMakeRect(contentViewFrame.origin.x,NSMaxY(contentViewFrame),contentViewFrame.size.width,[NSMainMenuView menuHeight]);
 
     _menu=[[NSApp mainMenu] copy];
@@ -662,9 +680,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=(leastY+20)-frame.size.height;
     }
 
-    if(changed)
+       if(changed){
      [self setFrame:frame display:YES];
-
+       }
+       
     _makeSureIsOnAScreen=NO;
    }
 #else
@@ -701,9 +720,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=virtual.origin.y-frame.size.height;
     }
 
-    if(changed)
+    if(changed){
      [self setFrame:frame display:YES];
-
+    }
     _makeSureIsOnAScreen=NO;
    }
 #endif
@@ -771,17 +790,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _makeSureIsOnAScreen=YES;
 
    [_backgroundView setFrameSize:_frame.size];
-   [[self platformWindow] setFrame:_frame];
+
+    [[self platformWindow] setFrame:_frame];
 
    if(didSize)
     [self resetCursorRects];
     
-   if(didSize)
+   if(didSize){
     [self postNotificationName:NSWindowDidResizeNotification];
+   }
     
-   if(didMove)
+   if(didMove){
     [self postNotificationName:NSWindowDidMoveNotification];
-
+   }
+    
 // If you setFrame:display:YES before rearranging views with only setFrame: calls (which do not mark the view for display)
 // Cocoa will properly redisplay the views
 // So, doing a hard display right here is not the right thing to do, delay it 
@@ -819,6 +841,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    frame.origin.x=point.x;
    frame.origin.y=point.y-frame.size.height;
+
    [self setFrame:frame display:YES];
 }
 
@@ -975,6 +998,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [toolbarView setFrameOrigin:toolbarOrigin];
 
    [[self contentView] setAutoresizingMask:NSViewNotSizable];
+
    [self setFrame:frame display:NO animate:NO];
    
    [[self contentView] setAutoresizingMask:mask];
@@ -1324,7 +1348,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)canBecomeMainWindow {
-   return YES;
+    return YES;
 }
 
 -(BOOL)canBecomeVisibleWithoutLogin {
@@ -1355,13 +1379,26 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return point;
 }
 
--(NSRect)frameRectForContentRect:(NSRect)rect {
-   return [isa frameRectForContentRect:rect styleMask:[self styleMask]];
+-(NSRect)frameRectForContentRect:(NSRect)contentRect {
+/* hasMainMenu is an instance method so we can't just use the class method frameRectForContentRect:styleMask: */
+    
+   NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,[self styleMask]);
+    
+   if([self hasMainMenu])
+    result.size.height+=[NSMainMenuView menuHeight];
+    
+   if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
+    result.size.height+=[[_toolbar _view] frame].size.height;
+
+    return result;
 }
 
--(NSRect)contentRectForFrameRect:(NSRect)rect {
-   NSRect result=[isa contentRectForFrameRect:rect styleMask:[self styleMask]];
+-(NSRect)contentRectForFrameRect:(NSRect)frameRect {
+   NSRect result=CGInsetRectForNativeWindowBorder(frameRect,[self styleMask]);
        
+   if([self hasMainMenu])
+    result.size.height-=[NSMainMenuView menuHeight];
+
    if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
     result.size.height-=[[_toolbar _view] frame].size.height;
    
@@ -2053,9 +2090,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else
       topLeftPoint.y = frame.origin.y + frame.size.height;
    
-   if (reposition)
+   if (reposition){
       [self setFrame:frame display:YES];
-   
+
+   }
+    
    return topLeftPoint;
 }
 
@@ -2299,20 +2338,21 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     frame=[self frame];
     frame.size.height+=(newSize.height-oldSize.height);
     // no display because setMenu: is called before awakeFromNib
+
     [self setFrame:frame display:NO];
     // do we even need this?
     [_backgroundView setNeedsDisplay:YES]; 
 }
 
 -(void)_hideMenuViewIfNeeded {
-   if(_menuView!=nil && ![_menuView isHidden]){
+   if([self hasMainMenu] && _menuView!=nil && ![_menuView isHidden]){
     [_menuView setHidden:YES];
     [self _resizeWithOldMenuViewSize:[_menuView frame].size];
    }
 }
 
 -(void)_showMenuViewIfNeeded {
-   if(_menuView!=nil && [_menuView isHidden]){
+   if([self hasMainMenu] && _menuView!=nil && [_menuView isHidden]){
     [_menuView setHidden:NO];
     [self _resizeWithOldMenuViewSize:NSMakeSize(0,0)];
    }
@@ -2323,7 +2363,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     NSSize  oldSize=[_menuView frame].size;
     
     [_menuView setMenu:menu];
-    
+
     [self _resizeWithOldMenuViewSize:oldSize];
    }
 
@@ -2528,10 +2568,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self saveFrameUsingName:_autosaveFrameName];
    [self resetCursorRects];
    
-   if(didSize)
+   if(didSize){
     [self postNotificationName:NSWindowDidResizeNotification];
-   else
+   }
+   else{
     [self postNotificationName:NSWindowDidMoveNotification];
+   }
 }
 
 -(void)platformWindowExitMove:(CGWindow *)window {

@@ -156,7 +156,7 @@ id NSApp=nil;
    return _windows;
 }
 
--(NSWindow *)windowWithWindowNumber:(int)number {
+-(NSWindow *)windowWithWindowNumber:(NSInteger)number {
    int i,count=[_windows count];
    
    for(i=0;i<count;i++){

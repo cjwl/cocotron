@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   _locationInWindow=location;
   _modifierFlags=modifierFlags;
   _timestamp = time;
-  _window = (NSWindow *)windowNum;
+  _windowNumber = windowNum;
   _subtype = subtype;
   _data1 = data1;
   _data2 = data2;

@@ -33,12 +33,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _timestamp=[NSDate timeIntervalSinceReferenceDate];
    _locationInWindow=location;
    _modifierFlags=modifierFlags;
-   _window=window;
+   _windowNumber=[window windowNumber];
    return self;
 }
 
 -(void)dealloc {
-   _window=nil;
    [super dealloc];
 }
 
@@ -88,7 +87,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSWindow *)window {
-   return _window;
+   return [NSApp windowWithWindowNumber:[self windowNumber]];
+}
+
+-(NSInteger)windowNumber {
+    return _windowNumber;
 }
 
 -(int)clickCount {

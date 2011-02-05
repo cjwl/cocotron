@@ -325,14 +325,17 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)setFrame:(CGRect)frame {
+   [self invalidateContextsWithNewSize:frame.size];
+
+    // _frame must be set before the MoveWindow as MoveWindow generates WM_SIZE and WM_MOVE messages
+    // which need to check the size against the current to prevent erroneous resize/move notifications
+    _frame=frame;
+    
    CGRect moveTo=convertFrameToWin32ScreenCoordinates(frame);
 
    _ignoreMinMaxMessage=YES;
    MoveWindow(_handle, moveTo.origin.x, moveTo.origin.y,moveTo.size.width, moveTo.size.height,YES);
    _ignoreMinMaxMessage=NO;
-
-   [self invalidateContextsWithNewSize:frame.size];
-   _frame=frame;
 }
 
 -(void)setOpaque:(BOOL)value {
@@ -776,7 +779,12 @@ i=count;
 }
 
 -(int)WM_MOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   [_delegate platformWindowWillMove:self];
+   NSPoint checkOrigin=[self queryFrame].origin;
+    
+   if(NSEqualPoints(checkOrigin,_frame.origin))
+    return 0;
+
+    [_delegate platformWindowWillMove:self];
    [self _GetWindowRectDidSize:NO];
    [_delegate platformWindowDidMove:self];
    return 0;
