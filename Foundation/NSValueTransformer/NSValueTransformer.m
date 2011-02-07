@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSValueTransformer_IsNotNil.h"
 #import "NSValueTransformer_NegateBoolean.h"
 #import "NSValueTransformer_UnarchiveFromData.h"
+#import "NSValueTransformer_KeyedUnarchiveFromData.h"
 
 // Do not change these values
 NSString * const NSIsNilTransformerName=@"NSIsNil";
@@ -31,7 +32,8 @@ static NSMapTable *_nameToTransformer=NULL;
     NSMapInsert(_nameToTransformer,NSIsNilTransformerName,[[[NSValueTransformer_IsNil alloc] init] autorelease]);
     NSMapInsert(_nameToTransformer,NSIsNotNilTransformerName,[[[NSValueTransformer_IsNotNil alloc] init] autorelease]);
     NSMapInsert(_nameToTransformer,NSNegateBooleanTransformerName,[[[NSValueTransformer_NegateBoolean alloc] init] autorelease]);
-    NSMapInsert(_nameToTransformer,NSUnarchiveFromDataTransformerName,[[[NSValueTransformer_UnarchiveFromData alloc] init] autorelease]);
+       NSMapInsert(_nameToTransformer,NSUnarchiveFromDataTransformerName,[[[NSValueTransformer_UnarchiveFromData alloc] init] autorelease]);
+       NSMapInsert(_nameToTransformer,NSKeyedUnarchiveFromDataTransformerName,[[[NSValueTransformer_KeyedUnarchiveFromData alloc] init] autorelease]);
    }
 }
 
