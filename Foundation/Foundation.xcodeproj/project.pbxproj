@@ -2173,7 +2173,7 @@
 		C6BC3CC31162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6BC3CC41162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
 		C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */; };
-		C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */; };
+		C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */; settings = {COMPILER_FLAGS = "-g0"; }; };
 		C816EBEF0F0A763500EDC3EB /* NSDarwinString.h in Headers */ = {isa = PBXBuildFile; fileRef = C816EBED0F0A763500EDC3EB /* NSDarwinString.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C816EBF00F0A763500EDC3EB /* NSDarwinString.m in Sources */ = {isa = PBXBuildFile; fileRef = C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */; };
 		C816EBF10F0A763500EDC3EB /* NSDarwinString.h in Headers */ = {isa = PBXBuildFile; fileRef = C816EBED0F0A763500EDC3EB /* NSDarwinString.h */; };
@@ -2749,7 +2749,7 @@
 		FE01A7A00C5D9B6900AEA51A /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE01A7A10C5D9B6900AEA51A /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
 		FE01A7A30C5D9B6900AEA51A /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
-		FE01A7A40C5D9B6900AEA51A /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
+		FE01A7A40C5D9B6900AEA51A /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; settings = {COMPILER_FLAGS = "-g0"; }; };
 		FE01A7A50C5D9B6900AEA51A /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
 		FE01A7A60C5D9B6900AEA51A /* NSSelectInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */; };
 		FE01A7A70C5D9B6900AEA51A /* NSSocket_windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CC100B4AD8A400FE7AB3 /* NSSocket_windows.m */; };
