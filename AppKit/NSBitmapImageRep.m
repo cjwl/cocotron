@@ -180,13 +180,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(graphicsPort==NULL){
     [self dealloc];
     return nil;
-}
+   }
 
-   CGImageRef image=CGBitmapContextCreateImage(graphicsPort);
-   
-   self=[self initWithCGImage:image];
-   
-   CGImageRelease(image);
+   [self initWithData:(NSData *)CGContextCaptureBitmap(graphicsPort,rect)];
    
    return self;
 }

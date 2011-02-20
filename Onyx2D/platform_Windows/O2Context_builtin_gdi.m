@@ -512,4 +512,69 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
    O2ContextConcatAdvancesToTextMatrix(self,useAdvances,count);
 }
 
+static inline BOOL transformIsFlipped(O2AffineTransform matrix){
+   return (matrix.d<0)?YES:NO;
+}
+
+-(NSData *)captureBitmapInRect:(NSRect)rect {
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
+   NSPoint           pt = O2PointApplyAffineTransform(rect.origin, transformToDevice);
+   int               width = rect.size.width;
+   int               height = rect.size.height;
+   unsigned long     i, bmSize = 4*width*height;
+   void             *bmBits;
+   HBITMAP           bmHandle;
+   BITMAPFILEHEADER  bmFileHeader = {0, 0, 0, 0, 0};
+   BITMAPINFO        bmInfo;
+
+   if (transformIsFlipped(transformToDevice))
+      pt.y -= rect.size.height;
+
+   HDC destDC = CreateCompatibleDC(_dc);
+   if (destDC == NULL)
+   {
+      NSLog(@"CreateCompatibleDC failed");
+      return nil;
+   }
+
+   bmInfo.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);
+   bmInfo.bmiHeader.biWidth=width;
+   bmInfo.bmiHeader.biHeight=height;
+   bmInfo.bmiHeader.biPlanes=1;
+   bmInfo.bmiHeader.biBitCount=32;
+   bmInfo.bmiHeader.biCompression=BI_RGB;
+   bmInfo.bmiHeader.biSizeImage=0;
+   bmInfo.bmiHeader.biXPelsPerMeter=0;
+   bmInfo.bmiHeader.biYPelsPerMeter=0;
+   bmInfo.bmiHeader.biClrUsed=0;
+   bmInfo.bmiHeader.biClrImportant=0;
+
+   bmHandle = CreateDIBSection(_dc, &bmInfo, DIB_RGB_COLORS, &bmBits, NULL, 0);
+   if (bmHandle == NULL)
+   {
+      NSLog(@"CreateDIBSection failed");
+      return nil;
+   }
+
+   SelectObject(destDC, bmHandle);
+   BitBlt(destDC, 0, 0, width, height, _dc, pt.x, pt.y, SRCCOPY);
+   GdiFlush();
+
+   ((char *)&bmFileHeader)[0] = 'B';
+   ((char *)&bmFileHeader)[1] = 'M';
+   for (i = 3; i < bmSize; i += 4)
+   	((char *)bmBits)[i] = 255;			// set alpha value
+   bmFileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+   bmFileHeader.bfSize = bmFileHeader.bfOffBits + bmSize;
+
+   NSMutableData *result = [NSMutableData dataWithBytes:&bmFileHeader length:sizeof(BITMAPFILEHEADER)];
+   [result appendBytes:&bmInfo.bmiHeader length:sizeof(BITMAPINFOHEADER)];
+   [result appendBytes:bmBits length:bmSize];
+   
+   DeleteObject(bmHandle);
+   DeleteDC(destDC);
+
+   return result;
+}
+
 @end
