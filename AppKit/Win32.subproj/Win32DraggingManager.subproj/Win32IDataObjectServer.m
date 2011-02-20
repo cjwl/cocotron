@@ -67,6 +67,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      format.cfFormat=RegisterClipboardFormat("Rich Text Format");
      [result addObject:[Win32FORMATETC formatEtcWithFORMATETC:format]];
     }
+    else if([type isEqualToString:NSPDFPboardType])
+    {
+     format.cfFormat=RegisterClipboardFormat("Portable Document Format");
+     [result addObject:[Win32FORMATETC formatEtcWithFORMATETC:format]];
+    }
     else if([type isEqualToString:NSFilenamesPboardType]){
      format.cfFormat=CF_HDROP;
      [result addObject:[Win32FORMATETC formatEtcWithFORMATETC:format]];
