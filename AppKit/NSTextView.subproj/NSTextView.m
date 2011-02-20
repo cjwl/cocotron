@@ -1889,7 +1889,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     [self _replaceCharactersInRange:NSMakeRange(0,[_textStorage length]) withString:string];
 	
-// this does not didChangeText
+    if ([self isFieldEditor])
+        [self didChangeText];
+    // otherwise this does not didChangeText
 }
 
 -(NSDictionary *)_stringAttributes {
@@ -2300,9 +2302,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         [self endUserCompletion];
     }
 
+    if ([string isKindOfClass:[NSAttributedString class]])
+        string = [(NSAttributedString *)string string];
     if(![self shouldChangeTextInRange:[self selectedRange] replacementString:string])
         return;
-    
+
    [self _replaceCharactersInRange:[self selectedRange] withString:string];
    [self didChangeText];
    [self scrollRangeToVisible:[self selectedRange]];
