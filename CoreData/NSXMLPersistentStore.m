@@ -8,6 +8,7 @@
 #import <CoreData/NSAtomicStoreCacheNode.h>
 #import <Foundation/NSXMLDocument.h>
 #import <Foundation/NSXMLElement.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
 #import <CoreFoundation/CFUUID.h>
 

@@ -335,7 +335,7 @@ NSString *O2MacRomanGlyphNames[256]={
 }
 
 extern O2FontRef O2FontCreateWithFontName_platform(NSString *name);
-extern O2FontRef O2FontCreateWithDataProvider_platform(NSString *name);
+extern O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider);
 
 O2FontRef O2FontCreateWithFontName(NSString *name) {
    return O2FontCreateWithFontName_platform(name);

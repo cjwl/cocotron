@@ -513,7 +513,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 #endif
 
 -(O2Surface_DIBSection *)resultSurface:(O2Point *)fromPoint {
-   O2Surface_DIBSection *result=[_backingContext surface];
+   O2Surface_DIBSection *result=(O2Surface_DIBSection *)[_backingContext surface];
 
    *fromPoint=O2PointMake(0,0);
    
@@ -557,7 +557,7 @@ i=count;
       if(i==count){
        fromPoint->x=-checkFrame.origin.x;
        fromPoint->y=-checkFrame.origin.y;
-       return [check validSurface];
+       return (O2Surface_DIBSection *)[check validSurface];
    }
      }
     }
@@ -583,7 +583,7 @@ i=count;
      continue;
     
     O2Rect                overFrame=[overlay frame];
-    O2Surface_DIBSection *overSurface=[overlay validSurface];
+    O2Surface_DIBSection *overSurface=(O2Surface_DIBSection *)[overlay validSurface];
     
     if(overSurface!=nil){
      BLENDFUNCTION blend;
@@ -605,9 +605,9 @@ i=count;
 
 -(void)flushOverlay:(CGLPixelSurface *)overlay {
    if([overlay isOpaque]){
-    O2Surface_DIBSection *backingSurface=[_backingContext surface];
+    O2Surface_DIBSection *backingSurface=(O2Surface_DIBSection *)[_backingContext surface];
     O2Rect                overFrame=[overlay frame];
-    O2Surface_DIBSection *overSurface=[overlay validSurface];
+    O2Surface_DIBSection *overSurface=(O2Surface_DIBSection *)[overlay validSurface];
     
     if(backingSurface!=nil){
      BLENDFUNCTION blend;
