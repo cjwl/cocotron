@@ -37,6 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                  _isLayered;
    BOOL                  _ignoreMinMaxMessage;
    BOOL                  _sentBeginSizing;
+   BOOL                  _isClosing;
    BOOL                  _disableDisplay;
    unsigned              _styleMask;
    BOOL                  _isPanel;

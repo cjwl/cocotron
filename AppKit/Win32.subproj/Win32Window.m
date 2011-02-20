@@ -548,7 +548,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
       O2argb8u  *pixels=[result pixelBytes];
       int        i,count=resultWidth*resultHeight;
 #if 1
-i=count;
+      i=count;
 #else
       for(i=0;i<count;i++)
        if(pixels[i].a!=0x00)
@@ -753,7 +753,7 @@ i=count;
 -(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
 
-   if(contentSize.width>0 && contentSize.height>0){
+   if(!_isClosing && contentSize.width>0 && contentSize.height>0){
        NSSize checkSize=[self queryFrame].size;
        
        if(NSEqualSizes(checkSize,_frame.size))
@@ -819,7 +819,9 @@ i=count;
 }
 
 -(int)WM_CLOSE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+   _isClosing = YES;
    [_delegate platformWindowWillClose:self];
+   _isClosing = NO;
    return 0;
 }
 
