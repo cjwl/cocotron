@@ -144,9 +144,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
      _currentEditor=[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-
-     [_currentEditor retain];
+     _currentEditor=[[cell setUpFieldEditorAttributes:_currentEditor] retain];
+     [_currentEditor setDelegate:self];
+     [_currentEditor registerForDraggedTypes:[self _draggedTypes]];
+     [_currentEditor becomeFirstResponder];
     }
 
     [cell selectWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self start:range.location length:range.length];
@@ -206,8 +207,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
      _currentEditor=[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-     [_currentEditor retain];
+     _currentEditor=[[cell setUpFieldEditorAttributes:_currentEditor] retain];
+     [_currentEditor setDelegate:self];
+     [_currentEditor registerForDraggedTypes:[self _draggedTypes]];
+     [_currentEditor becomeFirstResponder];
     }
 
     [cell editWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self event:event];

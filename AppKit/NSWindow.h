@@ -128,7 +128,8 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    id           _delegate;
    NSResponder *_firstResponder;
 
-   NSTextView  *_fieldEditor;
+   NSTextView  *_sharedFieldEditor;
+   NSTextView  *_currentFieldEditor;
    NSArray     *_draggedTypes;
 
    NSMutableArray   *_trackingAreas;

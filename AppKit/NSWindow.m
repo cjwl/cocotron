@@ -202,7 +202,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    _delegate=nil;
    _firstResponder=self;
-   _fieldEditor=nil;
+   _sharedFieldEditor=nil;
+   _currentFieldEditor=nil;
    _draggedTypes=nil;
 
    _trackingAreas=nil;
@@ -265,7 +266,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_menuView release];
    [_contentView release];
    [_backgroundColor release];
-   [_fieldEditor release];
+   [_sharedFieldEditor release];
    [_draggedTypes release];
    [_trackingAreas release];
    [_autosaveFrameName release];
@@ -1465,7 +1466,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(BOOL)makeFirstResponder:(NSResponder *)responder {
 
-   if(_firstResponder==responder)
+   if(_firstResponder==responder || 
+      ([responder isKindOfClass:[NSControl class]] && _firstResponder==[(NSControl *)responder currentEditor]))
     return YES;
 
    if(![_firstResponder resignFirstResponder])
@@ -1586,26 +1588,39 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSText *)fieldEditor:(BOOL)create forObject:object {
-   if(create && _fieldEditor==nil){
-    _fieldEditor=[[NSTextView alloc] init];
+   NSTextView *newFieldEditor = nil;
+   if([_delegate respondsToSelector:@selector(windowWillReturnFieldEditor:toObject:)])
+      newFieldEditor = [_delegate windowWillReturnFieldEditor:self toObject:object];
+   
+   if(create && newFieldEditor == nil && _sharedFieldEditor == nil)
+      newFieldEditor = _sharedFieldEditor = [[NSTextView alloc] init];
+   
+   if (newFieldEditor)
+      _currentFieldEditor = newFieldEditor;   
+   else
+      _currentFieldEditor = _sharedFieldEditor;
+   
+   if (_currentFieldEditor) {
+      [_currentFieldEditor setHorizontallyResizable:NO];
+      [_currentFieldEditor setVerticallyResizable:NO];
+      [_currentFieldEditor setFieldEditor:YES];
+      [_currentFieldEditor setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    }
-
-   [_fieldEditor setHorizontallyResizable:NO];
-   [_fieldEditor setVerticallyResizable:NO];
-   [_fieldEditor setFieldEditor:YES];
-   [_fieldEditor setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-
-   return _fieldEditor;
+   
+   return _currentFieldEditor;
 }
 
 -(void)endEditingFor:object {
-   if((NSResponder *)_fieldEditor==_firstResponder){
-    _firstResponder=self;
-    [_fieldEditor resignFirstResponder];
+   if (_currentFieldEditor) {
+      if ((NSResponder *)_currentFieldEditor == _firstResponder) {
+         _firstResponder = object;
+         [_currentFieldEditor resignFirstResponder];
+      }
+      [_currentFieldEditor setDelegate:nil];
+      [_currentFieldEditor removeFromSuperview];
+      [_currentFieldEditor setString:@""];
+      _currentFieldEditor = nil;
    }
-   [_fieldEditor setDelegate:nil];
-   [_fieldEditor removeFromSuperview];
-   [_fieldEditor setString:@""];
 }
 
 -(void)disableScreenUpdatesUntilFlush {
