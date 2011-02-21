@@ -21,6 +21,14 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 
 @implementation NSDrawer
 
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
+- (NSResponder *)nextResponder {
+    return [_drawerWindow firstResponder];
+}
+
 // - modify the leading/trailing offset portions of the drawer's geometry.
 // - constrain the "expandable" portion of the drawer to the min/max content sizes.
 + (NSRect)drawerFrameWithContentSize:(NSSize)contentSize parentWindow:(NSWindow *)parentWindow leadingOffset:(float)leadingOffset trailingOffset:(float)trailingOffset edge:(NSRectEdge)edge state:(NSDrawerState)state {
@@ -324,6 +332,8 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     if ([self state] != NSDrawerClosedState)
         return;
     
+    [_parentWindow makeFirstResponder:self];
+
     // if we've moved to a different edge, recompute...
     if (_edge != edge)
         [self setContentSize:[self drawerWindow:_drawerWindow constrainSize:[self contentSize] edge:edge]];
@@ -357,6 +367,9 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     if ([self state] != NSDrawerOpenState)
         return;
     
+    [_drawerWindow endEditingFor:nil];
+    [_parentWindow makeFirstResponder:_parentWindow];
+
     frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
     frame.size = [self drawerWindow:_drawerWindow constrainSize:frame.size edge:_edge];    
 
@@ -440,7 +453,6 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 - (void)parentWindowDidClose:(NSWindow *)window {
     if (_state == NSDrawerOpenState)
        [_drawerWindow orderOut:nil];
-    [self dealloc];
 }
 
 - (void)drawerWindowDidActivate:(NSDrawerWindow *)window {
