@@ -1228,7 +1228,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSResponder *)firstResponder {
-   return _firstResponder;
+   if ([_firstResponder isKindOfClass:[NSDrawer class]])
+    return [_firstResponder nextResponder];
+   else
+    return _firstResponder;
 }
 
 -(NSButton *)standardWindowButton:(NSWindowButton)value {
