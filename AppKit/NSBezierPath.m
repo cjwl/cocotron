@@ -697,7 +697,8 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 }
 
 -(void)appendBezierPathWithGlyphs:(NSGlyph *)glyphs count:(unsigned)count inFont:(NSFont *)font {
-	for (int i = 0; i < count; ++i) {
+	int i = 0;
+	for (i = 0; i < count; ++i) {
 		[self appendBezierPathWithGlyph:glyphs[i] inFont:font];
 	}
 }
@@ -775,12 +776,12 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 	// We're just taking the path segments from the end and switching their start and ends
 	// MoveTo are converted to ClosePath if the current path is closed, else to MoveTo
 	// ClosePath are converted to MoveTo and the current path is marked as closed
-	
 	NSBezierPath *path = (NSBezierPath *)[[self class] bezierPath];
 	
 	BOOL closed = NO; // state of current subpath
 	
-	for (int i = [self elementCount] - 1; i >= 0; i--) 
+	int i = 0;
+	for ( i = [self elementCount] - 1; i >= 0; i--) 
     {
 		// Find the next point : it's the end of previous element in the original path
 		CGPoint nextPoint = CGPointMake(0,0);
@@ -904,6 +905,48 @@ static void _addPathToContext(NSBezierPath *self,CGContextRef context) {
    CGContextBeginPath(context);
    _addPathToContext(self,context);
    CGContextClip(context);
+}
+
+- (NSString*)description
+{
+	NSMutableString* desc = [NSMutableString stringWithCapacity: 1024];
+	// give to big picture
+	[desc appendFormat: @"Path <0x%p>\n", self];
+	[desc appendFormat: @"  Bounds: %@\n", NSStringFromRect([self bounds])];
+	[desc appendFormat: @"  Control point bounds: %@\n", NSStringFromRect([self controlPointBounds])];
+	
+	// Now for the path details
+	
+	int i;
+	CGPoint *points=self->_points;
+	CGPoint p = NSZeroPoint;
+	for(i=0;i<self->_numberOfElements;i++){
+		switch(self->_elements[i]){
+				
+			case NSMoveToBezierPathElement:
+				p=*points++;
+				[desc appendFormat: @"    %f %f moveto\n", p.x, p.y];
+				break;
+				
+			case NSLineToBezierPathElement:
+				p=*points++;
+				[desc appendFormat: @"    %f %f lineto\n", p.x, p.y];
+				break;
+				
+			case NSCurveToBezierPathElement:
+			{
+				CGPoint cp1=*points++;
+				CGPoint cp2=*points++;
+				CGPoint end=*points++;				
+				[desc appendFormat: @"    %f %f %f %f %f %f curveto\n", cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y];
+			}
+				break;
+			case NSClosePathBezierPathElement:
+				[desc appendFormat: @"    closepath\n"];
+				break;
+		}
+	}
+	return desc;
 }
 
 @end
