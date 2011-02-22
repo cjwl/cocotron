@@ -36,27 +36,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSSet_concreteNew(NULL,objects,count);
 }
 
--initWithObjects:first,... {
+-initWithObjects:(id)object,... {
    va_list  arguments;
-   NSUInteger i,count=0;
+   NSUInteger i,count;
    id      *objects;
-
-   va_start(arguments,first);
-
+    
+   if(object==nil)
+       return [self init];
+    
+   va_start(arguments,object);
+   count=1;
    while(va_arg(arguments,id)!=nil)
     count++;
-
    va_end(arguments);
-
+    
    objects=__builtin_alloca(sizeof(id)*count);
-
-   va_start(arguments,first);
-
-   for(i=0;i<count;i++)
+    
+   va_start(arguments,object);
+   objects[0]=object;
+   for(i=1;i<count;i++)
     objects[i]=va_arg(arguments,id);
-
    va_end(arguments);
-
+    
    [self dealloc];
 
    return NSSet_concreteNew(NULL,objects,count);

@@ -47,10 +47,20 @@ static inline void _clearCurrentContext(){
 
 -initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext {
    CGLError error;
-   
+
+    if(_pixelFormat!=nil){
+        // Cocoa's NSOpenGLContext can withstand a double init and I know of at least one app that does it
+        // Maybe Cocoa just leaks, we don't
+        [_pixelFormat release];
+        _pixelFormat==nil;
+        CGLReleaseContext(_glContext);
+        _glContext=NULL;
+    }
+    
    _pixelFormat=[pixelFormat retain];
    if((error=CGLCreateContext([_pixelFormat CGLPixelFormatObj],[shareContext CGLContextObj],(CGLContextObj *)&_glContext))!=kCGLNoError)
     NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
+        
    return self;
 }
 
@@ -60,7 +70,7 @@ static inline void _clearCurrentContext(){
       _clearCurrentContext();
    [_pixelFormat release];
    _view=nil;
-   CGLDestroyContext(_glContext);
+   CGLReleaseContext(_glContext);
    [super dealloc];
 }
 
@@ -96,12 +106,15 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)updateViewParameters {
-   NSRect rect=[_view convertRect:[_view bounds] toView:nil];
+    NSRect rect=[_view bounds];
+    
+    if([_view window]!=nil)
+        rect=[_view convertRect:rect toView:nil];
    
    GLint size[2]={
     rect.size.width,
     rect.size.height };
-    
+        
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,size);
 }
 

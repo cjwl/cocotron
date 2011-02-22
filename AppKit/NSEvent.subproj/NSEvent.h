@@ -148,7 +148,7 @@ enum {
    NSTimeInterval _timestamp;
    NSPoint        _locationInWindow;
    NSUInteger     _modifierFlags;
-   NSWindow      *_window;
+    NSInteger      _windowNumber;
 }
 
 +(NSPoint)mouseLocation;
@@ -176,6 +176,7 @@ enum {
 -(NSPoint)locationInWindow;
 -(unsigned)modifierFlags;
 -(NSWindow *)window;
+-(NSInteger)windowNumber;
 
 -(int)clickCount;
 -(float)deltaX;

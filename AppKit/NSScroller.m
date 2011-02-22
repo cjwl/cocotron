@@ -23,6 +23,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSDisplay currentDisplay] scrollerWidth];
 }
 
+/* OS X has a global default "AppleScrollBarVariant" with the values: Single, DoubleMin, DoubleMax, and DoubleBoth
+ This controls the default position of the scroller. This should be controlling the positioning.
+ */
+
+typedef enum {
+    NSAppleScrollBarVariantSingle,
+    NSAppleScrollBarVariantDoubleMin,
+    NSAppleScrollBarVariantDoubleMax,
+    NSAppleScrollBarVariantDoubleBoth,
+} NSAppleScrollBarVariant;
+
+static NSAppleScrollBarVariant appleScrollBarVariant(NSScroller *self){
+    return NSAppleScrollBarVariantSingle;
+}
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
 }
@@ -199,7 +214,7 @@ static inline float roundFloat(float value){
 
      incLine=decLine;
 
-     if([self class]==[NSScroller class]){
+     if(appleScrollBarVariant(self)==NSAppleScrollBarVariantSingle){
      incLine.origin.y=bounds.size.height-incLine.size.height;
     knobSlot.origin.y+=decLine.size.height;
     knobSlot.size.height-=decLine.size.height+incLine.size.height;

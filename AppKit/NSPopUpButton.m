@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSMenu.h>
+#import <AppKit/NSApplication.h>
 #import <AppKit/NSObject+BindingSupport.h>
 
 NSString * const NSPopUpButtonWillPopUpNotification=@"NSPopUpButtonWillPopUpNotification";
@@ -189,10 +190,35 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
    [self setNeedsDisplay:YES];
 }
 
+-(void)performClick:sender {
+
+   if([_cell trackMouse:[NSApp currentEvent] inRect:[self bounds] ofView:self untilMouseUp:NO]){
+    NSMenuItem *item=[self selectedItem];
+    SEL         action=[item action];
+    id          target=[item target];
+
+    [_cell setState:![_cell state]];
+    [self setNeedsDisplay:YES];
+
+    if(action==NULL){
+     action=[self action];
+     target=[self target];
+    }
+    else if(target==nil){
+     target=[self target];
+    }
+
+    [self sendAction:action to:target];
+   }
+}
+
 -(void)mouseDown:(NSEvent *)event {
    if(![self isEnabled])
     return;
 
+#if 1
+   [self performClick:self];
+#else
    if([_cell trackMouse:event inRect:[self bounds] ofView:self untilMouseUp:NO]){
     NSMenuItem *item=[self selectedItem];
     SEL         action=[item action];
@@ -211,6 +237,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 
     [self sendAction:action to:target];
    }
+#endif
 }
 
 - (void)keyDown:(NSEvent *)event {

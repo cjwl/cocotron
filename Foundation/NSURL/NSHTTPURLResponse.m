@@ -27,11 +27,13 @@ static NSString *valueInHeaders(NSDictionary *headers,NSString *key){
 }
 
 static NSString *mimeTypeFromContentType(NSString *contentType){
-   return nil;
+// FIXME
+   return contentType;
 }
 
 static NSString *textEncodingNameFromContentType(NSString *contentType){
-   return nil;
+// FIXME
+   return contentType;
 }
 
 -initWithURL:(NSURL *)url statusCode:(NSInteger)statusCode headers:(NSDictionary *)headers {

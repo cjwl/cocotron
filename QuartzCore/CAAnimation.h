@@ -1,6 +1,7 @@
 #import <Foundation/NSObject.h>
 #import <QuartzCore/CABase.h>
 #import <QuartzCore/CAMediaTiming.h>
+#import <QuartzCore/CAAction.h>
 
 @class CAMediaTimingFunction;
 
@@ -14,7 +15,7 @@ CA_EXPORT NSString * const kCATransitionFromRight;
 CA_EXPORT NSString * const kCATransitionFromTop;
 CA_EXPORT NSString * const kCATransitionFromBottom;
 
-@interface CAAnimation : NSObject <NSCopying,CAMediaTiming> {
+@interface CAAnimation : NSObject <NSCopying,CAMediaTiming,CAAction> {
    id   _delegate;
    BOOL _removedOnCompletion;
    CAMediaTimingFunction *_timingFunction;

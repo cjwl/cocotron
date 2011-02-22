@@ -75,6 +75,7 @@ static void *nsThreadStartThread(void* t)
    NSThread    *thread = t;
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
+    NSCooperativeThreadWaiting();
    [thread main];
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
@@ -111,11 +112,15 @@ static void *nsThreadStartThread(void* t)
 +(void)sleepUntilDate:(NSDate *)date {
    NSTimeInterval interval=[date timeIntervalSinceNow];
 
+   NSCooperativeThreadBlocking();
    NSPlatformSleepThreadForTimeInterval(interval);
+   NSCooperativeThreadWaiting();
 }
 
 +(void)sleepForTimeInterval:(NSTimeInterval)value {
+   NSCooperativeThreadBlocking();
    NSPlatformSleepThreadForTimeInterval(value);
+   NSCooperativeThreadWaiting();
 }
 
 +(void)exit {

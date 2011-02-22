@@ -49,6 +49,7 @@ typedef enum {
    kO2ImageAlphaFirst,
    kO2ImageAlphaNoneSkipLast,
    kO2ImageAlphaNoneSkipFirst,
+   kO2ImageAlphaOnly,
 } O2ImageAlphaInfo;
 
 enum {

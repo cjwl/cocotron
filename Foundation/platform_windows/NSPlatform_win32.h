@@ -25,3 +25,5 @@ void _Win32Assert(const char *code,int line,const char *file);
 NSTimeInterval Win32TimeIntervalFromFileTime(FILETIME fileTime);
 void Win32ThreadSleepForTimeInterval(NSTimeInterval interval);
 
+BOOL NSPlatformGreaterThanOrEqualToWindowsXP(void);
+BOOL NSPlatformGreaterThanOrEqualToWindows2000(void);

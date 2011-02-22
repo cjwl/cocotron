@@ -79,11 +79,24 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return 0;
 }
 
+/* This method is Cococtron specific and can be override by subclasses, do not change method name */
++(BOOL)hasMainMenuForStyleMask:(NSUInteger)styleMask {
+    if(styleMask&NSTitledWindowMask)
+        return YES;
+    
+    return NO;
+}
+
+/* This method is Cococtron specific and can be override by subclasses, do not change method name. */
+-(BOOL)hasMainMenu {
+    return [isa hasMainMenuForStyleMask:_styleMask];
+}
+
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
    NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,styleMask);
    
-   if(styleMask!=0)
-    result.size.height+=[NSMainMenuView menuHeight];
+    if([self hasMainMenuForStyleMask:styleMask])
+        result.size.height+=[NSMainMenuView menuHeight];
     
    return result;
 }
@@ -91,8 +104,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask {
    NSRect result=CGInsetRectForNativeWindowBorder(frameRect,styleMask);
    
-   if(styleMask!=0)
-    result.size.height-=[NSMainMenuView menuHeight];
+    if([self hasMainMenuForStyleMask:styleMask])
+        result.size.height-=[NSMainMenuView menuHeight];
     
    return result;
 }
@@ -134,6 +147,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return [NSThemeFrame class];
 }
 
+-init {
+    return [self initWithContentRect:NSMakeRect(100,100,100,100) styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:NO];
+}
+
 -initWithCoder:(NSCoder *)coder {
   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
    return self;
@@ -143,15 +160,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSRect backgroundFrame;
    NSRect contentViewFrame;
 
-   _frame=[isa frameRectForContentRect:contentRect styleMask:styleMask];
+   _styleMask=styleMask;
+
+    _frame=[self frameRectForContentRect:contentRect];
    
    backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
-   contentViewFrame=[isa contentRectForFrameRect:backgroundFrame styleMask:styleMask];
+   contentViewFrame=[self contentRectForFrameRect:backgroundFrame];
    
    _savedFrame = _frame;
 	
-   _styleMask=styleMask;
    _backingType=backing;
    _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
@@ -161,7 +179,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _miniwindowTitle=@"";
 
    _menu=nil;
-   if(![self isKindOfClass:[NSPanel class]] && styleMask!=0){
+    if([self hasMainMenu]){
     NSRect frame=NSMakeRect(contentViewFrame.origin.x,NSMaxY(contentViewFrame),contentViewFrame.size.width,[NSMainMenuView menuHeight]);
 
     _menu=[[NSApp mainMenu] copy];
@@ -662,9 +680,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=(leastY+20)-frame.size.height;
     }
 
-    if(changed)
+       if(changed){
      [self setFrame:frame display:YES];
-
+       }
+       
     _makeSureIsOnAScreen=NO;
    }
 #else
@@ -701,9 +720,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=virtual.origin.y-frame.size.height;
     }
 
-    if(changed)
+    if(changed){
      [self setFrame:frame display:YES];
-
+    }
     _makeSureIsOnAScreen=NO;
    }
 #endif
@@ -771,17 +790,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _makeSureIsOnAScreen=YES;
 
    [_backgroundView setFrameSize:_frame.size];
-   [[self platformWindow] setFrame:_frame];
+
+    [[self platformWindow] setFrame:_frame];
 
    if(didSize)
-   [self _invalidateTrackingAreas];
-
-   if(didSize)
-    [self postNotificationName:NSWindowDidResizeNotification];
+    [self resetCursorRects];
     
-   if(didMove)
+   if(didSize){
+    [self postNotificationName:NSWindowDidResizeNotification];
+   }
+    
+   if(didMove){
     [self postNotificationName:NSWindowDidMoveNotification];
-
+   }
+    
 // If you setFrame:display:YES before rearranging views with only setFrame: calls (which do not mark the view for display)
 // Cocoa will properly redisplay the views
 // So, doing a hard display right here is not the right thing to do, delay it 
@@ -819,6 +841,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    frame.origin.x=point.x;
    frame.origin.y=point.y-frame.size.height;
+
    [self setFrame:frame display:YES];
 }
 
@@ -975,6 +998,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [toolbarView setFrameOrigin:toolbarOrigin];
 
    [[self contentView] setAutoresizingMask:NSViewNotSizable];
+
    [self setFrame:frame display:NO animate:NO];
    
    [[self contentView] setAutoresizingMask:mask];
@@ -1324,7 +1348,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)canBecomeMainWindow {
-   return YES;
+    return YES;
 }
 
 -(BOOL)canBecomeVisibleWithoutLogin {
@@ -1355,13 +1379,26 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return point;
 }
 
--(NSRect)frameRectForContentRect:(NSRect)rect {
-   return [isa frameRectForContentRect:rect styleMask:[self styleMask]];
+-(NSRect)frameRectForContentRect:(NSRect)contentRect {
+/* hasMainMenu is an instance method so we can't just use the class method frameRectForContentRect:styleMask: */
+    
+   NSRect result=CGOutsetRectForNativeWindowBorder(contentRect,[self styleMask]);
+    
+   if([self hasMainMenu])
+    result.size.height+=[NSMainMenuView menuHeight];
+    
+   if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
+    result.size.height+=[[_toolbar _view] frame].size.height;
+
+    return result;
 }
 
--(NSRect)contentRectForFrameRect:(NSRect)rect {
-   NSRect result=[isa contentRectForFrameRect:rect styleMask:[self styleMask]];
+-(NSRect)contentRectForFrameRect:(NSRect)frameRect {
+   NSRect result=CGInsetRectForNativeWindowBorder(frameRect,[self styleMask]);
        
+   if([self hasMainMenu])
+    result.size.height-=[NSMainMenuView menuHeight];
+
    if([_toolbar _view]!=nil && ![[_toolbar _view] isHidden])
     result.size.height-=[[_toolbar _view] frame].size.height;
    
@@ -1582,6 +1619,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setViewsNeedDisplay:(BOOL)flag {
    _viewsNeedDisplay=flag;
+   if(flag){
+    // NSApplication does a _displayAllWindowsIfNeeded before every event, but there are some things which wont generate
+    // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this
+    [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+}
 }
 
 -(void)disableFlushWindow {
@@ -1702,7 +1744,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)invalidateCursorRectsForView:(NSView *)view {
    [view discardCursorRects];
-   [view resetCursorRects];
+   [self _resetCursorRectsInView:view];
    [self _invalidateTrackingAreas];
 }
 
@@ -1916,15 +1958,17 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    switch([event type]){
 
     case NSLeftMouseDown:{
-      NSView *view=[_backgroundView hitTest:[event locationInWindow]];
+        NSView *view=[_backgroundView hitTest:[event locationInWindow]];
+        
+        if([view acceptsFirstResponder]){
+            if([view needsPanelToBecomeKey])
+             [self makeFirstResponder:view];
+        }
+        
+        // Event goes to view, not first responder
+        [view mouseDown:event];
 
-      if([view acceptsFirstResponder])
-      [self makeFirstResponder:view];
-       
-// Doing this again seems correct for control cells which put a field editor up when they become first responder but I'm not sure
-      view=[_backgroundView hitTest:[event locationInWindow]];
       _mouseDownLocationInWindow=[event locationInWindow];
-      [view mouseDown:event];
      }
      break;
 
@@ -2046,9 +2090,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else
       topLeftPoint.y = frame.origin.y + frame.size.height;
    
-   if (reposition)
+   if (reposition){
       [self setFrame:frame display:YES];
-   
+
+   }
+    
    return topLeftPoint;
 }
 
@@ -2133,8 +2179,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     }
   else
     {
-      [self close];
+	// Clicking the close button on a Window generates a performClose:, in a non-modal case we just close the window. If the window is a modal window, we abort the session, but do not close the window. So far it looks like we should not close the window too.
+
+        if([NSApp modalWindow]==self)
+            [NSApp abortModal];
+        else
+           [self close];
     }
+
 }
 
 -(void)_document:(NSDocument *)document shouldClose:(BOOL)shouldClose contextInfo:(void *)context
@@ -2292,20 +2344,21 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     frame=[self frame];
     frame.size.height+=(newSize.height-oldSize.height);
     // no display because setMenu: is called before awakeFromNib
+
     [self setFrame:frame display:NO];
     // do we even need this?
     [_backgroundView setNeedsDisplay:YES]; 
 }
 
 -(void)_hideMenuViewIfNeeded {
-   if(_menuView!=nil && ![_menuView isHidden]){
+   if([self hasMainMenu] && _menuView!=nil && ![_menuView isHidden]){
     [_menuView setHidden:YES];
     [self _resizeWithOldMenuViewSize:[_menuView frame].size];
    }
 }
 
 -(void)_showMenuViewIfNeeded {
-   if(_menuView!=nil && [_menuView isHidden]){
+   if([self hasMainMenu] && _menuView!=nil && [_menuView isHidden]){
     [_menuView setHidden:NO];
     [self _resizeWithOldMenuViewSize:NSMakeSize(0,0)];
    }
@@ -2316,7 +2369,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     NSSize  oldSize=[_menuView frame].size;
     
     [_menuView setMenu:menu];
-    
+
     [self _resizeWithOldMenuViewSize:oldSize];
    }
 
@@ -2521,10 +2574,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self saveFrameUsingName:_autosaveFrameName];
    [self resetCursorRects];
    
-   if(didSize)
+   if(didSize){
     [self postNotificationName:NSWindowDidResizeNotification];
-   else
+   }
+   else{
     [self postNotificationName:NSWindowDidMoveNotification];
+   }
 }
 
 -(void)platformWindowExitMove:(CGWindow *)window {
@@ -2572,9 +2627,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowWillClose:(CGWindow *)window {
-   if([NSApp modalWindow]==self)
-    [NSApp stopModalWithCode:NSRunAbortedResponse];
-
    [self performClose:nil];
 }
 
@@ -2602,12 +2654,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSMutableArray *moved=[NSMutableArray array];
    NSMutableArray *update=[NSMutableArray array];
    
-   NSPoint     mousePoint={-1,-1};
    BOOL        cursorIsSet=NO;
    BOOL        raiseToolTipWindow=NO;
    NSUInteger  i,count;
+   NSPoint     mousePoint=[self mouseLocationOutsideOfEventStream];
 
-   mousePoint=[self mouseLocationOutsideOfEventStream];
 
    // This collects only the active ones.
    [self _resetTrackingAreas];
@@ -2677,17 +2728,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==NO && mouseIsInside==YES){
       [entered addObject:area];
      }
-     if(options&NSTrackingMouseEnteredAndExited && mouseWasInside==YES && mouseIsInside==NO){
+     if(options&(NSTrackingMouseEnteredAndExited|NSTrackingCursorUpdate) && mouseWasInside==YES && mouseIsInside==NO){
       [exited addObject:area];
      }
      if(options&NSTrackingMouseMoved && [self acceptsMouseMovedEvents]==YES){
       [moved addObject:area];
      }
      if(options&NSTrackingCursorUpdate && mouseWasInside==NO && mouseIsInside==YES && !(options&NSTrackingActiveAlways)){
+      cursorIsSet=YES;
       [update addObject:area];
      }
+#if 0
      if(options&NSTrackingCursorUpdate && mouseIsInside==YES)
       cursorIsSet=YES;
+#endif
     } // (not) ToolTip
 
     [area _setMouseInside:mouseIsInside];
@@ -2699,6 +2753,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    for(NSTrackingArea *check in exited){
     id owner=[check owner];
     
+       if([check options]&NSTrackingCursorUpdate){
+           [[NSCursor arrowCursor] set];
+       }
+       
     if([owner respondsToSelector:@selector(mouseExited:)]){
       NSEvent *event=[NSEvent enterExitEventWithType:NSMouseExited
                                             location:mousePoint
@@ -2771,7 +2829,21 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      delay=2.;
     [[NSToolTipWindow sharedToolTipWindow] performSelector:@selector(orderFront:) withObject:nil afterDelay:delay];
    }
-
+   
+   if(!cursorIsSet){
+    NSPoint check=[_contentView convertPoint:mousePoint fromView:nil];
+    
+    // we set the cursor to the current cursor if it is inside the content area, this will need to be changed
+    // if we're drawing out own window frame 
+    if(NSMouseInRect(check,[_contentView bounds],[_contentView isFlipped])){
+     if([NSCursor currentCursor]==nil)
+         [[NSCursor arrowCursor] set];
+    else
+        [[NSCursor currentCursor] set];
+     cursorIsSet=YES;
+    }
+   }
+   
    return cursorIsSet;
 }
 

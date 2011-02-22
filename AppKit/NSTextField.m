@@ -15,6 +15,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSKeyValueBinding/NSTextFieldBinder.h"
 #import "NSKeyValueBinding/NSObject+BindingSupport.h"
 
+
+@interface NSTextFieldCell (Private)
+
+- (CGFloat) _fontSize;
+- (void) _setFontSize:(CGFloat)fontSize;
+- (NSString*) _fontFamilyName;
+- (void) _setFontFamilyName:(NSString*)familyName;
+
+@end
+
+
+
 @implementation NSTextField
 
 +(Class)cellClass {
@@ -37,6 +49,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
+// Default for a NSTextFieldCell is NOT the same as NSTextField
+   [_cell setEditable:YES];
+   [_cell setSelectable:YES];
+   [_cell setBezeled:YES];
    [self registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
    return self;
 }
@@ -108,6 +124,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)acceptsFirstResponder {
    return YES;
+}
+
+-(BOOL)needsPanelToBecomeKey {
+    return YES;
 }
 
 -(BOOL)becomeFirstResponder {
@@ -254,6 +274,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTitleWithMnemonic:(NSString *)value {
    [self setStringValue:value];
+}
+
+@end
+
+@implementation NSTextField (Bindings)
+
+- (CGFloat) _fontSize {
+    return [(NSTextFieldCell*)_cell _fontSize];
+}
+- (void) _setFontSize:(CGFloat)fontSize {
+    [(NSTextFieldCell*)_cell _setFontSize:fontSize];
+}
+- (NSString*) _fontFamilyName {
+    return [(NSTextFieldCell*)_cell _fontFamilyName];
+}
+- (void) _setFontFamilyName:(NSString*)familyName {
+    [(NSTextFieldCell*)_cell _setFontFamilyName:familyName];
 }
 
 @end

@@ -81,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_buildTimer {
    if(_animationTimer==nil){
     [self willChangeValueForKey:@"animate"];
-    _animationTimer = [[NSTimer scheduledTimerWithTimeInterval:_animationDelay
+    _animationTimer = [[NSTimer timerWithTimeInterval:_animationDelay
                                                         target:self
                                                       selector:@selector(animate:)
                                                       userInfo:nil
@@ -89,7 +89,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // FIXME: does it do this? Or does it add it to the current mode?
 // Apple's does work in a modal panel (right?)_                                                 
-    [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSModalPanelRunLoopMode];
+    [[NSRunLoop mainRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
+    [[NSRunLoop mainRunLoop] addTimer:_animationTimer forMode:NSModalPanelRunLoopMode];
     
     [self didChangeValueForKey:@"animate"];
    }
@@ -290,6 +291,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return;
    
    [self _buildTimer];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)stopAnimation:sender {
@@ -297,6 +299,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return;
 
    [self _invalidateTimer];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)animate:sender {

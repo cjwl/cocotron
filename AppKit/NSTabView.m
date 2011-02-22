@@ -506,3 +506,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+
+@implementation NSTabView (Bindings)
+
+-(int)_selectedIndex {
+    return [self indexOfTabViewItem:_selectedItem];
+}
+-(void)_setSelectedIndex:(int)selectedIndex {
+    [self selectTabViewItemAtIndex:selectedIndex];
+}
+
+@end

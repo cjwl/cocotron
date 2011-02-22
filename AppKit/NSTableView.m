@@ -1828,3 +1828,9 @@ _dataSource);
 }
 
 @end
+
+
+@implementation NSTableView (Bindings)
+
+
+@end

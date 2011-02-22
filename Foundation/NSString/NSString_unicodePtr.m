@@ -25,7 +25,7 @@ NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,const unichar *unicode,NSUIn
 }
 
 NSString *NSString_unicodePtrNew(NSZone *zone,const unichar *unicode,NSUInteger length) {
-   unichar *copy=malloc(length*sizeof(unichar));
+   unichar *copy=NSZoneMalloc(NULL,length*sizeof(unichar));
    int      i;
    
    for(i=0;i<length;i++)

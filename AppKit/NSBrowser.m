@@ -423,7 +423,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setReusesColumns:(BOOL)flag {
-   _reusesColumns=flag;
+    _reusesColumns=flag?YES:NO;
 }
 
 -(void)setTitle:(NSString *)title ofColumn:(NSInteger)column {
@@ -531,6 +531,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self unloadLastColumn];
 
    [self reloadColumn:0];
+}
+
+-(void)viewWillDraw {
+    // This should be a flag really
+    
+    if([_matrices count]==0 || [[_matrices objectAtIndex:0] numberOfRows]==0){
+    [self loadColumnZero];
+   }
+   
+   [super viewWillDraw];
 }
 
 -(NSMatrix *)createMatrixInColumn:(NSInteger)column {

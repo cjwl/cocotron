@@ -156,7 +156,7 @@ id NSApp=nil;
    return _windows;
 }
 
--(NSWindow *)windowWithWindowNumber:(int)number {
+-(NSWindow *)windowWithWindowNumber:(NSInteger)number {
    int i,count=[_windows count];
    
    for(i=0;i<count;i++){
@@ -415,6 +415,10 @@ id NSApp=nil;
        needsUntitled = [_delegate applicationShouldOpenUntitledFile: self];
    }
 
+   if(needsUntitled && _delegate && [_delegate respondsToSelector: @selector(applicationOpenUntitledFile:)]) {
+     needsUntitled = ![_delegate applicationOpenUntitledFile: self];
+   }
+
    if(needsUntitled && controller && ![controller documentClassForType:[controller defaultType]]) {
        needsUntitled = NO;
    }
@@ -477,11 +481,17 @@ id NSApp=nil;
 
 -(void)run {
     
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   [self finishLaunching];
-   [pool release];
-   
-   _isRunning=YES;
+  static BOOL didlaunch = NO;
+  NSAutoreleasePool *pool;
+
+  _isRunning=YES;
+
+  if (!didlaunch) {
+    didlaunch = YES;
+    pool=[NSAutoreleasePool new];
+    [self finishLaunching];
+    [pool release];
+  }
    
    do {
        pool = [NSAutoreleasePool new];
@@ -526,6 +536,11 @@ id NSApp=nil;
    [[event window] sendEvent:event];
 }
 
+// This method is used by NSWindow
+-(void)_displayAllWindowsIfNeeded {
+   [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
+}
+
 -(NSEvent *)nextEventMatchingMask:(unsigned int)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
    NSEvent *nextEvent=nil;
    
@@ -534,11 +549,14 @@ id NSApp=nil;
 
    NS_DURING
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(createRunningCopyPipe)];
+
+       // This should happen before _makeSureIsOnAScreen so we don't reposition done windows
+    [self _checkForReleasedWindows];
+
     [[NSApp windows] makeObjectsPerformSelector:@selector(_makeSureIsOnAScreen)];
  
-    [self _checkForReleasedWindows];
     [self _checkForAppActivation];
-    [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
+     [self _displayAllWindowsIfNeeded];
 
      nextEvent=[[_display nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue] retain];
 
@@ -717,7 +735,8 @@ id NSApp=nil;
    [_modalStack addObject:session];
 
    [window _hideMenuViewIfNeeded];
-   [window center];
+   if(![window isVisible])
+    [window center];
    [window makeKeyAndOrderFront:self];
 
    return session;
@@ -758,10 +777,7 @@ id NSApp=nil;
 }
 
 -(void)stopModalWithCode:(int)code {
-   if([_modalStack lastObject]==nil)
-    [NSException raise:NSInvalidArgumentException
-                format:@"-[%@ %s] no modal session running",isa,sel_getName(_cmd)];
-
+    // This should silently ignore any attempt to end a session when there is none.
    [[_modalStack lastObject] stopModalWithCode:code];
 }
 

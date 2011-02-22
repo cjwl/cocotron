@@ -143,11 +143,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(drawTitle)
     [title _clipAndDrawInRect:titleRect];
 
-   if(drawBranchImage)
-    [branchImage compositeToPoint:branchImageOrigin operation:NSCompositeSourceOver];
+    if(drawBranchImage){
+        [branchImage drawInRect:NSMakeRect(branchImageOrigin.x,branchImageOrigin.y,branchImageSize.width,branchImageSize.height) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 
-   if(drawImage)
-    [image compositeToPoint:imageOrigin operation:NSCompositeSourceOver];
+    }
+    
+    if(drawImage){
+       [image drawInRect:NSMakeRect(imageOrigin.x,imageOrigin.y,imageSize.width,imageSize.height) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+    }
 }
 
 @end

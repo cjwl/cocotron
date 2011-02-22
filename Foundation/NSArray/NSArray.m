@@ -298,7 +298,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSUInteger)indexOfObject:object {
-	return [self indexOfObject:object inRange:NSMakeRange(0,[self count])];
+   NSInteger i,count=[self count];
+
+   for(i=0;i<count;i++)
+    if([[self objectAtIndex:i] isEqual:object])
+     return i;
+
+   return NSNotFound;
 }
 
 

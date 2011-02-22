@@ -2194,6 +2194,11 @@
 		FE3C855E108779540018252A /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C854E108779540018252A /* O2AffineTransform.m */; };
 		FE3C855F108779540018252A /* O2Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3C854F108779540018252A /* O2Geometry.h */; };
 		FE3C8560108779540018252A /* O2Geometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C8550108779540018252A /* O2Geometry.m */; };
+		FE41B85912BEA2C800ED6C10 /* CATransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE41B85812BEA2C800ED6C10 /* CATransaction.m */; };
+		FE41B85A12BEA2C800ED6C10 /* CATransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE41B85812BEA2C800ED6C10 /* CATransaction.m */; };
+		FE41B85B12BEA2C800ED6C10 /* CATransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE41B85812BEA2C800ED6C10 /* CATransaction.m */; };
+		FE41B85C12BEA2C800ED6C10 /* CATransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE41B85812BEA2C800ED6C10 /* CATransaction.m */; };
+		FE41B85D12BEA2C800ED6C10 /* CATransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE41B85812BEA2C800ED6C10 /* CATransaction.m */; };
 		FE43BE2111FFBAAD00119833 /* O2PDFBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43BE1F11FFBAAC00119833 /* O2PDFBlock.h */; };
 		FE43BE2211FFBAAD00119833 /* O2PDFBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FE43BE2011FFBAAC00119833 /* O2PDFBlock.m */; };
 		FE43BE2311FFBAAD00119833 /* O2PDFBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43BE1F11FFBAAC00119833 /* O2PDFBlock.h */; };
@@ -3272,6 +3277,16 @@
 		FE71F3CC11FD40B800E6F801 /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F3C411FD40B800E6F801 /* O2TTFDecoder.m */; };
 		FE71F3CD11FD40B800E6F801 /* O2TTFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE71F3C311FD40B800E6F801 /* O2TTFDecoder.h */; };
 		FE71F3CE11FD40B800E6F801 /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE71F3C411FD40B800E6F801 /* O2TTFDecoder.m */; };
+		FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE74968912BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */; };
+		FE74968A12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE74968B12BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */; };
+		FE74968C12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE74968D12BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */; };
+		FE74968E12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE74968F12BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */; };
+		FE74969012BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE74969112BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */; };
 		FE7AA0CD10F9788100FEDD9C /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */; };
 		FE7AA0CE10F9788100FEDD9C /* CAWindowOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */; };
 		FE7AA13110F97E3300FEDD9C /* CALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3110E13DCA00A2A651 /* CALayer.m */; };
@@ -3964,6 +3979,31 @@
 		FED56E6B11A2D89900D6D09B /* CARenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3210E13DCA00A2A651 /* CARenderer.m */; };
 		FED56E6C11A2D89E00D6D09B /* CATransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = FED38C3310E13DCA00A2A651 /* CATransform3D.m */; };
 		FED56E6D11A2D8A200D6D09B /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */; };
+		FEDEA8AD12C112E5008E5A59 /* CATransactionGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */; };
+		FEDEA8AE12C112E5008E5A59 /* CATransactionGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */; };
+		FEDEA8AF12C112E5008E5A59 /* CATransactionGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */; };
+		FEDEA8B012C112E5008E5A59 /* CATransactionGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */; };
+		FEDEA8B112C112E5008E5A59 /* CATransactionGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */; };
+		FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */; };
+		FEDEA8B412C112EE008E5A59 /* CATransactionGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */; };
+		FEDEA8B512C112EE008E5A59 /* CATransactionGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */; };
+		FEDEA8B612C112EE008E5A59 /* CATransactionGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */; };
+		FEDEA8B712C112EE008E5A59 /* CATransactionGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */; };
+		FEDEA95412C13368008E5A59 /* CABase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA95312C13368008E5A59 /* CABase.m */; };
+		FEDEA95512C13368008E5A59 /* CABase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA95312C13368008E5A59 /* CABase.m */; };
+		FEDEA95612C13368008E5A59 /* CABase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA95312C13368008E5A59 /* CABase.m */; };
+		FEDEA95712C13368008E5A59 /* CABase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA95312C13368008E5A59 /* CABase.m */; };
+		FEDEA95812C13368008E5A59 /* CABase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEA95312C13368008E5A59 /* CABase.m */; };
+		FEDEAA9912C2639B008E5A59 /* CAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */; };
+		FEDEAA9A12C2639B008E5A59 /* CAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */; };
+		FEDEAA9B12C2639B008E5A59 /* CAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */; };
+		FEDEAA9C12C2639B008E5A59 /* CAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */; };
+		FEDEAA9D12C2639B008E5A59 /* CAValueFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */; };
+		FEDEABAE12C98F4C008E5A59 /* CALayerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */; };
+		FEDEABAF12C98F4C008E5A59 /* CALayerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */; };
+		FEDEABB012C98F4C008E5A59 /* CALayerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */; };
+		FEDEABB112C98F4C008E5A59 /* CALayerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */; };
+		FEDEABB212C98F4C008E5A59 /* CALayerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */; };
 		FEDF951F0CAF43E7009DC96F /* O2PDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* O2PDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDF95200CAF43E7009DC96F /* O2PDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* O2PDFContext.m */; };
 		FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
@@ -4165,12 +4205,47 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "OpenGL-Windows-i386";
 		};
+		FE0DDFBA12BFF7DD008EC2E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FECA819410EBB231003472F1;
+			remoteInfo = "QuartzCore-Windows-i386";
+		};
+		FE0DDFBC12BFF7F5008EC2E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "QuartzCore-FreeBSD-i386";
+		};
 		FE39C6821203D5E200A80A71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE39C67E1203D5E200A80A71 /* CoreData.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = "CoreData-Windows-i386";
+		};
+		FE41B87512BEA2D900ED6C10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "QuartzCore-FreeBSD-i386";
+		};
+		FE41B87712BEA2D900ED6C10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED38C4D10E13E1000A2A651;
+			remoteInfo = "QuartzCore-Darwin-i386";
+		};
+		FE41B87912BEA2D900ED6C10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FECA81A110EBB231003472F1;
+			remoteInfo = "QuartzCore-Windows-i386";
 		};
 		FE4404B6106034C700A2AEFE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -4235,54 +4310,12 @@
 			remoteGlobalIDString = FE01AAE20C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
 		};
-		FECA81A410EBB232003472F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FECA81A110EBB231003472F1;
-			remoteInfo = "QuartzCore-FreeBSD-i386 copy";
-		};
-		FECA81A810EBB286003472F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FECA819410EBB231003472F1;
-			remoteInfo = "QuartzCore-Windows-i386";
-		};
 		FECAF4D00DB710EE00BA2A8E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FE01AAED0C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
-		};
-		FED38C3F10E13DDF00A2A651 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = "QuartzCore-FreeBSD-i386";
-		};
-		FED38C4110E13E0800A2A651 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = "QuartzCore-FreeBSD-i386";
-		};
-		FED38C5010E13E2E00A2A651 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FED38C4D10E13E1000A2A651;
-			remoteInfo = "QuartzCore-FreeBSD-i386 copy";
-		};
-		FED38C5510E13E5A00A2A651 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FED38C4310E13E1000A2A651;
-			remoteInfo = "QuartzCore-FreeBSD-i386 copy";
 		};
 		FED5359B0FE061B200F02667 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -4912,6 +4945,7 @@
 		FE3C854E108779540018252A /* O2AffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2AffineTransform.m; sourceTree = "<group>"; };
 		FE3C854F108779540018252A /* O2Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Geometry.h; sourceTree = "<group>"; };
 		FE3C8550108779540018252A /* O2Geometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Geometry.m; sourceTree = "<group>"; };
+		FE41B85812BEA2C800ED6C10 /* CATransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransaction.m; sourceTree = "<group>"; };
 		FE43BE1F11FFBAAC00119833 /* O2PDFBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFBlock.h; sourceTree = "<group>"; };
 		FE43BE2011FFBAAC00119833 /* O2PDFBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFBlock.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
@@ -5083,6 +5117,8 @@
 		FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextAttachmentCell.m; sourceTree = "<group>"; };
 		FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTypesetter_concrete.h; sourceTree = "<group>"; };
 		FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTypesetter_concrete.m; sourceTree = "<group>"; };
+		FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewBackingLayer.h; sourceTree = "<group>"; };
+		FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewBackingLayer.m; sourceTree = "<group>"; };
 		FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAWindowOpenGLContext.h; path = ../QuartzCore/CAWindowOpenGLContext.h; sourceTree = SOURCE_ROOT; };
 		FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAWindowOpenGLContext.m; path = ../QuartzCore/CAWindowOpenGLContext.m; sourceTree = SOURCE_ROOT; };
 		FE7ABEBD0DC2C9BA0060D15B /* CGPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFDocument.m; sourceTree = "<group>"; };
@@ -5183,9 +5219,14 @@
 		FED38C3110E13DCA00A2A651 /* CALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CALayer.m; path = ../QuartzCore/CALayer.m; sourceTree = SOURCE_ROOT; };
 		FED38C3210E13DCA00A2A651 /* CARenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CARenderer.m; path = ../QuartzCore/CARenderer.m; sourceTree = SOURCE_ROOT; };
 		FED38C3310E13DCA00A2A651 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CATransform3D.m; path = ../QuartzCore/CATransform3D.m; sourceTree = SOURCE_ROOT; };
-		FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QuartzCore.xcodeproj; path = ../QuartzCore/QuartzCore.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = QuartzCore.xcodeproj; sourceTree = "<group>"; };
 		FED56E6411A2D87100D6D09B /* CGGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGradient.m; sourceTree = "<group>"; };
 		FEDE655E1210A294003D3EF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Cocotron/1.0/Windows/i386/Frameworks/CoreData.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransactionGroup.m; sourceTree = "<group>"; };
+		FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransactionGroup.h; sourceTree = "<group>"; };
+		FEDEA95312C13368008E5A59 /* CABase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABase.m; sourceTree = "<group>"; };
+		FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAValueFunction.m; sourceTree = "<group>"; };
+		FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CALayerContext.m; sourceTree = "<group>"; };
 		FEDF951B0CAF43E7009DC96F /* O2PDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2PDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* O2PDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2PDFContext.m; sourceTree = "<group>"; };
 		FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSToolbarOverflowArrow.pdf; sourceTree = "<group>"; };
@@ -5602,6 +5643,8 @@
 				FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */,
 				6E2B54BE0976075300DA0954 /* NSView.h */,
 				6E2B53DF0976075200DA0954 /* NSView.m */,
+				FE74968612BB1D4F008DBFCB /* NSViewBackingLayer.h */,
+				FE74968712BB1D4F008DBFCB /* NSViewBackingLayer.m */,
 				6E2B54DC0976075300DA0954 /* NSWindow-Drag.h */,
 				6E2B53F70976075200DA0954 /* NSWindow-Drag.m */,
 				6E2B54C20976075300DA0954 /* NSWindow-Private.h */,
@@ -6211,6 +6254,16 @@
 			path = CoreData_;
 			sourceTree = "<group>";
 		};
+		FE41B87012BEA2D900ED6C10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE41B87612BEA2D900ED6C10 /* QuartzCore.framework */,
+				FE41B87812BEA2D900ED6C10 /* QuartzCore.framework */,
+				FE41B87A12BEA2D900ED6C10 /* QuartzCore.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FE44327B0BB95F4300411464 /* NSInterfacePart */ = {
 			isa = PBXGroup;
 			children = (
@@ -6487,7 +6540,6 @@
 		FEAE000911E4E43B00CA0912 /* CoreVideo */ = {
 			isa = PBXGroup;
 			children = (
-				FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */,
 				FEAE000B11E4E45600CA0912 /* CVDisplayLink.m */,
 			);
 			name = CoreVideo;
@@ -6545,6 +6597,12 @@
 		FED38C2610E1305700A2A651 /* QuartzCore */ = {
 			isa = PBXGroup;
 			children = (
+				FEDEABAD12C98F4C008E5A59 /* CALayerContext.m */,
+				FEDEAA9812C2639B008E5A59 /* CAValueFunction.m */,
+				FEDEA95312C13368008E5A59 /* CABase.m */,
+				FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */,
+				FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */,
+				FE41B85812BEA2C800ED6C10 /* CATransaction.m */,
 				FE20C20711892436006F01BA /* CAAnimation.m */,
 				FEF5A7C711E4EB0A009B0041 /* CAAnimationGroup.m */,
 				FEF5A7C811E4EB0A009B0041 /* CABasicAnimation.m */,
@@ -6557,28 +6615,19 @@
 				FE7AA0CB10F9788100FEDD9C /* CAWindowOpenGLContext.h */,
 				FE7AA0CC10F9788100FEDD9C /* CAWindowOpenGLContext.m */,
 				FE20C20811892436006F01BA /* CIAffineTransform.m */,
-				FE71DA7011F7403200E6F801 /* CIBloom.m */,
 				FE71DA9111F7433000E6F801 /* CIBoxBlur.m */,
+				FE71DA7011F7403200E6F801 /* CIBloom.m */,
 				FE20C20911892436006F01BA /* CIColor.m */,
 				FE20C20A11892436006F01BA /* CIContext.m */,
 				FE20C20B11892436006F01BA /* CIFilter.m */,
 				FE20C20C11892436006F01BA /* CIImage.m */,
 				FE71DA9211F7433000E6F801 /* CILinearGradient.m */,
 				FE20C20D11892436006F01BA /* CIVector.m */,
+				FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */,
 				FEAE000911E4E43B00CA0912 /* CoreVideo */,
 			);
 			name = QuartzCore;
 			path = ../QuartzCore;
-			sourceTree = "<group>";
-		};
-		FED38C3C10E13DDF00A2A651 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FED38C4010E13DDF00A2A651 /* QuartzCore.framework */,
-				FED38C5110E13E2E00A2A651 /* QuartzCore.framework */,
-				FECA81A510EBB232003472F1 /* QuartzCore.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6981,6 +7030,8 @@
 				FE58788212694AD2009B9EDF /* O2argb32f.h in Headers */,
 				FE587956126961BD009B9EDF /* O2ClipMask.h in Headers */,
 				FE99DA76128396B6006D789F /* O2Encoder_PNG.h in Headers */,
+				FE74968A12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
+				FEDEA8B412C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7380,6 +7431,8 @@
 				FE58788312694AD2009B9EDF /* O2argb32f.h in Headers */,
 				FE587958126961BD009B9EDF /* O2ClipMask.h in Headers */,
 				FE99DA78128396B6006D789F /* O2Encoder_PNG.h in Headers */,
+				FE74968C12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
+				FEDEA8B512C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7776,6 +7829,8 @@
 				FE587954126961BD009B9EDF /* O2ClipMask.h in Headers */,
 				FE99DA74128396B6006D789F /* O2Encoder_PNG.h in Headers */,
 				FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */,
+				FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
+				FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8177,6 +8232,8 @@
 				FE58788512694AD2009B9EDF /* O2argb32f.h in Headers */,
 				FE58795C126961BD009B9EDF /* O2ClipMask.h in Headers */,
 				FE99DA7C128396B6006D789F /* O2Encoder_PNG.h in Headers */,
+				FE74969012BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
+				FEDEA8B712C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8495,6 +8552,8 @@
 				FE58788412694AD2009B9EDF /* O2argb32f.h in Headers */,
 				FE58795A126961BD009B9EDF /* O2ClipMask.h in Headers */,
 				FE99DA7A128396B6006D789F /* O2Encoder_PNG.h in Headers */,
+				FE74968E12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
+				FEDEA8B612C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8539,7 +8598,6 @@
 			dependencies = (
 				C8A2E5760F07EA440054397C /* PBXTargetDependency */,
 				FE07750D0F2D54470074EE75 /* PBXTargetDependency */,
-				FED38C5610E13E5A00A2A651 /* PBXTargetDependency */,
 				FEE7E14510E2722B004A50F8 /* PBXTargetDependency */,
 			);
 			name = "AppKit-Darwin-i386";
@@ -8565,7 +8623,7 @@
 				FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */,
 				FE6EDEBD0DB7AF94005503A1 /* PBXTargetDependency */,
 				FE0C4EC51041CF3200D8C100 /* PBXTargetDependency */,
-				FECA81A910EBB286003472F1 /* PBXTargetDependency */,
+				FE0DDFBB12BFF7DD008EC2E6 /* PBXTargetDependency */,
 			);
 			name = "AppKit-Windows-i386";
 			productInstallPath = /Library/Frameworks;
@@ -8590,7 +8648,7 @@
 				FE5A8BE610C6F546005E348A /* PBXTargetDependency */,
 				FE5A8BE810C6F54B005E348A /* PBXTargetDependency */,
 				FE5A8BF610C75AC7005E348A /* PBXTargetDependency */,
-				FED38C4210E13E0800A2A651 /* PBXTargetDependency */,
+				FE0DDFBD12BFF7F5008EC2E6 /* PBXTargetDependency */,
 			);
 			name = "AppKit-FreeBSD-i386";
 			productInstallPath = /Library/Frameworks;
@@ -8654,7 +8712,7 @@
 					ProjectRef = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
 				},
 				{
-					ProductGroup = FED38C3C10E13DDF00A2A651 /* Products */;
+					ProductGroup = FE41B87012BEA2D900ED6C10 /* Products */;
 					ProjectRef = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
 				},
 			);
@@ -8726,6 +8784,27 @@
 			remoteRef = FE39C6821203D5E200A80A71 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FE41B87612BEA2D900ED6C10 /* QuartzCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = QuartzCore.framework;
+			remoteRef = FE41B87512BEA2D900ED6C10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE41B87812BEA2D900ED6C10 /* QuartzCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = QuartzCore.framework;
+			remoteRef = FE41B87712BEA2D900ED6C10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE41B87A12BEA2D900ED6C10 /* QuartzCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = QuartzCore.framework;
+			remoteRef = FE41B87912BEA2D900ED6C10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE4404B7106034C700A2AEFE /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -8761,32 +8840,11 @@
 			remoteRef = FE65206E0FBE3D3D00464BFD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FECA81A510EBB232003472F1 /* QuartzCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = QuartzCore.framework;
-			remoteRef = FECA81A410EBB232003472F1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FECAF4D10DB710EE00BA2A8E /* ApplicationServices.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = FECAF4D00DB710EE00BA2A8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FED38C4010E13DDF00A2A651 /* QuartzCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = QuartzCore.framework;
-			remoteRef = FED38C3F10E13DDF00A2A651 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FED38C5110E13E2E00A2A651 /* QuartzCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = QuartzCore.framework;
-			remoteRef = FED38C5010E13E2E00A2A651 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FED5359C0FE061B200F02667 /* Foundation.framework */ = {
@@ -9570,6 +9628,12 @@
 				FE58791612695E21009B9EDF /* O2argb32f.m in Sources */,
 				FE587957126961BD009B9EDF /* O2ClipMask.m in Sources */,
 				FE99DA77128396B6006D789F /* O2Encoder_PNG.m in Sources */,
+				FE74968B12BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */,
+				FE41B85A12BEA2C800ED6C10 /* CATransaction.m in Sources */,
+				FEDEA8AE12C112E5008E5A59 /* CATransactionGroup.m in Sources */,
+				FEDEA95512C13368008E5A59 /* CABase.m in Sources */,
+				FEDEAA9A12C2639B008E5A59 /* CAValueFunction.m in Sources */,
+				FEDEABAF12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9962,6 +10026,12 @@
 				FE58791712695E21009B9EDF /* O2argb32f.m in Sources */,
 				FE587959126961BD009B9EDF /* O2ClipMask.m in Sources */,
 				FE99DA79128396B6006D789F /* O2Encoder_PNG.m in Sources */,
+				FE74968D12BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */,
+				FE41B85B12BEA2C800ED6C10 /* CATransaction.m in Sources */,
+				FEDEA8AF12C112E5008E5A59 /* CATransactionGroup.m in Sources */,
+				FEDEA95612C13368008E5A59 /* CABase.m in Sources */,
+				FEDEAA9B12C2639B008E5A59 /* CAValueFunction.m in Sources */,
+				FEDEABB012C98F4C008E5A59 /* CALayerContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10385,6 +10455,12 @@
 				FE587955126961BD009B9EDF /* O2ClipMask.m in Sources */,
 				FE99DA75128396B6006D789F /* O2Encoder_PNG.m in Sources */,
 				FE5F4CA912A860BA00F5F334 /* O2Context_gdi+AppKit.m in Sources */,
+				FE74968912BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */,
+				FE41B85912BEA2C800ED6C10 /* CATransaction.m in Sources */,
+				FEDEA8AD12C112E5008E5A59 /* CATransactionGroup.m in Sources */,
+				FEDEA95412C13368008E5A59 /* CABase.m in Sources */,
+				FEDEAA9912C2639B008E5A59 /* CAValueFunction.m in Sources */,
+				FEDEABAE12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10779,6 +10855,12 @@
 				FE58791912695E21009B9EDF /* O2argb32f.m in Sources */,
 				FE58795D126961BD009B9EDF /* O2ClipMask.m in Sources */,
 				FE99DA7D128396B6006D789F /* O2Encoder_PNG.m in Sources */,
+				FE74969112BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */,
+				FE41B85D12BEA2C800ED6C10 /* CATransaction.m in Sources */,
+				FEDEA8B112C112E5008E5A59 /* CATransactionGroup.m in Sources */,
+				FEDEA95812C13368008E5A59 /* CABase.m in Sources */,
+				FEDEAA9D12C2639B008E5A59 /* CAValueFunction.m in Sources */,
+				FEDEABB212C98F4C008E5A59 /* CALayerContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11068,6 +11150,12 @@
 				FE58791812695E21009B9EDF /* O2argb32f.m in Sources */,
 				FE58795B126961BD009B9EDF /* O2ClipMask.m in Sources */,
 				FE99DA7B128396B6006D789F /* O2Encoder_PNG.m in Sources */,
+				FE74968F12BB1D4F008DBFCB /* NSViewBackingLayer.m in Sources */,
+				FE41B85C12BEA2C800ED6C10 /* CATransaction.m in Sources */,
+				FEDEA8B012C112E5008E5A59 /* CATransactionGroup.m in Sources */,
+				FEDEA95712C13368008E5A59 /* CABase.m in Sources */,
+				FEDEAA9C12C2639B008E5A59 /* CAValueFunction.m in Sources */,
+				FEDEABB112C98F4C008E5A59 /* CALayerContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11104,6 +11192,16 @@
 			name = "OpenGL-Windows-i386";
 			targetProxy = FE0C4EC41041CF3200D8C100 /* PBXContainerItemProxy */;
 		};
+		FE0DDFBB12BFF7DD008EC2E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "QuartzCore-Windows-i386";
+			targetProxy = FE0DDFBA12BFF7DD008EC2E6 /* PBXContainerItemProxy */;
+		};
+		FE0DDFBD12BFF7F5008EC2E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "QuartzCore-FreeBSD-i386";
+			targetProxy = FE0DDFBC12BFF7F5008EC2E6 /* PBXContainerItemProxy */;
+		};
 		FE5A8BE610C6F546005E348A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Foundation-FreeBSD-i386";
@@ -11123,21 +11221,6 @@
 			isa = PBXTargetDependency;
 			name = "ApplicationServices-Windows-i386";
 			targetProxy = FE6EDEBC0DB7AF94005503A1 /* PBXContainerItemProxy */;
-		};
-		FECA81A910EBB286003472F1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "QuartzCore-Windows-i386";
-			targetProxy = FECA81A810EBB286003472F1 /* PBXContainerItemProxy */;
-		};
-		FED38C4210E13E0800A2A651 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "QuartzCore-FreeBSD-i386";
-			targetProxy = FED38C4110E13E0800A2A651 /* PBXContainerItemProxy */;
-		};
-		FED38C5610E13E5A00A2A651 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "QuartzCore-FreeBSD-i386 copy";
-			targetProxy = FED38C5510E13E5A00A2A651 /* PBXContainerItemProxy */;
 		};
 		FEE7E14510E2722B004A50F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

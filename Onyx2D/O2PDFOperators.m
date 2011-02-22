@@ -574,7 +574,7 @@ void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
    
 
    if([graphicsState getNameForKey:"SMask" value:&name]){
-    O2PDFFix(__FILE__,__LINE__,@"SMask not implemented");
+    O2PDFFix(__FILE__,__LINE__,@"SMask not implemented, name=%s",name);
    }
    else if([graphicsState getDictionaryForKey:"SMask" value:&dictionary]){
     O2PDFFix(__FILE__,__LINE__,@"SMask not implemented");

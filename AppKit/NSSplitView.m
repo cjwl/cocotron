@@ -89,6 +89,18 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
    return YES;
 }
 
+-(BOOL)isSubviewCollapsed:(NSView *)subview {
+    if (_isVertical) {
+        return [subview frame].size.width == 0.0;
+    } else {
+        return [subview frame].size.height == 0.0;
+    }
+}
+
+-(void)setDividerStyle:(NSSplitViewDividerStyle)style {
+    NSUnimplementedMethod();
+}
+
 -(void)adjustSubviews {
    NSRect  frame=[self bounds];
    int     i,count=[_subviews count];

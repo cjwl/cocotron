@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2Surface.h>
 #import <Onyx2D/O2Context_gdi.h>
+#import <Foundation/NSPlatform_win32.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
@@ -324,14 +325,17 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)setFrame:(CGRect)frame {
+   [self invalidateContextsWithNewSize:frame.size];
+
+    // _frame must be set before the MoveWindow as MoveWindow generates WM_SIZE and WM_MOVE messages
+    // which need to check the size against the current to prevent erroneous resize/move notifications
+    _frame=frame;
+    
    CGRect moveTo=convertFrameToWin32ScreenCoordinates(frame);
 
    _ignoreMinMaxMessage=YES;
    MoveWindow(_handle, moveTo.origin.x, moveTo.origin.y,moveTo.size.width, moveTo.size.height,YES);
    _ignoreMinMaxMessage=NO;
-
-   [self invalidateContextsWithNewSize:frame.size];
-   _frame=frame;
 }
 
 -(void)setOpaque:(BOOL)value {
@@ -577,7 +581,7 @@ i=count;
    for(CGLPixelSurface *overlay in _overlays){
     if([overlay isOpaque])
      continue;
-     
+    
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     
@@ -741,15 +745,21 @@ i=count;
 -(void)_GetWindowRectDidSize:(BOOL)didSize {
    CGRect frame=[self queryFrame];
    
-   if(frame.size.width>0 && frame.size.height>0)
+    if(frame.size.width>0 && frame.size.height>0){
     [_delegate platformWindow:self frameChanged:frame didSize:didSize];
+    }
 }
 
 -(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
 
    if(contentSize.width>0 && contentSize.height>0){
-    [self invalidateContextsWithNewSize:[self queryFrame].size];
+       NSSize checkSize=[self queryFrame].size;
+       
+       if(NSEqualSizes(checkSize,_frame.size))
+           return 0;
+       
+    [self invalidateContextsWithNewSize:checkSize];
 
     [self _GetWindowRectDidSize:YES];
 
@@ -769,7 +779,12 @@ i=count;
 }
 
 -(int)WM_MOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   [_delegate platformWindowWillMove:self];
+   NSPoint checkOrigin=[self queryFrame].origin;
+    
+   if(NSEqualPoints(checkOrigin,_frame.origin))
+    return 0;
+
+    [_delegate platformWindowWillMove:self];
    [self _GetWindowRectDidSize:NO];
    [_delegate platformWindowDidMove:self];
    return 0;
@@ -1000,10 +1015,6 @@ static void initializeWindowClass(WNDCLASS *class){
     HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,16,16,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
     static WNDCLASS _standardWindowClass,_borderlessWindowClass,_borderlessWindowClassWithShadow;
-    OSVERSIONINFOEX osVersion;
-    
-    osVersion.dwOSVersionInfoSize=sizeof(osVersion);
-    GetVersionEx((OSVERSIONINFO *)&osVersion);
 
     if(icon==NULL)
      icon=LoadImage(NULL,IDI_APPLICATION,IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_SHARED);
@@ -1019,10 +1030,8 @@ static void initializeWindowClass(WNDCLASS *class){
     
     _borderlessWindowClassWithShadow.lpszClassName="Win32BorderlessWindowWithShadow";
     
-    // XP or higher
-    if((osVersion.dwMajorVersion==5 && osVersion.dwMinorVersion>=1) || osVersion.dwMajorVersion>5){
+    if(NSPlatformGreaterThanOrEqualToWindowsXP())
      _borderlessWindowClassWithShadow.style|=CS_DROPSHADOW;
-    }
         
     if(RegisterClass(&_standardWindowClass)==0)
      NSLog(@"RegisterClass failed");

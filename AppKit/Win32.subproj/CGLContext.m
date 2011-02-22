@@ -341,9 +341,9 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.
  */
-    CGLSetCurrentContext(context);
+   CGLSetCurrentContext(context);
 
-     [context->overlay flushBuffer];
+   [context->overlay flushBuffer];
      
    return kCGLNoError;
 }

@@ -244,7 +244,7 @@ static id _readObjectAtOffset(NSPropertyListReader_binary1 *self,NSUInteger *off
                 if( topNibble == 0xA )
                 {
                         id result;
-                        id *objs = malloc( length * sizeof( *objs ) );
+                        id *objs = NSZoneMalloc(NULL, length * sizeof( *objs ) );
                         uint64_t i;
                         for( i = 0; i < length; i++ )
                                 objs[i] = _readInlineObjectAtOffset(self,offset);
@@ -259,8 +259,8 @@ static id _readObjectAtOffset(NSPropertyListReader_binary1 *self,NSUInteger *off
                 if( topNibble == 0xD )
                 {
                         id result;
-                        id *keys = malloc( length * sizeof( *keys ) );
-                        id *objs = malloc( length * sizeof( *objs ) );
+                        id *keys = NSZoneMalloc(NULL, length * sizeof( *keys ) );
+                        id *objs = NSZoneMalloc(NULL, length * sizeof( *objs ) );
                         uint64_t i;
                         for( i = 0; i < length; i++ )
                                 keys[i] = _readInlineObjectAtOffset(self,offset);
