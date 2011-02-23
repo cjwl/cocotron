@@ -321,11 +321,13 @@ static void CGPathConverter( void* info, const CGPathElement* element )
 
 static int numberOfPointsForOperator(int op){
    switch(op){
-    case kCGPathElementMoveToPoint: return 1;
-    case kCGPathElementAddLineToPoint: return 1;
-    case kCGPathElementAddCurveToPoint: return 3;
-    case kCGPathElementAddQuadCurveToPoint: return 2;
-    case kCGPathElementCloseSubpath: return 0;
+    case NSMoveToBezierPathElement: return 1;
+    case NSLineToBezierPathElement: return 1;
+    case NSCurveToBezierPathElement: return 3;
+    case NSClosePathBezierPathElement: return 0;
+	   default:
+		   [NSException raise:NSInvalidArgumentException format:@"op (%d) is not a valid element type", op];
+		   break;
    }
    return 0;
 }
@@ -816,6 +818,7 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 				break;
 			case NSCurveToBezierPathElement:
 				[path curveToPoint:nextPoint controlPoint1:pts[1] controlPoint2: pts[0]];
+				break;
 			case NSClosePathBezierPathElement:
 					[path moveToPoint: nextPoint];
 				// Current subpath is closed
