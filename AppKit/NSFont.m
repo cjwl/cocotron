@@ -337,7 +337,7 @@ static NSFont **_fontCache=NULL;
 			if (fontFace != nil) {
 				int i = 0;
 				for (i = 0; i < [matchingFonts count]; i++) {
-					NSArray* members = [matchingFonts objectAtIndex: 0];
+					NSArray* members = [matchingFonts objectAtIndex: i];
 					NSString* candidateFace = [members objectAtIndex: 1];
 					if ([candidateFace isEqualToString: fontFace]) {
 						return [NSFont fontWithName: [members objectAtIndex: 0] size: size];
