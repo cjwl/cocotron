@@ -440,8 +440,13 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(BOOL)containsPoint:(NSPoint)point {   
-   NSUnimplementedMethod();
-   return NO;
+
+	if ([self isEmpty]) {
+		return NO;
+	}
+	
+	// FIXME: this is way over simplified - but better than nothing
+	return NSPointInRect(point, [self bounds]);
 }
 
 -(NSPoint)currentPoint {
@@ -769,9 +774,89 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
     _points[pi+i]=points[i];
 }
 
+static BOOL curveIsFlat(float desiredFlatness, CGPoint start, CGPoint cp1, CGPoint cp2, CGPoint end)
+{
+	// Roughly compute the furthest distance of the curved path from the line connecting start to end
+	double ux = 3.0*cp1.x - 2.0*start.x - end.x; ux *= ux;
+	double uy = 3.0*cp1.y - 2.0*start.y - end.y; uy *= uy;
+	double vx = 3.0*cp2.x - 2.0*end.x - start.x; vx *= vx;
+	double vy = 3.0*cp2.y - 2.0*end.y - start.y; vy *= vy;
+	if (ux < vx) ux = vx;
+	if (uy < vy) uy = vy;
+	return (ux+uy <= desiredFlatness);
+}
+
+static NSUInteger doFlattenBezierCurve(float desiredFlatness, CGPoint start, CGPoint cp1, CGPoint cp2, CGPoint end, NSUInteger* index, CGPoint* points)
+{
+	int count = 0;
+	if (curveIsFlat(desiredFlatness, start, cp1, cp2, end) == NO) {
+		// Subdivide the curve - Hearn & Baker Computer Graphics pp460-461
+		CGPoint sub1_start = start;
+		CGPoint sub1_cp1 = CGPointMake((start.x + cp1.x)/2, (start.y + cp1.y)/2);
+		CGPoint T = CGPointMake((cp1.x + cp2.x)/2, (cp1.y + cp2.y)/2);
+		CGPoint sub1_cp2 = CGPointMake((sub1_cp1.x + T.x)/2, (sub1_cp1.y + T.y)/2);
+		
+		CGPoint sub2_end = end;
+		CGPoint sub2_cp2 = CGPointMake((cp2.x + end.x)/2, (cp2.y + end.y)/2);
+		CGPoint sub2_cp1 = CGPointMake((T.x + sub2_cp2.x)/2, (T.y + sub2_cp2.y)/2);
+		CGPoint sub2_start = CGPointMake((sub1_cp2.x + sub2_cp1.x)/2, (sub1_cp2.y + sub2_cp1.y)/2);
+		CGPoint sub1_end = sub2_start;
+		
+		count += doFlattenBezierCurve(desiredFlatness, sub1_start, sub1_cp1, sub1_cp2, sub1_end, index, points);
+		count += doFlattenBezierCurve(desiredFlatness, sub2_start, sub2_cp1, sub2_cp2, sub2_end, index, points);
+		return count;
+	} else {
+		// We're flat enough
+		if (index && points) {
+			points[*index] = end;
+			*index += 1;
+		}
+		return 1;
+	}
+}
+	
+// pass nil for points to figure out how large the buffer should be
+static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoint cp1, CGPoint cp2, CGPoint end, CGPoint* points)
+{
+	NSUInteger index = 0;
+	return doFlattenBezierCurve( desiredFlatness, start, cp1, cp2, end, &index, points);
+}
+
 -(NSBezierPath *)bezierPathByFlatteningPath {
-   NSUnimplementedMethod();
-   return nil;
+	// We're just taking the path segments from the end and switching their start and ends
+	// MoveTo are converted to ClosePath if the current path is closed, else to MoveTo
+	// ClosePath are converted to MoveTo and the current path is marked as closed
+	NSBezierPath *path = (NSBezierPath *)[[self class] bezierPath];
+	int i = 0;
+	for ( i = 0; i < [self elementCount]; i++) {
+		CGPoint pts[3];
+		NSBezierPathElement type = [self elementAtIndex: i associatedPoints: pts];
+		switch (type) {
+			case NSMoveToBezierPathElement: 
+				[path moveToPoint: pts[0]];
+				break;
+			case NSLineToBezierPathElement:
+				[path lineToPoint: pts[0]];
+				break;
+			case NSCurveToBezierPathElement:
+			{
+				CGPoint currentPoint = [path currentPoint];
+				NSUInteger count = flattenBezierCurve([self flatness], currentPoint, pts[0], pts[1], pts[2], nil);
+				CGPoint flattenedPoints[count];
+				flattenBezierCurve([self flatness], currentPoint, pts[0], pts[1], pts[2], &flattenedPoints[0]);
+				int p = 0;
+				for (p = 0; p < count; p++) {
+					[path lineToPoint: flattenedPoints[p]];
+				}
+			}
+				break;
+			case NSClosePathBezierPathElement:
+				[path closePath];
+				break;
+		}
+	}
+		
+	return path;
 }
 
 -(NSBezierPath *)bezierPathByReversingPath {
