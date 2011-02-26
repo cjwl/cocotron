@@ -11270,7 +11270,6 @@
 			buildSettings = {
 				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -11552,7 +11551,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;

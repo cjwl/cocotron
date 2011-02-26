@@ -2183,7 +2183,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
@@ -2223,7 +2222,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
