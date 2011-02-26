@@ -743,26 +743,25 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
+   while([session stopCode]==NSRunContinuesResponse){
+    NSEvent *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantFuture] inMode:NSModalPanelRunLoopMode dequeue:YES];
 
-   while([session stopCode]==NSRunContinuesResponse) {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
-        
     if(event==nil)
      break;
-     
-   NSWindow          *window=[event window];
 
-   // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
-   if([event type]==NSKeyDown && window == [session modalWindow])
-       [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-   
-   if(window==[session modalWindow] || [window worksWhenModal])
-    [self sendEvent:event];
-   else if([event type]==NSLeftMouseDown)
-    [[session modalWindow] makeKeyAndOrderFront:self];
+    NSAutoreleasePool *pool=[NSAutoreleasePool new];
+    NSWindow          *window=[event window];
 
-   [pool release];
+    // in theory this could get weird, but all we want is the ESC-cancel keybinding,
+    // afaik NSApp doesn't respond to any other doCommandBySelectors...
+    if([event type]==NSKeyDown && window == [session modalWindow])
+     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+
+    if(window==[session modalWindow] || [window worksWhenModal])
+     [self sendEvent:event];
+    else if([event type]==NSLeftMouseDown)
+     [[session modalWindow] makeKeyAndOrderFront:self];
+    [pool release];
    }
 
    return [session stopCode];
