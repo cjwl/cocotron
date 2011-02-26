@@ -161,8 +161,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSRect contentViewFrame;
 
    _styleMask=styleMask;
-
-    _frame=[self frameRectForContentRect:contentRect];
+   _frame=[self frameRectForContentRect:contentRect];
    
    backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
@@ -681,10 +680,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=(leastY+20)-frame.size.height;
     }
 
-       if(changed){
+    if(changed)
      [self setFrame:frame display:YES];
-       }
-       
+
     _makeSureIsOnAScreen=NO;
    }
 #else
@@ -721,9 +719,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=virtual.origin.y-frame.size.height;
     }
 
-    if(changed){
+    if(changed)
      [self setFrame:frame display:YES];
-    }
+
     _makeSureIsOnAScreen=NO;
    }
 #endif
@@ -791,20 +789,17 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _makeSureIsOnAScreen=YES;
 
    [_backgroundView setFrameSize:_frame.size];
-
-    [[self platformWindow] setFrame:_frame];
+   [[self platformWindow] setFrame:_frame];
 
    if(didSize)
     [self resetCursorRects];
     
-   if(didSize){
+   if(didSize)
     [self postNotificationName:NSWindowDidResizeNotification];
-   }
     
-   if(didMove){
+   if(didMove)
     [self postNotificationName:NSWindowDidMoveNotification];
-   }
-    
+
 // If you setFrame:display:YES before rearranging views with only setFrame: calls (which do not mark the view for display)
 // Cocoa will properly redisplay the views
 // So, doing a hard display right here is not the right thing to do, delay it 
@@ -842,7 +837,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    frame.origin.x=point.x;
    frame.origin.y=point.y-frame.size.height;
-
    [self setFrame:frame display:YES];
 }
 
@@ -999,7 +993,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [toolbarView setFrameOrigin:toolbarOrigin];
 
    [[self contentView] setAutoresizingMask:NSViewNotSizable];
-
    [self setFrame:frame display:NO animate:NO];
    
    [[self contentView] setAutoresizingMask:mask];
@@ -1352,7 +1345,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)canBecomeMainWindow {
-    return YES;
+   return YES;
 }
 
 -(BOOL)canBecomeVisibleWithoutLogin {
@@ -1641,7 +1634,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     // NSApplication does a _displayAllWindowsIfNeeded before every event, but there are some things which wont generate
     // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this
     [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
-}
+   }
 }
 
 -(void)disableFlushWindow {
@@ -1985,8 +1978,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         
         // Event goes to view, not first responder
         [view mouseDown:event];
-
-      _mouseDownLocationInWindow=[event locationInWindow];
+        _mouseDownLocationInWindow=[event locationInWindow];
      }
      break;
 
@@ -2108,11 +2100,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else
       topLeftPoint.y = frame.origin.y + frame.size.height;
    
-   if (reposition){
+   if (reposition)
       [self setFrame:frame display:YES];
 
-   }
-    
    return topLeftPoint;
 }
 
@@ -2362,7 +2352,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     frame=[self frame];
     frame.size.height+=(newSize.height-oldSize.height);
     // no display because setMenu: is called before awakeFromNib
-
     [self setFrame:frame display:NO];
     // do we even need this?
     [_backgroundView setNeedsDisplay:YES]; 
@@ -2592,12 +2581,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self saveFrameUsingName:_autosaveFrameName];
    [self resetCursorRects];
    
-   if(didSize){
+   if(didSize)
     [self postNotificationName:NSWindowDidResizeNotification];
-   }
-   else{
+   else
     [self postNotificationName:NSWindowDidMoveNotification];
-   }
 }
 
 -(void)platformWindowExitMove:(CGWindow *)window {
