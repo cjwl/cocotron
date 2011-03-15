@@ -58,6 +58,11 @@
    _title=value;
 }
 
+-(void)setView:(NSView *)value {
+   value=[value retain];
+   [_view release];
+   _view=value;
+}
 
 -(void)loadView {
    NSString *name=[self nibName];
