@@ -409,17 +409,7 @@ static void OBJCSymbolTableRegisterClasses(OBJCSymbolTable *symbolTable){
       
       OBJCRegisterClass(class);
       OBJCAddToUnResolvedClasses(class);
-       
-#ifdef APPLE
-       if(strcmp(class_getName(class), "NSConstantString") == 0) {
-           memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
-       }
-       
-       if(strcmp(class_getName(class), "NSDarwinString") == 0) {
-           memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
-       }
-#endif
-       
+              
        if(strcmp(class_getName(class), "Protocol") == 0) {
            // Fix protocol classes where isa is not yet set. This is the case for all
            // classes loaded before Protocol class is loaded.
