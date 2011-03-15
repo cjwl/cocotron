@@ -17,7 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSCollectionView *)collectionView;
 
 -(BOOL)isSelected;
--representedObject;
 
 -(void)setSelected:(BOOL)value;
 
