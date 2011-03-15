@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Glenn Ganz
+/* Copyright (c) 2010-2011 Glenn Ganz
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  
@@ -14,21 +14,19 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
-#import <Foundation/Foundation.h>
+#import <Foundation/NSProcessInfo.h>
 
 
-
-extern void __attribute__ ((constructor)) libmain(void)
-{
-    fprintf(stderr, "Warning during Cocotron initialization: Not fully implemented on this platform");
-    fflush(stderr);
-    
-    
+FOUNDATION_EXPORT void __attribute__ ((constructor)) libmain(void)
+{    
     char args[sysconf(_SC_ARG_MAX)];
     int managementInfoBase[4];
     size_t len;
-    int argc;
+    int argc = 0;
+    unsigned int last = 0;
+
         
     managementInfoBase[0] = CTL_KERN;
     managementInfoBase[1] = KERN_PROC;
@@ -37,27 +35,28 @@ extern void __attribute__ ((constructor)) libmain(void)
     
     len = sizeof(args);
     if (sysctl(managementInfoBase, 4, args, &len, NULL, 0) == -1) {
-        fprintf(stderr, "Warning during Cocotron initialization: Unable to read argument list of the process");
+        fprintf(stderr, "Error during Cocotron initialization: Unable to read argument list of the process");
         abort();
     }
     
-    int laststart = 0;
-    for(int i;i < len;i++) {
+    int allocated = 5;
+    const char **argv = (const char**)calloc(allocated,sizeof(char*));
+    
+    for(unsigned int i = 0;i < len;i++) {
         if(args[i] == '\0') {
             
-            char* arg = strdup(args + laststart );//malloc(i - laststart + 1);
+            char* arg = strdup(&args[last]);
             
-            //strncpy(arg, args + laststart, i - laststart + 1);
-            laststart = i + 1;
+            if(allocated <= argc) {
+                allocated *= 2;
+                argv = realloc(argv,sizeof(char*) * allocated);
+            }
+            
+            argv[argc] = arg;                     
+            last = i + 1;
             argc++;
-            fprintf(stderr, "Argument : [%s], laststart [%d] [%c] [args + laststart +1]= %d \n",  arg, laststart, args[laststart], args + laststart +1);
-            fflush(stderr); 
         }
     }
-    
-    //int argc,const char *argv[]
-    
-    
-    //__NSInitializeProcess(args,len);
-    OBJCInitializeProcess();
+
+    __NSInitializeProcess(argc,argv);
 }
