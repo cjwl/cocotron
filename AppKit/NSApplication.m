@@ -156,7 +156,7 @@ id NSApp=nil;
    return _windows;
 }
 
--(NSWindow *)windowWithWindowNumber:(int)number {
+-(NSWindow *)windowWithWindowNumber:(NSInteger)number {
    int i,count=[_windows count];
    
    for(i=0;i<count;i++){
@@ -549,9 +549,12 @@ id NSApp=nil;
 
    NS_DURING
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(createRunningCopyPipe)];
+
+       // This should happen before _makeSureIsOnAScreen so we don't reposition done windows
+    [self _checkForReleasedWindows];
+
     [[NSApp windows] makeObjectsPerformSelector:@selector(_makeSureIsOnAScreen)];
  
-    [self _checkForReleasedWindows];
     [self _checkForAppActivation];
      [self _displayAllWindowsIfNeeded];
 
@@ -732,7 +735,8 @@ id NSApp=nil;
    [_modalStack addObject:session];
 
    [window _hideMenuViewIfNeeded];
-   [window center];
+   if(![window isVisible])
+    [window center];
    [window makeKeyAndOrderFront:self];
 
    return session;
@@ -773,10 +777,7 @@ id NSApp=nil;
 }
 
 -(void)stopModalWithCode:(int)code {
-   if([_modalStack lastObject]==nil)
-    [NSException raise:NSInvalidArgumentException
-                format:@"-[%@ %s] no modal session running",isa,sel_getName(_cmd)];
-
+    // This should silently ignore any attempt to end a session when there is none.
    [[_modalStack lastObject] stopModalWithCode:code];
 }
 

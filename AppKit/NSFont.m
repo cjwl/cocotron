@@ -417,8 +417,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(NSString *)displayName {
-   NSUnimplementedMethod();
-   return nil;
+   return [self fontName];
 }
 
 -(NSFontDescriptor *)fontDescriptor {

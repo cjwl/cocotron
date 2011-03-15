@@ -103,7 +103,7 @@ typedef enum {
 
 -delegate;
 -(NSArray *)windows;
--(NSWindow *)windowWithWindowNumber:(int)number;
+-(NSWindow *)windowWithWindowNumber:(NSInteger)number;
 
 -(NSMenu *)mainMenu;
 -(NSMenu *)windowsMenu;
