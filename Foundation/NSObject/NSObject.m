@@ -123,7 +123,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 + (void)poseAsClass:(Class)aClass
 {
-    //TODO
+    NSUnimplementedMethod();
 }
 
 
