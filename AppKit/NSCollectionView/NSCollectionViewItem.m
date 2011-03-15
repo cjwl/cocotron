@@ -58,10 +58,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isSelected=value;
 }
 
--(void)setRepresentedObject:value {
-   value=[value retain];
-   [_representedObject release];
-   _representedObject=value;
-}
-
 @end

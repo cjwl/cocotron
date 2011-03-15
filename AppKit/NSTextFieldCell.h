@@ -17,7 +17,6 @@ typedef enum {
    NSColor *_backgroundColor;
    NSColor *_textColor;
    BOOL     _drawsBackground;
-   BOOL     _isBezeled;
    NSTextFieldBezelStyle _bezelStyle;
    id       _placeholder;
 }
@@ -25,7 +24,6 @@ typedef enum {
 -(NSColor *)backgroundColor;
 -(NSColor *)textColor;
 -(BOOL)drawsBackground;
--(BOOL)isBezeled;
 -(NSTextFieldBezelStyle)bezelStyle;
 
 -(NSString *)placeholderString;

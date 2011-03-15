@@ -697,7 +697,8 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 }
 
 -(void)appendBezierPathWithGlyphs:(NSGlyph *)glyphs count:(unsigned)count inFont:(NSFont *)font {
-	for (int i = 0; i < count; ++i) {
+	int i = 0;
+    for (; i < count; ++i) {
 		[self appendBezierPathWithGlyph:glyphs[i] inFont:font];
 	}
 }
@@ -780,7 +781,8 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 	
 	BOOL closed = NO; // state of current subpath
 	
-	for (int i = [self elementCount] - 1; i >= 0; i--) 
+    int i = [self elementCount] - 1;
+	for (; i >= 0; i--) 
     {
 		// Find the next point : it's the end of previous element in the original path
 		CGPoint nextPoint = CGPointMake(0,0);
