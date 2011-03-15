@@ -161,5 +161,8 @@ void OBJCRegisterModule_Darwin(const char * name)
 
    // Override the compiler version of the class
    //objc_addClass(&_NSConstantStringClassReference);
+    
+    OBJCSendLoadMessages();
+
 }
 

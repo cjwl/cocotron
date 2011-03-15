@@ -34,3 +34,4 @@ typedef struct {
 } OBJCObjectFile;
 
 OBJC_EXPORT void OBJCQueueModule(OBJCModule *module);
+OBJC_EXPORT void OBJCSendLoadMessages();

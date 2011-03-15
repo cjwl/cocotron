@@ -123,7 +123,9 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 + (void)poseAsClass:(Class)aClass
 {
+    NSAutoreleasePool * pool = [NSAutoreleasePool new];
     NSUnimplementedMethod();
+    [pool release];
 }
 
 
