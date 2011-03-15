@@ -117,10 +117,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _drawsBackground=flag;
 }
 
--(void)setBezeled:(BOOL)value {
-   _isBezeled=value;
-}
-
 -(void)setBezelStyle:(NSTextFieldBezelStyle)value {
    _bezelStyle=value;
 }

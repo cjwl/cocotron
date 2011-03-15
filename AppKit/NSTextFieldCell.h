@@ -32,7 +32,6 @@ typedef enum {
 -(void)setBackgroundColor:(NSColor *)color;
 -(void)setTextColor:(NSColor *)color;
 -(void)setDrawsBackground:(BOOL)flag;
--(void)setBezeled:(BOOL)value;
 -(void)setBezelStyle:(NSTextFieldBezelStyle)value;
 
 -(void)setPlaceholderString:(NSString *)value;
