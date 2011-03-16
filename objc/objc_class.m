@@ -646,7 +646,7 @@ BOOL class_addProtocol(Class cls,Protocol *protocol) {
 	protocolList->list[0] = protocol;
 	struct objc_protocol_list *protoList = cls->protocols;
 	struct objc_protocol_list *lastList = protoList;
-	while(protoList=protoList->next) {
+	while((protoList=protoList->next) != NULL) {
 		lastList = protoList;
 	}
 	lastList->next = protocolList;
