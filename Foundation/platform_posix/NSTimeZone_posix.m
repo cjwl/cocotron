@@ -191,7 +191,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         
         if(path != nil) {
             //localtime is a symlink
-            timeZoneName = [path lastPathComponent];
+            timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
             systemTimeZone = [self timeZoneWithName:timeZoneName];        
         }
         else {
