@@ -196,7 +196,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             systemTimeZone = [self timeZoneWithName:timeZoneName];        
         }
         else {
-            systemTimeZone = [[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]];
+            systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
         }
     }
 
