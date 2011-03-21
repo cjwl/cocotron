@@ -190,12 +190,12 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         NSString    *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
         
         if(path != nil) {
-
-            timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
-            
+            //localtime is a symlink
+            timeZoneName = [path lastPathComponent];
             systemTimeZone = [self timeZoneWithName:timeZoneName];        
         }
         else {
+            //localtime is a file
             systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
         }
     }
