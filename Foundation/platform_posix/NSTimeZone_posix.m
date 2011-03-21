@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaiseException.h>
 
-// structures in tzfiles are big-endian, from public doman tzfile.h
+// structures in tzfiles are big-endian, from public domain tzfile.h
 
 #define	TZ_MAGIC	"TZif"
 
@@ -87,7 +87,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         int             numberOfGMTFlags, numberOfStandardFlags;
         int             numberOfTransitionTimes, numberOfLocalTimes, numberOfAbbreviationCharacters;
         int             i;
-    
+        
         const struct tzType {
             unsigned int offset;
             unsigned char isDST;
@@ -103,8 +103,10 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
             data = [NSData dataWithContentsOfFile:zonePath];
         }
-        if (data == nil)
+        if (data == nil) {
+            [self release];
             return nil;
+        }
 
         transitions = [NSMutableArray array];
         sortedTransitions = [NSArray array];
@@ -134,9 +136,12 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         tzTypesBytes = (tzData+(numberOfTransitionTimes * 5));
         abbreviations = tzTypesBytes + numberOfLocalTimes * 6; //sizeof struct tzType
         for (i = 0; i < numberOfLocalTimes; ++i) {
-            
+
          tzTypes=(struct tzType *)tzTypesBytes;
             NSString *abb = [NSString stringWithCString:abbreviations+tzTypes->abbrevIndex];
+            if(name == nil) {
+                name = abb;
+            }
             [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
                                                                         isDaylightSavingTime:tzTypes->isDST
                                                                                 abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
@@ -184,14 +189,18 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         NSError     *error;
         NSString    *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
         
-        timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
-        
-        systemTimeZone = [self timeZoneWithName:timeZoneName];
+        if(path != nil) {
+
+            timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
+            
+            systemTimeZone = [self timeZoneWithName:timeZoneName];        
+        }
+        else {
+            systemTimeZone = [[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]];
+        }
     }
 
 #ifdef LINUX
-// FIXME: BSD does not have 'timezone' or __timezone
-
     if (systemTimeZone == nil) {
         NSString        *abbreviation;
         
