@@ -164,13 +164,15 @@ static RECT NSRectToRECT(NSRect rect) {
     
      case O2ClipPhaseNonZeroPath:;
       O2Path   *path=O2ClipPhaseObject(phase);
+
       O2DeviceContextClipToNonZeroPath_gdi(_dc,path,O2AffineTransformIdentity,O2AffineTransformIdentity);
       break;
       
      case O2ClipPhaseEOPath:{
        O2Path   *path=O2ClipPhaseObject(phase);
+
        O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformIdentity,O2AffineTransformIdentity);
-}
+      }
       break;
 
      case O2ClipPhaseMask:

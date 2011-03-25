@@ -1033,6 +1033,24 @@ The values should be upgraded to something which is more generic to implement, p
    return result;
 }
 
+NSArray *CGSOrderedWindowNumbers(){
+   NSMutableArray *result=[NSMutableArray array];
+
+   HWND check=GetTopWindow(NULL);
+   
+   while(check!=NULL){
+    Win32Window *platformWindow=GetProp(check,"self");
+    
+    if(platformWindow!=nil)
+     [result addObject:[NSNumber numberWithInteger:[platformWindow windowNumber]]];
+
+    check=GetNextWindow(check,GW_HWNDNEXT);
+   }
+
+   return result;
+}
+
+
 -(BOOL)postMSG:(MSG)msg {
    NSEventType  type;
    id           platformWindow=(id)GetProp(msg.hwnd,"self");

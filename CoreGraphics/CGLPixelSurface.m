@@ -67,7 +67,8 @@
     return;
 
 // 0's are silently ignored per spec.
-   CGLDeleteBuffers(_numberOfBuffers,_bufferObjects);
+   if(_bufferObjects!=NULL) // nVidia driver will crash if bufferObjects is NULL, does not conform to spec.
+    CGLDeleteBuffers(_numberOfBuffers,_bufferObjects);
       
    if(_bufferObjects!=NULL)
     free(_bufferObjects);
@@ -92,7 +93,7 @@
     _bufferObjects[i]=0;
     _readPixels[i]=NULL;
     _staticPixels[i]=NULL;
-}
+   }
 
   // CGLGenBuffers(_numberOfBuffers,_bufferObjects);
 
@@ -135,11 +136,15 @@ static inline uint32_t premultiplyPixel(uint32_t value){
 }
 
 -(void)flushBuffer {
+   if(_width==0 || _height==0){
+    return;
+    }
+    
    [self validateBuffersIfNeeded];
 
    int bytesPerRow=_width*4;
    int i,row=0;
-   
+
    glReadBuffer(GL_BACK);
 
    if(glGetError()!=GL_NO_ERROR)

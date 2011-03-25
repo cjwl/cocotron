@@ -252,7 +252,23 @@ id NSApp=nil;
 }
 
 -(NSArray *)orderedWindows {
+#if 0
   return _orderedWindows;
+#else
+  extern NSArray *CGSOrderedWindowNumbers();
+  
+  NSMutableArray *result=[NSMutableArray array];
+  NSArray *numbers=CGSOrderedWindowNumbers();
+  
+  for(NSNumber *number in numbers){
+   NSWindow *window=[self windowWithWindowNumber:[number integerValue]];
+   
+   if(![window isKindOfClass:[NSPanel class]])
+    [result addObject:window];
+  }
+  
+  return result;
+#endif
 }
 
 -(void)preventWindowOrdering {
@@ -1083,9 +1099,6 @@ standardAboutPanel] retain];
 -(void)_windowOrderingChange:(NSWindowOrderingMode)place forWindow:(NSWindow *)window relativeTo:(NSWindow *)relativeWindow {
   NSUInteger index, count;
 
-  NSWindowController *controller = [window windowController];
-  NSDocument *document = [controller document];
-
   [_orderedWindows removeObjectIdenticalTo: window];
   
   switch (place) {
@@ -1117,7 +1130,8 @@ standardAboutPanel] retain];
   default:
     break;
   }
-  if (document) {
+  
+  if ([[window windowController] document]) {
     [self _updateOrderedDocuments];
   }
 }

@@ -25,6 +25,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSImage imageNamed:@"NSHighlightedBrowserCellArrow"];
 }
 
+// overrides NSCell behavior
+-init {
+   return [self initTextCell:@""];
+}
+
 -(BOOL)isLeaf {
    return _isLeaf;
 }
@@ -125,7 +130,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    titleRect.size.width-=(branchImageSize.width+2);
 
    if([self isHighlighted] || [self state]){
-    if([title attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:NULL]==nil){
+    /* check for length to avoid exception */
+    if([title length]>0 && [title attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:NULL]==nil){
      NSMutableAttributedString *change=[[title mutableCopy] autorelease];
 
      [change addAttribute:NSForegroundColorAttributeName value:[NSColor selectedControlTextColor] range:NSMakeRange(0,[title length])];

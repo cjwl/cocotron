@@ -527,7 +527,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
      allOpaque=NO;
      break;
     }
-
+   
    if(allOpaque){
     [_overlayResult release];
     _overlayResult=nil;
@@ -609,7 +609,7 @@ i=count;
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     
-    if(backingSurface!=nil){
+    if(backingSurface!=nil && overFrame.size.width>0 && overFrame.size.height>0){
      BLENDFUNCTION blend;
     
      blend.BlendOp=AC_SRC_OVER;
@@ -627,11 +627,11 @@ i=count;
 }
 
 -(void)disableFlushWindow {
-   _disableFlushWindow++;
+ //  _disableFlushWindow++;
 }
 
 -(void)enableFlushWindow {
-   _disableFlushWindow--;
+ //  _disableFlushWindow--;
 }
 
 -(void)flushBuffer {

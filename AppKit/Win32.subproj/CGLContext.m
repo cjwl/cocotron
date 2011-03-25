@@ -225,8 +225,13 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 CGL_EXPORT CGLContextObj CGLRetainContext(CGLContextObj context) {
    if(context==NULL)
     return NULL;
+    
+   CGLLockContext(context);
 
    context->retainCount++;
+   
+   CGLUnlockContext(context);
+   
    return context;
 }
 
@@ -234,7 +239,9 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
    if(context==NULL)
     return;
     
+   CGLLockContext(context);
    context->retainCount--;
+   CGLUnlockContext(context);
    
    if(context->retainCount==0){
     if(CGLGetCurrentContext()==context)
@@ -249,7 +256,6 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
     opengl_wglDeleteContext(context->glContext);
     NSZoneFree(NULL,context);
    }
-   
 }
 
 CGL_EXPORT GLuint CGLGetContextRetainCount(CGLContextObj context) {
@@ -276,6 +282,8 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
 }
 
 CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
+   CGLLockContext(context);
+
    switch(parameter){
     case kCGLCPSwapInterval:;
      CGLSetCurrentContext(context);
@@ -284,10 +292,10 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)opengl_wglGetProcAddress("wglSwapIntervalEXT"); 
      if(wglSwapIntervalEXT==NULL){
       NSLog(@"wglGetProcAddress failed for wglSwapIntervalEXT");
-      return kCGLNoError;
      }
-     
-     wglSwapIntervalEXT(*value); 
+     else {
+      wglSwapIntervalEXT(*value); 
+     }
      break;
     
     case kCGLCPSurfaceOpacity:
@@ -315,10 +323,13 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      break;
    }
   
+   CGLUnlockContext(context);
+   
    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter parameter,GLint *value) { 
+   CGLLockContext(context);
    switch(parameter){
    
     case kCGLCPSurfaceOpacity:
@@ -332,6 +343,7 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
     default:
      break;
    }
+   CGLUnlockContext(context);
    
    return kCGLNoError;
 }
@@ -341,9 +353,12 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.
  */
-    CGLSetCurrentContext(context);
+    CGLLockContext(context);
 
-     [context->overlay flushBuffer];
+    CGLSetCurrentContext(context);
+    
+    [context->overlay flushBuffer];
+    CGLUnlockContext(context);
      
    return kCGLNoError;
 }
