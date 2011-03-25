@@ -188,6 +188,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
+   InitializeCriticalSection(&_lock);
    _frame=frame;
    _level=kCGNormalWindowLevel;
    _isOpaque=YES;
@@ -237,6 +238,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    _cgContext=nil;
    [_backingContext release];
    _backingContext=nil;
+}
+
+-(void)lock {
+   EnterCriticalSection(&_lock);
+}
+
+-(void)unlock {
+   LeaveCriticalSection(&_lock);
 }
 
 -(void)setDelegate:delegate {
@@ -604,6 +613,8 @@ i=count;
 }
 
 -(void)flushOverlay:(CGLPixelSurface *)overlay {
+   [self lock];
+   
    if([overlay isOpaque]){
     O2Surface_DIBSection *backingSurface=[_backingContext surface];
     O2Rect                overFrame=[overlay frame];
@@ -624,6 +635,7 @@ i=count;
    }
    
    [self flushBuffer];
+   [self unlock];
 }
 
 -(void)disableFlushWindow {
@@ -635,9 +647,11 @@ i=count;
 }
 
 -(void)flushBuffer {
+   [self lock];
+   
    if(_disableFlushWindow)
     return;
-    
+
    O2Point fromPoint;
    
    if([self isLayeredWindow]){
@@ -685,6 +699,7 @@ i=count;
       }
     }
    }
+   [self unlock];
 }
 
 -(CGPoint)convertPOINTLToBase:(POINTL)point {

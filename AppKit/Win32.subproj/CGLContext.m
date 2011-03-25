@@ -13,7 +13,7 @@
 
 struct _CGLContextObj {
    GLuint           retainCount;
-   CRITICAL_SECTION lock; // FIXME: this should be converted to the OS*Lock* functions when they appear
+   CRITICAL_SECTION lock; // This must be a recursive lock.
    HWND             window;
    HDC              dc;
    HGLRC            glContext;
@@ -223,6 +223,7 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 }
 
 CGL_EXPORT CGLContextObj CGLRetainContext(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    if(context==NULL)
     return NULL;
     
@@ -236,6 +237,7 @@ CGL_EXPORT CGLContextObj CGLRetainContext(CGLContextObj context) {
 }
 
 CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    if(context==NULL)
     return;
     
@@ -259,6 +261,7 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
 }
 
 CGL_EXPORT GLuint CGLGetContextRetainCount(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    if(context==NULL)
     return 0;
 
@@ -266,22 +269,26 @@ CGL_EXPORT GLuint CGLGetContextRetainCount(CGLContextObj context) {
 }
 
 CGL_EXPORT CGLError CGLDestroyContext(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    CGLReleaseContext(context);
 
    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLLockContext(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    EnterCriticalSection(&(context->lock));
    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    LeaveCriticalSection(&(context->lock));
    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
+if(NSDebugEnabled) NSCLog("%s %d %p CGLSetParameter parameter=%d",__FILE__,__LINE__,context,parameter);
    CGLLockContext(context);
 
    switch(parameter){
@@ -329,6 +336,7 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter parameter,GLint *value) { 
+if(NSDebugEnabled) NSCLog("%s %d %p CGLGetParameter parameter=%d",__FILE__,__LINE__,context,parameter);
    CGLLockContext(context);
    switch(parameter){
    
@@ -349,6 +357,7 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
+if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
 /*
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.
