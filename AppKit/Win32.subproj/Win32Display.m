@@ -1041,7 +1041,7 @@ NSArray *CGSOrderedWindowNumbers(){
    while(check!=NULL){
     Win32Window *platformWindow=GetProp(check,"self");
     
-    if(platformWindow!=nil)
+    if(platformWindow!=nil && [platformWindow isKindOfClass:[Win32Window class]])
      [result addObject:[NSNumber numberWithInteger:[platformWindow windowNumber]]];
 
     check=GetNextWindow(check,GW_HWNDNEXT);

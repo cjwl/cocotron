@@ -67,7 +67,7 @@
     return;
 
 // 0's are silently ignored per spec.
-   if(_bufferObjects!=NULL) // nVidia driver will crash if bufferObjects is NULL, does not conform to spec.
+   if(_numberOfBuffers>0 && _bufferObjects!=NULL) // nVidia driver will crash if bufferObjects is NULL, does not conform to spec.
     CGLDeleteBuffers(_numberOfBuffers,_bufferObjects);
       
    if(_bufferObjects!=NULL)
@@ -135,10 +135,7 @@ static inline uint32_t premultiplyPixel(uint32_t value){
    return _surface;
 }
 
--(void)flushBuffer {
-   if(_width==0 || _height==0){
-    return;
-    }
+-(void)readBuffer {
     
    [self validateBuffersIfNeeded];
 
@@ -219,9 +216,7 @@ static inline uint32_t premultiplyPixel(uint32_t value){
     row+=rowCount;
    }
    CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);          
-   
-   [_window flushOverlay:self];
-   
+      
 #if 0    
    if(_usePixelBuffer){
     CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);

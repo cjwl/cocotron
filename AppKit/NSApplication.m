@@ -131,8 +131,6 @@ id NSApp=nil;
    _display=[[NSDisplay currentDisplay] retain];
 
    _windows=[NSMutableArray new];
-   _orderedWindows=[NSMutableArray new];
-   _orderedDocuments=[NSMutableArray new];
    _mainMenu=nil;
       
    _dockTile=[[NSDockTile alloc] initWithOwner:self];
@@ -248,13 +246,20 @@ id NSApp=nil;
 }
 
 -(NSArray *)orderedDocuments {
-  return _orderedDocuments;
+   NSMutableArray *result=[NSMutableArray array];
+   NSArray        *orderedWindows=[self orderedWindows];
+   
+   for(NSWindow *checkWindow in orderedWindows){
+    NSDocument *checkDocument=[[checkWindow windowController] document];
+    
+    if(checkDocument!=nil)
+     [result addObject:checkDocument];
+   }
+   
+   return result;
 }
 
 -(NSArray *)orderedWindows {
-#if 0
-  return _orderedWindows;
-#else
   extern NSArray *CGSOrderedWindowNumbers();
   
   NSMutableArray *result=[NSMutableArray array];
@@ -268,7 +273,6 @@ id NSApp=nil;
   }
   
   return result;
-#endif
 }
 
 -(void)preventWindowOrdering {
@@ -746,8 +750,9 @@ id NSApp=nil;
    [_modalStack addObject:session];
 
    [window _hideMenuViewIfNeeded];
-   if(![window isVisible])
+   if(![window isVisible]){
     [window center];
+   }
    [window makeKeyAndOrderFront:self];
 
    return session;
@@ -792,18 +797,33 @@ id NSApp=nil;
    [[_modalStack lastObject] stopModalWithCode:code];
 }
 
--(int)runModalForWindow:(NSWindow *)window {
+-(void)_mainThreadRunModalForWindow:(NSMutableDictionary *)values {
+   NSWindow *window=[values objectForKey:@"NSWindow"];
+   
    NSModalSession session=[self beginModalSessionForWindow:window];
    int result;
 
-
-   while((result=[NSApp runModalSession:session])==NSRunContinuesResponse)
+   while((result=[NSApp runModalSession:session])==NSRunContinuesResponse){
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-
+   }
+   
    [self endModalSession:session];
 
-   return result;
+   [values setObject:[NSNumber numberWithInteger:result] forKey:@"result"];
 }
+
+-(int)runModalForWindow:(NSWindow *)window {
+   NSMutableDictionary *values=[NSMutableDictionary dictionary];
+   
+   [values setObject:window forKey:@"NSWindow"];
+   
+   [self performSelectorOnMainThread:@selector(_mainThreadRunModalForWindow:) withObject:values waitUntilDone:YES modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+   
+   NSNumber *result=[values objectForKey:@"result"];
+   
+   return [result integerValue];
+}
+
 
 -(void)stopModal {
    [self stopModalWithCode:NSRunStoppedResponse];
@@ -1095,66 +1115,6 @@ standardAboutPanel] retain];
 -(void)_addWindow:(NSWindow *)window {
    [_windows addObject:window];
 }
-
--(void)_windowOrderingChange:(NSWindowOrderingMode)place forWindow:(NSWindow *)window relativeTo:(NSWindow *)relativeWindow {
-  NSUInteger index, count;
-
-  [_orderedWindows removeObjectIdenticalTo: window];
-  
-  switch (place) {
-  case NSWindowAbove:
-    if (relativeWindow == nil) {
-      index = 0;
-    } else {
-      index = [_orderedWindows indexOfObject: relativeWindow];
-      if (index == NSNotFound) {
-        index = 0;
-      }
-    }
-    [_orderedWindows insertObject: window atIndex: index];
-    break;
-
-  case NSWindowBelow:
-    if (relativeWindow == nil) {
-      [_orderedWindows addObject: window];
-    } else {
-      index = [_orderedWindows indexOfObject: relativeWindow];
-      if (index == NSNotFound) {
-        [_orderedWindows addObject: window];
-      } else {
-        [_orderedWindows insertObject: window atIndex: index+1];
-      }
-    }
-    break;
-
-  default:
-    break;
-  }
-  
-  if ([[window windowController] document]) {
-    [self _updateOrderedDocuments];
-  }
-}
-
--(void)_updateOrderedDocuments {
-  NSUInteger i, count = [_orderedWindows count];
-  NSWindowController *controller;
-  NSDocument *document;
-  NSWindow *window;
-
-  [_orderedDocuments removeAllObjects];
-  for (i = 0; i < count; i++) {
-    window = [_orderedWindows objectAtIndex: i];
-    controller = [window windowController];
-    document = [controller document];
-    if (document) {
-      [_orderedDocuments addObject: document];
-    }
-  }
-}
-
-  
-
 
 -(void)_windowWillBecomeActive:(NSWindow *)window {
    [_attentionTimer invalidate];

@@ -187,7 +187,10 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    _handle=NULL;
 }
 
--initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
+FOUNDATION_EXPORT id NSThreadMainThreadId();
+
+
+-initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {   
    InitializeCriticalSection(&_lock);
    _frame=frame;
    _level=kCGNormalWindowLevel;
@@ -620,7 +623,7 @@ i=count;
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     
-    if(backingSurface!=nil && overFrame.size.width>0 && overFrame.size.height>0){
+    if(backingSurface!=nil){
      BLENDFUNCTION blend;
     
      blend.BlendOp=AC_SRC_OVER;
@@ -634,16 +637,17 @@ i=count;
     }
    }
    
-   [self flushBuffer];
    [self unlock];
+
+   [self flushBuffer];
 }
 
 -(void)disableFlushWindow {
- //  _disableFlushWindow++;
+   _disableFlushWindow++;
 }
 
 -(void)enableFlushWindow {
- //  _disableFlushWindow--;
+   _disableFlushWindow--;
 }
 
 -(void)flushBuffer {
@@ -653,7 +657,6 @@ i=count;
     return;
 
    O2Point fromPoint;
-   
    if([self isLayeredWindow]){
     if(_backingContext!=nil){
      O2Surface_DIBSection *surface=[self resultSurface:&fromPoint];
@@ -802,6 +805,7 @@ i=count;
     [_delegate platformWindowWillMove:self];
    [self _GetWindowRectDidSize:NO];
    [_delegate platformWindowDidMove:self];
+
    return 0;
 }
 

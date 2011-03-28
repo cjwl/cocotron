@@ -29,7 +29,7 @@ void CGLGenBuffers(GLsizei n,GLuint *buffers) {
 }
 
 void CGLDeleteBuffers(GLsizei n,const GLuint *buffers) {
-   PFNGLDELETEBUFFERSPROC function=(PFNGLGENBUFFERSPROC)wglGetProcAddress("glDeleteBuffers");
+   PFNGLDELETEBUFFERSPROC function=(PFNGLDELETEBUFFERSPROC)wglGetProcAddress("glDeleteBuffers");
    
    if(function==NULL){
     if(NSDebugEnabled)

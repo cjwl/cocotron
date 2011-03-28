@@ -59,7 +59,6 @@ typedef enum {
 } NSGradientType;
 
 @interface NSButtonCell : NSActionCell {
-   id        _titleOrAttributedTitle;
    NSImage  *_normalImage;
    NSString *_alternateTitle;
    NSImage  *_alternateImage;

@@ -157,7 +157,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setDocument:(NSDocument *)document {
    _document=document;
-   [NSApp _updateOrderedDocuments];
 }
 
 -(id)document {

@@ -88,8 +88,8 @@ typedef enum {
    NSDockTile     *_dockTile;
 
    NSMutableArray *_modalStack;
-   NSMutableArray *_orderedDocuments;
-   NSMutableArray *_orderedWindows;
+   NSMutableArray *_orderedDocuments; // get rid of
+   NSMutableArray *_orderedWindows; // get rid of
    NSTimer *_attentionTimer;
 }
 
@@ -210,8 +210,6 @@ typedef enum {
 -(void)_windowDidBecomeActive:(NSWindow *)window;
 -(void)_windowWillBecomeDeactive:(NSWindow *)window;
 -(void)_windowDidBecomeDeactive:(NSWindow *)window;
--(void)_windowOrderingChange:(NSWindowOrderingMode)place forWindow:(NSWindow *)window relativeTo:(NSWindow *)relativeWindow;
--(void)_updateOrderedDocuments;
 
 @end
 

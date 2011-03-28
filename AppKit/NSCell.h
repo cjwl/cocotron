@@ -90,6 +90,7 @@ enum {
    NSWritingDirection _writingDirection;
    int       _cellType;
    NSFormatter *_formatter;
+   id        _titleOrAttributedTitle;
    id        _representedObject;
    NSControlSize _controlSize;
    NSFocusRingType _focusRingType;

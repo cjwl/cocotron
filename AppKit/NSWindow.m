@@ -292,7 +292,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_platformWindow setTitle:title];
 }
 
--(CGWindow *)platformWindow {
+/*
+  There are issues when creating a Win32 handle on a non-main thread, so we always do it on the main thread
+ */
+-(void)_createPlatformWindowOnMainThread {
    if(_platformWindow==nil){
     if([self isKindOfClass:[NSPanel class]])
      _platformWindow=[[[NSDisplay currentDisplay] panelWithFrame: _frame styleMask:_styleMask backingType:_backingType] retain];
@@ -305,6 +308,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [self _updatePlatformWindowTitle];
 
     [[NSDraggingManager draggingManager] registerWindow:self dragTypes:nil];
+   }
+}
+
+-(CGWindow *)platformWindow {
+   if(_platformWindow==nil){
+    [self performSelectorOnMainThread:@selector(_createPlatformWindowOnMainThread) withObject:nil waitUntilDone:YES modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
    }
 
    return _platformWindow;
@@ -1838,11 +1847,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    may be the right place to do this, maybe not, further investigation is
    required
  */
+ 
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
          [NSApp changeWindowsItem:self title:_title filename:NO];
-         [NSApp _windowOrderingChange: NSWindowAbove forWindow: self relativeTo: [NSApp windowWithWindowNumber:relativeTo]];
      }
      
      break;
@@ -1861,7 +1870,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
        [NSApp changeWindowsItem:self title:_title filename:NO];
-       [NSApp _windowOrderingChange: NSWindowBelow forWindow: self relativeTo: [NSApp windowWithWindowNumber:relativeTo]];
      }
      break;
 
@@ -1870,7 +1878,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      [[self platformWindow] hideWindow];
      if (![self isKindOfClass:[NSPanel class]]) {
        [NSApp removeWindowsItem:self];
-       [NSApp _windowOrderingChange: NSWindowOut forWindow: self relativeTo: nil];
      }
      break;
    }

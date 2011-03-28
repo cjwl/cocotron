@@ -362,13 +362,16 @@ if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,co
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.
  */
-    CGLLockContext(context);
+   CGLLockContext(context);
 
-    CGLSetCurrentContext(context);
+   CGLSetCurrentContext(context);
     
-    [context->overlay flushBuffer];
-    CGLUnlockContext(context);
-     
+   [context->overlay readBuffer];
+   
+   CGLUnlockContext(context);
+
+   [[context->overlay window] flushOverlay:context->overlay];
+
    return kCGLNoError;
 }
 

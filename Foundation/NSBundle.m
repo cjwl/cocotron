@@ -661,30 +661,34 @@ static NSMapTable *pathToObject=NULL;
    if([table length]==0)
     table=@"Localizable";
 
-   dictionary=[_localizedTables objectForKey:table];
+// NSLocalizedString needs to be thread safe.
 
-   if(dictionary==nil){
-    NSString     *path;
-    NSString     *contents=nil;
+   @synchronized(self){
+    dictionary=[_localizedTables objectForKey:table];
 
-    if(_localizedTables==nil)
-     _localizedTables=[[NSMutableDictionary alloc] init];
+    if(dictionary==nil){
+     NSString     *path;
+     NSString     *contents=nil;
+
+     if(_localizedTables==nil)
+      _localizedTables=[[NSMutableDictionary alloc] init];
      
-    if((path=[self pathForResource:table ofType:@"strings"])!=nil)
-     if((contents=[NSString stringWithContentsOfFile:path])!=nil){
-      NS_DURING
-       dictionary=[contents propertyListFromStringsFileFormat];
-      NS_HANDLER
-       dictionary=nil;
-      NS_ENDHANDLER
-     }
+     if((path=[self pathForResource:table ofType:@"strings"])!=nil)
+      if((contents=[NSString stringWithContentsOfFile:path])!=nil){
+       NS_DURING
+        dictionary=[contents propertyListFromStringsFileFormat];
+       NS_HANDLER
+        dictionary=nil;
+       NS_ENDHANDLER
+      }
 
-    if(dictionary==nil)
-     dictionary=[NSDictionary dictionary];
+     if(dictionary==nil)
+      dictionary=[NSDictionary dictionary];
      
-    [_localizedTables setObject:dictionary forKey:table];
+     [_localizedTables setObject:dictionary forKey:table];
+    }
    }
-
+   
    if((result=[dictionary objectForKey:key])==nil)
 	   result=(value!=nil && [value isEqual:@""] == NO)?value:key;
    
