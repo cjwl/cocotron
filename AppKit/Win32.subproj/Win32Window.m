@@ -187,9 +187,6 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    _handle=NULL;
 }
 
-FOUNDATION_EXPORT id NSThreadMainThreadId();
-
-
 -initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {   
    InitializeCriticalSection(&_lock);
    _frame=frame;
