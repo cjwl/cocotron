@@ -12,18 +12,21 @@
 #endif
 
 struct _CGLContextObj {
+// do not reorder the beginning of this struct, it is accessed directly by AC, until we know AC doesnt do it anymore.
    GLuint           retainCount;
    CRITICAL_SECTION lock; // This must be a recursive lock.
-   CGLContextObj    share;
    HWND             window;
-   HDC              windowDC;
-   HGLRC            windowGLContext;
-   HPBUFFERARB      pbo;
-   HDC              pboDC;
-   HGLRC            pboGLContext;
+   HDC              activeDC;
+   HGLRC            activeGLContext;
    int              w,h;
    GLint            opacity;
    CGLPixelSurface  *overlay;
+   CGLContextObj    sharedContext;
+   HPBUFFERARB      pbo;
+   HDC              pboDC;
+   HGLRC            pboGLContext;
+   HDC              windowDC;
+   HGLRC            windowGLContext;
 };
 
 struct _CGLPixelFormatObj {
@@ -95,27 +98,13 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
    return result;
 }
 
-static HDC _CGLDC(CGLContextObj context){
-   if(context->pboGLContext!=NULL)
-    return context->pboDC;
-    
-   return context->windowDC;
-}
-
-static HGLRC _CGLRenderingContext(CGLContextObj context){
-   if(context->pboGLContext!=NULL){
-    return context->pboGLContext;
-    }
-   return context->windowGLContext;
-}
-
 static CGLError _CGLSetCurrentContextFromThreadLocal(){
    CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
    
    if(context==NULL)
     opengl_wglMakeCurrent(NULL,NULL);
    else
-    opengl_wglMakeCurrent(_CGLDC(context),_CGLRenderingContext(context));
+    opengl_wglMakeCurrent(context->activeDC,context->activeGLContext);
    
    return kCGLNoError;
 }
@@ -196,33 +185,32 @@ return;
 }
 
 void _CGLDestroyPBOBacking(CGLContextObj context){
-   if(context->pbo!=NULL){
-    opengl_wglDeleteContext(context->pboGLContext);
-    opengl_wglReleasePbufferDCARB(context->pbo,context->pboDC);
-    opengl_wglDestroyPbufferARB(context->pbo);
+   
+    if(context->pboGLContext!=NULL)
+     opengl_wglDeleteContext(context->pboGLContext);
+    if(context->pboDC!=NULL)
+     opengl_wglReleasePbufferDCARB(context->pbo,context->pboDC);
+    if(context->pbo!=NULL)
+     opengl_wglDestroyPbufferARB(context->pbo);
+     
     context->pbo=NULL;
     context->pboGLContext=NULL;
     context->pboDC=NULL;
-   }
+    
+    context->activeDC=context->windowDC;
+    context->activeGLContext=context->windowGLContext;
 }
 
 void _CGLShareLists(CGLContextObj context) {
-      NSLog(@"sharing=%p",context->share);
 
-   if(context->share!=NULL){
-   NSLog(@"sharing");
-    if(!opengl_wglShareLists(_CGLRenderingContext(context->share),_CGLRenderingContext(context)))
+   if(context->sharedContext!=NULL){
+    if(!opengl_wglShareLists(context->sharedContext->activeGLContext,context->activeGLContext))
      NSLog(@"opengl_wglShareLists failed");
    }
 }
 
 BOOL _CGLCreatePBOBacking(CGLContextObj context){
- //  CGLSetCurrentContext(context);
-      NSLog(@"NO PBUFFER?");
-return NO;
    const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
-
-   //NSLog(@"opengl_wglGetExtensionsStringARB extensions=%s",extensions);
 
    if(extensions==NULL)
     return NO;
@@ -233,15 +221,7 @@ return NO;
    if(strstr(extensions,"WGL_ARB_pixel_format")==NULL){
     return NO;
    }
-   if(strstr(extensions,"GL_ARB_framebuffer_object")==NULL){
-    return NO;
-   }
-      NSLog(@"HAS FRAMEBUFFER?");
-
-   extensions=glGetString(GL_EXTENSIONS);
    
-   //NSLog(@"glGetString extensions=%s",extensions);
-
 	int     pixelFormats;
 	int     intAttrs[] ={
                                WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
@@ -276,30 +256,30 @@ return NO;
      WGL_TEXTURE_2D_ARB,
      0}; // Of texture target will be GL_TEXTURE_2D
 	// the size of the PBuffer must be the same size as the texture
-	context->pbo= opengl_wglCreatePbufferARB(context->windowDC, pixelFormats, context->w, context->h, attributes);
-    
-   // NSLog(@"context->pbo=%p",context->pbo);
-    
+	context->pbo=opengl_wglCreatePbufferARB(context->windowDC, pixelFormats, context->w, context->h, NULL);
+        
     if(context->pbo==NULL){
-    // NSLog(@"context->pbo is NULL");
     return NO;
     }
     
 	context->pboDC=opengl_wglGetPbufferDCARB(context->pbo);
-	context->pboGLContext=wglCreateContext(context->pboDC);		
+	context->pboGLContext=opengl_wglCreateContext(context->pboDC);		
 
 	//query dimensions of created texture to make sure it was created right
 	int width=0, height=0;
 	opengl_wglQueryPbufferARB(context->pbo, WGL_PBUFFER_WIDTH_ARB, &width);
 	opengl_wglQueryPbufferARB(context->pbo, WGL_PBUFFER_HEIGHT_ARB, &height);
-   // NSLog(@"width=%d, height=%d",width,height);
     
     if(width!=context->w)
-     NSLog(@"width!=context->w");
+     NSLog(@"opengl_wglQueryPbufferARB width!=context->w");
     if(height!=context->h)
-     NSLog(@"height!=context->h");
+     NSLog(@"opengl_wglQueryPbufferARB height!=context->h");
+
+    context->activeDC=context->pboDC;
+    context->activeGLContext=context->pboGLContext;
 
    _CGLShareLists(context);
+
    return YES;
 }
 
@@ -321,20 +301,31 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 
    context->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,NULL,NULL,GetModuleHandle(NULL),NULL);
    
-   context->windowDC=GetDC(context->window);
+   context->activeDC=context->windowDC=GetDC(context->window);
 
    pfIndex=ChoosePixelFormat(context->windowDC,&pfd); 
 
    if(!SetPixelFormat(context->windowDC,pfIndex,&pfd))
     NSLog(@"SetPixelFormat failed");
 
-   context->windowGLContext=opengl_wglCreateContext(context->windowDC);
+   context->activeGLContext=context->windowGLContext=opengl_wglCreateContext(context->windowDC);
    
-      NSLog(@"incoming sharing=%p",share);
-   context->share=CGLRetainContext(share);
+   context->sharedContext=CGLRetainContext(share);
 
+/* Creating a context does NOT set it as current, if you need the context to be current,
+   save it and restore it. Some applications may create a context while using another, so
+   we don't want to improperly switch to another context during creating */
+   
+   // Might be helpful to have a push/pop context system here
+   
+   CGLContextObj saveContext=CGLGetCurrentContext();
+   
+   CGLSetCurrentContext(context);
+   
    if(!_CGLCreatePBOBacking(context))
     _CGLShareLists(context);
+   
+   CGLSetCurrentContext(saveContext);
    
    context->opacity=1;
 
@@ -376,7 +367,7 @@ if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,co
     if(CGLGetCurrentContext()==context)
      CGLSetCurrentContext(NULL);
     
-    CGLReleaseContext(context->share);
+    CGLReleaseContext(context->sharedContext);
     
     ReleaseDC(context->window,context->windowDC);
     DestroyWindow(context->window);
@@ -453,9 +444,10 @@ if(NSDebugEnabled) NSCLog("%s %d %p CGLSetParameter parameter=%d",__FILE__,__LIN
       MoveWindow(context->window,0,0,context->w,context->h,NO);
 
       _CGLDestroyPBOBacking(context);
-      _CGLCreatePBOBacking(context);
-      
        CGLSetCurrentContext(context);
+      _CGLCreatePBOBacking(context);
+       CGLSetCurrentContext(context);
+      
       [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
       }
      break;
@@ -501,7 +493,7 @@ if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,co
 
    CGLSetCurrentContext(context);
     
-   if(context->pboGLContext!=NULL)
+   if(context->pboDC!=NULL)
     glReadBuffer(GL_FRONT);
    else
     glReadBuffer(GL_BACK);
