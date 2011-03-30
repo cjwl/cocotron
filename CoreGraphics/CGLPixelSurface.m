@@ -116,7 +116,7 @@
    }
 }
 
-#define RGBA_NOT_BGRA 1
+//#define RGBA_NOT_BGRA 1
 
 #ifdef RGBA_NOT_BGRA
 #define PIXEL_FORMAT GL_RGBA
@@ -174,8 +174,6 @@ static inline uint32_t premultiplyPixel(uint32_t value){
    int bytesPerRow=_width*4;
    int i,row=0;
 
-   glReadBuffer(GL_BACK);
-
    if(glGetError()!=GL_NO_ERROR)
     return;
 
@@ -198,7 +196,11 @@ static inline uint32_t premultiplyPixel(uint32_t value){
      
      glReadPixels(0,row,_width,rowCount,PIXEL_FORMAT, GL_UNSIGNED_BYTE, 0);
     }
-       
+    
+    GLenum error=glGetError();
+    if(error!=GL_NO_ERROR){
+     NSLog(@"glReadPixels error=%d",error);
+    }
     row+=rowCount;
    }
    

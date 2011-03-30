@@ -1,5 +1,6 @@
 #import "opengl_dll.h"
 #import <Foundation/NSString.h>
+#import <Foundation/NSDebug.h>
 #import <OpenGL/glext.h>
 
 HGLRC opengl_wglCreateContext(HDC dc) {
@@ -112,4 +113,111 @@ GLboolean opengl_glUnmapBuffer(GLenum target) {
 }
 
 
+const char *opengl_wglGetExtensionsStringARB(HDC hdc) {
+   APIENTRY typeof(opengl_wglGetExtensionsStringARB) *function=(typeof(function))wglGetProcAddress("wglGetExtensionsStringARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NULL;
+   }
+   
+   return function(hdc);
+}
+
+HPBUFFERARB opengl_wglCreatePbufferARB(HDC hDC,int iPixelFormat,int iWidth,int iHeight,const int *piAttribList) {
+   APIENTRY typeof(opengl_wglCreatePbufferARB) *function=(typeof(function))wglGetProcAddress("wglCreatePbufferARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NULL;
+   }
+   
+   return function(hDC,iPixelFormat,iWidth,iHeight,piAttribList);
+}
+
+HDC  opengl_wglGetPbufferDCARB(HPBUFFERARB hPbuffer) {
+   APIENTRY typeof(opengl_wglGetPbufferDCARB) *function=(typeof(function))wglGetProcAddress("wglGetPbufferDCARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NULL;
+   }
+   
+   return function(hPbuffer);
+}
+
+int  opengl_wglReleasePbufferDCARB(HPBUFFERARB hPbuffer,HDC hDC) {
+   APIENTRY typeof(opengl_wglReleasePbufferDCARB) *function=(typeof(function))wglGetProcAddress("wglReleasePbufferDCARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return 0;
+   }
+   
+   return function(hPbuffer,hDC);
+}
+
+BOOL opengl_wglDestroyPbufferARB(HPBUFFERARB hPbuffer) {
+   APIENTRY typeof(opengl_wglDestroyPbufferARB) *function=(typeof(function))wglGetProcAddress("wglDestroyPbufferARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NO;
+   }
+   
+   return function(hPbuffer);
+}
+
+BOOL opengl_wglQueryPbufferARB(HPBUFFERARB hPbuffer,int iAttribute,int *piValue) {
+   APIENTRY typeof(opengl_wglQueryPbufferARB) *function=(typeof(function))wglGetProcAddress("wglQueryPbufferARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NO;
+   }
+   
+   return function(hPbuffer,iAttribute,piValue);
+}
+
+BOOL opengl_wglGetPixelFormatAttribivARB(HDC hdc,int iPixelFormat,int iLayerPlane,UINT nAttributes,const int *piAttributes,int *piValues) {
+   APIENTRY typeof(opengl_wglGetPixelFormatAttribivARB) *function=(typeof(function))wglGetProcAddress("wglGetPixelFormatAttribivARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NO;
+   }
+   
+   return function(hdc,iPixelFormat,iLayerPlane,nAttributes,piAttributes,piValues);
+}
+
+BOOL opengl_wglGetPixelFormatAttribfvARB(HDC hdc,int iPixelFormat,int iLayerPlane,UINT nAttributes,const int *piAttributes,FLOAT *pfValues) {
+   APIENTRY typeof(opengl_wglGetPixelFormatAttribfvARB) *function=(typeof(function))wglGetProcAddress("wglGetPixelFormatAttribfvARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NO;
+   }
+   
+   return function(hdc,iPixelFormat,iLayerPlane,nAttributes,piAttributes,pfValues);
+}
+
+BOOL opengl_wglChoosePixelFormatARB(HDC hdc,const int *piAttribIList,const FLOAT *pfAttribFList,UINT nMaxFormats,int *piFormats,UINT *nNumFormats) {
+   APIENTRY typeof(opengl_wglChoosePixelFormatARB) *function=(typeof(function))wglGetProcAddress("wglChoosePixelFormatARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+    return NO;
+   }
+   
+   return function(hdc,piAttribIList,pfAttribFList,nMaxFormats,piFormats,nNumFormats);
+}
 

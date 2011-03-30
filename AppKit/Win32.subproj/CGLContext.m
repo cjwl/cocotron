@@ -14,9 +14,13 @@
 struct _CGLContextObj {
    GLuint           retainCount;
    CRITICAL_SECTION lock; // This must be a recursive lock.
+   CGLContextObj    share;
    HWND             window;
-   HDC              dc;
-   HGLRC            glContext;
+   HDC              windowDC;
+   HGLRC            windowGLContext;
+   HPBUFFERARB      pbo;
+   HDC              pboDC;
+   HGLRC            pboGLContext;
    int              w,h;
    GLint            opacity;
    CGLPixelSurface  *overlay;
@@ -91,13 +95,27 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
    return result;
 }
 
+static HDC _CGLDC(CGLContextObj context){
+   if(context->pboGLContext!=NULL)
+    return context->pboDC;
+    
+   return context->windowDC;
+}
+
+static HGLRC _CGLRenderingContext(CGLContextObj context){
+   if(context->pboGLContext!=NULL){
+    return context->pboGLContext;
+    }
+   return context->windowGLContext;
+}
+
 static CGLError _CGLSetCurrentContextFromThreadLocal(){
    CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
    
    if(context==NULL)
     opengl_wglMakeCurrent(NULL,NULL);
    else
-    opengl_wglMakeCurrent(context->dc,context->glContext);
+    opengl_wglMakeCurrent(_CGLDC(context),_CGLRenderingContext(context));
    
    return kCGLNoError;
 }
@@ -177,6 +195,114 @@ return;
    }
 }
 
+void _CGLDestroyPBOBacking(CGLContextObj context){
+   if(context->pbo!=NULL){
+    opengl_wglDeleteContext(context->pboGLContext);
+    opengl_wglReleasePbufferDCARB(context->pbo,context->pboDC);
+    opengl_wglDestroyPbufferARB(context->pbo);
+    context->pbo=NULL;
+    context->pboGLContext=NULL;
+    context->pboDC=NULL;
+   }
+}
+
+void _CGLShareLists(CGLContextObj context) {
+      NSLog(@"sharing=%p",context->share);
+
+   if(context->share!=NULL){
+   NSLog(@"sharing");
+    if(!opengl_wglShareLists(_CGLRenderingContext(context->share),_CGLRenderingContext(context)))
+     NSLog(@"opengl_wglShareLists failed");
+   }
+}
+
+BOOL _CGLCreatePBOBacking(CGLContextObj context){
+ //  CGLSetCurrentContext(context);
+      NSLog(@"NO PBUFFER?");
+return NO;
+   const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
+
+   //NSLog(@"opengl_wglGetExtensionsStringARB extensions=%s",extensions);
+
+   if(extensions==NULL)
+    return NO;
+    
+   if(strstr(extensions,"WGL_ARB_pbuffer")==NULL){
+    return NO;
+   }
+   if(strstr(extensions,"WGL_ARB_pixel_format")==NULL){
+    return NO;
+   }
+   if(strstr(extensions,"GL_ARB_framebuffer_object")==NULL){
+    return NO;
+   }
+      NSLog(@"HAS FRAMEBUFFER?");
+
+   extensions=glGetString(GL_EXTENSIONS);
+   
+   //NSLog(@"glGetString extensions=%s",extensions);
+
+	int     pixelFormats;
+	int     intAttrs[] ={
+                               WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
+                               WGL_DRAW_TO_PBUFFER_ARB, GL_TRUE,
+                               WGL_RED_BITS_ARB,8,
+                               WGL_GREEN_BITS_ARB,8,
+                               WGL_BLUE_BITS_ARB,8,
+                               WGL_ALPHA_BITS_ARB,8,
+                               WGL_DEPTH_BITS_ARB,8,
+                               WGL_BIND_TO_TEXTURE_RGBA_ARB, GL_TRUE,
+                               WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
+                               WGL_DOUBLE_BUFFER_ARB,GL_FALSE,
+
+                               0}; // 0 terminate the list			
+	unsigned int numFormats = 0;	
+	// get an acceptable pixel format to create the PBuffer with
+	if (opengl_wglChoosePixelFormatARB(context->windowDC,intAttrs,NULL,1,&pixelFormats,&numFormats)==FALSE)
+	{
+		NSLog(@"wglChoosePixelFormatARB returned %i", GetLastError());
+        return NO;			
+	}
+	if (numFormats==0) // no supported formats, we need to change the parameters to something acceptable
+	{
+		return NO;
+	}
+
+	//Set some p-buffer attributes so that we can use this p-buffer as a 2d texture target
+	const int attributes[]= {
+     WGL_TEXTURE_FORMAT_ARB,
+     WGL_TEXTURE_RGBA_ARB, // p-buffer will have RBA texture format
+     WGL_TEXTURE_TARGET_ARB,
+     WGL_TEXTURE_2D_ARB,
+     0}; // Of texture target will be GL_TEXTURE_2D
+	// the size of the PBuffer must be the same size as the texture
+	context->pbo= opengl_wglCreatePbufferARB(context->windowDC, pixelFormats, context->w, context->h, attributes);
+    
+   // NSLog(@"context->pbo=%p",context->pbo);
+    
+    if(context->pbo==NULL){
+    // NSLog(@"context->pbo is NULL");
+    return NO;
+    }
+    
+	context->pboDC=opengl_wglGetPbufferDCARB(context->pbo);
+	context->pboGLContext=wglCreateContext(context->pboDC);		
+
+	//query dimensions of created texture to make sure it was created right
+	int width=0, height=0;
+	opengl_wglQueryPbufferARB(context->pbo, WGL_PBUFFER_WIDTH_ARB, &width);
+	opengl_wglQueryPbufferARB(context->pbo, WGL_PBUFFER_HEIGHT_ARB, &height);
+   // NSLog(@"width=%d, height=%d",width,height);
+    
+    if(width!=context->w)
+     NSLog(@"width!=context->w");
+    if(height!=context->h)
+     NSLog(@"height!=context->h");
+
+   _CGLShareLists(context);
+   return YES;
+}
+
 CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLContextObj *resultp) {
    CGLContextObj         context=NSZoneCalloc(NULL,1,sizeof(struct _CGLContextObj));
    PIXELFORMATDESCRIPTOR pfd;
@@ -195,20 +321,21 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 
    context->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,NULL,NULL,GetModuleHandle(NULL),NULL);
    
-   context->dc=GetDC(context->window);
+   context->windowDC=GetDC(context->window);
 
-   pfIndex=ChoosePixelFormat(context->dc,&pfd); 
+   pfIndex=ChoosePixelFormat(context->windowDC,&pfd); 
 
-   if(!SetPixelFormat(context->dc,pfIndex,&pfd))
+   if(!SetPixelFormat(context->windowDC,pfIndex,&pfd))
     NSLog(@"SetPixelFormat failed");
 
-   context->glContext=opengl_wglCreateContext(context->dc);
+   context->windowGLContext=opengl_wglCreateContext(context->windowDC);
    
-   if(share!=NULL){
-    if(!opengl_wglShareLists(share->glContext,context->glContext))
-     NSLog(@"opengl_wglShareLists failed");
-   }
+      NSLog(@"incoming sharing=%p",share);
+   context->share=CGLRetainContext(share);
 
+   if(!_CGLCreatePBOBacking(context))
+    _CGLShareLists(context);
+   
    context->opacity=1;
 
    context->overlay=[[CGLPixelSurface alloc] initWithFrame:O2RectMake(0,0,context->w,context->h)];
@@ -249,13 +376,18 @@ if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,co
     if(CGLGetCurrentContext()==context)
      CGLSetCurrentContext(NULL);
     
-    ReleaseDC(context->window,context->dc);
+    CGLReleaseContext(context->share);
+    
+    ReleaseDC(context->window,context->windowDC);
     DestroyWindow(context->window);
     
     [context->overlay release];
 
     DeleteCriticalSection(&(context->lock));
-    opengl_wglDeleteContext(context->glContext);
+    opengl_wglDeleteContext(context->windowGLContext);
+    
+    _CGLDestroyPBOBacking(context);
+    
     NSZoneFree(NULL,context);
    }
 }
@@ -320,6 +452,9 @@ if(NSDebugEnabled) NSCLog("%s %d %p CGLSetParameter parameter=%d",__FILE__,__LIN
 
       MoveWindow(context->window,0,0,context->w,context->h,NO);
 
+      _CGLDestroyPBOBacking(context);
+      _CGLCreatePBOBacking(context);
+      
        CGLSetCurrentContext(context);
       [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
       }
@@ -366,6 +501,11 @@ if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,co
 
    CGLSetCurrentContext(context);
     
+   if(context->pboGLContext!=NULL)
+    glReadBuffer(GL_FRONT);
+   else
+    glReadBuffer(GL_BACK);
+
    [context->overlay readBuffer];
    
    CGLUnlockContext(context);
