@@ -154,11 +154,12 @@ void OBJCRegisterModule_Darwin(const char * name)
    
    // init NSConstantString reference-tag (see http://lists.apple.com/archives/objc-language/2006/Jan/msg00013.html)
    // only Darwin ppc!?
-   Class cls = objc_lookUpClass("NSConstantString");
-   memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
-   cls=objc_lookUpClass("NSDarwinString");
-   memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
-
+    if(name == NULL) {
+        Class cls = objc_lookUpClass("NSConstantString");
+        memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
+        cls=objc_lookUpClass("NSDarwinString");
+        memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
+    }
    // Override the compiler version of the class
    //objc_addClass(&_NSConstantStringClassReference);
     
