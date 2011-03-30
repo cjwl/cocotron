@@ -118,8 +118,7 @@ void childSignalHandler(int sig) {
             
         }
         
-        //close all other file handles..see FD_CLOEXEC
-        for (i = 3; i < 256; i++) {
+        for (i = 3; i < getdtablesize(); i++) {
             close(i);
         }
         
