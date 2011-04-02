@@ -221,3 +221,123 @@ BOOL opengl_wglChoosePixelFormatARB(HDC hdc,const int *piAttribIList,const FLOAT
    return function(hdc,piAttribIList,pfAttribFList,nMaxFormats,piFormats,nNumFormats);
 }
 
+void opengl_glGenFramebuffersEXT(GLsizei count,GLuint *results) {
+   APIENTRY typeof(opengl_glGenFramebuffersEXT) *function=(typeof(function))wglGetProcAddress("glGenFramebuffersEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glGenFramebuffersEXT) failed");
+    return;
+   }
+   
+   return function(count,results);
+}
+
+void opengl_glDeleteFramebuffersEXT (GLsizei count, const GLuint *idents) {
+   APIENTRY typeof(opengl_glDeleteFramebuffersEXT) *function=(typeof(function))wglGetProcAddress("glDeleteFramebuffersEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glDeleteFramebuffersEXT) failed");
+    return;
+   }
+   
+   return function(count,idents);
+}
+
+
+void opengl_glBindFramebufferEXT (GLenum target, GLuint ident) {
+   APIENTRY typeof(opengl_glBindFramebufferEXT) *function=(typeof(function))wglGetProcAddress("glBindFramebufferEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glBindFramebufferEXT) failed");
+    return;
+   }
+   
+   return function(target,ident);
+}
+
+void opengl_glGenRenderbuffersEXT (GLsizei count, GLuint *results) {
+   APIENTRY typeof(opengl_glGenRenderbuffersEXT) *function=(typeof(function))wglGetProcAddress("glGenRenderbuffersEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glGenRenderbuffersEXT) failed");
+    return;
+   }
+   
+   return function(count,results);
+}
+
+void opengl_glDeleteRenderbuffersEXT (GLsizei count, const GLuint *idents) {
+   APIENTRY typeof(opengl_glDeleteRenderbuffersEXT) *function=(typeof(function))wglGetProcAddress("glDeleteRenderbuffersEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glDeleteRenderbuffersEXT) failed");
+    return;
+   }
+   
+   return function(count,idents);
+}
+
+void opengl_glRenderbufferStorageEXT (GLenum target, GLenum internalFormat, GLsizei width, GLsizei height) {
+   APIENTRY typeof(opengl_glRenderbufferStorageEXT) *function=(typeof(function))wglGetProcAddress("glRenderbufferStorageEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glRenderbufferStorageEXT) failed");
+    return;
+   }
+   
+   return function(target,internalFormat,width,height);
+}
+
+void opengl_glBindRenderbufferEXT (GLenum target, GLuint ident) {
+   APIENTRY typeof(opengl_glBindRenderbufferEXT) *function=(typeof(function))wglGetProcAddress("glBindRenderbufferEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glBindRenderbufferEXT) failed");
+    return;
+   }
+   
+   function(target,ident);
+}
+
+void opengl_glFramebufferRenderbufferEXT (GLenum target, GLenum attachmentPoint, GLenum renderbufferTarget, GLuint renderbufferId) {
+   APIENTRY typeof(opengl_glFramebufferRenderbufferEXT ) *function=(typeof(function))wglGetProcAddress("glFramebufferRenderbufferEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glFramebufferRenderbufferEXT ) failed");
+    return;
+   }
+   
+   function(target,attachmentPoint,renderbufferTarget,renderbufferId);
+}
+
+GLenum opengl_glCheckFramebufferStatusEXT(GLenum target) {
+   APIENTRY typeof(opengl_glCheckFramebufferStatusEXT ) *function=(typeof(function))wglGetProcAddress("glCheckFramebufferStatusEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glCheckFramebufferStatusEXT ) failed");
+    return GL_FRAMEBUFFER_UNSUPPORTED_EXT;
+   }
+   
+   return function(target);
+}
+
+void opengl_glFramebufferTexture2DEXT(GLenum target, GLenum attachmentPoint,GLenum textureTarget,GLuint textureId,GLint level) {
+   APIENTRY typeof(opengl_glFramebufferTexture2DEXT ) *function=(typeof(function))wglGetProcAddress("glFramebufferTexture2DEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(glFramebufferTexture2DEXT ) failed");
+    return ;
+   }
+   
+   function(target,attachmentPoint,textureTarget,textureId,level);
+}

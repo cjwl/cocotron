@@ -49,3 +49,20 @@ BOOL opengl_wglChoosePixelFormatARB(HDC hdc,const int *piAttribIList,const FLOAT
 BOOL opengl_wglBindTexImageARB(HPBUFFERARB hPbuffer, int iBuffer);
 BOOL opengl_wglReleaseTexImageARB(HPBUFFERARB hPbuffer, int iBuffer); 
 BOOL opengl_wglSetPbufferAttribARB(HPBUFFERARB hPbuffer, const int *piAttribList);
+
+
+void opengl_glGenFramebuffersEXT (GLsizei, GLuint *);
+void opengl_glDeleteFramebuffersEXT (GLsizei, const GLuint *);
+void opengl_glBindFramebufferEXT (GLenum, GLuint);
+
+void opengl_glGenRenderbuffersEXT (GLsizei, GLuint *);
+void opengl_glDeleteRenderbuffersEXT (GLsizei, const GLuint *);
+void opengl_glRenderbufferStorageEXT (GLenum, GLenum, GLsizei, GLsizei);
+void opengl_glBindRenderbufferEXT (GLenum, GLuint);
+
+void opengl_glFramebufferRenderbufferEXT (GLenum, GLenum, GLenum, GLuint);
+
+GLenum opengl_glCheckFramebufferStatusEXT(GLenum target);
+
+void opengl_glFramebufferTexture2DEXT(GLenum target, GLenum attachmentPoint,GLenum textureTarget,GLuint textureId,GLint level);
+

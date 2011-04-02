@@ -176,11 +176,12 @@ static inline uint32_t premultiplyPixel(uint32_t value){
 
    if(glGetError()!=GL_NO_ERROR)
     return;
-
+#if 0
    glPixelStorei(GL_PACK_ALIGNMENT, 4);
    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
    glPixelStorei(GL_PACK_SKIP_ROWS, 0);
    glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+#endif
 
    // Technically shouldn't need unbind, but to be safe
    BOOL unbind=NO;
