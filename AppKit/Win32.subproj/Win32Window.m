@@ -630,7 +630,9 @@ i=count;
 
      int y=O2ImageGetHeight(backingSurface)-(overFrame.origin.y+overFrame.size.height);
      
-     AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
+     HDC overlayDC=[[overSurface deviceContext] dc];
+           
+     AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,overlayDC,0,0,overFrame.size.width,overFrame.size.height,blend);
     }
    }
    

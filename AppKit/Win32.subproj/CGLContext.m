@@ -5,26 +5,41 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreGraphics/CGLPixelSurface.h>
 
+/* There is essentially only two ways to implement a CGLContext on Windows.
+
+   1) A double buffered off-screen window, using glReadPixels on the back buffer. You can't use a single buffered window because the front buffer is typically considered on-screen and will more likely fail the pixel ownership test. You can't use the front buffer in a double buffered window for the same reasons.
+   
+     Technique 1 works on a lot of systems, but not all. Some drivers will consider an off-screen window as failing the pixel ownership test and not produce any results (black). Some nVidia card/drivers exhibit this behavior.
+     Technique 1 is also slow and there are no acceleration options, the pixels must be retrieved with glReadPixels
+     
+     
+   2) Two pbuffers. Because pbuffers can't be resized you must use one pbuffer for the rendering context and another which is destroyed/created for the backing. The one small static pbuffer is used as the primary rendering context and participates in wglShareLists and preserves rendering context state during resizes. A second pbuffer is used as the backing HDC, this pbuffer is destroyed/created during a context resize (pbuffers can't be resized), no HGLRC is created for this pbuffer. This is all possible because wglMakeCurrent accepts both a HDC and HGLRC, provided the HDC and HGLRC have the same pixel format.
+   
+   Technique 2 is used if pbuffers are available, 1 is the fallback.
+   
+   You can't use FBO's because they are context state and you can't hide them from the application software. E.g. if the application switches to fbo 0 (default), and CGLContext is using 1 for the backing things will fail. Pbuffer doesn't have this problem, pbuffer is also older and more common on Windows at least. 
+      
+   You can't use child windows (this was the first implementation) because they have a number of problems, e.g. no transparency, they are not supported well in layered windows, you can't have multiple child windows with different pixels formats and they have a number of visual artifacts which are hard to control, e.g. flicker during resize.
+   
+   VMWare Fusion (as of April 4,2011) does not support pbuffers so you can't test it there.
+   Parallels Desktop (as of April 4,2011) does support pbuffers but the implementation appears buggy, they usually work, but sometimes don't.
+    */
+ 
 #import "opengl_dll.h"
 
-#ifndef PFD_SUPPORT_COMPOSITION
-#define PFD_SUPPORT_COMPOSITION 0x00008000
-#endif
-
 struct _CGLContextObj {
-// do not reorder the beginning of this struct, it is accessed directly by AC, until we know AC doesnt do it anymore.
    GLuint           retainCount;
    CRITICAL_SECTION lock; // This must be a recursive lock.
    HWND             window;
    int              w,h;
    GLint            opacity;
    CGLPixelSurface  *overlay;
-   CGLContextObj    sharedContext;
    HPBUFFERARB      staticPbuffer;
    HDC              staticPbufferDC;
    HGLRC            staticPbufferGLContext;
    HPBUFFERARB      dynamicPbuffer;
    HDC              dynamicPbufferDC;
+   BOOL             needsViewport;
    HDC              windowDC;
    HGLRC            windowGLContext;
 };
@@ -98,6 +113,30 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
    return result;
 }
 
+static void reportGLErrorIfNeeded(const char *function,int line){
+   GLenum error=glGetError();
+
+   if(error!=GL_NO_ERROR)
+     NSLog(@"%s %d error=%d/%x",function,line,error,error);
+
+}
+
+#if 0
+static BOOL contextHasMakeCurrentReadExtension(CGLContextObj context){
+   const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
+      
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
+   if(extensions==NULL)
+    return NO;
+   
+   if(strstr(extensions,"WGL_ARB_make_current_read")==NULL)
+    return NO;
+
+   return YES;
+}
+#endif
+
 static CGLError _CGLSetCurrentContextFromThreadLocal(){
    CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
    
@@ -105,12 +144,36 @@ static CGLError _CGLSetCurrentContextFromThreadLocal(){
     opengl_wglMakeCurrent(NULL,NULL);
    else {
 
-    if(context->dynamicPbufferDC==NULL)
-     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-    else {
-     opengl_wglMakeCurrent(context->dynamicPbufferDC,context->staticPbufferGLContext);
-     }
-   { GLenum error=glGetError(); if(error!=GL_NO_ERROR) NSLog(@"%s %d error=%d/%x",__FILE__,__LINE__,error,error); }
+   // NSCLog("window DC=%p, window GL=%p, dynamic DC=%p, static GL=%p",context->windowDC,context->windowGLContext,context->dynamicPbufferDC,context->staticPbufferGLContext);
+
+    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+    if(context->dynamicPbufferDC!=NULL){
+     int lost;
+     
+     opengl_wglQueryPbufferARB(context->dynamicPbuffer, WGL_PBUFFER_LOST_ARB, &lost);
+     
+     if(lost)
+      NSLog(@"lost dynamic pBuffer",lost);
+
+     opengl_wglQueryPbufferARB(context->staticPbuffer, WGL_PBUFFER_LOST_ARB, &lost);
+     
+     if(lost)
+      NSLog(@"lost static pBuffer",lost);
+
+#if 0
+     if(contextHasMakeCurrentReadExtension(context))
+      opengl_wglMakeContextCurrentARB(context->dynamicPbufferDC,context->dynamicPbufferDC,context->staticPbufferGLContext);
+     else  
+#endif
+
+      opengl_wglMakeCurrent(context->dynamicPbufferDC,context->staticPbufferGLContext);
+      if(context->needsViewport){
+       glViewport(0,0,context->w,context->h);
+       context->needsViewport=NO;
+      }
+    }
+    
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
    }
    
    return kCGLNoError;
@@ -145,16 +208,22 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    
    pfd->nSize=sizeof(PIXELFORMATDESCRIPTOR);
    pfd->nVersion=1;
-   pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW/*|PFD_DOUBLEBUFFER*/;
+   
+   /* It has to be double buffered regardless of what the application asks for, because we're reading from it, all the pixels must be
+      valid. A single buffer context is problematic in that the driver may not render obscured pixels, all of them since it is off-screen.
+      That isnt a problem with pbuffers but this is the fallback. */
+      
+   pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
    pfd->iLayerType=PFD_MAIN_PLANE;
    pfd->iPixelType=PFD_TYPE_RGBA;
-   pfd->cColorBits=24;
+   pfd->cColorBits=32;
    pfd->cRedBits=8;
    pfd->cGreenBits=8;
    pfd->cBlueBits=8;
    pfd->cAlphaBits=8;
-   pfd->cDepthBits=8;
+   pfd->cDepthBits=24;
 return;
+//ignored for now
    for(i=0;pixelFormat->attributes[i]!=0;i++){
     CGLPixelFormatAttribute attribute=pixelFormat->attributes[i];
 
@@ -191,106 +260,112 @@ return;
    }
 }
 
-void _CGLDestroydynamicPbufferBacking(CGLContextObj context){
-#if 0
-    if(context->dynamicPbufferGLContext!=NULL)
-     opengl_wglDeleteContext(context->dynamicPbufferGLContext);
-    if(context->dynamicPbufferDC!=NULL)
-     opengl_wglReleasePbufferDCARB(context->dynamicPbuffer,context->dynamicPbufferDC);
-    if(context->dynamicPbuffer!=NULL)
-     opengl_wglDestroyPbufferARB(context->dynamicPbuffer);
-#endif
-
-    context->dynamicPbuffer=NULL;
-    context->dynamicPbufferDC=NULL;
-}
-
-static int dynamicPbufferWidth(CGLContextObj context){
-   return context->w;
-}
-
-static int dynamicPbufferHeight(CGLContextObj context){
-   return context->h;
-}
-
-BOOL _CGLCreateDynamicPbufferBacking(CGLContextObj context){
+static BOOL contextHasPbufferExtension(CGLContextObj context){
    const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
    
+   NSLog(@"extensions=%s",extensions);
+   
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
    if(extensions==NULL)
     return NO;
-    
-   if(strstr(extensions,"WGL_ARB_pbuffer")==NULL){
+   
+   if(strstr(extensions,"WGL_ARB_pbuffer")==NULL)
     return NO;
+
+   if(strstr(extensions,"WGL_ARB_pixel_format")==NULL)
+    return NO;
+
+   return YES;
+}
+
+static int powerOfTwo(int value){
+   int result=1;
+   
+   while(result<value)
+    result*=2;
+    
+   return result;
+}
+
+void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
+   
+   if(!contextHasPbufferExtension(context))
+    return;
+    
+   int piFormats[1];
+   int piAttribIList[]={
+        WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
+        WGL_DRAW_TO_PBUFFER_EXT, GL_TRUE,
+        WGL_RED_BITS_ARB,8,
+        WGL_GREEN_BITS_ARB,8,
+        WGL_BLUE_BITS_ARB,8,
+        WGL_ALPHA_BITS_ARB,8,
+        WGL_DEPTH_BITS_ARB,24,
+        WGL_PIXEL_TYPE_EXT,WGL_TYPE_RGBA_EXT,
+        WGL_BIND_TO_TEXTURE_RGBA_ARB, GL_TRUE,
+        WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
+        WGL_DOUBLE_BUFFER_ARB,GL_FALSE,
+        0
+   }; 
+        			
+   UINT nNumFormats=0;	
+    
+   if(opengl_wglChoosePixelFormatARB(context->windowDC,piAttribIList,NULL,1,piFormats,&nNumFormats)==FALSE){
+    NSLog(@"wglChoosePixelFormatARB returned %i", GetLastError());
+    return;			
+   }
+    
+   if(nNumFormats==0){
+    NSLog(@"opengl_wglChoosePixelFormatARB return nNumFormats==0");
+    return;
    }
 
-   if(strstr(extensions,"WGL_ARB_pixel_format")==NULL){
-    return NO;
+   if(context->staticPbuffer==NULL){
+    context->staticPbuffer=opengl_wglCreatePbufferARB(context->windowDC, piFormats[0], 1, 1, NULL);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    context->staticPbufferDC=opengl_wglGetPbufferDCARB(context->staticPbuffer);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    context->staticPbufferGLContext=opengl_wglCreateContext(context->staticPbufferDC);		
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
    }
    
-	int     pixelFormats;
-	int     intAttrs[] ={
-                               WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
-                               WGL_DRAW_TO_PBUFFER_EXT, GL_TRUE,
-                               WGL_RED_BITS_ARB,8,
-                               WGL_GREEN_BITS_ARB,8,
-                               WGL_BLUE_BITS_ARB,8,
-                               WGL_ALPHA_BITS_ARB,8,
-                               WGL_DEPTH_BITS_ARB,8,
-                               WGL_PIXEL_TYPE_EXT,WGL_TYPE_RGBA_EXT,
-                              // WGL_BIND_TO_TEXTURE_RGBA_ARB, GL_TRUE,
-                               WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
-                               WGL_DOUBLE_BUFFER_ARB,GL_FALSE,
-
-                               0}; // 0 terminate the list			
-	unsigned int numFormats = 0;	
-	// get an acceptable pixel format to create the PBuffer with
-	if (opengl_wglChoosePixelFormatARB(context->windowDC,intAttrs,NULL,1,&pixelFormats,&numFormats)==FALSE)
-	{
-		NSLog(@"wglChoosePixelFormatARB returned %i", GetLastError());
-        return NO;			
-	}
-	if (numFormats==0) // no supported formats, we need to change the parameters to something acceptable
-	{
-   NSLog(@"%s %d",__FILE__,__LINE__);
-		return NO;
-	}
-
-	//Set some p-buffer attributes so that we can use this p-buffer as a 2d texture target
 	const int attributes[]= {
      WGL_TEXTURE_FORMAT_ARB,
      WGL_TEXTURE_RGBA_ARB, // p-buffer will have RBA texture format
      WGL_TEXTURE_TARGET_ARB,
      WGL_TEXTURE_2D_ARB,
      0}; // Of texture target will be GL_TEXTURE_2D
-     
-	// the size of the PBuffer must be the same size as the texture
-    if(context->staticPbuffer==NULL){
-	 context->staticPbuffer=opengl_wglCreatePbufferARB(context->windowDC, pixelFormats, 32, 32, NULL);
-	 context->staticPbufferDC=opengl_wglGetPbufferDCARB(context->staticPbuffer);
-  	 context->staticPbufferGLContext=opengl_wglCreateContext(context->staticPbufferDC);		
-    }
-   
-	context->dynamicPbuffer=opengl_wglCreatePbufferARB(context->windowDC, pixelFormats, dynamicPbufferWidth(context), dynamicPbufferHeight(context), NULL);
-        
+
+   context->dynamicPbuffer=opengl_wglCreatePbufferARB(context->windowDC, piFormats[0], context->w, context->h, NULL);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    
     if(context->dynamicPbuffer==NULL){
-      NSLog(@"pbuffer=NULL");
-    return NO;
+     NSLog(@"dynamic Pbuffer creation failed");
+     return ;
     }
     
-	context->dynamicPbufferDC=opengl_wglGetPbufferDCARB(context->dynamicPbuffer);
-      NSLog(@"dynamicPbufferDC=NULL");
+   context->dynamicPbufferDC=opengl_wglGetPbufferDCARB(context->dynamicPbuffer);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
+   if(context->dynamicPbufferDC==NULL)
+     NSLog(@"dynamic Pbuffer DC creation failed");
 
-	//query dimensions of created texture to make sure it was created right
-	int width=0, height=0;
-	opengl_wglQueryPbufferARB(context->dynamicPbuffer, WGL_PBUFFER_WIDTH_ARB, &width);
-	opengl_wglQueryPbufferARB(context->dynamicPbuffer, WGL_PBUFFER_HEIGHT_ARB, &height);
+   context->needsViewport=YES;
+   
+   // Verify result dimensions
+   int width=0;
+   int height=0;
+   opengl_wglQueryPbufferARB(context->dynamicPbuffer, WGL_PBUFFER_WIDTH_ARB, &width);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
+   opengl_wglQueryPbufferARB(context->dynamicPbuffer, WGL_PBUFFER_HEIGHT_ARB, &height);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     
-    if(width!=dynamicPbufferWidth(context))
-     NSLog(@"opengl_wglQueryPbufferARB width!=context->w");
-    if(height!=dynamicPbufferHeight(context))
-     NSLog(@"opengl_wglQueryPbufferARB height!=context->h");
-
-   return YES;
+   if(width!=context->w)
+    NSLog(@"opengl_wglQueryPbufferARB width!=context->w");
+   if(height!=context->h)
+    NSLog(@"opengl_wglQueryPbufferARB height!=context->h");
 }
 
 
@@ -298,21 +373,69 @@ BOOL _CGLCreateDynamicPbufferBacking(CGLContextObj context){
 void _CGLCreateBufferBackingIfPossible(CGLContextObj context){
    CGLContextObj saveContext=CGLGetCurrentContext();
    
-   CGLSetCurrentContext(context);
-   
+// Window context must be current for pBuffer functions to work.  
+   opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
    const char *extensions=glGetString(GL_EXTENSIONS);
    
    //NSLog(@"extensions=%s",extensions);
 
-    _CGLCreateDynamicPbufferBacking(context);
+   _CGLCreateDynamicPbufferBacking(context);
    CGLSetCurrentContext(saveContext);
 }
 
-void _CGLResizeBufferBackingIfNeeded(CGLContextObj context){
-   _CGLDestroydynamicPbufferBacking(context);
-   CGLSetCurrentContext(context);
+void _CGLDestroyStaticPbufferBacking(CGLContextObj context){
+// Window context must be current for pBuffer functions to work.  
+   opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
+   if(context->staticPbufferGLContext!=NULL){
+    opengl_wglDeleteContext(context->staticPbufferGLContext);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   }
+   
+   if(context->staticPbufferDC!=NULL){
+    opengl_wglReleasePbufferDCARB(context->staticPbuffer,context->staticPbufferDC);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   }
+   
+   if(context->staticPbuffer!=NULL){
+     opengl_wglDestroyPbufferARB(context->staticPbuffer);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   }
+   
+   context->staticPbuffer=NULL;
+   context->staticPbufferDC=NULL;
+}
+
+void _CGLDestroyDynamicPbufferBacking(CGLContextObj context){
+// Window context must be current for pBuffer functions to work.  
+
+   opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
+    if(context->dynamicPbufferDC!=NULL){
+     opengl_wglReleasePbufferDCARB(context->dynamicPbuffer,context->dynamicPbufferDC);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    }
+    
+    if(context->dynamicPbuffer!=NULL){
+     opengl_wglDestroyPbufferARB(context->dynamicPbuffer);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   }
+   
+    context->dynamicPbuffer=NULL;
+    context->dynamicPbufferDC=NULL;
+}
+
+
+void _CGLResizeBufferBackingIfNeeded(CGLContextObj context){    
+// Window context must be current for pBuffer functions to work.
+   opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+
+   _CGLDestroyDynamicPbufferBacking(context);
    _CGLCreateDynamicPbufferBacking(context);
-   CGLSetCurrentContext(context);
 }
 
 
@@ -329,8 +452,8 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 
    InitializeCriticalSection(&(context->lock));
    
-   context->w=32;
-   context->h=32;
+   context->w=16;
+   context->h=16;
 
    context->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,NULL,NULL,GetModuleHandle(NULL),NULL);
    
@@ -343,18 +466,17 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
 
    context->windowGLContext=opengl_wglCreateContext(context->windowDC);
    
-   context->sharedContext=CGLRetainContext(share);
-
-/* Creating a context does NOT set it as current, if you need the context to be current,
+/* Creating a CGL context does NOT set it as current, if you need the context to be current,
    save it and restore it. Some applications may create a context while using another, so
    we don't want to improperly switch to another context during creating */
-   
-   // Might be helpful to have a push/pop context system here
-   
+      
    _CGLCreateBufferBackingIfPossible(context);
    
-   if(context->sharedContext!=NULL){
-    if(!opengl_wglShareLists(context->sharedContext->staticPbufferGLContext,context->staticPbufferGLContext))
+   if(share!=NULL){
+    HGLRC shareGL=(share->staticPbufferGLContext!=NULL)?share->staticPbufferGLContext:share->windowGLContext;
+    HGLRC otherGL=(context->staticPbufferGLContext!=NULL)?context->staticPbufferGLContext:context->windowGLContext;
+    
+    if(!opengl_wglShareLists(shareGL,otherGL))
      NSLog(@"opengl_wglShareLists failed");
    }
    
@@ -364,9 +486,6 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    [context->overlay setOpaque:YES];
    
    *resultp=context;
-
-   if([[NSUserDefaults standardUserDefaults] boolForKey:@"CGLContextShowWindow"])
-    SetWindowPos(context->window,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
    
    return kCGLNoError;
 }
@@ -398,10 +517,9 @@ CGL_EXPORT void CGLReleaseContext(CGLContextObj context) {
 
     if(CGLGetCurrentContext()==context)
      CGLSetCurrentContext(NULL);
-    
-    CGLReleaseContext(context->sharedContext);
-    
-    _CGLDestroydynamicPbufferBacking(context);
+        
+    _CGLDestroyDynamicPbufferBacking(context);
+    _CGLDestroyStaticPbufferBacking(context);
 
     ReleaseDC(context->window,context->windowDC);
     DestroyWindow(context->window);
@@ -471,16 +589,19 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      BOOL sizeChanged=(context->w!=value[0] || context->h!=value[1])?YES:NO;
      
      if(sizeChanged){
-     context->w=value[0];
-     context->h=value[1];
+      context->w=value[0];
+      context->h=value[1];
 
-      MoveWindow(context->window,0,0,context->w,context->h,NO);
+      /* If we're using a Pbuffer we don't want the window large because it consumes resources */
+      if(context->staticPbufferGLContext==NULL)
+       MoveWindow(context->window,0,0,context->w,context->h,NO);
+      else
+       _CGLResizeBufferBackingIfNeeded(context);
+       
+      CGLSetCurrentContext(context);
 
-       CGLSetCurrentContext(context);
-      _CGLResizeBufferBackingIfNeeded(context);
-      
       [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
-      }
+     }
      break;
      
     default:
@@ -523,7 +644,14 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
    CGLLockContext(context);
 
    CGLSetCurrentContext(context);
-
+   
+   GLint buffer;
+   
+   glGetIntegerv(GL_DRAW_BUFFER,&buffer);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   glReadBuffer(buffer);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
    [context->overlay readBuffer];
    
    CGLUnlockContext(context);

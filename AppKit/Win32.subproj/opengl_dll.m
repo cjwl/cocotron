@@ -130,7 +130,7 @@ HPBUFFERARB opengl_wglCreatePbufferARB(HDC hDC,int iPixelFormat,int iWidth,int i
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglCreatePbufferARB) failed");
     return NULL;
    }
    
@@ -142,7 +142,7 @@ HDC  opengl_wglGetPbufferDCARB(HPBUFFERARB hPbuffer) {
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglGetPbufferDCARB) failed");
     return NULL;
    }
    
@@ -154,7 +154,7 @@ int  opengl_wglReleasePbufferDCARB(HPBUFFERARB hPbuffer,HDC hDC) {
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglReleasePbufferDCARB) failed");
     return 0;
    }
    
@@ -166,7 +166,7 @@ BOOL opengl_wglDestroyPbufferARB(HPBUFFERARB hPbuffer) {
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglDestroyPbufferARB) failed");
     return NO;
    }
    
@@ -178,7 +178,7 @@ BOOL opengl_wglQueryPbufferARB(HPBUFFERARB hPbuffer,int iAttribute,int *piValue)
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglQueryPbufferARB) failed");
     return NO;
    }
    
@@ -190,7 +190,7 @@ BOOL opengl_wglGetPixelFormatAttribivARB(HDC hdc,int iPixelFormat,int iLayerPlan
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglGetPixelFormatAttribivARB) failed");
     return NO;
    }
    
@@ -202,7 +202,7 @@ BOOL opengl_wglGetPixelFormatAttribfvARB(HDC hdc,int iPixelFormat,int iLayerPlan
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglGetPixelFormatAttribfvARB) failed");
     return NO;
    }
    
@@ -214,7 +214,7 @@ BOOL opengl_wglChoosePixelFormatARB(HDC hdc,const int *piAttribIList,const FLOAT
 
    if(function==NULL){
     if(NSDebugEnabled)
-     NSLog(@"wglGetProcAddress(wglGetExtensionsStringARB) failed");
+     NSLog(@"wglGetProcAddress(wglChoosePixelFormatARB) failed");
     return NO;
    }
    
@@ -340,4 +340,17 @@ void opengl_glFramebufferTexture2DEXT(GLenum target, GLenum attachmentPoint,GLen
    }
    
    function(target,attachmentPoint,textureTarget,textureId,level);
+}
+
+
+BOOL opengl_wglMakeContextCurrentARB(HDC hDrawDC,HDC hReadDC,HGLRC hglrc) {
+   APIENTRY typeof(opengl_wglMakeContextCurrentARB ) *function=(typeof(function))wglGetProcAddress("wglMakeContextCurrentARB");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglMakeContextCurrentARB ) failed");
+    return NO;
+   }
+   
+   return function(hDrawDC,hReadDC,hglrc);
 }

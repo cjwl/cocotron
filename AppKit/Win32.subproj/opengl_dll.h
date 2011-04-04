@@ -66,3 +66,5 @@ GLenum opengl_glCheckFramebufferStatusEXT(GLenum target);
 
 void opengl_glFramebufferTexture2DEXT(GLenum target, GLenum attachmentPoint,GLenum textureTarget,GLuint textureId,GLint level);
 
+
+BOOL opengl_wglMakeContextCurrentARB(HDC hDrawDC,HDC hReadDC,HGLRC hglrc);
