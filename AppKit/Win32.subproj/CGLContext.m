@@ -144,9 +144,9 @@ static CGLError _CGLSetCurrentContextFromThreadLocal(){
     opengl_wglMakeCurrent(NULL,NULL);
    else {
 
-   // NSCLog("window DC=%p, window GL=%p, dynamic DC=%p, static GL=%p",context->windowDC,context->windowGLContext,context->dynamicPbufferDC,context->staticPbufferGLContext);
-
     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    
     if(context->dynamicPbufferDC!=NULL){
      int lost;
      
@@ -171,9 +171,9 @@ static CGLError _CGLSetCurrentContextFromThreadLocal(){
        glViewport(0,0,context->w,context->h);
        context->needsViewport=NO;
       }
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     }
     
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
    }
    
    return kCGLNoError;
@@ -437,11 +437,15 @@ void _CGLDestroyDynamicPbufferBacking(CGLContextObj context){
 
 
 void _CGLResizeBufferBackingIfNeeded(CGLContextObj context){    
+   CGLContextObj saveContext=CGLGetCurrentContext();
+
 // Window context must be current for pBuffer functions to work.
    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
 
    _CGLDestroyDynamicPbufferBacking(context);
    _CGLCreateDynamicPbufferBacking(context);
+
+   CGLSetCurrentContext(saveContext);
 }
 
 
@@ -481,7 +485,7 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    if(share!=NULL){
     HGLRC shareGL=(share->staticPbufferGLContext!=NULL)?share->staticPbufferGLContext:share->windowGLContext;
     HGLRC otherGL=(context->staticPbufferGLContext!=NULL)?context->staticPbufferGLContext:context->windowGLContext;
-    
+
     if(!opengl_wglShareLists(shareGL,otherGL))
      NSLog(@"opengl_wglShareLists failed");
    }
@@ -603,8 +607,10 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
        MoveWindow(context->window,0,0,context->w,context->h,NO);
       else
        _CGLResizeBufferBackingIfNeeded(context);
-       
-      CGLSetCurrentContext(context);
+      
+      /* It is not appropriate to set this context as current, _CGLResizeBufferBackingIfNeeded saves/restores
+         because it may be made current on another thread, and if it is current on the resize thread the
+         other thread make current will fail. Basically, don't leave current! */
 
       [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
      }
