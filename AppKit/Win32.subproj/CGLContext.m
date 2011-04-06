@@ -263,7 +263,7 @@ return;
 static BOOL contextHasPbufferExtension(CGLContextObj context){
    const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
    
-   NSLog(@"extensions=%s",extensions);
+  // NSLog(@"extensions=%s",extensions);
    
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
@@ -275,7 +275,12 @@ static BOOL contextHasPbufferExtension(CGLContextObj context){
 
    if(strstr(extensions,"WGL_ARB_pixel_format")==NULL)
     return NO;
-
+    
+   const char *vendor=glGetString(GL_VENDOR);
+   
+   if(strstr(vendor,"Parallels")!=NULL)
+    return NO;
+    
    return YES;
 }
 
@@ -379,8 +384,9 @@ void _CGLCreateBufferBackingIfPossible(CGLContextObj context){
 
    const char *extensions=glGetString(GL_EXTENSIONS);
    
-   //NSLog(@"extensions=%s",extensions);
-
+  // NSLog(@"extensions=%s",extensions);
+  // NSLog(@"vendor=%s",glGetString(GL_VENDOR));
+   
    _CGLCreateDynamicPbufferBacking(context);
    CGLSetCurrentContext(saveContext);
 }
