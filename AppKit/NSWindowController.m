@@ -17,7 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithWindow:(NSWindow *)window {
    _window=[window retain];
    [_window setWindowController:self];
-
+   [_window setReleasedWhenClosed:NO];
+   
    if(_window!=nil)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
 
@@ -96,6 +97,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _window=window;
    
    [_window setWindowController:self];
+   [_window setReleasedWhenClosed:NO];
    
    if (_window)
     [center addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
@@ -103,9 +105,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)_windowWillClose:(NSNotification *)note {
    [_window setWindowController:nil];
-// NSWindowController properly releases a window which does and does not have release when closed set without over-releasing
-   if(![_window isReleasedWhenClosed])
-    [_window release];
    _window=nil;
    
   if (_document){

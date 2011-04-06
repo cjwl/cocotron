@@ -1047,6 +1047,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setWindowController:(NSWindowController *)value {
    _windowController=value;
+/*
+   Cocoa does not setReleasedWhenClosed:NO when setWindowController: is called.
+   The NSWindowController class does setReleasedWhenClosed:NO in conjunction with setWindowController:
+   
+   However, there is one application (AC), which calls setWindowController: standalone and does
+   _something else_ which also does setReleasedWhenClosed:NO. Perhaps some byproduct of NSDOcument, NSWindowController or NSWindow.
+   THis hasn't been figured out yet. So, in the meantime we do setReleasedWhenClosed:NO since all cases which do call setWindowCOntroller: also
+   want setReleasedWhenClosed:NO.
+ */
+   [self setReleasedWhenClosed:NO];
 }
 
 -(void)setDocumentEdited:(BOOL)flag {
