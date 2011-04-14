@@ -134,8 +134,11 @@ kern_return_t mach_timebase_info(mach_timebase_info_t timebase) {
 
 #ifdef WINDOWS
 unsigned int sleep(unsigned int seconds) {
-   NSUnimplementedFunction();
-   return 0;
+   return Sleep(seconds*1000);
+}
+
+int usleep(long useconds) {
+   return Sleep(useconds/1000);
 }
 
 size_t strlcpy(char *dst, const char *src, size_t size) {
@@ -147,6 +150,19 @@ size_t strlcpy(char *dst, const char *src, size_t size) {
    dst[i]='\0';
 
    return i;
+}
+
+char *strnstr(const char *s1,const char *s2, size_t n) {
+   if(s2[0]=='\0')
+    return s1;
+
+   size_t i,patLength=strlen(s2);
+
+   for(i=0;s1[i]!='\0' && i+patLength<=n;i++)
+    if(strncmp(s1+i,s2,patLength)==0)
+     return s1+i;
+    
+   return NULL;
 }
 
 void bzero(void *ptr,size_t size){
