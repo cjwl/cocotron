@@ -134,11 +134,13 @@ kern_return_t mach_timebase_info(mach_timebase_info_t timebase) {
 
 #ifdef WINDOWS
 unsigned int sleep(unsigned int seconds) {
-   return Sleep(seconds*1000);
+    Sleep(seconds*1000);
+    return 0;
 }
 
 int usleep(long useconds) {
-   return Sleep(useconds/1000);
+    Sleep(useconds/1000);
+    return 0;
 }
 
 size_t strlcpy(char *dst, const char *src, size_t size) {

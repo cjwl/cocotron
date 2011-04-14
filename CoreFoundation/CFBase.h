@@ -227,7 +227,7 @@ kern_return_t mach_timebase_info(mach_timebase_info_t timebase);
 
 #ifdef WINDOWS
 COREFOUNDATION_EXPORT unsigned int sleep(unsigned int seconds);
-COREFOUNDATION_EXPORT int usleep(long useconds);
+//COREFOUNDATION_EXPORT int usleep(long useconds);
 COREFOUNDATION_EXPORT size_t strlcpy(char *dst, const char *src, size_t size);
 COREFOUNDATION_EXPORT char *strnstr(const char *s1,const char *s2,size_t n);
 COREFOUNDATION_EXPORT void bzero(void *ptr,size_t size);
