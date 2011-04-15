@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSNumber *NSNumber_unsignedShortNew(NSZone *zone,unsigned short value) {
    NSNumber_unsignedShort *self=NSAllocateObject([NSNumber_unsignedShort class],0,zone);
+   self->_type=kCFNumberShortType;
    self->_value=value;
    return self;
 }

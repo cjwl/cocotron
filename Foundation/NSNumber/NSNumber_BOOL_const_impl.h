@@ -16,6 +16,7 @@ NS_DECLARE_CLASS_SYMBOL(NSNumber_BOOL);
 typedef struct
 {
    const struct objc_class * const isa;
+   CFNumberType _type;
    BOOL _value;
 } NSNumber_BOOL_Def;
 
@@ -23,6 +24,7 @@ typedef struct
 static const NSNumber_BOOL_Def kTrueDef =
 {
    &_OBJC_CLASS_NSNumber_BOOL,
+   kCFNumberCharType,
    YES
 };
 
@@ -30,6 +32,7 @@ static const NSNumber_BOOL_Def kTrueDef =
 static const NSNumber_BOOL_Def kFalseDef =
 {
    &_OBJC_CLASS_NSNumber_BOOL,
+   kCFNumberCharType,
    NO
 };
 
