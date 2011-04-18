@@ -112,6 +112,10 @@ FOUNDATION_EXPORT NSString * const NSNetServicesErrorDomain;
 
 @end
 
+@protocol NSNetServiceDelegate <NSObject>
+
+@end
+
 
 
 @class NSRunLoop,NSDictionary,NSNetService,NSSelectInputSource,NSMutableDictionary;

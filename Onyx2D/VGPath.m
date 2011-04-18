@@ -141,7 +141,7 @@ static inline StrokeVertex StrokeVertexInit(){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static O2Point unitAverageWithDirection(O2Point u0, O2Point u1, BOOL cw) {
+static O2Point unitAverageWithDirection(O2Point u0, O2Point u1) {
    O2Point u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
    O2Point n0 = Vector2PerpendicularCCW(u0);
 
@@ -156,7 +156,6 @@ static O2Point unitAverageWithDirection(O2Point u0, O2Point u1, BOOL cw) {
     u = Vector2MultiplyByFloat(Vector2Add(n0 , n1), 0.5f);
    }
    
-   if( cw )
     u = Vector2Negate(u);
 
    return Vector2Normalize(u);
@@ -188,13 +187,13 @@ static O2Point unitAverage(O2Point u0, O2Point u1){
 
 // Interpolate the given unit tangent vectors to the given direction on a unit circle.
 
-static O2Point circularLerpWithDirection(O2Point t0, O2Point t1, O2Float ratio, BOOL cw) {
+static O2Point circularLerpWithDirection(O2Point t0, O2Point t1, O2Float ratio) {
    O2Point u0 = t0, u1 = t1;
    O2Float l0 = 0.0f, l1 = 1.0f;
    int i;
     
    for(i=0;i<8;i++) {
-    O2Point n = unitAverageWithDirection(u0, u1, cw);
+    O2Point n = unitAverageWithDirection(u0, u1);
     O2Float l = 0.5f * (l0 + l1);
     if( ratio < l ){
      u1 = n;
@@ -305,6 +304,15 @@ void VGPathFill(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin 
    The resulting polygons are closed. */
 
 
+static inline O2Point O2PointApplyAffineTransformNoTranslate(O2Point point,O2AffineTransform xform){
+    O2Point result;
+
+    result.x=xform.a*point.x+xform.c*point.y;
+    result.y=xform.b*point.x+xform.d*point.y;
+
+    return result;
+}
+
 void VGPathInterpolateStroke(O2AffineTransform pathToSurface, O2Context_builtin *context,StrokeVertex v0,StrokeVertex v1, O2Float strokeWidth){
 	O2Point ppccw = O2PointApplyAffineTransform(v0.ccw,pathToSurface);
 	O2Point ppcw = O2PointApplyAffineTransform(v0.cw,pathToSurface);
@@ -315,16 +323,74 @@ void VGPathInterpolateStroke(O2AffineTransform pathToSurface, O2Context_builtin 
 
 	O2Float angle = RI_RAD_TO_DEG((O2Float)acos(RI_CLAMP(Vector2Dot(v0.t, v1.t), -1.0f, 1.0f))) / tessellationAngle;
 	int samples = RI_INT_MAX((int)ceil(angle), 1);
-	O2Point prev = v0.p;
-	O2Point prevt = v0.t;
-	O2Point position = v0.p;
+
 	O2Point pnccw = ppccw;
 	O2Point pncw = ppcw;
+
+    if(samples==1){
+    /* If there is only one sample then the line is close to straight, we use the tangent of one of the vertices
+       instead of interpolating and just make a box.
+     */
+     
+	//	O2Float t = 1;
+	//	O2Point tangent = circularLerp(v0.t, v1.t, t);
+        O2Point v0p=O2PointApplyAffineTransform(v0.p,pathToSurface);
+        O2Point v1p=O2PointApplyAffineTransform(v1.p,pathToSurface);
+		O2Point   n=O2PointApplyAffineTransformNoTranslate(Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(v1.t)) , strokeWidth * 0.5f),pathToSurface);
+
+		O2Point npccw = Vector2Add(v0p, n);
+		O2Point npcw = Vector2Subtract(v0p, n);
+		O2Point nnccw = Vector2Add(v1p,n);
+		O2Point nncw = Vector2Subtract(v1p , n);
+
+		O2DContextAddEdge(context,npccw, nnccw);
+		O2DContextAddEdge(context,nnccw, nncw);
+		O2DContextAddEdge(context,nncw, npcw);	
+		O2DContextAddEdge(context,npcw, npccw);
+#if 0
+		if(Vector2Dot(n,v0.t) <= 0.0f){
+			O2DContextAddEdge(context,pnccw, npcw);
+			O2DContextAddEdge(context,npcw, pncw);	
+			O2DContextAddEdge(context,pncw, npccw);
+			O2DContextAddEdge(context,npccw, pnccw);
+		}
+		else {
+			O2DContextAddEdge(context,pnccw, npccw);
+			O2DContextAddEdge(context,npccw, pncw);
+			O2DContextAddEdge(context,pncw, npcw);	
+			O2DContextAddEdge(context,npcw, pnccw);
+		}
+
+		ppccw = npccw;
+		ppcw = npcw;
+		pnccw = nnccw;
+		pncw = nncw;
+
+	//connect the last segment to the end coordinates
+	 n = Vector2PerpendicularCCW(v1.t);
+    
+     if(Vector2Dot(n,tangent) <= 0.0f){
+      O2DContextAddEdge(context,pnccw, endcw);
+      O2DContextAddEdge(context,endcw, pncw);
+      O2DContextAddEdge(context,pncw, endccw);
+      O2DContextAddEdge(context,endccw, pnccw);
+     }
+     else {
+      O2DContextAddEdge(context,pnccw, endccw);
+      O2DContextAddEdge(context,endccw, pncw);
+      O2DContextAddEdge(context,pncw, endcw);
+      O2DContextAddEdge(context,endcw, pnccw);
+     }
+#endif
+	}
+    else {
+	O2Point prev = v0.p;
+	O2Point prevt = v0.t;
     int     j;
     
 	for(j=0;j<samples;j++){
 		O2Float t = (O2Float)(j+1) / (O2Float)samples;
-		position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p ,t));
+		O2Point position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p ,t));
 		O2Point tangent = circularLerp(v0.t, v1.t, t);
 		O2Point n = Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(tangent)) , strokeWidth * 0.5f);
 
@@ -361,7 +427,6 @@ void VGPathInterpolateStroke(O2AffineTransform pathToSurface, O2Context_builtin 
 		prev = position;
 		prevt = tangent;
 	}
-
 	//connect the last segment to the end coordinates
 	O2Point n = Vector2PerpendicularCCW(v1.t);
     
@@ -377,6 +442,9 @@ void VGPathInterpolateStroke(O2AffineTransform pathToSurface, O2Context_builtin 
     O2DContextAddEdge(context,pncw, endcw);
     O2DContextAddEdge(context,endcw, pnccw);
    }
+
+}
+
 }
 
 // Generate edges for stroke caps. Resulting polygons are closed.
@@ -405,8 +473,16 @@ void VGPathDoCap(O2AffineTransform pathToSurface, O2Context_builtin *context,Str
         int j;
         
 		for(j=1;j<samples;j++){
-			O2Point next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
+#if 1
+        O2Point vp=O2PointApplyAffineTransform(v.p,pathToSurface);
+		O2Point   next=O2PointApplyAffineTransformNoTranslate(Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t) , strokeWidth * 0.5f),pathToSurface);
+
+        next=Vector2Add(vp,next);
+        
+#else
+			O2Point next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t) , strokeWidth * 0.5f));
 			next = O2PointApplyAffineTransform(next,pathToSurface);
+#endif
 
 			O2DContextAddEdge(context,prev, next);
 			prev = next;
@@ -419,8 +495,12 @@ void VGPathDoCap(O2AffineTransform pathToSurface, O2Context_builtin *context,Str
 	case kO2LineCapSquare: {
 		O2Point t = v.t;
 		t=Vector2Normalize(t);
-		O2Point ccws = O2PointApplyAffineTransform(Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
-		O2Point cws = O2PointApplyAffineTransform(Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
+        O2Point vccw=O2PointApplyAffineTransform(v.ccw,pathToSurface);
+        O2Point vcw=O2PointApplyAffineTransform(v.cw,pathToSurface);
+        O2Point strokeRadius=O2PointApplyAffineTransformNoTranslate(Vector2MultiplyByFloat(t , strokeWidth * 0.5f),pathToSurface);
+        
+		O2Point ccws = Vector2Add(vccw , strokeRadius);
+		O2Point cws = Vector2Add(vcw , strokeRadius);
 		O2DContextAddEdge(context,cwt, ccwt);
 		O2DContextAddEdge(context,ccwt, ccws);
 		O2DContextAddEdge(context,ccws, cws);
@@ -450,7 +530,7 @@ void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, S
 		e = ccw1t;
 		st = v0.t;
 		et = v1.t;
-		m = v0.ccw;
+		m = ccw0t;
 		cw = NO;
 		O2DContextAddEdge(context,m0t, ccw0t);
 		O2DContextAddEdge(context,ccw1t, m1t);
@@ -462,7 +542,7 @@ void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, S
 		e = cw0t;
 		st = v1.t;
 		et = v0.t;
-		m = v0.cw;
+		m = cw0t;
 		cw = YES;
 		O2DContextAddEdge(context,cw0t, m0t);
 		O2DContextAddEdge(context,m1t, cw1t);
@@ -479,8 +559,9 @@ void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, S
 		{	//miter
 			O2Float l = (O2Float)cos(theta*0.5f) * miterLengthPerStrokeWidth * (strokeWidth * 0.5f);
 			l = RI_MIN(l, RI_FLOAT_MAX);	//force finite
-			O2Point c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
-			c = O2PointApplyAffineTransform(c,pathToSurface);
+                        
+			O2Point c = Vector2Add(m , O2PointApplyAffineTransformNoTranslate(Vector2MultiplyByFloat(v0.t, l),pathToSurface));
+
 			O2DContextAddEdge(context,s, c);
 			O2DContextAddEdge(context,c, e);
 		}
@@ -505,11 +586,11 @@ void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, S
             int     j;
 			for(j=1;j<samples;j++)
 			{
-				O2Point position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t));
-				O2Point tangent = circularLerpWithDirection(st, et, t, YES);
+				O2Point position = O2PointApplyAffineTransform(Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t)),pathToSurface);
+				O2Point tangent = circularLerpWithDirection(st, et, t);
 
-				O2Point next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
-				next = O2PointApplyAffineTransform(next,pathToSurface);
+                O2Point strokeRadius=O2PointApplyAffineTransformNoTranslate(Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f),pathToSurface);
+				O2Point next = Vector2Add(position , strokeRadius);
 
 				O2DContextAddEdge(context,prev, next);
 				prev = next;
@@ -560,12 +641,58 @@ void VGPathStroke(VGPath *self,O2AffineTransform pathToSurface, O2Context_builti
 	//inDash keeps track whether the last point was in dash or not
 
 	//loop vertex events
-	{
+
 		O2Float nextDash = 0.0f;
 		int d = 0;
 		BOOL inDash = YES;
 		StrokeVertex v0=StrokeVertexInit(), v1=StrokeVertexInit(), vs=StrokeVertexInit();
         
+   if(!dashing){
+    
+    for(i=0;i<self->_vertexCount;i++){
+	 const Vertex v = self->_vertices[i];
+     v1.p = v.userPosition;
+     v1.t = v.userTangent;
+
+     v1.ccw = Vector2Add(v1.p , Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(v1.t)) , strokeWidth * 0.5f));
+     v1.cw = Vector2Add(v1.p , Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCW(v1.t)) , strokeWidth * 0.5f));
+     v1.pathLength = v.pathLength;
+     v1.flags = v.flags;
+
+			//process the vertex event
+			if(v.flags & START_SEGMENT) {
+				if(v.flags & START_SUBPATH)
+                  vs = v1;	//save the subpath start point
+				else {
+					if( v.flags & IMPLICIT_CLOSE_SUBPATH ) {	//do caps for the start and end of the current subpath
+							VGPathDoCap(pathToSurface, context, v0, strokeWidth, capStyle);	//end cap
+
+							StrokeVertex vi = vs;
+							vi.t = Vector2Negate(vi.t);
+							RI_SWAP(&vi.ccw.x, &vi.cw.x);
+							RI_SWAP(&vi.ccw.y, &vi.cw.y);
+							VGPathDoCap(pathToSurface, context, vi, strokeWidth, capStyle);	//start cap
+					}
+					else {	//join two segments
+							VGPathDoJoin(pathToSurface, context, v0, v1, strokeWidth, joinStyle, miterLimit);
+					}
+				}
+			}
+			else {	//in the middle of a segment
+				if( !(v.flags & IMPLICIT_CLOSE_SUBPATH) ) {	//normal segment, do stroking
+						VGPathInterpolateStroke(pathToSurface, context, v0, v1, strokeWidth);
+				}
+			}
+
+			if((v.flags & END_SEGMENT) && (v.flags & CLOSE_SUBPATH)) {	//join start and end of the current subpath
+					VGPathDoJoin(pathToSurface, context, v1, vs, strokeWidth, joinStyle, miterLimit);
+			}
+
+     v0 = v1;
+    }
+   }
+    else {
+
 		for(i=0;i<self->_vertexCount;i++)
 		{
 			//read the next vertex
@@ -735,7 +862,6 @@ void VGPathStroke(VGPath *self,O2AffineTransform pathToSurface, O2Context_builti
 			v0 = v1;
 		}
 	}
-
 }
 
 // Tessellates a path, and returns a position and a tangent on the path given a distance along the path.
@@ -901,6 +1027,7 @@ void VGPathAddVertex(VGPath *self,O2Point p, O2Point t, O2Float pathLength, unsi
 	Vertex v;
 	v.pathLength = pathLength;
 	v.userPosition = p;
+    
 	v.userTangent = t;
 	v.flags = flags;
     
@@ -988,7 +1115,7 @@ BOOL VGPathAddLineTo(VGPath *self,O2Point p0, O2Point p1, BOOL subpathHasGeometr
 // Tessellates a quad-to segment.
 
 /*
- Given a quadratic BÃ©zier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic BÃ©zier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
+ Given a quadratic BŽzier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic BŽzier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
   */
   
 BOOL VGPathAddQuadTo(VGPath *self,O2Point p0, O2Point p1, O2Point p2, BOOL subpathHasGeometry){
