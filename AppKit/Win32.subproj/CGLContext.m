@@ -223,10 +223,29 @@ static BOOL contextHasMakeCurrentReadExtension(CGLContextObj context){
 }
 #endif
 
+void _CGLResizeBufferBackingIfNeeded(CGLContextObj context){    
+   CGLContextObj saveContext=CGLGetCurrentContext();
+
+// Window context must be current for pBuffer functions to work.
+   opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+
+   _CGLDestroyDynamicPbufferBacking(context);
+   _CGLCreateDynamicPbufferBacking(context);
+
+   CGLSetCurrentContext(saveContext);
+}
+
+
+
 static void resizeBackingIfNeeded(CGLContextObj context){
    if(!context->resizeBacking)
     return;
 
+   if(context->w<0)
+    context->w=0;
+   if(context->h<0)
+    context->h=0;
+    
    context->resizeBacking=FALSE;
    
       /* If we're using a Pbuffer we don't want the window large because it consumes resources */
@@ -240,7 +259,6 @@ static void resizeBackingIfNeeded(CGLContextObj context){
       /* It is not appropriate to set this context as current, _CGLResizeBufferBackingIfNeeded saves/restores
          because it may be made current on another thread, and if it is current on the resize thread the
          other thread make current will fail. Basically, don't leave current! */
-
       [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
 }
 
@@ -544,19 +562,6 @@ void _CGLDestroyDynamicPbufferBacking(CGLContextObj context){
    
     context->dynamicPbuffer=NULL;
     context->dynamicPbufferDC=NULL;
-}
-
-
-void _CGLResizeBufferBackingIfNeeded(CGLContextObj context){    
-   CGLContextObj saveContext=CGLGetCurrentContext();
-
-// Window context must be current for pBuffer functions to work.
-   opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-
-   _CGLDestroyDynamicPbufferBacking(context);
-   _CGLCreateDynamicPbufferBacking(context);
-
-   CGLSetCurrentContext(saveContext);
 }
 
 
