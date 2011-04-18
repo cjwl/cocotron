@@ -268,7 +268,7 @@ id NSApp=nil;
   for(NSNumber *number in numbers){
    NSWindow *window=[self windowWithWindowNumber:[number integerValue]];
    
-   if(![window isKindOfClass:[NSPanel class]])
+   if(window!=nil && ![window isKindOfClass:[NSPanel class]])
     [result addObject:window];
   }
   

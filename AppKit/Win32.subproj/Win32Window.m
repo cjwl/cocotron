@@ -176,13 +176,13 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    if(_title!=nil)
     SetWindowTextW(_handle,(const unichar *)[_title cStringUsingEncoding:NSUnicodeStringEncoding]);
 
-   SetProp(_handle,"self",self);
+   SetProp(_handle,"Win32Window",self);
 
  //  [self setupPixelFormat];
 }
 
 -(void)destroyWindowHandle {
-   SetProp(_handle,"self",nil);
+   SetProp(_handle,"Win32Window",nil);
    DestroyWindow(_handle);
    _handle=NULL;
 }
@@ -1000,7 +1000,7 @@ i=count;
 
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   Win32Window       *self=GetProp(handle,"self");
+   Win32Window       *self=GetProp(handle,"Win32Window");
    LRESULT            result;
 
    if(self==nil)

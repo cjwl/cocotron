@@ -4,6 +4,7 @@
 #import <stdbool.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreGraphics/CGLPixelSurface.h>
+#import <pthread.h>
 
 /* There is essentially only two ways to implement a CGLContext on Windows.
 
@@ -32,6 +33,7 @@ struct _CGLContextObj {
    CRITICAL_SECTION lock; // This must be a recursive lock.
    HWND             window;
    int              w,h;
+   int              resizeBacking;
    GLint            opacity;
    CGLPixelSurface  *overlay;
    HPBUFFERARB      staticPbuffer;
@@ -81,7 +83,82 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
    return DefWindowProc(handle,message,wParam,lParam);
 }
 
+/* This is a dedicated thread for creating and dispatching messages to OpenGL context windows. 
+
+   Each HWND in Win32 is associated with the thread it is created on. Messages for that window are
+   sent to the associated threads input queue. So, for example if you send a MoveWindow to a window,
+   all the underlying messages related to the MoveWindow are sent to the input queue on the associated thread.
+   
+   The problem is that the application developer can not be expected to process the messages on the creating
+   thread. In a single threaded AppKit program under typical condition that is OK because you are processing messages,
+   but in a multi-threaded environment where the creating thread is not handling messages this can be a problem.
+
+   So, we create all OpenGL windows on a dedicated thread which handles the messages.
+
+ */
+CRITICAL_SECTION requestCriticalSection;
+CRITICAL_SECTION sharingCriticalSection;
+
+static CGLContextObj callerContext=NULL;
+static HANDLE pingThreadEvent=NULL;
+static HANDLE pingCallerEvent=NULL;
+
+static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
+
+   do {
+    HANDLE objects[1];
+    
+    objects[0]=pingThreadEvent;
+    
+    MsgWaitForMultipleObjects(1,objects,FALSE,INFINITE,QS_ALLINPUT);
+    
+    MSG msg;
+    
+    PeekMessage(&msg,NULL,0,0,PM_REMOVE);
+    DispatchMessage(&msg);
+
+    CGLContextObj check;
+    
+    EnterCriticalSection(&sharingCriticalSection);
+    check=callerContext;
+    callerContext=NULL;
+    LeaveCriticalSection(&sharingCriticalSection);
+
+    if(check!=NULL){
+     check->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,check->w,check->h,NULL,NULL,GetModuleHandle(NULL),NULL);
+     
+     SetEvent(pingCallerEvent);
+    }
+    
+   } while(1);
+   
+   return 0;
+}
+
+static void createWindowForContext(CGLContextObj context){
+    EnterCriticalSection(&requestCriticalSection);
+    
+    EnterCriticalSection(&sharingCriticalSection);
+    callerContext=context;
+    LeaveCriticalSection(&sharingCriticalSection);
+    
+    SetEvent(pingThreadEvent);
+    WaitForSingleObject(pingCallerEvent,INFINITE);
+    
+    LeaveCriticalSection(&requestCriticalSection);
+}
+
+static void initializeRequest(){
+   InitializeCriticalSection(&requestCriticalSection);
+}
+
 void CGLInitializeIfNeeded(){
+   static pthread_once_t once=PTHREAD_ONCE_INIT;
+   
+   pthread_once(&once,initializeRequest);
+   
+   EnterCriticalSection(&requestCriticalSection);
+   
    static bool registerWindowClass=FALSE;
    
    if(!registerWindowClass){
@@ -104,7 +181,16 @@ void CGLInitializeIfNeeded(){
      NSLog(@"RegisterClass failed %s %d",__FILE__,__LINE__);
      
     registerWindowClass=TRUE;
+    
+    InitializeCriticalSection(&sharingCriticalSection);
+    
+    pingThreadEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
+    pingCallerEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
+    
+    CreateThread(NULL,0,openGLWindowThread,NULL,0,NULL);
+
    }
+   LeaveCriticalSection(&requestCriticalSection);
 }
 
 CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
@@ -137,15 +223,39 @@ static BOOL contextHasMakeCurrentReadExtension(CGLContextObj context){
 }
 #endif
 
+static void resizeBackingIfNeeded(CGLContextObj context){
+   if(!context->resizeBacking)
+    return;
+
+   context->resizeBacking=FALSE;
+   
+      /* If we're using a Pbuffer we don't want the window large because it consumes resources */
+
+      if(context->staticPbufferGLContext==NULL){
+       MoveWindow(context->window,0,0,context->w,context->h,NO);
+      }
+      else
+       _CGLResizeBufferBackingIfNeeded(context);
+      
+      /* It is not appropriate to set this context as current, _CGLResizeBufferBackingIfNeeded saves/restores
+         because it may be made current on another thread, and if it is current on the resize thread the
+         other thread make current will fail. Basically, don't leave current! */
+
+      [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
+}
+
 static CGLError _CGLSetCurrentContextFromThreadLocal(){
    CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
    
    if(context==NULL)
     opengl_wglMakeCurrent(NULL,NULL);
    else {
+    opengl_wglMakeCurrent(NULL,NULL);
+    resizeBackingIfNeeded(context);
 
     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    
     
     if(context->dynamicPbufferDC!=NULL){
      int lost;
@@ -379,6 +489,7 @@ void _CGLCreateBufferBackingIfPossible(CGLContextObj context){
    CGLContextObj saveContext=CGLGetCurrentContext();
    
 // Window context must be current for pBuffer functions to work.  
+
    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
@@ -465,7 +576,8 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    context->w=16;
    context->h=16;
 
-   context->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,NULL,NULL,GetModuleHandle(NULL),NULL);
+   createWindowForContext(context);
+   
    
    context->windowDC=GetDC(context->window);
 
@@ -560,21 +672,16 @@ CGL_EXPORT CGLError CGLDestroyContext(CGLContextObj context) {
 }
 
 CGL_EXPORT CGLError CGLLockContext(CGLContextObj context) {
-//if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    EnterCriticalSection(&(context->lock));
    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
-//if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
    LeaveCriticalSection(&(context->lock));
    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
-//if(NSDebugEnabled) NSCLog("%s %d %p CGLSetParameter parameter=%d",__FILE__,__LINE__,context,parameter);
-   CGLLockContext(context);
-
    switch(parameter){
     case kCGLCPSwapInterval:;
      CGLSetCurrentContext(context);
@@ -591,7 +698,6 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
     
     case kCGLCPSurfaceOpacity:
      context->opacity=*value;
-     
      [context->overlay setOpaque:context->opacity?YES:NO];
      break;
     
@@ -601,18 +707,7 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      if(sizeChanged){
       context->w=value[0];
       context->h=value[1];
-
-      /* If we're using a Pbuffer we don't want the window large because it consumes resources */
-      if(context->staticPbufferGLContext==NULL)
-       MoveWindow(context->window,0,0,context->w,context->h,NO);
-      else
-       _CGLResizeBufferBackingIfNeeded(context);
-      
-      /* It is not appropriate to set this context as current, _CGLResizeBufferBackingIfNeeded saves/restores
-         because it may be made current on another thread, and if it is current on the resize thread the
-         other thread make current will fail. Basically, don't leave current! */
-
-      [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
+      context->resizeBacking=TRUE;
      }
      break;
      
@@ -620,9 +715,7 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      NSUnimplementedFunction();
      break;
    }
-  
-   CGLUnlockContext(context);
-   
+
    return kCGLNoError;
 }
 
@@ -653,7 +746,8 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.
  */
-   CGLLockContext(context);
+
+   CGLContextObj saveContext=CGLGetCurrentContext();
 
    CGLSetCurrentContext(context);
    
@@ -664,9 +758,13 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
    glReadBuffer(buffer);
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
    
+   CGLLockContext(context);
+
    [context->overlay readBuffer];
    
    CGLUnlockContext(context);
+
+   CGLSetCurrentContext(saveContext);
 
    [[context->overlay window] flushOverlay:context->overlay];
 

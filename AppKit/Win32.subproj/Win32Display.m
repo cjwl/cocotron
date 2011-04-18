@@ -1039,9 +1039,9 @@ NSArray *CGSOrderedWindowNumbers(){
    HWND check=GetTopWindow(NULL);
    
    while(check!=NULL){
-    Win32Window *platformWindow=GetProp(check,"self");
+    Win32Window *platformWindow=GetProp(check,"Win32Window");
     
-    if(platformWindow!=nil && [platformWindow isKindOfClass:[Win32Window class]])
+    if(platformWindow!=nil)
      [result addObject:[NSNumber numberWithInteger:[platformWindow windowNumber]]];
 
     check=GetNextWindow(check,GW_HWNDNEXT);
@@ -1053,7 +1053,7 @@ NSArray *CGSOrderedWindowNumbers(){
 
 -(BOOL)postMSG:(MSG)msg {
    NSEventType  type;
-   id           platformWindow=(id)GetProp(msg.hwnd,"self");
+   id           platformWindow=(id)GetProp(msg.hwnd,"Win32Window");
    NSWindow    *window=nil;
    POINT        deviceLocation;
    NSPoint      location;
