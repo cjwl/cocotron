@@ -232,7 +232,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _autosaveFrameName=nil;
 
    _platformWindow=nil;
-
+   _threadToContext=[[NSMutableDictionary alloc] init];
+   
    if(_menuView!=nil)
     [_backgroundView addSubview:_menuView];
 
@@ -272,8 +273,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_platformWindow invalidate];
    [_platformWindow release];
    _platformWindow=nil;
-   [_graphicsContext release];
-   _graphicsContext=nil;
+   [_threadToContext release];
    [_undoManager release];
    [super dealloc];
 }
@@ -292,7 +292,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_platformWindow setTitle:title];
 }
 
--(CGWindow *)platformWindow {
+/*
+  There are issues when creating a Win32 handle on a non-main thread, so we always do it on the main thread
+ */
+-(void)_createPlatformWindowOnMainThread {
    if(_platformWindow==nil){
     if([self isKindOfClass:[NSPanel class]])
      _platformWindow=[[[NSDisplay currentDisplay] panelWithFrame: _frame styleMask:_styleMask backingType:_backingType] retain];
@@ -305,6 +308,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [self _updatePlatformWindowTitle];
 
     [[NSDraggingManager draggingManager] registerWindow:self dragTypes:nil];
+   }
+}
+
+-(CGWindow *)platformWindow {
+   if(_platformWindow==nil){
+    [self performSelectorOnMainThread:@selector(_createPlatformWindowOnMainThread) withObject:nil waitUntilDone:YES modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
    }
 
    return _platformWindow;
@@ -330,15 +339,19 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSGraphicsContext *)graphicsContext {
-   if(_graphicsContext==nil)
-    _graphicsContext=[[NSGraphicsContext graphicsContextWithWindow:self] retain];
+   NSValue           *key=[NSValue valueWithPointer:[NSThread currentThread]];
+   NSGraphicsContext *result=[_threadToContext objectForKey:key];
    
-   return _graphicsContext;
+   if(result==nil){
+    result=[NSGraphicsContext graphicsContextWithWindow:self];
+    [_threadToContext setObject:result forKey:key];
+   }
+   
+   return result;
 } 
 
 -(void)platformWindowDidInvalidateCGContext:(CGWindow *)window {
-   [_graphicsContext release];
-   _graphicsContext=nil;
+   [_threadToContext removeAllObjects];
 }
 
 -(NSDictionary *)deviceDescription {
@@ -1038,6 +1051,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setWindowController:(NSWindowController *)value {
    _windowController=value;
+/*
+   Cocoa does not setReleasedWhenClosed:NO when setWindowController: is called.
+   The NSWindowController class does setReleasedWhenClosed:NO in conjunction with setWindowController:
+   
+   However, there is one application (AC), which calls setWindowController: standalone and does
+   _something else_ which also does setReleasedWhenClosed:NO. Perhaps some byproduct of NSDOcument, NSWindowController or NSWindow.
+   THis hasn't been figured out yet. So, in the meantime we do setReleasedWhenClosed:NO since all cases which do call setWindowCOntroller: also
+   want setReleasedWhenClosed:NO.
+ */
+   [self setReleasedWhenClosed:NO];
 }
 
 -(void)setDocumentEdited:(BOOL)flag {
@@ -1843,11 +1866,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    may be the right place to do this, maybe not, further investigation is
    required
  */
+ 
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
          [NSApp changeWindowsItem:self title:_title filename:NO];
-         [NSApp _windowOrderingChange: NSWindowAbove forWindow: self relativeTo: [NSApp windowWithWindowNumber:relativeTo]];
      }
      
      break;
@@ -1866,7 +1889,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
        [NSApp changeWindowsItem:self title:_title filename:NO];
-       [NSApp _windowOrderingChange: NSWindowBelow forWindow: self relativeTo: [NSApp windowWithWindowNumber:relativeTo]];
      }
      break;
 
@@ -1875,7 +1897,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      [[self platformWindow] hideWindow];
      if (![self isKindOfClass:[NSPanel class]]) {
        [NSApp removeWindowsItem:self];
-       [NSApp _windowOrderingChange: NSWindowOut forWindow: self relativeTo: nil];
      }
      break;
    }
@@ -2896,6 +2917,18 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(NSView *)_backgroundView {
     return _backgroundView;
+}
+
+-(NSInteger)orderedIndex {
+   NSInteger result=[[NSApp orderedWindows] indexOfObjectIdenticalTo:self];
+   
+   /* Documentation says orderedIndex is zero based, but tests say it is 1 based
+      Possible there is a window at 0 which is not in -[NSApp windows] ? Either way, available windows are 1 based.
+    */
+   if(result!=NSNotFound)
+    result+=1;
+
+   return result;
 }
 
 @end

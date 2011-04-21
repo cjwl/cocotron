@@ -90,8 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _focusRingType=[isa defaultFocusRingType];
    _state=NSOffState;
    _font=[[NSFont userFontOfSize:0] retain];
-   _objectValue=[[NSNumber alloc] initWithBool:NO];
-   _titleOrAttributedTitle=[string copy];
+   _objectValue=[string copy];
    _image=nil;
    _cellType=NSTextCellType;
    _isEnabled=YES;
@@ -109,7 +108,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _focusRingType=[isa defaultFocusRingType];
    _state=NSOffState;
    _font=nil;
-   _objectValue=[[NSNumber alloc] initWithBool:NO];
+   _objectValue=nil;
    _image=[image retain];
    _cellType=NSImageCellType;
    _isEnabled=YES;
@@ -124,7 +123,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-   return [self initTextCell:@"Cell"];
+   return [self initImageCell:nil];
 }
 
 -(void)dealloc {
@@ -132,7 +131,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_objectValue release];
    [_image release];
    [_formatter release];
-   [_titleOrAttributedTitle release];
    [_representedObject release];
    [super dealloc];
 }
@@ -144,7 +142,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    copy->_objectValue=[_objectValue copy];
    copy->_image=[_image retain];
    copy->_formatter=[_formatter retain];
-   copy->_titleOrAttributedTitle=[_titleOrAttributedTitle copy];
    copy->_representedObject=[_representedObject retain];
 
    return copy;
@@ -216,7 +213,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)title {
-    return _titleOrAttributedTitle;
+    return [self stringValue];
 }
 
 -(BOOL)isEnabled {
@@ -477,9 +474,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setTitle:(NSString *)title {
-    title = [title retain];
-    [_titleOrAttributedTitle release];
-    _titleOrAttributedTitle = title;
+    [self setStringValue:title];
 }
 
 -(void)setEnabled:(BOOL)flag {

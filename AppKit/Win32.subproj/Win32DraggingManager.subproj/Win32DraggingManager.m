@@ -29,6 +29,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)registerWindow:(NSWindow *)window dragTypes:(NSArray *)dragTypes {
    Win32IDropTargetServer *target=[[[Win32IDropTargetServer alloc] initWithWindow:(Win32Window *)[window platformWindow]] autorelease];
 
+   if(target==nil) // RegisterDragDrop fails sometimes, unresolved.
+    return;
+    
    [_dropTargets addObject:target];
 }
 

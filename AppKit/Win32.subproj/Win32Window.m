@@ -176,18 +176,19 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    if(_title!=nil)
     SetWindowTextW(_handle,(const unichar *)[_title cStringUsingEncoding:NSUnicodeStringEncoding]);
 
-   SetProp(_handle,"self",self);
+   SetProp(_handle,"Win32Window",self);
 
  //  [self setupPixelFormat];
 }
 
 -(void)destroyWindowHandle {
-   SetProp(_handle,"self",nil);
+   SetProp(_handle,"Win32Window",nil);
    DestroyWindow(_handle);
    _handle=NULL;
 }
 
--initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {
+-initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType {   
+   InitializeCriticalSection(&_lock);
    _frame=frame;
    _level=kCGNormalWindowLevel;
    _isOpaque=YES;
@@ -237,6 +238,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    _cgContext=nil;
    [_backingContext release];
    _backingContext=nil;
+}
+
+-(void)lock {
+   EnterCriticalSection(&_lock);
+}
+
+-(void)unlock {
+   LeaveCriticalSection(&_lock);
 }
 
 -(void)setDelegate:delegate {
@@ -527,7 +536,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
      allOpaque=NO;
      break;
     }
-
+   
    if(allOpaque){
     [_overlayResult release];
     _overlayResult=nil;
@@ -604,6 +613,8 @@ i=count;
 }
 
 -(void)flushOverlay:(CGLPixelSurface *)overlay {
+   [self lock];
+   
    if([overlay isOpaque]){
     O2Surface_DIBSection *backingSurface=[_backingContext surface];
     O2Rect                overFrame=[overlay frame];
@@ -619,10 +630,14 @@ i=count;
 
      int y=O2ImageGetHeight(backingSurface)-(overFrame.origin.y+overFrame.size.height);
      
-     AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
+     HDC overlayDC=[[overSurface deviceContext] dc];
+           
+     AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,overlayDC,0,0,overFrame.size.width,overFrame.size.height,blend);
     }
    }
    
+   [self unlock];
+
    [self flushBuffer];
 }
 
@@ -635,11 +650,14 @@ i=count;
 }
 
 -(void)flushBuffer {
-   if(_disableFlushWindow)
-    return;
-    
-   O2Point fromPoint;
+   [self lock];
    
+   if(_disableFlushWindow){
+    [self unlock];
+    return;
+    }
+
+   O2Point fromPoint;
    if([self isLayeredWindow]){
     if(_backingContext!=nil){
      O2Surface_DIBSection *surface=[self resultSurface:&fromPoint];
@@ -685,6 +703,7 @@ i=count;
       }
     }
    }
+   [self unlock];
 }
 
 -(CGPoint)convertPOINTLToBase:(POINTL)point {
@@ -787,6 +806,7 @@ i=count;
     [_delegate platformWindowWillMove:self];
    [self _GetWindowRectDidSize:NO];
    [_delegate platformWindowDidMove:self];
+
    return 0;
 }
 
@@ -980,7 +1000,7 @@ i=count;
 
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   Win32Window       *self=GetProp(handle,"self");
+   Win32Window       *self=GetProp(handle,"Win32Window");
    LRESULT            result;
 
    if(self==nil)

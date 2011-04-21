@@ -146,6 +146,7 @@ static inline void _clearCurrentContext(){
    We need to reload the view values when becoming current because it may
    have moved windows since the last make current
  */
+ // Possible this shouldnt be done here, especially on a non-main thread
    [self updateViewParameters];
    
    if(!_hasPrepared){

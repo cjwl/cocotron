@@ -135,13 +135,19 @@ static IEnumFORMATETCVtbl IEnumFORMATETCVTable={
 -initWithVtable:(void *)vtable interfaceIdentifier:(LPOLESTR)identifier {
    _capacity=1;
    _count=1;
-   _interfaces=NSZoneMalloc([self zone],sizeof(Win32COMObject)*_capacity);
+   _interfaces=NSZoneMalloc(NULL,sizeof(Win32COMObject)*_capacity);
    _interfaces[0].vtable=vtable;
    _interfaces[0].object=self;
    if(IIDFromString(identifier,&_interfaces[0].iid)!=S_OK){
     NSLog(@"IIDFromString failed %s",identifier);
    }
    return self;
+}
+
+-(void)dealloc {
+   if(_interfaces!=NULL)
+    NSZoneFree(NULL,_interfaces);
+   [super dealloc];
 }
 
 -initAsIDropTarget {

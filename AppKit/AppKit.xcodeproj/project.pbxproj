@@ -4009,6 +4009,16 @@
 		FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
 		FEE36B810F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
 		FEE36B820F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
+		FEE4B2FA133BB8770095E656 /* NSWindowScripting.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE4B2FB133BB8770095E656 /* NSWindowScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */; };
+		FEE4B2FC133BB8770095E656 /* NSWindowScripting.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE4B2FD133BB8770095E656 /* NSWindowScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */; };
+		FEE4B2FE133BB8770095E656 /* NSWindowScripting.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE4B2FF133BB8770095E656 /* NSWindowScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */; };
+		FEE4B300133BB8770095E656 /* NSWindowScripting.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE4B301133BB8770095E656 /* NSWindowScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */; };
+		FEE4B302133BB8770095E656 /* NSWindowScripting.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE4B303133BB8770095E656 /* NSWindowScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */; };
 		FEE7E0B710E26487004A50F8 /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7E0B610E26487004A50F8 /* CGLContext.m */; };
 		FEE7E0B810E26487004A50F8 /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7E0B610E26487004A50F8 /* CGLContext.m */; };
 		FEE7E0B910E26487004A50F8 /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7E0B610E26487004A50F8 /* CGLContext.m */; };
@@ -5230,6 +5240,8 @@
 		FEDF951B0CAF43E7009DC96F /* O2PDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2PDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* O2PDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2PDFContext.m; sourceTree = "<group>"; };
 		FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSToolbarOverflowArrow.pdf; sourceTree = "<group>"; };
+		FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSWindowScripting.h; sourceTree = "<group>"; };
+		FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSWindowScripting.m; sourceTree = "<group>"; };
 		FEE7E0B610E26487004A50F8 /* CGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGLContext.m; sourceTree = "<group>"; };
 		FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSRefreshTemplate.pdf; sourceTree = "<group>"; };
 		FEED42C81224B82B0059B0DF /* NSExitFullScreenTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSExitFullScreenTemplate.pdf; sourceTree = "<group>"; };
@@ -5652,6 +5664,8 @@
 				6E2B54C40976075300DA0954 /* NSThemeFrame.h */,
 				6E2B53E30976075200DA0954 /* NSThemeFrame.m */,
 				6E2B53E10976075200DA0954 /* NSWindow.m */,
+				FEE4B2F8133BB8770095E656 /* NSWindowScripting.h */,
+				FEE4B2F9133BB8770095E656 /* NSWindowScripting.m */,
 				6E2B54D80976075300DA0954 /* NSWindowAnimationContext.h */,
 				6E2B53F30976075200DA0954 /* NSWindowAnimationContext.m */,
 				6E2B54C60976075300DA0954 /* NSWindowController.h */,
@@ -7032,6 +7046,7 @@
 				FE99DA76128396B6006D789F /* O2Encoder_PNG.h in Headers */,
 				FE74968A12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B412C112EE008E5A59 /* CATransactionGroup.h in Headers */,
+				FEE4B2FC133BB8770095E656 /* NSWindowScripting.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7433,6 +7448,7 @@
 				FE99DA78128396B6006D789F /* O2Encoder_PNG.h in Headers */,
 				FE74968C12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B512C112EE008E5A59 /* CATransactionGroup.h in Headers */,
+				FEE4B2FE133BB8770095E656 /* NSWindowScripting.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7831,6 +7847,7 @@
 				FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */,
 				FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */,
+				FEE4B2FA133BB8770095E656 /* NSWindowScripting.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8234,6 +8251,7 @@
 				FE99DA7C128396B6006D789F /* O2Encoder_PNG.h in Headers */,
 				FE74969012BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B712C112EE008E5A59 /* CATransactionGroup.h in Headers */,
+				FEE4B302133BB8770095E656 /* NSWindowScripting.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8554,6 +8572,7 @@
 				FE99DA7A128396B6006D789F /* O2Encoder_PNG.h in Headers */,
 				FE74968E12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B612C112EE008E5A59 /* CATransactionGroup.h in Headers */,
+				FEE4B300133BB8770095E656 /* NSWindowScripting.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9634,6 +9653,7 @@
 				FEDEA95512C13368008E5A59 /* CABase.m in Sources */,
 				FEDEAA9A12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAF12C98F4C008E5A59 /* CALayerContext.m in Sources */,
+				FEE4B2FD133BB8770095E656 /* NSWindowScripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10032,6 +10052,7 @@
 				FEDEA95612C13368008E5A59 /* CABase.m in Sources */,
 				FEDEAA9B12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB012C98F4C008E5A59 /* CALayerContext.m in Sources */,
+				FEE4B2FF133BB8770095E656 /* NSWindowScripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10461,6 +10482,7 @@
 				FEDEA95412C13368008E5A59 /* CABase.m in Sources */,
 				FEDEAA9912C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAE12C98F4C008E5A59 /* CALayerContext.m in Sources */,
+				FEE4B2FB133BB8770095E656 /* NSWindowScripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10861,6 +10883,7 @@
 				FEDEA95812C13368008E5A59 /* CABase.m in Sources */,
 				FEDEAA9D12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB212C98F4C008E5A59 /* CALayerContext.m in Sources */,
+				FEE4B303133BB8770095E656 /* NSWindowScripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11156,6 +11179,7 @@
 				FEDEA95712C13368008E5A59 /* CABase.m in Sources */,
 				FEDEAA9C12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB112C98F4C008E5A59 /* CALayerContext.m in Sources */,
+				FEE4B301133BB8770095E656 /* NSWindowScripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11283,6 +11307,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
+				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = (
@@ -11576,6 +11601,7 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
+				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
