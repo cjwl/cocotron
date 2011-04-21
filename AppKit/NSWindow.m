@@ -232,7 +232,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _autosaveFrameName=nil;
 
    _platformWindow=nil;
-
+   _threadToContext=[[NSMutableDictionary alloc] init];
+   
    if(_menuView!=nil)
     [_backgroundView addSubview:_menuView];
 
@@ -272,8 +273,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_platformWindow invalidate];
    [_platformWindow release];
    _platformWindow=nil;
-   [_graphicsContext release];
-   _graphicsContext=nil;
+   [_threadToContext release];
    [_undoManager release];
    [super dealloc];
 }
@@ -339,15 +339,19 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSGraphicsContext *)graphicsContext {
-   if(_graphicsContext==nil)
-    _graphicsContext=[[NSGraphicsContext graphicsContextWithWindow:self] retain];
+   NSValue           *key=[NSValue valueWithPointer:[NSThread currentThread]];
+   NSGraphicsContext *result=[_threadToContext objectForKey:key];
    
-   return _graphicsContext;
+   if(result==nil){
+    result=[NSGraphicsContext graphicsContextWithWindow:self];
+    [_threadToContext setObject:result forKey:key];
+   }
+   
+   return result;
 } 
 
 -(void)platformWindowDidInvalidateCGContext:(CGWindow *)window {
-   [_graphicsContext release];
-   _graphicsContext=nil;
+   [_threadToContext removeAllObjects];
 }
 
 -(NSDictionary *)deviceDescription {

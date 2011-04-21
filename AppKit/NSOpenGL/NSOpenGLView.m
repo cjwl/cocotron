@@ -106,6 +106,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)lockFocus {
 	[super lockFocus];
 
+    CGLLockContext([_context CGLContextObj]);
     [_context setView:self];
 	[[self openGLContext] makeCurrentContext];
     
@@ -119,6 +120,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Cocoa _does not_ flushBuffer
 // Single buffered contexts need to be updated somehow else
 	[super unlockFocus];
+    CGLUnlockContext([_context CGLContextObj]);
 }
 
 - (void)clearGLContext {
