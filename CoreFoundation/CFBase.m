@@ -240,6 +240,11 @@ int mkstemps(char *template,int suffixlen) {
    return (int)result;
 }
 
+long random(void) {
+// rand() is only good for 15 bits, random() returns 31
+   return (rand()<<16)|(rand()<<1)|(rand()&0x1);
+}
+
 #endif
 
 
