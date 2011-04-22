@@ -1660,9 +1660,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else {
     _flushNeeded=NO;
     BOOL doFlush=YES;
-    
-    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+
+    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque]){
      doFlush=NO;
+     }
     
     if(doFlush)
      [[self platformWindow] flushBuffer];

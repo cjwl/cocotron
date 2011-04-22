@@ -294,12 +294,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -(void)invalidateContextsWithNewSize:(CGSize)size forceRebuild:(BOOL)forceRebuild {
    if(!NSEqualSizes(_frame.size,size) || forceRebuild){
+    [self lock];
     _frame.size=size;
     [_cgContext release];
     _cgContext=nil;
     [_backingContext release];
     _backingContext=nil;
     [_delegate platformWindowDidInvalidateCGContext:self];
+    [self unlock];
    }  
 }
 
@@ -631,8 +633,10 @@ i=count;
      int y=O2ImageGetHeight(backingSurface)-(overFrame.origin.y+overFrame.size.height);
      
      HDC overlayDC=[[overSurface deviceContext] dc];
-           
+    
+     O2SurfaceLock(backingSurface);
      AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,overlayDC,0,0,overFrame.size.width,overFrame.size.height,blend);
+     O2SurfaceUnlock(backingSurface);
     }
    }
    
@@ -698,8 +702,11 @@ i=count;
        
        CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
        
-       if(deviceContext!=nil)
+       if(deviceContext!=nil){
+        O2SurfaceLock(surface);
         BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+        O2SurfaceUnlock(surface);
+       }
       }
     }
    }

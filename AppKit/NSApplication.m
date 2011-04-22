@@ -764,8 +764,10 @@ id NSApp=nil;
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
     NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
         
-    if(event==nil)
+    if(event==nil){
+     [pool release];
      break;
+    }
      
    NSWindow          *window=[event window];
 

@@ -517,13 +517,23 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
     NSLog(@"O2Surface -init error, return");
 
    _clampExternalPixels=NO; // only set to yes if premultiplied
+   _lock=pthread_mutex_init(&_lock,NULL);
    return self;
 }
 
 -(void)dealloc {
     _pixelBytes=NULL; // if we own it, it's in the provider, if not, no release
-
+    pthread_mutex_destroy(&_lock);
+    
     [super dealloc];
+}
+
+void O2SurfaceLock(O2Surface *surface) {
+   pthread_mutex_lock(&(surface->_lock));
+}
+
+void O2SurfaceUnlock(O2Surface *surface) {
+   pthread_mutex_unlock(&(surface->_lock));
 }
 
 -(void *)pixelBytes {

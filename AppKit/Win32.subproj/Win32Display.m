@@ -385,7 +385,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:mode];
    [self stopWaitCursor];
    
-   while([untilDate timeIntervalSinceNow]>0){
+   while([untilDate timeIntervalSinceNow]>0 || [_eventQueue count]>0){
     result=[super nextEventMatchingMask:mask|NSPlatformSpecificDisplayMask untilDate:untilDate inMode:mode dequeue:dequeue];
     
     if([result type]==NSPlatformSpecificDisplayEvent){

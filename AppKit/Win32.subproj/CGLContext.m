@@ -741,6 +741,8 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
 
    CGLContextObj saveContext=CGLGetCurrentContext();
 
+   CGLLockContext(context);
+
    CGLSetCurrentContext(context);
    
    GLint buffer;
@@ -750,7 +752,6 @@ CGLError CGLFlushDrawable(CGLContextObj context) {
    glReadBuffer(buffer);
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
    
-   CGLLockContext(context);
 
    [context->overlay readBuffer];
    

@@ -117,7 +117,7 @@ void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc,O2Path *path,O2AffineTra
 
 void O2DeviceContextClipReset_gdi(HDC dc) {
 // These two should effectively be the same, an the latter is preferred. But needs testing. Possibly not working (e.g. AC)
-#if 1
+#if 0
    HRGN region=CreateRectRgn(0,0,GetDeviceCaps(dc,HORZRES),GetDeviceCaps(dc,VERTRES));
    if(!SelectClipRgn(dc,region)){
     if(NSDebugEnabled)
