@@ -52,6 +52,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   return self;
 }
 
+// Override NSCell behavior of creating an image/null type cell
+-init {
+   return [self initTextCell:@""];
+}
+
 -(void)dealloc {
    [_backgroundColor release];
    [_textColor release];

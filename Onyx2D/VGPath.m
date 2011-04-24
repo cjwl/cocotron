@@ -564,13 +564,15 @@ void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, S
 
 			O2DContextAddEdge(context,s, c);
 			O2DContextAddEdge(context,c, e);
+            break;
 		}
-		else
-		{	//bevel
-			O2DContextAddEdge(context,s, e);
+
+        // bevel
+        // dropthrough
 		}
+	case kO2LineJoinBevel:
+        O2DContextAddEdge(context,s, e);
 		break;
-	}
 
 	case kO2LineJoinRound:
 	{
@@ -601,12 +603,6 @@ void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, S
 		break;
 	}
 
-	case kO2LineJoinBevel:
-		if(!cw)
-			O2DContextAddEdge(context,ccw0t, ccw1t);
-		else
-			O2DContextAddEdge(context,cw1t, cw0t);	
-		break;
 	}
 }
 

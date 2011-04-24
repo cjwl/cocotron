@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class O2Context_gdi,O2Surface,O2Surface_DIBSection;
 
 @interface Win32Window : CGWindow {
+   CRITICAL_SECTION       _lock; // This must be a recursive lock.
    CGRect                 _frame;
    int                    _level;
    BOOL                   _isOpaque;
@@ -43,6 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    id                    _delegate;
    NSMutableDictionary  *_deviceDictionary;
+
 }
 
 -initWithFrame:(CGRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(CGSBackingStoreType)backingType;
@@ -51,6 +53,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -delegate;
 
 -(void)invalidate;
+
+-(void)lock;
+-(void)unlock;
 
 -(HWND)windowHandle;
 -(CGRect)frame;
