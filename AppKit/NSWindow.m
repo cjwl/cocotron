@@ -2006,7 +2006,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
     case NSMouseMoved:{
       NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
-      
+
       if(hit==nil)
        [self mouseMoved:event];
       else
