@@ -523,6 +523,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 #endif
 
+#define NO_INCREMENTAL_COMPOSITE 1
+
 -(O2Surface_DIBSection *)resultSurface:(O2Point *)fromPoint {
    O2Surface_DIBSection *result=[_backingContext surface];
 
@@ -538,7 +540,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
      allOpaque=NO;
      break;
     }
-   
+
+#ifdef NO_INCREMENTAL_COMPOSITE
+   allOpaque=NO;
+#endif
+
    if(allOpaque){
     [_overlayResult release];
     _overlayResult=nil;
@@ -578,6 +584,15 @@ i=count;
      _overlayResult=[[O2Surface_DIBSection alloc] initWithWidth:resultWidth height:resultHeight compatibleWithDeviceContext:nil];
     }
     
+     BLENDFUNCTION blend;
+    
+     blend.BlendOp=AC_SRC_OVER;
+     blend.BlendFlags=0;
+     blend.SourceConstantAlpha=255;
+     blend.AlphaFormat=0;
+     
+     AlphaBlend([[_overlayResult deviceContext] dc],0,0,resultWidth,resultHeight,[[result deviceContext] dc],0,0,resultWidth,resultHeight,blend);
+#if 0
     uint32_t *src=[result pixelBytes];
     uint32_t *dst=[_overlayResult pixelBytes];
     // FIXME: if backing is not 32bpp this needs to accomodate that
@@ -585,14 +600,17 @@ i=count;
     
     for(i=0;i<count;i++)
      dst[i]=src[i];
-     
+#endif
+
     result=_overlayResult;
    }
    
    for(CGLPixelSurface *overlay in _overlays){
+#ifndef NO_INCREMENTAL_COMPOSITE
     if([overlay isOpaque])
      continue;
-    
+#endif
+
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     
@@ -615,6 +633,7 @@ i=count;
 }
 
 -(void)flushOverlay:(CGLPixelSurface *)overlay {
+#ifndef NO_INCREMENTAL_COMPOSITE
    [self lock];
    
    if([overlay isOpaque]){
@@ -641,6 +660,7 @@ i=count;
    }
    
    [self unlock];
+#endif
 
    [self flushBuffer];
 }
@@ -887,9 +907,10 @@ i=count;
    RECT   rect=*(RECT *)lParam;
    CGSize size=NSMakeSize(rect.right-rect.left,rect.bottom-rect.top);
 
-   if(!_sentBeginSizing)
+   if(!_sentBeginSizing){
     [_delegate platformWindowWillBeginSizing:self];
-
+   }
+   
    _sentBeginSizing=YES;
 
    size=[_delegate platformWindow:self frameSizeWillChange:size];
@@ -940,13 +961,16 @@ i=count;
 }
 
 -(int)WM_ENTERSIZEMOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+   
    return 0;
 }
 
 -(int)WM_EXITSIZEMOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   if(_sentBeginSizing)
+   
+   if(_sentBeginSizing){
     [_delegate platformWindowDidEndSizing:self];
-
+   }
+   
    [_delegate platformWindowExitMove:self];
 
    _sentBeginSizing=NO;
