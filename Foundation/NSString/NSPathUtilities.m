@@ -296,7 +296,7 @@ NSArray *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory,NSS
    if(directory==NSCachesDirectory){
     NSString *path=[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Caches"];
     
-    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil];
+    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:NULL];
     
     return [NSArray arrayWithObject:path];
    }
@@ -304,7 +304,7 @@ NSArray *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory,NSS
    if(directory==NSApplicationSupportDirectory){
     NSString *path=[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Application Support"];
 
-    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil];
+    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:NULL];
 
     return [NSArray arrayWithObject:path];
    }
