@@ -224,6 +224,9 @@ static BOOL contextHasMakeCurrentReadExtension(CGLContextObj context){
 }
 #endif
 
+static void _CGLCreateDynamicPbufferBacking(CGLContextObj context);
+static void _CGLDestroyDynamicPbufferBacking(CGLContextObj context);
+
 static void resizeBackingIfNeeded(CGLContextObj context){
    if(!context->resizeBacking)
     return;
@@ -399,14 +402,6 @@ static BOOL contextHasPbufferExtension(CGLContextObj context){
    return YES;
 }
 
-static int powerOfTwo(int value){
-   int result=1;
-   
-   while(result<value)
-    result*=2;
-    
-   return result;
-}
 
 void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
    
@@ -507,7 +502,7 @@ void _CGLCreateBufferBackingIfPossible(CGLContextObj context){
    CGLSetCurrentContext(saveContext);
 }
 
-void _CGLDestroyStaticPbufferBacking(CGLContextObj context){
+static void _CGLDestroyStaticPbufferBacking(CGLContextObj context){
 // Window context must be current for pBuffer functions to work.  
    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -531,7 +526,7 @@ void _CGLDestroyStaticPbufferBacking(CGLContextObj context){
    context->staticPbufferDC=NULL;
 }
 
-void _CGLDestroyDynamicPbufferBacking(CGLContextObj context){
+static void _CGLDestroyDynamicPbufferBacking(CGLContextObj context){
 // Window context must be current for pBuffer functions to work.  
 
    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);

@@ -40,6 +40,7 @@ static void dump(O2TTFDecoderRef self,NSString *format,...){
    }
 }
 
+#if 0
 static CFIndex currentPosition(O2TTFDecoderRef self){
    return self->_position;
 }
@@ -47,6 +48,7 @@ static CFIndex currentPosition(O2TTFDecoderRef self){
 static void seekToPosition(O2TTFDecoderRef self,CFIndex value){
    self->_position=value;
 }
+#endif
 
 static uint8_t decode_uint8(O2TTFDecoderRef self){
    if(self->_position>=self->_length){

@@ -289,16 +289,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSArray *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory,NSSearchPathDomainMask mask,BOOL expand) {
    if(mask!=NSUserDomainMask)
     NSUnimplementedFunction();
-    
+
+/* Callers expect the directories to exist, so create them if needed.
+ */
+     
    if(directory==NSCachesDirectory){
-    NSString *path=[[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Caches"] stringByAppendingPathComponent:[[NSProcessInfo processInfo] processName]];
+    NSString *path=[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Caches"];
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil];
     
     return [NSArray arrayWithObject:path];
    }
    
    if(directory==NSApplicationSupportDirectory){
-    NSString *path=[[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Application Support"] stringByAppendingPathComponent:[[NSProcessInfo processInfo] processName]];
-    
+    NSString *path=[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Application Support"];
+
+    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil];
+
     return [NSArray arrayWithObject:path];
    }
 

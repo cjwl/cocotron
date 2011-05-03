@@ -6,6 +6,10 @@
 #import <OpenGL/OpenGL.h>
 #import <Onyx2D/O2Surface.h>
 
+@interface CALayer(private)
+-(NSNumber *)_textureId;
+@end
+
 @implementation CARenderer
 
 -(CGRect)bounds {

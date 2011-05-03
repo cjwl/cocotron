@@ -156,13 +156,13 @@ size_t strlcpy(char *dst, const char *src, size_t size) {
 
 char *strnstr(const char *s1,const char *s2, size_t n) {
    if(s2[0]=='\0')
-    return s1;
+    return (char *)s1;
 
    size_t i,patLength=strlen(s2);
 
    for(i=0;s1[i]!='\0' && i+patLength<=n;i++)
     if(strncmp(s1+i,s2,patLength)==0)
-     return s1+i;
+     return (char *)(s1+i);
     
    return NULL;
 }
