@@ -115,7 +115,7 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
         
     [objectData buildConnectionsWithNameTable:_nameTable];
 	if((menu=[objectData mainMenu])!=nil) {
-		// Rename the first item to have the application name
+		// Rename the first item to have the application name.
 		if ([menu numberOfItems] > 0) {
 			NSMenuItem *firstItem = [menu itemAtIndex: 0];
 			NSString *appName = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:(NSString *)kCFBundleNameKey];
