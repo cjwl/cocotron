@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSNumber *NSNumber_unsignedCharNew(NSZone *zone,unsigned char value) {
    NSNumber_unsignedChar *self=NSAllocateObject([NSNumber_unsignedChar class],0,zone);
+   self->_type=kCFNumberCharType;
    self->_value=value;
    return self;
 }

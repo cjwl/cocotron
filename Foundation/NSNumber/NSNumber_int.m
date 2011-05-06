@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSNumber *NSNumber_intNew(NSZone *zone,int value) {
    NSNumber_int *self=NSAllocateObject([NSNumber_int class],0,zone);
+   self->_type=kCFNumberIntType;
    self->_value=value;
    return self;
 }

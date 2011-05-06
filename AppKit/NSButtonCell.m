@@ -152,6 +152,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initTextCell:(NSString *)string {
    [super initTextCell:string];
+   _titleOrAttributedTitle=[string copy];
    _alternateTitle=@"";
    _imagePosition=NSNoImage;
    _highlightsBy=NSPushInCellMask;
@@ -166,13 +167,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setBordered:YES];
    [self setBezeled:YES];
    [self setAlignment:NSCenterTextAlignment];
-
+   [self setObjectValue:[NSNumber numberWithBool:NO]];
+   
    return self;
 }
 
 -initImageCell:(NSImage *)image {
    [super initImageCell:image];
+   _titleOrAttributedTitle=@""; // empty string, not nil
    _imagePosition=NSImageOnly;
+   [self setObjectValue:[NSNumber numberWithBool:NO]];
+   
    return self;
 }
 
@@ -181,6 +186,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+   [_titleOrAttributedTitle release];
    [_normalImage release];
    [_alternateTitle release];
    [_alternateImage release];
@@ -194,6 +200,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -copyWithZone:(NSZone *)zone {
    NSButtonCell *result=[super copyWithZone:zone];
 
+   result->_titleOrAttributedTitle=[_titleOrAttributedTitle copy];
    result->_alternateTitle =[_alternateTitle copy];
    result->_alternateImage=[_alternateImage retain];
    result->_keyEquivalent=[_keyEquivalent copy];
@@ -323,6 +330,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
    if(_bezelStyle==NSTexturedRoundedBezelStyle)
     return NO;
+   if(_bezelStyle==NSShadowlessSquareBezelStyle)
+    return NO;
    if(_bezelStyle==NSRecessedBezelStyle)
     return NO;
     
@@ -359,6 +368,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setImagePosition:(NSCellImagePosition)position {
    _imagePosition=position;
 }
+
 
 -(void)setTitle:(NSString *)title {
    title=[title copy];
@@ -457,8 +467,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          break;
 
       case NSOnOffButton:
-	      _highlightsBy = NSChangeBackgroundCellMask;
-	      _showsStateBy = NSChangeBackgroundCellMask;
+	      _highlightsBy = NSChangeBackgroundCellMask|NSChangeGrayCellMask;
+	      _showsStateBy = NSChangeBackgroundCellMask|NSChangeGrayCellMask;
          _imageDimsWhenDisabled = YES;
          break;
 
@@ -789,6 +799,8 @@ static void drawRoundedBezel(CGContextRef context,CGRect frame){
     
     case NSTexturedSquareBezelStyle:
     case NSTexturedRoundedBezelStyle:
+    case NSShadowlessSquareBezelStyle:
+
      if ([self isBordered]) {
       [self _drawTexturedBezelWithFrame:frame];
      }

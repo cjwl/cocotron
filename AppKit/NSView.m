@@ -1290,7 +1290,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)isInFullScreenMode {
-   NSUnimplementedMethod();
+// dont issue warning
    return NO;
 }
 

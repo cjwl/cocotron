@@ -70,7 +70,7 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    _interpolationQuality=kCGInterpolationLow;
    _scalex=1;
    _scaley=1;
-   _rotation=10;
+   _rotation=0;
    _blendMode=kCGBlendModeNormal;
    _shadowColor=createCGColor(0,0,0,1);
    _shadowBlur=1;
@@ -360,7 +360,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
 -(void)drawStraightLines {
    CGAffineTransform xform=[self ctm];
-  int               i,width=400,height=400;
+  int               i,width=200,height=200;
 
     CGMutablePathRef  path=CGPathCreateMutable();
 
@@ -370,14 +370,15 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGPathMoveToPoint(path,NULL,0,-height);
    CGPathAddLineToPoint(path,NULL,0,height);
 #else
-   for(i=0;i<400;i+=4){
+   CGPathMoveToPoint(path,NULL,0,0);
+   for(i=0;i<width;i+=2){
     
-   CGPathMoveToPoint(path,NULL,i,0);
+   CGPathAddLineToPoint(path,NULL,i,0);
    CGPathAddLineToPoint(path,NULL,i,height);
    }
    
-   for(i=0;i<400;i+=4){
-   CGPathMoveToPoint(path,NULL,0,i);
+   for(i=0;i<height;i+=2){
+   CGPathAddLineToPoint(path,NULL,0,i);
    CGPathAddLineToPoint(path,NULL,width,i);
    }
    

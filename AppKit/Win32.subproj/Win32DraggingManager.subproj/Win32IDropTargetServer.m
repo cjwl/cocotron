@@ -22,9 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initAsIDropTarget];
    _window=window;
 
-   if((result=RegisterDragDrop([_window windowHandle],[self iUknown]))!=S_OK)
-    NSLog(@"RegisterDragDrop failed with %d",result);
-
+   if((result=RegisterDragDrop([_window windowHandle],[self iUknown]))!=S_OK){
+    NSLog(@"RegisterDragDrop failed with %d, handle=%p",result,[_window windowHandle]);
+    [super dealloc];
+    return nil;
+   }
+   
    return self;
 }
 

@@ -210,7 +210,7 @@ static NSMutableDictionary *_storeTypes=nil;
    NSManagedObjectModel *model=[self managedObjectModel];
    NSEntityDescription  *entity=[[model entitiesByName] objectForKey:entityName];
    
-   return [[self _persistentStoreWithIdentifier:host] objectIDForEntity:entity referenceObject:referenceObject];
+   return [(NSAtomicStore *)[self _persistentStoreWithIdentifier:host] objectIDForEntity:entity referenceObject:referenceObject];
 }
 
 @end

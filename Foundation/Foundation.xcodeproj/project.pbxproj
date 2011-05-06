@@ -4781,6 +4781,24 @@
 		FE8C914B0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
 		FE8C914C0FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8C914D0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE937F401358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F411358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F421358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F431358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F441358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F451358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F461358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F471358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F481358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F491358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F4A1358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F4B1358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F4C1358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F4D1358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F4E1358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F4F1358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
+		FE937F501358DC8000C93531 /* NSNumber_CF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE937F3E1358DC8000C93531 /* NSNumber_CF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE937F511358DC8000C93531 /* NSNumber_CF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE937F3F1358DC8000C93531 /* NSNumber_CF.m */; };
 		FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9C1B8F1125A649002DA20B /* CFSSLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */; };
 		FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -7359,6 +7377,8 @@
 		FE88A4D50F8A9DE00081CFC1 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
 		FE8C913E0FFD1E430027C889 /* NSString_win1252.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_win1252.h; sourceTree = "<group>"; };
 		FE8C913F0FFD1E430027C889 /* NSString_win1252.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_win1252.m; sourceTree = "<group>"; };
+		FE937F3E1358DC8000C93531 /* NSNumber_CF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_CF.h; path = NSNumber/NSNumber_CF.h; sourceTree = "<group>"; };
+		FE937F3F1358DC8000C93531 /* NSNumber_CF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSNumber_CF.m; path = NSNumber/NSNumber_CF.m; sourceTree = "<group>"; };
 		FE9C1B8A1125A649002DA20B /* CFSSLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSSLHandler.h; sourceTree = "<group>"; };
 		FE9C1B8B1125A649002DA20B /* CFSSLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSSLHandler.m; sourceTree = "<group>"; };
 		FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNil.h; sourceTree = "<group>"; };
@@ -7951,6 +7971,8 @@
 		6E2803370974794A00EC542B /* NSNumber */ = {
 			isa = PBXGroup;
 			children = (
+				FE937F3E1358DC8000C93531 /* NSNumber_CF.h */,
+				FE937F3F1358DC8000C93531 /* NSNumber_CF.m */,
 				1A28B5B2109096950019EFC6 /* NSConstObject.h */,
 				6E2803FC09747BB300EC542B /* NSNumber_BOOL.h */,
 				6E2803FD09747BB300EC542B /* NSNumber_BOOL.m */,
@@ -9274,6 +9296,7 @@
 				FE720FE4124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE721035124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5CE12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F4E1358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9602,6 +9625,7 @@
 				FE720FE2124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE721033124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5CC12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F4C1358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9930,6 +9954,7 @@
 				FE720FDA124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE72102B124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C412FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F441358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10258,6 +10283,7 @@
 				FE720FD8124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE721029124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C212FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F421358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10591,6 +10617,7 @@
 				FE721027124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEEA64B512B674A200E6E2C8 /* NSRecursiveLock_win32.h in Headers */,
 				FEADE5C012FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F401358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10919,6 +10946,7 @@
 				FE720FE6124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE721037124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5D012FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F501358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11248,6 +11276,7 @@
 				FE720FE0124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE721031124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5CA12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F4A1358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11577,6 +11606,7 @@
 				FE720FDC124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE72102D124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C612FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F461358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11906,6 +11936,7 @@
 				FE720FDE124C56FA009B690D /* NSKeyPathObserver.h in Headers */,
 				FE72102F124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C812FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
+				FE937F481358DC8000C93531 /* NSNumber_CF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12834,6 +12865,7 @@
 				FE720FE5124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721036124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5CF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F4F1358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13200,6 +13232,7 @@
 				FE720FE3124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721034124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5CD12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F4D1358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13567,6 +13600,7 @@
 				FE720FDB124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE72102C124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C512FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F451358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13935,6 +13969,7 @@
 				FE720FD9124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE72102A124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C312FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F431358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14310,6 +14345,7 @@
 				FE721028124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEEA64B612B674A200E6E2C8 /* NSRecursiveLock_win32.m in Sources */,
 				FEADE5C112FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F411358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14678,6 +14714,7 @@
 				FE720FE7124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721038124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5D112FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F511358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15049,6 +15086,7 @@
 				FE720FE1124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721032124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5CB12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F4B1358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15421,6 +15459,7 @@
 				FE720FDD124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE72102E124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C712FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F471358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15793,6 +15832,7 @@
 				FE720FDF124C56FA009B690D /* NSKeyPathObserver.m in Sources */,
 				FE721030124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C912FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
+				FE937F491358DC8000C93531 /* NSNumber_CF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
