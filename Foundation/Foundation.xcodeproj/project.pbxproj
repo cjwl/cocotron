@@ -2882,6 +2882,7 @@
 		C6EEC54F138508A50060A27A /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
 		C6EEC550138508A50060A27A /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
 		C6EEC551138508A50060A27A /* NSStringEncodingNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE86D406114743AC0010FE05 /* NSStringEncodingNames.plist */; };
+		C6EEC6801385188A0060A27A /* NSNumber_BOOL_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0601090D1BE00C44FD7 /* NSNumber_BOOL_const.m */; };
 		C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */; };
 		C816EBEF0F0A763500EDC3EB /* NSDarwinString.h in Headers */ = {isa = PBXBuildFile; fileRef = C816EBED0F0A763500EDC3EB /* NSDarwinString.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C816EBF00F0A763500EDC3EB /* NSDarwinString.m in Sources */ = {isa = PBXBuildFile; fileRef = C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */; };
@@ -15507,6 +15508,7 @@
 				C6EEC541138508A50060A27A /* libmain.m in Sources */,
 				C6EEC542138508A50060A27A /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				C6EEC543138508A50060A27A /* NSNumber_CF.m in Sources */,
+				C6EEC6801385188A0060A27A /* NSNumber_BOOL_const.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
