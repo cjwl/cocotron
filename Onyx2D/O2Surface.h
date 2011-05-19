@@ -32,6 +32,10 @@
 
 #import <Onyx2D/VGmath.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef unsigned int	RIuint32;
 typedef short			RIint16;
 typedef unsigned int VGbitfield;
@@ -70,6 +74,11 @@ typedef void (*O2SurfaceWriteSpan_argb32f)(O2Surface *self,int x,int y,O2argb32f
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
 
+void *O2SurfaceGetPixelBytes(O2Surface *surface);
+size_t O2SurfaceGetWidth(O2Surface *surface);
+size_t O2SurfaceGetHeight(O2Surface *surface);
+size_t O2SurfaceGetBytesPerRow(O2Surface *surface);
+
 O2ImageRef O2SurfaceCreateImage(O2Surface *surface);
 
 BOOL O2SurfaceIsValidFormat(int format);
@@ -91,3 +100,7 @@ void O2SurfaceGaussianBlur(O2Surface *self,O2Image * src, O2GaussianKernelRef ke
 void O2SurfaceLookup(O2Surface *self,O2Surface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 
 @end
+
+#ifdef __cplusplus
+}
+#endif

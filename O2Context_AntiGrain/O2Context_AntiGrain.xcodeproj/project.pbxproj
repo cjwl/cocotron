@@ -1,0 +1,394 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D576314048677EA00EA77CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* Foundation.framework */; };
+		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
+		FE5C8314121D81470063E96F /* O2Context_AntiGrain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C8313121D81470063E96F /* O2Context_AntiGrain.m */; };
+		FEB99C471382CDFE0072F784 /* O2AGGContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB99C461382CDFE0072F784 /* O2AGGContext.cpp */; };
+		FEE163EA137C6DAD00B2F340 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE163E9137C6DAD00B2F340 /* AppKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE5C82FA121D67BB0063E96F /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FEB99E5B138417F20072F784 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.cpp;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		FEE16435137C6DC800B2F340 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
+		FEE16437137C6DC800B2F340 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
+			remoteInfo = "AppKit-Linux-i386";
+		};
+		FEE16439137C6DC800B2F340 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
+			remoteInfo = "AppKit-Darwin-i386";
+		};
+		FEE1643B137C6DC800B2F340 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
+			remoteInfo = "AppKit-MacOS-i386";
+		};
+		FEE1643D137C6DC800B2F340 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A8BE310C6F50E005E348A;
+			remoteInfo = "AppKit-FreeBSD-i386";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0AA1909FFE8422F4C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = O2Context_AntiGrain.cgContext; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_AntiGrain.h; sourceTree = "<group>"; };
+		FE5C8313121D81470063E96F /* O2Context_AntiGrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_AntiGrain.m; sourceTree = "<group>"; };
+		FEB99C451382CDFE0072F784 /* O2AGGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2AGGContext.h; sourceTree = "<group>"; };
+		FEB99C461382CDFE0072F784 /* O2AGGContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = O2AGGContext.cpp; sourceTree = "<group>"; };
+		FEE163E9137C6DAD00B2F340 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D576313048677EA00EA77CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D576314048677EA00EA77CD /* Foundation.framework in Frameworks */,
+				FEE163EA137C6DAD00B2F340 /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* O2Context_AntiGrain */ = {
+			isa = PBXGroup;
+			children = (
+				FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */,
+				FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */,
+				FE5C8313121D81470063E96F /* O2Context_AntiGrain.m */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
+				19C28FB6FE9D52B211CA2CBB /* Products */,
+				FEB99C451382CDFE0072F784 /* O2AGGContext.h */,
+				FEB99C461382CDFE0072F784 /* O2AGGContext.cpp */,
+			);
+			name = O2Context_AntiGrain;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				0AA1909FFE8422F4C02AAC07 /* Foundation.framework */,
+				FEE163E9137C6DAD00B2F340 /* AppKit.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D576317048677EA00EA77CD /* Info.plist */,
+				8D5B49A704867FD3000E48DA /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		19C28FB6FE9D52B211CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEE163ED137C6DC600B2F340 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FEE16436137C6DC800B2F340 /* AppKit.framework */,
+				FEE16438137C6DC800B2F340 /* AppKit.framework */,
+				FEE1643A137C6DC800B2F340 /* AppKit.framework */,
+				FEE1643C137C6DC800B2F340 /* AppKit.framework */,
+				FEE1643E137C6DC800B2F340 /* AppKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D57630D048677EA00EA77CD /* O2Context_AntiGrain-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB911A08733D790010E9CD /* Build configuration list for PBXNativeTarget "O2Context_AntiGrain-Windows-i386" */;
+			buildPhases = (
+				FEE16442137C6DDA00B2F340 /* Check for AntiGrain Library */,
+				8D57630F048677EA00EA77CD /* Resources */,
+				8D576311048677EA00EA77CD /* Sources */,
+				8D576313048677EA00EA77CD /* Frameworks */,
+			);
+			buildRules = (
+				FEB99E5B138417F20072F784 /* PBXBuildRule */,
+				FE5C82FA121D67BB0063E96F /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "O2Context_AntiGrain-Windows-i386";
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = O2Context_AntiGrain;
+			productReference = 8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "O2Context_AntiGrain" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* O2Context_AntiGrain */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FEE163ED137C6DC600B2F340 /* Products */;
+					ProjectRef = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8D57630D048677EA00EA77CD /* O2Context_AntiGrain-Windows-i386 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FEE16436137C6DC800B2F340 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FEE16435137C6DC800B2F340 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEE16438137C6DC800B2F340 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FEE16437137C6DC800B2F340 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEE1643A137C6DC800B2F340 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FEE16439137C6DC800B2F340 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEE1643C137C6DC800B2F340 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FEE1643B137C6DC800B2F340 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEE1643E137C6DC800B2F340 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FEE1643D137C6DC800B2F340 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D57630F048677EA00EA77CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FEE16442137C6DDA00B2F340 /* Check for AntiGrain Library */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check for AntiGrain Library";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/O2Defines_AntiGrain.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\necho \"\" > $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/agg-2.5 ]; then\n echo \"#define ANTIGRAIN_2_5 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n ANTIGRAIN_PRESENT=YES\necho \"2.5 present!\"\nfi\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/agg-2.4 ]; then\n echo \"#define ANTIGRAIN_2_4 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n ANTIGRAIN_PRESENT=YES\necho \"2.4 present!\"\nfi\n\nif [ \"$ANTIGRAIN_PRESENT\" = \"YES\" ];then\n echo \"#define ANTIGRAIN_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\nfi\n\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D576311048677EA00EA77CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5C8314121D81470063E96F /* O2Context_AntiGrain.m in Sources */,
+				FEB99C471382CDFE0072F784 /* O2AGGContext.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8D5B49A704867FD3000E48DA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C167EFE841241C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB911B08733D790010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = stabs;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
+				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-Wl,--enable-auto-import",
+				);
+				PRODUCT_NAME = O2Context_AntiGrain;
+				SDKROOT = "";
+				SYMROOT = build/Windows/i386;
+				WRAPPER_EXTENSION = cgContext;
+			};
+			name = Debug;
+		};
+		1DEB911C08733D790010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = stabs;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
+				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4";
+				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
+				OTHER_LDFLAGS = (
+					"-static",
+					"-lagg",
+					"-shared",
+					"-Wl,--enable-auto-import",
+				);
+				PRODUCT_NAME = O2Context_AntiGrain;
+				SDKROOT = "";
+				SYMROOT = build/Windows/i386;
+				WRAPPER_EXTENSION = cgContext;
+			};
+			name = Release;
+		};
+		1DEB911F08733D790010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		1DEB912008733D790010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB911A08733D790010E9CD /* Build configuration list for PBXNativeTarget "O2Context_AntiGrain-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB911B08733D790010E9CD /* Debug */,
+				1DEB911C08733D790010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "O2Context_AntiGrain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB911F08733D790010E9CD /* Debug */,
+				1DEB912008733D790010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

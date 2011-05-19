@@ -9,6 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Path.h>
 #import <Onyx2D/O2Geometry.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @interface O2MutablePath : O2Path <NSCopying> {
    unsigned _capacityOfElements;
    unsigned _capacityOfPoints;
@@ -34,3 +38,7 @@ void O2PathApplyTransform(O2MutablePathRef self,const O2AffineTransform matrix);
 void O2MutablePathEllipseToBezier(O2Point *cp,float x,float y,float xrad,float yrad);
 
 @end
+
+#ifdef __cplusplus
+}
+#endif

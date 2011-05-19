@@ -10,6 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Geometry.h>
 #import <Onyx2D/O2Font.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @class O2Image,O2ColorSpace,O2Color,O2Pattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font,O2Encoding,O2PDFCharWidths,O2ClipState;
 
 @interface O2GState : NSObject {
@@ -151,3 +155,7 @@ void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode);
 -(void)setAntialiasingQuality:(int)value;
 
 @end
+
+#ifdef __cplusplus
+}
+#endif
