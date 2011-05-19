@@ -15,6 +15,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if defined(__APPLE__) && !defined(__clang__)
 #import "OBJCRegisterModule_Darwin.h"
 #endif
+
+#ifdef __clang__
+extern struct objc_class _NSConstantStringClassReference;
+#endif
  
 #import <string.h>
 
@@ -353,8 +357,14 @@ void OBJCSendLoadMessage(Class class) {
 	else {
 		sentLoadMessageClasses[i] = class;
 	}
-    
-       
+
+#ifdef __clang__
+    if(strcmp(class_getName(class), "NSConstantString") == 0) {
+
+        memcpy(&_NSConstantStringClassReference, class, sizeof(_NSConstantStringClassReference));
+    }
+#endif 
+          
     Method m = class_getClassMethod(class, @selector(load));
     if(m) {
         IMP imp = method_getImplementation(m);
@@ -536,14 +546,12 @@ void OBJCQueueModule(OBJCModule *module) {
    OBJCSymbolTableRegisterSelectors(module->symbolTable);
    OBJCSymbolTableRegisterClasses(module->symbolTable);
    OBJCSymbolTableRegisterCategories(module->symbolTable);
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(__clang__)
    OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
    OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
 #endif
-
    OBJCLinkClassTable();
-#ifndef __APPLE__
-
+#if !defined(__APPLE__) || defined(__clang__)
    OBJCSendLoadMessages();
 #endif
 }
