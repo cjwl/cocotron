@@ -17978,7 +17978,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = org.cocotron.1.0.darwin.i386.llvm.clang.default;
-				INFOPLIST_FILE = "Info copy.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -18008,7 +18008,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = org.cocotron.1.0.darwin.i386.llvm.clang.default;
-				INFOPLIST_FILE = "Info copy.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
