@@ -116,7 +116,7 @@
    
    [_renderer render];
    
-   [pixelSurface flushBuffer];
+   [pixelSurface readBuffer];
 }
 
 -(void)render {

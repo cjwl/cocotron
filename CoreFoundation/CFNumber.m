@@ -8,12 +8,14 @@ struct __CFBoolean {
 
 #define ToNSNumber(object) ((NSNumber *)object)
 
+@implementation NSNumber_CF(CF)
+
 CFTypeID CFBooleanGetTypeID(void) {
    return kNSCFTypeBoolean;
 }
 
 CFNumberType CFNumberGetType(CFNumberRef self) {
-   if([self isKindOfClass:[NSNumber_CF class]])
+   if([ToNSNumber(self) isKindOfClass:[NSNumber_CF class]])
     return ((NSNumber_CF *)self)->_type;
 
    return kCFNumberIntType;
@@ -22,3 +24,5 @@ CFNumberType CFNumberGetType(CFNumberRef self) {
 Boolean CFBooleanGetValue(CFBooleanRef self) {
    return [ToNSNumber(self) boolValue];
 }
+
+@end
