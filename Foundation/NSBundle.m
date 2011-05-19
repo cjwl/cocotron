@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <objc/runtime.h>
 #import <Foundation/NSRaiseException.h>
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(__clang__)
 #import"OBJCRegisterModule_Darwin.h"
 #endif
 
@@ -140,7 +140,7 @@ NSModuleHandle NSLoadModule(const char *path) {
    if (handle == NULL){
        NSCLog(NSLastModuleError());
    }
-#ifdef __APPLE__    
+#if defined(__APPLE__) && !defined(__clang__)
     OBJCRegisterModule_Darwin(path);
 #endif
 

@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "ObjCException.h"
 #import "objc_malloc.h"
 #import "objc_protocol.h"
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(__clang__)
 #import "OBJCRegisterModule_Darwin.h"
 #endif
  
@@ -194,7 +194,7 @@ int _NSGetExecutablePath(char *path,uint32_t *capacity) {
 #endif
 
 void OBJCInitializeProcess() {
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(__clang__)
    OBJCRegisterModule_Darwin(NULL);
 #endif
 	

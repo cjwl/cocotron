@@ -75,8 +75,9 @@ void NSLogv(NSString *format,va_list arguments) {
    bytes=NSString_cStringFromCharacters(unicode,length,YES,&byteLength,NULL,NO);
    [string release];
    if (bytes == NULL) return;
-   
+#ifndef __clang__ 
    assert(sNSLogCString != NULL);
+#endif
    sNSLogCString(bytes,byteLength,YES);
    NSZoneFree(NULL,bytes);
 }

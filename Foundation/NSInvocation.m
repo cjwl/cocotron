@@ -421,16 +421,20 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
       }
       else {
        struct structReturn {
-        char result[size];
+           char *result;
        } (*function)()=(struct structReturn (*)())msgSendv; // should be msgSend_stret
-       struct structReturn value;
-
-// FIX internal compiler error on windows/linux/bsd
+          struct structReturn value;
+          
+          value.result = calloc(size, sizeof(char));
+          
+          // FIX internal compiler error on windows/linux/bsd
 #if !defined(WIN32) && !defined(BSD) && !defined(LINUX)
-       value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+          value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
 #endif
-
-       [self setReturnValue:&value];
+          
+          [self setReturnValue:&value];
+          
+          free(value.result);
       }
      }
      break;

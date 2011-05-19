@@ -115,8 +115,9 @@ static uint64_t ReadSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offs
 {
         const uint8_t   *ptr = bplist->_bytes;
         NSUInteger        length=bplist->_length;
-        
+#ifndef __clang__        
         assert(ptr != NULL && size >= 1 && size <= 8 && offset + size <= length);
+#endif
         
         uint64_t                result = 0;
         const uint8_t        *byte = ptr + offset;
@@ -136,8 +137,9 @@ static BOOL ReadSelfSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offs
         
         uint32_t                        size;
         int64_t                                value;
-        
+#ifndef __clang__                
         assert(ptr != NULL && offset < length);
+#endif
         
         size = 1 << (ptr[offset] & 0x0F);
         if (size > 8)

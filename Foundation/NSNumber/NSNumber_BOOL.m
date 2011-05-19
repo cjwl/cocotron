@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_BOOL.h>
 #import <Foundation/NSStringFormatter.h>
 
-#if __APPLE__
+#if defined(__APPLE__) && !defined(__clang__)
 #import <Foundation/NSNumber_BOOL_const.h>
 #else
 #import <Foundation/NSNumber_BOOL_const_impl.h>
