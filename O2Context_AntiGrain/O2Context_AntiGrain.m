@@ -22,6 +22,9 @@ static void transferPath(O2AGGContextRef agg,O2PathRef path,O2AffineTransform xf
    unsigned             i,numberOfElements=O2PathNumberOfElements(path),pointIndex;
 
    pointIndex=0;
+
+   O2AGGContextBeginPath(agg);
+   
    for(i=0;i<numberOfElements;i++){
    
     switch(elements[i]){
@@ -67,12 +70,14 @@ static void transferPath(O2AGGContextRef agg,O2PathRef path,O2AffineTransform xf
 
 -(void)clipToState:(O2ClipState *)clipState {
    [super clipToState:clipState];
+
+   O2AGGContextSetDeviceViewport(_agg,_vpx,_vpy,_vpwidth,_vpheight);
        
    O2GState *gState=O2ContextCurrentGState(self);
    NSArray  *phases=[O2GStateClipState(gState) clipPhases];
    int       i,count=[phases count];
    
- //  O2DeviceContextClipReset_gdi(_dc);
+  // O2AGGContextClipReset(_agg);
    
    for(i=0;i<count;i++){
     O2ClipPhase *phase=[phases objectAtIndex:i];
@@ -102,24 +107,61 @@ static void transferPath(O2AGGContextRef agg,O2PathRef path,O2AffineTransform xf
 -(void)drawPath:(O2PathDrawingMode)drawingMode {
    O2GState *gState=O2ContextCurrentGState(self);
    
-   if(drawingMode==kO2PathFill){
-    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
-    const float *components=O2ColorGetComponents(rgbColor);
-    
-    transferPath(_agg,(O2PathRef)_path,O2AffineTransformInvert(gState->_userSpaceTransform));
+   transferPath(_agg,(O2PathRef)_path,O2AffineTransformInvert(gState->_userSpaceTransform));
 
-    O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
-    
-    O2AGGContextFillPath(_agg,components[0],components[1],components[2],components[3],
+   O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
+   const float *fill=O2ColorGetComponents(fillColor);
+   O2ColorRef   strokeColor=O2ColorConvertToDeviceRGB(gState->_strokeColor);
+   const float *stroke=O2ColorGetComponents(strokeColor);
+
+   O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
+
+   BOOL doFill=NO;
+   BOOL doEOFill=NO;
+   BOOL doStroke=NO;
+   
+   switch(drawingMode){
+   
+    case kO2PathFill:
+     doFill=YES;
+     break;
+
+    case kO2PathEOFill:
+     doEOFill=YES;
+     break;
+
+    case kO2PathStroke:
+     doStroke=YES;
+     break;
+
+    case kO2PathFillStroke:
+     doFill=YES;
+     doStroke=YES;
+     break;
+
+    case kO2PathEOFillStroke:
+     doEOFill=YES;
+     doStroke=YES;
+     break;
+     
+   }
+   
+   if(doFill)
+    O2AGGContextFillPath(_agg,fill[0],fill[1],fill[2],fill[3],
+      deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+      
+   if(doEOFill)
+    O2AGGContextEOFillPath(_agg,fill[0],fill[1],fill[2],fill[3],
       deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
 
-    O2ColorRelease(rgbColor);
-    O2PathReset(_path);
-   }
-   else {
-//    O2PathReset(_path);
-    [super drawPath:drawingMode];
-   }
+   if(doStroke)
+    O2AGGContextStrokePath(_agg,stroke[0],stroke[1],stroke[2],stroke[3],
+      deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+
+    O2ColorRelease(fillColor);
+    O2ColorRelease(strokeColor);
+   
+   O2PathReset(_path);
 }
 
 @end

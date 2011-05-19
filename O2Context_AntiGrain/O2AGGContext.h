@@ -19,9 +19,12 @@ void O2AGGContextAddQuadCurveToPoint(O2AGGContextRef self,double cp1x,double cp1
 void O2AGGContextCloseSubpath(O2AGGContextRef self);
 
 void O2AGGContextClipReset(O2AGGContextRef self);
+void O2AGGContextSetDeviceViewport(O2AGGContextRef self,int x,int y,int w,int h);
 void O2AGGContextClipToPath(O2AGGContextRef self,int evenOdd);
 
 void O2AGGContextFillPath(O2AGGContextRef self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty);
+void O2AGGContextEOFillPath(O2AGGContextRef self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty);
+void O2AGGContextStrokePath(O2AGGContextRef self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty);
 
 #ifdef __cplusplus
 }
