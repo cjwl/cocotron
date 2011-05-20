@@ -8699,9 +8699,7 @@
 		C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTimeZone_posix.m; path = platform_posix/NSTimeZone_posix.m; sourceTree = "<group>"; };
 		C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = NSTimeZoneWindowsZones.plist; path = NSTimeZone/NSTimeZoneWindowsZones.plist; sourceTree = "<group>"; };
 		C6EC42561386AABE00F6A9D5 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C6EC42571386AABE00F6A9D5 /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
 		C6EEC555138508A50060A27A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C6EEC556138508A50060A27A /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = "objc-msgsend.s"; sourceTree = "<group>"; };
 		C816EBED0F0A763500EDC3EB /* NSDarwinString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDarwinString.h; sourceTree = "<group>"; };
 		C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDarwinString.m; sourceTree = "<group>"; };
@@ -9321,8 +9319,6 @@
 				6E280B2709747EC800EC542B /* NSTimeZone */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				6E280B2B09747F4900EC542B /* NSUserDefaults.plist */,
-				C6EEC556138508A50060A27A /* Info copy.plist */,
-				C6EC42571386AABE00F6A9D5 /* Info copy 2.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -19573,7 +19569,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
-				INFOPLIST_FILE = "Info copy 2.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -19583,6 +19579,7 @@
 					"-DDEBUG",
 					"-march=i686",
 					"$(OTHER_CFLAGS)",
+					"-DWINDOWS",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",

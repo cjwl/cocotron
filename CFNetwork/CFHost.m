@@ -288,14 +288,15 @@ static CFAddressResolverThreadInfo *startResolverThreadIfNeeded(){
 #endif
 
 static void queueHostToAddressResolver(CFHostRef host){
-   if(SYNCHRONOUS){
+    __CFHost *h = (__CFHost *)host;
+    if(SYNCHRONOUS){
     int addressCount=0;
-    struct addrinfo *addressList=blockingRequest(host->_request);
+    struct addrinfo *addressList=blockingRequest(h->_request);
 
-    host->_request->_state=CFHostRequestDone;
-    host->_request->_addressList=addressList;
+    h->_request->_state=CFHostRequestDone;
+    h->_request->_addressList=addressList;
 
-    SetEvent(host->_request->_event);
+    SetEvent(h->_request->_event);
    }
    else {
    CFAddressResolverThreadInfo *info=startResolverThreadIfNeeded();
@@ -305,7 +306,7 @@ static void queueHostToAddressResolver(CFHostRef host){
     info->queueCapacity*=2;
     info->queue=NSZoneRealloc(NULL,info->queue,sizeof(CFHostRequest *)*info->queueCapacity);
    }
-   info->queue[info->queueCount++]=host->_request;
+   info->queue[info->queueCount++]=h->_request;
    LeaveCriticalSection(&(info->queueLock));
    
    SetEvent(info->queueEvent);
@@ -313,8 +314,9 @@ static void queueHostToAddressResolver(CFHostRef host){
 }
 
 static void cancelHostInAddressResolverIfNeeded(CFHostRef self){
+    __CFHost *s = (__CFHost *)self;
 
-   if(self->_request==NULL)
+   if(s->_request==NULL)
     return;
     
    if(SYNCHRONOUS){
@@ -327,15 +329,15 @@ static void cancelHostInAddressResolverIfNeeded(CFHostRef self){
     
    EnterCriticalSection(&(info->queueLock));
       
-    if(self->_request->_state==CFHostRequestInProgress){
-     self->_request->_state=CFHostRequestDeallocate;
-     self->_request=NULL;
+    if(s->_request->_state==CFHostRequestInProgress){
+     s->_request->_state=CFHostRequestDeallocate;
+     s->_request=NULL;
     }
     else {
      int i;
        
      for(i=0;i<info->queueCount;i++)
-      if(info->queue[i]==self->_request){
+      if(info->queue[i]==s->_request){
        info->queueCount--;
        for(;i<info->queueCount;i++)
         info->queue[i]=info->queue[i+1];
@@ -345,10 +347,10 @@ static void cancelHostInAddressResolverIfNeeded(CFHostRef self){
       
    LeaveCriticalSection(&(info->queueLock));
    
-   if(self->_request!=NULL){
-    NSZoneFree(NULL,self->_request->_name);
-    NSZoneFree(NULL,self->_request);
-    self->_request=NULL;
+   if(s->_request!=NULL){
+    NSZoneFree(NULL,s->_request->_name);
+    NSZoneFree(NULL,s->_request);
+    s->_request=NULL;
    }
    }
 }
@@ -376,9 +378,9 @@ CFHostRef  CFHostCreateWithAddress(CFAllocatorRef allocator,CFDataRef address) {
 }
 
 CFHostRef  CFHostCreateWithName(CFAllocatorRef allocator,CFStringRef name) {
-   CFHostRef result=[__CFHost allocWithZone:NULL];
+    CFHostRef result=[__CFHost allocWithZone:NULL];
 
-   result->_name=CFStringCreateCopy(allocator,name);
+   ((__CFHost*)result)->_name=CFStringCreateCopy(allocator,name);
    
    return result;
 }
@@ -401,9 +403,9 @@ CFHostRef  CFHostCreateWithName(CFAllocatorRef allocator,CFStringRef name) {
 
 CFArrayRef CFHostGetAddressing(CFHostRef self,Boolean *hasBeenResolved) {
    if(hasBeenResolved!=NULL)
-    *hasBeenResolved=self->_hasResolvedAddressing;
+    *hasBeenResolved=((__CFHost*)self)->_hasResolvedAddressing;
 
-   return self->_addressing;
+   return ((__CFHost*)self)->_addressing;
 }
 
 CFArrayRef CFHostGetNames(CFHostRef self,Boolean *hasBeenResolved) {
@@ -417,68 +419,71 @@ CFDataRef  CFHostGetReachability(CFHostRef self,Boolean *hasBeenResolved) {
 }
 
 Boolean    CFHostSetClient(CFHostRef self,CFHostClientCallBack callback,CFHostClientContext *context) {
-   if(self->_context.info!=NULL && self->_context.release!=NULL)
-    self->_context.release(self->_context.info);
+    __CFHost *s = (__CFHost*)self;
+    if(s->_context.info!=NULL && s->_context.release!=NULL)
+    s->_context.release(s->_context.info);
 
-   self->_callback=callback;
+   s->_callback=callback;
    if(context!=NULL)
-    self->_context=*context;
+    s->_context=*context;
    else {
-    self->_context.version=0;
-    self->_context.info=NULL;
-    self->_context.retain=NULL;
-    self->_context.release=NULL;
-    self->_context.copyDescription=NULL;
+    s->_context.version=0;
+    s->_context.info=NULL;
+    s->_context.retain=NULL;
+    s->_context.release=NULL;
+    s->_context.copyDescription=NULL;
    }
 
-   if(self->_callback!=NULL){
-    if(self->_context.info!=NULL && self->_context.retain!=NULL)
-     self->_context.info=(void *)self->_context.retain(self->_context.info);
+   if(s->_callback!=NULL){
+    if(s->_context.info!=NULL && s->_context.retain!=NULL)
+     s->_context.info=(void *)s->_context.retain(s->_context.info);
    }
    
    return TRUE;
 }
 
 static void CFHostCreateEventIfNeeded(CFHostRef self){
-   if(self->_event==NULL){
-    self->_event=CreateEvent(NULL,FALSE,FALSE,NULL);
-    self->_monitor=[[NSHandleMonitor_win32 handleMonitorWithHandle:self->_event] retain];
-    [self->_monitor setDelegate:self];
-    [self->_monitor setCurrentActivity:Win32HandleSignaled];
+    __CFHost *s = (__CFHost*)self;
+   if(s->_event==NULL){
+    s->_event=CreateEvent(NULL,FALSE,FALSE,NULL);
+    s->_monitor=[[NSHandleMonitor_win32 handleMonitorWithHandle:s->_event] retain];
+    [s->_monitor setDelegate:s];
+    [s->_monitor setCurrentActivity:Win32HandleSignaled];
    }
 }
 
 Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStreamError *streamError) {
+    __CFHost *s = (__CFHost*)self;
 
    switch(infoType){
    
     case kCFHostAddresses:
-     if(self->_hasResolvedAddressing){
+     if(s->_hasResolvedAddressing){
       NSLog(@"CFHostStartInfoResolution, addressing already resolved");
       return TRUE;
      }
-     if(self->_callback!=NULL){
-      if(self->_request!=NULL){
+     if(s->_callback!=NULL){
+      if(s->_request!=NULL){
        NSLog(@"CFHostStartInfoResolution already started");
        return FALSE;
       }
       char *cStringName=NSZoneMalloc(NULL,MAXHOSTNAMELEN+1);
 
 // this encoding is probably wrong but CFStringGetCString can do it
-      if(!CFStringGetCString(self->_name,cStringName,MAXHOSTNAMELEN,kCFStringEncodingISOLatin1)){
-        NSLog(@"CFStringGetCString failed for CFHostRef name %@",self->_name);
+      if(!CFStringGetCString(s->_name,cStringName,MAXHOSTNAMELEN,kCFStringEncodingISOLatin1)){
+        NSLog(@"CFStringGetCString failed for CFHostRef name %@",s->_name);
         NSZoneFree(NULL,cStringName);
         return FALSE;
       }
       
-      self->_request=NSZoneMalloc(NULL,sizeof(CFHostRequest));
-      self->_request->_state=CFHostRequestInQueue;
-      self->_request->_name=cStringName;
-      self->_request->_addressList=NULL;
-      CFHostCreateEventIfNeeded(self);
-      self->_request->_event=self->_event;
+      s->_request=NSZoneMalloc(NULL,sizeof(CFHostRequest));
+      s->_request->_state=CFHostRequestInQueue;
+      s->_request->_name=cStringName;
+      s->_request->_addressList=NULL;
+      CFHostCreateEventIfNeeded(s);
+      s->_request->_event=s->_event;
 
-      queueHostToAddressResolver(self);
+      queueHostToAddressResolver(s);
       return TRUE;
      }
      else {
@@ -526,14 +531,14 @@ void CFHostScheduleWithRunLoop(CFHostRef self,CFRunLoopRef runLoop,CFStringRef m
     NSUnimplementedFunction();
 
    CFHostCreateEventIfNeeded(self);
-   [(NSRunLoop *)runLoop addInputSource:self->_monitor forMode:(NSString *)mode];
+   [(NSRunLoop *)runLoop addInputSource:((__CFHost *)self)->_monitor forMode:(NSString *)mode];
 }
 
 void CFHostUnscheduleFromRunLoop(CFHostRef self,CFRunLoopRef runLoop,CFStringRef mode) {
    if(runLoop!=CFRunLoopGetCurrent())
      NSUnimplementedFunction();
 
-   [(NSRunLoop *)runLoop removeInputSource:self->_monitor forMode:(NSString *)mode];
+   [(NSRunLoop *)runLoop removeInputSource:((__CFHost *)self)->_monitor forMode:(NSString *)mode];
 }
 
 @end
