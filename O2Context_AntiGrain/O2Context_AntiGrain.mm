@@ -7,6 +7,7 @@
 #import "O2AGGContext.h"
 
 @implementation O2Context_AntiGrain
+#ifdef ANTIGRAIN_PRESENT
 
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
@@ -72,7 +73,10 @@ static void transferPath(O2AGGContextRef agg,O2PathRef path,O2AffineTransform xf
    [super clipToState:clipState];
 
    O2AGGContextSetDeviceViewport(_agg,_vpx,_vpy,_vpwidth,_vpheight);
-       
+
+#if 0
+// If we supported path clipping we'd need to do this
+
    O2GState *gState=O2ContextCurrentGState(self);
    NSArray  *phases=[O2GStateClipState(gState) clipPhases];
    int       i,count=[phases count];
@@ -102,20 +106,10 @@ static void transferPath(O2AGGContextRef agg,O2PathRef path,O2AffineTransform xf
     }
 
    }
+#endif
 }
 
--(void)drawPath:(O2PathDrawingMode)drawingMode {
-   O2GState *gState=O2ContextCurrentGState(self);
-   
-   transferPath(_agg,(O2PathRef)_path,O2AffineTransformInvert(gState->_userSpaceTransform));
-
-   O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
-   const float *fill=O2ColorGetComponents(fillColor);
-   O2ColorRef   strokeColor=O2ColorConvertToDeviceRGB(gState->_strokeColor);
-   const float *stroke=O2ColorGetComponents(strokeColor);
-
-   O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
-
+-(void)drawPath:(O2PathDrawingMode)drawingMode { 
    BOOL doFill=NO;
    BOOL doEOFill=NO;
    BOOL doStroke=NO;
@@ -143,25 +137,39 @@ static void transferPath(O2AGGContextRef agg,O2PathRef path,O2AffineTransform xf
      doEOFill=YES;
      doStroke=YES;
      break;
-     
    }
    
+   O2GState    *gState=O2ContextCurrentGState(self);
+   O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
+   const float *fillComps=O2ColorGetComponents(fillColor);
+   O2ColorRef   strokeColor=O2ColorConvertToDeviceRGB(gState->_strokeColor);
+   const float *strokeComps=O2ColorGetComponents(strokeColor);
+
+   O2AGGContextSetBlendMode(_agg,O2GStateBlendMode(gState));
+
+   transferPath(_agg,(O2PathRef)_path,O2AffineTransformInvert(gState->_userSpaceTransform));
+
+   O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
+
    if(doFill)
-    O2AGGContextFillPath(_agg,fill[0],fill[1],fill[2],fill[3],
+    O2AGGContextFillPath(_agg,fillComps[0],fillComps[1],fillComps[2],fillComps[3],
       deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
       
    if(doEOFill)
-    O2AGGContextEOFillPath(_agg,fill[0],fill[1],fill[2],fill[3],
+    O2AGGContextEOFillPath(_agg,fillComps[0],fillComps[1],fillComps[2],fillComps[3],
       deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
 
-   if(doStroke)
-    O2AGGContextStrokePath(_agg,stroke[0],stroke[1],stroke[2],stroke[3],
+   if(doStroke){
+    O2AGGContextSetLineWidth(_agg,gState->_lineWidth);
+    O2AGGContextStrokePath(_agg,strokeComps[0],strokeComps[1],strokeComps[2],strokeComps[3],
       deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
-
-    O2ColorRelease(fillColor);
-    O2ColorRelease(strokeColor);
+   }
+   
+   O2ColorRelease(fillColor);
+   O2ColorRelease(strokeColor);
    
    O2PathReset(_path);
 }
 
+#endif
 @end

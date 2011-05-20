@@ -1,7 +1,10 @@
 #import <stdlib.h>
+#import "O2Defines_AntiGrain.h"
+#import <Onyx2D/O2Context.h>
 
 // There are some constructs in Onyx2D which cause compiler crashes with ObjC++
 // So we're just wrapping the AGG calls with straight C until it is sorted out.
+// This might not be needed anymore, marking the ObjC headers with extern "C" seems to work
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +25,9 @@ void O2AGGContextClipReset(O2AGGContextRef self);
 void O2AGGContextSetDeviceViewport(O2AGGContextRef self,int x,int y,int w,int h);
 void O2AGGContextClipToPath(O2AGGContextRef self,int evenOdd);
 
+void O2AGGContextSetBlendMode(O2AGGContextRef self,O2BlendMode blendMode);
+void O2AGGContextSetLineWidth(O2AGGContextRef self,float value);
+void O2AGGContextSetLineCap(O2AGGContextRef self,O2LineCap lineCap);
 void O2AGGContextFillPath(O2AGGContextRef self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty);
 void O2AGGContextEOFillPath(O2AGGContextRef self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty);
 void O2AGGContextStrokePath(O2AGGContextRef self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty);

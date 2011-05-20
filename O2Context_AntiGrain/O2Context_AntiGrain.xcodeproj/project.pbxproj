@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		8D576314048677EA00EA77CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* Foundation.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
-		FE5C8314121D81470063E96F /* O2Context_AntiGrain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C8313121D81470063E96F /* O2Context_AntiGrain.m */; };
-		FEB99C471382CDFE0072F784 /* O2AGGContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB99C461382CDFE0072F784 /* O2AGGContext.cpp */; };
+		FE5C8314121D81470063E96F /* O2Context_AntiGrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */; };
+		FEB99C471382CDFE0072F784 /* O2AGGContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = FEB99C461382CDFE0072F784 /* O2AGGContext.mm */; };
 		FEE163EA137C6DAD00B2F340 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE163E9137C6DAD00B2F340 /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,9 +77,9 @@
 		8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = O2Context_AntiGrain.cgContext; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_AntiGrain.h; sourceTree = "<group>"; };
-		FE5C8313121D81470063E96F /* O2Context_AntiGrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_AntiGrain.m; sourceTree = "<group>"; };
+		FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O2Context_AntiGrain.mm; sourceTree = "<group>"; };
 		FEB99C451382CDFE0072F784 /* O2AGGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2AGGContext.h; sourceTree = "<group>"; };
-		FEB99C461382CDFE0072F784 /* O2AGGContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = O2AGGContext.cpp; sourceTree = "<group>"; };
+		FEB99C461382CDFE0072F784 /* O2AGGContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O2AGGContext.mm; sourceTree = "<group>"; };
 		FEE163E9137C6DAD00B2F340 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -102,12 +102,12 @@
 			children = (
 				FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */,
 				FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */,
-				FE5C8313121D81470063E96F /* O2Context_AntiGrain.m */,
+				FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
 				FEB99C451382CDFE0072F784 /* O2AGGContext.h */,
-				FEB99C461382CDFE0072F784 /* O2AGGContext.cpp */,
+				FEB99C461382CDFE0072F784 /* O2AGGContext.mm */,
 			);
 			name = O2Context_AntiGrain;
 			sourceTree = "<group>";
@@ -276,8 +276,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5C8314121D81470063E96F /* O2Context_AntiGrain.m in Sources */,
-				FEB99C471382CDFE0072F784 /* O2AGGContext.cpp in Sources */,
+				FE5C8314121D81470063E96F /* O2Context_AntiGrain.mm in Sources */,
+				FEB99C471382CDFE0072F784 /* O2AGGContext.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,10 +337,10 @@
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.5/include/";
+				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
-				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.5";
+				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4";
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
 					"-static",

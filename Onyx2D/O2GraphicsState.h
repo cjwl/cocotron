@@ -141,6 +141,7 @@ void O2GStateSetMiterLimit(O2GState *self,float limit);
 void O2GStateSetLineDash(O2GState *self,float phase,const float *lengths,unsigned count);
 
 -(void)setRenderingIntent:(O2ColorRenderingIntent)intent;
+O2BlendMode O2GStateBlendMode(O2GState *self);
 void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode);
 
 -(void)setFlatness:(float)flatness;
