@@ -34,6 +34,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE0819091386F94F00C06956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A8070C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
 		FEE16435137C6DC800B2F340 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */;
@@ -167,6 +174,7 @@
 				FE5C82FA121D67BB0063E96F /* PBXBuildRule */,
 			);
 			dependencies = (
+				FE08190A1386F94F00C06956 /* PBXTargetDependency */,
 			);
 			name = "O2Context_AntiGrain-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Bundles";
@@ -267,7 +275,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\necho \"\" > $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/agg-2.5 ]; then\n echo \"#define ANTIGRAIN_2_5 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n ANTIGRAIN_PRESENT=YES\necho \"2.5 present!\"\nfi\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/agg-2.4 ]; then\n echo \"#define ANTIGRAIN_2_4 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n ANTIGRAIN_PRESENT=YES\necho \"2.4 present!\"\nfi\n\nif [ \"$ANTIGRAIN_PRESENT\" = \"YES\" ];then\n echo \"#define ANTIGRAIN_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\nfi\n\n\n";
+			shellScript = "#!/bin/sh\necho \"\" > $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/agg-2.5 ]; then\n echo \"#define ANTIGRAIN_2_5 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n ANTIGRAIN_PRESENT=YES\necho \"2.5 present!\"\nfi\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/agg-2.4 ]; then\n echo \"#define ANTIGRAIN_2_4 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\n ANTIGRAIN_PRESENT=YES\necho \"2.4 present!\"\nfi\n\nif [ \"$ANTIGRAIN_PRESENT\" = \"YES\" ];then\n echo \"#define ANTIGRAIN_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_AntiGrain.h\nelse\n# Create empty libagg for link phase\n touch $DERIVED_FILE_DIR/libagg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libagg.c -c -o $DERIVED_FILE_DIR/libagg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libagg.a $DERIVED_FILE_DIR/libagg.o\nfi\n\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -282,6 +290,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE08190A1386F94F00C06956 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppKit-Windows-i386";
+			targetProxy = FE0819091386F94F00C06956 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8D5B49A704867FD3000E48DA /* InfoPlist.strings */ = {
@@ -340,7 +356,10 @@
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
-				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4";
+				LIBRARY_SEARCH_PATHS = (
+					"/Developer/Cocotron/1.0/Windows/i386/agg-2.4",
+					"$(DERIVED_FILE_DIR)",
+				);
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
 					"-static",

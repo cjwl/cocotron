@@ -16,6 +16,7 @@
 				FE1FC01611E7807A00A9A87A /* PBXTargetDependency */,
 				FE5C83A0121D89CD0063E96F /* PBXTargetDependency */,
 				FE0513EF121E06DF0097BA92 /* PBXTargetDependency */,
+				FE0819131386F95800C06956 /* PBXTargetDependency */,
 			);
 			name = "Cocotron-Windows-i386";
 			productName = "Cocotron-Windows-i386";
@@ -36,6 +37,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "Security-Windows-i386";
+		};
+		FE0818F91386F93F00C06956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0818F11386F93F00C06956 /* O2Context_AntiGrain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8D576316048677EA00EA77CD;
+			remoteInfo = "O2Context_AntiGrain-Windows-i386";
+		};
+		FE0819121386F95800C06956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0818F11386F93F00C06956 /* O2Context_AntiGrain.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D57630D048677EA00EA77CD;
+			remoteInfo = "O2Context_AntiGrain-Windows-i386";
 		};
 		FE1FC00911E7806100A9A87A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -90,6 +105,7 @@
 
 /* Begin PBXFileReference section */
 		FE0513E4121E06D90097BA92 /* Security.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Security.xcodeproj; path = ../Security/Security.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE0818F11386F93F00C06956 /* O2Context_AntiGrain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = O2Context_AntiGrain.xcodeproj; path = ../O2Context_AntiGrain/O2Context_AntiGrain.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE1FBFFC11E7806100A9A87A /* Cocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cocoa.xcodeproj; path = ../Cocoa/Cocoa.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE5C8396121D89BF0063E96F /* CFSSLHandler_openssl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFSSLHandler_openssl.xcodeproj; path = ../CFSSLHandler_openssl/CFSSLHandler_openssl.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -103,9 +119,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FE0818F21386F93F00C06956 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE0818FA1386F93F00C06956 /* O2Context_AntiGrain.cgContext */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FE1FBFF011E7804C00A9A87A = {
 			isa = PBXGroup;
 			children = (
+				FE0818F11386F93F00C06956 /* O2Context_AntiGrain.xcodeproj */,
 				FE0513E4121E06D90097BA92 /* Security.xcodeproj */,
 				FE5C8396121D89BF0063E96F /* CFSSLHandler_openssl.xcodeproj */,
 				FE1FBFFC11E7806100A9A87A /* Cocoa.xcodeproj */,
@@ -158,6 +183,10 @@
 					ProjectRef = FE1FBFFC11E7806100A9A87A /* Cocoa.xcodeproj */;
 				},
 				{
+					ProductGroup = FE0818F21386F93F00C06956 /* Products */;
+					ProjectRef = FE0818F11386F93F00C06956 /* O2Context_AntiGrain.xcodeproj */;
+				},
+				{
 					ProductGroup = FE0513E5121E06D90097BA92 /* Products */;
 					ProjectRef = FE0513E4121E06D90097BA92 /* Security.xcodeproj */;
 				},
@@ -175,6 +204,13 @@
 			fileType = wrapper.framework;
 			path = Security.framework;
 			remoteRef = FE0513EC121E06DA0097BA92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE0818FA1386F93F00C06956 /* O2Context_AntiGrain.cgContext */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = O2Context_AntiGrain.cgContext;
+			remoteRef = FE0818F91386F93F00C06956 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE1FC00A11E7806100A9A87A /* Cocoa.framework */ = {
@@ -219,6 +255,11 @@
 			isa = PBXTargetDependency;
 			name = "Security-Windows-i386";
 			targetProxy = FE0513EE121E06DF0097BA92 /* PBXContainerItemProxy */;
+		};
+		FE0819131386F95800C06956 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "O2Context_AntiGrain-Windows-i386";
+			targetProxy = FE0819121386F95800C06956 /* PBXContainerItemProxy */;
 		};
 		FE1FC01611E7807A00A9A87A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
