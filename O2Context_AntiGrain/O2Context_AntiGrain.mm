@@ -7,6 +7,7 @@
 
 @implementation O2Context_AntiGrain
 #ifdef ANTIGRAIN_PRESENT
+// If AntiGrain is not present it will just be a non-overriding subclass of the builtin context, so no problems
 
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
@@ -20,6 +21,17 @@
    return self;
 }
 
+-(void)dealloc {
+   delete renderingBuffer;
+   delete pixelFormat;
+   delete rasterizer;
+   delete ren_base;
+   delete path;
+   [super dealloc];
+}
+
+/* Transfer path from Onyx2D to AGG. Not a very expensive operation, tessellation, stroking and rasterization are the expensive pieces
+ */
 static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransform xform){
    const unsigned char *elements=O2PathElements(path);
    const O2Point       *points=O2PathPoints(path);
@@ -75,45 +87,22 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 -(void)clipToState:(O2ClipState *)clipState {
    [super clipToState:clipState];
 
+/*
+   The builtin Onyx2D renderer only supports viewport clipping (one integer rect), so once the superclass has clipped
+   the viewport is what we want to clip to also. The base AGG renderer also does viewport clipping, so we just set it.
+ */
    self->ren_base->reset_clipping(1);
    self->ren_base->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
 
-#if 0
-// If we supported path clipping we'd need to do this
+/*
+   It's possible to add path clipping using an alpha mask but that is not implemented here.
+ */
 
-   O2GState *gState=O2ContextCurrentGState(self);
-   NSArray  *phases=[O2GStateClipState(gState) clipPhases];
-   int       i,count=[phases count];
-   
-  // O2AGGContextClipReset(_agg);
-   
-   for(i=0;i<count;i++){
-    O2ClipPhase *phase=[phases objectAtIndex:i];
-    O2Path      *path;
-    
-    switch(O2ClipPhasePhaseType(phase)){
-    
-     case O2ClipPhaseNonZeroPath:
-      path=O2ClipPhaseObject(phase);
-   
-  //    O2DeviceContextClipToNonZeroPath_gdi(_dc,path,O2AffineTransformIdentity,O2AffineTransformIdentity);
-      break;
-      
-     case O2ClipPhaseEOPath:
-      path=O2ClipPhaseObject(phase);
-
-  //    O2DeviceContextClipToEvenOddPath_gdi(_dc,path,O2AffineTransformIdentity,O2AffineTransformIdentity);
-      break;
-      
-     case O2ClipPhaseMask:
-      break;
-    }
-
-   }
-#endif
 }
 
 void O2AGGContextSetBlendMode(O2Context_AntiGrain *self,O2BlendMode blendMode){
+// Onyx2D -> AGG blend mode conversion
+
    enum agg::comp_op_e blendModeMap[28]={
     agg::comp_op_src_over,
     agg::comp_op_multiply,
@@ -149,52 +138,68 @@ void O2AGGContextSetBlendMode(O2Context_AntiGrain *self,O2BlendMode blendMode){
 }
 
 
-void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty,agg::filling_rule_e fillingRule) {
+void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,agg::rgba color,agg::trans_affine deviceMatrix,agg::filling_rule_e fillingRule) {
    
    agg::scanline_u8 sl;
 
-   agg::trans_affine mtx(xa,xb,xc,xd,xtx,xty);
-
    agg::conv_curve<agg::path_storage> curve(*(self->path));
-   agg::conv_transform<agg::conv_curve<agg::path_storage>, agg::trans_affine> trans(curve, mtx);
+   agg::conv_transform<agg::conv_curve<agg::path_storage>, agg::trans_affine> trans(curve, deviceMatrix);
 
-   curve.approximation_scale(mtx.scale());
+   curve.approximation_scale(deviceMatrix.scale());
    
    self->rasterizer->add_path(trans);
    self->rasterizer->filling_rule(fillingRule);
    
-   agg::render_scanlines_aa_solid(*(self->rasterizer),sl,*(self->ren_base),agg::rgba(r,g,b,a));
+   agg::render_scanlines_aa_solid(*(self->rasterizer),sl,*(self->ren_base),color);
 }
 
-void O2AGGContextFillPath(O2Context_AntiGrain *self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty) {
-   O2AGGContextFillPathWithRule(self,r,g,b,a,xa,xb,xc,xd,xtx,xty,agg::fill_non_zero);
-}
-
-void O2AGGContextEOFillPath(O2Context_AntiGrain *self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty) {
-   O2AGGContextFillPathWithRule(self,r,g,b,a,xa,xb,xc,xd,xtx,xty,agg::fill_even_odd);
-}
-
-void O2AGGContextStrokePath(O2Context_AntiGrain *self,float r,float g,float b,float a,double xa,double xb,double xc,double xd,double xtx,double xty) {
+static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg::trans_affine deviceMatrix) {
    O2GState *gState=O2ContextCurrentGState(self);
 
    agg::scanline_u8 sl;
 
-   agg::trans_affine mtx(xa,xb,xc,xd,xtx,xty);
-
    agg::conv_curve<agg::path_storage> curve(*(self->path));
    agg::conv_stroke<agg::conv_curve<agg::path_storage> > stroke(curve);
-   agg::conv_transform<agg::conv_stroke<agg::conv_curve<agg::path_storage> >, agg::trans_affine> trans(stroke, mtx);
+   agg::conv_transform<agg::conv_stroke<agg::conv_curve<agg::path_storage> >, agg::trans_affine> trans(stroke, deviceMatrix);
 
-   curve.approximation_scale(mtx.scale());
+   curve.approximation_scale(deviceMatrix.scale());
+   stroke.approximation_scale(deviceMatrix.scale());
    
+   switch(gState->_lineJoin){
+    case kO2LineJoinMiter:
+     stroke.line_join(agg::miter_join);
+     break;
+     
+    case kO2LineJoinRound:
+     stroke.line_join(agg::round_join);
+     break;
 
+    case kO2LineJoinBevel:
+     stroke.line_join(agg::bevel_join);
+     break;
+
+   }
+   
+   switch(gState->_lineCap){
+    case kO2LineCapButt:
+     stroke.line_cap(agg::butt_cap);
+     break;
+
+    case kO2LineCapRound:
+     stroke.line_cap(agg::round_cap);
+     break;
+
+    case kO2LineCapSquare:
+     stroke.line_cap(agg::square_cap);
+     break;
+   }
    
    stroke.width(gState->_lineWidth);
    
    self->rasterizer->add_path(trans);
    self->rasterizer->filling_rule(agg::fill_non_zero);
 
-   agg::render_scanlines_aa_solid(*(self->rasterizer),sl,*(self->ren_base),agg::rgba(r,g,b,a));
+   agg::render_scanlines_aa_solid(*(self->rasterizer),sl,*(self->ren_base),color);
 }
 
 
@@ -240,17 +245,18 @@ void O2AGGContextStrokePath(O2Context_AntiGrain *self,float r,float g,float b,fl
 
    O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
 
+   agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
+   agg::rgba aggStrokeColor(strokeComps[0],strokeComps[1],strokeComps[2],strokeComps[3]);
+   agg::trans_affine aggDeviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+
    if(doFill)
-    O2AGGContextFillPath(self,fillComps[0],fillComps[1],fillComps[2],fillComps[3],
-      deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+    O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_non_zero);
       
    if(doEOFill)
-    O2AGGContextEOFillPath(self,fillComps[0],fillComps[1],fillComps[2],fillComps[3],
-      deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+    O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_even_odd);
 
    if(doStroke){
-    O2AGGContextStrokePath(self,strokeComps[0],strokeComps[1],strokeComps[2],strokeComps[3],
-      deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+    O2AGGContextStrokePath(self,aggStrokeColor,aggDeviceMatrix);
    }
    
    O2ColorRelease(fillColor);
