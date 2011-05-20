@@ -5,7 +5,7 @@
 		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% llvm-clang %REPLACE%compilerVersion%REPLACE%";
 		Version    = "org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.clang.%REPLACE%compilerVersion%REPLACE%";
 		Vendor     = "cocotron.org";
-		ExecPath   = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/llvm-clang-%REPLACE%compilerVersion%REPLACE%/bin/clang";
+		ExecPath   = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/llvm-clang-%REPLACE%compilerVersion%REPLACE%/bin/%REPLACE%TARGET%REPLACE%-llvm-clang";
 		Architectures = (i386);
 
 		SupportsZeroLink              = No;
@@ -42,30 +42,6 @@
         {   Name = PREBINDING; /* this override doesn't work */
             Type = bool;
             DefaultValue = NO;
-        },
-        {   Name =  CLANG_COCOTRON_RUNTIME;
-            Type = bool;
-            DefaultValue = YES;
-            CommandLineArgs = { YES = (-fcocotron-runtime); NO = (); };
-            Category = CodeGeneration;
-        },
-        {   Name =  CCC_HOST_TRIPLE;
-            Type = string;
-            DefaultValue = "%REPLACE%TARGET%REPLACE%";
-            CommandLineArgs = ( -ccc-host-triple, "$(value)" );
-            Category = Compile;
-        },
-        /* GCC is required since clang does not support an option to set "as" (assembler) with a different argument*/
-        {   Name =  CCC_GCC_NAME;
-            Type = string;
-            DefaultValue = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/gcc-4.3.1/bin/%REPLACE%TARGET%REPLACE%-gcc";
-            CommandLineArgs = ( -ccc-gcc-name, "$(value)" );
-            Category = Compile;
-        },
-        {   Name =  PLATFORM_INCLUDE;
-            Type = string;
-            CommandLineArgs = ( "-I/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/llvm-clang-%REPLACE%compilerVersion%REPLACE%/%REPLACE%TARGET%REPLACE%/include" );
-            Category = Compile;
         },
         {   Name = WARNING_CFLAGS;
             CommandLineArgs = ( );
