@@ -551,6 +551,23 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
    }
 }
 
+void *O2SurfaceGetPixelBytes(O2Surface *surface) {
+  return surface->_pixelBytes;
+}
+
+size_t O2SurfaceGetWidth(O2Surface *surface) {
+  return surface->_width;
+}
+
+size_t O2SurfaceGetHeight(O2Surface *surface) {
+  return surface->_height;
+}
+
+size_t O2SurfaceGetBytesPerRow(O2Surface *surface) {
+   return surface->_bytesPerRow;
+}
+
+
 O2ImageRef O2SurfaceCreateImage(O2Surface *self) {
    NSData           *data=[[NSData alloc] initWithBytes:self->_pixelBytes length:self->_bytesPerRow*self->_height];
    O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);

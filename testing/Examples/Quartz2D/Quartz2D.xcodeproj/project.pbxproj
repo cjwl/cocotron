@@ -319,7 +319,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework CoreData -destination $TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\ncp /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/bin/freetype6.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\ncp /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/bin/zlib1.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\n";
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework CoreData -destination $TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
