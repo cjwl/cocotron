@@ -133,10 +133,15 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 	NSString* fontsDir = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"ATSApplicationFontsPath"];
 
 	NSArray*  ttfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory: fontsDir];
+	NSArray*  TTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"TTF" inDirectory: fontsDir];
 
-	NSLog(@"ttfPaths: %@", ttfPaths);
+	NSMutableArray* allPaths = [NSMutableArray arrayWithCapacity: 100];
+	[allPaths addObjectsFromArray: ttfPaths];
+	[allPaths addObjectsFromArray: TTFPaths];
 	
-	[self loadPrivateFontPaths:ttfPaths];
+	NSLog(@"Application Fonts: %@", allPaths);
+	
+	[self loadPrivateFontPaths: allPaths];
 }
 
 -(id)init {
