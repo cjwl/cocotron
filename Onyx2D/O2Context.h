@@ -9,6 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2Geometry.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @class O2Context,O2Color,O2Shading,O2Image,O2GState,O2MutablePath,O2Path,O2Pattern,O2Layer,O2PDFPage,NSMutableArray,CGWindow,O2Surface,NSDictionary,NSData,O2Font,O2Encoding,O2PDFCharWidths,O2ClipState;
 
 typedef O2Context *O2ContextRef;
@@ -370,3 +374,7 @@ void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState);
 NSData *O2ContextCaptureBitmap(O2ContextRef self,O2Rect rect);
 
 @end
+
+#ifdef __cplusplus
+}
+#endif

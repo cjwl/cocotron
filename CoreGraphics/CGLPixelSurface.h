@@ -29,7 +29,7 @@
 
 -(void)setOpaque:(BOOL)value;
 
--(void)flushBuffer;
+-(void)readBuffer;
 -(O2Surface *)validSurface;
 
 @end

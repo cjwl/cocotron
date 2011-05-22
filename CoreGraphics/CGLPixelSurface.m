@@ -67,7 +67,8 @@
     return;
 
 // 0's are silently ignored per spec.
-   CGLDeleteBuffers(_numberOfBuffers,_bufferObjects);
+   if(_numberOfBuffers>0 && _bufferObjects!=NULL) // nVidia driver will crash if bufferObjects is NULL, does not conform to spec.
+    CGLDeleteBuffers(_numberOfBuffers,_bufferObjects);
       
    if(_bufferObjects!=NULL)
     free(_bufferObjects);
@@ -115,12 +116,44 @@
    }
 }
 
+//#define RGBA_NOT_BGRA 1
+
+#ifdef RGBA_NOT_BGRA
+#define PIXEL_FORMAT GL_RGBA
+#else
+#define PIXEL_FORMAT GL_BGRA
+#endif
+
+static inline uint32_t setAlpha255(uint32_t value){
+#ifdef RGBA_NOT_BGRA
+   unsigned int a=0xFF;
+   unsigned int b=(value>>16)&0xFF;
+   unsigned int g=(value>>8)&0xFF;
+   unsigned int r=(value>>0)&0xFF;
+
+   value=a<<24;
+   value|=r<<16;
+   value|=g<<8;
+   value|=b;
+   
+   return value;
+#else
+   return value|=0xFF000000;
+#endif
+}
 
 static inline uint32_t premultiplyPixel(uint32_t value){
+#ifdef RGBA_NOT_BGRA
+   unsigned int a=(value>>24)&0xFF;
+   unsigned int b=(value>>16)&0xFF;
+   unsigned int g=(value>>8)&0xFF;
+   unsigned int r=(value>>0)&0xFF;
+#else
    unsigned int a=(value>>24)&0xFF;
    unsigned int r=(value>>16)&0xFF;
    unsigned int g=(value>>8)&0xFF;
    unsigned int b=(value>>0)&0xFF;
+#endif
    
    value&=0xFF000000;
    value|=O2Image_8u_mul_8u_div_255(r,a)<<16;
@@ -134,34 +167,50 @@ static inline uint32_t premultiplyPixel(uint32_t value){
    return _surface;
 }
 
--(void)flushBuffer {
+-(void)readBuffer {
+    
    [self validateBuffersIfNeeded];
 
    int bytesPerRow=_width*4;
    int i,row=0;
-   
-   glReadBuffer(GL_BACK);
 
    if(glGetError()!=GL_NO_ERROR)
     return;
+#if 0
+   glPixelStorei(GL_PACK_ALIGNMENT, 4);
+   glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+   glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+   glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+#endif
 
+   // Technically shouldn't need unbind, but to be safe
+   BOOL unbind=NO;
+   
    for(i=0;i<_numberOfBuffers;i++){
     int rowCount=MIN(_height-row,_rowsPerBuffer);
 
     if(_bufferObjects[i]==0)
-     glReadPixels(0,row,_width,rowCount,GL_BGRA,GL_UNSIGNED_BYTE,_readPixels[i]);
+     glReadPixels(0,row,_width,rowCount,PIXEL_FORMAT, GL_UNSIGNED_BYTE,_readPixels[i]);
     else {
      CGLBindBuffer(GL_PIXEL_PACK_BUFFER,_bufferObjects[i]);
-
-     glReadPixels(0,row,_width,rowCount,GL_BGRA,GL_UNSIGNED_BYTE, 0);
+     unbind=YES;
+     
+     glReadPixels(0,row,_width,rowCount,PIXEL_FORMAT, GL_UNSIGNED_BYTE, 0);
     }
-       
+    
+    GLenum error=glGetError();
+    if(error!=GL_NO_ERROR){
+     NSLog(@"glReadPixels error=%d",error);
+    }
     row+=rowCount;
    }
-   CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);          
+   
+   if(unbind)
+    CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);          
 
    row=0;
-   
+   unbind=NO;
+      
    for(i=0;i<_numberOfBuffers;i++){
     int            r,rowCount=MIN(_height-row,_rowsPerBuffer);
     unsigned char *inputRow;
@@ -170,6 +219,7 @@ static inline uint32_t premultiplyPixel(uint32_t value){
     if(_bufferObjects[i]==0)
      inputRow=_readPixels[i];
     else {
+     unbind=YES;
      CGLBindBuffer(GL_PIXEL_PACK_BUFFER,_bufferObjects[i]);          
      inputRow=(GLubyte*)CGLMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
     }
@@ -185,7 +235,7 @@ static inline uint32_t premultiplyPixel(uint32_t value){
       for(c=0;c<bytesPerRow;c+=4){
        uint32_t pixel=*((uint32_t *)(inputRow+c));
        
-       pixel|=0xFF000000;
+       pixel=setAlpha255(pixel);
        
        *((uint32_t *)(outputRow+c))=pixel;
        
@@ -213,10 +263,10 @@ static inline uint32_t premultiplyPixel(uint32_t value){
     
     row+=rowCount;
    }
-   CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);          
    
-   [_window flushOverlay:self];
-   
+   if(unbind)
+    CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);          
+      
 #if 0    
    if(_usePixelBuffer){
     CGLBindBuffer(GL_PIXEL_PACK_BUFFER,0);

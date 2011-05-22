@@ -29,12 +29,14 @@
 
 @implementation O2Paint_image
 
+#if 0
 ONYX2D_STATIC int O2PaintReadResampledHighSpan_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
    O2ImageBicubic_largb32f_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
+#endif
 
 ONYX2D_STATIC int O2PaintReadResampledLowSpan_largb32f_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;

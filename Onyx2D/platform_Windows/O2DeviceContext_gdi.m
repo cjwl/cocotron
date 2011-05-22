@@ -116,28 +116,50 @@ void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc,O2Path *path,O2AffineTra
 }
 
 void O2DeviceContextClipReset_gdi(HDC dc) {
+// These two should effectively be the same, an the latter is preferred. But needs testing. Possibly not working (e.g. AC)
+#if 1
    HRGN region=CreateRectRgn(0,0,GetDeviceCaps(dc,HORZRES),GetDeviceCaps(dc,VERTRES));
-   SelectClipRgn(dc,region);
+   if(!SelectClipRgn(dc,region)){
+    if(NSDebugEnabled)
+     NSLog(@"SelectClipRgn failed (%i), HORZRES=%i,VERTRES=%i", GetLastError(),GetDeviceCaps(dc,HORZRES),GetDeviceCaps(dc,VERTRES));
+   }
    DeleteObject(region);
+#else
+   if(!SelectClipRgn(dc,NULL)){
+    if(NSDebugEnabled)
+     NSLog(@"SelectClipRgn failed (%i), HORZRES=%i,VERTRES=%i", GetLastError(),GetDeviceCaps(dc,HORZRES),GetDeviceCaps(dc,VERTRES));
+   }
+#endif
 }
 
 void O2DeviceContextClipToPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM,BOOL evenOdd){
    XFORM current;
    XFORM userToDevice={deviceXFORM.a,deviceXFORM.b,deviceXFORM.c,deviceXFORM.d,deviceXFORM.tx,deviceXFORM.ty};
+    
+   if(!GetWorldTransform(dc,&current)){
+    if(NSDebugEnabled)
+     NSLog(@"GetWorldTransform failed (%i) %s %i",GetLastError(),__FILE__,__LINE__);
 
-   if(!GetWorldTransform(dc,&current))
-    NSLog(@"GetWorldTransform failed %s %d",__FILE__,__LINE__);
-
-   if(!SetWorldTransform(dc,&userToDevice))
-    NSLog(@"ModifyWorldTransform failed %s %d",__FILE__,__LINE__);
-
+    current=(XFORM){1.0f,0.0f,0.0f,1.0f,0.0f,0.0f};
+   }
+   
+   if(!SetWorldTransform(dc,&userToDevice)){
+    if(NSDebugEnabled)
+     NSLog(@"SetWorldTransform failed (%i) %s %i",GetLastError(),__FILE__,__LINE__);
+   }
+   
    O2DeviceContextEstablishDeviceSpacePath_gdi(dc,path,xform);
    SetPolyFillMode(dc,evenOdd?ALTERNATE:WINDING);
-   if(!SelectClipPath(dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),O2PathNumberOfElements(path));
-
-   if(!SetWorldTransform(dc,&current))
-    NSLog(@"SetWorldTransform failed %s %d",__FILE__,__LINE__);
+   
+   if(!SelectClipPath(dc,RGN_AND)){
+    if(NSDebugEnabled)
+     NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),O2PathNumberOfElements(path));
+   }
+    
+   if(!SetWorldTransform(dc,&current)){
+    if(NSDebugEnabled)
+     NSLog(@"SetWorldTransform failed (%i) %s %i",GetLastError(),__FILE__,__LINE__);
+   }
 }
 
 void O2DeviceContextClipToNonZeroPath_gdi(HDC dc,O2Path *path,O2AffineTransform xform,O2AffineTransform deviceXFORM){

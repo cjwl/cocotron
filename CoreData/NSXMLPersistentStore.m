@@ -215,7 +215,9 @@
       break;
       
      case NSDateAttributeType:
-      objectValue=[NSCalendarDate dateWithNaturalLanguageString:stringValue];
+      objectValue=nil;
+      // we don't want to use NSCalendarDate
+   //   objectValue=[NSCalendarDate dateWithNaturalLanguageString:stringValue];
       break;
       
      case NSBinaryDataAttributeType:

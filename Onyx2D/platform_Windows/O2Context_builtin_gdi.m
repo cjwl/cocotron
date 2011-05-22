@@ -161,6 +161,7 @@ static void applyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,uint8_t *coverageSpa
    }
 }
 
+#if 0
 static void drawGray8Stencil(O2Context_builtin_gdi *self,O2Surface *surface,CGFloat fpx,CGFloat fpy,O2Paint *paint,uint8_t *coverage,size_t bytesPerRow,size_t width,size_t height,int left,int top){
    int x=lroundf(fpx)+left;
    int y=lroundf(fpy)-top;
@@ -231,7 +232,6 @@ static void drawGray8Stencil(O2Context_builtin_gdi *self,O2Surface *surface,CGFl
     
 }
 
-#if 0
 static void drawFreeTypeBitmap(O2Context_builtin_gdi *self,O2Surface *surface,O2GlyphStencilRef stencil,CGFloat fpx,CGFloat fpy,O2Paint *paint){
    drawGray8Stencil(self,surface,fpx,fpy,paint,O2GlyphStencilGetCoverage(stencil),O2GlyphStencilGetWidth(stencil),O2GlyphStencilGetWidth(stencil),O2GlyphStencilGetHeight(stencil),O2GlyphStencilGetLeft(stencil),O2GlyphStencilGetTop(stencil));
 }
