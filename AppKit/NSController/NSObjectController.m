@@ -27,6 +27,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setKeys:[NSArray arrayWithObjects:@"content", nil] triggerChangeNotificationsForDependentKey:@"contentObject"];
 }
 
+- (id)init
+{
+	if ((self = [super init])) {
+		_selection=[[NSControllerSelectionProxy alloc] initWithController:self];
+	}
+	return self;
+}
+
 - (id)initWithContent:(id)content
 {
 	if ((self=[super init])) {
@@ -38,7 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		_observedKeys=[[NSCountedSet alloc] init];
 		_selection=[[NSControllerSelectionProxy alloc] initWithController:self];
 	}
-	
+
 	return self;
 }
 
