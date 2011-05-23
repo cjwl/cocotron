@@ -323,8 +323,14 @@
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
+				LIBRARY_SEARCH_PATHS = (
+					"/Developer/Cocotron/1.0/Windows/i386/agg-2.4",
+					"$(DERIVED_FILE_DIR)",
+				);
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
+					"-static",
+					"-lagg",
 					"-shared",
 					"-Wl,--enable-auto-import",
 				);
