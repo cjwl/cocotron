@@ -40,7 +40,7 @@ else
 	compiler=$3
 fi
 
-gccVersion = "4.3.1"
+gccVersion="4.3.1"
 
 if [ ""$4"" = "" ];then
 	if [ "$compiler" = "gcc" ]; then
@@ -329,9 +329,10 @@ if [ "$compiler" = "llvm-clang" ]; then
 # you need to install also gcc because -ccc-gcc-name is required for cross compiling with clang (this is required for choosing the right assembler 'as' tool. 
 # there is no flag for referencing only this tool :-(
 /bin/echo -n "Creating clang script for architecture $targetArchitecture ..."
-/bin/echo "!#/bin/sh\n$productFolder/$compiler-$compilerVersion/bin/llvm-clang -fcocotron-runtime -ccc-host-triple $compilerTarget -ccc-gcc-name /$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/gcc-$gccVersion/bin/$targetPlatform-gcc \
--I/$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion%/$targetPlatform/include -L/$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion%/$targetPlatform/lib $@" > /$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion%/bin/$targetArchitecture-llvm-clang
-chmod +x /$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion%/bin/$targetArchitecture-llvm-clang
+/bin/echo '#!/bin/sh' > $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
+/bin/echo "$productFolder/$compiler-$compilerVersion/bin/clang -fcocotron-runtime -ccc-host-triple $compilerTarget -ccc-gcc-name $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/gcc-$gccVersion/bin/$targetPlatform-gcc \
+-I$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/$targetPlatform/include \"\$@\"" >> $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
+chmod +x $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
 /bin/echo "done."
 fi
 echo 
