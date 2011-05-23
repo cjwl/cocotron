@@ -111,15 +111,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if 0
 static O2Paint *paintFromColor(O2ColorRef color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
-   const float *components=O2ColorGetComponents(rgbColor);
    CGFloat r,g,b,a;
    
-   r=components[0];
-   g=components[1];
-   b=components[2];
-   a=components[3];
+   if(rgbColor==NULL){
+    r=g=b=0;
+    a=1;
+   }
+   else {
+    const float *components=O2ColorGetComponents(rgbColor);
    
-   O2ColorRelease(rgbColor);
+    r=components[0];
+    g=components[1];
+    b=components[2];
+    a=components[3];
+   
+    O2ColorRelease(rgbColor);
+   }
    
    return [[O2Paint_color alloc] initWithRed:r green:g blue:b alpha:a surfaceToPaintTransform:O2AffineTransformIdentity];
 }

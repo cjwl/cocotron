@@ -12,6 +12,7 @@
 #include <agg_renderer_scanline.h>
 #include <agg_conv_curve.h>
 #include <agg_conv_stroke.h>
+#include <agg_conv_dash.h>
 #include <agg_conv_adaptor_vcgen.h>
 
 typedef agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_bgra> blender_type;

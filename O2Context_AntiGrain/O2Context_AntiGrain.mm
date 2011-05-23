@@ -5,6 +5,8 @@
 #import <Onyx2D/O2ClipPhase.h>
 #import <Onyx2D/O2MutablePath.h>
 
+#import <agg_vcgen_markers_term.h>
+
 @implementation O2Context_AntiGrain
 #ifdef ANTIGRAIN_PRESENT
 // If AntiGrain is not present it will just be a non-overriding subclass of the builtin context, so no problems
@@ -30,8 +32,30 @@
    [super dealloc];
 }
 
-/* Transfer path from Onyx2D to AGG. Not a very expensive operation, tessellation, stroking and rasterization are the expensive pieces
+/* Most of CG/O2Context is state management, the actual heavy lifting is done by a handful of functions
+   O2Context exposes these as Objective-C methods which can be overriden. They are:
+     drawPath:
+     showGlyphs:advances:count:
+     drawShading:
+     drawImage:inRect:
+     drawLayer:inRect:
+     clipToState:
+    
+   This subclass implements drawPath: (except dashing) and a primitive clipToState: which clips to a single integer rect.
+   
+   drawImage: and showGlyphs: would be good candidates for more implementation as they are heavily used in the kit, then drawShading:
+   
+   If you need clipping to arbitrary paths you'll need to implement clipToState: to build an alpha mask and then have all the drawing
+   operations honor that alpha mask. (AGG supports this).
+   
+   If you need showGlyphs: to honor more of the text matrix such as rotation/skewing you'll need to implement it to do so.
  */
+
+/* Transfer path from Onyx2D to AGG. Not a very expensive operation, tessellation, stroking and rasterization are the expensive pieces
+ 
+   The coordinate space conversions are explained in detail here:  http://groups.google.com/group/cocotron-dev/msg/bb05cb22bf56b11b
+ */
+ 
 static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransform xform){
    const unsigned char *elements=O2PathElements(path);
    const O2Point       *points=O2PathPoints(path);
@@ -159,11 +183,13 @@ static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg
    agg::scanline_u8 sl;
 
    agg::conv_curve<agg::path_storage> curve(*(self->path));
-   agg::conv_stroke<agg::conv_curve<agg::path_storage> > stroke(curve);
-   agg::conv_transform<agg::conv_stroke<agg::conv_curve<agg::path_storage> >, agg::trans_affine> trans(stroke, deviceMatrix);
+   agg::conv_stroke<typeof(curve) > stroke(curve);
+   agg::conv_transform<typeof(stroke), agg::trans_affine> trans(stroke, deviceMatrix);
 
    curve.approximation_scale(deviceMatrix.scale());
    stroke.approximation_scale(deviceMatrix.scale());
+
+   stroke.miter_limit(gState->_miterLimit);
    
    switch(gState->_lineJoin){
     case kO2LineJoinMiter:
@@ -202,7 +228,6 @@ static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg
    agg::render_scanlines_aa_solid(*(self->rasterizer),sl,*(self->ren_base),color);
 }
 
-
 -(void)drawPath:(O2PathDrawingMode)drawingMode { 
    BOOL doFill=NO;
    BOOL doEOFill=NO;
@@ -235,8 +260,21 @@ static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg
    
    O2GState    *gState=O2ContextCurrentGState(self);
    O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
-   const float *fillComps=O2ColorGetComponents(fillColor);
    O2ColorRef   strokeColor=O2ColorConvertToDeviceRGB(gState->_strokeColor);
+   
+   // If we can't convert the color to RGBA it's probably a pattern, punt to superclass
+   if((doFill && fillColor==NULL) || (doStroke && strokeColor==NULL)){ 
+    [super drawPath:drawingMode];
+    return;
+   }
+   
+   // If we're stroking and there are dashes, punt to superclass
+   if(doStroke && gState->_dashLengthsCount>0){
+    [super drawPath:drawingMode];
+    return;
+   }
+   
+   const float *fillComps=O2ColorGetComponents(fillColor);
    const float *strokeComps=O2ColorGetComponents(strokeColor);
 
    O2AGGContextSetBlendMode(self,O2GStateBlendMode(gState));
@@ -264,6 +302,26 @@ static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg
    
    O2PathReset(_path);
 }
+
+#if 0
+
+// If you implement any of these and don't want to handle a combination of gState/arguments you can always punt and call super, then return 
+
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
+
+}
+
+-(void)drawShading:(O2Shading *)shading {
+
+}
+
+-(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
+
+}
+
+-(void)drawLayer:(O2LayerRef)layer inRect:(O2Rect)rect {
+}
+#endif
 
 #endif
 @end
