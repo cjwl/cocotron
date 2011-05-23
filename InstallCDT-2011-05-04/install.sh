@@ -330,8 +330,8 @@ if [ "$compiler" = "llvm-clang" ]; then
 # there is no flag for referencing only this tool :-(
 /bin/echo -n "Creating clang script for architecture $targetArchitecture ..."
 /bin/echo '#!/bin/sh' > $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
-/bin/echo "$productFolder/$compiler-$compilerVersion/bin/clang -fcocotron-runtime -ccc-host-triple $compilerTarget -ccc-gcc-name $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/gcc-$gccVersion/bin/$targetPlatform-gcc \
--I$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/$targetPlatform/include \"\$@\"" >> $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
+/bin/echo "$productFolder/$compiler-$compilerVersion/bin/clang -fcocotron-runtime -ccc-host-triple $compilerTarget -ccc-gcc-name $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/gcc-$gccVersion/bin/$compilerTarget-gcc \
+-I$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/$compilerTarget/include \"\$@\"" >> $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
 chmod +x $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$compilerVersion/bin/$compilerTarget-llvm-clang
 /bin/echo "done."
 fi
