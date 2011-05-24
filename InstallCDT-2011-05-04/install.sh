@@ -19,7 +19,7 @@
 #OR OTHER DEALINGS IN THE SOFTWARE.
 #
 # Inspired by the build-cross.sh script by Sam Lantinga, et al
-# Usage: install.sh <platform> <architecture> [<compiler>] [<compiler-version>]"
+# Usage: install.sh <platform> <architecture> <compiler> <compiler-version> <osVersion>"
 # Windows i386, Linux i386, Solaris sparc
 
 if [ ""$1"" = "" ];then
@@ -68,6 +68,20 @@ else
 	compilerVersionDate="-"$5
 fi
 
+osVersion=$6
+
+if [ ""$6"" = "" ];then
+	if [ ""$6"" = "" -a ""$targetPlatform"" = "Solaris" ];then
+		osVersion="2.10"
+	elif [ ""$6"" = "" -a ""$targetPlatform"" = "FreeBSD" ];then
+		osVersion="7"
+	else
+		osVersion=""
+	fi
+else
+	osVersion=$6
+fi
+
 set -eu
 
 cd "`dirname \"$0\"`"
@@ -94,7 +108,7 @@ binutilsConfigureFlags=""
 
 if [ $targetPlatform = "Windows" ];then
 	if [ $targetArchitecture = "i386" ];then
-		compilerTarget=i386-pc-mingw32msvc
+		compilerTarget=i386-pc-mingw32msvc$osVersion
 		compilerConfigureFlags=""
 	else
 		/bin/echo "Unsupported architecture $targetArchitecture on $targetPlatform"
@@ -102,16 +116,16 @@ if [ $targetPlatform = "Windows" ];then
 	fi
 elif [ $targetPlatform = "Linux" ];then
 	if [ $targetArchitecture = "i386" ];then
-		compilerTarget=i386-ubuntu-linux
+		compilerTarget=i386-ubuntu-linux$osVersion
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 	elif [ $targetArchitecture = "arm" ];then
-		compilerTarget=arm-none-linux-gnueabi
+		compilerTarget=arm-none-linux-gnueabi$osVersion
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 	elif [ $targetArchitecture = "ppc" ];then
-   	 	compilerTarget=powerpc-unknown-linux
+   	 	compilerTarget=powerpc-unknown-linux$osVersion
     		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 	elif [ $targetArchitecture = "x86_64" ];then
-		compilerTarget=x86_64-pc-linux
+		compilerTarget=x86_64-pc-linux$osVersion
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 		binutilsConfigureFlags="--enable-64-bit-bfd"
 	else
@@ -120,7 +134,7 @@ elif [ $targetPlatform = "Linux" ];then
 	fi
 elif [ $targetPlatform = "FreeBSD" ];then
 	if [ $targetArchitecture = "i386" ];then
-		compilerTarget=i386-pc-freebsd7
+		compilerTarget=i386-pc-freebsd$osVersion
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 	else
 		/bin/echo "Unsupported architecture $targetArchitecture on $targetPlatform"
@@ -128,7 +142,7 @@ elif [ $targetPlatform = "FreeBSD" ];then
 	fi
 elif [ $targetPlatform = "Solaris" ];then
 	if [ $targetArchitecture = "sparc" ];then
-		compilerTarget=sparc-sun-solaris
+		compilerTarget=sparc-sun-solaris$osVersion
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 	else
 		/bin/echo "Unsupported architecture $targetArchitecture on $targetPlatform"
@@ -136,7 +150,7 @@ elif [ $targetPlatform = "Solaris" ];then
 	 fi
 elif [ $targetPlatform = "Darwin" ];then
 	if [ $targetArchitecture = "i386" ];then
-		compilerTarget=i386-unknown-darwin
+		compilerTarget=i386-unknown-darwin$osVersion
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
 	else
 		/bin/echo "Unsupported architecture $targetArchitecture on $targetPlatform"
