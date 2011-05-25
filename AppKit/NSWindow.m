@@ -214,7 +214,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _isDocumentEdited=NO;
 
    _makeSureIsOnAScreen=YES;
-   _excludedFromWindowsMenu=NO;
 
    _acceptsMouseMovedEvents=NO;
    _excludedFromWindowsMenu=NO;
@@ -1367,11 +1366,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)canBecomeKeyWindow {
-   return YES;
+	// The NSWindow implementation returns YES if the window has a title bar or a resize bar, or NO otherwise
+    return (_styleMask & (NSTitledWindowMask|NSResizableWindowMask)) != 0;
 }
 
 -(BOOL)canBecomeMainWindow {
-    return YES;
+	// The NSWindow implementation returns YES if the window is visible and has a title bar or a resize mechanism. Otherwise it returns NO
+    return [self isVisible] && (_styleMask & (NSTitledWindowMask|NSResizableWindowMask));
 }
 
 -(BOOL)canBecomeVisibleWithoutLogin {
@@ -2159,7 +2160,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    [self orderWindow:NSWindowAbove relativeTo:0];
 
-   [self makeKeyWindow];
+	if([self canBecomeKeyWindow])
+		[self makeKeyWindow];
 
    if([self canBecomeMainWindow])
     [self makeMainWindow];

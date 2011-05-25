@@ -356,19 +356,25 @@ id NSApp=nil;
 }
 
 -(void)changeWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)isFilename {
-    int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
 
-    if (itemIndex != -1) {
-        NSMenuItem *item = [[self windowsMenu] itemAtIndex:itemIndex];
-
-        if (isFilename)
-            title = [NSString stringWithFormat:@"%@  --  %@",[title lastPathComponent], [title stringByDeletingLastPathComponent]];
-
-        [item setTitle:title];
-        [[self windowsMenu] itemChanged:item];
-    }
-    else
-        [self addWindowsItem:window title:title filename:isFilename];
+ 	if ([title length] == 0) {
+    // Windows with no name aren't in the Windows menu
+		[self removeWindowsItem:window];
+	} else {
+		int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
+		
+		if (itemIndex != -1) {
+			NSMenuItem *item = [[self windowsMenu] itemAtIndex:itemIndex];
+			
+			if (isFilename)
+				title = [NSString stringWithFormat:@"%@  --  %@",[title lastPathComponent], [title stringByDeletingLastPathComponent]];
+			
+			[item setTitle:title];
+			[[self windowsMenu] itemChanged:item];
+		} 
+		else
+			[self addWindowsItem:window title:title filename:isFilename];
+	}
 }
 
 -(void)removeWindowsItem:(NSWindow *)window {
