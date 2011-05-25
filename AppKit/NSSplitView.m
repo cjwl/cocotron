@@ -109,13 +109,15 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 
    if([self isVertical]){
     float totalWidthBefore=0.;
-    float totalWidthAfter=[self bounds].size.height-[self dividerThickness]*(count-1);
+    float totalWidthAfter=[self bounds].size.width-[self dividerThickness]*(count-1);
 
     for(i=0;i<count;i++)
-     totalWidthBefore+=[[_subviews objectAtIndex:i] frame].size.height;
+     totalWidthBefore+=[[_subviews objectAtIndex:i] frame].size.width;
 
     for(i=0;i<count;i++){
      frame.size.width=[[_subviews objectAtIndex:i] frame].size.width*(totalWidthAfter/totalWidthBefore);
+     frame.size.width=floor(frame.size.width);
+     
      [[_subviews objectAtIndex:i] setFrame:frame];
   
      frame.origin.x+=frame.size.width;

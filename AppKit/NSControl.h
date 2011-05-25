@@ -67,6 +67,7 @@ APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 -(void)setBezeled:(BOOL)flag;
 -(void)setContinuous:(BOOL)flag;
 -(void)setRefusesFirstResponder:(BOOL)flag;
+-(void)setFormatter:(NSFormatter *)formatter;
 
 -(void)setObjectValue:(id <NSCopying>)value;
 -(void)setStringValue:(NSString *)value;
