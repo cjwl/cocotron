@@ -19,7 +19,69 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
   BOOL lossy,unsigned *resultLength,NSZone *zone);
 
 
+@implementation NSNibFontNameTranslator
+
+-(NSString *)translateToNibFontName:(NSString *)name {
+	if([name isEqual:@"Arial"])
+		return @"Helvetica";
+	if([name isEqual:@"Arial Bold"])
+		return @"Helvetica-Bold";
+	if([name isEqual:@"Arial Italic"])
+		return @"Helvetica-Oblique";
+	if([name isEqual:@"Arial Bold Italic"])
+		return @"Helvetica-BoldOblique";
+	
+	if([name isEqual:@"Times New Roman"])
+		return @"Times-Roman";
+	if([name isEqual:@"Courier New"])
+		return @"Courier";
+	
+	if([name isEqual:@"Symbol"])
+		return name;
+	
+	return name;
+}
+
+-(NSString *)translateFromNibFontName:(NSString *)name {
+	
+	if([name isEqual:@"Helvetica"])
+		return @"Arial";
+	if([name isEqual:@"Helvetica-Bold"])
+		return @"Arial Bold";
+	if([name isEqual:@"Helvetica-Oblique"])
+		return @"Arial Italic";
+	if([name isEqual:@"Helvetica-BoldOblique"])
+		return @"Arial Bold Italic";
+	
+	if([name isEqual:@"Times-Roman"])
+		return @"Times New Roman";
+	if([name isEqual:@"Ohlfs"])
+		return @"Courier New";
+	if([name isEqual:@"Courier"])
+		return @"Courier New";
+	
+	if([name isEqual:@"Symbol"])
+		return name;
+	if([name isEqual:@"LucidaGrande"])
+		return @"Lucida Sans Unicode Regular";
+	if([name isEqual:@"LucidaGrande-Bold"])
+		return @"Lucida Sans Unicode Regular";
+	
+	if([name isEqual:@"HelveticaNeue-CondensedBold"])
+		return @"Arial";    
+	if([name isEqual:@"HelveticaNeue-Bold"])
+		return @"Arial";
+	if([name isEqual:@"HelveticaNeue-Regular"])
+		return @"Arial";
+    
+	return name;
+}
+
+@end
+
 @implementation NSFont
+
+static NSNibFontNameTranslator* _nibFontTranslator = nil;
 
 static unsigned _fontCacheCapacity=0;
 static unsigned _fontCacheSize=0;
@@ -30,6 +92,7 @@ static NSFont **_fontCache=NULL;
     _fontCacheCapacity=4;
     _fontCacheSize=0;
     _fontCache=NSZoneMalloc([self zone],sizeof(NSFont *)*_fontCacheCapacity);
+	   _nibFontTranslator = [[NSNibFontNameTranslator alloc] init];
    }
 }
 
@@ -178,30 +241,9 @@ static NSFont **_fontCache=NULL;
    NSUnimplementedMethod();
 }
 
--(NSString *)_translateToNibFontName:(NSString *)name {
-   if([name isEqual:@"Arial"])
-    return @"Helvetica";
-   if([name isEqual:@"Arial Bold"])
-    return @"Helvetica-Bold";
-   if([name isEqual:@"Arial Italic"])
-    return @"Helvetica-Oblique";
-   if([name isEqual:@"Arial Bold Italic"])
-    return @"Helvetica-BoldOblique";
-
-   if([name isEqual:@"Times New Roman"])
-    return @"Times-Roman";
-   if([name isEqual:@"Courier New"])
-    return @"Courier";
-
-   if([name isEqual:@"Symbol"])
-    return name;
-
-   return name;
-}
-
 -(void)encodeWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
-     [coder encodeObject:[self _translateToNibFontName:_name] forKey:@"NSName"];
+     [coder encodeObject:[[NSFont nibFontTranslator] translateToNibFontName:_name] forKey:@"NSName"];
      [coder encodeFloat:_pointSize forKey:@"NSSize"];
    }
    else {
@@ -209,45 +251,10 @@ static NSFont **_fontCache=NULL;
    }
 }
 
--(NSString *)_translateFromNibFontName:(NSString *)name {
-
-   if([name isEqual:@"Helvetica"])
-    return @"Arial";
-   if([name isEqual:@"Helvetica-Bold"])
-    return @"Arial Bold";
-   if([name isEqual:@"Helvetica-Oblique"])
-    return @"Arial Italic";
-   if([name isEqual:@"Helvetica-BoldOblique"])
-    return @"Arial Bold Italic";
-
-   if([name isEqual:@"Times-Roman"])
-    return @"Times New Roman";
-   if([name isEqual:@"Ohlfs"])
-    return @"Courier New";
-   if([name isEqual:@"Courier"])
-    return @"Courier New";
-
-   if([name isEqual:@"Symbol"])
-    return name;
-   if([name isEqual:@"LucidaGrande"])
-    return @"Lucida Sans Unicode Regular";
-   if([name isEqual:@"LucidaGrande-Bold"])
-    return @"Lucida Sans Unicode Regular";
-
-   if([name isEqual:@"HelveticaNeue-CondensedBold"])
-    return @"Arial";    
-   if([name isEqual:@"HelveticaNeue-Bold"])
-	return @"Arial";
-   if([name isEqual:@"HelveticaNeue-Regular"])
-	return @"Arial";
-    
-   return name;
-}
-
 -initWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
-    NSString          *name=[self _translateFromNibFontName:[keyed decodeObjectForKey:@"NSName"]];
+    NSString          *name=[[NSFont nibFontTranslator] translateFromNibFontName:[keyed decodeObjectForKey:@"NSName"]];
     float              size=[keyed decodeFloatForKey:@"NSSize"];
     // int                flags=[keyed decodeIntForKey:@"NSfFlags"]; // ?
     
@@ -630,3 +637,18 @@ int NSConvertGlyphsToPackedGlyphs(NSGlyph *glyphs,int length,NSMultibyteGlyphPac
 
 @end
 
+@implementation NSFont (PortatibilityAdditions)
+
++ (void)setNibFontTranslator:(NSNibFontNameTranslator*)fontTranslator
+{
+	[fontTranslator retain];
+	[_nibFontTranslator release];
+	_nibFontTranslator = fontTranslator;
+}
+
++ (NSNibFontNameTranslator*)nibFontTranslator
+{
+	return _nibFontTranslator;
+}
+
+@end
