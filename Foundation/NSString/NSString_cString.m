@@ -177,6 +177,7 @@ NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar
         case NSUnicodeStringEncoding:
             return NSGetUnicodeCStringWithMaxLength(characters,length, location, cString, maxLength);
         case NSISOLatin1StringEncoding:
+        case NSASCIIStringEncoding:
             return NSGetISOLatin1CStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
         case NSMacOSRomanStringEncoding:
             return NSGetMacOSRomanCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
