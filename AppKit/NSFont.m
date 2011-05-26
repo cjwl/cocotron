@@ -428,8 +428,8 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(NSFontDescriptor *)fontDescriptor {
-   NSUnimplementedMethod();
-   return nil;
+	NSFontDescriptor* descriptor = [NSFontDescriptor fontDescriptorWithName: [self fontName] size: [self pointSize]];
+	return descriptor;
 }
 
 -(NSFont *)printerFont {
