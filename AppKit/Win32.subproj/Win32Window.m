@@ -69,6 +69,10 @@ static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL
    if(isLayeredWindow)
     result|=/*CS_DROPSHADOW|*/WS_EX_LAYERED;
 
+	if (styleMask&NSUtilityWindowMask) {
+		result|=WS_EX_TOPMOST;// Make it floating as a utility window should be
+	}
+		
    return result/*|0x80000*/ ;
 }
 
