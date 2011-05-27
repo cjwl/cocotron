@@ -295,39 +295,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView {
-	NSRect fakeFrame = frame;
+
+	[super drawBezelWithFrame: frame inView: controlView];
+
 	NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
 	
-	if( _arrowPosition == NSPopUpArrowAtBottom ) {
-		// For ONLY this arrow position, we adjust the frame to exclude the arrow we're going to draw afterwards
-		fakeFrame.size.width -= [arrowImage size].width + 4;		
-	}
-	
-	[super drawBezelWithFrame: fakeFrame inView: controlView];
+	if (arrowImage == NULL) return;
 	
 	// Now draw the arrow
     if( _arrowPosition != NSPopUpNoArrow )
 	{
+		// Scale down the arrows so they look proportional to the control size
+		float sizeFactor = 0;
+		switch ([self controlSize]) {
+			case NSRegularControlSize:
+				sizeFactor = 0;
+				break;
+			case NSSmallControlSize:
+				sizeFactor = 1;
+				break;
+			case NSMiniControlSize:
+				sizeFactor = 2;
+				break;
+		}
 		NSRect otherFrame = frame;
 		NSSize arrowSize = [arrowImage size];
-		otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + 2 );
+		otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + (4 - sizeFactor) );
 		otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
 		otherFrame.size =  arrowSize;
 		
-		// Scale down the arrows so they look proportional to the control size
-		float insetFactor = 0;
-		switch ([self controlSize]) {
-			case NSRegularControlSize:
-				insetFactor = 0;
-				break;
-			case NSSmallControlSize:
-				insetFactor = 1;
-				break;
-			case NSMiniControlSize:
-				insetFactor = 2;
-				break;
-		}
-		otherFrame = NSInsetRect(otherFrame, insetFactor, insetFactor);
+		otherFrame = NSInsetRect(otherFrame, sizeFactor, sizeFactor);
 		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:otherFrame enabled:YES mixed:YES];
 	}
 }
