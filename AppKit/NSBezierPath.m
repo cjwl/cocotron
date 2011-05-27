@@ -530,14 +530,15 @@ static inline void expandPointCapacity(NSBezierPath *self,unsigned delta){
 }
 
 -(void)appendBezierPathWithPoints:(NSPoint *)points count:(unsigned)count {
-   int i;
-   
-   if(count==0)
-    return;
-    
-   [self moveToPoint:points[0] ];
-   for(i=1;i<count;i++)
-    [self lineToPoint:points[i] ];
+	if(count==0)
+		return;
+	
+	int i = 0;
+	if([self isEmpty])
+		[self moveToPoint:points[i++]];
+	
+	while(i < count)
+		[self lineToPoint:points[i++]];
 }
 
 -(void)appendBezierPathWithRect:(NSRect)rect {
