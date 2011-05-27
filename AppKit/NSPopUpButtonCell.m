@@ -294,7 +294,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSImage imageNamed:@"NSPopUpButtonCellPopUp"];
 }
 
--(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView {
+-(void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView {
 	NSRect fakeFrame = frame;
 	NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
 	
@@ -303,7 +303,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		fakeFrame.size.width -= [arrowImage size].width + 4;		
 	}
 	
-	[super drawInteriorWithFrame: fakeFrame inView: controlView];
+	[super drawBezelWithFrame: fakeFrame inView: controlView];
 	
 	// Now draw the arrow
     if( _arrowPosition != NSPopUpNoArrow )
