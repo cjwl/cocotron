@@ -637,10 +637,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				break;
 
 			case NSMiniControlSize:
-				frame.size.width  = 6;
-				frame.size.height = 4;
-				frame.origin.x    = 3;
-				frame.origin.y    = 4;
+				// Mini controls don't need adjusting they're small enough already.
 				break;
 		}
 	}
@@ -967,7 +964,7 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 
    titleRect.origin.y+=floor((titleRect.size.height-titleSize.height)/2);
    titleRect.size.height=titleSize.height;
-
+	titleRect.origin.x += 3; // the title is way to tight to the left edge otherwise
    switch(imagePosition){
 
     case NSNoImage:

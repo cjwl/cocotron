@@ -313,6 +313,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + 2 );
 		otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
 		otherFrame.size =  arrowSize;
+		
+		// Scale down the arrows so they look proportional to the control size
+		float insetFactor = 0;
+		switch ([self controlSize]) {
+			case NSRegularControlSize:
+				insetFactor = 0;
+				break;
+			case NSSmallControlSize:
+				insetFactor = 1;
+				break;
+			case NSMiniControlSize:
+				insetFactor = 2;
+				break;
+		}
+		otherFrame = NSInsetRect(otherFrame, insetFactor, insetFactor);
 		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:otherFrame enabled:YES mixed:YES];
 	}
 }
