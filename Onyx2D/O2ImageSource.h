@@ -23,7 +23,7 @@ extern NSString *kO2ImagePropertyDPIHeight;
 
 +(O2ImageSourceRef)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(CFDictionaryRef)options;
 +(O2ImageSourceRef)newImageSourceWithData:(CFDataRef)data options:(CFDictionaryRef)options;
-+(O2ImageSourceRef)newImageSourceWitURL:(NSURL *)url options:(CFDictionaryRef)options;
++(O2ImageSourceRef)newImageSourceWithURL:(NSURL *)url options:(CFDictionaryRef)options;
 
 +(BOOL)isPresentInDataProvider:(O2DataProvider *)provider;
 

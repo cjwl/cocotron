@@ -50,7 +50,7 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
    return result;
 }
 
-+(O2ImageSourceRef)newImageSourceWitURL:(NSURL *)url options:(CFDictionaryRef)options {
++(O2ImageSourceRef)newImageSourceWithURL:(NSURL *)url options:(CFDictionaryRef)options {
    O2DataProviderRef provider=[[O2DataProvider alloc] initWithURL:url];
    O2ImageSourceRef result=[self newImageSourceWithDataProvider:provider options:options];
    O2DataProviderRelease(provider);

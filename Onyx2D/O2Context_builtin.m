@@ -176,9 +176,10 @@ void O2DContextClipAndFillEdges(O2Context_builtin *self,int fillRuleMask);
    O2Size size=[self size];
 
    if (O2ContextCurrentGState(self)->_shadowKernel) {
-    O2Surface *shadow=[self createSurfaceWithWidth:O2ImageGetWidth(_surface) height:O2ImageGetHeight(_surface)];
+    O2Surface *shadow=[self createSurfaceWithWidth:O2ImageGetWidth(_surface)+O2ContextCurrentGState(self)->_shadowOffset.width*2 height:O2ImageGetHeight(_surface)+O2ContextCurrentGState(self)->_shadowOffset.height*2];
    
     O2SurfaceGaussianBlur(shadow,O2LayerGetSurface(layer),O2ContextCurrentGState(self)->_shadowKernel,O2ContextCurrentGState(self)->_shadowColor);
+	   NSLog(@"Drawing shadow");
     O2ContextDrawImage(self,O2RectMake(O2ContextCurrentGState(self)->_shadowOffset.width,O2ContextCurrentGState(self)->_shadowOffset.height,size.width,size.height),shadow);
    }
    

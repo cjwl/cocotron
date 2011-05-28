@@ -8,12 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "CoreGraphicsExport.h"
 #import <CoreFoundation/CFDictionary.h>
+#import <CoreFoundation/CFURL.h>
 
 typedef struct _O2ImageSource *CGImageSourceRef;
 
 #import "CGImage.h"
 
 COREGRAPHICS_EXPORT CGImageSourceRef CGImageSourceCreateWithData(CFDataRef data,CFDictionaryRef options);
+COREGRAPHICS_EXPORT CGImageSourceRef CGImageSourceCreateWithURL(CFURLRef url,CFDictionaryRef options);
 
 COREGRAPHICS_EXPORT size_t CGImageSourceGetCount(CGImageSourceRef self);
 
