@@ -10,6 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Geometry.h>
 #import <Onyx2D/O2AffineTransform.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @class O2Path,O2MutablePath;
 
 typedef O2Path *O2PathRef;
@@ -61,3 +65,8 @@ O2PathRef        O2PathCreateCopy(O2PathRef self);
 BOOL             O2PathContainsPoint(O2PathRef self,const O2AffineTransform *xform,O2Point point,BOOL evenOdd);
 
 @end
+
+#ifdef __cplusplus
+}
+#endif
+

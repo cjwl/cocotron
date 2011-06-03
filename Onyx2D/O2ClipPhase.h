@@ -2,6 +2,10 @@
 #import <Onyx2D/O2Geometry.h>
 #import <Onyx2D/O2AffineTransform.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @class O2Path,O2Image;
 
 typedef enum {
@@ -25,3 +29,7 @@ O2ClipPhaseType O2ClipPhasePhaseType(O2ClipPhase *self);
 id O2ClipPhaseObject(O2ClipPhase *self);
 
 @end
+
+#ifdef __cplusplus
+}
+#endif

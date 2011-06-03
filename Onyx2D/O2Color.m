@@ -153,7 +153,7 @@ BOOL O2ColorEqualToColor(O2ColorRef self,O2ColorRef other) {
    return YES;
 }
 
-void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Float *components,O2Float *rgbComponents){
+int O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Float *components,O2Float *rgbComponents){
    O2ColorSpaceModel model=O2ColorSpaceGetModel(inputSpace);
    
    switch(model){
@@ -163,14 +163,14 @@ void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Floa
      rgbComponents[1]=components[0];
      rgbComponents[2]=components[0];
      rgbComponents[3]=components[1];
-     break;
+     return 1;
 
     case kO2ColorSpaceModelRGB:
      rgbComponents[0]=components[0];
      rgbComponents[1]=components[1];
      rgbComponents[2]=components[2];
      rgbComponents[3]=components[3];
-     break;
+     return 1;
 
     case kO2ColorSpaceModelCMYK:;
 #if 1
@@ -191,7 +191,7 @@ void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Floa
      output[1]=(input[1]>white)?0:white-input[1];
      output[2]=(input[2]>white)?0:white-input[2];
 #endif
-     break;
+     return 1;
 
     case kO2ColorSpaceModelLab:
      NSLog(@"O2ColorConvertComponentsToDeviceRGB unimplemented conversion %d",model);
@@ -199,7 +199,7 @@ void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Floa
      rgbComponents[1]=0;
      rgbComponents[2]=0;
      rgbComponents[3]=1;
-     break;
+     return 0;
 
     case kO2ColorSpaceModelDeviceN:{
      O2ColorSpace_DeviceN *deviceN=(O2ColorSpace_DeviceN *)inputSpace;
@@ -209,15 +209,17 @@ void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Floa
      size_t                   altNumberOfComponents=O2ColorSpaceGetNumberOfComponents(altSpace)+1;
      CGFloat                  altComponents[altNumberOfComponents];
      
-     if(deviceNNumberOfComponents!=1)
+     if(deviceNNumberOfComponents!=1){
       NSLog(@"DeviceN color has more than one component");
-          
+      return 0;
+     }
+     
      O2FunctionEvaluate(tintTransform,components[0],altComponents);
      
      // Tint transforms dont process alpha, so we just pass it through?
      altComponents[altNumberOfComponents-1]=components[1];
      
-     O2ColorConvertComponentsToDeviceRGB(altSpace,altComponents,rgbComponents);
+     return O2ColorConvertComponentsToDeviceRGB(altSpace,altComponents,rgbComponents);
      }
      break;
 
@@ -227,7 +229,7 @@ void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Floa
      rgbComponents[1]=0;
      rgbComponents[2]=0;
      rgbComponents[3]=1;
-     break;
+     return 0;
 
     case kO2ColorSpaceModelPattern:
      NSLog(@"O2ColorConvertComponentsToDeviceRGB unimplemented conversion %d",model);
@@ -235,7 +237,7 @@ void O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Floa
      rgbComponents[1]=0;
      rgbComponents[2]=0;
      rgbComponents[3]=1;
-     break;
+     return 0;
    }
 }
 
@@ -244,7 +246,9 @@ O2ColorRef O2ColorConvertToDeviceRGB(O2ColorRef self) {
    const O2Float   *components=O2ColorGetComponents(self);
    O2Float         rgbComponents[4];
    
-   O2ColorConvertComponentsToDeviceRGB(colorSpace,components,rgbComponents);
+   if(!O2ColorConvertComponentsToDeviceRGB(colorSpace,components,rgbComponents))
+    return NULL;
+    
 
    O2ColorSpaceRef rgbColorSpace=O2ColorSpaceCreateDeviceRGB();
    O2ColorRef      result=O2ColorCreate(rgbColorSpace,rgbComponents);

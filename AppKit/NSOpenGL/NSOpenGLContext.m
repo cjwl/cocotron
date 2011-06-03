@@ -98,11 +98,15 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)getValues:(GLint *)vals forParameter:(NSOpenGLContextParameter)parameter {   
+   CGLLockContext(_glContext);
    CGLGetParameter(_glContext,parameter,vals);
+   CGLUnlockContext(_glContext);
 }
 
 -(void)setValues:(const GLint *)vals forParameter:(NSOpenGLContextParameter)parameter {   
+   CGLLockContext(_glContext);
    CGLSetParameter(_glContext,parameter,vals);
+   CGLUnlockContext(_glContext);
 }
 
 -(void)updateViewParameters {
@@ -115,7 +119,9 @@ static inline void _clearCurrentContext(){
     rect.size.width,
     rect.size.height };
         
+   CGLLockContext(_glContext);
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,size);
+   CGLUnlockContext(_glContext);
 }
 
 -(void)setView:(NSView *)view {
@@ -127,7 +133,9 @@ static inline void _clearCurrentContext(){
    
    CGLPixelSurface *overlay=nil;
    
+   CGLLockContext(_glContext);
    CGLGetParameter(_glContext,kCGLCPOverlayPointer,(GLint *)&overlay);
+   CGLUnlockContext(_glContext);
    
    [_view _setOverlay:overlay];
    
@@ -141,14 +149,18 @@ static inline void _clearCurrentContext(){
     NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
     
    _setCurrentContext(self);
-      
+
+#if 0
 /*
    We need to reload the view values when becoming current because it may
    have moved windows since the last make current
  */
  // Possible this shouldnt be done here, especially on a non-main thread
+ 
+ // Don't do this here due to threading reason. Figure out where to do this when moving windows, view _setWindow ?
    [self updateViewParameters];
-   
+#endif
+
    if(!_hasPrepared){
     _hasPrepared=YES;
 
