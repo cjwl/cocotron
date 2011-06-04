@@ -13,3 +13,4 @@ build
 *~.nib
 
 *.orig
+AppKit/AppKit\.xcodeproj/xcuserdata

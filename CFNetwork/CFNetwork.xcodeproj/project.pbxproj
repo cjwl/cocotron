@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D85BEDD1395E56100554785 /* CFNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74338510A89A9D004CDF00 /* CFNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7D85BEDE1395E56100554785 /* CFSocketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121A810EFC6C000FD1B47 /* CFSocketStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7D85BEDF1395E56100554785 /* CFNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121CC10EFC89500FD1B47 /* CFNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7D85BEE01395E56100554785 /* CFHost.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121D610EFC92800FD1B47 /* CFHost.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7D85BEE11395E56100554785 /* CFNetworkExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1221810EFCB9A00FD1B47 /* CFNetworkExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE74338610A89A9D004CDF00 /* CFNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74338510A89A9D004CDF00 /* CFNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE849306119AF77F00E252CC /* CFNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74338510A89A9D004CDF00 /* CFNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE849307119AF77F00E252CC /* CFSocketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121A810EFC6C000FD1B47 /* CFSocketStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +35,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		7D85BEE21395E56100554785 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.freebsd.x86_64.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		FE74338110A899DC004CDF00 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
@@ -59,6 +72,7 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D85BEE61395E56100554785 /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE74338510A89A9D004CDF00 /* CFNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFNetwork.h; sourceTree = "<group>"; };
@@ -79,6 +93,7 @@
 				FEA752F3114EB30B00AF634E /* CFNetwork.framework */,
 				FEC32E40115909B30008ECE5 /* CFNetwork.framework */,
 				FE84930F119AF77F00E252CC /* CFNetwork.framework */,
+				7D85BEE61395E56100554785 /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,6 +157,18 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		7D85BEDC1395E56100554785 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D85BEDD1395E56100554785 /* CFNetwork.h in Headers */,
+				7D85BEDE1395E56100554785 /* CFSocketStream.h in Headers */,
+				7D85BEDF1395E56100554785 /* CFNetServices.h in Headers */,
+				7D85BEE01395E56100554785 /* CFHost.h in Headers */,
+				7D85BEE11395E56100554785 /* CFNetworkExport.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF500486A6940098B216 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -193,6 +220,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		7D85BEDB1395E56100554785 /* CFNetwork-FreeBSD-x86_64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D85BEE31395E56100554785 /* Build configuration list for PBXNativeTarget "CFNetwork-FreeBSD-x86_64" */;
+			buildPhases = (
+				7D85BEDC1395E56100554785 /* Headers */,
+			);
+			buildRules = (
+				7D85BEE21395E56100554785 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "CFNetwork-FreeBSD-x86_64";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CFNetwork;
+			productReference = 7D85BEE61395E56100554785 /* CFNetwork.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8DC2EF4F0486A6940098B216 /* CFNetwork-Windows-i386 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CFNetwork-Windows-i386" */;
@@ -267,7 +311,11 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CFNetwork" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* CFNetwork */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -277,6 +325,7 @@
 				FEA752E8114EB30B00AF634E /* CFNetwork-Linux-i386 */,
 				FEC32E35115909B30008ECE5 /* CFNetwork-Darwin-i386 */,
 				FE849304119AF77F00E252CC /* CFNetwork-FreeBSD-i386 */,
+				7D85BEDB1395E56100554785 /* CFNetwork-FreeBSD-x86_64 */,
 			);
 		};
 /* End PBXProject section */
@@ -356,6 +405,44 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		7D85BEE41395E56100554785 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/x86_64/Frameworks;
+				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
+				PRODUCT_NAME = CFNetwork;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/FreeBSD/x86_64;
+			};
+			name = Debug;
+		};
+		7D85BEE51395E56100554785 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/x86_64/Frameworks;
+				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
+				PRODUCT_NAME = CFNetwork;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/FreeBSD/x86_64;
 			};
 			name = Release;
 		};
@@ -490,6 +577,15 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7D85BEE31395E56100554785 /* Build configuration list for PBXNativeTarget "CFNetwork-FreeBSD-x86_64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D85BEE41395E56100554785 /* Debug */,
+				7D85BEE51395E56100554785 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

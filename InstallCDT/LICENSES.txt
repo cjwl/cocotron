@@ -1,0 +1,4 @@
+The Bourne shell scripts are under the MIT license.
+
+I place the Xcode specification templates in the public domain.
+

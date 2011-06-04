@@ -155,11 +155,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    //NSLog(@"string=%@",string);
 
    if((lookup=NSHashGet(_cStrings,string))!=nil)
-    [self _appendWordFour:(unsigned)lookup];
+   {
+    if(sizeof(void *) == 4)
+     [self _appendWordFour:(uint32_t)lookup];
+    else // if(sizeof(void *) == 8)
+     [self _appendWordEight:(uint64_t)lookup];
+   }
    else {
     NSHashInsert(_cStrings,string);
 
-    [self _appendWordFour:(unsigned)string];
+    if(sizeof(void *) == 4)
+     [self _appendWordFour:(uint32_t)string];
+    else // if(sizeof(void *) == 8)
+     [self _appendWordEight:(uint64_t)string];
+
     [self _appendCStringBytes:[string cString]];
    }
 }
@@ -169,8 +178,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self _appendWordFour:0];
     return;
    }
-   
-   [self _appendWordFour:(unsigned)class];
+
+    if(sizeof(void *) == 4)
+        [self _appendWordFour:(uint32_t)class];
+    else // if(sizeof(void *) == 8)
+        [self _appendWordEight:(uint64_t)class];
 
    if(NSHashGet(_classes,class)==NULL){
     NSHashInsert(_classes,class);
@@ -202,13 +214,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(object==nil)
      [self _appendWordFour:0];
     else if(NSHashGet(_objects,object)!=NULL)
-     [self _appendWordFour:(unsigned)object];
+    {
+        if(sizeof(void *) == 4)
+            [self _appendWordFour:(uint32_t)object];
+        else // if(sizeof(void *) == 8)
+            [self _appendWordEight:(uint64_t)object];
+    }
     else { // FIX do replacementForCoder ?
      Class class=[object classForArchiver];
 
      NSHashInsert(_objects,object);
 
-     [self _appendWordFour:(unsigned)object];
+    if(sizeof(void *) == 4)
+        [self _appendWordFour:(uint32_t)object];
+    else // if(sizeof(void *) == 8)
+        [self _appendWordEight:(uint64_t)object];
+        
      [self _appendClassVersion:class];
 
      [object encodeWithCoder:self];

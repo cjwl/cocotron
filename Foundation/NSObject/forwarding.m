@@ -4,8 +4,8 @@
 #import <stdio.h>
 
 #define NSABISizeofRegisterReturn 8
-#define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
-#define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret")
+#define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend@PLT")
+#define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret@PLT");
 
 #if !COCOTRON_DISALLOW_FORWARDING
 @interface NSObject(fastforwarding)
