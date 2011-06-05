@@ -62,9 +62,15 @@ else
       /bin/echo "Permissions properly set up, continuing install."
    else
       /bin/echo "For this script to complete successfully, the directory /Library/Application Support/Develper/Shared/Xcode/Specifications must be writeable by you, and we've detected that it isn't.  Please enter your sudo password to execute the command:"
-      /bin/echo "sudo mkdir -p /Library/Application\ Support/Developer/Shared/Xcode/Specifications ; sudo chmod -R g+w /Library/Application\ Support/Developer/Shared/Xcode/Specifications"
+      /bin/echo "sudo mkdir -p /Library/Application\ Support/Developer/Shared/Xcode/Specifications"
+      /bin/echo "sudo chgrp -R admin /Library/Application\ Support/Developer/Shared/Xcode/Specifications"
+      /bin/echo "sudo chmod -R g+w /Library/Application\ Support/Developer/Shared/Xcode/Specifications"
       /bin/echo "Or, fix these permissions yourself and launch this script again."
-      `sudo mkdir -p /Library/Application\ Support/Developer/Shared/Xcode/Specifications ; sudo chmod -R g+w /Library/Application\ Support/Developer/Shared/Xcode/Specifications`
+
+      `sudo mkdir -p /Library/Application\ Support/Developer/Shared/Xcode/Specifications`
+      `sudo chgrp -R admin /Library/Application\ Support/Developer/Shared/Xcode/Specifications`
+      `sudo chmod -R g+w /Library/Application\ Support/Developer/Shared/Xcode/Specifications`
+
       if [ -w /Library/Application\ Support/Developer/Shared/Xcode/Specifications ];then
 	 /bin/echo "Permissions properly set up, continuing install."
       else
