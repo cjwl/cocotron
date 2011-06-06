@@ -276,7 +276,10 @@ stripBinaries() {
 "create"$targetPlatform"InterfaceIfNeeded"
 downloadCompilerIfNeeded
  
+      
+/bin/echo -n "Copying the platform interface.  This could take a while.."
 copyPlatformInterface
+/bin/echo -n "done."
 
 configureAndInstall_binutils
 
