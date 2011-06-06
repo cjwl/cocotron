@@ -119,7 +119,6 @@
 
 -(BOOL)lockBeforeDate:(NSDate *)date {
     struct timeval tv;
-    gettimeofday(&tv, NULL);
     struct timespec t;
     int rc;
     gettimeofday(&tv,NULL);
@@ -151,7 +150,6 @@
 
 -(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date {
     struct timeval tv;
-    gettimeofday(&tv, NULL);
     struct timespec t;
     int rc;
     gettimeofday(&tv,NULL);
