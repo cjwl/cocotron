@@ -251,10 +251,12 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             else
                 return [_timeZoneTypes objectAtIndex:[previousTransition typeIndex]];
         }
+        
+        return [_timeZoneTypes lastObject];
     }
-
+    //don't use date description in exception text, because of recursion
     [NSException raise:NSInternalInconsistencyException
-                format:@"%@ could not determine seconds from GMT for %@", self, date];
+                format:@"%@ could not determine seconds from GMT for timeInterval %d since reference date", self, [date timeIntervalSinceReferenceDate]];
     return nil;
 }
 

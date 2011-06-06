@@ -8,6 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/O2Geometry.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
    O2Float a;
    O2Float b;
@@ -35,3 +39,6 @@ ONYX2D_EXPORT O2Point O2PointApplyAffineTransform(O2Point point, O2AffineTransfo
 ONYX2D_EXPORT O2Size O2SizeApplyAffineTransform(O2Size size, O2AffineTransform xform);
 
 
+#ifdef __cplusplus
+}
+#endif

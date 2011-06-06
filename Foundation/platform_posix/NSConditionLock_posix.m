@@ -11,7 +11,7 @@
 #import <Foundation/NSRaiseException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
-#import <time.h>
+#import <sys/time.h>
 #import <math.h>
 #import <errno.h>
 
@@ -118,11 +118,13 @@
 }
 
 -(BOOL)lockBeforeDate:(NSDate *)date {
+    struct timeval tv;
+    struct timespec t;
     int rc;
-    struct timespec t={0};
+    gettimeofday(&tv,NULL);
     NSTimeInterval d=[date timeIntervalSinceNow];
-    t.tv_sec=(unsigned int)d;
-    t.tv_nsec=fmod(d, 1.0)*1000000.0;
+    t.tv_sec= tv.tv_sec + (unsigned int)d + 1;
+    t.tv_nsec=tv.tv_usec*1000 + fmod(d, 1.0)*1000000.0;
     
     if((rc = pthread_mutex_lock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
@@ -147,11 +149,13 @@
 }
 
 -(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date {
-    struct timespec t={0};
+    struct timeval tv;
+    struct timespec t;
     int rc;
+    gettimeofday(&tv,NULL);
     NSTimeInterval d=[date timeIntervalSinceNow];
-    t.tv_sec=(unsigned int)d;
-    t.tv_nsec=fmod(d, 1.0)*1000000.0;
+    t.tv_sec= tv.tv_sec + (unsigned int)d + 1;
+    t.tv_nsec=tv.tv_usec*1000 + fmod(d, 1.0)*1000000.0;
 
     if((rc = pthread_mutex_lock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];

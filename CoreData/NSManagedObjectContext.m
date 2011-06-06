@@ -205,7 +205,7 @@ NSString * const NSInvalidatedAllObjectsKey=@"NSInvalidatedAllObjectsKey";
 }
 
 -(NSAtomicStoreCacheNode *)_cacheNodeForObjectID:(NSManagedObjectID *)objectID {
-   NSAtomicStore *store=[_storeCoordinator _persistentStoreForObjectID:objectID];
+   NSAtomicStore *store=(NSAtomicStore *)[_storeCoordinator _persistentStoreForObjectID:objectID];
 
    return [store cacheNodeForObjectID:objectID];
 }

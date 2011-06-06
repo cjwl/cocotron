@@ -1161,7 +1161,7 @@ BOOL VGPathAddQuadTo(VGPath *self,O2Point p0, O2Point p1, O2Point p2, BOOL subpa
 }
 
 // Tessellates a cubic-to segment.
-
+#if 0
 // Bezier to lines from: Windows Graphics Programming by Feng Yuan
 static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,O2Point *pp,O2Point *tp){
    // Ax+By+C=0 is the line (x1,y1) (x4,y4);
@@ -1199,6 +1199,7 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
     bezier(self,x/8,y/8,x2334/4,y2334/4,x34/2,y34/2,x4,y4,prevFlags,pp,tp);
    }
 }
+#endif
 
 BOOL VGPathAddCubicTo(VGPath *self,O2Point p0, O2Point p1, O2Point p2, O2Point p3, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2) && Vector2IsEqual(p0 ,p3))

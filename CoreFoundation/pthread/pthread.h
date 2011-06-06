@@ -31,6 +31,7 @@
 
 #import <stdint.h>
 #import <time.h>
+#import <sched.h>
 
 struct timespec {
   time_t tv_sec;
@@ -62,6 +63,9 @@ PTHREAD_EXPORT pthread_t pthread_self(void);
 PTHREAD_EXPORT int pthread_join(pthread_t thread, void **value_ptr);
 PTHREAD_EXPORT int pthread_detach(pthread_t thread);
 PTHREAD_EXPORT void *pthread_getw32threadhandle_np(pthread_t thread);
+
+PTHREAD_EXPORT int pthread_getschedparam(pthread_t thread,int *policy,struct sched_param *scheduling);
+PTHREAD_EXPORT int pthread_setschedparam(pthread_t thread,int policy,const struct sched_param *scheduling);
 
 PTHREAD_EXPORT void *pthread_getspecific(pthread_key_t key);
 PTHREAD_EXPORT int pthread_setspecific(pthread_key_t key, const void *value); 
