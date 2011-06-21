@@ -2182,6 +2182,8 @@
 		C6BC3CC31162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6BC3CC41162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
 		C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */; };
+		C6BDA96F13B0DB3800676F8F /* NSNumber_BOOL_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0601090D1BE00C44FD7 /* NSNumber_BOOL_const.m */; };
+		C6BDA97013B0DB4000676F8F /* NSNumber_double_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */; };
 		C6EC3F881386AABE00F6A9D5 /* NSString_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BB09747D0400EC542B /* NSString_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6EC3F891386AABE00F6A9D5 /* NSTimeZone_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6EC3F8A1386AABE00F6A9D5 /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -16650,6 +16652,8 @@
 				C6EC423F1386AABE00F6A9D5 /* NSRecursiveLock_win32.m in Sources */,
 				C6EC42401386AABE00F6A9D5 /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				C6EC42411386AABE00F6A9D5 /* NSNumber_CF.m in Sources */,
+				C6BDA96F13B0DB3800676F8F /* NSNumber_BOOL_const.m in Sources */,
+				C6BDA97013B0DB4000676F8F /* NSNumber_double_const.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
