@@ -14403,6 +14403,7 @@
 			isa = PBXProject;
 			buildConfigurationList = 6E2801B909746B8900EC542B /* Build configuration list for PBXProject "Foundation" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -19548,7 +19549,6 @@
 					"-shared",
 					"-lrpcrt4",
 					"-lws2_32",
-					"-Wl,--export-all-symbols",
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
