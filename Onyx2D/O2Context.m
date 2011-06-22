@@ -244,7 +244,7 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 	}
 }
 
--(void)supportsGlobalAlpha
+-(BOOL)supportsGlobalAlpha
 {
 	return NO;
 }

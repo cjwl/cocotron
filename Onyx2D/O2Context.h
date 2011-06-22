@@ -187,7 +187,7 @@ O2ColorRef O2ContextFillColor(O2ContextRef self);
 
 -(void)clipToState:(O2ClipState *)clipState;
 
--(void)supportsGlobalAlpha;
+-(BOOL)supportsGlobalAlpha;
 
 O2ContextRef O2ContextRetain(O2ContextRef self);
 void         O2ContextRelease(O2ContextRef self);
