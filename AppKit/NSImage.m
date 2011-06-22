@@ -755,20 +755,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    CGContextSaveGState(context);
    
-   if(fraction!=1.0){
-// fraction is accomplished with a 1x1 alpha mask
-// FIXME: could use a float format image to completely preserve fraction
-    uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
-    CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
-    CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
-   
-    CGContextClipToMask(context,rect,mask);
-    CGImageRelease(mask);
-    CGDataProviderRelease(provider);
-   }
-   
-   [[NSGraphicsContext currentContext] setCompositingOperation:operation];
-      
+	if ([context supportsGlobalAlpha] == NO) {
+		// That should really be done by setting the context alpha - and the compositing done in the context implementation
+		if(fraction!=1.0){
+			// fraction is accomplished with a 1x1 alpha mask
+			// FIXME: could use a float format image to completely preserve fraction
+			uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
+			CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
+			CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
+			
+			CGContextClipToMask(context,rect,mask);
+			CGImageRelease(mask);
+			CGDataProviderRelease(provider);
+		}
+	} else {
+		CGContextSetAlpha(context, fraction);
+	}	
+	[[NSGraphicsContext currentContext] setCompositingOperation:operation];
+	
    [self drawRepresentation:drawRep inRect:rect];
    
    CGContextRestoreGState(context);

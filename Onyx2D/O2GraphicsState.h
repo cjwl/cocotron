@@ -50,6 +50,7 @@ extern "C" {
    float              *_dashLengths;
    O2ColorRenderingIntent _renderingIntent;
    O2BlendMode          _blendMode;
+	float				_alpha;
    float               _flatness;
    O2InterpolationQuality _interpolationQuality;
    O2Size              _shadowOffset;
@@ -143,6 +144,8 @@ void O2GStateSetLineDash(O2GState *self,float phase,const float *lengths,unsigne
 -(void)setRenderingIntent:(O2ColorRenderingIntent)intent;
 O2BlendMode O2GStateBlendMode(O2GState *self);
 void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode);
+float O2GStateAlpha(O2GState *self);
+void O2GStateSetAlpha(O2GState *self,float alpha);
 
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(O2InterpolationQuality)quality;
