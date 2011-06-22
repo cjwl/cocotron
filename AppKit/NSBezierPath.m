@@ -865,6 +865,7 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 	// MoveTo are converted to ClosePath if the current path is closed, else to MoveTo
 	// ClosePath are converted to MoveTo and the current path is marked as closed
 	NSBezierPath *path = (NSBezierPath *)[[self class] bezierPath];
+	[path moveToPoint: [self currentPoint]];
 	
 	BOOL closed = NO; // state of current subpath
 	
@@ -872,7 +873,7 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 	for ( i = [self elementCount] - 1; i >= 0; i--) 
     {
 		// Find the next point : it's the end of previous element in the original path
-		CGPoint nextPoint = CGPointMake(0,0);
+		CGPoint nextPoint = [self currentPoint];
 		CGPoint pts[3];
 		NSBezierPathElement type = [self elementAtIndex: i associatedPoints: pts];
 		if (i > 0) {
@@ -880,6 +881,18 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 			CGPoint prevPoints[3];
 			prevType = [self elementAtIndex: i-1 associatedPoints: prevPoints];
 			switch (prevType) {
+				case NSClosePathBezierPathElement: {
+					int j = 0;
+					// Find the previous start of a path
+					for (j = i - 1; j >= 0; j--) {
+						NSBezierPathElement type = [self elementAtIndex: j associatedPoints: prevPoints];
+						if (type == NSMoveToBezierPathElement) {
+							nextPoint = prevPoints[0];
+							break;
+						}
+					}
+					break;
+				}
 				case NSCurveToBezierPathElement:
 					nextPoint = prevPoints[2];
 					break;
@@ -896,7 +909,10 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 					// We're starting a new subpath - non-closed until we meet a ClosePath
 					closed = NO;
 				} else {
-					[path moveToPoint: nextPoint];
+					if (i != 0) {
+						// We don't need the first move point 
+						[path moveToPoint: nextPoint];
+					}
 				}
 				break;
 			case NSLineToBezierPathElement:
@@ -906,9 +922,12 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 				[path curveToPoint:nextPoint controlPoint1:pts[1] controlPoint2: pts[0]];
 				break;
 			case NSClosePathBezierPathElement:
+				if (i != 0) {
+					// We don't need a move point as the last element of the path
 					[path moveToPoint: nextPoint];
-				// Current subpath is closed
-				closed = YES;
+					// Current subpath is closed
+					closed = YES;
+				}
 				break;
 			default:
 				break;
