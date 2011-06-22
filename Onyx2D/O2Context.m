@@ -1444,5 +1444,8 @@ void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
    [self copyBitsInRect:rect toPoint:point gState:gState];
 }
 
-
+bool O2ContextSupportsGlobalAlpha(O2ContextRef self)
+{
+	return [self supportsGlobalAlpha];
+}
 @end

@@ -755,7 +755,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    CGContextSaveGState(context);
    
-	if ([context supportsGlobalAlpha] == NO) {
+	if (CGContextSupportsGlobalAlpha(context) == NO) {
 		// That should really be done by setting the context alpha - and the compositing done in the context implementation
 		if(fraction!=1.0){
 			// fraction is accomplished with a 1x1 alpha mask
