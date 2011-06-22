@@ -173,25 +173,29 @@ static Class _fontPanelFactory;
 }
 
 -(NSFont *)fontWithFamily:(NSString *)familyName traits:(NSFontTraitMask)traits weight:(int)weight size:(float)size {
-#if 0
-   NSFontFamily *family=[NSFontFamily fontFamilyWithName:familyName];
-   NSArray      *typefaces=[family typefaces];
-   int           i,count=[typefaces count];
-   NSString     *fontName=nil; 
-   
-   for(i=0;i<count;i++){
-    NSFontTypeface *typeface=[typefaces objectAtIndex:i];
-    NSFontTraitMask checkTraits=[typeface traits];
-    
-    if(((traits&NSItalicFontMask)==(checkTraits&NSItalicFontMask)) &&
-        ((traits&NSBoldFontMask)==(checkTraits&NSBoldFontMask))
-   }
-   
-   if(fontName!=nil)
-    return [NSFont fontWithName:fontName size:size];
-#endif
-   NSUnimplementedMethod();
-   return nil;
+	// Note : weight is ignored 
+	
+	NSFontFamily *family=[NSFontFamily fontFamilyWithName:familyName];
+	NSArray      *typefaces=[family typefaces];
+	int           i,count=[typefaces count];
+	NSString     *fontName=nil; 
+	
+	for(i=0;i<count;i++){
+		NSFontTypeface *typeface=[typefaces objectAtIndex:i];
+		NSFontTraitMask checkTraits=[typeface traits];
+		
+		if(((traits&NSItalicFontMask)==(checkTraits&NSItalicFontMask)) &&
+		   ((traits&NSBoldFontMask)==(checkTraits&NSBoldFontMask))) {
+			fontName = [typeface name];
+			break;
+		}
+	}
+	
+	NSFont *font = nil;
+	if(fontName!=nil)
+		font = [NSFont fontWithName:fontName size:size];
+	
+	return font;
 }
 
 -(int)weightOfFont:(NSFont *)font {
