@@ -1642,6 +1642,9 @@ static void clearInvalidRects(NSView *self){
 }
 
 static void clearNeedsDisplay(NSView *self){
+	if ([NSGraphicsContext inQuartzDebugMode]) {
+		return;
+	}
    clearInvalidRects(self);
    self->_needsDisplay=NO;
 }
@@ -1873,8 +1876,13 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    NSRect visibleRect=[self visibleRect];
 
    rect=NSIntersectionRect(rect,visibleRect);
-   removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
 
+	if ([NSGraphicsContext inQuartzDebugMode]) {
+		// Don't do anything to interfere with what will be drawn in non-debug mode
+	} else {
+		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
+	}
+	
    if(NSIsEmptyRect(rect))
     return;
     
@@ -1888,7 +1896,12 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
     CGContextClipToRect(graphicsPort,rect);
 
-    [self drawRect:rect];
+	   if ([NSGraphicsContext inQuartzDebugMode]) {
+		   [[NSColor yellowColor] set];
+		   NSRectFill(rect);
+	   } else {
+		   [self drawRect:rect];
+	   }
     [self unlockFocus];
 
     NSInteger i,count=[_subviews count];

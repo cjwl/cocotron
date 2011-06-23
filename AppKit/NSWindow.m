@@ -1684,6 +1684,18 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    if([self isVisible] && ![self isMiniaturized] && [self viewsNeedDisplay]){
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
+	if ([NSGraphicsContext quartzDebuggingIsEnabled] == YES) {
+
+		// Show all the views getting redrawn
+	   [NSGraphicsContext setQuartzDebugMode: YES];
+	   [self disableFlushWindow];
+	   [_backgroundView displayIfNeeded];
+	   [self enableFlushWindow];
+	   [self flushWindowIfNeeded];
+	}
+
+	[NSGraphicsContext setQuartzDebugMode: NO];
+	   
     [self disableFlushWindow];
     [_backgroundView displayIfNeeded];
     [self enableFlushWindow];
@@ -1698,7 +1710,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
  */
    if([self isVisible]){
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    [self disableFlushWindow];
+
+	if ([NSGraphicsContext quartzDebuggingIsEnabled] == YES) {
+
+		// Show all the views getting redrawn
+	   [NSGraphicsContext setQuartzDebugMode: YES];
+	   [self disableFlushWindow];
+	   [_backgroundView display];
+	   [self enableFlushWindow];
+	   [self flushWindowIfNeeded];
+	}
+
+	[NSGraphicsContext setQuartzDebugMode: NO];
+
+	[self disableFlushWindow];
     [_backgroundView display];
     [self enableFlushWindow];
     [self flushWindowIfNeeded];
