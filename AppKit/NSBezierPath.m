@@ -450,8 +450,25 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(NSPoint)currentPoint {
-// FIXME: this is wrong w/ closepath last
-   return (_numberOfPoints==0)?CGPointZero:_points[_numberOfPoints-1];
+	if (_numberOfElements < 1) {
+		// Empty path
+		return NSZeroPoint;
+	}
+	int j = _numberOfElements - 1;
+	if (_elements[j] == NSClosePathBezierPathElement) {
+		// last element is a closePath - Find the start of the closed path
+		j--;
+		while (j >= 0 && _elements[j] != NSMoveToBezierPathElement) {
+			j--;
+		}
+		if (j >= 0 && _elements[j] == NSMoveToBezierPathElement) {
+			NSPoint pts[3];
+			[self elementAtIndex: j associatedPoints: pts];
+			return pts[0];
+		}
+	}
+	// Else the last point of the _points array is the current point
+	return (_numberOfPoints==0)?NSZeroPoint:_points[_numberOfPoints-1];
 }
 
 static inline void expandOperatorCapacity(NSBezierPath *self,unsigned delta){
@@ -870,6 +887,7 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 	BOOL closed = NO; // state of current subpath
 	
 	int i = 0;
+	// Note: using elementAtIndex:associatedPoints: is very inefficient
 	for ( i = [self elementCount] - 1; i >= 0; i--) 
     {
 		// Find the next point : it's the end of previous element in the original path
