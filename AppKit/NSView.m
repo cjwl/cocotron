@@ -194,6 +194,10 @@ static CGAffineTransform concatViewTransform(CGAffineTransform result,NSView *vi
    if(doFrame)
    result=CGAffineTransformTranslate(result,frame.origin.x,frame.origin.y);
 
+	// Apply bounds scaling to fit in the frame
+	CGAffineTransform scale = CGAffineTransformMakeScale(NSWidth(frame)/NSWidth(bounds), NSHeight(frame)/NSHeight(bounds));
+	result=CGAffineTransformConcat(scale,result);
+	
    if(flip){
     CGAffineTransform flip=CGAffineTransformMake(1,0,0,-1,0,bounds.size.height);
 
