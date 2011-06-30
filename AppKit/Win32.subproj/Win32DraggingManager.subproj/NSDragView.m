@@ -15,10 +15,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithImage:(NSImage *)image {
    NSSize size=[image size];
-   NSRect frame=NSMakeRect(0,0,size.width,size.height);
-   [super initWithFrame:frame];
-   _image=[image retain];
-   return self;
+	NSRect frame=NSMakeRect(0,0,size.width,size.height);
+	if ((self = [super initWithFrame:frame])) {
+		_image=[image retain];
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[_image release];
+	[super dealloc];
 }
 
 -(void)drawRect:(NSRect)rect {
