@@ -2087,6 +2087,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:source slideBack:(BOOL)slideBack {
+	location = [self convertPoint:location toView:nil];
    [[NSDraggingManager draggingManager] dragImage:image at:location offset:offset event:event pasteboard:pasteboard source:source slideBack:slideBack];
 }
 
