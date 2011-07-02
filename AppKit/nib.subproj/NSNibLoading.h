@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(BOOL)loadNibNamed:(NSString *)name owner:owner;
 
--(BOOL)loadNibFile:(NSString *)path externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone;
+-(BOOL)loadNibFile:(NSString *)fileName externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone;
 
 @end
 

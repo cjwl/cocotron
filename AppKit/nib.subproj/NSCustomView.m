@@ -20,16 +20,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          return self;
       }
       else {
-         NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
          NSRect frame=NSZeroRect;
-         if([keyed containsValueForKey:@"NSFrame"])
-            frame=[keyed decodeRectForKey:@"NSFrame"];
-         else if([keyed containsValueForKey:@"NSFrameSize"])
-            frame.size=[keyed decodeSizeForKey:@"NSFrameSize"];
+         if([coder containsValueForKey:@"NSFrame"])
+            frame=[coder decodeRectForKey:@"NSFrame"];
+         else if([coder containsValueForKey:@"NSFrameSize"])
+            frame.size=[coder decodeSizeForKey:@"NSFrameSize"];
 
          NSView *newView=[[class alloc] initWithFrame:frame];
-         if([keyed containsValueForKey:@"NSvFlags"]){
-          unsigned vFlags=[keyed decodeIntForKey:@"NSvFlags"];
+         if([coder containsValueForKey:@"NSvFlags"]){
+          unsigned vFlags=[coder decodeIntForKey:@"NSvFlags"];
           
           newView->_autoresizingMask=vFlags&0x3F;
           newView->_autoresizesSubviews=(vFlags&0x100)?YES:NO;
@@ -38,11 +37,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Despite the fact it appears _autoresizesSubviews is encoded in the flags, it should always be on
          newView->_autoresizesSubviews=YES;
          
-         if([keyed containsValueForKey:@"NSTag"])
-             newView->_tag=[keyed decodeIntForKey:@"NSTag"];
-         [newView->_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
+         if([coder containsValueForKey:@"NSTag"])
+             newView->_tag=[coder decodeIntForKey:@"NSTag"];
+         [newView->_subviews addObjectsFromArray:[coder decodeObjectForKey:@"NSSubviews"]];
          [newView->_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:newView];
          [_subviews removeAllObjects];
+         
+         [newView setWantsLayer:[coder decodeBoolForKey:@"NSViewIsLayerTreeHost"]];
+         [newView setLayerContentsRedrawPolicy:[coder decodeIntegerForKey:@"NSViewLayerContentsRedrawPolicy"]];
          [self release];
          return newView;
       }

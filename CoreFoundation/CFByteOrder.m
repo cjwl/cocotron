@@ -25,6 +25,16 @@ uint32_t CFSwapInt32(uint32_t value) {
    return result;
 }
 
+uint32_t CFSwapInt32BigToHost(uint32_t value) {
+#ifdef __LITTLE_ENDIAN__
+   return CFSwapInt32(value);
+#endif
+#ifdef __BIG_ENDIAN__
+   return value;
+#endif
+}
+
+
 uint16_t OSReadBigInt16(const void *ptr,size_t offset){
    const uint8_t *bytes=ptr+offset;
    uint16_t result;

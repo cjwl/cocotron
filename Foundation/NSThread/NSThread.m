@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSConditionLock.h>
 #import <Foundation/objc_debugHelpers.h>
 #import <Foundation/NSSelectSet.h>
+#import <pthread.h>
 
 NSString * const NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString * const NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
@@ -75,6 +76,7 @@ static void *nsThreadStartThread(void* t)
    NSThread    *thread = t;
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
+    NSCooperativeThreadWaiting();
    [thread main];
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
@@ -104,18 +106,35 @@ static void *nsThreadStartThread(void* t)
 }
 
 +(BOOL)setThreadPriority:(double)value {
-   NSUnimplementedMethod();
-   return 0;
+   struct sched_param scheduling;
+   
+   value=MAX(0,MIN(value,1.0));
+   
+   int policy;
+   
+   pthread_getschedparam(pthread_self(),&policy,&scheduling);
+   int min=sched_get_priority_min(policy);
+   int max=sched_get_priority_min(policy);
+   
+   scheduling.sched_priority=min+(max-min)*value;
+   
+   pthread_setschedparam(pthread_self(),policy,&scheduling);
+
+   return YES;
 }
 
 +(void)sleepUntilDate:(NSDate *)date {
    NSTimeInterval interval=[date timeIntervalSinceNow];
 
+   NSCooperativeThreadBlocking();
    NSPlatformSleepThreadForTimeInterval(interval);
+   NSCooperativeThreadWaiting();
 }
 
 +(void)sleepForTimeInterval:(NSTimeInterval)value {
+   NSCooperativeThreadBlocking();
    NSPlatformSleepThreadForTimeInterval(value);
+   NSCooperativeThreadWaiting();
 }
 
 +(void)exit {

@@ -9,6 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 #import <Onyx2D/O2GlyphStencil.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @class Win32Font,O2DeviceContext_gdi,O2DeviceContext_gdiDIBSection;
 
 @interface O2Context_builtin_gdi : O2Context_builtin {
@@ -30,3 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(O2DeviceContext_gdi *)deviceContext;
 
 @end
+
+#ifdef __cplusplus
+}
+#endif

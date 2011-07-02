@@ -22,6 +22,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2Context_builtin_gdi
 
++(BOOL)canInitBitmap {
+   return YES;
+}
+
+-(Class)surfaceClass {
+   return [O2Surface_DIBSection class];
+}
+
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
    /* FIX: we need to also override initWithBytes:... and create an O2Surface_DIBSection for the pixel format.
@@ -106,15 +114,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if 0
 static O2Paint *paintFromColor(O2ColorRef color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
-   const float *components=O2ColorGetComponents(rgbColor);
    CGFloat r,g,b,a;
    
-   r=components[0];
-   g=components[1];
-   b=components[2];
-   a=components[3];
+   if(rgbColor==NULL){
+    r=g=b=0;
+    a=1;
+   }
+   else {
+    const float *components=O2ColorGetComponents(rgbColor);
    
-   O2ColorRelease(rgbColor);
+    r=components[0];
+    g=components[1];
+    b=components[2];
+    a=components[3];
+   
+    O2ColorRelease(rgbColor);
+   }
    
    return [[O2Paint_color alloc] initWithRed:r green:g blue:b alpha:a surfaceToPaintTransform:O2AffineTransformIdentity];
 }
@@ -156,6 +171,7 @@ static void applyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,uint8_t *coverageSpa
    }
 }
 
+#if 0
 static void drawGray8Stencil(O2Context_builtin_gdi *self,O2Surface *surface,CGFloat fpx,CGFloat fpy,O2Paint *paint,uint8_t *coverage,size_t bytesPerRow,size_t width,size_t height,int left,int top){
    int x=lroundf(fpx)+left;
    int y=lroundf(fpy)-top;
@@ -226,7 +242,6 @@ static void drawGray8Stencil(O2Context_builtin_gdi *self,O2Surface *surface,CGFl
     
 }
 
-#if 0
 static void drawFreeTypeBitmap(O2Context_builtin_gdi *self,O2Surface *surface,O2GlyphStencilRef stencil,CGFloat fpx,CGFloat fpy,O2Paint *paint){
    drawGray8Stencil(self,surface,fpx,fpy,paint,O2GlyphStencilGetCoverage(stencil),O2GlyphStencilGetWidth(stencil),O2GlyphStencilGetWidth(stencil),O2GlyphStencilGetHeight(stencil),O2GlyphStencilGetLeft(stencil),O2GlyphStencilGetTop(stencil));
 }

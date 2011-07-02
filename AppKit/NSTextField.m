@@ -15,6 +15,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSKeyValueBinding/NSTextFieldBinder.h"
 #import "NSKeyValueBinding/NSObject+BindingSupport.h"
 
+
+@interface NSTextFieldCell (Private)
+
+- (CGFloat) _fontSize;
+- (void) _setFontSize:(CGFloat)fontSize;
+- (NSString*) _fontFamilyName;
+- (void) _setFontFamilyName:(NSString*)familyName;
+
+@end
+
+
+
 @implementation NSTextField
 
 +(Class)cellClass {
@@ -262,6 +274,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTitleWithMnemonic:(NSString *)value {
    [self setStringValue:value];
+}
+
+@end
+
+@implementation NSTextField (Bindings)
+
+- (CGFloat) _fontSize {
+    return [(NSTextFieldCell*)_cell _fontSize];
+}
+- (void) _setFontSize:(CGFloat)fontSize {
+    [(NSTextFieldCell*)_cell _setFontSize:fontSize];
+}
+- (NSString*) _fontFamilyName {
+    return [(NSTextFieldCell*)_cell _fontFamilyName];
+}
+- (void) _setFontFamilyName:(NSString*)familyName {
+    [(NSTextFieldCell*)_cell _setFontFamilyName:familyName];
 }
 
 @end

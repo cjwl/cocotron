@@ -237,7 +237,7 @@ void *, const void *))
 {
 	NSInteger h, i, j, k, l, m, n = nel;
 	void* A; // points to an element
-	void* B = malloc((n/2 + 1) * width); // points to a temp array
+	void* B = NSZoneMalloc(NULL,(n/2 + 1) * width); // points to a temp array
 	
 
 	for (h = 1; h < n; h += h) {
@@ -398,7 +398,7 @@ static int selectorCompare(id object1,id object2,void *userData){
 -(void)sortUsingFunction:(NSInteger (*)(id, id, void *))compare context:(void *)context
 {
    NSInteger h, i, j, k, l, m, n = [self count];
-   id  A, *B = malloc((n/2 + 1) * sizeof(id));
+   id  A, *B = NSZoneMalloc(NULL,(n/2 + 1) * sizeof(id));
 
 // to prevent retain counts from temporarily hitting zero.  
    for(i=0;i<n;i++)

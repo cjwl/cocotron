@@ -383,6 +383,10 @@ void O2GStateSetLineDash(O2GState *self,float phase,const float *lengths,unsigne
    _renderingIntent=intent;
 }
 
+O2BlendMode O2GStateBlendMode(O2GState *self) {
+   return self->_blendMode;
+}
+
 void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode){
    self->_blendMode=mode;
 }

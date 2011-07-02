@@ -18,6 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/CFUID.h>
 #import <Foundation/NSCFTypeID.h>
 
+#import <Foundation/NSRaise.h>
+
 NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationException";
 
 @interface NSObject(NSKeyedUnarchiverPrivate)
@@ -201,6 +203,23 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    return [number boolValue];
 }
 
+-(char)decodeCharForKey:(NSString *)key {
+    NSNumber *number=_numberForKey(self,key);
+    
+    if(number==nil)
+        return NO;
+    
+    return [number charValue];
+}
+-(unsigned char)decodeUnsignedCharForKey:(NSString *)key {
+    NSNumber *number=_numberForKey(self,key);
+    
+    if(number==nil)
+        return NO;
+    
+    return [number unsignedCharValue];
+}
+
 -(double)decodeDoubleForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
    
@@ -226,6 +245,14 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
     return 0;
     
    return [number intValue];
+}
+-(short)decodeShortForKey:(NSString *)key {
+    NSNumber *number=_numberForKey(self,key);
+    
+    if(number==nil)
+        return 0;
+    
+    return [number shortValue];
 }
 
 -(int32_t)decodeInt32ForKey:(NSString *)key {
@@ -417,30 +444,127 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    return NSMakeRect(array[0],array[1],array[2],array[3]);
 }
 
--_decodeObjectWithPropertyList:plist {
-   unsigned typeID=[plist _cfTypeID];
+// NSCoder: Subclasses must override this method and provide an implementation to decode the value.
+// keys of "unnamed" values seem to be incremented indexes prefixed with "$" ($0,$1,$2...)
+-(void)decodeValueOfObjCType:(const char *)type at:(void *)data {
+    NSString *key = [NSString stringWithFormat:@"$%u", _unnamedKeyIndex++];
 
-   if(typeID==kNSCFTypeString || typeID==kNSCFTypeData || typeID==kNSCFTypeNumber)
-    return plist;
-   if(typeID==kNSCFTypeDictionary)
-    return [self decodeObjectForUID:integerFromCFUID(plist)];
-   if(typeID==kNSCFTypeArray){
-    NSMutableArray *result=[NSMutableArray array];
-    NSInteger       i,count=[plist count];
-    
-    for(i=0;i<count;i++){
-     id sibling=[plist objectAtIndex:i];
-     
-     [result addObject:[self _decodeObjectWithPropertyList:sibling]];
+    switch (*type) {
+        case _C_ID: //       '@'
+            *(id*)data = [[self decodeObjectForKey:key] retain];
+            break;
+        case _C_CLASS: //    '#'
+            *(id*)data = [[self decodeObjectForKey:key] retain];
+            break;
+        case _C_SEL: //      ':'
+            *(SEL*)data = NSSelectorFromString([self decodeObjectForKey:key]);
+            break;
+        case _C_CHR: //      'c'
+            *(char*)data = [self decodeCharForKey:key];
+            break;
+        case _C_UCHR: //     'C'
+            *(unsigned char*)data = [self decodeUnsignedCharForKey:key];
+            break;
+        case _C_SHT: //      's'
+            *(short*)data = [self decodeShortForKey:key];
+            break;
+        case _C_USHT: //     'S'
+            *(unsigned short*)data = [self decodeShortForKey:key];
+            break;
+        case _C_INT: //      'i'
+            *(int*)data = [self decodeIntForKey:key];
+            break;
+        case _C_UINT: //     'I'
+            *(unsigned int*)data = [self decodeIntForKey:key];
+            break;
+        case _C_LNG: //      'l'
+            *(long*)data = [self decodeInt32ForKey:key];
+            break;
+        case _C_ULNG: //     'L'
+            *(unsigned long*)data = [self decodeInt32ForKey:key];
+            break;
+        case _C_LNG_LNG: //  'q'
+            *(long long*)data = [self decodeInt64ForKey:key];
+            break;
+        case _C_ULNG_LNG: // 'Q'
+            *(unsigned long long*)data = [self decodeInt64ForKey:key];
+            break;
+        case _C_FLT: //      'f'
+            *(float*)data = [self decodeFloatForKey:key];
+            break;
+        case _C_DBL: //      'd'
+            *(double*)data = [self decodeDoubleForKey:key];
+            break;
+/*        case _C_BFLD: //     'b'
+            break;*/
+        case 'B':   // _C_BOOL: //     'B'  (undefined?)
+            *(BOOL*)data = [self decodeBoolForKey:key];
+            break;
+        case _C_VOID: //     'v'
+            break;
+        case _C_UNDEF: //    '?'
+            break;
+        case _C_PTR: //      '^'
+            break;
+        case _C_CHARPTR: //  '*'
+            *(const char**)data = [[self decodeObjectForKey:key] cString];
+            break;
+/*        case _C_ATOM: //     '%'
+            break;
+        case _C_ARY_B: //    '['
+            break;
+        case _C_ARY_E: //    ']'
+            break;
+        case _C_UNION_B: //  '('
+            break;
+        case _C_UNION_E: //  ')'
+            break;
+        case _C_STRUCT_B: // '{'
+            break;
+        case _C_STRUCT_E: // '}'
+            break;
+        case _C_VECTOR: //   '!'
+            break;
+        case _C_CONST: //    'r'
+            break; */
+        default:
+            [NSException raise:@"NSKeyedUnarchiverException" format:@"Unable to decode unnamed ObjC value with unsupported type '%s'",type];
+            break;
     }
     
+    //NSUnimplementedMethod();
+}
+
+-_decodeObjectWithPropertyList:plist {
+   unsigned typeID=[plist _cfTypeID];
+    
+    int backupUnnamedKeyIndex = _unnamedKeyIndex;
+    _unnamedKeyIndex = 0;
+
+    id result = nil;
+    
+    if(typeID==kNSCFTypeString || typeID==kNSCFTypeData || typeID==kNSCFTypeNumber) {
+        result = plist;
+    } else if(typeID==kNSCFTypeDictionary) {
+        result = [self decodeObjectForUID:integerFromCFUID(plist)];
+    } else if(typeID==kNSCFTypeArray){
+        result=[NSMutableArray array];
+        NSInteger       i,count=[plist count];
+    
+        for(i=0;i<count;i++){
+            id sibling=[plist objectAtIndex:i];
+     
+            [result addObject:[self _decodeObjectWithPropertyList:sibling]];
+        }
+    } else if([plist isKindOfClass:[CFUID class]]) {
+        result = [self decodeObjectForUID:[plist integerValue]];
+    } else {
+        [NSException raise:@"NSKeyedUnarchiverException" format:@"Unable to decode property list with class %@",[plist class]];
+    }
+    
+    _unnamedKeyIndex = backupUnnamedKeyIndex;
+    
     return result;
-   }
-   if([plist isKindOfClass:[CFUID class]])
-    return [self decodeObjectForUID:[plist integerValue]];
-   
-   [NSException raise:@"NSKeyedUnarchiverException" format:@"Unable to decode property list with class %@",[plist class]];
-   return nil;
 }
 
 -decodeObjectForKey:(NSString *)key {

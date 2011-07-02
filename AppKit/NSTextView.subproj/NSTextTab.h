@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef enum {
    NSLeftTabStopType=0,
+   NSRightTabStopType,
+   NSCenterTabStopType,
+   NSDecimalTabStopType
 } NSTextTabType;
 
 @interface NSTextTab : NSObject <NSCopying> {

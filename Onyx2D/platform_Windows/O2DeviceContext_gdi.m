@@ -13,6 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 COLORREF COLORREFFromColor(O2Color *color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
+   
+   if(rgbColor==NULL)
+    return RGB(0,0,0);
+    
    const float *components=O2ColorGetComponents(rgbColor);
    
    COLORREF result=RGB(RI_INT_CLAMP(components[0]*255,0,255),RI_INT_CLAMP(components[1]*255,0,255),RI_INT_CLAMP(components[2]*255,0,255));

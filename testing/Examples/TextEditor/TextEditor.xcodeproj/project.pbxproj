@@ -225,9 +225,18 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "TextEditor" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* TextEditor */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				FE7135E30B370ED7006C9493 /* TextEditor */,
 				8D15AC270486D014006FF6A4 /* TextEditor-Mac */,

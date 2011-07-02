@@ -152,7 +152,7 @@ void O2DContextClipAndFillEdges(O2Context_builtin *self,int fillRuleMask);
 }
 
 -(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
-  return [[O2Surface alloc] initWithBytes:NULL width:width height:height bitsPerComponent:O2ImageGetBitsPerComponent(_surface) bytesPerRow:0 colorSpace:O2ImageGetColorSpace(_surface) bitmapInfo:O2ImageGetBitmapInfo(_surface)];
+  return [[[self surfaceClass] alloc] initWithBytes:NULL width:width height:height bitsPerComponent:O2ImageGetBitsPerComponent(_surface) bytesPerRow:0 colorSpace:O2ImageGetColorSpace(_surface) bitmapInfo:O2ImageGetBitmapInfo(_surface)];
 }
 
 -(O2Size)size {

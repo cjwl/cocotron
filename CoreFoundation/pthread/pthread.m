@@ -3,6 +3,31 @@
 #import <windows.h>
 #import <errno.h>
 
+int sched_yield(void) {
+   SwitchToThread();
+   return 0;
+}
+
+int sched_get_priority_min(int policy) {
+   return 0;
+}
+
+int sched_get_priority_max(int policy) {
+   return 100;
+}
+
+int pthread_getschedparam(pthread_t thread,int *policy,struct sched_param *scheduling) {
+   return 0;
+}
+
+int pthread_setschedparam(pthread_t thread,int policy,const struct sched_param *scheduling) {
+   return 0;
+}
+
+pthread_t pthread_self(void) {
+   return NULL;
+}
+
 int pthread_mutex_init(pthread_mutex_t *mutex,const pthread_mutexattr_t *attr) {
    *mutex=PTHREAD_MUTEX_INITIALIZER;
    return 0;

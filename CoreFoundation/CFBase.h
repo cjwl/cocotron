@@ -82,12 +82,6 @@ typedef struct CGRect {
 } CGRect;
  
 
-// FIXME: 
-#ifndef _MACH_PORT_T
-#define _MACH_PORT_T
-typedef int mach_port_t;
-#endif
-
 typedef unsigned short UniChar;
 typedef unsigned long UTF32Char;
 typedef float Float32;
@@ -205,13 +199,42 @@ COREFOUNDATION_EXPORT CFStringRef    CFCopyTypeIDDescription(CFTypeID typeID);
 COREFOUNDATION_EXPORT CFStringRef    CFCopyDescription(CFTypeRef self);
 COREFOUNDATION_EXPORT CFTypeRef      CFMakeCollectable(CFTypeRef self);
 
+#ifndef MACH
+
+// mach/mach_types.h
+
+typedef int kern_return_t;
+
+#define KERN_SUCCESS 0
+#define KERN_FAILURE 5
+
+#ifndef _MACH_PORT_T
+#define _MACH_PORT_T
+typedef int mach_port_t;
+#endif
+
+
+// mach/mach_time.h
+
+typedef struct mach_timebase_info {
+   uint32_t numer;
+   uint32_t denom;
+} mach_timebase_info_data_t,*mach_timebase_info_t;
+
+uint64_t      mach_absolute_time(void);
+kern_return_t mach_timebase_info(mach_timebase_info_t timebase);
+#endif
+
 #ifdef WINDOWS
 COREFOUNDATION_EXPORT unsigned int sleep(unsigned int seconds);
+//COREFOUNDATION_EXPORT int usleep(long useconds);
 COREFOUNDATION_EXPORT size_t strlcpy(char *dst, const char *src, size_t size);
+COREFOUNDATION_EXPORT char *strnstr(const char *s1,const char *s2,size_t n);
 COREFOUNDATION_EXPORT void bzero(void *ptr,size_t size);
 COREFOUNDATION_EXPORT void bcopy(const void *s1, void *s2, size_t n);
 COREFOUNDATION_EXPORT int bcmp(const void *s1, void *s2, size_t n);
 COREFOUNDATION_EXPORT int mkstemps(char *tmplt,int suffixlen);
+COREFOUNDATION_EXPORT long random(void);
 #endif
 
 

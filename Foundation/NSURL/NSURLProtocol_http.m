@@ -434,8 +434,10 @@ NSLog(@"parse error %d",__LINE__);
    [string appendString:@"\015\012"];
 
    if(NSDebugEnabled){
+#if 0
     NSLog(@"HTTP request=%@",string);
     NSLog(@"body=%@",[[[NSString alloc] initWithData:[_request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);
+#endif
 }
    NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
 

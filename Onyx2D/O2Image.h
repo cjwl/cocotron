@@ -33,6 +33,10 @@
 #import <Onyx2D/O2argb8u.h>
 #import <Onyx2D/O2argb32f.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 @class O2Image;
 
 typedef O2Image *O2ImageRef;
@@ -49,6 +53,7 @@ typedef enum {
    kO2ImageAlphaFirst,
    kO2ImageAlphaNoneSkipLast,
    kO2ImageAlphaNoneSkipFirst,
+   kO2ImageAlphaOnly,
 } O2ImageAlphaInfo;
 
 enum {
@@ -218,3 +223,7 @@ void O2ImageIntegerTranslate_largb8u_PRE(O2Image *self,int x, int y,O2argb8u *sp
 
 void O2ImageReadPatternSpan_largb8u_PRE(O2Image *self,O2Float x, O2Float y, O2argb8u *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);
 void O2ImageReadPatternSpan_largb32f_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);
+
+#ifdef __cplusplus
+}
+#endif
