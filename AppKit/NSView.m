@@ -104,7 +104,9 @@ static BOOL NSViewLayersEnabled=NO;
      _tag=[keyed decodeIntForKey:@"NSTag"];
      
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
+	[_subviews makeObjectsPerformSelector:@selector(viewWillMoveToSuperview:) withObject:self];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
+	[_subviews makeObjectsPerformSelector:@selector(viewDidMoveToSuperview)];
 
     _needsDisplay=YES;
     _invalidRectCount=0;
