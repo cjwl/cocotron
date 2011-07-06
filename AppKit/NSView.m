@@ -99,7 +99,7 @@ static BOOL NSViewLayersEnabled=NO;
 // should be.
      _autoresizesSubviews=YES;
     _isHidden=(vFlags&0x80000000)?YES:NO;
-    _tag=-1;
+    _tag= 0; // IB assigns a default tag id of 0 - which is different from the default in the docs.
     if([keyed containsValueForKey:@"NSTag"])
      _tag=[keyed decodeIntForKey:@"NSTag"];
      
@@ -141,7 +141,7 @@ static BOOL NSViewLayersEnabled=NO;
    _postsNotificationOnBoundsChange=YES;
    _autoresizesSubviews=YES;
    _autoresizingMask=NSViewNotSizable;
-   _tag=-1;
+   _tag=-1; // according to the docs - loading from a nib gets a default of 0.
    _needsDisplay=YES;
    _invalidRectCount=0;
    _invalidRects=NULL;
