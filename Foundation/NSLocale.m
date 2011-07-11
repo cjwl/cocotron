@@ -161,9 +161,9 @@ static NSLocale *_sharedCurrentLocale = nil;
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
-   return self;
-
+	// A very basic implementation that handles Locale encoding in nib files
+	NSDeallocateObject(self);
+	return [NSLocale systemLocale];
 }
 
 -copyWithZone:(NSZone *)zone {
