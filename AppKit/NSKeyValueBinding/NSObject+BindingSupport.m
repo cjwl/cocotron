@@ -6,13 +6,17 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSKVOBinder.h"
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
 #import <AppKit/NSObject+BindingSupport.h>
+#import <AppKit/NSController.h>
+#import <AppKit/NSObservationProxy.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSUserDefaults.h>
 
 static NSMutableDictionary *bindersForObjects=nil;
 static NSDictionary *defaultBindingOptions=nil;
@@ -36,7 +40,27 @@ NSString * const NSContinuouslyUpdatesValueBindingOption=@"NSContinuouslyUpdates
 NSString * const NSDisplayPatternBindingOption=@"NSDisplayPattern"; // Do not change.
 
 
+
+int NSBindingDebugLogLevel = 0; // Defaults to no logging
+
 @implementation NSObject (BindingSupport)
+
+void NSDetermineBindingDebugLoggingLevel(void)
+{
+	static BOOL loggingLevelDetermined = NO;
+	if (loggingLevelDetermined == NO) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+		
+		NSBindingDebugLogLevel = [defaults integerForKey: @"NSBindingDebugLogLevel"];
+		if (NSBindingDebugLogLevel > 0) {
+			NSLog(@"set NSBindingDebugLogLevel to: '%d'", NSBindingDebugLogLevel);
+		}
+		[pool drain];
+		loggingLevelDetermined = YES;
+	}
+}
+
 
 +(NSDictionary *)_defaultBindingOptionsForBinding:(NSString *)binding {
 
@@ -115,27 +139,36 @@ NSString * const NSDisplayPatternBindingOption=@"NSDisplayPattern"; // Do not ch
 
 -(id)_replacementKeyPathForBinding:(id)binding
 {
-	if([binding isEqual:@"value"])
+	if([binding isEqual:@"value"]) {
 		return @"objectValue";
+	}
    // FIX: actually try and detect these
-	if([binding hasPrefix:@"displayPatternValue"])
+	if([binding hasPrefix:@"displayPatternValue"]) {
+		NSBindingDebugLog(kNSBindingDebugLogLevel3, @"display pattern binding: %@ was unprocessed", binding);
 		return @"objectValue";
-
+	}
+	
 	return binding;
 }
 
 -(void)bind:(id)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options
 {
+	NSBindingDebugLog(kNSBindingDebugLogLevel1, @"binding: %@\n   toObject: %@\n   withKeyPath: %@\n   options: %@", binding, destination, keyPath, options);
+
 	if(![isa _binderClassForBinding:binding]){
+		NSBindingDebugLog(kNSBindingDebugLogLevel1, @"no binder class for binding: '%@'", binding);
 		return;
     }
-
+	
 	id binder=[self _binderForBinding:binding create:NO];
 
-	if(binder)
+	if(binder) {
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"unbinding binding: '%@' before rebinding", binding);
 		[binder unbind];
-	else
+	} else {
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"creating new binder for binding: '%@'", binding);
 		binder=[self _binderForBinding:binding create:YES];
+	}
 	
 	[binder setSource:self];
 	[binder setDestination:destination];
@@ -148,6 +181,7 @@ NSString * const NSDisplayPatternBindingOption=@"NSDisplayPattern"; // Do not ch
 
 -(void)unbind:(id)binding
 {
+	NSBindingDebugLog(kNSBindingDebugLogLevel1, @"binding: %@", binding);
 	id key = [NSValue valueWithNonretainedObject:self];
 	id ownBinders = [bindersForObjects objectForKey:key];
 	
@@ -155,8 +189,10 @@ NSString * const NSDisplayPatternBindingOption=@"NSDisplayPattern"; // Do not ch
 	[binder unbind];
 	
 	[ownBinders removeObjectForKey:binding];
-	if([ownBinders count]==0)
+	if([ownBinders count]==0) {
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"Removing binders for key: %@", key);
 		[bindersForObjects removeObjectForKey:key];
+	}
 }
 
 -(void)_unbindAllBindings

@@ -212,17 +212,22 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 #pragma mark -
 #pragma mark Primary methods
 
--valueForKey:(NSString*)key {
-   if(!key)
-    return [self valueForUndefinedKey:nil];
-        
+- (id)valueForKey:(NSString*)key
+{
+	if(!key) {
+		id value = [self valueForUndefinedKey:nil];
+		return value;
+	}
+	
    const char *keyCString=[key cString];
    SEL         sel=sel_getUid(keyCString);
 
 	// FIXME: getKey, _getKey, isKey, _isKey are missing
 	
-   if([self respondsToSelector:sel])
-    return [self _wrapReturnValueForSelector:sel];
+	if([self respondsToSelector:sel]) {
+		id value = [self _wrapReturnValueForSelector:sel];
+		return value;
+	}
 
    size_t keyCStringLength=strlen(keyCString);
    char  *selBuffer=__builtin_alloca(keyCStringLength+5);
@@ -235,7 +240,8 @@ sprintf(selBuffer, format, keyname); \
 sel = sel_getUid(selBuffer); \
 if([self respondsToSelector:sel]) \
 { \
-return [self _wrapReturnValueForSelector:sel]; \
+id value = [self _wrapReturnValueForSelector:sel]; \
+return value; \
 }
 		TRY_FORMAT("_%s");
 		keyname[0]=toupper(keyname[0]);
@@ -251,7 +257,8 @@ return [self _wrapReturnValueForSelector:sel]; \
         
 		if([self respondsToSelector:sel])
 		{
-			return [self _wrapReturnValueForSelector:sel];
+			id value = [self _wrapReturnValueForSelector:sel];
+			return value;
 		}
 		
 
@@ -261,15 +268,19 @@ return [self _wrapReturnValueForSelector:sel]; \
            
 		if(ivar)
 		{
-			return [self _wrapValue:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
+			id value = [self _wrapValue:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
+			return value;			
 		}
 		
 	}
 	
-	return [self valueForUndefinedKey:key];
+	id value = [self valueForUndefinedKey:key];
+	return value;
 }
 
 -(void)setValue:(id)value forKey:(NSString *)key {
+	
+	
     NSUInteger cStringLength=[key length];
     char keyCString[cStringLength+1];
     char uppercaseKeyCString[cStringLength+1];
@@ -287,9 +298,13 @@ return [self _wrapReturnValueForSelector:sel]; \
 		return [self _setValue:value withSelector:sel fromKey:key];
 	}
 
+	BOOL shouldNotify=[isa automaticallyNotifiesObserversForKey:key];
+	if (shouldNotify == NO) {
+	}
 	if([isa accessInstanceVariablesDirectly])
 	{
-       // FIXME: doc.s don't mention _set, is that true?
+		
+		// FIXME: doc.s don't mention _set, is that true?
        strcpy(check,"_set");strcat(check,uppercaseKeyCString);strcat(check,":");
 	   sel = sel_getUid(check);
 
@@ -314,20 +329,30 @@ return [self _wrapReturnValueForSelector:sel]; \
 
 		if(ivar)
 		{
-         BOOL shouldNotify=[isa automaticallyNotifiesObserversForKey:key];
-         if(shouldNotify)
-            [self willChangeValueForKey:key];
+			if(shouldNotify) {
+				[self willChangeValueForKey:key];
+			}
 			// if value is nil and ivar is not an object type
-			if(!value && ivar->ivar_type[0]!='@')
-				return [self setNilValueForKey:key];
-
-			[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type shouldRetain:YES];
-         if(shouldNotify)
-            [self didChangeValueForKey:key];
+			if(!value && ivar->ivar_type[0]!='@') {
+				[self setNilValueForKey:key];
+			} else {				
+				[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type shouldRetain:YES];
+			}
+			if(shouldNotify) {
+				[self didChangeValueForKey:key];
+			}
 			return;
 		}
 	}
+	
+	// Path of last resort - but still assume we're letting people know about changes
+	if(shouldNotify) {
+		[self willChangeValueForKey:key];
+	}
 	[self setValue:value forUndefinedKey:key];	
+	if(shouldNotify) {
+		[self didChangeValueForKey:key];
+	}
 }
 
 - (BOOL)validateValue:(id *)ioValue forKey:(NSString *)key error:(NSError **)outError
@@ -365,24 +390,29 @@ return [self _wrapReturnValueForSelector:sel]; \
    [NSException raise:@"NSInvalidArgumentException"  format:@"%@: trying to set nil value for key %@", [self className], key];
 }
 
--valueForKeyPath:(NSString*)keyPath {
+- (id)valueForKeyPath:(NSString*)keyPath {
+	
    NSString* firstPart, *rest;
    [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
    
-   if(rest)
-    return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
-   else
-    return [self valueForKey:firstPart];
+	if(rest) {
+		return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
+	}
+	else {
+		return [self valueForKey:firstPart];
+	}
 }
 
 -(void)setValue:(id)value forKeyPath:(NSString *)keyPath {
+
    NSString* firstPart, *rest;
    [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
 
-   if(rest)
-    [[self valueForKey:firstPart] setValue:value forKeyPath:rest];
-   else {
-    [self setValue:value  forKey:firstPart];
+	if(rest) {
+		id firstPartObj = [self valueForKey:firstPart];
+		[firstPartObj setValue:value forKeyPath:rest];
+	} else {
+		[self setValue:value  forKey:firstPart];
    }
 }
 
@@ -398,7 +428,10 @@ return [self _wrapReturnValueForSelector:sel]; \
 	{
 		ret = [ret valueForKey:pathComponent];
 	}
-	return [self validateValue:ioValue forKey:lastPathComponent error:outError];
+	
+	BOOL valid = [self validateValue:ioValue forKey:lastPathComponent error:outError];
+
+	return valid;
 }
 
 

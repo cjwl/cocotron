@@ -17,6 +17,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObservationProxy.h>
 #import <Foundation/NSException.h>
 
+@interface  NSControllerSelectionProxy (FwdDecls)
+
+- (void)_startObservingKey:(NSString*)key;
+- (void)_startObservingSelectedObjects;
+- (void)_stopObservingSelectedObjects;
+
+@end
+
 @implementation NSControllerSelectionProxy
 -(id)initWithController:(id)cont
 {
@@ -37,6 +45,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc
 {
+	[self _stopObservingSelectedObjects];
+	
    [_cachedKeysForKVO release];
 	[_cachedValues release];
 	[_controller release];
@@ -50,6 +60,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [_observationProxies release];
 	[super dealloc];
+}
+
+- (void)_startObservingKey:(NSString*)key
+{
+	// Stop observing all the current selectedObjects for the keys we're interested in
+	NSArray *selectedObjects = [_controller selectedObjects];
+	for (id obj in selectedObjects) {
+		[obj addObserver: self forKeyPath: key options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context: nil];
+	}	
 }
 
 -(id)valueForKey:(NSString*)key
@@ -112,7 +131,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			}
 		}
 	}
+	
 	[_cachedValues setValue:val forKey:key];
+	
+	if ([_cachedKeysForKVO containsObject: key] == NO) {
+		// start observing this key - and add it to the cachedKeys array (this bit could probably be simplified)
+		[self _startObservingKey: key];
+		[_cachedKeysForKVO autorelease];
+		_cachedKeysForKVO=[[_cachedValues allKeys] retain];
+	}
 	if (val == nilMarker) {
 		val = nil;
 	}
@@ -142,11 +169,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		self];
 }
 
+- (void)_stopObservingSelectedObjects
+{
+	// Stop observing all the current selectedObjects for the keys we're interested in
+	NSArray *selectedObjects = [_controller selectedObjects];
+	for (id obj in selectedObjects) {
+		for(id key in _cachedKeysForKVO) {
+			[obj removeObserver: self forKeyPath: key];
+		}
+	}
+}
+
+- (void)_startObservingSelectedObjects
+{
+	// Start observing all the current selectedObjects for the keys we're interested in
+	NSArray *selectedObjects = [_controller selectedObjects];
+	for (id obj in selectedObjects) {
+		for(id key in _cachedKeysForKVO) {
+			[obj addObserver: self forKeyPath: key options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context: nil];
+		}
+	}
+}
+
 -(void)controllerWillChange
 {
+	[self _stopObservingSelectedObjects];
+	
    [_cachedKeysForKVO autorelease];
    _cachedKeysForKVO=[[_cachedValues allKeys] retain];
-   for(id key in _cachedKeysForKVO)
+	
+  for(id key in _cachedKeysForKVO)
    {
       [self willChangeValueForKey:key];
    }
@@ -162,8 +214,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    {
       [self didChangeValueForKey:key];
    }
-   [_cachedKeysForKVO autorelease];
-   _cachedKeysForKVO=nil;
+
+	[self _startObservingSelectedObjects];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath 
@@ -173,6 +225,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
    // remove cached value for this key path
    [_cachedValues removeObjectForKey:keyPath];
+	
+	// Pass the change on up to those observing the proxy
+	if([[change objectForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue] == YES) {
+		[self willChangeValueForKey: keyPath];
+	} else {
+		[self didChangeValueForKey: keyPath];
+	}
 }
 
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context

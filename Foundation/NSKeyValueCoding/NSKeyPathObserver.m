@@ -1,5 +1,6 @@
 #import "NSKeyPathObserver.h"
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 
 @implementation NSKeyPathObserver
 
@@ -68,6 +69,10 @@
 -(void)clearChangeDictionary {
    [_changeDictionary release];
    _changeDictionary=nil;
+}
+
+-(NSString *)description {
+	return [NSString stringWithFormat:@"<%@ %x _object: %@ _keypath: %@>",isa, self,_object,_keyPath];
 }
 
 @end

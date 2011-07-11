@@ -16,13 +16,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	BOOL _automaticallyPreparesContent;
    NSCountedSet* _observedKeys;
 }
--(void)setContent:content;
--content;
+-(void)setContent: (id)content;
+-(id)content;
 
--selection;
+- (id)selection;
 -(NSArray *)selectedObjects;
 
--initWithContent:content;
+-initWithContent:(id)content;
 
 //-(Class)objectClass;
 //-(NSString *)entityName;
