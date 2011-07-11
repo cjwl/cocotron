@@ -341,7 +341,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	NSBezierPath* path = [NSBezierPath bezierPathWithOvalInRect: sliderRect];
 
-	[[NSColor controlColor] set];
+	if ([self isEnabled]) {
+		[[NSColor whiteColor] set];
+	} else {
+		[[NSColor controlColor] set];
+	}
 	[path fill];
 		
 	NSGradient* backgroundGradient = [self circularSliderBackgroundGradient];
@@ -355,7 +359,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 	double angle = percent * 360;
 	
-	NSPoint knobOffset = NSMakePoint(0, (NSHeight(sliderRect)/2.f) - 5);
+	NSPoint knobOffset = NSMakePoint(0, -(NSHeight(sliderRect)/2.f) + 5);
 	
 	NSAffineTransform* rotateTransform = [NSAffineTransform transform];
 	[rotateTransform rotateByDegrees: angle];
@@ -363,10 +367,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	NSPoint knobCenter = NSMakePoint(NSMidX(sliderRect), NSMidY(sliderRect));
 	knobCenter.x += knobOffset.x;
-	knobCenter.y += knobOffset.y;
+	knobCenter.y -= knobOffset.y;
 	
 	NSRect knobRect = NSMakeRect(knobCenter.x, knobCenter.y, 0, 0);
-	knobRect = NSInsetRect(knobRect, -3, -3);
+	knobRect = NSInsetRect(knobRect, -3, -3); // by visual inspection
 	
 	NSBezierPath* knobPath = [NSBezierPath bezierPathWithOvalInRect: knobRect];
 	
@@ -496,10 +500,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	NSPoint center = NSMakePoint(NSMidX(_lastRect), NSMidY(_lastRect));
 
-	if (flipped) {
-		point.y -= point.y - center.y;
+	if (flipped == NO) {
+		point.y = center.y - (point.y - center.y);
 	}
-	
 	// Get the angle and ensure it's in 0..2*PI - 0˙ is top center
 	double angle = fmod(atan2(center.y - point.y, center.x - point.x) - M_PI_2 + M_PI * 2.f, M_PI * 2.f);
 
