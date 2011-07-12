@@ -370,6 +370,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 				[self willChangeValueForKey:@"selectedIndex"];
             [self willChangeValueForKey:@"selectedValue"];
             [self willChangeValueForKey:@"selectedObject"];
+				[self willChangeValueForKey:@"selectedTag"];
 
 			}
 			else
@@ -377,6 +378,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
             [self didChangeValueForKey:@"selectedObject"];
             [self didChangeValueForKey:@"selectedValue"];
 				[self didChangeValueForKey:@"selectedIndex"];
+				[self didChangeValueForKey:@"selectedTag"];
 			}
 		}
 		else
