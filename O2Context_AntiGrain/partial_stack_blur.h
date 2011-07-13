@@ -19,6 +19,19 @@ namespace agg
     template<class Img> 
     void partial_stack_blur_rgba32(Img& img, unsigned rx, unsigned ry, unsigned startX, unsigned endX, unsigned startY, unsigned endY)
     {
+		if (startX >= endX || startY >= endY) {
+			// Nothing to do
+			return;
+		}
+		
+		// Clip the rect to the img bounds
+		unsigned imgW = img.width();
+		unsigned imgH = img.height();
+		startX = max(0, startX);
+		startY = max(0, startY);
+		endX = min(endX, imgW);
+		endY = min(endX, imgH);
+
         typedef typename Img::color_type color_type;
         typedef typename Img::order_type order_type;
         enum order_e 

@@ -187,26 +187,48 @@ class context_renderer
 			ren_shadow->clip_box(a, b, c, d);
 		}
 		
-		template<class Ras, class S> void blur(S &sl)
+		// Blur the (x1,y1,x2,y2) part of the shadow buffer, and copy it to the main buffer 
+		template<class Ras, class S> void blur(S &sl, float x1, float x2, float y1, float y2)
 		{
 			float xmin = ren_base->xmin();
 			float ymin = ren_base->ymin();
 			float xmax = ren_base->xmax();
 			float ymax = ren_base->ymax();
 			
+			// Clip the rect to render - no need to try to blur any clipped area
+			xmin = max(xmin, x1);
+			xmax = min(xmax, x2);
+			ymin = max(ymin, y1);
+			ymax = min(ymax, y2);
+
 			// Blur the shadows
 			if (shadowBlurRadius > 0) {
-				O2Log("Shadow: blur shadow - are : ((%.0f,%.0f),(%.0f,%.0f))", xmin, ymin, xmax - xmin, ymax - ymin);
+				int radius = agg::uround(shadowBlurRadius);
+				// Add the blur radius to the area to blur
+				xmin -= radius;
+				xmax += radius;
+				ymin -= radius;
+				ymax += radius;
+				xmin = max(xmin,0);
+				ymin = max(ymin,0);
+
+				O2Log("Shadow: blur shadow - area : ((%.0f,%.0f),(%.0f,%.0f))", xmin, ymin, xmax - xmin, ymax - ymin);
 				// Stack blur - not really a gaussian one but much faster and good enough
 				// Blur only the current clipped area - no need to process pixels we won't see
-				partial_stack_blur_rgba32(*pixelFormatShadow, agg::uround(shadowBlurRadius), agg::uround(shadowBlurRadius), 
-										  xmin, xmax, ymin, ymax);
+				partial_stack_blur_rgba32(*pixelFormatShadow, radius, radius,  xmin, xmax, ymin, ymax);
 				O2Log("Shadow: done blur");
 			}
 			
+			// Add the offset to the area to copy
 			Ras r;
+			xmin += shadowOffset.width;
+			xmax += shadowOffset.width;
+			ymin -= shadowOffset.height;
+			ymax -= shadowOffset.height;
+			xmin = max(xmin,0);
+			ymin = max(ymin,0);
 			r.clip_box(xmin, ymin, xmax, ymax);
-
+			
 			// Rasterize the shadow to our main renderer
 			agg::span_allocator<typename pixfmt_shadow_type::color_type> sa;
 			typedef agg::image_accessor_clone<pixfmt_shadow_type> img_accessor_type;
@@ -215,7 +237,7 @@ class context_renderer
 			
 			agg::path_storage aggPath;
 			
-			// We'll use a path that cover the current clipped rect, and render that path using the shadow image
+			// We'll use a path that cover the current used rect, and render that path using the shadow image
 			aggPath.move_to(xmin, ymin);
 			aggPath.line_to(xmax, ymin);
 			aggPath.line_to(xmax, ymax);
@@ -255,8 +277,14 @@ class context_renderer
 				agg::span_converter<T, span_color_converter<agg::rgba8> > converter(type, color_converter);
 				agg::render_scanlines_aa(rasterizer, sl, *ren_shadow, span_allocator, converter);
 
+				// Get the used part of the rasterizer - we don't need to blur a bigger area than that
+				float x1 = rasterizer.min_x();
+				float x2 = rasterizer.max_x();
+				float y1 = rasterizer.min_y();
+				float y2 = rasterizer.max_y();
+				
 				// Blur the shadow buffer
-				blur<Ras>(sl);
+				blur<Ras>(sl, x1, x2, y1, y2);
 				O2Log("%p:Done Drawing shadow Image", this);
 			}
 			
@@ -282,8 +310,14 @@ class context_renderer
 				T color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * type.opacity() * alpha);
 				agg::render_scanlines_aa_solid(rasterizer, sl, *ren_shadow, color);
 				
+				// Get the used part of the rasterizer - we don't need to blur a bigger area than that
+				float x1 = rasterizer.min_x();
+				float x2 = rasterizer.max_x();
+				float y1 = rasterizer.min_y();
+				float y2 = rasterizer.max_y();
+
 				// Blur the shadow buffer
-				blur<Ras>(sl);
+				blur<Ras>(sl, x1, x2, y1, y2);
 			}
 			// And finally do the "normal" drawing
 			T color = type;
@@ -551,8 +585,6 @@ template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *sel
 {
 	O2GState *gState=O2ContextCurrentGState(self);
 	
-	agg::conv_transform<StrokeType, agg::trans_affine> trans(stroke, deviceMatrix);
-	
 	stroke.approximation_scale(deviceMatrix.scale());
 	
 	switch(gState->_lineJoin){
@@ -586,6 +618,7 @@ template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *sel
 	
 	stroke.width(gState->_lineWidth);
 	
+	agg::conv_transform<StrokeType, agg::trans_affine> trans(stroke, deviceMatrix);
 	[self rasterizer]->add_path(trans);
 	[self rasterizer]->filling_rule(agg::fill_non_zero);
 	
