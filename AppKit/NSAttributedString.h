@@ -58,11 +58,8 @@ enum {
 
 @interface NSAttributedString(NSAttributedString_AppKit)
 
-+(NSArray *)textFileTypes;
-+(NSArray *)textPasteboardTypes;
-
-+(NSArray *)textUnfilteredFileTypes;
-+(NSArray *)textUnfilteredPasteboardTypes;
+#pragma mark -
+#pragma mark Creating an NSAttributedString
 
 +(NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment;
 
@@ -82,38 +79,72 @@ enum {
 -initWithURL:(NSURL *)url documentAttributes:(NSDictionary **)attributes;
 -initWithURL:(NSURL *)url options:(NSDictionary *)options documentAttributes:(NSDictionary **)attributes error:(NSError **)error;
 
--(int)itemNumberInTextList:(NSTextList *)list atIndex:(unsigned)index;
+#pragma mark -
+#pragma mark Retrieving Font Attribute Information
+
+-(BOOL)containsAttachments;
+-(NSDictionary *)fontAttributesInRange:(NSRange)range;
+-(NSDictionary *)rulerAttributesInRange:(NSRange)range;
+
+#pragma mark -
+#pragma mark Calculating Linguistic Units
+
+-(NSRange)doubleClickAtIndex:(unsigned)index;
 -(unsigned)lineBreakBeforeIndex:(unsigned)index withinRange:(NSRange)range;
 -(unsigned)lineBreakByHyphenatingBeforeIndex:(unsigned)index withinRange:(NSRange)range;
--(NSRange)rangeOfTextBlock:(NSTextBlock *)block atIndex:(unsigned)index;
+-(unsigned)nextWordFromIndex:(unsigned)index forward:(BOOL)forward;
 
+#pragma mark -
+#pragma mark Calculating Ranges
+
+-(int)itemNumberInTextList:(NSTextList *)list atIndex:(unsigned)index;
+-(NSRange)rangeOfTextBlock:(NSTextBlock *)block atIndex:(unsigned)index;
 -(NSRange)rangeOfTextList:(NSTextList *)list atIndex:(unsigned)index;
 -(NSRange)rangeOfTextTable:(NSTextTable *)table atIndex:(unsigned)index;
 
+#pragma mark -
+#pragma mark Generating Data
+
+-(NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error;
+-(NSFileWrapper *)fileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error;
+-(NSData *)docFormatFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
+-(NSData *)RTFFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
+-(NSData *)RTFDFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
 -(NSFileWrapper *)RTFDFileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
 
--(NSData *)RTFDFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
+#pragma mark -
+#pragma mark Drawing the String
 
--(NSData *)RTFFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
+- (void)drawAtPoint:(NSPoint)point;
+- (void)drawInRect:(NSRect)rect;
+- (void)drawWithRect:(NSRect)rect options:(NSStringDrawingOptions)options;
+- (NSSize)size;
 
--(NSDictionary *)rulerAttributesInRange:(NSRange)range;
-
--(NSRange)doubleClickAtIndex:(unsigned)index;
--(unsigned)nextWordFromIndex:(unsigned)index forward:(BOOL)forward;
+#pragma mark -
+#pragma mark Getting the Bounding Rectangle of Rendered Strings
 
 -(NSRect)boundingRectWithSize:(NSSize)size options:(NSStringDrawingOptions)options;
 
--(BOOL)containsAttachments;
+#pragma mark -
+#pragma mark Testing String Data Sources
 
--(NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error;
++ (NSArray*)textTypes;
++ (NSArray*)textUnfilteredTypes;
 
--(NSData *)docFormatFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes;
--(NSFileWrapper *)fileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error;
--(NSDictionary *)fontAttributesInRange:(NSRange)range;
+#pragma mark -
+#pragma mark Deprecated in 10.5
+
++(NSArray *)textFileTypes;
++(NSArray *)textPasteboardTypes;
+
++(NSArray *)textUnfilteredFileTypes;
++(NSArray *)textUnfilteredPasteboardTypes;
 
 @end
 
-// private
+#pragma mark -
+#pragma mark Private
+
 NSFont *NSFontAttributeInDictionary(NSDictionary *dictionary);
 NSColor *NSForegroundColorAttributeInDictionary(NSDictionary *dictionary);
 NSColor *NSBackgroundColorAttributeInDictionary(NSDictionary *dictionary);

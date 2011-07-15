@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSParagraphStyle.h>
+#import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSRichTextReader.h>
 #import <AppKit/NSRaise.h>
@@ -39,25 +40,8 @@ NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentA
 
 @implementation NSAttributedString(NSAttributedString_AppKit)
 
-+(NSArray *)textFileTypes {
-   NSUnimplementedMethod();
-   return nil;
-}
-
-+(NSArray *)textPasteboardTypes {
-   NSUnimplementedMethod();
-   return nil;
-}
-
-+(NSArray *)textUnfilteredFileTypes {
-   NSUnimplementedMethod();
-   return nil;
-}
-
-+(NSArray *)textUnfilteredPasteboardTypes {
-   NSUnimplementedMethod();
-   return nil;
-}
+#pragma mark -
+#pragma mark Creating an NSAttributedString
 
 +(NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment {
    unichar       unicode=NSAttachmentCharacter;
@@ -126,88 +110,69 @@ NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentA
    return nil;
 }
 
--(int)itemNumberInTextList:(NSTextList *)list atIndex:(unsigned)index {
-   NSUnimplementedMethod();
-   return 0;
+#pragma mark -
+#pragma mark Retrieving Font Attribute Information
+
+-(BOOL)containsAttachments {
+	NSUnimplementedMethod();
+	return NO;
 }
 
--(unsigned)lineBreakBeforeIndex:(unsigned)index withinRange:(NSRange)range {
-   NSUnimplementedMethod();
-   return 0;
-}
-
--(unsigned)lineBreakByHyphenatingBeforeIndex:(unsigned)index withinRange:(NSRange)range {
-   NSUnimplementedMethod();
-   return 0;
-}
-
--(NSRange)rangeOfTextBlock:(NSTextBlock *)block atIndex:(unsigned)index {
-   NSUnimplementedMethod();
-   return NSMakeRange(0,0);
-}
-
--(NSRange)rangeOfTextList:(NSTextList *)list atIndex:(unsigned)index {
-   NSUnimplementedMethod();
-   return NSMakeRange(0,0);
-}
-
--(NSRange)rangeOfTextTable:(NSTextTable *)table atIndex:(unsigned)index {
-   NSUnimplementedMethod();
-   return NSMakeRange(0,0);
-}
-
--(NSFileWrapper *)RTFDFileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--(NSData *)RTFDFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--(NSData *)RTFFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
-   NSUnimplementedMethod();
-   return nil;
+-(NSDictionary *)fontAttributesInRange:(NSRange)range {
+	NSUnimplementedMethod();
+	return nil;
 }
 
 -(NSDictionary *)rulerAttributesInRange:(NSRange)range {
-   NSUnimplementedMethod();
-   return nil;
+	NSUnimplementedMethod();
+	return nil;
 }
 
+#pragma mark -
+#pragma mark Calculating Linguistic Units
+
 -(NSRange)doubleClickAtIndex:(unsigned)location {
-   NSRange   result=NSMakeRange(location,0);
-   NSString *string=[self string];
-   unsigned  length=[string length];
-   unichar   character=[string characterAtIndex:location];
-   NSCharacterSet *set;
-   BOOL      expand=NO;
+	NSRange   result=NSMakeRange(location,0);
+	NSString *string=[self string];
+	unsigned  length=[string length];
+	unichar   character=[string characterAtIndex:location];
+	NSCharacterSet *set;
+	BOOL      expand=NO;
+	
+	set=[NSCharacterSet alphanumericCharacterSet];
+	if([set characterIsMember:character])
+		expand=YES;
+	else {
+		set=[NSCharacterSet whitespaceCharacterSet];
+		if([set characterIsMember:character])
+			expand=YES;
+	}
+	
+	if(expand){
+		for(;result.location!=0;result.location--,result.length++) {
+			if(![set characterIsMember:[string characterAtIndex:result.location-1]])
+				break;
+		}
+		
+		for(;NSMaxRange(result)<length;result.length++){
+			if(![set characterIsMember:[string characterAtIndex:NSMaxRange(result)]])
+				break;
+		}
+	}
+	else if(location<length)
+		result.length=1;
+	
+	return result;
+}
 
-   set=[NSCharacterSet alphanumericCharacterSet];
-   if([set characterIsMember:character])
-    expand=YES;
-   else {
-    set=[NSCharacterSet whitespaceCharacterSet];
-    if([set characterIsMember:character])
-     expand=YES;
-   }
+-(unsigned)lineBreakBeforeIndex:(unsigned)index withinRange:(NSRange)range {
+	NSUnimplementedMethod();
+	return 0;
+}
 
-   if(expand){
-    for(;result.location!=0;result.location--,result.length++) {
-     if(![set characterIsMember:[string characterAtIndex:result.location-1]])
-      break;
-    }
-
-    for(;NSMaxRange(result)<length;result.length++){
-     if(![set characterIsMember:[string characterAtIndex:NSMaxRange(result)]])
-      break;
-    }
-   }
-   else if(location<length)
-    result.length=1;
-
-   return result;
+-(unsigned)lineBreakByHyphenatingBeforeIndex:(unsigned)index withinRange:(NSRange)range {
+	NSUnimplementedMethod();
+	return 0;
 }
 
 /* as usual, the documentation says one thing and the system behaves differently, this is the way i think it should work... (dwy 5/11/2003) */
@@ -220,19 +185,19 @@ NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentA
         STATE_ALNUM,	// body of word
         STATE_SPACE	// word delimiter
     } state = STATE_ALNUM;
-
+	
     if (location == 0 && forward == NO) {
-//        NSLog(@"sanity check: location == 0 && forward == NO");
+		//        NSLog(@"sanity check: location == 0 && forward == NO");
         return location;
     }
     if (location >= [self length]) {
-//        NSLog(@"sanity check: location >= [self length] && forward == YES");
+		//        NSLog(@"sanity check: location >= [self length] && forward == YES");
         if (forward == YES)
             return [self length];
         else
             location = [self length]-1;
     }
-
+	
     if (forward) {
         if (![alpha characterIsMember:[string characterAtIndex:location]])
             state = STATE_INIT;
@@ -253,14 +218,14 @@ NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentA
                         return i;
             }
         }
-
+		
         return length;
     }
     else {
         i--;
         if (![alpha characterIsMember:[string characterAtIndex:location]])
             state = STATE_INIT;
-
+		
         for (; i >= 0; i--) {
             unichar ch = [string characterAtIndex:i];
             switch (state) {
@@ -277,22 +242,54 @@ NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentA
                         return i+1;
             }
         }
-
+		
         return 0;
     }
-
+	
     return NSNotFound;
 }
 
--(NSRect)boundingRectWithSize:(NSSize)size options:(NSStringDrawingOptions)options {
+#pragma mark -
+#pragma mark Calculating Ranges
+
+-(int)itemNumberInTextList:(NSTextList *)list atIndex:(unsigned)index {
    NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+   return 0;
 }
 
--(BOOL)containsAttachments {
+-(NSRange)rangeOfTextBlock:(NSTextBlock *)block atIndex:(unsigned)index {
    NSUnimplementedMethod();
-   return NO;
+   return NSMakeRange(0,0);
 }
+
+-(NSRange)rangeOfTextList:(NSTextList *)list atIndex:(unsigned)index {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSRange)rangeOfTextTable:(NSTextTable *)table atIndex:(unsigned)index {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+#pragma mark -
+#pragma mark Generating Data
+
+-(NSFileWrapper *)RTFDFileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSData *)RTFDFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSData *)RTFFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 
 -(NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error {
    NSUnimplementedMethod();
@@ -309,12 +306,85 @@ NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentA
    return nil;
 }
 
--(NSDictionary *)fontAttributesInRange:(NSRange)range {
-   NSUnimplementedMethod();
-   return nil;
+#pragma mark -
+#pragma mark Drawing the string
+
+- (void)drawAtPoint:(NSPoint)point
+{
+	NSStringDrawer* drawer = [NSStringDrawer sharedStringDrawer];
+	[drawer drawAttributedString: self atPoint: point inSize: NSZeroSize];
 }
 
+- (void)drawInRect:(NSRect)rect
+{
+	NSStringDrawer* drawer = [NSStringDrawer sharedStringDrawer];
+	[drawer drawAttributedString: self inRect: rect];
+}
+
+- (void)drawWithRect:(NSRect)rect options:(NSStringDrawingOptions)options
+{
+	NSStringDrawer* drawer = [NSStringDrawer sharedStringDrawer];
+	[drawer drawAttributedString: self inRect: rect];
+}
+
+- (NSSize)size
+{
+	NSStringDrawer* drawer = [NSStringDrawer sharedStringDrawer];
+	NSSize size = [drawer sizeOfAttributedString: self inSize:NSZeroSize];
+	return size;
+}
+
+#pragma mark -
+#pragma mark Getting the Bounding Rectangle of Rendered Strings
+
+-(NSRect)boundingRectWithSize:(NSSize)size options:(NSStringDrawingOptions)options {
+	NSUnimplementedMethod();
+	return NSMakeRect(0,0,0,0);
+}
+
+#pragma mark -
+#pragma mark Testing String Data Sources
+
++ (NSArray*)textTypes
+{
+	NSUnimplementedMethod();
+	return nil;
+}
+
++ (NSArray*)textUnfilteredTypes
+{
+	NSUnimplementedMethod();
+	return nil;
+}
+
+#pragma mark -
+#pragma mark Deprecated in 10.5
+
++(NSArray *)textFileTypes {
+	NSUnimplementedMethod();
+	return nil;
+}
+
++(NSArray *)textPasteboardTypes {
+	NSUnimplementedMethod();
+	return nil;
+}
+
++(NSArray *)textUnfilteredFileTypes {
+	NSUnimplementedMethod();
+	return nil;
+}
+
++(NSArray *)textUnfilteredPasteboardTypes {
+	NSUnimplementedMethod();
+	return nil;
+}
+
+
 @end
+
+#pragma mark -
+#pragma mark Private
 
 NSFont *NSFontAttributeInDictionary(NSDictionary *dictionary) {
    NSFont *font=[dictionary objectForKey:NSFontAttributeName];
