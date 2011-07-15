@@ -201,6 +201,11 @@ class context_renderer
 			ymin = max(ymin, y1);
 			ymax = min(ymax, y2);
 
+			xmin = agg::ufloor(xmin);
+			ymin = agg::ufloor(ymin);
+			xmax = agg::uceil(xmax);
+			ymax = agg::uceil(ymax);
+			
 			// Blur the shadows
 			if (shadowBlurRadius > 0) {
 				int radius = agg::uround(shadowBlurRadius);
@@ -227,6 +232,11 @@ class context_renderer
 			ymax -= shadowOffset.height;
 			xmin = max(xmin,0);
 			ymin = max(ymin,0);
+			
+			xmin = agg::ufloor(xmin);
+			ymin = agg::ufloor(ymin);
+			xmax = agg::uceil(xmax);
+			ymax = agg::uceil(ymax);
 			r.clip_box(xmin, ymin, xmax, ymax);
 			
 			// Rasterize the shadow to our main renderer

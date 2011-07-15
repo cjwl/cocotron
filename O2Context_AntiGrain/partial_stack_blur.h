@@ -30,7 +30,7 @@ namespace agg
 		startX = max(0, startX);
 		startY = max(0, startY);
 		endX = min(endX, imgW);
-		endY = min(endX, imgH);
+		endY = min(endY, imgH);
 
         typedef typename Img::color_type color_type;
         typedef typename Img::order_type order_type;
