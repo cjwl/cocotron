@@ -22,6 +22,11 @@ APPKIT_EXPORT NSString * const NSFontVisibleNameAttribute;
 
 typedef unsigned NSFontSymbolicTraits;
 
+APPKIT_EXPORT NSString * const NSFontSymbolicTrait;
+APPKIT_EXPORT NSString * const NSFontWeightTrait;
+APPKIT_EXPORT NSString * const NSFontWidthTrait;
+APPKIT_EXPORT NSString * const NSFontSlantTrait;
+
 @interface NSFontDescriptor : NSObject <NSCopying> {
    NSDictionary *_attributes;
 }
