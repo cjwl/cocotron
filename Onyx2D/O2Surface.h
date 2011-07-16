@@ -31,6 +31,7 @@
 #import <Onyx2D/O2Image.h>
 
 #import <Onyx2D/VGmath.h>
+#import <pthread.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,6 +67,7 @@ typedef void (*O2SurfaceWriteSpan_argb32f)(O2Surface *self,int x,int y,O2argb32f
    O2SurfaceWriteSpan_argb32f _writeargb32f;
    
 	BOOL           m_ownsData;
+    pthread_mutex_t _lock;
 } 
 
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo;
@@ -80,6 +82,9 @@ size_t O2SurfaceGetHeight(O2Surface *surface);
 size_t O2SurfaceGetBytesPerRow(O2Surface *surface);
 
 O2ImageRef O2SurfaceCreateImage(O2Surface *surface);
+
+void O2SurfaceLock(O2Surface *surface);
+void O2SurfaceUnlock(O2Surface *surface);
 
 BOOL O2SurfaceIsValidFormat(int format);
 
