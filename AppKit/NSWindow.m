@@ -1666,9 +1666,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else {
     _flushNeeded=NO;
     BOOL doFlush=YES;
-    
-    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+
+    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque]){
      doFlush=NO;
+     }
     
     if(doFlush)
      [[self platformWindow] flushBuffer];
@@ -2011,7 +2012,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
     case NSMouseMoved:{
       NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
-      
+
       if(hit==nil)
        [self mouseMoved:event];
       else

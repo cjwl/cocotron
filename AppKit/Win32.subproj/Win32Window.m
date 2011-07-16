@@ -298,12 +298,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -(void)invalidateContextsWithNewSize:(CGSize)size forceRebuild:(BOOL)forceRebuild {
    if(!NSEqualSizes(_frame.size,size) || forceRebuild){
+    [self lock];
     _frame.size=size;
     [_cgContext release];
     _cgContext=nil;
     [_backingContext release];
     _backingContext=nil;
     [_delegate platformWindowDidInvalidateCGContext:self];
+    [self unlock];
    }  
 }
 
@@ -525,6 +527,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 #endif
 
+#define NO_INCREMENTAL_COMPOSITE 1
+
 -(O2Surface_DIBSection *)resultSurface:(O2Point *)fromPoint {
    O2Surface_DIBSection *result=[_backingContext surface];
 
@@ -540,7 +544,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
      allOpaque=NO;
      break;
     }
-   
+
+#ifdef NO_INCREMENTAL_COMPOSITE
+   allOpaque=NO;
+#endif
+
    if(allOpaque){
     [_overlayResult release];
     _overlayResult=nil;
@@ -580,6 +588,17 @@ i=count;
      _overlayResult=[[O2Surface_DIBSection alloc] initWithWidth:resultWidth height:resultHeight compatibleWithDeviceContext:nil];
     }
     
+     BLENDFUNCTION blend;
+    
+     blend.BlendOp=AC_SRC_OVER;
+     blend.BlendFlags=0;
+     blend.SourceConstantAlpha=255;
+     blend.AlphaFormat=0;
+     
+     O2SurfaceLock(result);
+     AlphaBlend([[_overlayResult deviceContext] dc],0,0,resultWidth,resultHeight,[[result deviceContext] dc],0,0,resultWidth,resultHeight,blend);
+     O2SurfaceUnlock(result);
+#if 0
     uint32_t *src=[result pixelBytes];
     uint32_t *dst=[_overlayResult pixelBytes];
     // FIXME: if backing is not 32bpp this needs to accomodate that
@@ -587,14 +606,18 @@ i=count;
     
     for(i=0;i<count;i++)
      dst[i]=src[i];
-     
+#endif
+
     result=_overlayResult;
    }
    
+   O2SurfaceLock(result);
    for(CGLPixelSurface *overlay in _overlays){
+#ifndef NO_INCREMENTAL_COMPOSITE
     if([overlay isOpaque])
      continue;
-    
+#endif
+
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     
@@ -608,15 +631,19 @@ i=count;
 
      int y=O2ImageGetHeight(result)-(overFrame.origin.y+overFrame.size.height);
      
+     O2SurfaceLock(overSurface);
      AlphaBlend([[result deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
+     O2SurfaceUnlock(overSurface);
     }
     
    }
+   O2SurfaceUnlock(result);
    
    return result;
 }
 
 -(void)flushOverlay:(CGLPixelSurface *)overlay {
+#ifndef NO_INCREMENTAL_COMPOSITE
    [self lock];
    
    if([overlay isOpaque]){
@@ -635,12 +662,15 @@ i=count;
      int y=O2ImageGetHeight(backingSurface)-(overFrame.origin.y+overFrame.size.height);
      
      HDC overlayDC=[[overSurface deviceContext] dc];
-           
+    
+     O2SurfaceLock(backingSurface);
      AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,overlayDC,0,0,overFrame.size.width,overFrame.size.height,blend);
+     O2SurfaceUnlock(backingSurface);
     }
    }
    
    [self unlock];
+#endif
 
    [self flushBuffer];
 }
@@ -702,8 +732,11 @@ i=count;
        
        CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
        
-       if(deviceContext!=nil)
+       if(deviceContext!=nil){
+        O2SurfaceLock(surface);
         BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+        O2SurfaceUnlock(surface);
+       }
       }
     }
    }
@@ -884,9 +917,10 @@ i=count;
    RECT   rect=*(RECT *)lParam;
    CGSize size=NSMakeSize(rect.right-rect.left,rect.bottom-rect.top);
 
-   if(!_sentBeginSizing)
+   if(!_sentBeginSizing){
     [_delegate platformWindowWillBeginSizing:self];
-
+   }
+   
    _sentBeginSizing=YES;
 
    size=[_delegate platformWindow:self frameSizeWillChange:size];
@@ -928,6 +962,9 @@ i=count;
    if(_ignoreMinMaxMessage)
     return 0;
 
+   info->ptMaxTrackSize.x=10000;
+   info->ptMaxTrackSize.y=10000;
+
    if([_delegate minSize].width>0)
     info->ptMinTrackSize.x=[_delegate minSize].width;
    if([_delegate minSize].height>0)
@@ -937,13 +974,16 @@ i=count;
 }
 
 -(int)WM_ENTERSIZEMOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+   
    return 0;
 }
 
 -(int)WM_EXITSIZEMOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   if(_sentBeginSizing)
+   
+   if(_sentBeginSizing){
     [_delegate platformWindowDidEndSizing:self];
-
+   }
+   
    [_delegate platformWindowExitMove:self];
 
    _sentBeginSizing=NO;
