@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSFont.h>
+#import <AppKit/NSFontManager.h>
 
 @implementation NSButton
 
@@ -225,6 +227,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)keyDown:(NSEvent *)event {
     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+}
+
+@end
+
+@implementation NSButton (BindingSupport)
+
+- (void)_setFontFamilyName:(NSString*)familyName
+{
+	// Bail if it's any of the objects we don't grok
+	if (familyName == nil ||
+		familyName == NSNoSelectionMarker ||
+		familyName == NSMultipleValuesMarker ||
+		familyName == NSNotApplicableMarker) {
+		return;
+	}
+	
+	NSFont* currentFont = [self font];
+	CGFloat size = [currentFont pointSize];
+	
+	NSFont* newFont = [[NSFontManager sharedFontManager] fontWithFamily: familyName traits: 0 weight: 5 size: size];
+	if (newFont != nil) {
+		[self setFont: newFont];
+	}
 }
 
 @end
