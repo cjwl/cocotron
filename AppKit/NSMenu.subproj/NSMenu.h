@@ -8,7 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSMenuItem,NSWindow,NSEvent,NSView;
+@class NSScreen,NSMenu, NSMenuItem,NSWindow,NSEvent,NSView;
+
+@protocol NSMenuDelegate;
 
 @interface NSMenu : NSObject <NSCopying> {
    NSMenu         *_supermenu;
@@ -16,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSString       *_name;
    NSMutableArray *_itemArray;
    BOOL            _autoenablesItems;
+   id<NSMenuDelegate> _delegate;
 }
 
 +(void)popUpContextMenu:(NSMenu *)menu withEvent:(NSEvent *)event forView:(NSView *)view;
@@ -61,8 +64,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event;
 
+- (void)setDelegate:(id <NSMenuDelegate>)object;
+- (id<NSMenuDelegate>)delegate;
+
 @end
 
 @interface NSObject(NSMenu_validateItem)
 -(BOOL)validateMenuItem:(NSMenuItem *)item;
 @end
+
+@protocol NSMenuDelegate <NSObject>
+
+@optional
+
+- (NSRect)confinementRectForMenu:(NSMenu *)menu onScreen:(NSScreen *)screen;
+- (BOOL)menuHasKeyEquivalent:(NSMenu *)menu forEvent:(NSEvent *)event target:(id *)target action:(SEL *)action;
+- (void)menuNeedsUpdate:(NSMenu *)menu;
+- (void)menuWillOpen:(NSMenu *)menu;
+- (void)menuDidClose:(NSMenu *)menu;
+- (NSInteger)numberOfItemsInMenu:(NSMenu *)menu;
+- (void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item;
+- (BOOL)menu:(NSMenu *)menu updateItem:(NSMenuItem *)item atIndex:(NSInteger)index shouldCancel:(BOOL)shouldCancel;
+
+@end
+
