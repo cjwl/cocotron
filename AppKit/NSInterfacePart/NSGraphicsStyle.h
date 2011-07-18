@@ -44,6 +44,7 @@ Margins;
 -(void)drawMenuGutterInRect:(NSRect)rect;
 -(void)drawMenuCheckmarkInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
 -(void)drawMenuItemText:(NSString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
+-(void)drawAttributedMenuItemText:(NSAttributedString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
 -(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected;
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect;
 -(void)drawMenuBarBackgroundInRect:(NSRect)rect;
