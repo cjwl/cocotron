@@ -57,7 +57,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [_view setFrameSize:size];
    [_view setFrameOrigin:NSMakePoint(0,0)];
-   
+
+	[_view setNeedsDisplay: YES];
+	
    return [_view runTrackingWithEvent:event];
 }
 
