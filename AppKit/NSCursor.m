@@ -166,11 +166,11 @@ static NSMutableArray *_cursorStack=nil;
 }
 
 +(NSCursor *)currentCursor {
-   return [_cursorStack lastObject];
+   return [[[_cursorStack lastObject] retain] autorelease];
 }
 
 +(NSCursor *)currentSystemCursor {
-   return [_cursorStack lastObject];
+   return [[[_cursorStack lastObject] retain] autorelease];
 }
 
 -initWithCoder:(NSCoder *)coder {

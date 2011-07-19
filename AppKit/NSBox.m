@@ -296,8 +296,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
    }
 
-   [[NSColor controlColor] setFill];
-   NSRectFill(rect);
+	if (_boxType != NSBoxSeparator) {
+		// Separator are transparent except for drawing a line
+		[[NSColor controlColor] setFill];
+		NSRectFill(rect);
+	}
 
 	if (_boxType == NSBoxCustom){
 		
@@ -309,6 +312,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		{
 			[[self borderColor] set];
 			NSFrameRectWithWidth(_bounds,[self borderWidth]);
+		}
+	} else if (_boxType == NSBoxSeparator) {
+		[[NSColor grayColor] set];
+		if (NSWidth(grooveRect) > NSHeight(grooveRect)) {
+			NSRect horizontal = NSMakeRect(NSMinX(grooveRect), NSMidY(grooveRect), NSMaxX(grooveRect), NSMidY(grooveRect));
+			NSRectFill(horizontal);
+		} else {
+			NSRect vertical = NSMakeRect(NSMidX(grooveRect), NSMinY(grooveRect), NSMidX(grooveRect), NSMaxY(grooveRect));
+			NSRectFill(vertical);
 		}
 	}
 	else{

@@ -69,6 +69,10 @@ static DWORD Win32ExtendedStyleForStyleMask(unsigned styleMask,BOOL isPanel,BOOL
    if(isLayeredWindow)
     result|=/*CS_DROPSHADOW|*/WS_EX_LAYERED;
 
+	if (styleMask&NSUtilityWindowMask) {
+		result|=WS_EX_TOPMOST;// Make it floating as a utility window should be
+	}
+		
    return result/*|0x80000*/ ;
 }
 
@@ -591,7 +595,9 @@ i=count;
      blend.SourceConstantAlpha=255;
      blend.AlphaFormat=0;
      
+     O2SurfaceLock(result);
      AlphaBlend([[_overlayResult deviceContext] dc],0,0,resultWidth,resultHeight,[[result deviceContext] dc],0,0,resultWidth,resultHeight,blend);
+     O2SurfaceUnlock(result);
 #if 0
     uint32_t *src=[result pixelBytes];
     uint32_t *dst=[_overlayResult pixelBytes];
@@ -605,6 +611,7 @@ i=count;
     result=_overlayResult;
    }
    
+   O2SurfaceLock(result);
    for(CGLPixelSurface *overlay in _overlays){
 #ifndef NO_INCREMENTAL_COMPOSITE
     if([overlay isOpaque])
@@ -624,10 +631,13 @@ i=count;
 
      int y=O2ImageGetHeight(result)-(overFrame.origin.y+overFrame.size.height);
      
+     O2SurfaceLock(overSurface);
      AlphaBlend([[result deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
+     O2SurfaceUnlock(overSurface);
     }
     
    }
+   O2SurfaceUnlock(result);
    
    return result;
 }
@@ -951,6 +961,9 @@ i=count;
 
    if(_ignoreMinMaxMessage)
     return 0;
+
+   info->ptMaxTrackSize.x=10000;
+   info->ptMaxTrackSize.y=10000;
 
    if([_delegate minSize].width>0)
     info->ptMinTrackSize.x=[_delegate minSize].width;

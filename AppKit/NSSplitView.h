@@ -20,6 +20,7 @@ typedef enum {
 @interface NSSplitView : NSView {
    id   _delegate;
    BOOL _isVertical;
+	NSSplitViewDividerStyle _dividerStyle;
 }
 
 -(id)delegate;
@@ -36,6 +37,7 @@ typedef enum {
 -(BOOL)isSubviewCollapsed:(NSView *)subview;
 
 -(void)setDividerStyle:(NSSplitViewDividerStyle)style;
+- (NSSplitViewDividerStyle)dividerStyle;
 
 @end
 
