@@ -49,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //-(void)remove:sender;
 //-(void)removeObject:object;
 
-//-(void)prepareContent;
+-(void)prepareContent;
 
 //-(BOOL)fetchWithRequest:(NSFetchRequest *)fetchRequest merge:(BOOL)merge error:(NSError **)error;
 
