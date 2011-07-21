@@ -592,7 +592,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
                 return YES;
             } else {
-                return NO;
+                continue;
             }
         }
         else if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
