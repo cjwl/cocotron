@@ -1080,30 +1080,35 @@ standardAboutPanel] retain];
    NSUnimplementedMethod();
 }
 
--(void)showHelp:sender {
-   NSString *helpBookFolder = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleHelpBookFolder"];
-   if(helpBookFolder != nil) {
-    BOOL isDir;
-    NSString *folder = [[NSBundle mainBundle] pathForResource:helpBookFolder ofType:nil];
-    if(folder != nil && [[NSFileManager defaultManager] fileExistsAtPath:folder isDirectory:&isDir] && isDir) {
-     NSString *helpBookName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleHelpBookName"];
-     if(helpBookName != nil) {
-      NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.html", helpBookName]];
-      if([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-       if([[NSWorkspace sharedWorkspace] openFile:filePath withApplication:@"Help Viewer"]==YES) {
-        return;
-       }
-      }
-     }
-     NSString *filePath = [folder stringByAppendingPathComponent:@"index.html"];
-     if([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-      if([[NSWorkspace sharedWorkspace] openFile:filePath withApplication:@"Help Viewer"]==YES) {
-       return;
-      }
-     }
-    }
-   }
-
+-(void)showHelp:sender
+{
+	NSString *helpBookFolder = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleHelpBookFolder"];
+	if(helpBookFolder != nil) {
+		BOOL isDir;
+		NSString *folder = [[NSBundle mainBundle] pathForResource:helpBookFolder ofType:nil];
+		if(folder != nil && [[NSFileManager defaultManager] fileExistsAtPath:folder isDirectory:&isDir] && isDir) {
+			NSBundle* helpBundle = [NSBundle bundleWithPath: folder];
+			if (helpBundle) {
+				NSString *helpBookName = [[helpBundle infoDictionary] objectForKey:@"CFBundleHelpTOCFile"];
+				if(helpBookName != nil) {
+					NSString* helpFilePath = [helpBundle pathForResource: helpBookName ofType: nil];
+					if (helpFilePath) {
+						if([[NSWorkspace sharedWorkspace] openFile:helpFilePath withApplication:@"Help Viewer"]==YES) {
+							return;
+						}
+					}
+				}
+				// Perhaps there's an index.html file that'll be usable?
+				NSString* helpFilePath = [helpBundle pathForResource: @"index" ofType: @"html"];
+				if (helpFilePath) {
+					if([[NSWorkspace sharedWorkspace] openFile:helpFilePath withApplication:@"Help Viewer"]==YES) {
+						return;
+					}
+				}
+			}
+		}
+	}
+	
    NSString *processName = [[NSProcessInfo processInfo] processName];
    NSAlert *alert = [[NSAlert alloc] init];
    [alert setMessageText:@"Help"];
