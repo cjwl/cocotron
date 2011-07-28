@@ -413,77 +413,90 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     planes[i]=NULL;
 }
 
--(void)getPixel:(unsigned int[])pixel atX:(int)x y:(int)y {
+-(void)getPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y
+{
    NSUnimplementedMethod();
 }
 
--(void)setPixel:(unsigned int[])pixel atX:(int)x y:(int)y {
+-(void)setPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y
+{
    NSAssert(x>=0 && x<[self pixelsWide],@"x out of bounds");
    NSAssert(y>=0 && y<[self pixelsHigh],@"y out of bounds");
 
    [self createBitmapIfNeeded];
    
-   if(_isPlanar)
-    NSUnimplementedMethod();
-   else {
-    if(_bitsPerPixel/_samplesPerPixel!=8)
-     NSUnimplementedMethod();
-
-    unsigned char *bits=_bitmapPlanes[0]+_bytesPerRow*y+(x*_bitsPerPixel)/8;
+	if(_isPlanar) {
+		NSUnimplementedMethod();
+	} else {
+		if(_bitsPerPixel/_samplesPerPixel!=8) {
+			NSUnimplementedMethod();
+		}
+		unsigned char *bits=_bitmapPlanes[0]+_bytesPerRow*y+(x*_bitsPerPixel)/8;
     
-    int i;
+		int i;
    
-    for(i=0;i<_samplesPerPixel;i++){
-     bits[i]=pixel[i];
-    }
-
-   }
+		for( i = 0; i < _samplesPerPixel; i++) {
+			bits[i]=pixel[i];
+		}
+	}
 }
 
--(NSColor *)colorAtX:(int)x y:(int)y {   
+-(NSColor *)colorAtX:(NSInteger)x y:(NSInteger)y {   
    NSUnimplementedMethod();
    return nil;
 }
 
--(void)setColor:(NSColor *)color atX:(int)x y:(int)y {
+-(void)setColor:(NSColor *)color atX:(NSInteger)x y:(NSInteger)y
+{
+	// Convert the color to a compatible format
    color=[color colorUsingColorSpaceName:[self colorSpaceName]];
 
    NSInteger i,numberOfComponents=[color numberOfComponents];
    CGFloat   components[numberOfComponents];
    unsigned  pixels[numberOfComponents];
 
+	// Extract the RGBA components
    [color getComponents:components];
    
-   if(!_hasAlpha)
-    numberOfComponents--;
-   else {
-    if(!(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)){ // premultiplied
-     CGFloat alpha=components[numberOfComponents-1];
-     
-     for(i=0;i<numberOfComponents-1;i++)
-      components[i]*=alpha;
-    }
-    
-    if(_bitmapFormat&NSAlphaFirstBitmapFormat){
-     CGFloat alpha=components[numberOfComponents-1];
-     
-     for(i=numberOfComponents;--i>=1;)
-      components[i]=components[i-1];
-      
-     components[0]=alpha;
-    }
-   }
+	if(!_hasAlpha) {
+		// No alpha - then drop the component count  
+		numberOfComponents--;
+	} else {
+		// Deal with the alpha component
+		if((_bitmapFormat & NSAlphaNonpremultipliedBitmapFormat) == NO) { // premultiplied
+			CGFloat alpha=components[numberOfComponents-1];
 
-   if(_bitmapFormat&NSFloatingPointSamplesBitmapFormat){
-    for(i=0;i<numberOfComponents;i++)
-     ((float *)pixels)[i]=MAX(0.0f,MIN(1.0f,components[i])); // clamp just in case
-   }
-   else {
-    int maxValue=(1<<[self bitsPerSample])-1;
+			// Multiply through the alpha
+			for(i=0;i<numberOfComponents-1;i++) {
+				components[i]*=alpha;
+			}
+		}
+	
+		if(_bitmapFormat&NSAlphaFirstBitmapFormat) {
+			// Swap the location of the alpha component
+			CGFloat alpha=components[numberOfComponents-1];
+		 
+			for(i=numberOfComponents;--i>=1;) {
+				components[i]=components[i-1];
+			}
+			components[0]=alpha;
+		}
+	}
+	
+	if(_bitmapFormat&NSFloatingPointSamplesBitmapFormat){
+		for(i=0;i<numberOfComponents;i++) {
+			((float *)pixels)[i]=MAX(0.0f,MIN(1.0f,components[i])); // clamp just in case
+		}
+	} else {
+		int maxValue=(1<<[self bitsPerSample])-1;
     
-    for(i=0;i<numberOfComponents;i++){
-     pixels[i]=MAX(0,MIN(maxValue,(int)(components[i]*maxValue))); // clamp just in case
-    }
+		for(i=0;i<numberOfComponents;i++){
+#ifdef __LITTLE_ENDIAN__
+			pixels[i]=MAX(0,MIN(maxValue,(int)(components[(numberOfComponents - 1) - i]*maxValue))); // clamp just in case
+#else
+			pixels[i]=MAX(0,MIN(maxValue,(int)(components[i]*maxValue))); // clamp just in case
+#endif
+		}
    }
    
    [self setPixel:pixels atX:x y:y];

@@ -86,11 +86,11 @@ typedef enum {
 
 -(void)getBitmapDataPlanes:(unsigned char **)planes;
 
--(void)getPixel:(unsigned int[])pixel atX:(int)x y:(int)y;
--(void)setPixel:(unsigned int[])pixel atX:(int)x y:(int)y;
+-(void)getPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y;
+-(void)setPixel:(NSUInteger[])pixel atX:(NSInteger)x y:(NSInteger)y;
 
--(NSColor *)colorAtX:(int)x y:(int)y;
--(void)setColor:(NSColor *)color atX:(int)x y:(int)y;
+-(NSColor *)colorAtX:(NSInteger)x y:(NSInteger)y;
+-(void)setColor:(NSColor *)color atX:(NSInteger)x y:(NSInteger)y;
 
 -valueForProperty:(NSString *)property;
 -(void)setProperty:(NSString *)property withValue:value;
