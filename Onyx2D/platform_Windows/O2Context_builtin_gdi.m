@@ -77,11 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_dc==NULL)
     return;
 
-<<<<<<< local
-   //O2SurfaceLock(_surface);
-=======
    O2SurfaceLock(_surface);
->>>>>>> other
    
    O2GState *gState=O2ContextCurrentGState(self);
    NSArray  *phases=[O2GStateClipState(gState) clipPhases];
@@ -112,11 +108,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
    
-<<<<<<< local
-   //O2SurfaceUnlock(_surface);
-=======
    O2SurfaceUnlock(_surface);
->>>>>>> other
 }
 
 #if 0
@@ -291,11 +283,7 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
 
 
 -(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
-<<<<<<< local
-   //O2SurfaceLock(_surface);
-=======
    O2SurfaceLock(_surface);
->>>>>>> other
 
    O2GState         *gState=O2ContextCurrentGState(self);
    O2Font           *font=O2GStateFont(gState);
@@ -485,11 +473,7 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
    
     if(face==NULL){
      NSLog(@"face is NULL");
-<<<<<<< local
-     //O2SurfaceUnlock(_surface);
-=======
      O2SurfaceUnlock(_surface);
->>>>>>> other
      return;
     }
 
@@ -497,11 +481,7 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
 
     if((ftError=FT_Set_Char_Size(face,0,ABS(fontSize.height)*64,72.0,72.0))!=0){
      NSLog(@"FT_Set_Char_Size returned %d",ftError);
-<<<<<<< local
-     //O2SurfaceUnlock(_surface);
-=======
      O2SurfaceUnlock(_surface);
->>>>>>> other
      return;
     }
     
@@ -545,11 +525,7 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
    
    O2ContextConcatAdvancesToTextMatrix(self,useAdvances,count);
    
-<<<<<<< local
-   //O2SurfaceUnlock(_surface);
-=======
    O2SurfaceUnlock(_surface);
->>>>>>> other
 }
 
 @end
