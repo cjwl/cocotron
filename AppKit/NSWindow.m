@@ -214,7 +214,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _isDocumentEdited=NO;
 
    _makeSureIsOnAScreen=YES;
-   _excludedFromWindowsMenu=NO;
 
    _acceptsMouseMovedEvents=NO;
    _excludedFromWindowsMenu=NO;
@@ -1367,11 +1366,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)canBecomeKeyWindow {
-   return YES;
+	// The NSWindow implementation returns YES if the window has a title bar or a resize bar, or NO otherwise
+    return (_styleMask & (NSTitledWindowMask|NSResizableWindowMask)) != 0;
 }
 
 -(BOOL)canBecomeMainWindow {
-    return YES;
+	// The NSWindow implementation returns YES if the window is visible and has a title bar or a resize mechanism. Otherwise it returns NO
+    return [self isVisible] && (_styleMask & (NSTitledWindowMask|NSResizableWindowMask));
 }
 
 -(BOOL)canBecomeVisibleWithoutLogin {
@@ -1665,9 +1666,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else {
     _flushNeeded=NO;
     BOOL doFlush=YES;
-    
-    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+
+    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque]){
      doFlush=NO;
+     }
     
     if(doFlush)
      [[self platformWindow] flushBuffer];
@@ -2010,7 +2012,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
     case NSMouseMoved:{
       NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
-      
+
       if(hit==nil)
        [self mouseMoved:event];
       else
@@ -2159,7 +2161,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    [self orderWindow:NSWindowAbove relativeTo:0];
 
-   [self makeKeyWindow];
+	if([self canBecomeKeyWindow])
+		[self makeKeyWindow];
 
    if([self canBecomeMainWindow])
     [self makeMainWindow];
@@ -2589,11 +2592,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_childWindows makeObjectsPerformSelector:@selector(_parentWindowDidChangeFrame:) withObject:self];
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidChangeFrame:) withObject:self];
 
-   [_backgroundView setFrameSize:_frame.size];
-   [_backgroundView setNeedsDisplay:YES];
+	if (didSize) {
+		// Don't redraw everything unless we really have to
+		[_backgroundView setFrameSize:_frame.size];
+		[_backgroundView setNeedsDisplay:YES];
+		
+		// And make sure the cursor rect align with the new size
+		[self resetCursorRects];
+	}
 
    [self saveFrameUsingName:_autosaveFrameName];
-   [self resetCursorRects];
    
    if(didSize){
     [self postNotificationName:NSWindowDidResizeNotification];

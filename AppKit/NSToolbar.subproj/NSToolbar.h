@@ -84,6 +84,12 @@ APPKIT_EXPORT NSString * const NSToolbarDidRemoveItemNotification;
 
 @end
 
+@interface NSToolbar (NSToolbarCustomization)
+
+- (Class)toolbarItemClass;
+
+@end
+
 @interface NSObject (NSToolbar_delegate)
 
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)identifier willBeInsertedIntoToolbar:(BOOL)flag;

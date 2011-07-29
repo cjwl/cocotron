@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 static NSAffineTransformStruct identity={1,0,0,1,0,0};
 
+// Instead of doing start * append - this imp is doing append * start - which is quite different in matrix multiplication
 static inline NSAffineTransformStruct multiplyStruct(NSAffineTransformStruct start, NSAffineTransformStruct append){
    NSAffineTransformStruct result;
 
@@ -106,17 +107,17 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 
 -(void)appendTransform:(NSAffineTransform *)other {
     // Cocoa doesn't raise when 'other' is nil
-   _matrix=multiplyStruct(_matrix,[other transformStruct]);
+   _matrix=multiplyStruct([other transformStruct], _matrix);
 }
 
 -(void)prependTransform:(NSAffineTransform *)other {
     // Cocoa doesn't raise when 'other' is nil
-   _matrix=multiplyStruct([other transformStruct],_matrix);
+   _matrix=multiplyStruct(_matrix, [other transformStruct]);
 }
 
 -(void)translateXBy:(CGFloat)xby yBy:(CGFloat)yby {
    NSAffineTransformStruct translate={1,0,0,1,xby,yby};
-   _matrix=multiplyStruct(_matrix,translate);
+   _matrix=multiplyStruct(_matrix, translate);
 }
 
 -(NSPoint)transformPoint:(NSPoint)point {
@@ -145,17 +146,17 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 -(void)rotateByRadians:(CGFloat)radians
 {
 	NSAffineTransformStruct rotate={cos(radians),sin(radians),-sin(radians),cos(radians),0,0};
-	_matrix=multiplyStruct(_matrix,rotate);
+	_matrix=multiplyStruct(_matrix, rotate);
 }
 
 -(void)scaleBy:(CGFloat)value {
-	NSAffineTransformStruct rotate={value,0,0,value,0,0};
-	_matrix=multiplyStruct(_matrix,rotate);
+	NSAffineTransformStruct scale={value,0,0,value,0,0};
+	_matrix=multiplyStruct(_matrix, scale);
 }
 
 -(void)scaleXBy:(CGFloat)xvalue yBy:(CGFloat)yvalue {
-	NSAffineTransformStruct rotate={xvalue,0,0,yvalue,0,0};
-	_matrix=multiplyStruct(_matrix,rotate);
+	NSAffineTransformStruct scale={xvalue,0,0,yvalue,0,0};
+	_matrix=multiplyStruct(_matrix, scale);
 }
 
 - (NSString *)description
