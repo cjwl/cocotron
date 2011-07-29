@@ -165,6 +165,15 @@ void O2DContextClipAndFillEdges(O2Context_builtin *self,int fillRuleMask);
    [self->_layerStack addObject:layer];
    O2LayerRelease(layer);
    O2ContextSaveGState(self);
+	
+	/**
+	 * From Cocoa doc :
+	 * graphics state parameters remain unchanged except for alpha (which is set to 1), shadow (which is turned off), blend mode (which is set to normal), 
+	 * and other parameters that affect the final composite.
+	 */
+	O2GStateSetBlendMode(O2ContextCurrentGState(self), kO2BlendModeNormal);
+	[O2ContextCurrentGState(self) setShadowOffset:O2SizeZero blur:0. color:nil];
+	O2GStateSetAlpha(O2ContextCurrentGState(self), 1.);
 }
 
 -(void)endTransparencyLayer {

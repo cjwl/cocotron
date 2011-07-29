@@ -43,8 +43,12 @@ CGRect CGContextGetPathBoundingBox(CGContextRef context) {
    return O2ContextGetPathBoundingBox(context);
 }
 
+bool CGContextSupportsGlobalAlpha(CGContextRef context) {
+	return O2ContextSupportsGlobalAlpha(context);
+}
+
 bool CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode) {
-   return O2ContextPathContainsPoint(context,point,pathMode);
+	return O2ContextPathContainsPoint(context,point,pathMode);
 }
 
 void CGContextBeginPath(CGContextRef context) {

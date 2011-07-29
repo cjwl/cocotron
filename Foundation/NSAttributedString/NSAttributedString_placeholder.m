@@ -7,6 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
+#import <Foundation/NSString.h>
+#import <Foundation/NSCoder.h>
+
 #import <Foundation/NSAttributedString_placeholder.h>
 #import "NSAttributedString_nilAttributes.h"
 #import "NSAttributedString_oneAttribute.h"
@@ -30,6 +33,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDeallocateObject(self);
 
    return [NSAllocateObject([NSAttributedString_manyAttributes class],0,NULL) initWithAttributedString:other];
+}
+
+-initWithCoder:(NSCoder *)coder {
+	
+	// A very basic implementation that handles AttributedString encoding in nib files
+	NSDeallocateObject(self);
+	
+	NSString* string = [coder decodeObjectForKey: @"NSString"];
+	if ([coder containsValueForKey: @"NSAttributes"]) {
+		NSDictionary* attributes = [coder decodeObjectForKey: @"NSAttributes"];
+		return [NSAllocateObject([NSAttributedString_oneAttribute class],0,NULL) initWithString:string attributes:attributes];
+	}
+	return [NSAllocateObject([NSAttributedString_nilAttributes class],0,NULL) initWithString:string];
 }
 
 @end

@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(id)description {
-   return [NSString stringWithFormat:@"%@ - %@ (%f)", [super description], _label, _width];
+   return [NSString stringWithFormat:@"%@ - %@ (%f) [%d]", [super description], _label, _width, _tag];
 }
 
 -(void)dealloc {

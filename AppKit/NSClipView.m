@@ -227,12 +227,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      deltax=bounds.size.width;
    }
 
-   bounds.origin.y-=deltay;
-   bounds.origin.x-=deltax;
-
-   [self scrollToPoint:bounds.origin];
-
-   return YES;
+  // "Returns YES if any scrolling is performed; otherwise returns NO." - AppKit documentation
+	if (deltax != 0.f || deltay != 0.f) {
+		bounds.origin.y-=deltay;
+		bounds.origin.x-=deltax;
+		[self scrollToPoint:bounds.origin];
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
 -(void)scrollToPoint:(NSPoint)point {   

@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMenuItem : NSObject <NSValidatedUserInterfaceItem> {
    NSMenu   *_menu;
+   NSString *_title;
    NSAttributedString *_atitle;
    id        _target;
    SEL       _action;
@@ -22,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned  _mnemonicLocation;
    NSMenu   *_submenu;
    int       _tag;
+   NSInteger _indentationLevel;
    BOOL      _enabled;
    BOOL		 _hidden;
    int	     _state;
@@ -43,6 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(unsigned)mnemonicLocation;
 -target;
 -(SEL)action;
+-(NSInteger)indentationLevel;
 -(int)tag;
 -(int)state;
 -(NSString *)keyEquivalent;
@@ -67,6 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setMnemonicLocation:(unsigned)location;
 -(void)setTarget:target;
 -(void)setAction:(SEL)action;
+-(void)setIndentationLevel:(NSInteger)indentationLevel;
 -(void)setTag:(int)tag;
 -(void)setState:(int)state;
 -(void)setKeyEquivalent:(NSString *)keyEquivalent;

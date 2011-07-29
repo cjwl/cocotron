@@ -216,3 +216,13 @@ NSString * const NSWorkspaceRecycleOperation=@"NSWorkspaceRecycleOperation";
 }
 
 @end
+
+@implementation NSWorkspace (CocotronAdditions)
+
+- (BOOL)isFileHiddenAtPath:(NSString*)path
+{
+	return NO;
+}
+
+@end
+

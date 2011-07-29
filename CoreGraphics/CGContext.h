@@ -256,3 +256,4 @@ COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
 
 COREGRAPHICS_EXPORT CFDataRef CGContextCaptureBitmap(CGContextRef context,CGRect rect);
 COREGRAPHICS_EXPORT void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState);
+COREGRAPHICS_EXPORT bool CGContextSupportsGlobalAlpha(CGContextRef context);

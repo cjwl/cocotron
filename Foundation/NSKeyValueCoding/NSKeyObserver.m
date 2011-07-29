@@ -67,7 +67,7 @@
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %x %@ %@ %@>",isa,self,_object,_key,_branchPath];
+   return [NSString stringWithFormat:@"<%@ %x _object: %@ _key: %@ _branchPath: %@>",isa,self,_object,_key,_branchPath];
 }
 
 @end

@@ -1669,7 +1669,7 @@
 		FE01A94B0C5D9BCB00AEA51A /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247670C06202B007CBC51 /* NSTextList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A94E0C5D9BCB00AEA51A /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
+		FE01A94E0C5D9BCB00AEA51A /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94F0C5D9BCB00AEA51A /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9510C5D9BCB00AEA51A /* O2DeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* O2DeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };

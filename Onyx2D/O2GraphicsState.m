@@ -40,6 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _interpolationQuality=kO2InterpolationDefault;
    _shouldAntialias=YES;
    _antialiasingQuality=64;
+	_alpha = 1.;
    return self;
 }
 
@@ -98,6 +99,8 @@ O2GState *O2GStateCopyWithZone(O2GState *self,NSZone *zone) {
    
    copy->_shadowKernel=O2GaussianKernelRetain(self->_shadowKernel);
    
+	copy->_alpha = self->_alpha;
+	
    return copy;
 }
 
@@ -384,11 +387,19 @@ void O2GStateSetLineDash(O2GState *self,float phase,const float *lengths,unsigne
 }
 
 O2BlendMode O2GStateBlendMode(O2GState *self) {
-   return self->_blendMode;
+	return self->_blendMode;
 }
 
 void O2GStateSetBlendMode(O2GState *self,O2BlendMode mode){
-   self->_blendMode=mode;
+	self->_blendMode=mode;
+}
+
+float O2GStateAlpha(O2GState *self) {
+	return self->_alpha;
+}
+
+void O2GStateSetAlpha(O2GState *self,float alpha){
+	self->_alpha=alpha;
 }
 
 -(void)setFlatness:(float)flatness {

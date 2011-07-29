@@ -308,7 +308,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 	[self _setItemValues:values forKey:@"representedObject"];
 	if(![self _binderForBinding:@"contentValues"])
 	{
-		[self _setItemValues:[[values valueForKey:@"value"] valueForKey:@"description"] forKey:@"title"];
+		[self _setItemValues: [values valueForKey: @"description"] forKey:@"title"];
 	}
 }
 
@@ -342,7 +342,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 
 -(void)_setSelectedValue:(id)value
 {
-	return [self selectItemWithTitle:value];
+	[self selectItemWithTitle:value];
 }
 
 - (void) bind:(NSString *)binding toObject:(id)observable withKeyPath:(NSString *)keyPath options:(NSDictionary *)options
@@ -370,6 +370,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 				[self willChangeValueForKey:@"selectedIndex"];
             [self willChangeValueForKey:@"selectedValue"];
             [self willChangeValueForKey:@"selectedObject"];
+				[self willChangeValueForKey:@"selectedTag"];
 
 			}
 			else
@@ -377,6 +378,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
             [self didChangeValueForKey:@"selectedObject"];
             [self didChangeValueForKey:@"selectedValue"];
 				[self didChangeValueForKey:@"selectedIndex"];
+				[self didChangeValueForKey:@"selectedTag"];
 			}
 		}
 		else

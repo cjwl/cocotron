@@ -127,4 +127,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+- (NSString*)description
+{
+	if ([self length] > 0) {
+		NSRange range;
+		NSDictionary* attributes = [self attributesAtIndex: 0 effectiveRange: &range];
+		return [NSString stringWithFormat: @"%@ {\n%@\n}", [self string], attributes];
+	} else {
+		return [NSString stringWithFormat: @"%@ {}", [self string]];
+	}
+}
+
 @end

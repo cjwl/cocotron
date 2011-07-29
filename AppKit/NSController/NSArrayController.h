@@ -19,70 +19,98 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		NSUInteger preservesSelection:1;
 		NSUInteger selectsInsertedObjects:1;
 		NSUInteger alwaysUsesMultipleValuesMarker:1;
+		NSUInteger automaticallyPreparesContent:1;
+		NSUInteger automaticallyRearrangesObjects:1;
 	} _flags;
 	NSMutableIndexSet *_selectionIndexes;
 	NSArray *_sortDescriptors;
 	id _filterPredicate;
-	NSMutableArray *_arrangedObjects;
+	NSMutableArray *_arrangedObjects; // A cache of the current arrangement
 }
 
--(NSArray *)sortDescriptors;
--(NSPredicate *)filterPredicate;
--(BOOL)alwaysUsesMultipleValuesMarker;
-//-(BOOL)clearsFilterPredicateOnInsertion;
-//-(BOOL)automaticallyPreparesContent;
-//-(BOOL)avoidsEmptySelection;
-//-(BOOL)selectsInsertedObjects;
--(BOOL)preservesSelection;
+#pragma mark -
+#pragma mark Managing Sort Descriptors
 
 -(void)setSortDescriptors:(NSArray *)descriptors;
--(void)setFilterPredicate:(NSPredicate *)predicate;
-//-(void)setAlwaysUsesMultipleValuesMarker:(BOOL)flag;
-//-(void)setClearsFilterPredicateOnInsertion:(BOOL)flag;
-//-(void)setAutomaticallyPreparesContent:(BOOL)flag;
-//-(void)setAvoidsEmptySelection:(BOOL)flag;
-//-(void)setSelectsInsertedObjects:(BOOL)flag;
--(void)setPreservesSelection:(BOOL)flag;
+-(NSArray *)sortDescriptors;
 
--(void)addObject:object;
--(void)addObjects:(NSArray *)objects;
-//-(void)insertObject:object atArrangedObjectIndex:(unsigned)index;
-//-(void)insertObjects:(NSArray *)objects atArrangedObjectIndexes:(NSIndexSet *)indices;
--(void)removeObject:object;
-//-(void)removeObjectAtArrangedObjectIndex:(unsigned)index;
+#pragma mark -
+#pragma mark Arranging Objects
 
--(void)removeObjects:(NSArray *)objects;
--(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet *)indices;
-
--(NSIndexSet *)selectionIndexes;
--(NSUInteger)selectionIndex;
--(NSArray *)selectedObjects;
-
--(BOOL)canInsert;
--(BOOL)canSelectNext;
--(BOOL)canSelectPrevious;
-
--(void)insert:sender;
--(void)remove:sender;
--(void)selectNext:sender;
--(void)selectPrevious:sender;
-
--(BOOL)setSelectedObjects:(NSArray *)objects;
--(BOOL)setSelectionIndex:(unsigned)index;
--(BOOL)setSelectionIndexes:(NSIndexSet *)indices;
-
-//-(BOOL)addSelectedObjects:(NSArray *)objects;
-//-(BOOL)addSelectionIndexes:(NSIndexSet *)indices;
-
-//-(BOOL)removeSelectedObjects:(NSArray *)objects;
-//-(BOOL)removeSelectionIndexes:(NSIndexSet *)indices;
-
--arrangedObjects;
 -(NSArray *)arrangeObjects:(NSArray *)objects;
+-(id)arrangedObjects;
 -(void)rearrangeObjects;
 
-// actions useable with IB
--(void)add:(id)sender;
+#pragma mark -
+#pragma mark Managing Content
+
+-(void)setAutomaticallyPreparesContent:(BOOL)flag;
+-(BOOL)automaticallyPreparesContent;
+
+#pragma mark -
+#pragma mark Selection Attributes
+
+-(void)setAvoidsEmptySelection:(BOOL)flag;
+-(BOOL)avoidsEmptySelection;
+-(void)setPreservesSelection:(BOOL)flag;
+-(BOOL)preservesSelection;
+-(void)setAlwaysUsesMultipleValuesMarker:(BOOL)flag;
+-(BOOL)alwaysUsesMultipleValuesMarker;
+
+#pragma mark -
+#pragma mark Managing Selections
+
+-(NSUInteger)selectionIndex;
+-(BOOL)setSelectionIndex:(unsigned)index;
+-(void)setSelectsInsertedObjects:(BOOL)flag;
+-(BOOL)selectsInsertedObjects;
+-(BOOL)setSelectionIndexes:(NSIndexSet *)indices;
+-(NSIndexSet *)selectionIndexes;
+-(BOOL)addSelectionIndexes:(NSIndexSet *)indices;
+-(BOOL)removeSelectionIndexes:(NSIndexSet *)indices;
+-(BOOL)setSelectedObjects:(NSArray *)objects;
+-(NSArray *)selectedObjects;
+-(BOOL)addSelectedObjects:(NSArray *)objects;
+-(BOOL)removeSelectedObjects:(NSArray *)objects;
+-(void)selectNext:sender;
+-(BOOL)canSelectNext;
+-(void)selectPrevious:sender;
+-(BOOL)canSelectPrevious;
+
+#pragma mark -
+#pragma mark Inserting
+
+-(BOOL)canInsert;
 -(void)insert:(id)sender;
+
+#pragma mark -
+#pragma mark Adding and Removing Objects
+
+-(void)add:(id)sender;
+-(void)addObject:(id)object;
+-(void)addObjects:(NSArray *)objects;
+-(void)insertObject:(id)object atArrangedObjectIndex:(unsigned)index;
+-(void)insertObjects:(NSArray *)objects atArrangedObjectIndexes:(NSIndexSet *)indices;
+-(void)removeObjectAtArrangedObjectIndex:(unsigned)index;
+-(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet *)indices;
 -(void)remove:(id)sender;
+-(void)removeObject:(id)object;
+-(void)removeObjects:(NSArray *)objects;
+
+#pragma mark -
+#pragma mark Filtering Content
+
+-(void)setClearsFilterPredicateOnInsertion:(BOOL)flag;
+-(BOOL)clearsFilterPredicateOnInsertion;
+-(void)setFilterPredicate:(NSPredicate *)predicate;
+-(NSPredicate *)filterPredicate;
+
+#pragma mark -
+#pragma mark Automatic Content Rearranging
+
+- (void)setAutomaticallyRearrangesObjects:(BOOL)flag;
+- (BOOL)automaticallyRearrangesObjects;
+- (NSArray*)automaticRearrangementKeyPaths;
+- (void)didChangeArrangementCriteria;
+
 @end

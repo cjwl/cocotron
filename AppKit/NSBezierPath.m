@@ -21,6 +21,18 @@ static NSWindingRule   _defaultWindingRule=NSNonZeroWindingRule;
 static NSLineCapStyle  _defaultLineCapStyle=NSButtLineCapStyle;
 static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
+static BOOL curveIsFlat(float desiredFlatness, CGPoint start, CGPoint cp1, CGPoint cp2, CGPoint end)
+{
+	// Roughly compute the furthest distance of the curved path from the line connecting start to end
+	double ux = 3.0*cp1.x - 2.0*start.x - end.x; ux *= ux;
+	double uy = 3.0*cp1.y - 2.0*start.y - end.y; uy *= uy;
+	double vx = 3.0*cp2.x - 2.0*end.x - start.x; vx *= vx;
+	double vy = 3.0*cp2.y - 2.0*end.y - start.y; vy *= vy;
+	if (ux < vx) ux = vx;
+	if (uy < vy) uy = vy;
+	return (ux+uy <= desiredFlatness);
+}
+
 static void CGPathConverter( void* info, const CGPathElement* element )
 {
 	NSBezierPath* bezier = (NSBezierPath*)info;
@@ -439,19 +451,127 @@ static int numberOfPointsForOperator(int op){
    return result;
 }
 
--(BOOL)containsPoint:(NSPoint)point {   
+// Count the crossings on the Y axis from the point to a bezier curve
+-(int)countYCrossingFromPoint:(NSPoint)point toCurveFrom:(CGPoint)fromPoint to:(CGPoint)toPoint tan1:(CGPoint)tan1 tan2:(CGPoint)tan2
+{
+	int count = 0;
 
+	// No need to test if there no chance of any crossing
+	float minY = MIN(MIN(fromPoint.y, toPoint.y), MIN(tan1.y, tan2.y));
+	float maxY = MAX(MAX(fromPoint.y, toPoint.y), MAX(tan1.y, tan2.y));
+	if (minY > point.y ||  maxY < point.y) {
+		return 0;
+	}
+
+	if (curveIsFlat([self flatness], fromPoint, tan1, tan2, toPoint)) {
+		// Flat enough curve : handle it like a segment
+		if (((fromPoint.y <= point.y) && (toPoint.y > point.y))    // an upward crossing
+			|| ((fromPoint.y > point.y) && (toPoint.y <= point.y))) { // a downward crossing
+			// compute the actual edge-ray intersect x-coordinate
+			float vt = (float)(point.y - fromPoint.y) / (toPoint.y - fromPoint.y);
+			if (point.x < fromPoint.x + vt * (toPoint.x - fromPoint.x)) // point.x < intersect
+				++count;   // a valid crossing of y=point.y right of point.x
+		}
+	} else {
+		// Subdivide the bezier path and test both subpaths - adapted from the flatten path code
+		CGPoint sub1_start = fromPoint;
+		CGPoint sub1_cp1 = CGPointMake((fromPoint.x + tan1.x)/2, (fromPoint.y + tan1.y)/2);
+		CGPoint T = CGPointMake((tan1.x + tan2.x)/2, (tan1.y + tan2.y)/2);
+		CGPoint sub1_cp2 = CGPointMake((sub1_cp1.x + T.x)/2, (sub1_cp1.y + T.y)/2);
+		CGPoint sub2_end = toPoint;
+		CGPoint sub2_cp2 = CGPointMake((tan2.x + toPoint.x)/2, (tan2.y + toPoint.y)/2);
+		CGPoint sub2_cp1 = CGPointMake((T.x + sub2_cp2.x)/2, (T.y + sub2_cp2.y)/2);
+		CGPoint sub2_start = CGPointMake((sub1_cp2.x + sub2_cp1.x)/2, (sub1_cp2.y + sub2_cp1.y)/2);
+		CGPoint sub1_end = sub2_start;
+
+		count += [self countYCrossingFromPoint:point toCurveFrom:sub1_start to:sub1_end  tan1:sub1_cp1 tan2:sub1_cp2];
+		count += [self countYCrossingFromPoint:point toCurveFrom:sub2_start to:sub2_end  tan1:sub2_cp1 tan2:sub2_cp2];
+}
+	return count;
+}
+
+// Based on http://softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm
+
+-(BOOL)containsPoint:(NSPoint)point 
+{   
+	// TODO: handle winding rule
+	
 	if ([self isEmpty]) {
 		return NO;
 	}
 	
-	// FIXME: this is way over simplified - but better than nothing
-	return NSPointInRect(point, [self bounds]);
+	// Some quick test first
+	if (NSPointInRect(point, [self bounds]) == NO) {
+		return NO;
+	}
+	
+	int  cn = 0;    // the crossing number counter
+	
+	int count = [self elementCount];
+	int i = 0;
+	NSPoint startPoint = NSZeroPoint, currentPoint = NSZeroPoint, toPoint = NSZeroPoint;
+	NSPoint *points = _points;
+	uint8_t *element = _elements;
+	for (i = 0; i < count; ++i) {
+		switch (*element++) {
+			case NSMoveToBezierPathElement:
+				startPoint = currentPoint = points[0];
+				points++;
+				break;
+			case NSLineToBezierPathElement:
+				toPoint = points[0];
+				if (((currentPoint.y <= point.y) && (toPoint.y > point.y))    // an upward crossing
+					|| ((currentPoint.y > point.y) && (toPoint.y <= point.y))) { // a downward crossing
+					// compute the actual edge-ray intersect x-coordinate
+					float vt = (float)(point.y - currentPoint.y) / (toPoint.y - currentPoint.y);
+					if (point.x < currentPoint.x + vt * (toPoint.x - currentPoint.x)) // point.x < intersect
+						++cn;   // a valid crossing of y=point.y right of point.x
+				}
+				currentPoint = toPoint;
+				points++;
+				break;
+			case NSCurveToBezierPathElement:
+				toPoint = points[2];
+				cn += [self countYCrossingFromPoint:point toCurveFrom:currentPoint to:toPoint tan1: points[0] tan2: points[1]];
+				currentPoint = toPoint;
+				points+=3;
+				break;
+			case NSClosePathBezierPathElement:
+				toPoint = startPoint;
+				if (((currentPoint.y <= point.y) && (toPoint.y > point.y))    // an upward crossing
+					|| ((currentPoint.y > point.y) && (toPoint.y <= point.y))) { // a downward crossing
+					// compute the actual edge-ray intersect x-coordinate
+					float vt = (float)(point.y - currentPoint.y) / (toPoint.y - currentPoint.y);
+					if (point.x < currentPoint.x + vt * (toPoint.x - currentPoint.x)) // point.x < intersect
+						++cn;   // a valid crossing of y=point.y right of point.x
+				}
+				currentPoint = startPoint;
+				break;
+		}
+	}
+	return (cn&1);    // 0 if even (out), and 1 if odd (in)
 }
 
 -(NSPoint)currentPoint {
-// FIXME: this is wrong w/ closepath last
-   return (_numberOfPoints==0)?CGPointZero:_points[_numberOfPoints-1];
+	if (_numberOfElements < 1) {
+		// Empty path
+		return NSZeroPoint;
+	}
+	int j = _numberOfElements - 1;
+	if (_elements[j] == NSClosePathBezierPathElement) {
+		// last element is a closePath - Find the start of the closed path
+		j--;
+		while (j >= 0 && _elements[j] != NSMoveToBezierPathElement) {
+			j--;
+		}
+		if (j >= 0 && _elements[j] == NSMoveToBezierPathElement) {
+			NSPoint pts[3];
+			[self elementAtIndex: j associatedPoints: pts];
+			return pts[0];
+		}
+	}
+	// Else the last point of the _points array is the current point
+	return (_numberOfPoints==0)?NSZeroPoint:_points[_numberOfPoints-1];
 }
 
 static inline void expandOperatorCapacity(NSBezierPath *self,unsigned delta){
@@ -775,18 +895,6 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
     _points[pi+i]=points[i];
 }
 
-static BOOL curveIsFlat(float desiredFlatness, CGPoint start, CGPoint cp1, CGPoint cp2, CGPoint end)
-{
-	// Roughly compute the furthest distance of the curved path from the line connecting start to end
-	double ux = 3.0*cp1.x - 2.0*start.x - end.x; ux *= ux;
-	double uy = 3.0*cp1.y - 2.0*start.y - end.y; uy *= uy;
-	double vx = 3.0*cp2.x - 2.0*end.x - start.x; vx *= vx;
-	double vy = 3.0*cp2.y - 2.0*end.y - start.y; vy *= vy;
-	if (ux < vx) ux = vx;
-	if (uy < vy) uy = vy;
-	return (ux+uy <= desiredFlatness);
-}
-
 static NSUInteger doFlattenBezierCurve(float desiredFlatness, CGPoint start, CGPoint cp1, CGPoint cp2, CGPoint end, NSUInteger* index, CGPoint* points)
 {
 	int count = 0;
@@ -870,6 +978,7 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 	BOOL closed = NO; // state of current subpath
 	
 	int i = 0;
+	// Note: using elementAtIndex:associatedPoints: is very inefficient
 	for ( i = [self elementCount] - 1; i >= 0; i--) 
     {
 		// Find the next point : it's the end of previous element in the original path

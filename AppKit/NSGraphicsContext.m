@@ -17,6 +17,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSGraphicsContext
 
++ (void)initialize
+{
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	
+	BOOL enabled = [defaults boolForKey: @"NSQuartzDebugEnabled"];
+	
+	if (enabled) {
+		NSLog(@"enabling Quartz Debugging emulation");
+	}
+	
+	[NSGraphicsContext setQuartzDebuggingEnabled: enabled];
+	
+	[pool drain];
+}
+
 -initWithWindow:(NSWindow *)window {
    _graphicsPort=CGContextRetain([window cgContext]);
    _focusStack=[NSMutableArray new];
@@ -237,4 +253,29 @@ NSMutableArray *NSCurrentFocusStack() {
 
 @end
 
+static BOOL sQuartzDebuggingEnabled = NO;
+static BOOL sQuartzDebugging = NO;		
+				
+@implementation NSGraphicsContext (QuartzDebugging)
 
++ (void)setQuartzDebuggingEnabled:(BOOL)enabled
+{
+	sQuartzDebuggingEnabled = enabled;
+}
+
++ (BOOL)quartzDebuggingIsEnabled
+{
+	return sQuartzDebuggingEnabled;
+}
+
++ (BOOL)inQuartzDebugMode
+{
+	return sQuartzDebuggingEnabled && sQuartzDebugging;
+}
+
++ (void)setQuartzDebugMode:(BOOL)mode
+{
+	sQuartzDebugging = mode;
+}
+
+@end
