@@ -664,7 +664,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     BOOL pressed=[self state] && ([self showsStateBy] & NSChangeBackgroundCellMask);
     
     BOOL renderDarkenBg=NO, renderOutlineShadow=NO;
-    CGFloat topGray=0.76, bottomGray=0.98, strokeGray=0.4;
+    //CGFloat topGray=0.76, bottomGray=0.98, strokeGray=0.4;
+    CGFloat topGray=0.98, bottomGray=0.76, strokeGray=0.4;
     if (pressed) {
         topGray=0.4;
         bottomGray=0.30;
