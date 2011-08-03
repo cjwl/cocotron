@@ -58,6 +58,24 @@ static NSString *convertBackslashToSlash(NSString *string){
    return [NSString stringWithCharacters:buffer length:length];
 }
 
+static NSError *NSErrorForGetLastErrorCode(DWORD code)
+{
+	NSString *localizedDescription=@"NSErrorForGetLastError localizedDescription";
+	unichar  *message;
+	
+	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,NULL,code,MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPWSTR) &message,0, NULL );
+	localizedDescription=NSStringFromNullTerminatedUnicode(message);
+	
+	LocalFree(message);
+	
+	return [NSError errorWithDomain:NSWin32ErrorDomain code:code userInfo:[NSDictionary dictionaryWithObject:localizedDescription forKey:NSLocalizedDescriptionKey]];
+}
+
+static NSError *NSErrorForGetLastError()
+{
+	return NSErrorForGetLastErrorCode(GetLastError());
+}
+
 @implementation NSPlatform_win32
 
 static NSString *processName(){
@@ -435,7 +453,8 @@ void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
    }
 }
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically {
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length options:(NSUInteger)options error:(NSError **)errorp {
+   BOOL atomically=(options&NSAtomicWrite);
    HANDLE   file;
    DWORD    wrote;
    const uint16_t *pathW=[path fileSystemRepresentationW];
@@ -468,6 +487,7 @@ void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
 
    file=CreateFileW(pathW,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);   
    if(!WriteFile(file,bytes,length,&wrote,NULL)){
+    if (errorp) *errorp = NSErrorForGetLastError();
     CloseHandle(file);
     return NO;
    }

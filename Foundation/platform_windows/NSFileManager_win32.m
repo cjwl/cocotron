@@ -332,7 +332,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 
 -(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data attributes:(NSDictionary *)attributes
 {
-	return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[data bytes] length:[data length] atomically:YES];
+	return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[data bytes] length:[data length] options:NSAtomicWrite error:NULL];
 }
 
 -(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes
