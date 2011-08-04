@@ -16,12 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindowController.h>
 #import <AppKit/NSRaise.h>
 
-// function exposed in Cocotron Obj-C runtime.
-// used for Cocoa-compatible backward compatibility checks: newer methods can call the old ones if a subclass has overridden them
-// (e.g. -openUntitledDocumentAndDisplay:error: will call -openUntitledDocumentOfType:display: only in this case).
-extern struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId);  
-
-
 @interface NSDocument(private)
 -(void)_setUntitledNumber:(int)number;
 @end
@@ -282,16 +276,11 @@ static NSDocumentController *shared=nil;
         "For backward binary compatibility with Mac OS X v10.3 and earlier,
          the default implementation of this method instead invokes makeUntitledDocumentOfType: if it is overridden."
       Hence we need to check if this class is a subclass that has this method overridden.
-      The check is performed using the Cocotron runtime's own OBJCLookupUniqueIdInOnlyThisClass()
-      because the Apple-compatible alternative, class_copyMethodList(), is not yet implemented in the Cocotron runtime.
    */
-   if ([self class] != [NSDocumentController class]) {
-    Class class = [self class];
-    SEL selector = @selector(makeUntitledDocumentOfType:);
-    struct objc_method *method = NULL;
-    if ((method = OBJCLookupUniqueIdInOnlyThisClass(class,selector)) != NULL) {
-      return [self makeUntitledDocumentOfType:type];
-    }
+   IMP mine=[NSDocumentController instanceMethodForSelector:@selector(makeUntitledDocumentOfType:)];
+   IMP theirs=[self methodForSelector:@selector(makeUntitledDocumentOfType:)];   
+   if (mine != theirs) {
+    return [self makeUntitledDocumentOfType:type];
    }
 
    static int nextUntitledNumber=1;
@@ -331,16 +320,11 @@ static NSDocumentController *shared=nil;
         "For backward binary compatibility with Mac OS X v10.3 and earlier,
          the default implementation of this method instead invokes openUntitledDocumentOfType:display: if it is overridden."
       Hence we need to check if this class is a subclass that has this method overridden.
-      The check is performed using the Cocotron runtime's own OBJCLookupUniqueIdInOnlyThisClass()
-      because the Apple-compatible alternative, class_copyMethodList(), is not yet implemented in the Cocotron runtime.
    */
-   if ([self class] != [NSDocumentController class]) {
-    Class class = [self class];
-    SEL selector = @selector(openUntitledDocumentOfType:display:);
-    struct objc_method *method = NULL;
-    if ((method = OBJCLookupUniqueIdInOnlyThisClass(class,selector)) != NULL) {
-      return [self openUntitledDocumentOfType:type display:display];
-    }
+   IMP mine=[NSDocumentController instanceMethodForSelector:@selector(openUntitledDocumentOfType:display:)];
+   IMP theirs=[self methodForSelector:@selector(openUntitledDocumentOfType:display:)];
+   if (mine != theirs) {
+    return [self openUntitledDocumentOfType:type display:display];
    }
    
    NSDocument *result=[self makeUntitledDocumentOfType:type error:error];
