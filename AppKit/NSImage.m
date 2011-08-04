@@ -191,7 +191,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSData *data=[NSData dataWithContentsOfURL:url];
    
    if(data==nil){
-    [self dealloc];
+    [self release];
     return nil;
 }
 
@@ -199,8 +199,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithPasteboard:(NSPasteboard *)pasteboard {
-   NSUnimplementedMethod();
-   return 0;
+
+	NSString *available=[pasteboard availableTypeFromArray:[[self class] imageUnfilteredPasteboardTypes]];
+	NSData *data = [pasteboard dataForType:available];
+	if (data == nil) {
+		[self dealloc];
+		return nil;
+	}
+	return [self initWithData:data];
 }
 
 -initByReferencingFile:(NSString *)path {
@@ -208,8 +214,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initByReferencingURL:(NSURL *)url {
-   NSUnimplementedMethod();
-   return 0;
+	// Better than nothing
+	return [self initWithContentsOfURL:url];
 }
 
 -(void)dealloc {

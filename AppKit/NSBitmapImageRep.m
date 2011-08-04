@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSPasteboard.h>
 
 @implementation NSBitmapImageRep
 
@@ -60,6 +61,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSData *)representationOfImageRepsInArray:(NSArray *)array usingType:(NSBitmapImageFileType)type properties:(NSDictionary *)properties {
    NSUnimplementedMethod();
    return nil;
+}
+
++(NSArray *)imageUnfilteredPasteboardTypes {
+	return [NSArray arrayWithObjects:
+			NSTIFFPboardType,
+			nil];
 }
 
 +(BOOL)canInitWithData:(NSData *)data {
@@ -628,7 +635,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(CGBitmapInfo)CGBitmapInfo {
    CGBitmapInfo result=kCGBitmapByteOrderDefault;
-   
+	
    if(![self hasAlpha])
     result|=kCGImageAlphaNone;
    else {
