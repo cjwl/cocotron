@@ -16,6 +16,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindowController.h>
 #import <AppKit/NSRaise.h>
 
+// function exposed in Cocotron Obj-C runtime.
+// used for Cocoa-compatible backward compatibility checks: newer methods can call the old ones if a subclass has overridden them
+// (e.g. -openUntitledDocumentAndDisplay:error: will call -openUntitledDocumentOfType:display: only in this case).
+extern struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId);  
+
+
 @interface NSDocument(private)
 -(void)_setUntitledNumber:(int)number;
 @end
@@ -256,7 +262,7 @@ static NSDocumentController *shared=nil;
    return result;
 }
 
--makeUntitledDocumentOfType:(NSString *)type {
+-(id)makeUntitledDocumentOfType:(NSString *)type {
    static int nextUntitledNumber=1;
    id    result;
    Class class=[self documentClassForType:type];
@@ -271,8 +277,41 @@ static NSDocumentController *shared=nil;
    return result;
 }
 
+-(id)makeUntitledDocumentOfType:(NSString *)type error:(NSError **)outError {
+   /* Cocoa documentation says:
+        "For backward binary compatibility with Mac OS X v10.3 and earlier,
+         the default implementation of this method instead invokes makeUntitledDocumentOfType: if it is overridden."
+      Hence we need to check if this class is a subclass that has this method overridden.
+      The check is performed using the Cocotron runtime's own OBJCLookupUniqueIdInOnlyThisClass()
+      because the Apple-compatible alternative, class_copyMethodList(), is not yet implemented in the Cocotron runtime.
+   */
+   if ([self class] != [NSDocumentController class]) {
+    Class class = [self class];
+    SEL selector = @selector(makeUntitledDocumentOfType:);
+    struct objc_method *method = NULL;
+    if ((method = OBJCLookupUniqueIdInOnlyThisClass(class,selector)) != NULL) {
+      return [self makeUntitledDocumentOfType:type];
+    }
+   }
+
+   static int nextUntitledNumber=1;
+   id    result;
+   Class class=[self documentClassForType:type];
+
+   NSError *error;
+   result=[[[class alloc] initWithType:type error:&error] autorelease];
+   if (result)
+    [result _setUntitledNumber:nextUntitledNumber++];
+   else {
+    if (outError) *outError = error;
+    else [self presentError:error];
+   }
+
+   return result;
+}
+
 -openUntitledDocumentOfType:(NSString *)type display:(BOOL)display {
-   NSDocument *result=[self makeUntitledDocumentOfType:type];
+   NSDocument *result=[self makeUntitledDocumentOfType:type error:NULL];
 
    if(result!=nil)
     [self addDocument:result];
@@ -287,7 +326,24 @@ static NSDocumentController *shared=nil;
 
 -openUntitledDocumentAndDisplay:(BOOL)display error:(NSError **)error {
    NSString   *type=[self defaultType];
-   NSDocument *result=[self makeUntitledDocumentOfType:type];
+
+   /* Cocoa documentation says:
+        "For backward binary compatibility with Mac OS X v10.3 and earlier,
+         the default implementation of this method instead invokes openUntitledDocumentOfType:display: if it is overridden."
+      Hence we need to check if this class is a subclass that has this method overridden.
+      The check is performed using the Cocotron runtime's own OBJCLookupUniqueIdInOnlyThisClass()
+      because the Apple-compatible alternative, class_copyMethodList(), is not yet implemented in the Cocotron runtime.
+   */
+   if ([self class] != [NSDocumentController class]) {
+    Class class = [self class];
+    SEL selector = @selector(openUntitledDocumentOfType:display:);
+    struct objc_method *method = NULL;
+    if ((method = OBJCLookupUniqueIdInOnlyThisClass(class,selector)) != NULL) {
+      return [self openUntitledDocumentOfType:type display:display];
+    }
+   }
+   
+   NSDocument *result=[self makeUntitledDocumentOfType:type error:error];
 
    if(result!=nil)
     [self addDocument:result];
@@ -568,9 +624,7 @@ static NSDocumentController *shared=nil;
 }
 
 -(void)newDocument:sender {
-   NSString *type=[(NSDictionary *)[_fileTypes objectAtIndex:0] objectForKey:@"CFBundleTypeName"];
-
-   [self openUntitledDocumentOfType:type display:YES];
+   [self openUntitledDocumentAndDisplay:YES error:NULL];
 }
 
 -(void)openDocument:sender {
