@@ -157,7 +157,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
 	if([reps count]==0){
-       [self dealloc];
+       [self release];
 		return nil;
 	}
 	
@@ -203,7 +203,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSString *available=[pasteboard availableTypeFromArray:[[self class] imageUnfilteredPasteboardTypes]];
 	NSData *data = [pasteboard dataForType:available];
 	if (data == nil) {
-		[self dealloc];
+		[self release];
 		return nil;
 	}
 	return [self initWithData:data];
