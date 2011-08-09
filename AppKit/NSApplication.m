@@ -599,9 +599,12 @@ id NSApp=nil;
    }while(nextEvent==nil && [untilDate timeIntervalSinceNow]>0);
 
    if(nextEvent!=nil){
-    [_currentEvent release];
-    _currentEvent=[nextEvent retain];
-}
+    nextEvent=[nextEvent retain];
+    
+    /* Caller may be referencing previous current event, so autorelease it. */
+    [_currentEvent autorelease];
+    _currentEvent=nextEvent;
+   }
 
    return [nextEvent autorelease];
 }
