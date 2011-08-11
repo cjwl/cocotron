@@ -833,7 +833,11 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
 -(void)getLineStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
    NSUInteger start=range.location;
-   NSUInteger end=NSMaxRange(range);
+   NSUInteger maxRange = NSMaxRange(range);
+   if (maxRange == 0) {
+        maxRange = 1;
+   }
+   NSUInteger end=maxRange - 1;
    NSUInteger contentsEnd=end;
    NSUInteger length=[self length];
    unichar  buffer[length];
@@ -910,7 +914,11 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
  The difference is that getParagraphStart: does not delimit on line terminators 0x0085 and 0x2028
  */
    NSUInteger start=range.location;
-   NSUInteger end=NSMaxRange(range);
+    NSUInteger maxRange = NSMaxRange(range);
+    if (maxRange == 0) {
+        maxRange = 1;
+    }
+   NSUInteger end=maxRange - 1;
    NSUInteger contentsEnd=end;
    NSUInteger length=[self length];
    unichar  buffer[length];
