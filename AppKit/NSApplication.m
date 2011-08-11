@@ -135,7 +135,9 @@ id NSApp=nil;
       
    _dockTile=[[NSDockTile alloc] initWithOwner:self];
    _modalStack=[NSMutableArray new];
-      
+    
+   pthread_mutex_init(&_lock,NULL);
+   
    [self _showSplashImage];
    
    return NSApp;
@@ -600,17 +602,25 @@ id NSApp=nil;
 
    if(nextEvent!=nil){
     nextEvent=[nextEvent retain];
-    
-    /* Caller may be referencing previous current event, so autorelease it. */
-    [_currentEvent autorelease];
-    _currentEvent=nextEvent;
+
+    pthread_mutex_lock(&_lock);
+     [_currentEvent release];
+     _currentEvent=nextEvent;
+    pthread_mutex_unlock(&_lock);
    }
 
    return [nextEvent autorelease];
 }
 
 -(NSEvent *)currentEvent {
-   return _currentEvent;
+   /* Apps do use currentEvent from secondary threads and it doesn't crash on OS X, so we need to be safe here too. */
+   NSEvent *result;
+
+    pthread_mutex_lock(&_lock);
+     result=[_currentEvent retain];
+    pthread_mutex_unlock(&_lock);
+   
+   return [result autorelease];
 }
 
 -(void)discardEventsMatchingMask:(unsigned)mask beforeEvent:(NSEvent *)event {
