@@ -57,9 +57,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSHost hostWithName:hostName];
 }
 
--(BOOL)isEqualToHost:(NSHost *)host {
-   NSUnimplementedMethod();
-   return 0;
+-(BOOL)isEqualToHost:(NSHost *)host {    
+    for(NSString *address in [self addresses])
+    {
+        if ([[host addresses] containsObject:address] == YES) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 -(void)_resolveAddressesIfNeeded {
