@@ -800,3 +800,24 @@ unichar *NSUnicodeFromBytesUTF16BigEndian(const unsigned char *bytes,NSUInteger 
    return result;
 }
 
+unichar *NSUnicodeFromBytesUTF16LittleEndian(const unsigned char *bytes,NSUInteger length,NSUInteger *resultLengthp) {
+	NSUInteger             i,resultLength,resultIndex=0;
+	unichar             *result;
+	
+	if(length%2!=0)
+		[NSException raise:NSInvalidArgumentException format:@"length of unicode NSData is not even (length=%d)",length];
+	
+	resultLength=length/2;
+	result=NSZoneMalloc(NULL,sizeof(unichar)*resultLength);
+	
+	for(i=0;i<length;i+=2){
+		unichar high=bytes[i+1];
+		unichar low=bytes[i];
+		
+		result[resultIndex++]=(high<<8)|low;
+	}
+	
+	*resultLengthp=resultLength;
+	
+	return result;
+}
