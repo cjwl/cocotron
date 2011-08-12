@@ -83,7 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          
     case NSUTF16LittleEndianStringEncoding:
      characters=NSUnicodeFromBytesUTF16LittleEndian(bytes,length,&resultLength);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
 
       case NSUTF16BigEndianStringEncoding:
      characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
