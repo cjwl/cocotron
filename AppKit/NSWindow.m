@@ -2596,16 +2596,19 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_childWindows makeObjectsPerformSelector:@selector(_parentWindowDidChangeFrame:) withObject:self];
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidChangeFrame:) withObject:self];
 
-   [_backgroundView setFrameSize:_frame.size];
-   [_backgroundView setNeedsDisplay:YES];
-
-   [self saveFrameUsingName:_autosaveFrameName];
-   [self resetCursorRects];
-   
-   if(didSize)
+   if (didSize) {
+    // Don't redraw everything unless we really have to
+    [_backgroundView setFrameSize:_frame.size];
+    [_backgroundView setNeedsDisplay:YES];
+    [self resetCursorRects];
+    [self saveFrameUsingName:_autosaveFrameName];
     [self postNotificationName:NSWindowDidResizeNotification];
+   }
    else
+   {
+    [self saveFrameUsingName:_autosaveFrameName];
     [self postNotificationName:NSWindowDidMoveNotification];
+   }
 }
 
 -(void)platformWindowExitMove:(CGWindow *)window {
