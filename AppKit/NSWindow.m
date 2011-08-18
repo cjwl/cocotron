@@ -214,7 +214,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _isDocumentEdited=NO;
 
    _makeSureIsOnAScreen=YES;
-   _excludedFromWindowsMenu=NO;
 
    _acceptsMouseMovedEvents=NO;
    _excludedFromWindowsMenu=NO;
@@ -1364,11 +1363,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)canBecomeKeyWindow {
-   return YES;
+	// The NSWindow implementation returns YES if the window has a title bar or a resize bar, or NO otherwise
+    return (_styleMask & (NSTitledWindowMask|NSResizableWindowMask)) != 0;
 }
 
 -(BOOL)canBecomeMainWindow {
-   return YES;
+	// The NSWindow implementation returns YES if the window is visible and has a title bar or a resize mechanism. Otherwise it returns NO
+    return [self isVisible] && (_styleMask & (NSTitledWindowMask|NSResizableWindowMask));
 }
 
 -(BOOL)canBecomeVisibleWithoutLogin {
@@ -1676,9 +1677,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else {
     _flushNeeded=NO;
     BOOL doFlush=YES;
-    
-    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+
+    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque]){
      doFlush=NO;
+     }
     
     if(doFlush)
      [[self platformWindow] flushBuffer];
@@ -2020,7 +2022,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
     case NSMouseMoved:{
       NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
-      
+
       if(hit==nil)
        [self mouseMoved:event];
       else
@@ -2167,7 +2169,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    [self orderWindow:NSWindowAbove relativeTo:0];
 
-   [self makeKeyWindow];
+	if([self canBecomeKeyWindow])
+		[self makeKeyWindow];
 
    if([self canBecomeMainWindow])
     [self makeMainWindow];
@@ -2925,18 +2928,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(NSView *)_backgroundView {
     return _backgroundView;
-}
-
--(NSInteger)orderedIndex {
-   NSInteger result=[[NSApp orderedWindows] indexOfObjectIdenticalTo:self];
-   
-   /* Documentation says orderedIndex is zero based, but tests say it is 1 based
-      Possible there is a window at 0 which is not in -[NSApp windows] ? Either way, available windows are 1 based.
-    */
-   if(result!=NSNotFound)
-    result+=1;
-
-   return result;
 }
 
 @end

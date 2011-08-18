@@ -12,6 +12,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSFontDescriptor;
 
+// Provides an extendable translation scheme for apps that use non-standard fonts in UI elements
+@interface NSNibFontNameTranslator : NSObject {
+	
+}
+
+- (NSString*)translateToNibFontName:(NSString*)fontName;
+- (NSString*)translateFromNibFontName:(NSString*)fontName;
+
+@end
+
 typedef unsigned NSGlyph;
 
 enum {
@@ -117,6 +127,13 @@ typedef enum {
 // private
 
 -(unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length;
+
+@end
+
+@interface NSFont (PortatibilityAdditions)
+
++ (void)setNibFontTranslator:(NSNibFontNameTranslator*)fontTranslator;
++ (NSNibFontNameTranslator*)nibFontTranslator;
 
 @end
 

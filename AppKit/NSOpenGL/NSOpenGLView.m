@@ -119,8 +119,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)unlockFocus {
 // Cocoa _does not_ flushBuffer
 // Single buffered contexts need to be updated somehow else
-	[super unlockFocus];
     CGLUnlockContext([_context CGLContextObj]);
+
+	[super unlockFocus];
 }
 
 - (void)clearGLContext {

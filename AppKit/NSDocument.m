@@ -128,12 +128,12 @@ static int untitled_document_number = 0;
    }
    else {
     [self init];
+	   [self setFileURL:url];
+	   [self setFileType:type];
     if(![self readFromURL:url ofType:type error:error]){
      [self dealloc];
      return nil;
     }
-    [self setFileURL:url];
-    [self setFileType:type];
    }
    [self _updateFileModificationDate];
    return self;
@@ -141,14 +141,14 @@ static int untitled_document_number = 0;
 
 -initForURL:(NSURL *)url withContentsOfURL:(NSURL *)contentsURL ofType:(NSString *)type error:(NSError **)error {
    [self init];
+	[self setFileURL:url];
+	[self setFileType:type];
    if(contentsURL!=nil){
     if(![self readFromURL:contentsURL ofType:type error:error]){
      [self dealloc];
      return nil;
     }
    }
-   [self setFileURL:url];
-   [self setFileType:type];
    [self _updateFileModificationDate];
    return self;
 }
@@ -936,14 +936,15 @@ forSaveOperation:(NSSaveOperationType)operation
    
    [self init];
 
-   error=nil;
+	[self setFileName:path];
+	[self setFileType:type];
+
+	error=nil;
    if(![self readFromURL:url ofType:type error:&error]){
     NSRunAlertPanel(nil,@"Can't open file '%@'. Error = %@",@"Ok",nil,nil,path,error);
     [self dealloc];
     return nil;
    }
-   [self setFileName:path];
-   [self setFileType:type];
    [self _updateFileModificationDate];
 
    return self;
@@ -956,13 +957,13 @@ forSaveOperation:(NSSaveOperationType)operation
    [self init];
 
    error=nil;
+	[self setFileURL:url];
+	[self setFileType:type];
    if(![self readFromURL:url ofType:type error:&error]){
     NSRunAlertPanel(nil,@"Can't open URL '%@'. Error = %@",@"Ok",nil,nil,url,error);
     [self dealloc];
     return nil;
    }
-   [self setFileURL:url];
-   [self setFileType:type];
    [self _updateFileModificationDate];
 
    return self;

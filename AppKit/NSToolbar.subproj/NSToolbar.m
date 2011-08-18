@@ -232,7 +232,7 @@ static BOOL isStandardItemIdentifier(NSString *identifier){
     BOOL standardItem=isStandardItemIdentifier(identifier);
     
     if(_delegate==nil || standardItem)
-     item=[[[NSToolbarItem alloc] initWithItemIdentifier:identifier] autorelease];
+     item=[[[[self toolbarItemClass] alloc] initWithItemIdentifier:identifier] autorelease];
     else {
      item=[_delegate toolbar:self itemForItemIdentifier:identifier willBeInsertedIntoToolbar:intoToolbar];
     }
@@ -545,6 +545,15 @@ static BOOL isStandardItemIdentifier(NSString *identifier){
 -(void)postAwakeFromNib {
 // this causes animation, display, frame changes, do post in initWithCoder:
    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarChangeAppearanceNotification object:self];
+}
+
+@end
+
+@implementation NSToolbar (NSToolbarCustomization)
+
+- (Class)toolbarItemClass
+{
+	return [NSToolbarItem class];
 }
 
 @end

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7E3027E213FC8F360025E69B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3027E113FC8F360025E69B /* Foundation.framework */; };
 		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
 		A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
@@ -700,7 +701,6 @@
 		C88977020EA0BF3100D0A0A2 /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		C88977030EA0BF3100D0A0A2 /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		C88977040EA0BF3100D0A0A2 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
-		C88977060EA0BF3100D0A0A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		C8A2379A0F09AC6300A3EC80 /* O2Context_cairo.m in Sources */ = {isa = PBXBuildFile; fileRef = C81BEA0E0EA6038800478D50 /* O2Context_cairo.m */; };
 		C8A2E2A50F07EA1F0054397C /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2A60F07EA1F0054397C /* AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FC0976075200DA0954 /* AppKit.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -1369,7 +1369,6 @@
 		C8A2E5690F07EA1F0054397C /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		C8A2E56A0F07EA1F0054397C /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
 		C8A2E56B0F07EA1F0054397C /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
-		C8A2E56D0F07EA1F0054397C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		C8A2E6080F07F4540054397C /* O2Context_cairo.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* O2Context_cairo.h */; };
 		C8AB730A0F40C21A00D93B96 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8AB730B0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
@@ -2007,7 +2006,6 @@
 		FE01AAB80C5D9BCB00AEA51A /* NSButtonCell_disclosure_normal.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */; };
 		FE01AAB90C5D9BCB00AEA51A /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
 		FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
-		FE01AABC0C5D9BCB00AEA51A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FE051BDB1221A2F40097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051BD91221A2F40097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE069E231245A4B80040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069E211245A4B80040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE069E241245A4B90040F165 /* O2GlyphStencil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069E221245A4B80040F165 /* O2GlyphStencil.m */; };
@@ -3157,7 +3155,6 @@
 		FE5A8BD910C6F50E005E348A /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
 		FE5A8BDA10C6F50E005E348A /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
 		FE5A8BDB10C6F50E005E348A /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
-		FE5A8BDD10C6F50E005E348A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FE5C69A10D76039F00098551 /* O2DeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* O2DeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C69A20D76039F00098551 /* O2DeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */; };
 		FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */; };
@@ -3906,7 +3903,6 @@
 		FEA316430FD5667D00F480D4 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
 		FEA316440FD5667D00F480D4 /* NSRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSRefreshTemplate.pdf */; };
 		FEA316450FD5667D00F480D4 /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
-		FEA316470FD5667D00F480D4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FEA317C20FD5893300F480D4 /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317C10FD5893300F480D4 /* NSRaise.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA317C30FD5893300F480D4 /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317C10FD5893300F480D4 /* NSRaise.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA317C40FD5893300F480D4 /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317C10FD5893300F480D4 /* NSRaise.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -4769,7 +4765,6 @@
 		6E2B574A0976075500DA0954 /* NSDrawerWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSDrawerWindow.m; sourceTree = "<group>"; };
 		6E2B574D0976075500DA0954 /* NSDrawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSDrawer.h; sourceTree = "<group>"; };
 		6E2B574F0976075500DA0954 /* NSDrawerWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSDrawerWindow.h; sourceTree = "<group>"; };
-		6E2B575B0976075500DA0954 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextViewSharedData.h; sourceTree = "<group>"; };
 		6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextViewSharedData.m; sourceTree = "<group>"; };
 		6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -4787,6 +4782,7 @@
 		6EC4ADE50A37294300E8D6CA /* NSButtonImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSButtonImageSource.m; sourceTree = "<group>"; };
 		6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomView.h; sourceTree = "<group>"; };
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
+		7E3027E113FC8F360025E69B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		A149E81710069B5B00616E2D /* NSCellUndoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCellUndoManager.h; sourceTree = "<group>"; };
 		A149E81810069B5B00616E2D /* NSCellUndoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCellUndoManager.m; sourceTree = "<group>"; };
 		A1CC7017100534AB00DB9974 /* NSCachingBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCachingBinder.h; sourceTree = "<group>"; };
@@ -5277,7 +5273,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C88977060EA0BF3100D0A0A2 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5285,7 +5280,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8A2E56D0F07EA1F0054397C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5293,7 +5287,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE01AABC0C5D9BCB00AEA51A /* Foundation.framework in Frameworks */,
+				7E3027E213FC8F360025E69B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5301,7 +5295,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5A8BDD10C6F50E005E348A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5309,7 +5302,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEA316470FD5667D00F480D4 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6166,7 +6158,7 @@
 		6E2B575A0976075500DA0954 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				6E2B575B0976075500DA0954 /* Foundation.framework */,
+				7E3027E113FC8F360025E69B /* Foundation.framework */,
 				FEDE655E1210A294003D3EF1 /* CoreData.framework */,
 			);
 			name = "External Frameworks and Libraries";

@@ -135,7 +135,9 @@ id NSApp=nil;
       
    _dockTile=[[NSDockTile alloc] initWithOwner:self];
    _modalStack=[NSMutableArray new];
-      
+    
+   pthread_mutex_init(&_lock,NULL);
+   
    [self _showSplashImage];
    
    return NSApp;
@@ -356,19 +358,25 @@ id NSApp=nil;
 }
 
 -(void)changeWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)isFilename {
-    int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
 
-    if (itemIndex != -1) {
-        NSMenuItem *item = [[self windowsMenu] itemAtIndex:itemIndex];
-
-        if (isFilename)
-            title = [NSString stringWithFormat:@"%@  --  %@",[title lastPathComponent], [title stringByDeletingLastPathComponent]];
-
-        [item setTitle:title];
-        [[self windowsMenu] itemChanged:item];
-    }
-    else
-        [self addWindowsItem:window title:title filename:isFilename];
+ 	if ([title length] == 0) {
+    // Windows with no name aren't in the Windows menu
+		[self removeWindowsItem:window];
+	} else {
+		int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
+		
+		if (itemIndex != -1) {
+			NSMenuItem *item = [[self windowsMenu] itemAtIndex:itemIndex];
+			
+			if (isFilename)
+				title = [NSString stringWithFormat:@"%@  --  %@",[title lastPathComponent], [title stringByDeletingLastPathComponent]];
+			
+			[item setTitle:title];
+			[[self windowsMenu] itemChanged:item];
+		} 
+		else
+			[self addWindowsItem:window title:title filename:isFilename];
+	}
 }
 
 -(void)removeWindowsItem:(NSWindow *)window {
@@ -593,15 +601,26 @@ id NSApp=nil;
    }while(nextEvent==nil && [untilDate timeIntervalSinceNow]>0);
 
    if(nextEvent!=nil){
-    [_currentEvent release];
-    _currentEvent=[nextEvent retain];
-}
+    nextEvent=[nextEvent retain];
+
+    pthread_mutex_lock(&_lock);
+     [_currentEvent release];
+     _currentEvent=nextEvent;
+    pthread_mutex_unlock(&_lock);
+   }
 
    return [nextEvent autorelease];
 }
 
 -(NSEvent *)currentEvent {
-   return _currentEvent;
+   /* Apps do use currentEvent from secondary threads and it doesn't crash on OS X, so we need to be safe here too. */
+   NSEvent *result;
+
+    pthread_mutex_lock(&_lock);
+     result=[_currentEvent retain];
+    pthread_mutex_unlock(&_lock);
+   
+   return [result autorelease];
 }
 
 -(void)discardEventsMatchingMask:(unsigned)mask beforeEvent:(NSEvent *)event {
@@ -764,24 +783,27 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
-   while([session stopCode]==NSRunContinuesResponse){
-    NSEvent *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantFuture] inMode:NSModalPanelRunLoopMode dequeue:YES];
 
-    if(event==nil)
-     break;
-
+   while([session stopCode]==NSRunContinuesResponse) {
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    NSWindow          *window=[event window];
+    NSEvent          *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
 
-    // in theory this could get weird, but all we want is the ESC-cancel keybinding,
-    // afaik NSApp doesn't respond to any other doCommandBySelectors...
+    if(event==nil){
+     [pool release];
+     break;
+    }
+
+    NSWindow        *window=[event window];
+
+    // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
     if([event type]==NSKeyDown && window == [session modalWindow])
-     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-
+       [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+   
     if(window==[session modalWindow] || [window worksWhenModal])
      [self sendEvent:event];
     else if([event type]==NSLeftMouseDown)
      [[session modalWindow] makeKeyAndOrderFront:self];
+
     [pool release];
    }
 

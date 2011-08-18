@@ -178,7 +178,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [pool release];
    }while(state!=STATE_EXIT);
-
+   [event release];
+   
    if([viewStack count]>0)
     item=[[viewStack lastObject] itemAtSelectedIndex];
 

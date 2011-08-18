@@ -13,6 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSegmentItem
 
+- (id)init {
+	if (self = [super init]) {
+		_isEnabled = YES;
+	}
+	return self;
+}
+
 - (id)initWithCoder:(NSCoder *)decoder {
    _label=[[decoder decodeObjectForKey:@"NSSegmentItemLabel"] retain];
    _image=[[decoder decodeObjectForKey:@"NSSegmentItemImage"] retain];

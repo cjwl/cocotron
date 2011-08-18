@@ -14,3 +14,4 @@ void NSUnicodeToCapitalized(unichar *characters,NSUInteger length);
 
 unichar *NSUnicodeFromBytes(const unsigned char *bytes,NSUInteger length,NSUInteger *resultLengthp);
 unichar *NSUnicodeFromBytesUTF16BigEndian(const unsigned char *bytes,NSUInteger length,NSUInteger *resultLengthp);
+unichar *NSUnicodeFromBytesUTF16LittleEndian(const unsigned char *bytes,NSUInteger length,NSUInteger *resultLengthp);

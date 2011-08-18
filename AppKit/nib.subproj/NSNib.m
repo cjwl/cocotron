@@ -114,9 +114,16 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     objectData=[unarchiver decodeObjectForKey:@"IB.objectdata"];
         
     [objectData buildConnectionsWithNameTable:_nameTable];
-    if((menu=[objectData mainMenu])!=nil)
-     [NSApp setMainMenu:menu];
-     
+	if((menu=[objectData mainMenu])!=nil) {
+		// Rename the first item to have the application name.
+		if ([menu numberOfItems] > 0) {
+			NSMenuItem *firstItem = [menu itemAtIndex: 0];
+			NSString *appName = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:(NSString *)kCFBundleNameKey];
+			[firstItem setTitle: appName];
+		}
+		[NSApp setMainMenu:menu];
+	}
+	
     // Top-level objects are always retained; if external table contains a mutable
     // array for key NSNibTopLevelObjects, then this array retains all top-level objects,
     // else we simply do a retain on them.

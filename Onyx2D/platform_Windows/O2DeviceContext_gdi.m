@@ -13,6 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 COLORREF COLORREFFromColor(O2Color *color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
+   
+   if(rgbColor==NULL)
+    return RGB(0,0,0);
+    
    const float *components=O2ColorGetComponents(rgbColor);
    
    COLORREF result=RGB(RI_INT_CLAMP(components[0]*255,0,255),RI_INT_CLAMP(components[1]*255,0,255),RI_INT_CLAMP(components[2]*255,0,255));
@@ -117,7 +121,7 @@ void O2DeviceContextEstablishDeviceSpacePath_gdi(HDC dc,O2Path *path,O2AffineTra
 
 void O2DeviceContextClipReset_gdi(HDC dc) {
 // These two should effectively be the same, an the latter is preferred. But needs testing. Possibly not working (e.g. AC)
-#if 1
+#if 0
    HRGN region=CreateRectRgn(0,0,GetDeviceCaps(dc,HORZRES),GetDeviceCaps(dc,VERTRES));
    if(!SelectClipRgn(dc,region)){
     if(NSDebugEnabled)

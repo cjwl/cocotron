@@ -65,6 +65,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 	switch(type[0])
 	{
 		case '@':
+		case '#':
 			return *(id*)value;
 		case 'i':
 			return [NSNumber numberWithInt:*(int*)value];
@@ -98,7 +99,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 	char* cleanType=__builtin_alloca(strlen(type)+1);
 	[self _demangleTypeEncoding:type to:cleanType];
 	
-	if(cleanType[0]!='@' && strlen(cleanType)>1)
+	if(cleanType[0]!='@' && cleanType[0]!='#' && strlen(cleanType)>1)
 	{
 		if(strcmp([value objCType], cleanType))
 		{
@@ -111,6 +112,8 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 	
 	switch(cleanType[0])
 	{
+		case '#':
+			shouldRetain = NO; // no need to retain classes
 		case '@':
          if(shouldRetain) {
             if((*(id*)buffer)!=value) {
@@ -161,7 +164,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 {
 	id sig=[self methodSignatureForSelector:sel];
 	const char* type=[sig methodReturnType];
-	if(strcmp(type, "@"))
+	if(strcmp(type, "@") && strcmp(type, "#")) // neither object or class
 	{
 		id inv=[NSInvocation invocationWithMethodSignature:sig];
 		[inv setSelector:sel];
@@ -181,7 +184,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 {
 	id sig=[self methodSignatureForSelector:sel];
 	const char* type=[sig getArgumentTypeAtIndex:2];
-	if(strcmp(type, "@"))
+	if(strcmp(type, "@") && strcmp(type, "#")) // neither object or class
 	{
 		if(!value)
 		{

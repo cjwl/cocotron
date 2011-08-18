@@ -169,6 +169,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)dataForType:(NSString *)type {
    NSData   *result=nil;
+   BOOL      copyData=YES;
    FORMATETC formatEtc;
    STGMEDIUM storageMedium;
 
@@ -208,39 +209,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case TYMED_HGLOBAL: 
            { // hGlobal 
-           void  *bytes=GlobalLock(storageMedium.hGlobal); 
-           int    size=GlobalSize(storageMedium.hGlobal); 
-           if(formatEtc.cfFormat==CF_UNICODETEXT && (size > 0)) 
-                   { 
-                        if(size % 2) 
-                                { // odd data length. WTF? 
-                                unsigned char lastbyte = ((unsigned char *)bytes)[size-1]; 
-                                if(lastbyte != 0) 
-                                        { // not a null oddbyte, log it. 
-                                        NSString * str = [NSString stringWithCharacters: bytes length: (size-1)/2]; 
-                                        if([str length] > 80) 
-                                                { 
-                                                str = [str substringFromIndex: [str length] - 80]; 
-                                                } 
-                                        NSLog(@"%s:%u[%s] -- \n*****CF_UNICODETEXT byte count not even and odd byte (%0X,'%c') not null",__FILE__, __LINE__, __PRETTY_FUNCTION__,(unsigned)lastbyte, 
+           uint8_t  *bytes=GlobalLock(storageMedium.hGlobal); 
+           NSUInteger byteLength=GlobalSize(storageMedium.hGlobal); 
+           if(formatEtc.cfFormat==CF_UNICODETEXT && (byteLength > 0)) { 
+                if(byteLength % 2)  { // odd data length. WTF? 
+                    uint8_t lastbyte = bytes[byteLength-1]; 
+                    if(lastbyte != 0) { // not a null oddbyte, log it. 
+                        NSLog(@"%s:%u[%s] -- \n*****CF_UNICODETEXT byte count not even and odd byte (%0X,'%c') not null",__FILE__, __LINE__, __PRETTY_FUNCTION__,(unsigned)lastbyte, 
 lastbyte); 
-                                        } 
-                                --size; // truncate regardless 
-                                }       
-                   while(size) 
-                           { // zortch any terminating null unichars 
-                           if(((unichar *) bytes)[(size-2)/2] != 0) 
-                                   { 
-                                   break; 
-                                   } 
-                           else 
-                                   { 
-                                   size -= 2; 
-                                   } 
-                           }; 
-                   } 
-                result=[NSData dataWithBytes:bytes length:size]; 
-                GlobalUnlock(storageMedium.hGlobal); 
+                    } 
+                        --byteLength; // truncate regardless 
+                }  
+                     
+                while(byteLength>0)  { // zortch any terminating null unichars 
+                    if(((unichar *) bytes)[(byteLength-2)/2] != 0) { 
+                        break; 
+                    } 
+                    else { 
+                        byteLength -= 2; 
+                    } 
+                }; 
+
+/* check for BOM, if not it is big endian. */
+                if(byteLength>=2){
+                 if(bytes[0]==0xFE && bytes[1]==0xFF){
+                  copyData=NO;
+                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes+2, byteLength-2, &byteLength);
+                  byteLength*=2;
+                 }
+                 else if(bytes[0]==0xFF && bytes[1]==0xFE){
+                  copyData=NO;
+                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16LittleEndian(bytes+2, byteLength-2, &byteLength);
+                  byteLength*=2;
+                 }
+                }
+                if(copyData){
+                  copyData=NO;
+                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes, byteLength, &byteLength);
+                  byteLength*=2;
+                }
+                
+            } 
+            if(copyData)
+             result=[NSData dataWithBytes:bytes length:byteLength]; 
+            else
+             result=[NSData dataWithBytesNoCopy:bytes length:byteLength freeWhenDone:YES]; 
+             
+            GlobalUnlock(storageMedium.hGlobal); 
            } 
         break; 
 
