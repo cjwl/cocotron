@@ -2152,7 +2152,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     size.height=MAX([self frame].size.height,size.height);
     
-    NSClipView *clipView=[self superview];
+    NSView *clipView=[self superview];
     
     if([clipView isKindOfClass:[NSClipView class]]){
      if(size.height<[clipView bounds].size.height)
@@ -2582,6 +2582,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 - (NSAttributedString *)attributedString
 {
 	return [[_textStorage copy] autorelease];
+}
+
+-(void)changeSpelling:sender {
+
+}
+
+-(void)ignoreSpelling:sender {
+
 }
 
 

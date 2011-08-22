@@ -346,6 +346,9 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
       _winAnsiEncoding=[[O2Encoding alloc] initWithGlyphs:glyphs unicode:unicode];
      }
      return [_winAnsiEncoding retain];
+
+    case kO2EncodingUnicode:
+     break;
    }
    
    return nil;
