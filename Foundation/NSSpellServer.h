@@ -1,4 +1,8 @@
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRange.h>
+#import <Foundation/NSTextCheckingResult.h>
+
+@class NSSpellServer,NSArray,NSDictionary,NSOrthography;
 
 NSString *const NSGrammarRange;
 NSString *const NSGrammarUserDescription;

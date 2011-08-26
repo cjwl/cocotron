@@ -35,6 +35,13 @@ APPKIT_EXPORT NSString * const NSCursorAttributeName;
 APPKIT_EXPORT NSString * const NSToolTipAttributeName;
 APPKIT_EXPORT NSString * const NSBackgroundColorDocumentAttribute;
 
+APPKIT_EXPORT NSString * const NSSpellingStateAttributeName;
+
+enum {
+   NSSpellingStateSpellingFlag=0x01,
+   NSSpellingStateGrammarFlag =0x02,
+};
+
 enum {
    NSUnderlineStyleNone,
    NSUnderlineStyleSingle,
