@@ -123,7 +123,6 @@ enum {
 // private
 NSFont *NSFontAttributeInDictionary(NSDictionary *dictionary);
 NSColor *NSForegroundColorAttributeInDictionary(NSDictionary *dictionary);
-NSColor *NSBackgroundColorAttributeInDictionary(NSDictionary *dictionary);
 NSParagraphStyle *NSParagraphStyleAttributeInDictionary(NSDictionary *dictionary);
 
 #import <AppKit/NSMutableAttributedString.h>

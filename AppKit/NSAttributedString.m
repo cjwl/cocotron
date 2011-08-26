@@ -335,10 +335,6 @@ NSColor *NSForegroundColorAttributeInDictionary(NSDictionary *dictionary) {
    return color;
 }
 
-NSColor *NSBackgroundColorAttributeInDictionary(NSDictionary *dictionary) {
-   return [dictionary objectForKey:NSBackgroundColorAttributeName];
-}
-
 NSParagraphStyle *NSParagraphStyleAttributeInDictionary(NSDictionary *dictionary) {
    NSParagraphStyle  *style=[dictionary objectForKey:NSParagraphStyleAttributeName];
 
