@@ -2021,6 +2021,11 @@
 		FE069E2C1245A4B90040F165 /* O2GlyphStencil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069E221245A4B80040F165 /* O2GlyphStencil.m */; };
 		FE08C3230DDF299800B3169A /* NSColor_CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE08C3210DDF299800B3169A /* NSColor_CGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08C3220DDF299800B3169A /* NSColor_CGColor.m */; };
+		FE09AF3513FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3613FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3713FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3813FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3913FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE14436A1256D43D007FE685 /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1443681256D43D007FE685 /* _NSControllerArray.h */; };
 		FE14436B1256D43D007FE685 /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1443691256D43D007FE685 /* _NSControllerArray.m */; };
 		FE14436C1256D43D007FE685 /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1443681256D43D007FE685 /* _NSControllerArray.h */; };
@@ -4839,6 +4844,7 @@
 		FE069E221245A4B80040F165 /* O2GlyphStencil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2GlyphStencil.m; sourceTree = "<group>"; };
 		FE08C3210DDF299800B3169A /* NSColor_CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColor_CGColor.h; sourceTree = "<group>"; };
 		FE08C3220DDF299800B3169A /* NSColor_CGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColor_CGColor.m; sourceTree = "<group>"; };
+		FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellProtocol.h; sourceTree = "<group>"; };
 		FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenGL.xcodeproj; path = ../OpenGL/OpenGL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE1443681256D43D007FE685 /* _NSControllerArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _NSControllerArray.h; sourceTree = "<group>"; };
 		FE1443691256D43D007FE685 /* _NSControllerArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _NSControllerArray.m; sourceTree = "<group>"; };
@@ -5358,6 +5364,7 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */,
 				FE20C240118924A4006F01BA /* NSAccessibility.h */,
 				FE20C241118924A4006F01BA /* NSAccessibility.m */,
 				FE20C242118924A4006F01BA /* NSCIImageRep.h */,
@@ -7047,6 +7054,7 @@
 				FE74968A12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B412C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FC133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3613FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7449,6 +7457,7 @@
 				FE74968C12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B512C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FE133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3713FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7848,6 +7857,7 @@
 				FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FA133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3513FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8252,6 +8262,7 @@
 				FE74969012BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B712C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B302133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3913FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8573,6 +8584,7 @@
 				FE74968E12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B612C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B300133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3813FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

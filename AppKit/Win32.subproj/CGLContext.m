@@ -4,6 +4,7 @@
 #import <stdbool.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreGraphics/CGLPixelSurface.h>
+#import <CoreGraphics/CGWindow.h>
 #import <pthread.h>
 
 /* There is essentially only two ways to implement a CGLContext on Windows.

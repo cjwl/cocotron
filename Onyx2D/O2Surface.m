@@ -517,7 +517,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
     NSLog(@"O2Surface -init error, return");
 
    _clampExternalPixels=NO; // only set to yes if premultiplied
-   _lock=pthread_mutex_init(&_lock,NULL);
+   pthread_mutex_init(&_lock,NULL);
    return self;
 }
 

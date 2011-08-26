@@ -107,6 +107,9 @@ size_t O2BitmapContextGetBitsPerPixel(O2ContextRef self) {
 
     case kO2ImageAlphaNoneSkipFirst:
      break;
+
+    case kO2ImageAlphaOnly:
+     break;
    }
    
    return result;

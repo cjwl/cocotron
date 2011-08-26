@@ -1,6 +1,7 @@
 #import "NSGraphicsStyle_uxtheme.h"
 #import <AppKit/NSGraphicsContext.h>
 #import <Onyx2D/O2Context.h>
+#import <Onyx2D/O2Surface.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
