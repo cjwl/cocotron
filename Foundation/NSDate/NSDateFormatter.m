@@ -346,8 +346,8 @@ NSInteger NSMinuteFromTimeInterval(NSTimeInterval interval){ // 0-59
 
 NSInteger NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
     NSInteger seconds = fmod(interval,60);
-    if (seconds < 0)
-        seconds = (60 + seconds);
+    if (seconds <= 0)
+        seconds = (59 + seconds);
 
     return seconds;
 }
