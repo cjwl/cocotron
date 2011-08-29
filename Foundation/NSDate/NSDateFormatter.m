@@ -247,7 +247,7 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
     daysOfCommonEra -= NSDaysOfCommonEraOfReferenceDate;
     daysOfCommonEra;
 
-    interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + ((double)milliseconds/1000);
+    interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + milliseconds/1000.0;
 
     return interval;
 }
@@ -353,7 +353,11 @@ NSInteger NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
 }
 
 NSInteger NSMillisecondsFromTimeInterval(NSTimeInterval interval){ // 0-999
-    return fabs(fmod(interval*1000,1000));
+    NSInteger milli = fmod(interval*1000,1000);
+    if(milli < 0) {
+        milli = (1000 + milli);
+    }
+    return milli;
 }
 
 NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,NSDictionary *locale,NSTimeZone *timeZone) {
