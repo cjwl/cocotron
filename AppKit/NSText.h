@@ -132,6 +132,9 @@ APPKIT_EXPORT NSString * const NSTextDidChangeNotification;
 -(void)copyRuler:sender;
 -(void)pasteRuler:sender;
 
+-(void)showGuessPanel:sender;
+-(void)checkSpelling:sender;
+
 @end
 
 @interface NSObject(NSText_delegate)

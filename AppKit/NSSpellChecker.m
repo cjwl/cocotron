@@ -213,6 +213,9 @@ static NSSpellChecker *shared=nil;
     
     NSView *view=[_spellingViewController view];
     _spellingPanel=[[NSPanel alloc] initWithContentRect:[view frame] styleMask:NSUtilityWindowMask backing:NSBackingStoreBuffered defer:YES];
+    
+    [_spellingPanel setContentView:view];
+    
     [_spellingPanel center];
    }
    

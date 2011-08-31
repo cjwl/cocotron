@@ -2601,6 +2601,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [[NSSpellChecker sharedSpellChecker] ignoreWord:[[sender selectedCell] stringValue] inSpellDocumentWithTag: [self spellCheckerDocumentTag]];
 }
 
+-(void)showGuessPanel:sender {
+   [[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
+}
+
+-(void)checkSpelling:sender {
+   [NSSpellChecker sharedSpellChecker];
+   NSUnimplementedMethod();
+}
+
 -(NSInteger)spellCheckerDocumentTag {
    /* There is no explicity invalid document tag, this is indirectly documented as zero in the full checkSpellingOfString: method.
       and supported by behavior. */

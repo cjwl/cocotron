@@ -8,8 +8,31 @@
 
 #import <Foundation/NSSpellEngine.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSArray.h>
 
 @implementation NSSpellEngine
+
++(void)initialize {
+   if(self==[NSSpellEngine class]){
+        
+    NSArray *allPaths=[[NSBundle bundleForClass:self] pathsForResourcesOfType:@"spellEngine" inDirectory:nil];
+    int      i,count=[allPaths count];
+    
+    for(i=0;i<count;i++){
+     NSString *path=[allPaths objectAtIndex:i];
+     NSBundle *check=[NSBundle bundleWithPath:path];
+     Class     cls=[check principalClass];
+     
+     [cls registerEngine];
+     
+    }
+   }
+}
+
++(void)registerEngine {
+   NSUnimplementedMethod();
+}
 
 -(NSRange)spellServer:(NSSpellServer *)sender checkGrammarInString:(NSString *)string language:(NSString *)language details:(NSArray **)outDetails {
    NSUnimplementedMethod();
