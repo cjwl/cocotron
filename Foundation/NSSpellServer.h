@@ -4,9 +4,9 @@
 
 @class NSSpellServer,NSArray,NSDictionary,NSOrthography;
 
-NSString *const NSGrammarRange;
-NSString *const NSGrammarUserDescription;
-NSString *const NSGrammarCorrections;
+FOUNDATION_EXPORT NSString *const NSGrammarRange;
+FOUNDATION_EXPORT NSString *const NSGrammarUserDescription;
+FOUNDATION_EXPORT NSString *const NSGrammarCorrections;
 
 @protocol NSSpellServerDelegate
 //@optional
