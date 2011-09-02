@@ -16,47 +16,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
 #include <signal.h>
 #include <errno.h>
 
 // these cannot be static, subclasses need them :/
 NSMutableArray *_liveTasks = nil;
-NSPipe *_taskPipe = nil;
 
 @implementation NSTask_posix
 
-void childSignalHandler(int sig);
-
-// it is possible that this code could execute before _taskPipe is set up, in
-// which case we wind up send some messages to nil.
 void childSignalHandler(int sig) {
     if (sig == SIGCHLD) {
-// FIX, this probably isnt safe to do from a signal handler
-       uint32_t quad = 32;
-       NSData *data = [NSData dataWithBytes:&quad length:sizeof(uint32_t)];
-       NSFileHandle *handle = [_taskPipe fileHandleForWriting];
-
-       [handle writeData:data];
+        NSTask_posix *task;
+        pid_t pid;
+        int status;
+        
+        pid = wait4(-1, &status, WNOHANG, NULL);
+        
+        if (pid < 0) {
+            // [NSException raise:NSInvalidArgumentException format:@"wait4(): %s", strerror(errno)];
+        }
+        else if (pid == 0) {
+            // This can happen when a child is suspended (^Z'ing at the shell)
+            // something got out of synch here
+            // [NSException raise:NSInternalInconsistencyException format:@"wait4() returned 0, but data was fed to the pipe!"];
+        }
+        else {
+            @synchronized(_liveTasks) {
+                NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
+                while (task = [taskEnumerator nextObject]) {
+                    if ([task processIdentifier] == pid) {
+                        if (WIFEXITED(status))
+                            [task setTerminationStatus:WEXITSTATUS(status)];
+                        else
+                            [task setTerminationStatus:-1];
+                        
+                        [task taskFinished];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:NSTaskDidTerminateNotification object:task]];
+                        
+                        return;
+                    }
+                }
+            }
+            
+            // something got out of synch here
+            //[NSException raise:NSInternalInconsistencyException format:@"wait4() returned %d, but we have no matching task!", pid];
+        }
     }
 }
 
-+(void)registerNotification {
-    NSFileHandle *forReading;
-    forReading=[_taskPipe fileHandleForReading];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(signalPipeReadNotification:)
-                                                 name:NSFileHandleReadCompletionNotification object:forReading];
-    [forReading readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
-    
-}
-
-+(void)signalPipeReadNotification:(NSNotification *)note {
-   [[_taskPipe fileHandleForReading] readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
-}
-
 +(void)initialize {
-    if(self==[NSTask_posix class]){
+    if (self == [NSTask_posix class]) {
         _liveTasks=[[NSMutableArray alloc] init];
-        _taskPipe=[[NSPipe alloc] init];
+
+        struct sigaction sa;        
+        sigaction (SIGCHLD, (struct sigaction *)0, &sa);
+        sa.sa_flags |= SA_RESTART;
+        sa.sa_handler = childSignalHandler;
+        sigaction (SIGCHLD, &sa, (struct sigaction *)0);
     }
 }
 
@@ -65,9 +85,15 @@ void childSignalHandler(int sig) {
 }
 
 -(void)launch {
-    if(launchPath==nil)
+    if (isRunning) {
+        [NSException raise:NSInvalidArgumentException
+                    format:@"NSTask already launched"];   
+    }
+    
+    if (launchPath==nil)
         [NSException raise:NSInvalidArgumentException
                     format:@"NSTask launchPath is nil"];
+    
     
     _processID = fork(); 
     if (_processID == 0) {  // child process
@@ -150,6 +176,8 @@ void childSignalHandler(int sig) {
             i++;
         }
         
+        cenv[[env count]] = NULL;
+        
         execve(path, (char**)args, (char**)cenv);
         [NSException raise:NSInvalidArgumentException
                     format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
@@ -185,7 +213,7 @@ void childSignalHandler(int sig) {
 -(int)terminationStatus { return _terminationStatus; }			// OSX specs this
 -(void)setTerminationStatus:(int)terminationStatus { _terminationStatus = terminationStatus; }
 
--(void)taskFinished {
+-(void)taskFinished {    
    isRunning = NO;
     @synchronized(_liveTasks) {
         [_liveTasks removeObject:self];

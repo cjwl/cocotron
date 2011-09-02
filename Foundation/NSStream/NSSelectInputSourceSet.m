@@ -55,8 +55,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInteger      i,count=[sources count];
 
    for(i=0;i<count;i++){   
-    NSSelectInputSource *check=[sources objectAtIndex:i];
-     NSSocket *socket=[check socket];
+    NSSelectInputSource *inputSource=[sources objectAtIndex:i];
+     NSSocket *socket=[inputSource socket];
     NSUInteger event=0,remove;
     
      if([_outputSet containsObjectForRead:socket])
@@ -66,7 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      if([_outputSet containsObjectForException:socket])
       event|=NSSelectExceptEvent;
      
-    if((remove=[check processImmediateEvents:event])){
+    if((remove=[inputSource processImmediateEvents:event])){
      if(remove&NSSelectReadEvent)
       [_outputSet removeObjectForRead:socket];
      if(remove&NSSelectWriteEvent)
@@ -83,11 +83,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSelectSet *)inputSelectSet {
    NSSelectSet         *result=[[[NSSelectSet alloc] init] autorelease];
    NSEnumerator        *state=[[self validInputSources] objectEnumerator];
-   NSSelectInputSource *check;
+   NSSelectInputSource *inputSource;
    
-   while((check=[state nextObject])!=nil){
-    NSSocket *socket=[check socket];
-    NSUInteger  mask=[check selectEventMask];
+   while((inputSource=[state nextObject])!=nil){
+    NSSocket *socket=[inputSource socket];
+    NSUInteger  mask=[inputSource selectEventMask];
     
     if(mask&NSSelectReadEvent)
      [result addObjectForRead:socket];

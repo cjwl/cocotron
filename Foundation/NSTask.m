@@ -152,9 +152,10 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
 }
 
 -(void)waitUntilExit {
-   while(isRunning)
+    while(isRunning) {
      [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode 
                               beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
+    }
 }
 
 -(int)processIdentifier {

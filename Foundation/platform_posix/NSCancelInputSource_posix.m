@@ -28,6 +28,7 @@
    [super dealloc];
 }
 
+/*
 -(NSUInteger)processImmediateEvents:(NSUInteger)selectEvent {
    if(selectEvent & NSSelectReadEvent) {
       uint8_t buf[256];
@@ -36,7 +37,7 @@
       return NSSelectReadEvent;
    }
    return 0;
-}
+}*/
 
 -(void)cancel {
    if(!_hasCanceled) {

@@ -83,20 +83,6 @@ NSString * const NSPlatformExecutableFileExtension=@"";
 NSString * const NSPlatformLoadableObjectFileExtension=@"dylib";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"";
 
--(Class)taskClass {
-    static Class NSTaskClass = Nil;
-    
-    @synchronized(self)
-	{
-        if (NSTaskClass == Nil) {
-            NSTaskClass = [NSTask_darwin class];
-            [NSTaskClass registerNotification];
-        }
-    }
-    
-    return NSTaskClass;
-}
-
 - (NSUInteger)processorCount
 {
   return((NSUInteger)int32SysctlByName("hw.ncpu"));

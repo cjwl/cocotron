@@ -206,8 +206,6 @@
 		15D91FC7105E918000171406 /* NSPipe_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28057F09747CEE00EC542B /* NSPipe_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FC8105E918000171406 /* NSPlatform_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28058109747CEE00EC542B /* NSPlatform_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FC9105E918000171406 /* NSTask_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28058309747CEE00EC542B /* NSTask_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		15D91FCA105E918000171406 /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28056C09747CE100EC542B /* NSPlatform_linux.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		15D91FCB105E918000171406 /* NSTask_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28056E09747CE100EC542B /* NSTask_linux.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FCC105E918000171406 /* NSPropertyListReader_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FCD105E918000171406 /* NSPropertyListReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084CD0A19371600F78605 /* NSPropertyListReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D91FCE105E918000171406 /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -510,8 +508,6 @@
 		15D920FB105E918000171406 /* NSPlatform_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058209747CEE00EC542B /* NSPlatform_posix.m */; };
 		15D920FC105E918000171406 /* NSTask_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058409747CEE00EC542B /* NSTask_posix.m */; };
 		15D920FD105E918000171406 /* NSMemoryFunctions_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */; };
-		15D920FE105E918000171406 /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056D09747CE100EC542B /* NSPlatform_linux.m */; };
-		15D920FF105E918000171406 /* NSTask_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056F09747CE100EC542B /* NSTask_linux.m */; };
 		15D92100105E918000171406 /* NSConstantString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057509747CEE00EC542B /* NSConstantString.m */; };
 		15D92101105E918000171406 /* NSPropertyListReader_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */; };
 		15D92102105E918000171406 /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
@@ -946,8 +942,6 @@
 		28D485C20FE04E7100DC03EF /* NSPipe_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28057F09747CEE00EC542B /* NSPipe_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485C30FE04E7100DC03EF /* NSPlatform_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28058109747CEE00EC542B /* NSPlatform_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485C40FE04E7100DC03EF /* NSTask_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28058309747CEE00EC542B /* NSTask_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		28D485C50FE04E7100DC03EF /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28056C09747CE100EC542B /* NSPlatform_linux.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		28D485C60FE04E7100DC03EF /* NSTask_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28056E09747CE100EC542B /* NSTask_linux.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485C70FE04E7100DC03EF /* NSPropertyListReader_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485C80FE04E7100DC03EF /* NSPropertyListReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084CD0A19371600F78605 /* NSPropertyListReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		28D485C90FE04E7100DC03EF /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1241,8 +1235,6 @@
 		28D486ED0FE04E7100DC03EF /* NSPlatform_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058209747CEE00EC542B /* NSPlatform_posix.m */; };
 		28D486EE0FE04E7100DC03EF /* NSTask_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058409747CEE00EC542B /* NSTask_posix.m */; };
 		28D486EF0FE04E7100DC03EF /* NSMemoryFunctions_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */; };
-		28D486F00FE04E7100DC03EF /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056D09747CE100EC542B /* NSPlatform_linux.m */; };
-		28D486F10FE04E7100DC03EF /* NSTask_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056F09747CE100EC542B /* NSTask_linux.m */; };
 		28D486F20FE04E7100DC03EF /* NSConstantString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057509747CEE00EC542B /* NSConstantString.m */; };
 		28D486F30FE04E7100DC03EF /* NSPropertyListReader_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */; };
 		28D486F40FE04E7100DC03EF /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
@@ -1421,10 +1413,6 @@
 		6E0084D10A19371600F78605 /* NSPropertyListReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084CD0A19371600F78605 /* NSPropertyListReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E0084D20A19371600F78605 /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
 		6E1B5DB709E8ABDA00B6029C /* NSMemoryFunctions_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */; };
-		6E1B5DB809E8ABDB00B6029C /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28056C09747CE100EC542B /* NSPlatform_linux.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E1B5DB909E8ABDB00B6029C /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056D09747CE100EC542B /* NSPlatform_linux.m */; };
-		6E1B5DBA09E8ABDB00B6029C /* NSTask_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28056E09747CE100EC542B /* NSTask_linux.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E1B5DBB09E8ABDB00B6029C /* NSTask_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28056F09747CE100EC542B /* NSTask_linux.m */; };
 		6E4D918A0A2642BD003D335C /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D918B0A2642BD003D335C /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D918C0A2642BD003D335C /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2182,6 +2170,12 @@
 		C6BC3CC31162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6BC3CC41162305000DFC16C /* NSTimeZone_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */; };
 		C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */; };
+		C6E2B39D1410CA930094D33E /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = C6E2B39B1410CA930094D33E /* NSPlatform_linux.h */; };
+		C6E2B39E1410CA930094D33E /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B39C1410CA930094D33E /* NSPlatform_linux.m */; };
+		C6E2B39F1410CA930094D33E /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = C6E2B39B1410CA930094D33E /* NSPlatform_linux.h */; };
+		C6E2B3A01410CA930094D33E /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B39C1410CA930094D33E /* NSPlatform_linux.m */; };
+		C6E2B3A11410CA930094D33E /* NSPlatform_linux.h in Headers */ = {isa = PBXBuildFile; fileRef = C6E2B39B1410CA930094D33E /* NSPlatform_linux.h */; };
+		C6E2B3A21410CA930094D33E /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B39C1410CA930094D33E /* NSPlatform_linux.m */; };
 		C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */; };
 		C816EBEF0F0A763500EDC3EB /* NSDarwinString.h in Headers */ = {isa = PBXBuildFile; fileRef = C816EBED0F0A763500EDC3EB /* NSDarwinString.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C816EBF00F0A763500EDC3EB /* NSDarwinString.m in Sources */ = {isa = PBXBuildFile; fileRef = C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */; };
@@ -4085,7 +4079,6 @@
 		FE6519270FBC844C00464BFD /* NSValueTransformer_UnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */; };
 		FE6519280FBC844C00464BFD /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FE6519290FBC844C00464BFD /* NSPlatform_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE65192A0FBC844C00464BFD /* NSTask_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B020C3B4255000CBE5B /* NSTask_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE65192B0FBC844C00464BFD /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE65192C0FBC844C00464BFD /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE65192D0FBC844C00464BFD /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -4383,7 +4376,6 @@
 		FE651A560FBC844C00464BFD /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
 		FE651A570FBC844C00464BFD /* DarwinMemoryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */; };
 		FE651A580FBC844C00464BFD /* NSPlatform_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */; };
-		FE651A590FBC844C00464BFD /* NSTask_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B030C3B4255000CBE5B /* NSTask_darwin.m */; };
 		FE651A5B0FBC844C00464BFD /* OBJCRegisterModule_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCRegisterModule_Darwin.m */; };
 		FE651A5C0FBC844C00464BFD /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
 		FE651A5D0FBC844C00464BFD /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
@@ -5721,8 +5713,6 @@
 		FED70B040C3B4255000CBE5B /* DarwinMemoryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */; };
 		FED70B050C3B4255000CBE5B /* NSPlatform_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70B060C3B4255000CBE5B /* NSPlatform_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */; };
-		FED70B070C3B4255000CBE5B /* NSTask_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B020C3B4255000CBE5B /* NSTask_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FED70B080C3B4255000CBE5B /* NSTask_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B030C3B4255000CBE5B /* NSTask_darwin.m */; };
 		FED70B090C3B4271000CBE5B /* NSTask_solaris.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28059709747CF900EC542B /* NSTask_solaris.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70B0A0C3B4278000CBE5B /* NSPlatform_solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28059609747CF900EC542B /* NSPlatform_solaris.m */; };
 		FED70D6B0C3C09C7000CBE5B /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -5996,7 +5986,6 @@
 		FED70E860C3C09C7000CBE5B /* NSValueTransformer_UnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */; };
 		FED70E870C3C09C7000CBE5B /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FED70E880C3C09C7000CBE5B /* NSPlatform_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FED70E890C3C09C7000CBE5B /* NSTask_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B020C3B4255000CBE5B /* NSTask_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70E8B0C3C09C7000CBE5B /* NSArray_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280312097478CC00EC542B /* NSArray_concrete.m */; };
 		FED70E8C0C3C09C7000CBE5B /* NSArray_placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280314097478CC00EC542B /* NSArray_placeholder.m */; };
 		FED70E8D0C3C09C7000CBE5B /* NSArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280316097478CC00EC542B /* NSArray.m */; };
@@ -6270,7 +6259,6 @@
 		FED70FA00C3C09C7000CBE5B /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
 		FED70FA10C3C09C7000CBE5B /* DarwinMemoryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */; };
 		FED70FA20C3C09C7000CBE5B /* NSPlatform_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */; };
-		FED70FA30C3C09C7000CBE5B /* NSTask_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B030C3B4255000CBE5B /* NSTask_darwin.m */; };
 		FED70FA70C3C09C7000CBE5B /* punctuationCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */; };
 		FED70FA80C3C09C7000CBE5B /* uppercaseLetterCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */; };
 		FED70FAB0C3C09C7000CBE5B /* alphanumericCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */; };
@@ -7091,10 +7079,6 @@
 		6E28055D09747CC300EC542B /* msgSendv-windows.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = "msgSendv-windows.s"; sourceTree = "<group>"; };
 		6E28055F09747CCA00EC542B /* msgSendv-solaris.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 30; path = "msgSendv-solaris.m"; sourceTree = "<group>"; };
 		6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSMemoryFunctions_linux.m; path = platform_linux/NSMemoryFunctions_linux.m; sourceTree = "<group>"; };
-		6E28056C09747CE100EC542B /* NSPlatform_linux.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPlatform_linux.h; path = platform_linux/NSPlatform_linux.h; sourceTree = "<group>"; };
-		6E28056D09747CE100EC542B /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_linux.m; path = platform_linux/NSPlatform_linux.m; sourceTree = "<group>"; };
-		6E28056E09747CE100EC542B /* NSTask_linux.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_linux.h; path = platform_linux/NSTask_linux.h; sourceTree = "<group>"; };
-		6E28056F09747CE100EC542B /* NSTask_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_linux.m; path = platform_linux/NSTask_linux.m; sourceTree = "<group>"; };
 		6E28057509747CEE00EC542B /* NSConstantString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSConstantString.m; path = ../platform_posix/NSConstantString.m; sourceTree = "<group>"; };
 		6E28057609747CEE00EC542B /* NSFileHandle_posix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSFileHandle_posix.h; path = platform_posix/NSFileHandle_posix.h; sourceTree = "<group>"; };
 		6E28057709747CEE00EC542B /* NSFileHandle_posix.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSFileHandle_posix.m; path = platform_posix/NSFileHandle_posix.m; sourceTree = "<group>"; };
@@ -7261,6 +7245,8 @@
 		C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTimeZone_posix.h; path = platform_posix/NSTimeZone_posix.h; sourceTree = "<group>"; };
 		C6BC3CB41162305000DFC16C /* NSTimeZone_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTimeZone_posix.m; path = platform_posix/NSTimeZone_posix.m; sourceTree = "<group>"; };
 		C6BC3CC51162308E00DFC16C /* NSTimeZoneWindowsZones.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = NSTimeZoneWindowsZones.plist; path = NSTimeZone/NSTimeZoneWindowsZones.plist; sourceTree = "<group>"; };
+		C6E2B39B1410CA930094D33E /* NSPlatform_linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPlatform_linux.h; path = platform_linux/NSPlatform_linux.h; sourceTree = "<group>"; };
+		C6E2B39C1410CA930094D33E /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_linux.m; path = platform_linux/NSPlatform_linux.m; sourceTree = "<group>"; };
 		C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = "objc-msgsend.s"; sourceTree = "<group>"; };
 		C816EBED0F0A763500EDC3EB /* NSDarwinString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDarwinString.h; sourceTree = "<group>"; };
 		C816EBEE0F0A763500EDC3EB /* NSDarwinString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDarwinString.m; sourceTree = "<group>"; };
@@ -7591,8 +7577,6 @@
 		FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DarwinMemoryFunctions.m; sourceTree = "<group>"; };
 		FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPlatform_darwin.h; sourceTree = "<group>"; };
 		FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_darwin.m; sourceTree = "<group>"; };
-		FED70B020C3B4255000CBE5B /* NSTask_darwin.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTask_darwin.h; sourceTree = "<group>"; };
-		FED70B030C3B4255000CBE5B /* NSTask_darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTask_darwin.m; sourceTree = "<group>"; };
 		FED70C8E0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = "objc_msgSend-darwin-i386.s"; sourceTree = "<group>"; };
 		FED70D610C3C0973000CBE5B /* objc_msgSend-darwin-ppc.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = "objc_msgSend-darwin-ppc.s"; sourceTree = "<group>"; };
 		FED70FB70C3C09C7000CBE5B /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -8418,12 +8402,10 @@
 		6E28034709747A4900EC542B /* platform_linux */ = {
 			isa = PBXGroup;
 			children = (
+				C6E2B39B1410CA930094D33E /* NSPlatform_linux.h */,
+				C6E2B39C1410CA930094D33E /* NSPlatform_linux.m */,
 				C6B050701282F3BB00897472 /* libmain.m */,
 				6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */,
-				6E28056C09747CE100EC542B /* NSPlatform_linux.h */,
-				6E28056D09747CE100EC542B /* NSPlatform_linux.m */,
-				6E28056E09747CE100EC542B /* NSTask_linux.h */,
-				6E28056F09747CE100EC542B /* NSTask_linux.m */,
 			);
 			name = platform_linux;
 			sourceTree = "<group>";
@@ -9047,8 +9029,6 @@
 				FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */,
 				FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */,
 				FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */,
-				FED70B020C3B4255000CBE5B /* NSTask_darwin.h */,
-				FED70B030C3B4255000CBE5B /* NSTask_darwin.m */,
 				C6B0504B1282F26F00897472 /* libmain.m */,
 			);
 			path = platform_darwin;
@@ -9233,8 +9213,6 @@
 				15D91FC7105E918000171406 /* NSPipe_posix.h in Headers */,
 				15D91FC8105E918000171406 /* NSPlatform_posix.h in Headers */,
 				15D91FC9105E918000171406 /* NSTask_posix.h in Headers */,
-				15D91FCA105E918000171406 /* NSPlatform_linux.h in Headers */,
-				15D91FCB105E918000171406 /* NSTask_linux.h in Headers */,
 				15D91FCC105E918000171406 /* NSPropertyListReader_xml1.h in Headers */,
 				15D91FCD105E918000171406 /* NSPropertyListReader.h in Headers */,
 				15D91FCE105E918000171406 /* NSKeyedUnarchiver.h in Headers */,
@@ -9385,6 +9363,7 @@
 				FE937F4E1358DC8000C93531 /* NSNumber_CF.h in Headers */,
 				FE09AF8013FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF9413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				C6E2B39F1410CA930094D33E /* NSPlatform_linux.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9564,8 +9543,6 @@
 				28D485C20FE04E7100DC03EF /* NSPipe_posix.h in Headers */,
 				28D485C30FE04E7100DC03EF /* NSPlatform_posix.h in Headers */,
 				28D485C40FE04E7100DC03EF /* NSTask_posix.h in Headers */,
-				28D485C50FE04E7100DC03EF /* NSPlatform_linux.h in Headers */,
-				28D485C60FE04E7100DC03EF /* NSTask_linux.h in Headers */,
 				28D485C70FE04E7100DC03EF /* NSPropertyListReader_xml1.h in Headers */,
 				28D485C80FE04E7100DC03EF /* NSPropertyListReader.h in Headers */,
 				28D485C90FE04E7100DC03EF /* NSKeyedUnarchiver.h in Headers */,
@@ -9716,6 +9693,7 @@
 				FE937F4C1358DC8000C93531 /* NSNumber_CF.h in Headers */,
 				FE09AF7C13FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF9013FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				C6E2B39D1410CA930094D33E /* NSPlatform_linux.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10226,8 +10204,6 @@
 				6EA04A8409E57EA10067589C /* NSPipe_posix.h in Headers */,
 				6EA04A8609E57EA10067589C /* NSPlatform_posix.h in Headers */,
 				6EA04A8809E57EA10067589C /* NSTask_posix.h in Headers */,
-				6E1B5DB809E8ABDB00B6029C /* NSPlatform_linux.h in Headers */,
-				6E1B5DBA09E8ABDB00B6029C /* NSTask_linux.h in Headers */,
 				6E0084A60A19363F00F78605 /* NSPropertyListReader_xml1.h in Headers */,
 				6E0084D10A19371600F78605 /* NSPropertyListReader.h in Headers */,
 				6EC4AAE90A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */,
@@ -10378,6 +10354,7 @@
 				FE937F421358DC8000C93531 /* NSNumber_CF.h in Headers */,
 				FE09AF7213FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8613FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				C6E2B3A11410CA930094D33E /* NSPlatform_linux.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11324,7 +11301,6 @@
 				FE6519270FBC844C00464BFD /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FE6519280FBC844C00464BFD /* objc_cache.h in Headers */,
 				FE6519290FBC844C00464BFD /* NSPlatform_darwin.h in Headers */,
-				FE65192A0FBC844C00464BFD /* NSTask_darwin.h in Headers */,
 				FE65192B0FBC844C00464BFD /* NSMutableURLRequest.h in Headers */,
 				FE65192C0FBC844C00464BFD /* NSCachedURLResponse.h in Headers */,
 				FE65192D0FBC844C00464BFD /* NSPropertyListReader_binary1.h in Headers */,
@@ -11656,7 +11632,6 @@
 				FED7093D0C3B3D2C000CBE5B /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FED7093E0C3B3D2C000CBE5B /* objc_cache.h in Headers */,
 				FED70B050C3B4255000CBE5B /* NSPlatform_darwin.h in Headers */,
-				FED70B070C3B4255000CBE5B /* NSTask_darwin.h in Headers */,
 				FEDF9FF10CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA1020CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0920D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
@@ -11988,7 +11963,6 @@
 				FED70E860C3C09C7000CBE5B /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FED70E870C3C09C7000CBE5B /* objc_cache.h in Headers */,
 				FED70E880C3C09C7000CBE5B /* NSPlatform_darwin.h in Headers */,
-				FED70E890C3C09C7000CBE5B /* NSTask_darwin.h in Headers */,
 				FEDF9FF30CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA1040CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
@@ -12261,6 +12235,7 @@
 			isa = PBXProject;
 			buildConfigurationList = 6E2801B909746B8900EC542B /* Build configuration list for PBXProject "Foundation" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -12795,8 +12770,6 @@
 				15D920FB105E918000171406 /* NSPlatform_posix.m in Sources */,
 				15D920FC105E918000171406 /* NSTask_posix.m in Sources */,
 				15D920FD105E918000171406 /* NSMemoryFunctions_linux.m in Sources */,
-				15D920FE105E918000171406 /* NSPlatform_linux.m in Sources */,
-				15D920FF105E918000171406 /* NSTask_linux.m in Sources */,
 				15D92100105E918000171406 /* NSConstantString.m in Sources */,
 				15D92101105E918000171406 /* NSPropertyListReader_xml1.m in Sources */,
 				15D92102105E918000171406 /* NSPropertyListReader.m in Sources */,
@@ -12988,6 +12961,7 @@
 				FE937F4F1358DC8000C93531 /* NSNumber_CF.m in Sources */,
 				FE09AF8113FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				C6E2B3A01410CA930094D33E /* NSPlatform_linux.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13166,8 +13140,6 @@
 				28D486ED0FE04E7100DC03EF /* NSPlatform_posix.m in Sources */,
 				28D486EE0FE04E7100DC03EF /* NSTask_posix.m in Sources */,
 				28D486EF0FE04E7100DC03EF /* NSMemoryFunctions_linux.m in Sources */,
-				28D486F00FE04E7100DC03EF /* NSPlatform_linux.m in Sources */,
-				28D486F10FE04E7100DC03EF /* NSTask_linux.m in Sources */,
 				28D486F20FE04E7100DC03EF /* NSConstantString.m in Sources */,
 				28D486F30FE04E7100DC03EF /* NSPropertyListReader_xml1.m in Sources */,
 				28D486F40FE04E7100DC03EF /* NSPropertyListReader.m in Sources */,
@@ -13358,6 +13330,7 @@
 				FE937F4D1358DC8000C93531 /* NSNumber_CF.m in Sources */,
 				FE09AF7D13FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9113FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				C6E2B39E1410CA930094D33E /* NSPlatform_linux.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13907,8 +13880,6 @@
 				6EA04A8709E57EA10067589C /* NSPlatform_posix.m in Sources */,
 				6EA04A8909E57EA10067589C /* NSTask_posix.m in Sources */,
 				6E1B5DB709E8ABDA00B6029C /* NSMemoryFunctions_linux.m in Sources */,
-				6E1B5DB909E8ABDB00B6029C /* NSPlatform_linux.m in Sources */,
-				6E1B5DBB09E8ABDB00B6029C /* NSTask_linux.m in Sources */,
 				6E903FFD0A07B67300938799 /* NSConstantString.m in Sources */,
 				6E0084A70A19363F00F78605 /* NSPropertyListReader_xml1.m in Sources */,
 				6E0084D20A19371600F78605 /* NSPropertyListReader.m in Sources */,
@@ -14101,6 +14072,7 @@
 				FE937F431358DC8000C93531 /* NSNumber_CF.m in Sources */,
 				FE09AF7313FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8713FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				C6E2B3A21410CA930094D33E /* NSPlatform_linux.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15131,7 +15103,6 @@
 				FE651A560FBC844C00464BFD /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 				FE651A570FBC844C00464BFD /* DarwinMemoryFunctions.m in Sources */,
 				FE651A580FBC844C00464BFD /* NSPlatform_darwin.m in Sources */,
-				FE651A590FBC844C00464BFD /* NSTask_darwin.m in Sources */,
 				FE651A5B0FBC844C00464BFD /* OBJCRegisterModule_Darwin.m in Sources */,
 				FE651A5C0FBC844C00464BFD /* NSMutableURLRequest.m in Sources */,
 				FE651A5D0FBC844C00464BFD /* NSCachedURLResponse.m in Sources */,
@@ -15506,7 +15477,6 @@
 				FED70A580C3B3D2C000CBE5B /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 				FED70B040C3B4255000CBE5B /* DarwinMemoryFunctions.m in Sources */,
 				FED70B060C3B4255000CBE5B /* NSPlatform_darwin.m in Sources */,
-				FED70B080C3B4255000CBE5B /* NSTask_darwin.m in Sources */,
 				FE2705C60C5EF3D60004AB37 /* OBJCRegisterModule_Darwin.m in Sources */,
 				FEDF9FF20CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
 				FEDFA1030CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
@@ -15882,7 +15852,6 @@
 				FED70FA00C3C09C7000CBE5B /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 				FED70FA10C3C09C7000CBE5B /* DarwinMemoryFunctions.m in Sources */,
 				FED70FA20C3C09C7000CBE5B /* NSPlatform_darwin.m in Sources */,
-				FED70FA30C3C09C7000CBE5B /* NSTask_darwin.m in Sources */,
 				FED70FB90C3C0A00000CBE5B /* objc_msgSend-darwin-ppc.s in Sources */,
 				FE2705C70C5EF3D60004AB37 /* OBJCRegisterModule_Darwin.m in Sources */,
 				FEDF9FF40CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,

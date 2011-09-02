@@ -16,9 +16,6 @@ extern void childSignalHandler(int sig);
    int _terminationStatus;
 }
 
-+(void)registerNotification;
-+(void)signalPipeReadNotification:(NSNotification *)note;
-
 -(void)launch;
 -(void)terminate;
 

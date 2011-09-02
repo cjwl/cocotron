@@ -46,17 +46,7 @@ BOOL NSCurrentLocaleIsMetric(){
 @implementation NSPlatform_posix
 
 -(Class)taskClass {
-    static Class NSTaskClass = Nil;
-    
-    @synchronized(self)
-	{
-        if (NSTaskClass == Nil) {
-            NSTaskClass = [NSTask_posix class];
-            [NSTaskClass registerNotification];
-        }
-    }
-    
-    return NSTaskClass;
+    return [NSTask_posix class];
 }
 
 -(Class)pipeClass {

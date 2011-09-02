@@ -248,6 +248,12 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
     daysOfCommonEra;
 
     interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + milliseconds/1000.0;
+    NSTimeInterval interval0 = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + ((double)milliseconds)/1000.0;
+
+    NSTimeInterval interval1 = (daysOfCommonEra * 86400) + (hour * 3600) + (minute * 60) + second + milliseconds/1000.0;
+    NSTimeInterval interval2 = ((((daysOfCommonEra * 86400) + (hour * 3600) + (minute * 60) + second)) * 1000 + milliseconds) / 1000.0;
+    NSTimeInterval interval3 = (double)milliseconds / (double)1000.0;
+
 
     return interval;
 }
@@ -354,7 +360,7 @@ NSInteger NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
 
 NSInteger NSMillisecondsFromTimeInterval(NSTimeInterval interval){ // 0-999
     NSInteger milli = fmod(interval*1000,1000);
-    if(milli < 0) {
+    if (milli < 0) {
         milli = (1000 + milli);
     }
     return milli;
