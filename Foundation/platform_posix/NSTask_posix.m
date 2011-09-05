@@ -94,23 +94,49 @@ void childSignalHandler(int sig) {
         [NSException raise:NSInvalidArgumentException
                     format:@"NSTask launchPath is nil"];
     
+    NSArray *array       = arguments;
+    NSInteger            i,count=[array count];
+    const char          *args[count+2];
+    const char          *path = [launchPath fileSystemRepresentation];
+    
+    if (array == nil)
+        array = [NSArray array];
+
+    args[0]=path;
+    for(i=0;i<count;i++)
+        args[i+1]=(char *)[[[array objectAtIndex:i] description] cString];
+    args[count+1]=NULL;
+    
+    NSDictionary *env;
+    if(environment == nil) {
+        env = [[NSProcessInfo processInfo] environment];
+    }
+    else {
+        env = environment;
+    }
+    const char *cenv[[env count] + 1];
+    
+    NSString *key;
+    i = 0;
+    
+    for (key in env) {
+        id          value = [env objectForKey:key];
+        NSString    *entry;
+        if (value) {
+            entry = [NSString stringWithFormat:@"%@=%@", key, value];
+        }
+        else {
+            entry = [NSString stringWithFormat:@"%@=", key];
+        }      
+        
+        cenv[i] = [entry cString];
+        i++;
+    }
+    
+    cenv[[env count]] = NULL;    
     
     _processID = fork(); 
-    if (_processID == 0) {  // child process
-        NSMutableArray *array = [[arguments mutableCopy] autorelease];
-        const char     *path = [launchPath fileSystemRepresentation];
-        NSInteger            i,count=[array count];
-        const char          *args[count+2];
-        
-        if (array == nil)
-            array = [NSMutableArray array];
-        
-        args[0]=path;
-        for(i=0;i<count;i++)
-            args[i+1]=(char *)[[[array objectAtIndex:i] description] cString];
-        args[count+1]=NULL;
-        
-        
+    if (_processID == 0) {  // child process               
         if ([standardInput isKindOfClass:[NSFileHandle class]] || [standardInput isKindOfClass:[NSPipe class]]) {
             int fd = -1;
 
@@ -149,35 +175,7 @@ void childSignalHandler(int sig) {
         }
         
         chdir([currentDirectoryPath fileSystemRepresentation]);
-        
-        NSDictionary *env;
-        if(environment == nil) {
-            env = [[NSProcessInfo processInfo] environment];
-        }
-        else {
-            env = environment;
-        }
-        const char *cenv[[env count] + 1];
-        
-        NSString *key;
-        i = 0;
-        
-        for (key in env) {
-            id          value = [env objectForKey:key];
-            NSString    *entry;
-            if (value) {
-                entry = [NSString stringWithFormat:@"%@=%@", key, value];
-            }
-            else {
-                entry = [NSString stringWithFormat:@"%@=", key];
-            }      
-            
-            cenv[i] = [entry cString];
-            i++;
-        }
-        
-        cenv[[env count]] = NULL;
-        
+               
         execve(path, (char**)args, (char**)cenv);
         [NSException raise:NSInvalidArgumentException
                     format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
