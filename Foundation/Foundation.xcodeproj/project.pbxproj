@@ -1771,7 +1771,6 @@
 		6E4D93220A2642BD003D335C /* NSTimeZoneRegions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B309747EA400EC542B /* NSTimeZoneRegions.plist */; };
 		6E4D93230A2642BD003D335C /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
 		6E5796DF0A26438500D0D5AB /* NSPlatform_solaris.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28059509747CF900EC542B /* NSPlatform_solaris.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E5796E20A26439600D0D5AB /* NSTask_solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28059809747CF900EC542B /* NSTask_solaris.m */; };
 		6E5796E40A2643A000D0D5AB /* SolarisMemoryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28059909747CF900EC542B /* SolarisMemoryFunctions.m */; };
 		6E5796E50A2643AE00D0D5AB /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
 		6E8113980A54BBAC000DE3F1 /* msgSendv-linux.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */; };
@@ -3793,8 +3792,6 @@
 		FE5A86DA10C6EF41005E348A /* NSMemoryFunctions_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */; };
 		FE5A86DB10C6EF41005E348A /* NSPlatform_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5A86DC10C6EF42005E348A /* NSPlatform_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */; };
-		FE5A86DD10C6EF43005E348A /* NSTask_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5EA8040FA3896500536850 /* NSTask_bsd.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE5A86DE10C6EF43005E348A /* NSTask_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5EA8050FA3896500536850 /* NSTask_bsd.m */; };
 		FE6014231042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6014221042FD49008A7357 /* NSString_defaultEncoding_posix.m */; };
 		FE6014241042FD49008A7357 /* NSString_defaultEncoding_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6014221042FD49008A7357 /* NSString_defaultEncoding_posix.m */; };
 		FE6014261042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6014251042FD5A008A7357 /* NSString_defaultEncoding_darwin.m */; };
@@ -5713,7 +5710,6 @@
 		FED70B040C3B4255000CBE5B /* DarwinMemoryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */; };
 		FED70B050C3B4255000CBE5B /* NSPlatform_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70B060C3B4255000CBE5B /* NSPlatform_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B010C3B4255000CBE5B /* NSPlatform_darwin.m */; };
-		FED70B090C3B4271000CBE5B /* NSTask_solaris.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28059709747CF900EC542B /* NSTask_solaris.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70B0A0C3B4278000CBE5B /* NSPlatform_solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28059609747CF900EC542B /* NSPlatform_solaris.m */; };
 		FED70D6B0C3C09C7000CBE5B /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FED70D6C0C3C09C7000CBE5B /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -7097,8 +7093,6 @@
 		6E28058409747CEE00EC542B /* NSTask_posix.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_posix.m; path = platform_posix/NSTask_posix.m; sourceTree = "<group>"; };
 		6E28059509747CF900EC542B /* NSPlatform_solaris.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPlatform_solaris.h; path = platform_solaris/NSPlatform_solaris.h; sourceTree = "<group>"; };
 		6E28059609747CF900EC542B /* NSPlatform_solaris.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_solaris.m; path = platform_solaris/NSPlatform_solaris.m; sourceTree = "<group>"; };
-		6E28059709747CF900EC542B /* NSTask_solaris.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_solaris.h; path = platform_solaris/NSTask_solaris.h; sourceTree = "<group>"; };
-		6E28059809747CF900EC542B /* NSTask_solaris.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_solaris.m; path = platform_solaris/NSTask_solaris.m; sourceTree = "<group>"; };
 		6E28059909747CF900EC542B /* SolarisMemoryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SolarisMemoryFunctions.m; path = platform_solaris/SolarisMemoryFunctions.m; sourceTree = "<group>"; };
 		6E28059F09747D0400EC542B /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 		6E2805A309747D0400EC542B /* NSFileHandle_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFileHandle_win32.h; sourceTree = "<group>"; };
@@ -7353,8 +7347,6 @@
 		FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMemoryFunctions_bsd.m; sourceTree = "<group>"; };
 		FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPlatform_bsd.h; sourceTree = "<group>"; };
 		FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_bsd.m; sourceTree = "<group>"; };
-		FE5EA8040FA3896500536850 /* NSTask_bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTask_bsd.h; sourceTree = "<group>"; };
-		FE5EA8050FA3896500536850 /* NSTask_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTask_bsd.m; sourceTree = "<group>"; };
 		FE6014221042FD49008A7357 /* NSString_defaultEncoding_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSString_defaultEncoding_posix.m; path = platform_posix/NSString_defaultEncoding_posix.m; sourceTree = "<group>"; };
 		FE6014251042FD5A008A7357 /* NSString_defaultEncoding_darwin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_defaultEncoding_darwin.m; sourceTree = "<group>"; };
 		FE6014291042FD6B008A7357 /* NSString_defaultEncoding_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_defaultEncoding_windows.m; sourceTree = "<group>"; };
@@ -8453,8 +8445,6 @@
 				C6B052B612832AB500897472 /* libmain.m */,
 				6E28059509747CF900EC542B /* NSPlatform_solaris.h */,
 				6E28059609747CF900EC542B /* NSPlatform_solaris.m */,
-				6E28059709747CF900EC542B /* NSTask_solaris.h */,
-				6E28059809747CF900EC542B /* NSTask_solaris.m */,
 				6E28059909747CF900EC542B /* SolarisMemoryFunctions.m */,
 			);
 			name = platform_solaris;
@@ -8771,8 +8761,6 @@
 				FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */,
 				FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */,
 				FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */,
-				FE5EA8040FA3896500536850 /* NSTask_bsd.h */,
-				FE5EA8050FA3896500536850 /* NSTask_bsd.m */,
 				C6B052721283275900897472 /* libmain.m */,
 			);
 			path = platform_bsd;
@@ -9972,7 +9960,6 @@
 				FE9D95500C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */,
 				FE9D95520C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FEA36F280C24C57000025A9C /* objc_cache.h in Headers */,
-				FED70B090C3B4271000CBE5B /* NSTask_solaris.h in Headers */,
 				FEDF9FFB0CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA10C0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0900D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
@@ -11010,7 +10997,6 @@
 				FE30A18E10C6ED6F00A1BF7F /* NSNumber_double_const_impl.h in Headers */,
 				FE30A18F10C6ED6F00A1BF7F /* NSCFTypeID.h in Headers */,
 				FE5A86DB10C6EF41005E348A /* NSPlatform_bsd.h in Headers */,
-				FE5A86DD10C6EF43005E348A /* NSTask_bsd.h in Headers */,
 				FE828F49110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1BAE1125A649002DA20B /* CFSSLHandler.h in Headers */,
 				FE3C474E112AF7FC0099DAB8 /* CFUID.h in Headers */,
@@ -13511,7 +13497,6 @@
 				6E4D93120A2642BD003D335C /* NSConstantString.m in Sources */,
 				6E4D93130A2642BD003D335C /* NSPropertyListReader_xml1.m in Sources */,
 				6E4D93140A2642BD003D335C /* NSPropertyListReader.m in Sources */,
-				6E5796E20A26439600D0D5AB /* NSTask_solaris.m in Sources */,
 				6E5796E40A2643A000D0D5AB /* SolarisMemoryFunctions.m in Sources */,
 				6E5796E50A2643AE00D0D5AB /* msgSendv-solaris.m in Sources */,
 				6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */,
@@ -14802,7 +14787,6 @@
 				FE30A2EC10C6ED6F00A1BF7F /* NSString_defaultEncoding_posix.m in Sources */,
 				FE5A86DA10C6EF41005E348A /* NSMemoryFunctions_bsd.m in Sources */,
 				FE5A86DC10C6EF42005E348A /* NSPlatform_bsd.m in Sources */,
-				FE5A86DE10C6EF43005E348A /* NSTask_bsd.m in Sources */,
 				FE256A0210F2F9C7005CE23E /* CFNetServices.m in Sources */,
 				FE256A0310F2F9C7005CE23E /* CFSocketStream.m in Sources */,
 				FE256A8B10F387DA005CE23E /* CFDate.m in Sources */,
