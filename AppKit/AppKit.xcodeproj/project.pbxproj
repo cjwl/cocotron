@@ -2021,6 +2021,11 @@
 		FE069E2C1245A4B90040F165 /* O2GlyphStencil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE069E221245A4B80040F165 /* O2GlyphStencil.m */; };
 		FE08C3230DDF299800B3169A /* NSColor_CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE08C3210DDF299800B3169A /* NSColor_CGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08C3220DDF299800B3169A /* NSColor_CGColor.m */; };
+		FE09AF3513FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3613FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3713FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3813FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF3913FCC56600B53D10 /* NSSpellProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE14436A1256D43D007FE685 /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1443681256D43D007FE685 /* _NSControllerArray.h */; };
 		FE14436B1256D43D007FE685 /* _NSControllerArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1443691256D43D007FE685 /* _NSControllerArray.m */; };
 		FE14436C1256D43D007FE685 /* _NSControllerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1443681256D43D007FE685 /* _NSControllerArray.h */; };
@@ -2123,6 +2128,21 @@
 		FE2759A712341F3A00BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2759A312341F3A00BD6643 /* O2Context_distill.m */; };
 		FE2759A812341F3A00BD6643 /* O2Context_distill.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2759A312341F3A00BD6643 /* O2Context_distill.m */; };
 		FE2A4FE110CCAACC00458F2E /* O2Font_FT.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34054910CAB38F00A989F0 /* O2Font_FT.m */; };
+		FE2C93D414035649002E0CB4 /* NSSpellingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */; };
+		FE2C93D514035649002E0CB4 /* NSSpellingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */; };
+		FE2C93D614035649002E0CB4 /* NSSpellingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */; };
+		FE2C93D714035649002E0CB4 /* NSSpellingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */; };
+		FE2C93D814035649002E0CB4 /* NSSpellingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */; };
+		FE2C93D914035649002E0CB4 /* NSSpellingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */; };
+		FE2C93DA14035649002E0CB4 /* NSSpellingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */; };
+		FE2C93DB14035649002E0CB4 /* NSSpellingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */; };
+		FE2C93DC14035649002E0CB4 /* NSSpellingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */; };
+		FE2C93DD14035649002E0CB4 /* NSSpellingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */; };
+		FE2C93E414035935002E0CB4 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */; };
+		FE2C93E514035935002E0CB4 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */; };
+		FE2C93E614035935002E0CB4 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */; };
+		FE2C93E714035935002E0CB4 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */; };
+		FE2C93E814035935002E0CB4 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */; };
 		FE311FA80CCC430200EBD696 /* KTFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE311FA40CCC430200EBD696 /* KTFont_gdi.h */; };
 		FE311FA90CCC430200EBD696 /* KTFont_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE311FA50CCC430200EBD696 /* KTFont_gdi.m */; };
 		FE337FCA0EE77A6C00D4A751 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE337FC90EE77A6C00D4A751 /* CTFont.m */; };
@@ -3941,6 +3961,16 @@
 		FEB07FA10FF9B37C00C27509 /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */; };
 		FEB07FA20FF9B37C00C27509 /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */; };
 		FEB07FA30FF9B37C00C27509 /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */; };
+		FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */; };
+		FEB3F1EA14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
+		FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */; };
+		FEB3F1EC14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
+		FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */; };
+		FEB3F1EE14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
+		FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */; };
+		FEB3F1F014049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
+		FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */; };
+		FEB3F1F214049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
 		FEBF55E50DCA112900CE5A1C /* O2ImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF55E20DCA112900CE5A1C /* O2ImageSource_JPEG.h */; };
 		FEBF55E60DCA112900CE5A1C /* O2Paint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF55E30DCA112900CE5A1C /* O2Paint.h */; };
 		FEBF55E70DCA112900CE5A1C /* O2Paint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55E40DCA112900CE5A1C /* O2Paint.m */; };
@@ -4839,6 +4869,7 @@
 		FE069E221245A4B80040F165 /* O2GlyphStencil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2GlyphStencil.m; sourceTree = "<group>"; };
 		FE08C3210DDF299800B3169A /* NSColor_CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColor_CGColor.h; sourceTree = "<group>"; };
 		FE08C3220DDF299800B3169A /* NSColor_CGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColor_CGColor.m; sourceTree = "<group>"; };
+		FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellProtocol.h; sourceTree = "<group>"; };
 		FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenGL.xcodeproj; path = ../OpenGL/OpenGL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE1443681256D43D007FE685 /* _NSControllerArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _NSControllerArray.h; sourceTree = "<group>"; };
 		FE1443691256D43D007FE685 /* _NSControllerArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _NSControllerArray.m; sourceTree = "<group>"; };
@@ -4930,6 +4961,9 @@
 		FE2A11530B45C65E006C03DE /* NSTokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenField.m; sourceTree = "<group>"; };
 		FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTokenFieldCell.h; sourceTree = "<group>"; };
 		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
+		FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellingViewController.h; sourceTree = "<group>"; };
+		FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSpellingViewController.m; sourceTree = "<group>"; };
+		FE2C93E314035935002E0CB4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
 		FE311FA40CCC430200EBD696 /* KTFont_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KTFont_gdi.h; sourceTree = "<group>"; };
 		FE311FA50CCC430200EBD696 /* KTFont_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KTFont_gdi.m; sourceTree = "<group>"; };
 		FE337FC90EE77A6C00D4A751 /* CTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFont.m; sourceTree = "<group>"; };
@@ -5193,6 +5227,8 @@
 		FEAED7A40FD6C9820043F915 /* CGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFContext.m; sourceTree = "<group>"; };
 		FEAEFF7911E4D1B600CA0912 /* glweak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = glweak.m; sourceTree = "<group>"; };
 		FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2Font+PDF.m"; sourceTree = "<group>"; };
+		FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellCheckerTagData.h; sourceTree = "<group>"; };
+		FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSpellCheckerTagData.m; sourceTree = "<group>"; };
 		FEBF55E20DCA112900CE5A1C /* O2ImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ImageSource_JPEG.h; sourceTree = "<group>"; };
 		FEBF55E30DCA112900CE5A1C /* O2Paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Paint.h; sourceTree = "<group>"; };
 		FEBF55E40DCA112900CE5A1C /* O2Paint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Paint.m; sourceTree = "<group>"; };
@@ -5358,6 +5394,11 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */,
+				FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */,
+				FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */,
+				FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */,
+				FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */,
 				FE20C240118924A4006F01BA /* NSAccessibility.h */,
 				FE20C241118924A4006F01BA /* NSAccessibility.m */,
 				FE20C242118924A4006F01BA /* NSCIImageRep.h */,
@@ -5736,6 +5777,7 @@
 		6E2B55050976075300DA0954 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */,
 				6E2B55060976075300DA0954 /* NSMenu.plist */,
 			);
 			name = Resources;
@@ -7047,6 +7089,9 @@
 				FE74968A12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B412C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FC133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3613FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
+				FE2C93D614035649002E0CB4 /* NSSpellingViewController.h in Headers */,
+				FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7449,6 +7494,9 @@
 				FE74968C12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B512C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FE133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3713FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
+				FE2C93D814035649002E0CB4 /* NSSpellingViewController.h in Headers */,
+				FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7848,6 +7896,9 @@
 				FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FA133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3513FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
+				FE2C93D414035649002E0CB4 /* NSSpellingViewController.h in Headers */,
+				FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8252,6 +8303,9 @@
 				FE74969012BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B712C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B302133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3913FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
+				FE2C93DA14035649002E0CB4 /* NSSpellingViewController.h in Headers */,
+				FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8573,6 +8627,9 @@
 				FE74968E12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B612C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B300133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FE09AF3813FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
+				FE2C93DC14035649002E0CB4 /* NSSpellingViewController.h in Headers */,
+				FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8952,6 +9009,7 @@
 				FEED42D61224B82B0059B0DF /* NSInfo.pdf in Resources */,
 				FEED42D81224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708001260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
+				FE2C93E514035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9017,6 +9075,7 @@
 				FEED42DC1224B82B0059B0DF /* NSInfo.pdf in Resources */,
 				FEED42DE1224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708021260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
+				FE2C93E614035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9083,6 +9142,7 @@
 				FEED42D01224B82B0059B0DF /* NSInfo.pdf in Resources */,
 				FEED42D21224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1707FE1260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
+				FE2C93E714035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9148,6 +9208,7 @@
 				FEED42E81224B82B0059B0DF /* NSInfo.pdf in Resources */,
 				FEED42EA1224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708061260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
+				FE2C93E814035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9213,6 +9274,7 @@
 				FEED42E21224B82B0059B0DF /* NSInfo.pdf in Resources */,
 				FEED42E41224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708041260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
+				FE2C93E414035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9654,6 +9716,8 @@
 				FEDEAA9A12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAF12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FD133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				FE2C93D714035649002E0CB4 /* NSSpellingViewController.m in Sources */,
+				FEB3F1EE14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10053,6 +10117,8 @@
 				FEDEAA9B12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB012C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FF133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				FE2C93D914035649002E0CB4 /* NSSpellingViewController.m in Sources */,
+				FEB3F1EA14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10483,6 +10549,8 @@
 				FEDEAA9912C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAE12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FB133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				FE2C93D514035649002E0CB4 /* NSSpellingViewController.m in Sources */,
+				FEB3F1EC14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10884,6 +10952,8 @@
 				FEDEAA9D12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB212C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B303133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				FE2C93DB14035649002E0CB4 /* NSSpellingViewController.m in Sources */,
+				FEB3F1F014049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11180,6 +11250,8 @@
 				FEDEAA9C12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB112C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B301133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				FE2C93DD14035649002E0CB4 /* NSSpellingViewController.m in Sources */,
+				FEB3F1F214049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11268,6 +11340,14 @@
 				6E2B55080976075300DA0954 /* English */,
 			);
 			name = NSMenu.plist;
+			sourceTree = "<group>";
+		};
+		FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE2C93E314035935002E0CB4 /* English */,
+			);
+			name = NSSpellingViewController.xib;
 			sourceTree = "<group>";
 		};
 		FE71E83711FA88BE00E6F801 /* InfoPlist.strings */ = {

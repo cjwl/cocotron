@@ -39,6 +39,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSTextViewSharedData.h"
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSController.h>
+#import <AppKit/NSSpellChecker.h>
+#import <AppKit/NSControl.h>
 
 NSString * const NSTextViewDidChangeSelectionNotification=@"NSTextViewDidChangeSelectionNotification";
 NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
@@ -2152,7 +2154,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     size.height=MAX([self frame].size.height,size.height);
     
-    NSClipView *clipView=[self superview];
+    NSView *clipView=[self superview];
     
     if([clipView isKindOfClass:[NSClipView class]]){
      if(size.height<[clipView bounds].size.height)
@@ -2584,5 +2586,90 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 	return [[_textStorage copy] autorelease];
 }
 
+-(void)changeSpelling:sender {
+   NSString *correction=[[sender selectedCell] stringValue];
+   NSRange selectedRange=[self selectedRange];
+   
+   if (![self _delegateChangeTextInRange: selectedRange replacementString: correction])
+    return;
+	   
+   [self _replaceCharactersInRange:selectedRange withString:correction];
+   [self didChangeText];
+}
+
+-(void)ignoreSpelling:sender {
+   [[NSSpellChecker sharedSpellChecker] ignoreWord:[[sender selectedCell] stringValue] inSpellDocumentWithTag: [self spellCheckerDocumentTag]];
+}
+
+-(void)showGuessPanel:sender {
+   [[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
+}
+
+-(void)checkSpelling:sender {
+   [NSSpellChecker sharedSpellChecker];
+   NSUnimplementedMethod();
+}
+
+-(NSInteger)spellCheckerDocumentTag {
+   /* There is no explicity invalid document tag, this is indirectly documented as zero in the full checkSpellingOfString: method.
+      and supported by behavior. */
+   if(_spellCheckerDocumentTag==0){
+   
+    /* Check if any other text view in the group has a document tag and use it. */
+    /* We could put this in the text storage, but there are no provisions for that. */
+    for(NSLayoutManager *checkLayout in [[self textStorage] layoutManagers])
+     for(NSTextContainer *checkContainer in [checkLayout textContainers])
+      if([checkContainer textView]->_spellCheckerDocumentTag!=0){
+       // Direct access the ivar to avoid the method logic here.
+       _spellCheckerDocumentTag=[checkContainer textView]->_spellCheckerDocumentTag;
+      }
+      
+    if(_spellCheckerDocumentTag==0)
+     _spellCheckerDocumentTag=[NSSpellChecker uniqueSpellDocumentTag];
+   }
+   
+   return _spellCheckerDocumentTag;
+}
+
+-(BOOL)isContinuousSpellCheckingEnabled {
+   return _isContinuousSpellCheckingEnabled;
+}
+
+-(void)setContinuousSpellCheckingEnabled:(BOOL)value {
+   _isContinuousSpellCheckingEnabled=value;
+   NSUnimplementedMethod();
+}
+
+-(void)toggleContinuousSpellChecking:sender {
+   NSUnimplementedMethod();
+   _isContinuousSpellCheckingEnabled=!_isContinuousSpellCheckingEnabled;
+}
+
+-(BOOL)isAutomaticSpellingCorrectionEnabled {
+   return _isAutomaticSpellingCorrectionEnabled;
+}
+
+-(void)setAutomaticSpellingCorrectionEnabled:(BOOL)value {
+   _isAutomaticSpellingCorrectionEnabled=value;
+   NSUnimplementedMethod();
+}
+
+-(void)toggleAutomaticSpellingCorrection:sender {
+   _isAutomaticSpellingCorrectionEnabled=!_isAutomaticSpellingCorrectionEnabled;
+   NSUnimplementedMethod();
+}
+
+-(NSTextCheckingTypes)enabledTextCheckingTypes {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)setEnabledTextCheckingTypes:(NSTextCheckingTypes)checkingTypes {
+   NSUnimplementedMethod();
+}
+
+-(void)setSpellingState:(NSInteger)value range:(NSRange)characterRange {
+   NSUnimplementedMethod();
+}
 
 @end

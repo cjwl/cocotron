@@ -232,6 +232,7 @@ int O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Float
      return 0;
 
     case kO2ColorSpaceModelPattern:
+    default:
      NSLog(@"O2ColorConvertComponentsToDeviceRGB unimplemented conversion %d",model);
      rgbComponents[0]=0;
      rgbComponents[1]=0;

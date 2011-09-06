@@ -81,6 +81,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case NSMacOSRomanStringEncoding:
       return NSString_macOSRomanNewWithBytes(NULL,bytes,length);
          
+    case NSUTF16LittleEndianStringEncoding:
+     characters=NSUnicodeFromBytesUTF16LittleEndian(bytes,length,&resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
+
       case NSUTF16BigEndianStringEncoding:
      characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
      return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);

@@ -37,6 +37,7 @@ NSString * const NSExpansionAttributeName=@"NSExpansionAttributeName";
 NSString * const NSCursorAttributeName=@"NSCursorAttributeName";
 NSString * const NSToolTipAttributeName=@"NSToolTipAttributeName";
 NSString * const NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribute";
+NSString * const NSSpellingStateAttributeName=@"NSSpellingStateAttributeName"; // temporary attribute
 
 @implementation NSAttributedString(NSAttributedString_AppKit)
 
@@ -402,10 +403,6 @@ NSColor *NSForegroundColorAttributeInDictionary(NSDictionary *dictionary) {
     color=[NSColor blackColor];
 
    return color;
-}
-
-NSColor *NSBackgroundColorAttributeInDictionary(NSDictionary *dictionary) {
-   return [dictionary objectForKey:NSBackgroundColorAttributeName];
 }
 
 NSParagraphStyle *NSParagraphStyleAttributeInDictionary(NSDictionary *dictionary) {

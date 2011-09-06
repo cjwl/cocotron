@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSResponder.h>
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSGraphics.h>
+#import <pthread.h>
 
 @class NSWindow,NSImage,NSMenu, NSPasteboard, NSDisplay,NSDockTile;
 
@@ -88,7 +89,7 @@ typedef enum {
    NSDockTile     *_dockTile;
 
    NSMutableArray *_modalStack;
-   NSMutableArray *_orderedDocuments; // get rid of
+   pthread_mutex_t _lock; 
    NSMutableArray *_orderedWindows; // get rid of
    NSTimer *_attentionTimer;
 }

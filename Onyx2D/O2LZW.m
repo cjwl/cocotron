@@ -281,7 +281,7 @@ int DLZWDecompressLine(LZWFileType * LZWFile,O2DataConsumerRef consumer,int Line
 
 NSData *LZWDecodeWithExpectedResultLength(NSData *data,unsigned stripLength){
    NSMutableData    *outputData=[NSMutableData data];
-   O2DataConsumerRef consumer=O2DataConsumerCreateWithCFData(outputData);
+   O2DataConsumerRef consumer=O2DataConsumerCreateWithCFData((CFMutableDataRef)outputData);
    LZWFileType lzwStream;
 
    lzwStream.inputStream=[NSInputStream inputStreamWithData:data];
