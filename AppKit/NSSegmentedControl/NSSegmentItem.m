@@ -75,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _toolTip;
 }
 
--(float)width {
+-(CGFloat)width {
    return _width;
 }
 
@@ -115,7 +115,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _toolTip=toolTip;
 }
 
--(void)setWidth:(float)width {
+-(void)setWidth:(CGFloat)width {
    _width=width;
 }
 
