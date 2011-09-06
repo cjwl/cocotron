@@ -239,6 +239,7 @@ int O2ColorConvertComponentsToDeviceRGB(O2ColorSpaceRef inputSpace,const O2Float
      rgbComponents[3]=1;
      return 0;
    }
+   return 0;
 }
 
 O2ColorRef O2ColorConvertToDeviceRGB(O2ColorRef self) {

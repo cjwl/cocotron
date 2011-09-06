@@ -315,6 +315,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    switch(CGImageGetAlphaInfo(_cgImage)){
     case kCGImageAlphaNone:
+    case kCGImageAlphaOnly:
      break;
     case kCGImageAlphaPremultipliedLast:
      break;
