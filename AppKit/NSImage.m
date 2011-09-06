@@ -723,7 +723,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImageRep        *drawRep=nil;
    CGContextRef       context;
       
-   if(NSIsEmptyRect(source)){
+   if(NSIsEmptyRect(source) && !_isFlipped){
     if([any isKindOfClass:[NSCachedImageRep class]])
      drawRep=[any retain];
     else if([any isKindOfClass:[NSBitmapImageRep class]])
@@ -739,9 +739,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [self lockFocusOnRepresentation:cached];
    
+    context=NSCurrentGraphicsPort();
     if(useSourceRect){
-     context=NSCurrentGraphicsPort();
      CGContextTranslateCTM(context,-source.origin.x,-source.origin.y);
+    }
+    if (_isFlipped) {
+     CGContextTranslateCTM(context, 0, source.size.height);
+     CGContextScaleCTM(context, 1, -1);
     }
    
     [self drawRepresentation:uncached inRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
@@ -772,7 +776,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		CGContextSetAlpha(context, fraction);
 	}	
 	[[NSGraphicsContext currentContext] setCompositingOperation:operation];
-	
+    
    [self drawRepresentation:drawRep inRect:rect];
    
    CGContextRestoreGState(context);
