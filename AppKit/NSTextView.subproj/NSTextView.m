@@ -2606,8 +2606,19 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)checkSpelling:sender {
-   [NSSpellChecker sharedSpellChecker];
-   NSUnimplementedMethod();
+   NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
+   NSString *string=[self string];
+   NSRange range=NSMakeRange(0,[string length]);
+   
+   [[self textStorage] removeAttribute:NSSpellingStateAttributeName range:range];
+
+   NSArray *checking=[checker checkString:string range:range types:NSTextCheckingTypeSpelling options:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag] orthography:NULL wordCount:NULL];
+   
+   for(NSTextCheckingResult *result in checking){
+    NSRange range=[result range];
+
+    [[self textStorage] addAttribute:NSSpellingStateAttributeName value:[NSNumber numberWithUnsignedInt:NSSpellingStateSpellingFlag] range:range];
+   }
 }
 
 -(NSInteger)spellCheckerDocumentTag {

@@ -11,8 +11,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSOrthography.h>
+#import <Foundation/NSSpellEngine.h>
 #import "NSSpellCheckerTagData.h"
 #import "NSSpellingViewController.h"
+
+NSString * const NSSpellCheckerDidChangeAutomaticTextReplacementNotification=@"NSSpellCheckerDidChangeAutomaticTextReplacementNotification";
+NSString * const NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification=@"NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification";
+
+NSString * const NSTextCheckingOrthographyKey=@"NSTextCheckingOrthographyKey";
+NSString * const NSTextCheckingQuotesKey=@"NSTextCheckingQuotesKey";
+NSString * const NSTextCheckingReplacementsKey=@"NSTextCheckingReplacementsKey";
+NSString * const NSTextCheckingReferenceDateKey=@"NSTextCheckingReferenceDateKey";
+NSString * const NSTextCheckingReferenceTimeZoneKey=@"NSTextCheckingReferenceTimeZoneKey";
+NSString * const NSTextCheckingDocumentURLKey=@"NSTextCheckingDocumentURLKey";
+NSString * const NSTextCheckingDocumentTitleKey=@"NSTextCheckingDocumentTitleKey";
+NSString * const NSTextCheckingDocumentAuthorKey=@"NSTextCheckingDocumentAuthorKey";
 
 @implementation NSSpellChecker
 
@@ -101,13 +115,42 @@ static NSSpellChecker *shared=nil;
 }
 
 -(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount {
-   NSUnimplementedMethod();
-   return NSMakeRange(0,0);
+   NSMutableDictionary *options=[NSMutableDictionary dictionary];
+   
+   if(language==nil)
+    language=[[NSLocale currentLocale] localeIdentifier];
+    
+   if(language!=nil){
+    NSDictionary  *languageMap=[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:language] forKey:@"Latn"];
+    NSOrthography *orthography=[NSOrthography orthographyWithDominantScript:@"Latn" languageMap:languageMap];
+    
+    [options setObject:orthography forKey:NSTextCheckingOrthographyKey];
+   }
+
+   NSArray *checking=[self checkString:string range:NSMakeRange(offset,[string length]-offset) types:NSTextCheckingTypeSpelling options:options inSpellDocumentWithTag:tag orthography:NULL wordCount:wordCount];
+   
+   if([checking count]==0)
+    return NSMakeRange(0,0);
+    
+   NSTextCheckingResult *first=[checking objectAtIndex:0];
+   
+   return [first range];
+}
+
+-(NSSpellEngine *)currentSpellEngine {
+   return [[NSSpellEngine allSpellEngines] objectAtIndex:0];
 }
 
 -(NSArray *)checkString:(NSString *)string range:(NSRange)range types:(NSTextCheckingTypes)types options:(NSDictionary *)options inSpellDocumentWithTag:(NSInteger)tag orthography:(NSOrthography **)orthography wordCount:(NSInteger *)wordCount {
-   NSUnimplementedMethod();
-   return 0;
+   NSSpellEngine *spellEngine=[self currentSpellEngine];
+   
+   /* NSSpellChecker and NSSpellServer have inconsistent API, we accept a range but the server only takes an offset. */
+   /* NSSpellChecker returns by ref an orthography, yet NSSpellServer accepts one as argument. */
+   /* I guess this isn't one to one and there is some extra work being done in NSSpellChecker. */
+   
+   NSString *substring=[string substringToIndex:NSMaxRange(range)];
+   
+   return [spellEngine checkString:substring offset:range.location types:types options:options orthography:[options objectForKey:NSTextCheckingOrthographyKey] wordCount:wordCount];
 }
 
 -(void)closeSpellDocumentWithTag:(NSInteger)tag { 

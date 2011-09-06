@@ -36,6 +36,9 @@ enum {
 typedef uint64_t NSTextCheckingTypes;
 
 @interface NSTextCheckingResult : NSObject {
+   NSTextCheckingType _resultType;
+   NSRange _range;
+   NSDictionary *_properties;
 }
 
 +(NSTextCheckingResult *)addressCheckingResultWithRange:(NSRange)range components:(NSDictionary *)components;
