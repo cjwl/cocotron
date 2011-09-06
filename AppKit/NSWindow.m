@@ -979,6 +979,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setBackgroundColor:(NSColor *)color {
+   if (color==nil) color = [NSColor windowBackgroundColor];
    color=[color copy];
    [_backgroundColor release];
    _backgroundColor=color;
@@ -1430,8 +1431,22 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSRect)constrainFrameRect:(NSRect)rect toScreen:(NSScreen *)screen {
-   NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+   if ( !screen) return rect;
+   NSRect visRect = [screen visibleFrame];
+
+   if (NSMaxX(rect) > NSMaxX(visRect)) {
+    rect.origin.x = NSMaxX(visRect) - rect.size.width;
+   }
+   if (NSMaxY(rect) > NSMaxY(visRect)) {
+    rect.origin.y = NSMaxY(visRect) - rect.size.height;
+   }
+   if (NSMinX(rect) < NSMinX(visRect)) {
+    rect.origin.x = NSMinX(visRect);
+   }
+   if (NSMinY(rect) < NSMinY(visRect)) {
+    rect.origin.y = NSMinY(visRect);
+   }
+   return rect;
 }
 
 -(NSWindow *)parentWindow {
