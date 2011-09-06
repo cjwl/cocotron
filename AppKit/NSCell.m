@@ -316,6 +316,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return [_objectValue doubleValue];
 }
 
+-(NSInteger)integerValue {
+   NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
+   if([objString isKindOfClass:[NSString class]])
+   {
+      NSInteger i = 0;
+      [[NSScanner localizedScannerWithString:objString] scanInteger:&i];
+      return i;
+   }
+   else
+      return [_objectValue integerValue];
+}
+
 -(NSAttributedString *)attributedStringValue {
    if([_objectValue isKindOfClass:[NSAttributedString class]])
     return _objectValue;
@@ -586,6 +598,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setObjectValue:[NSNumber numberWithDouble:value]];
 }
 
+-(void)setIntegerValue:(NSInteger)value {
+   [self setObjectValue:[NSNumber numberWithInteger:value]];
+}
+
 
 -(void)setAttributedStringValue:(NSAttributedString *)value {
    value=[value copy];
@@ -628,6 +644,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)takeFloatValueFrom:sender {
    [self setFloatValue:[sender floatValue]];
+}
+
+-(void)takeDoubleValueFrom:sender {
+   [self setDoubleValue:[sender doubleValue]];
+}
+
+-(void)takeIntegerValueFrom:sender {
+   [self setIntegerValue:[sender integerValue]];
 }
 
 -(NSSize)cellSize {
