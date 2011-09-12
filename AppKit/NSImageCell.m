@@ -170,15 +170,15 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 		CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
 		CGContextSaveGState(ctx);
 		CGContextClipToRect(ctx,frame);
-
+        
         frame=[self _scaledAndAlignedImageFrame:frame];
         
         if([control isFlipped]){
-         CGAffineTransform flip={1,0,0,-1,0,frame.size.height};
-     
-         CGContextConcatCTM(ctx,flip);
+         CGContextTranslateCTM(ctx, 0, NSMaxY(frame));
+         CGContextScaleCTM(ctx, 1, -1);
+         frame.origin.y = 0;
         }
-              
+        
         [[self _imageValue] drawInRect:frame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
         
 		CGContextRestoreGState(ctx);
