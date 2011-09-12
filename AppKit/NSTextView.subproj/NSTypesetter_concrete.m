@@ -247,7 +247,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		
 		if(_alignment!=NSLeftTextAlignment){
 			float totalWidth=0;
-			float totalUsedWidth=_scanRect.size.width;
+			float totalUsedWidth=NSMaxX(_scanRect);
 			
 			for(i=0;i<count;i++){
 				NSRange range=[_glyphRangesInLine rangeAtIndex:i];
