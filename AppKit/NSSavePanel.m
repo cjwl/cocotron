@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)runModal {
-   return [[NSDisplay currentDisplay] savePanel:self runModalForDirectory:@"" file:@""];
+   return [[NSDisplay currentDisplay] savePanel:self runModalForDirectory:[self directory] file:@""];
 }
 
 -(NSString *)directory {
