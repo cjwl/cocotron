@@ -263,6 +263,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    [self setObjectValue:[NSNumber numberWithInt:value]];
 }
 
+-(void)setIntegerValue:(NSInteger)value {
+	[self setObjectValue:[NSNumber numberWithInteger:value]];
+}
+
 -(void)setFloatValue:(float)value {
    [self setObjectValue:[NSNumber numberWithFloat:value]];
 }
