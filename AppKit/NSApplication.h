@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSResponder.h>
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSGraphics.h>
-#import <pthread.h>
+#import <CoreFoundation/pthread.h>
 
 @class NSWindow,NSImage,NSMenu, NSPasteboard, NSDisplay,NSDockTile;
 
