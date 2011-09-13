@@ -758,7 +758,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     while(location<limit){
      NSRange          effectiveRange;
      NSDictionary    *attributes=[_textStorage attributesAtIndex:location effectiveRange:&effectiveRange];
-     NSColor         *color=NSBackgroundColorAttributeInDictionary(attributes);
+     NSColor         *color=[attributes objectForKey:NSBackgroundColorAttributeName];
 
      effectiveRange=NSIntersectionRange(characterRange,effectiveRange);
 
@@ -785,6 +785,28 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     }
    }
    [self drawSelectionAtPoint:origin];
+}
+
+-(void)drawSpellingState:(NSNumber *)spellingState characterRange:(NSRange)characterRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+   unsigned i,rectCount;
+   BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
+   float            usedHeight=[self usedRectForTextContainer:container].size.height;
+   NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
+
+   [[NSColor redColor] setFill];
+
+   for(i=0;i<rectCount;i++){
+    NSRect fill=rects[i];
+
+    if(isFlipped)
+     fill.origin.y+=(fill.size.height-1);
+
+    fill.origin.x+=origin.x;
+    fill.origin.y+=origin.y;
+    fill.size.height=1;
+    
+    NSRectFill(fill);
+   }
 }
 
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin {
@@ -835,6 +857,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
       else {
        NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
        NSFont       *font=NSFontAttributeInDictionary(attributes);
+       NSNumber     *spellingState=[attributes objectForKey:NSSpellingStateAttributeName];
        NSMultibyteGlyphPacking packing=NSNativeShortGlyphPacking;
        NSGlyph       glyphs[range.length];
        unsigned      glyphsLength;
@@ -888,6 +911,11 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
          else {
           packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs+start,length,packing,packedGlyphs);
           [self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
+          
+          if(spellingState!=nil){
+           [self drawSpellingState:spellingState characterRange:[self characterRangeForGlyphRange:NSMakeRange(range.location+start,length) actualGlyphRange:NULL] container:container origin:origin];
+          }
+                     
           partWidth+=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
           point.x+=partWidth;
           partWidth=0;
@@ -900,6 +928,9 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
         [color setFill];
         packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs,glyphsLength,packing,packedGlyphs);
         [self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
+        if(spellingState!=nil){
+         [self drawSpellingState:spellingState characterRange:characterRange container:container origin:origin];
+        }
        }
       }
      }

@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // For manually created segment cells
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_segments = [[NSMutableArray arrayWithCapacity: 5] retain];
 		_selectedSegment = NSNotFound; // initially empty
 		_trackingMode = NSSegmentSwitchTrackingSelectOne; // default

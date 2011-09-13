@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSText.h>
 #import <AppKit/NSTextInput.h>
 #import <AppKit/NSDragging.h>
+#import <Foundation/NSTextCheckingResult.h>
 
 @class NSTextStorage, NSLayoutManager, NSTextContainer, NSUndoManager;
 @class NSRulerView, NSRulerMarker;
@@ -99,6 +100,11 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    NSRange                _undoRange; // The range of text that was entered in the current typing operation
    BOOL                   _processingKeyEvent;
    BOOL                   _firstResponderButNotEditingYet;
+   
+   NSInteger _spellCheckerDocumentTag;
+   BOOL _isContinuousSpellCheckingEnabled;
+   BOOL _isAutomaticSpellingCorrectionEnabled;
+   NSTextCheckingTypes _enabledTextCheckingTypes;
 }
 
 -initWithFrame:(NSRect)frame textContainer:(NSTextContainer *)container;
@@ -184,6 +190,22 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
 
 -(void)_setFieldEditorUndoManager:(NSUndoManager *)undoManager;
 -(void)breakUndoCoalescing;
+
+-(NSInteger)spellCheckerDocumentTag;
+
+-(BOOL)isContinuousSpellCheckingEnabled;
+-(void)setContinuousSpellCheckingEnabled:(BOOL)value;
+-(void)toggleContinuousSpellChecking:sender;
+
+-(BOOL)isAutomaticSpellingCorrectionEnabled;
+-(void)setAutomaticSpellingCorrectionEnabled:(BOOL)value;
+-(void)toggleAutomaticSpellingCorrection:sender;
+
+-(NSTextCheckingTypes)enabledTextCheckingTypes;
+-(void)setEnabledTextCheckingTypes:(NSTextCheckingTypes)checkingTypes;
+
+-(void)setSpellingState:(NSInteger)value range:(NSRange)characterRange;
+
 @end
 
 @interface NSObject(NSTextView_undoManager)

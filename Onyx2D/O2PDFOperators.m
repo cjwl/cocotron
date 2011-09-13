@@ -670,8 +670,10 @@ void O2PDF_render_ID(O2PDFScanner *scanner,void *info) {
    if(![dictionary getBooleanForKey:"IM" value:&imageMask])
     if(![dictionary getBooleanForKey:"ImageMask" value:&imageMask]){
     }
-
-   if(![dictionary getObjectForKey:"Intent" value:&intent])
+#if 0
+   if(![dictionary getObjectForKey:"Intent" value:&intent]){
+   }
+#endif
 
    if(![dictionary getBooleanForKey:"I" value:&interpolate])
     if(![dictionary getBooleanForKey:"Interpolate" value:&interpolate]){

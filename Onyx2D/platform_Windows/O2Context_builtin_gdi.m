@@ -158,6 +158,7 @@ static inline O2argb8u testO2argb8uMultiplyByMask8u(O2argb8u result,uint32_t val
    return result;
 }
 
+#if 0
 static void applyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,uint8_t *coverageSpan,O2argb8u *src,int length){
    int i;
    
@@ -171,7 +172,6 @@ static void applyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,uint8_t *coverageSpa
    }
 }
 
-#if 0
 static void drawGray8Stencil(O2Context_builtin_gdi *self,O2Surface *surface,CGFloat fpx,CGFloat fpy,O2Paint *paint,uint8_t *coverage,size_t bytesPerRow,size_t width,size_t height,int left,int top){
    int x=lroundf(fpx)+left;
    int y=lroundf(fpy)-top;

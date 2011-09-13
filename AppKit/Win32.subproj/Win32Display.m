@@ -400,7 +400,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
     result=[super nextEventMatchingMask:mask|NSPlatformSpecificDisplayMask untilDate:untilDate inMode:mode dequeue:dequeue];
     
     if([result type]==NSPlatformSpecificDisplayEvent){
-     Win32Event *win32Event=[(NSEvent_CoreGraphics *)result coreGraphicsEvent];
+     Win32Event *win32Event=(Win32Event *)[(NSEvent_CoreGraphics *)result coreGraphicsEvent];
      MSG msg=[win32Event msg];
      
      DispatchMessage(&msg);

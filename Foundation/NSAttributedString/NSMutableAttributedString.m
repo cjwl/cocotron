@@ -80,17 +80,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    while(location<limit){
     NSRange       effectiveRange;
-    NSMutableDictionary *modify=[[[self attributesAtIndex: location effectiveRange:&effectiveRange] mutableCopy] autorelease];
+    NSDictionary *check=[self attributesAtIndex: location effectiveRange:&effectiveRange];
     NSRange       replace;
+    
+    replace.location=location;
+    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))-location;
 
-    [modify removeObjectForKey:name];
+    if([check objectForKey:name]!=nil){
+     NSMutableDictionary *modify=[[check mutableCopy] autorelease];
 
-    replace.location= location;
-    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))
-        -location;
+     [modify removeObjectForKey:name];
 
-    [self setAttributes:modify range:replace];
-
+     [self setAttributes:modify range:replace];
+    }
+    
     location=NSMaxRange(replace);
    }
 }

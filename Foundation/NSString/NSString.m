@@ -995,6 +995,9 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -(NSString *)substringToIndex:(NSUInteger)location {
    NSRange range={0,location};
 
+   if(location==[self length])
+    return [[self copy] autorelease];
+    
    if(location>[self length])
     [NSException raise:NSRangeException format:@"-[%@ %s] index %d beyond length %d",isa,sel_getName(_cmd),location,[self length]];
 

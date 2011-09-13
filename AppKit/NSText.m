@@ -264,5 +264,21 @@ NSString * const NSTextDidChangeNotification=@"NSTextDidChangeNotification";
     NSInvalidAbstractInvocation();
 }
 
+-(void)changeSpelling:sender {
+    NSInvalidAbstractInvocation();
+}
+
+-(void)ignoreSpelling:sender {
+    NSInvalidAbstractInvocation();
+}
+
+-(void)showGuessPanel:sender {
+    NSInvalidAbstractInvocation();
+}
+
+-(void)checkSpelling:sender {
+    NSInvalidAbstractInvocation();
+}
+
 @end
 

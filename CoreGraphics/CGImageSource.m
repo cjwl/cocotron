@@ -9,7 +9,7 @@ CGImageSourceRef CGImageSourceCreateWithData(CFDataRef data,CFDictionaryRef opti
 }
 
 CGImageSourceRef CGImageSourceCreateWithURL(CFURLRef url,CFDictionaryRef options) {
-	return (CGImageSourceRef)[O2ImageSource newImageSourceWithURL:url options:options];
+	return (CGImageSourceRef)[O2ImageSource newImageSourceWithURL:(NSURL *)url options:options];
 }
 
 size_t CGImageSourceGetCount(CGImageSourceRef self) {

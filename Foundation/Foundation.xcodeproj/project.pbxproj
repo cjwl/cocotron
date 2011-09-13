@@ -332,7 +332,7 @@
 		15D92047105E918000171406 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D92048105E918000171406 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		15D92049105E918000171406 /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		15D9204A105E918000171406 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		15D9204A105E918000171406 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15D9204B105E918000171406 /* NSURLError.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E29102CD5A600B265D6 /* NSURLError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15D9204C105E918000171406 /* NSGarbageCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E44102CD5B700B265D6 /* NSGarbageCollector.h */; };
 		15D9204D105E918000171406 /* NSPointerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E54102CD5C700B265D6 /* NSPointerArray.h */; };
@@ -2811,6 +2811,42 @@
 		FE01A7E50C5D9B6900AEA51A /* NSTimeZoneAbbreviations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B209747EA400EC542B /* NSTimeZoneAbbreviations.plist */; };
 		FE01A7E60C5D9B6900AEA51A /* NSTimeZoneRegions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B309747EA400EC542B /* NSTimeZoneRegions.plist */; };
 		FE01A7E70C5D9B6900AEA51A /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
+		FE09AF7013FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7113FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7213FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7313FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7413FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7513FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7613FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7713FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7813FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7913FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7A13FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7B13FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7C13FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7D13FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF7E13FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF7F13FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF8013FCC68100B53D10 /* NSOrthography.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF6E13FCC68100B53D10 /* NSOrthography.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8113FCC68100B53D10 /* NSOrthography.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF6F13FCC68100B53D10 /* NSOrthography.m */; };
+		FE09AF8413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF8613FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8713FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF8813FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8913FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF8A13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8B13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF8C13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8D13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF8E13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF8F13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF9013FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF9113FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF9213FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF9313FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
+		FE09AF9413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */ = {isa = PBXBuildFile; fileRef = FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE09AF9513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */; };
 		FE1365E00F154B3A000F2657 /* NSAtomicList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365D80F154B3A000F2657 /* NSAtomicList.h */; };
 		FE1365E10F154B3A000F2657 /* NSAtomicList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365D90F154B3A000F2657 /* NSAtomicList.m */; };
 		FE1365E40F154B3A000F2657 /* NSOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DC0F154B3A000F2657 /* NSOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3188,7 +3224,7 @@
 		FE30A17F10C6ED6F00A1BF7F /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A18010C6ED6F00A1BF7F /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A18110C6ED6F00A1BF7F /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE30A18210C6ED6F00A1BF7F /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE30A18210C6ED6F00A1BF7F /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE30A18310C6ED6F00A1BF7F /* NSURLError.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E29102CD5A600B265D6 /* NSURLError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE30A18410C6ED6F00A1BF7F /* NSGarbageCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E44102CD5B700B265D6 /* NSGarbageCollector.h */; };
 		FE30A18510C6ED6F00A1BF7F /* NSPointerArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E54102CD5C700B265D6 /* NSPointerArray.h */; };
@@ -3621,19 +3657,19 @@
 		FE452E8D102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
 		FE452E8E102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE452E8F102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
-		FE463E1B102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E1B102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E1C102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
-		FE463E1D102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E1D102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E1E102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
-		FE463E1F102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E1F102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E20102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
-		FE463E21102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E21102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E22102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
-		FE463E23102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E23102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E24102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
-		FE463E25102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E25102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E26102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
-		FE463E27102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; };
+		FE463E27102CD59500B265D6 /* NSSpellServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E19102CD59500B265D6 /* NSSpellServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E28102CD59500B265D6 /* NSSpellServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E1A102CD59500B265D6 /* NSSpellServer.m */; };
 		FE463E2B102CD5A600B265D6 /* NSURLError.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E29102CD5A600B265D6 /* NSURLError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E2C102CD5A600B265D6 /* NSURLError.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463E2A102CD5A600B265D6 /* NSURLError.m */; };
@@ -4881,6 +4917,24 @@
 		FEADE5CF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEADE5BF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m */; };
 		FEADE5D012FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEADE5BE12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h */; };
 		FEADE5D112FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEADE5BF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m */; };
+		FEB3F2BA1404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2BB1404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2BC1404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2BD1404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2BE1404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2BF1404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2C01404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2C11404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2C21404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2C31404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2C41404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2C51404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2C61404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2C71404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2C81404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2C91404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
+		FEB3F2CA1404A92400059C8F /* NSSpellEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F2B81404A92400059C8F /* NSSpellEngine.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB3F2CB1404A92400059C8F /* NSSpellEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F2B91404A92400059C8F /* NSSpellEngine.m */; };
 		FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
 		FEB6CBB40B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7212,6 +7266,10 @@
 		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSConditionLock_win32.h; sourceTree = "<group>"; };
 		C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSConditionLock_win32.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE09AF6E13FCC68100B53D10 /* NSOrthography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOrthography.h; sourceTree = "<group>"; };
+		FE09AF6F13FCC68100B53D10 /* NSOrthography.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOrthography.m; sourceTree = "<group>"; };
+		FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextCheckingResult.h; sourceTree = "<group>"; };
+		FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextCheckingResult.m; sourceTree = "<group>"; };
 		FE1342BD1151842200404745 /* CoreServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreServices.xcodeproj; path = ../CoreServices/CoreServices.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE1365D80F154B3A000F2657 /* NSAtomicList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicList.h; sourceTree = "<group>"; };
 		FE1365D90F154B3A000F2657 /* NSAtomicList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAtomicList.m; sourceTree = "<group>"; };
@@ -7402,6 +7460,8 @@
 		FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRunLoopState_posix.m; path = platform_posix/NSRunLoopState_posix.m; sourceTree = "<group>"; };
 		FEADE5BE12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_KeyedUnarchiveFromData.h; sourceTree = "<group>"; };
 		FEADE5BF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_KeyedUnarchiveFromData.m; sourceTree = "<group>"; };
+		FEB3F2B81404A92400059C8F /* NSSpellEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellEngine.h; sourceTree = "<group>"; };
+		FEB3F2B91404A92400059C8F /* NSSpellEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSpellEngine.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
 		FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueCoding.m; sourceTree = "<group>"; };
 		FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = objc.xcodeproj; path = ../objc/objc.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -7634,6 +7694,10 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */,
+				FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */,
+				FE09AF6E13FCC68100B53D10 /* NSOrthography.h */,
+				FE09AF6F13FCC68100B53D10 /* NSOrthography.m */,
 				FE1342BD1151842200404745 /* CoreServices.xcodeproj */,
 				FE2569E410F2F936005CE23E /* CFNetwork */,
 				FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */,
@@ -7772,6 +7836,8 @@
 				034768DFFF38A50411DB9C8B /* Products */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				6E28034B09747A8200EC542B /* xml */,
+				FEB3F2B81404A92400059C8F /* NSSpellEngine.h */,
+				FEB3F2B91404A92400059C8F /* NSSpellEngine.m */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -9297,6 +9363,9 @@
 				FE721035124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5CE12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F4E1358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF8013FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF9413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2BA1404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9626,6 +9695,9 @@
 				FE721033124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5CC12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F4C1358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7C13FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF9013FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2CA1404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9955,6 +10027,9 @@
 				FE72102B124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C412FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F441358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7413FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF8813FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2C61404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10284,6 +10359,9 @@
 				FE721029124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C212FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F421358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7213FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF8613FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2BC1404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10618,6 +10696,9 @@
 				FEEA64B512B674A200E6E2C8 /* NSRecursiveLock_win32.h in Headers */,
 				FEADE5C012FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F401358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7013FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF8413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2C01404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10947,6 +11028,9 @@
 				FE721037124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5D012FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F501358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7E13FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF9213FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2C81404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11277,6 +11361,9 @@
 				FE721031124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5CA12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F4A1358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7A13FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF8E13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2C21404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11607,6 +11694,9 @@
 				FE72102D124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C612FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F461358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7613FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF8A13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2C41404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11937,6 +12027,9 @@
 				FE72102F124CE420009B690D /* NSKeyObserver.h in Headers */,
 				FEADE5C812FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.h in Headers */,
 				FE937F481358DC8000C93531 /* NSNumber_CF.h in Headers */,
+				FE09AF7813FCC68100B53D10 /* NSOrthography.h in Headers */,
+				FE09AF8C13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
+				FEB3F2BE1404A92400059C8F /* NSSpellEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12866,6 +12959,9 @@
 				FE721036124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5CF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F4F1358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF8113FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF9513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2BB1404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13233,6 +13329,9 @@
 				FE721034124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5CD12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F4D1358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7D13FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF9113FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2CB1404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13601,6 +13700,9 @@
 				FE72102C124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C512FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F451358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7513FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF8913FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2C71404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13970,6 +14072,9 @@
 				FE72102A124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C312FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F431358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7313FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF8713FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2BD1404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14346,6 +14451,9 @@
 				FEEA64B612B674A200E6E2C8 /* NSRecursiveLock_win32.m in Sources */,
 				FEADE5C112FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F411358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7113FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF8513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2C11404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14715,6 +14823,9 @@
 				FE721038124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5D112FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F511358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7F13FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF9313FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2C91404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15087,6 +15198,9 @@
 				FE721032124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5CB12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F4B1358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7B13FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF8F13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2C31404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15460,6 +15574,9 @@
 				FE72102E124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C712FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F471358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7713FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF8B13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2C51404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15833,6 +15950,9 @@
 				FE721030124CE420009B690D /* NSKeyObserver.m in Sources */,
 				FEADE5C912FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F491358DC8000C93531 /* NSNumber_CF.m in Sources */,
+				FE09AF7913FCC68100B53D10 /* NSOrthography.m in Sources */,
+				FE09AF8D13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				FEB3F2BF1404A92400059C8F /* NSSpellEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
