@@ -57,8 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [modify addEntriesFromDictionary:attributes];
 
     replace.location=MAX(location,effectiveRange.location);
-    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))
-       -replace.location;
+    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))-replace.location;
 
     [self setAttributes:modify range:replace];
 
@@ -76,7 +75,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAttribute:(NSString *)name range:(NSRange)range {
    NSUInteger location=range.location;
-   NSUInteger limit=NSMaxRange(range);
+   // TODO, raise exception if beyond length
+   NSUInteger limit=MIN(NSMaxRange(range),[self length]);
 
    while(location<limit){
     NSRange       effectiveRange;

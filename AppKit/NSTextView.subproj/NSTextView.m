@@ -1978,10 +1978,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
   
   [_textStorage replaceCharactersInRange:range withString:string];
   [_textStorage setAttributes:[self _stringAttributes] range:NSMakeRange(range.location,[string length])];
-  [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
 
 // TODO: this needs to be optimized to check the changed range expanded (probably to paragraphs) instead of everything
    [self _continuousSpellCheckWithInvalidatedRange:range];
+
+  [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
 }
 
 -(BOOL)readRTFDFromFile:(NSString *)path {
@@ -2616,9 +2617,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)_continuousSpellCheckWithInvalidatedRange:(NSRange)invalidatedRange {
    NSString *string=[self string];
    NSUInteger start, end;
-    
+
+        // TODO, truncate invalidated range to string size if needed
+        
    // round range to nearest paragraphs
-    
+
    [string getParagraphStart:&start end:&end contentsEnd:NULL forRange:invalidatedRange];
    invalidatedRange=NSMakeRange(start,end-start);
 

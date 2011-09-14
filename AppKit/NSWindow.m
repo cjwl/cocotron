@@ -795,6 +795,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setFrame:(NSRect)newFrame display:(BOOL)display animate:(BOOL)animate  {
+   newFrame=[self constrainFrameRect:newFrame toScreen:[self screen]];
+   
    BOOL didSize=NSEqualSizes(newFrame.size,_frame.size)?NO:YES;
    BOOL didMove=NSEqualPoints(newFrame.origin,_frame.origin)?NO:YES;
    
@@ -1430,8 +1432,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSRect)constrainFrameRect:(NSRect)rect toScreen:(NSScreen *)screen {
-   NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+   return rect;
 }
 
 -(NSWindow *)parentWindow {

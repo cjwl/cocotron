@@ -145,4 +145,10 @@
    return result;
 }
 
+-(NSArray *)suggestGuessesForWord:(NSString *)word inLanguage:(NSString *)language {
+   NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
+
+   return [dict suggestGuessesForWord:word];    
+}
+
 @end

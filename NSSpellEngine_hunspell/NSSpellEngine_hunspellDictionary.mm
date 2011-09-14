@@ -40,37 +40,84 @@
 
 }
 
--(NSArray *)textCheckingResultWithRange:(NSRange)range forCharacters:(unichar *)characters length:(NSUInteger)length {
-      
+-(char *)createHunspellStringForCharacters:(unichar *)characters length:(NSUInteger)length {
    char *encoding=hunspell_get_dic_encoding((Hunspell *)_hunspell);
+   char *result=NULL;
    
    if(encoding==NULL || strcmp(encoding,"ISO8859-1")==0){
     NSUInteger i;
-    char latin1[length+1];
-   
     
+    result=(char *)malloc(length+1);
+   
     for(i=0;i<length;i++){
      if(characters[i]<256)
-      latin1[i]=characters[i];
+      result[i]=characters[i];
      else {
-      /* Word contains a character outside of IS8859-1, I guess this is a spelling error. */
-      NSTextCheckingResult *result=[NSTextCheckingResult spellCheckingResultWithRange:range];
-      return [NSArray arrayWithObject:result];
+      free(result);
+      return NULL;
      }
      
     }
-    latin1[i]='\0';
-    
-    if(hunspell_spell((Hunspell *)_hunspell,latin1)==0){
-     NSTextCheckingResult *result=[NSTextCheckingResult spellCheckingResultWithRange:range];
-     return [NSArray arrayWithObject:result];
-    }
+    result[i]='\0';
    }
    else {
     NSLog(@"Unhandled hunspell dictionary encoding %s",encoding);
+    result=NULL;
+   }
+   
+   return result;
+}
+
+-(char *)createHunspellStringForString:(NSString *)string {
+   NSUInteger length=[string length];
+   unichar buffer[length];
+   
+   [string getCharacters:buffer];
+   
+   return [self createHunspellStringForCharacters:buffer length:length];
+}
+
+-(NSArray *)textCheckingResultWithRange:(NSRange)range forCharacters:(unichar *)characters length:(NSUInteger)length {
+   char *string=[self createHunspellStringForCharacters:characters length:length];
+   
+   if(string==NULL) {
+    /* Word contains a character outside of IS8859-1, I guess this is a spelling error. */
+    NSTextCheckingResult *result=[NSTextCheckingResult spellCheckingResultWithRange:range];
+    
+    return [NSArray arrayWithObject:result];
+   }
+   else {    
+    if(hunspell_spell((Hunspell *)_hunspell,string)==0){
+     NSTextCheckingResult *result=[NSTextCheckingResult spellCheckingResultWithRange:range];
+          
+     return [NSArray arrayWithObject:result];
+    }
    }
    
    return nil;
+}
+
+-(NSArray *)suggestGuessesForWord:(NSString *)word {
+   NSMutableArray *result=[NSMutableArray array];
+
+   char **slst;
+   char *string=[self createHunspellStringForString:word];
+   
+   if(string==NULL)
+    return nil;
+
+   int i,len=hunspell_suggest((Hunspell *)_hunspell,string,&slst);
+
+   free(string);
+   
+   for(i=0;i<len && slst!=NULL;i++){    
+    NSString *guess=[[[NSString alloc] initWithBytes:slst[i] length:strlen(slst[i]) encoding:NSUTF8StringEncoding] autorelease];
+    [result addObject:guess];
+   }
+
+   hunspell_suggest_free((Hunspell *)_hunspell,slst,len);
+
+   return result;
 }
 
 @end

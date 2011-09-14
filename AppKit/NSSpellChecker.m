@@ -114,12 +114,19 @@ static NSSpellChecker *shared=nil;
    return [self checkSpellingOfString:string startingAt:offset language:nil wrap:NO inSpellDocumentWithTag:0 wordCount:NULL];
 }
 
+-(NSString *)currentLanguage {
+    return [[NSLocale currentLocale] localeIdentifier];
+}
+
 -(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount {
    NSMutableDictionary *options=[NSMutableDictionary dictionary];
    
-   if(language==nil)
-    language=[[NSLocale currentLocale] localeIdentifier];
+   if(language==nil){
+    language=[self currentLanguage];
     
+    NSLog(@"language=%@",language);
+   }
+   
    if(language!=nil){
     NSDictionary  *languageMap=[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:language] forKey:@"Latn"];
     NSOrthography *orthography=[NSOrthography orthographyWithDominantScript:@"Latn" languageMap:languageMap];
@@ -202,9 +209,28 @@ static NSSpellChecker *shared=nil;
 
 
 
--(NSMenu *)menuForResult:(NSTextCheckingResult *)result string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view {
-   NSUnimplementedMethod();
-   return 0;
+-(NSMenu *)menuForResult:(NSTextCheckingResult *)checkingResult string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view {
+   NSSpellEngine *engine=[self currentSpellEngine];
+   
+   NSMenu *result=[[NSMenu alloc] initWithTitle:@""];
+    
+   NSRange range=[checkingResult range];
+   NSString *word=[checkedString substringWithRange:range];
+    
+   NSArray *guesses=[engine suggestGuessesForWord:word inLanguage:[self currentLanguage]];
+    
+   if([guesses count]==0){
+    NSMenuItem *item=[result addItemWithTitle:@"< No Suggestions >" action:NULL keyEquivalent:@""];
+    [item setEnabled:NO];
+   }
+   else {
+    for(NSString *guess in guesses)
+     [result addItemWithTitle:guess action:@selector(changeSpelling:) keyEquivalent:@""];
+   }
+      
+   [result addItem:[NSMenuItem separatorItem]];
+
+   return result;
 }
 
 -(void)recordResponse:(NSCorrectionResponse)response toCorrection:(NSString *)correction forWord:(NSString *)word language :(NSString *)language inSpellDocumentWithTag :(NSInteger)tag {

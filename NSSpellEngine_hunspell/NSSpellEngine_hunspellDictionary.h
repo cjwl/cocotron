@@ -23,4 +23,6 @@
 
 -(NSArray *)textCheckingResultWithRange:(NSRange)range forCharacters:(unichar *)characters length:(NSUInteger)length;
 
+-(NSArray *)suggestGuessesForWord:(NSString *)word;
+
 @end
