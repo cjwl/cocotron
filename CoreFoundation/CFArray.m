@@ -223,8 +223,16 @@ CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self,CFRange range,const void *va
 }
 
 CFIndex CFArrayGetLastIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
-	NSRange inrange = NSMakeRange(range.location, range.length);
-	return [(NSArray*)self indexOfObject:(id)value inRange:inrange];
+    // backwards search
+	NSInteger i=range.location+range.length;
+    NSInteger location=range.location;
+    
+	while(--i>=location) {
+		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value])
+            return i;
+	}
+    // doc.s say -1
+	return -1;
 }
 
 CFIndex CFArrayGetCountOfValue(CFArrayRef self,CFRange range,const void *value) {
