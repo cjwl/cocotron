@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSSpellChecker.h>
 #import <AppKit/NSPanel.h>
+#import <AppKit/NSMenu.h>
+#import <AppKit/NSMenuItem.h>
 #import <AppKit/NSRaise.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSBundle.h>
@@ -184,8 +186,11 @@ static NSSpellChecker *shared=nil;
 }
 
 -(NSArray *)guessesForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag {
-   NSUnimplementedMethod();
-   return 0;
+    NSSpellEngine *spellEngine=[self currentSpellEngine];
+
+    NSString *word = [string substringWithRange: range];
+    
+    return [spellEngine suggestGuessesForWord: word inLanguage: language];
 }
 
 -(void)learnWord:(NSString *)word {

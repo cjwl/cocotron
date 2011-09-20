@@ -10,7 +10,6 @@
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		FE05C39F140C91D600B85148 /* NSSpellEngine_hunspell.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE05C39E140C91D600B85148 /* NSSpellEngine_hunspell.mm */; };
 		FE081A17141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE081A16141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.mm */; };
-		FE081AC214107F5C00A3DE85 /* Spelling in Resources */ = {isa = PBXBuildFile; fileRef = FE081AB314107F5C00A3DE85 /* Spelling */; };
 		FEC24A24140DE31100DDAC92 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +33,6 @@
 		FE05C39E140C91D600B85148 /* NSSpellEngine_hunspell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSSpellEngine_hunspell.mm; sourceTree = "<group>"; };
 		FE081A15141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellEngine_hunspellDictionary.h; sourceTree = "<group>"; };
 		FE081A16141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSSpellEngine_hunspellDictionary.mm; sourceTree = "<group>"; };
-		FE081AB314107F5C00A3DE85 /* Spelling */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Spelling; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +71,6 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FE081AB314107F5C00A3DE85 /* Spelling */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -173,7 +170,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
-				FE081AC214107F5C00A3DE85 /* Spelling in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

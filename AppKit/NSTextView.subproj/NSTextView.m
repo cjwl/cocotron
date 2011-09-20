@@ -2606,6 +2606,17 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [self didChangeText];
 }
 
+-(void)_changeSpellingFromMenuItem:sender {
+   NSString *correction=[sender title];
+   NSRange selectedRange=[self selectedRange];
+   
+   if (![self _delegateChangeTextInRange: selectedRange replacementString: correction])
+    return;
+	   
+   [self _replaceCharactersInRange:selectedRange withString:correction];
+   [self didChangeText];
+}
+
 -(void)ignoreSpelling:sender {
    [[NSSpellChecker sharedSpellChecker] ignoreWord:[[sender selectedCell] stringValue] inSpellDocumentWithTag: [self spellCheckerDocumentTag]];
 }
@@ -2668,6 +2679,43 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     // manual spell check only does one
     break;
    }
+}
+
+-(NSMenu *)menuForEvent:(NSEvent *)event {
+    NSRange glyphRange;
+    
+    NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
+    float fraction;
+    
+    NSRange range = [_textStorage doubleClickAtIndex: [self glyphIndexForPoint:point fractionOfDistanceThroughGlyph:&fraction]];
+    
+    [self setSelectedRange:range];
+    
+    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
+    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
+
+    NSLog(@"guesses=%@",guesses);
+    
+    NSMenu *menu=[[[NSMenu alloc] initWithTitle:@""] autorelease];
+
+    if([guesses count]==0) {
+        NSMenuItem *item=[menu addItemWithTitle:@"No Guesses Found" action:@selector(cut:) keyEquivalent:@""];
+        [item setEnabled:NO];
+    }
+    else {
+        for(NSString *guess in guesses){
+         [menu addItemWithTitle:guess action:@selector(_changeSpellingFromMenuItem:) keyEquivalent:@""];
+        }
+    }
+    [menu addItem:[NSMenuItem separatorItem]];
+
+    [menu addItemWithTitle:@"Cut" action:@selector(cut:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Copy" action:@selector(copy:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@""];
+    [menu addItem:[NSMenuItem separatorItem]];
+    [menu addItemWithTitle:@"Select All" action:@selector(selectAll:) keyEquivalent:@""];
+                    
+    return menu;
 }
 
 -(NSInteger)spellCheckerDocumentTag {

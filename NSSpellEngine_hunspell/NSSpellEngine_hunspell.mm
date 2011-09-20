@@ -146,6 +146,8 @@
 }
 
 -(NSArray *)suggestGuessesForWord:(NSString *)word inLanguage:(NSString *)language {
+   language=@"en_US";
+
    NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
 
    return [dict suggestGuessesForWord:word];    
