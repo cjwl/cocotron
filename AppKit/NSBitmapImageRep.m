@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSPasteboard.h>
 
+NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
+
 @implementation NSBitmapImageRep
 
 +(NSArray *)imageUnfilteredFileTypes {
@@ -568,7 +570,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    NSMutableData        *result=[NSMutableData data];
-   CGImageDestinationRef dest=CGImageDestinationCreateWithData((CFMutableDataRef)result,uti,1,NULL);
+	// Convert the NS options to CG options - just NSImageCompressionFactor for now
+	NSDictionary *CGProperties = nil;
+	if ([properties count]) {
+		id compressionFactor = [properties valueForKey:NSImageCompressionFactor];
+		if (compressionFactor) {
+			[CGProperties setValue:compressionFactor forKey:(id)kCGImageDestinationLossyCompressionQuality];
+		}
+	}
+   CGImageDestinationRef dest=CGImageDestinationCreateWithData((CFMutableDataRef)result,uti,1,(CFDictionaryRef)CGProperties);
    
    CGImageDestinationAddImage(dest,[self CGImage],NULL);
 

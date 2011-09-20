@@ -319,7 +319,7 @@ unsigned char *stbi_write_png_to_mem(O2ImageRef image, int x, int y, int *out_le
          for (k= p?best:0; k < 5; ++k) {
             int type = mymap[k],est=0;
             
-            pixels=O2Image_read_argb8u(image,0,j,pixelBuffer,y);
+            pixels=O2Image_read_argb8u(image,0,j,pixelBuffer,x);
             
             if(pixels==NULL)
              pixels=pixelBuffer;

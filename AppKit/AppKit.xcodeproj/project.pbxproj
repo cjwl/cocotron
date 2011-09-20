@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A7975314224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
+		49A7975414224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		49A7975514224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
+		49A7975614224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		49A7975714224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
+		49A7975814224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		49A7975914224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
+		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
+		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
 		A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
@@ -4360,6 +4370,8 @@
 /* Begin PBXFileReference section */
 		36570F980E818CD5008FE1BE /* NSGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGradient.h; sourceTree = "<group>"; };
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
+		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
+		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
 		6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
 		6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Decoder_TIFF.h; sourceTree = "<group>"; };
@@ -6310,6 +6322,8 @@
 			isa = PBXGroup;
 			children = (
 				FE5F4BF712A83CA600F5F334 /* platform_Windows */,
+				49A7975114224021001CE4C2 /* O2Encoder_JPG.h */,
+				49A7975214224021001CE4C2 /* O2Encoder_JPG.m */,
 				FE99DA72128396B6006D789F /* O2Encoder_PNG.h */,
 				FE99DA73128396B6006D789F /* O2Encoder_PNG.m */,
 				FE587952126961BC009B9EDF /* O2ClipMask.h */,
@@ -7047,6 +7061,7 @@
 				FE74968A12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B412C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FC133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				49A7975514224021001CE4C2 /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7449,6 +7464,7 @@
 				FE74968C12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B512C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FE133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				49A7975714224021001CE4C2 /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7848,6 +7864,7 @@
 				FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FA133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				49A7975314224021001CE4C2 /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8252,6 +8269,7 @@
 				FE74969012BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B712C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B302133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				49A7975914224021001CE4C2 /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8573,6 +8591,7 @@
 				FE74968E12BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B612C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B300133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9654,6 +9673,7 @@
 				FEDEAA9A12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAF12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FD133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				49A7975614224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10053,6 +10073,7 @@
 				FEDEAA9B12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB012C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FF133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				49A7975814224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10483,6 +10504,7 @@
 				FEDEAA9912C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAE12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FB133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				49A7975414224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10884,6 +10906,7 @@
 				FEDEAA9D12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB212C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B303133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11180,6 +11203,7 @@
 				FEDEAA9C12C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABB112C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B301133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11307,15 +11331,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
-				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers,
+					/Developer/Cocotron/1.0/Windows/i386/,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
+				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
 				OTHER_CFLAGS = (
+					"-DHASLIBJPEG",
 					"-DWINVER=0x500",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
@@ -11326,6 +11350,8 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
+					"-static",
+					"-ljpeg",
 					"-shared",
 					"-lmsimg32",
 					"-lole32",
@@ -11601,11 +11627,16 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers,
+					/Developer/Cocotron/1.0/Windows/i386/,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
 				OTHER_CFLAGS = (
+					"-DHASLIBJPEG",
 					"-DWINVER=0x500",
 					"-DQUARTZCORE_INSIDE_BUILD",
 					"-DAPPKIT_INSIDE_BUILD",
@@ -11617,6 +11648,8 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
+					"-static",
+					"-ljpeg",
 					"-shared",
 					"-lmsimg32",
 					"-lole32",
