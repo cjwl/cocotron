@@ -1899,11 +1899,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 // this does not didChangeText
 }
 
+// Should this be related to typingAttributes somehow?
 -(NSDictionary *)_stringAttributes {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
 
    [result setObject:_font forKey: NSFontAttributeName];
-
+   [result setObject:_textColor forKey:NSForegroundColorAttributeName];
    return result;
 }
 
@@ -2083,10 +2084,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    color=[color copy];
    [_textColor release];
    _textColor=color;
+   [self setTextColor:_textColor range:NSMakeRange(0, [[self textStorage] length])];
 }
 
 -(void)setTextColor:(NSColor *)color range:(NSRange)range {
-   [[self textStorage] addAttribute:NSForegroundColorAttributeName value:color range:range];
+   if(color==nil)
+    [[self textStorage] removeAttribute:NSForegroundColorAttributeName range:range];
+   else
+    [[self textStorage] addAttribute:NSForegroundColorAttributeName value:color range:range];
 }
 
 -(void)setDrawsBackground:(BOOL)flag {
@@ -2163,7 +2168,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     size.height=MAX([self frame].size.height,size.height);
     
-    NSView *clipView=[self superview];
+    NSView *clipView=(NSClipView *)[self superview];
     
     if([clipView isKindOfClass:[NSClipView class]]){
      if(size.height<[clipView bounds].size.height)
