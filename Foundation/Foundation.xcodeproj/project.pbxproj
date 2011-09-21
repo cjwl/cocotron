@@ -6362,6 +6362,24 @@
 		FEF5B4DF0BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */; };
 		FEF5B4E00BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF5B4E10BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */; };
+		FEFAA53B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA53C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA53D1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA53E1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA53F1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA5401429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA5411429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA5421429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA5431429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA5441429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA5451429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA5461429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA5471429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA5481429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA5491429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
 		FEFF23910BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFF23920BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 		FEFF23930BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7604,6 +7622,8 @@
 		FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueObserving.m; sourceTree = "<group>"; };
 		FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSString+KVCAdditions.h"; sourceTree = "<group>"; };
 		FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString+KVCAdditions.m"; sourceTree = "<group>"; };
+		FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSScriptWhoseTests.h; sourceTree = "<group>"; };
+		FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSScriptWhoseTests.m; sourceTree = "<group>"; };
 		FEFF238D0BDCF136005357B8 /* NSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSCalendar.h; path = NSDate/NSCalendar.h; sourceTree = "<group>"; };
 		FEFF238E0BDCF136005357B8 /* NSCalendar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSCalendar.m; path = NSDate/NSCalendar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -7806,6 +7826,7 @@
 				6E28062609747D5800EC542B /* NSRange.m */,
 				6E28033A0974796000EC542B /* NSRunLoop */,
 				6E28033B0974796500EC542B /* NSScanner */,
+				FEFAA5341429095500CEE177 /* NSScript */,
 				6E28033C0974796E00EC542B /* NSSet */,
 				FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */,
 				FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */,
@@ -9034,6 +9055,15 @@
 			path = platform_darwin;
 			sourceTree = "<group>";
 		};
+		FEFAA5341429095500CEE177 /* NSScript */ = {
+			isa = PBXGroup;
+			children = (
+				FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */,
+				FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */,
+			);
+			path = NSScript;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -9366,6 +9396,7 @@
 				FE09AF8013FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF9413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2BA1404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA53B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9698,6 +9729,7 @@
 				FE09AF7C13FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF9013FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2CA1404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10030,6 +10062,7 @@
 				FE09AF7413FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8813FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C61404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA5471429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10362,6 +10395,7 @@
 				FE09AF7213FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8613FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2BC1404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA53D1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10699,6 +10733,7 @@
 				FE09AF7013FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C01404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA5411429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11031,6 +11066,7 @@
 				FE09AF7E13FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF9213FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C81404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA5491429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11364,6 +11400,7 @@
 				FE09AF7A13FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8E13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C21404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA5431429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11697,6 +11734,7 @@
 				FE09AF7613FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8A13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C41404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA5451429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12030,6 +12068,7 @@
 				FE09AF7813FCC68100B53D10 /* NSOrthography.h in Headers */,
 				FE09AF8C13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2BE1404A92400059C8F /* NSSpellEngine.h in Headers */,
+				FEFAA53F1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12962,6 +13001,7 @@
 				FE09AF8113FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BB1404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA53C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13332,6 +13372,7 @@
 				FE09AF7D13FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9113FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2CB1404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13703,6 +13744,7 @@
 				FE09AF7513FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8913FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C71404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA5481429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14075,6 +14117,7 @@
 				FE09AF7313FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8713FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BD1404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA53E1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14454,6 +14497,7 @@
 				FE09AF7113FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C11404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA5421429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14826,6 +14870,7 @@
 				FE09AF7F13FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9313FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C91404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15201,6 +15246,7 @@
 				FE09AF7B13FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8F13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C31404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA5441429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15577,6 +15623,7 @@
 				FE09AF7713FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8B13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C51404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA5461429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15953,6 +16000,7 @@
 				FE09AF7913FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8D13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BF1404A92400059C8F /* NSSpellEngine.m in Sources */,
+				FEFAA5401429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
