@@ -795,6 +795,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setFrame:(NSRect)newFrame display:(BOOL)display animate:(BOOL)animate  {
+   newFrame=[self constrainFrameRect:newFrame toScreen:[self screen]];
+   
    BOOL didSize=NSEqualSizes(newFrame.size,_frame.size)?NO:YES;
    BOOL didMove=NSEqualPoints(newFrame.origin,_frame.origin)?NO:YES;
    
@@ -1430,8 +1432,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSRect)constrainFrameRect:(NSRect)rect toScreen:(NSScreen *)screen {
-   NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+   return rect;
 }
 
 -(NSWindow *)parentWindow {
@@ -1666,9 +1667,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else {
     _flushNeeded=NO;
     BOOL doFlush=YES;
-    
-    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque])
+
+    if([self isOpaque] && [_contentView isKindOfClass:[NSOpenGLView class]] && [_contentView isOpaque]){
      doFlush=NO;
+     }
     
     if(doFlush)
      [[self platformWindow] flushBuffer];
@@ -2036,7 +2038,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
     case NSMouseMoved:{
       NSView *hit=[_backgroundView hitTest:[event locationInWindow]];
-      
+
       if(hit==nil)
        [self mouseMoved:event];
       else
@@ -2954,18 +2956,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(NSView *)_backgroundView {
     return _backgroundView;
-}
-
--(NSInteger)orderedIndex {
-   NSInteger result=[[NSApp orderedWindows] indexOfObjectIdenticalTo:self];
-   
-   /* Documentation says orderedIndex is zero based, but tests say it is 1 based
-      Possible there is a window at 0 which is not in -[NSApp windows] ? Either way, available windows are 1 based.
-    */
-   if(result!=NSNotFound)
-    result+=1;
-
-   return result;
 }
 
 @end

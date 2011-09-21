@@ -57,8 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [modify addEntriesFromDictionary:attributes];
 
     replace.location=MAX(location,effectiveRange.location);
-    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))
-       -replace.location;
+    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))-replace.location;
 
     [self setAttributes:modify range:replace];
 
@@ -76,21 +75,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAttribute:(NSString *)name range:(NSRange)range {
    NSUInteger location=range.location;
-   NSUInteger limit=NSMaxRange(range);
+   // TODO, raise exception if beyond length
+   NSUInteger limit=MIN(NSMaxRange(range),[self length]);
 
    while(location<limit){
     NSRange       effectiveRange;
-    NSMutableDictionary *modify=[[[self attributesAtIndex: location effectiveRange:&effectiveRange] mutableCopy] autorelease];
+    NSDictionary *check=[self attributesAtIndex: location effectiveRange:&effectiveRange];
     NSRange       replace;
+    
+    replace.location=location;
+    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))-location;
 
-    [modify removeObjectForKey:name];
+    if([check objectForKey:name]!=nil){
+     NSMutableDictionary *modify=[[check mutableCopy] autorelease];
 
-    replace.location= location;
-    replace.length=MIN(NSMaxRange(range),NSMaxRange(effectiveRange))
-        -location;
+     [modify removeObjectForKey:name];
 
-    [self setAttributes:modify range:replace];
-
+     [self setAttributes:modify range:replace];
+    }
+    
     location=NSMaxRange(replace);
    }
 }

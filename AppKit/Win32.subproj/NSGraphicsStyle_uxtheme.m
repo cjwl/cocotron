@@ -1,6 +1,7 @@
 #import "NSGraphicsStyle_uxtheme.h"
 #import <AppKit/NSGraphicsContext.h>
 #import <Onyx2D/O2Context.h>
+#import <Onyx2D/O2Surface.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
@@ -209,6 +210,10 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
    return context;
 }
 
+-(O2Surface *)surface  {
+   return [[self context] surface];
+}
+
 -(O2DeviceContext_gdi *)deviceContext {
    O2Context *context=[[NSGraphicsContext currentContext] graphicsPort];
    
@@ -293,7 +298,12 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
     matrix=O2ContextGetUserSpaceToDeviceSpaceTransform([self context]);
     tlbr=transformToRECT(matrix,rect);
 
+    O2Surface *surface=[self surface];
+    
+    O2SurfaceLock(surface);
     drawThemeBackground(theme,[deviceContext dc],partId,stateId,&tlbr,NULL);
+    O2SurfaceUnlock(surface);
+    
     return YES;
    }
    return NO;

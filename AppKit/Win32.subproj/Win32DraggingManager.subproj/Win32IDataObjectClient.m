@@ -1,16 +1,15 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd - <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32IDataObjectClient.h>
 #import <AppKit/Win32IStreamClient.h>
 #import <AppKit/Win32FORMATETC.h>
 #import <Foundation/NSString_win32.h>
+#import <Foundation/NSUnicodeCaseMapping.h>
 
 #import <AppKit/NSPasteboard.h>
 
@@ -169,6 +168,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)dataForType:(NSString *)type {
    NSData   *result=nil;
+   BOOL      copyData=YES;
    FORMATETC formatEtc;
    STGMEDIUM storageMedium;
 
@@ -208,39 +208,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case TYMED_HGLOBAL: 
            { // hGlobal 
-           void  *bytes=GlobalLock(storageMedium.hGlobal); 
-           int    size=GlobalSize(storageMedium.hGlobal); 
-           if(formatEtc.cfFormat==CF_UNICODETEXT && (size > 0)) 
-                   { 
-                        if(size % 2) 
-                                { // odd data length. WTF? 
-                                unsigned char lastbyte = ((unsigned char *)bytes)[size-1]; 
-                                if(lastbyte != 0) 
-                                        { // not a null oddbyte, log it. 
-                                        NSString * str = [NSString stringWithCharacters: bytes length: (size-1)/2]; 
-                                        if([str length] > 80) 
-                                                { 
-                                                str = [str substringFromIndex: [str length] - 80]; 
-                                                } 
-                                        NSLog(@"%s:%u[%s] -- \n*****CF_UNICODETEXT byte count not even and odd byte (%0X,'%c') not null",__FILE__, __LINE__, __PRETTY_FUNCTION__,(unsigned)lastbyte, 
+           uint8_t  *bytes=GlobalLock(storageMedium.hGlobal); 
+           NSUInteger byteLength=GlobalSize(storageMedium.hGlobal); 
+           if(formatEtc.cfFormat==CF_UNICODETEXT && (byteLength > 0)) { 
+                if(byteLength % 2)  { // odd data length. WTF? 
+                    uint8_t lastbyte = bytes[byteLength-1]; 
+                    if(lastbyte != 0) { // not a null oddbyte, log it. 
+                        NSLog(@"%s:%u[%s] -- \n*****CF_UNICODETEXT byte count not even and odd byte (%0X,'%c') not null",__FILE__, __LINE__, __PRETTY_FUNCTION__,(unsigned)lastbyte, 
 lastbyte); 
-                                        } 
-                                --size; // truncate regardless 
-                                }       
-                   while(size) 
-                           { // zortch any terminating null unichars 
-                           if(((unichar *) bytes)[(size-2)/2] != 0) 
-                                   { 
-                                   break; 
-                                   } 
-                           else 
-                                   { 
-                                   size -= 2; 
-                                   } 
-                           }; 
-                   } 
-                result=[NSData dataWithBytes:bytes length:size]; 
-                GlobalUnlock(storageMedium.hGlobal); 
+                    } 
+                        --byteLength; // truncate regardless 
+                }  
+                     
+                while(byteLength>0)  { // zortch any terminating null unichars 
+                    if(((unichar *) bytes)[(byteLength-2)/2] != 0) { 
+                        break; 
+                    } 
+                    else { 
+                        byteLength -= 2; 
+                    } 
+                }; 
+
+/* check for BOM, if not it is big endian. */
+                if(byteLength>=2){
+                 if(bytes[0]==0xFE && bytes[1]==0xFF){
+                  copyData=NO;
+                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes+2, byteLength-2, &byteLength);
+                  byteLength*=2;
+                 }
+                 else if(bytes[0]==0xFF && bytes[1]==0xFE){
+                  copyData=NO;
+                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16LittleEndian(bytes+2, byteLength-2, &byteLength);
+                  byteLength*=2;
+                 }
+                }
+                if(copyData){
+                  copyData=NO;
+                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes, byteLength, &byteLength);
+                  byteLength*=2;
+                }
+                
+            } 
+            if(copyData)
+             result=[NSData dataWithBytes:bytes length:byteLength]; 
+            else
+             result=[NSData dataWithBytesNoCopy:bytes length:byteLength freeWhenDone:YES]; 
+             
+            GlobalUnlock(storageMedium.hGlobal); 
            } 
         break; 
 

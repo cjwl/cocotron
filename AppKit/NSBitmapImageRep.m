@@ -340,6 +340,8 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
     case kCGImageAlphaNoneSkipLast:
     case kCGImageAlphaNoneSkipFirst:
      break;
+    case kCGImageAlphaOnly:
+     break;
    }
     
    _bitsPerPixel=CGImageGetBitsPerPixel(_cgImage);

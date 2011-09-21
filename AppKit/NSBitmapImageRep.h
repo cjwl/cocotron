@@ -36,7 +36,7 @@ typedef enum {
    NSFloatingPointSamplesBitmapFormat=0x04,
 } NSBitmapFormat;
 
-APPKIT_EXTERN NSString* NSImageCompressionFactor;
+APPKIT_EXPORT NSString* NSImageCompressionFactor;
 
 @interface NSBitmapImageRep : NSImageRep {
    int _samplesPerPixel;

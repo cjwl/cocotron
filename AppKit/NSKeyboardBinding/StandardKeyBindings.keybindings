@@ -1,5 +1,16 @@
 {
-	/* let's try this format! (Apple is using a gigantic XML database...) */
+/* The default behavior of modifiers is to map the left control to command.
+   Applications may override this behavior, we still want control-x to behave properly, so we put it in the map here too. */
+	"control,0x0078" = "cut:";				/* command-x */
+	"control,0x0063" = "copy:";				/* command-c */
+	"control,0x0076" = "paste:";				/* command-v */
+	"control,0x0061" = "selectAll:";				/* command-a */
+
+	"command,0x0078" = "cut:";				/* command-x */
+	"command,0x0063" = "copy:";				/* command-c */
+	"command,0x0076" = "paste:";				/* command-v */
+	"command,0x0061" = "selectAll:";				/* command-a */
+
 	"0x0008" = "deleteBackward:";			/* (backspace? heh) */
 	"0x001B" = "cancel:";				/* Escape */
 	"0x0009" = "insertTab:";

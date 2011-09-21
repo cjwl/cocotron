@@ -67,6 +67,8 @@ void O2PaintApplyMaskSpan(O2argb8u *span,O2argb8u *maskSpan,int length){
    }
 }
 
+#if 0
+// disable below too
 ONYX2D_STATIC int O2PaintReadResampledHighSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
@@ -81,6 +83,7 @@ ONYX2D_STATIC int O2PaintReadResampledHighSpan_largb8u_PRE(O2Paint *selfX,int x,
    
    return length;
 }
+#endif
 
 ONYX2D_STATIC int O2PaintReadResampledLowSpan_largb8u_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;

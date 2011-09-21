@@ -335,7 +335,7 @@ NSString *O2MacRomanGlyphNames[256]={
 }
 
 extern O2FontRef O2FontCreateWithFontName_platform(NSString *name);
-extern O2FontRef O2FontCreateWithDataProvider_platform(NSString *name);
+extern O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider);
 
 O2FontRef O2FontCreateWithFontName(NSString *name) {
    return O2FontCreateWithFontName_platform(name);
@@ -4741,7 +4741,7 @@ uint16_t O2FontUnicodeForGlyphName(NSString *name){
 {@"zstroke",0x01B6},
 {@"zuhiragana",0x305A},
 {@"zukatakana",0x30BA},
-nil,0
+{nil,0}
 };
    int i;
    

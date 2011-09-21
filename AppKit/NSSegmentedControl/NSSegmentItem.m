@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSSegmentItem
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_isEnabled = YES;
 	}
 	return self;
