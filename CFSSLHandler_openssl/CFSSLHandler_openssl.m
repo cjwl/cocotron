@@ -35,17 +35,21 @@ static threadid_func(CRYPTO_THREADID *id){
 #endif
 
 +(void)initialize {
-   pthread_mutex_lock(&initLock);
-   SSL_library_init();
-   SSL_load_error_strings();
-   
-   int i,numberOfLocks=CRYPTO_num_locks();
-   lockTable=OPENSSL_malloc(numberOfLocks*sizeof(pthread_mutex_t));
-   for(i=0;i<numberOfLocks;i++)
-    pthread_mutex_init(&(lockTable[i]),NULL);
+   if(self==[CFSSLHandler_openssl class]){
+    pthread_mutex_lock(&initLock);
+    CRYPTO_malloc_init();
+    SSL_load_error_strings();
+    ERR_load_BIO_strings();
+    SSL_library_init();
+
+    int i,numberOfLocks=CRYPTO_num_locks();
+    lockTable=OPENSSL_malloc(numberOfLocks*sizeof(pthread_mutex_t));
+    for(i=0;i<numberOfLocks;i++)
+     pthread_mutex_init(&(lockTable[i]),NULL);
     
-   CRYPTO_set_locking_callback(locking_function);
-   pthread_mutex_unlock(&initLock);
+    CRYPTO_set_locking_callback(locking_function);
+    pthread_mutex_unlock(&initLock);
+   }
 }
 
 -initWithProperties:(CFDictionaryRef )properties {
@@ -74,20 +78,15 @@ static threadid_func(CRYPTO_THREADID *id){
    _incoming=BIO_new(BIO_s_mem());
    _outgoing=BIO_new(BIO_s_mem());
 
-#if 0
-   BIO_set_mem_eof_return(_incoming,0);
-   BIO_set_mem_eof_return(_outgoing,0);
-#endif
-
    SSL_set_bio(_connection,_incoming,_outgoing);
    
    SSL_set_connect_state(_connection);
    
    /* The SSL_read doc.s say that when SSL_read returns Wants More you should use the same arguments
       the next call. It is a little ambiguous whether the same exact pointer should be used, so we don't
-      chance it and just maintain a 1k buffer for this purpose. */
+      chance it and just maintain a buffer for this purpose. */
       
-   _stableBufferCapacity=1024;
+   _stableBufferCapacity=8192;
    _stableBuffer=NSZoneMalloc(NULL,_stableBufferCapacity);
    _readBuffer=[[NSMutableData alloc] init];
    
