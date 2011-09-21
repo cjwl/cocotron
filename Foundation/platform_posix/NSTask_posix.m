@@ -53,9 +53,11 @@ void childSignalHandler(int sig) {
                         else
                             [task setTerminationStatus:-1];
                         
+                        [task retain];
                         [task taskFinished];
                         
                         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:NSTaskDidTerminateNotification object:task]];
+                        [task release];
                         
                         return;
                     }
