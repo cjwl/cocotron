@@ -217,7 +217,8 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         abbreviation = [NSString stringWithCString:tzname[0]];
         
         systemTimeZone = [self timeZoneWithAbbreviation:abbreviation];
-        
+
+#ifdef LINUX
         if(systemTimeZone == nil) {
             //check if the error is because of a missing entry in NSTimeZoneAbbreviations.plist (only for logging)
             if([[self abbreviationDictionary] objectForKey:abbreviation] == nil) {
@@ -227,8 +228,9 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
                 NSCLog("TimeZone [%s] not instantiable -> using absolute timezone (no daylight saving)", [[[self abbreviationDictionary] objectForKey:abbreviation] cString]);
             }
 
-            systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:-timezone];
+            systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:timezone];
         }
+#endif
     }
     
     return systemTimeZone;
