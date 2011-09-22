@@ -465,15 +465,18 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)miniaturize {
+    _isMiniaturized=YES;
     ShowWindow(_handle,SW_MINIMIZE);
 }
 
 -(void)deminiaturize {
+    _isMiniaturized=NO;
     ShowWindow(_handle,SW_RESTORE);
 }
 
 -(BOOL)isMiniaturized {
-    return IsIconic(_handle);
+// We need to track miniaturized state more accurately than IsIconic
+    return _isMiniaturized;
 }
 
 -(void)setupPixelFormat {
@@ -998,7 +1001,15 @@ i=count;
         case SC_MAXIMIZE:
             [_delegate platformWindowShouldZoom:self];
             return 0;
-               
+        
+        case SC_MINIMIZE:
+            _isMiniaturized=YES;
+            return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
+            
+        case SC_RESTORE:
+            _isMiniaturized=NO;
+            return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
+            
         default:
             return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
    }

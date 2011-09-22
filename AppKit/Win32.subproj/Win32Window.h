@@ -41,7 +41,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                  _disableDisplay;
    unsigned              _styleMask;
    BOOL                  _isPanel;
-
+   BOOL                  _isMiniaturized;
+   
    id                    _delegate;
    NSMutableDictionary  *_deviceDictionary;
 
