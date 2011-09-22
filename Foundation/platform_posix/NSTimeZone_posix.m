@@ -88,11 +88,14 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         int             numberOfTransitionTimes, numberOfLocalTimes, numberOfAbbreviationCharacters;
         int             i;
         
+    #pragma pack(1)
         const struct tzType {
             unsigned int offset;
             unsigned char isDST;
             unsigned char abbrevIndex;
         } *tzTypes;
+    #pragma pack()
+    
         const char *tzTypesBytes;
         const char *abbreviations;
 
@@ -134,9 +137,8 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
         // this is a bit more awkward, but i want to support non-3 character abbreviations theoretically.
         tzTypesBytes = (tzData+(numberOfTransitionTimes * 5));
-        abbreviations = tzTypesBytes + numberOfLocalTimes * 6; //sizeof struct tzType
+        abbreviations = tzTypesBytes + numberOfLocalTimes * sizeof(struct tzType);
         for (i = 0; i < numberOfLocalTimes; ++i) {
-
          tzTypes=(struct tzType *)tzTypesBytes;
             NSString *abb = [NSString stringWithCString:abbreviations+tzTypes->abbrevIndex];
             if(name == nil) {
@@ -145,8 +147,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
                                                                         isDaylightSavingTime:tzTypes->isDST
                                                                                 abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
-            tzTypesBytes += 6;	// wtf, implementing as arrays didn't work.
-            				// a-ha! sizeof(struct tzType) returns *8*, not 6 as it should!!!
+            tzTypesBytes += sizeof(struct tzType);
         }
 
         return [self initWithName:name data:data transitions:sortedTransitions types:types];
@@ -180,10 +181,10 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
 +(NSTimeZone *)systemTimeZone {
     
-    NSTimeZone      *systemTimeZone = nil;
-    NSString        *timeZoneName;
-    NSInteger       secondsFromGMT;
-    NSDictionary    *dictionary;
+    NSTimeZone          *systemTimeZone = nil;
+    NSString            *timeZoneName;
+    NSInteger           secondsFromGMT;
+    NSDictionary        *dictionary;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
         NSError     *error;
@@ -199,8 +200,16 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
         }
     }
+    
+    if (systemTimeZone == nil) {
+        //try to use TZ environment variable
+        const char  *envTimeZoneName = getenv("TZ");
+        
+        if (envTimeZoneName != NULL) {
+            systemTimeZone = [self timeZoneWithName:[NSString stringWithCString:envTimeZoneName]];        
+        }
+    }
 
-#ifdef LINUX
     if (systemTimeZone == nil) {
         NSString        *abbreviation;
         
@@ -221,7 +230,6 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:-timezone];
         }
     }
-#endif
     
     return systemTimeZone;
 }
