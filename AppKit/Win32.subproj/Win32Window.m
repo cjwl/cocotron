@@ -991,6 +991,19 @@ i=count;
    return 0;
 }
 
+-(int)WM_SYSCOMMAND_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+
+    switch(wParam&0xFFF0){
+   
+        case SC_MAXIMIZE:
+            [_delegate platformWindowShouldZoom:self];
+            return 0;
+               
+        default:
+            return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
+   }
+}
+
 -(LRESULT)windowProcedure:(UINT)message wParam:(WPARAM)wParam
   lParam:(LPARAM)lParam {
 
@@ -1019,6 +1032,7 @@ i=count;
     case WM_GETMINMAXINFO: return [self WM_GETMINMAXINFO_wParam:wParam lParam:lParam];
     case WM_ENTERSIZEMOVE: return [self WM_ENTERSIZEMOVE_wParam:wParam lParam:lParam];
     case WM_EXITSIZEMOVE:  return [self WM_EXITSIZEMOVE_wParam:wParam lParam:lParam];
+    case WM_SYSCOMMAND:    return [self WM_SYSCOMMAND_wParam:wParam lParam:lParam];
     case WM_SYSCOLORCHANGE:
      [[Win32Display currentDisplay] invalidateSystemColors];
      [_delegate platformWindowStyleChanged:self];

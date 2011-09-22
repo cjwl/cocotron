@@ -2262,6 +2262,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	}
 }
 
+-(void)platformWindowShouldZoom:(CGWindow *)window {
+    [self zoom:nil];
+}
+
 -(void)miniaturize:sender {
    [[self platformWindow] miniaturize];
 }
@@ -2562,8 +2566,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowMiniaturized:(CGWindow *)window {
-   _isActive=NO;
-
+    _isActive=NO;
+    
    [self _updatePlatformWindowTitle];
    if(_sheetContext!=nil){
     [[_sheetContext sheet] orderWindow:NSWindowOut relativeTo:0];
