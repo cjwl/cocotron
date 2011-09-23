@@ -1,8 +1,12 @@
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRange.h>
+#import <Foundation/NSTextCheckingResult.h>
 
-NSString *const NSGrammarRange;
-NSString *const NSGrammarUserDescription;
-NSString *const NSGrammarCorrections;
+@class NSSpellServer,NSArray,NSDictionary,NSOrthography;
+
+FOUNDATION_EXPORT NSString *const NSGrammarRange;
+FOUNDATION_EXPORT NSString *const NSGrammarUserDescription;
+FOUNDATION_EXPORT NSString *const NSGrammarCorrections;
 
 @protocol NSSpellServerDelegate
 //@optional

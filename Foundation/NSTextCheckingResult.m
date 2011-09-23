@@ -1,7 +1,26 @@
 #import <Foundation/NSTextCheckingResult.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSDictionary.h>
 
 @implementation NSTextCheckingResult
+
+-initWithResultType:(NSTextCheckingType)resultType range:(NSRange)range properties:(NSDictionary *)properties {
+   _resultType=resultType;
+   _range=range;
+   _properties=[properties copy];
+   return self;
+}
+
+-initWithResultType:(NSTextCheckingType)resultType range:(NSRange)range property:property name:(NSString *)name {
+   NSDictionary *properties=[NSDictionary dictionaryWithObject:property forKey:name];
+   
+   return [self initWithResultType:resultType range:range properties:properties];
+}
+
+-(void)dealloc {
+   [_properties release];
+   [super dealloc];
+}
 
 +(NSTextCheckingResult *)addressCheckingResultWithRange:(NSRange)range components:(NSDictionary *)components {
     NSUnimplementedMethod();
@@ -54,8 +73,7 @@
 }
 
 +(NSTextCheckingResult *)spellCheckingResultWithRange:(NSRange)range {
-    NSUnimplementedMethod();
-    return nil;
+   return [[[self alloc] initWithResultType:NSTextCheckingTypeSpelling range:range properties:nil] autorelease];
 }
 
 -(NSDictionary *)addressComponents {
@@ -84,8 +102,7 @@
 }
 
 -(NSRange)range {
-    NSUnimplementedMethod();
-    return NSMakeRange(0,0);
+    return _range;
 }
 
 -(NSString *)replacementString {
@@ -94,8 +111,7 @@
 }
 
 -(NSTextCheckingType)resultType {
-    NSUnimplementedMethod();
-    return nil;
+    return _resultType;
 }
 
 -(NSTimeZone *)timeZone {

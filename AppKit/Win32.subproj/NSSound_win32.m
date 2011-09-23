@@ -15,7 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 #import <windows.h>
 
-static unsigned int uniquenum = 0;
+// zero is null number
+static unsigned int uniquenum = 1;
 
 @interface NSSound(win32)
 @end
@@ -41,15 +42,24 @@ static unsigned int uniquenum = 0;
 	{
 		_soundFilePath = [path copy];
 		_paused = NO;
-		_handle = uniquenum++;
+		_handle = 0;
 	}
 	return self;
 }
 
 -(BOOL)play {
-	NSString *loadStr = [NSString stringWithFormat:@"open \"%@\" type %@ alias %i", _soundFilePath, [[_soundFilePath pathExtension] isEqualToString:@"wav"] ? @"waveaudio" : @"MPEGVideo", _handle];
-	if (mciSendString([loadStr UTF8String], NULL, 0, 0))
-		return NO;
+    if (_handle == 0) {
+     _handle = uniquenum++;
+    }
+    else {
+/* If the sound has already been played we need to close it before playing again or it wont play. */
+        NSString *stopStr = [NSString stringWithFormat:@"close %i", _handle];
+        mciSendString([stopStr UTF8String], NULL, 0, 0);
+    }
+
+    NSString *loadStr = [NSString stringWithFormat:@"open \"%@\" type %@ alias %i", _soundFilePath, [[_soundFilePath pathExtension] isEqualToString:@"wav"] ? @"waveaudio" : @"MPEGVideo", _handle];
+    if (mciSendString([loadStr UTF8String], NULL, 0, 0))
+	 	return NO;
 
 	NSString *playStr = [NSString stringWithFormat:@"play %i from 0", _handle];
 	if (mciSendString([playStr UTF8String], NULL, 0, 0))
@@ -63,8 +73,10 @@ static unsigned int uniquenum = 0;
 		return NO;
 	else
 	{
-		NSString *pauseStr = [NSString stringWithFormat:@"pause %i", _handle];
-		mciSendString([pauseStr UTF8String], NULL, 0, 0);
+        if(_handle!=0){
+ 		 NSString *pauseStr = [NSString stringWithFormat:@"pause %i", _handle];
+		 mciSendString([pauseStr UTF8String], NULL, 0, 0);
+        }
 		_paused = YES;
 	}
 	return YES;
@@ -75,24 +87,30 @@ static unsigned int uniquenum = 0;
 		return NO;
 	else
 	{
-		NSString *pauseStr = [NSString stringWithFormat:@"resume %i", _handle];
-		mciSendString([pauseStr UTF8String], NULL, 0, 0);
+        if(_handle!=0){
+ 		 NSString *pauseStr = [NSString stringWithFormat:@"resume %i", _handle];
+		 mciSendString([pauseStr UTF8String], NULL, 0, 0);
+        }
 		_paused = NO;
 	}
 	return YES;
 }
 
 -(BOOL)stop {
-	NSString *stopStr = [NSString stringWithFormat:@"stop %i", _handle];
-	mciSendString([stopStr UTF8String], NULL, 0, 0);
-	
+    if(_handle!=0){
+	 NSString *stopStr = [NSString stringWithFormat:@"stop %i", _handle];
+	 mciSendString([stopStr UTF8String], NULL, 0, 0);
+	}
+    
 	return YES;
 }
 
 -(void)dealloc {
+    if(_handle!=0){
+ 	 NSString *stopStr = [NSString stringWithFormat:@"close %i", _handle];
+	 mciSendString([stopStr UTF8String], NULL, 0, 0);
+    }
 	[super dealloc];
-	NSString *stopStr = [NSString stringWithFormat:@"close %i", _handle];
-	mciSendString([stopStr UTF8String], NULL, 0, 0);
 }
 
 @end

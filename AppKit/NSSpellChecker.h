@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSView, NSMenu,NSViewController,NSPanel;
+@class NSView, NSMenu,NSViewController,NSPanel,NSMutableDictionary,NSMutableSet;
 
 APPKIT_EXPORT NSString * const NSSpellCheckerDidChangeAutomaticTextReplacementNotification;
 APPKIT_EXPORT NSString * const NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification;
@@ -43,7 +43,13 @@ enum {
 typedef NSInteger NSCorrectionResponse;
 
 @interface NSSpellChecker : NSObject {
-
+   NSPanel *_spellingPanel;
+   NSViewController *_spellingViewController;
+   NSView *_accessoryView;
+   NSPanel *_substitutionsPanel;
+   NSMutableDictionary *_tagToData;
+   NSMutableSet *_learnedWords;
+   NSString *_language;
 }
 
 +(NSSpellChecker *)sharedSpellChecker;
@@ -54,6 +60,8 @@ typedef NSInteger NSCorrectionResponse;
 +(NSInteger)uniqueSpellDocumentTag;
 
 -(NSView *)accessoryView;
+-(void)setAccessoryView:(NSView *)view;
+
 -(BOOL)automaticallyIdentifiesLanguages;
 
 -(NSArray *)availableLanguages;
@@ -77,15 +85,12 @@ typedef NSInteger NSCorrectionResponse;
 
 -(NSArray *)guessesForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
 
+-(void)learnWord:(NSString *)word;
 -(BOOL)hasLearnedWord:(NSString *)word;
 
--(NSArray *)ignoredWordsInSpellDocumentWithTag:(NSInteger)tag;
-
--(void)ignoreWord:(NSString *)word inSpellDocumentWithTag:(NSInteger)tag;
-
 -(NSString *)language;
+-(BOOL)setLanguage:(NSString *)language;
 
--(void)learnWord:(NSString *)word;
 
 -(NSMenu *)menuForResult:(NSTextCheckingResult *)result string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view;
 
@@ -95,13 +100,15 @@ typedef NSInteger NSCorrectionResponse;
 -(NSInteger)requestCheckingOfString:(NSString *)stringToCheck range:(NSRange)range types:(NSTextCheckingTypes)checkingTypes options:(NSDictionary *)options inSpellDocumentWithTag:(NSInteger)tag completionHandler:(void (^)(NSInteger sequenceNumber, NSArray *results, NSOrthography *orthography, NSInteger wordCount))completionHandler;
 #endif
 
--(void)setAccessoryView:(NSView *)view;
 
 -(void)setAutomaticallyIdentifiesLanguages:(BOOL)flag;
 
+-(void)ignoreWord:(NSString *)word inSpellDocumentWithTag:(NSInteger)tag;
+
+-(NSArray *)ignoredWordsInSpellDocumentWithTag:(NSInteger)tag;
+
 -(void)setIgnoredWords:(NSArray *)ignoredWords inSpellDocumentWithTag:(NSInteger)tag;
 
--(BOOL)setLanguage:(NSString *)language;
 
 -(void)setSubstitutionsPanelAccessoryViewController:(NSViewController *)viewController;
 

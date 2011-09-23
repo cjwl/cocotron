@@ -578,6 +578,12 @@ void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
    }
    else if([graphicsState getDictionaryForKey:"SMask" value:&dictionary]){
     O2PDFFix(__FILE__,__LINE__,@"SMask not implemented");
+#if 0   
+    O2ImageRef mask=[O2Image imageWithPDFObject:dictionary];
+    
+    if(mask!=NULL)
+     O2ContextClipToMask(context,O2RectMake(0,0,1,1),mask);
+#endif
    }
 
    if([graphicsState getNumberForKey:"CA" value:&number]){
