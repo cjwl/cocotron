@@ -81,6 +81,7 @@
 		FE43021B11E2593F00EBDD56 /* PDFKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PDFKit.xcodeproj; path = ../PDFKit/PDFKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE43022911E2594C00EBDD56 /* ImageKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ImageKit.xcodeproj; path = ../ImageKit/ImageKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE43023D11E2599200EBDD56 /* Quartz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quartz.h; sourceTree = "<group>"; };
+		FE70872C1431187900B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +181,7 @@
 				FE06B4A01430E9820071169B /* solaris.xcconfig */,
 				FE06B4A11430E9820071169B /* windows-i386.xcconfig */,
 				FE06B4A21430E9820071169B /* windows.xcconfig */,
+				FE70872C1431187900B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -337,7 +339,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B4A11430E9820071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE70872C1431187900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

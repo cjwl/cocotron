@@ -134,6 +134,7 @@
 		FE06B5851430EA000071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE3C420B1129AB3B0099DAB8 /* SecKeychainCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecKeychainCursor.h; sourceTree = "<group>"; };
 		FE3C420C1129AB3B0099DAB8 /* SecKeychainCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecKeychainCursor.m; sourceTree = "<group>"; };
+		FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE9C1C181125B9CD002DA20B /* SecBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecBase.h; sourceTree = "<group>"; };
 		FE9C1C291125BC26002DA20B /* Security.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Security.h; sourceTree = "<group>"; };
 		FE9C1C341125BC3E002DA20B /* SecBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecBase.m; sourceTree = "<group>"; };
@@ -265,6 +266,7 @@
 				FE06B5831430EA000071169B /* solaris.xcconfig */,
 				FE06B5841430EA000071169B /* windows-i386.xcconfig */,
 				FE06B5851430EA000071169B /* windows.xcconfig */,
+				FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -460,7 +462,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B5841430EA000071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -527,7 +529,7 @@
 		};
 		FE081DC2118A1B590026A20E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B5841430EA000071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

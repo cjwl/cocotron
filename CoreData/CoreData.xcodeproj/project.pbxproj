@@ -183,6 +183,7 @@
 		FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataExports.h; sourceTree = "<group>"; };
 		FE2132910DBFD22000CEDC65 /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
 		FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE82F3BE0BF1042F00B18B54 /* NSAttributeDescription.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAttributeDescription.h; sourceTree = "<group>"; };
 		FE82F3BF0BF1042F00B18B54 /* NSAttributeDescription.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAttributeDescription.m; sourceTree = "<group>"; };
 		FE82F3C00BF1042F00B18B54 /* NSEntityDescription.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSEntityDescription.h; sourceTree = "<group>"; };
@@ -361,6 +362,7 @@
 				FE06B12E1430E7390071169B /* solaris.xcconfig */,
 				FE06B12F1430E7390071169B /* windows-i386.xcconfig */,
 				FE06B1301430E7390071169B /* windows.xcconfig */,
+				FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;

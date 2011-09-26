@@ -197,6 +197,7 @@
 		FE06B0451430E6B30071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE5A873F10C6F1E8005E348A /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE7135460B36427F006C9493 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE78D0FF126F4CF500CC39CF /* CoreData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreData.xcodeproj; path = ../CoreData/CoreData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FECC1DD6108D025D00BD4A91 /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -338,6 +339,7 @@
 				FE06B0431430E6B30071169B /* solaris.xcconfig */,
 				FE06B0441430E6B30071169B /* windows-i386.xcconfig */,
 				FE06B0451430E6B30071169B /* windows.xcconfig */,
+				FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;

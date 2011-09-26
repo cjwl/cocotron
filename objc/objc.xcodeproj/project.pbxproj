@@ -343,6 +343,7 @@
 		FE651A9D0FBC84DD00464BFD /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE6CF82A11526D3000B6D893 /* objc_malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_malloc.h; sourceTree = "<group>"; };
 		FE6CF82B11526D3000B6D893 /* objc_malloc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_malloc.m; sourceTree = "<group>"; };
+		FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE74345E10A8A61B004CDF00 /* objc-auto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-auto.h"; sourceTree = "<group>"; };
 		FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "objc-runtime.h"; sourceTree = "<group>"; };
 		FE88A1D90F88F8D00081CFC1 /* runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = runtime.h; sourceTree = "<group>"; };
@@ -509,6 +510,7 @@
 				FE1E53B8143029F7000D60A1 /* solaris.xcconfig */,
 				FE1E53B9143029F7000D60A1 /* windows-i386.xcconfig */,
 				FE1E53BA143029F7000D60A1 /* windows.xcconfig */,
+				FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -1243,7 +1245,7 @@
 		};
 		7E891EBB0D4961EA008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E53B9143029F7000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
@@ -1279,7 +1281,7 @@
 		};
 		FE01A5880C5D9B3100AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E53B9143029F7000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;

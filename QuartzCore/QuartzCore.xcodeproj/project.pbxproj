@@ -251,6 +251,7 @@
 		FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreVideo.xcodeproj; path = ../CoreVideo/CoreVideo.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE4301AB11E255A500EBDD56 /* CoreVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreVideo.h; sourceTree = "<group>"; };
 		FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartzCore.h; sourceTree = "<group>"; };
+		FE7087621431189F00B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE7AA0EB10F97A2A00FEDD9C /* CAWindowOpenGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAWindowOpenGLContext.m; sourceTree = "<group>"; };
 		FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAWindowOpenGLContext.h; sourceTree = "<group>"; };
 		FEA3F2121133089500690AA2 /* CIAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIAffineTransform.h; sourceTree = "<group>"; };
@@ -444,6 +445,7 @@
 				FE06B4FF1430E9A30071169B /* solaris.xcconfig */,
 				FE06B5001430E9A30071169B /* windows-i386.xcconfig */,
 				FE06B5011430E9A30071169B /* windows.xcconfig */,
+				FE7087621431189F00B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -881,7 +883,7 @@
 		};
 		FECA81A010EBB231003472F1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B5001430E9A30071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7087621431189F00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

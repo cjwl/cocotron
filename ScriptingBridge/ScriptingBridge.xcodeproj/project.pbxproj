@@ -59,6 +59,7 @@
 		FE43050B11E3719A00EBDD56 /* SBApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBApplication.h; sourceTree = "<group>"; };
 		FE43050C11E3719A00EBDD56 /* SBElementArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBElementArray.h; sourceTree = "<group>"; };
 		FE43050D11E3719A00EBDD56 /* SBObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBObject.h; sourceTree = "<group>"; };
+		FE708774143118B200B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE7AEF2711EFC22B0094448C /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 		FEAEFD6411E41C7E00CA0912 /* SBApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBApplication.m; sourceTree = "<group>"; };
 		FEAEFD6511E41C7E00CA0912 /* SBElementArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBElementArray.m; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 				FE06B5361430E9D30071169B /* solaris.xcconfig */,
 				FE06B5371430E9D30071169B /* windows-i386.xcconfig */,
 				FE06B5381430E9D30071169B /* windows.xcconfig */,
+				FE708774143118B200B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -282,7 +284,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B5371430E9D30071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE708774143118B200B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

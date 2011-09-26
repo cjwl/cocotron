@@ -7342,6 +7342,7 @@
 		FE6CF89F1152743100B6D893 /* objc_malloc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_malloc.m; sourceTree = "<group>"; };
 		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
+		FE70869F143117F100B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE720FD4124C56FA009B690D /* NSKeyPathObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyPathObserver.h; sourceTree = "<group>"; };
 		FE720FD5124C56FA009B690D /* NSKeyPathObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyPathObserver.m; sourceTree = "<group>"; };
 		FE721025124CE420009B690D /* NSKeyObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyObserver.h; sourceTree = "<group>"; };
@@ -8674,6 +8675,7 @@
 				FE1E546F14303009000D60A1 /* solaris.xcconfig */,
 				FE1E547014303009000D60A1 /* windows-i386.xcconfig */,
 				FE1E547114303009000D60A1 /* windows.xcconfig */,
+				FE70869F143117F100B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;

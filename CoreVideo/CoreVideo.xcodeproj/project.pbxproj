@@ -155,6 +155,7 @@
 		FE43017B11E253E900EBDD56 /* CoreVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreVideo.h; sourceTree = "<group>"; };
 		FE43045811E2769E00EBDD56 /* CVBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVBase.h; sourceTree = "<group>"; };
 		FE43045A11E2779700EBDD56 /* CVReturn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVReturn.h; sourceTree = "<group>"; };
+		FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +271,7 @@
 				FE06B2751430E8000071169B /* solaris.xcconfig */,
 				FE06B2761430E8000071169B /* windows-i386.xcconfig */,
 				FE06B2771430E8000071169B /* windows.xcconfig */,
+				FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;

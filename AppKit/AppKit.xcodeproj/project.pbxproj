@@ -5152,6 +5152,7 @@
 		FE6EE28D0DB91FDF005503A1 /* O2Surface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Surface.m; sourceTree = "<group>"; };
 		FE6EE2E30DB92B11005503A1 /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE6EE2E40DB92B11005503A1 /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
+		FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE71DA7011F7403200E6F801 /* CIBloom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIBloom.m; sourceTree = "<group>"; };
 		FE71DA9111F7433000E6F801 /* CIBoxBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIBoxBlur.m; sourceTree = "<group>"; };
 		FE71DA9211F7433000E6F801 /* CILinearGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CILinearGradient.m; sourceTree = "<group>"; };
@@ -6259,6 +6260,7 @@
 		FE1E54DE1430303F000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */,
 				FE1E54DF1430303F000D60A1 /* darwin-i386.xcconfig */,
 				FE1E54E01430303F000D60A1 /* darwin-ppc.xcconfig */,
 				FE1E54E11430303F000D60A1 /* darwin-x86_64.xcconfig */,
@@ -11410,7 +11412,7 @@
 		};
 		7E891F4D0D4967B6008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E54EC1430303F000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
@@ -11692,7 +11694,7 @@
 		};
 		FE01AAC00C5D9BCB00AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E54EC1430303F000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;

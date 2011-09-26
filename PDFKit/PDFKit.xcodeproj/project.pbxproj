@@ -74,6 +74,7 @@
 		FE4302B411E2637A00EBDD56 /* PDFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFView.m; sourceTree = "<group>"; };
 		FE4302C411E2648300EBDD56 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = dllmain.m; path = ../AppKit/Win32.subproj/dllmain.m; sourceTree = SOURCE_ROOT; };
 		FE4302CD11E264C000EBDD56 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE71DB3011F748CE00E6F801 /* PDFKit_Framework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFKit_Framework.m; sourceTree = "<group>"; };
 		FE71DE2E11F87E8200E6F801 /* PDFDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFDocumentView.h; sourceTree = "<group>"; };
 		FE71DE2F11F87E8200E6F801 /* PDFDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFDocumentView.m; sourceTree = "<group>"; };
@@ -184,6 +185,7 @@
 				FE06B4611430E9600071169B /* solaris.xcconfig */,
 				FE06B4621430E9600071169B /* windows-i386.xcconfig */,
 				FE06B4631430E9600071169B /* windows.xcconfig */,
+				FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -300,7 +302,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B4621430E9600071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEPLOYMENT_LOCATION = YES;

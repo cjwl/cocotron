@@ -71,6 +71,7 @@
 		FE43032E11E2679F00EBDD56 /* IOEthernetInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOEthernetInterface.h; sourceTree = "<group>"; };
 		FE43032F11E2679F00EBDD56 /* IONetworkInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONetworkInterface.h; sourceTree = "<group>"; };
 		FE43034F11E2689700EBDD56 /* IOTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOTypes.h; sourceTree = "<group>"; };
+		FE7086C21431181400B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FEAEF9F011E3C97C00CA0912 /* IONetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IONetworkController.h; sourceTree = "<group>"; };
 		FEAEFAD311E41B0900CA0912 /* IOKitLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOKitLib.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,6 +170,7 @@
 				FE06B2F51430E8780071169B /* solaris.xcconfig */,
 				FE06B2F61430E8780071169B /* windows-i386.xcconfig */,
 				FE06B2F71430E8780071169B /* windows.xcconfig */,
+				FE7086C21431181400B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -283,7 +285,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B2F61430E8780071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7086C21431181400B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

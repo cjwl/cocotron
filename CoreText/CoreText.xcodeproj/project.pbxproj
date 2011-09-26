@@ -131,6 +131,7 @@
 		FE06B2231430E7D90071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
 		FE06B2241430E7D90071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE5A888E10C6F2F5005E348A /* CoreText.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreText.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE708651143117C400B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FECF920B0FFB217F007AECF1 /* CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreText.h; sourceTree = "<group>"; };
 		FECF920C0FFB217F007AECF1 /* CoreTextExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextExport.h; sourceTree = "<group>"; };
 		FECF920D0FFB217F007AECF1 /* CTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFont.h; sourceTree = "<group>"; };
@@ -271,6 +272,7 @@
 				FE06B2221430E7D90071169B /* solaris.xcconfig */,
 				FE06B2231430E7D90071169B /* windows-i386.xcconfig */,
 				FE06B2241430E7D90071169B /* windows.xcconfig */,
+				FE708651143117C400B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;

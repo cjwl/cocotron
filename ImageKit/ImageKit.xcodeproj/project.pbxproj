@@ -52,6 +52,7 @@
 		FE43024511E259D100EBDD56 /* ImageKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageKit.h; sourceTree = "<group>"; };
 		FE43042D11E2746700EBDD56 /* IKImageBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKImageBrowserView.h; sourceTree = "<group>"; };
 		FE43042E11E2746700EBDD56 /* IKImageBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKImageBrowserView.m; sourceTree = "<group>"; };
+		FE7086B31431180300B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE71DB7A11F7498E00E6F801 /* ImageKit_Framework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageKit_Framework.m; sourceTree = "<group>"; };
 		FEAD494311E90BBE00063B34 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 		FEAD498311E90DF800063B34 /* ImageKitExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageKitExport.h; sourceTree = "<group>"; };
@@ -156,6 +157,7 @@
 				FE06B2C41430E8590071169B /* solaris.xcconfig */,
 				FE06B2C51430E8590071169B /* windows-i386.xcconfig */,
 				FE06B2C61430E8590071169B /* windows.xcconfig */,
+				FE7086B31431180300B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
 			path = ../xcconfig;
@@ -260,7 +262,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B2C51430E8590071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7086B31431180300B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
