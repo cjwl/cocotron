@@ -63,6 +63,21 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Quartz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Quartz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		FE06B4941430E9820071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B4951430E9820071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B4961430E9820071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B4971430E9820071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B4981430E9820071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B4991430E9820071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B49A1430E9820071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B49B1430E9820071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B49C1430E9820071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B49D1430E9820071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B49E1430E9820071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B49F1430E9820071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B4A01430E9820071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B4A11430E9820071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B4A21430E9820071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE43021B11E2593F00EBDD56 /* PDFKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PDFKit.xcodeproj; path = ../PDFKit/PDFKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE43022911E2594C00EBDD56 /* ImageKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ImageKit.xcodeproj; path = ../ImageKit/ImageKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE43023D11E2599200EBDD56 /* Quartz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quartz.h; sourceTree = "<group>"; };
@@ -91,6 +106,7 @@
 		0867D691FE84028FC02AAC07 /* Quartz */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B4931430E9820071169B /* xcconfig */,
 				FE43023D11E2599200EBDD56 /* Quartz.h */,
 				FE43022911E2594C00EBDD56 /* ImageKit.xcodeproj */,
 				FE43021B11E2593F00EBDD56 /* PDFKit.xcodeproj */,
@@ -145,6 +161,29 @@
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
+		};
+		FE06B4931430E9820071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B4941430E9820071169B /* darwin-i386.xcconfig */,
+				FE06B4951430E9820071169B /* darwin-ppc.xcconfig */,
+				FE06B4961430E9820071169B /* darwin-x86_64.xcconfig */,
+				FE06B4971430E9820071169B /* darwin.xcconfig */,
+				FE06B4981430E9820071169B /* freebsd-i386.xcconfig */,
+				FE06B4991430E9820071169B /* freebsd.xcconfig */,
+				FE06B49A1430E9820071169B /* linux-arm.xcconfig */,
+				FE06B49B1430E9820071169B /* linux-i386.xcconfig */,
+				FE06B49C1430E9820071169B /* linux-ppc.xcconfig */,
+				FE06B49D1430E9820071169B /* linux.xcconfig */,
+				FE06B49E1430E9820071169B /* platform.xcconfig */,
+				FE06B49F1430E9820071169B /* solaris-sparc.xcconfig */,
+				FE06B4A01430E9820071169B /* solaris.xcconfig */,
+				FE06B4A11430E9820071169B /* windows-i386.xcconfig */,
+				FE06B4A21430E9820071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 		FE43021C11E2593F00EBDD56 /* Products */ = {
 			isa = PBXGroup;
@@ -205,7 +244,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Quartz" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* Quartz */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -291,8 +337,8 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B4A11430E9820071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
@@ -313,7 +359,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Quartz;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};

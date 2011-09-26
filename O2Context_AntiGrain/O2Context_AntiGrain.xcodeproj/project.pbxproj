@@ -82,6 +82,21 @@
 		0AA1909FFE8422F4C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = O2Context_AntiGrain.cgContext; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE06B39A1430E8DC0071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B39B1430E8DC0071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B39C1430E8DC0071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B39D1430E8DC0071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B39E1430E8DC0071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B39F1430E8DC0071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B3A01430E8DC0071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B3A11430E8DC0071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3A21430E8DC0071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3A31430E8DC0071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B3A41430E8DC0071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B3A51430E8DC0071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3A61430E8DC0071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B3A71430E8DC0071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3A81430E8DC0071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_AntiGrain.h; sourceTree = "<group>"; };
 		FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O2Context_AntiGrain.mm; sourceTree = "<group>"; };
 		FEE163E9137C6DAD00B2F340 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -104,6 +119,7 @@
 		089C166AFE841209C02AAC07 /* O2Context_AntiGrain */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B3991430E8DC0071169B /* xcconfig */,
 				FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */,
 				FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */,
 				FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */,
@@ -139,6 +155,29 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		FE06B3991430E8DC0071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B39A1430E8DC0071169B /* darwin-i386.xcconfig */,
+				FE06B39B1430E8DC0071169B /* darwin-ppc.xcconfig */,
+				FE06B39C1430E8DC0071169B /* darwin-x86_64.xcconfig */,
+				FE06B39D1430E8DC0071169B /* darwin.xcconfig */,
+				FE06B39E1430E8DC0071169B /* freebsd-i386.xcconfig */,
+				FE06B39F1430E8DC0071169B /* freebsd.xcconfig */,
+				FE06B3A01430E8DC0071169B /* linux-arm.xcconfig */,
+				FE06B3A11430E8DC0071169B /* linux-i386.xcconfig */,
+				FE06B3A21430E8DC0071169B /* linux-ppc.xcconfig */,
+				FE06B3A31430E8DC0071169B /* linux.xcconfig */,
+				FE06B3A41430E8DC0071169B /* platform.xcconfig */,
+				FE06B3A51430E8DC0071169B /* solaris-sparc.xcconfig */,
+				FE06B3A61430E8DC0071169B /* solaris.xcconfig */,
+				FE06B3A71430E8DC0071169B /* windows-i386.xcconfig */,
+				FE06B3A81430E8DC0071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 		FEE163ED137C6DC600B2F340 /* Products */ = {
 			isa = PBXGroup;
@@ -307,9 +346,9 @@
 /* Begin XCBuildConfiguration section */
 		1DEB911B08733D790010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B3A71430E8DC0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
@@ -336,16 +375,15 @@
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
 				SDKROOT = "";
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Debug;
 		};
 		1DEB911C08733D790010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B3A71430E8DC0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
@@ -369,7 +407,6 @@
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
 				SDKROOT = "";
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Release;

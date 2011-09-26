@@ -180,6 +180,21 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C8E0BFAA0F0E6B0E00677729 /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE01AB210C5D9C3400AEA51A /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE06B0371430E6B30071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B0381430E6B30071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B0391430E6B30071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B03A1430E6B30071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B03B1430E6B30071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B03C1430E6B30071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B03D1430E6B30071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B03E1430E6B30071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B03F1430E6B30071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B0401430E6B30071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B0411430E6B30071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B0421430E6B30071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B0431430E6B30071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B0441430E6B30071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B0451430E6B30071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE5A873F10C6F1E8005E348A /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7135460B36427F006C9493 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -243,6 +258,7 @@
 		0867D691FE84028FC02AAC07 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B0361430E6B30071169B /* xcconfig */,
 				FE78D0FF126F4CF500CC39CF /* CoreData.xcodeproj */,
 				FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */,
 				FE7135460B36427F006C9493 /* AppKit.xcodeproj */,
@@ -303,6 +319,29 @@
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
+		};
+		FE06B0361430E6B30071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B0371430E6B30071169B /* darwin-i386.xcconfig */,
+				FE06B0381430E6B30071169B /* darwin-ppc.xcconfig */,
+				FE06B0391430E6B30071169B /* darwin-x86_64.xcconfig */,
+				FE06B03A1430E6B30071169B /* darwin.xcconfig */,
+				FE06B03B1430E6B30071169B /* freebsd-i386.xcconfig */,
+				FE06B03C1430E6B30071169B /* freebsd.xcconfig */,
+				FE06B03D1430E6B30071169B /* linux-arm.xcconfig */,
+				FE06B03E1430E6B30071169B /* linux-i386.xcconfig */,
+				FE06B03F1430E6B30071169B /* linux-ppc.xcconfig */,
+				FE06B0401430E6B30071169B /* linux.xcconfig */,
+				FE06B0411430E6B30071169B /* platform.xcconfig */,
+				FE06B0421430E6B30071169B /* solaris-sparc.xcconfig */,
+				FE06B0431430E6B30071169B /* solaris.xcconfig */,
+				FE06B0441430E6B30071169B /* windows-i386.xcconfig */,
+				FE06B0451430E6B30071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 		FE3217D20BB41D16004F000A /* Products */ = {
 			isa = PBXGroup;
@@ -693,8 +732,8 @@
 		};
 		7E2EFA4F0DF995A500A40193 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -717,7 +756,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
@@ -769,8 +807,8 @@
 		};
 		FE01AB200C5D9C3400AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -793,7 +831,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};

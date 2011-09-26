@@ -748,6 +748,21 @@
 		FE069F4F1245A9260040F165 /* O2Font_freetype.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_freetype.m; sourceTree = "<group>"; };
 		FE069F501245A9260040F165 /* O2GlyphStencil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2GlyphStencil.h; sourceTree = "<group>"; };
 		FE069F511245A9260040F165 /* O2GlyphStencil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2GlyphStencil.m; sourceTree = "<group>"; };
+		FE06B3ED1430E9150071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3EE1430E9150071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3EF1430E9150071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F01430E9150071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B3F11430E9150071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F21430E9150071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B3F31430E9150071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F41430E9150071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F51430E9150071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F61430E9150071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B3F71430E9150071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B3F81430E9150071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F91430E9150071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B3FA1430E9150071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3FB1430E9150071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE081BAA118A165F0026A20E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE27593E1234039700BD6643 /* O2Context_distill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_distill.h; sourceTree = "<group>"; };
 		FE27593F1234039700BD6643 /* O2Context_distill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_distill.m; sourceTree = "<group>"; };
@@ -980,6 +995,7 @@
 		0867D691FE84028FC02AAC07 /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B3EC1430E9150071169B /* xcconfig */,
 				FE7F724D12AF4DA300FDF52D /* O2argb8u.m */,
 				FE7F724E12AF4DA300FDF52D /* O2argb32f.m */,
 				FE5F4C6B12A853B800F5F334 /* platform_Windows */,
@@ -1214,6 +1230,29 @@
 			);
 			path = English.lproj;
 			sourceTree = "<group>";
+		};
+		FE06B3EC1430E9150071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B3ED1430E9150071169B /* darwin-i386.xcconfig */,
+				FE06B3EE1430E9150071169B /* darwin-ppc.xcconfig */,
+				FE06B3EF1430E9150071169B /* darwin-x86_64.xcconfig */,
+				FE06B3F01430E9150071169B /* darwin.xcconfig */,
+				FE06B3F11430E9150071169B /* freebsd-i386.xcconfig */,
+				FE06B3F21430E9150071169B /* freebsd.xcconfig */,
+				FE06B3F31430E9150071169B /* linux-arm.xcconfig */,
+				FE06B3F41430E9150071169B /* linux-i386.xcconfig */,
+				FE06B3F51430E9150071169B /* linux-ppc.xcconfig */,
+				FE06B3F61430E9150071169B /* linux.xcconfig */,
+				FE06B3F71430E9150071169B /* platform.xcconfig */,
+				FE06B3F81430E9150071169B /* solaris-sparc.xcconfig */,
+				FE06B3F91430E9150071169B /* solaris.xcconfig */,
+				FE06B3FA1430E9150071169B /* windows-i386.xcconfig */,
+				FE06B3FB1430E9150071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 		FE081BAB118A165F0026A20E /* Products */ = {
 			isa = PBXGroup;
@@ -2181,8 +2220,8 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B3FA1430E9150071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -2215,14 +2254,13 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B3FA1430E9150071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -2255,7 +2293,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};

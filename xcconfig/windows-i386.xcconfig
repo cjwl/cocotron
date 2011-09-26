@@ -1,0 +1,3 @@
+#include "windows"
+ARCHS = i386
+OTHER_CFLAGS = -D__LITTLE_ENDIAN__

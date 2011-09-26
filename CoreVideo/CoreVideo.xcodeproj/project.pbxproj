@@ -102,28 +102,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* OpenGL.framework */;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = "OpenGL-Windows-i386";
 		};
 		FE2A2D0812D2C7760028C06D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C8E0BE8A0F0E544700677729 /* OpenGL.framework */;
+			remoteGlobalIDString = C8E0BE8A0F0E544700677729;
 			remoteInfo = "OpenGL-Darwin-i386";
 		};
 		FE2A2D0A12D2C7760028C06D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE5A876310C6F244005E348A /* OpenGL.framework */;
+			remoteGlobalIDString = FE5A876310C6F244005E348A;
 			remoteInfo = "OpenGL-FreeBSD-i386";
 		};
 		FE2A2D0C12D2C77C0028C06D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* OpenGL-Windows-i386 */;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "OpenGL-Windows-i386";
 		};
 /* End PBXContainerItemProxy section */
@@ -134,6 +134,21 @@
 		50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreVideo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreVideo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE06B2691430E8000071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B26A1430E8000071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B26B1430E8000071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B26C1430E8000071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B26D1430E8000071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B26E1430E8000071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B26F1430E8000071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B2701430E8000071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B2711430E8000071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B2721430E8000071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B2731430E8000071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B2741430E8000071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B2751430E8000071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B2761430E8000071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B2771430E8000071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenGL.xcodeproj; path = ../OpenGL/OpenGL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVDisplayLink.h; sourceTree = "<group>"; };
 		FE43015B11E2531F00EBDD56 /* CVDisplayLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVDisplayLink.m; sourceTree = "<group>"; };
@@ -165,6 +180,7 @@
 		0867D691FE84028FC02AAC07 /* CoreVideo */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B2681430E8000071169B /* xcconfig */,
 				FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */,
 				50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */,
 				FE43045A11E2779700EBDD56 /* CVReturn.h */,
@@ -235,6 +251,29 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		FE06B2681430E8000071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B2691430E8000071169B /* darwin-i386.xcconfig */,
+				FE06B26A1430E8000071169B /* darwin-ppc.xcconfig */,
+				FE06B26B1430E8000071169B /* darwin-x86_64.xcconfig */,
+				FE06B26C1430E8000071169B /* darwin.xcconfig */,
+				FE06B26D1430E8000071169B /* freebsd-i386.xcconfig */,
+				FE06B26E1430E8000071169B /* freebsd.xcconfig */,
+				FE06B26F1430E8000071169B /* linux-arm.xcconfig */,
+				FE06B2701430E8000071169B /* linux-i386.xcconfig */,
+				FE06B2711430E8000071169B /* linux-ppc.xcconfig */,
+				FE06B2721430E8000071169B /* linux.xcconfig */,
+				FE06B2731430E8000071169B /* platform.xcconfig */,
+				FE06B2741430E8000071169B /* solaris-sparc.xcconfig */,
+				FE06B2751430E8000071169B /* solaris.xcconfig */,
+				FE06B2761430E8000071169B /* windows-i386.xcconfig */,
+				FE06B2771430E8000071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 		FE2A2D0112D2C7760028C06D /* Products */ = {
 			isa = PBXGroup;
@@ -456,8 +495,8 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B2761430E8000071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
@@ -478,7 +517,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreVideo;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
