@@ -625,7 +625,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -661,7 +660,6 @@
 				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "a+w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",

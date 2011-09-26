@@ -590,7 +590,6 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCORETEXT_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -753,7 +752,6 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCORETEXT_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",

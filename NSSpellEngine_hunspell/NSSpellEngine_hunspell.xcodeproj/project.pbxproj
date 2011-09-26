@@ -255,7 +255,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/lib";
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
@@ -287,7 +287,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/lib";
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (

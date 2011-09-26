@@ -478,7 +478,6 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
 					"-DSECURITY_INSIDE_BUILD",
@@ -546,7 +545,6 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
 					"-DSECURITY_INSIDE_BUILD",

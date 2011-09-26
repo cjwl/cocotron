@@ -16347,7 +16347,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
 					"-DCFNETWORK_INSIDE_BUILD",
@@ -16539,7 +16538,6 @@
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
 					"-DCFNETWORK_INSIDE_BUILD",

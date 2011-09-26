@@ -361,7 +361,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/AppKit.framework/Resources";
 				LIBRARY_SEARCH_PATHS = (
 					"/Developer/Cocotron/1.0/Windows/i386/agg-2.4",
 					"$(DERIVED_FILE_DIR)",
@@ -393,7 +393,7 @@
 				GCC_MODEL_TUNING = G5;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/AppKit.framework/Resources";
 				LIBRARY_SEARCH_PATHS = (
 					"/Developer/Cocotron/1.0/Windows/i386/agg-2.4",
 					"$(DERIVED_FILE_DIR)",

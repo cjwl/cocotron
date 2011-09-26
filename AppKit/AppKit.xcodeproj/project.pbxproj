@@ -11428,7 +11428,6 @@
 				GCC_UNROLL_LOOPS = NO;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "/Developer/Cocotron/1.0/Windows/i386/Frameworks\n";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
@@ -11722,7 +11721,6 @@
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = "/Developer/Cocotron/1.0/Windows/i386/Frameworks\n";
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
 					"-DQUARTZCORE_INSIDE_BUILD",
