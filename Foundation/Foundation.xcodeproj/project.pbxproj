@@ -6,24 +6,6 @@
 	objectVersion = 42;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		6E3877300A0A78EF00643D29 /* Foundation */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 6E3877380A0A792300643D29 /* Build configuration list for PBXAggregateTarget "Foundation" */;
-			buildPhases = (
-			);
-			dependencies = (
-				6E3877340A0A78F800643D29 /* PBXTargetDependency */,
-				FEE66CCE0C3D614F00FBED82 /* PBXTargetDependency */,
-				FEE66CD00C3D615200FBED82 /* PBXTargetDependency */,
-				FE50C5DA0D85891000CD1896 /* PBXTargetDependency */,
-				FECB39600FE143E9000562E8 /* PBXTargetDependency */,
-			);
-			name = Foundation;
-			productName = Foundation;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		151B5CC4105EA25E009092D5 /* objc_msg_sendv-Disabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */; };
 		151B5D1B105EA94F009092D5 /* NSAtomicCompareAndSwap.h in Headers */ = {isa = PBXBuildFile; fileRef = 151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -6565,13 +6547,6 @@
 			remoteGlobalIDString = 28D484ED0FE04DDD00DC03EF;
 			remoteInfo = "objc-Linux-ppc";
 		};
-		6E3877330A0A78F800643D29 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6EA048CA09E57D5F0067589C;
-			remoteInfo = "Foundation-Linux-i386-gcc-4.0.3-redhat";
-		};
 		FE01A7F20C5D9B9100AEA51A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -6592,13 +6567,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CoreServices-Windows-i386";
-		};
-		FE50C5D90D85891000CD1896 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
-			remoteInfo = "Foundation-Windows-i386";
 		};
 		FE5A868D10C6EDDC005E348A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6782,13 +6750,6 @@
 			remoteGlobalIDString = FEC32E45115909F00008ECE5;
 			remoteInfo = "CoreServices-Darwin-i386";
 		};
-		FECB395F0FE143E9000562E8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FE6518160FBC844C00464BFD;
-			remoteInfo = "Foundation-Darwin-x86_64";
-		};
 		FED70AAB0C3B3F5E000CBE5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -6816,20 +6777,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FED70FBE0C3C0A17000CBE5B;
 			remoteInfo = "objc-Darwin-ppc";
-		};
-		FEE66CCD0C3D614F00FBED82 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
-			remoteInfo = "Foundation-Darwin-i386";
-		};
-		FEE66CCF0C3D615200FBED82 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FED70D670C3C09C7000CBE5B;
-			remoteInfo = "Foundation-Darwin-ppc";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -12316,7 +12263,6 @@
 			targets = (
 				FE01A5970C5D9B6900AEA51A /* Foundation-Windows-i386 */,
 				6EA048CA09E57D5F0067589C /* Foundation-Linux-i386 */,
-				6E3877300A0A78EF00643D29 /* Foundation */,
 				6E4D91880A2642BD003D335C /* Foundation-Solaris-sparc */,
 				FED7081C0C3B3D2C000CBE5B /* Foundation-Darwin-i386 */,
 				FED70D670C3C09C7000CBE5B /* Foundation-Darwin-ppc */,
@@ -16022,11 +15968,6 @@
 			name = "objc-Linux-ppc";
 			targetProxy = 28D487AE0FE04F3F00DC03EF /* PBXContainerItemProxy */;
 		};
-		6E3877340A0A78F800643D29 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6EA048CA09E57D5F0067589C /* Foundation-Linux-i386 */;
-			targetProxy = 6E3877330A0A78F800643D29 /* PBXContainerItemProxy */;
-		};
 		FE01A7F30C5D9B9100AEA51A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-Windows-i386";
@@ -16036,11 +15977,6 @@
 			isa = PBXTargetDependency;
 			name = "CoreServices-Windows-i386";
 			targetProxy = FE1342D41151843C00404745 /* PBXContainerItemProxy */;
-		};
-		FE50C5DA0D85891000CD1896 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FE01A5970C5D9B6900AEA51A /* Foundation-Windows-i386 */;
-			targetProxy = FE50C5D90D85891000CD1896 /* PBXContainerItemProxy */;
 		};
 		FE5A86D210C6EE82005E348A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -16107,11 +16043,6 @@
 			name = "CoreServices-Darwin-i386";
 			targetProxy = FEC32E7711590C950008ECE5 /* PBXContainerItemProxy */;
 		};
-		FECB39600FE143E9000562E8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FE6518160FBC844C00464BFD /* Foundation-Darwin-x86_64 */;
-			targetProxy = FECB395F0FE143E9000562E8 /* PBXContainerItemProxy */;
-		};
 		FED70AB60C3B3FAC000CBE5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-Darwin";
@@ -16121,16 +16052,6 @@
 			isa = PBXTargetDependency;
 			name = "objc-Darwin-ppc";
 			targetProxy = FED70FCD0C3C0A4F000CBE5B /* PBXContainerItemProxy */;
-		};
-		FEE66CCE0C3D614F00FBED82 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FED7081C0C3B3D2C000CBE5B /* Foundation-Darwin-i386 */;
-			targetProxy = FEE66CCD0C3D614F00FBED82 /* PBXContainerItemProxy */;
-		};
-		FEE66CD00C3D615200FBED82 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FED70D670C3C09C7000CBE5B /* Foundation-Darwin-ppc */;
-			targetProxy = FEE66CCF0C3D615200FBED82 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -16299,17 +16220,6 @@
 					"-DCFNETWORK_INSIDE_BUILD=1",
 					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 				);
-			};
-			name = Release;
-		};
-		6E38773A0A0A792300643D29 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				PRODUCT_NAME = Foundation;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -16544,17 +16454,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/ppc;
-			};
-			name = Debug;
-		};
-		7E891F1B0D4964FF008150D3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				PRODUCT_NAME = Foundation;
-				ZERO_LINK = NO;
 			};
 			name = Debug;
 		};
@@ -16837,15 +16736,6 @@
 			buildConfigurations = (
 				6E2801BB09746B8900EC542B /* Release */,
 				7E891F1C0D4964FF008150D3 /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6E3877380A0A792300643D29 /* Build configuration list for PBXAggregateTarget "Foundation" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6E38773A0A0A792300643D29 /* Release */,
-				7E891F1B0D4964FF008150D3 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

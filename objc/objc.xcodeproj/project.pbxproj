@@ -6,21 +6,6 @@
 	objectVersion = 42;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		FE4034A10B42F1BC00CEC41A /* objc */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = FE4034AE0B42F1D600CEC41A /* Build configuration list for PBXAggregateTarget "objc" */;
-			buildPhases = (
-			);
-			dependencies = (
-				FE4034A50B42F1C400CEC41A /* PBXTargetDependency */,
-				FE4034A70B42F1C800CEC41A /* PBXTargetDependency */,
-			);
-			name = objc;
-			productName = objc;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		15D921D7105E922600171406 /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15D921D8105E922600171406 /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -296,23 +281,6 @@
 			);
 		};
 /* End PBXBuildRule section */
-
-/* Begin PBXContainerItemProxy section */
-		FE4034A40B42F1C400CEC41A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FE4034530B42E8AF00CEC41A;
-			remoteInfo = "objc-Linux-i386";
-		};
-		FE4034A60B42F1C800CEC41A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FE4034840B42E94D00CEC41A;
-			remoteInfo = "objc-Solaris-sparc";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		15D921E5105E922600171406 /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -945,7 +913,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "objc" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* objc */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -954,7 +929,6 @@
 				FE01A57F0C5D9B3100AEA51A /* objc-Windows-i386 */,
 				FE4034530B42E8AF00CEC41A /* objc-Linux-i386 */,
 				FE4034840B42E94D00CEC41A /* objc-Solaris-sparc */,
-				FE4034A10B42F1BC00CEC41A /* objc */,
 				FED70A9E0C3B3F5E000CBE5B /* objc-Darwin-i386 */,
 				FED70FBE0C3C0A17000CBE5B /* objc-Darwin-ppc */,
 				FE651A8D0FBC84DD00464BFD /* objc-Darwin-x86_64 */,
@@ -1030,19 +1004,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FE4034A50B42F1C400CEC41A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FE4034530B42E8AF00CEC41A /* objc-Linux-i386 */;
-			targetProxy = FE4034A40B42F1C400CEC41A /* PBXContainerItemProxy */;
-		};
-		FE4034A70B42F1C800CEC41A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FE4034840B42E94D00CEC41A /* objc-Solaris-sparc */;
-			targetProxy = FE4034A60B42F1C800CEC41A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		15D921E3105E922600171406 /* Release */ = {
@@ -1194,17 +1155,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Solaris/sparc;
-			};
-			name = Debug;
-		};
-		7E891EB80D4961EA008150D3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				PRODUCT_NAME = objc;
-				ZERO_LINK = NO;
 			};
 			name = Debug;
 		};
@@ -1366,17 +1316,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Solaris/sparc;
-			};
-			name = Release;
-		};
-		FE4034AF0B42F1D600CEC41A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				PRODUCT_NAME = objc;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -1573,15 +1512,6 @@
 			buildConfigurations = (
 				FE4034890B42E94D00CEC41A /* Release */,
 				7E891EB70D4961EA008150D3 /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FE4034AE0B42F1D600CEC41A /* Build configuration list for PBXAggregateTarget "objc" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FE4034AF0B42F1D600CEC41A /* Release */,
-				7E891EB80D4961EA008150D3 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
