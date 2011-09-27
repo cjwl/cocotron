@@ -885,7 +885,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7087621431189F00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;

@@ -380,11 +380,10 @@
 				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
+				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/CoreFoundation.framework/Headers";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				OTHER_LDFLAGS = (
@@ -409,9 +408,8 @@
 				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
+				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/CoreFoundation.framework/Headers";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				OTHER_LDFLAGS = (

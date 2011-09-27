@@ -578,7 +578,6 @@
 			baseConfigurationReference = FE06B2231430E7D90071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -658,10 +657,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/Cocotron/1.0/Linux/i386/Frameworks,
-					"\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -734,7 +730,6 @@
 			baseConfigurationReference = FE06B2231430E7D90071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -771,10 +766,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/Cocotron/1.0/Linux/i386/Frameworks,
-					"\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;

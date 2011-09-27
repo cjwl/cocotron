@@ -56,7 +56,7 @@
 		FE71DB7A11F7498E00E6F801 /* ImageKit_Framework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageKit_Framework.m; sourceTree = "<group>"; };
 		FEAD494311E90BBE00063B34 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 		FEAD498311E90DF800063B34 /* ImageKitExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageKitExport.h; sourceTree = "<group>"; };
-		FEDE65AB1210A706003D3EF1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
+		FEDE65AB1210A706003D3EF1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,7 +264,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086B31431180300B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";

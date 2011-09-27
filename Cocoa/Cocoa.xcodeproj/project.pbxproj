@@ -736,7 +736,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -806,7 +805,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";

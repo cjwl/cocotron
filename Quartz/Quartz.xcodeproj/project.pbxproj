@@ -341,7 +341,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70872C1431187900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";

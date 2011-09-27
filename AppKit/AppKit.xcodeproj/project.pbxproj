@@ -5283,7 +5283,7 @@
 		FED38C3310E13DCA00A2A651 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CATransform3D.m; path = ../QuartzCore/CATransform3D.m; sourceTree = SOURCE_ROOT; };
 		FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = QuartzCore.xcodeproj; sourceTree = "<group>"; };
 		FED56E6411A2D87100D6D09B /* CGGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGradient.m; sourceTree = "<group>"; };
-		FEDE655E1210A294003D3EF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Cocotron/1.0/Windows/i386/Frameworks/CoreData.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		FEDE655E1210A294003D3EF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = "/System/Library/Frameworks//CoreData.framework"; sourceTree = "<absolute>"; };
 		FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransactionGroup.m; sourceTree = "<group>"; };
 		FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransactionGroup.h; sourceTree = "<group>"; };
 		FEDEA95312C13368008E5A59 /* CABase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABase.m; sourceTree = "<group>"; };
@@ -11416,7 +11416,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -11425,13 +11424,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
-				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
+				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/CoreFoundation.framework/Headers";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
 					"-DAPPKIT_INSIDE_BUILD",
@@ -11694,7 +11688,6 @@
 			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = stabs;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -11713,7 +11706,7 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
+				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/CoreFoundation.framework/Headers";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
