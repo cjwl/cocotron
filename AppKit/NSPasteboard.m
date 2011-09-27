@@ -78,8 +78,14 @@ NSString * const NSRulerPboard=@"NSRulerPboard";
 }
 
 -(id)propertyListForType:(NSString *)type {
-   NSUnimplementedMethod();
-   return nil;
+	NSData* data = [self dataForType: type];
+	NSString* errorDesc = nil;
+	id plist = [NSPropertyListSerialization propertyListFromData: data mutabilityOption: NSPropertyListImmutable format: NULL errorDescription: &errorDesc];
+	if (plist && errorDesc == nil) {
+		return plist;
+	}
+	NSLog(@"propertyListForType: produced error: %@", errorDesc);
+	return nil;
 }
 
 -(int)declareTypes:(NSArray *)types owner:(id)owner {
@@ -98,7 +104,12 @@ NSString * const NSRulerPboard=@"NSRulerPboard";
 }
 
 -(BOOL)setPropertyList:(id)plist forType:(NSString *)type {
-   NSUnimplementedMethod();
+	NSString* errorDesc = nil;
+	NSData* data = [NSPropertyListSerialization dataFromPropertyList: plist format: NSPropertyListXMLFormat_v1_0 errorDescription: &errorDesc];
+	if (data && errorDesc == nil) {
+		return [self setData: data forType: type]; 
+	}
+	NSLog(@"setPropertyList:forType: produced error: %@", errorDesc);
    return NO;
 }
 

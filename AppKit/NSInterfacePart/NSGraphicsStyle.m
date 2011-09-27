@@ -222,6 +222,44 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 	}
 }
 
+-(void)drawAttributedMenuItemText:(NSAttributedString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected
+{
+	NSMutableAttributedString* mutableString = [string mutableCopy];
+	
+	Margins margins=[self menuItemTextMargins];
+	
+	rect.origin.x += margins.left;
+	rect.origin.y += margins.top;
+	rect.size.width -= (margins.left + margins.right);
+	rect.size.height -= (margins.top + margins.bottom);
+	
+	NSRange range = NSMakeRange(0, [string length]);
+	
+	if (enabled)
+	{
+		if (selected)
+		{
+			[mutableString addAttributes: [NSDictionary dictionaryWithObject: [NSColor whiteColor] forKey: NSForegroundColorAttributeName] range: range];
+		}
+		else
+		{
+			[mutableString addAttributes: [NSDictionary dictionaryWithObject: [NSColor blackColor] forKey: NSForegroundColorAttributeName] range: range];
+		}
+		[mutableString drawInRect:rect];
+	}
+	else
+	{
+		if (!selected)
+		{
+			[mutableString addAttributes: [NSDictionary dictionaryWithObject: [NSColor grayColor] forKey: NSForegroundColorAttributeName] range: range];
+			NSRect offsetRect = rect;
+			offsetRect.origin.x += 1;
+			offsetRect.origin.y += 1;
+			[mutableString drawInRect:offsetRect];
+		}
+		[mutableString drawInRect:rect];
+	}
+}
 
 -(void)drawMenuCheckmarkInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {
 	NSColor                         *color;

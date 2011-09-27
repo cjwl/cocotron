@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4970823C13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4970823E13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; };
+		4970823F13FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */; };
+		4970824013FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; };
+		4970824113FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */; };
+		4970824213FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; };
+		4970824313FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */; };
 		FE051C6D1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE051C6E1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE051C6F1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -741,6 +748,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* Onyx2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Onyx2D_Prefix.pch; sourceTree = "<group>"; };
+		4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
+		4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE051C6C1221A7440097BA92 /* O2Font_freetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_freetype.h; sourceTree = "<group>"; };
@@ -1002,6 +1011,8 @@
 				FE5F4C6B12A853B800F5F334 /* platform_Windows */,
 				FE99DB1712843F74006D789F /* O2Encoder_PNG.h */,
 				FE99DB1812843F74006D789F /* O2Encoder_PNG.m */,
+				4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */,
+				4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */,
 				FE58789312694AE4009B9EDF /* O2argb32f.h */,
 				FE587851126949AA009B9EDF /* O2argb8u.h */,
 				FE069F4C1245A9260040F165 /* English.lproj */,
@@ -1396,6 +1407,7 @@
 				FE5F4C8212A853D000F5F334 /* O2Font_gdi.h in Headers */,
 				FE5F4C8412A853D000F5F334 /* O2Surface_DIBSection.h in Headers */,
 				FE5F4C8612A853D000F5F334 /* Win32Font.h in Headers */,
+				4970823C13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1492,6 +1504,7 @@
 				FE587853126949AA009B9EDF /* O2argb8u.h in Headers */,
 				FE58789512694AE4009B9EDF /* O2argb32f.h in Headers */,
 				FE99DB1B12843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				4970823E13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1588,6 +1601,7 @@
 				FE587854126949AA009B9EDF /* O2argb8u.h in Headers */,
 				FE58789612694AE4009B9EDF /* O2argb32f.h in Headers */,
 				FE99DB1D12843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				4970824013FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1684,6 +1698,7 @@
 				FE587855126949AA009B9EDF /* O2argb8u.h in Headers */,
 				FE58789712694AE4009B9EDF /* O2argb32f.h in Headers */,
 				FE99DB1F12843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				4970824213FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2000,6 +2015,7 @@
 				FE06A0D51245A9270040F165 /* O2Font_freetype.m in Sources */,
 				FE06A0D71245A9270040F165 /* O2GlyphStencil.m in Sources */,
 				FE99DB1C12843F74006D789F /* O2Encoder_PNG.m in Sources */,
+				4970823F13FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2090,6 +2106,7 @@
 				FE06A1981245A9270040F165 /* O2Font_freetype.m in Sources */,
 				FE06A19A1245A9270040F165 /* O2GlyphStencil.m in Sources */,
 				FE99DB1E12843F74006D789F /* O2Encoder_PNG.m in Sources */,
+				4970824113FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2182,6 +2199,7 @@
 				FE99DB2012843F74006D789F /* O2Encoder_PNG.m in Sources */,
 				FE7F724F12AF4DA300FDF52D /* O2argb8u.m in Sources */,
 				FE7F725012AF4DA300FDF52D /* O2argb32f.m in Sources */,
+				4970824313FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

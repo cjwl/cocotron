@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSLock.h>
@@ -20,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
@@ -43,6 +45,25 @@ NSString *const _KVO_DependentKeysTriggeringChangeNotification=@"_KVO_DependentK
 NSString *const _KVO_KeyPathsForValuesAffectingValueForKey=@"_KVO_KeyPathsForValuesAffectingValueForKey";
 
 static pthread_mutex_t kvoLock=PTHREAD_MUTEX_INITIALIZER;
+
+int NSKeyValueDebugLogLevel = 0;
+
+void NSDetermineKeyValueDebugLoggingLevel()
+{
+	static BOOL loggingLevelDetermined = NO;
+	if (loggingLevelDetermined == NO) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+		
+		NSKeyValueDebugLogLevel = [defaults integerForKey: @"NSKeyValueDebugLogLevel"];
+		if (NSKeyValueDebugLogLevel > 0) {
+			NSLog(@"set NSKeyValueDebugLevel to: '%d'", NSKeyValueDebugLogLevel);
+		}
+		[pool drain];
+		loggingLevelDetermined = YES;
+	}
+}
+
 
 @interface NSObject (KVOSettersForwardReferencs)
 +(NSDictionary *)_KVO_buildDependencyUnion;
@@ -112,7 +133,7 @@ static inline NSMapTable *masterObservationInfo(){
 }
 
 static void addKeyObserver(NSKeyObserver *keyObserver){
-//NSLog(@"addKeyObserver:%@",keyObserver);
+	NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"addKeyObserver: %@",keyObserver);
 
    id object=[keyObserver object];
 
@@ -130,7 +151,7 @@ static void addKeyObserver(NSKeyObserver *keyObserver){
 }
 
 static void removeKeyObserver(NSKeyObserver *keyObserver){
-//NSLog(@"removeKeyObserver:%@",keyObserver);
+//	NSKeyValueDebugLog(kNSKeyValueDebugLevel3,@"removeKeyObserver:%@",keyObserver);
 
    if(keyObserver==nil)
     return;
@@ -171,12 +192,12 @@ static NSKeyObserver *addKeyPathObserverToObject(id object,NSString *path,NSKeyP
 static NSArray *addKeyPathObserverToDependantPaths(id object,NSSet *dependentPaths,NSKeyPathObserver *keyPathObserver){
     NSMutableArray *result=[NSMutableArray array];
     
-//NSLog(@"dependant=%@",dependentPaths);
     for(NSString *path in dependentPaths){
-     NSKeyObserver *check=addKeyPathObserverToObject(object,path,keyPathObserver);
-     
-     if(check!=nil)
-      [result addObject:check];
+		// Recursively walk the keypath setting up key/keyPath observer pairs for each dependentPath.
+		 NSKeyObserver *check=addKeyPathObserverToObject(object,path,keyPathObserver);
+		 
+		 if(check!=nil)
+		  [result addObject:check];
     }
     
     return result;
@@ -192,15 +213,16 @@ static void addKeyObserverDependantsAndRestOfPath(NSKeyObserver *keyObserver){
 
    [keyObserver setDependantKeyObservers:dependantObservers];
      
-   if(restOfPath!=nil){
-    NSKeyObserver *restOfPathObserver=addKeyPathObserverToObject([object valueForKey:key],restOfPath,keyPathObserver);
+   if(restOfPath!=nil) {
+	   // Recursively walk the keypath setting up key/keyPath observer pairs for each link in the chain.
+	   // [object valueForKey: key] makes sure the observer pair is associated with the correct object.
+	   NSKeyObserver *restOfPathObserver=addKeyPathObserverToObject([object valueForKey:key],restOfPath,keyPathObserver);
     
-    [keyObserver setRestOfPathObserver:restOfPathObserver];
+	   [keyObserver setRestOfPathObserver:restOfPathObserver];
    }
 }
 
 static NSKeyObserver *addKeyPathObserverToObject(id object,NSString *path,NSKeyPathObserver *keyPathObserver){
-//NSLog(@"addKeyPathObserverToObject(%@,%@)",[object class],path);
    if(object==nil)
     return nil;
     
@@ -224,8 +246,22 @@ static NSKeyObserver *addKeyPathObserverToObject(id object,NSString *path,NSKeyP
    return keyObserver;
 }
 
+/*
+ * addObserver:forKeyPath:options:context:
+ * 1. Creates a keyPathObserver to track the designated keypath for self
+ * 2. Creates a keyObserver for the first key in the path and connects it to the freshly created keyPathObserver
+ * 3. Creates keyObserver and keyPathObservers for all dependent keys and the rest of the key path (which for the keyPath recursively calls this set of
+ *       operations - but using the current value of the key in the keypath as the root object)
+ * 4. Adds the keyObserver to the object - which means
+ * 4.1 Swizzles object into a KVO capable class (if it's not already)
+ * 4.2 Creates and sets a NSKVOInfoPerObject (if one is not available already) onto the object
+ * 4.3 Adds the keyObserver to the info
+ */
+
 -(void)addObserver:observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context {
    
+	NSKeyValueDebugLog(kNSKeyValueDebugLevel1, @"self: %@ observer: %@, keyPath: %@", self, observer, keyPath);
+	
    NSKeyPathObserver *keyPathObserver=[[[NSKeyPathObserver alloc] initWithObject:self observer:observer keyPath:keyPath options:options context:context] autorelease];
    
    addKeyPathObserverToObject(self,keyPath,keyPathObserver);
@@ -238,6 +274,7 @@ static NSKeyObserver *addKeyPathObserverToObject(id object,NSString *path,NSKeyP
     [self didChangeValueForKey:key];
 #endif
    }
+	NSKeyValueDebugLog(kNSKeyValueDebugLevel2, @"self: %@ added keyPathObserver: %@ for observer: %@ keyPath: %@", self, keyPathObserver, observer, keyPath);
 }
 
 static void pruneKeyObserver(NSKeyObserver *keyObserver);
@@ -255,9 +292,9 @@ static void pruneRestOfPathAndDependantObservers(NSKeyObserver *keyObserver){
 }
 
 static void pruneKeyObserver(NSKeyObserver *keyObserver){
-//NSLog(@"pruneKeyObserver %@",keyObserver);
-   if(keyObserver==nil)
-    return;
+	if(keyObserver==nil) {
+		return;
+	}
     
    pruneRestOfPathAndDependantObservers(keyObserver);
    removeKeyObserver(keyObserver);
@@ -270,28 +307,37 @@ static void pruneKeyObserver(NSKeyObserver *keyObserver){
 }
 
 static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeInfo) {
-//NSLog(@"willChangeValueForKey %@ %@",object,key);
 
+	NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"object: %@, key: %@", object, key);
+	
    NSKVOInfoPerObject *observationInfo=[object observationInfo];
 	
-   if(observationInfo==nil)
-    return;
+	if(observationInfo==nil) {
+		NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"observationInfo is nil - so bailing");
+		return;
+	}
     
    NSArray *keyObserversArray=[NSArray arrayWithArray:[observationInfo keyObserversForKey:key]];
    NSInteger count=[keyObserversArray count];
-
+	if (count > 0) {
+		NSKeyValueDebugLog(kNSKeyValueDebugLevel2, @"notifying %d observers of change to keyPath: %@ which are: %@", count, key, keyObserversArray);
+	}
 // Cocoa does notifications in this order, last to first
    while(--count>=0){
     NSKeyObserver *keyObserver=[keyObserversArray objectAtIndex:count];
       
-    if(![keyObserver isValid])
-     continue;
-     
+	   if(![keyObserver isValid]) {
+		   NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"skipping invalid keyObserver: %@", keyObserver);
+		   continue;
+	   }
+	   
     NSKeyPathObserver *keyPathObserver=[keyObserver keyPathObserver];
     NSKeyValueObservingOptions observingOptions=[keyPathObserver options];
     
-    if([keyPathObserver willChangeAlreadyChanging])
-     continue;
+	   if([keyPathObserver willChangeAlreadyChanging]) {
+		   NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"skipping keyObserver: %@ as already changing", keyObserver);
+		   continue;
+	   }
 
     id                   rootObject=[keyPathObserver object];
     id                   rootObserver=[keyPathObserver observer];
@@ -305,7 +351,7 @@ static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeIn
      if(idxs==nil)
       [changeDictionary setValue:[rootObject valueForKeyPath:rootKeyPath] forKey:NSKeyValueChangeOldKey];
      else {
-// FIXME: this is wrong, the type of change will depend on the positin in the key path
+// FIXME: this is wrong, the type of change will depend on the position in the key path
       int type=[[changeDictionary objectForKey:NSKeyValueChangeKindKey] intValue];
       
       // for to-many relationships, oldvalue is only sensible for replace and remove
@@ -317,6 +363,7 @@ static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeIn
     if(observingOptions&NSKeyValueObservingOptionPrior) {
      [changeDictionary setObject:[NSNumber numberWithBool:YES] forKey:NSKeyValueChangeNotificationIsPriorKey];
 
+	 NSKeyValueDebugLog(kNSKeyValueDebugLevel2, @"informing observer: %@ prior to change: %@ inKeyPath: %@", rootObserver, changeDictionary, rootKeyPath);
      [rootObserver observeValueForKeyPath:rootKeyPath ofObject:rootObject change:changeDictionary context:[keyPathObserver context]];
 
      [changeDictionary removeObjectForKey:NSKeyValueChangeNotificationIsPriorKey];
@@ -346,27 +393,38 @@ static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeIn
 }
 
 static void didChangeValueForKey(id object,NSString *key)  {   
-   NSKVOInfoPerObject *observationInfo=[object observationInfo];
+	NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"object: %@, key: %@", object, key);
 
-   if(observationInfo==nil)
-    return;
+	NSKVOInfoPerObject *observationInfo=[object observationInfo];
 
-   NSArray *keyObserversArray=[NSArray arrayWithArray:[observationInfo keyObserversForKey:key]];
-   NSInteger count=[keyObserversArray count];
+	if(observationInfo==nil) {
+		NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"observationInfo is nil - so bailing");
+		return;
+	}
 
+	NSArray *keyObserversArray=[NSArray arrayWithArray:[observationInfo keyObserversForKey:key]];
+	NSInteger count=[keyObserversArray count];
+	if (count > 0) {
+		NSKeyValueDebugLog(kNSKeyValueDebugLevel2, @"notifying %d observers of change to keyPath: %@ which are: %@", count, key, keyObserversArray);
+	}
+	
 // Cocoa does notifications in this order, last to first
    while(--count>=0){
     NSKeyObserver *keyObserver=[keyObserversArray objectAtIndex:count];
 
-    if(![keyObserver isValid])
-     continue;
-
+	   if(![keyObserver isValid]) {
+		   NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"skipping invalid keyObserver: %@", keyObserver);
+		   continue;
+	   }
+	   
     NSKeyPathObserver   *keyPathObserver=[keyObserver keyPathObserver];
     NSKeyValueObservingOptions observerOptions=[keyPathObserver options];
     
-    if([keyPathObserver didChangeAlreadyChanging])
-     continue;
-     
+	   if([keyPathObserver didChangeAlreadyChanging]) {
+		NSKeyValueDebugLog(kNSKeyValueDebugLevel3, @"skipping keyObserver: %@ as already changing", keyObserver);
+	   continue;
+   }
+	
     id                   rootObject=[keyPathObserver object];
     id                   rootObserver=[keyPathObserver observer];
     NSString            *rootKeyPath=[keyPathObserver keyPath];
@@ -389,6 +447,7 @@ static void didChangeValueForKey(id object,NSString *key)  {
 
     addKeyObserverDependantsAndRestOfPath(keyObserver);
     
+	   NSKeyValueDebugLog(kNSKeyValueDebugLevel2, @"informing observer: %@ after change: %@ inKeyPath: %@", rootObserver, changeDictionary, rootKeyPath);
     [rootObserver observeValueForKeyPath:rootKeyPath ofObject:rootObject change:changeDictionary context:[keyPathObserver context]];
     [keyPathObserver clearChangeDictionary];
    }

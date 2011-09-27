@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGWindow *)platformWindow;
 -(CGContextRef)cgContext;
 -(BOOL)_isActive;
+-(void)_setVisible:(BOOL)visible;
 -(NSArray *)_draggedTypes;
 -(void)_addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;
 -(void)_removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;

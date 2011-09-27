@@ -587,18 +587,6 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
 }
 
 /****************************************************************************
- *  FUNCTION   : IntFromFixed
- *  RETURNS    : int value approximating the FIXED value.
- ****************************************************************************/ 
-static int IntFromFixed(FIXED f)
-{
-    if (f.fract >= 0x8000)
-		return(f.value + 1);
-    else
-		return(f.value);
-}
-
-/****************************************************************************
  *  FUNCTION   : fxDiv2
  *  RETURNS    : (val1 + val2)/2 for FIXED values
  ****************************************************************************/ 
@@ -621,6 +609,11 @@ static FIXED FloatToFIXED(const float d)
 	return f;
 }
 
+static float FIXEDToFloat(FIXED f)
+{
+	return (f.value<<16 | f.fract )  / 65536.0;
+}
+
 /****************************************************************************
  *  FUNCTION   : MakeBezierFromQBSpline
  *
@@ -630,20 +623,20 @@ static FIXED FloatToFIXED(const float d)
  *
  *  RETURNS    : number of Bezier points placed into the pPts POINT array.
  ****************************************************************************/ 
-UINT MakeBezierFromQBSpline( POINT *pPts, POINTFX *pSpline )
+static UINT MakeBezierFromQBSpline( CGPoint *pPts, POINTFX *pSpline )
 {
-    POINT   P0,         // Quadratic on curve start point
+    CGPoint   P0,         // Quadratic on curve start point
 	P1,         // Quadratic control point
 	P2;         // Quadratic on curve end point
     UINT    cTotal = 0;
 	
     // Convert the Quadratic points to integer
-    P0.x = IntFromFixed( pSpline[0].x );
-    P0.y = IntFromFixed( pSpline[0].y );
-    P1.x = IntFromFixed( pSpline[1].x );
-    P1.y = IntFromFixed( pSpline[1].y );
-    P2.x = IntFromFixed( pSpline[2].x );
-    P2.y = IntFromFixed( pSpline[2].y );
+    P0.x = FIXEDToFloat( pSpline[0].x );
+    P0.y = FIXEDToFloat( pSpline[0].y );
+    P1.x = FIXEDToFloat( pSpline[1].x );
+    P1.y = FIXEDToFloat( pSpline[1].y );
+    P2.x = FIXEDToFloat( pSpline[2].x );
+    P2.y = FIXEDToFloat( pSpline[2].y );
 	
     // conversion of a quadratic to a cubic
 	
@@ -679,12 +672,12 @@ UINT MakeBezierFromQBSpline( POINT *pPts, POINTFX *pSpline )
  *
  *  RETURNS    : number of Bezier points added to the POINT array.
  ****************************************************************************/ 
-UINT AppendQuadBSplineToBezier( POINTFX start, LPTTPOLYCURVE lpCurve, O2MutablePathRef path)
+static UINT AppendQuadBSplineToBezier( POINTFX start, LPTTPOLYCURVE lpCurve, O2MutablePathRef path)
 {
     WORD                i;
     UINT                cTotal = 0;
     POINTFX             spline[3];  // a Quadratic is defined by 3 points
-    POINT               bezier[4];  // a Cubic by 4
+    CGPoint               bezier[4];  // a Cubic by 4
 	
     // The initial A point is on the curve.
     spline[0] = start;
@@ -742,22 +735,22 @@ UINT AppendQuadBSplineToBezier( POINTFX start, LPTTPOLYCURVE lpCurve, O2MutableP
  *
  *  RETURNS    : number of Bezier points added to the POINT array.
  ****************************************************************************/ 
-UINT AppendPolyLineToBezier( POINTFX start, LPTTPOLYCURVE lpCurve, O2MutablePathRef path )
+static UINT AppendPolyLineToBezier( POINTFX start, LPTTPOLYCURVE lpCurve, O2MutablePathRef path )
 {
     int     i;
     UINT    cTotal = 0;
-    POINT   endpt;
-    POINT   startpt;
+    CGPoint   endpt;
+    CGPoint   startpt;
 	
-    endpt.x = IntFromFixed(start.x);
-    endpt.y = IntFromFixed(start.y);
+    endpt.x = FIXEDToFloat(start.x);
+    endpt.y = FIXEDToFloat(start.y);
 	
     for (i = 0; i < lpCurve->cpfx; i++)
     {
         // define the line segment
         startpt = endpt;
-        endpt.x = IntFromFixed(lpCurve->apfx[i].x);
-        endpt.y = IntFromFixed(lpCurve->apfx[i].y);
+        endpt.x = FIXEDToFloat(lpCurve->apfx[i].x);
+        endpt.y = FIXEDToFloat(lpCurve->apfx[i].y);
 		
 		O2PathAddLineToPoint(path, NULL, endpt.x, endpt.y);
     }
@@ -765,21 +758,15 @@ UINT AppendPolyLineToBezier( POINTFX start, LPTTPOLYCURVE lpCurve, O2MutablePath
     return cTotal;
 }
 
-// Code adapted from here: http://support.microsoft.com/kb/243285
+// Code adapted from here: http://support.microsoft.com/kb/243285 - fixed-to-int conversions replaced with fixed-to-float
 static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2MutablePathRef path)
 {
 	WORD                i;
 	LPTTPOLYGONHEADER   lpStart;    // the start of the buffer
 	LPTTPOLYCURVE       lpCurve;    // the current curve of a contour
-	POINT				pt;         // the bezier buffer
+	CGPoint				pt;         // the bezier buffer
 	POINTFX             ptStart;    // The starting point of a curve
 	DWORD               dwMaxPts = size/sizeof(POINTFX); // max possible pts.
-	DWORD               dwBuffSize;
-
-	dwBuffSize = dwMaxPts *     // Maximum possible # of contour points.
-				sizeof(POINT) * // sizeof buffer element
-				 3;             // Worst case multiplier of one additional point
-								// of line expanding to three points of a bezier
 
 	lpStart = lpHeader;
 
@@ -797,8 +784,8 @@ static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2Mut
 			// point of the contour. Thus the start point the next
 			// bezier is always pt[cTotal-1] - the last point of the 
 			// previous bezier. See PolyBezier.
-			pt.x = IntFromFixed(lpHeader->pfxStart.x);
-			pt.y = IntFromFixed(lpHeader->pfxStart.y);
+			pt.x = FIXEDToFloat(lpHeader->pfxStart.x);
+			pt.y = FIXEDToFloat(lpHeader->pfxStart.y);
 			
 			O2PathMoveToPoint(path, NULL, pt.x, pt.y);
 			

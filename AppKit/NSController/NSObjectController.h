@@ -16,13 +16,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	BOOL _automaticallyPreparesContent;
    NSCountedSet* _observedKeys;
 }
--(void)setContent:content;
--content;
+-(void)setContent: (id)content;
+-(id)content;
 
--selection;
+- (id)selection;
 -(NSArray *)selectedObjects;
 
--initWithContent:content;
+-initWithContent:(id)content;
 
 //-(Class)objectClass;
 //-(NSString *)entityName;
@@ -49,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //-(void)remove:sender;
 //-(void)removeObject:object;
 
-//-(void)prepareContent;
+-(void)prepareContent;
 
 //-(BOOL)fetchWithRequest:(NSFetchRequest *)fetchRequest merge:(BOOL)merge error:(NSError **)error;
 

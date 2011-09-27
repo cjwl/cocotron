@@ -75,3 +75,15 @@ APPKIT_EXPORT NSString * const NSConditionallySetsEditableBindingOption;
 APPKIT_EXPORT NSString * const NSContinuouslyUpdatesValueBindingOption;
 APPKIT_EXPORT NSString * const NSDisplayPatternBindingOption;
 
+enum {
+	kNSBindingDebugLogLevel1 = 1,
+	kNSBindingDebugLogLevel2,
+	kNSBindingDebugLogLevel3
+};
+
+APPKIT_EXPORT void NSDetermineBindingDebugLoggingLevel();
+
+APPKIT_EXPORT int NSBindingDebugLogLevel; // Defaults to 0 = no logging
+
+#define NSBindingDebugLog(level, format, args...) NSDetermineBindingDebugLoggingLevel(); if (NSBindingDebugLogLevel >= level ) NSLog(@"%d: %s line: %d | %@", level, __PRETTY_FUNCTION__, __LINE__, [NSString stringWithFormat: format, ## args])
+

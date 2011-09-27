@@ -8,13 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/Win32IUnknownServer.h>
 
-@class NSImage,NSWindow;
+@class NSImage,NSWindow,NSEvent;
 
 @interface Win32IDropSourceServer : Win32IUnknownServer {
    NSImage  *_image;
    NSWindow *_window;
+   NSSize _offset;
 }
 
--(void)setImage:(NSImage *)image;
+-(void)startDragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event;
 
 @end

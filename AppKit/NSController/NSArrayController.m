@@ -20,6 +20,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSObservationProxy.h"
 #import "_NSControllerArray.h"
 
+/*
+ * Implementation Notes
+ *
+ * _arrangedObjects is a cache of a particular arrangement of the content as established by invoking arrangeObjects: with the content array
+ *
+ * Unless the controller is configured to automatically rearrange its objects when there are changes to the content, it's up to the implementation
+ * to keep the _arrangedObjects cache and the _content in sync. This means that objects need to be added and removed from both.
+ *
+ * Selection Indexes reference into the arrangedObjects array.
+ */
+
 @interface NSObjectController(private)
 -(id)_defaultNewObject;
 -(void)_selectionWillChange;
@@ -27,9 +38,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 @interface NSArrayController(forwardRefs)
--(void)prepareContent;
 - (void)_setArrangedObjects:(id)value;
 - (void)_setContentArray:(id)value;
+- (id)_contentArray;
 @end
 
 @interface NSArray (private)
@@ -38,7 +49,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSArrayController
 
-+(void)initialize {
+#pragma mark -
+#pragma mark Initialization and Tear Down
+
++(void)initialize
+{
    [self setKeys:[NSArray arrayWithObjects:@"content", nil] triggerChangeNotificationsForDependentKey:@"contentArray"];
    [self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", nil] triggerChangeNotificationsForDependentKey:@"selection"];
    [self setKeys:[NSArray arrayWithObjects:@"content", @"contentArray", @"selectionIndexes", @"selection", nil]triggerChangeNotificationsForDependentKey:@"selectionIndex"];
@@ -49,7 +64,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil] triggerChangeNotificationsForDependentKey:@"canSelectPrevious"];
 }
 
--initWithCoder:(NSCoder*)coder {
+-(id)initWithCoder:(NSCoder*)coder
+{
 	if((self = [super initWithCoder:coder])) {
 		_flags.avoidsEmptySelection = [coder decodeBoolForKey:@"NSAvoidsEmptySelection"];
 		_flags.clearsFilterPredicateOnInsertion = [coder decodeBoolForKey:@"NSClearsFilterPredicateOnInsertion"];
@@ -60,10 +76,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		id declaredKeys=[coder decodeObjectForKey:@"NSDeclaredKeys"];
 		
-		if([self automaticallyPreparesContent])
+		if([self automaticallyPreparesContent]) {
 			[self prepareContent];
-		else
+		} else {
 			[self _setContentArray:[NSMutableArray array]];
+		}
 
 	}
 	return self;
@@ -71,8 +88,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (id)initWithContent:(id)content
 {
-	if ((self = [super init]))
-	{
+	if ((self = [super init])) {
 		_flags.avoidsEmptySelection = YES;
 		_flags.clearsFilterPredicateOnInsertion = YES;
 		_flags.filterRestrictsInsertion = NO;
@@ -84,13 +100,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		[self _setContentArray:content];
 	}
 	return self;
-}
-
--(void)prepareContent
-{
-	id array=[NSMutableArray array];
-	[array addObject:[[self newObject] autorelease]];
-	[self _setContentArray:array];
 }
 
 -(void)dealloc
@@ -108,326 +117,579 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self _selectionDidChange];
 }
 
+#pragma mark -
+#pragma mark Managing Sort Descriptors
+
+- (void)setSortDescriptors:(NSArray *)value
+{
+	[_sortDescriptors release];
+	_sortDescriptors=[value copy];
+	
+	if ([self automaticallyRearrangesObjects]) {
+		[self rearrangeObjects];
+	}
+}
+
+- (NSArray *)sortDescriptors
+{
+	return _sortDescriptors;
+}
+
+#pragma mark -
+#pragma mark Arranging Objects
+
+- (void)_setArrangedObjects:(id)value
+{
+	[_arrangedObjects autorelease];
+	_arrangedObjects = [[_NSControllerArray alloc] initWithArray:value];
+}
+
+-(NSArray*)arrangeObjects:(NSArray*)objects
+{
+	id sortedObjects=objects;
+    
+	if([self filterPredicate]) {
+		sortedObjects=[sortedObjects filteredArrayUsingPredicate:[self filterPredicate]];
+	}
+	
+	if([self sortDescriptors]) {
+		sortedObjects=[sortedObjects sortedArrayUsingDescriptors:[self sortDescriptors]];
+	}
+	
+	return sortedObjects;
+}
+
+-(id)arrangedObjects
+{
+	return _arrangedObjects;
+}
+
+-(void)rearrangeObjects
+{
+	// We may need to restore selection
+	NSArray* selectedObjects = [[self selectedObjects] retain];
+
+	// Arrange the content
+	NSArray* arrangedObjects = [self arrangeObjects:[self _contentArray]];
+
+	[self willChangeValueForKey: @"arrangedObjects"];
+
+	// Cache the new arrangement
+	[self _setArrangedObjects: arrangedObjects];
+
+	[self didChangeValueForKey: @"arrangedObjects"];
+
+	if ([self preservesSelection]) {
+		// restore the selection
+		[self setSelectedObjects: selectedObjects];
+	}
+}
+
+#pragma mark -
+#pragma mark Managing Content
+
+-(void)setContent:(id)value
+{
+	// Convert the value, if necessary, into an array so it's compatible with the array controller
+	if(value!=nil && ![value isKindOfClass:[NSArray class]]) {
+		value=[NSArray arrayWithObject:value];
+    }
+	
+	[super setContent:[[value mutableCopy] autorelease]];
+	
+	if(_flags.clearsFilterPredicateOnInsertion) {
+		[self setFilterPredicate:nil];
+	}
+	
+	// Rearrange objects will preserve selection if needed
+	[self rearrangeObjects];
+	
+}
+
+- (void)_setContentArrayForMultipleSelection:(id)value 
+{
+	NSUnimplementedMethod();
+}
+
+- (void)_setContentArray:(id)value 
+{
+	[self setContent:value];
+}
+
+- (id)_contentArray
+{
+    id result=[self content];
+    return result;
+}
+
+-(id)_contentSet
+{
+	return [NSSet setWithArray:_content];
+}
+
+-(void)_setContentSet:(NSSet *)set
+{
+	[self setContent:[set allObjects]];
+}
+
+-(void)setAutomaticallyPreparesContent:(BOOL)flag
+{
+	_flags.automaticallyPreparesContent = flag;
+}
+
+-(BOOL)automaticallyPreparesContent
+{
+	return _flags.automaticallyPreparesContent;
+}
+
+-(void)prepareContent
+{
+	id array=[NSMutableArray array];
+	[array addObject:[[self newObject] autorelease]];
+	[self _setContentArray:array];
+}
+
+#pragma mark -
+#pragma mark Selection Attributes
+
+-(void)setAvoidsEmptySelection:(BOOL)value
+{
+	_flags.avoidsEmptySelection=value;
+}
+
+- (BOOL)avoidsEmptySelection
+{
+	return _flags.avoidsEmptySelection;
+}
+
+-(void)setPreservesSelection:(BOOL)value
+{
+	_flags.preservesSelection=value;
+}
+
 - (BOOL)preservesSelection
 {
 	return _flags.preservesSelection;
 }
 
--(void)setPreservesSelection:(BOOL)value {
-	_flags.preservesSelection=value;
-}
-
--(void)setContent:(id)value {
-   if(value!=nil && ![value isKindOfClass:[NSArray class]])
-       value=[NSArray arrayWithObject:value];
-    
-	id oldSelection=nil; 
-	id oldSelectionIndexes=[[[self selectionIndexes] copy] autorelease];
-	if([self preservesSelection])
-		oldSelection=[self selectedObjects];
-   
-	[super setContent:[[value mutableCopy] autorelease]];
-   
-   if(_flags.clearsFilterPredicateOnInsertion)
-      [self setFilterPredicate:nil];
-   
-	[self rearrangeObjects];
-   
-	if(oldSelection)
-	{
-		[self setSelectedObjects:oldSelection];
-	}
-	else	
-	{
-		[self setSelectionIndexes:oldSelectionIndexes];
-	}
-}
-
-- (void)_setContentArrayForMultipleSelection:(id)value 
+- (void)setAlwaysUsesMultipleValuesMarker:(BOOL)flag
 {
-   NSUnimplementedMethod();
+	_flags.alwaysUsesMultipleValuesMarker = flag;
 }
 
-- (void)_setContentArray:(id)value 
+-(BOOL)alwaysUsesMultipleValuesMarker
 {
-   [self setContent:value];
-}
-
-- (id)contentArray {
-    id result=[self content];
-    return result;
-}
-
--(NSArray*)arrangeObjects:(NSArray*)objects {
-	id sortedObjects=objects;
-    
-	if([self filterPredicate])
-		sortedObjects=[sortedObjects filteredArrayUsingPredicate:[self filterPredicate]];
-        
-	if([self sortDescriptors])
-		sortedObjects=[sortedObjects sortedArrayUsingDescriptors:[self sortDescriptors]];
-        
-	return sortedObjects;
-}
-
--(void)rearrangeObjects {
-	[self _setArrangedObjects:[self arrangeObjects:[self contentArray]]];
-}
-
-- (void)_setArrangedObjects:(id)value {
-   [_arrangedObjects autorelease];
-   _arrangedObjects = [[_NSControllerArray alloc] initWithArray:value];
-}
-
--arrangedObjects {
-	return _arrangedObjects;
-}
-
-- (NSArray *)sortDescriptors {
-   return _sortDescriptors;
-}
-
-- (void)setSortDescriptors:(NSArray *)value {
-   value=[value copy];
-        [_sortDescriptors release];
-   _sortDescriptors=value;
-		[self rearrangeObjects];
-}
-
-- (NSPredicate *)filterPredicate {
-   return _filterPredicate;
-}
-
-- (void)setFilterPredicate:(NSPredicate *)value {
-   value=[value copy];
-        [_filterPredicate release];
-   _filterPredicate = value;
-		[self rearrangeObjects];
-    }
-
--(BOOL)alwaysUsesMultipleValuesMarker {
 	return _flags.alwaysUsesMultipleValuesMarker;
 }
 
--(NSUInteger)selectionIndex {
+#pragma mark -
+#pragma mark Managing Selections
+
+-(NSUInteger)selectionIndex
+{
 	return [_selectionIndexes firstIndex];
 }
 
--(BOOL)setSelectionIndex:(unsigned)index {
+-(BOOL)setSelectionIndex:(unsigned)index
+{
 	return [self setSelectionIndexes:[NSIndexSet indexSetWithIndex:index]];
 }
 
-- (NSIndexSet *)selectionIndexes {
+- (void)setSelectsInsertedObjects:(BOOL)flag
+{
+	_flags.selectsInsertedObjects = flag;
+}
+
+- (BOOL)selectsInsertedObjects
+{
+	return _flags.selectsInsertedObjects;
+}
+
+- (BOOL)setSelectionIndexes:(NSIndexSet *)value
+{
+	
+	if(_flags.avoidsEmptySelection && [value count]==0 && [[self arrangedObjects] count]) {
+		value=[NSIndexSet indexSetWithIndex:0];
+	}
+	
+	if ([_selectionIndexes isEqualToIndexSet: value]) {
+		// The selection isn't going to change
+		return NO;
+	}
+	
+	[self willChangeValueForKey:@"selectionIndexes"];
+	[self _selectionWillChange];
+	
+	[_selectionIndexes release];
+	_selectionIndexes = [value mutableCopy];
+	[self _selectionDidChange];
+	
+	[self didChangeValueForKey:@"selectionIndexes"];
+	return YES;
+}
+
+- (NSIndexSet *)selectionIndexes
+{
     return _selectionIndexes;
 }
 
-- (BOOL)setSelectionIndexes:(NSIndexSet *)value {
+- (BOOL)addSelectionIndexes:(NSIndexSet *)indices
+{
+	if ([_selectionIndexes containsIndexes: indices] == YES) {
+		// they already selected so the selection won't change
+		return NO;
+	}
+	
+	[self willChangeValueForKey: @"selectionIndexes"];
+	[self _selectionWillChange];
 
-	if(_flags.avoidsEmptySelection && [value count]==0 && [[self arrangedObjects] count])
-      value=[NSIndexSet indexSetWithIndex:0];
+	[_selectionIndexes addIndexes: indices];
+
+	[self _selectionDidChange];
+	[self didChangeValueForKey: @"selectionIndexes"];
+
+	return YES;
+}
+
+- (BOOL)removeSelectionIndexes:(NSIndexSet *)indices
+{	
+	if ([_selectionIndexes containsIndexes: indices] == NO) {
+		// they already deselected so the selection won't change
+		return NO;
+	}
 	
-    NSMutableIndexSet *mutableValue=[[value mutableCopy] autorelease];
-    
-	[mutableValue removeIndexesInRange:NSMakeRange([[self arrangedObjects] count]+1, NSNotFound)];
-	
-    if (![_selectionIndexes isEqualToIndexSet: mutableValue]) {
-		[self willChangeValueForKey:@"selectionIndexes"];
-       [self _selectionWillChange];
-       
-        [_selectionIndexes release];
-        _selectionIndexes = [mutableValue retain];
-       [self _selectionDidChange];
-       
-		[self didChangeValueForKey:@"selectionIndexes"];
-		return YES;
-    }
-    return NO;
+	[self willChangeValueForKey: @"selectionIndexes"];
+	[self _selectionWillChange];
+
+	[_selectionIndexes removeIndexes: indices];
+
+	[self _selectionDidChange];
+	[self didChangeValueForKey: @"selectionIndexes"];
+	return YES;
+}
+
+- (NSMutableIndexSet*)_indexesOfArrangedObjects:(NSArray*)objects
+{
+	id set=[NSMutableIndexSet indexSet];
+	int i, count=[objects count];
+	for(i=0; i<[objects count]; i++) {
+		unsigned idx=[[self arrangedObjects] indexOfObject:[objects objectAtIndex:i]];
+		if(idx!=NSNotFound) {
+			[set addIndex:idx];
+		}
+	}
+	return set;
+}
+
+- (BOOL)setSelectedObjects:(NSArray *)objects
+{
+	NSMutableIndexSet* set = [self _indexesOfArrangedObjects: objects];
+	BOOL selectionChanged = [self setSelectionIndexes:set];
+	return selectionChanged;
 }
 
 -(NSArray *)selectedObjects
 {
 	id idxs=[self selectionIndexes];
-	if(idxs)
+	if(idxs) {
 		return [[self arrangedObjects] objectsAtIndexes:idxs];
+	}
 	return [NSArray array];
 }
 
-- (BOOL)setSelectedObjects:(NSArray *)objects
+- (BOOL)addSelectedObjects:(NSArray *)objects
 {
-	id set=[NSMutableIndexSet indexSet];
-	int i, count=[objects count];
-	for(i=0; i<[objects count]; i++)
-	{
-		unsigned idx=[[self arrangedObjects] indexOfObject:[objects objectAtIndex:i]];
-		if(idx!=NSNotFound)
-			[set addIndex:idx];
-	}
-	[self setSelectionIndexes:set];
-	return YES;
+	NSMutableIndexSet* set = [self _indexesOfArrangedObjects: objects];
+	BOOL selectionChanged = [self addSelectionIndexes: set];
+	return selectionChanged;
 }
 
-#pragma mark -
-#pragma mark Moving selection
+- (BOOL)removeSelectedObjects:(NSArray *)objects
+{
+	NSMutableIndexSet* set = [self _indexesOfArrangedObjects: objects];
+	BOOL selectionChanged = [self removeSelectionIndexes: set];
+	return selectionChanged;
+}
 
--(BOOL)canSelectPrevious
+-(void)selectNext:(id)sender
 {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
+	if(!idxs) {
+		[self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
+        return;
+    }
+	[idxs shiftIndexesStartingAtIndex:0 by:1];
 	
-	if(idxs && [idxs firstIndex]>0)
-	{
-		return YES;
+	if([idxs lastIndex]<[[self arrangedObjects] count]) {
+		[self setSelectionIndexes:idxs];
 	}
-	return NO;
 }
 
 -(BOOL)canSelectNext
 {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
 	
-	if(idxs && [idxs lastIndex]<[[self arrangedObjects] count]-1)
+	if(idxs && [idxs lastIndex]<[[self arrangedObjects] count]-1) {
 		return YES;
-	return NO;
-}
-
--(void)selectNext:(id)sender
-{
-	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
-	if(!idxs){
-		[self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
-        return;
-    }
-	[idxs shiftIndexesStartingAtIndex:0 by:1];
+	}
 	
-	if([idxs lastIndex]<[[self arrangedObjects] count])
-		[self setSelectionIndexes:idxs];
+	return NO;
 }
 
 -(void)selectPrevious:(id)sender {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
-	if(!idxs){
+	if(!idxs) {
 		[self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
         return;
 	}
-	if([idxs firstIndex]>0)
-	{
+	if([idxs firstIndex]>0) {
 		[idxs shiftIndexesStartingAtIndex:0 by:-1];
 		
 		[self setSelectionIndexes:idxs];
 	}
 }
 
--(id)_contentSet {
-   return [NSSet setWithArray:_content];
+-(BOOL)canSelectPrevious
+{
+	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
+	
+	if(idxs && [idxs firstIndex]>0) {
+		return YES;
+	}
+	return NO;
 }
 
--(void)_setContentSet:(NSSet *)set {
-   [self setContent:[set allObjects]];
-}
+#pragma mark -
+#pragma mark Inserting
 
-- (void)addObject:(id)object {
-// Don't check canAdd here as this can be used programmatically to add objects
-   
-   [self willChangeValueForKey:@"content"];
-   [_content addObject:object];
-   [self didChangeValueForKey:@"content"];
-   
-   if(_flags.clearsFilterPredicateOnInsertion)
-      [self setFilterPredicate:nil];
-   
-   if([self filterPredicate]==nil || [_filterPredicate evaluateWithObject:object]){
-     // FIXME: this should probably use arrangeObjects: to get subclass behavior
-      [self willChangeValueForKey:@"arrangedObjects"];
-      NSUInteger pos=[_arrangedObjects _insertObject:object inArraySortedByDescriptors:_sortDescriptors];
-      [self didChangeValueForKey:@"arrangedObjects"];
-
-      [self willChangeValueForKey:@"selectionIndexes"];
-      [_selectionIndexes shiftIndexesStartingAtIndex:pos by:1];
-      [self didChangeValueForKey:@"selectionIndexes"];
-   }
-}
-
-
--(void)removeObject:(id)object {
-// Don't check canremove/editable here as this can be used programmatically to remove objects
-   
-   [self willChangeValueForKey:@"content"];
-   [_content removeObject:object];
-   [self didChangeValueForKey:@"content"];
-   
-   if([self filterPredicate]==nil || [_filterPredicate evaluateWithObject:object]){
-     // FIXME: this should probably use arrangeObjects: to get subclass behavior
-      [self willChangeValueForKey:@"arrangedObjects"];
-      NSUInteger pos=[_arrangedObjects indexOfObject:object];
-      [_arrangedObjects removeObject:object];
-      [self didChangeValueForKey:@"arrangedObjects"];
-
-      [self willChangeValueForKey:@"selectionIndexes"];
-      [_selectionIndexes shiftIndexesStartingAtIndex:pos+1 by:-1];
-      [self didChangeValueForKey:@"selectionIndexes"];
-   }
-}
-
--(void)add:(id)sender {
-
-	if(![self canAdd])
-		return;
-        
-	[self insert:sender];
+-(BOOL)canInsert
+{
+	return [self isEditable];
 }
 
 -(void)insert:(id)sender
 {
-	if(![self canInsert])
+	if(![self canInsert]) {
 		return;
-        
+	}
+	
 	id toAdd=nil;
-	if([self automaticallyPreparesContent])
+	if([self automaticallyPreparesContent]) {
 		toAdd=[[self newObject] autorelease];
-	else
+	} else {
 		toAdd=[[self _defaultNewObject] autorelease];
+	}
+	
 	[self addObject:toAdd];
 }
 
--(void)remove:(id)sender {
-   if(![self canRemove])
-    return;
-    
-   [self removeObjects:[[self contentArray] objectsAtIndexes:[self selectionIndexes]]];
+#pragma mark -
+#pragma mark Adding and Removing Objects
+
+-(void)add:(id)sender {
+	
+	if(![self canAdd]) {
+		return;
+	}
+	
+	[self insert:sender];
 }
 
--(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet*)indexes {
-   [self removeObjects:[[self contentArray] objectsAtIndexes:indexes]];
+- (void)addObject:(id)object {
+	// Don't check canAdd here as this can be used programmatically to add objects
+	[self insertObject: object atArrangedObjectIndex: [[self arrangedObjects] count]];
 }
 
-
-- (void)addObjects:(NSArray *)objects {
-// Don't check canAdd/editable here as this can be used programmatically to add objects
-
-	id contentArray=[[[self contentArray] mutableCopy] autorelease];
-	int count=[objects count];
-	int i;
-	for(i=0; i<count; i++)
-		[contentArray addObject:[objects objectAtIndex:i]];
-	[self setContent:contentArray];
+- (void)addObjects:(NSArray *)objects
+{
+	for (id object in objects) {
+		[self addObject: object];
+	}
 }
 
+-(void)insertObject:object atArrangedObjectIndex:(unsigned)index
+{
+	if(_flags.clearsFilterPredicateOnInsertion) {
+		[self setFilterPredicate:nil];
+	}
+	
+	[self willChangeValueForKey: @"content"];
+	[self willChangeValueForKey: @"arrangedObjects"];
+	[_content addObject:object];
+	[_arrangedObjects insertObject: object atIndex: index];
+	[self didChangeValueForKey: @"content"];
+	[self didChangeValueForKey: @"arrangedObjects"];
+
+	if (_flags.selectsInsertedObjects) {
+		[self addSelectedObjects: [NSArray arrayWithObject: object]];
+	}
+
+	if ([self automaticallyRearrangesObjects]) {
+		[self rearrangeObjects];
+	}
+	
+}
+
+-(void)insertObjects:(NSArray *)objects atArrangedObjectIndexes:(NSIndexSet *)indices
+{
+	if(_flags.clearsFilterPredicateOnInsertion) {
+		[self setFilterPredicate:nil];
+	}
+	
+	// Batch up the changes to avoid over observing
+	[self willChangeValueForKey: @"content"];
+	[self willChangeValueForKey: @"arrangedObjects"];
+
+	int i = 0;
+	NSUInteger index = [indices firstIndex];
+	while (index != NSNotFound) {
+		id object = [objects objectAtIndex: i++];
+		[_content addObject:object];
+		[_arrangedObjects insertObject: object atIndex: index];
+		index = [indices indexGreaterThanIndex: index];
+	}
+	
+	[self didChangeValueForKey: @"content"];
+	[self didChangeValueForKey: @"arrangedObjects"];
+
+	if (_flags.selectsInsertedObjects) {
+		[self addSelectedObjects: objects];
+	}
+	
+	if ([self automaticallyRearrangesObjects]) {
+		[self rearrangeObjects];
+	}
+}
+
+-(void)removeObjectAtArrangedObjectIndex:(unsigned)index
+{
+	[self removeSelectionIndexes: [NSIndexSet indexSetWithIndex: index]];
+	
+	id object = [_arrangedObjects objectAtIndex: index];
+	[self willChangeValueForKey: @"content"];
+	[self willChangeValueForKey: @"arrangedObjects"];
+	[_arrangedObjects removeObjectAtIndex: index];
+	[_content removeObject: object];
+	[self didChangeValueForKey: @"content"];
+	[self didChangeValueForKey: @"arrangedObjects"];
+
+	if ([self automaticallyRearrangesObjects]) {
+		[self rearrangeObjects];
+	}	
+}
+
+-(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet*)indexes
+{	
+	[self removeSelectionIndexes: indexes];
+
+	// Batch up the changes to avoid over observing
+	[self willChangeValueForKey: @"content"];
+	[self willChangeValueForKey: @"arrangedObjects"];
+
+	// Work in reverse order to avoid messing up the array
+	NSUInteger index = [indexes lastIndex];
+	while (index != NSNotFound) {
+		id object = [_arrangedObjects objectAtIndex: index];
+		[_arrangedObjects removeObjectAtIndex: index];
+		[_content removeObject: object];
+		index = [indexes indexLessThanIndex: index];
+	}
+
+	[self didChangeValueForKey: @"content"];
+	[self didChangeValueForKey: @"arrangedObjects"];
+
+	if ([self automaticallyRearrangesObjects]) {
+		[self rearrangeObjects];
+	}
+}
+
+-(void)remove:(id)sender
+{
+	if(![self canRemove]) {
+		return;
+    }
+	
+	[self removeObjectsAtArrangedObjectIndexes: [self selectionIndexes]];
+}
+
+-(void)removeObject:(id)object
+{
+	// Don't check canremove/editable here as this can be used programmatically to remove objects
+	
+	NSUInteger index=[_arrangedObjects indexOfObject:object];
+	[self removeObjectAtArrangedObjectIndex: index];
+}
 
 - (void)removeObjects:(NSArray *)objects {
-// Don't check canRemove here as this can be used programmatically to remove objects
+	// Don't check canRemove here as this can be used programmatically to remove objects
+	
+	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
 
-	id contentArray=[[[self contentArray] mutableCopy] autorelease];
-	int count=[objects count];
-	int i;
-
-	for(i=0; i<count; i++)
-		[contentArray removeObject:[objects objectAtIndex:i]];
-	[self setContent:contentArray];
+	for (id object in objects) {
+		NSUInteger index = [_arrangedObjects indexOfObject: object];
+		[indexes addIndex: index];
+	}
+	[self removeObjectsAtArrangedObjectIndexes: indexes];
 }
 
--(BOOL)canInsert;
+#pragma mark -
+#pragma mark Filtering Content
+
+-(void)setClearsFilterPredicateOnInsertion:(BOOL)flag
 {
-	return [self isEditable];
+	_flags.clearsFilterPredicateOnInsertion = flag;
 }
+
+-(BOOL)clearsFilterPredicateOnInsertion
+{
+	return _flags.clearsFilterPredicateOnInsertion;
+}
+
+- (NSPredicate *)filterPredicate
+{
+   return _filterPredicate;
+}
+
+- (void)setFilterPredicate:(NSPredicate *)value
+{
+	value=[value copy];
+	[_filterPredicate release];
+	_filterPredicate = value;
+	[self rearrangeObjects];
+}
+
+#pragma mark -
+#pragma mark Automatic Content Rearranging
+
+- (void)setAutomaticallyRearrangesObjects:(BOOL)flag
+{
+	_flags.automaticallyRearrangesObjects = flag;
+}
+
+- (BOOL)automaticallyRearrangesObjects
+{
+	return _flags.automaticallyRearrangesObjects;
+}
+
+- (NSArray*)automaticRearrangementKeyPaths
+{
+	NSUnimplementedMethod();
+	return nil;
+}
+
+- (void)didChangeArrangementCriteria
+{
+	NSUnimplementedMethod();
+}
+
+#pragma mark -
+#pragma mark Debugging
+
+- (NSString*)description
+{
+	return [NSString stringWithFormat: @"<%@ %x> content: %@ arrangedObjects: %@", [self class], self, _content, _arrangedObjects];
+}
+
 @end
 
 

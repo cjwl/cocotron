@@ -187,6 +187,8 @@ O2ColorRef O2ContextFillColor(O2ContextRef self);
 
 -(void)clipToState:(O2ClipState *)clipState;
 
+-(BOOL)supportsGlobalAlpha;
+
 O2ContextRef O2ContextRetain(O2ContextRef self);
 void         O2ContextRelease(O2ContextRef self);
 
@@ -369,6 +371,7 @@ O2GState *O2ContextCurrentGState(O2ContextRef self);
 // Temporary hacks
 
 void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState);
+bool O2ContextSupportsGlobalAlpha(O2ContextRef self);
 
 @end
 

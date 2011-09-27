@@ -434,13 +434,20 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
     }
 #endif
 #else
+	   // Use the current layer context if any
+	   O2Context_builtin_gdi *context = self;
+	   O2LayerRef layer=[self->_layerStack lastObject];
+	   if (layer) {
+		   context = (O2Context_builtin_gdi *)O2LayerGetContext(layer);
+	   }
+	   
     if(gState->_fontIsDirty){
      O2GStateClearFontIsDirty(gState);
      [self->_gdiFont release];
-     self->_gdiFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:self->_dc pointSize:ABS(fontSize.height)];
+     self->_gdiFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:context->_dc pointSize:ABS(fontSize.height)];
     }
-   
-    SetTextColor(self->_dc,COLORREFFromColor(O2ContextFillColor(self)));
+	SelectObject(context->_dc,[self->_gdiFont fontHandle]);
+    SetTextColor(context->_dc,COLORREFFromColor(O2ContextFillColor(self)));
 
     INT dx[count];
     
@@ -449,7 +456,7 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
       dx[i]=lroundf(O2SizeApplyAffineTransform(advances[i],Trm).width);
     }
     
-    ExtTextOutW(self->_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,(advances!=NULL)?dx:NULL);
+    ExtTextOutW(context->_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,(advances!=NULL)?dx:NULL);
 #endif
    }
    else if(O2FontGetPlatformType(font)==O2FontPlatformTypeFreeType){

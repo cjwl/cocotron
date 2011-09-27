@@ -157,7 +157,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
 	if([reps count]==0){
-       [self dealloc];
+       [self release];
 		return nil;
 	}
 	
@@ -191,7 +191,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSData *data=[NSData dataWithContentsOfURL:url];
    
    if(data==nil){
-    [self dealloc];
+    [self release];
     return nil;
 }
 
@@ -199,8 +199,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithPasteboard:(NSPasteboard *)pasteboard {
-   NSUnimplementedMethod();
-   return 0;
+
+	NSString *available=[pasteboard availableTypeFromArray:[[self class] imageUnfilteredPasteboardTypes]];
+	NSData *data = [pasteboard dataForType:available];
+	if (data == nil) {
+		[self release];
+		return nil;
+	}
+	return [self initWithData:data];
 }
 
 -initByReferencingFile:(NSString *)path {
@@ -208,8 +214,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initByReferencingURL:(NSURL *)url {
-   NSUnimplementedMethod();
-   return 0;
+	// Better than nothing
+	return [self initWithContentsOfURL:url];
 }
 
 -(void)dealloc {
@@ -755,20 +761,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    CGContextSaveGState(context);
    
-   if(fraction!=1.0){
-// fraction is accomplished with a 1x1 alpha mask
-// FIXME: could use a float format image to completely preserve fraction
-    uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
-    CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
-    CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
-   
-    CGContextClipToMask(context,rect,mask);
-    CGImageRelease(mask);
-    CGDataProviderRelease(provider);
-   }
-   
-   [[NSGraphicsContext currentContext] setCompositingOperation:operation];
-      
+	if (CGContextSupportsGlobalAlpha(context) == NO) {
+		// That should really be done by setting the context alpha - and the compositing done in the context implementation
+		if(fraction!=1.0){
+			// fraction is accomplished with a 1x1 alpha mask
+			// FIXME: could use a float format image to completely preserve fraction
+			uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
+			CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
+			CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
+			
+			CGContextClipToMask(context,rect,mask);
+			CGImageRelease(mask);
+			CGDataProviderRelease(provider);
+		}
+	} else {
+		CGContextSetAlpha(context, fraction);
+	}	
+	[[NSGraphicsContext currentContext] setCompositingOperation:operation];
+	
    [self drawRepresentation:drawRep inRect:rect];
    
    CGContextRestoreGState(context);

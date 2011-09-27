@@ -68,8 +68,7 @@ static unsigned sourceOperationForSource(id source,BOOL isLocal){
    DWORD                   targetEffect=0;
    HRESULT                 error;
 
-   [dropSource setImage:image];
-
+	[dropSource startDragImage:image at:location offset:offset event:event];
    _localDraggingSource=source;
 
    if([source respondsToSelector:@selector(draggedImage:beganAt:)])

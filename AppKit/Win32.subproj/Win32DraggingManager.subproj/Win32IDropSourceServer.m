@@ -13,7 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Window.h>
 #import <AppKit/NSDragView.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSColor.h>
 #import <AppKit/NSWindow-Private.h>
+#import <AppKit/NSDraggingManager.h>
 
 @implementation Win32IDropSourceServer
 
@@ -23,21 +25,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(void)setImage:(NSImage *)image {
-   _image=[image retain];
+-(void)startDragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event
+{
+	_image=[image retain];
+	
+	if(_image!=nil){
+		NSSize  size=[image size];
+		NSView *view=[[[NSDragView alloc] initWithImage:image] autorelease];
+		
+		_window=[[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height)
+										   styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+		[_window setHasShadow:NO];
+		[_window setOpaque:NO];
+		[_window setBackgroundColor:[NSColor clearColor]];
+		
+		[_window setLevel:NSPopUpMenuWindowLevel];
+		[[_window contentView] addSubview:view];
+		
+		[_window _setVisible:YES];
+		[(Win32Window *)[_window platformWindow] showWindowWithoutActivation];
+		[(Win32Window *)[_window platformWindow] bringToTop];
 
-   if(_image!=nil){
-    NSSize  size=[image size];
-    NSView *view=[[[NSDragView alloc] initWithImage:image] autorelease];
-
-    _window=[[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height)
-       styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
-    [_window setLevel:NSPopUpMenuWindowLevel];
-    [[_window contentView] addSubview:view];
-
-    [(Win32Window *)[_window platformWindow] showWindowWithoutActivation];
-    [(Win32Window *)[_window platformWindow] bringToTop];
-   }
+		// We don't want the window used to display the drag image to be itself a drop target...
+		[(Win32Window *)[_window platformWindow] makeTransparent];
+		
+		// Set the offset between the start location and the mouse location in the event
+		NSPoint eventLocation = [event locationInWindow];
+		_offset.width = eventLocation.x - location.x; 
+		_offset.height = eventLocation.y - location.y; 
+	}
 }
 
 -(HRESULT)QueryContinueDrag:(BOOL)escapePressed:(DWORD)keyState {
@@ -61,10 +77,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 
    NSPoint point=[(Win32Window *)[_window platformWindow] mouseLocationOutsideOfEventStream];
-   NSRect  frame=[_window frame];
-
-   frame.origin=point;
-   [_window setFrame:frame display:NO];
+	point.x -= _offset.width;
+	point.y -= _offset.height;
+	
+   [_window setFrameOrigin:point];
 
    if(escapePressed)
     return DRAGDROP_S_CANCEL;
@@ -76,12 +92,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(HRESULT)GiveFeedback:(DWORD)dwEffect {
-   NSPoint point=[(Win32Window *)[_window platformWindow] mouseLocationOutsideOfEventStream];
-   NSRect  frame=[_window frame];
-
-   frame.origin=point;
-   [_window setFrame:frame display:NO];
-
+	NSPoint point=[(Win32Window *)[_window platformWindow] mouseLocationOutsideOfEventStream];
+	point.x -= _offset.width;
+	point.y -= _offset.height;
+	
+	[_window setFrameOrigin:point];
+	
    [[NSApp windows] makeObjectsPerformSelector:@selector(displayIfNeeded)];
 
    return DRAGDROP_S_USEDEFAULTCURSORS;

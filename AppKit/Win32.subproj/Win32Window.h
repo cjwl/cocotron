@@ -66,6 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)hideWindow;
 -(void)showWindowWithoutActivation;
 -(void)bringToTop;
+-(void)makeTransparent;
 -(void)placeAboveWindow:(Win32Window *)other;
 -(void)placeBelowWindow:(Win32Window *)other;
 

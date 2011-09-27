@@ -200,4 +200,36 @@ static inline id mutableCopyWithZone(NSParagraphStyle *self,NSZone *zone){
    return _tighteningFactorForTruncation;
 }
 
+- (NSString*)description
+{
+	NSMutableString* tabsString = [NSMutableString stringWithString: @" (\n"];
+	
+	for (NSTextTab* tab in _tabStops) {
+		switch ([tab tabStopType]) {
+			case NSLeftTabStopType:
+				[tabsString appendString: [NSString stringWithFormat: @"%fL", [tab location]]];
+				break;
+			case NSRightTabStopType:
+				[tabsString appendString: [NSString stringWithFormat: @"%fR", [tab location]]];
+				break;
+			case NSCenterTabStopType:
+				[tabsString appendString: [NSString stringWithFormat: @"%fC", [tab location]]];
+				break;
+			case NSDecimalTabStopType:
+				[tabsString appendString: [NSString stringWithFormat: @"%fD", [tab location]]];
+				break;
+		}
+	}
+	[tabsString appendString: @")"];
+		
+	return [NSString stringWithFormat: @"Alignment %d, LineSpacing %f, ParagraphSpacing %f, "
+										@"ParagraphSpacingBefore %f, HeadIndent %f, TailIndent %f, FirstLineHeadIndent %f, "
+										@"LineHeight %f/%f, LineHeightMultiple %f, LineBreakMode %d, Tabs %@, "
+										@"DefaultTabInterval %f, Blocks %@, Lists %@, BaseWritingDirection %d, "
+										@"HyphenationFactor %f, TighteningFactor %f, HeaderLevel %d",
+										_alignment, _lineSpacing, _paragraphSpacing, _paragraphSpacingBefore, _headIndent, _firstLineHeadIndent,
+										_minimumLineHeight, _maximumLineHeight, _lineHeightMultiple, _lineBreakMode, _tabStops, _defaultTabInterval,
+			_textBlocks, _textLists, _writingDirection, _hyphenationFactor, _tighteningFactorForTruncation, _headerLevel];
+}
+
 @end

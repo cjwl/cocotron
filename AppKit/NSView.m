@@ -99,12 +99,14 @@ static BOOL NSViewLayersEnabled=NO;
 // should be.
      _autoresizesSubviews=YES;
     _isHidden=(vFlags&0x80000000)?YES:NO;
-    _tag=-1;
+    _tag= 0; // IB assigns a default tag id of 0 - which is different from the default in the docs.
     if([keyed containsValueForKey:@"NSTag"])
      _tag=[keyed decodeIntForKey:@"NSTag"];
      
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
+	[_subviews makeObjectsPerformSelector:@selector(viewWillMoveToSuperview:) withObject:self];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
+	[_subviews makeObjectsPerformSelector:@selector(viewDidMoveToSuperview)];
 
     _needsDisplay=YES;
     _invalidRectCount=0;
@@ -139,7 +141,7 @@ static BOOL NSViewLayersEnabled=NO;
    _postsNotificationOnBoundsChange=YES;
    _autoresizesSubviews=YES;
    _autoresizingMask=NSViewNotSizable;
-   _tag=-1;
+   _tag=-1; // according to the docs - loading from a nib gets a default of 0.
    _needsDisplay=YES;
    _invalidRectCount=0;
    _invalidRects=NULL;
@@ -194,6 +196,10 @@ static CGAffineTransform concatViewTransform(CGAffineTransform result,NSView *vi
    if(doFrame)
    result=CGAffineTransformTranslate(result,frame.origin.x,frame.origin.y);
 
+	// Apply bounds scaling to fit in the frame
+	CGAffineTransform scale = CGAffineTransformMakeScale(NSWidth(frame)/NSWidth(bounds), NSHeight(frame)/NSHeight(bounds));
+	result=CGAffineTransformConcat(scale,result);
+	
    if(flip){
     CGAffineTransform flip=CGAffineTransformMake(1,0,0,-1,0,bounds.size.height);
 
@@ -1642,6 +1648,9 @@ static void clearInvalidRects(NSView *self){
 }
 
 static void clearNeedsDisplay(NSView *self){
+	if ([NSGraphicsContext inQuartzDebugMode]) {
+		return;
+	}
    clearInvalidRects(self);
    self->_needsDisplay=NO;
 }
@@ -1873,8 +1882,13 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    NSRect visibleRect=[self visibleRect];
 
    rect=NSIntersectionRect(rect,visibleRect);
-   removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
 
+	if ([NSGraphicsContext inQuartzDebugMode]) {
+		// Don't do anything to interfere with what will be drawn in non-debug mode
+	} else {
+		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
+	}
+	
    if(NSIsEmptyRect(rect))
     return;
     
@@ -1888,7 +1902,12 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
     CGContextClipToRect(graphicsPort,rect);
 
-    [self drawRect:rect];
+	   if ([NSGraphicsContext inQuartzDebugMode]) {
+		   [[NSColor yellowColor] set];
+		   NSRectFill(rect);
+	   } else {
+		   [self drawRect:rect];
+	   }
     [self unlockFocus];
 
     NSInteger i,count=[_subviews count];
@@ -2070,6 +2089,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:source slideBack:(BOOL)slideBack {
+	location = [self convertPoint:location toView:nil];
    [[NSDraggingManager draggingManager] dragImage:image at:location offset:offset event:event pasteboard:pasteboard source:source slideBack:slideBack];
 }
 
