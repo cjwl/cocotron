@@ -11419,7 +11419,6 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
 				OTHER_CFLAGS = (
-					"-DHASLIBJPEG",
 					"-DWINVER=0x500",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
@@ -11430,8 +11429,6 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
-					"-static",
-					"-ljpeg",
 					"-shared",
 					"-lmsimg32",
 					"-lole32",
@@ -11716,7 +11713,6 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
 				OTHER_CFLAGS = (
-					"-DHASLIBJPEG",
 					"-DWINVER=0x500",
 					"-DQUARTZCORE_INSIDE_BUILD",
 					"-DAPPKIT_INSIDE_BUILD",
@@ -11728,8 +11724,6 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
-					"-static",
-					"-ljpeg",
 					"-shared",
 					"-lmsimg32",
 					"-lole32",
