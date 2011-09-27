@@ -2203,7 +2203,6 @@
 			buildSettings = {
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -2393,7 +2392,6 @@
 			buildSettings = {
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;

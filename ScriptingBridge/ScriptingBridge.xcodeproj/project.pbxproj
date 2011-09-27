@@ -288,7 +288,6 @@
 			buildSettings = {
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;

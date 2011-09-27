@@ -402,7 +402,6 @@
 			baseConfigurationReference = FE06B42F1430E93F0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;

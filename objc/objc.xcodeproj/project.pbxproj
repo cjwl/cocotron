@@ -1248,7 +1248,6 @@
 			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -1283,7 +1282,6 @@
 			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
