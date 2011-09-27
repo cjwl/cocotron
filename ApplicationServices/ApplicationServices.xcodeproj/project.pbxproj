@@ -846,7 +846,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -905,7 +904,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;

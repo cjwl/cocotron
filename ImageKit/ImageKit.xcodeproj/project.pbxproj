@@ -264,7 +264,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086B31431180300B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;

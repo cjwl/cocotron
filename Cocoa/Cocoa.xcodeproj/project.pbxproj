@@ -736,7 +736,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
@@ -810,7 +809,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
