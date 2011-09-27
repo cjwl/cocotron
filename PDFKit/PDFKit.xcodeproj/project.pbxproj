@@ -46,6 +46,21 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* PDFKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PDFKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE06B4551430E9600071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B4561430E9600071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B4571430E9600071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B4581430E9600071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B4591430E9600071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B45A1430E9600071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B45B1430E9600071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B45C1430E9600071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B45D1430E9600071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B45E1430E9600071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B45F1430E9600071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B4601430E9600071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B4611430E9600071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B4621430E9600071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B4631430E9600071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE1FBF9C11E769D300A9A87A /* PDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFPage.h; sourceTree = "<group>"; };
 		FE1FBF9D11E769D300A9A87A /* PDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFPage.m; sourceTree = "<group>"; };
 		FE2758F71233FE7A00BD6643 /* PDFSelectedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFSelectedRange.h; sourceTree = "<group>"; };
@@ -59,6 +74,7 @@
 		FE4302B411E2637A00EBDD56 /* PDFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFView.m; sourceTree = "<group>"; };
 		FE4302C411E2648300EBDD56 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = dllmain.m; path = ../AppKit/Win32.subproj/dllmain.m; sourceTree = SOURCE_ROOT; };
 		FE4302CD11E264C000EBDD56 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE71DB3011F748CE00E6F801 /* PDFKit_Framework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFKit_Framework.m; sourceTree = "<group>"; };
 		FE71DE2E11F87E8200E6F801 /* PDFDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFDocumentView.h; sourceTree = "<group>"; };
 		FE71DE2F11F87E8200E6F801 /* PDFDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFDocumentView.m; sourceTree = "<group>"; };
@@ -91,6 +107,7 @@
 		0867D691FE84028FC02AAC07 /* PDFKit */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B4541430E9600071169B /* xcconfig */,
 				FE2758F71233FE7A00BD6643 /* PDFSelectedRange.h */,
 				FE2758F81233FE7A00BD6643 /* PDFSelectedRange.m */,
 				FE4302AF11E2637A00EBDD56 /* PDFDocument.h */,
@@ -150,6 +167,30 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
+		FE06B4541430E9600071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B4551430E9600071169B /* darwin-i386.xcconfig */,
+				FE06B4561430E9600071169B /* darwin-ppc.xcconfig */,
+				FE06B4571430E9600071169B /* darwin-x86_64.xcconfig */,
+				FE06B4581430E9600071169B /* darwin.xcconfig */,
+				FE06B4591430E9600071169B /* freebsd-i386.xcconfig */,
+				FE06B45A1430E9600071169B /* freebsd.xcconfig */,
+				FE06B45B1430E9600071169B /* linux-arm.xcconfig */,
+				FE06B45C1430E9600071169B /* linux-i386.xcconfig */,
+				FE06B45D1430E9600071169B /* linux-ppc.xcconfig */,
+				FE06B45E1430E9600071169B /* linux.xcconfig */,
+				FE06B45F1430E9600071169B /* platform.xcconfig */,
+				FE06B4601430E9600071169B /* solaris-sparc.xcconfig */,
+				FE06B4611430E9600071169B /* solaris.xcconfig */,
+				FE06B4621430E9600071169B /* windows-i386.xcconfig */,
+				FE06B4631430E9600071169B /* windows.xcconfig */,
+				FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -199,7 +240,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "PDFKit" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* PDFKit */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -254,9 +302,9 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
@@ -269,7 +317,6 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-D__LITTLE_ENDIAN__",
 					"-DPDFKIT_INSIDE_BUILD=1",
@@ -283,7 +330,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = PDFKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

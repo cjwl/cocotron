@@ -102,6 +102,21 @@
 		8D576316048677EA00EA77CD /* CFSSLHandler_openssl.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CFSSLHandler_openssl.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE0513A9121E05F70097BA92 /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE06AFB71430E6690071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06AFB81430E6690071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06AFB91430E6690071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06AFBA1430E6690071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06AFBB1430E6690071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06AFBC1430E6690071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06AFBD1430E6690071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06AFBE1430E6690071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06AFBF1430E6690071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06AFC01430E6690071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06AFC11430E6690071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06AFC21430E6690071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06AFC31430E6690071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06AFC41430E6690071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06AFC51430E6690071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE5C8312121D81470063E96F /* CFSSLHandler_openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSSLHandler_openssl.h; sourceTree = "<group>"; };
 		FE5C8313121D81470063E96F /* CFSSLHandler_openssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSSLHandler_openssl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,6 +136,7 @@
 		089C166AFE841209C02AAC07 /* CFSSLHandler_openssl */ = {
 			isa = PBXGroup;
 			children = (
+				FE06AFB61430E6690071169B /* xcconfig */,
 				FE0513A9121E05F70097BA92 /* Foundation.xcodeproj */,
 				FE5C8312121D81470063E96F /* CFSSLHandler_openssl.h */,
 				FE5C8313121D81470063E96F /* CFSSLHandler_openssl.m */,
@@ -172,6 +188,29 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FE06AFB61430E6690071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06AFB71430E6690071169B /* darwin-i386.xcconfig */,
+				FE06AFB81430E6690071169B /* darwin-ppc.xcconfig */,
+				FE06AFB91430E6690071169B /* darwin-x86_64.xcconfig */,
+				FE06AFBA1430E6690071169B /* darwin.xcconfig */,
+				FE06AFBB1430E6690071169B /* freebsd-i386.xcconfig */,
+				FE06AFBC1430E6690071169B /* freebsd.xcconfig */,
+				FE06AFBD1430E6690071169B /* linux-arm.xcconfig */,
+				FE06AFBE1430E6690071169B /* linux-i386.xcconfig */,
+				FE06AFBF1430E6690071169B /* linux-ppc.xcconfig */,
+				FE06AFC01430E6690071169B /* linux.xcconfig */,
+				FE06AFC11430E6690071169B /* platform.xcconfig */,
+				FE06AFC21430E6690071169B /* solaris-sparc.xcconfig */,
+				FE06AFC31430E6690071169B /* solaris.xcconfig */,
+				FE06AFC41430E6690071169B /* windows-i386.xcconfig */,
+				FE06AFC51430E6690071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -202,7 +241,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "CFSSLHandler_openssl" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* CFSSLHandler_openssl */;
 			projectDirPath = "";
 			projectReferences = (
@@ -328,9 +374,9 @@
 /* Begin XCBuildConfiguration section */
 		1DEB911B08733D790010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06AFC41430E6690071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
@@ -343,7 +389,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-lssl",
@@ -354,16 +400,15 @@
 				);
 				PRODUCT_NAME = CFSSLHandler_openssl;
 				SDKROOT = "";
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
 		};
 		1DEB911C08733D790010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06AFC41430E6690071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
@@ -373,7 +418,7 @@
 				GCC_MODEL_TUNING = G5;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-lssl",
@@ -384,7 +429,6 @@
 				);
 				PRODUCT_NAME = CFSSLHandler_openssl;
 				SDKROOT = "";
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;

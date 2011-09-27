@@ -219,8 +219,24 @@
 		C88977390EA0C0CD00D0A0A2 /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A2E2900F07E9B70054397C /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1E554B1430306F000D60A1 /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE1E554C1430306F000D60A1 /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE1E554D1430306F000D60A1 /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE1E554E1430306F000D60A1 /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE1E554F1430306F000D60A1 /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE1E55501430306F000D60A1 /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE1E55511430306F000D60A1 /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE1E55521430306F000D60A1 /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE1E55531430306F000D60A1 /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE1E55541430306F000D60A1 /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE1E55551430306F000D60A1 /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE1E55561430306F000D60A1 /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE1E55571430306F000D60A1 /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE1E55581430306F000D60A1 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE1E55591430306F000D60A1 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
 		FE5A88A410C6F34A005E348A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE7084B8143116E500B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FEC11BB10FD4B86500082282 /* CoreGraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreGraphics.xcodeproj; path = ../CoreGraphics/CoreGraphics.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreText.xcodeproj; path = ../CoreText/CoreText.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -272,6 +288,7 @@
 		0867D691FE84028FC02AAC07 /* ApplicationServices */ = {
 			isa = PBXGroup;
 			children = (
+				FE1E554A1430306F000D60A1 /* xcconfig */,
 				FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */,
 				FEC11BB10FD4B86500082282 /* CoreGraphics.xcodeproj */,
 				FE32179C0BB41C65004F000A /* ApplicationServices.h */,
@@ -323,6 +340,30 @@
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
+		};
+		FE1E554A1430306F000D60A1 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE1E554B1430306F000D60A1 /* darwin-i386.xcconfig */,
+				FE1E554C1430306F000D60A1 /* darwin-ppc.xcconfig */,
+				FE1E554D1430306F000D60A1 /* darwin-x86_64.xcconfig */,
+				FE1E554E1430306F000D60A1 /* darwin.xcconfig */,
+				FE1E554F1430306F000D60A1 /* freebsd-i386.xcconfig */,
+				FE1E55501430306F000D60A1 /* freebsd.xcconfig */,
+				FE1E55511430306F000D60A1 /* linux-arm.xcconfig */,
+				FE1E55521430306F000D60A1 /* linux-i386.xcconfig */,
+				FE1E55531430306F000D60A1 /* linux-ppc.xcconfig */,
+				FE1E55541430306F000D60A1 /* linux.xcconfig */,
+				FE1E55551430306F000D60A1 /* platform.xcconfig */,
+				FE1E55561430306F000D60A1 /* solaris-sparc.xcconfig */,
+				FE1E55571430306F000D60A1 /* solaris.xcconfig */,
+				FE1E55581430306F000D60A1 /* windows-i386.xcconfig */,
+				FE1E55591430306F000D60A1 /* windows.xcconfig */,
+				FE7084B8143116E500B99A95 /* windows-i386-framework.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 		FEC11BB20FD4B86500082282 /* Products */ = {
 			isa = PBXGroup;
@@ -803,8 +844,8 @@
 		};
 		FE01AAEC0C5D9BF900AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -812,7 +853,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -825,7 +865,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -864,8 +903,8 @@
 		};
 		FEDE64AB118A725B009C3494 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -873,7 +912,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -886,7 +924,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
