@@ -305,8 +305,6 @@
 			baseConfigurationReference = FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -314,7 +312,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-D__LITTLE_ENDIAN__",
 					"-DPDFKIT_INSIDE_BUILD=1",
@@ -327,7 +324,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PDFKit;
-				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

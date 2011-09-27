@@ -736,13 +736,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -808,13 +806,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B0441430E6B30071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",

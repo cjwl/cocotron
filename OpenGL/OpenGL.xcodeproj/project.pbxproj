@@ -401,11 +401,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B42F1430E93F0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-Wl,--enable-auto-import",

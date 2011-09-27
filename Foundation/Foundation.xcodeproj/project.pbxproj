@@ -16339,7 +16339,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DSTROOT = /;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -16513,8 +16512,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -16535,7 +16532,6 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				HEADER_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks/CoreFoundation.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
 					"-DCFNETWORK_INSIDE_BUILD",
@@ -16559,7 +16555,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};

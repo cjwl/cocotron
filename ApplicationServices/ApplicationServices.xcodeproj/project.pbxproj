@@ -846,7 +846,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -903,7 +902,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";

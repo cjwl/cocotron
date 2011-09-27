@@ -1247,7 +1247,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -1281,12 +1280,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DSTROOT = /;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",

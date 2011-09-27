@@ -2201,8 +2201,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B19A1430E7790071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -2212,7 +2210,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -2228,7 +2225,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -2390,8 +2386,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B19A1430E7790071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -2401,7 +2395,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -2417,7 +2410,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Debug;
 		};

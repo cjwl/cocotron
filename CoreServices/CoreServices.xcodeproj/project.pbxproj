@@ -552,14 +552,10 @@
 			baseConfigurationReference = FE06B1CB1430E7AF0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -568,14 +564,10 @@
 			baseConfigurationReference = FE06B1CB1430E7AF0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};

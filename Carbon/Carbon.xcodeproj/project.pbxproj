@@ -254,14 +254,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1E559014303093000D60A1 /* windows-i386.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-Wl,--enable-auto-import",
@@ -270,7 +267,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Carbon;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};

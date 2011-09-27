@@ -287,14 +287,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086C21431181400B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-liphlpapi",
@@ -304,7 +301,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = IOKit;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};

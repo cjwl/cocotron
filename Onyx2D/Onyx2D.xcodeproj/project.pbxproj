@@ -2225,8 +2225,6 @@
 			baseConfigurationReference = FE7086F01431183D00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -2238,7 +2236,6 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DONYX2D_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -2252,7 +2249,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -2261,8 +2257,6 @@
 			baseConfigurationReference = FE7086F01431183D00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -2274,7 +2268,6 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DONYX2D_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -2288,7 +2281,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
-				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};

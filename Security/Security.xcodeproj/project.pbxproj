@@ -464,8 +464,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
@@ -477,7 +475,6 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
 					"-DSECURITY_INSIDE_BUILD",
@@ -496,7 +493,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Security;
-				STRIP_INSTALLED_PRODUCT = YES;
 				WARNING_CFLAGS = "-Wno-multichar";
 			};
 			name = Release;
@@ -529,8 +525,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
@@ -542,7 +536,6 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
 				OTHER_CFLAGS = (
 					"-DWINVER=0x500",
 					"-DSECURITY_INSIDE_BUILD",
@@ -561,7 +554,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Security;
-				STRIP_INSTALLED_PRODUCT = YES;
 				WARNING_CFLAGS = "-Wno-multichar";
 			};
 			name = Debug;
