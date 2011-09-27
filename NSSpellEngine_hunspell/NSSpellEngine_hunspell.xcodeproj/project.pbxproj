@@ -31,6 +31,21 @@
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE05C39D140C91D600B85148 /* NSSpellEngine_hunspell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellEngine_hunspell.h; sourceTree = "<group>"; };
 		FE05C39E140C91D600B85148 /* NSSpellEngine_hunspell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSSpellEngine_hunspell.mm; sourceTree = "<group>"; };
+		FE06B31A1430E89E0071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B31B1430E89E0071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B31C1430E89E0071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B31D1430E89E0071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B31E1430E89E0071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B31F1430E89E0071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B3201430E89E0071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B3211430E89E0071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3221430E89E0071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3231430E89E0071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B3241430E89E0071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B3251430E89E0071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3261430E89E0071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B3271430E89E0071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3281430E89E0071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE081A15141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellEngine_hunspellDictionary.h; sourceTree = "<group>"; };
 		FE081A16141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSSpellEngine_hunspellDictionary.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +65,7 @@
 		089C166AFE841209C02AAC07 /* NSSpellEngine_hunspell */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B3191430E89E0071169B /* xcconfig */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C167CFE841241C02AAC07 /* Resources */,
@@ -117,6 +133,29 @@
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
+		};
+		FE06B3191430E89E0071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B31A1430E89E0071169B /* darwin-i386.xcconfig */,
+				FE06B31B1430E89E0071169B /* darwin-ppc.xcconfig */,
+				FE06B31C1430E89E0071169B /* darwin-x86_64.xcconfig */,
+				FE06B31D1430E89E0071169B /* darwin.xcconfig */,
+				FE06B31E1430E89E0071169B /* freebsd-i386.xcconfig */,
+				FE06B31F1430E89E0071169B /* freebsd.xcconfig */,
+				FE06B3201430E89E0071169B /* linux-arm.xcconfig */,
+				FE06B3211430E89E0071169B /* linux-i386.xcconfig */,
+				FE06B3221430E89E0071169B /* linux-ppc.xcconfig */,
+				FE06B3231430E89E0071169B /* linux.xcconfig */,
+				FE06B3241430E89E0071169B /* platform.xcconfig */,
+				FE06B3251430E89E0071169B /* solaris-sparc.xcconfig */,
+				FE06B3261430E89E0071169B /* solaris.xcconfig */,
+				FE06B3271430E89E0071169B /* windows-i386.xcconfig */,
+				FE06B3281430E89E0071169B /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -201,11 +240,10 @@
 /* Begin XCBuildConfiguration section */
 		1DEB913B08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B3271430E89E0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -216,7 +254,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/lib";
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
@@ -227,18 +265,16 @@
 				);
 				PRODUCT_NAME = NSSpellEngine_hunspell;
 				SDKROOT = "";
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = spellEngine;
 			};
 			name = Debug;
 		};
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE06B3271430E89E0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
@@ -249,7 +285,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks/Foundation.framework/Resources;
+				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
 				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/lib";
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
@@ -260,7 +296,6 @@
 				);
 				PRODUCT_NAME = NSSpellEngine_hunspell;
 				SDKROOT = "";
-				SYMROOT = build/Windows/i386;
 				WRAPPER_EXTENSION = spellEngine;
 			};
 			name = Release;
