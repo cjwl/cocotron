@@ -372,7 +372,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Debug;
@@ -401,7 +400,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Release;

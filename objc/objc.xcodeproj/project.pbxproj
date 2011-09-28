@@ -1096,8 +1096,6 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
-				PREBINDING = NO;
 			};
 			name = Release;
 		};
@@ -1269,10 +1267,6 @@
 		7E891EBC0D4961EA008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
-				COPY_PHASE_STRIP = NO;
-				PREBINDING = NO;
-				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
 		};

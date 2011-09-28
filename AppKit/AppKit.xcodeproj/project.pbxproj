@@ -11429,8 +11429,6 @@
 		6E2B57760976075500DA0954 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				SDKROOT = "";
 			};
 			name = Release;
 		};
@@ -11484,7 +11482,6 @@
 		7E891F4E0D4967B6008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
 			};
 			name = Debug;
 		};

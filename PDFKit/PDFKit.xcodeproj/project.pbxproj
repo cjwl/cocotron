@@ -330,7 +330,6 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = "-DPDFKIT_INSIDE_BUILD=1";
 			};
 			name = Release;
 		};
