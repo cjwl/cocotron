@@ -48,8 +48,6 @@
 		FE5A86BE10C6EE28005E348A /* CFXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FEED22730EFB669D004E378B /* CFXMLNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A86BF10C6EE28005E348A /* CFXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FEED22740EFB669D004E378B /* CFXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A86C110C6EE28005E348A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
-		FE828EED110DE9080008AFA2 /* pthread.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828EEA110DE9080008AFA2 /* pthread.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE828EEF110DE9080008AFA2 /* sched.h in Headers */ = {isa = PBXBuildFile; fileRef = FE828EEC110DE9080008AFA2 /* sched.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA828B5109B754A00C7A732 /* CFBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C60DC962D600598037 /* CFBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA828B6109B754A00C7A732 /* CFLocale.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C70DC962D600598037 /* CFLocale.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA828B7109B754A00C7A732 /* CFNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C90DC962D600598037 /* CFNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -302,6 +300,23 @@
 		};
 /* End PBXBuildRule section */
 
+/* Begin PBXContainerItemProxy section */
+		FE6784E2143389C80009A0A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC0C705546C1D00DB518D /* pthread.1.0.dll */;
+			remoteInfo = pthread;
+		};
+		FE6784E4143389D10009A0A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC0C605546C1D00DB518D /* pthread */;
+			remoteInfo = pthread;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -322,10 +337,8 @@
 		FE1E541B14302FBD000D60A1 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
 		FE1E541C14302FBD000D60A1 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE5A86C810C6EE28005E348A /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE6784DB143389C80009A0A0 /* pthread.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pthread.xcodeproj; path = ../pthread/pthread.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE7085E51431179200B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
-		FE828EEA110DE9080008AFA2 /* pthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthread.h; sourceTree = "<group>"; };
-		FE828EEB110DE9080008AFA2 /* pthread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pthread.m; sourceTree = "<group>"; };
-		FE828EEC110DE9080008AFA2 /* sched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sched.h; sourceTree = "<group>"; };
 		FEA828E4109B754A00C7A732 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEA82956109B75D600C7A732 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEA82990109B773300C7A732 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -433,8 +446,8 @@
 		0867D691FE84028FC02AAC07 /* CoreFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				FE6784DB143389C80009A0A0 /* pthread.xcodeproj */,
 				FE1E540D14302FBD000D60A1 /* xcconfig */,
-				FE828EE8110DE8BA0008AFA2 /* pthread */,
 				FEED22530EFB669D004E378B /* CFArray.h */,
 				FEED22540EFB669D004E378B /* CFAttributedString.h */,
 				FEED22550EFB669D004E378B /* CFBag.h */,
@@ -545,14 +558,12 @@
 			path = ../xcconfig;
 			sourceTree = SOURCE_ROOT;
 		};
-		FE828EE8110DE8BA0008AFA2 /* pthread */ = {
+		FE6784DC143389C80009A0A0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FE828EEA110DE9080008AFA2 /* pthread.h */,
-				FE828EEB110DE9080008AFA2 /* pthread.m */,
-				FE828EEC110DE9080008AFA2 /* sched.h */,
+				FE6784E3143389C80009A0A0 /* pthread.1.0.dll */,
 			);
-			path = pthread;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -601,8 +612,6 @@
 				FEED22940EFB669D004E378B /* CFUUID.h in Headers */,
 				FEED22950EFB669D004E378B /* CFXMLNode.h in Headers */,
 				FEED22960EFB669D004E378B /* CFXMLParser.h in Headers */,
-				FE828EED110DE9080008AFA2 /* pthread.h in Headers */,
-				FE828EEF110DE9080008AFA2 /* sched.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -852,6 +861,7 @@
 				FEE0F9D60DC9634200598037 /* PBXBuildRule */,
 			);
 			dependencies = (
+				FE6784E5143389D10009A0A0 /* PBXTargetDependency */,
 			);
 			name = "CoreFoundation-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -977,6 +987,12 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* CoreFoundation */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE6784DC143389C80009A0A0 /* Products */;
+					ProjectRef = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* CoreFoundation-Windows-i386 */,
@@ -988,6 +1004,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE6784E3143389C80009A0A0 /* pthread.1.0.dll */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = pthread.1.0.dll;
+			remoteRef = FE6784E2143389C80009A0A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {
@@ -1084,6 +1110,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE6784E5143389D10009A0A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = pthread;
+			targetProxy = FE6784E4143389D10009A0A0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
