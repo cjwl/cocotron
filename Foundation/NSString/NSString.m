@@ -1457,16 +1457,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(const char *)UTF8String {
-   NSUInteger length=[self length],byteLength;
-   unichar  unicode[length];
-   char    *bytes;
-   
-   [self getCharacters:unicode];
-   
-   if((bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,YES))==NULL)
-    return NULL;
-
-   return [[NSData dataWithBytesNoCopy:bytes length:byteLength] bytes];
+    return [[self dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO] bytes];
 }
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
