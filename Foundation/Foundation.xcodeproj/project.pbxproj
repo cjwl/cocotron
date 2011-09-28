@@ -16133,6 +16133,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DCOCOTRON_USE_NONATOMIC_COMPARE_AND_SWAP=1",
 					"-DCOCOTRON_DISALLOW_FORWARDING=1",
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -16167,6 +16170,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DCOCOTRON_USE_NONATOMIC_COMPARE_AND_SWAP=1",
 					"-DCOCOTRON_DISALLOW_FORWARDING=1",
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -16203,6 +16209,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
@@ -16234,6 +16243,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
@@ -16256,11 +16268,6 @@
 		6E2801BB09746B8900EC542B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = (
-					"-DPTHREAD_INSIDE_BUILD=1",
-					"-DCFNETWORK_INSIDE_BUILD=1",
-					"-DCOREFOUNDATION_INSIDE_BUILD=1",
-				);
 			};
 			name = Release;
 		};
@@ -16279,6 +16286,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
@@ -16314,6 +16324,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16388,6 +16401,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16422,6 +16438,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
@@ -16455,6 +16474,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16484,6 +16506,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
@@ -16578,6 +16603,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16609,6 +16637,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16644,6 +16675,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16673,6 +16707,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16704,6 +16741,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -16734,6 +16774,9 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
+					"-DPTHREAD_INSIDE_BUILD=1",
+					"-DCFNETWORK_INSIDE_BUILD=1",
+					"-DCOREFOUNDATION_INSIDE_BUILD=1",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
