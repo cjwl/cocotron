@@ -399,17 +399,11 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B42F1430E93F0071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7087041431184D00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = OpenGL;
 				WRAPPER_EXTENSION = framework;

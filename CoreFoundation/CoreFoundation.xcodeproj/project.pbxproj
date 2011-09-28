@@ -1099,7 +1099,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E541B14302FBD000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7085E51431179200B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = Info.plist;
@@ -1111,7 +1111,7 @@
 		};
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E541B14302FBD000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7085E51431179200B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = Info.plist;

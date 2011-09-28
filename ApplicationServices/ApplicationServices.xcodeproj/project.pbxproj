@@ -840,7 +840,7 @@
 		};
 		FE01AAEC0C5D9BF900AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7084B8143116E500B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -849,12 +849,6 @@
 				OTHER_CFLAGS = (
 					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;
@@ -892,7 +886,7 @@
 		};
 		FEDE64AB118A725B009C3494 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1E55581430306F000D60A1 /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE7084B8143116E500B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -901,12 +895,6 @@
 				OTHER_CFLAGS = (
 					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ApplicationServices;

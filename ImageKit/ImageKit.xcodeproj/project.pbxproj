@@ -272,12 +272,6 @@
 					"-DIMAGEKIT_INSIDE_BUILD=1",
 					"-D__LITTLE_ENDIAN__",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ImageKit;
 			};
