@@ -10,18 +10,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32Font
 
--initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias {
-   NSUInteger length=[name length];
-   unichar    buffer[length+1];
-   
-   [name getCharacters:buffer];
-   buffer[length]=0x0000;
-   
-   _handle=CreateFontW(height,0,0,0,FW_NORMAL,
-     FALSE,FALSE,FALSE,
-     DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
-     antialias?ANTIALIASED_QUALITY:DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,buffer);
-   return self;
+-initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias angle:(CGFloat)angle
+{
+	NSUInteger length=[name length];
+	unichar    buffer[length+1];
+	
+	[name getCharacters:buffer];
+	buffer[length]=0x0000;
+	
+	angle = 180.*angle/M_PI*10; // Tenth of degrees
+	_handle=CreateFontW(height,0,angle,angle,FW_NORMAL,
+						FALSE,FALSE,FALSE,
+						DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
+						antialias?ANTIALIASED_QUALITY:DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,buffer);
+	return self;
+}
+
+-initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias 
+{
+	return [self initWithName:name height:height antialias:antialias angle: 0.f];
 }
 
 -(void)dealloc {
