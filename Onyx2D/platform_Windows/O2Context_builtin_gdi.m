@@ -288,8 +288,14 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
    O2GState         *gState=O2ContextCurrentGState(self);
    O2Font           *font=O2GStateFont(gState);
    O2AffineTransform Trm=O2ContextGetTextRenderingMatrix(self);
+	
    NSPoint           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
-   O2Size            fontSize=O2SizeApplyAffineTransform(O2SizeMake(0,O2GStatePointSize(gState)),Trm);
+	
+	// Only use the scaling part of the current transform to scale the font size
+	float scaleX   = sqrt((Trm.a * Trm.a) + (Trm.c * Trm.c));
+	float scaleY   = sqrt((Trm.b * Trm.b) + (Trm.d * Trm.d));
+	O2AffineTransform scalingTransform = O2AffineTransformMakeScale(scaleX, scaleY);
+	O2Size            fontSize=O2SizeApplyAffineTransform(O2SizeMake(0,O2GStatePointSize(gState)),scalingTransform);
    int               i;
    O2Size            defaultAdvances[count];
    
@@ -407,9 +413,9 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
        self->_scratchBitmap=[self->_scratchContext bitmapBytes];
       }
 
-      if(self->_scratchFont==nil)
-       self->_scratchFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:self->_scratchDC pointSize:ABS(fontSize.height)];
-
+		 if(self->_scratchFont==nil) {
+			 self->_scratchFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:self->_scratchDC pointSize:ABS(fontSize.height)];
+		 }
       uint8_t *erase=self->_scratchBitmap;
       int r,c;
       for(r=0;r<extent.cy;r++){
@@ -441,22 +447,24 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
 		   context = (O2Context_builtin_gdi *)O2LayerGetContext(layer);
 	   }
 	   
-    if(gState->_fontIsDirty){
-     O2GStateClearFontIsDirty(gState);
-     [self->_gdiFont release];
-     self->_gdiFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:context->_dc pointSize:ABS(fontSize.height)];
-    }
-	SelectObject(context->_dc,[self->_gdiFont fontHandle]);
+	   if(gState->_fontIsDirty){
+		   O2GStateClearFontIsDirty(gState);
+		   [self->_gdiFont release];
+		   // Rotate the font according to the current transform
+		   O2Float32 angle = atan2(-Trm.b,Trm.a);
+		   self->_gdiFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:context->_dc pointSize:ABS(fontSize.height) angle:angle];
+	   }
+	   SelectObject(context->_dc,[self->_gdiFont fontHandle]);
     SetTextColor(context->_dc,COLORREFFromColor(O2ContextFillColor(self)));
 
     INT dx[count];
     
-    if(advances!=NULL){
-   for(i=0;i<count;i++)
-      dx[i]=lroundf(O2SizeApplyAffineTransform(advances[i],Trm).width);
-    }
-    
-    ExtTextOutW(context->_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,(advances!=NULL)?dx:NULL);
+	   if(advances!=NULL) {
+		   for(i=0;i<count;i++) {
+			   dx[i]=lroundf(O2SizeApplyAffineTransform(advances[i],Trm).width);
+		   }
+	   }
+	   ExtTextOutW(context->_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,(advances!=NULL)?dx:NULL);
 #endif
    }
    else if(O2FontGetPlatformType(font)==O2FontPlatformTypeFreeType){

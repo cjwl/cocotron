@@ -1394,7 +1394,7 @@ O2AffineTransform O2ContextGetTextRenderingMatrix(O2ContextRef self) {
    O2AffineTransform transformToDevice=gState->_deviceSpaceTransform;
    O2AffineTransform Tm=self->_textMatrix;
 
-   return O2AffineTransformConcat(Tm,transformToDevice);
+	return O2AffineTransformConcat(Tm,transformToDevice);
 }
 
 void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size *advances,size_t count) {

@@ -214,6 +214,10 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 }
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize {
+	return [self createGDIFontSelectedInDC:dc pointSize:pointSize angle:0.];
+}
+
+-(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
    if(_useMacMetrics){
     if (pointSize <= 10.0)
        pointSize=pointSize;
@@ -223,7 +227,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
        pointSize=pointSize/1.125;
    }
    int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
-   Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES];
+	Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES angle: angle];
    
    SelectObject(dc,[result fontHandle]);
    
