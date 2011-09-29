@@ -3,16 +3,14 @@
 #import <Foundation/NSString_win32.h>
 #import "Win32Font.h"
 #import <Onyx2D/O2Encoding.h>
-#if 0
 #import <Onyx2D/O2Font_freetype.h>
-#endif
 
 O2FontRef O2FontCreateWithFontName_platform(NSString *name) {
    return [[O2Font_gdi alloc] initWithFontName:name];
 }
 
 O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider) {
-#if 0
+#ifdef FREETYPE_PRESENT
    return [[O2Font_freetype alloc] initWithDataProvider:provider];
 #else
    return nil;

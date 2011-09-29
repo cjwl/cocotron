@@ -4128,6 +4128,7 @@
 		FEF9CBC50E13EB8E003502ED /* O2Shading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9E0E13EB8E003502ED /* O2Shading+PDF.m */; };
 		FEF9CCC30E1416C4003502ED /* O2Context_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* O2Context_builtin_gdi.h */; };
 		FEF9CCC40E1416C4003502ED /* O2Context_builtin_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CCC20E1416C4003502ED /* O2Context_builtin_gdi.m */; };
+		FEFD32061434A4F400C14B08 /* O2Font_freetype.m in Sources */ = {isa = PBXBuildFile; fileRef = FE051BDA1221A2F40097BA92 /* O2Font_freetype.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -8746,6 +8747,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE01AABF0C5D9BCB00AEA51A /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */;
 			buildPhases = (
+				FE4C081E1434A30A0034EE26 /* Detect Libraries */,
 				FE01A80A0C5D9BCB00AEA51A /* Headers */,
 				FE01A9530C5D9BCB00AEA51A /* Sources */,
 				FE01AA940C5D9BCB00AEA51A /* Resources */,
@@ -9377,6 +9379,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE4C081E1434A30A0034EE26 /* Detect Libraries */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Detect Libraries";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/O2Defines_FreeType.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C889757D0EA0BF3100D0A0A2 /* Sources */ = {
@@ -10614,6 +10634,7 @@
 				49A7975414224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 				FE2C93D514035649002E0CB4 /* NSSpellingViewController.m in Sources */,
 				FEB3F1EC14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
+				FEFD32061434A4F400C14B08 /* O2Font_freetype.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11458,6 +11479,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
+					"-lfreetype",
 					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",
@@ -11736,6 +11758,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
+					"-lfreetype",
 					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",

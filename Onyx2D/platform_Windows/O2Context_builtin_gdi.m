@@ -10,9 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Surface_DIBSection.h>
 #import "O2DeviceContext_gdi.h"
 #import <Onyx2D/O2Font_gdi.h>
-#if 0
 #import <Onyx2D/O2Font_freetype.h>
-#endif
 #import <Onyx2D/O2ClipState.h>
 #import <Onyx2D/O2ClipPhase.h>
 #import <Onyx2D/O2ColorSpace.h>
@@ -111,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2SurfaceUnlock(_surface);
 }
 
-#if 0
+#ifdef FREETYPE_PRESENT
 static O2Paint *paintFromColor(O2ColorRef color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
    CGFloat r,g,b,a;
@@ -158,7 +156,7 @@ static inline O2argb8u testO2argb8uMultiplyByMask8u(O2argb8u result,uint32_t val
    return result;
 }
 
-#if 0
+#ifdef FREETYPE_PRESENT
 static void applyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,uint8_t *coverageSpan,O2argb8u *src,int length){
    int i;
    
@@ -468,7 +466,7 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
 #endif
    }
    else if(O2FontGetPlatformType(font)==O2FontPlatformTypeFreeType){
-#if 0
+#ifdef FREETYPE_PRESENT
     O2Font_freetype *ftFont=(O2Font_freetype *)font;
     FT_Face          face=O2FontFreeTypeFace(ftFont);
       

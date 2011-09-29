@@ -1,4 +1,5 @@
 #import <Onyx2D/O2Font_freetype.h>
+#ifdef FREETYPE_PRESENT
 #import <Onyx2D/O2Encoding.h>
 
 @implementation O2Font_freetype
@@ -185,3 +186,4 @@ FT_Face O2FontFreeTypeFace(O2Font_freetype *self) {
 }
 
 @end
+#endif
