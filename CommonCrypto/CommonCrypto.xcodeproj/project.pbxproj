@@ -12,6 +12,11 @@
 		FE4301E811E2580E00EBDD56 /* CommonDigest.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301E211E2580E00EBDD56 /* CommonDigest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4301EA11E2580E00EBDD56 /* CommonHMAC.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301E411E2580E00EBDD56 /* CommonHMAC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF5A81D11E4F37E009B0041 /* CommonCryptoExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5A81C11E4F37E009B0041 /* CommonCryptoExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFD323A1434B0FB00C14B08 /* CommonCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4301E111E2580E00EBDD56 /* CommonCryptor.m */; };
+		FEFD323B1434B10000C14B08 /* CommonDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4301E311E2580E00EBDD56 /* CommonDigest.m */; };
+		FEFD323C1434B10200C14B08 /* CommonHMAC.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4301E511E2580E00EBDD56 /* CommonHMAC.m */; };
+		FEFD32531434B1F000C14B08 /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFD32521434B1F000C14B08 /* dllmain.m */; };
+		FEFD325B1434B22F00C14B08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -53,6 +58,7 @@
 		FE4301E511E2580E00EBDD56 /* CommonHMAC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHMAC.m; sourceTree = "<group>"; };
 		FE7085A21431175E00B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FEF5A81C11E4F37E009B0041 /* CommonCryptoExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonCryptoExport.h; sourceTree = "<group>"; };
+		FEFD32521434B1F000C14B08 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEFD325B1434B22F00C14B08 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +84,7 @@
 		0867D691FE84028FC02AAC07 /* CommonCrypto */ = {
 			isa = PBXGroup;
 			children = (
+				FEFD32521434B1F000C14B08 /* dllmain.m */,
 				FE06B0D41430E70B0071169B /* xcconfig */,
 				FEF5A81C11E4F37E009B0041 /* CommonCryptoExport.h */,
 				FE4301E011E2580E00EBDD56 /* CommonCryptor.h */,
@@ -235,6 +243,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEFD323A1434B0FB00C14B08 /* CommonCryptor.m in Sources */,
+				FEFD323B1434B10000C14B08 /* CommonDigest.m in Sources */,
+				FEFD323C1434B10200C14B08 /* CommonHMAC.m in Sources */,
+				FEFD32531434B1F000C14B08 /* dllmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +271,16 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
+				OTHER_CFLAGS = (
+					"-DCOMMONCRYPTO_INSIDE_BUILD=1",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-lssl",
+					"-lcrypto",
+					"-lgdi32",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CommonCrypto;
 			};
