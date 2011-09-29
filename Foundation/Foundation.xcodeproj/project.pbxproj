@@ -3716,6 +3716,24 @@
 		FE463E79102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E7A102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463E7B102CD5D200B265D6 /* NSXMLNodeOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4C074A1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C074B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C074C1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C074E1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C07501434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C07521434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C07541434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C07551434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C07561434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C07571434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C07581434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C07591434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
+		FE4C075A1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */; };
+		FE4C075B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */; };
 		FE4EC6900BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4EC6910BD9B47B0015F9E9 /* NSKeyedArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4EC68D0BD9B47B0015F9E9 /* NSKeyedArchiver.m */; };
 		FE4EC6920BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7304,6 +7322,8 @@
 		FE463E56102CD5C700B265D6 /* NSPointerFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPointerFunctions.h; sourceTree = "<group>"; };
 		FE463E57102CD5C700B265D6 /* NSPointerFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPointerFunctions.m; sourceTree = "<group>"; };
 		FE463E74102CD5D200B265D6 /* NSXMLNodeOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXMLNodeOptions.h; sourceTree = "<group>"; };
+		FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberPlaceholder.h; sourceTree = "<group>"; };
+		FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDecimalNumberPlaceholder.m; sourceTree = "<group>"; };
 		FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyedArchiver.h; sourceTree = "<group>"; };
 		FE4EC68D0BD9B47B0015F9E9 /* NSKeyedArchiver.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyedArchiver.m; sourceTree = "<group>"; };
 		FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOldXMLAttribute.h; sourceTree = "<group>"; };
@@ -8790,6 +8810,8 @@
 		FE74776A0BAC4E0D00829F4F /* NSDecimal */ = {
 			isa = PBXGroup;
 			children = (
+				FE4C07481434A0330034EE26 /* NSDecimalNumberPlaceholder.h */,
+				FE4C07491434A0330034EE26 /* NSDecimalNumberPlaceholder.m */,
 				FE74776D0BAC4E9000829F4F /* NSDecimal.h */,
 				FE74776E0BAC4E9000829F4F /* NSDecimal.m */,
 				FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */,
@@ -9385,6 +9407,7 @@
 				FE09AF9413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2BA1404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA53B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C07581434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9718,6 +9741,7 @@
 				FE09AF9013FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2CA1404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C07561434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10051,6 +10075,7 @@
 				FE09AF8813FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C61404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA5471429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C074E1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10384,6 +10409,7 @@
 				FE09AF8613FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2BC1404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA53D1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C074C1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10722,6 +10748,7 @@
 				FE09AF8413FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C01404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA5411429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C074A1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11055,6 +11082,7 @@
 				FE09AF9213FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C81404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA5491429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C075A1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11389,6 +11417,7 @@
 				FE09AF8E13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C21404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA5431429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C07541434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11723,6 +11752,7 @@
 				FE09AF8A13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2C41404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA5451429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C07501434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12057,6 +12087,7 @@
 				FE09AF8C13FCC69200B53D10 /* NSTextCheckingResult.h in Headers */,
 				FEB3F2BE1404A92400059C8F /* NSSpellEngine.h in Headers */,
 				FEFAA53F1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
+				FE4C07521434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12989,6 +13020,7 @@
 				FE09AF9513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BB1404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA53C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C07591434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13360,6 +13392,7 @@
 				FE09AF9113FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2CB1404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C07571434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13732,6 +13765,7 @@
 				FE09AF8913FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C71404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5481429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14105,6 +14139,7 @@
 				FE09AF8713FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BD1404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA53E1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14485,6 +14520,7 @@
 				FE09AF8513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C11404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5421429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C074B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14858,6 +14894,7 @@
 				FE09AF9313FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C91404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C075B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15234,6 +15271,7 @@
 				FE09AF8F13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C31404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5441429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C07551434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15611,6 +15649,7 @@
 				FE09AF8B13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C51404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5461429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15988,6 +16027,7 @@
 				FE09AF8D13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BF1404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5401429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
