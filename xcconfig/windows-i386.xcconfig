@@ -2,5 +2,5 @@
 
 ARCHS = i386
 INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks
-OTHER_CFLAGS = -D__LITTLE_ENDIAN__
+OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type
 

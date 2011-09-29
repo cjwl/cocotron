@@ -464,7 +464,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -512,7 +511,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70879F143118C000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;

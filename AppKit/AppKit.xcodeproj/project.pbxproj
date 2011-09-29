@@ -11450,14 +11450,11 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
 				OTHER_CFLAGS = (
-					"-DWINVER=0x500",
+					"$(OTHER_CFLAGS)",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-DCGL_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wno-multichar",
-					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
@@ -11709,7 +11706,6 @@
 			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = stabs;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -11731,15 +11727,12 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
 				OTHER_CFLAGS = (
-					"-DWINVER=0x500",
+					"$(OTHER_CFLAGS)",
 					"-DQUARTZCORE_INSIDE_BUILD",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-DCGL_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wno-multichar",
-					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
 					"-shared",

@@ -499,7 +499,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
