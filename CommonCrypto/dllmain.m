@@ -6,25 +6,18 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/Foundation.h>
 #import <windows.h>
+#import <stdio.h>
 
-@class NSHandleMonitor_win32;
+int OBJCRegisterDLL(HINSTANCE handle);
 
-@interface Win32RunningCopyPipe : NSObject {
-   HANDLE              _pipe;
-   HANDLE              _event;
-   NSHandleMonitor_win32 *_eventMonitor;
-   enum {
-    STATE_CONNECTING,
-    STATE_READING,
-   } _state;
-   OVERLAPPED          _readOverlap;
-   DWORD               _readCount;
-   unichar             _readBuffer[65536];
+int APIENTRY DllMain(HINSTANCE handle,DWORD reason,LPVOID _reserved) {
+
+   if(reason==DLL_PROCESS_ATTACH)
+    return OBJCRegisterDLL(handle);
+
+   if(reason==DLL_THREAD_DETACH){
+     return TRUE;
+   }
+   return TRUE;
 }
-
-+(void)invalidateRunningCopyPipe;
-+(void)startRunningCopyPipe;
-
-@end

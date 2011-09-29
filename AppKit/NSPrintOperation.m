@@ -195,9 +195,15 @@ static NSPrintOperation *_currentOperation=nil;
     if(_showsPrintPanel){
      NSPrintPanel *printPanel=[self printPanel];
      int           panelResult;
-     
+
+		// We can't assume that there are valid titles on every window
+		NSString* title = [[_view window] title];
+		if (title == nil) {
+			title = @"Printing View";
+		}
+		
      [[_printInfo dictionary] setObject:_view forKey:@"_NSView"];
-     [[_printInfo dictionary] setObject:[[_view window] title] forKey:@"_title"];
+     [[_printInfo dictionary] setObject: title forKey:@"_title"];
      panelResult=[printPanel runModal];
      [[_printInfo dictionary] removeObjectForKey:@"_NSView"];
      [[_printInfo dictionary] removeObjectForKey:@"_title"];

@@ -247,28 +247,31 @@ static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
    pixels = malloc(pixelslen);
    GetBitmapBits(iconInfo.hbmColor, pixelslen, pixels);
 
-   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
-    pixelsWide:bmp.bmWidth
-    pixelsHigh:bmp.bmHeight
-    bitsPerSample:8
-    samplesPerPixel:4
-    hasAlpha:YES
-    isPlanar:NO
-    colorSpaceName:NSCalibratedRGBColorSpace
-    bytesPerRow:bmp.bmWidth*4
-    bitsPerPixel:32] autorelease];
+   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL
+													 pixelsWide: bmp.bmWidth
+													 pixelsHigh: bmp.bmHeight
+												  bitsPerSample: 8
+												samplesPerPixel: 4
+													   hasAlpha: YES
+													   isPlanar: NO
+												 colorSpaceName: NSCalibratedRGBColorSpace
+												   bitmapFormat: NSAlphaNonpremultipliedBitmapFormat
+													bytesPerRow: bmp.bmWidth * 4
+												   bitsPerPixel:32]
+			 autorelease];
+	
+	unsigned int pixel = 0;
+	
+   for (y = 0; y < bmp.bmHeight; y++) {
+    for (x = 0; x < bmp.bmWidth; x++) {
 
-   for (y = 0; y < bmp.bmHeight; y++)
-   {
-    for (x = 0; x < bmp.bmWidth; x++)
-    {
-     float b = (float) pixels[4*(y*bmp.bmWidth + x)+0] / 255.0f;
-     float g = (float) pixels[4*(y*bmp.bmWidth + x)+1] / 255.0f;
-     float r = (float) pixels[4*(y*bmp.bmWidth + x)+2] / 255.0f;
-     float a = (float) pixels[4*(y*bmp.bmWidth + x)+3] / 255.0f;
+		float b = (float) pixels[4*(y*bmp.bmWidth + x)+0] / 255.0f;
+		float g = (float) pixels[4*(y*bmp.bmWidth + x)+1] / 255.0f;
+		float r = (float) pixels[4*(y*bmp.bmWidth + x)+2] / 255.0f;
+		float a = (float) pixels[4*(y*bmp.bmWidth + x)+3] / 255.0f;
 
      NSColor *color = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:a];
-     [bitmap setColor:color atX:x y:y];
+     [bitmap setColor:color atX:x y: (bmp.bmHeight - 1) - y];
     }
    }
 
@@ -286,15 +289,37 @@ static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
 
    NSImage *icon=[[[NSImage alloc] init] autorelease];
 
-   if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_SMALLICON))
-    [icon addRepresentation:imageRepForIcon(&fileInfo)];
-   if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_LARGEICON))
-    [icon addRepresentation:imageRepForIcon(&fileInfo)];
+	if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_SMALLICON)) {
+		NSImageRep* rep = imageRepForIcon(&fileInfo);
+		[icon addRepresentation: rep];
+		DestroyIcon(fileInfo.hIcon);
+	}
+	if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_SHELLICONSIZE)) {
+		NSImageRep* rep = imageRepForIcon(&fileInfo);
+		[icon addRepresentation: rep];
+		DestroyIcon(fileInfo.hIcon);
+	}
 
-   if([[icon representations] count]==0)
-    return nil;
-    
+	if([[icon representations] count]==0) {
+		NSLog(@"unable to load icon for file: %@", path);
+		return nil;
+    }
+	
    return icon;
+}
+
+- (BOOL)isFileHiddenAtPath:(NSString*)path
+{
+	static NSArray* hiddenSuffixes = nil;
+	if (hiddenSuffixes == nil) {
+		hiddenSuffixes = [[NSArray arrayWithObjects: @".ini", @".INI" @".dat", @".DAT" @".log", @".LOG" @".sys", @".SYS", @".bat", @".BAT", @".db", @".DB", @"NetHood", @"PrintHood", nil] retain];
+	}
+	for (id suffix in hiddenSuffixes) {
+		if ([path hasSuffix: suffix]) {
+			return YES;
+		}
+	}
+	return NO;
 }
 
 @end

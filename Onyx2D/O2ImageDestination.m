@@ -3,6 +3,7 @@
 #import <Onyx2D/O2Exceptions.h>
 #import <Onyx2D/O2Encoder_TIFF.h>
 #import <Onyx2D/O2Encoder_PNG.h>
+#import <Onyx2D/O2Encoder_JPG.h>
 
 @interface _O2ImageDestination : O2ImageDestination
 @end
@@ -83,6 +84,9 @@ O2ImageDestinationRef O2ImageDestinationCreateWithDataConsumer(O2DataConsumerRef
      break;
 
     case O2ImageFileJPEG:
+#ifdef HASLIBJPEG
+	 self->_encoder=O2JPGEncoderCreate(self->_consumer);
+#endif
      break;
 
     case O2ImageFilePNG:
@@ -126,6 +130,9 @@ void O2ImageDestinationAddImage(O2ImageDestinationRef self,O2ImageRef image,CFDi
      break;
 
     case O2ImageFileJPEG:
+#ifdef HASLIBJPEG
+	 O2JPGEncoderWriteImage(self->_encoder,image,properties);
+#endif
      break;
 
     case O2ImageFilePNG:
@@ -163,6 +170,10 @@ bool O2ImageDestinationFinalize(O2ImageDestinationRef self) {
      break;
 
     case O2ImageFileJPEG:
+#ifdef HASLIBJPEG
+	 O2JPGEncoderDealloc(self->_encoder);
+	 self->_encoder=NULL;
+#endif
      break;
 
     case O2ImageFilePNG:

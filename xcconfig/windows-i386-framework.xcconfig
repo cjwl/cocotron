@@ -1,0 +1,7 @@
+#include "windows-i386"
+
+EXECUTABLE_SUFFIX = .1.0.dll
+PREBINDING = NO
+
+OTHER_LDFLAGS = -shared -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a;
+

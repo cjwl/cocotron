@@ -235,6 +235,20 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
    O2ContextSetCMYKFillColor(self,c,m,y,k,alpha);
 }
 
+-(void)setAlpha:(float)alpha
+{
+	O2GStateSetAlpha(O2ContextCurrentGState(self), alpha);
+	if ([self supportsGlobalAlpha] == NO) {
+		[self setStrokeAlpha:alpha];
+		[self setFillAlpha:alpha];
+	}
+}
+
+-(BOOL)supportsGlobalAlpha
+{
+	return NO;
+}
+
 -(void)drawPath:(O2PathDrawingMode)pathMode {
    O2InvalidAbstractInvocation();
 // reset path in subclass
@@ -874,8 +888,7 @@ void O2ContextSetAlpha(O2ContextRef self,O2Float alpha) {
    if(self==nil)
     return;
 
-   [self setStrokeAlpha:alpha];
-   [self setFillAlpha:alpha];
+	[self setAlpha:alpha];
 }
 
 void O2ContextSetPatternPhase(O2ContextRef self,O2Size phase) {
@@ -1381,7 +1394,7 @@ O2AffineTransform O2ContextGetTextRenderingMatrix(O2ContextRef self) {
    O2AffineTransform transformToDevice=gState->_deviceSpaceTransform;
    O2AffineTransform Tm=self->_textMatrix;
 
-   return O2AffineTransformConcat(Tm,transformToDevice);
+	return O2AffineTransformConcat(Tm,transformToDevice);
 }
 
 void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size *advances,size_t count) {
@@ -1431,5 +1444,8 @@ void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
    [self copyBitsInRect:rect toPoint:point gState:gState];
 }
 
-
+bool O2ContextSupportsGlobalAlpha(O2ContextRef self)
+{
+	return [self supportsGlobalAlpha];
+}
 @end

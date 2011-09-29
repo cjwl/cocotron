@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSFontDescriptor.h>
 #import <AppKit/NSFontFamily.h>
+#import <AppKit/NSFontTypeface.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <ApplicationServices/ApplicationServices.h>
@@ -350,7 +351,12 @@ static NSFont **_fontCache=NULL;
 						return [NSFont fontWithName: [members objectAtIndex: 0] size: size];
 					}
 				}
+			} else {
+				// just take the first one
+				NSArray* members = [matchingFonts objectAtIndex: 0];
+				return [NSFont fontWithName: [members objectAtIndex: 0] size: size];
 			}
+			
 		}
 	}
 	NSLog(@"unable to match font descriptor: %@", descriptor);
@@ -427,8 +433,39 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    return [self fontName];
 }
 
+- (NSDictionary*)_fontTraitsAsDictionary
+{
+	NSFontManager* fm = [NSFontManager sharedFontManager];
+	
+	NSMutableDictionary* traitsDictionary = [NSMutableDictionary dictionaryWithCapacity: 4];
+	NSFontFamily   *family=[NSFontFamily fontFamilyWithTypefaceName:[self fontName]];
+	NSFontTypeface *typeface=[family typefaceWithName:[self fontName]];
+	NSFontTraitMask symbolicTraits=[typeface traits];
+	[traitsDictionary setObject: [NSNumber numberWithInt: symbolicTraits] forKey: NSFontSymbolicTrait];
+	[traitsDictionary setObject: [NSNumber numberWithInt: [fm weightOfFont: self]] forKey: NSFontWeightTrait];
+//	[traitsDictionary setObject: [NSNumber numberWithInt: ??] forKey: NSFontWidthTrait]; // not sure what's put here
+	[traitsDictionary setObject: [NSNumber numberWithFloat: [self italicAngle]] forKey: NSFontSlantTrait];
+	return traitsDictionary;
+}
+
 -(NSFontDescriptor *)fontDescriptor {
-	NSFontDescriptor* descriptor = [NSFontDescriptor fontDescriptorWithName: [self fontName] size: [self pointSize]];
+	
+	NSFontFamily   *fontFamily=[NSFontFamily fontFamilyWithName: [self familyName]];
+	NSFontTypeface *typeface=[fontFamily typefaceWithName:[self fontName]];
+
+	NSDictionary* attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+								[self fontName],	NSFontNameAttribute,
+								[self familyName],	NSFontFamilyAttribute,
+								[[NSNumber numberWithFloat: [self pointSize]] stringValue], NSFontSizeAttribute,
+//								[self matrix], NSFontMatrixAttribute, // currently returns nil
+//								[self coveredCharacterSet], NSFontCharacterSetAttribute, // currently returns nil
+								[self _fontTraitsAsDictionary], NSFontTraitsAttribute,
+								[typeface traitName], NSFontFaceAttribute,
+								[NSNumber numberWithFloat: [self maximumAdvancement].width], NSFontFixedAdvanceAttribute,
+								[self displayName], NSFontVisibleNameAttribute,
+								nil];
+								
+	NSFontDescriptor* descriptor = [NSFontDescriptor fontDescriptorWithFontAttributes: attributes];
 	return descriptor;
 }
 

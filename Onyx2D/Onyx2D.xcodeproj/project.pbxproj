@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4970823C13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4970823E13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; };
+		4970823F13FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */; };
+		4970824013FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; };
+		4970824113FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */; };
+		4970824213FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */; };
+		4970824313FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */; };
 		FE051C6D1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE051C6E1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE051C6F1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -741,6 +748,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* Onyx2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Onyx2D_Prefix.pch; sourceTree = "<group>"; };
+		4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
+		4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Onyx2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Onyx2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE051C6C1221A7440097BA92 /* O2Font_freetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_freetype.h; sourceTree = "<group>"; };
@@ -748,6 +757,21 @@
 		FE069F4F1245A9260040F165 /* O2Font_freetype.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_freetype.m; sourceTree = "<group>"; };
 		FE069F501245A9260040F165 /* O2GlyphStencil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2GlyphStencil.h; sourceTree = "<group>"; };
 		FE069F511245A9260040F165 /* O2GlyphStencil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2GlyphStencil.m; sourceTree = "<group>"; };
+		FE06B3ED1430E9150071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3EE1430E9150071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3EF1430E9150071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F01430E9150071169B /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE06B3F11430E9150071169B /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F21430E9150071169B /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE06B3F31430E9150071169B /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F41430E9150071169B /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F51430E9150071169B /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F61430E9150071169B /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE06B3F71430E9150071169B /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE06B3F81430E9150071169B /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE06B3F91430E9150071169B /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE06B3FA1430E9150071169B /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE06B3FB1430E9150071169B /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE081BAA118A165F0026A20E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE27593E1234039700BD6643 /* O2Context_distill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Context_distill.h; sourceTree = "<group>"; };
 		FE27593F1234039700BD6643 /* O2Context_distill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Context_distill.m; sourceTree = "<group>"; };
@@ -923,6 +947,7 @@
 		FE5F4C7712A853D000F5F334 /* O2Surface_DIBSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Surface_DIBSection.m; sourceTree = "<group>"; };
 		FE5F4C7812A853D000F5F334 /* Win32Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win32Font.h; sourceTree = "<group>"; };
 		FE5F4C7912A853D000F5F334 /* Win32Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Win32Font.m; sourceTree = "<group>"; };
+		FE7086F01431183D00B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE71EDA911FA890300E6F801 /* O2PDFFunction_Type4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2PDFFunction_Type4.h; sourceTree = "<group>"; };
 		FE71EDAA11FA890300E6F801 /* O2PDFFunction_Type4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2PDFFunction_Type4.m; sourceTree = "<group>"; };
 		FE71EF2611FBCA7E00E6F801 /* O2Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoding.h; sourceTree = "<group>"; };
@@ -980,11 +1005,14 @@
 		0867D691FE84028FC02AAC07 /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE06B3EC1430E9150071169B /* xcconfig */,
 				FE7F724D12AF4DA300FDF52D /* O2argb8u.m */,
 				FE7F724E12AF4DA300FDF52D /* O2argb32f.m */,
 				FE5F4C6B12A853B800F5F334 /* platform_Windows */,
 				FE99DB1712843F74006D789F /* O2Encoder_PNG.h */,
 				FE99DB1812843F74006D789F /* O2Encoder_PNG.m */,
+				4970823A13FC0FAE008AE26B /* O2Encoder_JPG.h */,
+				4970823B13FC0FAE008AE26B /* O2Encoder_JPG.m */,
 				FE58789312694AE4009B9EDF /* O2argb32f.h */,
 				FE587851126949AA009B9EDF /* O2argb8u.h */,
 				FE069F4C1245A9260040F165 /* English.lproj */,
@@ -1215,6 +1243,30 @@
 			path = English.lproj;
 			sourceTree = "<group>";
 		};
+		FE06B3EC1430E9150071169B /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE06B3ED1430E9150071169B /* darwin-i386.xcconfig */,
+				FE06B3EE1430E9150071169B /* darwin-ppc.xcconfig */,
+				FE06B3EF1430E9150071169B /* darwin-x86_64.xcconfig */,
+				FE06B3F01430E9150071169B /* darwin.xcconfig */,
+				FE06B3F11430E9150071169B /* freebsd-i386.xcconfig */,
+				FE06B3F21430E9150071169B /* freebsd.xcconfig */,
+				FE06B3F31430E9150071169B /* linux-arm.xcconfig */,
+				FE06B3F41430E9150071169B /* linux-i386.xcconfig */,
+				FE06B3F51430E9150071169B /* linux-ppc.xcconfig */,
+				FE06B3F61430E9150071169B /* linux.xcconfig */,
+				FE06B3F71430E9150071169B /* platform.xcconfig */,
+				FE06B3F81430E9150071169B /* solaris-sparc.xcconfig */,
+				FE06B3F91430E9150071169B /* solaris.xcconfig */,
+				FE06B3FA1430E9150071169B /* windows-i386.xcconfig */,
+				FE06B3FB1430E9150071169B /* windows.xcconfig */,
+				FE7086F01431183D00B99A95 /* windows-i386-framework.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
+		};
 		FE081BAB118A165F0026A20E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1355,6 +1407,7 @@
 				FE5F4C8212A853D000F5F334 /* O2Font_gdi.h in Headers */,
 				FE5F4C8412A853D000F5F334 /* O2Surface_DIBSection.h in Headers */,
 				FE5F4C8612A853D000F5F334 /* Win32Font.h in Headers */,
+				4970823C13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1451,6 +1504,7 @@
 				FE587853126949AA009B9EDF /* O2argb8u.h in Headers */,
 				FE58789512694AE4009B9EDF /* O2argb32f.h in Headers */,
 				FE99DB1B12843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				4970823E13FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1547,6 +1601,7 @@
 				FE587854126949AA009B9EDF /* O2argb8u.h in Headers */,
 				FE58789612694AE4009B9EDF /* O2argb32f.h in Headers */,
 				FE99DB1D12843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				4970824013FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1643,6 +1698,7 @@
 				FE587855126949AA009B9EDF /* O2argb8u.h in Headers */,
 				FE58789712694AE4009B9EDF /* O2argb32f.h in Headers */,
 				FE99DB1F12843F74006D789F /* O2Encoder_PNG.h in Headers */,
+				4970824213FC0FAE008AE26B /* O2Encoder_JPG.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1959,6 +2015,7 @@
 				FE06A0D51245A9270040F165 /* O2Font_freetype.m in Sources */,
 				FE06A0D71245A9270040F165 /* O2GlyphStencil.m in Sources */,
 				FE99DB1C12843F74006D789F /* O2Encoder_PNG.m in Sources */,
+				4970823F13FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2049,6 +2106,7 @@
 				FE06A1981245A9270040F165 /* O2Font_freetype.m in Sources */,
 				FE06A19A1245A9270040F165 /* O2GlyphStencil.m in Sources */,
 				FE99DB1E12843F74006D789F /* O2Encoder_PNG.m in Sources */,
+				4970824113FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2141,6 +2199,7 @@
 				FE99DB2012843F74006D789F /* O2Encoder_PNG.m in Sources */,
 				FE7F724F12AF4DA300FDF52D /* O2argb8u.m in Sources */,
 				FE7F725012AF4DA300FDF52D /* O2argb32f.m in Sources */,
+				4970824313FC0FAE008AE26B /* O2Encoder_JPG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2181,14 +2240,9 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE7086F01431183D00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2199,36 +2253,21 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DONYX2D_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Debug;
 		};
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE7086F01431183D00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = stabs;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .1.0.dll;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2239,23 +2278,13 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DONYX2D_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
 			};
 			name = Release;
 		};
@@ -2280,7 +2309,6 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2291,7 +2319,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DONYX2D_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -2306,7 +2334,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -2319,7 +2347,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2330,7 +2358,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DONYX2D_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
@@ -2340,7 +2368,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Onyx2D;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Windows/i386;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};

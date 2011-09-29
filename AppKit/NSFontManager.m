@@ -168,35 +168,39 @@ static Class _fontPanelFactory;
 }
 
 -(BOOL)fontNamed:(NSString *)name hasTraits:(NSFontTraitMask)traits {
-   NSUnimplementedMethod();
-   return 0;
+	NSFont* font = [NSFont fontWithName: name size: 12];
+	NSFontTraitMask fontTraits=[self traitsOfFont:font];
+	return (traits & fontTraits) == traits;
 }
 
 -(NSFont *)fontWithFamily:(NSString *)familyName traits:(NSFontTraitMask)traits weight:(int)weight size:(float)size {
-#if 0
-   NSFontFamily *family=[NSFontFamily fontFamilyWithName:familyName];
-   NSArray      *typefaces=[family typefaces];
-   int           i,count=[typefaces count];
-   NSString     *fontName=nil; 
-   
-   for(i=0;i<count;i++){
-    NSFontTypeface *typeface=[typefaces objectAtIndex:i];
-    NSFontTraitMask checkTraits=[typeface traits];
-    
-    if(((traits&NSItalicFontMask)==(checkTraits&NSItalicFontMask)) &&
-        ((traits&NSBoldFontMask)==(checkTraits&NSBoldFontMask))
-   }
-   
-   if(fontName!=nil)
-    return [NSFont fontWithName:fontName size:size];
-#endif
-   NSUnimplementedMethod();
-   return nil;
+	// Note : weight is ignored 
+	
+	NSFontFamily *family=[NSFontFamily fontFamilyWithName:familyName];
+	NSArray      *typefaces=[family typefaces];
+	int           i,count=[typefaces count];
+	NSString     *fontName=nil; 
+	
+	for(i=0;i<count;i++){
+		NSFontTypeface *typeface=[typefaces objectAtIndex:i];
+		NSFontTraitMask checkTraits=[typeface traits];
+		
+		if(((traits&NSItalicFontMask)==(checkTraits&NSItalicFontMask)) &&
+		   ((traits&NSBoldFontMask)==(checkTraits&NSBoldFontMask))) {
+			fontName = [typeface name];
+			break;
+		}
+	}
+	
+	NSFont *font = nil;
+	if(fontName!=nil)
+		font = [NSFont fontWithName:fontName size:size];
+	
+	return font;
 }
 
 -(int)weightOfFont:(NSFont *)font {
-   NSUnimplementedMethod();
-   return 0;
+	return 5; // default to the normal weight
 }
 
 -(NSFontTraitMask)traitsOfFont:(NSFont *)font {
@@ -206,8 +210,10 @@ static Class _fontPanelFactory;
 }
 
 -(NSString *)localizedNameForFamily:(NSString *)family face:(NSString *)face {
-   NSUnimplementedMethod();
-   return 0;
+	if (face == nil) {
+		return family;
+	}
+	return [NSString stringWithFormat: @"%@ %@", family, face];
 }
 
 -(void)setFontPanel:(NSFontPanel *)panel {
@@ -320,31 +326,46 @@ static Class _fontPanelFactory;
 
    newface=[family typefaceWithTraits:traits];
 
-   if(newface!=nil)
-    return [NSFont fontWithName:[newface name] size:[font pointSize]];
-
+	if(newface!=nil) {
+		return [NSFont fontWithName:[newface name] size:[font pointSize]];
+	}
    NSLog(@"%s failed, %@ %d",sel_getName(_cmd),[font fontName],addTraits);
    return font;
 }
 
 -(NSFont *)convertFont:(NSFont *)font toNotHaveTrait:(NSFontTraitMask)trait {
-   NSUnimplementedMethod();
-   return nil;
+	NSFontFamily   *family=[NSFontFamily fontFamilyWithName: [font familyName]];
+	NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
+	NSFontTraitMask traits=[typeface traits];
+	traits ^= trait; // remove the traits
+	NSFontTypeface *newface;
+		
+	newface=[family typefaceWithTraits:traits];
+	
+	if(newface!=nil) {
+		return [NSFont fontWithName:[newface name] size:[font pointSize]];
+	}
+	
+	NSLog(@"%s failed, %@ %d",sel_getName(_cmd),[font fontName],trait);
+	return font;
 }
 
 -(NSFont *)convertFont:(NSFont *)font toFace:(NSString *)typeface {
-   NSUnimplementedMethod();
-   return nil;
+	return [NSFont fontWithName: typeface size: [font pointSize]];
 }
 
 -(NSFont *)convertFont:(NSFont *)font toFamily:(NSString *)family {
-   NSUnimplementedMethod();
-   return nil;
+
+	// Get the current traits so we try and match them...
+	NSFontFamily   *fontFamily=[NSFontFamily fontFamilyWithName: [font familyName]];
+	NSFontTypeface *typeface=[fontFamily typefaceWithName:[font fontName]];
+	NSFontTraitMask traits=[typeface traits];
+	return [self fontWithFamily: family traits: traits weight: 5 size: [font pointSize]];
 }
 
 -(NSFont *)convertWeight:(BOOL)heavierNotLighter ofFont:(NSFont *)font {
-   NSUnimplementedMethod();
-   return nil;
+	NSLog(@"convertWeight: %d ofFont: %@ ignored", heavierNotLighter, font);
+	return font;
 }
 
 -(NSDictionary *)convertAttributes:(NSDictionary *)attributes {

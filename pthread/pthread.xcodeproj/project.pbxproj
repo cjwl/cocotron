@@ -1,0 +1,220 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FE678391143386160009A0A0 /* pthread.h in Headers */ = {isa = PBXBuildFile; fileRef = FE67838E143386160009A0A0 /* pthread.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE678393143386160009A0A0 /* sched.h in Headers */ = {isa = PBXBuildFile; fileRef = FE678390143386160009A0A0 /* sched.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FE67837E143385CD0009A0A0 /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
+		FE67837F143385CD0009A0A0 /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE678380143385CD0009A0A0 /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
+		FE678381143385CD0009A0A0 /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
+		FE678382143385CD0009A0A0 /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
+		FE678383143385CD0009A0A0 /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
+		FE678384143385CD0009A0A0 /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
+		FE678385143385CD0009A0A0 /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
+		FE678386143385CD0009A0A0 /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
+		FE678387143385CD0009A0A0 /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
+		FE678388143385CD0009A0A0 /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
+		FE678389143385CD0009A0A0 /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
+		FE67838A143385CD0009A0A0 /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
+		FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FE67838C143385CD0009A0A0 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
+		FE67838D143385CD0009A0A0 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
+		FE67838E143386160009A0A0 /* pthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthread.h; sourceTree = "<group>"; };
+		FE67838F143386160009A0A0 /* pthread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pthread.m; sourceTree = "<group>"; };
+		FE678390143386160009A0A0 /* sched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sched.h; sourceTree = "<group>"; };
+		FE6786871433A2530009A0A0 /* pthread.1.0.dll */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = pthread.1.0.dll; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2AAC0C505546C1D00DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE6786871433A2530009A0A0 /* pthread.1.0.dll */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* pthread */ = {
+			isa = PBXGroup;
+			children = (
+				FE67838E143386160009A0A0 /* pthread.h */,
+				FE67838F143386160009A0A0 /* pthread.m */,
+				FE678390143386160009A0A0 /* sched.h */,
+				FE67837D143385CD0009A0A0 /* xcconfig */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = pthread;
+			sourceTree = "<group>";
+		};
+		FE67837D143385CD0009A0A0 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				FE67837E143385CD0009A0A0 /* darwin-i386.xcconfig */,
+				FE67837F143385CD0009A0A0 /* darwin-ppc.xcconfig */,
+				FE678380143385CD0009A0A0 /* darwin-x86_64.xcconfig */,
+				FE678381143385CD0009A0A0 /* darwin.xcconfig */,
+				FE678382143385CD0009A0A0 /* freebsd-i386.xcconfig */,
+				FE678383143385CD0009A0A0 /* freebsd.xcconfig */,
+				FE678384143385CD0009A0A0 /* linux-arm.xcconfig */,
+				FE678385143385CD0009A0A0 /* linux-i386.xcconfig */,
+				FE678386143385CD0009A0A0 /* linux-ppc.xcconfig */,
+				FE678387143385CD0009A0A0 /* linux.xcconfig */,
+				FE678388143385CD0009A0A0 /* platform.xcconfig */,
+				FE678389143385CD0009A0A0 /* solaris-sparc.xcconfig */,
+				FE67838A143385CD0009A0A0 /* solaris.xcconfig */,
+				FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */,
+				FE67838C143385CD0009A0A0 /* windows-i386.xcconfig */,
+				FE67838D143385CD0009A0A0 /* windows.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../xcconfig;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC0C305546C1D00DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE678391143386160009A0A0 /* pthread.h in Headers */,
+				FE678393143386160009A0A0 /* sched.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC0C605546C1D00DB518D /* pthread */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB917D08733D990010E9CD /* Build configuration list for PBXNativeTarget "pthread" */;
+			buildPhases = (
+				D2AAC0C305546C1D00DB518D /* Headers */,
+				D2AAC0C405546C1D00DB518D /* Sources */,
+				D2AAC0C505546C1D00DB518D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pthread;
+			productName = pthread;
+			productReference = FE6786871433A2530009A0A0 /* pthread.1.0.dll */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB918108733D990010E9CD /* Build configuration list for PBXProject "pthread" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 0867D691FE84028FC02AAC07 /* pthread */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC0C605546C1D00DB518D /* pthread */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC0C405546C1D00DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB917E08733D990010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
+			buildSettings = {
+				DEPLOYMENT_POSTPROCESSING = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				PRIVATE_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				PRODUCT_NAME = pthread;
+				PUBLIC_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+			};
+			name = Debug;
+		};
+		1DEB917F08733D990010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEPLOYMENT_POSTPROCESSING = NO;
+				PRIVATE_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				PRODUCT_NAME = pthread;
+				PUBLIC_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+			};
+			name = Release;
+		};
+		1DEB918208733D990010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		1DEB918308733D990010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB917D08733D990010E9CD /* Build configuration list for PBXNativeTarget "pthread" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB917E08733D990010E9CD /* Debug */,
+				1DEB917F08733D990010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB918108733D990010E9CD /* Build configuration list for PBXProject "pthread" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB918208733D990010E9CD /* Debug */,
+				1DEB918308733D990010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

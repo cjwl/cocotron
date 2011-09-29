@@ -70,3 +70,14 @@ typedef enum {
 
 @end
 
+@interface NSGraphicsContext (QuartzDebugging)
+
++ (void)setQuartzDebuggingEnabled:(BOOL)enabled;
+
++ (BOOL)quartzDebuggingIsEnabled;
+
++ (BOOL)inQuartzDebugMode;
+
++ (void)setQuartzDebugMode:(BOOL)mode;
+
+@end

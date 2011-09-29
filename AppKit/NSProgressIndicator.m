@@ -238,9 +238,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setUsesThreadedAnimation:(BOOL)value {
+	// This currently has no effect on the indicator - but no need to complain about it
    _usesThreadedAnimation=value;
-   if(_usesThreadedAnimation)
-    NSUnimplementedMethod();
 }
 
 -(void)setMinValue:(double)value {

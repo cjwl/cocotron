@@ -15,7 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValueTransformer.h>
-#import <Foundation/NSDebug.h>
 #import <AppKit/NSController.h>
 
 static void* NSBinderChangeContext;
@@ -87,9 +86,10 @@ static void* NSBinderChangeContext;
      
     result=[NSValueTransformer valueTransformerForName:name];
     
-    if(NSDebugEnabled && result==nil)
-     NSLog(@"[NSValueTransformer valueTransformerForName:%@] failed in NSBinder.m",name);
-    
+	   if(result==nil) {
+		   NSBindingDebugLog(kNSBindingDebugLogLevel1, @"[NSValueTransformer valueTransformerForName:%@] failed in NSBinder.m",name);
+	   }
+	   
     if(result!=nil)
      [_options setObject:result forKey:NSValueTransformerBindingOption];
    }
@@ -214,14 +214,16 @@ static void* NSBinderChangeContext;
 }
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	NSBindingDebugLog(kNSBindingDebugLogLevel1, @"keyPath: %@\n   object: %@\n   change: %@\n    context: %p", kp, object, change, context);
    if([self allowsReverseTransformation]){
 
     if(context==&NSBinderChangeContext) {
       [self stopObservingChanges];
 
-      //NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
-      //NSLog(@"new value %@", [_source valueForKeyPath:_bindingPath]);
- //  NSLog(@"DST setting %@, for %@",[_source valueForKeyPath:_bindingPath],_keyPath);
+      NSBindingDebugLog(kNSBindingDebugLogLevel2, @"bind event from %@.%@ alias %@ to %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
+      NSBindingDebugLog(kNSBindingDebugLogLevel2, @"new value %@", [_source valueForKeyPath:_bindingPath]);
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"DST setting %@, for %@",[_source valueForKeyPath:_bindingPath],_keyPath);
       
        id value=[_source valueForKeyPath:_bindingPath];
        

@@ -3,16 +3,14 @@
 #import <Foundation/NSString_win32.h>
 #import "Win32Font.h"
 #import <Onyx2D/O2Encoding.h>
-#if 0
 #import <Onyx2D/O2Font_freetype.h>
-#endif
 
 O2FontRef O2FontCreateWithFontName_platform(NSString *name) {
    return [[O2Font_gdi alloc] initWithFontName:name];
 }
 
 O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider) {
-#if 0
+#ifdef FREETYPE_PRESENT
    return [[O2Font_freetype alloc] initWithDataProvider:provider];
 #else
    return nil;
@@ -214,6 +212,10 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 }
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize {
+	return [self createGDIFontSelectedInDC:dc pointSize:pointSize angle:0.];
+}
+
+-(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
    if(_useMacMetrics){
     if (pointSize <= 10.0)
        pointSize=pointSize;
@@ -223,7 +225,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
        pointSize=pointSize/1.125;
    }
    int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
-   Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES];
+	Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES angle: angle];
    
    SelectObject(dc,[result fontHandle]);
    

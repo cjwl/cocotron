@@ -28,8 +28,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setSelectedItemIndex:(unsigned)itemIndex {
-   _selectedItemIndex=itemIndex;
-   [self setNeedsDisplay:YES];
+	if (_selectedItemIndex != itemIndex) {
+		_selectedItemIndex=itemIndex;
+		[self setNeedsDisplay:YES];
+	}
 }
 
 -(NSArray *)itemArray {

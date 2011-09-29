@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPopUpView.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSGraphicsStyle.h>
+#import <AppKit/NSMenuItem.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 enum {
     KEYBOARD_INACTIVE,
@@ -35,6 +37,13 @@ enum {
     nil];
 }
 
+-(NSDictionary *)disabledItemAttributes {
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			_font,NSFontAttributeName,
+			[NSColor grayColor],NSForegroundColorAttributeName,
+			nil];
+}
+
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
    _cellSize=frame.size;
@@ -49,6 +58,7 @@ enum {
 }
 
 -(void)dealloc {
+	[_cachedOffsets release];
    [_font release];
    [super dealloc];
 }
@@ -85,53 +95,90 @@ enum {
       NSMenuItem * item = [items objectAtIndex: i];
       if( ![item isHidden ] )
 	  {
-	     result.height += _cellSize.height;
-		 NSSize titleSize = [[item title] sizeWithAttributes: attributes ];
+		  NSAttributedString* aTitle = [item attributedTitle];
+		  if (aTitle != nil && [aTitle length] > 0) {
+			  // The user is using an attributed title - so respect that when calc-ing the height and width
+			  NSSize size = [aTitle size];
+			  result.height += MAX(_cellSize.height, size.height);
+			  size.width += [item indentationLevel] * 5;
+			  result.width = MAX(result.width, size.width);
+		  } else {
+				result.height += _cellSize.height;
 
-		 if( result.width < titleSize.width )
-			result.width = titleSize.width;
+			  NSSize titleSize = [[item title] sizeWithAttributes: attributes ];
+
+			  titleSize.width += [item indentationLevel] * 5;
+
+			 if( result.width < titleSize.width )
+				result.width = titleSize.width;
+		  }
 	  }
    }
    
    return result;
 }
 
--(unsigned)itemIndexForPoint:(NSPoint)point {
-   unsigned result;
-   NSArray * items=[_menu itemArray];
-   int i, count = [items count];
-   
-   point.y-=2;
-
-   if( point.y < 0 )
-      return NSNotFound;
+- (void)_buildCachedOffsets
+{
+	NSRect result=NSMakeRect(2,2,[self bounds].size.width,_cellSize.height);
 	
-   for( i = 0; i < count; i++ )
-   {
-      if( [[items objectAtIndex: i] isHidden ] )
-	     continue;
-      if( point.y < _cellSize.height )
-	     return i;
-	  point.y -= _cellSize.height;
-   }
-   return NSNotFound;
+	NSArray * items=[_menu itemArray];
+	int i, count = [items count];
+	
+	_cachedOffsets = [[NSMutableArray arrayWithCapacity: count] retain];
+	
+	CGFloat yOffset = 0;
+	
+	// First offset is 0 of course
+	[_cachedOffsets addObject: [NSNumber numberWithFloat: 0]];
+	
+	// Stop one before the end because we're just figuring how far down each one is based on the preceding
+	// entries.
+	for( i = 0; i < count - 1; i++ )
+	{
+		NSMenuItem* item = [items objectAtIndex: i];
+		
+		if( [item isHidden ] ) {
+			continue;
+		}
+		
+		NSAttributedString* aTitle = [item attributedTitle];
+		if (aTitle != nil && [aTitle length] > 0) {
+			NSSize size = [aTitle size];
+			yOffset += MAX(_cellSize.height, size.height);
+		} else {
+			yOffset += _cellSize.height;
+		}
+		[_cachedOffsets addObject: [NSNumber numberWithFloat: yOffset]];
+	}
+}
+
+// For attributed strings - precalcing the the offsets makes performance much faster.
+- (NSArray*)_cachedOffsets
+{
+	if (_cachedOffsets == nil) {
+		[self _buildCachedOffsets];
+	}
+	return _cachedOffsets;
 }
 
 -(NSRect)rectForItemAtIndex:(unsigned)index {
    NSRect result=NSMakeRect(2,2,[self bounds].size.width,_cellSize.height);
 
    result.size.width-=4;
-   
-   NSArray * items=[_menu itemArray];
-   int i, count = [items count];
-   
-   for( i = 0; i < index; i++ )
-   {
-      if( [[items objectAtIndex: i] isHidden ] )
-	     continue;
-	  result.origin.y += _cellSize.height;
-   }
 
+	result.origin.y = [[[self _cachedOffsets] objectAtIndex: index] floatValue];
+
+	NSArray * items=[_menu itemArray];
+	NSMenuItem* item = [items objectAtIndex: index];
+
+	NSAttributedString* aTitle = [item attributedTitle];
+	// Fix up the cell height if needed
+	if (aTitle != nil && [aTitle length] > 0) {
+		NSSize size = [aTitle size];
+		result.size.height = MAX(_cellSize.height, size.height);
+	}
+	
    return result;
 }
 
@@ -151,47 +198,90 @@ enum {
 
    if( [item isHidden] )
       return;
-	
-   if(index==_selectedIndex)
-    attributes=[self selectedItemAttributes];
-   else
-    attributes=[self itemAttributes];
+
+	[[NSColor controlBackgroundColor] setFill];
+	NSRectFill(itemRect);
 
    if([item isSeparatorItem]){
-	NSRect r = itemRect;
-	r.origin.y += r.size.height / 2 - 1;
-	r.size.height = 2;
-	[[self graphicsStyle] drawMenuSeparatorInRect:r];
+		NSRect r = itemRect;
+		r.origin.y += r.size.height / 2 - 1;
+		r.size.height = 2;
+		[[self graphicsStyle] drawMenuSeparatorInRect:r];
    }
    else {
-    NSString *string=[item title];
-    NSSize    size=[string sizeWithAttributes:attributes];
+	   
+	   if(index==_selectedIndex && [item isEnabled]){
+		   [[NSColor selectedTextBackgroundColor] setFill];
+		   NSRectFill(itemRect);
+	   }
 
-    if(index==_selectedIndex){
-     [[NSColor selectedTextBackgroundColor] setFill];
-     NSRectFill(itemRect);
-    }
-    else {
-     [[NSColor controlColor] setFill];
-     NSRectFill(itemRect);
-    }
+	   // Accommodate indentation level
+	   itemRect = NSOffsetRect(itemRect, [item indentationLevel] * 5, 0);
 
-    itemRect=NSInsetRect(itemRect,2,2);
-    itemRect.origin.y+=floor((_cellSize.height-size.height)/2);
-    itemRect.size.height=size.height;
-   
-    [string _clipAndDrawInRect:itemRect withAttributes:attributes];
+	   // Check for an Attributed title first
+	   NSAttributedString* aTitle = [item attributedTitle];
+	   if (aTitle != nil && [aTitle length] > 0) {
+		   itemRect=NSInsetRect(itemRect,2,2);
+			[aTitle _clipAndDrawInRect: itemRect];
+	   } else {
+		   if(index==_selectedIndex && [item isEnabled]) {
+			   attributes=[self selectedItemAttributes];
+		   } else if ([item isEnabled] == NO) {
+			   attributes = [self disabledItemAttributes];
+		   } else {
+			   attributes=[self itemAttributes];
+		   }
+		   NSString *string=[item title];
+		   NSSize    size=[string sizeWithAttributes:attributes];
+		   
+		   itemRect=NSInsetRect(itemRect,2,2);
+		   itemRect.origin.y+=floor((_cellSize.height-size.height)/2);
+		   itemRect.size.height=size.height;
+		   
+		   [string _clipAndDrawInRect:itemRect withAttributes:attributes];
+	   }
    }
 }
+
+-(unsigned)itemIndexForPoint:(NSPoint)point {
+	unsigned result;
+	NSArray * items=[_menu itemArray];
+	int i, count = [items count];
+	
+	point.y-=2;
+	
+	if( point.y < 0 )
+		return NSNotFound;
+	
+	for( i = 0; i < count; i++ )
+	{
+		if( [[items objectAtIndex: i] isHidden ] )
+			continue;
+		
+		NSRect itemRect = [self rectForItemAtIndex: i];
+		if (NSPointInRect( point, itemRect)) {
+			if (([[items objectAtIndex: i] isEnabled] == NO) ||
+				([[items objectAtIndex: i] isSeparatorItem])) {
+				return NSNotFound;
+			}
+			return i;
+		}
+	}
+	return NSNotFound;
+}
+
 
 -(void)drawRect:(NSRect)rect {
    NSArray      *items=[_menu itemArray];
    int           i,count=[items count];
 
-   [[self graphicsStyle] drawPopUpButtonWindowBackgroundInRect:[self bounds]];
+   [[self graphicsStyle] drawPopUpButtonWindowBackgroundInRect: rect];
 
    for(i=0;i<count;i++){
-    [self drawItemAtIndex:i];
+	   NSRect itemRect = [self rectForItemAtIndex: i];
+	   if (NSIntersectsRect(rect, itemRect)) {
+		   [self drawItemAtIndex:i];
+	   }
    }
 }
 
@@ -234,12 +324,18 @@ enum {
     if(index!=NSNotFound && _keyboardUIState == KEYBOARD_INACTIVE){
      if(_selectedIndex!=index){
       unsigned previous=_selectedIndex;
-
+		 if (previous != NSNotFound) {
+			 NSRect itemRect = [self rectForItemAtIndex: previous];
+			 [self setNeedsDisplayInRect: itemRect];
+		 }
       _selectedIndex=index;
+		 if (_selectedIndex != NSNotFound) {
+			 NSRect itemRect = [self rectForItemAtIndex: _selectedIndex];
+			 [self setNeedsDisplayInRect: itemRect];
+		 }
      }
     }
     
-    [self setNeedsDisplay:YES];
     [[self window] flushWindow];
 
     event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask];
@@ -282,7 +378,9 @@ enum {
 
      if(change)
       [[self window] setFrameOrigin:origin];
-    }
+    } else {
+		_selectedIndex == NSNotFound;
+	}
 
     point=[self convertPoint:[event locationInWindow] fromView:nil];
 

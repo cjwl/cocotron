@@ -230,8 +230,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    for(i=0; i<count; i++) {
       segmentFrame.size.width=[[_segments objectAtIndex:i] width];
-      [self drawSegment:i inFrame:segmentFrame withView:controlView];
-      segmentFrame.origin.x+=segmentFrame.size.width;
+	   [NSGraphicsContext saveGraphicsState];
+	   // Make sure that segment drawing is not allowed to spill out into other segments
+	   NSBezierPath* clipPath = [NSBezierPath bezierPathWithRect: segmentFrame];
+	   [clipPath addClip];
+	   [self drawSegment:i inFrame:segmentFrame withView:controlView];
+	   [NSGraphicsContext restoreGraphicsState];
+	   segmentFrame.origin.x+=segmentFrame.size.width;
    }
    
    _lastDrawRect=cellFrame;

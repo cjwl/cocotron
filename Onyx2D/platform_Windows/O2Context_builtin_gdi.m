@@ -10,9 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Surface_DIBSection.h>
 #import "O2DeviceContext_gdi.h"
 #import <Onyx2D/O2Font_gdi.h>
-#if 0
 #import <Onyx2D/O2Font_freetype.h>
-#endif
 #import <Onyx2D/O2ClipState.h>
 #import <Onyx2D/O2ClipPhase.h>
 #import <Onyx2D/O2ColorSpace.h>
@@ -111,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2SurfaceUnlock(_surface);
 }
 
-#if 0
+#ifdef FREETYPE_PRESENT
 static O2Paint *paintFromColor(O2ColorRef color){
    O2ColorRef   rgbColor=O2ColorConvertToDeviceRGB(color);
    CGFloat r,g,b,a;
@@ -158,7 +156,7 @@ static inline O2argb8u testO2argb8uMultiplyByMask8u(O2argb8u result,uint32_t val
    return result;
 }
 
-#if 0
+#ifdef FREETYPE_PRESENT
 static void applyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,uint8_t *coverageSpan,O2argb8u *src,int length){
    int i;
    
@@ -288,8 +286,14 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
    O2GState         *gState=O2ContextCurrentGState(self);
    O2Font           *font=O2GStateFont(gState);
    O2AffineTransform Trm=O2ContextGetTextRenderingMatrix(self);
+	
    NSPoint           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
-   O2Size            fontSize=O2SizeApplyAffineTransform(O2SizeMake(0,O2GStatePointSize(gState)),Trm);
+	
+	// Only use the scaling part of the current transform to scale the font size
+	float scaleX   = sqrt((Trm.a * Trm.a) + (Trm.c * Trm.c));
+	float scaleY   = sqrt((Trm.b * Trm.b) + (Trm.d * Trm.d));
+	O2AffineTransform scalingTransform = O2AffineTransformMakeScale(scaleX, scaleY);
+	O2Size            fontSize=O2SizeApplyAffineTransform(O2SizeMake(0,O2GStatePointSize(gState)),scalingTransform);
    int               i;
    O2Size            defaultAdvances[count];
    
@@ -407,9 +411,9 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
        self->_scratchBitmap=[self->_scratchContext bitmapBytes];
       }
 
-      if(self->_scratchFont==nil)
-       self->_scratchFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:self->_scratchDC pointSize:ABS(fontSize.height)];
-
+		 if(self->_scratchFont==nil) {
+			 self->_scratchFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:self->_scratchDC pointSize:ABS(fontSize.height)];
+		 }
       uint8_t *erase=self->_scratchBitmap;
       int r,c;
       for(r=0;r<extent.cy;r++){
@@ -434,26 +438,35 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
     }
 #endif
 #else
-    if(gState->_fontIsDirty){
-     O2GStateClearFontIsDirty(gState);
-     [self->_gdiFont release];
-     self->_gdiFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:self->_dc pointSize:ABS(fontSize.height)];
-    }
-   
-    SetTextColor(self->_dc,COLORREFFromColor(O2ContextFillColor(self)));
+	   // Use the current layer context if any
+	   O2Context_builtin_gdi *context = self;
+	   O2LayerRef layer=[self->_layerStack lastObject];
+	   if (layer) {
+		   context = (O2Context_builtin_gdi *)O2LayerGetContext(layer);
+	   }
+	   
+	   if(gState->_fontIsDirty){
+		   O2GStateClearFontIsDirty(gState);
+		   [self->_gdiFont release];
+		   // Rotate the font according to the current transform
+		   O2Float32 angle = atan2(-Trm.b,Trm.a);
+		   self->_gdiFont=[(O2Font_gdi *)font createGDIFontSelectedInDC:context->_dc pointSize:ABS(fontSize.height) angle:angle];
+	   }
+	   SelectObject(context->_dc,[self->_gdiFont fontHandle]);
+    SetTextColor(context->_dc,COLORREFFromColor(O2ContextFillColor(self)));
 
     INT dx[count];
     
-    if(advances!=NULL){
-   for(i=0;i<count;i++)
-      dx[i]=lroundf(O2SizeApplyAffineTransform(advances[i],Trm).width);
-    }
-    
-    ExtTextOutW(self->_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,(advances!=NULL)?dx:NULL);
+	   if(advances!=NULL) {
+		   for(i=0;i<count;i++) {
+			   dx[i]=lroundf(O2SizeApplyAffineTransform(advances[i],Trm).width);
+		   }
+	   }
+	   ExtTextOutW(context->_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,(advances!=NULL)?dx:NULL);
 #endif
    }
    else if(O2FontGetPlatformType(font)==O2FontPlatformTypeFreeType){
-#if 0
+#ifdef FREETYPE_PRESENT
     O2Font_freetype *ftFont=(O2Font_freetype *)font;
     FT_Face          face=O2FontFreeTypeFace(ftFont);
       

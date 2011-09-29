@@ -403,6 +403,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
      cellFrame.size.width,cellFrame.size.height)];
+	[[_menu delegate] menuNeedsUpdate: _menu];
+//	[[_menu delegate] menuWillOpen: _menu];
    [window setMenu:_menu];
    if([self font]!=nil)
     [window setFont:[self font]];
@@ -413,10 +415,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [window selectItemAtIndex:_selectedIndex];
 
    NSInteger itemIndex=[window runTrackingWithEvent:event];
-   if(itemIndex!=NSNotFound)
-	[self selectItemAtIndex:itemIndex];
-
+	if(itemIndex!=NSNotFound) {
+		[(NSPopUpButton*)controlView selectItemAtIndex:itemIndex];
+	}
    [window close]; // release when closed=YES
+//	[[_menu delegate] menuDidClose: _menu];
 
    return YES;
 }

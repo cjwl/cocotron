@@ -61,3 +61,15 @@ typedef NSUInteger NSKeyValueChange;
 @end
 
 
+enum {
+	kNSKeyValueDebugLevel1 = 1, // public method calls
+	kNSKeyValueDebugLevel2,	// some clarifying logging
+	kNSKeyValueDebugLevel3, // Most intimate function calls
+};
+
+FOUNDATION_EXPORT void NSDetermineKeyValueDebugLoggingLevel();
+
+FOUNDATION_EXPORT int NSKeyValueDebugLogLevel;
+
+#define NSKeyValueDebugLog(level, format, args...) NSDetermineKeyValueDebugLoggingLevel(); if (level <= NSKeyValueDebugLogLevel) NSLog(@"%d: %s line: %d | %@", level, __PRETTY_FUNCTION__, __LINE__, [NSString stringWithFormat: format, ## args])
+

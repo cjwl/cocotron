@@ -22,7 +22,7 @@ static void *NSKVOBinderChangeContext;
 { 
   if(!_isObserving){
    @try {
-      //NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
+	   NSBindingDebugLog(kNSBindingDebugLogLevel2, @"start observing binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
       [super startObservingChanges];
       [_destination addObserver:self  forKeyPath:_keyPath  options:0 context:&NSKVOBinderChangeContext];
       _isObserving=YES;
@@ -35,6 +35,7 @@ static void *NSKVOBinderChangeContext;
 -(void)stopObservingChanges {
    @try {
       if(_isObserving) {
+		  NSBindingDebugLog(kNSBindingDebugLogLevel2, @"stop observing binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
          [super stopObservingChanges];
          [_destination removeObserver:self forKeyPath:_keyPath];
        _isObserving=NO;
@@ -225,6 +226,8 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
     
    }
    
+	NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, _bindingPath);
+	
    [_source setValue:value forKeyPath:_bindingPath];
 
    if([self conditionallySetsEditable])
@@ -249,8 +252,8 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-  //NSLog(@"observeValueForKeyPath %@, %@", kp, object);
-
+	NSBindingDebugLog(kNSBindingDebugLogLevel1, @"keyPath: %@\n   object: %@\n   change: %@\n    context: %p", kp, object, change, context);
+	
 // We want changes to propogate one way so we stop observing for both our handling and super's,
 // otherwise our change will generate a change for the super's observation and it will write a value
 // back the value we just got here which causes a problem for read only values
@@ -260,8 +263,6 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
    if(context==&NSKVOBinderChangeContext)
 	{
    [self stopObservingChanges];
-
-    //  NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
 
       @try {
          [self writeDestinationToSource];
@@ -276,20 +277,23 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
     [self startObservingChanges];
 	}
 	else {
+		NSBindingDebugLog(kNSBindingDebugLogLevel3, @"punting to super");
       [super observeValueForKeyPath:kp ofObject:object change:change context:context];
     }
-    
 }
 
 -(void)bind
 {
+    NSBindingDebugLog(kNSBindingDebugLogLevel1, @"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
 	[self syncUp];
 	[self startObservingChanges];
 }
 
 -(void)unbind
 {
+    NSBindingDebugLog(kNSBindingDebugLogLevel1, @"alias: %@ (%@)", _bindingPath, self);
 	[self stopObservingChanges];
 }
+
 @end
 

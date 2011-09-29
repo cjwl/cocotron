@@ -18,28 +18,28 @@ void O2MutablePathEllipseToBezier(O2Point *cp,float x,float y,float xrad,float y
    float ymag=yrad*magic;
    int   i=0;
 
-   cp[i++]=O2PointMake(-xrad,0);
-
-   cp[i++]=O2PointMake(-xrad,ymag);
-   cp[i++]=O2PointMake(-xmag,yrad);
-   cp[i++]=O2PointMake(0,yrad);
-   
-   cp[i++]=O2PointMake(xmag,yrad);
-   cp[i++]=O2PointMake(xrad,ymag);
-   cp[i++]=O2PointMake(xrad,0);
-
-   cp[i++]=O2PointMake(xrad,-ymag);
-   cp[i++]=O2PointMake(xmag,-yrad);
-   cp[i++]=O2PointMake(0,-yrad);
-
-   cp[i++]=O2PointMake(-xmag,-yrad);
-   cp[i++]=O2PointMake(-xrad,-ymag);
-   cp[i++]=O2PointMake(-xrad,0);
-   
-   for(i=0;i<13;i++){
-    cp[i].x+=x;
-    cp[i].y+=y;
-   }
+	cp[i++]=O2PointMake(-xrad,0);
+	
+	cp[i++]=O2PointMake(-xrad,-ymag);
+	cp[i++]=O2PointMake(-xmag,-yrad);
+	cp[i++]=O2PointMake(0,-yrad);
+	
+	cp[i++]=O2PointMake(xmag,-yrad);
+	cp[i++]=O2PointMake(xrad,-ymag);
+	cp[i++]=O2PointMake(xrad,0);
+	
+	cp[i++]=O2PointMake(xrad,ymag);
+	cp[i++]=O2PointMake(xmag,yrad);
+	cp[i++]=O2PointMake(0,yrad);
+	
+	cp[i++]=O2PointMake(-xmag,yrad);
+	cp[i++]=O2PointMake(-xrad,ymag);
+	cp[i++]=O2PointMake(-xrad,0);
+	
+	for(i=0;i<13;i++){
+		cp[i].x+=x;
+		cp[i].y+=y;
+	}
 }
 
 @implementation O2MutablePath

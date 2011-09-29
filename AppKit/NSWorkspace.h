@@ -76,3 +76,11 @@ APPKIT_EXPORT NSString * const NSWorkspaceRecycleOperation;
 
 @end
 
+@interface NSWorkspace (CocotronAdditions)
+
+// Cocoa should provide a simple method for this - but it doesn't. You have to build it with Launch Services
+// But so many files are typically hidden from users in GUI browsers that this just makes life better for everyone...
+- (BOOL)isFileHiddenAtPath:(NSString*)path;
+
+@end
+
