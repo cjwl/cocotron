@@ -276,8 +276,11 @@ static NSMapTable *_globalNameToClass=NULL;
 -(void)encodeConditionalObject:object forKey:(NSString *)key {
    if(_pass==0)
     return;
-    
-   [self encodeObject:object forKey:key];
+	
+    // Only encode the object if it's already somewhere
+    if (NSMapGet(_objectToUid,object)) {
+        [self encodeObject:object forKey:key];
+    }
 }
 
 
