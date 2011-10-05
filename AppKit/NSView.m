@@ -1779,8 +1779,17 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(BOOL)needsToDrawRect:(NSRect)rect {
-   NSUnimplementedMethod();
-   return YES;
+	BOOL needsToDrawRect = NO;
+	if(_invalidRectCount == 0) {
+		needsToDrawRect = NSIntersectsRect(rect, [self visibleRect]);
+	} else {
+		int i;
+		
+		for(i=0; i<_invalidRectCount && needsToDrawRect == NO;i++) {
+			needsToDrawRect = NSIntersectsRect(rect, _invalidRects[i]);
+		}
+	}
+	return needsToDrawRect;
 }
 
 -(void)getRectsBeingDrawn:(const NSRect **)rects count:(NSInteger *)count {
