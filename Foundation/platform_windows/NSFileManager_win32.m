@@ -57,6 +57,16 @@ static NSString *TranslatePath( NSString *path )
 	return [NSString stringWithCharacters:result length:resultLength];
 }
 
+static NSString *DriveLetterInPath(NSString* path)
+{
+	NSArray* components = [path componentsSeparatedByString: @":"];
+	if ([components count] > 0) {
+		NSString* driveLetter = [NSString stringWithFormat: @"%@:\\", [components objectAtIndex: 0]];
+		return driveLetter;
+	}
+	return nil;
+}
+
 static NSError *NSErrorForGetLastErrorCode(DWORD code)
 {
 	NSString *localizedDescription=@"NSErrorForGetLastError localizedDescription";
@@ -507,13 +517,50 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	if(path == nil) {
 		return nil;
 	}
-	if(![path hasSuffix:@"\\"])
+
+	path = TranslatePath(path);
+
+	if(![path hasSuffix:@"\\"]) {
 		path=[path stringByAppendingString:@"\\"];
-    
-	if(GetVolumeInformationW([path fileSystemRepresentationW], NULL , 0, &serialNumber, NULL, NULL, NULL, 0 ))
-		return [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:serialNumber] forKey:NSFileSystemNumber];
+    }
 	
-	return nil;
+	NSMutableDictionary* attrs = [NSMutableDictionary dictionaryWithCapacity: 3];
+	
+	const uint16_t *wPath = [path fileSystemRepresentationW];
+	ULARGE_INTEGER freeBytesAvailable;
+	ULARGE_INTEGER totalNumberOfBytes; // This seems to be the same as freeBytesAvailable
+	ULARGE_INTEGER totalNumberOfFreeBytes;
+	
+	if (GetDiskFreeSpaceExW(wPath, &freeBytesAvailable, &totalNumberOfBytes, &totalNumberOfBytes) != 0) {
+		[attrs setObject: [NSNumber numberWithUnsignedLongLong: freeBytesAvailable.QuadPart] forKey: NSFileSystemFreeSize];
+		[attrs setObject: [NSNumber numberWithUnsignedLongLong: totalNumberOfFreeBytes.QuadPart] forKey: NSFileSystemSize];
+	} else {
+		NSError* error = NSErrorForGetLastError();
+		NSLog(@"GetDiskFreeSpaceExW failed for path: '%@' with error: %@", path, error);
+		if (errorp) {
+			*errorp = error;
+		}
+		return nil;
+	}
+
+	
+	NSString* driveLetter = DriveLetterInPath(path);
+	if (driveLetter) {
+		wPath = [driveLetter fileSystemRepresentationW];
+	}
+	// This seems to prefer Drive Letters to full paths
+	if (GetVolumeInformationW(wPath, NULL , 0, &serialNumber, NULL, NULL, NULL, 0 ) != 0) {
+		[attrs setObject:[NSNumber numberWithInt:serialNumber] forKey:NSFileSystemNumber];
+	} else {
+		NSError* error = NSErrorForGetLastError();
+		NSLog(@"GetVolumeInformationW failed for path: '%@' with error: %@", path, error);
+		if (errorp) {
+			*errorp = error;
+		}
+		return nil;
+	}
+	
+	return attrs;
 }
 
 -(NSDictionary *)attributesOfItemAtPath:(NSString *)path error:(NSError **)error {

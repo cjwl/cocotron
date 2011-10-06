@@ -8,11 +8,18 @@
 
 #import <Foundation/NSSpellEngine.h>
 
-#undef near
-#import "hunspelldll.h"
+@class NSMutableDictionary;
+
 
 @interface NSSpellEngine_hunspell : NSSpellEngine {
-
+   NSMutableDictionary *_dictionaries;
+   
+   NSString *_directory;
+   NSString *_localeIdentifier;
+   
+   void *_hunspell;
 }
+
+-initWithContentsOfFile:(NSString *)path;
 
 @end

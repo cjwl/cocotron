@@ -60,9 +60,11 @@ enum {
 }
 
 -(void)headers:(NSDictionary *)headers {
+#if 0
    if(NSDebugEnabled)
     NSLog(@"statusCode=%d headers: %@",_statusCode,headers);
-   
+#endif
+
    if(_statusCode>=200 && _statusCode<300){
     NSURL             *url=[_request URL];
     NSHTTPURLResponse *response=[[[NSHTTPURLResponse alloc] initWithURL:url statusCode:_statusCode headers:headers] autorelease];
@@ -85,8 +87,6 @@ enum {
     [_client URLProtocol:self didLoadData:[_cachedResponse data]];
 }
    else {
- //  OBJCEnableMsgTracing();
-
     NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"HTTP status code = %d", _statusCode] forKey:NSLocalizedDescriptionKey];
      
     NSError *error=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo];

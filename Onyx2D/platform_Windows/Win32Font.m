@@ -11,39 +11,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #ifndef CLEARTYPE_QUALITY
 #define CLEARTYPE_QUALITY 5
 #endif
-
 #ifndef CLEARTYPE_NATURAL_QUALITY
 #define CLEARTYPE_NATURAL_QUALITY 6
 #endif
 
-
 @implementation Win32Font
 
-static BOOL g_disableAntialias = NO;
-
-+ (void)setAntialiasDisabled:(BOOL)f {
-    g_disableAntialias = f;
+-initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias angle:(CGFloat)angle
+{
+	NSUInteger length=[name length];
+	unichar    buffer[length+1];
+	
+	[name getCharacters:buffer];
+	buffer[length]=0x0000;
+	
+	long quality = antialias?CLEARTYPE_QUALITY:DEFAULT_QUALITY;
+	
+	angle = 180.*angle/M_PI*10; // Tenth of degrees
+	_handle=CreateFontW(height,0,angle,angle,FW_NORMAL,
+						FALSE,FALSE,FALSE,
+						DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
+						quality,DEFAULT_PITCH|FF_DONTCARE,buffer);
+	return self;
 }
 
--initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias {
-   NSUInteger length=[name length];
-   unichar    buffer[length+1];
-   
-   [name getCharacters:buffer];
-   buffer[length]=0x0000;
-   
-   long quality = antialias?CLEARTYPE_QUALITY:DEFAULT_QUALITY;
-   
-   // in Win32, "antialiased" apparently means the Win98-style AA where only large pixel sizes are antialiased.
-   // hence passing this flag will result in the old rendering.
-   if (g_disableAntialias) quality = ANTIALIASED_QUALITY;
-   
-   _handle=CreateFontW(height,0,0,0,FW_NORMAL,
-     FALSE,FALSE,FALSE,
-     DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
-     quality,
-     DEFAULT_PITCH|FF_DONTCARE,buffer);
-   return self;
+-initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias 
+{
+	return [self initWithName:name height:height antialias:antialias angle: 0.f];
 }
 
 -(void)dealloc {

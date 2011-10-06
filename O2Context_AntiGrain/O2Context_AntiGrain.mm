@@ -194,6 +194,10 @@ class context_renderer
 			float ymin = ren_base->ymin();
 			float xmax = ren_base->xmax();
 			float ymax = ren_base->ymax();
+			if (xmax <= xmin || ymax <= ymin) {
+				O2Log("Nothing to do - skip shadow blur");
+				return;
+			}
 			
 			// Clip the rect to render - no need to try to blur any clipped area
 			xmin = max(xmin, x1);
@@ -201,14 +205,14 @@ class context_renderer
 			ymin = max(ymin, y1);
 			ymax = min(ymax, y2);
 
-			xmin = agg::ufloor(xmin);
-			ymin = agg::ufloor(ymin);
-			xmax = agg::uceil(xmax);
-			ymax = agg::uceil(ymax);
-			
+			xmin = floorf(xmin);
+			ymin = floorf(ymin);
+			xmax = ceilf(xmax);
+			ymax = ceilf(ymax);
+
 			// Blur the shadows
-			if (shadowBlurRadius > 0) {
-				int radius = agg::uround(shadowBlurRadius);
+			int radius = agg::iround(shadowBlurRadius);
+			if (radius > 0) {
 				// Add the blur radius to the area to blur
 				xmin -= radius;
 				xmax += radius;
@@ -220,7 +224,11 @@ class context_renderer
 				O2Log("Shadow: blur shadow - area : ((%.0f,%.0f),(%.0f,%.0f))", xmin, ymin, xmax - xmin, ymax - ymin);
 				// Stack blur - not really a gaussian one but much faster and good enough
 				// Blur only the current clipped area - no need to process pixels we won't see
-				partial_stack_blur_rgba32(*pixelFormatShadow, radius, radius,  xmin, xmax, ymin, ymax);
+				if (xmax > xmin && ymax > ymin) {
+					partial_stack_blur_rgba32(*pixelFormatShadow, radius, radius,  xmin, xmax, ymin, ymax);
+				} else {
+					O2Log("Skip blurring");
+				}
 				O2Log("Shadow: done blur");
 			}
 			
@@ -232,14 +240,20 @@ class context_renderer
 			ymax -= shadowOffset.height;
 			xmin = max(xmin,0);
 			ymin = max(ymin,0);
+
+			xmin = floorf(xmin);
+			ymin = floorf(ymin);
+			xmax = ceilf(xmax);
+			ymax = ceilf(ymax);
 			
-			xmin = agg::ufloor(xmin);
-			ymin = agg::ufloor(ymin);
-			xmax = agg::uceil(xmax);
-			ymax = agg::uceil(ymax);
-			r.clip_box(xmin, ymin, xmax, ymax);
-			
-			// Rasterize the shadow to our main renderer
+			if (xmax <= xmin || ymax <= ymin) {
+				O2Log("Nothing to do - skip shadow drawing");
+				return;
+			}
+
+			r.clip_box(ren_base->xmin(), ren_base->ymin(), ren_base->xmax(), ren_base->ymax());
+
+				// Rasterize the shadow to our main renderer
 			agg::span_allocator<typename pixfmt_shadow_type::color_type> sa;
 			typedef agg::image_accessor_clone<pixfmt_shadow_type> img_accessor_type;
 			

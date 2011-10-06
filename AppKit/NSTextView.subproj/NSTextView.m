@@ -62,6 +62,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(NSArray *)_delegateChangeSelectionFromRanges:(NSArray *)from toRanges:(NSArray *)to;
 
+-(void)_continuousSpellCheckWithInvalidatedRange:(NSRange)range;
+-(void)_continuousSpellCheck;
 @end
 
 @implementation NSTextView
@@ -385,6 +387,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if((!stillSelecting) && ![oldRanges isEqual:[self selectedRanges]]){
     [[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [oldRanges objectAtIndex:0] forKey: NSOldSelectedCharacterRange]];
    }
+
+   if(!_isContinuousSpellCheckingEnabled)
+    [[self textStorage] removeAttribute:NSSpellingStateAttributeName range:NSMakeRange(0,[[self string] length])];
 }
 
 -(void)setSelectedRanges:(NSArray *)ranges {
@@ -1894,11 +1899,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 // this does not didChangeText
 }
 
+// Should this be related to typingAttributes somehow?
 -(NSDictionary *)_stringAttributes {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
 
    [result setObject:_font forKey: NSFontAttributeName];
-
+   [result setObject:_textColor forKey:NSForegroundColorAttributeName];
    return result;
 }
 
@@ -1973,6 +1979,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
   
   [_textStorage replaceCharactersInRange:range withString:string];
   [_textStorage setAttributes:[self _stringAttributes] range:NSMakeRange(range.location,[string length])];
+
+// TODO: this needs to be optimized to check the changed range expanded (probably to paragraphs) instead of everything
+   [self _continuousSpellCheckWithInvalidatedRange:range];
+
   [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
 }
 
@@ -2074,10 +2084,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    color=[color copy];
    [_textColor release];
    _textColor=color;
+   [self setTextColor:_textColor range:NSMakeRange(0, [[self textStorage] length])];
 }
 
 -(void)setTextColor:(NSColor *)color range:(NSRange)range {
-   [[self textStorage] addAttribute:NSForegroundColorAttributeName value:color range:range];
+   if(color==nil)
+    [[self textStorage] removeAttribute:NSForegroundColorAttributeName range:range];
+   else
+    [[self textStorage] addAttribute:NSForegroundColorAttributeName value:color range:range];
 }
 
 -(void)setDrawsBackground:(BOOL)flag {
@@ -2154,7 +2168,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     size.height=MAX([self frame].size.height,size.height);
     
-    NSView *clipView=[self superview];
+    NSView *clipView=(NSClipView *)[self superview];
     
     if([clipView isKindOfClass:[NSClipView class]]){
      if(size.height<[clipView bounds].size.height)
@@ -2252,8 +2266,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSNotification *note=[NSNotification notificationWithName:NSTextDidEndEditingNotification object:self userInfo:nil];
 
    [[NSNotificationCenter defaultCenter] postNotification:note];
-   _didSendTextDidEndNotification=NO;
    }
+
    
    return YES;
 }
@@ -2597,6 +2611,17 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [self didChangeText];
 }
 
+-(void)_changeSpellingFromMenuItem:sender {
+   NSString *correction=[sender title];
+   NSRange selectedRange=[self selectedRange];
+   
+   if (![self _delegateChangeTextInRange: selectedRange replacementString: correction])
+    return;
+	   
+   [self _replaceCharactersInRange:selectedRange withString:correction];
+   [self didChangeText];
+}
+
 -(void)ignoreSpelling:sender {
    [[NSSpellChecker sharedSpellChecker] ignoreWord:[[sender selectedCell] stringValue] inSpellDocumentWithTag: [self spellCheckerDocumentTag]];
 }
@@ -2605,9 +2630,97 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
 }
 
+-(void)_continuousSpellCheckWithInvalidatedRange:(NSRange)invalidatedRange {
+   NSString *string=[self string];
+   NSUInteger start, end;
+
+        // TODO, truncate invalidated range to string size if needed
+        
+   // round range to nearest paragraphs
+
+   [string getParagraphStart:&start end:&end contentsEnd:NULL forRange:invalidatedRange];
+   invalidatedRange=NSMakeRange(start,end-start);
+
+   [[self textStorage] removeAttribute:NSSpellingStateAttributeName range:invalidatedRange];
+
+   if(_isContinuousSpellCheckingEnabled) {
+    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
+    
+    NSArray *checking=[checker checkString:string range:invalidatedRange types:NSTextCheckingTypeSpelling options:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag] orthography:NULL wordCount:NULL];
+   
+    NSUInteger selectionLocation=[self selectedRange].location;
+    
+    for(NSTextCheckingResult *result in checking){
+     NSRange range=[result range];
+    
+     // inclusive of max range if the selection is sitting at the end of the word
+     BOOL doNotMark=(selectionLocation>=range.location && selectionLocation<=NSMaxRange(range));
+     
+     if(!doNotMark)
+      [self setSpellingState:NSSpellingStateSpellingFlag range:range];
+    }
+   }
+}
+
+-(void)_continuousSpellCheck {
+   [self _continuousSpellCheckWithInvalidatedRange:NSMakeRange(0,[[self string] length])];
+}
+
 -(void)checkSpelling:sender {
-   [NSSpellChecker sharedSpellChecker];
-   NSUnimplementedMethod();
+   NSString *string=[self string];
+   NSRange selection=[self selectedRange];
+   NSRange range=NSMakeRange(selection.location,[string length]-selection.location);
+   
+   NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
+   NSArray *checking=[checker checkString:string range:range types:NSTextCheckingTypeSpelling options:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag] orthography:NULL wordCount:NULL];
+   
+   for(NSTextCheckingResult *result in checking){
+    NSRange range=[result range];
+
+    [self setSelectedRange:range]; // this will clear the current spelling attributes
+    
+    [self setSpellingState:NSSpellingStateSpellingFlag range:range];
+    
+    // manual spell check only does one
+    break;
+   }
+}
+
+-(NSMenu *)menuForEvent:(NSEvent *)event {
+    NSRange glyphRange;
+    
+    NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
+    float fraction;
+    
+    NSRange range = [_textStorage doubleClickAtIndex: [self glyphIndexForPoint:point fractionOfDistanceThroughGlyph:&fraction]];
+    
+    [self setSelectedRange:range];
+    
+    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
+    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
+
+    NSLog(@"guesses=%@",guesses);
+    
+    NSMenu *menu=[[[NSMenu alloc] initWithTitle:@""] autorelease];
+
+    if([guesses count]==0) {
+        NSMenuItem *item=[menu addItemWithTitle:@"No Guesses Found" action:@selector(cut:) keyEquivalent:@""];
+        [item setEnabled:NO];
+    }
+    else {
+        for(NSString *guess in guesses){
+         [menu addItemWithTitle:guess action:@selector(_changeSpellingFromMenuItem:) keyEquivalent:@""];
+        }
+    }
+    [menu addItem:[NSMenuItem separatorItem]];
+
+    [menu addItemWithTitle:@"Cut" action:@selector(cut:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Copy" action:@selector(copy:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@""];
+    [menu addItem:[NSMenuItem separatorItem]];
+    [menu addItemWithTitle:@"Select All" action:@selector(selectAll:) keyEquivalent:@""];
+                    
+    return menu;
 }
 
 -(NSInteger)spellCheckerDocumentTag {
@@ -2637,12 +2750,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)setContinuousSpellCheckingEnabled:(BOOL)value {
    _isContinuousSpellCheckingEnabled=value;
-   NSUnimplementedMethod();
+
+   [self _continuousSpellCheck];
 }
 
 -(void)toggleContinuousSpellChecking:sender {
-   NSUnimplementedMethod();
    _isContinuousSpellCheckingEnabled=!_isContinuousSpellCheckingEnabled;
+   
+   [self _continuousSpellCheck];
 }
 
 -(BOOL)isAutomaticSpellingCorrectionEnabled {
@@ -2660,16 +2775,16 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(NSTextCheckingTypes)enabledTextCheckingTypes {
-   NSUnimplementedMethod();
-   return 0;
+   return _enabledTextCheckingTypes;
 }
 
 -(void)setEnabledTextCheckingTypes:(NSTextCheckingTypes)checkingTypes {
+   _enabledTextCheckingTypes=checkingTypes;
    NSUnimplementedMethod();
 }
 
 -(void)setSpellingState:(NSInteger)value range:(NSRange)characterRange {
-   NSUnimplementedMethod();
+   [[self textStorage] addAttribute:NSSpellingStateAttributeName value:[NSNumber numberWithUnsignedInt:value] range:characterRange];
 }
 
 @end

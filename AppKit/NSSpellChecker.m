@@ -8,11 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSSpellChecker.h>
 #import <AppKit/NSPanel.h>
+#import <AppKit/NSMenu.h>
+#import <AppKit/NSMenuItem.h>
 #import <AppKit/NSRaise.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSOrthography.h>
+#import <Foundation/NSSpellEngine.h>
 #import "NSSpellCheckerTagData.h"
 #import "NSSpellingViewController.h"
+
+NSString * const NSSpellCheckerDidChangeAutomaticTextReplacementNotification=@"NSSpellCheckerDidChangeAutomaticTextReplacementNotification";
+NSString * const NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification=@"NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification";
+
+NSString * const NSTextCheckingOrthographyKey=@"NSTextCheckingOrthographyKey";
+NSString * const NSTextCheckingQuotesKey=@"NSTextCheckingQuotesKey";
+NSString * const NSTextCheckingReplacementsKey=@"NSTextCheckingReplacementsKey";
+NSString * const NSTextCheckingReferenceDateKey=@"NSTextCheckingReferenceDateKey";
+NSString * const NSTextCheckingReferenceTimeZoneKey=@"NSTextCheckingReferenceTimeZoneKey";
+NSString * const NSTextCheckingDocumentURLKey=@"NSTextCheckingDocumentURLKey";
+NSString * const NSTextCheckingDocumentTitleKey=@"NSTextCheckingDocumentTitleKey";
+NSString * const NSTextCheckingDocumentAuthorKey=@"NSTextCheckingDocumentAuthorKey";
 
 @implementation NSSpellChecker
 
@@ -100,14 +116,50 @@ static NSSpellChecker *shared=nil;
    return [self checkSpellingOfString:string startingAt:offset language:nil wrap:NO inSpellDocumentWithTag:0 wordCount:NULL];
 }
 
+-(NSString *)currentLanguage {
+    return [[NSLocale currentLocale] localeIdentifier];
+}
+
 -(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount {
-   NSUnimplementedMethod();
-   return NSMakeRange(0,0);
+   NSMutableDictionary *options=[NSMutableDictionary dictionary];
+   
+   if(language==nil){
+    language=[self currentLanguage];
+    
+    NSLog(@"language=%@",language);
+   }
+   
+   if(language!=nil){
+    NSDictionary  *languageMap=[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:language] forKey:@"Latn"];
+    NSOrthography *orthography=[NSOrthography orthographyWithDominantScript:@"Latn" languageMap:languageMap];
+    
+    [options setObject:orthography forKey:NSTextCheckingOrthographyKey];
+   }
+
+   NSArray *checking=[self checkString:string range:NSMakeRange(offset,[string length]-offset) types:NSTextCheckingTypeSpelling options:options inSpellDocumentWithTag:tag orthography:NULL wordCount:wordCount];
+   
+   if([checking count]==0)
+    return NSMakeRange(0,0);
+    
+   NSTextCheckingResult *first=[checking objectAtIndex:0];
+   
+   return [first range];
+}
+
+-(NSSpellEngine *)currentSpellEngine {
+   return [[NSSpellEngine allSpellEngines] objectAtIndex:0];
 }
 
 -(NSArray *)checkString:(NSString *)string range:(NSRange)range types:(NSTextCheckingTypes)types options:(NSDictionary *)options inSpellDocumentWithTag:(NSInteger)tag orthography:(NSOrthography **)orthography wordCount:(NSInteger *)wordCount {
-   NSUnimplementedMethod();
-   return 0;
+   NSSpellEngine *spellEngine=[self currentSpellEngine];
+   
+   /* NSSpellChecker and NSSpellServer have inconsistent API, we accept a range but the server only takes an offset. */
+   /* NSSpellChecker returns by ref an orthography, yet NSSpellServer accepts one as argument. */
+   /* I guess this isn't one to one and there is some extra work being done in NSSpellChecker. */
+   
+   NSString *substring=[string substringToIndex:NSMaxRange(range)];
+   
+   return [spellEngine checkString:substring offset:range.location types:types options:options orthography:[options objectForKey:NSTextCheckingOrthographyKey] wordCount:wordCount];
 }
 
 -(void)closeSpellDocumentWithTag:(NSInteger)tag { 
@@ -134,8 +186,11 @@ static NSSpellChecker *shared=nil;
 }
 
 -(NSArray *)guessesForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag {
-   NSUnimplementedMethod();
-   return 0;
+    NSSpellEngine *spellEngine=[self currentSpellEngine];
+
+    NSString *word = [string substringWithRange: range];
+    
+    return [spellEngine suggestGuessesForWord: word inLanguage: language];
 }
 
 -(void)learnWord:(NSString *)word {
@@ -159,9 +214,28 @@ static NSSpellChecker *shared=nil;
 
 
 
--(NSMenu *)menuForResult:(NSTextCheckingResult *)result string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view {
-   NSUnimplementedMethod();
-   return 0;
+-(NSMenu *)menuForResult:(NSTextCheckingResult *)checkingResult string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view {
+   NSSpellEngine *engine=[self currentSpellEngine];
+   
+   NSMenu *result=[[NSMenu alloc] initWithTitle:@""];
+    
+   NSRange range=[checkingResult range];
+   NSString *word=[checkedString substringWithRange:range];
+    
+   NSArray *guesses=[engine suggestGuessesForWord:word inLanguage:[self currentLanguage]];
+    
+   if([guesses count]==0){
+    NSMenuItem *item=[result addItemWithTitle:@"< No Suggestions >" action:NULL keyEquivalent:@""];
+    [item setEnabled:NO];
+   }
+   else {
+    for(NSString *guess in guesses)
+     [result addItemWithTitle:guess action:@selector(changeSpelling:) keyEquivalent:@""];
+   }
+      
+   [result addItem:[NSMenuItem separatorItem]];
+
+   return result;
 }
 
 -(void)recordResponse:(NSCorrectionResponse)response toCorrection:(NSString *)correction forWord:(NSString *)word language :(NSString *)language inSpellDocumentWithTag :(NSInteger)tag {

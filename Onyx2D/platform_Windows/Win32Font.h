@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias;
+-initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias angle:(CGFloat)angle;
 
 -(HFONT)fontHandle;
 

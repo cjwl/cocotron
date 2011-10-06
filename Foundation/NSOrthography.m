@@ -1,5 +1,7 @@
 #import <Foundation/NSOrthography.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 
 @implementation NSOrthography
 
@@ -24,18 +26,22 @@
 }
 
 -(NSArray *)allLanguages {
-    NSUnimplementedMethod();
-    return nil;
+   NSMutableArray *result=[NSMutableArray array];
+   
+   for(NSArray *entry in [_languageMap allValues])
+    [result addObjectsFromArray: entry];
+    
+   return result;
 }
 
 -(NSArray *)allScripts {
-    NSUnimplementedMethod();
-    return nil;
+   return [_languageMap allKeys];
 }
 
 -(NSString *)dominantLanguage {
-    NSUnimplementedMethod();
-    return nil;
+   NSArray *languages=[_languageMap objectForKey:[self dominantScript]];
+   
+   return [languages count]?[languages objectAtIndex:0]:nil;
 }
 
 -(NSString *)dominantScript {
@@ -43,13 +49,13 @@
 }
 
 -(NSString *)dominantLanguageForScript:(NSString *)script {
-    NSUnimplementedMethod();
-    return nil;
+   NSArray *languages=[_languageMap objectForKey:[self dominantScript]];
+   
+   return [languages count]?[languages objectAtIndex:0]:nil;
 }
 
 -(NSArray *)languagesForScript:(NSString *)script {
-    NSUnimplementedMethod();
-    return nil;
+   return [_languageMap objectForKey:script];
 }
 
 @end
