@@ -35,6 +35,11 @@ typedef enum {
    BOOL            _isDrawingToScreen;
    BOOL            _isFlipped;
    NSDictionary   *_deviceDescription;
+   
+   BOOL _shouldAntialias;
+   NSColorRenderingIntent _renderingIntent;
+   NSCompositingOperation _compOperation;
+   NSPoint _patternPhase;
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
@@ -60,6 +65,12 @@ typedef enum {
 -(void)setColorRenderingIntent:(NSColorRenderingIntent)value;
 -(void)setCompositingOperation:(NSCompositingOperation)value;
 -(void)setPatternPhase:(NSPoint)phase;
+
+- (BOOL)shouldAntialias;
+- (NSImageInterpolation)imageInterpolation;
+- (NSColorRenderingIntent)colorRenderingIntent;
+- (NSCompositingOperation)compositingOperation;
+- (NSPoint)patternPhase;
 
 -(CIContext *)CIContext;
 

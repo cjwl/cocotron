@@ -50,7 +50,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
 -(void)unmapAddress:(void *)ptr length:(NSUInteger)length;
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically;
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length options:(NSUInteger)options error:(NSError **)errorp;
 
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
 @end

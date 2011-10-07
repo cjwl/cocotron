@@ -8,6 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Onyx2D/Win32Font.h>
 
+#ifndef CLEARTYPE_QUALITY
+#define CLEARTYPE_QUALITY 5
+#endif
+#ifndef CLEARTYPE_NATURAL_QUALITY
+#define CLEARTYPE_NATURAL_QUALITY 6
+#endif
+
 @implementation Win32Font
 
 -initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias angle:(CGFloat)angle
@@ -18,11 +25,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[name getCharacters:buffer];
 	buffer[length]=0x0000;
 	
+	long quality = antialias?CLEARTYPE_QUALITY:DEFAULT_QUALITY;
+	
 	angle = 180.*angle/M_PI*10; // Tenth of degrees
 	_handle=CreateFontW(height,0,angle,angle,FW_NORMAL,
 						FALSE,FALSE,FALSE,
 						DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
-						antialias?ANTIALIASED_QUALITY:DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,buffer);
+						quality,DEFAULT_PITCH|FF_DONTCARE,buffer);
 	return self;
 }
 

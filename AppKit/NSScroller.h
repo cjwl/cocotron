@@ -48,6 +48,7 @@ typedef NSUInteger NSUsableScrollerParts;
    float _floatValue;
    float _knobProportion;
    NSScrollArrowPosition  _arrowsPosition;
+   NSControlSize _controlSize;
 
    NSScrollerPart        _hitPart;
    BOOL                  _isEnabled;
@@ -58,9 +59,11 @@ typedef NSUInteger NSUsableScrollerParts;
 
 -(float)knobProportion;
 -(NSScrollArrowPosition)arrowsPosition;
+-(NSControlSize)controlSize;
 
 -(void)setFloatValue:(float)zeroToOneValue knobProportion:(float)zeroToOneKnob;
 -(void)setArrowsPosition:(NSScrollArrowPosition)position;
+-(void)setControlSize:(NSControlSize)value;
 
 -(NSRect)rectForPart:(NSScrollerPart)part;
 -(void)checkSpaceForParts;
