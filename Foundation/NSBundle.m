@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/NSURL.h>
 #import <objc/runtime.h>
 #import <Foundation/NSRaiseException.h>
 
@@ -645,6 +646,12 @@ static NSMapTable *pathToObject=NULL;
 	}
     
    return result;
+}
+
+- (NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)extension {
+	NSString *path = [self pathForResource:name ofType:extension inDirectory:nil];
+    
+	return [NSURL fileURLWithPath:path];
 }
 
 -(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
