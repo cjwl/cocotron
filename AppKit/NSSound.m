@@ -38,9 +38,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	 
    return nil;
 }
+-(id)initWithContentsOfURL:(NSURL *)url byReference:(BOOL)byReference {
+    self = [super init];
+    return self;
+}
 
--initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
-
+- (id)initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
+    self = [super init];
    return self;
 }
 

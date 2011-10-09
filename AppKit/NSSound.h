@@ -15,8 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSSound *)soundNamed:(NSString *)name;
 
--initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference;
-
+-(id)initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference;
+-(id)initWithContentsOfURL:(NSURL *)url byReference:(BOOL)byReference;
 -(BOOL)setName:(NSString *)name;
 
 -(BOOL)play;

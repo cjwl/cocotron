@@ -37,7 +37,11 @@ static unsigned int uniquenum = 1;
 
 @implementation NSSound_win32
 
--initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
+- (id)initWithContentsOfURL:(NSURL *)url byReference:(BOOL)byReference {
+	return [self initWithContentsOfFile:[url path] byReference:byReference];
+}
+
+- (id)initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
 	if ((self = [super initWithContentsOfFile:path byReference:byReference]))
 	{
 		_soundFilePath = [path copy];
@@ -110,6 +114,7 @@ static unsigned int uniquenum = 1;
  	 NSString *stopStr = [NSString stringWithFormat:@"close %i", _handle];
 	 mciSendString([stopStr UTF8String], NULL, 0, 0);
     }
+    [path release];
 	[super dealloc];
 }
 
