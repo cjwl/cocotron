@@ -487,7 +487,7 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
    urlScanner scannerStruct,*scanner=&scannerStruct;
 
    if(string==nil){
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] string == nil",isa,sel_getName(_cmd)];
+    return nil;
    }
    
    initScanner(scanner,string);
@@ -863,5 +863,29 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
    NSUnimplementedMethod();
 }
 
+- (NSString *)lastPathComponent
+{
+    return [_path lastPathComponent];
+}
 
+- (NSString *)pathExtension
+{
+    return [_path pathExtension];
+}
+
+- (NSURL *)URLByDeletingPathExtension
+{
+	if ([self isFileURL])
+		return [NSURL fileURLWithPath:[_path stringByDeletingPathExtension]];
+	else
+		return [NSURL URLWithString:[_string stringByDeletingPathExtension] relativeToURL:_baseURL];
+}
+
+- (NSURL *)URLByAppendingPathExtension:(NSString *)pathExtension
+{
+	if ([self isFileURL])
+		return [NSURL fileURLWithPath:[_path stringByAppendingPathExtension:pathExtension]];
+	else
+		return [NSURL URLWithString:[_string stringByAppendingPathExtension:pathExtension] relativeToURL:_baseURL];
+}
 @end
