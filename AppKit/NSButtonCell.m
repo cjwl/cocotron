@@ -974,43 +974,48 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
    titleRect.origin.y+=floor((titleRect.size.height-titleSize.height)/2);
    titleRect.size.height=titleSize.height;
 	titleRect.origin.x += 3; // the title is way to tight to the left edge otherwise
-   switch(imagePosition){
-
-    case NSNoImage:
-     drawImage=NO;
-     break;
-
-    case NSImageOnly:
-     drawTitle=NO;
-     break;
-
-    case NSImageLeft:
-     imageOrigin.x=frame.origin.x;
-     titleRect.origin.x+=imageSize.width+4;
-     titleRect.size.width-=imageSize.width+4;
-     break;
-
-    case NSImageRight:
-     imageOrigin.x=frame.origin.x+(frame.size.width-imageSize.width);
-     titleRect.size.width-=(imageSize.width+4);
-     break;
-
-    case NSImageBelow:
-     imageOrigin.y=frame.origin.y;
-     titleRect.origin.y+=imageSize.height;
-     break;
-
-    case NSImageAbove:
-     imageOrigin.y=frame.origin.y+(frame.size.height-imageSize.height);
-     titleRect.origin.y-=imageSize.height;
-     if(titleRect.origin.y<frame.origin.y)
-      titleRect.origin.y=frame.origin.y;
-     break;
-
-    case NSImageOverlaps:
-     break;
-   }
-
+    switch(imagePosition){
+            
+        case NSNoImage:
+            drawImage=NO;
+            break;
+            
+        case NSImageOnly:
+            drawTitle=NO;
+            break;
+            
+        case NSImageLeft:
+            imageOrigin.x=frame.origin.x;
+            titleRect.origin.x+=imageSize.width+4;
+            titleRect.origin.x = MIN(frame.origin.x + frame.size.width, titleRect.origin.x);
+            titleRect.size.width-=imageSize.width+4;
+            titleRect.size.width = MAX(0, titleRect.size.width);
+            break;
+            
+        case NSImageRight:
+            imageOrigin.x=frame.origin.x+(frame.size.width-imageSize.width);
+            titleRect.size.width-=(imageSize.width+4);
+            titleRect.size.width = MAX(0, titleRect.size.width);
+            break;
+            
+        case NSImageBelow:
+            imageOrigin.y=frame.origin.y;
+            titleRect.origin.y+=imageSize.height;
+            imageOrigin.y = MAX(frame.origin.y, imageOrigin.y);
+            titleRect.origin.y = MIN(frame.origin.y + frame.size.height - titleRect.size.height, titleRect.origin.y);
+            break;
+            
+        case NSImageAbove:
+            imageOrigin.y=frame.origin.y+(frame.size.height-imageSize.height);
+            titleRect.origin.y-=imageSize.height;
+            imageOrigin.y = MIN(frame.origin.y + frame.size.height - imageSize.height, imageOrigin.y);
+            titleRect.origin.y = MAX(frame.origin.y, titleRect.origin.y);
+            break;
+            
+        case NSImageOverlaps:
+            break;
+    }
+    
    if(![self isBordered]){
     if([self isVisuallyHighlighted]){
      [[NSColor whiteColor] setFill];
