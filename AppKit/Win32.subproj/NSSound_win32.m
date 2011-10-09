@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSURL.h>
 #import <AppKit/NSRaise.h>
 #import <windows.h>
 
@@ -114,7 +115,7 @@ static unsigned int uniquenum = 1;
  	 NSString *stopStr = [NSString stringWithFormat:@"close %i", _handle];
 	 mciSendString([stopStr UTF8String], NULL, 0, 0);
     }
-    [path release];
+    [_soundFilePath release];
 	[super dealloc];
 }
 
