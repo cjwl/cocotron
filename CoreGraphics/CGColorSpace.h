@@ -19,6 +19,7 @@ typedef enum {
 } CGColorRenderingIntent;
 
 typedef enum {
+   kCGColorSpaceModelUnknown = -1,
    kCGColorSpaceModelMonochrome,
    kCGColorSpaceModelRGB,
    kCGColorSpaceModelCMYK,

@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdbool.h>
 
 COREGRAPHICS_EXPORT const CGRect CGRectZero;
+COREGRAPHICS_EXPORT const CGRect CGRectNull;
 COREGRAPHICS_EXPORT const CGPoint CGPointZero;
 COREGRAPHICS_EXPORT const CGSize CGSizeZero;
 
@@ -29,6 +30,10 @@ static inline CGSize CGSizeMake(CGFloat x,CGFloat y){
    return result;
 }
 
+static bool CGSizeEqualToSize(CGSize a, CGSize b) {
+	return a.width == b.width && a.height == b.height;
+}
+
 static inline CGFloat CGRectGetMinX(CGRect rect){
    return rect.origin.x;
 }
@@ -37,12 +42,20 @@ static inline CGFloat CGRectGetMaxX(CGRect rect){
    return rect.origin.x+rect.size.width;
 }
 
+static inline CGFloat CGRectGetMidX(CGRect rect){
+	return CGRectGetMinX(rect) + ((CGRectGetMaxX(rect)-CGRectGetMinX(rect))/2.f);
+}
+
 static inline CGFloat CGRectGetMinY(CGRect rect){
    return rect.origin.y;
 }
 
 static inline CGFloat CGRectGetMaxY(CGRect rect){
    return rect.origin.y+rect.size.height;
+}
+
+static inline CGFloat CGRectGetMidY(CGRect rect){
+	return CGRectGetMinY(rect) + ((CGRectGetMaxY(rect)-CGRectGetMinY(rect))/2.f);
 }
 
 static inline CGFloat CGRectGetWidth(CGRect rect){
@@ -69,6 +82,20 @@ static inline CGRect CGRectInset(CGRect rect,CGFloat dx,CGFloat dy) {
    return rect;
 }
 
+static inline CGRect CGRectOffset(CGRect rect,CGFloat dx,CGFloat dy) {
+	rect.origin.x+=dx;
+	rect.origin.y+=dy;
+	return rect;
+}
+
+static inline CGRect CGRectUnion(CGRect a, CGRect b) {
+	float minX = MIN(CGRectGetMinX(a), CGRectGetMinX(b));
+	float minY = MIN(CGRectGetMinY(a), CGRectGetMinY(b));
+	float maxX = MAX(CGRectGetMaxX(a), CGRectGetMaxX(b));
+	float maxY = MAX(CGRectGetMaxY(a), CGRectGetMaxY(b));
+	return CGRectMake(minX, minY, maxX - minX, maxY - minY);
+}
+
 static inline bool CGRectIsEmpty(CGRect rect) {
    return ((rect.size.width==0) && (rect.size.height==0))?TRUE:FALSE;
 }
@@ -84,4 +111,23 @@ static inline bool CGRectIntersectsRect(CGRect a, CGRect b)
     if(a.origin.y > b.origin.y + b.size.height)
         return false;
     return true;
+}
+
+static inline bool CGRectEqualToRect(CGRect a, CGRect b) {
+	return CGPointEqualToPoint(a.origin, b.origin) && CGSizeEqualToSize(a.size, b.size);
+}
+
+static inline bool CGRectIsNull(CGRect rect) {
+	return CGRectEqualToRect(rect, CGRectNull);
+}
+
+extern CGRect CGRectIntersection(CGRect a, CGRect b);
+extern CGRect CGRectIntegral(CGRect rect);
+
+static inline bool CGRectContainsRect(CGRect a, CGRect b)
+{
+	return (CGRectGetMinX(b) >= CGRectGetMinX(a) &&
+			CGRectGetMaxX(b) <= CGRectGetMaxX(a) &&
+			CGRectGetMinY(b) >= CGRectGetMinY(a) &&
+			CGRectGetMaxY(b) <= CGRectGetMaxY(a));
 }
