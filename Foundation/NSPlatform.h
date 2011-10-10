@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
 
-@class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet;
+@class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet, NSError;
 
 FOUNDATION_EXPORT NSString * const NSPlatformExecutableFileExtension;
 FOUNDATION_EXPORT NSString * const NSPlatformLoadableObjectFileExtension;

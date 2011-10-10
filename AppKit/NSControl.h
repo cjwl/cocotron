@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 #import <AppKit/NSText.h>
+#import <AppKit/NSCell.h>
 
 @class NSCell,NSFont,NSText,NSTextView;
 
