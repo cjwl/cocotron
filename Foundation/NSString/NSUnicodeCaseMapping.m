@@ -788,7 +788,12 @@ unichar *NSUnicodeFromBytesUTF16BigEndian(const unsigned char *bytes,NSUInteger 
    resultLength=length/2;
    result=NSZoneMalloc(NULL,sizeof(unichar)*resultLength);
 
-	i = 2; // Skip the marker word - internal Unicode rep doesn't use it.
+	i = 0;
+	BOOL skippedMarker = NO;
+	if (bytes[0] == 0xFE && bytes[1] == 0xFF) {
+		i = 2; // Skip the marker word - internal Unicode rep doesn't use it.
+		skippedMarker = YES;
+	}
    for(;i<length;i+=2){
     unichar high=bytes[i];
     unichar low=bytes[i+1];
@@ -796,7 +801,7 @@ unichar *NSUnicodeFromBytesUTF16BigEndian(const unsigned char *bytes,NSUInteger 
     result[resultIndex++]=(high<<8)|low;
    }
 
-   *resultLengthp=resultLength - 2; // we skipped the marker word
+	*resultLengthp=resultLength - ((skippedMarker) ? 2 : 0); // we skipped the marker word
 
    return result;
 }
@@ -811,7 +816,12 @@ unichar *NSUnicodeFromBytesUTF16LittleEndian(const unsigned char *bytes,NSUInteg
 	resultLength=length/2;
 	result=NSZoneMalloc(NULL,sizeof(unichar)*resultLength);
 	
-	i = 2; // Skip the marker word - internal Unicode rep doesn't use it.
+	i = 0;
+	BOOL skippedMarker = NO;
+	if (bytes[0] == 0xFF && bytes[1] == 0xFE) {
+		i = 2; // Skip the marker word - internal Unicode rep doesn't use it.
+		skippedMarker = YES;
+	}
 	for(;i<length;i+=2){
 		unichar high=bytes[i+1];
 		unichar low=bytes[i];
@@ -819,7 +829,7 @@ unichar *NSUnicodeFromBytesUTF16LittleEndian(const unsigned char *bytes,NSUInteg
 		result[resultIndex++]=(high<<8)|low;
 	}
 	
-	*resultLengthp=resultLength - 2; // we skipped the marker word
+	*resultLengthp=resultLength - ((skippedMarker) ? 2 : 0); // we skipped the marker word
 	
 	return result;
 }
