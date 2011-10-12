@@ -651,7 +651,8 @@ static NSMapTable *pathToObject=NULL;
 - (NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)extension {
 	NSString *path = [self pathForResource:name ofType:extension inDirectory:nil];
     
-	return [NSURL fileURLWithPath:path];
+	// attention: fileURLWithPath returns a non-nil object for nil input, we don't want that
+	return path ? [NSURL fileURLWithPath:path] : nil;
 }
 
 -(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
