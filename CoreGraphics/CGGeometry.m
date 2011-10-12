@@ -52,3 +52,20 @@ CGRect CGRectIntegral(CGRect rect) {
 	return rect; 
 	
 }
+
+CGRect CGRectUnion(CGRect a, CGRect b) {
+	// make sure we handle null!
+	if (CGRectIsNull(a)) {
+		return b;
+	}
+	
+	if (CGRectIsNull(b)) {
+		return a;
+	}
+	
+	float minX = MIN(CGRectGetMinX(a), CGRectGetMinX(b));
+	float minY = MIN(CGRectGetMinY(a), CGRectGetMinY(b));
+	float maxX = MAX(CGRectGetMaxX(a), CGRectGetMaxX(b));
+	float maxY = MAX(CGRectGetMaxY(a), CGRectGetMaxY(b));
+	return CGRectMake(minX, minY, maxX - minX, maxY - minY);
+}

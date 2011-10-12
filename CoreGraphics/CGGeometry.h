@@ -88,14 +88,6 @@ static inline CGRect CGRectOffset(CGRect rect,CGFloat dx,CGFloat dy) {
 	return rect;
 }
 
-static inline CGRect CGRectUnion(CGRect a, CGRect b) {
-	float minX = MIN(CGRectGetMinX(a), CGRectGetMinX(b));
-	float minY = MIN(CGRectGetMinY(a), CGRectGetMinY(b));
-	float maxX = MAX(CGRectGetMaxX(a), CGRectGetMaxX(b));
-	float maxY = MAX(CGRectGetMaxY(a), CGRectGetMaxY(b));
-	return CGRectMake(minX, minY, maxX - minX, maxY - minY);
-}
-
 static inline bool CGRectIsEmpty(CGRect rect) {
    return ((rect.size.width==0) && (rect.size.height==0))?TRUE:FALSE;
 }
@@ -121,6 +113,7 @@ static inline bool CGRectIsNull(CGRect rect) {
 	return CGRectEqualToRect(rect, CGRectNull);
 }
 
+extern CGRect CGRectUnion(CGRect a, CGRect b);
 extern CGRect CGRectIntersection(CGRect a, CGRect b);
 extern CGRect CGRectIntegral(CGRect rect);
 
