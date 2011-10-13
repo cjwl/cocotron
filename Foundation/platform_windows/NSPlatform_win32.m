@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSFileManager.h>
+#import <Foundation/NSError.h>
 #import <stdlib.h>
 #import <winsock.h>
 #import <Foundation/NSSocket_windows.h>
