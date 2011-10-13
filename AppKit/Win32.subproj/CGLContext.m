@@ -728,7 +728,6 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-//if(NSDebugEnabled) NSCLog("%s %d %s %p",__FILE__,__LINE__,__PRETTY_FUNCTION__,context);
 /*
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.

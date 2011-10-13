@@ -530,62 +530,16 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 #endif
 
-#define NO_INCREMENTAL_COMPOSITE 1
-
--(O2Surface_DIBSection *)resultSurface:(O2Point *)fromPoint {
+-(O2Surface_DIBSection *)resultSurface {
    O2Surface_DIBSection *result=[_backingContext surface];
-
-   *fromPoint=O2PointMake(0,0);
    
    if([_overlays count]==0)
     return result;
 
-   BOOL allOpaque=YES;
-   
-   for(CGLPixelSurface *check in _overlays)
-    if(![check isOpaque]){
-     allOpaque=NO;
-     break;
-    }
-
-#ifdef NO_INCREMENTAL_COMPOSITE
-   allOpaque=NO;
-#endif
-
-   if(allOpaque){
-    [_overlayResult release];
-    _overlayResult=nil;
-   }
-   else {
+   {
     size_t resultWidth=O2ImageGetWidth(result);
     size_t resultHeight=O2ImageGetHeight(result);
        
-    if([_overlays count]==1){
-    // For the case where there is one overlay and it intersects the whole window
-    // we check if the window backing is 0 and we just return the overlay for the window's contents
-    // It would be better if the surface kept a flag if cleared.
-     CGLPixelSurface *check=[_overlays objectAtIndex:0];
-     O2Rect     checkFrame=[check frame];
-     O2Rect     intersect=O2RectIntersection(checkFrame,O2RectMake(0,0,resultWidth,resultHeight));
-     
-     if(intersect.origin.x==0 && intersect.origin.y==0 && intersect.size.width==resultWidth && intersect.size.height==resultHeight){
-      O2argb8u  *pixels=[result pixelBytes];
-      int        i,count=resultWidth*resultHeight;
-#if 1
-i=count;
-#else
-      for(i=0;i<count;i++)
-       if(pixels[i].a!=0x00)
-        break;
-#endif      
-      if(i==count){
-       fromPoint->x=-checkFrame.origin.x;
-       fromPoint->y=-checkFrame.origin.y;
-       return [check validSurface];
-   }
-     }
-    }
-
     if(O2ImageGetWidth(_overlayResult)!=resultWidth || O2ImageGetHeight(_overlayResult)!=resultHeight){
      [_overlayResult release];
      _overlayResult=[[O2Surface_DIBSection alloc] initWithWidth:resultWidth height:resultHeight compatibleWithDeviceContext:nil];
@@ -601,26 +555,12 @@ i=count;
      O2SurfaceLock(result);
      AlphaBlend([[_overlayResult deviceContext] dc],0,0,resultWidth,resultHeight,[[result deviceContext] dc],0,0,resultWidth,resultHeight,blend);
      O2SurfaceUnlock(result);
-#if 0
-    uint32_t *src=[result pixelBytes];
-    uint32_t *dst=[_overlayResult pixelBytes];
-    // FIXME: if backing is not 32bpp this needs to accomodate that
-    int       i,count=O2ImageGetBytesPerRow(result)/4*resultHeight;
-    
-    for(i=0;i<count;i++)
-     dst[i]=src[i];
-#endif
 
     result=_overlayResult;
    }
    
    O2SurfaceLock(result);
    for(CGLPixelSurface *overlay in _overlays){
-#ifndef NO_INCREMENTAL_COMPOSITE
-    if([overlay isOpaque])
-     continue;
-#endif
-
     O2Rect                overFrame=[overlay frame];
     O2Surface_DIBSection *overSurface=[overlay validSurface];
     
@@ -646,35 +586,6 @@ i=count;
 }
 
 -(void)flushOverlay:(CGLPixelSurface *)overlay {
-#ifndef NO_INCREMENTAL_COMPOSITE
-   [self lock];
-   
-   if([overlay isOpaque]){
-    O2Surface_DIBSection *backingSurface=[_backingContext surface];
-    O2Rect                overFrame=[overlay frame];
-    O2Surface_DIBSection *overSurface=[overlay validSurface];
-    
-    if(backingSurface!=nil){
-     BLENDFUNCTION blend;
-    
-     blend.BlendOp=AC_SRC_OVER;
-     blend.BlendFlags=0;
-     blend.SourceConstantAlpha=255;
-     blend.AlphaFormat=0;
-
-     int y=O2ImageGetHeight(backingSurface)-(overFrame.origin.y+overFrame.size.height);
-     
-     HDC overlayDC=[[overSurface deviceContext] dc];
-    
-     O2SurfaceLock(backingSurface);
-     AlphaBlend([[backingSurface deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,overlayDC,0,0,overFrame.size.width,overFrame.size.height,blend);
-     O2SurfaceUnlock(backingSurface);
-    }
-   }
-   
-   [self unlock];
-#endif
-
    [self flushBuffer];
 }
 
@@ -694,10 +605,9 @@ i=count;
     return;
     }
 
-   O2Point fromPoint;
    if([self isLayeredWindow]){
     if(_backingContext!=nil){
-     O2Surface_DIBSection *surface=[self resultSurface:&fromPoint];
+     O2Surface_DIBSection *surface=[self resultSurface];
      O2DeviceContext_gdi  *deviceContext=[surface deviceContext];
      
     BLENDFUNCTION blend;
@@ -709,7 +619,7 @@ i=count;
     blend.AlphaFormat=AC_SRC_ALPHA;
     
     SIZE sizeWnd = {_frame.size.width, _frame.size.height};
-     POINT ptSrc = {fromPoint.x, fromPoint.y};
+     POINT ptSrc = {0, 0};
      DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
     
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
@@ -724,7 +634,7 @@ i=count;
  
      case CGSBackingStoreBuffered:
       if(_backingContext!=nil){
-       O2Surface_DIBSection *surface=[self resultSurface:&fromPoint];
+       O2Surface_DIBSection *surface=[self resultSurface];
        O2DeviceContext_gdi  *deviceContext=[surface deviceContext];
        int                  dstX=0;
        int                  dstY=0;
