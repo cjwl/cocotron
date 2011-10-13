@@ -38,6 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <poll.h>
 #include <pthread.h>
 #import <sys/socket.h>
+#import <errno.h>
 
 BOOL NSCurrentLocaleIsMetric(){
    return NO;
@@ -297,7 +298,8 @@ void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
     }
 }
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically {
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length options:(NSUInteger)options error:(NSError **)errorp {
+    BOOL atomically = (options & NSAtomicWrite);
     NSString *atomic = nil;
     int fd;
     size_t total = 0;
@@ -308,19 +310,24 @@ void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
         } while ([[NSFileManager defaultManager] fileExistsAtPath:atomic] == YES);
                 
         fd = open([atomic fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE);
-        if (fd == -1)
+        if (fd == -1) {
+            if (errorp) *errorp = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
             return NO;
+        }
     }
     else {
         fd = open([path fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE);
-        if (fd == -1)
+        if (fd == -1) {
+            if (errorp) *errorp = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
             return NO;
+        }
     }
 
     do {
         size_t written = write(fd, bytes+total, length);
 
         if (written == -1) {
+            if (errorp) *errorp = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
             close(fd);
             return NO;
         }
@@ -331,8 +338,10 @@ void *NSPlatformContentsOfFile(NSString *path,NSUInteger *lengthp) {
     close(fd);
 
     if (atomically)
-        if (rename([atomic fileSystemRepresentation], [path fileSystemRepresentation]) == -1)
+        if (rename([atomic fileSystemRepresentation], [path fileSystemRepresentation]) == -1) {
+            if (errorp) *errorp = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
             return NO;
+        }
 
     return YES;
 }
