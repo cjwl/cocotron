@@ -174,7 +174,7 @@ static BOOL NSViewLayersEnabled=NO;
    [_layerContext invalidate];
    [_layerContext release];
    [_overlay release];
-   
+
    [super dealloc];
 }
 
@@ -713,11 +713,13 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self resizeSubviewsWithOldSize:oldSize];
    }
 
-   if(_superview==nil)
-    [_overlay setFrame:_frame];
-   else
-    [_overlay setFrame:[_superview convertRect:_frame toView:nil]];
-   
+    NSRect layerFrame=_frame;
+    
+    if(_superview!=nil)
+        layerFrame=[_superview convertRect:layerFrame toView:nil];
+    
+    [[_layerContext pixelSurface] setFrame:layerFrame];
+       
    invalidateTransform(self);
 
    if(_postsNotificationOnFrameChange)
@@ -783,20 +785,15 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)_setOverlay:(CGLPixelSurface *)overlay {
-   if(overlay!=_overlay){
-    [[[self window] platformWindow] removeOverlay:_overlay];
+    if(overlay!=_overlay){
+        [[[self window] platformWindow] removeOverlay:_overlay];
 
-    overlay=[overlay retain];
-    [_overlay release];
-    _overlay=overlay;
-    
-    if(_superview==nil)
-     [_overlay setFrame:[self frame]];
-    else
-     [_overlay setFrame:[_superview convertRect:[self frame] toView:nil]];
-     
-    if(_overlay!=nil)
-     [[[self window] platformWindow] addOverlay:_overlay];
+        overlay=[overlay retain];
+        [_overlay release];
+        _overlay=overlay;
+         
+        if(_overlay!=nil)
+            [[[self window] platformWindow] addOverlay:_overlay];
    }
 }
 

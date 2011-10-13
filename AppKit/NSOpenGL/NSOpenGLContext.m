@@ -118,9 +118,13 @@ static inline void _clearCurrentContext(){
    GLint size[2]={
     rect.size.width,
     rect.size.height };
+   GLint origin[2]={
+    rect.origin.x,
+    rect.origin.y };
         
    CGLLockContext(_glContext);
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,size);
+   CGLSetParameter(_glContext,kCGLCPSurfaceBackingOrigin,origin);
    CGLUnlockContext(_glContext);
 }
 

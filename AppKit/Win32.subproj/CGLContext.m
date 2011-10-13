@@ -698,6 +698,10 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      }
      break;
      
+    case kCGLCPSurfaceBackingOrigin:;
+     [context->overlay setFrame:NSMakeRect(value[0],value[1],context->w,context->h)];
+     break;
+
     default:
      NSUnimplementedFunction();
      break;
