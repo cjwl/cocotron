@@ -24,20 +24,12 @@
    [super dealloc];
 }
 
--(CGWindow *)window {
-   return _window;
-}
-
 -(BOOL)isOpaque {
    return _isOpaque;
 }
 
 -(O2Rect)frame {
    return O2RectMake(_x,_y,_width,_height);
-}
-
--(void)setWindow:(CGWindow *)window {
-   _window=window;
 }
 
 -(void)setFrame:(O2Rect)frame {

@@ -3,6 +3,7 @@
 #import <Foundation/NSRaise.h>
 #import <stdbool.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <CoreGraphics/CGWindow.h>
 #import <CoreGraphics/CGLPixelSurface.h>
 #import <pthread.h>
 
@@ -44,6 +45,7 @@ struct _CGLContextObj {
    BOOL             needsViewport;
    HDC              windowDC;
    HGLRC            windowGLContext;
+   int              parentWindowNumber;
 };
 
 struct _CGLPixelFormatObj {
@@ -698,13 +700,19 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      }
      break;
      
-    case kCGLCPSurfaceBackingOrigin:;
-     [context->overlay setFrame:NSMakeRect(value[0],value[1],context->w,context->h)];
-     break;
+        case kCGLCPSurfaceBackingOrigin:;
+            [context->overlay setFrame:NSMakeRect(value[0],value[1],context->w,context->h)];
+            break;
 
-    default:
-     NSUnimplementedFunction();
-     break;
+        case kCGLCPSurfaceWindowNumber:
+            [[CGWindow windowWithWindowNumber:context->parentWindowNumber] removeCGLContext:context]; 
+            context->parentWindowNumber=value[0];
+            [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context]; 
+            break;
+        
+        default:
+            NSUnimplementedFunction();
+            break;
    }
 
    return kCGLNoError;
@@ -718,9 +726,13 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
     case kCGLCPSurfaceOpacity:
      *value=context->opacity;
      break;
-    
+         
+    case kCGLCPSurfaceWindowNumber:
+     *value=context->parentWindowNumber;
+     break;
+     
     case kCGLCPOverlayPointer:
-     *((CGLPixelSurface **)value)=context->overlay;
+     *value=(int)context->overlay;
      break;
      
     default:
@@ -732,32 +744,7 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-/*
-  If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
-  complete. Read from GL_BACK.
- */
-
-   CGLContextObj saveContext=CGLGetCurrentContext();
-
-   CGLLockContext(context);
-
-   CGLSetCurrentContext(context);
-   
-   GLint buffer;
-   
-   glGetIntegerv(GL_DRAW_BUFFER,&buffer);
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   glReadBuffer(buffer);
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   
-
-   [context->overlay readBuffer];
-   
-   CGLUnlockContext(context);
-
-   CGLSetCurrentContext(saveContext);
-
-   [[context->overlay window] flushOverlay:context->overlay];
+   [[CGWindow windowWithWindowNumber:context->parentWindowNumber] flushCGLContext:context];
 
    return kCGLNoError;
 }

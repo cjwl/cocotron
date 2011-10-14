@@ -14,10 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <OpenGL/OpenGL.h>
 #import <Foundation/NSThread-Private.h>
 
-@interface NSView(private)
--(void)_setOverlay:(CGLPixelSurface *)overlay;
-@end
-
 @interface NSOpenGLContext(private)
 -(void)_clearCurrentContext;
 @end
@@ -70,6 +66,8 @@ static inline void _clearCurrentContext(){
       _clearCurrentContext();
    [_pixelFormat release];
    _view=nil;
+   
+   
    CGLReleaseContext(_glContext);
    [super dealloc];
 }
@@ -132,17 +130,16 @@ static inline void _clearCurrentContext(){
    if(_view!=view)
     _hasPrepared=NO;
     
-   [_view _setOverlay:nil];
    _view=view;
-   
-   CGLPixelSurface *overlay=nil;
-   
+      
    CGLLockContext(_glContext);
-   CGLGetParameter(_glContext,kCGLCPOverlayPointer,(GLint *)&overlay);
+   
+   GLint num[1]={[[_view window] windowNumber]};
+   
+   CGLSetParameter(_glContext,kCGLCPSurfaceWindowNumber,num);
+   
    CGLUnlockContext(_glContext);
-   
-   [_view _setOverlay:overlay];
-   
+      
    [self update];
 }
 
@@ -211,12 +208,11 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)update {
-   [self updateViewParameters];
-   }
+    [self updateViewParameters];
+}
 
 -(void)clearDrawable {
-   _view=nil;
-   [self updateViewParameters];
+    [self setView:nil];
 }
 
 -(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {

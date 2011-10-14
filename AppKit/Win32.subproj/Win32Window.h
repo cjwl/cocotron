@@ -30,6 +30,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2Context             *_backingContext;
    CGLContextObj          _cglContext;
 
+    int _surfaceCount;
+    void **_surfaces;
+    
    NSMutableArray        *_overlays;
    O2Surface_DIBSection  *_overlayResult;
    

@@ -30,7 +30,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Context.h>
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSViewBackingLayer.h>
-#import <CoreGraphics/CGLPixelSurface.h>
 #import <CoreGraphics/CGWindow.h>
 #import <QuartzCore/CALayerContext.h>
 #import <QuartzCore/CATransaction.h>
@@ -173,7 +172,6 @@ static BOOL NSViewLayersEnabled=NO;
    
    [_layerContext invalidate];
    [_layerContext release];
-   [_overlay release];
 
    [super dealloc];
 }
@@ -784,30 +782,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    _postsNotificationOnBoundsChange=flag;
 }
 
--(void)_setOverlay:(CGLPixelSurface *)overlay {
-    if(overlay!=_overlay){
-        [[[self window] platformWindow] removeOverlay:_overlay];
-
-        overlay=[overlay retain];
-        [_overlay release];
-        _overlay=overlay;
-         
-        if(_overlay!=nil)
-            [[[self window] platformWindow] addOverlay:_overlay];
-   }
-}
-
 -(void)_setWindow:(NSWindow *)window {
    [self viewWillMoveToWindow:window];
 
-   if(_overlay!=nil)
-    [[_window platformWindow] removeOverlay:_overlay];
-    
    _window=window;
-   
-   if(_overlay!=nil)
-    [[_window platformWindow] addOverlay:_overlay];
-    
+       
    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
    _validTrackingAreas=NO;
    [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
@@ -1421,7 +1400,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)_removeLayerFromSuperlayer {
    [_layer removeFromSuperlayer];    
-   [self _setOverlay:nil];
    [_layerContext invalidate];
    [_layerContext release];
    _layerContext=nil;
@@ -1431,7 +1409,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    if([_superview layer]==nil){
     _layerContext=[[CALayerContext alloc] initWithFrame:[self frame]];
     [_layerContext setLayer:_layer];
-    [self _setOverlay:[_layerContext pixelSurface]];
    }
 }
 
