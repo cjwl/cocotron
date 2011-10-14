@@ -566,9 +566,9 @@ static NSMapTable *pathToObject=NULL;
     
       NSString *language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
       if ([language isEqualToString:@"English"])
-         _lookInDirectories = [[NSArray arrayWithObjects:@"English.lproj", @"", nil] retain];
+         _lookInDirectories = [[NSArray arrayWithObjects:@"English.lproj", @"en.lproj", @"", nil] retain];
       else
-         _lookInDirectories = [[NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"", nil] retain];
+         _lookInDirectories = [[NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"en.lproj", @"", nil] retain];
    }
    return _lookInDirectories;
 }

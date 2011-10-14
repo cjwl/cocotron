@@ -27,10 +27,37 @@ uint32_t CFSwapInt32(uint32_t value) {
 
 uint32_t CFSwapInt32BigToHost(uint32_t value) {
 #ifdef __LITTLE_ENDIAN__
-   return CFSwapInt32(value);
+	return CFSwapInt32(value);
 #endif
 #ifdef __BIG_ENDIAN__
-   return value;
+	return value;
+#endif
+}
+
+uint32_t CFSwapInt32LittleToHost(uint32_t value) {
+#ifdef __BIG_ENDIAN__
+	return CFSwapInt32(value);
+#endif
+#ifdef __LITTLE_ENDIAN__
+	return value;
+#endif
+}
+
+uint32_t CFSwapInt32HostToBig(uint32_t value) {
+#ifdef __LITTLE_ENDIAN__
+	return CFSwapInt32(value);
+#endif
+#ifdef __BIG_ENDIAN__
+	return value;
+#endif
+}
+
+uint32_t CFSwapInt32HostToLittle(uint32_t value) {
+#ifdef __BIG_ENDIAN__
+	return CFSwapInt32(value);
+#endif
+#ifdef __LITTLE_ENDIAN__
+	return value;
 #endif
 }
 

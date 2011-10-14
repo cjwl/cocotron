@@ -13,6 +13,8 @@ typedef struct O2Pattern *CGPatternRef;
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGContext.h>
 
+typedef void (*CGPatternReleaseInfoCallback)(void*);
+
 typedef struct {
    unsigned int version;
    void       (*drawPattern)(void *,CGContextRef);

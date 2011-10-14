@@ -78,16 +78,26 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
     mapUC=PickWord;
     index=0;
    }
+	
+	// Remove the linefeed at the end of the file (if there is one)
+	// Not sure what the length >>= 1 is doing for us - length is the right number
    if(mapUC(unicode[(length>>=1)-1])==0x0A)
-    length--;
+		length--;
+	
+	// Now iterate over the unichar words skipping the endianness marker word if necessary)
    for(;index<length;index++){
+	   
+	   // Get the unichar in native format
     unichar code=mapUC(unicode[index]);
          
     switch(state){
 
      case STATE_WHITESPACE:
+			// We're looking for anything non-whitespace
       if(code=='/')
+		  // Found what looks like the start of a comment; a '*" should come next
        state=STATE_COMMENT_SLASH;
+			// An '=' in the middle of whitespace is only valid if we're looking for the value after finding a key
       else if(code=='='){
        if(expect==EXPECT_EQUAL_SEMI)
         expect=EXPECT_VAL;
@@ -95,9 +105,13 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
         return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
       }
       else if(code==';'){
+		  // A semi-colon means we're at the end of a key value pair so start expecting a new key
        if(expect==EXPECT_SEMI)
         expect=EXPECT_KEY;
        else if(expect==EXPECT_EQUAL_SEMI){
+		   // Special case where the value is the same as the key (and thus not present in the file)
+		   // not sure if this is a bodge or what but we just add the key again as the value
+		   // And start expecting a new key
         expect=EXPECT_KEY;
         [array addObject:[array lastObject]];
        }
@@ -105,13 +119,16 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
         return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
       }
       else if(code=='\"'){
+		  // A quote by itself that's not starting a key or value is a big no no
        if(expect!=EXPECT_KEY && expect!=EXPECT_VAL)
         return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
 
+		  // Start looking for string within the quotes
        bufferCount=0;
        state=STATE_STRING;
       }
       else if(code>' '){
+		  // Not sure what non-white space really should mean - but we're interpreting as a STATE_STRING_KEY
        if(expect!=EXPECT_KEY)
         return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
 
@@ -123,6 +140,7 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
 
      case STATE_COMMENT_SLASH:
       if(code=='*')
+		  // Looks like we've found a comment
        state=STATE_COMMENT;
       else
        return error(array,buffer,@"unexpected character %02X '%C',after /",code,code);
@@ -130,43 +148,57 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
 
      case STATE_COMMENT:
       if(code=='*')
+		  // Perhaps we're hitting the end of the comment?
        state=STATE_COMMENT_STAR;
       break;
 
      case STATE_COMMENT_STAR:
       if(code=='/')
+		  // Yep we're at the end - switch back to looking at whitespace
        state=STATE_WHITESPACE;
       else if(code!='*')
+		  // I guess we're not there yet
        state=STATE_COMMENT;
       break;
 
      case STATE_STRING_KEY:
       switch(code){
+			  // I guess a '"' is not valid in this special state?
        case '\"':
         return error(array,buffer,@"unexpected character %02X '%C' at %d",code,code,index);
        case '=':
+			  // Uh-oh we're going backwards now...
          index-=2;
        case ' ':
+			  // And now we're diddling the code - STATE_STRING_KEY is very magic!
          code='\"';
       }
      case STATE_STRING:
       if(code=='\"'){
+		  // We've found a key or value
        NSString *string=[[NSString allocWithZone:NULL] initWithCharacters:buffer length:bufferCount];
 
+		  // So save it off
        [array addObject:string];
        [string release];
+		  // Switch back to looking at whitespace
        state=STATE_WHITESPACE;
+		  
        if(expect==EXPECT_KEY)
+		   // If we found a key then we're looking for "=" or ";"
         expect=EXPECT_EQUAL_SEMI;
        else
+		   // Else we found a value so look for a ";"
         expect=EXPECT_SEMI;
       }
       else{
+		  // accumulate the unichars of the string in a buffer
        if(bufferCount>=bufferCapacity){
         bufferCapacity*=2;
         buffer=NSZoneRealloc(NSZoneFromPointer(buffer),buffer,bufferCapacity*sizeof(unichar));
        }
        if(code=='\\')
+		   // Apparently escaped chars can be embedded in the string so look for that
         state=STATE_STRING_SLASH;
        else 
         buffer[bufferCount++]=code;
@@ -175,6 +207,7 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
 
      case STATE_STRING_SLASH:
       switch(code){
+			  // Handle the escaped char in the string
        case 'a': buffer[bufferCount++]='\a'; state=STATE_STRING; break;
        case 'b': buffer[bufferCount++]='\b'; state=STATE_STRING; break;
        case 'f': buffer[bufferCount++]='\f'; state=STATE_STRING; break;
@@ -222,9 +255,11 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
 
    NSZoneFree(NSZoneFromPointer(buffer),buffer);
 
+	// We better not be in the middle of parsing something important when we ran out of chars!
    if(state!=STATE_WHITESPACE)
     return error(array,NULL,@"unexpected EOF\n");
 
+	// or expecting something important either
    switch(expect){
     case EXPECT_EQUAL_SEMI:
      return error(array,NULL,@"unexpected EOF, expecting = or ;");

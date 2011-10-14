@@ -207,8 +207,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)dealloc {
-   if(_ownsTextStorage)
-    [_textStorage release];
+	if(_ownsTextStorage) {
+		[_textStorage release];
+	}
+	[_textContainer setTextView: nil];
    [_textContainer release];
    [_typingAttributes release];
    [_backgroundColor release];

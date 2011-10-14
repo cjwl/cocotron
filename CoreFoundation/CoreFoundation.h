@@ -6,6 +6,39 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+#if !defined(CF_EXCLUDE_CSTD_HEADERS)
+
+#include <sys/types.h>
+#include <stdarg.h>
+#include <assert.h>
+#include <ctype.h>
+#include <errno.h>
+#include <float.h>
+#include <limits.h>
+#include <locale.h>
+#include <math.h>
+#include <setjmp.h>
+#include <signal.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#if defined(__STDC_VERSION__)
+
+#include <inttypes.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+#endif
+
+#ifndef MAXFLOAT
+#define	MAXFLOAT	((float)3.40282346638528860e+38)
+#endif
+
+#endif
+
 #import <CoreFoundation/CFAttributedString.h>
 #import <CoreFoundation/CFBag.h>
 #import <CoreFoundation/CFBinaryHeap.h>
