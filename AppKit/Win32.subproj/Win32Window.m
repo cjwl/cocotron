@@ -228,11 +228,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)dealloc {
-   [self invalidate];
-   [_deviceDictionary release];
-   NSZoneFree(NULL,_surfaces);   
-   [_overlayResult release];
-   [super dealloc];
+    [self invalidate];
+    [_deviceDictionary release];
+    NSZoneFree(NULL,_surfaces);  
+    CGLReleaseContext(_overlayResult);
+    [super dealloc];
 }
 
 -(void)invalidate {
@@ -530,65 +530,49 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 #endif
 
+CGL_EXPORT CGLError CGLCopyPixelsFromSurface(O2Surface_DIBSection *srcSurface,CGLContextObj destination);
+CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination);
+
 -(O2Surface_DIBSection *)resultSurface {
-   O2Surface_DIBSection *result=[_backingContext surface];
+    O2Surface_DIBSection *backingSurface=(O2Surface_DIBSection *)[_backingContext surface];
 
-   if(_surfaceCount==0)
-    return result;
+    if(_surfaceCount==0)
+        return backingSurface;
+        
+    if(_overlayResult==NULL){
+        CGLPixelFormatObj pf;
+        GLint novs;
+        
+        CGLPixelFormatAttribute attributes[]={
+        
+            0
+        };
+        
+        CGLChoosePixelFormat(attributes,&pf,&novs);
+        
+        CGLError error;
+        
+        if((error=CGLCreateContext(pf,NULL,&_overlayResult))!=kCGLNoError)
+            NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
 
-   {
-    size_t resultWidth=O2ImageGetWidth(result);
-    size_t resultHeight=O2ImageGetHeight(result);
-       
-    if(O2ImageGetWidth(_overlayResult)!=resultWidth || O2ImageGetHeight(_overlayResult)!=resultHeight){
-     [_overlayResult release];
-     _overlayResult=[[O2Surface_DIBSection alloc] initWithWidth:resultWidth height:resultHeight compatibleWithDeviceContext:nil];
+        CGLReleasePixelFormat(pf);
     }
     
-     BLENDFUNCTION blend;
+    GLint size[2]={ O2ImageGetWidth(backingSurface), O2ImageGetHeight(backingSurface) };
     
-     blend.BlendOp=AC_SRC_OVER;
-     blend.BlendFlags=0;
-     blend.SourceConstantAlpha=255;
-     blend.AlphaFormat=0;
-     
-     O2SurfaceLock(result);
-     AlphaBlend([[_overlayResult deviceContext] dc],0,0,resultWidth,resultHeight,[[result deviceContext] dc],0,0,resultWidth,resultHeight,blend);
-     O2SurfaceUnlock(result);
-
-    result=_overlayResult;
-   }
-   
-    O2SurfaceLock(result);
-   
+    CGLSetParameter(_overlayResult,kCGLCPSurfaceBackingSize,size);
+    
+    CGLCopyPixelsFromSurface(backingSurface,_overlayResult);
+      
     int i;
-    for(i=0;i<_surfaceCount;i++){
-        CGLPixelSurface *overlay;
+    for(i=0;i<_surfaceCount;i++)
+        CGLCopyPixels(_surfaces[i],_overlayResult);
     
-        CGLGetParameter(_surfaces[i],kCGLCPOverlayPointer,&overlay);
-
-        O2Rect                overFrame=[overlay frame];
-        O2Surface_DIBSection *overSurface=[overlay validSurface];
+    CGLPixelSurface *pixelSurface;
     
-        if(overSurface!=nil){
-            BLENDFUNCTION blend;
+    CGLGetParameter(_overlayResult,kCGLCPOverlayPointer,&pixelSurface);
     
-            blend.BlendOp=AC_SRC_OVER;
-            blend.BlendFlags=0;
-            blend.SourceConstantAlpha=255;
-            blend.AlphaFormat=[overlay isOpaque]?0:AC_SRC_ALPHA;
-
-            int y=O2ImageGetHeight(result)-(overFrame.origin.y+overFrame.size.height);
-     
-            O2SurfaceLock(overSurface);
-            AlphaBlend([[result deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
-            O2SurfaceUnlock(overSurface);
-        }
-    
-    }
-    O2SurfaceUnlock(result);
-   
-   return result;
+    return (O2Surface_DIBSection *)[pixelSurface validSurface];
 }
 
 static int reportGLErrorIfNeeded(const char *function,int line){

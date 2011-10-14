@@ -5,6 +5,8 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreGraphics/CGWindow.h>
 #import <CoreGraphics/CGLPixelSurface.h>
+#import <Onyx2D/O2Surface_DIBSection.h>
+#import <Onyx2D/O2DeviceContext_gdi.h>
 #import <pthread.h>
 
 /* There is essentially only two ways to implement a CGLContext on Windows.
@@ -33,6 +35,7 @@ struct _CGLContextObj {
    GLuint           retainCount;
    CRITICAL_SECTION lock; // This must be a recursive lock.
    HWND             window;
+   int              x,y;
    int              w,h;
    int              resizeBacking;
    GLint            opacity;
@@ -593,7 +596,7 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    
    context->opacity=1;
 
-   context->overlay=[[CGLPixelSurface alloc] initWithFrame:O2RectMake(0,0,context->w,context->h)];
+   context->overlay=[[CGLPixelSurface alloc] initWithSize:O2SizeMake(context->w,context->h)];
    [context->overlay setOpaque:YES];
    
    *resultp=context;
@@ -701,7 +704,8 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      break;
      
         case kCGLCPSurfaceBackingOrigin:;
-            [context->overlay setFrame:NSMakeRect(value[0],value[1],context->w,context->h)];
+            context->x=value[0];
+            context->y=value[1];
             break;
 
         case kCGLCPSurfaceWindowNumber:
@@ -741,6 +745,58 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
    CGLUnlockContext(context);
    
    return kCGLNoError;
+}
+
+CGL_EXPORT CGLError CGLCopyPixelsFromSurface(O2Surface_DIBSection *srcSurface,CGLContextObj destination) {
+    resizeBackingIfNeeded(destination);
+    
+    O2Surface_DIBSection *dstSurface=(O2Surface_DIBSection *)[destination->overlay validSurface];
+    BLENDFUNCTION blend;
+    
+    blend.BlendOp=AC_SRC_OVER;
+    blend.BlendFlags=0;
+    blend.SourceConstantAlpha=255;
+    blend.AlphaFormat=0;
+    
+    int width=O2ImageGetWidth(srcSurface);
+    int height=O2ImageGetHeight(srcSurface);
+    
+    O2SurfaceLock(dstSurface);
+        O2SurfaceLock(srcSurface);
+            AlphaBlend([[dstSurface deviceContext] dc],0,0,width,height,[[srcSurface deviceContext] dc],0,0,width,height,blend);
+        O2SurfaceUnlock(srcSurface);
+    O2SurfaceUnlock(dstSurface);
+
+    return kCGLNoError;
+}
+
+CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination) {
+    //resizeBackingIfNeeded(destination);
+
+    CGLPixelSurface *overlay=source->overlay;
+        
+    O2Surface_DIBSection *dstSurface=(O2Surface_DIBSection *)[destination->overlay validSurface];
+    O2Surface_DIBSection *srcSurface=(O2Surface_DIBSection *)[overlay validSurface];
+    
+    if(srcSurface==nil)
+        return kCGLNoError;
+
+    BLENDFUNCTION blend;
+    
+    blend.BlendOp=AC_SRC_OVER;
+    blend.BlendFlags=0;
+    blend.SourceConstantAlpha=255;
+    blend.AlphaFormat=source->opacity?0:AC_SRC_ALPHA;
+
+    int y=destination->h-(source->y+source->h);
+     
+    O2SurfaceLock(dstSurface);
+        O2SurfaceLock(srcSurface);
+            AlphaBlend([[dstSurface deviceContext] dc],source->x,y,source->w,source->h,[[srcSurface deviceContext] dc],0,0,source->w,source->h,blend);
+        O2SurfaceUnlock(srcSurface);
+    O2SurfaceUnlock(dstSurface);
+
+    return kCGLNoError;
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
