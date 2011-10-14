@@ -724,46 +724,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   NSImageRep        *any=[self _bestUncachedFallbackCachedRepresentationForDevice:nil size:rect.size];
-   NSImageRep        *drawRep=nil;
+
+	// Keep a lid on any intermediate allocations while producing caches
+	NSAutoreleasePool *pool=[NSAutoreleasePool new];
+   NSImageRep        *any=[[[self _bestUncachedFallbackCachedRepresentationForDevice:nil size:rect.size] retain] autorelease];
+   NSImageRep        *cachedRep=nil;
    CGContextRef       context;
       
-   if(NSIsEmptyRect(source) && !_isFlipped){
-    if([any isKindOfClass:[NSCachedImageRep class]])
-     drawRep=[any retain];
-    else if([any isKindOfClass:[NSBitmapImageRep class]])
-     drawRep=[any retain];
-   }
+	if(NSIsEmptyRect(source) && !_isFlipped) {
+		// If we're drawing a subset of the image and the image isn't flipped then
+		// we can just draw from a cached rep or a bitmap rep(assuming we have one)
+		if([any isKindOfClass:[NSCachedImageRep class]] ||
+		   [any isKindOfClass:[NSBitmapImageRep class]]) {
+			cachedRep=any;
+		}
+	}
     
-   if(drawRep==nil) {
-    NSImageRep       *uncached=any;
-    NSSize            uncachedSize=[uncached size];
-    BOOL              useSourceRect=NSIsEmptyRect(source)?NO:YES;
-    NSSize            cachedSize=useSourceRect?source.size:uncachedSize;
-    NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:cachedSize depth:0 separate:YES alpha:YES];
+	if(cachedRep==nil) {
+		// Looks like we need to create a cached rep for this image
+		NSImageRep       *uncached=any;
+		NSSize            uncachedSize=[uncached size];
+		BOOL              useSourceRect=NSIsEmptyRect(source)?NO:YES;
+		NSSize            cachedSize=useSourceRect?source.size:uncachedSize;
+	
+		// Create a cached image rep to hold our image
+		NSCachedImageRep *cached=[[[NSCachedImageRep alloc] initWithSize:cachedSize depth:0 separate:YES alpha:YES] autorelease]; // remember that pool we created earlier
 
-    [self lockFocusOnRepresentation:cached];
+		// a non-nil object passed here means we need to manually add the rep
+		[self lockFocusOnRepresentation: cached];
    
-    context=NSCurrentGraphicsPort();
-    if(useSourceRect){
-     CGContextTranslateCTM(context,-source.origin.x,-source.origin.y);
-    }
-    if (_isFlipped) {
-     CGContextTranslateCTM(context, 0, source.size.height);
-     CGContextScaleCTM(context, 1, -1);
-    }
-   
-    [self drawRepresentation:uncached inRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
+		context=NSCurrentGraphicsPort();
+		if(useSourceRect) {
+			// move to the origin of the source rect - remember we've locked focus so we've got a fresh CTM to work with
+			CGContextTranslateCTM(context,-source.origin.x,-source.origin.y);
+		}
+		if (_isFlipped) {
+			// Flip the CTM so the image is drawn the right way up in the cache
+			CGContextTranslateCTM(context, 0, uncachedSize.height);
+			CGContextScaleCTM(context, 1, -1);
+		}
+		// Draw into the new cache rep
+		[self drawRepresentation:uncached inRect:NSMakeRect(0,0,uncachedSize.width,uncachedSize.height)];
 
-    [self unlockFocus];
+		[self unlockFocus];
     
-    drawRep=cached;
-   }
+		// And add it
+		[self addRepresentation: cached];
+		
+		cachedRep=cached;
+	}
    
-   context=NSCurrentGraphicsPort();
-   
-   CGContextSaveGState(context);
+	// OK now we've got a rep we can draw
+	
+	context=NSCurrentGraphicsPort();
+
+	CGContextSaveGState(context);
    
 	if (CGContextSupportsGlobalAlpha(context) == NO) {
 		// That should really be done by setting the context alpha - and the compositing done in the context implementation
@@ -783,12 +798,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}	
 	[[NSGraphicsContext currentContext] setCompositingOperation:operation];
     
-   [self drawRepresentation:drawRep inRect:rect];
+	[self drawRepresentation: cachedRep inRect:rect];
    
-   CGContextRestoreGState(context);
+	CGContextRestoreGState(context);
 
-   [drawRep release];
-   [pool release];
+	[pool release];
 }
 
 -(NSString *)description {
