@@ -21,6 +21,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSButtonCell class];
 }
 
+-initWithCoder:(NSCoder *)coder {
+   [super initWithCoder:coder];
+   
+   if ([[self cell] controlSize] == NSMiniControlSize) {
+    NSRect frame = [self frame];
+    if (frame.size.height < 18) {
+     frame.size.height = 18;
+     frame.origin.y -= 1;
+     [self setFrame:frame];
+    }
+   }
+   
+   return self;
+}
+
 -(BOOL)resignFirstResponder {
    [self setNeedsDisplay:YES];
    return [super resignFirstResponder];

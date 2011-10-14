@@ -29,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSRaise.h>
 #import <objc/message.h>
+#import <pthread.h>
 
 NSString * const NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
 NSString * const NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
@@ -136,7 +137,8 @@ id NSApp=nil;
    _dockTile=[[NSDockTile alloc] initWithOwner:self];
    _modalStack=[NSMutableArray new];
     
-   pthread_mutex_init(&_lock,NULL);
+   _lock=NSZoneMalloc(NULL,sizeof(pthread_mutex_t));
+   pthread_mutex_init(_lock,NULL);
    
    [self _showSplashImage];
    
@@ -603,10 +605,10 @@ id NSApp=nil;
    if(nextEvent!=nil){
     nextEvent=[nextEvent retain];
 
-    pthread_mutex_lock(&_lock);
+    pthread_mutex_lock(_lock);
      [_currentEvent release];
      _currentEvent=nextEvent;
-    pthread_mutex_unlock(&_lock);
+    pthread_mutex_unlock(_lock);
    }
 
    return [nextEvent autorelease];
@@ -616,9 +618,9 @@ id NSApp=nil;
    /* Apps do use currentEvent from secondary threads and it doesn't crash on OS X, so we need to be safe here too. */
    NSEvent *result;
 
-    pthread_mutex_lock(&_lock);
+    pthread_mutex_lock(_lock);
      result=[_currentEvent retain];
-    pthread_mutex_unlock(&_lock);
+    pthread_mutex_unlock(_lock);
    
    return [result autorelease];
 }

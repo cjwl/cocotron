@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSCell.h>
+#import <AppKit/NSTextFieldCell.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSRaise.h>
@@ -81,7 +82,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   NSView *contentview;
 
   [super initWithFrame: frame];
-   _isTransparent=YES;
+   
+   _isTransparent = YES;
+   _titleCell = [[NSTextFieldCell alloc] initTextCell:@""];
+   _borderType = NSLineBorder;
+   _titlePosition = NSAboveTop;
 
   contentview = [[NSView alloc] initWithFrame:NSMakeRect(0,0,NSWidth(frame),NSHeight(frame))];
   [contentview  setAutoresizingMask: NSViewWidthSizable| NSViewHeightSizable];
