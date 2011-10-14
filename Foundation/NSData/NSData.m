@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData_concrete.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
@@ -142,7 +143,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeDataObject:self];
+   if([coder isKindOfClass:[NSKeyedArchiver class]]){
+    NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+    
+    [keyed encodeObject:self forKey:@"NS.data"];
+   }
+   else {
+    [coder encodeDataObject:self];
+   }
 }
 
 +data {
@@ -273,10 +281,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
-   BOOL atomically=(options&NSAtomicWrite);
-   if(errorp)
-     NSLog(@"-[%@ %s]: NSError not (yet) supported.",[self class],_cmd);
-   return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] atomically:atomically];
+   return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] options:options error:errorp];
 }
 
 -(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {

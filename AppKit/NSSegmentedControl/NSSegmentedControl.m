@@ -9,6 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSegmentedControl.h>
 #import <AppKit/NSSegmentedCell.h>
 
+@interface NSSegmentedCell (PrivateToControlView)
+- (void)_wasDrawnWithFrame:(NSRect)cellFrame inView:(NSView *)controlView;
+@end
+
 @implementation NSSegmentedControl
 
 -(NSInteger)segmentCount {
@@ -122,6 +126,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cell setSelectedSegment:segment];
    [self setNeedsDisplay:YES];
 }
+
+-(void)drawRect:(NSRect)rect {
+   [super drawRect:rect];
+   [_cell _wasDrawnWithFrame:rect inView:self];
+}
+
 @end
 
 @implementation NSSegmentedControl (Bindings)

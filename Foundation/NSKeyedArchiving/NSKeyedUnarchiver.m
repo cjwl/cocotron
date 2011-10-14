@@ -44,6 +44,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
    [_plistStack addObject:[_propertyList objectForKey:@"$top"]];
    _uidToObject=NSCreateMapTable(NSIntMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
    _objectToUid=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,NSIntMapValueCallBacks,0);
+   _classVersions=NSCreateMapTable(NSObjectMapKeyCallBacks,NSIntMapValueCallBacks,0);
    return self;
 }
 
@@ -56,6 +57,8 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
     NSFreeMapTable(_uidToObject);
    if(_objectToUid!=NULL)
     NSFreeMapTable(_objectToUid);
+   if(_classVersions!=NULL)
+    NSFreeMapTable(_classVersions);
    [super dealloc];
 }
 
@@ -81,6 +84,8 @@ static inline int integerFromCFUID(id object){
    NSDictionary *profile=[_objects objectAtIndex:integerFromCFUID(plist)];
    NSDictionary *classes=[profile objectForKey:@"$classes"];
    NSString     *className=[profile objectForKey:@"$classname"];
+   
+   // TODO: decode class version
    
    if((result=[_nameToReplacementClass objectForKey:className])==Nil)
     if((result=NSClassFromString(className))==Nil)
@@ -619,6 +624,10 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 
 -(Class)classForClassName:(NSString *)className {
    return [_nameToReplacementClass objectForKey:className];
+}
+
+-(NSInteger)versionForClassName:(NSString *)className {
+   return (NSInteger)NSMapGet(_classVersions,className);
 }
 
 -(NSString*)description

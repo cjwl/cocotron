@@ -124,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int       p,priorityCount=4;
    
    [_visibleItems removeAllObjects];
-      
+   
    for(i=0;i<count;i++){
     NSToolbarItem *item=[items objectAtIndex:i];
     NSString      *identifier=[item itemIdentifier];
@@ -262,6 +262,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_removeItemAtIndex:(NSInteger)index {
+   [[[[self subviews] copy] autorelease] makeObjectsPerformSelector:@selector(removeFromSuperview)];
    [self layoutViews];
 }
 

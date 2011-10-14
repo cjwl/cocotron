@@ -792,6 +792,13 @@ _dataSource);
     [_selectedRowIndexes release];
     _selectedRowIndexes=[[NSIndexSet alloc] initWithIndex:0];
    }
+   
+   if ([_selectedRowIndexes count] > 0 && [_selectedColumns count] > 0) {
+    // selecting a row deselects the previously selected column
+    [_selectedColumns removeAllObjects];
+    [self setNeedsDisplay:YES];
+    [_headerView setNeedsDisplay:YES];
+   }
 
     [self noteSelectionDidChange];
 }
@@ -812,6 +819,7 @@ _dataSource);
    // Selecting a row deselects all columns.
    if ([_selectedColumns count]) {
     [_selectedColumns removeAllObjects];
+    [self setNeedsDisplay:YES];
     [_headerView setNeedsDisplay:YES];
     changed = YES;
    }

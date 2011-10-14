@@ -107,7 +107,6 @@ static Class _rulerViewClass = nil;
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     unsigned           flags=[keyed decodeIntForKey:@"NSsFlags"];
     
-    _drawsBackground=NO; // FIXME: this is in the nib
     _hasVerticalScroller=(flags&0x10)?YES:NO;
     _hasHorizontalScroller=(flags&0x20)?YES:NO;
     _autohidesScrollers=(flags&0x200)?YES:NO;
@@ -122,11 +121,28 @@ static Class _rulerViewClass = nil;
     _headerClipView=[[keyed decodeObjectForKey:@"NSHeaderClipView"] retain];
     _cornerView=[[keyed decodeObjectForKey:@"NSCornerView"] retain];
     _backgroundColor=[[NSColor controlBackgroundColor] copy];
-    // scroll amounts in NSScrollAmts
-    _verticalLineScroll=1.0;
+    
+    BOOL copyOnScroll=(flags&0x80)?YES:NO;
+    if (copyOnScroll) {
+        _drawsBackground = YES;
+        [_clipView setDrawsBackground:YES];
+        [_clipView setCopiesOnScroll:YES];
+    } else {
+        _drawsBackground = [_clipView drawsBackground];
+    }
+
+    _verticalLineScroll=10.0;  // the default value in IB is 10
     _verticalPageScroll=10.0;
-    _horizontalLineScroll=1.0;
+    _horizontalLineScroll=10.0;
     _verticalLineScroll=10.0;
+    id scrollAmts = [keyed decodeObjectForKey:@"NSScrollAmts"];
+    if ([scrollAmts isKindOfClass:[NSData class]] && [scrollAmts length] == 4*sizeof(NSSwappedFloat)) {
+        NSSwappedFloat *amts = (NSSwappedFloat *)[scrollAmts bytes];
+        _horizontalPageScroll = NSSwapBigFloatToHost(amts[0]);
+        _verticalPageScroll = NSSwapBigFloatToHost(amts[1]);
+        _horizontalLineScroll = NSSwapBigFloatToHost(amts[2]);
+        _verticalLineScroll = NSSwapBigFloatToHost(amts[3]);
+    }
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
