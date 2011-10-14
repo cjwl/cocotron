@@ -8,14 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSViewController.h>
 #import <AppKit/NSNibLoading.h>
 
-@class NSTextField,NSButton,NSPopUpButton,NSBrowser;
+@class NSTextField,NSButton,NSPopUpButton,NSTableView;
 
 @interface NSSpellingViewController : NSViewController {
    IBOutlet NSTextField *_currentWord;
+   IBOutlet NSTextField *_infoLabel;
    IBOutlet NSButton *_changeButton;
    IBOutlet NSButton *_findNextButton;
    
-   IBOutlet NSBrowser *_suggestionBrowser;
+   IBOutlet NSTableView *_suggestionTable;
    IBOutlet NSButton *_ignoreButton;
    IBOutlet NSButton *_learnButton;
    IBOutlet NSButton *_defineButton;
@@ -24,5 +25,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)availableLanguages;
+
+-(void)updateSpellingPanelWithMisspelledWord:(NSString *)word;
+
+-(void)change:sender;
+-(void)findNext:sender;
+-(void)ignore:sender;
+-(void)learn:sender;
+-(void)guess:sender;
 
 @end
