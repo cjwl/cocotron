@@ -43,6 +43,9 @@ struct NSRangeEntries {
 }
 
  void NSFreeRangeEntries(NSRangeEntries *self) {
+	 if (self == nil) {
+		 return;
+	 }
    NSResetRangeEntries(self);
    NSZoneFree(NULL,self->entries);
    NSZoneFree(NULL,self);
