@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSKVCMutableArray.h"
 #import "NSString+KVCAdditions.h"
+#import "NSKeyValueObserving-Private.h"
 
 NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 
@@ -298,8 +299,8 @@ return value; \
 		return [self _setValue:value withSelector:sel fromKey:key];
 	}
 
-	BOOL shouldNotify=[isa automaticallyNotifiesObserversForKey:key];
-	if (shouldNotify == NO) {
+	BOOL shouldNotify=[isa automaticallyNotifiesObserversForKey:key] && [self _hasObserverForKey: key] ;
+	if (shouldNotify == YES) {
 	}
 	if([isa accessInstanceVariablesDirectly])
 	{

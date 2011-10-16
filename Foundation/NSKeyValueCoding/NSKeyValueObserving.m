@@ -373,6 +373,16 @@ static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeIn
    }
 }
 
+-(BOOL)_hasObserverForKey:(NSString*)key
+{
+	NSKVOInfoPerObject *observationInfo=[self observationInfo];
+	if(observationInfo==nil) {
+		return NO;
+	}
+	NSArray *keyObserversArray=[observationInfo keyObserversForKey:key];
+	NSInteger count=[keyObserversArray count];
+	return count > 0;
+}
 
 -(void)willChangeValueForKey:(NSString *)key {
 	NSMutableDictionary *changeInfo=[[NSMutableDictionary allocWithZone:NULL] init];
@@ -554,11 +564,12 @@ static SEL selectorForKeyPathsForValuesAffecting(NSString *key){
 		sel+=3; \
 	sel[0]=tolower(sel[0]); \
 	NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel]; \
-	[self willChangeValueForKey:key]; \
+	BOOL shouldNotify = [self _hasObserverForKey:key];\
+	if (shouldNotify) [self willChangeValueForKey:key]; \
 	typedef id (*sender)(id obj, SEL selector, type value); \
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; \
 	(void)*implementation(self, _cmd, value); \
-	[self didChangeValueForKey:key]; \
+	if (shouldNotify) [self didChangeValueForKey:key]; \
 	[key release]; \
 }
 
@@ -592,19 +603,29 @@ CHANGE_DECLARATION(long)
 CHANGE_DECLARATION(SEL)
 
 -(void)KVO_notifying_change_setObject:(id)object forKey:(NSString*)key {
-	[self willChangeValueForKey:key];
+	BOOL shouldNotify = [self _hasObserverForKey:key];
+	if (shouldNotify) {
+		[self willChangeValueForKey:key];
+	}
 	typedef id (*sender)(id obj, SEL selector, id object, id key);
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
 	implementation(self, _cmd, object, key);
-	[self didChangeValueForKey:key];
+	if (shouldNotify) {
+		[self didChangeValueForKey:key];
+	}	
 }
 
 -(void)KVO_notifying_change_removeObjectForKey:(NSString*)key {
-	[self willChangeValueForKey:key];
+	BOOL shouldNotify = [self _hasObserverForKey:key];
+	if (shouldNotify) {
+		[self willChangeValueForKey:key];
+	}
 	typedef id (*sender)(id obj, SEL selector, id key);
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
 	implementation(self, _cmd, key);
-	[self didChangeValueForKey:key];
+	if (shouldNotify) {
+		[self didChangeValueForKey:key];
+	}
 }
 
 
