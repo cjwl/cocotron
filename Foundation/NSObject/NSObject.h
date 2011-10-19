@@ -96,6 +96,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(Class)classForCoder;
 -(Class)classForArchiver;
+-(Class)classForKeyedArchiver;
+
 -replacementObjectForCoder:(NSCoder *)coder;
 -awakeAfterUsingCoder:(NSCoder *)coder;
 

@@ -11479,7 +11479,6 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
-					"-lfreetype",
 					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",
@@ -11758,7 +11757,6 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
-					"-lfreetype",
 					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",

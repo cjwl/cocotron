@@ -7,7 +7,11 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSSpellingViewController.h"
 #import <Foundation/NSSpellEngine.h>
+#import <AppKit/NSApplication.h>
+#import <AppKit/NSTableView.h>
+#import <AppKit/NSSpellChecker.h>
 
+@class NSTableColumn;
 
 @implementation NSSpellingViewController
 
@@ -22,6 +26,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    NSLog(@"result=%@",result);
    return result;
+}
+
+
+
+-(NSSpellEngine *)currentSpellEngine {
+    return [[NSSpellEngine allSpellEngines] objectAtIndex:0];
+}
+
+-(NSString *)currentWord {
+    return [_currentWord stringValue];
+}
+
+-(NSString *)currentLanguage {
+    return [[NSLocale currentLocale] localeIdentifier];
+}
+
+-(NSArray *)currentGuesses {
+    return [[self currentSpellEngine] suggestGuessesForWord:[self currentWord] inLanguage:[self currentLanguage]];
+}
+
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return [[self currentGuesses] count];
+}
+
+-tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    return [[self currentGuesses] objectAtIndex:row];
+}
+
+-(void)reloadGuessesForCurrentWord {
+    [_suggestionTable reloadData];
+}
+
+-(void)updateSpellingPanelWithMisspelledWord:(NSString *)word {
+    [_currentWord setStringValue:word];
+    [self reloadGuessesForCurrentWord];
+}
+
+-(void)change:sender {
+    [NSApp sendAction:@selector(changeSpelling:) to:nil from:_currentWord];
+}
+
+-(void)findNext:sender {
+    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+}
+
+-(void)ignore:sender {
+    [NSApp sendAction:@selector(ignoreSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+}
+
+-(void)learn:sender {
+    [[NSSpellChecker sharedSpellChecker] learnWord:[_currentWord stringValue]];
+}
+
+-(void)guess:sender {
+    [self reloadGuessesForCurrentWord];
 }
 
 @end

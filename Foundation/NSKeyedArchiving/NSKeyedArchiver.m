@@ -210,7 +210,7 @@ static NSMapTable *_globalNameToClass=NULL;
     uid=[NSNumber numberWithUnsignedInteger:[_objects count]];
     NSMapInsert(_objectToUid,object,uid);
     
-    NSString *archClass = NSStringFromClass([object classForArchiver]);
+    NSString *archClass = NSStringFromClass([object classForKeyedArchiver]);
     
     //NSLog(@"uid %@: encoding class %@ as '%@'", uid, [object class], archClass);
     
@@ -237,7 +237,7 @@ static NSMapTable *_globalNameToClass=NULL;
 		
 	NSMutableArray *supers = [[NSMutableArray alloc] init];
 	[supers addObject:archClass];
-	Class sup = class_getSuperclass([object classForArchiver]);
+	Class sup = class_getSuperclass([object classForKeyedArchiver]);
 	while( sup != nil )
 	{
 		[supers addObject:NSStringFromClass(sup)];
