@@ -656,6 +656,9 @@ BOOL class_addProtocol(Class cls,Protocol *protocol) {
 
 BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
 
+   if (class == Nil) {
+        return NO;
+   }
    for(;;class=class->super_class){
     struct objc_protocol_list *protoList=class->protocols;
 

@@ -14,7 +14,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSLock_posix
 
 - init {
-    pthread_mutex_init(&_mutex, NULL);
+    if (pthread_mutex_init(&_mutex, NULL) != 0) {
+        [self autorelease];
+        NSRaiseException(NSInvalidArgumentException,
+                         self, _cmd, @"pthread_mutex_lock() returned -1");
+
+    }
 
     return self;
 }
@@ -25,13 +30,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)lock {
-    if (pthread_mutex_lock(&_mutex) == -1)
+    if (pthread_mutex_lock(&_mutex) != 0)
         NSRaiseException(NSInvalidArgumentException,
                          self, _cmd, @"pthread_mutex_lock() returned -1");
 }
 
 -(void)unlock {
-    if (pthread_mutex_unlock(&_mutex) == -1)
+    if (pthread_mutex_unlock(&_mutex) != 0)
         NSRaiseException(NSInvalidArgumentException,
                          self, _cmd, @"pthread_mutex_lock() returned -1");
 }

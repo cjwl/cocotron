@@ -9,7 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_class.h"
 
 Class object_getClass(id object) {
-   return object->isa;
+    if (object == nil) {
+        return Nil;
+    }
+    return object->isa;
 }
 
 const char *object_getClassName(id object) {

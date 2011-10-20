@@ -144,9 +144,15 @@ second, 0);
 
 
 -(void)setCalendarFormat:(NSString *)format {
-   [format retain];
-   [_format release];
-   _format=format;
+    if (format != nil) {
+        [format retain];
+        [_format release];
+        _format=format;
+    }
+    else {
+        [_format release];
+        _format=[defaultCalendarDate retain];
+    }
 }
 
 -(void)setTimeZone:(NSTimeZone *)timeZone {

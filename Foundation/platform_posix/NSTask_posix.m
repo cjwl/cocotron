@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle_posix.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/Foundation.h>
+#import <Foundation/NSRaiseException.h>
 
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -22,8 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <signal.h>
 #include <errno.h>
 
-// these cannot be static, subclasses need them :/
-NSMutableArray *_liveTasks = nil;
+static NSMutableArray *_liveTasks = nil;
 
 @implementation NSTask_posix
 
@@ -32,11 +32,11 @@ void childSignalHandler(int sig) {
         NSTask_posix *task;
         pid_t pid;
         int status;
-        
-        pid = wait4(-1, &status, WNOHANG, NULL);
+
+        pid = wait3(&status, WNOHANG, NULL);
         
         if (pid < 0) {
-            // [NSException raise:NSInvalidArgumentException format:@"wait4(): %s", strerror(errno)];
+            NSCLog("Invalid wait4 result [%s] in child signal handler", strerror(errno));
         }
         else if (pid == 0) {
             // This can happen when a child is suspended (^Z'ing at the shell)
@@ -147,8 +147,9 @@ void childSignalHandler(int sig) {
             else
                 fd = [(NSFileHandle_posix *)[standardInput fileHandleForReading] fileDescriptor];
             dup2(fd, STDIN_FILENO);
-            
-            
+        }
+        else {
+            close(STDIN_FILENO);
         }
         if ([standardOutput isKindOfClass:[NSFileHandle class]] || [standardOutput isKindOfClass:[NSPipe class]]) {
             int fd = -1;
@@ -159,7 +160,9 @@ void childSignalHandler(int sig) {
                 fd = [(NSFileHandle_posix *)[standardOutput fileHandleForWriting] fileDescriptor];
             
             dup2(fd, STDOUT_FILENO);
-            
+        }
+        else {
+            close(STDOUT_FILENO);
         }
         if ([standardError isKindOfClass:[NSFileHandle class]] || [standardError isKindOfClass:[NSPipe class]]) {
             int fd = -1;
@@ -169,7 +172,9 @@ void childSignalHandler(int sig) {
             else
                 fd = [(NSFileHandle_posix *)[standardError fileHandleForWriting] fileDescriptor];
             dup2(fd, STDERR_FILENO);
-            
+        }
+        else {
+            close(STDERR_FILENO);
         }
         
         for (i = 3; i < getdtablesize(); i++) {
