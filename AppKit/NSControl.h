@@ -74,6 +74,7 @@ APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 -(void)setObjectValue:(id <NSCopying>)value;
 -(void)setStringValue:(NSString *)value;
 -(void)setIntValue:(int)value;
+-(void)setIntegerValue:(NSInteger)value;
 -(void)setFloatValue:(float)value;
 -(void)setDoubleValue:(double)value;
 -(void)setIntegerValue:(NSInteger)anInteger;

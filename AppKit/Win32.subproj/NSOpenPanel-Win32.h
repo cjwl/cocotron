@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSOpenPanel(Win32)
 
--(int)_SHBrowseForFolder:(NSArray *)types;
+-(int)_SHBrowseForFolder:(NSString *)initialPath;
 -(int)_GetOpenFileNameForTypes:(NSArray *)types;
 
 @end

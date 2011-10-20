@@ -181,6 +181,7 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 }
 
 - (void)dealloc {
+	[self setDelegate:nil];
     [_drawerWindow release];
     [super dealloc];
 }
