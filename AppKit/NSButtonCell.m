@@ -643,10 +643,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask)) 
 	{
-		frame.size.width  = 10 - _controlSize*2;
-		frame.size.height = 10 - _controlSize*2;
-		frame.origin.x    =  5 - _controlSize;
-		frame.origin.y    = flipped ? _controlSize*2 - 3 : 7 - _controlSize*2;
+        switch (_controlSize) 
+        {
+            default:
+                frame.size.width  = 10 - _controlSize*2;
+                frame.size.height = 10 - _controlSize*2;
+                frame.origin.x    =  5 - _controlSize;
+                frame.origin.y    = flipped ? _controlSize*2 - 3 : 7 - _controlSize*2;
+                break;
+                
+            case NSMiniControlSize:
+                break;
+        }
 	}   
     else if(_bezelStyle==NSRegularSquareBezelStyle){
 
@@ -661,7 +669,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     BOOL pressed=[self state] && ([self showsStateBy] & NSChangeBackgroundCellMask);
     
     BOOL renderDarkenBg=NO, renderOutlineShadow=NO;
-    CGFloat topGray=0.76, bottomGray=0.98, strokeGray=0.4;
+    //CGFloat topGray=0.76, bottomGray=0.98, strokeGray=0.4;
+    CGFloat topGray=0.98, bottomGray=0.76, strokeGray=0.4;
     if (pressed) {
         topGray=0.4;
         bottomGray=0.30;

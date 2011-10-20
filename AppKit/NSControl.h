@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 #import <AppKit/NSText.h>
+#import <AppKit/NSCell.h>
 
 @class NSCell,NSFont,NSText,NSTextView;
 
@@ -47,6 +48,7 @@ APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 -(int)intValue;
 -(float)floatValue;
 -(double)doubleValue;
+-(NSInteger)integerValue;
 
 -selectedCell;
 -(int)selectedTag;
@@ -67,19 +69,22 @@ APPKIT_EXPORT NSString * const NSControlTextDidEndEditingNotification;
 -(void)setBezeled:(BOOL)flag;
 -(void)setContinuous:(BOOL)flag;
 -(void)setRefusesFirstResponder:(BOOL)flag;
+-(void)setFormatter:(NSFormatter *)formatter;
 
 -(void)setObjectValue:(id <NSCopying>)value;
 -(void)setStringValue:(NSString *)value;
 -(void)setIntValue:(int)value;
 -(void)setFloatValue:(float)value;
 -(void)setDoubleValue:(double)value;
+-(void)setIntegerValue:(NSInteger)anInteger;
 -(void)setAttributedStringValue:(NSAttributedString *)value;
 
--(void)takeObjectValueFrom:sender;
--(void)takeStringValueFrom:sender;
--(void)takeIntValueFrom:sender;
--(void)takeFloatValueFrom:sender;
--(void)takeDoubleValueFrom:sender;
+-(void)takeObjectValueFrom:(id)sender;
+-(void)takeStringValueFrom:(id)sender;
+-(void)takeIntValueFrom:(id)sender;
+-(void)takeFloatValueFrom:(id)sender;
+-(void)takeDoubleValueFrom:(id)sender;
+-(void)takeIntegerValueFrom:(id)sender;
 
 -(void)selectCell:(NSCell *)cell;
 

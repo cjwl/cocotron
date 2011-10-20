@@ -182,6 +182,10 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    return [self classForCoder];
 }
 
+-(Class)classForKeyedArchiver {
+	return [self classForCoder];
+}
+
 -replacementObjectForCoder:(NSCoder *)coder {
    return self;
 }

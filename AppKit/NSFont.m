@@ -426,6 +426,10 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
       }
    }
 
+	// Fall back to using the font name - nil is not an option
+	if (familyName == nil) {
+		familyName = _name;
+	}
    return familyName;
 }
 

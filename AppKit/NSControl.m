@@ -161,6 +161,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return [[self selectedCell] doubleValue];
 }
 
+-(NSInteger)integerValue {
+   return [[self selectedCell] integerValue];
+}
+
 -selectedCell {
    return _cell;
 }
@@ -271,6 +275,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    [self setObjectValue:[NSNumber numberWithDouble:value]];
 }
 
+-(void)setIntegerValue:(NSInteger)value {
+   [self setObjectValue:[NSNumber numberWithInteger:value]];
+}
+
 -(void)setAttributedStringValue:(NSAttributedString *)value {
    [self setObjectValue:value];
 }
@@ -293,6 +301,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(void)takeDoubleValueFrom:sender {
    [self setDoubleValue:[sender doubleValue]];
+}
+
+-(void)takeIntegerValueFrom:sender {
+   [self setIntegerValue:[sender integerValue]];
 }
 
 -(void)selectCell:(NSCell *)cell {

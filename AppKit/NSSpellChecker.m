@@ -281,19 +281,27 @@ static NSSpellChecker *shared=nil;
 }
 #endif
 
+-(NSSpellingViewController *)_spellingViewController {
+    if(_spellingViewController==nil)
+        _spellingViewController=[[NSSpellingViewController alloc] initWithNibName:@"NSSpellingViewController" bundle:[NSBundle bundleForClass:[NSSpellingViewController class]]];
+    
+    return _spellingViewController;
+}
+
 -(NSPanel *)spellingPanel {
-   if(_spellingPanel==nil){
-    _spellingViewController=[[NSSpellingViewController alloc] initWithNibName:@"NSSpellingViewController" bundle:[NSBundle bundleForClass:[NSSpellingViewController class]]];
+    if(_spellingPanel==nil){
+        
+        NSSpellingViewController *vc=[self _spellingViewController];
     
-    NSView *view=[_spellingViewController view];
-    _spellingPanel=[[NSPanel alloc] initWithContentRect:[view frame] styleMask:NSUtilityWindowMask backing:NSBackingStoreBuffered defer:YES];
+        NSView *view=[vc view];
+        _spellingPanel=[[NSPanel alloc] initWithContentRect:[view frame] styleMask:NSUtilityWindowMask backing:NSBackingStoreBuffered defer:YES];
     
-    [_spellingPanel setContentView:view];
+        [_spellingPanel setContentView:view];
     
-    [_spellingPanel center];
-   }
+        [_spellingPanel center];
+    }
    
-   return _spellingPanel;
+    return _spellingPanel;
 }
 
 -(NSPanel *)substitutionsPanel {
@@ -318,7 +326,9 @@ static NSSpellChecker *shared=nil;
 }
 
 -(void)updateSpellingPanelWithMisspelledWord:(NSString *)word {
-   NSUnimplementedMethod();
+    NSSpellingViewController *vc=[self _spellingViewController];
+    
+    [vc updateSpellingPanelWithMisspelledWord:word];
 }
 
 -(NSArray *)userPreferredLanguages {

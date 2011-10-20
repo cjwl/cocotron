@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
 
-@class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet;
+@class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet, NSError;
 
 FOUNDATION_EXPORT NSString * const NSPlatformExecutableFileExtension;
 FOUNDATION_EXPORT NSString * const NSPlatformLoadableObjectFileExtension;
@@ -50,7 +50,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
 -(void)unmapAddress:(void *)ptr length:(NSUInteger)length;
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically;
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length options:(NSUInteger)options error:(NSError **)errorp;
 
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
 @end

@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSString      *_label;
    NSMenu        *_menu;
    NSString      *_toolTip;
-   float          _width;
+   CGFloat       _width;
    NSImageScaling _imageScaling;
 }
 
@@ -30,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)label;
 -(NSMenu *)menu;
 -(NSString *)toolTip;
--(float)width;
+-(CGFloat)width;
 -(NSImageScaling)imageScaling;
 
 -(void)setTag:(int)tag;
@@ -40,6 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setLabel:(NSString *)label;
 -(void)setMenu:(NSMenu *)menu;
 -(void)setToolTip:(NSString *)toolTip;
--(void)setWidth:(float)width;
+-(void)setWidth:(CGFloat)width;
 -(void)setImageScaling:(NSImageScaling)value;
+
 @end

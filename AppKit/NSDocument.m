@@ -599,8 +599,23 @@ static int untitled_document_number = 0;
       NSString *savePath=[savePanel filename];
       [[NSUserDefaults standardUserDefaults] setObject:[savePath stringByDeletingLastPathComponent] 
                                                 forKey:@"NSNavLastRootDirectory"];
-      
-      [self saveToFile:savePath saveOperation:operation delegate:delegate didSaveSelector:selector contextInfo:context];
+		if([self _isSelectorOverridden:@selector(saveToFile:saveOperation:delegate:didSaveSelector:contextInfo:)])
+        {
+			[self saveToFile:savePath 
+			   saveOperation:operation 
+					delegate:delegate 
+			 didSaveSelector:selector
+				 contextInfo:context];
+        }
+		else 
+        {
+			[self saveToURL:[savePanel URL] 
+					 ofType:[self fileType] 
+		   forSaveOperation:operation 
+				   delegate:delegate 
+			didSaveSelector:selector 
+				contextInfo:context];
+        }
     } 
   else 
     {

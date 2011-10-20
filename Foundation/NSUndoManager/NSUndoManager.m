@@ -327,7 +327,7 @@ NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoCh
 
     [invocation setTarget:target];
     [invocation setSelector:selector];
-    [invocation setArgument:object atIndex:2];
+    [invocation setArgument:&object atIndex:2];
     [invocation retainArguments];
 
     [_currentGroup addInvocation:invocation];

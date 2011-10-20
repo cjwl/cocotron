@@ -207,8 +207,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)dealloc {
-   if(_ownsTextStorage)
-    [_textStorage release];
+	if(_ownsTextStorage) {
+		[_textStorage release];
+	}
+	[_textContainer setTextView: nil];
    [_textContainer release];
    [_typingAttributes release];
    [_backgroundColor release];
@@ -2674,15 +2676,20 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
    NSArray *checking=[checker checkString:string range:range types:NSTextCheckingTypeSpelling options:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag] orthography:NULL wordCount:NULL];
    
-   for(NSTextCheckingResult *result in checking){
-    NSRange range=[result range];
+    if([checking count]==0){
+        [checker updateSpellingPanelWithMisspelledWord: @""];
+    }
+    else {
+        NSTextCheckingResult *result=[checking objectAtIndex:0];
+        NSRange range=[result range];
 
-    [self setSelectedRange:range]; // this will clear the current spelling attributes
+        [self setSelectedRange:range]; // this will clear the current spelling attributes
     
-    [self setSpellingState:NSSpellingStateSpellingFlag range:range];
+        [self setSpellingState:NSSpellingStateSpellingFlag range:range];
     
-    // manual spell check only does one
-    break;
+        NSString *word=[string substringWithRange:range];
+        
+        [checker updateSpellingPanelWithMisspelledWord: word];
    }
 }
 

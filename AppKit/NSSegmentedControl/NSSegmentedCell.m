@@ -12,31 +12,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSPopUpWindow.h>
 
+@interface NSSegmentedCell (Private)
+- (void)_recomputeSegmentWidths;
+@end
+
 @implementation NSSegmentedCell
 
 // For manually created segment cells
-- (id)init {
-	if ((self = [super init])) {
-		_segments = [[NSMutableArray arrayWithCapacity: 5] retain];
+- (id)initImageCell:(NSImage *)image {
+	if ((self = [super initImageCell:image])) {
+		_segments = [[NSMutableArray arrayWithCapacity:5] retain];
 		_selectedSegment = NSNotFound; // initially empty
 		_trackingMode = NSSegmentSwitchTrackingSelectOne; // default
 	}
 	return self;
 }
 
+- (id)initTextCell:(NSString *)str {
+    return [self initImageCell:nil];
+}
+
 // For nib created segment cells
--initWithCoder:(NSCoder *)coder {
+- (id)initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
    
-   _segments=[[coder decodeObjectForKey:@"NSSegmentImages"] retain];
-   _selectedSegment=[coder decodeIntForKey:@"NSSelectedSegment"];
-   _trackingMode=[coder decodeIntForKey:@"NSTrackingMode"];
-      
+   _segments = [[coder decodeObjectForKey:@"NSSegmentImages"] retain];
+   if ( !_segments)
+    _segments = [[NSMutableArray arrayWithCapacity:5] retain];
+
+   if ([coder containsValueForKey:@"NSSelectedSegment"])
+    _selectedSegment = [coder decodeIntForKey:@"NSSelectedSegment"];
+   else
+    _selectedSegment = NSNotFound;
+    
+   _trackingMode = [coder decodeIntForKey:@"NSTrackingMode"];
+
+   [self _recomputeSegmentWidths];
+
    return self;
-      }
+}
    
 -(void)dealloc {
    [_segments release];
+   [_segmentComputedWidths release];
    [super dealloc];
 }
 
@@ -114,6 +132,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			[_segments removeLastObject];
 		}
 	}
+    [self _recomputeSegmentWidths];
 }
 
 -(void)setSegmentStyle:(NSSegmentStyle)value {
@@ -130,6 +149,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setImage:(NSImage *)image forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setImage:image];
+   [self _recomputeSegmentWidths];
 }
 
 -(void)setEnabled:(BOOL)enabled forSegment:(NSInteger)segment {
@@ -138,6 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setLabel:(NSString *)label forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setLabel:label];
+   [self _recomputeSegmentWidths];
 }
 
 -(void)setMenu:(NSMenu *)menu forSegment:(NSInteger)segment {
@@ -150,6 +171,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setWidth:(CGFloat)width forSegment:(NSInteger)segment {
    [[_segments objectAtIndex:segment] setWidth:width];
+   [self _recomputeSegmentWidths];
 }
 
 -(void)setImageScaling:(NSImageScaling)value forSegment:(NSInteger)segment {
@@ -186,6 +208,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 -(void)makePreviousSegmentKey {
    NSUnimplementedMethod();
+}
+
+-(void)setFont:(NSFont *)font {
+   [super setFont:font];
+   [self _recomputeSegmentWidths];
+}
+
+-(void)_recomputeSegmentWidths {
+   if ( !_segmentComputedWidths)
+    _segmentComputedWidths = [[NSMutableArray arrayWithCapacity:5] retain];
+   else
+    [_segmentComputedWidths removeAllObjects];
+
+   CGFloat x = 0;
+   NSDictionary *textAttrs = nil;
+
+   int i,count=[_segments count];   
+   for(i=0;i<count;i++) {
+    NSSegmentItem *segment = [_segments objectAtIndex:i];
+    double w = [segment width];
+    if (w <= 0.0) {
+     if ( !textAttrs) {
+      textAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [self font], NSFontAttributeName,
+                                        nil];
+     }
+     NSString *label = [segment label];
+     if ([label length] > 0) {
+      NSSize textSize = [label sizeWithAttributes:textAttrs];
+      w = ceil(textSize.width + 12);
+     } else if ([segment image]) {
+      w = ceil([[segment image] size].width + 12);
+     } else {
+      w  = 5;  // truly empty segment, but still needs to be drawn at some size
+     }
+    }
+    [_segmentComputedWidths addObject:[NSNumber numberWithDouble:w]];
+   }
 }
 
 -(void)drawSegment:(NSInteger)idx inFrame:(NSRect)frame withView:(NSView *)view {
@@ -228,8 +288,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i=0, count=[self segmentCount];
    NSRect segmentFrame=cellFrame;
    
+   if ([_segmentComputedWidths count]!=count)
+    [self _recomputeSegmentWidths];
+   
    for(i=0; i<count; i++) {
-      segmentFrame.size.width=[[_segments objectAtIndex:i] width];
+      segmentFrame.size.width=[[_segmentComputedWidths objectAtIndex:i] doubleValue];
 	   [NSGraphicsContext saveGraphicsState];
 	   // Make sure that segment drawing is not allowed to spill out into other segments
 	   NSBezierPath* clipPath = [NSBezierPath bezierPathWithRect: segmentFrame];
@@ -242,14 +305,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _lastDrawRect=cellFrame;
 }
 
+// updating this value in -drawWithFrame is not enough, because a subclass might have replaced it entirely.
+// hence NSSegmentedControl will call this private method as well.
+- (void)_wasDrawnWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
+   _lastDrawRect=cellFrame;
+}
+
 -(NSInteger)_segmentForPoint:(NSPoint)point {
    int i=0, count=[self segmentCount];
    NSRect segmentFrame=_lastDrawRect;
+   if (segmentFrame.size.height <= 0.0)
+    segmentFrame.size.height = 100;
 
+   if ([_segmentComputedWidths count]!=count)
+    [self _recomputeSegmentWidths];
+   
    for(i=0; i<count; i++) {
       NSSegmentItem *item=[_segments objectAtIndex:i];
       
-      segmentFrame.size.width=[item width];
+      segmentFrame.size.width=[[_segmentComputedWidths objectAtIndex:i] doubleValue];
       if(NSPointInRect(point, segmentFrame)) {
          return i;
       }
