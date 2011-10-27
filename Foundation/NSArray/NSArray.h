@@ -66,6 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    context:(void *)context;
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+-(BOOL)writeToURL:(NSURL *)aURL atomically:(BOOL)atomically;
 
 -(void)makeObjectsPerformSelector:(SEL)selector;
 -(void)makeObjectsPerformSelector:(SEL)selector withObject:object;

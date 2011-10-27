@@ -52,7 +52,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [_string getCharacters:buffer range:range];
    for(i=0;i<range.length;i++){
-    if(buffer[i]=='\n')
+    if(buffer[i]=='\n' || buffer[i]=='\\')
      ansiLength+=2;
     else if(buffer[i]>127)
      ansiLength+=6;
@@ -67,7 +67,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      ansi[ansiLength++]='\\';
      ansi[ansiLength++]='\n';
     }
-    else if(code>127){
+	   else if(code=='\\'){
+		   ansi[ansiLength++]='\\';
+		   ansi[ansiLength++]='\\';
+	   }
+	   else if(code>127){
      char *hex="0123456789ABCDEF";
 
      ansi[ansiLength++]='\\';

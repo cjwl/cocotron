@@ -430,6 +430,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSPropertyListWriter_vintage writePropertyList:self toFile:path atomically:atomically];
 }
 
+-(BOOL)writeToURL:(NSURL *)aURL atomically:(BOOL)atomically {
+	if ([aURL isFileURL]) {
+		return [self writeToFile:[aURL path] atomically:atomically];
+	}
+	else {
+		return NO;
+	}
+}
+
 
 -(void)makeObjectsPerformSelector:(SEL)selector {
 	NSInteger i, count = [self count];

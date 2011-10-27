@@ -1426,7 +1426,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 
 -(int)openPanel:(NSOpenPanel *)openPanel runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types {
    if([openPanel canChooseDirectories])
-    return [openPanel _SHBrowseForFolder:types];
+    return [openPanel _SHBrowseForFolder:directory];
    else
     return [openPanel _GetOpenFileNameForTypes:types];
 }

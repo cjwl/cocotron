@@ -29,23 +29,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSOpenPanel(Win32)
 
--(int)_SHBrowseForFolder:(NSArray *)types {
+static int CALLBACK browseFolderHook(HWND hdlg, UINT uMsg, LPARAM lParam, LPARAM lpData) {
+	if(uMsg==BFFM_INITIALIZED) {
+		SendMessage(hdlg, BFFM_SETSELECTIONW, YES, lpData);
+	}
+	
+	return 0;
+}
+
+-(int)_SHBrowseForFolder:(NSString *)initialPath {
    BROWSEINFOW  browseInfo;
    ITEMIDLIST *itemIdList;
    LPMALLOC    mallocInterface;
    unichar        displayName[MAX_PATH+1];
-
+	
    @synchronized(self)
 	{
       browseInfo.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
       browseInfo.pidlRoot=NULL;
       browseInfo.pszDisplayName=displayName;
       browseInfo.lpszTitle=(const unichar *)[_dialogTitle cStringUsingEncoding:NSUnicodeStringEncoding];
-      browseInfo.ulFlags=0;
-      browseInfo.lpfn=NULL;
-      browseInfo.lParam=0;
+      browseInfo.ulFlags=BIF_NEWDIALOGSTYLE;
+		if ([initialPath length]) {
+			browseInfo.lpfn=browseFolderHook;
+			browseInfo.lParam=(LPARAM)[initialPath fileSystemRepresentationW];
+		}
+		else {
+			browseInfo.lpfn=NULL;
+			browseInfo.lParam=0;
+		}
       browseInfo.iImage=0;
    }
+	
+	
 
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
    itemIdList=SHBrowseForFolderW(&browseInfo);
