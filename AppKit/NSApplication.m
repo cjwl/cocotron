@@ -832,7 +832,7 @@ id NSApp=nil;
    int result;
 
    while((result=[NSApp runModalSession:session])==NSRunContinuesResponse){
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    [[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate distantFuture]];
    }
    
    [self endModalSession:session];
@@ -845,7 +845,7 @@ id NSApp=nil;
    
    [values setObject:window forKey:@"NSWindow"];
    
-   [self performSelectorOnMainThread:@selector(_mainThreadRunModalForWindow:) withObject:values waitUntilDone:YES modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+   [self performSelectorOnMainThread:@selector(_mainThreadRunModalForWindow:) withObject:values waitUntilDone:YES modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode,NSModalPanelRunLoopMode,nil]];
    
    NSNumber *result=[values objectForKey:@"result"];
    
