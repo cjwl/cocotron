@@ -204,10 +204,7 @@ NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoCh
     if (_groupsByEvent == YES) {
         if (_currentGroup != nil)
             [self endUndoGrouping];
-
-        [self beginUndoGrouping];
-
-        [[NSRunLoop currentRunLoop] performSelector:@selector(runLoopUndo:) target:self argument:nil order:NSUndoCloseGroupingRunLoopOrdering modes:_modes];
+		_performRegistered=NO;
     }
 }
 
@@ -284,7 +281,6 @@ NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoCh
     [[NSNotificationCenter defaultCenter] postNotificationName:NSUndoManagerWillRedoChangeNotification
                                                         object:self];
 
-    [self endUndoGrouping];
     _state = NSUndoManagerRedoing;
     undoGroup = [[_redoStack lastObject] retain];
     [_redoStack removeLastObject];
@@ -293,7 +289,6 @@ NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoCh
     [self endUndoGrouping];
     [undoGroup release];
     _state = NSUndoManagerNormal;
-    [self beginUndoGrouping];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:NSUndoManagerDidRedoChangeNotification
                                                         object:self];
@@ -313,6 +308,11 @@ NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoCh
     if (_disableCount > 0)
         return;
 
+	if (_groupsByEvent && _currentGroup == nil) {
+		[self _registerPerform];
+        [self beginUndoGrouping];
+	}		
+	
     if (_currentGroup == nil)
         [NSException raise:NSInternalInconsistencyException
                     format:@"forwardInvocation called without first opening an undo group"];
@@ -380,6 +380,12 @@ NSString * const NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoCh
     if (_preparedTarget == nil)
         [NSException raise:NSInternalInconsistencyException
                     format:@"forwardInvocation called without first preparing a target"];
+	
+	if (_groupsByEvent && _currentGroup == nil) {
+		[self _registerPerform];
+		[self beginUndoGrouping];
+	}		
+	
     if (_currentGroup == nil)
         [NSException raise:NSInternalInconsistencyException
                     format:@"forwardInvocation called without first opening an undo group"];
