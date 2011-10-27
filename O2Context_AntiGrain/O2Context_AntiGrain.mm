@@ -605,7 +605,7 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 	}
 }
 
-template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *self, StrokeType &stroke, agg::rgba color,agg::trans_affine deviceMatrix) 
+template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self, StrokeType &stroke, agg::trans_affine deviceMatrix) 
 {
 	O2GState *gState=O2ContextCurrentGState(self);
 	
@@ -641,12 +641,59 @@ template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *sel
 	}
 	
 	stroke.width(gState->_lineWidth);
-	
+}
+
+template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *self, StrokeType &stroke, agg::rgba color,agg::trans_affine deviceMatrix) 
+{
 	agg::conv_transform<StrokeType, agg::trans_affine> trans(stroke, deviceMatrix);
 	[self rasterizer]->add_path(trans);
 	[self rasterizer]->filling_rule(agg::fill_non_zero);
 	
 	render_scanlines_aa_solid(self, color);	
+}
+
+template <class StrokeType> void O2AGGStrokeToO2Path(O2Context_AntiGrain *self, StrokeType &stroke) 
+{
+	double x,y;
+	int type;
+	O2ContextBeginPath(self);
+	while ((type = stroke.vertex(&x,&y)) != agg::path_cmd_stop) {
+		switch (type) {
+			case agg::path_cmd_move_to: {
+				O2ContextMoveToPoint(self, x, y);
+			}
+				break;
+			case agg::path_cmd_line_to: {
+				O2ContextAddLineToPoint(self, x, y);
+			}
+				
+				break;
+			case agg::path_cmd_curve3: {
+				// x, y are ctrl_x, ctrl_y
+				double to_x, to_y;
+				stroke.vertex(&to_x,&to_y);
+				O2ContextAddQuadCurveToPoint(self, x, y, to_x, to_y);				
+			}
+				
+				break;
+			case agg::path_cmd_curve4: {
+				// x, y are ctrl1_x, ctrl1_y
+				double ctrl2_x, ctrl2_y;
+				stroke.vertex(&ctrl2_x,&ctrl2_y);
+				double to_x, to_y;
+				stroke.vertex(&to_x,&to_y);
+				O2ContextAddCurveToPoint(self, x, y, ctrl2_x, ctrl2_y, to_x, to_y);
+				
+			}
+				break;
+			case agg::path_cmd_end_poly: {
+				O2ContextClosePath(self);
+			}
+				
+			default:
+				break;
+		}
+	}
 }
 #endif
 
@@ -691,11 +738,41 @@ static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg
 				dash.add_dash(gState->_dashLengths[i], gState->_dashLengths[i+1]);
 			}
 		}	
+		O2AGGContextSetStroke<typeof(stroke)>(self,stroke,deviceMatrix);
 		O2AGGContextStrokePath<typeof(stroke)>(self,stroke,color,deviceMatrix);
 	} else {
 		// Just stroke
 		agg::conv_stroke<agg::conv_curve<agg::path_storage> > stroke(curve);
+		O2AGGContextSetStroke<typeof(stroke)>(self,stroke,deviceMatrix);
 		O2AGGContextStrokePath<typeof(stroke)>(self,stroke,color,deviceMatrix);
+	}
+}
+
+static void O2AGGReplaceStrokedPath(O2Context_AntiGrain *self,agg::trans_affine deviceMatrix) {	
+	agg::conv_curve<agg::path_storage> curve(*(self->path));
+	curve.approximation_scale(deviceMatrix.scale());
+	
+	O2GState *gState=O2ContextCurrentGState(self);
+	if (gState->_dashLengthsCount > 1) {
+		agg::conv_dash<agg::conv_curve<agg::path_storage> > dash(curve);
+		agg::conv_stroke<agg::conv_dash<agg::conv_curve<agg::path_storage> > > stroke(dash);
+		dash.dash_start(gState->_dashPhase);
+		for (int i = 0; i < gState->_dashLengthsCount; i += 2) {
+			if (i == gState->_dashLengthsCount - 1) {
+				// Last dash without an length for the next space
+				dash.add_dash(gState->_dashLengths[i], 0);
+			} else {
+				dash.add_dash(gState->_dashLengths[i], gState->_dashLengths[i+1]);
+			}
+		}	
+		O2AGGContextSetStroke<typeof(stroke)>(self,stroke,deviceMatrix);
+		O2AGGStrokeToO2Path<typeof(stroke)>(self,stroke);
+		
+	} else {
+		// Just stroke
+		agg::conv_stroke<agg::conv_curve<agg::path_storage> > stroke(curve);
+		O2AGGContextSetStroke<typeof(stroke)>(self,stroke,deviceMatrix);
+		O2AGGStrokeToO2Path<typeof(stroke)>(self,stroke);
 	}
 }
 
@@ -1134,6 +1211,18 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 	}
 	
 	O2PathReset(_path);
+}
+
+-(void)replacePathWithStrokedPath 
+{
+	O2GState    *gState=O2ContextCurrentGState(self);
+	
+	transferPath(self,(O2PathRef)_path,O2AffineTransformInvert(gState->_userSpaceTransform));
+	
+	O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
+	agg::trans_affine aggDeviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+
+	O2AGGReplaceStrokedPath(self,aggDeviceMatrix);
 }
 
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect
