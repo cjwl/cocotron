@@ -1044,6 +1044,7 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 // FIXME: use shadow in attributed string and implement shadow text drawing
         const BOOL pressed=[self state] && ([self showsStateBy] & NSChangeBackgroundCellMask);
         const CGFloat fgGray = (pressed) ? 0.98 : 0.0;
+        const CGFloat fgGrayDisabled = 0.5;
         const CGFloat shadowGray = (pressed) ? 0.07 : 0.93;
         const CGFloat shadowAlpha = ([self isHighlighted]) ? 0.15 : 0.25;
         NSString *baseTitle = [NSString stringWithString:[title string]];
@@ -1060,7 +1061,10 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
         }
         
         NSMutableDictionary *fgAttrs = [[shadowAttrs mutableCopy] autorelease];
-        [fgAttrs setObject:[NSColor colorWithDeviceRed:fgGray green:fgGray blue:fgGray alpha:1.0] forKey:NSForegroundColorAttributeName];
+		if ([self isEnabled])
+			[fgAttrs setObject:[NSColor colorWithDeviceRed:fgGray green:fgGray blue:fgGray alpha:1.0] forKey:NSForegroundColorAttributeName];
+		else
+			[fgAttrs setObject:[NSColor colorWithDeviceRed:fgGrayDisabled green:fgGrayDisabled blue:fgGrayDisabled alpha:1.0] forKey:NSForegroundColorAttributeName];
         title = [[[NSAttributedString alloc] initWithString:baseTitle attributes:fgAttrs] autorelease];
     }
     
