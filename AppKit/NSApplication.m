@@ -335,7 +335,7 @@ id NSApp=nil;
    [_applicationIconImage release];
    _applicationIconImage=image;
    
-   NSUnimplementedMethod();
+	[image setName: @"NSApplicationIcon"];
 }
 
 -(void)setWindowsMenu:(NSMenu *)menu {
@@ -417,6 +417,16 @@ id NSApp=nil;
     [self reportException:localException];
    NS_ENDHANDLER
 
+	// Load the application icon if we have one
+	NSString* iconName = [[[NSBundle mainBundle]
+						   infoDictionary]
+						  objectForKey:@"CFBundleIconFile"];
+	if (iconName) {
+		iconName = [iconName stringByAppendingPathExtension: @"icns"];
+		NSImage* image = [NSImage imageNamed: iconName];
+		[self setApplicationIconImage: image];
+	}
+	
 // Give us a first event
    [NSTimer scheduledTimerWithTimeInterval:0.1 target:nil
      selector:NULL userInfo:nil repeats:NO];
