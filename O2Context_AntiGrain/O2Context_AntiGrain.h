@@ -47,7 +47,7 @@ typedef agg::font_cache_manager<font_engine_type> font_manager_type;
 class context_renderer;
 @class KFont;
 
-typedef agg::pixfmt_gray8 pixfmt_alphaMaskType;
+typedef agg::pixfmt_gray8_pre pixfmt_alphaMaskType;
 typedef agg::renderer_base<pixfmt_alphaMaskType> BaseRendererWithAlphaMaskType;
 typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased scanline rasterizer for AGG rendering.
 
@@ -82,6 +82,7 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 - (agg::alpha_mask_gray8*)currentMask;
 - (RasterizerType *)rasterizer;
 - (context_renderer *)renderer;
+- (BOOL)isPremultiplied;
 @end
 #else
 #import <Onyx2D/O2Context_builtin_gdi.h>

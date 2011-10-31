@@ -105,7 +105,10 @@ class context_renderer
 {
 	class context_renderer_helper_base
 	{
+	protected:
+		bool premultiply;
 	public:
+		void setPremultiply(bool pre) { premultiply = pre; };
 		virtual bool isRGBA() { return false; }
 		virtual bool isBGRA() { return false; }
 		virtual bool isARGB() { return false; }
@@ -118,12 +121,11 @@ class context_renderer
 		virtual void clipBox(int a, int b, int c, int d) = 0;
 	};
 	
-	template<class Order> class context_renderer_helper : public context_renderer_helper_base
+	template<class blender_type> class context_renderer_helper : public context_renderer_helper_base
 	{
-		typedef agg::comp_op_adaptor_rgba<agg::rgba8, Order> blender_type;
 		typedef agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> pixfmt_type;
 		
-		typedef agg::pixfmt_rgba32 pixfmt_shadow_type;
+		typedef agg::pixfmt_rgba32_pre pixfmt_shadow_type;
 		
 		typedef agg::renderer_base<pixfmt_type> renderer_base;	
 		typedef agg::renderer_base<pixfmt_shadow_type> renderer_shadow;	
@@ -185,7 +187,7 @@ class context_renderer
 		
 		void setShadowOffset(O2Size offset)
 		{
-			shadowOffset = offset;;
+			shadowOffset = offset;
 		}
 		
 		void clipBox(int a, int b, int c, int d)
@@ -306,6 +308,8 @@ class context_renderer
 				
 				// Draw using our shadow rendererer using a transformer to transform original colors by the shadow color * original color alpha (and global alpha)
 				agg::rgba8 color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * alpha);
+				if (premultiply)
+					color.premultiply();
 				span_color_converter<agg::rgba8> color_converter(color);
 				agg::span_converter<T, span_color_converter<agg::rgba8> > converter(type, color_converter);
 				agg::render_scanlines_aa(rasterizer, sl, *ren_shadow, span_allocator, converter);
@@ -341,6 +345,8 @@ class context_renderer
 				
 				// Draw using our shadow rendererer using our shadow color (and global alpha)
 				T color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * type.opacity() * alpha);
+				if (premultiply)
+					color.premultiply();
 				agg::render_scanlines_aa_solid(rasterizer, sl, *ren_shadow, color);
 				
 				// Get the used part of the rasterizer - we don't need to blur a bigger area than that
@@ -355,6 +361,8 @@ class context_renderer
 			// And finally do the "normal" drawing
 			T color = type;
 			color.opacity(color.opacity() * alpha );
+			if (premultiply)
+				color.premultiply();
 			agg::render_scanlines_aa_solid(rasterizer, sl, *ren_base, color);
 		}
 		
@@ -366,58 +374,110 @@ class context_renderer
 	
 	
 	context_renderer_helper_base* helper;
-	
-	typedef class context_renderer_helper<agg::order_rgba> rgba_helper;
-	typedef class context_renderer_helper<agg::order_bgra> bgra_helper;
-	typedef class context_renderer_helper<agg::order_argb> argb_helper;
-	typedef class context_renderer_helper<agg::order_abgr> abgr_helper;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_rgba> > rgba_helper;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_bgra> > bgra_helper;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_argb> > argb_helper;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_abgr> > abgr_helper;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_rgba> > rgba_helper_pre;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_bgra> > bgra_helper_pre;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_argb> > argb_helper_pre;
+	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_abgr> > abgr_helper_pre;
 	
 public:
+	bool premultiplied;
+
 	virtual ~context_renderer()
 	{
 		delete helper;
 	}
 	template<class Order> void init(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingShadowBuffer)
 	{
-		helper = new context_renderer_helper<Order>(renderingBuffer, renderingShadowBuffer);
+		typedef agg::comp_op_adaptor_rgba<agg::rgba8, Order> blender_type;
+		premultiplied = false;
+		helper = new context_renderer_helper<blender_type>(renderingBuffer, renderingShadowBuffer);
+		helper->setPremultiply(premultiplied);
+	}
+	template<class Order> void init_pre(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingShadowBuffer)
+	{
+		typedef agg::comp_op_adaptor_rgba_pre<agg::rgba8, Order> blender_type;
+		premultiplied = true;
+		helper = new context_renderer_helper<blender_type>(renderingBuffer, renderingShadowBuffer);
+		helper->setPremultiply(premultiplied);
 	}
 	
 	// Not sure how to better write that since we can't have virtual template methods and we don't know some type
 	// at compile time (like pixel format)
+	// But there must be some better way...
 	template<class Ras, class S, class T> void render_scanlines(Ras &rasterizer, S &sl, T &type)
 	{
-		if (helper->isRGBA()) {
-			((rgba_helper *)helper)->render_scanlines(rasterizer, sl, type);
-		} else if (helper->isABGR()) {
-			((abgr_helper *)helper)->render_scanlines(rasterizer, sl, type);
-		} else if (helper->isBGRA()) {
-			((bgra_helper *)helper)->render_scanlines(rasterizer, sl, type);
-		} else if (helper->isBGRA()) {
-			((bgra_helper *)helper)->render_scanlines(rasterizer, sl, type);
+		if (premultiplied) {
+			if (helper->isRGBA()) {
+				((rgba_helper_pre *)helper)->render_scanlines(rasterizer, sl, type);
+			} else if (helper->isABGR()) {
+				((abgr_helper_pre *)helper)->render_scanlines(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper_pre *)helper)->render_scanlines(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper_pre *)helper)->render_scanlines(rasterizer, sl, type);
+			}
+		} else {
+			if (helper->isRGBA()) {
+				((rgba_helper *)helper)->render_scanlines(rasterizer, sl, type);
+			} else if (helper->isABGR()) {
+				((abgr_helper *)helper)->render_scanlines(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper *)helper)->render_scanlines(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper *)helper)->render_scanlines(rasterizer, sl, type);
+			}
 		}
 	}
 	template<class Ras, class S, class SA, class T> void render_scanlines_aa(Ras &rasterizer, S &sl, SA &span_allocator, T &type)
 	{
-		if (helper->isRGBA()) {
-			((rgba_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
-		} else if (helper->isABGR()) {
-			((abgr_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
-		} else if (helper->isBGRA()) {
-			((bgra_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
-		} else if (helper->isBGRA()) {
-			((bgra_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+		if (premultiplied) {
+			if (helper->isRGBA()) {
+				((rgba_helper_pre *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			} else if (helper->isABGR()) {
+				((abgr_helper_pre *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper_pre *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper_pre *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			}
+		} else {
+			if (helper->isRGBA()) {
+				((rgba_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			} else if (helper->isABGR()) {
+				((abgr_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper *)helper)->render_scanlines_aa(rasterizer, sl, span_allocator, type);
+			}
 		}
 	}
 	template<class Ras, class S, class T> void render_scanlines_aa_solid(Ras &rasterizer, S &sl, T &type)	
 	{
-		if (helper->isRGBA()) {
-			((rgba_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
-		} else if (helper->isABGR()) {
-			((abgr_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
-		} else if (helper->isBGRA()) {
-			((bgra_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
-		} else if (helper->isBGRA()) {
-			((bgra_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+		if (premultiplied) {
+			if (helper->isRGBA()) {
+				((rgba_helper_pre *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			} else if (helper->isABGR()) {
+				((abgr_helper_pre *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper_pre *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper_pre *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			}
+		} else {
+			if (helper->isRGBA()) {
+				((rgba_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			} else if (helper->isABGR()) {
+				((abgr_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			} else if (helper->isBGRA()) {
+				((bgra_helper *)helper)->render_scanlines_aa_solid(rasterizer, sl, type);
+			}
 		}
 	}
 	
@@ -458,13 +518,18 @@ template<> bool context_renderer::bgra_helper::isBGRA() { return true; };
 template<> bool context_renderer::argb_helper::isARGB() { return true; };
 template<> bool context_renderer::abgr_helper::isABGR() { return true; };
 
+template<> bool context_renderer::rgba_helper_pre::isRGBA() { return true; };
+template<> bool context_renderer::bgra_helper_pre::isBGRA() { return true; };
+template<> bool context_renderer::argb_helper_pre::isARGB() { return true; };
+template<> bool context_renderer::abgr_helper_pre::isABGR() { return true; };
+
 
 class gradient_evaluator
 {
 public:
 	// We don't really care about the size - we just need it is big enough for what we draw
-	gradient_evaluator(O2Shading *shading, unsigned size = 4096) :
-	m_shading(shading), m_size(size) {}
+	gradient_evaluator(O2Shading *shading, bool premultiply = true, unsigned size = 4096) :
+	m_premultiply(premultiply), m_shading(shading), m_size(size) {}
 	
 	int size() const { return m_size; }
 	agg::rgba operator [] (unsigned v) const 
@@ -476,10 +541,13 @@ public:
 		color.g = result[1];
 		color.b = result[2];
 		color.a = result[3];
+		if (m_premultiply)
+			color.premultiply();
 		return color;
 	}
 private:
 	O2Shading *m_shading;
+	bool m_premultiply;
 	unsigned m_size;
 };
 
@@ -508,7 +576,7 @@ template <class Type> void render_scanlines_aa_solid(O2Context_AntiGrain *self, 
 
 template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGrain *self, O2Shading* shading, float x, float y, float width, float height)
 {
-	typedef agg::pixfmt_bgra32 pixfmt_type; // That should be the same pixel type as the context - so that probably should be moved to the renderer - probably mostly everything should be moved there
+	typedef agg::pixfmt_bgra32_pre pixfmt_type; // That should be the same pixel type as the context ?
 	typedef pixfmt_type::color_type color_type; 
 	typedef gradient_evaluator color_func_type; 
 	typedef agg::span_interpolator_linear<> interpolator_type; 
@@ -529,7 +597,7 @@ template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGr
 	double y2=deviceEnd.y;
 	
 	gradient_func_type gradient_func; 
-	color_func_type color_func(shading); 
+	color_func_type color_func(shading, [self isPremultiplied]); 
 	
 	agg::trans_affine gradient_mtx; 
 	gradient_mtx.reset(); 
@@ -868,9 +936,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		NSString *fontName = [(NSString *)O2FontCopyFullName(font) autorelease];
 		
 		float pointSize = O2GStatePointSize(gState);
-		
 		O2AffineTransform Trm=self->_textMatrix;
-		
+
 		O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
 		agg::trans_affine deviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
 		// Round the drawing start point - that helps at killing blury text
@@ -889,7 +956,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		[self rasterizer]->filling_rule(agg::fill_non_zero);
 		
 		font_engine->hinting(false); // For some reason, it looks better without hinting...
-		font_engine->height(pointSize);
+		font_engine->height((int)pointSize);
 		font_engine->width(0.); // Automatic width
 		font_engine->flip_y(false);
 		if(font_engine->create_font([fontName UTF8String], agg::glyph_ren_outline))
@@ -908,6 +975,9 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 					self->kfont = [[KTFont alloc] initWithFont:font size:pointSize];
 				}
 				[self->kfont getAdvancements:defaultAdvances forGlyphs:glyphs count:count];
+				for(int i=0;i<count;i++){
+					defaultAdvances[i].width+=gState->_characterSpacing;
+				}				
 			}
 			font_manager->precache(' ', 127);
 			
@@ -921,7 +991,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 				const agg::glyph_cache* glyph = font_manager->glyph(*p);
 				if(glyph)
 				{
-					font_manager->add_kerning(&x, &y);
 					font_manager->init_embedded_adaptors(glyph, x, y);
 					
 					switch(glyph->data_type)
@@ -989,10 +1058,14 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		case kO2BitmapByteOrder32Big:
 			switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 				case kO2ImageAlphaPremultipliedLast:
+					renderer->init_pre<agg::order_rgba>(*renderingBuffer, *renderingBufferShadow);
+					break;
 				case kO2ImageAlphaLast:
 					renderer->init<agg::order_rgba>(*renderingBuffer, *renderingBufferShadow);
 					break;
 				case kO2ImageAlphaPremultipliedFirst:
+					renderer->init_pre<agg::order_argb>(*renderingBuffer, *renderingBufferShadow);
+					break;
 				case kO2ImageAlphaFirst:
 					renderer->init<agg::order_argb>(*renderingBuffer, *renderingBufferShadow);
 					break;
@@ -1005,10 +1078,14 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		case kO2BitmapByteOrder32Little:
 			switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 				case kO2ImageAlphaPremultipliedLast:
+					renderer->init_pre<agg::order_abgr>(*renderingBuffer, *renderingBufferShadow);
+					break;
 				case kO2ImageAlphaLast:
 					renderer->init<agg::order_abgr>(*renderingBuffer, *renderingBufferShadow);
 					break;
 				case kO2ImageAlphaPremultipliedFirst:
+					renderer->init_pre<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
+					break;
 				case kO2ImageAlphaFirst:
 					renderer->init<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
 					break;
@@ -1101,6 +1178,11 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	return useMask;
 }
 
+- (BOOL)isPremultiplied;
+{
+	return renderer->premultiplied;
+}
+
 - (agg::alpha_mask_gray8*)currentMask
 {
 	if (baseRendererAlphaMask[0] == NULL) {
@@ -1158,7 +1240,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	[self renderer]->setBlendMode(blendModeMap[O2GStateBlendMode(gState)]);
 	[self renderer]->setAlpha(O2GStateAlpha(gState));
 	
-	// TODO : We suppose the color is RGBA - convert it if needed
 	O2ColorRef shadowColor = gState->_shadowColor;
 	if (shadowColor) {
 		shadowColor = O2ColorConvertToDeviceRGB(shadowColor);
@@ -1447,13 +1528,13 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			case kO2BitmapByteOrder32Big:
 				switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 					case kO2ImageAlphaPremultipliedLast:
-						O2AGGContextDrawImage<agg::pixfmt_rgba32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<agg::pixfmt_rgba32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaLast:
 						O2AGGContextDrawImage<agg::pixfmt_rgba32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaPremultipliedFirst:
-						O2AGGContextDrawImage<agg::pixfmt_argb32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<agg::pixfmt_argb32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaFirst:
 						O2AGGContextDrawImage<agg::pixfmt_argb32>(self, imageBuffer, globalTransform, interpolationType);
@@ -1469,13 +1550,13 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			case kO2BitmapByteOrder32Little:
 				switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 					case kO2ImageAlphaPremultipliedLast:
-						O2AGGContextDrawImage<agg::pixfmt_abgr32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<agg::pixfmt_abgr32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaLast:
 						O2AGGContextDrawImage<agg::pixfmt_abgr32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaPremultipliedFirst:
-						O2AGGContextDrawImage<agg::pixfmt_bgra32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<agg::pixfmt_bgra32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaFirst:
 						O2AGGContextDrawImage<agg::pixfmt_bgra32>(self, imageBuffer, globalTransform, interpolationType);
