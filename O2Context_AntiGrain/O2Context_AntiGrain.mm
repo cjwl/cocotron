@@ -20,6 +20,9 @@
 
 #include <agg_conv_dash.h>
 #include "partial_stack_blur.h"
+#ifdef WINDOWS
+#include <AppKit/KTFont.h>
+#endif
 
 typedef enum {
 	kImageInterpolationNone,
@@ -29,6 +32,12 @@ typedef enum {
 } ImageInterpolationType;
 
 //#define DEBUG
+
+#ifdef O2AGG_GLYPH_SUPPORT
+// They are shared by all the contexts
+static font_engine_type      *font_engine = 0;
+static font_manager_type     *font_manager = 0;
+#endif
 
 // Like NSLog, but works in C++ code - format is a C strings (""), not a Obj-C string (@"")
 #ifdef DEBUG
@@ -695,6 +704,7 @@ template <class StrokeType> void O2AGGStrokeToO2Path(O2Context_AntiGrain *self, 
 		}
 	}
 }
+
 #endif
 
 @interface O2AGGGState : O2GState
@@ -793,31 +803,31 @@ static void buildAGGPathFromO2PathAndTransform(agg::path_storage *aggPath,O2Path
 		switch(elements[i]){
 				
 			case kO2PathElementMoveToPoint:{
-				NSPoint point=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point point=O2PointApplyAffineTransform(points[pointIndex++],xform);
 				
 				aggPath->move_to(point.x,point.y);
 			}
 				break;
 				
 			case kO2PathElementAddLineToPoint:{
-				NSPoint point=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point point=O2PointApplyAffineTransform(points[pointIndex++],xform);
 				
 				aggPath->line_to(point.x,point.y);
 			}
 				break;
 				
 			case kO2PathElementAddCurveToPoint:{
-				NSPoint cp1=O2PointApplyAffineTransform(points[pointIndex++],xform);
-				NSPoint cp2=O2PointApplyAffineTransform(points[pointIndex++],xform);
-				NSPoint end=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point cp1=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point cp2=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point end=O2PointApplyAffineTransform(points[pointIndex++],xform);
 				
 				aggPath->curve4(cp1.x,cp1.y,cp2.x,cp2.y,end.x,end.y);
 			}
 				break;
 				
 			case kO2PathElementAddQuadCurveToPoint:{
-				NSPoint cp1=O2PointApplyAffineTransform(points[pointIndex++],xform);
-				NSPoint cp2=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point cp1=O2PointApplyAffineTransform(points[pointIndex++],xform);
+				O2Point cp2=O2PointApplyAffineTransform(points[pointIndex++],xform);
 				
 				aggPath->curve3(cp1.x,cp1.y,cp2.x,cp2.y);
 			}
@@ -835,6 +845,118 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 	buildAGGPathFromO2PathAndTransform(self->path, path, xform);
 }
 
+#ifdef O2AGG_GLYPH_SUPPORT
+
+unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs, const O2Size *advances, unsigned count)
+{
+	unsigned num_glyphs = 0;
+	
+	// All context use the same font manager - protect acceses
+	@synchronized([self class]) {
+		if (font_manager == 0) {
+			font_engine = new font_engine_type(::GetDC(NULL));
+			font_manager = new font_manager_type(*font_engine);
+		}		
+		
+		// Pipeline to process the vectors glyph paths (curves)
+		typedef agg::conv_curve<font_manager_type::path_adaptor_type> conv_curve_type;
+		conv_curve_type curves(font_manager->path_adaptor());
+		
+		O2GState    *gState=O2ContextCurrentGState(self);
+		
+		O2Font           *font=O2GStateFont(gState);
+		NSString *fontName = [(NSString *)O2FontCopyFullName(font) autorelease];
+		
+		float pointSize = O2GStatePointSize(gState);
+		
+		O2AffineTransform Trm=self->_textMatrix;
+		
+		O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
+		agg::trans_affine deviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
+		// Round the drawing start point - that helps at killing blury text
+		Trm.tx = roundf(Trm.tx);
+		Trm.ty = roundf(Trm.ty);
+		agg::trans_affine trmMatrix(Trm.a,Trm.b,Trm.c,Trm.d,Trm.tx,Trm.ty);
+		
+		agg::trans_affine transformMatrix = deviceMatrix;
+		transformMatrix.premultiply(trmMatrix);
+		
+		O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
+		const float *fillComps=O2ColorGetComponents(fillColor);
+		agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
+		O2ColorRelease(fillColor);
+		
+		[self rasterizer]->filling_rule(agg::fill_non_zero);
+		
+		font_engine->hinting(false); // For some reason, it looks better without hinting...
+		font_engine->height(pointSize);
+		font_engine->width(0.); // Automatic width
+		font_engine->flip_y(false);
+		if(font_engine->create_font([fontName UTF8String], agg::glyph_ren_outline))
+		{
+			agg::conv_transform<conv_curve_type, agg::trans_affine> trans(curves, transformMatrix);
+			
+			CGSize defaultAdvances[count];
+			if(advances == NULL) {
+				// Using a KTFont because we need to get the advancements the same way the layout manager is 
+				// getting them.
+				// Of course, it would be better if the layout manager could give us the advances it wants us to use...
+				
+				if(gState->_fontIsDirty){
+					O2GStateClearFontIsDirty(gState);
+					[self->kfont release];
+					self->kfont = [[KTFont alloc] initWithFont:font size:pointSize];
+				}
+				[self->kfont getAdvancements:defaultAdvances forGlyphs:glyphs count:count];
+			}
+			font_manager->precache(' ', 127);
+			
+			double x = 0;
+			double y = 0;
+			
+			const O2Glyph* p = glyphs;
+			
+			for (int i = 0; i < count; ++i)
+			{
+				const agg::glyph_cache* glyph = font_manager->glyph(*p);
+				if(glyph)
+				{
+					font_manager->add_kerning(&x, &y);
+					font_manager->init_embedded_adaptors(glyph, x, y);
+					
+					switch(glyph->data_type)
+					{
+						case agg::glyph_data_outline: {
+							[self rasterizer]->reset();
+							[self rasterizer]->add_path(trans);
+							render_scanlines_aa_solid(self,aggFillColor);
+							break;
+						}
+						default:
+							// No data to process
+							break;
+					}
+					
+					// increment pen position
+					if (advances) {
+						x += advances[i].width;
+						y += advances[i].height;
+					}  else {
+						x += defaultAdvances[i].width;
+						y += defaultAdvances[i].height;
+					}
+					
+					++num_glyphs;
+				}
+				++p;
+			}
+			
+			O2ContextConcatAdvancesToTextMatrix(self,advances?advances:defaultAdvances,num_glyphs);
+		}
+	}
+	return num_glyphs;
+}
+#endif
 
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
 	[super initWithSurface:surface flipped:flipped];
@@ -847,7 +969,6 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 	renderingBufferShadow = new agg::rendering_buffer(pixelShadowBytes,O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),bytesPerRow);
 	
 	rasterizer=new RasterizerType();
-	
 	
 	// Use with the right order depending of the bitmap info of the surface - we'll probably want to pass a pixel type here instead of an order to support non 32 bits surfaces and pre/no pre
 	renderer = new context_renderer();
@@ -908,13 +1029,13 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 
 -(void)dealloc {
 	[savedClipPhases release];
-	
+	[kfont release];;
+
 	delete renderer;
 	delete renderingBuffer;
 	delete renderingBufferShadow;
 	delete rasterizer;
 	delete path;
-	
 	delete[] pixelShadowBytes;
 	
 	if (baseRendererAlphaMask[0]) {
@@ -1045,6 +1166,7 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 		[self renderer]->setShadowColor(agg::rgba(components[0], components[1], components[2], components[3]));
 		[self renderer]->setShadowBlurRadius(gState->_shadowBlur);
 		[self renderer]->setShadowOffset(gState->_shadowOffset);
+		O2ColorRelease(shadowColor);
 	} else {
 		[self renderer]->setShadowColor(agg::rgba(0, 0, 0, 0));
 	}
@@ -1438,5 +1560,18 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransf
 
 	O2LayerRelease(layer);
 }
+
+#ifdef O2AGG_GLYPH_SUPPORT
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count
+{
+	[self updateMask];
+	[self updateBlendMode];
+	
+	[self rasterizer]->reset();
+	[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
+	
+	O2AGGContextShowGlyphs(self,glyphs,advances,count);
+}
+#endif
 #endif
 @end

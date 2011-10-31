@@ -34,9 +34,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <agg_conv_dash.h>
 #include <agg_conv_adaptor_vcgen.h>
 
+#ifdef WINDOWS
+#include <../font_win32_tt/agg_font_win32_tt.h>
+
+typedef agg::font_engine_win32_tt_int32 font_engine_type;
+typedef agg::font_cache_manager<font_engine_type> font_manager_type;
+#define O2AGG_GLYPH_SUPPORT 1
+#endif
+
 @class O2Context_AntiGrain;
 
 class context_renderer;
+@class KFont;
 
 typedef agg::pixfmt_gray8 pixfmt_alphaMaskType;
 typedef agg::renderer_base<pixfmt_alphaMaskType> BaseRendererWithAlphaMaskType;
@@ -65,6 +74,8 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 	NSArray *savedClipPhases;
 	BOOL maskValid;
 	BOOL useMask;
+	
+	KFont *kfont;
 }
 
 - (BOOL)useMask;

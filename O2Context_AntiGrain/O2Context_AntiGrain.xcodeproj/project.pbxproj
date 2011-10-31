@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		494DA9A0145C0C320001E307 /* agg_font_win32_tt.mm in Sources */ = {isa = PBXBuildFile; fileRef = 494DA99F145C0C320001E307 /* agg_font_win32_tt.mm */; };
+		494DA9A9145C0D290001E307 /* libgdi32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 494DA9A8145C0D290001E307 /* libgdi32.a */; };
 		8D576314048677EA00EA77CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* Foundation.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
 		FE5C8314121D81470063E96F /* O2Context_AntiGrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */; };
@@ -80,7 +82,11 @@
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0AA1909FFE8422F4C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4920AE1B145EABE9007999E6 /* agg_font_cache_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = agg_font_cache_manager.h; path = "../../plasqdev-cocotron-merge/O2Context_AntiGrain/agg_font_cache_manager.h"; sourceTree = SOURCE_ROOT; };
 		4931E7B913B1042600CEF331 /* partial_stack_blur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = partial_stack_blur.h; sourceTree = "<group>"; };
+		494DA99F145C0C320001E307 /* agg_font_win32_tt.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = agg_font_win32_tt.mm; path = "/Users/airy/Sources/plasq/plasqdev-cocotron-merge/O2Context_AntiGrain/agg_font_win32_tt.mm"; sourceTree = "<absolute>"; };
+		494DA9A8145C0D290001E307 /* libgdi32.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgdi32.a; path = "Cocotron/1.0/PlatformInterfaces/i386-mingw32msvc/lib/libgdi32.a"; sourceTree = DEVELOPER_DIR; };
+		494DA9C8145C114C0001E307 /* agg_font_win32_tt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = agg_font_win32_tt.h; path = "/Users/airy/Sources/plasq/plasqdev-cocotron-merge/O2Context_AntiGrain/agg_font_win32_tt.h"; sourceTree = "<absolute>"; };
 		8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = O2Context_AntiGrain.cgContext; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE06B39A1430E8DC0071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
@@ -111,6 +117,7 @@
 			files = (
 				8D576314048677EA00EA77CD /* Foundation.framework in Frameworks */,
 				FEE163EA137C6DAD00B2F340 /* AppKit.framework in Frameworks */,
+				494DA9A9145C0D290001E307 /* libgdi32.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,11 +127,15 @@
 		089C166AFE841209C02AAC07 /* O2Context_AntiGrain */ = {
 			isa = PBXGroup;
 			children = (
+				494DA9A8145C0D290001E307 /* libgdi32.a */,
 				FE06B3991430E8DC0071169B /* xcconfig */,
 				FEE163EC137C6DC600B2F340 /* AppKit.xcodeproj */,
 				4931E7B913B1042600CEF331 /* partial_stack_blur.h */,
 				FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */,
 				FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */,
+				494DA99F145C0C320001E307 /* agg_font_win32_tt.mm */,
+				494DA9C8145C114C0001E307 /* agg_font_win32_tt.h */,
+				4920AE1B145EABE9007999E6 /* agg_font_cache_manager.h */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
@@ -321,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C8314121D81470063E96F /* O2Context_AntiGrain.mm in Sources */,
+				494DA9A0145C0C320001E307 /* agg_font_win32_tt.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +375,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"/Developer/Cocotron/1.0/Windows/i386/agg-2.4",
 					"$(DERIVED_FILE_DIR)",
+					"\"$(DEVELOPER_DIR)/Cocotron/1.0/PlatformInterfaces/i386-mingw32msvc/lib\"",
 				);
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
@@ -391,6 +404,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"/Developer/Cocotron/1.0/Windows/i386/agg-2.4",
 					"$(DERIVED_FILE_DIR)",
+					"\"$(DEVELOPER_DIR)/Cocotron/1.0/PlatformInterfaces/i386-mingw32msvc/lib\"",
 				);
 				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
 				OTHER_LDFLAGS = (
