@@ -19,6 +19,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
 
+// Private class used so the context knows the flipped status of a locked image
+// 10.4 does something like that - probably for more than just getting the flippiness - 10.6 uses some special NSSnapshotBitmapGraphicsContext
+@interface NSImageCacheView : NSView {
+	BOOL _flipped;
+}
+- (id)initWithFlipped:(BOOL)flipped;
+@end
+@implementation NSImageCacheView
+- (id)initWithFlipped:(BOOL)flipped
+{
+	if (self = [super init]) {
+		_flipped = flipped;
+	}
+	return self;
+}
+-(BOOL)isFlipped
+{
+	return _flipped;
+}
+@end
+
 @implementation NSImage
 
 +(NSArray *)imageFileTypes {
@@ -77,7 +98,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +imageNamed:(NSString *)name {
    NSImage *image=[[self allImages] objectForKey:name];
-
    if(image==nil){
     NSArray *bundles=[self _checkBundles];
     int      i,count=[bundles count];
@@ -93,9 +113,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
 
-// Must use copy here, the caller may modify the image, e.g. size, and you don't want
-// to wreck the cache values. 
-   return [[image copy] autorelease];
+  // Cocoa AppKit always returns the same shared cached image
+   return image;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -647,16 +666,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,NSMakeRect(0,0,[representation size].width,[representation size].height));
    
-   if([self isFlipped]){
+	// Some fake view, just so the context knows if it's flipped or not
+	NSView *view = [[[NSImageCacheView alloc] initWithFlipped:[self isFlipped]] autorelease];
+    [[context focusStack] addObject:self];
+
+	if([self isFlipped]){
     CGAffineTransform flip={1,0,0,-1,0,[self size].height};
-     
     CGContextConcatCTM(graphicsPort,flip);
    }
 
 }
 
 -(void)unlockFocus {
-   CGContextRef graphicsPort=NSCurrentGraphicsPort();
+	// Remove the pushed view
+	[[[NSGraphicsContext currentContext] focusStack] removeLastObject];
+
+	CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
 

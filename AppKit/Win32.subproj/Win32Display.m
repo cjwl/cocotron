@@ -139,8 +139,6 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 	[allPaths addObjectsFromArray: ttfPaths];
 	[allPaths addObjectsFromArray: TTFPaths];
 	
-	NSLog(@"Application Fonts: %@", allPaths);
-	
 	[self loadPrivateFontPaths: allPaths];
 }
 
