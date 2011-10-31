@@ -592,16 +592,15 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
  ****************************************************************************/ 
 static FIXED fxDiv2(FIXED fxVal1, FIXED fxVal2)
 {
-    long l;
-	
-    l = (*((long far *)&(fxVal1)) + *((long far *)&(fxVal2)))/2;
-    return(*(FIXED *)&l);
+	// Note: the "volatile" is there to prevent some wrong result because of some compiler "optimisations"
+    int32_t l = (*((int32_t volatile *)&(fxVal1)) + *((int32_t volatile *)&(fxVal2)))/2;
+    return(*(FIXED volatile *)&l);
 }
 
 static FIXED FloatToFIXED(const float d)
 {
 	FIXED f;
-	uint32_t v = d * pow(2, 16);
+	int32_t v = d * 65536.;
 	
 	f.value = v >> 16;
 	f.fract = v & 0xFFFF;
