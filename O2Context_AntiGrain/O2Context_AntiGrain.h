@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <agg_conv_adaptor_vcgen.h>
 
 #ifdef WINDOWS
-#include <../font_win32_tt/agg_font_win32_tt.h>
+#include "agg_font_win32_tt.h"
 
 typedef agg::font_engine_win32_tt_int32 font_engine_type;
 typedef agg::font_cache_manager<font_engine_type> font_manager_type;
