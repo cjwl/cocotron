@@ -100,7 +100,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		   NSURLResponse *response=nil;
 
 		   NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&response error:&error];
-
+		   if (data == nil) {
+			   if (errorp != NULL) {
+				   *errorp = error;
+			   }
+			   [self dealloc];
+			   return nil;
+		   }
 		   return [self initWithData:data];
 	   } else {
 		   [self dealloc];
