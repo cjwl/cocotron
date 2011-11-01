@@ -19,6 +19,51 @@
 		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		631381D3145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
+		631381D4145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
+		631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
+		631381D6145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
+		631381D7145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
+		631381D8145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
+		631381D9145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
+		631381DA145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
+		631381DB145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
+		631381DC145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
+		631381DD145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
+		631381DE145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
+		631381DF145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
+		631381E0145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
+		631381E1145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
+		63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		63138203145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
+		63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
+		63138205145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
+		63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
+		63138207145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
+		63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
+		63138209145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
+		6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
+		6313820B145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
+		6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6313829B145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
+		6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
+		6313829D145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
+		6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
+		6313829F145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
+		631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
+		631382A1145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
+		631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
+		631382A3145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
+		631382A7145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */; };
+		631382A8145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */; };
+		631382A9145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */; };
+		631382AA145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */; };
+		631382AB145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */; };
+		631382B4145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		631382B5145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		631382B6145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		631382B7145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		631382B8145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
 		A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
@@ -4403,6 +4448,15 @@
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
+		631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerListIcon.png; path = NSColorPicker.subproj/NSColorPickerListIcon.png; sourceTree = "<group>"; };
+		631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerSlidersIcon.png; path = NSColorPicker.subproj/NSColorPickerSlidersIcon.png; sourceTree = "<group>"; };
+		631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerWheelIcon.png; path = NSColorPicker.subproj/NSColorPickerWheelIcon.png; sourceTree = "<group>"; };
+		63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColorPickerWheel.h; sourceTree = "<group>"; };
+		63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorPickerWheel.m; sourceTree = "<group>"; };
+		63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColorPickerWheelView.h; sourceTree = "<group>"; };
+		63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorPickerWheelView.m; sourceTree = "<group>"; };
+		631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSColorPickerWheel.nib; sourceTree = "<group>"; };
+		631382B3145F734100765AA7 /* NSColorWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorWheel.png; path = NSColorPicker.subproj/NSColorWheel.png; sourceTree = "<group>"; };
 		6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
 		6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Decoder_TIFF.h; sourceTree = "<group>"; };
@@ -5766,6 +5820,10 @@
 		6E2B54E60976075300DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				631382B3145F734100765AA7 /* NSColorWheel.png */,
+				631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */,
+				631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */,
+				631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */,
 				FE1707FC1260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf */,
 				FEED42C81224B82B0059B0DF /* NSExitFullScreenTemplate.pdf */,
 				FEED42CA1224B82B0059B0DF /* NSInfo.pdf */,
@@ -5970,6 +6028,10 @@
 				6E2B55E30976075300DA0954 /* NSColorPickerColorList.m */,
 				6E2B55F00976075300DA0954 /* NSColorPickerSliders.h */,
 				6E2B55E70976075300DA0954 /* NSColorPickerSliders.m */,
+				63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */,
+				63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */,
+				63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */,
+				63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */,
 			);
 			name = NSColorPicker;
 			path = NSColorPicker.subproj;
@@ -5980,6 +6042,7 @@
 			children = (
 				6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */,
 				6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */,
+				631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -7149,6 +7212,8 @@
 				FE09AF3613FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 				FE2C93D614035649002E0CB4 /* NSSpellingViewController.h in Headers */,
 				FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
+				63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
+				6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7555,6 +7620,8 @@
 				FE09AF3713FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 				FE2C93D814035649002E0CB4 /* NSSpellingViewController.h in Headers */,
 				FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
+				63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
+				631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7958,6 +8025,8 @@
 				FE09AF3513FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 				FE2C93D414035649002E0CB4 /* NSSpellingViewController.h in Headers */,
 				FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
+				63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
+				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8366,6 +8435,8 @@
 				FE09AF3913FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 				FE2C93DA14035649002E0CB4 /* NSSpellingViewController.h in Headers */,
 				FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
+				63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
+				6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8691,6 +8762,8 @@
 				FE09AF3813FCC56600B53D10 /* NSSpellProtocol.h in Headers */,
 				FE2C93DC14035649002E0CB4 /* NSSpellingViewController.h in Headers */,
 				FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
+				6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
+				631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9072,6 +9145,11 @@
 				FEED42D81224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708001260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
 				FE2C93E514035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
+				631381D6145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */,
+				631381D7145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
+				631381D8145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
+				631382A9145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */,
+				631382B6145F734100765AA7 /* NSColorWheel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9138,6 +9216,11 @@
 				FEED42DE1224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708021260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
 				FE2C93E614035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
+				631381D9145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */,
+				631381DA145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
+				631381DB145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
+				631382A8145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */,
+				631382B7145F734100765AA7 /* NSColorWheel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9205,6 +9288,11 @@
 				FEED42D21224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1707FE1260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
 				FE2C93E714035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
+				631381D3145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */,
+				631381D4145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
+				631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
+				631382AB145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */,
+				631382B4145F734100765AA7 /* NSColorWheel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9271,6 +9359,11 @@
 				FEED42EA1224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708061260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
 				FE2C93E814035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
+				631381DF145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */,
+				631381E0145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
+				631381E1145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
+				631382AA145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */,
+				631382B5145F734100765AA7 /* NSColorWheel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9337,6 +9430,11 @@
 				FEED42E41224B82B0059B0DF /* NSStopProgressTemplate.pdf in Resources */,
 				FE1708041260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */,
 				FE2C93E414035935002E0CB4 /* NSSpellingViewController.xib in Resources */,
+				631381DC145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */,
+				631381DD145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
+				631381DE145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
+				631382A7145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */,
+				631382B8145F734100765AA7 /* NSColorWheel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9799,6 +9897,8 @@
 				49A7975614224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 				FE2C93D714035649002E0CB4 /* NSSpellingViewController.m in Sources */,
 				FEB3F1EE14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
+				63138207145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
+				6313829F145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10201,6 +10301,8 @@
 				49A7975814224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 				FE2C93D914035649002E0CB4 /* NSSpellingViewController.m in Sources */,
 				FEB3F1EA14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
+				63138209145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
+				631382A1145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10635,6 +10737,8 @@
 				FE2C93D514035649002E0CB4 /* NSSpellingViewController.m in Sources */,
 				FEB3F1EC14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 				FEFD32061434A4F400C14B08 /* O2Font_freetype.m in Sources */,
+				63138203145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
+				6313829B145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11039,6 +11143,8 @@
 				49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 				FE2C93DB14035649002E0CB4 /* NSSpellingViewController.m in Sources */,
 				FEB3F1F014049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
+				63138205145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
+				6313829D145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11338,6 +11444,8 @@
 				49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */,
 				FE2C93DD14035649002E0CB4 /* NSSpellingViewController.m in Sources */,
 				FEB3F1F214049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
+				6313820B145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
+				631382A3145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

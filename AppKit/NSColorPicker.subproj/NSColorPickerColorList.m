@@ -54,7 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (NSImage *)provideNewButtonImage
 {
-    return [NSImage imageNamed:@"NSColorPickerColorList"];
+    return [NSImage imageNamed:@"NSColorPickerListIcon"];
 }
 
 - (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column
