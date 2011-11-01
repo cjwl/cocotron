@@ -174,6 +174,8 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
                                                  name:NSColorPanelColorDidChangeNotification
                                                object:[NSColorPanel sharedColorPanel]];
     [self setNeedsDisplay:YES];
+
+	[NSApp orderFrontColorPanel: self];
 }
 
 -(void)deactivate {
