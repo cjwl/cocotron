@@ -1354,20 +1354,41 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    return GetSystemMetrics(SM_CXHTHUMB);
 }
 
--(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
+#define PTS2THOUSANDS(x) ((x/72.f) * 1000.f)
+#define THOUSANDS2PTS(x) ((x / 1000.f) * 72.f)
+
+-(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    PAGESETUPDLG setup;
 
    setup.lStructSize=sizeof(PAGESETUPDLG);
    setup.hwndOwner=[(Win32Window *)[[NSApp mainWindow] platformWindow] windowHandle];
    setup.hDevMode=NULL;
    setup.hDevNames=NULL;
-   setup.Flags=0;
-   //setup.ptPaperSize=0;
-   //setup.rtMinMargin=0;
+   setup.Flags=PSD_INTHOUSANDTHSOFINCHES;
+   setup.ptPaperSize.x = PTS2THOUSANDS([printInfo paperSize].width);
+   setup.ptPaperSize.y = PTS2THOUSANDS([printInfo paperSize].height);
+	setup.rtMargin.top = PTS2THOUSANDS([printInfo topMargin]);
+	setup.rtMargin.left = PTS2THOUSANDS([printInfo leftMargin]);
+	setup.rtMargin.right = PTS2THOUSANDS([printInfo rightMargin]);
+	setup.rtMargin.bottom = PTS2THOUSANDS([printInfo bottomMargin]);
 
    [self stopWaitCursor];
-   PageSetupDlg(&setup);
+   int check = PageSetupDlg(&setup);
    [self startWaitCursor];
+	if (check == 0) {
+		return NSCancelButton;
+	}
+	else {
+		NSSize size = NSMakeSize(THOUSANDS2PTS(setup.ptPaperSize.x),
+								 THOUSANDS2PTS(setup.ptPaperSize.y));
+		[printInfo setPaperSize: size];
+		
+		[printInfo setTopMargin: THOUSANDS2PTS(setup.rtMargin.top)];
+		[printInfo setLeftMargin: THOUSANDS2PTS(setup.rtMargin.left)];
+		[printInfo setRightMargin: THOUSANDS2PTS(setup.rtMargin.right)];
+		[printInfo setBottomMargin: THOUSANDS2PTS(setup.rtMargin.bottom)];
+	}
+	return NSOKButton;
 }
 
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {

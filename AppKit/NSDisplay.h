@@ -54,7 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(float)scrollerWidth;
 
--(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo;
+-(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo;
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes;
 
 -(CGContextRef)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange;

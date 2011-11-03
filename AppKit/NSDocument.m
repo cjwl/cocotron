@@ -222,7 +222,7 @@ static int untitled_document_number = 0;
 }
 
 -(void)setPrintInfo:(NSPrintInfo *)value {
-   value=[value copy];
+	value=[value copy];
    [_printInfo release];
    _printInfo=value;
 }
@@ -737,7 +737,13 @@ forSaveOperation:(NSSaveOperationType)operation
 }
 
 -(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo delegate:delegate didRunSelector:(SEL)selector contextInfo:(void *)info {
-   NSUnimplementedMethod();
+	int button = [[NSPageLayout pageLayout] runModalWithPrintInfo:printInfo];
+	if ([delegate respondsToSelector:selector]) {
+		// Tell delegate if the print info was updated.
+		void (*delegateMethod)(id, SEL, id, BOOL, void *);
+		delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+		delegateMethod(delegate, selector, self, button == NSOKButton, info);
+	}
 }
 
 -(void)runModalPrintOperation:(NSPrintOperation *)printOperation delegate:delegate didRunSelector:(SEL)selector contextInfo:(void *)info {
