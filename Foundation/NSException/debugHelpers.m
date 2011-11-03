@@ -12,7 +12,7 @@
 
 #import <setjmp.h>
 
-#if 0
+#ifdef DEBUG
 static void *_objc_returnAddress(unsigned frame)
 {
    void *ret=0;
@@ -60,9 +60,6 @@ static void _objc_badAccessHandler()
 
 id _NSStackTrace()
 {
-   // this crashes after all. Disable for now
-   return nil;
-#if 0
 #ifdef DEBUG
    NSMutableArray *ret=[NSMutableArray array];
 
@@ -82,7 +79,7 @@ id _NSStackTrace()
       goto restore;
    }
    
-   int frame=0;
+   int frame=2; // Skip _objc_returnAddress and _NSStackTrace - they are always there
    void *addr=_objc_returnAddress(frame);
    
    while(addr)
@@ -103,7 +100,6 @@ restore:
    return ret;
 #else
    return [NSArray arrayWithObject:@"Stack trace unavailable in Release builds"];
-#endif
 #endif
 }
 
