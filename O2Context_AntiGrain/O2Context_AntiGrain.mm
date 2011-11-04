@@ -61,43 +61,67 @@ typedef agg::scanline_u8_am<agg::alpha_mask_gray8> scanline_mask_type;
 // Apply some alpha value to its input spans
 template<class color_type> struct span_alpha_converter
 {
-	span_alpha_converter(float alpha) : m_alpha(alpha) {};
+	span_alpha_converter(float alpha, bool premultiply) : m_alpha(alpha), m_premultiply(premultiply) {};
 	
 	void prepare() {}
 	
 	void generate(color_type* span, int x, int y, unsigned len)
 	{
 		if(m_alpha < 1.) {
-			do {
-				span->opacity(span->opacity()*m_alpha);
-				++span;
-			} while(--len);
+			if (m_premultiply) {
+				do {
+					span->demultiply();
+					span->opacity(span->opacity()*m_alpha);
+					span->premultiply();
+					++span;
+				} while(--len);
+			} else {
+				do {
+					span->opacity(span->opacity()*m_alpha);
+					++span;
+				} while(--len);
+			}
 		} 
 	}		
 private:
+	bool m_premultiply;
 	double m_alpha;
 };
 
 // Replace spans with a fixed color, keeping the original opacity - used as a transformer to render shadow for non-plain color
 template<class color_type> struct span_color_converter
 {
-	span_color_converter(color_type &color) : m_color(color) {};
+	span_color_converter(color_type &color, bool premultiply) : m_color(color), m_premultiply(premultiply) {};
 	
 	void prepare() {}
 	
 	void generate(color_type* span, int x, int y, unsigned len)
 	{
-		do {
-			// Replace the span color, with m_color * span opacity
-			if (span->opacity() > 0) {
-				color_type color = m_color;
-				color.opacity(color.opacity()*span->opacity());
-				*span = color;
-			}
-			++span;
-		} while(--len);
+		if (m_premultiply) {
+			do {
+				// Replace the span color, with m_color * span opacity
+				if (span->opacity() > 0) {
+					color_type color = m_color;
+					color.opacity(color.opacity()*span->opacity());
+					span->premultiply();
+					*span = color;
+				}
+				++span;
+			} while(--len);
+		} else {
+			do {
+				// Replace the span color, with m_color * span opacity
+				if (span->opacity() > 0) {
+					color_type color = m_color;
+					color.opacity(color.opacity()*span->opacity());
+					*span = color;
+				}
+				++span;
+			} while(--len);
+		}
 	}		
 private:
+	bool m_premultiply;
 	color_type m_color;
 };
 
@@ -125,7 +149,7 @@ class context_renderer
 	{
 		typedef agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> pixfmt_type;
 		
-		typedef agg::pixfmt_rgba32_pre pixfmt_shadow_type;
+		typedef agg::pixfmt_rgba32 pixfmt_shadow_type;
 		
 		typedef agg::renderer_base<pixfmt_type> renderer_base;	
 		typedef agg::renderer_base<pixfmt_shadow_type> renderer_shadow;	
@@ -142,7 +166,7 @@ class context_renderer
 		O2Size shadowOffset;
 		float shadowBlurRadius;
 	public:
-		
+		context_renderer *renderer;
 		context_renderer_helper(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingBufferShadow)
 		{
 			pixelFormat=new pixfmt_type(renderingBuffer);
@@ -308,9 +332,7 @@ class context_renderer
 				
 				// Draw using our shadow rendererer using a transformer to transform original colors by the shadow color * original color alpha (and global alpha)
 				agg::rgba8 color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * alpha);
-				if (premultiply)
-					color.premultiply();
-				span_color_converter<agg::rgba8> color_converter(color);
+				span_color_converter<agg::rgba8> color_converter(color, premultiply);
 				agg::span_converter<T, span_color_converter<agg::rgba8> > converter(type, color_converter);
 				agg::render_scanlines_aa(rasterizer, sl, *ren_shadow, span_allocator, converter);
 
@@ -330,7 +352,7 @@ class context_renderer
 				// No need for an alpha converter
 				agg::render_scanlines_aa(rasterizer, sl, *ren_base, span_allocator, type);
 			} else {
-				span_alpha_converter<agg::rgba8> alpha_converter(alpha);
+				span_alpha_converter<agg::rgba8> alpha_converter(alpha, premultiply);
 				agg::span_converter<T, span_alpha_converter<agg::rgba8> > converter(type, alpha_converter);
 				agg::render_scanlines_aa(rasterizer, sl, *ren_base, span_allocator, converter);
 			}
@@ -345,8 +367,7 @@ class context_renderer
 				
 				// Draw using our shadow rendererer using our shadow color (and global alpha)
 				T color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * type.opacity() * alpha);
-				if (premultiply)
-					color.premultiply();
+				color.premultiply();
 				agg::render_scanlines_aa_solid(rasterizer, sl, *ren_shadow, color);
 				
 				// Get the used part of the rasterizer - we don't need to blur a bigger area than that
@@ -385,7 +406,7 @@ class context_renderer
 	
 public:
 	bool premultiplied;
-
+	O2Context_AntiGrain *context;
 	virtual ~context_renderer()
 	{
 		delete helper;
@@ -640,7 +661,7 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 	
 	typedef agg::span_interpolator_linear<agg::trans_affine> interpolator_type;
 	interpolator_type interpolator(transform);
-	
+
 	// Use a filter according to the wanted interpolation quality
 	switch (interpolationQuality) {
 		case kImageInterpolationNone: {
@@ -1042,7 +1063,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	// Use with the right order depending of the bitmap info of the surface - we'll probably want to pass a pixel type here instead of an order to support non 32 bits surfaces and pre/no pre
 	renderer = new context_renderer();
 	O2BitmapInfo bitmapInfo = O2ImageGetBitmapInfo(surface);
-	
+	renderer->context = self;
+
 	/*
 	 AlphaFirst => The Alpha channel is next to the Red channel
 	 (ARGB and BGRA are both Alpha First formats)
@@ -1098,7 +1120,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			O2Log("UNKNOW ORDER : %x",bitmapInfo & kO2BitmapByteOrderMask);
 			renderer->init<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
 	}
-	
+
 	path=new agg::path_storage();
 	
 	return self;
@@ -1350,6 +1372,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 }
 
 -(void)drawPath:(O2PathDrawingMode)drawingMode { 
+	renderer->premultiplied = YES;
 	BOOL doFill=NO;
 	BOOL doEOFill=NO;
 	BOOL doStroke=NO;
@@ -1528,15 +1551,19 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			case kO2BitmapByteOrder32Big:
 				switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 					case kO2ImageAlphaPremultipliedLast:
+						renderer->premultiplied = YES;
 						O2AGGContextDrawImage<agg::pixfmt_rgba32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaLast:
+						renderer->premultiplied = NO;
 						O2AGGContextDrawImage<agg::pixfmt_rgba32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaPremultipliedFirst:
+						renderer->premultiplied = YES;
 						O2AGGContextDrawImage<agg::pixfmt_argb32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaFirst:
+						renderer->premultiplied = NO;
 						O2AGGContextDrawImage<agg::pixfmt_argb32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					default:
@@ -1550,15 +1577,19 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			case kO2BitmapByteOrder32Little:
 				switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 					case kO2ImageAlphaPremultipliedLast:
+						renderer->premultiplied = YES;
 						O2AGGContextDrawImage<agg::pixfmt_abgr32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaLast:
+						renderer->premultiplied = NO;
 						O2AGGContextDrawImage<agg::pixfmt_abgr32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaPremultipliedFirst:
+						renderer->premultiplied = YES;
 						O2AGGContextDrawImage<agg::pixfmt_bgra32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaFirst:
+						renderer->premultiplied = NO;
 						O2AGGContextDrawImage<agg::pixfmt_bgra32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					default:
@@ -1583,6 +1614,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 
 -(void)drawShading:(O2Shading *)shading
 { 
+	renderer->premultiplied = YES;
 	[self updateMask];
 	[self updateBlendMode];
 	
@@ -1645,6 +1677,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 #ifdef O2AGG_GLYPH_SUPPORT
 -(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count
 {
+	renderer->premultiplied = YES;
 	[self updateMask];
 	[self updateBlendMode];
 	
