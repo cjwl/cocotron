@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    SEL       _didEndSelector;
    void     *_contextInfo;
    NSRect    _frame;
+	NSModalSession _session;
 }
 
 +(NSSheetContext *)sheetContextWithSheet:(NSWindow *)sheet modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo frame:(NSRect)frame;
@@ -25,5 +26,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void *)contextInfo;
 
 -(NSRect)frame;
+
+- (void)setModalSession:(NSModalSession)session;
+- (NSModalSession)modalSession;
 
 @end

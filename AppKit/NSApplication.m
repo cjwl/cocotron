@@ -880,10 +880,35 @@ id NSApp=nil;
 -(void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)window modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo {
     NSSheetContext *context=[NSSheetContext sheetContextWithSheet:sheet modalDelegate:modalDelegate didEndSelector:didEndSelector contextInfo:contextInfo frame:[sheet frame]];
 
-   [window _attachSheetContextOrderFrontAndAnimate:context];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"NSRunAllSheetsAsModalPanel"]) {
+		[sheet _setSheetContext: context];
+		[sheet setLevel: NSModalPanelWindowLevel];
+		NSModalSession session = [self beginModalSessionForWindow: sheet];
+		[context setModalSession: session];
+		while([NSApp runModalSession:session] == NSRunContinuesResponse){
+			[[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate distantFuture]];
+		}
+		[self endModalSession:session];
+	} else {
+		[window _attachSheetContextOrderFrontAndAnimate:context];
+	}
 }
 
 -(void)endSheet:(NSWindow *)sheet returnCode:(int)returnCode {
+	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"NSRunAllSheetsAsModalPanel"]) {
+		NSSheetContext* context = [sheet _sheetContext];
+		NSModalSession session = [context modalSession];
+		[session stopModalWithCode: NSRunStoppedResponse];
+		IMP function=[[context modalDelegate] methodForSelector:[context didEndSelector]];
+		
+		if(function!=NULL) {
+			function([context modalDelegate],[context didEndSelector],sheet,returnCode,[context contextInfo]);
+		}
+		[sheet _setSheetContext: nil];
+		
+	} else {
+	
    int count=[_windows count];
 
    while(--count>=0){
@@ -904,6 +929,7 @@ id NSApp=nil;
      return;
     }
    }
+	}
 }
 
 -(void)endSheet:(NSWindow *)sheet {

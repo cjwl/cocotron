@@ -477,7 +477,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)worksWhenModal {
-   return NO;
+	// We do work when we're running a modal session
+	return (_sheetContext && [_sheetContext modalSession] != nil);
 }
 
 -(BOOL)isSheet {
@@ -2009,15 +2010,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                 default:
                     break;
             }
+			return;
         }
         else if ([event type] == NSPlatformSpecific){
             //[self _setSheetOriginAndFront];
             [_platformWindow sendEvent:[(NSEvent_CoreGraphics *)event coreGraphicsEvent]];
+			return;
         }
-
-        return;
     }
 
+	// OK let's see if anyone else wants it
    switch([event type]){
 
     case NSLeftMouseDown:{
@@ -2534,6 +2536,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [sheet display];
    [[sheet platformWindow] sheetOrderFrontFromFrame:NSMakeRect(sheetFrame.origin.x,NSMaxY(sheetFrame),sheetFrame.size.width,0) aboveWindow:[self platformWindow]];
    [self makeKeyWindow];
+}
+
+- (void)_setSheetContext:(NSSheetContext *)sheetContext
+{
+	[sheetContext retain];
+	[_sheetContext release];
+	_sheetContext = sheetContext;
 }
 
 -(NSSheetContext *)_sheetContext {
