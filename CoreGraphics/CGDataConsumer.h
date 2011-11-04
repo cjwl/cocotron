@@ -11,5 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef struct O2DataConsumer *CGDataConsumerRef;
 
+typedef size_t (*CGDataConsumerPutBytesCallback) (void *info, const void *buffer, size_t count);
+
+typedef void (*CGDataConsumerReleaseInfoCallback) (void *info);
+
+typedef struct O2DataConsumerCallbacks {
+	CGDataConsumerPutBytesCallback putBytes;
+	CGDataConsumerReleaseInfoCallback releaseConsumer;
+} CGDataConsumerCallbacks;
+
 COREGRAPHICS_EXPORT CGDataConsumerRef CGDataConsumerCreateWithCFData(CFMutableDataRef data);
+COREGRAPHICS_EXPORT CGDataConsumerRef CGDataConsumerCreate(void *info, const CGDataConsumerCallbacks *callbacks);
+COREGRAPHICS_EXPORT CGDataConsumerRef CGDataConsumerCreateWithURL(CFURLRef url);
+	
 COREGRAPHICS_EXPORT void CGDataConsumerRelease(CGDataConsumerRef self);

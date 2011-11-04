@@ -184,7 +184,9 @@ bool O2ImageDestinationFinalize(O2ImageDestinationRef self) {
     case O2ImageFileJPEG2000:
      break;
    }
-
+	[self->_consumer release]; // This is needed so the consumer can finalize its work before we exit this function
+	self->_consumer = nil;
+	
    return TRUE;
 }
 
