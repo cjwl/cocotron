@@ -22,7 +22,8 @@ typedef void (*O2DataConsumerReleaseInfoCallback)(void *info);
 struct O2DataConsumerCallbacks {
 	O2DataConsumerPutBytesCallback putBytes;
 	O2DataConsumerReleaseInfoCallback releaseConsumer;
-} 
+};
+
 typedef struct O2DataConsumerCallbacks O2DataConsumerCallbacks;
 
 @interface O2DataConsumer : NSObject {
