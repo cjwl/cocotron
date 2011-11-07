@@ -693,6 +693,19 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
    return [[[path pathExtension] uppercaseString] isEqualToString:@"EXE"];
 }
 
+-(NSString *)displayNameAtPath:(NSString *)path {
+	NSString *result = [super displayNameAtPath:path];
+	if ([result isEqualToString:[path lastPathComponent]]) {
+		// Check if Win32 can find a better name
+		const unichar *pathCString=[path fileSystemRepresentationW];
+		SHFILEINFOW fileInfo;
+		if(SHGetFileInfoW(pathCString, FILE_ATTRIBUTE_NORMAL, &fileInfo, sizeof(SHFILEINFOW), SHGFI_DISPLAYNAME)) {
+			result = [NSString stringWithFormat:@"%S", fileInfo.szDisplayName];
+		}
+	}
+	return result;
+}
+
 #pragma mark -
 #pragma mark Getting Representations of File Paths
 
