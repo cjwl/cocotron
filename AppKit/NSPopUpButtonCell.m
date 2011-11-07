@@ -294,38 +294,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSImage imageNamed:@"NSPopUpButtonCellPopUp"];
 }
 
+-(NSRect)_arrowRectForRect:(NSRect)frame
+{
+	NSRect result = NSZeroRect;
+	if( _arrowPosition != NSPopUpNoArrow ) {
+		NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
+		
+		if (arrowImage != nil) {
+			
+			// Scale down the arrows so they look proportional to the control size
+			float sizeFactor = 0;
+			
+			switch ([self controlSize]) {
+				case NSRegularControlSize:
+					sizeFactor = 0;
+					break;
+				case NSSmallControlSize:
+					sizeFactor = 1;
+					break;
+				case NSMiniControlSize:
+					sizeFactor = 2;
+					break;
+			}
+			NSRect otherFrame = frame;
+			NSSize arrowSize = [arrowImage size];
+			otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + (4 - sizeFactor) );
+			otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
+			otherFrame.size =  arrowSize;
+			
+			result = NSInsetRect(otherFrame, sizeFactor, sizeFactor);
+		}
+	}
+	return result;
+}
+
+-(NSRect)titleRectForBounds:(NSRect)rect 
+{
+	rect = [super titleRectForBounds:rect];
+	if (_arrowPosition != NSPopUpNoArrow) {
+		// Don't use the room used by the arrow, with some margin
+		NSRect arrowRect = [self _arrowRectForRect:rect];
+		rect.size.width = NSMinX(arrowRect) - NSMinX(rect) - 5.;
+	}
+	return rect;
+}
+
 -(void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView {
 
 	[super drawBezelWithFrame: frame inView: controlView];
 
-	NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
-	
-	if (arrowImage == NULL) return;
-	
 	// Now draw the arrow
     if( _arrowPosition != NSPopUpNoArrow )
 	{
-		// Scale down the arrows so they look proportional to the control size
-		float sizeFactor = 0;
-		switch ([self controlSize]) {
-			case NSRegularControlSize:
-				sizeFactor = 0;
-				break;
-			case NSSmallControlSize:
-				sizeFactor = 1;
-				break;
-			case NSMiniControlSize:
-				sizeFactor = 2;
-				break;
-		}
-		NSRect otherFrame = frame;
-		NSSize arrowSize = [arrowImage size];
-		otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + (4 - sizeFactor) );
-		otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
-		otherFrame.size =  arrowSize;
+		NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
 		
-		otherFrame = NSInsetRect(otherFrame, sizeFactor, sizeFactor);
-		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:otherFrame enabled:YES mixed:YES];
+		if (arrowImage == NULL) return;
+				
+		NSRect arrowFrame = [self _arrowRectForRect:frame];
+		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:arrowFrame enabled:YES mixed:YES];
 	}
 }
 
