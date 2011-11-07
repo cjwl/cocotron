@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
 #import <windows.h>
+#import <commctrl.h>
 #import <shellapi.h>
 #import <AppKit/NSRaise.h>
 
@@ -117,195 +118,147 @@ static BOOL openFileWithHelpViewer(const char *helpFilePath)
    NSUnimplementedMethod();
 }
 
-static void FixBitmapAlpha(HBITMAP bitmap)
-{
-  BITMAP bmp;
+static NSImageRep *imageRepForIcon(HICON icon) {
+	// Create a bitmap context, and draw the icon into its DC
+	NSImageRep *imageRep = nil;
+	if (icon != NULL) {
+		ICONINFO iconInfo;
+		GetIconInfo(icon, &iconInfo);
+		BITMAP bmp;
+		GetObject(iconInfo.hbmColor, sizeof(BITMAP), (void *) &bmp);
+		int w = bmp.bmWidth;
+		int h = bmp.bmHeight;
+		DeleteObject(iconInfo.hbmMask);
+		DeleteObject(iconInfo.hbmColor);
 
-  GetObject(bitmap, sizeof(bmp), &bmp);
-  if (bmp.bmBitsPixel == 32)
-  {
-    DWORD length = bmp.bmWidth * bmp.bmHeight * (bmp.bmBitsPixel / 8);
-    BYTE *buf = (BYTE *) calloc(1, length);
-
-    if (buf)
-    {
-      int x, y;
-
-      GetBitmapBits(bitmap, length, buf);
-
-      for (y = 0; y < bmp.bmHeight; ++y)
-      {
-        BYTE *pixel = buf + bmp.bmWidth * 4 * y;
-        for (x = 0; x < bmp.bmWidth; ++x)
-        {
-          if (pixel[3])
-          {
-            // Already has alpha, don't need to do anything.
-            free(buf);
-            return;
-          }
-          if (pixel[0] || pixel[1] || pixel[2])
-            pixel[3] = 255;
-          pixel += 4;
-        }
-      }
-
-      SetBitmapBits(bitmap, length, buf);
-      free(buf);
-    }
-  }
+		if (w > 0 && h > 0) {
+			CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+			CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
+			CGColorSpaceRelease(colorspace);
+			// Contexts created on the Win32 plateform are supposed to have an "dc" method
+			HDC dc = [(id)ctx dc];
+			if (dc) {
+				DrawIcon(dc, 0, 0, icon);
+				CGImageRef image = CGBitmapContextCreateImage(ctx);
+				if (image) {
+					imageRep = [[[NSBitmapImageRep alloc] initWithCGImage: image] autorelease];
+					CGImageRelease(image);
+				}
+			}
+			CGContextRelease(ctx);
+		}
+	}
+	return imageRep;
 }
 
-static HBITMAP ConvertBitmap(HBITMAP bitmap)
-{
-  HBITMAP convertedBitmap;
-  BITMAP bmp;
-  DWORD length;
-  BYTE *buf;
-
-  GetObject(bitmap, sizeof(bmp), &bmp);
-
-  length = bmp.bmWidth * bmp.bmHeight * 4;
-  buf = (BYTE *) calloc(1, length);
-  if (buf)
-  {
-    BITMAPINFO bi;
-    BYTE * pixels;
-
-    memset(&bi, 0, sizeof(BITMAPINFO));
-    bi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    bi.bmiHeader.biWidth = bmp.bmWidth;
-    bi.bmiHeader.biHeight = bmp.bmHeight;
-    bi.bmiHeader.biBitCount = 32;
-    bi.bmiHeader.biPlanes = 1;
-
-    convertedBitmap = CreateDIBSection(NULL, &bi, DIB_RGB_COLORS, (void **) &pixels, NULL, 0);
-    if (convertedBitmap)
-    {
-      if (bmp.bmBitsPixel != 32)
-      {
-        HDC from, to;
-        HBITMAP oldFrom, oldTo;
-
-        from = CreateCompatibleDC(NULL);
-        oldFrom = (HBITMAP) SelectObject(from, bitmap);
-
-        to = CreateCompatibleDC(NULL);
-        oldTo = (HBITMAP) SelectObject(to, convertedBitmap);
-
-        BitBlt(to, 0, 0, bmp.bmWidth, bmp.bmHeight, from, 0, 0, SRCCOPY);
-
-        SelectObject(to, oldTo);
-        DeleteObject(to);
-        SelectObject(from, oldFrom);
-        DeleteObject(from);
-
-        FixBitmapAlpha(convertedBitmap);
-      }
-      else
-      {
-        GetBitmapBits(bitmap, length, buf);
-        SetBitmapBits(convertedBitmap, length, buf);
-      }
-    }
-
-    free(buf);
-  }
-
-  return convertedBitmap;
-}
-
-static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
-   NSBitmapImageRep *bitmap;
-   ICONINFO iconInfo;
-   BITMAP bmp;
-   size_t masklen;
-   unsigned char *mask;
-   size_t pixelslen;
-   unsigned char *pixels;
-   int i, x, y, bit, hasAlpha;
-
-   GetIconInfo(fileInfo->hIcon, &iconInfo);
-
-   GetObject(iconInfo.hbmMask, sizeof(BITMAP), (void *) &bmp);
-   masklen = bmp.bmWidth * bmp.bmHeight * bmp.bmBitsPixel / 8;
-   mask = malloc(masklen);
-   GetBitmapBits(iconInfo.hbmMask, masklen, mask);
-   GetObject(iconInfo.hbmColor, sizeof(BITMAP), (void *) &bmp);
-   if (bmp.bmBitsPixel != 32)
-   {
-    HBITMAP hbmColor32 = ConvertBitmap(iconInfo.hbmColor);
-    if (hbmColor32)
-    {
-      DeleteObject(iconInfo.hbmColor);
-      iconInfo.hbmColor = hbmColor32;
-      GetObject(iconInfo.hbmColor, sizeof(BITMAP), (void *) &bmp);
-    }
-   }
-   FixBitmapAlpha(iconInfo.hbmColor);
-   pixelslen = bmp.bmWidth * bmp.bmHeight * bmp.bmBitsPixel / 8;
-   pixels = malloc(pixelslen);
-   GetBitmapBits(iconInfo.hbmColor, pixelslen, pixels);
-
-   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL
-													 pixelsWide: bmp.bmWidth
-													 pixelsHigh: bmp.bmHeight
-												  bitsPerSample: 8
-												samplesPerPixel: 4
-													   hasAlpha: YES
-													   isPlanar: NO
-												 colorSpaceName: NSCalibratedRGBColorSpace
-												   bitmapFormat: NSAlphaNonpremultipliedBitmapFormat
-													bytesPerRow: bmp.bmWidth * 4
-												   bitsPerPixel:32]
-			 autorelease];
-	
-	unsigned int pixel = 0;
-	
-   for (y = 0; y < bmp.bmHeight; y++) {
-    for (x = 0; x < bmp.bmWidth; x++) {
-
-		float b = (float) pixels[4*(y*bmp.bmWidth + x)+0] / 255.0f;
-		float g = (float) pixels[4*(y*bmp.bmWidth + x)+1] / 255.0f;
-		float r = (float) pixels[4*(y*bmp.bmWidth + x)+2] / 255.0f;
-		float a = (float) pixels[4*(y*bmp.bmWidth + x)+3] / 255.0f;
-
-     NSColor *color = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:a];
-     [bitmap setColor:color atX:x y: (bmp.bmHeight - 1) - y];
-    }
-   }
-
-   free(mask);
-   free(pixels);
-   DeleteObject(iconInfo.hbmMask);
-   DeleteObject(iconInfo.hbmColor);
-
-   return bitmap;
+static NSImageRep *imageRepForImageListAndIndex(HIMAGELIST imageListH, int index) {
+	// Create a bitmap context, and draw the image into its DC
+	NSImageRep *imageRep = nil;
+	if (imageListH != NULL) {
+		int w, h;
+		if (ImageList_GetIconSize(imageListH, &w, &h)) {
+			CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+			CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
+			CGColorSpaceRelease(colorspace);
+			// Contexts created on the Win32 plateform are supposed to have an "dc" method
+			HDC dc = [(id)ctx dc];
+			if (dc) {
+				ImageList_Draw(imageListH, index, dc, 0, 0, ILD_TRANSPARENT);
+				CGImageRef image = CGBitmapContextCreateImage(ctx);
+				if (image) {
+					imageRep = [[[NSBitmapImageRep alloc] initWithCGImage: image] autorelease];
+					CGImageRelease(image);
+				}
+			}
+			CGContextRelease(ctx);
+		}
+	}
+	return imageRep;
 }
 
 -(NSImage *)iconForFile:(NSString *)path {
-   const unichar *pathCString=[path fileSystemRepresentationW];
-   SHFILEINFOW fileInfo;
-
-   NSImage *icon=[[[NSImage alloc] init] autorelease];
-
-	if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_SMALLICON)) {
-		NSImageRep* rep = imageRepForIcon(&fileInfo);
-		[icon addRepresentation: rep];
-		DestroyIcon(fileInfo.hIcon);
+	// Some pointers to some needed SHELL32 functions
+	static HRESULT  (*SHGetImageListPtr)(
+								  int iImageList,
+								  REFIID riid,
+								  HIMAGELIST *imageList
+								  ) = NULL;
+	static HRESULT  (*FileIconInitPtr)(BOOL restoreCache) = NULL; 
+			
+	OSVERSIONINFOEX osVersion;
+	osVersion.dwOSVersionInfoSize=sizeof(osVersion);
+	GetVersionEx((OSVERSIONINFO *)&osVersion);
+	BOOL isRunningVistaOrBetter = osVersion.dwMajorVersion >= 6;
+	
+	if (FileIconInitPtr == NULL) {
+		HANDLE library = LoadLibrary("SHELL32");
+		FileIconInitPtr = (void*)GetProcAddress(library,(char *)660); // 660 is the magic number for it
+		if (FileIconInitPtr) {
+			// Call the init function the first time we get called - MS says it should be done before using
+			// SHGetImageList
+			FileIconInitPtr(YES);
+		}
+		FreeLibrary(library);
+	}	
+	if (SHGetImageListPtr == NULL) {
+		HANDLE library = LoadLibrary("SHELL32");
+		SHGetImageListPtr = (void*)GetProcAddress(library,"SHGetImageList");
+		FreeLibrary(library);
 	}
-	if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_SHELLICONSIZE)) {
-		NSImageRep* rep = imageRepForIcon(&fileInfo);
-		[icon addRepresentation: rep];
-		DestroyIcon(fileInfo.hIcon);
+	
+	const unichar *pathCString=[path fileSystemRepresentationW];
+	SHFILEINFOW fileInfo;
+	
+	NSImage *icon=[[[NSImage alloc] init] autorelease];
+	
+	if (SHGetImageListPtr) {
+		if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_SYSICONINDEX)) {
+			HIMAGELIST imageList = NULL;
+#ifndef SHIL_EXTRALARGE
+#define SHIL_EXTRALARGE		0x2
+#endif
+#ifndef SHIL_JUMBO
+#define SHIL_JUMBO			0x4
+#endif
+			static const IID IID_IImageList = {0x46EB5926L,0x582E,0x4017,0x9F,0xDF,0xE8,0x99,0x8D,0xAA,0x09,0x50};
+			if (isRunningVistaOrBetter) {
+				if (SHGetImageListPtr(SHIL_JUMBO, &IID_IImageList, &imageList) == S_OK) {
+					NSImageRep* rep = imageRepForImageListAndIndex(imageList, fileInfo.iIcon);
+					if (rep)
+						[icon addRepresentation: rep];
+				}
+			}
+			if (SHGetImageListPtr(SHIL_EXTRALARGE, &IID_IImageList, &imageList) == S_OK) {
+				NSImageRep* rep = imageRepForImageListAndIndex(imageList, fileInfo.iIcon);
+				if (rep)
+					[icon addRepresentation: rep];
+			}
+			// Note: we should be able to get the other sizes icons the same way but that's failing if we also
+			// try to get the big one - no idea why...
+		}
 	}
-
+	// Try to add the regular size (32 and 16) icons
+	if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_LARGEICON)) {
+		if (fileInfo.hIcon) {
+			NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
+			if (rep)
+				[icon addRepresentation: rep];
+			DeleteObject(fileInfo.hIcon);
+		}
+	}
+	if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_SMALLICON)) {
+		if (fileInfo.hIcon) {
+			NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
+			if (rep)
+				[icon addRepresentation: rep];
+			DeleteObject(fileInfo.hIcon);
+		}
+	}
 	if([[icon representations] count]==0) {
 		NSLog(@"unable to load icon for file: %@", path);
 		return nil;
-    }
-	
-   return icon;
+	}
+	return icon;
 }
 
 - (BOOL)isFileHiddenAtPath:(NSString*)path
