@@ -846,7 +846,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSRect frame=[self frame];
 
    frame.origin=point;
-   [self setFrame:frame display:YES];
+   [self setFrame:frame display:NO];
 }
 
 -(void)setFrameTopLeftPoint:(NSPoint)point {
@@ -855,7 +855,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    frame.origin.x=point.x;
    frame.origin.y=point.y-frame.size.height;
 
-   [self setFrame:frame display:YES];
+   [self setFrame:frame display:NO];
 }
 
 -(void)setMinSize:(NSSize)size {
