@@ -113,11 +113,15 @@ const float NSStringDrawerLargeDimension=1000000.;
 
 @implementation NSString(NSStringDrawer)
 
+- (void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes truncatingTail:(BOOL)truncateTail
+{
+	NSAttributedString *string = [[[NSAttributedString alloc] initWithString:self attributes:attributes] autorelease];
+	[string _clipAndDrawInRect:rect truncatingTail: truncateTail];
+}
+
 // Draw self in the rect, clipped - add ellipsis if needed 
 -(void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes {
-	
-	NSAttributedString *string = [[[NSAttributedString alloc] initWithString:self attributes:attributes] autorelease];
-	[string _clipAndDrawInRect:rect];
+	[self _clipAndDrawInRect: rect withAttributes: attributes truncatingTail: YES];
 }
 
 @end
@@ -125,7 +129,8 @@ const float NSStringDrawerLargeDimension=1000000.;
 @implementation NSAttributedString(NSStringDrawer)
 
 // Draw self in the rect, clipped - add ellipsis if needed 
--(void)_clipAndDrawInRect:(NSRect)rect {
+-(void)_clipAndDrawInRect:(NSRect)rect truncatingTail:(BOOL)truncateTail
+{
    CGContextRef graphicsPort=NSCurrentGraphicsPort();
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);
@@ -134,7 +139,7 @@ const float NSStringDrawerLargeDimension=1000000.;
 	// by Cocotron
 	NSAttributedString *string = self; 
 	NSSize size = [string size];
-	if (size.width > rect.size.width && [string length]) {
+	if (truncateTail && size.width > rect.size.width && [string length]) {
 		// Create a "..." attributed string with the attributes of the last char of this string
 		NSDictionary *attributes = [string attributesAtIndex:[string length]-1 effectiveRange:NULL];
 		NSAttributedString *ellipsis = [[[NSAttributedString alloc] initWithString:@"..." attributes:attributes] autorelease];
@@ -149,6 +154,11 @@ const float NSStringDrawerLargeDimension=1000000.;
 	}
 	[[NSStringDrawer sharedStringDrawer] drawAttributedString:string inRect:rect];
    CGContextRestoreGState(graphicsPort);
+}
+
+-(void)_clipAndDrawInRect:(NSRect)rect
+{
+	[self _clipAndDrawInRect: rect truncatingTail: YES];
 }
 
 @end

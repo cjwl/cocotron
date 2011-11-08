@@ -271,7 +271,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
    }
 
-   [drawValue _clipAndDrawInRect:titleRect];
+	[drawValue _clipAndDrawInRect:titleRect truncatingTail: _lineBreakMode > NSLineBreakByClipping];
 }
 
 static void drawRoundedBezel(CGContextRef context,CGRect frame){
