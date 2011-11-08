@@ -54,6 +54,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 @end
 
 @interface NSTextView()
+-(void)_replaceCharactersInRange:(NSRange)range 
+					  withString:(NSString *)string 
+			 useTypingAttributes:(BOOL)useTypingAttributes;
+// Same as above, with useTypingAttributes = YES
 - (void) _replaceCharactersInRange: (NSRange)    range
                         withString: (NSString *) string;
 
@@ -304,7 +308,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         [_textStorage release];
         _ownsTextStorage=NO;
     }
-
     _textStorage = [[_textContainer layoutManager] textStorage];
    }
 }
@@ -386,12 +389,40 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _insertionPointOn=[self shouldDrawInsertionPoint];
    [self setNeedsDisplay:YES];
 
-   if((!stillSelecting) && ![oldRanges isEqual:[self selectedRanges]]){
-    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [oldRanges objectAtIndex:0] forKey: NSOldSelectedCharacterRange]];
-   }
-
+	if((!stillSelecting) && ![oldRanges isEqual:[self selectedRanges]]){
+		// Update the typing attributes according to the start point of the selection if the current string isn't empty
+		int length = [[self textStorage] length];
+		if (length > 0) {
+			int rangeLength = 0;
+			if  ([ranges count] && length) {
+				int min = length + 1;
+				for (int i = 0; i < [ranges count]; ++i) {
+					NSRange range = [[ranges objectAtIndex:i] rangeValue];
+					if (range.location < min) {
+						min = range.location;
+						rangeLength = range.length;
+					}
+				}
+				if (min > 0 && rangeLength == 0) {
+					// Use attributes of the char just before the insertion point when we just have an insert point
+					min = min - 1;
+				}
+				if (min >= 0 && min < length) {
+					NSDictionary *attributes = [[self textStorage] attributesAtIndex:min effectiveRange:NULL];
+					if (attributes && [attributes isEqualToDictionary:[self typingAttributes]] == NO) {
+						[self setTypingAttributes:attributes];
+					}
+				}
+			}
+		}
+		// Tell the world the selection changed
+		[[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [oldRanges objectAtIndex:0] forKey: NSOldSelectedCharacterRange]];
+	}
+	
+	
    if(!_isContinuousSpellCheckingEnabled)
     [[self textStorage] removeAttribute:NSSpellingStateAttributeName range:NSMakeRange(0,[[self string] length])];
+	
 }
 
 -(void)setSelectedRanges:(NSArray *)ranges {
@@ -1216,7 +1247,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    else {
     if(range.location>0){
      range.location--;
-		
      if (! [self _delegateChangeTextInRange: NSMakeRange(range.location, 1)
                           replacementString: @""])
       return;
@@ -1695,7 +1725,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
             return;
 
         [self _replaceCharactersInRange: NSMakeRange(range.location-1, 2) 
-                             withString: transposed];
+                             withString: transposed useTypingAttributes: NO];
         [self _setAndScrollToRange:NSMakeRange(range.location+1, 0)];
     }
 }
@@ -1915,10 +1945,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                          replacementString: string])
         return;
  
-    [self _replaceCharactersInRange: range withString: string];
+    [self _replaceCharactersInRange: range withString: string useTypingAttributes: NO];
 }
 
--(void)_replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
+-(void)_replaceCharactersInRange:(NSRange)range withString:(NSString *)string useTypingAttributes:(BOOL)useTypingAttributes {
   NSUndoManager * undoManager = [self undoManager];
   
   if (_firstResponderButNotEditingYet)
@@ -1978,14 +2008,23 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                                                                         withString:[[_textStorage string] substringWithRange:range]];
         }
     }
-  
-  [_textStorage replaceCharactersInRange:range withString:string];
-  [_textStorage setAttributes:[self _stringAttributes] range:NSMakeRange(range.location,[string length])];
+	if (useTypingAttributes && [string length]) {
+		// Use the typing attributes for the inserted string
+		NSAttributedString *attrString = [[[NSAttributedString alloc] initWithString:string attributes:[self typingAttributes]] autorelease];
+		[_textStorage replaceCharactersInRange:range withAttributedString:attrString];
+	} else {
+		// Just replace the string
+		[_textStorage replaceCharactersInRange:range withString:string];
+	}
 
-// TODO: this needs to be optimized to check the changed range expanded (probably to paragraphs) instead of everything
-   [self _continuousSpellCheckWithInvalidatedRange:range];
+	// TODO: this needs to be optimized to check the changed range expanded (probably to paragraphs)
+	[self _continuousSpellCheckWithInvalidatedRange:NSMakeRange(range.location, [string length])];
 
   [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
+}
+
+-(void)_replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
+	[self _replaceCharactersInRange:range withString:string useTypingAttributes: YES];
 }
 
 -(BOOL)readRTFDFromFile:(NSString *)path {
@@ -2320,8 +2359,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     if(![self shouldChangeTextInRange:[self selectedRange] replacementString:string])
         return;
-    
-   [self _replaceCharactersInRange:[self selectedRange] withString:string];
+
+	[self _replaceCharactersInRange:[self selectedRange] withString:string];
+	
    [self didChangeText];
    [self scrollRangeToVisible:[self selectedRange]];
 }
@@ -2364,7 +2404,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [_backgroundColor setFill];
     NSRectFill(rect);
    }
-
    [layoutManager drawBackgroundForGlyphRange:gRange atPoint:origin];
    [layoutManager drawGlyphsForGlyphRange:gRange atPoint:origin];
    if([self shouldDrawInsertionPoint]){
@@ -2609,7 +2648,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if (![self _delegateChangeTextInRange: selectedRange replacementString: correction])
     return;
 	   
-   [self _replaceCharactersInRange:selectedRange withString:correction];
+	[self _replaceCharactersInRange:selectedRange withString:correction useTypingAttributes: NO];
    [self didChangeText];
 }
 
@@ -2620,7 +2659,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if (![self _delegateChangeTextInRange: selectedRange replacementString: correction])
     return;
 	   
-   [self _replaceCharactersInRange:selectedRange withString:correction];
+   [self _replaceCharactersInRange:selectedRange withString:correction useTypingAttributes: NO];
    [self didChangeText];
 }
 
@@ -2706,8 +2745,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
     NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
 
-    NSLog(@"guesses=%@",guesses);
-    
     NSMenu *menu=[[[NSMenu alloc] initWithTitle:@""] autorelease];
 
     if([guesses count]==0) {

@@ -249,12 +249,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 
 -(NSTextContainer *)textContainerForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange {
 	[self validateGlyphsAndLayoutForGlyphRange:NSMakeRange(glyphIndex, 1)];
-	
 	NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
 	
 	if(fragment==NULL)
 		return nil;
-
+	
 	if (effectiveGlyphRange) {
 		*effectiveGlyphRange = [self glyphRangeForTextContainer:fragment->container];
 	}
@@ -262,12 +261,12 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(NSRect)lineFragmentRectForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange {
-   NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
-
-   if(fragment==NULL)
-    return NSZeroRect;
-
-   return fragment->rect;
+	NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
+	
+	if(fragment==NULL)
+		return NSZeroRect;
+	
+	return fragment->rect;
 }
 
 -(NSPoint)locationForGlyphAtIndex:(unsigned)glyphIndex {
@@ -469,7 +468,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
     NSTextContainer *container=[_textContainers objectAtIndex:i];
     NSTextView      *textView=[container textView];
 
-    [textView setSelectedRange:NSMakeRange([_textStorage length],0)];
+	[textView setSelectedRange:NSMakeRange([_textStorage length],0)];
    }
 }
 
