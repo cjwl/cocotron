@@ -192,9 +192,20 @@ static Class _fontPanelFactory;
 		}
 	}
 	
+	if (fontName == nil) {
+		// match something!
+		if ([typefaces count] > 0) {
+			NSFontTypeface *typeface=[typefaces objectAtIndex:0];
+			fontName = [typeface name];
+		}
+	}
+	
 	NSFont *font = nil;
-	if(fontName!=nil)
+	if (fontName != nil) {
 		font = [NSFont fontWithName:fontName size:size];
+	} else {
+		NSLog(@"unable to match any font in faces '%@' of family '%@' with traits mask: %d", typefaces, familyName, traits);
+	}
 	
 	return font;
 }
