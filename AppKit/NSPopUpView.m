@@ -402,8 +402,14 @@ enum {
       break;
 
      default:
-      if([event type]==NSLeftMouseUp)
-       state=STATE_EXIT;
+			if([event type]==NSLeftMouseUp) {
+				// If the user clicked outside of the window - then they want
+				// to dismiss it without changing anything
+				if (NSPointInRect(point,[[self window] frame]) == NO) {
+					_selectedIndex = -1;
+				}
+				state=STATE_EXIT;
+			}
       break;
     }
 
@@ -413,7 +419,7 @@ enum {
 
    _keyboardUIState = KEYBOARD_INACTIVE;
    
-   return _selectedIndex;
+	return (_selectedIndex == -1) ? NSNotFound : _selectedIndex;
 }
 
 - (void)keyDown:(NSEvent *)event {
