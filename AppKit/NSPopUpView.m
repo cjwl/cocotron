@@ -405,7 +405,9 @@ enum {
 			if([event type]==NSLeftMouseUp) {
 				// If the user clicked outside of the window - then they want
 				// to dismiss it without changing anything
-				if (NSPointInRect(point,[[self window] frame]) == NO) {
+				NSPoint winPoint=[event locationInWindow];
+				winPoint=[[event window] convertBaseToScreen:winPoint];
+				if (NSPointInRect(winPoint,[[self window] frame]) == NO) {
 					_selectedIndex = -1;
 				}
 				state=STATE_EXIT;
