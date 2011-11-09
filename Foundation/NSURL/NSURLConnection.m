@@ -57,13 +57,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[state receiveAllDataInMode:mode];
     [connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
 
-   NSData *result=[[connection->_mutableData retain] autorelease];
-	
     [connection cancel];
-    
-   if(errorp!=NULL)
-    *errorp=[state error];
 
+	// Now let's see what we should return to the caller...
+	
+	NSData *result= nil; 
+
+	if([state error]) {
+		*errorp=[state error];
+	} else {
+		// Looks good - give them the data
+		result = [[connection->_mutableData retain] autorelease];
+	}
+	
    if(responsep!=NULL)
     *responsep=[[connection->_response retain] autorelease];
     
