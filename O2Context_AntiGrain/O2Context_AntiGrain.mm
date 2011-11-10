@@ -56,7 +56,7 @@ static void O2Log(const char *format,...)
 #endif
 
 // Multiply the alpha spans with a ratio - used as a transformer to render alpha for non-plain color
-typedef agg::scanline_u8_am<agg::alpha_mask_gray8> scanline_mask_type;
+typedef agg::scanline_u8_am<MaskType> scanline_mask_type;
 
 // Apply some alpha value to its input spans
 template<class color_type> struct span_alpha_converter
@@ -980,6 +980,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		font_engine->height((int)pointSize);
 		font_engine->width(0.); // Automatic width
 		font_engine->flip_y(false);
+
+		[self rasterizer]->reset();
 		if(font_engine->create_font([fontName UTF8String], agg::glyph_ren_outline))
 		{
 			agg::conv_transform<conv_curve_type, agg::trans_affine> trans(curves, transformMatrix);
@@ -1013,13 +1015,10 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 				if(glyph)
 				{
 					font_manager->init_embedded_adaptors(glyph, x, y);
-					
 					switch(glyph->data_type)
 					{
 						case agg::glyph_data_outline: {
-							[self rasterizer]->reset();
 							[self rasterizer]->add_path(trans);
-							render_scanlines_aa_solid(self,aggFillColor);
 							break;
 						}
 						default:
@@ -1041,6 +1040,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 				++p;
 			}
 			
+			render_scanlines_aa_solid(self,aggFillColor);
 			O2ContextConcatAdvancesToTextMatrix(self,advances?advances:defaultAdvances,num_glyphs);
 		}
 	}
@@ -1059,7 +1059,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	renderingBufferShadow = new agg::rendering_buffer(pixelShadowBytes,O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),bytesPerRow);
 	
 	rasterizer=new RasterizerType();
-	
+
 	// Use with the right order depending of the bitmap info of the surface - we'll probably want to pass a pixel type here instead of an order to support non 32 bits surfaces and pre/no pre
 	renderer = new context_renderer();
 	O2BitmapInfo bitmapInfo = O2ImageGetBitmapInfo(surface);
@@ -1162,7 +1162,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		O2Surface *surface = [self surface];
 		void *alphaBuffer = malloc(O2SurfaceGetWidth(surface)*O2SurfaceGetHeight(surface));
 		rBufAlphaMask[i] = new agg::rendering_buffer((unsigned char *)alphaBuffer, O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface), O2SurfaceGetWidth(surface));
-		alphaMask[i] = new agg::alpha_mask_gray8(*rBufAlphaMask[i]);
+		alphaMask[i] = new MaskType(*rBufAlphaMask[i]);
 		pixelFormatAlphaMask[i] = new pixfmt_alphaMaskType(*rBufAlphaMask[i]);
 		baseRendererAlphaMask[i] = new BaseRendererWithAlphaMaskType(*pixelFormatAlphaMask[i]);
 		
@@ -1173,25 +1173,11 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 
 - (RasterizerType *)rasterizer
 {
-	O2LayerRef layer=[self->_layerStack lastObject];
-	if (layer) {
-		// Use the layer rasterizer
-		O2Context_AntiGrain *context = (O2Context_AntiGrain *)O2LayerGetContext(layer);
-		return [context rasterizer];
-	}
-	
 	return rasterizer;
 }
 
 - (context_renderer *)renderer;
 {
-	O2LayerRef layer=[self->_layerStack lastObject];
-	if (layer) {
-		// Use the layer renderer
-		O2Context_AntiGrain *context = (O2Context_AntiGrain *)O2LayerGetContext(layer);
-		return [context renderer];
-	}
-	
 	return renderer;
 }
 
@@ -1205,7 +1191,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	return renderer->premultiplied;
 }
 
-- (agg::alpha_mask_gray8*)currentMask
+- (MaskType*)currentMask
 {
 	if (baseRendererAlphaMask[0] == NULL) {
 		[self createMaskRenderer];
@@ -1259,19 +1245,19 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	};
 	O2GState    *gState=O2ContextCurrentGState(self);
 	
-	[self renderer]->setBlendMode(blendModeMap[O2GStateBlendMode(gState)]);
-	[self renderer]->setAlpha(O2GStateAlpha(gState));
+	renderer->setBlendMode(blendModeMap[O2GStateBlendMode(gState)]);
+	renderer->setAlpha(O2GStateAlpha(gState));
 	
 	O2ColorRef shadowColor = gState->_shadowColor;
 	if (shadowColor) {
 		shadowColor = O2ColorConvertToDeviceRGB(shadowColor);
 		const O2Float *components = O2ColorGetComponents(shadowColor);
-		[self renderer]->setShadowColor(agg::rgba(components[0], components[1], components[2], components[3]));
-		[self renderer]->setShadowBlurRadius(gState->_shadowBlur);
-		[self renderer]->setShadowOffset(gState->_shadowOffset);
+		renderer->setShadowColor(agg::rgba(components[0], components[1], components[2], components[3]));
+		renderer->setShadowBlurRadius(gState->_shadowBlur);
+		renderer->setShadowOffset(gState->_shadowOffset);
 		O2ColorRelease(shadowColor);
 	} else {
-		[self renderer]->setShadowColor(agg::rgba(0, 0, 0, 0));
+		renderer->setShadowColor(agg::rgba(0, 0, 0, 0));
 	}
 }
 
@@ -1283,7 +1269,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		return;
 	}
 	currentMask = 0;
-	
+	useMask = NO;
 	if ([savedClipPhases count]) {
 		typedef agg::conv_curve<agg::path_storage> conv_crv_type;
 		typedef agg::conv_transform<conv_crv_type> transStroke;
@@ -1296,7 +1282,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		agg::trans_affine deviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
 		
 		agg::path_storage aggPath;
-		useMask = NO;
 		for (int i = 0; i < [savedClipPhases count]; ++i) {
 			O2ClipPhase *phase = [savedClipPhases objectAtIndex:i];
 			
@@ -1328,15 +1313,15 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 						curve.approximation_scale(deviceMatrix.scale());
 						O2ClipPhaseType phaseType = O2ClipPhasePhaseType(phase);
 						if (phaseType == O2ClipPhaseNonZeroPath)
-							[self rasterizer]->filling_rule(agg::fill_non_zero);
+							rasterizer->filling_rule(agg::fill_non_zero);
 						else
-							[self rasterizer]->filling_rule(agg::fill_even_odd);
+							rasterizer->filling_rule(agg::fill_even_odd);
 						
-						[self rasterizer]->add_path(curve);
+						rasterizer->add_path(curve);
 						
 						// Render the path masked by the previous mask
 						scanline_mask_type sl(*self->alphaMask[!currentMask]);
-						[self renderer]->render_scanlines(*[self rasterizer], sl, *solidScanlineRendererAlphaMask[currentMask]);
+						renderer->render_scanlines(*rasterizer, sl, *solidScanlineRendererAlphaMask[currentMask]);
 					}
 					break;
 				}
@@ -1364,7 +1349,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	 the viewport is what we want to clip to also. The base AGG renderer also does viewport clipping, so we just set it.
 	 */
 	[super clipToState:clipState];
-	[self renderer]->clipBox(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
+	renderer->clipBox(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
 	
 	// That will force a rebuild of the mask next time we need to draw something - no need to build it now as it might
 	// be not needed
@@ -1380,8 +1365,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	[self updateMask];
 	[self updateBlendMode];
 	
-	[self rasterizer]->reset();
-	[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
+	rasterizer->reset();
+	rasterizer->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
 	
 	switch(drawingMode){
 			
@@ -1415,7 +1400,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
 	
 	agg::trans_affine aggDeviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
-	
+
 	if(doFill || doEOFill) {
 		O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
 		const float *fillComps=O2ColorGetComponents(fillColor);
@@ -1463,8 +1448,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		[self updateMask];
 		[self updateBlendMode];
 
-		[self rasterizer]->reset();
-		[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
+		rasterizer->reset();
+		rasterizer->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
 		
 		agg::path_storage p2;
 		p2.move_to(rect.origin.x, rect.origin.y);
@@ -1479,7 +1464,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		agg::trans_affine transform(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
 		
 		agg::conv_transform<agg::path_storage> trans(p2, transform); // Global Affine transformer
-		[self rasterizer]->add_path(trans);
+		rasterizer->add_path(trans);
 		
 		// Flipped scaled transfrom from the original image bounds to the destination rect
 		O2AffineTransform imageTransform = O2AffineTransformMakeTranslation(rect.origin.x, rect.origin.y + rect.size.height);
@@ -1618,8 +1603,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	[self updateMask];
 	[self updateBlendMode];
 	
-	[self rasterizer]->reset();
-	[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
+	rasterizer->reset();
+	rasterizer->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
 		
 	if ([shading isAxial]) {
 		O2AGGContextDrawShading<agg::gradient_x>(self, shading, _vpx, _vpy, _vpwidth, _vpheight);
@@ -1635,34 +1620,45 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	
 	[self->_layerStack addObject:layer];
 	O2LayerRelease(layer);
-	O2ContextSaveGState(self);
 
-	// Be sure we'll update the clipping area for the layer context
-	[savedClipPhases release];
-	savedClipPhases = nil;
+	// Attach to the layer surface
+	O2Surface *surface = O2LayerGetSurface(layer);
+	renderingBuffer->attach((unsigned char *)O2SurfaceGetPixelBytes(surface),O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),O2SurfaceGetBytesPerRow(surface));
+
+	O2ContextSaveGState(self); // Save the pre layer-time context
 	
 	/**
 	 * From Cocoa doc :
 	 * graphics state parameters remain unchanged except for alpha (which is set to 1), shadow (which is turned off), blend mode (which is set to normal), 
 	 * and other parameters that affect the final composite.
 	 */
+	
+	O2ContextResetClip(self); // Starts with a clean clipping region
 	O2GStateSetBlendMode(O2ContextCurrentGState(self), kO2BlendModeNormal);
-	[O2ContextCurrentGState(self) setShadowOffset:O2SizeZero blur:0. color:nil];
 	O2GStateSetAlpha(O2ContextCurrentGState(self), 1.);
+	// We're keeping the shadow for when we render the layer
+	
+	O2ContextSaveGState(self); // Save that clean state - we'll use it to render the layer
+
+	// No shadow from now
+	[O2ContextCurrentGState(self) setShadowOffset:O2SizeZero blur:0. color:nil];
+
 }
 
 -(void)endTransparencyLayer {
 	O2LayerRef layer=O2LayerRetain([self->_layerStack lastObject]);
 	
-	O2ContextRestoreGState(self);
 	[self->_layerStack removeLastObject];
 	
 	O2Size size=[self size];
 	
-	// Be sure we'll update the clipping area
-	[savedClipPhases release];
-	savedClipPhases = nil;
-	
+	// Reattach the renderer to the top surface (either to the new top layer if any or the context one)
+	O2LayerRef newTopLayer = [self->_layerStack lastObject];
+	O2Surface *surface = newTopLayer?O2LayerGetSurface(newTopLayer):_surface;
+	renderingBuffer->attach((unsigned char *)O2SurfaceGetPixelBytes(surface),O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),O2SurfaceGetBytesPerRow(surface));
+
+	O2ContextRestoreGState(self); // Restore the clean state
+
 	// Draw the layer content into our surface
 	O2AffineTransform transform = O2ContextGetCTM(self);
 	O2ContextSaveGState(self);
@@ -1670,6 +1666,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	O2ContextConcatCTM(self, O2AffineTransformInvert(O2ContextGetCTM(self)));
 	[self drawImage:O2LayerGetSurface(layer) inRect:O2RectMake(0,0,size.width,size.height)];
 	O2ContextRestoreGState(self);
+
+	O2ContextRestoreGState(self); // Restore the pre layer-time context
 
 	O2LayerRelease(layer);
 }
@@ -1681,8 +1679,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	[self updateMask];
 	[self updateBlendMode];
 	
-	[self rasterizer]->reset();
-	[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
+	rasterizer->reset();
+	rasterizer->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
 	
 	O2AGGContextShowGlyphs(self,glyphs,advances,count);
 }

@@ -50,6 +50,7 @@ class context_renderer;
 typedef agg::pixfmt_gray8_pre pixfmt_alphaMaskType;
 typedef agg::renderer_base<pixfmt_alphaMaskType> BaseRendererWithAlphaMaskType;
 typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased scanline rasterizer for AGG rendering.
+typedef agg::amask_no_clip_gray8 MaskType;
 
 @interface O2Context_AntiGrain : O2Context_builtin_gdi {
 	agg::rendering_buffer *renderingBuffer;
@@ -65,7 +66,7 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 	
 	// Rendering buffer to use for alpha masking (bezier path clipping)
 	agg::rendering_buffer*												rBufAlphaMask[2];
-	agg::alpha_mask_gray8*												alphaMask[2];
+	MaskType*															alphaMask[2];
 	pixfmt_alphaMaskType*												pixelFormatAlphaMask[2];
 	BaseRendererWithAlphaMaskType*										baseRendererAlphaMask[2];
 	agg::renderer_scanline_aa_solid<BaseRendererWithAlphaMaskType>*		solidScanlineRendererAlphaMask[2];
@@ -79,7 +80,7 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 }
 
 - (BOOL)useMask;
-- (agg::alpha_mask_gray8*)currentMask;
+- (MaskType*)currentMask;
 - (RasterizerType *)rasterizer;
 - (context_renderer *)renderer;
 - (BOOL)isPremultiplied;
