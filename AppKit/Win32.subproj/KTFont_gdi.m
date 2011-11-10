@@ -312,7 +312,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     
    int size=GetOutlineTextMetricsA(dc,0,NULL);
    
-   _useMacMetrics=NO;
+	_useMacMetrics=NO;
    
    if(size<=0){
     ReleaseDC(NULL,dc);
@@ -351,7 +351,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     return;
    }
 
-   if(![(NSString *)_name isEqualToString:@"Marlett"])
+	// Don't use the magic pointSize scaling formula on these font (UI fonts) 
+   if(![(NSString *)_name isEqualToString:@"Marlett"] && ![(NSString *)_name isEqualToString:@"Segoe UI"] && ![(NSString *)_name isEqualToString:@"Tahoma"])
     _useMacMetrics=YES;
 
    _metrics.emsquare=ttMetrics->otmEMSquare;
@@ -404,30 +405,27 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    switch(uiFontType){
   
     case kCTFontMenuTitleFontType:
-    case kCTFontMenuItemFontType:
-     if(size==0)
-      size=10;
-     font=O2FontCreateWithFontName(@"Tahoma");
-     
-#if 0
-// We should be able to get the menu font but this doesnt work
-// MS Shell Dlg
-// MS Shell Dlg 2
-// DEFAULT_GUI_FONT
-   HGDIOBJ    font=GetStockObject(SYSTEM_FONT);
-   EXTLOGFONT fontData;
-
-   GetObject(font,sizeof(fontData),&fontData);
-
-   *pointSize=fontData.elfLogFont.lfHeight;
-
-   HDC dc=GetDC(NULL);
-   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps(dc,LOGPIXELSY);
-   ReleaseDC(NULL,dc);
-NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
-#endif
-
-     break;
+	case kCTFontMenuItemFontType: {
+		   NSString *name = @"Tahoma";
+		   // Try to ask the system which font we should use for menus
+		   NONCLIENTMETRICSW nm;
+		   nm.cbSize = sizeof (NONCLIENTMETRICSW);
+		   if (SystemParametersInfoW(SPI_GETNONCLIENTMETRICS,0,&nm,0)) {
+			   LOGFONTW fl = nm.lfMenuFont;
+			   name = [NSString stringWithFormat:@"%S", fl.lfFaceName];
+			   if (size == 0) {
+				   size = ABS(fl.lfHeight);
+			   }
+		   }
+		   font=O2FontCreateWithFontName(name);
+		   if (font == nil) {
+			   font=O2FontCreateWithFontName(@"Tahoma");
+		   }
+		   if(size==0) {
+			   size=10;
+		   }
+	   }
+		   break;
  
     default:
      NSUnimplementedMethod();
@@ -435,7 +433,6 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
    }
 
    id result=[self initWithFont:font size:size];
-   
    [font release];
    
    return result;
