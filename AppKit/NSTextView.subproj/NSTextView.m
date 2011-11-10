@@ -54,6 +54,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 @end
 
 @interface NSTextView()
+-(void)_updateTypingAttributes;
 -(void)_replaceCharactersInRange:(NSRange)range 
 					  withString:(NSString *)string 
 			 useTypingAttributes:(BOOL)useTypingAttributes;
@@ -388,33 +389,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _selectionGranularity=NSSelectByCharacter;
    _insertionPointOn=[self shouldDrawInsertionPoint];
    [self setNeedsDisplay:YES];
-
+	
+	if (![oldRanges isEqual:[self selectedRanges]]) {
+		[self _updateTypingAttributes];
+	}
+	
+	// Note: when mouse selecting, we'll never enter this part because either we have stillSelecting and update the selectedRange, or have
+	// stillSelecting == NO but then the range was already set by some previous call
 	if((!stillSelecting) && ![oldRanges isEqual:[self selectedRanges]]){
-		// Update the typing attributes according to the start point of the selection if the current string isn't empty
-		int length = [[self textStorage] length];
-		if (length > 0) {
-			int rangeLength = 0;
-			if  ([ranges count] && length) {
-				int min = length + 1;
-				for (int i = 0; i < [ranges count]; ++i) {
-					NSRange range = [[ranges objectAtIndex:i] rangeValue];
-					if (range.location < min) {
-						min = range.location;
-						rangeLength = range.length;
-					}
-				}
-				if (min > 0 && rangeLength == 0) {
-					// Use attributes of the char just before the insertion point when we just have an insert point
-					min = min - 1;
-				}
-				if (min >= 0 && min < length) {
-					NSDictionary *attributes = [[self textStorage] attributesAtIndex:min effectiveRange:NULL];
-					if (attributes && [attributes isEqualToDictionary:[self typingAttributes]] == NO) {
-						[self setTypingAttributes:attributes];
-					}
-				}
-			}
-		}
 		// Tell the world the selection changed
 		[[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [oldRanges objectAtIndex:0] forKey: NSOldSelectedCharacterRange]];
 	}
@@ -608,9 +590,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    NSRect  result;
 
    if(range.length==0){
-    if(range.location>=[_textStorage length])
-     result=[[self layoutManager] extraLineFragmentRect];
-    else {
+	   if(range.location>=[_textStorage length])
+		   result=[[self layoutManager] extraLineFragmentRect];
+	   else {
      unsigned    rectCount=0;
      NSRect * rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
 
@@ -622,9 +604,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     result.size.width=1;
    }
    else {
-    if(range.location>=[_textStorage length])
-     result=[[self layoutManager] extraLineFragmentRect];
-    else {
+	   if(range.location>=[_textStorage length])
+		   result = [[self layoutManager] extraLineFragmentRect];
+	 else {
      NSRange glyphRange=[[self layoutManager] glyphRangeForCharacterRange:range actualCharacterRange:NULL];
  
      result=[[self layoutManager] boundingRectForGlyphRange:glyphRange inTextContainer:[self textContainer]];
@@ -1931,6 +1913,37 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 // this does not didChangeText
 }
 
+// Update the typing attributes according to the current selection
+- (void)_updateTypingAttributes
+{
+	// Update the typing attributes according to the start point of the selection if the current string isn't empty
+	int length = [[self textStorage] length];
+	if (length > 0) {
+		int rangeLength = 0;
+		NSArray *ranges = [self selectedRanges];
+		if  ([ranges count] && length) {
+			int min = length + 1;
+			for (int i = 0; i < [ranges count]; ++i) {
+				NSRange range = [[ranges objectAtIndex:i] rangeValue];
+				if (range.location < min) {
+					min = range.location;
+					rangeLength = range.length;
+				}
+			}
+			if (min > 0 && rangeLength == 0) {
+				// Use attributes of the char just before the insertion point when we just have an insert point
+				min = min - 1;
+			}
+			if (min >= 0 && min < length) {
+				NSDictionary *attributes = [[self textStorage] attributesAtIndex:min effectiveRange:NULL];
+				if (attributes && [attributes isEqualToDictionary:[self typingAttributes]] == NO) {
+					[self setTypingAttributes:attributes];
+				}
+			}
+		}
+	}
+}
+
 // Should this be related to typingAttributes somehow?
 -(NSDictionary *)_stringAttributes {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
@@ -2114,6 +2127,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [style setAlignment:alignment];
 
     [[self textStorage] addAttribute:NSParagraphStyleAttributeName value:style range:range];
+	
+	// This method is always been called with the selected range - so update the typing attributes with that
+	NSMutableDictionary *attributes = [[[self typingAttributes] mutableCopy] autorelease];
+	[attributes setObject:style forKey:NSParagraphStyleAttributeName];
+	[self setTypingAttributes:attributes];		
 }
 
 -(void)setAlignment:(NSTextAlignment)alignment {
@@ -2126,6 +2144,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [_textColor release];
    _textColor=color;
    [self setTextColor:_textColor range:NSMakeRange(0, [[self textStorage] length])];
+
+	[self _updateTypingAttributes];
 }
 
 -(void)setTextColor:(NSColor *)color range:(NSRange)range {
@@ -2133,6 +2153,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [[self textStorage] removeAttribute:NSForegroundColorAttributeName range:range];
    else
     [[self textStorage] addAttribute:NSForegroundColorAttributeName value:color range:range];
+	
+	[self _updateTypingAttributes];
 }
 
 -(void)setDrawsBackground:(BOOL)flag {
@@ -2232,12 +2254,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)changeFont:sender {
    NSFont *font=[[NSFontManager sharedFontManager] convertFont:[self font]];
-
    if(![self isRichText])
     [self setFont:font];
    else {
     [[self textStorage] addAttribute:NSFontAttributeName value:font range:[self selectedRange]];
    }
+	
+	NSMutableDictionary *attributes = [[[self typingAttributes] mutableCopy] autorelease];
+	[attributes setObject:font forKey:NSFontAttributeName];
+	[self setTypingAttributes:attributes];
 }
 
 // making changes to textstorage attributes seems to wipe out the selection in this codebase,
@@ -2274,6 +2299,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                                range:range];
 
     [self setSelectedRange:range];
+	
+	NSMutableDictionary *attributes = [[[self typingAttributes] mutableCopy] autorelease];
+	[attributes setObject:[NSNumber numberWithInt:NSUnderlineStyleSingle] forKey:NSUnderlineStyleAttributeName];
+	[self setTypingAttributes:attributes];	
 }
 
 
