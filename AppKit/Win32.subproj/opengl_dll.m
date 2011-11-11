@@ -347,10 +347,59 @@ BOOL opengl_wglMakeContextCurrentARB(HDC hDrawDC,HDC hReadDC,HGLRC hglrc) {
    APIENTRY typeof(opengl_wglMakeContextCurrentARB ) *function=(typeof(function))wglGetProcAddress("wglMakeContextCurrentARB");
 
    if(function==NULL){
-    if(NSDebugEnabled)
+ //   if(NSDebugEnabled)
      NSLog(@"wglGetProcAddress(wglMakeContextCurrentARB ) failed");
     return NO;
    }
    
    return function(hDrawDC,hReadDC,hglrc);
 }
+
+BOOL opengl_wglBindTexImageARB(HPBUFFERARB hPbuffer,int iBuffer) {
+   APIENTRY typeof(opengl_wglBindTexImageARB) *function=(typeof(function))wglGetProcAddress("wglBindTexImageARB");
+
+   if(function==NULL){
+ //   if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglBindTexImageARB) failed");
+    return NO;
+   }
+   
+   return function(hPbuffer,iBuffer);
+}
+
+BOOL opengl_wglReleaseTexImageARB(HPBUFFERARB hPbuffer,int iBuffer) {
+   APIENTRY typeof(opengl_wglReleaseTexImageARB) *function=(typeof(function))wglGetProcAddress("wglReleaseTexImageARB");
+
+   if(function==NULL){
+ //   if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglReleaseTexImageARB) failed");
+    return NO;
+   }
+   
+   return function(hPbuffer,iBuffer);
+}
+
+BOOL opengl_wglSetPbufferAttribARB(HPBUFFERARB hPbuffer,const int *piAttribList) {
+   APIENTRY typeof(opengl_wglSetPbufferAttribARB) *function=(typeof(function))wglGetProcAddress("wglSetPbufferAttribARB");
+
+   if(function==NULL){
+ //   if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglSetPbufferAttribARB) failed");
+    return NO;
+   }
+   
+   return function(hPbuffer,piAttribList);
+}
+
+BOOL opengl_wglSwapIntervalEXT (int interval) {
+   APIENTRY typeof(opengl_wglSwapIntervalEXT) *function=(typeof(function))wglGetProcAddress("wglSwapIntervalEXT");
+
+
+   if(function==NULL){
+    NSLog(@"wglGetProcAddress(wglSwapIntervalEXT) failed");
+    return NO;
+   }
+   
+    return function(interval);
+}
+

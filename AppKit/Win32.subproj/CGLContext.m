@@ -46,6 +46,7 @@ struct _CGLContextObj {
    HPBUFFERARB      dynamicPbuffer;
    HDC              dynamicPbufferDC;
    BOOL             needsViewport;
+   BOOL             needsReadPixels;
    HDC              windowDC;
    HGLRC            windowGLContext;
    int              parentWindowNumber;
@@ -339,7 +340,7 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
    pfd->iLayerType=PFD_MAIN_PLANE;
    pfd->iPixelType=PFD_TYPE_RGBA;
-   pfd->cColorBits=32;
+   pfd->cColorBits=24;
    pfd->cRedBits=8;
    pfd->cGreenBits=8;
    pfd->cBlueBits=8;
@@ -399,10 +400,12 @@ static BOOL contextHasPbufferExtension(CGLContextObj context){
    if(strstr(extensions,"WGL_ARB_pixel_format")==NULL)
     return NO;
     
+#if 0
    const char *vendor=glGetString(GL_VENDOR);
    
    if(strstr(vendor,"Parallels")!=NULL)
     return NO;
+#endif
     
    return YES;
 }
@@ -416,16 +419,14 @@ void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
    int piFormats[1];
    int piAttribIList[]={
         WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
-        WGL_DRAW_TO_PBUFFER_EXT, GL_TRUE,
-        WGL_RED_BITS_ARB,8,
-        WGL_GREEN_BITS_ARB,8,
-        WGL_BLUE_BITS_ARB,8,
+        WGL_DRAW_TO_PBUFFER_ARB,GL_TRUE,
+        WGL_COLOR_BITS_ARB,24,
         WGL_ALPHA_BITS_ARB,8,
-        WGL_DEPTH_BITS_ARB,24,
-        WGL_PIXEL_TYPE_EXT,WGL_TYPE_RGBA_EXT,
+        WGL_DEPTH_BITS_ARB,16,
+        WGL_PIXEL_TYPE_ARB,WGL_TYPE_RGBA_ARB,
         WGL_BIND_TO_TEXTURE_RGBA_ARB, GL_TRUE,
         WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
-        WGL_DOUBLE_BUFFER_ARB,GL_FALSE,
+      //  WGL_DOUBLE_BUFFER_ARB,GL_TRUE,
         0
    }; 
         			
@@ -441,15 +442,6 @@ void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
     return;
    }
 
-   if(context->staticPbuffer==NULL){
-    context->staticPbuffer=opengl_wglCreatePbufferARB(context->windowDC, piFormats[0], 1, 1, NULL);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    context->staticPbufferDC=opengl_wglGetPbufferDCARB(context->staticPbuffer);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    context->staticPbufferGLContext=opengl_wglCreateContext(context->staticPbufferDC);		
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   }
-   
 	const int attributes[]= {
      WGL_TEXTURE_FORMAT_ARB,
      WGL_TEXTURE_RGBA_ARB, // p-buffer will have RBA texture format
@@ -457,7 +449,17 @@ void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
      WGL_TEXTURE_2D_ARB,
      0}; // Of texture target will be GL_TEXTURE_2D
 
-   context->dynamicPbuffer=opengl_wglCreatePbufferARB(context->windowDC, piFormats[0], context->w, context->h, NULL);
+   if(context->staticPbuffer==NULL){
+    context->staticPbuffer=opengl_wglCreatePbufferARB(context->windowDC, piFormats[0], 1, 1, attributes);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    context->staticPbufferDC=opengl_wglGetPbufferDCARB(context->staticPbuffer);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    context->staticPbufferGLContext=opengl_wglCreateContext(context->staticPbufferDC);		
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   }
+   
+
+   context->dynamicPbuffer=opengl_wglCreatePbufferARB(context->windowDC, piFormats[0], context->w, context->h, attributes);
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     
     if(context->dynamicPbuffer==NULL){
@@ -536,7 +538,7 @@ static void _CGLDestroyDynamicPbufferBacking(CGLContextObj context){
 
    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   
+
     if(context->dynamicPbufferDC!=NULL){
      opengl_wglReleasePbufferDCARB(context->dynamicPbuffer,context->dynamicPbufferDC);
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -678,14 +680,7 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
     case kCGLCPSwapInterval:;
      CGLSetCurrentContext(context);
      
-     typedef BOOL (WINAPI * PFNWGLSWAPINTERVALEXTPROC)(int interval); 
-     PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)opengl_wglGetProcAddress("wglSwapIntervalEXT"); 
-     if(wglSwapIntervalEXT==NULL){
-      NSLog(@"wglGetProcAddress failed for wglSwapIntervalEXT");
-     }
-     else {
-      wglSwapIntervalEXT(*value); 
-     }
+     opengl_wglSwapIntervalEXT(*value);
      break;
     
     case kCGLCPSurfaceOpacity:
@@ -739,6 +734,16 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
      *value=(int)context->overlay;
      break;
      
+        case kCGLCPSurfaceBackingSize:;
+        value[0]=context->w;
+        value[1]=context->h;
+            break;
+            
+    case kCGLCPSurfaceBackingOrigin:
+        value[0]=context->x;
+        value[1]=context->y;
+        break;
+        
     default:
      break;
    }
@@ -770,16 +775,68 @@ CGL_EXPORT CGLError CGLCopyPixelsFromSurface(O2Surface_DIBSection *srcSurface,CG
     return kCGLNoError;
 }
 
-CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination) {
-    //resizeBackingIfNeeded(destination);
+static void cglReadBufferIfNeeded(CGLContextObj source){
+    CGLLockContext(source);
+    
+    if(!source->needsReadPixels){
+        CGLUnlockContext(source);
+        return;
+    }
+    source->needsReadPixels=NO;
+    
+        /*
+            If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
+            complete. Read from GL_BACK.
+        */
 
-    CGLPixelSurface *overlay=source->overlay;
+    CGLContextObj saveContext=CGLGetCurrentContext();
+
+
+    CGLSetCurrentContext(source);
+   
+    GLint buffer;
+   
+    glGetIntegerv(GL_DRAW_BUFFER,&buffer);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    glReadBuffer(buffer);
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
+    [source->overlay readBuffer];
+   
+    CGLUnlockContext(source);
+
+    CGLSetCurrentContext(saveContext);
+}
+
+HDC CGLGetDC(CGLContextObj context){
+    if(context->dynamicPbufferDC!=NULL)
+        return context->dynamicPbufferDC;
         
-    O2Surface_DIBSection *dstSurface=(O2Surface_DIBSection *)[destination->overlay validSurface];
-    O2Surface_DIBSection *srcSurface=(O2Surface_DIBSection *)[overlay validSurface];
+    return context->windowDC;
+}
+
+HPBUFFERARB CGLGetPBUFFER(CGLContextObj context){
+    return context->dynamicPbuffer;
+}
+
+
+O2Surface *CGLGetSurface(CGLContextObj context){
+    cglReadBufferIfNeeded(context);
+    
+    CGLPixelSurface *overlay=context->overlay;
+        
+    return (O2Surface_DIBSection *)[overlay validSurface];
+}
+
+CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination) {
+    resizeBackingIfNeeded(destination);
+        
+    O2Surface_DIBSection *srcSurface=CGLGetSurface(source);
     
     if(srcSurface==nil)
         return kCGLNoError;
+
+    O2Surface_DIBSection *dstSurface=(O2Surface_DIBSection *)[destination->overlay validSurface];
 
     BLENDFUNCTION blend;
     
@@ -800,9 +857,13 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   [[CGWindow windowWithWindowNumber:context->parentWindowNumber] flushCGLContext:context];
+    CGLLockContext(context);
+    context->needsReadPixels=YES;
+    CGLUnlockContext(context);
+    
+    [[CGWindow windowWithWindowNumber:context->parentWindowNumber] flushCGLContext:context];
 
-   return kCGLNoError;
+    return kCGLNoError;
 }
 
 static int attributesCount(const CGLPixelFormatAttribute *attributes){

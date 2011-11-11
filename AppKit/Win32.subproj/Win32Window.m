@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Surface_DIBSection.h>
 #import <CoreGraphics/CGLPixelSurface.h>
 
+#import "opengl_dll.h"
+
 @implementation Win32Window
 
 static CGRect convertFrameToWin32ScreenCoordinates(CGRect rect){
@@ -182,7 +184,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
    SetProp(_handle,"Win32Window",self);
 
- //  [self setupPixelFormat];
+   [self setupPixelFormat];
 }
 
 -(void)destroyWindowHandle {
@@ -479,56 +481,6 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     return _isMiniaturized;
 }
 
--(void)setupPixelFormat {
-    PIXELFORMATDESCRIPTOR pfd;
-    HDC       dc=GetDC(_handle);
-       
-    memset(&pfd,0,sizeof(pfd));
-   
-    pfd.nSize=sizeof(PIXELFORMATDESCRIPTOR);
-    pfd.nVersion=1;
-    pfd.dwFlags=PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER|PFD_GENERIC_ACCELERATED|PFD_DRAW_TO_WINDOW;
-    pfd.iPixelType=PFD_TYPE_RGBA;
-    pfd.cColorBits=24;
-   pfd.cRedBits=8;
-   pfd.cGreenBits=8;
-   pfd.cBlueBits=8;
-    pfd.cAlphaBits=8;
-    pfd.iLayerType=PFD_MAIN_PLANE;
-
-    int pfIndex=ChoosePixelFormat(dc,&pfd); 
- 
-    if(!SetPixelFormat(dc,pfIndex,&pfd))
-     NSLog(@"SetPixelFormat failed at %s %d",__FILE__,__LINE__);
-
-    ReleaseDC(_handle,dc);
-   }
-#if 0
--(BOOL)openGLFlushBuffer {
-   CGLError error;
-   O2Surface *surface=[_backingContext surface];
-   
-   if(surface==nil){
-    NSLog(@"no surface on %@",_backingContext);
-    return NO;
-   }
-    
-   [self createCGLContextObjIfNeeded];
-       
-   CAWindowOpenGLContext *renderer=(CAWindowOpenGLContext *)[NSClassFromString(@"CAWindowOpenGLContext") rendererWithCGLContext:_cglContext options:nil];
-   
-   if(renderer==nil)
-    return NO;
-    
-   [renderer renderWithSurface:surface];
-   
-   HDC dc=GetDC(_handle);
-   SwapBuffers(dc);
-   ReleaseDC(_handle,dc);
-   
-   return YES;
-}
-#endif
 
 CGL_EXPORT CGLError CGLCopyPixelsFromSurface(O2Surface_DIBSection *srcSurface,CGLContextObj destination);
 CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination);
@@ -575,43 +527,7 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
     return (O2Surface_DIBSection *)[pixelSurface validSurface];
 }
 
-static int reportGLErrorIfNeeded(const char *function,int line){
-   GLenum error=glGetError();
-
-   if(error!=GL_NO_ERROR)
-     NSLog(@"%s %d error=%d/%x",function,line,error,error);
-   
-   return error;
-}
-
 -(void)flushCGLContext:(CGLContextObj)cglContext {
-/*
-  If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
-  complete. Read from GL_BACK.
- */
-
-   CGLContextObj saveContext=CGLGetCurrentContext();
-
-   CGLLockContext(cglContext);
-
-   CGLSetCurrentContext(cglContext);
-   
-   GLint buffer;
-   
-   glGetIntegerv(GL_DRAW_BUFFER,&buffer);
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   glReadBuffer(buffer);
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   
-    CGLPixelSurface *overlay;
-    
-    CGLGetParameter(cglContext,kCGLCPOverlayPointer,&overlay);
-
-   [overlay readBuffer];
-   
-   CGLUnlockContext(cglContext);
-
-   CGLSetCurrentContext(saveContext);
 
    [self flushBuffer];
 }
@@ -624,18 +540,291 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    _disableFlushWindow--;
 }
 
--(void)flushBuffer {
-   [self lock];
+-(void)setupPixelFormat {
+    PIXELFORMATDESCRIPTOR pfd;
+    HDC       dc=GetDC(_handle);
+       
+    memset(&pfd,0,sizeof(pfd));
    
-   if(_disableFlushWindow){
-    [self unlock];
-    return;
-    }
+    pfd.nSize=sizeof(PIXELFORMATDESCRIPTOR);
+    pfd.nVersion=1;
+    pfd.dwFlags=PFD_SUPPORT_OPENGL|PFD_GENERIC_ACCELERATED|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
+    pfd.iPixelType=PFD_TYPE_RGBA;
+    pfd.cColorBits=32;
+    pfd.cRedBits=8;
+    pfd.cGreenBits=8;
+    pfd.cBlueBits=8;
+    pfd.cAlphaBits=8;
+    pfd.iLayerType=PFD_MAIN_PLANE;
 
-   if([self isLayeredWindow]){
-    if(_backingContext!=nil){
-     O2Surface_DIBSection *surface=[self resultSurface];
-     O2DeviceContext_gdi  *deviceContext=[surface deviceContext];
+    int pfIndex=ChoosePixelFormat(dc,&pfd); 
+ 
+    if(!SetPixelFormat(dc,pfIndex,&pfd))
+     NSLog(@"SetPixelFormat failed at %s %d",__FILE__,__LINE__);
+
+    ReleaseDC(_handle,dc);
+}
+
+-(BOOL)createCGLContextObjIfNeeded {
+    if(_hglrc!=NULL)
+        return NO;
+        
+    HDC dc=GetDC(_handle);
+    
+    _hglrc=opengl_wglCreateContext(dc);
+    
+    ReleaseDC(_handle,dc);
+    
+    return YES;
+}
+
+-(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip {
+
+    GLint surfaceTexture;
+    glGenTextures(1, &surfaceTexture);
+    glBindTexture(GL_TEXTURE_2D, surfaceTexture);						
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    O2SurfaceLock(surface);
+    size_t width=O2ImageGetWidth(surface);
+    size_t height=O2ImageGetHeight(surface);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, [surface pixelBytes]);
+    O2SurfaceUnlock(surface);
+
+    GLint vertices[4*2];
+    GLint texture[4*2];
+   
+    vertices[0]=0;
+    vertices[1]=0;
+    vertices[2]=width;
+    vertices[3]=0;
+    vertices[4]=0;
+    vertices[5]=height;
+    vertices[6]=width;
+    vertices[7]=height;
+   
+    if(flip){
+        texture[0]=0;
+        texture[1]=1;
+        texture[2]=1;
+        texture[3]=1;
+        texture[4]=0;
+        texture[5]=0;
+        texture[6]=1;
+        texture[7]=0;
+    }
+    else {
+        texture[0]=0;
+        texture[1]=0;
+        texture[2]=1;
+        texture[3]=0;
+        texture[4]=0;
+        texture[5]=1;
+        texture[6]=1;
+        texture[7]=1;
+    }
+    
+    glTexCoordPointer(2, GL_INT, 0, texture);
+    glVertexPointer(2, GL_INT, 0, vertices);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDeleteTextures(1, &surfaceTexture);
+}
+
+static int reportGLErrorIfNeeded(const char *function,int line){
+   GLenum error=glGetError();
+
+   if(error!=GL_NO_ERROR)
+     NSLog(@"%s %d error=%d/%x",function,line,error,error);
+   
+   return error;
+}
+
+-(void)openGLFlushBuffer {
+    CGLError error;
+    O2Surface_DIBSection *surface=[_backingContext surface];
+   
+    if(surface==nil){
+        NSLog(@"no surface on %@",_backingContext);
+        return ;
+    }
+    
+   BOOL didCreate = [self createCGLContextObjIfNeeded];
+   
+    HDC dc=GetDC(_handle);
+
+    opengl_wglMakeCurrent(dc,_hglrc);
+    
+    if(didCreate){
+        const char *extensions=opengl_wglGetExtensionsStringARB(dc);
+
+        _hasRenderTexture=NO;//(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
+        _hasMakeCurrentRead=NO;//(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
+        _hasReadback=YES;
+    }
+    
+    O2Surface *CGLGetSurface(CGLContextObj context);
+    if(!_hasMakeCurrentRead && !_hasRenderTexture){
+        int i;
+        for(i=0;i<_surfaceCount;i++) {
+            O2Surface *overlay=CGLGetSurface(_surfaces[i]);
+        }
+    opengl_wglMakeCurrent(dc,_hglrc);
+   }
+
+// reshape
+   size_t width=O2ImageGetWidth(surface);
+   size_t height=O2ImageGetHeight(surface);
+
+   glEnable(GL_DEPTH_TEST);
+   glShadeModel(GL_SMOOTH);
+
+// reshape
+   glViewport(0,0,width,height);
+   glMatrixMode(GL_PROJECTION);                      
+   glLoadIdentity();
+   glOrtho (0, width, 0, height, -1, 1);
+
+// render
+   glMatrixMode(GL_MODELVIEW);                                           
+   glLoadIdentity();
+
+   glClearColor(0, 0, 0, 0);
+   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+   
+   glEnable( GL_TEXTURE_2D );
+   glEnableClientState(GL_VERTEX_ARRAY);
+   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+   glEnable (GL_BLEND);
+
+   // we don't clear background as background will cover entire area with a copy
+   glBlendFunc(GL_ONE, GL_ZERO);
+    
+   glPushMatrix();
+    CGFloat top,left,bottom,right;
+       
+    CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
+    glTranslatef(-right,-bottom,0);
+
+    [self flushSurface:surface flip:YES];
+
+    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
+    int i;
+    GLint surfaceTextures[_surfaceCount];
+    
+    glGenTextures(_surfaceCount, surfaceTextures);
+    
+    for(i=0;i<_surfaceCount;i++) {
+        GLint size[2];
+        GLint origin[2];
+        GLint opacity;
+        
+        CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingSize,size);
+        CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingOrigin,origin);
+        CGLGetParameter(_surfaces[i],kCGLCPSurfaceOpacity,&opacity);
+
+        if(opacity)
+            glBlendFunc(GL_ONE, GL_ZERO);
+        else
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            
+        if(_hasRenderTexture){
+            HPBUFFERARB CGLGetPBUFFER(CGLContextObj context);
+
+            HPBUFFERARB pBuffer=CGLGetPBUFFER(_surfaces[i]);
+    
+            glBindTexture(GL_TEXTURE_2D, surfaceTextures[i]);						
+            opengl_wglBindTexImageARB(pBuffer,WGL_FRONT_LEFT_ARB);
+
+          //  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
+            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+            GLint vertices[4*2];
+            GLint texture[4*2];
+   
+            vertices[0]=0;
+            vertices[1]=0;
+            vertices[2]=size[0];
+            vertices[3]=0;
+            vertices[4]=0;
+            vertices[5]=size[1];
+            vertices[6]=size[0];
+            vertices[7]=size[1];
+
+            texture[0]=0;
+            texture[1]=0;
+            texture[2]=1;
+            texture[3]=0;
+            texture[4]=0;
+            texture[5]=1;
+            texture[6]=1;
+            texture[7]=1;
+
+            glTranslatef(0,0,1);
+            glPushMatrix();
+            glTranslatef((float)origin[0],(float)origin[1],0);
+            
+            glTexCoordPointer(2, GL_INT, 0, texture);
+            glVertexPointer(2, GL_INT, 0, vertices);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+            glPopMatrix();
+            
+            glBindTexture(GL_TEXTURE_2D, 0);						
+            opengl_wglReleaseTexImageARB(pBuffer,WGL_FRONT_LEFT_ARB);
+        }
+        else if(_hasMakeCurrentRead){
+            HDC CGLGetDC(CGLContextObj context);
+            
+            opengl_wglMakeContextCurrentARB(dc,CGLGetDC(_surfaces[i]),_hglrc);
+
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            
+            glRasterPos3i(origin[0],origin[1],i);
+            
+        //    glReadBuffer(GL_FRONT);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+          //  glDrawBuffer(GL_FRONT);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            
+            glCopyPixels(0,0,size[0],size[1],GL_COLOR);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        }
+        else if(_hasReadback) {
+            O2Surface *overlay=CGLGetSurface(_surfaces[i]);
+        
+            glTranslatef(0,0,1);
+            glPushMatrix();
+            glTranslatef((float)origin[0],(float)origin[1],0);
+        
+            [self flushSurface:overlay flip:NO];
+            glPopMatrix();
+        }
+    }
+    glDeleteTextures(_surfaceCount, surfaceTextures);
+    
+    glPopMatrix();
+ 
+    SwapBuffers(dc);
+    
+    ReleaseDC(_handle,dc);
+}
+
+-(void)updateLayeredWindow {
+    O2Surface_DIBSection *surface=[self resultSurface];
+    O2DeviceContext_gdi  *deviceContext=[surface deviceContext];
      
     BLENDFUNCTION blend;
     BYTE          constantAlpha=MAX(0,MIN(_alphaValue*255,255));
@@ -646,41 +835,61 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     blend.AlphaFormat=AC_SRC_ALPHA;
     
     SIZE sizeWnd = {_frame.size.width, _frame.size.height};
-     POINT ptSrc = {0, 0};
-     DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
+    POINT ptSrc = {0, 0};
+    DWORD flags=(_isOpaque && constantAlpha==255)?ULW_OPAQUE:ULW_ALPHA;
     
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
-   }
-   }
-   else {
+}
+
+-(void)bitBltWindow {
     switch(_backingType){
 
-     case CGSBackingStoreRetained:
-     case CGSBackingStoreNonretained:
-      break;
+        case CGSBackingStoreRetained:
+        case CGSBackingStoreNonretained:
+            break;
  
-     case CGSBackingStoreBuffered:
-      if(_backingContext!=nil){
-       O2Surface_DIBSection *surface=[self resultSurface];
-       O2DeviceContext_gdi  *deviceContext=[surface deviceContext];
-       int                  dstX=0;
-       int                  dstY=0;
-       int                  width=_frame.size.width;
-       int                  height=_frame.size.height;
+        case CGSBackingStoreBuffered:;
+            O2Surface_DIBSection *surface=[self resultSurface];
+            O2DeviceContext_gdi  *deviceContext=[surface deviceContext];
+            int                  dstX=0;
+            int                  dstY=0;
+            int                  width=_frame.size.width;
+            int                  height=_frame.size.height;
        
-       CGFloat top,left,bottom,right;
+            CGFloat top,left,bottom,right;
        
-       CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
-       
-       if(deviceContext!=nil){
-        O2SurfaceLock(surface);
-        BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
-        O2SurfaceUnlock(surface);
-       }
-      }
+            CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
+    
+            if(deviceContext!=nil){
+                O2SurfaceLock(surface);
+                BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+                O2SurfaceUnlock(surface);
+            }
+            break;
+        
     }
-   }
-   [self unlock];
+}
+
+-(void)flushBuffer {
+    [self lock];
+   
+    if(_disableFlushWindow){
+        [self unlock];
+        return;
+    }
+
+    if(_backingContext!=nil){
+        if([self isLayeredWindow])
+            [self updateLayeredWindow];
+        else {
+            if(_surfaceCount>0)
+                [self openGLFlushBuffer];
+            else
+                [self bitBltWindow];
+        }
+    }
+    
+    [self unlock];
 }
 
 -(CGPoint)convertPOINTLToBase:(POINTL)point {
@@ -1074,6 +1283,7 @@ static void initializeWindowClass(WNDCLASS *class){
     _surfaceCount++;
     _surfaces=NSZoneRealloc(NULL,_surfaces,sizeof(void *)*_surfaceCount);
     _surfaces[_surfaceCount-1]=cglContext;
+    
 }
 
 -(void)removeCGLContext:(CGLContextObj)cglContext {
