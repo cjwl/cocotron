@@ -515,10 +515,12 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
     CGLSetParameter(_overlayResult,kCGLCPSurfaceBackingSize,size);
     
     CGLCopyPixelsFromSurface(backingSurface,_overlayResult);
-      
+    
+    [self lock];
     int i;
     for(i=0;i<_surfaceCount;i++)
         CGLCopyPixels(_surfaces[i],_overlayResult);
+    [self unlock];
     
     CGLPixelSurface *pixelSurface;
     
@@ -1280,15 +1282,17 @@ static void initializeWindowClass(WNDCLASS *class){
 }
 
 -(void)addCGLContext:(CGLContextObj)cglContext {
+    [self lock];
     _surfaceCount++;
     _surfaces=NSZoneRealloc(NULL,_surfaces,sizeof(void *)*_surfaceCount);
     _surfaces[_surfaceCount-1]=cglContext;
-    
+    [self unlock];
 }
 
 -(void)removeCGLContext:(CGLContextObj)cglContext {
     int i;
     
+    [self lock];
     for(i=0;i<_surfaceCount;i++)
         if(_surfaces[i]==cglContext){
             _surfaceCount--;
@@ -1297,6 +1301,7 @@ static void initializeWindowClass(WNDCLASS *class){
     
     for(;i<_surfaceCount;i++)
         _surfaces[i]=_surfaces[i+1];
+    [self unlock];
 }
 
 @end
