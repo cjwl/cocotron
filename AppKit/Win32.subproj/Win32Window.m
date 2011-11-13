@@ -590,7 +590,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     }
     O2SurfaceUnlock(result);
     [self unlock];
-    
+
    return result;
 }
 
@@ -1094,7 +1094,6 @@ static void initializeWindowClass(WNDCLASS *class){
     _surfaceCount++;
     _surfaces=NSZoneRealloc(NULL,_surfaces,sizeof(void *)*_surfaceCount);
     _surfaces[_surfaceCount-1]=cglContext;
-         
     [self unlock];
 }
 
@@ -1110,7 +1109,6 @@ static void initializeWindowClass(WNDCLASS *class){
     
     for(;i<_surfaceCount;i++)
         _surfaces[i]=_surfaces[i+1];
-
 
     [self unlock];
 }
