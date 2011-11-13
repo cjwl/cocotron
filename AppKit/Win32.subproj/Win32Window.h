@@ -32,9 +32,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     int _surfaceCount;
     void **_surfaces;
-    
+
+    CGLContextObj   _overlayResult;
    NSMutableArray        *_overlays;
-   O2Surface_DIBSection  *_overlayResult;
    
    int                    _disableFlushWindow;
    NSString              *_title;

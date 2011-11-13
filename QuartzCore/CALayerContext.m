@@ -87,6 +87,7 @@
 }
 
 -(void)renderLayer:(CALayer *)layer intoSurface:(CGLPixelSurface *)pixelSurface {
+#if 0
    CGLSetCurrentContext(_glContext);
 
    glEnable(GL_DEPTH_TEST);
@@ -117,6 +118,7 @@
    [_renderer render];
    
    [pixelSurface readBuffer];
+#endif
 }
 
 -(void)render {
