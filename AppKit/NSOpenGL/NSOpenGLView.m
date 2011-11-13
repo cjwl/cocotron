@@ -71,6 +71,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return _context;
 }
 
+- (void) _setWindow:(NSWindow *)window {
+    [super _setWindow:window];
+    [_context setView:self];
+}
+
 - (void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat {
 	pixelFormat = [pixelFormat retain];
 	[_pixelFormat release];

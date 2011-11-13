@@ -213,7 +213,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
    _backingContext=nil;
 
-   _overlays=[[NSMutableArray alloc] init];
+    _surfaceCount=0;
+    _surfaces=NULL;
    
    _ignoreMinMaxMessage=NO;
    _sentBeginSizing=NO;
@@ -229,8 +230,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 -(void)dealloc {
    [self invalidate];
    [_deviceDictionary release];
-   [_overlays makeObjectsPerformSelector:@selector(setWindow:) withObject:nil];
-   [_overlays release];
+    if(_surfaces!=NULL)
+        NSZoneFree(NULL,_surfaces);   
    [_overlayResult release];
    [super dealloc];
 }
@@ -532,10 +533,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -(O2Surface_DIBSection *)resultSurface {
    O2Surface_DIBSection *result=[_backingContext surface];
-   
-   if([_overlays count]==0)
+
+   if(_surfaceCount==0)
     return result;
 
+   [self lock];
    {
     size_t resultWidth=O2ImageGetWidth(result);
     size_t resultHeight=O2ImageGetHeight(result);
@@ -559,33 +561,77 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     result=_overlayResult;
    }
    
-   O2SurfaceLock(result);
-   for(CGLPixelSurface *overlay in _overlays){
-    O2Rect                overFrame=[overlay frame];
-    O2Surface_DIBSection *overSurface=[overlay validSurface];
-    
-    if(overSurface!=nil){
-     BLENDFUNCTION blend;
-    
-     blend.BlendOp=AC_SRC_OVER;
-     blend.BlendFlags=0;
-     blend.SourceConstantAlpha=255;
-     blend.AlphaFormat=[overlay isOpaque]?0:AC_SRC_ALPHA;
-
-     int y=O2ImageGetHeight(result)-(overFrame.origin.y+overFrame.size.height);
-     
-     O2SurfaceLock(overSurface);
-     AlphaBlend([[result deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
-     O2SurfaceUnlock(overSurface);
-    }
-    
-   }
-   O2SurfaceUnlock(result);
+    O2SurfaceLock(result);
    
+    int i;
+    for(i=0;i<_surfaceCount;i++){
+        CGLPixelSurface *overlay;
+    
+        CGLGetParameter(_surfaces[i],kCGLCPOverlayPointer,&overlay);
+
+        O2Rect                overFrame=[overlay frame];
+        O2Surface_DIBSection *overSurface=[overlay validSurface];
+    
+        if(overSurface!=nil){
+            BLENDFUNCTION blend;
+    
+            blend.BlendOp=AC_SRC_OVER;
+            blend.BlendFlags=0;
+            blend.SourceConstantAlpha=255;
+            blend.AlphaFormat=[overlay isOpaque]?0:AC_SRC_ALPHA;
+
+            int y=O2ImageGetHeight(result)-(overFrame.origin.y+overFrame.size.height);
+     
+            O2SurfaceLock(overSurface);
+            AlphaBlend([[result deviceContext] dc],overFrame.origin.x,y,overFrame.size.width,overFrame.size.height,[[overSurface deviceContext] dc],0,0,overFrame.size.width,overFrame.size.height,blend);
+            O2SurfaceUnlock(overSurface);
+        }
+    
+    }
+    O2SurfaceUnlock(result);
+    [self unlock];
+    
    return result;
 }
 
--(void)flushOverlay:(CGLPixelSurface *)overlay {
+static int reportGLErrorIfNeeded(const char *function,int line){
+   GLenum error=glGetError();
+
+   if(error!=GL_NO_ERROR)
+     NSLog(@"%s %d error=%d/%x",function,line,error,error);
+   
+   return error;
+}
+
+-(void)flushCGLContext:(CGLContextObj)cglContext {
+/*
+  If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
+  complete. Read from GL_BACK.
+ */
+
+   CGLLockContext(cglContext);
+
+   CGLContextObj saveContext=CGLGetCurrentContext();
+
+   CGLSetCurrentContext(cglContext);
+   
+   GLint buffer;
+   
+   glGetIntegerv(GL_DRAW_BUFFER,&buffer);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   glReadBuffer(buffer);
+   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
+    CGLPixelSurface *overlay;
+    
+    CGLGetParameter(cglContext,kCGLCPOverlayPointer,&overlay);
+
+   [overlay readBuffer];
+   
+   CGLSetCurrentContext(saveContext);
+
+   CGLUnlockContext(cglContext);
+
    [self flushBuffer];
 }
 
@@ -1043,17 +1089,30 @@ static void initializeWindowClass(WNDCLASS *class){
    }
 }
 
--(void)addOverlay:(CGLPixelSurface *)overlay {
-   [overlay setWindow:self];
-   
-   if(![_overlays containsObject:overlay])
-    [_overlays addObject:overlay];
+-(void)addCGLContext:(CGLContextObj)cglContext {
+    [self lock];
+    _surfaceCount++;
+    _surfaces=NSZoneRealloc(NULL,_surfaces,sizeof(void *)*_surfaceCount);
+    _surfaces[_surfaceCount-1]=cglContext;
+         
+    [self unlock];
 }
 
--(void)removeOverlay:(CGLPixelSurface *)overlay {
-   [overlay setWindow:nil];
-   
-   [_overlays removeObjectIdenticalTo:overlay];
+-(void)removeCGLContext:(CGLContextObj)cglContext {
+    int i;
+    
+    [self lock];
+    for(i=0;i<_surfaceCount;i++)
+        if(_surfaces[i]==cglContext){
+            _surfaceCount--;
+            break;
+        }
+    
+    for(;i<_surfaceCount;i++)
+        _surfaces[i]=_surfaces[i+1];
+
+
+    [self unlock];
 }
 
 @end

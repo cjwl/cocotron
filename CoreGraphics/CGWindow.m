@@ -158,12 +158,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
--(void)addOverlay:(CGLPixelSurface *)overlay {
+-(void)addCGLContext:(CGLContextObj)cglContext {
 }
 
--(void)removeOverlay:(CGLPixelSurface *)overlay {
+-(void)removeCGLContext:(CGLContextObj)cglContext {
 }
 
+-(void)flushCGLContext:(CGLContextObj)cglContext {
+}
 
 
 @end
