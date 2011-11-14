@@ -232,7 +232,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		bounds.origin.y-=deltay;
 		bounds.origin.x-=deltax;
 		[self scrollToPoint:bounds.origin];
-		return YES;
+		// Return YES only if some scrolling really happened
+		return NSEqualPoints(bounds.origin, _bounds.origin) == NO;
 	} else {
 		return NO;
 	}
@@ -240,11 +241,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)scrollToPoint:(NSPoint)point {   
    point=[self constrainScrollPoint:point];
-   [self setBoundsOrigin:point];
-   [self setNeedsDisplay:YES];
-
-   if([[self superview] isKindOfClass:[NSScrollView class]])
-    [[self superview] reflectScrolledClipView:self];
+	// Not need for more work and a full redislay if we don't really scroll
+	if (!NSEqualPoints(point, _bounds.origin)) {
+		[self setBoundsOrigin:point];
+		[self setNeedsDisplay:YES];
+		
+		if([[self superview] isKindOfClass:[NSScrollView class]])
+			[[self superview] reflectScrolledClipView:self];
+	}
 }
 
 @end

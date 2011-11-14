@@ -171,6 +171,9 @@ static BOOL NSViewLayersEnabled=NO;
    if(_invalidRects!=NULL)
     NSZoneFree(NULL,_invalidRects);
    
+	if (_rectsBeingRedrawn!=NULL) {
+		NSZoneFree(NULL, _rectsBeingRedrawn);
+	}
    [_layer release];
    
    [_layerContext invalidate];
@@ -1640,11 +1643,20 @@ static void removeRectFromInvalidInVisibleRect(NSView *self,NSRect rect,NSRect v
    }
 }
 
+static void clearRectsBeingRedrawn(NSView *self){
+	if (self->_rectsBeingRedrawn) {
+		NSZoneFree(NULL, self->_rectsBeingRedrawn);
+		self->_rectsBeingRedrawn = NULL;
+		self->_rectsBeingRedrawnCount = 0;
+	}	
+}
+
 static void clearInvalidRects(NSView *self){
    if(self->_invalidRects!=NULL)
     NSZoneFree(NULL,self->_invalidRects);
    self->_invalidRects=NULL;
    self->_invalidRectCount=0;
+	clearRectsBeingRedrawn(self);
 }
 
 static void clearNeedsDisplay(NSView *self){
@@ -1668,9 +1680,24 @@ static void clearNeedsDisplay(NSView *self){
 -(void)setNeedsDisplayInRect:(NSRect)rect {
 // We only add rects if its not the entire view
    if(!_needsDisplay || _invalidRects!=NULL){
-    _invalidRectCount++;
-    _invalidRects=NSZoneRealloc(NULL,_invalidRects,sizeof(NSRect)*_invalidRectCount);
-    _invalidRects[_invalidRectCount-1]=rect;
+	   // All of our clipping done by the context is rounded - so we need to do the same
+	   // here else we might get some artifact on clipping borders
+	   rect = [self convertRect:rect toView:nil];
+	   rect = NSIntegralRect(rect);
+	   rect = [self convertRect:rect fromView:nil];
+	   _invalidRectCount++;
+	   _invalidRects=NSZoneRealloc(NULL,_invalidRects,sizeof(NSRect)*_invalidRectCount);
+	   _invalidRects[_invalidRectCount-1]=rect;
+	   
+	   clearRectsBeingRedrawn(self);
+
+	   // We also needs to be sure all of our superviews will properly redraw this area, 
+	   // even if they are smart about what to redraw (using needsDisplayInRect:)
+	   NSView *opaqueAncestor = [self opaqueAncestor];
+	   if (opaqueAncestor != self) {
+			NSRect dirtyRect = [self convertRect:rect toView:opaqueAncestor];
+			[opaqueAncestor setNeedsDisplayInRect:dirtyRect];
+	   }
    }
    
    _needsDisplay=YES;
@@ -1780,20 +1807,88 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 -(BOOL)needsToDrawRect:(NSRect)rect {
 	BOOL needsToDrawRect = NO;
-	if(_invalidRectCount == 0) {
-		needsToDrawRect = NSIntersectsRect(rect, [self visibleRect]);
-	} else {
-		int i;
-		
-		for(i=0; i<_invalidRectCount && needsToDrawRect == NO;i++) {
-			needsToDrawRect = NSIntersectsRect(rect, _invalidRects[i]);
+
+	if (NSIntersectsRect(rect, _visibleRect)) {
+		const NSRect *rects;
+		NSUInteger count;
+		[self getRectsBeingDrawn:&rects count:&count];
+		if (count) {
+			for(int i=0; i<count && needsToDrawRect == NO;i++) {
+				needsToDrawRect = NSIntersectsRect(rect, rects[i]);
+			}		
 		}
 	}
 	return needsToDrawRect;
 }
 
 -(void)getRectsBeingDrawn:(const NSRect **)rects count:(NSInteger *)count {
-   NSUnimplementedMethod();
+	// This method returns all the rects being drawn concerning the view
+	// That's all of the dirty rects from the view, but also all the ones
+	// from the superview that might have caused the redraw.
+	// Since invalidating a rect also invalidates the first opaque superview,
+	// only the opaque views need to be checked
+	*rects = _rectsBeingRedrawn;
+	*count = _rectsBeingRedrawnCount;
+	
+	if  (_rectsBeingRedrawn == NULL) {
+		NSView *opaqueAncestor = [self opaqueAncestor];
+		if (opaqueAncestor != self) {
+			// Ask our opaque ancestor what to draw
+			const NSRect *ancestorRects;
+			[opaqueAncestor getRectsBeingDrawn:&ancestorRects count:&_rectsBeingRedrawnCount];
+			if (_rectsBeingRedrawnCount) {
+				_rectsBeingRedrawn = NSZoneCalloc(NULL, _rectsBeingRedrawnCount, sizeof(NSRect));
+				int rectsCount = 0;
+				for (int i = 0; i < _rectsBeingRedrawnCount; ++i) {
+					NSRect r = [opaqueAncestor convertRect:ancestorRects[i] toView:self];
+					// No need for the rects that are outside of the visibleRect
+					if (NSIntersectsRect(r, _visibleRect)) {
+						_rectsBeingRedrawn[rectsCount++] = r;
+					}
+				}
+				*rects = _rectsBeingRedrawn;
+				*count = rectsCount;
+			}
+		} else {
+			// We're opaque - concatenate our invalid rect with the one from the previous opaque view
+			NSView *view = [self superview];
+			if (view) {
+				NSView *opaqueAncestor = [view opaqueAncestor];
+				const NSRect *ancestorRects;
+				NSUInteger ancestorRectsCount;
+				[opaqueAncestor getRectsBeingDrawn:&ancestorRects count:&ancestorRectsCount];
+				if (ancestorRectsCount || _invalidRectCount) {
+					_rectsBeingRedrawn = NSZoneCalloc(NULL, _invalidRectCount + ancestorRectsCount, sizeof(NSRect));
+					int rectsCount = 0;
+					for (int i = 0; i < ancestorRectsCount; ++i) {
+						NSRect r = [opaqueAncestor convertRect:ancestorRects[i] toView:self];
+						// No need for the rects that are outside of the visibleRect
+						if (NSIntersectsRect(r, _visibleRect)) {
+							_rectsBeingRedrawn[rectsCount++] = r;
+						}
+					}
+					for (int i = 0; i < _invalidRectCount; ++i) {
+						_rectsBeingRedrawn[rectsCount++] = _invalidRects[i];
+					}
+					_rectsBeingRedrawnCount = rectsCount;
+					*rects = _rectsBeingRedrawn;
+					*count = _rectsBeingRedrawnCount;
+				}
+			}
+		}
+	}
+	// We had no info and no opaque ancestor gave us any useful rect - just use our invalid rects
+	if (*rects == NULL) {
+		if (_invalidRects == NULL) {
+			if (_needsDisplay) {
+				*rects = &_visibleRect;
+				*count = 1;
+			}
+		} else {
+			*rects = _invalidRects;
+			*count = _invalidRectCount;
+		}
+	}		
 }
 
 -(void)getRectsExposedDuringLiveResize:(NSRect)rects count:(NSInteger *)count {
@@ -1903,7 +1998,15 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
     NSGraphicsContext *context=[NSGraphicsContext currentContext];
     CGContextRef       graphicsPort=[context graphicsPort];
 
-    CGContextClipToRect(graphicsPort,rect);
+	   CGContextClipToRect(graphicsPort,rect);
+	   
+	   const NSRect *rects;
+	   NSUInteger rectsCount;
+	   [self getRectsBeingDrawn:&rects count:&rectsCount];
+	   // If there is only one rect, it's the visible rect - it's already clipped
+	   if (rectsCount > 1) {
+ 		   CGContextClipToRects(graphicsPort, rects, rectsCount);
+	   }
 
 	   if ([NSGraphicsContext inQuartzDebugMode]) {
 		   [[NSColor yellowColor] set];
@@ -1933,10 +2036,12 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 	// Don't do anything to interfere with what will be drawn in non-debug mode
 	if ([NSGraphicsContext inQuartzDebugMode] == NO) {
 		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
+
+		// Rects being drawn are only valid while we redraw
+		clearRectsBeingRedrawn(self);
 	}
-		
+
 /*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
- 
    [[self window] flushWindow];
 }
 
