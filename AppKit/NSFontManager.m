@@ -238,6 +238,12 @@ static Class _fontPanelFactory;
     [NSBundle loadNibNamed:@"NSFontPanel" owner:self];
    }
 
+	if(![_panel setFrameUsingName:@"NSFontPanel"]) {
+		[_panel center];
+	}
+    [_panel setFrameAutosaveName:@"NSFontPanel"];
+	
+	
    [_panel setPanelFont:_selectedFont isMultiple:_isMultiple];
    return _panel;
 }
