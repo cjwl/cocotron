@@ -110,8 +110,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [_textStorage addLayoutManager:[_textContainer layoutManager]];
     _ownsTextStorage=YES;
 
-    _typingAttributes=[NSMutableDictionary new];
-
     _delegate=[keyed decodeObjectForKey:@"NSDelegate"];
     
     _isEditable=[sharedData isEditable];
@@ -141,6 +139,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     [_textStorage addAttribute:NSFontAttributeName value:_font range:NSMakeRange(0,[[self textStorage] length])];
     [_textStorage addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0,[[self textStorage] length])];
+	
+	   NSMutableDictionary *typingAttributes=[[_textStorage attributesAtIndex:0 effectiveRange:NULL] mutableCopy];
+	   if (![typingAttributes objectForKey:NSFontAttributeName]) {
+		   [typingAttributes setObject:_font forKey: NSFontAttributeName];
+	   }
+	   if (![typingAttributes objectForKey:NSForegroundColorAttributeName]) {
+		   [typingAttributes setObject:_textColor forKey: NSForegroundColorAttributeName];
+	   }
+	   _typingAttributes = typingAttributes;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -176,6 +183,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _selectedRanges=[[NSMutableArray alloc] init];
    [_selectedRanges addObject:[NSValue valueWithRange:NSMakeRange(0,0)]];
     
+	NSMutableDictionary *typingAttributes=[[_textStorage attributesAtIndex:0 effectiveRange:NULL] mutableCopy];
+	if (![typingAttributes objectForKey:NSFontAttributeName]) {
+		[typingAttributes setObject:_font forKey: NSFontAttributeName];
+	}
+	if (![typingAttributes objectForKey:NSForegroundColorAttributeName]) {
+		[typingAttributes setObject:_textColor forKey: NSForegroundColorAttributeName];
+	}
+	_typingAttributes = typingAttributes;
+	
    _rangeForUserCompletion=NSMakeRange(NSNotFound, 0);
    _selectedTextAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
       [NSColor selectedTextColor],NSForegroundColorAttributeName,
@@ -388,9 +404,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _selectionAffinity=affinity;
    _selectionGranularity=NSSelectByCharacter;
    _insertionPointOn=[self shouldDrawInsertionPoint];
-   [self setNeedsDisplay:YES];
 	
 	if (![oldRanges isEqual:[self selectedRanges]]) {
+		[self setNeedsDisplay:YES];
 		[self _updateTypingAttributes];
 	}
 	
@@ -589,30 +605,38 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    NSPoint origin=[self textContainerOrigin];
    NSRect  result;
 
-   if(range.length==0){
-	   if(range.location>=[_textStorage length])
-		   result=[[self layoutManager] extraLineFragmentRect];
-	   else {
-     unsigned    rectCount=0;
-     NSRect * rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
-
-     if(rectCount==0)
-      NSLog(@"rectCount==0!");
-
-     result=rectArray[0];
-    }
-    result.size.width=1;
-   }
-   else {
-	   if(range.location>=[_textStorage length])
-		   result = [[self layoutManager] extraLineFragmentRect];
-	 else {
-     NSRange glyphRange=[[self layoutManager] glyphRangeForCharacterRange:range actualCharacterRange:NULL];
- 
-     result=[[self layoutManager] boundingRectForGlyphRange:glyphRange inTextContainer:[self textContainer]];
-    }
-   }
-
+	if(range.length==0){
+		if(range.location>=[_textStorage length]) {
+			result=[[self layoutManager] extraLineFragmentRect];
+			if (NSIsEmptyRect(result) && [_textStorage length]) {
+				unsigned    rectCount=0;
+				// Get the rect for the last char of the text storage and we'll be at the right of that - we suppose we're writing left-to-write, but so do other parts of the code...
+				range = NSMakeRange([_textStorage length]-1, 1);
+				NSRect * rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
+				
+				if(rectCount==0)
+					NSLog(@"rectCount==0!");
+				
+				result=rectArray[0];
+				result.origin.x = NSMaxX(result);
+			}
+			result.size.width=1;		   
+		} else {
+			unsigned    rectCount=0;
+			NSRect * rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
+			result=rectArray[0];
+		}
+		result.size.width=1;
+	} else {
+		if(range.location>=[_textStorage length]) {
+			result = [[self layoutManager] extraLineFragmentRect];
+		} else {
+			NSRange glyphRange=[[self layoutManager] glyphRangeForCharacterRange:range actualCharacterRange:NULL];
+			
+			result=[[self layoutManager] boundingRectForGlyphRange:glyphRange inTextContainer:[self textContainer]];
+		}
+	}
+	
    result.origin.x+=origin.x;
    result.origin.y+=origin.y;
 
@@ -1909,13 +1933,44 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         return;
 
     [self _replaceCharactersInRange:NSMakeRange(0,[_textStorage length]) withString:string];
-	
 // this does not didChangeText
+}
+
+- (void)updateFontPanel
+{
+	NSRange selectedRange = [self selectedRange];
+	if (selectedRange.length == 0) {
+		// Use the font from the typing attributes
+		NSFont *font = [_typingAttributes objectForKey:NSFontAttributeName];
+		if (font) {
+			[[NSFontManager sharedFontManager] setSelectedFont:font isMultiple:NO];
+		}
+	} else {
+		// Use the font at the selection point and check if the selection is using any other font
+		NSRange effectiveRange;
+		NSFont *font = [_textStorage attribute:NSFontAttributeName atIndex:selectedRange.location effectiveRange:&effectiveRange];
+		BOOL isMultiple = NSMaxRange(effectiveRange) < NSMaxRange(selectedRange);
+		if (font) {
+			[[NSFontManager sharedFontManager] setSelectedFont:font isMultiple:isMultiple];
+		}
+	}
 }
 
 // Update the typing attributes according to the current selection
 - (void)_updateTypingAttributes
 {
+	if (_isRichText == NO) {
+		NSMutableParagraphStyle *style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+		[style setAlignment: _textAlignment];
+		NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+									_font, NSFontAttributeName,
+									style, NSParagraphStyleAttributeName,
+									nil];
+		if (attributes && [attributes isEqualToDictionary:[self typingAttributes]] == NO) {
+			[self setTypingAttributes:attributes];
+		}
+		return;
+	}
 	// Update the typing attributes according to the start point of the selection if the current string isn't empty
 	int length = [[self textStorage] length];
 	if (length > 0) {
@@ -1941,6 +1996,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 				}
 			}
 		}
+		[self updateFontPanel];
 	}
 }
 
@@ -2021,7 +2077,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                                                                         withString:[[_textStorage string] substringWithRange:range]];
         }
     }
-	if (useTypingAttributes && [string length]) {
+	if (_isRichText && useTypingAttributes && [string length]) {
 		// Use the typing attributes for the inserted string
 		NSAttributedString *attrString = [[[NSAttributedString alloc] initWithString:string attributes:[self typingAttributes]] autorelease];
 		[_textStorage replaceCharactersInRange:range withAttributedString:attrString];
@@ -2091,6 +2147,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [_font release];
    _font=font;
    [[self textStorage] addAttribute:NSFontAttributeName value:_font range:NSMakeRange(0,[[self textStorage] length])];
+   [self _updateTypingAttributes];
 }
 
 -(void)setFont:(NSFont *)font range:(NSRange)range {
@@ -2101,6 +2158,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
       _font=font;
    }
    [[self textStorage] addAttribute:NSFontAttributeName value:font range:range];
+	[self _updateTypingAttributes];
 }
 
 -(NSRange)_rangeForSelectedParagraph {
@@ -2169,10 +2227,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)setHorizontallyResizable:(BOOL)flag {
    _isHorizontallyResizable=flag;
+	[_textContainer setWidthTracksTextView:flag];
 }
 
 -(void)setVerticallyResizable:(BOOL)flag {
    _isVerticallyResizable=flag;
+	[_textContainer setHeightTracksTextView:flag];
 }
 
 -(void)setMaxSize:(NSSize)size {
@@ -2192,14 +2252,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)_configureTextContainerSize {
    NSSize containerSize=[[self textContainer] containerSize];
 
-   if([self isHorizontallyResizable])
-    containerSize.width=1000000;
-   else
+   if([self isHorizontallyResizable] == NO)
     containerSize.width=[self bounds].size.width-_textContainerInset.width*2;
 
-   if([self isVerticallyResizable])
-    containerSize.height=1000000;
-   else
+   if([self isVerticallyResizable] == NO)
     containerSize.height=[self bounds].size.height-_textContainerInset.height*2;
 
    [[self textContainer] setContainerSize:containerSize];
@@ -2213,10 +2269,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
    usedRect=[[self layoutManager] usedRectForTextContainer:[self textContainer]];
    extraRect=[[self layoutManager] extraLineFragmentUsedRect];
-   extraRect.size.width=NSMaxX(usedRect)-NSMinX(extraRect);
-   usedRect=NSUnionRect(usedRect,extraRect);
-
-   size=usedRect.size;
+	if (!NSEqualRects(extraRect, NSZeroRect)) {
+		extraRect.size.width=NSMaxX(usedRect)-NSMinX(extraRect);
+		usedRect=NSUnionRect(usedRect,extraRect);
+	}
+	size=usedRect.size;
    size.width+=_textContainerInset.width*2;
    size.height+=_textContainerInset.height*2;
 
@@ -2240,7 +2297,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
       size.width=[clipView bounds].size.width;
     }
    }
-
    if([self isHorizontallyResizable] || [self isVerticallyResizable])
     [self setFrameSize:size];
 }
@@ -2311,12 +2367,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if([self shouldDrawInsertionPoint])
     [self _displayInsertionPointWithState:[[self window] isKeyWindow]];
    _firstResponderButNotEditingYet = YES;
-
+	_didSendTextDidEndNotification = NO;
+	
    return YES;
 }
 
 -(BOOL)resignFirstResponder {
-    
    if (_isEditable)
      if ([_delegate respondsToSelector:@selector(textShouldEndEditing:)])
        if ([_delegate textShouldEndEditing:self] == NO)
@@ -2364,8 +2420,13 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)setFrame:(NSRect)frame {
-   [super setFrame:frame];
-   [self _configureTextContainerSize];
+	[super setFrame:frame];
+	[self _configureTextContainerSize];
+}
+
+-(void)setFrameSize:(NSSize)size {
+	[super setFrameSize:size];
+	[self _configureTextContainerSize];
 }
 
 -(void)insertText:(NSString *)string {
@@ -2454,7 +2515,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
    firstRange.location=[self glyphIndexForPoint:point fractionOfDistanceThroughGlyph:&fraction];
    firstRange.length=0;
-
    if(firstRange.location==NSNotFound)
     return;
 

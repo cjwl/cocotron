@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextView.h>
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSBezierPath.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 
@@ -464,12 +465,18 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 -(void)fixupSelectionInRange:(NSRange)range changeInLength:(int)changeInLength {
    int i,count=[_textContainers count];
 
-   for(i=0;i<count;i++){
-    NSTextContainer *container=[_textContainers objectAtIndex:i];
-    NSTextView      *textView=[container textView];
-
-	[textView setSelectedRange:NSMakeRange([_textStorage length],0)];
-   }
+	for(i=0;i<count;i++){
+		NSTextContainer *container=[_textContainers objectAtIndex:i];
+		NSTextView      *textView=[container textView];
+		if (textView) {
+			NSRange selectedRange = [textView selectedRange];
+			NSRange textRange = NSMakeRange(0, [_textStorage length]);
+			NSRange range = NSIntersectionRange(selectedRange, textRange);
+			if (!NSEqualRanges(selectedRange, range)) {
+				[textView setSelectedRange:range];
+			}
+		}
+	}
 }
 
 -(void)textStorage:(NSTextStorage *)storage edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)changeInLength invalidatedRange:(NSRange)invalidateRange {
@@ -517,7 +524,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
      if(point.x<NSMinX(fragment->rect)){
       return range.location;
      }
-     else if(point.x<NSMaxX(fragment->rect)){
+     else if(point.x<NSMaxX(fragment->usedRect)){
       NSRect   glyphRect=fragment->usedRect;
       NSGlyph  glyphs[range.length];
       NSFont  *font=[self _fontForGlyphRange:range];
@@ -671,24 +678,33 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	NSRange remainder=(selGlyphRange.location==NSNotFound)?glyphRange:selGlyphRange;
 	
 	_rectCacheCount=0;
-	
 	do {
 		NSRange          range;
+		// Get the fragment to the range to process
 		NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,remainder.location,&range);
 		
 		if(fragment==NULL)
 			break;
 		else if (fragment->container == container) {
+			// Part of the line fragment to process
 			NSRange intersect=NSIntersectionRange(remainder,range);
+			// The part of the that we are interested in - start with the full rect, we'll change it if we
+			// don't want the full fragment
 			NSRect  fill=fragment->rect;
-			
 			if(!NSEqualRanges(range,intersect)){
+				// We only want part of that fragment - so check the part we want by getting the 
+				// interesting glyphs locations
+				
+				// Use the usedRect - we're not interested in any potential white space lead
+				fill=fragment->usedRect;
+
 				NSGlyph glyphs[range.length],previousGlyph=NSNullGlyph;
 				int     i,length=[self getGlyphs:glyphs range:range];
 				NSFont *font=[self _fontForGlyphRange:range];
 				float   advance;
 				BOOL    ignore;
 				
+				// Starts with a 0 width - we'll grow it with the width of the glyphs from our intersect range
 				fill.size.width=0;
 				for(i=0;i<length;i++){
 					NSGlyph glyph=glyphs[i];
@@ -698,28 +714,32 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 					
 					advance=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
 					
-					if(range.location+i<=intersect.location)
+					if(range.location+i<=intersect.location) {
+						// Not yet part of intersect - advance the fill rect origin
 						fill.origin.x+=advance;
-					else if(range.location+i<=NSMaxRange(intersect))
+					} else if(range.location+i<=NSMaxRange(intersect)) {
+						// Part of intersect - grow the width
 						fill.size.width+=advance;
+					}
 					
 					previousGlyph=glyph;
 				}
-				advance=[font positionOfGlyph:NSNullGlyph precededByGlyph:previousGlyph isNominal:&ignore].x;
-				if(range.location+i<=NSMaxRange(intersect)){
+				if(NSMaxRange(range)<=NSMaxRange(remainder)){
+					// We want the full end of fragment, so grow the width to the end of the fragment rect
 					fill.size.width=NSMaxX(fragment->rect)-fill.origin.x;
 				}
 				
-				range=intersect;
+				range = intersect;
 			}
 			
 			_appendRectToCache(self,fill);
 			
+			// Remove the range we just processed
 			remainder.length=NSMaxRange(remainder)-NSMaxRange(range);
 			remainder.location=NSMaxRange(range);
 		}
 	} while(remainder.length>0);
-	
+
 	*rectCount=_rectCacheCount;
 	
 	return _rectCache;
@@ -759,13 +779,12 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 }
 
 -(void)showPackedGlyphs:(char *)glyphs length:(unsigned)length glyphRange:(NSRange)glyphRange atPoint:(NSPoint)point font:(NSFont *)font color:(NSColor *)color printingAdjustment:(NSSize)printingAdjustment {
-   CGContextRef context=NSCurrentGraphicsPort();
-   CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
-   int          cgGlyphsLength=length/2;
-
-   CGContextShowGlyphsAtPoint(context,point.x,point.y,cgGlyphs,cgGlyphsLength);
+	CGContextRef context=NSCurrentGraphicsPort();
+	CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
+	int          cgGlyphsLength=length/2;
+	
+	CGContextShowGlyphsAtPoint(context,point.x,point.y,cgGlyphs,cgGlyphsLength);
 }
-
 
 -(void)drawSelectionAtPoint:(NSPoint)origin {
    NSTextView *textView=[self textViewForBeginningOfSelection];
@@ -837,7 +856,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
      location=NSMaxRange(effectiveRange);
     }
    }
-   [self drawSelectionAtPoint:origin];
+	[self drawSelectionAtPoint:origin];
 }
 
 -(void)drawSpellingState:(NSNumber *)spellingState characterRange:(NSRange)characterRange container:(NSTextContainer *)container origin:(NSPoint)origin {
@@ -845,21 +864,27 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
     float            usedHeight=[self usedRectForTextContainer:container].size.height;
     NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
-    
-    [[NSColor redColor] setFill];
-    
+        
+	NSBezierPath *path = [NSBezierPath bezierPath];
+	[path setLineWidth:2.];
+	[path setLineCapStyle:NSRoundLineCapStyle];
+    CGFloat lineDash[] = {.75, 3.25};
+	[path setLineDash:lineDash count:sizeof(lineDash)/sizeof(lineDash[0]) phase:0.0];
+
     for(i=0;i<rectCount;i++){
         NSRect fill=rects[i];
         
         if(isFlipped)
             fill.origin.y+=(fill.size.height-1);
         
-        fill.origin.x+=origin.x;
+        fill.origin.x+=origin.x + 2; // some margin because of the line cap
         fill.origin.y+=origin.y;
-        fill.size.height=1;
-        
-        NSRectFill(fill);
+        [path moveToPoint:fill.origin];
+		float width = fill.size.width;
+		[path relativeLineToPoint:NSMakePoint(width, 0)];
     }
+    [[NSColor redColor] setStroke];
+	[path stroke];
 }
 
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin {
@@ -956,6 +981,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 							else if(location==limit){
 								[color setFill];
 								
+								
 								start=NSMaxRange(intersectRange)-range.location;
 								length=NSMaxRange(range)-NSMaxRange(intersectRange);
 								showGlyphs=YES;
@@ -981,7 +1007,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 						[color setFill];
 						packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs,glyphsLength,packing,packedGlyphs);
 						[self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
-                        if(spellingState!=nil){
+                       if(spellingState!=nil){
                             [self drawSpellingState:spellingState characterRange:characterRange container:container origin:origin];
                         }
 					}

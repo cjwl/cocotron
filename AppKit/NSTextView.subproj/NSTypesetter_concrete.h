@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSGlyph            *_glyphCache;
    unichar            *_characterCache;
 
+	BOOL				   _paragraphBreak;
+	
    NSTextContainer    *_container;
    NSSize              _containerSize;
 

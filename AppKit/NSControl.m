@@ -430,7 +430,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(void)textDidEndEditing:(NSNotification *)note {
 // It is possible for an NSControl subclass to be the delegate of another text view
-   if([note object]!=_currentEditor)
+	if([note object]!=_currentEditor)
     return;
 
    [[self selectedCell] endEditing:_currentEditor];
