@@ -24,11 +24,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                   _hasShadow;
    CGFloat                _alphaValue;
    HWND                   _handle;
+   HGLRC                  _hglrc;
+   BOOL                   _hasRenderTexture;
+   BOOL                   _hasMakeCurrentRead;
+   BOOL                   _hasReadback;
    O2Context_gdi         *_cgContext;
 
    CGSBackingStoreType    _backingType;
    O2Context             *_backingContext;
-   CGLContextObj          _cglContext;
 
     int _surfaceCount;
     void **_surfaces;
