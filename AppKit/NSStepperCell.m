@@ -13,8 +13,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSMatrix.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSStepperCell
+-(void)encodeWithCoder:(NSCoder *)coder {
+	NSUnimplementedMethod();
+}
+
+-initWithCoder:(NSCoder *)coder {
+	[super initWithCoder:coder];
+	
+	if([coder allowsKeyedCoding]){
+		NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
+		
+		_minValue=[keyed decodeDoubleForKey:@"NSMinValue"];
+		_maxValue=[keyed decodeDoubleForKey:@"NSMaxValue"];
+		_valueWraps=[keyed decodeBoolForKey:@"NSValueWraps"];
+		_autorepeat=[keyed decodeBoolForKey:@"NSAutorepeat"];
+		_increment=[keyed decodeBoolForKey:@"NSIncrement"];
+	}
+	else {
+		[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
+	}
+	
+	return self;
+}
 
 -(double)minValue {
     return _minValue;
@@ -74,7 +97,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)_incrementAndConstrainBy:(double)delta {
     double value = [self doubleValue];
- 
     value += delta;
     if (value < _minValue) {
         if (_valueWraps)
