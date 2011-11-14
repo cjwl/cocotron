@@ -1892,12 +1892,6 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
    rect=NSIntersectionRect(rect,visibleRect);
 
-	if ([NSGraphicsContext inQuartzDebugMode]) {
-		// Don't do anything to interfere with what will be drawn in non-debug mode
-	} else {
-		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
-	}
-	
    if(NSIsEmptyRect(rect))
     return;
     
@@ -1919,6 +1913,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 	   }
     [self unlockFocus];
 
+	   
     NSInteger i,count=[_subviews count];
     
     for(i=0;i<count;i++){
@@ -1935,6 +1930,11 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
    [_layerContext render];
    
+	// Don't do anything to interfere with what will be drawn in non-debug mode
+	if ([NSGraphicsContext inQuartzDebugMode] == NO) {
+		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
+	}
+		
 /*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
  
    [[self window] flushWindow];
