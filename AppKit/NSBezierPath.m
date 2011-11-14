@@ -976,10 +976,9 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 	[path moveToPoint: [self currentPoint]];
 	
 	BOOL closed = NO; // state of current subpath
-	
-	int i = 0;
+	BOOL firstMoveDone = NO;
 	// Note: using elementAtIndex:associatedPoints: is very inefficient
-	for ( i = [self elementCount] - 1; i >= 0; i--) 
+	for (int i = [self elementCount] - 1; i >= 0; i--) 
     {
 		// Find the next point : it's the end of previous element in the original path
 		CGPoint nextPoint = [self currentPoint];
@@ -1009,6 +1008,28 @@ static NSUInteger flattenBezierCurve(float desiredFlatness, CGPoint start, CGPoi
 					nextPoint = prevPoints[0];
 					break;
 			}
+		}
+		if (firstMoveDone == NO) {
+			// We need to start with a moveTo to the last point of the last segment
+			switch(type) 
+			{
+				case NSLineToBezierPathElement:
+				case NSMoveToBezierPathElement:
+					[path moveToPoint: pts[0]];
+					firstMoveDone = YES;
+					break;
+				case NSCurveToBezierPathElement:
+					[path moveToPoint: pts[2]];
+					firstMoveDone = YES;
+					break;
+				case NSClosePathBezierPathElement:
+					// The next switch will do the move
+					firstMoveDone = YES;
+					break;
+				default:
+					break;
+			}
+			
 		}
 		switch(type) 
         {
