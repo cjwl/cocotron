@@ -387,6 +387,7 @@ void O2PathAddEllipseInRect(O2MutablePathRef self,const O2AffineTransform *matri
    O2PathMoveToPoint(self,matrix,cp[0].x,cp[0].y);
    for(i=1;i<13;i+=3)
     O2PathAddCurveToPoint(self,matrix,cp[i].x,cp[i].y,cp[i+1].x,cp[i+1].y,cp[i+2].x,cp[i+2].y);
+   O2PathCloseSubpath(self);
 }
 
 void O2PathAddPath(O2MutablePathRef self,const O2AffineTransform *matrix,O2PathRef path) {
