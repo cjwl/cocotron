@@ -539,11 +539,13 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(void)flushCGLContext:(CGLContextObj)cglContext {
-  NSCLog("flush %p",cglContext);
 /*
   If we SwapBuffers() and read from the front buffer we get junk because the swapbuffers may not be
   complete. Read from GL_BACK.
  */
+   // only pull the pixels if this context is not a pbuffer
+  HPBUFFERARB CGLGetPBUFFER(CGLContextObj context);
+   if(CGLGetPBUFFER(cglContext)==NULL){
    CGLLockContext(cglContext);
 
    CGLContextObj saveContext=CGLGetCurrentContext();
@@ -566,7 +568,8 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    CGLSetCurrentContext(saveContext);
 
    CGLUnlockContext(cglContext);
-
+   }
+   
    [self flushBuffer];
 }
 
@@ -588,7 +591,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     pfd.nVersion=1;
     pfd.dwFlags=PFD_SUPPORT_OPENGL|PFD_GENERIC_ACCELERATED|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
     pfd.iPixelType=PFD_TYPE_RGBA;
-    pfd.cColorBits=32;
+    pfd.cColorBits=24;
     pfd.cRedBits=8;
     pfd.cGreenBits=8;
     pfd.cBlueBits=8;
@@ -616,12 +619,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     return YES;
 }
 
--(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip {
+-(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId {
 
-    GLint surfaceTexture;
-    glGenTextures(1, &surfaceTexture);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    glBindTexture(GL_TEXTURE_2D, surfaceTexture);						
+    glBindTexture(GL_TEXTURE_2D, textureId);						
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -640,7 +640,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     O2SurfaceLock(surface);
     size_t width=O2ImageGetWidth(surface);
     size_t height=O2ImageGetHeight(surface);
-  NSCLog("glTexImage2D %d %d %p",width,height,[surface pixelBytes]);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, [surface pixelBytes]);
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     O2SurfaceUnlock(surface);
@@ -684,8 +683,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    glDeleteTextures(1, &surfaceTexture);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 }
 
 -(void)openGLFlushBuffer {
@@ -706,7 +703,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     if(didCreate){
         const char *extensions=opengl_wglGetExtensionsStringARB(dc);
 
-        _hasRenderTexture=NO;//(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
+        _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
         _hasMakeCurrentRead=NO;//(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
         _hasReadback=YES;
     }
@@ -717,7 +714,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    size_t width=O2ImageGetWidth(surface);
    size_t height=O2ImageGetHeight(surface);
 
-   glEnable(GL_DEPTH_TEST);
+   glDisable(GL_DEPTH_TEST);
    glShadeModel(GL_FLAT);
 
 // reshape
@@ -737,30 +734,40 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    glEnableClientState(GL_VERTEX_ARRAY);
    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
    glEnable (GL_BLEND);
    
    // background is copied on
    glBlendFunc(GL_ONE, GL_ZERO);
-    
+
    glPushMatrix();
-    CGFloat top,left,bottom,right;
+
+   GLint allTextures[1+_surfaceCount];
+   
+   glGenTextures(1+_surfaceCount,allTextures);
+   
+     CGFloat top,left,bottom,right;
        
-    CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
-    glTranslatef(-right,-bottom,0);
+     CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
+     // this applies to all surfaces too too
+     glTranslatef(-right,-bottom,0);
 
-    [self flushSurface:surface flip:YES];
+     [self flushSurface:surface flip:YES textureId:allTextures[0]];
 
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
     int i;
-    GLint surfaceTexture;
     
-    glGenTextures(1,&surfaceTexture);
+    HPBUFFERARB releasePbuffers[_surfaceCount];
     
     for(i=0;i<_surfaceCount;i++) {
         GLint size[2];
         GLint origin[2];
         GLint opacity=1;
+        
+        HPBUFFERARB CGLGetPBUFFER(CGLContextObj context);
+        releasePbuffers[i]=CGLGetPBUFFER(_surfaces[i]);
         
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingSize,size);
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingOrigin,origin);
@@ -771,13 +778,12 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         else
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-        if(_hasRenderTexture){
-            HPBUFFERARB CGLGetPBUFFER(CGLContextObj context);
-
-            glBindTexture(GL_TEXTURE_2D, surfaceTexture);						
+        if(_hasRenderTexture && releasePbuffers[i]!=NULL){
+            HPBUFFERARB pBuffer=releasePbuffers[i];
+            
+            glBindTexture(GL_TEXTURE_2D, allTextures[1+i]);						
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            HPBUFFERARB pBuffer=CGLGetPBUFFER(_surfaces[i]);
-    
+                 
             opengl_wglBindTexImageARB(pBuffer,WGL_FRONT_LEFT_ARB);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
@@ -815,9 +821,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             texture[6]=1;
             texture[7]=1;
 
-            glTranslatef(0,0,1);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             glPushMatrix(); 
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            glTranslatef(0,0,1);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             glTranslatef((float)origin[0],(float)origin[1],0);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -831,11 +837,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             
             glPopMatrix();
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-
             glBindTexture(GL_TEXTURE_2D, 0);						
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            opengl_wglReleaseTexImageARB(pBuffer,WGL_FRONT_LEFT_ARB);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
         }
         else if(_hasMakeCurrentRead){
             HDC CGLGetDC(CGLContextObj context);
@@ -857,23 +859,33 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         else if(_hasReadback) {
             O2Surface *overlay=CGLGetSurface(_surfaces[i]);
         
-            glTranslatef(0,0,1);
             glPushMatrix();
+            glTranslatef(0,0,1);
             glTranslatef((float)origin[0],(float)origin[1],0);
         
-            [self flushSurface:overlay flip:NO];
+            [self flushSurface:overlay flip:NO textureId:allTextures[1+i]];
             glPopMatrix();
         }
     }
-    glDeleteTextures(1, &surfaceTexture);
     
     glPopMatrix();
  
+    glFinish();
+    
     SwapBuffers(dc);
     
+    for(i=0;i<_surfaceCount;i++)
+        if(releasePbuffers[i]!=NULL){
+            opengl_wglReleaseTexImageARB(releasePbuffers[i],WGL_FRONT_LEFT_ARB);
+        }
+        
+    glDeleteTextures(1+_surfaceCount,allTextures);
+        
+    // restore previously set context
+    CGLError _CGLSetCurrentContextFromThreadLocal(int);
+    _CGLSetCurrentContextFromThreadLocal(1);
+
     ReleaseDC(_handle,dc);
- CGLError _CGLSetCurrentContextFromThreadLocal();
-    _CGLSetCurrentContextFromThreadLocal();
 }
 
 -(void)updateLayeredWindow {

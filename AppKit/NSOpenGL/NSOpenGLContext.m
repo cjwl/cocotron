@@ -132,9 +132,9 @@ static inline void _clearCurrentContext(){
    
    CGLSetParameter(_glContext,kCGLCPSurfaceWindowNumber,num);
    
-   CGLUnlockContext(_glContext);
-      
    [self update];
+
+   CGLUnlockContext(_glContext);
 }
 
 -(void)makeCurrentContext {
