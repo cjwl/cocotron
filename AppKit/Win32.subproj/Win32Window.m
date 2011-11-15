@@ -544,31 +544,36 @@ static int reportGLErrorIfNeeded(const char *function,int line){
   complete. Read from GL_BACK.
  */
    // only pull the pixels if this context is not a pbuffer
-  HPBUFFERARB CGLGetPBUFFER(CGLContextObj context);
-   if(CGLGetPBUFFER(cglContext)==NULL){
-   CGLLockContext(cglContext);
-
-   CGLContextObj saveContext=CGLGetCurrentContext();
-
-   CGLSetCurrentContext(cglContext);
-
-   GLint buffer;
-   
-   glGetIntegerv(GL_DRAW_BUFFER,&buffer);
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   glReadBuffer(buffer);
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-   
-    CGLPixelSurface *overlay;
+    CGLPBufferObj CGLGetRetainedPBuffer(CGLContextObj context);
     
-    CGLGetParameter(cglContext,kCGLCPOverlayPointer,&overlay);
+    CGLPBufferObj pBuffer=CGLGetRetainedPBuffer(cglContext);
+    
+    if(pBuffer==NULL){
+        CGLLockContext(cglContext);
 
-   [overlay readBuffer];
+        CGLContextObj saveContext=CGLGetCurrentContext();
+
+        CGLSetCurrentContext(cglContext);
+
+        GLint buffer;
    
-   CGLSetCurrentContext(saveContext);
+        glGetIntegerv(GL_DRAW_BUFFER,&buffer);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        glReadBuffer(buffer);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+   
+        CGLPixelSurface *overlay;
+    
+        CGLGetParameter(cglContext,kCGLCPOverlayPointer,&overlay);
 
-   CGLUnlockContext(cglContext);
+        [overlay readBuffer];
+   
+        CGLSetCurrentContext(saveContext);
+
+        CGLUnlockContext(cglContext);
    }
+   
+   CGLReleasePBuffer(pBuffer);
    
    [self flushBuffer];
 }
@@ -759,15 +764,16 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
     int i;
     
-    HPBUFFERARB releasePbuffers[_surfaceCount];
+    CGLPBufferObj releasePbuffers[_surfaceCount];
     
     for(i=0;i<_surfaceCount;i++) {
         GLint size[2];
         GLint origin[2];
         GLint opacity=1;
         
-        HPBUFFERARB CGLGetPBUFFER(CGLContextObj context);
-        releasePbuffers[i]=CGLGetPBUFFER(_surfaces[i]);
+        CGLPBufferObj CGLGetRetainedPBuffer(CGLContextObj context);
+        
+        releasePbuffers[i]=CGLGetRetainedPBuffer(_surfaces[i]);
         
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingSize,size);
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingOrigin,origin);
@@ -779,13 +785,12 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
         if(_hasRenderTexture && releasePbuffers[i]!=NULL){
-            HPBUFFERARB pBuffer=releasePbuffers[i];
+            CGLPBufferObj pBuffer=releasePbuffers[i];
             
             glBindTexture(GL_TEXTURE_2D, allTextures[1+i]);						
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-                 
-            opengl_wglBindTexImageARB(pBuffer,WGL_FRONT_LEFT_ARB);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            
+            CGLTexImagePBuffer(NULL,pBuffer,WGL_FRONT_LEFT_ARB);
 
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -876,7 +881,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
     for(i=0;i<_surfaceCount;i++)
         if(releasePbuffers[i]!=NULL){
-            opengl_wglReleaseTexImageARB(releasePbuffers[i],WGL_FRONT_LEFT_ARB);
+            HPBUFFERARB CGLGetPBUFFER(CGLPBufferObj pbuffer);
+            
+            opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
+            CGLReleasePBuffer(releasePbuffers[i]);
         }
         
     glDeleteTextures(1+_surfaceCount,allTextures);
