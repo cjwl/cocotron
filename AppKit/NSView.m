@@ -1284,7 +1284,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)viewWillStartLiveResize {
-   _inLiveResize=YES;
+	_inLiveResize=YES;
    [_subviews makeObjectsPerformSelector:_cmd];
 }
 
@@ -1816,6 +1816,9 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 			for(int i=0; i<count && needsToDrawRect == NO;i++) {
 				needsToDrawRect = NSIntersectsRect(rect, rects[i]);
 			}		
+		} else {
+			// No rect = the full visible rect is being drawn
+			needsToDrawRect = YES;
 		}
 	}
 	return needsToDrawRect;

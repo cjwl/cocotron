@@ -33,9 +33,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _docView=[[keyed decodeObjectForKey:@"NSDocView"] retain];
     
     if(_docView!=nil)
-     [[NSNotificationCenter defaultCenter] addObserver:self
-        selector:@selector(viewFrameChanged:)
-            name:NSViewFrameDidChangeNotification object:_docView];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(viewFrameChanged:)
+													 name:NSViewFrameDidChangeNotification object:_docView];
+	   [[NSNotificationCenter defaultCenter] addObserver:self
+												selector:@selector(viewBoundsChanged:)
+													name: NSViewBoundsDidChangeNotification object:_docView];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -163,10 +166,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)viewBoundsChanged:(NSNotification *)note {
    [self scrollToPoint:[self _scrollPoint]];
+
+	// Be sure our scrollbars are in sync with the new docview bounds
+	if([[self superview] isKindOfClass:[NSScrollView class]])
+		[[self superview] reflectScrolledClipView:self];
 }
 
 -(void)viewFrameChanged:(NSNotification *)note {
    [self scrollToPoint:[self _scrollPoint]];
+
+	// Be sure our scrollbars are in sync with the new docview frame
+	if([[self superview] isKindOfClass:[NSScrollView class]])
+		[[self superview] reflectScrolledClipView:self];
+	
+    // if the docview doesn't completely fill the clip view, we need a redraw
+	// because some of our content has been revealed
+    NSRect visibleRect=[self visibleRect];
+    NSRect frame=[_docView frame];
+    if(NSContainsRect(frame, visibleRect) == NO) {
+		[self setNeedsDisplay:YES];
+	}	
 }
 
 -(BOOL)isOpaque {

@@ -2697,7 +2697,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowDidEndSizing:(CGWindow *)window {
-   [_backgroundView viewDidEndLiveResize];
+	[_backgroundView viewDidEndLiveResize];
    [self postNotificationName:NSWindowDidEndLiveResizeNotification];
 }
 
