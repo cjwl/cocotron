@@ -509,14 +509,13 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 
         CGLReleasePixelFormat(pf);
     }
-   [self lock];
     
     GLint size[2]={ O2ImageGetWidth(backingSurface), O2ImageGetHeight(backingSurface) };
     
     CGLSetParameter(_overlayResult,kCGLCPSurfaceBackingSize,size);
     
     CGLCopyPixelsFromSurface(backingSurface,_overlayResult);
-      
+    
     int i;
     for(i=0;i<_surfaceCount;i++)
         CGLCopyPixels(_surfaces[i],_overlayResult);
@@ -525,7 +524,6 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
     
     CGLGetParameter(_overlayResult,kCGLCPOverlayPointer,&pixelSurface);
     
-    [self unlock];
     return (O2Surface_DIBSection *)[pixelSurface validSurface];
 }
 
@@ -876,7 +874,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     glPopMatrix();
  
     glFinish();
-    
     SwapBuffers(dc);
     
     for(i=0;i<_surfaceCount;i++)

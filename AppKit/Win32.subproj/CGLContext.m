@@ -256,19 +256,32 @@ static int resizeBackingIfNeeded(CGLContextObj context){
    
       /* If we're using a Pbuffer we don't want the window large because it consumes resources */
 
-   if(context->staticpBuffer==NULL){
-    MoveWindow(context->window,0,0,context->w,context->h,NO);
-   }
-   else {
+    if(context->staticpBuffer==NULL){
+        MoveWindow(context->window,0,0,context->w,context->h,NO);
+    }
+    else {
 // Window context must be current for pBuffer functions to work. Since this is now only called during a SetCurrent, no need to wglMakeCurrent
 
-   _CGLDestroyDynamicPbufferBacking(context);
-   _CGLCreateDynamicPbufferBacking(context);
-   }   
+/* WARNING:
+ *   We retain the old dynamic pbuffer here, create a new one, then release the old one. There is a bug (mis-feature?) in the Parallels driver
+ *   at least which will cause invalid pbuffers to be returned if you immediately free then alloc a new one. If you save the old one and free
+ *   it AFTER the new one is allocated it all works.
+ *   I am not aware of this being a problem in other drivers.
+ *
+ *   This can be problematic with big pbuffers as the old one would be around while allocating a new one. Could possibly special case for just
+ *   Parallels as that appears to be the only place it happens.
+ */
+        CGLPBufferObj releaseThis = CGLRetainPBuffer(context->dynamicpBuffer);
     
-   [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
+        _CGLDestroyDynamicPbufferBacking(context);
+        _CGLCreateDynamicPbufferBacking(context);
    
-   return 1;
+        CGLReleasePBuffer(releaseThis);
+    }   
+    
+    [context->overlay setFrameSize:O2SizeMake(context->w,context->h)];
+   
+    return 1;
 }
 
  CGLError _CGLSetCurrentContextFromThreadLocal(int value){
@@ -278,23 +291,32 @@ static int resizeBackingIfNeeded(CGLContextObj context){
     opengl_wglMakeCurrent(NULL,NULL);
    else {
 
-    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    BOOL windowIsCurrent=NO;
     
-    int resize = resizeBackingIfNeeded(context);
-
-    if(context->dynamicpBuffer!=NULL){
+    if(context->resizeBacking){
+     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+     windowIsCurrent=YES;
+     
+     resizeBackingIfNeeded(context);
+    }
+    
+    if(context->dynamicpBuffer==NULL) {
+        opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    }
+    else {
      int lost;
      
      opengl_wglQueryPbufferARB(context->dynamicpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
      
      if(lost)
-      NSLog(@"lost dynamic pBuffer %d resize=%d",value,resize);
+      NSLog(@"lost dynamic pBuffer %d",value);
 
      opengl_wglQueryPbufferARB(context->staticpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
      
      if(lost)
-      NSLog(@"lost static pBuffer %d resize = %d",value,resize);
+      NSLog(@"lost static pBuffer %d",value);
 
 #if 0
      if(contextHasMakeCurrentReadExtension(context))
@@ -427,6 +449,7 @@ void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
             
         if(CGLSetPBuffer(context,context->staticpBuffer,0,0,0)!=kCGLNoError){
             CGLReleasePBuffer(context->staticpBuffer);
+            context->staticpBuffer=NULL;
             return;
         }
     }
@@ -438,6 +461,7 @@ void _CGLCreateDynamicPbufferBacking(CGLContextObj context){
         if(CGLSetPBuffer(context,context->dynamicpBuffer,0,0,0)!=kCGLNoError){
             NSLog(@"CGLSetPBuffer failed for dynamic pBuffer");
             CGLReleasePBuffer(context->dynamicpBuffer);
+            context->dynamicpBuffer=NULL;
             return;
         }
     }
@@ -518,8 +542,8 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    _CGLCreateBufferBackingIfPossible(context);
    
    if(share!=NULL){
-    HGLRC shareGL=(share->staticpBuffer->hglrc!=NULL)?share->staticpBuffer->hglrc:share->windowGLContext;
-    HGLRC otherGL=(context->staticpBuffer->hglrc!=NULL)?context->staticpBuffer->hglrc:context->windowGLContext;
+    HGLRC shareGL=(share->staticpBuffer!=NULL)?share->staticpBuffer->hglrc:share->windowGLContext;
+    HGLRC otherGL=(context->staticpBuffer!=NULL)?context->staticpBuffer->hglrc:context->windowGLContext;
 
     if(!opengl_wglShareLists(shareGL,otherGL))
      NSLog(@"opengl_wglShareLists failed");
@@ -750,9 +774,9 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-   [[CGWindow windowWithWindowNumber:context->parentWindowNumber] flushCGLContext:context];
+    [[CGWindow windowWithWindowNumber:context->parentWindowNumber] flushCGLContext:context];
 
-   return kCGLNoError;
+    return kCGLNoError;
 }
 
 static int attributesCount(const CGLPixelFormatAttribute *attributes){
