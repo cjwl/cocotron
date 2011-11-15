@@ -808,7 +808,7 @@ forSaveOperation:(NSSaveOperationType)operation
       if (fileName == nil)
         fileName = [self displayName];
       int result = NSRunAlertPanel([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"], 
-                                   @"The %@ file has changed. \n\nDo you want to save the changes?", 
+                                   @"Save changes to %@?", 
                                    @"Yes", @"No", @"Cancel",
                                    fileName);
       if (result == NSAlertDefaultReturn)
@@ -1159,7 +1159,12 @@ forSaveOperation:(NSSaveOperationType)operation
 
 -(BOOL)windowShouldClose:sender {
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"useSheets"]){
-    NSBeginAlertSheet(nil,@"Save",@"Don't Save",@"Cancel",sender,self,@selector(didEndShouldCloseSheet:returnCode:contextInfo:),NULL,sender,@"%@ has changed. Save?",[self displayName]);
+    NSBeginAlertSheet(nil,
+					  @"Yes", @"No", @"Cancel",
+					  sender, self,
+					  @selector(didEndShouldCloseSheet:returnCode:contextInfo:),
+					  NULL, sender,
+					  @"Save changes to %@?", [self displayName]);
 
     return NO;
    }
@@ -1167,7 +1172,10 @@ forSaveOperation:(NSSaveOperationType)operation
     if(![self isDocumentEdited])
      return YES;
     else {
-     int result=NSRunAlertPanel(nil,@"%@ has changed. Save?",@"Save",@"Don't Save",@"Cancel",[self displayName]);
+     int result=NSRunAlertPanel(nil, 
+								@"Save changes to %@?",
+								@"Yes", @"No", @"Cancel",
+								[self displayName]);
 
      switch(result){
       case NSAlertDefaultReturn:
