@@ -799,7 +799,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
     CGLPBufferObj releasePbuffers[_surfaceCount];
     
-    for(i=0;NO && i<_surfaceCount;i++) {
+    for(i=0;i<_surfaceCount;i++) {
         GLint size[2];
         GLint origin[2];
         GLint opacity=1;
@@ -898,7 +898,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
  
     SwapBuffers(dc);
     
-    for(i=0;NO && i<_surfaceCount;i++)
+    for(i=0;i<_surfaceCount;i++)
         if(releasePbuffers[i]!=NULL){
             HPBUFFERARB CGLGetPBUFFER(CGLPBufferObj pbuffer);
             
