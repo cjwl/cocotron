@@ -56,8 +56,8 @@ static void* NSBinderChangeContext;
 -(id)multipleValuesPlaceholder
 {
 	id ret=[_options objectForKey:NSMultipleValuesPlaceholderBindingOption];
-	if(!ret)
-		return NSMultipleValuesMarker;
+
+	// nil or whatever the was configured is fine
 
 	return ret;
 }
@@ -65,14 +65,18 @@ static void* NSBinderChangeContext;
 -(id)noSelectionPlaceholder
 {
 	id ret=[_options objectForKey:NSNoSelectionPlaceholderBindingOption];
-	if(!ret)
-		return NSNoSelectionMarker;
+
+	// nil or whatever the was configured is fine
 
 	return ret;
 }
 
 -(id)nullPlaceholder {
-	return [_options objectForKey:NSNullPlaceholderBindingOption];
+	id ret = [_options objectForKey:NSNullPlaceholderBindingOption];
+	
+	// nil or whatever the was configured is fine
+
+	return ret;
 }
 
 -valueTransformer {
