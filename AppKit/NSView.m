@@ -708,26 +708,26 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setFrame:(NSRect)frame {
-   // Cocoa does not post the notification if the frames are equal
+  // Cocoa does not post the notification if the frames are equal
    // Possible that resizeSubviewsWithOldSize is not called if the sizes are equal
    if(NSEqualRects(_frame,frame))
     return;
 
    NSSize oldSize=_bounds.size;
 
-  if (_bounds.size.width == 0 || _bounds.size.height == 0) {
-	// No valid current bounds value - just update it to use the frame size
-    _bounds.size=frame.size;
-  } else {
-    // Get the bounds->frame transform
-    CGAffineTransform transform=concatViewTransform(CGAffineTransformIdentity,self,nil,YES,NO);
-    // ... and invert it so we can get the new bounds size from the new frame size
-    transform = CGAffineTransformInvert(transform);
-
-    _bounds.size=CGSizeApplyAffineTransform(frame.size, transform);
-  }
-  _frame=frame;
-
+	if (_bounds.size.width == 0 || _bounds.size.height == 0) {
+		// No valid current bounds value - just update it to use the frame size
+		_bounds.size=frame.size;
+	} else {
+		// Get the bounds->frame transform
+		CGAffineTransform transform=concatViewTransform(CGAffineTransformIdentity,self,nil,YES,NO);
+		// ... and invert it so we can get the new bounds size from the new frame size
+		transform = CGAffineTransformInvert(transform);
+		
+		_bounds.size=CGSizeApplyAffineTransform(frame.size, transform);
+	}
+	_frame=frame;
+	
    if(_autoresizesSubviews){
     [self resizeSubviewsWithOldSize:oldSize];
    }
@@ -737,10 +737,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    else
     [_overlay setFrame:[_superview convertRect:_frame toView:nil]];
    
-   invalidateTransform(self);
-
-   if(_postsNotificationOnFrameChange)
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSViewFrameDidChangeNotification object:self];
+	invalidateTransform(self);
+	
+	if(_postsNotificationOnFrameChange)
+		[[NSNotificationCenter defaultCenter] postNotificationName:NSViewFrameDidChangeNotification object:self];
 }
 
 -(void)setFrameSize:(NSSize)size {
@@ -1065,7 +1065,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
      [self updateTrackingAreas];
      _validTrackingAreas=YES;
     }
-    
+	   
     count=[_trackingAreas count];
     for(i=0;i<count;i++){
      NSTrackingArea *area=[_trackingAreas objectAtIndex:i];
@@ -1630,7 +1630,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 static void removeRectFromInvalidInVisibleRect(NSView *self,NSRect rect,NSRect visibleRect) {
    int count=self->_invalidRectCount;
-   
+	
    while(--count>=0){
     self->_invalidRects[count]=NSIntersectionRect(self->_invalidRects[count],visibleRect);
     
@@ -1642,15 +1642,18 @@ static void removeRectFromInvalidInVisibleRect(NSView *self,NSRect rect,NSRect v
       self->_invalidRects[i]=self->_invalidRects[i+1];
     }
    }
-   if(self->_invalidRectCount==0){
-    if(self->_invalidRects!=NULL)
-     NSZoneFree(NULL,self->_invalidRects);
-    self->_invalidRects=NULL;
-   }
-   
-   if((self->_invalidRectCount==0) && NSEqualRects(visibleRect,rect)){
-    self->_needsDisplay=NO;
-   }
+	if(self->_invalidRectCount==0){
+		if(self->_invalidRects!=NULL) {
+			NSZoneFree(NULL,self->_invalidRects);
+			self->_invalidRects=NULL;
+			// We killed the last invalidRect - we're clean now
+			self->_needsDisplay=NO;
+		} else if (NSContainsRect(rect, visibleRect)) {
+			// We had no invalidRect, which means the full visibleRect was dirty
+			// We're now clean
+			self->_needsDisplay=NO;
+		}
+	}
 }
 
 static void clearRectsBeingRedrawn(NSView *self){
