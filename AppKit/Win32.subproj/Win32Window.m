@@ -185,6 +185,8 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    SetProp(_handle,"Win32Window",self);
 
    [self setupPixelFormat];
+
+    CGNativeBorderFrameWidthsForStyle([self styleMask],&_borderTop,&_borderLeft,&_borderBottom,&_borderRight);
 }
 
 -(void)destroyWindowHandle {
@@ -234,7 +236,12 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
     [_deviceDictionary release];
     if(_surfaces!=NULL)
         NSZoneFree(NULL,_surfaces);  
+    if(_textureIds!=NULL)
+        NSZoneFree(NULL,_textureIds);  
     CGLReleaseContext(_overlayResult);
+    if(_hglrc!=NULL)
+        opengl_wglDeleteContext(_hglrc);
+
     [super dealloc];
 }
 
@@ -281,6 +288,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 -(O2Context *)createBackingCGContextIfNeeded {
    if(_backingContext==nil){
     _backingContext=[O2Context createBackingContextWithSize:_frame.size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
+     CGNativeBorderFrameWidthsForStyle([self styleMask],&_borderTop,&_borderLeft,&_borderBottom,&_borderRight);
    }
    
    return _backingContext;
@@ -528,6 +536,7 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 }
 
 static int reportGLErrorIfNeeded(const char *function,int line){
+   return GL_NO_ERROR;
    GLenum error=glGetError();
 
    if(error!=GL_NO_ERROR)
@@ -573,7 +582,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    
    CGLReleasePBuffer(pBuffer);
    
-   [self flushBuffer];
+   [self flushBuffer:NO];
 }
 
 -(void)disableFlushWindow {
@@ -622,31 +631,40 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     return YES;
 }
 
--(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId {
+-(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId reload:(BOOL)reload {
 
     glBindTexture(GL_TEXTURE_2D, textureId);						
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    size_t width,height;
     
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    if(reload){    
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
-    O2SurfaceLock(surface);
-    size_t width=O2ImageGetWidth(surface);
-    size_t height=O2ImageGetHeight(surface);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, [surface pixelBytes]);
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    O2SurfaceUnlock(surface);
-
+        O2SurfaceLock(surface);
+        width=O2ImageGetWidth(surface);
+        height=O2ImageGetHeight(surface);
+        
+        /* need use of glTexSubImage2D here */
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, [surface pixelBytes]);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        O2SurfaceUnlock(surface);
+    }
+    else {
+        O2SurfaceLock(surface);
+        width=O2ImageGetWidth(surface);
+        height=O2ImageGetHeight(surface);
+        O2SurfaceUnlock(surface);
+    }
+    
     GLint vertices[4*2];
     GLint texture[4*2];
    
@@ -696,7 +714,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         NSLog(@"no surface on %@",_backingContext);
         return ;
     }
-    
+        
    BOOL didCreate = [self createCGLContextObjIfNeeded];
    
     HDC dc=GetDC(_handle);
@@ -709,16 +727,33 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
         _hasMakeCurrentRead=NO;//(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
         _hasReadback=YES;
+        _reloadBackingTexture=YES;
+        glGenTextures(1,&_backingTextureId);
+        
+        glDisable(GL_DEPTH_TEST);
+        glShadeModel(GL_FLAT);
+
+        glMatrixMode(GL_MODELVIEW);                                           
+        glLoadIdentity();
+        glEnable( GL_TEXTURE_2D );
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+        glEnable (GL_BLEND);
+        
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        
+        //opengl_wglSwapIntervalEXT(0);
     }
-    
+        
     O2Surface *CGLGetSurface(CGLContextObj context);
 
 // reshape
    size_t width=O2ImageGetWidth(surface);
    size_t height=O2ImageGetHeight(surface);
-
-   glDisable(GL_DEPTH_TEST);
-   glShadeModel(GL_FLAT);
 
 // reshape
    glViewport(0,0,width,height);
@@ -727,44 +762,44 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    glOrtho (0, width, 0, height, -1, 1);
 
 // render
-   glMatrixMode(GL_MODELVIEW);                                           
-   glLoadIdentity();
-
-   glClearColor(0, 0, 0, 0);
-   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-   
-   glEnable( GL_TEXTURE_2D );
-   glEnableClientState(GL_VERTEX_ARRAY);
-   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
-   glEnable (GL_BLEND);
    
    // background is copied on
    glBlendFunc(GL_ONE, GL_ZERO);
 
    glPushMatrix();
 
-   GLint allTextures[1+_surfaceCount];
-   
-   glGenTextures(1+_surfaceCount,allTextures);
-   
-     CGFloat top,left,bottom,right;
+    int i;
+    BOOL setupTexture[_surfaceCount];
+    
+    for(i=0;i<_surfaceCount;i++)
+        setupTexture[i]=NO;
+        
+    if(_textureIdCount<_surfaceCount){
+        _textureIds=NSZoneRealloc(NULL,_textureIds,sizeof(GLint)*_surfaceCount);
+        glGenTextures((_surfaceCount-_textureIdCount),_textureIds+_textureIdCount);
+        
+        for(i=_textureIdCount;i<_surfaceCount;i++)
+            setupTexture[i]=YES;
+            
+        _textureIdCount=_surfaceCount;
+    }
+    else if(_textureIdCount>_surfaceCount){
+        glDeleteTextures(_textureIdCount-_surfaceCount,_textureIds+_surfaceCount);
+        _textureIdCount=_surfaceCount;
+    }
        
-     CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
-     // this applies to all surfaces too too
-     glTranslatef(-right,-bottom,0);
+     // this applies to all surfaces too 
+     glTranslatef(-_borderRight,-_borderBottom,0);
 
-     [self flushSurface:surface flip:YES textureId:allTextures[0]];
+     [self flushSurface:surface flip:YES textureId:_backingTextureId reload:_reloadBackingTexture];
+     _reloadBackingTexture=NO;
 
      reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
-    int i;
     
     CGLPBufferObj releasePbuffers[_surfaceCount];
     
-    for(i=0;i<_surfaceCount;i++) {
+    for(i=0;NO && i<_surfaceCount;i++) {
         GLint size[2];
         GLint origin[2];
         GLint opacity=1;
@@ -785,35 +820,34 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         if(_hasRenderTexture && releasePbuffers[i]!=NULL){
             CGLPBufferObj pBuffer=releasePbuffers[i];
             
-            glBindTexture(GL_TEXTURE_2D, allTextures[1+i]);						
+            glBindTexture(GL_TEXTURE_2D, _textureIds[i]);						
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
+            if(setupTexture[i]){
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            }
+            
             CGLTexImagePBuffer(NULL,pBuffer,WGL_FRONT_LEFT_ARB);
-
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-
-            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-
-            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
             GLint vertices[4*2];
             GLint texture[4*2];
    
-            vertices[0]=0;
-            vertices[1]=0;
-            vertices[2]=size[0];
-            vertices[3]=0;
-            vertices[4]=0;
-            vertices[5]=size[1];
-            vertices[6]=size[0];
-            vertices[7]=size[1];
+            vertices[0]=origin[0];
+            vertices[1]=origin[1];
+            vertices[2]=origin[0]+size[0];
+            vertices[3]=origin[1];
+            vertices[4]=origin[0];
+            vertices[5]=origin[1]+size[1];
+            vertices[6]=origin[0]+size[0];
+            vertices[7]=origin[1]+size[1];
 
             texture[0]=0;
             texture[1]=0;
@@ -823,13 +857,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             texture[5]=1;
             texture[6]=1;
             texture[7]=1;
-
-            glPushMatrix(); 
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            glTranslatef(0,0,1);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            glTranslatef((float)origin[0],(float)origin[1],0);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
             glTexCoordPointer(2, GL_INT, 0, texture);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -838,9 +865,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
-            glPopMatrix();
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            glBindTexture(GL_TEXTURE_2D, 0);						
         }
         else if(_hasMakeCurrentRead){
             HDC CGLGetDC(CGLContextObj context);
@@ -863,29 +887,25 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             O2Surface *overlay=CGLGetSurface(_surfaces[i]);
         
             glPushMatrix();
-            glTranslatef(0,0,1);
             glTranslatef((float)origin[0],(float)origin[1],0);
         
-            [self flushSurface:overlay flip:NO textureId:allTextures[1+i]];
+            [self flushSurface:overlay flip:NO textureId:_textureIds[i] reload:YES];
             glPopMatrix();
         }
     }
     
     glPopMatrix();
  
-    glFinish();
     SwapBuffers(dc);
     
-    for(i=0;i<_surfaceCount;i++)
+    for(i=0;NO && i<_surfaceCount;i++)
         if(releasePbuffers[i]!=NULL){
             HPBUFFERARB CGLGetPBUFFER(CGLPBufferObj pbuffer);
             
             opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
             CGLReleasePBuffer(releasePbuffers[i]);
         }
-        
-    glDeleteTextures(1+_surfaceCount,allTextures);
-        
+                
     // restore previously set context
     CGLError _CGLSetCurrentContextFromThreadLocal(int);
     _CGLSetCurrentContextFromThreadLocal(1);
@@ -941,9 +961,11 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     }
 }
 
--(void)flushBuffer {
+-(void)flushBuffer:(BOOL)reloadBackingTexture {
     [self lock];
-   
+    if(reloadBackingTexture)
+        _reloadBackingTexture=YES;
+        
     if(_disableFlushWindow){
         [self unlock];
         return;
@@ -963,6 +985,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     }
     
     [self unlock];
+}
+
+-(void)flushBuffer {
+    [self flushBuffer:YES];
 }
 
 -(CGPoint)convertPOINTLToBase:(POINTL)point {
@@ -1304,6 +1330,7 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
 static void initializeWindowClass(WNDCLASS *class){
 /* WS_EX_LAYERED windows can not use CS_OWNDC or CS_CLASSDC */
 /* OpenGL windows want CS_OWNDC, so don't use OpenGL on a top level window */
+#warning different windows class, one with CS_OWNDC and one without
    class->style=CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS;
    class->lpfnWndProc=windowProcedure;
    class->cbClsExtra=0;

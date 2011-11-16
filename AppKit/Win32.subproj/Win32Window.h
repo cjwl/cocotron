@@ -25,9 +25,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGFloat                _alphaValue;
    HWND                   _handle;
    HGLRC                  _hglrc;
+   GLint                  _backingTextureId;
    BOOL                   _hasRenderTexture;
    BOOL                   _hasMakeCurrentRead;
    BOOL                   _hasReadback;
+   BOOL                   _reloadBackingTexture;
+   CGFloat                _borderTop,_borderLeft,_borderBottom,_borderRight;
    O2Context_gdi         *_cgContext;
 
    CGSBackingStoreType    _backingType;
@@ -35,7 +38,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     int _surfaceCount;
     void **_surfaces;
-
+    
+    int _textureIdCount;
+    GLint *_textureIds;
+    
     CGLContextObj   _overlayResult;
    NSMutableArray        *_overlays;
    

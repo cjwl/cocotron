@@ -17,7 +17,7 @@
      Technique 1 is also slow and there are no acceleration options, the pixels must be retrieved with glReadPixels
      
      
-   2) Two pbuffers. Because pbuffers can't be resized you must use one pbuffer for the rendering context and another which is destroyed/created for the backing. The one small static pbuffer is used as the primary rendering context and participates in wglShareLists and preserves rendering context state during resizes. A second pbuffer is used as the backing HDC, this pbuffer is destroyed/created during a context resize (pbuffers can't be resized), no HGLRC is created for this pbuffer. This is all possible because wglMakeCurrent accepts both a HDC and HGLRC, provided the HDC and HGLRC have the same pixel format.
+   2) Two pbuffers. Because pbuffers can't be resized you must use one pbuffer for the rendering context and another which is destroyed/created for the backing. The one small static pbuffer is used as the primary rendering context and participates in wglShareLists and preserves rendering context state during resizes. A second pbuffer is used as the backing HDC, this pbuffer is destroyed/created during a context resize (pbuffers can't be resized), no HGLRC is needed for this pbuffer (although we create one as a side effect of pbuffer management). This is all possible because wglMakeCurrent accepts both a HDC and HGLRC, provided the HDC and HGLRC have the same pixel format.
    
    Technique 2 is used if pbuffers are available, 1 is the fallback.
    
@@ -25,8 +25,8 @@
       
    You can't use child windows (this was the first implementation) because they have a number of problems, e.g. no transparency, they are not supported well in layered windows, you can't have multiple child windows with different pixels formats and they have a number of visual artifacts which are hard to control, e.g. flicker during resize.
    
-   VMWare Fusion (as of April 4,2011) does not support pbuffers so you can't test it there.
-   Parallels Desktop (as of April 4,2011) does support pbuffers but the implementation appears buggy, they usually work, but sometimes don't.
+   VMWare Fusion 3 (as of April 4,2011) does not support pbuffers so you can't test it there.
+   Parallels Desktop (as of April 4,2011) does support pbuffers but the implementation appears slightly buggy. There is a workaround present (see WARNING in the pbuffer resize code).
     */
  
 #import "opengl_dll.h"
@@ -215,6 +215,8 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
 }
 
 static int reportGLErrorIfNeeded(const char *function,int line){
+   return GL_NO_ERROR;
+   
    GLenum error=glGetError();
 
    if(error!=GL_NO_ERROR)
@@ -291,12 +293,10 @@ static int resizeBackingIfNeeded(CGLContextObj context){
     opengl_wglMakeCurrent(NULL,NULL);
    else {
 
-    BOOL windowIsCurrent=NO;
     
     if(context->resizeBacking){
      opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
      reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-     windowIsCurrent=YES;
      
      resizeBackingIfNeeded(context);
     }
@@ -307,7 +307,7 @@ static int resizeBackingIfNeeded(CGLContextObj context){
     }
     else {
      int lost;
-     
+#if 0
      opengl_wglQueryPbufferARB(context->dynamicpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
      
      if(lost)
@@ -317,6 +317,7 @@ static int resizeBackingIfNeeded(CGLContextObj context){
      
      if(lost)
       NSLog(@"lost static pBuffer %d",value);
+#endif
 
 #if 0
      if(contextHasMakeCurrentReadExtension(context))
@@ -654,9 +655,11 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
             break;
 
         case kCGLCPSurfaceWindowNumber:
-            [[CGWindow windowWithWindowNumber:context->parentWindowNumber] removeCGLContext:context]; 
-            context->parentWindowNumber=value[0];
-            [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context]; 
+            if(context->parentWindowNumber!=value[0]){
+                [[CGWindow windowWithWindowNumber:context->parentWindowNumber] removeCGLContext:context]; 
+                context->parentWindowNumber=value[0];
+                [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context]; 
+            }
             break;
         
         default:
