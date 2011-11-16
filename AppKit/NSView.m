@@ -715,8 +715,18 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    NSSize oldSize=_bounds.size;
 
-   _frame=frame;
-   _bounds.size=frame.size;
+  if (_bounds.size.width == 0 || _bounds.size.height == 0) {
+	// No valid current bounds value - just update it to use the frame size
+    _bounds.size=frame.size;
+  } else {
+    // Get the bounds->frame transform
+    CGAffineTransform transform=concatViewTransform(CGAffineTransformIdentity,self,nil,YES,NO);
+    // ... and invert it so we can get the new bounds size from the new frame size
+    transform = CGAffineTransformInvert(transform);
+
+    _bounds.size=CGSizeApplyAffineTransform(frame.size, transform);
+  }
+  _frame=frame;
 
    if(_autoresizesSubviews){
     [self resizeSubviewsWithOldSize:oldSize];
