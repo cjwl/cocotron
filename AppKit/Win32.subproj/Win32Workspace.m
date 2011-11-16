@@ -6,6 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+#import <Onyx2D/O2Context_gdi.h>
 #import <AppKit/Win32Workspace.h>
 #import <Foundation/NSString_win32.h>
 #import <AppKit/NSBitmapImageRep.h>
@@ -15,6 +16,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <commctrl.h>
 #import <shellapi.h>
 #import <AppKit/NSRaise.h>
+
+static NSString *DriveLetterInPath(NSString* path)
+{
+	NSArray* components = [path componentsSeparatedByString: @":"];
+	if ([components count] > 0) {
+		NSString* driveLetter = [NSString stringWithFormat: @"%@:\\", [components objectAtIndex: 0]];
+		return driveLetter;
+	}
+	return nil;
+}
 
 @implementation NSWorkspace(windows)
 
@@ -37,6 +48,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    
    return result;
+}
+
+-(BOOL)getFileSystemInfoForPath:(NSString *)path isRemovable:(BOOL *)isRemovable isWritable:(BOOL *)isWritable isUnmountable:(BOOL *)isUnmountable description:(NSString **)description type:(NSString **)type
+{
+	*isWritable = YES;
+	*isRemovable = NO;
+	*isUnmountable = NO;
+	*type = @"WinFS";
+	
+	NSString* driveLetter = DriveLetterInPath(path);
+	
+	UINT driveType = GetDriveTypeW([driveLetter fileSystemRepresentationW]);
+	switch (driveType) {
+		case DRIVE_UNKNOWN:
+			*description = @"Unrecognized drive";
+			break;
+		case DRIVE_NO_ROOT_DIR:
+			*description = @"Corrupted drive";
+			break;
+		case DRIVE_REMOVABLE:
+			*description = @"Removable drive";
+			*isRemovable = YES;
+			break;
+		case DRIVE_FIXED:
+			*description = @"Fixed drive";
+			break;
+		case DRIVE_REMOTE:
+			*description = @"Network drive";
+			*isUnmountable = YES;
+			break;
+		case DRIVE_CDROM:
+			*description = @"CD-ROM drive";
+			*isUnmountable = YES;
+			*isRemovable = YES;
+			break;
+		case DRIVE_RAMDISK:
+			*description = @"RAM drive";
+			*isUnmountable = YES;
+			break;
+	}
+	return driveType >= DRIVE_REMOVABLE;
 }
 
 -(BOOL)openURL:(NSURL *)url {
