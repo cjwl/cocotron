@@ -798,6 +798,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
     
     CGLPBufferObj releasePbuffers[_surfaceCount];
+    HPBUFFERARB CGLGetPBUFFER(CGLPBufferObj pbuffer);
     
     for(i=0;i<_surfaceCount;i++) {
         GLint size[2];
@@ -835,8 +836,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
                 reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             }
             
-            CGLTexImagePBuffer(NULL,pBuffer,WGL_FRONT_LEFT_ARB);
-
+            opengl_wglBindTexImageARB(CGLGetPBUFFER(pBuffer),WGL_FRONT_LEFT_ARB);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            
             GLint vertices[4*2];
             GLint texture[4*2];
    
@@ -863,8 +865,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             glVertexPointer(2, GL_INT, 0, vertices);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);            
         }
         else if(_hasMakeCurrentRead){
             HDC CGLGetDC(CGLContextObj context);
@@ -875,9 +876,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             
             glRasterPos3i(origin[0],origin[1],i);
             
-        //    glReadBuffer(GL_FRONT);
+            glReadBuffer(GL_FRONT);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-          //  glDrawBuffer(GL_FRONT);
+            glDrawBuffer(GL_BACK);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
             glCopyPixels(0,0,size[0],size[1],GL_COLOR);
@@ -896,15 +897,16 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
     glPopMatrix();
  
-    SwapBuffers(dc);
-    
     for(i=0;i<_surfaceCount;i++)
         if(releasePbuffers[i]!=NULL){
-            HPBUFFERARB CGLGetPBUFFER(CGLPBufferObj pbuffer);
-            
-            opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
+            if(_hasRenderTexture)
+                opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
+                
             CGLReleasePBuffer(releasePbuffers[i]);
         }
+
+    SwapBuffers(dc);
+    
                 
     // restore previously set context
     CGLError _CGLSetCurrentContextFromThreadLocal(int);
