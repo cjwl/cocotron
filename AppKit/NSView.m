@@ -728,6 +728,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 	}
 	_frame=frame;
 	
+	[_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
+	
    if(_autoresizesSubviews){
     [self resizeSubviewsWithOldSize:oldSize];
    }
@@ -766,11 +768,15 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setBounds:(NSRect)bounds {
-    _bounds=bounds;
-   invalidateTransform(self);
-
-   if(_postsNotificationOnBoundsChange)
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSViewBoundsDidChangeNotification object:self];
+	if (!NSEqualRects(bounds, _bounds)) {
+		_bounds=bounds;
+		invalidateTransform(self);
+		
+		[_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
+		
+		if(_postsNotificationOnBoundsChange)
+			[[NSNotificationCenter defaultCenter] postNotificationName:NSViewBoundsDidChangeNotification object:self];
+	}
 }
 
 -(void)setBoundsSize:(NSSize)size {
@@ -839,6 +845,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)_setSuperview:superview {
    _superview=superview;
+	
+   [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
+
    [self setNextResponder:superview];
 }
 
