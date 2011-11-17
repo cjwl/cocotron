@@ -193,6 +193,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)controllerWillChange
 {
+	// While the controller is changing it can ask for our attention multiple times - but
+	// asking for selected objects while the content/arranged objects are in flux is quite
+	// risky - so we keep track of how many times the controller will change and only 
+	// make a move on the first call of a will/did pair.
+	_respondingToSelectionChanges++;
+	if (_respondingToSelectionChanges > 1) {
+		return;
+	}
+	
 	[self _stopObservingSelectedObjects];
 	
    [_cachedKeysForKVO autorelease];
@@ -209,6 +218,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)controllerDidChange
 {
+	// Reflecting the willChange logic - we only proceed if the will/did change tracker is reset to 0.
+	_respondingToSelectionChanges--;
+	if (_respondingToSelectionChanges > 0) {
+		return;
+	}
+	
    [_cachedValues removeAllObjects];
    for(id key in _cachedKeysForKVO)
    {
@@ -216,6 +231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
 	[self _startObservingSelectedObjects];
+	_respondingToSelectionChanges = NO;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath 
