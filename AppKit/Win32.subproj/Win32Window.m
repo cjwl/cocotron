@@ -555,7 +555,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
     CGLPBufferObj pBuffer=CGLGetRetainedPBuffer(cglContext);
     
-    if(pBuffer==NULL){
+    if(pBuffer==NULL || [self isLayeredWindow]){
         CGLLockContext(cglContext);
 
         CGLContextObj saveContext=CGLGetCurrentContext();
@@ -626,6 +626,22 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
     _hglrc=opengl_wglCreateContext(dc);
     
+    opengl_wglMakeCurrent(dc,_hglrc);
+#if 0
+
+    // check for extension
+    
+    const int attributes[]= {
+        WGL_CONTEXT_MAJOR_VERSION_ARB,2,
+        WGL_CONTEXT_MINOR_VERSION_ARB,2,
+        0
+    };
+    
+    HGLRC glrc=opengl_wglCreateContextAttribsARB(dc,NULL,attributes);
+    
+    // release old context
+#endif
+
     ReleaseDC(_handle,dc);
     
     return YES;
@@ -725,7 +741,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         const char *extensions=opengl_wglGetExtensionsStringARB(dc);
 
         _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
-        _hasMakeCurrentRead=NO;//(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
+        _hasMakeCurrentRead=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
         _hasReadback=YES;
         _reloadBackingTexture=YES;
         glGenTextures(1,&_backingTextureId);
@@ -867,18 +883,18 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);            
         }
-        else if(_hasMakeCurrentRead){
+        else if(_hasMakeCurrentRead && releasePbuffers[i]!=NULL){
             HDC CGLGetDC(CGLContextObj context);
             
             opengl_wglMakeContextCurrentARB(dc,CGLGetDC(_surfaces[i]),_hglrc);
 
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
-            glRasterPos3i(origin[0],origin[1],i);
+            glRasterPos2i(origin[0],origin[1]);
             
-            glReadBuffer(GL_FRONT);
+           // glReadBuffer(GL_BACK);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            glDrawBuffer(GL_BACK);
+           // glDrawBuffer(GL_BACK);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
             glCopyPixels(0,0,size[0],size[1],GL_COLOR);
@@ -899,9 +915,12 @@ static int reportGLErrorIfNeeded(const char *function,int line){
  
     for(i=0;i<_surfaceCount;i++)
         if(releasePbuffers[i]!=NULL){
-            if(_hasRenderTexture)
+            if(_hasRenderTexture) {
+                // This flushes the pipeline, we want to do it last before swap buffer, but not after
+                // swapbuffers as that is a lot slow.
                 opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
-                
+            }
+            
             CGLReleasePBuffer(releasePbuffers[i]);
         }
 

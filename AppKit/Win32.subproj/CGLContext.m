@@ -321,7 +321,7 @@ static int resizeBackingIfNeeded(CGLContextObj context){
 
 #if 0
      if(contextHasMakeCurrentReadExtension(context))
-      opengl_wglMakeContextCurrentARB(context->dynamicPbufferDC,context->dynamicPbufferDC,context->staticPbufferGLContext);
+      opengl_wglMakeContextCurrentARB(context->dynamicpBuffer->dc,context->dynamicpBuffer->dc,context->staticpBuffer->hglrc);
      else  
 #endif
 

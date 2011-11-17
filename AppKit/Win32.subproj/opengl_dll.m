@@ -342,6 +342,18 @@ void opengl_glFramebufferTexture2DEXT(GLenum target, GLenum attachmentPoint,GLen
    function(target,attachmentPoint,textureTarget,textureId,level);
 }
 
+HGLRC opengl_wglCreateContextAttribsARB(HDC hDC, HGLRC hshareContext,const int *attribList) {
+   APIENTRY typeof(opengl_wglCreateContextAttribsARB ) *function=(typeof(function))wglGetProcAddress("wglCreateContextAttribsARB");
+
+   if(function==NULL){
+ //   if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglCreateContextAttribsARB ) failed");
+    return NO;
+   }
+   
+   return function(hDC,hshareContext,attribList);
+}
+
 
 BOOL opengl_wglMakeContextCurrentARB(HDC hDrawDC,HDC hReadDC,HGLRC hglrc) {
    APIENTRY typeof(opengl_wglMakeContextCurrentARB ) *function=(typeof(function))wglGetProcAddress("wglMakeContextCurrentARB");
