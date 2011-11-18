@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -353,14 +353,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC0C705546C1D00DB518D /* pthread.1.0.dll */;
+			remoteGlobalIDString = D2AAC0C705546C1D00DB518D;
 			remoteInfo = pthread;
 		};
 		FE6784E4143389D10009A0A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC0C605546C1D00DB518D /* pthread */;
+			remoteGlobalIDString = D2AAC0C605546C1D00DB518D;
 			remoteInfo = pthread;
 		};
 /* End PBXContainerItemProxy section */
@@ -494,7 +494,6 @@
 				FEA82990109B773300C7A732 /* CoreFoundation.framework */,
 				FEA829CD109B7BFD00C7A732 /* CoreFoundation.framework */,
 				FE5A86C810C6EE28005E348A /* CoreFoundation.framework */,
-				C67E02F8125B214E00C10757 /* CoreFoundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -565,7 +564,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				C67E02F9125B215700C10757 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -989,7 +987,6 @@
 			name = "CoreFoundation-Solaris-sparc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreFoundation;
-			productReference = C67E02F8125B214E00C10757 /* CoreFoundation.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FE5A869710C6EE28005E348A /* CoreFoundation-FreeBSD-i386 */ = {
@@ -1097,8 +1094,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreFoundation" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (

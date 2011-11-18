@@ -28,7 +28,6 @@
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSPlatform_bsd.h>
-#import <Foundation/NSTask_bsd.h>
 
 #include <sys/param.h>
 #include <time.h>

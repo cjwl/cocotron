@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12276,8 +12276,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 6E2801B909746B8900EC542B /* Build configuration list for PBXProject "Foundation" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -16136,7 +16139,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
@@ -16157,7 +16160,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/arm;
 			};
@@ -16173,7 +16175,7 @@
 				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
@@ -16194,7 +16196,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/arm;
 			};
@@ -16231,7 +16232,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/ppc;
 			};
@@ -16266,7 +16266,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/ppc;
 			};
@@ -16310,7 +16309,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Solaris/sparc;
 				VALID_ARCHS = sparc;
@@ -16349,7 +16347,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/i386;
 			};
@@ -16391,7 +16388,6 @@
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 			};
 			name = Debug;
@@ -16426,7 +16422,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/i386;
 			};
@@ -16463,7 +16458,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Solaris/sparc;
 				VALID_ARCHS = sparc;
@@ -16480,7 +16474,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -16497,7 +16491,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -16526,7 +16519,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/ppc;
 			};
@@ -16591,7 +16583,6 @@
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 			};
 			name = Release;
@@ -16627,7 +16618,6 @@
 					"-lm",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -16662,7 +16652,6 @@
 					"-lm",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -16679,7 +16668,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
@@ -16696,7 +16685,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/x86_64;
 			};
@@ -16712,7 +16700,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -16729,7 +16717,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/x86_64;
 			};
@@ -16746,7 +16733,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -16763,7 +16750,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -16793,7 +16779,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/ppc;
 			};

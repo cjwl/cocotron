@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -108,7 +108,6 @@
 				FEA752F3114EB30B00AF634E /* CFNetwork.framework */,
 				FEC32E40115909B30008ECE5 /* CFNetwork.framework */,
 				FE84930F119AF77F00E252CC /* CFNetwork.framework */,
-				C67E033F125B230900C10757 /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,7 +143,6 @@
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				C67E0340125B230900C10757 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -292,7 +290,6 @@
 			name = "CFNetwork-Solaris-sparc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CFNetwork;
-			productReference = C67E033F125B230900C10757 /* CFNetwork.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FE849304119AF77F00E252CC /* CFNetwork-FreeBSD-i386 */ = {
@@ -350,8 +347,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CFNetwork" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
