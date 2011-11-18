@@ -69,3 +69,5 @@ BOOL opengl_wglReleaseTexImageARB(HPBUFFERARB hPbuffer,int iBuffer);
 BOOL opengl_wglSetPbufferAttribARB(HPBUFFERARB hPbuffer,const int *piAttribList);
 
 BOOL opengl_wglSwapIntervalEXT (int interval);
+
+void opengl_glAddSwapHintRectWIN(GLint x,GLint y,GLsizei width,GLsizei height);

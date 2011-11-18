@@ -618,36 +618,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     ReleaseDC(_handle,dc);
 }
 
--(BOOL)createCGLContextObjIfNeeded {
-    if(_hglrc!=NULL)
-        return NO;
-        
-    HDC dc=GetDC(_handle);
-    
-    _hglrc=opengl_wglCreateContext(dc);
-    
-    opengl_wglMakeCurrent(dc,_hglrc);
-#if 0
-
-    // check for extension
-    
-    const int attributes[]= {
-        WGL_CONTEXT_MAJOR_VERSION_ARB,2,
-        WGL_CONTEXT_MINOR_VERSION_ARB,2,
-        0
-    };
-    
-    HGLRC glrc=opengl_wglCreateContextAttribsARB(dc,NULL,attributes);
-    
-    // release old context
-#endif
-
-    ReleaseDC(_handle,dc);
-    
-    return YES;
-}
-
--(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId reload:(BOOL)reload {
+-(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId reload:(BOOL)reload origin:(CGPoint)origin {
 
     glBindTexture(GL_TEXTURE_2D, textureId);						
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -684,14 +655,14 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     GLint vertices[4*2];
     GLint texture[4*2];
    
-    vertices[0]=0;
-    vertices[1]=0;
-    vertices[2]=width;
-    vertices[3]=0;
-    vertices[4]=0;
-    vertices[5]=height;
-    vertices[6]=width;
-    vertices[7]=height;
+    vertices[0]=origin.x+0;
+    vertices[1]=origin.y+0;
+    vertices[2]=origin.x+width;
+    vertices[3]=origin.y+0;
+    vertices[4]=origin.x+0;
+    vertices[5]=origin.y+height;
+    vertices[6]=origin.x+width;
+    vertices[7]=origin.y+height;
    
     if(flip){
         texture[0]=0;
@@ -730,11 +701,19 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         NSLog(@"no surface on %@",_backingContext);
         return ;
     }
-        
-   BOOL didCreate = [self createCGLContextObjIfNeeded];
-   
+/*
+    Notes:
+        - GetDCEx can not be used to limit drawn area, simply doesn't work.
+ */
     HDC dc=GetDC(_handle);
 
+    BOOL didCreate=NO;
+    
+    if(_hglrc==NULL){
+        _hglrc=opengl_wglCreateContext(dc);
+        didCreate=YES;
+    }
+    
     opengl_wglMakeCurrent(dc,_hglrc);
     
     if(didCreate){
@@ -743,6 +722,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
         _hasMakeCurrentRead=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
         _hasReadback=YES;
+        
+        extensions=glGetString(GL_EXTENSIONS);
+        _hasSwapHintRect=(extensions==NULL)?NO:((strstr(extensions,"GL_WIN_swap_hint")==NULL)?NO:YES);;
+        
         _reloadBackingTexture=YES;
         glGenTextures(1,&_backingTextureId);
         
@@ -757,21 +740,22 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
-        glEnable (GL_BLEND);
+        glDisable (GL_BLEND);
         
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
         
-        //opengl_wglSwapIntervalEXT(0);
+        opengl_wglSwapIntervalEXT(0);
     }
         
     O2Surface *CGLGetSurface(CGLContextObj context);
 
 // reshape
+// Note: can avoid this is if window has not been resized
+
    size_t width=O2ImageGetWidth(surface);
    size_t height=O2ImageGetHeight(surface);
 
-// reshape
    glViewport(0,0,width,height);
    glMatrixMode(GL_PROJECTION);                      
    glLoadIdentity();
@@ -779,11 +763,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
 // render
    
-   // background is copied on
-   glBlendFunc(GL_ONE, GL_ZERO);
-
-   glPushMatrix();
-
     int i;
     BOOL setupTexture[_surfaceCount];
     
@@ -804,16 +783,17 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         _textureIdCount=_surfaceCount;
     }
        
-     // this applies to all surfaces too 
-     glTranslatef(-_borderRight,-_borderBottom,0);
 
-     [self flushSurface:surface flip:YES textureId:_backingTextureId reload:_reloadBackingTexture];
+     [self flushSurface:surface flip:YES textureId:_backingTextureId reload:_reloadBackingTexture origin:CGPointMake(-_borderRight,-_borderBottom)];
      _reloadBackingTexture=NO;
 
      reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 
     
     CGLPBufferObj releasePbuffers[_surfaceCount];
+    for(i=0;i<_surfaceCount;i++)
+        releasePbuffers[i]=NULL;
+        
     HPBUFFERARB CGLGetPBUFFER(CGLPBufferObj pbuffer);
     
     for(i=0;i<_surfaceCount;i++) {
@@ -829,11 +809,13 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingOrigin,origin);
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceOpacity,&opacity);
 
-        if(opacity)
-            glBlendFunc(GL_ONE, GL_ZERO);
-        else
+// Note: if blend function doesn't change, can avoid setting it (probably won't do much?)
+        if(!opacity){
+            // We only use blending for blended surfaces
+            glEnable (GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
+        }
+        
         if(_hasRenderTexture && releasePbuffers[i]!=NULL){
             CGLPBufferObj pBuffer=releasePbuffers[i];
             
@@ -858,15 +840,16 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             GLint vertices[4*2];
             GLint texture[4*2];
    
-            vertices[0]=origin[0];
-            vertices[1]=origin[1];
-            vertices[2]=origin[0]+size[0];
-            vertices[3]=origin[1];
-            vertices[4]=origin[0];
-            vertices[5]=origin[1]+size[1];
-            vertices[6]=origin[0]+size[0];
-            vertices[7]=origin[1]+size[1];
+            vertices[0]=-_borderRight+origin[0];
+            vertices[1]=-_borderBottom+origin[1];
+            vertices[2]=-_borderRight+origin[0]+size[0];
+            vertices[3]=-_borderBottom+origin[1];
+            vertices[4]=-_borderRight+origin[0];
+            vertices[5]=-_borderBottom+origin[1]+size[1];
+            vertices[6]=-_borderRight+origin[0]+size[0];
+            vertices[7]=-_borderBottom+origin[1]+size[1];
 
+// Note: Texture coordinates are same for all textures, can avoid reloading
             texture[0]=0;
             texture[1]=0;
             texture[2]=1;
@@ -889,7 +872,54 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             opengl_wglMakeContextCurrentARB(dc,CGLGetDC(_surfaces[i]),_hglrc);
 
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+#if 0
+            glBindTexture(GL_TEXTURE_2D, _textureIds[i]);						
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
+            if(setupTexture[i]){
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            }
+            
+            glCopyTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,0,0,size[0],size[1],0);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            
+            GLint vertices[4*2];
+            GLint texture[4*2];
+   
+            vertices[0]=-_borderRight+origin[0];
+            vertices[1]=-_borderBottom+origin[1];
+            vertices[2]=-_borderRight+origin[0]+size[0];
+            vertices[3]=-_borderBottom+origin[1];
+            vertices[4]=-_borderRight+origin[0];
+            vertices[5]=-_borderBottom+origin[1]+size[1];
+            vertices[6]=-_borderRight+origin[0]+size[0];
+            vertices[7]=-_borderBottom+origin[1]+size[1];
+
+// Note: Texture coordinates are same for all textures, can avoid reloading
+            texture[0]=0;
+            texture[1]=0;
+            texture[2]=1;
+            texture[3]=0;
+            texture[4]=0;
+            texture[5]=1;
+            texture[6]=1;
+            texture[7]=1;
+            
+            glTexCoordPointer(2, GL_INT, 0, texture);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            glVertexPointer(2, GL_INT, 0, vertices);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);            
+#else            
             glRasterPos2i(origin[0],origin[1]);
             
            // glReadBuffer(GL_BACK);
@@ -899,30 +929,32 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             
             glCopyPixels(0,0,size[0],size[1],GL_COLOR);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+#endif
         }
         else if(_hasReadback) {
             O2Surface *overlay=CGLGetSurface(_surfaces[i]);
+                
+// Note: Texture coordinates are same for all textures, can avoid reloading
+            [self flushSurface:overlay flip:NO textureId:_textureIds[i] reload:YES origin:CGPointMake(-_borderRight+origin[0],-_borderBottom+origin[1])];
+        }
         
-            glPushMatrix();
-            glTranslatef((float)origin[0],(float)origin[1],0);
-        
-            [self flushSurface:overlay flip:NO textureId:_textureIds[i] reload:YES];
-            glPopMatrix();
+        if(!opacity){
+            glDisable(GL_BLEND);
         }
     }
-    
-    glPopMatrix();
- 
+     
     for(i=0;i<_surfaceCount;i++)
         if(releasePbuffers[i]!=NULL){
             if(_hasRenderTexture) {
                 // This flushes the pipeline, we want to do it last before swap buffer, but not after
-                // swapbuffers as that is a lot slow.
+                // swapbuffers as that is a lot slower.
                 opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
             }
             
             CGLReleasePBuffer(releasePbuffers[i]);
         }
+
+// look into using glAddSwapHintRectWIN when only the GL context changes
 
     SwapBuffers(dc);
     

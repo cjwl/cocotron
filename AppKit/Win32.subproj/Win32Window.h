@@ -29,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                   _hasRenderTexture;
    BOOL                   _hasMakeCurrentRead;
    BOOL                   _hasReadback;
+   BOOL                   _hasSwapHintRect;
    BOOL                   _reloadBackingTexture;
    CGFloat                _borderTop,_borderLeft,_borderBottom,_borderRight;
    O2Context_gdi         *_cgContext;

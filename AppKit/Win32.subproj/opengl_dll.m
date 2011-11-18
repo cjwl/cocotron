@@ -415,3 +415,15 @@ BOOL opengl_wglSwapIntervalEXT (int interval) {
     return function(interval);
 }
 
+void opengl_glAddSwapHintRectWIN(GLint x,GLint y,GLsizei width,GLsizei height) {
+   WINAPI typeof(opengl_glAddSwapHintRectWIN) *function=(typeof(function))wglGetProcAddress("glAddSwapHintRectWIN");
+
+
+   if(function==NULL){
+    NSLog(@"wglGetProcAddress(glAddSwapHintRectWIN) failed");
+    return NO;
+   }
+   
+    return function(x,y,width,height);
+}
+
