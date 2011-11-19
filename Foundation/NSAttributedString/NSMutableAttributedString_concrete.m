@@ -11,7 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSRaiseException.h>
 
 @implementation NSMutableAttributedString_concrete
@@ -21,6 +23,113 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _rangeToAttributes=NSCreateRangeToCopiedObjectEntries(0);
    NSRangeEntryInsert(_rangeToAttributes,NSMakeRange(0,[_string length]),[NSDictionary dictionary]);
    return self;
+}
+
+/*
+ * NOTE: Cocoa encodes the attribute ranges in an unconventional way. They compress
+ * the data down to a byte encoding with the following format:
+ *  <runlength><attribute set>
+ * where runlength is the length that the attribute set applies and attribute set is an
+ * index or id pointing to an attribute dictionary.
+ * Things get trickier when the runlength exceeds 127 - in that case a multi-byte encoding is used
+ * where the first byte has the top bit set to indicate the following byte is a multiplier - this
+ * is extended for runs greater than 127*127 - but this implementation doesn't go that far.
+ *
+ * Decoding simply reverses the process.
+ */
+static void encodeIntoData(NSMutableData* data, NSUInteger value)
+{
+	char c = value/127;
+	char v = value % 127;
+	if (c > 0) {
+		v |= 0x80;
+	}
+	[data appendBytes:&v length: 1];
+	if (c > 0) {
+		[data appendBytes:&c length: 1];
+	}
+}
+
+static NSUInteger decodeFromData(NSData* data, NSUInteger offset, NSUInteger *value)
+{
+	*value = 0;
+	const char* bytes = [data bytes];
+	
+	char v = bytes[offset++];
+	if (v & 0x80) {
+		char c = bytes[offset++];
+		v ^= 0x80;
+		*value = v * c;
+	} else {
+		*value = v;
+	}
+	return offset;
+}
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+	if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+		NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
+		NSString* string = [keyed decodeObjectForKey: @"NSString"];
+		id attributes = [keyed decodeObjectForKey: @"NSAttributes"];
+		if (attributes == nil) {
+			return [self initWithString: string];
+		} else if ([attributes isKindOfClass: [NSDictionary class]]) {
+			return [self initWithString: string attributes: attributes];
+		} else {
+			// we've got an array to work through
+			NSMutableAttributedString* attrStr = [[[NSMutableAttributedString alloc] initWithString: string] autorelease];
+			NSData* data = [keyed decodeObjectForKey: @"NSAttributeInfo"];
+			NSArray* attributesArray = attributes;
+			NSUInteger offset =0;
+			for (NSUInteger i = 0; i < [attributesArray count]; i++) {
+				NSDictionary* dict = [attributesArray objectAtIndex: i];
+				NSUInteger length = 0;
+				NSUInteger index = 0;
+				NSUInteger location = offset;
+				// See note above on encoding and decoding
+				offset = decodeFromData(data, offset, &length);
+				offset = decodeFromData(data, offset, &index);
+				NSRange range = NSMakeRange(location, length);
+				[attrStr addAttributes: dict range: range];
+			}
+			return [self initWithAttributedString: attrStr];
+		}
+	} else {
+		NSUnimplementedMethod();
+	}
+	return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder
+{
+	if([coder isKindOfClass:[NSKeyedArchiver class]]){
+		NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+		
+		[keyed encodeObject: [self string] forKey:@"NSString"];
+		NSRange range;
+		NSDictionary* dict = [self attributesAtIndex: 0 effectiveRange: &range];
+		if (dict == nil || range.length == [self length]) {
+			[keyed encodeObject: dict forKey: @"NSAttributes"];
+		} else {
+			NSMutableArray* attributesArray = [NSMutableArray arrayWithCapacity: 10];
+			// we've got more than one set of attributes so we have to encode more data
+			NSUInteger count = NSCountRangeEntries(_rangeToAttributes);
+			NSMutableData* data = [NSMutableData dataWithCapacity: count * 4];
+			for (NSUInteger i = 0; i < count; i++) {
+				NSRange range;
+				NSDictionary* attributes = NSRangeEntryAtIndex(_rangeToAttributes, i, &range);
+				[attributesArray addObject: attributes];
+				// See note above on encoding and decoding
+				encodeIntoData(data, range.length);
+				encodeIntoData(data, i);
+			}
+			[keyed encodeObject: attributesArray forKey: @"NSAttributes"];
+			[keyed encodeObject: data forKey: @"NSAttributeInfo"];
+		}
+	} else {
+		NSUnimplementedMethod();
+	}	
 }
 
 -(void)dealloc {
