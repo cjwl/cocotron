@@ -29,6 +29,7 @@ GLvoid   *opengl_glMapBuffer(GLenum target,GLenum access);
 GLboolean opengl_glUnmapBuffer(GLenum target);
 
 const char *opengl_wglGetExtensionsStringARB(HDC hdc);
+const char *opengl_wglGetExtensionsStringEXT(HDC hdc);
 
 HPBUFFERARB opengl_wglCreatePbufferARB(HDC hDC,int iPixelFormat,int iWidth,int iHeight,const int *piAttribList);
 

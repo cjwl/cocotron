@@ -125,6 +125,18 @@ const char *opengl_wglGetExtensionsStringARB(HDC hdc) {
    return function(hdc);
 }
 
+const char *opengl_wglGetExtensionsStringEXT(HDC hdc) {
+   APIENTRY typeof(opengl_wglGetExtensionsStringEXT) *function=(typeof(function))wglGetProcAddress("wglGetExtensionsStringEXT");
+
+   if(function==NULL){
+    if(NSDebugEnabled)
+     NSLog(@"wglGetProcAddress(wglGetExtensionsStringEXT) failed");
+    return NULL;
+   }
+   
+   return function(hdc);
+}
+
 HPBUFFERARB opengl_wglCreatePbufferARB(HDC hDC,int iPixelFormat,int iWidth,int iHeight,const int *piAttribList) {
    APIENTRY typeof(opengl_wglCreatePbufferARB) *function=(typeof(function))wglGetProcAddress("wglCreatePbufferARB");
 

@@ -693,6 +693,18 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
 }
 
+-(void)checkExtensionsInString:(const char *)extensions {
+    _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
+    if(!_hasRenderTexture)
+        _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_EXT_render_texture")==NULL)?NO:YES);
+            
+    _hasMakeCurrentRead=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
+    if(!_hasMakeCurrentRead)
+        _hasMakeCurrentRead=(extensions==NULL)?NO:((strstr(extensions,"WGL_EXT_make_current_read")==NULL)?NO:YES);
+
+    _hasSwapHintRect=(extensions==NULL)?NO:((strstr(extensions,"GL_WIN_swap_hint")==NULL)?NO:YES);;
+}
+
 -(void)openGLFlushBuffer {
     CGLError error;
     O2Surface_DIBSection *surface=[_backingContext surface];
@@ -719,12 +731,16 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     if(didCreate){
         const char *extensions=opengl_wglGetExtensionsStringARB(dc);
 
-        _hasRenderTexture=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_render_texture")==NULL)?NO:YES);
-        _hasMakeCurrentRead=(extensions==NULL)?NO:((strstr(extensions,"WGL_ARB_make_current_read")==NULL)?NO:YES);
-        _hasReadback=YES;
+        [self checkExtensionsInString:extensions];
         
+        extensions=opengl_wglGetExtensionsStringEXT(dc);
+
+        [self checkExtensionsInString:extensions];
+
         extensions=glGetString(GL_EXTENSIONS);
-        _hasSwapHintRect=(extensions==NULL)?NO:((strstr(extensions,"GL_WIN_swap_hint")==NULL)?NO:YES);;
+        [self checkExtensionsInString:extensions];
+
+        _hasReadback=YES;
         
         _reloadBackingTexture=YES;
         glGenTextures(1,&_backingTextureId);
@@ -872,7 +888,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             opengl_wglMakeContextCurrentARB(dc,CGLGetDC(_surfaces[i]),_hglrc);
 
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-#if 0
+#if 1
             glBindTexture(GL_TEXTURE_2D, _textureIds[i]);						
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
