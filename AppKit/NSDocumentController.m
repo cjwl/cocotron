@@ -222,7 +222,7 @@ static NSDocumentController *shared=nil;
    if(![url isFileURL])
     return nil;
     
-   NSString *extension=[[url path] lastPathComponent];
+   NSString *extension=[[url path] pathExtension];
    if(extension==nil)
     return nil;
        
