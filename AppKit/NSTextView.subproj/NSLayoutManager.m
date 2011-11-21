@@ -859,8 +859,109 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	[self drawSelectionAtPoint:origin];
 }
 
--(void)drawSpellingState:(NSNumber *)spellingState characterRange:(NSRange)characterRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+- (void)drawUnderlineForGlyphRange:(NSRange)glyphRange underlineType:(NSInteger)underlineVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
     unsigned i,rectCount;
+	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
+    BOOL             isFlipped = [[NSGraphicsContext currentContext] isFlipped];
+	NSTextContainer* container = [self textContainerForGlyphAtIndex: glyphRange.location effectiveRange: NULL];
+
+    NSRect *rects = [self rectArrayForCharacterRange: characterRange
+						withinSelectedCharacterRange: NSMakeRange(NSNotFound,0)
+									 inTextContainer: container
+										   rectCount:&rectCount];
+	
+	NSBezierPath *path = [NSBezierPath bezierPath];
+	
+	// Lots more stylistic options available than just this
+	[path setLineWidth: (underlineVal & NSUnderlineStyleThick) ? 1 : .5 ];
+	[path setLineCapStyle:NSSquareLineCapStyle];
+	if (underlineVal & NSUnderlinePatternDash) {
+		CGFloat lineDash[] = {.75, 3.25};
+		[path setLineDash:lineDash count:sizeof(lineDash)/sizeof(lineDash[0]) phase:0.0];
+	}
+	
+	NSPoint origin = containerOrigin;
+	
+    for(i=0;i<rectCount;i++){
+        NSRect fill=rects[i];
+        
+        if(isFlipped)
+            fill.origin.y+=(fill.size.height-1);
+        
+        fill.origin.x+=origin.x;
+        fill.origin.y+=origin.y + baselineOffset;
+        [path moveToPoint:fill.origin];
+		float width = fill.size.width;
+		[path relativeLineToPoint:NSMakePoint(width, 0)];
+    }
+
+	NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
+	NSColor* underlineColor = [attributes objectForKey: NSUnderlineColorAttributeName];
+	if (underlineColor == nil) {
+		underlineColor = [NSColor blackColor];
+	}
+	[underlineColor set];
+	[path stroke];
+	
+}
+
+- (void)underlineGlyphRange:(NSRange)glyphRange underlineType:(NSInteger)underlineVal lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
+	// A full implementation would honor options like breaking the underline for whitespace.
+	[self drawUnderlineForGlyphRange: glyphRange underlineType: underlineVal baselineOffset: 0 lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: containerOrigin];
+}
+
+- (void)drawStrikethroughForGlyphRange:(NSRange)glyphRange strikethroughType:(NSInteger)strikethroughVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
+    unsigned i,rectCount;
+	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
+    BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
+	NSTextContainer* container = [self textContainerForGlyphAtIndex: glyphRange.location effectiveRange: NULL];
+    NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
+	
+	NSBezierPath *path = [NSBezierPath bezierPath];
+	
+	// Lots more stylistic options available than just this
+	[path setLineWidth: (strikethroughVal & NSUnderlineStyleThick) ? 1 : .5 ];
+	[path setLineCapStyle:NSSquareLineCapStyle];
+	if (strikethroughVal & NSUnderlinePatternDash) {
+		CGFloat lineDash[] = {.75, 3.25};
+		[path setLineDash:lineDash count:sizeof(lineDash)/sizeof(lineDash[0]) phase:0.0];
+	}
+	
+	NSPoint origin = containerOrigin;
+	
+    for(i=0;i<rectCount;i++){
+        NSRect fill=rects[i];
+        
+		fill.origin.y+=(fill.size.height/2);
+        
+        fill.origin.x+=origin.x;
+        fill.origin.y+=origin.y + baselineOffset;
+        [path moveToPoint:fill.origin];
+		float width = fill.size.width;
+		[path relativeLineToPoint:NSMakePoint(width, 0)];
+    }
+	
+	NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
+	NSColor* underlineColor = [attributes objectForKey: NSUnderlineColorAttributeName];
+	if (underlineColor == nil) {
+		underlineColor = [NSColor blackColor];
+	}
+	[underlineColor set];
+	[path stroke];	
+}
+
+- (void)strikethroughGlyphRange:(NSRange)glyphRange strikethroughType:(NSInteger)strikethroughVal lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
+	// A full implementation would honor options like breaking the strikethrough for whitespace.
+	[self drawStrikethroughForGlyphRange: glyphRange strikethroughType: strikethroughVal  baselineOffset: 0 lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: containerOrigin];
+}
+
+-(void)drawSpellingState:(NSNumber *)spellingState glyphRange:(NSRange)glyphRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+    unsigned i,rectCount;
+	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
     BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
     float            usedHeight=[self usedRectForTextContainer:container].size.height;
     NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
@@ -937,6 +1038,16 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 				} else {
 					NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
 					NSFont       *font=NSFontAttributeInDictionary(attributes);
+					BOOL		 underline = [[attributes objectForKey: NSUnderlineStyleAttributeName] boolValue];
+				
+					BOOL		 strikeThru = [[attributes objectForKey: NSStrikethroughStyleAttributeName] boolValue];
+					NSColor*	strikeThruColor = nil;
+					if (strikeThru) {
+						strikeThruColor = [attributes objectForKey: NSStrikethroughColorAttributeName];
+						if (strikeThruColor == nil) {
+							strikeThruColor = [NSColor blackColor];
+						}
+					}
                     NSNumber     *spellingState=[attributes objectForKey:NSSpellingStateAttributeName];
 					NSMultibyteGlyphPacking packing=NSNativeShortGlyphPacking;
 					NSGlyph       glyphs[range.length];
@@ -992,8 +1103,19 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 							else {
 								packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs+start,length,packing,packedGlyphs);
 								[self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
+								NSRange glyphRange = NSMakeRange(range.location+start,length);
+								if (underline || strikeThru) {
+									NSRange lineGlyphRange;
+									NSRect lineRect = [self lineFragmentRectForGlyphAtIndex: glyphRange.location effectiveRange: &lineGlyphRange];
+									if (underline) {
+										[self underlineGlyphRange: glyphRange underlineType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: NSZeroPoint];
+									}
+									if (strikeThru) {
+										[self strikethroughGlyphRange: glyphRange strikethroughType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: NSZeroPoint];
+									}
+								}
                                 if(spellingState!=nil){
-                                    [self drawSpellingState:spellingState characterRange:[self characterRangeForGlyphRange:NSMakeRange(range.location+start,length) actualGlyphRange:NULL] container:container origin:origin];
+                                    [self drawSpellingState:spellingState glyphRange: glyphRange container:container origin:origin];
                                 }
 								partWidth+=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
 								point.x+=partWidth;
@@ -1007,8 +1129,18 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 						[color setFill];
 						packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs,glyphsLength,packing,packedGlyphs);
 						[self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
-                       if(spellingState!=nil){
-                            [self drawSpellingState:spellingState characterRange:characterRange container:container origin:origin];
+						if (underline || strikeThru) {
+							NSRange lineGlyphRange;
+							NSRect lineRect = [self lineFragmentRectForGlyphAtIndex: range.location effectiveRange: &lineGlyphRange];
+							if (underline) {
+								[self underlineGlyphRange: range underlineType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: origin];
+							}
+							if (strikeThru) {
+								[self strikethroughGlyphRange: range strikethroughType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: origin];
+							}
+						}
+						if(spellingState!=nil){
+                            [self drawSpellingState:spellingState glyphRange: range container:container origin:origin];
                         }
 					}
 				}
