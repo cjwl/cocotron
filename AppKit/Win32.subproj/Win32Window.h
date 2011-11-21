@@ -89,6 +89,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)deminiaturize;
 -(BOOL)isMiniaturized;
 
+-(BOOL)isLayeredWindow;
+
 -(void)flushBuffer;
 
 -(NSPoint)convertPOINTLToBase:(POINTL)point;

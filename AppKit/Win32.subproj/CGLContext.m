@@ -8,7 +8,8 @@
 #import <Onyx2D/O2Surface_DIBSection.h>
 #import <Onyx2D/O2DeviceContext_gdi.h>
 #import <pthread.h>
-
+#import "Win32Window.h"
+#import <windowsx.h>
 /* There is essentially only two ways to implement a CGLContext on Windows.
 
    1) A double buffered off-screen window, using glReadPixels on the back buffer. You can't use a single buffered window because the front buffer is typically considered on-screen and will more likely fail the pixel ownership test. You can't use the front buffer in a double buffered window for the same reasons.
@@ -129,8 +130,55 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
     
     MSG msg;
     
-    PeekMessage(&msg,NULL,0,0,PM_REMOVE);
-    DispatchMessage(&msg);
+    if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+        switch(msg.message){
+
+            case WM_KEYDOWN:
+            case WM_SYSKEYDOWN:
+            case WM_KEYUP:
+            case WM_SYSKEYUP:
+            case WM_MOUSEMOVE:
+            case WM_LBUTTONDOWN:
+            case WM_LBUTTONDBLCLK:
+            case WM_LBUTTONUP:
+            case WM_RBUTTONDOWN:
+            case WM_RBUTTONDBLCLK:
+            case WM_RBUTTONUP:
+            case WM_MOUSEWHEEL:
+                if(GetProp(msg.hwnd,"parent")!=NULL){
+                    HWND parentHandle=GetProp(msg.hwnd,"parent");
+                    int parentX=GET_X_LPARAM(msg.lParam);
+                    int parentY=GET_Y_LPARAM(msg.lParam);
+                
+                    RECT child={0},parent={0};
+                    
+                    // There is no way to get a child's frame inside the parent, you have to get
+                    // them both in screen coordinates and do a delta
+                    // GetClientRect always returns 0,0 for top,left which makes it useless     
+                    GetWindowRect(msg.hwnd,&child);
+                    GetWindowRect(parentHandle,&parent);
+                    parentX+=child.left-parent.left;
+                    parentY+=child.top-parent.top;
+                    
+                    CGFloat top,left,bottom,right;
+
+                    Win32Window *parentWindow=GetProp(parentHandle,"Win32Window");
+                    
+                    CGNativeBorderFrameWidthsForStyle([parentWindow styleMask],&top,&left,&bottom,&right);
+
+                    parentX-=left;
+                    parentY-=top;
+                    LPARAM lParam=MAKELPARAM(parentX,parentY);
+                    PostMessage(parentHandle,msg.message,msg.wParam,lParam);
+                    break;
+                }
+                // fallthrough
+                
+            default:
+                DispatchMessage(&msg);
+                break;
+        }
+    }
 
     CGLContextObj check;
     
@@ -140,8 +188,8 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
     LeaveCriticalSection(&sharingCriticalSection);
 
     if(check!=NULL){
-     check->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,check->w,check->h,NULL,NULL,GetModuleHandle(NULL),NULL);
-     
+     check->window=CreateWindowEx(0,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,check->w,check->h,NULL,NULL,GetModuleHandle(NULL),NULL);
+
      SetEvent(pingCallerEvent);
     }
     
@@ -215,7 +263,7 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
 }
 
 static int reportGLErrorIfNeeded(const char *function,int line){
-   return GL_NO_ERROR;
+  // return GL_NO_ERROR;
    
    GLenum error=glGetError();
 
@@ -245,6 +293,18 @@ static void _CGLCreateDynamicPbufferBacking(CGLContextObj context);
 static void _CGLDestroyDynamicPbufferBacking(CGLContextObj context);
  CGLError _CGLSetCurrentContextFromThreadLocal(int value);
 
+static void adjustFrameInParent(CGLContextObj context,Win32Window *parentWindow,GLint *x,GLint *y,GLint *w,GLint *h){
+   if(parentWindow!=nil){
+    CGFloat top,left,bottom,right;
+
+    CGNativeBorderFrameWidthsForStyle([parentWindow styleMask],&top,&left,&bottom,&right);
+
+    *y=[parentWindow frame].size.height-(*y+*h);
+
+    *y-=top;
+    *x-=left;
+   }
+}
 static int resizeBackingIfNeeded(CGLContextObj context){
    if(!context->resizeBacking)
     return 0;
@@ -259,7 +319,14 @@ static int resizeBackingIfNeeded(CGLContextObj context){
       /* If we're using a Pbuffer we don't want the window large because it consumes resources */
 
     if(context->staticpBuffer==NULL){
-        MoveWindow(context->window,0,0,context->w,context->h,NO);
+        GLint x=context->x;
+        GLint y=context->y;
+        GLint w=context->w;
+        GLint h=context->h;
+        
+        adjustFrameInParent(context,[CGWindow windowWithWindowNumber:context->parentWindowNumber],&x,&y,&w,&h);
+        
+        MoveWindow(context->window,x,y,w,h,NO);
     }
     else {
 // Window context must be current for pBuffer functions to work. Since this is now only called during a SetCurrent, no need to wglMakeCurrent
@@ -294,7 +361,7 @@ static int resizeBackingIfNeeded(CGLContextObj context){
    else {
 
     
-    if(context->resizeBacking){
+    if(context->resizeBacking){          
      opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
      reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
      
@@ -302,8 +369,18 @@ static int resizeBackingIfNeeded(CGLContextObj context){
     }
     
     if(context->dynamicpBuffer==NULL) {
-        opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-        reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+#if 0
+     HDC dc=GetDC([[CGWindow windowWithWindowNumber:context->parentWindowNumber] windowHandle]);
+        opengl_wglMakeCurrent(dc,context->windowGLContext);
+        ReleaseDC([[CGWindow windowWithWindowNumber:context->parentWindowNumber] windowHandle],dc);
+        
+        glViewport(context->x,context->y,context->w,context->h);
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(context->x,context->y,context->w,context->h);
+#else
+     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+#endif
+       reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     }
     else {
      int lost;
@@ -420,22 +497,41 @@ return;
 }
 
 static BOOL contextHasPbufferExtension(CGLContextObj context){
-   const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
+    const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
    
   // NSLog(@"extensions=%s",extensions);
-   
+    
+    return NO;
+    
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+    
+    if(extensions!=NULL) {
+        if(strstr(extensions,"WGL_ARB_pbuffer")!=NULL){
+            if(strstr(extensions,"WGL_ARB_pixel_format")!=NULL)
+                return YES;
+        }
 
-   if(extensions==NULL)
-    return NO;
-   
-   if(strstr(extensions,"WGL_ARB_pbuffer")==NULL)
-    return NO;
+        if(strstr(extensions,"WGL_EXT_pbuffer")!=NULL){
+            if(strstr(extensions,"WGL_EXT_pixel_format")!=NULL)
+                return YES;
+        }
+    }
 
-   if(strstr(extensions,"WGL_ARB_pixel_format")==NULL)
-    return NO;
+    extensions=opengl_wglGetExtensionsStringEXT(context->windowDC);
 
-   return YES;
+    if(extensions!=NULL) {
+        if(strstr(extensions,"WGL_ARB_pbuffer")!=NULL){
+            if(strstr(extensions,"WGL_ARB_pixel_format")!=NULL)
+                return YES;
+        }
+
+        if(strstr(extensions,"WGL_EXT_pbuffer")!=NULL){
+            if(strstr(extensions,"WGL_EXT_pixel_format")!=NULL)
+                return YES;
+        }
+    }
+
+    return NO;
 }
 
 
@@ -650,15 +746,28 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      break;
      
         case kCGLCPSurfaceBackingOrigin:;
-            context->x=value[0];
-            context->y=value[1];
+            BOOL originChanged=(context->x!=value[0] || context->y!=value[1])?YES:NO;
+     
+            if(originChanged){
+                context->x=value[0];
+                context->y=value[1];
+                context->resizeBacking=TRUE;
+            }
             break;
 
         case kCGLCPSurfaceWindowNumber:
             if(context->parentWindowNumber!=value[0]){
                 [[CGWindow windowWithWindowNumber:context->parentWindowNumber] removeCGLContext:context]; 
                 context->parentWindowNumber=value[0];
-                [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context]; 
+                [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context];
+                
+                Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
+                
+                if(![parentWindow isLayeredWindow]){
+                    SetParent(context->window,[parentWindow windowHandle]);
+                    SetProp(context->window,"parent",[parentWindow windowHandle]);
+                    ShowWindow(context->window,SW_SHOWNOACTIVATE);
+                }
             }
             break;
         
@@ -777,8 +886,14 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-    [[CGWindow windowWithWindowNumber:context->parentWindowNumber] flushCGLContext:context];
-
+    Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
+    if([parentWindow isLayeredWindow]){
+        [parentWindow flushCGLContext:context];
+    }
+    else {
+        SwapBuffers(context->windowDC);
+    }
+    
     return kCGLNoError;
 }
 

@@ -39,11 +39,16 @@ static CGRect convertFrameFromWin32ScreenCoordinates(CGRect rect){
 }
 
 -(BOOL)isLayeredWindow {
-   if(_styleMask&NSDocModalWindowMask)
+   if(_styleMask&NSDocModalWindowMask){
+   NSCLog("doc modal");
     return TRUE;
+}
    
-   if(_styleMask==NSBorderlessWindowMask)
+   if(_styleMask==NSBorderlessWindowMask){
+      NSCLog("borderless");
+
     return TRUE;
+}
 /*
    if(!_isOpaque)
     return TRUE;
@@ -582,7 +587,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    
    CGLReleasePBuffer(pBuffer);
    
-   [self flushBuffer:NO];
+   [self flushBuffer:NO only:cglContext];
 }
 
 -(void)disableFlushWindow {
@@ -618,13 +623,13 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     ReleaseDC(_handle,dc);
 }
 
--(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId reload:(BOOL)reload origin:(CGPoint)origin {
+-(void)flushSurface:(O2Surface *)surface flip:(BOOL)flip textureId:(GLint)textureId setup:(BOOL)setup reload:(BOOL)reload origin:(CGPoint)origin {
 
     glBindTexture(GL_TEXTURE_2D, textureId);						
     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
     size_t width,height;
     
-    if(reload){    
+    if(setup){
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
@@ -634,7 +639,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-
+    }
+    
+    if(reload){    
         O2SurfaceLock(surface);
         width=O2ImageGetWidth(surface);
         height=O2ImageGetHeight(surface);
@@ -705,10 +712,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     _hasSwapHintRect=(extensions==NULL)?NO:((strstr(extensions,"GL_WIN_swap_hint")==NULL)?NO:YES);;
 }
 
--(void)openGLFlushBuffer {
+-(void)openGLFlushBufferOnlyContext:(CGLContextObj)onlyContext {
     CGLError error;
     O2Surface_DIBSection *surface=[_backingContext surface];
-   
+
     if(surface==nil){
         NSLog(@"no surface on %@",_backingContext);
         return ;
@@ -800,7 +807,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     }
        
 
-     [self flushSurface:surface flip:YES textureId:_backingTextureId reload:_reloadBackingTexture origin:CGPointMake(-_borderRight,-_borderBottom)];
+     [self flushSurface:surface flip:YES textureId:_backingTextureId setup:didCreate reload:_reloadBackingTexture origin:CGPointMake(-_borderRight,-_borderBottom)];
      _reloadBackingTexture=NO;
 
      reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -949,9 +956,11 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         }
         else if(_hasReadback) {
             O2Surface *overlay=CGLGetSurface(_surfaces[i]);
-                
+            
+            BOOL reload=(onlyContext!=NULL && onlyContext==onlyContext);
+            
 // Note: Texture coordinates are same for all textures, can avoid reloading
-            [self flushSurface:overlay flip:NO textureId:_textureIds[i] reload:YES origin:CGPointMake(-_borderRight+origin[0],-_borderBottom+origin[1])];
+            [self flushSurface:overlay flip:NO textureId:_textureIds[i] setup:setupTexture[i] reload:reload origin:CGPointMake(-_borderRight+origin[0],-_borderBottom+origin[1])];
         }
         
         if(!opacity){
@@ -1030,7 +1039,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     }
 }
 
--(void)flushBuffer:(BOOL)reloadBackingTexture {
+-(void)flushBuffer:(BOOL)reloadBackingTexture only:(CGLContextObj)onlyContext {
     [self lock];
     if(reloadBackingTexture)
         _reloadBackingTexture=YES;
@@ -1044,9 +1053,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
         if([self isLayeredWindow])
             [self updateLayeredWindow];
         else {
-#if 1
+#if 0
             if(_surfaceCount>0)
-                [self openGLFlushBuffer];
+                [self openGLFlushBufferOnlyContext:onlyContext];
             else
 #endif
                 [self bitBltWindow];
@@ -1057,7 +1066,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(void)flushBuffer {
-    [self flushBuffer:YES];
+    [self flushBuffer:YES only:NULL];
 }
 
 -(CGPoint)convertPOINTLToBase:(POINTL)point {
