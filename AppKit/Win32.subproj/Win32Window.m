@@ -39,16 +39,12 @@ static CGRect convertFrameFromWin32ScreenCoordinates(CGRect rect){
 }
 
 -(BOOL)isLayeredWindow {
-   if(_styleMask&NSDocModalWindowMask){
-   NSCLog("doc modal");
+   if(_styleMask&NSDocModalWindowMask)
     return TRUE;
-}
    
-   if(_styleMask==NSBorderlessWindowMask){
-      NSCLog("borderless");
-
+   if(_styleMask==NSBorderlessWindowMask)
     return TRUE;
-}
+
 /*
    if(!_isOpaque)
     return TRUE;
