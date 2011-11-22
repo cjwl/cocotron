@@ -78,8 +78,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setImage:(NSImage *)image {
-   [_cell setImage:image];
-   [self setNeedsDisplay:YES];
+	[_cell setImage:image];
+	[self setNeedsDisplay:YES];
+}
+
+-(void)setValuePath:(NSString *)path {
+	NSImage *image = [[[NSImage alloc] initWithContentsOfFile:path] autorelease];
+	[_cell setImage:image];
+	[self setNeedsDisplay:YES];
+}
+
+-(void)setValueURL:(NSURL *)url {
+	NSImage *image = [[[NSImage alloc] initWithContentsOfURL:url] autorelease];
+	[_cell setImage:image];
+	[self setNeedsDisplay:YES];
 }
 
 -(void)setImageAlignment:(NSImageAlignment)alignment {
