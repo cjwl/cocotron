@@ -221,7 +221,7 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
     LeaveCriticalSection(&sharingCriticalSection);
 
     if(check!=NULL){
-     check->window=CreateWindowEx(0,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,check->w,check->h,NULL,NULL,GetModuleHandle(NULL),NULL);
+     check->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,check->w,check->h,NULL,NULL,GetModuleHandle(NULL),NULL);
 
      SetEvent(pingCallerEvent);
     }
