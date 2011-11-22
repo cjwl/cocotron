@@ -89,8 +89,8 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
    
    if(message==WM_MOUSEACTIVATE)
     return MA_NOACTIVATE;
-
-//   if(message==WM_ACTIVATE)
+    
+ //  if(message==WM_ACTIVATE)
   //  return 1;
 
  //  if(message==WM_ERASEBKGND)
@@ -131,53 +131,86 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
     MSG msg;
     
     if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+        BOOL postToParent=NO;
+                
         switch(msg.message){
 
+            case WM_LBUTTONDOWN:
+            case WM_LBUTTONDBLCLK:
+                SetCapture(msg.hwnd);
+                postToParent=YES;
+                break;
+
+            case WM_LBUTTONUP:
+                ReleaseCapture();
+                postToParent=YES;
+                break;
+
+            case WM_MOUSEMOVE:
+                // flush all mouse moved
+                while(YES){
+                    MSG check;
+
+                    if(!PeekMessage(&check,msg.hwnd,0,0,PM_NOREMOVE))
+                        break;
+                                                
+                    if(check.message!=WM_MOUSEMOVE)
+                        break;
+                    
+                    // I suppose it is posssible this fails after a PM_NOREMOVE
+                    PeekMessage(&msg,msg.hwnd,0,0,PM_REMOVE);
+                }
+                postToParent=YES;
+                break;
+                
             case WM_KEYDOWN:
             case WM_SYSKEYDOWN:
             case WM_KEYUP:
             case WM_SYSKEYUP:
-            case WM_MOUSEMOVE:
-            case WM_LBUTTONDOWN:
-            case WM_LBUTTONDBLCLK:
-            case WM_LBUTTONUP:
             case WM_RBUTTONDOWN:
             case WM_RBUTTONDBLCLK:
             case WM_RBUTTONUP:
             case WM_MOUSEWHEEL:
-                if(GetProp(msg.hwnd,"parent")!=NULL){
-                    HWND parentHandle=GetProp(msg.hwnd,"parent");
-                    int parentX=GET_X_LPARAM(msg.lParam);
-                    int parentY=GET_Y_LPARAM(msg.lParam);
-                
-                    RECT child={0},parent={0};
-                    
-                    // There is no way to get a child's frame inside the parent, you have to get
-                    // them both in screen coordinates and do a delta
-                    // GetClientRect always returns 0,0 for top,left which makes it useless     
-                    GetWindowRect(msg.hwnd,&child);
-                    GetWindowRect(parentHandle,&parent);
-                    parentX+=child.left-parent.left;
-                    parentY+=child.top-parent.top;
-                    
-                    CGFloat top,left,bottom,right;
-
-                    Win32Window *parentWindow=GetProp(parentHandle,"Win32Window");
-                    
-                    CGNativeBorderFrameWidthsForStyle([parentWindow styleMask],&top,&left,&bottom,&right);
-
-                    parentX-=left;
-                    parentY-=top;
-                    LPARAM lParam=MAKELPARAM(parentX,parentY);
-                    PostMessage(parentHandle,msg.message,msg.wParam,lParam);
-                    break;
-                }
-                // fallthrough
+                postToParent=YES;
+                break;
                 
             default:
-                DispatchMessage(&msg);
                 break;
         }
+        
+        if(GetProp(msg.hwnd,"parent")==NULL)
+            postToParent=NO;
+            
+        if(!postToParent)
+            DispatchMessage(&msg);
+        else {
+            HWND parentHandle=GetProp(msg.hwnd,"parent");
+            int parentX=GET_X_LPARAM(msg.lParam);
+            int parentY=GET_Y_LPARAM(msg.lParam);
+        
+            RECT child={0},parent={0};
+            
+            // There is no way to get a child's frame inside the parent, you have to get
+            // them both in screen coordinates and do a delta
+            // GetClientRect always returns 0,0 for top,left which makes it useless     
+            GetWindowRect(msg.hwnd,&child);
+            GetWindowRect(parentHandle,&parent);
+            parentX+=child.left-parent.left;
+            parentY+=child.top-parent.top;
+            
+            CGFloat top,left,bottom,right;
+
+            Win32Window *parentWindow=GetProp(parentHandle,"Win32Window");
+            
+            CGNativeBorderFrameWidthsForStyle([parentWindow styleMask],&top,&left,&bottom,&right);
+
+            parentX-=left;
+            parentY-=top;
+            LPARAM lParam=MAKELPARAM(parentX,parentY);
+            PostMessage(parentHandle,msg.message,msg.wParam,lParam);
+            SwitchToThread();
+        }
+        
     }
 
     CGLContextObj check;
