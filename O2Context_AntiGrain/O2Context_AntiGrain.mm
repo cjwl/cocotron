@@ -14,7 +14,6 @@
 #include <agg_span_converter.h>
 
 #include <agg_image_accessors.h>
-#include <agg_pixfmt_rgb.h>
 #include <agg_span_image_filter_rgba.h>
 #include <agg_span_image_filter_rgb.h>
 
@@ -28,7 +27,8 @@ typedef enum {
 	kImageInterpolationNone,
 	kImageInterpolationBilinear,
 	kImageInterpolationBicubic,
-	kImageInterpolationLanczos
+	kImageInterpolationLanczos,
+	kImageInterpolationRepeat,
 } ImageInterpolationType;
 
 //#define DEBUG
@@ -65,7 +65,7 @@ template<class color_type> struct span_alpha_converter
 	
 	void prepare() {}
 	
-	void generate(color_type* span, int x, int y, unsigned len)
+	inline void generate(color_type* span, int x, int y, unsigned len)
 	{
 		if(m_alpha < 1.) {
 			if (m_premultiply) {
@@ -95,7 +95,7 @@ template<class color_type> struct span_color_converter
 	
 	void prepare() {}
 	
-	void generate(color_type* span, int x, int y, unsigned len)
+	inline void generate(color_type* span, int x, int y, unsigned len)
 	{
 		if (m_premultiply) {
 			do {
@@ -147,9 +147,9 @@ class context_renderer
 	
 	template<class blender_type> class context_renderer_helper : public context_renderer_helper_base
 	{
-		typedef agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> pixfmt_type;
+		typedef o2agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> pixfmt_type;
 		
-		typedef agg::pixfmt_rgba32 pixfmt_shadow_type;
+		typedef o2agg::pixfmt_rgba32 pixfmt_shadow_type;
 		
 		typedef agg::renderer_base<pixfmt_type> renderer_base;	
 		typedef agg::renderer_base<pixfmt_shadow_type> renderer_shadow;	
@@ -313,7 +313,7 @@ class context_renderer
 			typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
 			span_gen_type sg(ia, interpolator);
 			
-			pixelFormat->comp_op(agg::comp_op_src_over); // Always use src_over when copying the shadow
+			pixelFormat->comp_op(o2agg::comp_op_src_over); // Always use src_over when copying the shadow
 			agg::render_scanlines_aa(r, sl, *ren_base, sa, sg);
 		}
 		
@@ -395,14 +395,14 @@ class context_renderer
 	
 	
 	context_renderer_helper_base* helper;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_rgba> > rgba_helper;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_bgra> > bgra_helper;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_argb> > argb_helper;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_abgr> > abgr_helper;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_rgba> > rgba_helper_pre;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_bgra> > bgra_helper_pre;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_argb> > argb_helper_pre;
-	typedef class context_renderer_helper<agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_abgr> > abgr_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_rgba> > rgba_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_bgra> > bgra_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_argb> > argb_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_abgr> > abgr_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_rgba> > rgba_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_bgra> > bgra_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_argb> > argb_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_abgr> > abgr_helper_pre;
 	
 public:
 	bool premultiplied;
@@ -413,14 +413,14 @@ public:
 	}
 	template<class Order> void init(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingShadowBuffer)
 	{
-		typedef agg::comp_op_adaptor_rgba<agg::rgba8, Order> blender_type;
+		typedef o2agg::comp_op_adaptor_rgba<agg::rgba8, Order> blender_type;
 		premultiplied = false;
 		helper = new context_renderer_helper<blender_type>(renderingBuffer, renderingShadowBuffer);
 		helper->setPremultiply(premultiplied);
 	}
 	template<class Order> void init_pre(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingShadowBuffer)
 	{
-		typedef agg::comp_op_adaptor_rgba_pre<agg::rgba8, Order> blender_type;
+		typedef o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, Order> blender_type;
 		premultiplied = true;
 		helper = new context_renderer_helper<blender_type>(renderingBuffer, renderingShadowBuffer);
 		helper->setPremultiply(premultiplied);
@@ -549,14 +549,14 @@ class gradient_evaluator
 {
 public:
 	// We don't really care about the size - we just need it is big enough for what we draw
-	gradient_evaluator(O2Shading *shading, bool premultiply = true, unsigned size = 4096) :
-	m_premultiply(premultiply), m_shading(shading), m_size(size) {}
+	gradient_evaluator(O2FunctionRef function, bool premultiply = true, unsigned size = 4096) :
+	m_premultiply(premultiply), m_function(function), m_size(size), m_invsize(1./(size-1)) { }
 	
-	int size() const { return m_size; }
-	agg::rgba operator [] (unsigned v) const 
+	inline int size() const { return m_size; }
+	inline agg::rgba operator [] (unsigned v) const 
 	{
 		O2Float result[4] = { 1 };
-		O2FunctionEvaluate([m_shading function], v/float(m_size-1), result);
+		O2FunctionEvaluate(m_function, v*m_invsize, result);
 		agg::rgba color;
 		color.r = result[0];
 		color.g = result[1];
@@ -567,9 +567,10 @@ public:
 		return color;
 	}
 private:
-	O2Shading *m_shading;
+	O2FunctionRef m_function;
 	bool m_premultiply;
-	unsigned m_size;
+	float m_invsize;
+	int m_size;
 };
 
 
@@ -597,7 +598,7 @@ template <class Type> void render_scanlines_aa_solid(O2Context_AntiGrain *self, 
 
 template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGrain *self, O2Shading* shading, float x, float y, float width, float height)
 {
-	typedef agg::pixfmt_bgra32_pre pixfmt_type; // That should be the same pixel type as the context ?
+	typedef o2agg::pixfmt_bgra32_pre pixfmt_type; // That should be the same pixel type as the context ?
 	typedef pixfmt_type::color_type color_type; 
 	typedef gradient_evaluator color_func_type; 
 	typedef agg::span_interpolator_linear<> interpolator_type; 
@@ -618,7 +619,7 @@ template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGr
 	double y2=deviceEnd.y;
 	
 	gradient_func_type gradient_func; 
-	color_func_type color_func(shading, [self isPremultiplied]); 
+	color_func_type color_func([shading function], [self isPremultiplied]); 
 	
 	agg::trans_affine gradient_mtx; 
 	gradient_mtx.reset(); 
@@ -652,7 +653,7 @@ template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGr
 	render_scanlines_aa(self, span_allocator, span_gradient);
 }
 
-template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, agg::rendering_buffer &imageBuffer, agg::trans_affine transform, ImageInterpolationType interpolationQuality)
+template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, agg::rendering_buffer &imageBuffer, const agg::trans_affine &transform, ImageInterpolationType interpolationType)
 {
 	agg::span_allocator<typename pixfmt::color_type> sa;
 	pixfmt          img_pixf(imageBuffer);
@@ -663,7 +664,7 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 	interpolator_type interpolator(transform);
 
 	// Use a filter according to the wanted interpolation quality
-	switch (interpolationQuality) {
+	switch (interpolationType) {
 		case kImageInterpolationNone: {
 			typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
 			span_gen_type sg(ia, interpolator);
@@ -700,10 +701,21 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 			render_scanlines_aa(self, sa, sg);
 		}
 			break;
+		case kImageInterpolationRepeat: {
+			typedef agg::image_accessor_wrap<pixfmt, agg::wrap_mode_repeat, agg::wrap_mode_repeat> img_accessor_type;
+			img_accessor_type ia(img_pixf);
+			
+			agg::image_filter_bilinear filter_kernel;			
+			typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
+			span_gen_type sg(ia, interpolator);
+			
+			render_scanlines_aa(self, sa, sg);
+		}
+			break;
 	}
 }
 
-template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self, StrokeType &stroke, agg::trans_affine deviceMatrix) 
+template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self, StrokeType &stroke, const agg::trans_affine &deviceMatrix) 
 {
 	O2GState *gState=O2ContextCurrentGState(self);
 	
@@ -741,7 +753,7 @@ template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self
 	stroke.width(gState->_lineWidth);
 }
 
-template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *self, StrokeType &stroke, agg::rgba color,agg::trans_affine deviceMatrix) 
+template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *self, StrokeType &stroke, agg::rgba color, const agg::trans_affine &deviceMatrix) 
 {
 	agg::conv_transform<StrokeType, agg::trans_affine> trans(stroke, deviceMatrix);
 	[self rasterizer]->add_path(trans);
@@ -808,7 +820,7 @@ template <class StrokeType> void O2AGGStrokeToO2Path(O2Context_AntiGrain *self, 
 #ifdef ANTIGRAIN_PRESENT
 // If AntiGrain is not present it will just be a non-overriding subclass of the builtin context, so no problems
 
-static void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,agg::rgba color,agg::trans_affine deviceMatrix,agg::filling_rule_e fillingRule) {
+static void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,agg::rgba color, const agg::trans_affine &deviceMatrix,agg::filling_rule_e fillingRule) {
 	agg::conv_curve<agg::path_storage> curve(*(self->path));
 	agg::conv_transform<agg::conv_curve<agg::path_storage>, agg::trans_affine> trans(curve, deviceMatrix);
 	
@@ -820,7 +832,7 @@ static void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,agg::rgba col
 	render_scanlines_aa_solid(self,color);
 }
 
-static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg::trans_affine deviceMatrix) {	
+static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color, const agg::trans_affine &deviceMatrix) {	
 	agg::conv_curve<agg::path_storage> curve(*(self->path));
 	curve.approximation_scale(deviceMatrix.scale());
 	
@@ -847,7 +859,7 @@ static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color,agg
 	}
 }
 
-static void O2AGGReplaceStrokedPath(O2Context_AntiGrain *self,agg::trans_affine deviceMatrix) {	
+static void O2AGGReplaceStrokedPath(O2Context_AntiGrain *self, const agg::trans_affine &deviceMatrix) {	
 	agg::conv_curve<agg::path_storage> curve(*(self->path));
 	curve.approximation_scale(deviceMatrix.scale());
 	
@@ -878,7 +890,7 @@ static void O2AGGReplaceStrokedPath(O2Context_AntiGrain *self,agg::trans_affine 
 
 /* Transfer path from Onyx2D to AGG. Not a very expensive operation, tessellation, stroking and rasterization are the expensive pieces
  */
-static void buildAGGPathFromO2PathAndTransform(agg::path_storage *aggPath,O2PathRef path,O2AffineTransform xform){
+static void buildAGGPathFromO2PathAndTransform(agg::path_storage *aggPath,O2PathRef path, const O2AffineTransform &xform){
 	const unsigned char *elements=O2PathElements(path);
 	const O2Point       *points=O2PathPoints(path);
 	unsigned             i,numberOfElements=O2PathNumberOfElements(path),pointIndex;
@@ -930,7 +942,7 @@ static void buildAGGPathFromO2PathAndTransform(agg::path_storage *aggPath,O2Path
 	
 }
 
-static void transferPath(O2Context_AntiGrain *self,O2PathRef path,O2AffineTransform xform) {
+static void transferPath(O2Context_AntiGrain *self,O2PathRef path, const O2AffineTransform &xform) {
 	buildAGGPathFromO2PathAndTransform(self->path, path, xform);
 }
 
@@ -1064,7 +1076,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	renderer = new context_renderer();
 	O2BitmapInfo bitmapInfo = O2ImageGetBitmapInfo(surface);
 	renderer->context = self;
-
 	/*
 	 AlphaFirst => The Alpha channel is next to the Red channel
 	 (ARGB and BGRA are both Alpha First formats)
@@ -1213,35 +1224,35 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 {
 	// Onyx2D -> AGG blend mode conversion
 	//	O2Log("Setting blend mode to %d", blendMode);
-	enum agg::comp_op_e blendModeMap[28]={
-		agg::comp_op_src_over,
-		agg::comp_op_multiply,
-		agg::comp_op_screen,
-		agg::comp_op_overlay,
-		agg::comp_op_darken,
-		agg::comp_op_lighten,
-		agg::comp_op_color_dodge,
-		agg::comp_op_color_burn,
-		agg::comp_op_hard_light,
-		agg::comp_op_soft_light,
-		agg::comp_op_difference,
-		agg::comp_op_exclusion,
-		agg::comp_op_src_over, // Hue
-		agg::comp_op_src_over, // Saturation
-		agg::comp_op_src_over, // Color
-		agg::comp_op_src_over, // Luminosity
-		agg::comp_op_clear,
-		agg::comp_op_src,
-		agg::comp_op_src_in,
-		agg::comp_op_src_out,
-		agg::comp_op_src_atop,
-		agg::comp_op_dst_over,
-		agg::comp_op_dst_in,
-		agg::comp_op_dst_out,
-		agg::comp_op_dst_atop,
-		agg::comp_op_xor,
-		agg::comp_op_plus, // PlusDarker
-		agg::comp_op_minus, // MinusLighter
+	enum o2agg::comp_op_e blendModeMap[28]={
+		o2agg::comp_op_src_over,
+		o2agg::comp_op_multiply,
+		o2agg::comp_op_screen,
+		o2agg::comp_op_overlay,
+		o2agg::comp_op_darken,
+		o2agg::comp_op_lighten,
+		o2agg::comp_op_color_dodge,
+		o2agg::comp_op_color_burn,
+		o2agg::comp_op_hard_light,
+		o2agg::comp_op_soft_light,
+		o2agg::comp_op_difference,
+		o2agg::comp_op_exclusion,
+		o2agg::comp_op_src_over, // should be Hue
+		o2agg::comp_op_src_over, // should be Saturation
+		o2agg::comp_op_src_over, // should be Color
+		o2agg::comp_op_src_over, // should be Luminosity
+		o2agg::comp_op_clear,
+		o2agg::comp_op_src,
+		o2agg::comp_op_src_in,
+		o2agg::comp_op_src_out,
+		o2agg::comp_op_src_atop,
+		o2agg::comp_op_dst_over,
+		o2agg::comp_op_dst_in,
+		o2agg::comp_op_dst_out,
+		o2agg::comp_op_dst_atop,
+		o2agg::comp_op_xor,
+		o2agg::comp_op_plus_darker,
+		o2agg::comp_op_minus, // shoud be MinusLighter
 	};
 	O2GState    *gState=O2ContextCurrentGState(self);
 	
@@ -1295,13 +1306,11 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 						if (useMask == NO) {
 							// Fill the mask content on first use
 							useMask = YES;
-							
 							if (baseRendererAlphaMask[0] == NULL) {
 								[self createMaskRenderer];
 							}
 							baseRendererAlphaMask[0]->clear(agg::gray8(255, 255));
 						}
-						
 						// Switch masks
 						currentMask = !currentMask;
 						// Clear the new mask
@@ -1396,24 +1405,59 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	O2GState    *gState=O2ContextCurrentGState(self);
 	
 	transferPath(self,(O2PathRef)_path,O2AffineTransformInvert(gState->_userSpaceTransform));
-	
+
 	O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
 	
 	agg::trans_affine aggDeviceMatrix(deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty);
 
 	if(doFill || doEOFill) {
-		O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
-		const float *fillComps=O2ColorGetComponents(fillColor);
-		agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
-		if (doFill) {
-			O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_non_zero);
+		O2PatternRef pattern = O2ColorGetPattern(gState->_fillColor);
+		if (pattern) {
+			// Note: pattern support is incomplete :
+			// We don't make much use of the pattern phase, pattern color or pattern bounds
+			
+			// Create a context with the size of our pattern tile
+			O2Surface       *surface=[self createSurfaceWithWidth:[pattern xstep] height:[pattern ystep]];
+			O2Context_AntiGrain *context=[[self->isa alloc] initWithSurface:surface flipped:YES];
+			
+			// Draw the pattern tile
+			[pattern drawInContext:context];
+			O2ContextRelease(context);
+			
+			// Build the global transform from the pattern to the device
+			O2AffineTransform matrix = O2AffineTransformConcat( ([pattern matrix]), O2AffineTransformInvert(gState->_userSpaceTransform));
+			
+			agg::trans_affine globalTransform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+			globalTransform.multiply(aggDeviceMatrix);
+			globalTransform.invert();
+			
+			// Create an agg buffer from the Surface content
+			uint8_t *imgBytes = (uint8_t *)[surface pixelBytes];
+			agg::rendering_buffer imageBuffer(imgBytes, O2SurfaceGetWidth(surface) , O2SurfaceGetHeight(surface), O2SurfaceGetBytesPerRow(surface));
+
+			// Fill the current agg path with the repeated tile
+			agg::conv_curve<agg::path_storage> curve(*(self->path));
+			agg::conv_transform<agg::conv_curve<agg::path_storage>, agg::trans_affine> trans(curve, aggDeviceMatrix);
+			[self rasterizer]->add_path(trans);
+			renderer->premultiplied = YES;
+			O2AGGContextDrawImage<o2agg::pixfmt_bgra32_pre>(self, imageBuffer, globalTransform, kImageInterpolationRepeat);
+			
+			[surface release];
 		} else {
-			O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_even_odd);
+			O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
+			const float *fillComps=O2ColorGetComponents(fillColor);
+			agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
+			if (doFill) {
+				O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_non_zero);
+			} else {
+				O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_even_odd);
+			}
+			O2ColorRelease(fillColor);
 		}
-		O2ColorRelease(fillColor);
 	}
 	
 	if(doStroke){
+		// Note: pattern stroking not supported for now
 		O2ColorRef   strokeColor=O2ColorConvertToDeviceRGB(gState->_strokeColor);
 		const float *strokeComps=O2ColorGetComponents(strokeColor);
 		agg::rgba aggStrokeColor(strokeComps[0],strokeComps[1],strokeComps[2],strokeComps[3]);
@@ -1488,7 +1532,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			{
 				reducedScale = false;
 			}
-			if (compoundTransform[i] != 1.f && compoundTransform[i] != 0.f)
+			if (fabs(fabs(compoundTransform[i]) - 1.f) > 1e-6f  && fabs(compoundTransform[i]) > 1e-6f)
 			{
 				isUnity = false;
 			}
@@ -1537,45 +1581,45 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 				switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 					case kO2ImageAlphaPremultipliedLast:
 						renderer->premultiplied = YES;
-						O2AGGContextDrawImage<agg::pixfmt_rgba32_pre>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_rgba32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaLast:
 						renderer->premultiplied = NO;
-						O2AGGContextDrawImage<agg::pixfmt_rgba32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_rgba32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaPremultipliedFirst:
 						renderer->premultiplied = YES;
-						O2AGGContextDrawImage<agg::pixfmt_argb32_pre>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_argb32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaFirst:
 						renderer->premultiplied = NO;
-						O2AGGContextDrawImage<agg::pixfmt_argb32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_argb32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					default:
 						O2Log("UNKNOW ALPHA");
-						// Fallback to the default implementation - that means clipping, shadow, layers... won't work on this one
+						// Fallback to the default implementation - that means path clipping, shadow, layers... won't work well on this one
 						[super drawImage:image inRect:rect];
 				}
-				break;
+				break; 
 				// Little Endian is BG
 			case kO2BitmapByteOrderDefault:
 			case kO2BitmapByteOrder32Little:
 				switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 					case kO2ImageAlphaPremultipliedLast:
 						renderer->premultiplied = YES;
-						O2AGGContextDrawImage<agg::pixfmt_abgr32_pre>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_abgr32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaLast:
 						renderer->premultiplied = NO;
-						O2AGGContextDrawImage<agg::pixfmt_abgr32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_abgr32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaPremultipliedFirst:
 						renderer->premultiplied = YES;
-						O2AGGContextDrawImage<agg::pixfmt_bgra32_pre>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_bgra32_pre>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					case kO2ImageAlphaFirst:
 						renderer->premultiplied = NO;
-						O2AGGContextDrawImage<agg::pixfmt_bgra32>(self, imageBuffer, globalTransform, interpolationType);
+						O2AGGContextDrawImage<o2agg::pixfmt_bgra32>(self, imageBuffer, globalTransform, interpolationType);
 						break;
 					default:
 						// Fallback to the default implementation - that means clipping, shadow, layers... won't work on this one
@@ -1585,6 +1629,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 				break;
 			default:
 				O2Log("UNKNOW ORDER");
+				// Fallback to the default implementation - that means path clipping, shadow, layers... won't work well on this one
 				[super drawImage:image inRect:rect];
 				break;
 		}
@@ -1592,7 +1637,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	else
 	{
 		O2Log("Unsuported image format");
-		// Fallback to the default implementation - that means clipping, shadow, layers... won't work on this one
+		// Fallback to the default implementation - that means path clipping, shadow, layers... won't work well on this one
 		[super drawImage:image inRect:rect];
 	}
 }
@@ -1660,7 +1705,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	O2ContextRestoreGState(self); // Restore the clean state
 
 	// Draw the layer content into our surface
-	O2AffineTransform transform = O2ContextGetCTM(self);
 	O2ContextSaveGState(self);
 	// We want no transform here as the layer surface matches the context one
 	O2ContextConcatCTM(self, O2AffineTransformInvert(O2ContextGetCTM(self)));

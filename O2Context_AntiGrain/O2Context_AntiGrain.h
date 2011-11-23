@@ -17,7 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #ifdef ANTIGRAIN_PRESENT
 #include <agg_basics.h>
-#include <agg_pixfmt_rgba.h>
+#include "o2agg_pixfmt_rgba.h"
+
 #include <agg_pixfmt_gray.h>
 #include <agg_alpha_mask_u8.h>
 #include <agg_scanline_p.h>

@@ -16,6 +16,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		49B6AC24147BB10900429D06 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		49B6AC25147BB10900429D06 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.asm;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		FE5C82FA121D67BB0063E96F /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
@@ -87,6 +103,7 @@
 		494DA99F145C0C320001E307 /* agg_font_win32_tt.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = agg_font_win32_tt.mm; sourceTree = "<group>"; };
 		494DA9A8145C0D290001E307 /* libgdi32.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgdi32.a; path = "Cocotron/1.0/PlatformInterfaces/i386-mingw32msvc/lib/libgdi32.a"; sourceTree = DEVELOPER_DIR; };
 		494DA9C8145C114C0001E307 /* agg_font_win32_tt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = agg_font_win32_tt.h; sourceTree = "<group>"; };
+		49B6B97C147BE9E700429D06 /* o2agg_pixfmt_rgba.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = o2agg_pixfmt_rgba.h; sourceTree = "<group>"; };
 		8D576316048677EA00EA77CD /* O2Context_AntiGrain.cgContext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = O2Context_AntiGrain.cgContext; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE06B39A1430E8DC0071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
@@ -133,6 +150,7 @@
 				4931E7B913B1042600CEF331 /* partial_stack_blur.h */,
 				FE5C8312121D81470063E96F /* O2Context_AntiGrain.h */,
 				FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */,
+				49B6B97C147BE9E700429D06 /* o2agg_pixfmt_rgba.h */,
 				494DA99F145C0C320001E307 /* agg_font_win32_tt.mm */,
 				494DA9C8145C114C0001E307 /* agg_font_win32_tt.h */,
 				4920AE1B145EABE9007999E6 /* agg_font_cache_manager.h */,
@@ -217,6 +235,8 @@
 				8D576313048677EA00EA77CD /* Frameworks */,
 			);
 			buildRules = (
+				49B6AC24147BB10900429D06 /* PBXBuildRule */,
+				49B6AC25147BB10900429D06 /* PBXBuildRule */,
 				FEB99E5B138417F20072F784 /* PBXBuildRule */,
 				FE5C82FA121D67BB0063E96F /* PBXBuildRule */,
 			);
@@ -398,6 +418,7 @@
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(INSTALL_PATH)/AppKit.framework/Resources";
@@ -421,12 +442,17 @@
 		1DEB911F08733D790010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				SDKROOT = "cocotron-win32";
 			};
 			name = Debug;
 		};
 		1DEB912008733D790010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 3;
+				SDKROOT = "cocotron-win32";
 			};
 			name = Release;
 		};
