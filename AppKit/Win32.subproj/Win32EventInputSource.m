@@ -23,6 +23,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    MSG  msg;
 
    if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+        if(msg.message==WM_MOUSEMOVE){
+                // IMPORTANT: Since the OpenGL (child) window thread is pushing events through as fast
+                // as it receives them we need to coalesce mouse moved here, should anyway to prevent lag.
+                // flush all mouse moved
+                while(YES){
+                    MSG check;
+
+                    if(!PeekMessage(&check,msg.hwnd,0,0,PM_NOREMOVE))
+                        break;
+                                                
+                    if(check.message!=WM_MOUSEMOVE)
+                        break;
+                    
+                    // I suppose it is posssible this fails after a PM_NOREMOVE
+                    PeekMessage(&msg,msg.hwnd,0,0,PM_REMOVE);
+                }
+        }
+        
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
     if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg]){

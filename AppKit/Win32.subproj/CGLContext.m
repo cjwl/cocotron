@@ -796,10 +796,17 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
                 
                 Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
                 
-                if(![parentWindow isLayeredWindow]){
-                    SetParent(context->window,[parentWindow windowHandle]);
-                    SetProp(context->window,"parent",[parentWindow windowHandle]);
-                    ShowWindow(context->window,SW_SHOWNOACTIVATE);
+                if(parentWindow==nil){
+                        ShowWindow(context->window,SW_HIDE);
+                        SetParent(context->window,NULL);
+                        SetProp(context->window,"parent",NULL);
+                }
+                else {
+                    if(![parentWindow isLayeredWindow]){
+                        SetParent(context->window,[parentWindow windowHandle]);
+                        SetProp(context->window,"parent",[parentWindow windowHandle]);
+                        ShowWindow(context->window,SW_SHOWNOACTIVATE);
+                    }
                 }
             }
             break;
