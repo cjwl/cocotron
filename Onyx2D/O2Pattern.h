@@ -41,6 +41,10 @@ typedef struct {
 }
 
 -(O2Rect)bounds;
+-(O2AffineTransform)matrix;
+-(O2Float)xstep;
+-(O2Float)ystep;
+
 -(void)drawInContext:(O2ContextRef)context;
 
 O2PatternRef O2PatternCreate(void *info,O2Rect bounds,O2AffineTransform matrix,O2Float xStep,O2Float yStep,O2PatternTiling tiling,bool isColored,const O2PatternCallbacks *callbacks);
