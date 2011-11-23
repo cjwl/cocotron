@@ -85,7 +85,8 @@ NSString * const NSFontSlantTrait = @"NSFontSlantTrait";
 }
 
 -(NSFontSymbolicTraits)symbolicTraits {
-   return [[_attributes objectForKey:NSFontTraitsAttribute] unsignedIntValue];
+	NSDictionary* fontTraits = [_attributes objectForKey:NSFontTraitsAttribute];
+	return [[fontTraits objectForKey: NSFontSymbolicTrait] unsignedIntValue];
 }
 
 -(NSFontDescriptor *)fontDescriptorByAddingAttributes:(NSDictionary *)attributes {
@@ -131,7 +132,9 @@ NSString * const NSFontSlantTrait = @"NSFontSlantTrait";
 -(NSFontDescriptor *)fontDescriptorWithSymbolicTraits:(NSFontSymbolicTraits)traits {
    NSMutableDictionary *copy=[NSMutableDictionary dictionaryWithDictionary:_attributes];
 
-   [copy setObject:[NSNumber numberWithUnsignedInt:traits] forKey:NSFontTraitsAttribute];
+	NSMutableDictionary *traitsCopy = [NSMutableDictionary dictionaryWithDictionary: [_attributes objectForKey: NSFontTraitsAttribute]];
+	[traitsCopy setObject: [NSNumber numberWithUnsignedInt: traits] forKey: NSFontSymbolicTrait];
+   [copy setObject:traitsCopy forKey:NSFontTraitsAttribute];
 
    return [isa fontDescriptorWithFontAttributes:copy];
 }
