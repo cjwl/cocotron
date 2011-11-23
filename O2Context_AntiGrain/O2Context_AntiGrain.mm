@@ -548,28 +548,32 @@ template<> bool context_renderer::abgr_helper_pre::isABGR() { return true; };
 class gradient_evaluator
 {
 public:
-	// We don't really care about the size - we just need it is big enough for what we draw
 	gradient_evaluator(O2FunctionRef function, bool premultiply = true, unsigned size = 4096) :
-	m_premultiply(premultiply), m_function(function), m_size(size), m_invsize(1./(size-1)) { }
-	
+	m_size(size) { 
+		// Precalculate our colors
+		m_colors_lut = new agg::rgba[size];
+		float invSize = 1./size;
+		for (int i = 0; i < size; ++i) {
+			O2Float result[4] = { 1 };
+			O2FunctionEvaluate(function, i*invSize, result);
+			agg::rgba color;
+			color.r = result[0];
+			color.g = result[1];
+			color.b = result[2];
+			color.a = result[3];
+			if (premultiply)
+				color.premultiply();
+			m_colors_lut[i] = color;
+		}
+	}
+	~gradient_evaluator() { delete[] m_colors_lut; };
 	inline int size() const { return m_size; }
 	inline agg::rgba operator [] (unsigned v) const 
 	{
-		O2Float result[4] = { 1 };
-		O2FunctionEvaluate(m_function, v*m_invsize, result);
-		agg::rgba color;
-		color.r = result[0];
-		color.g = result[1];
-		color.b = result[2];
-		color.a = result[3];
-		if (m_premultiply)
-			color.premultiply();
-		return color;
+		return m_colors_lut[v];
 	}
 private:
-	O2FunctionRef m_function;
-	bool m_premultiply;
-	float m_invsize;
+	agg::rgba *m_colors_lut;
 	int m_size;
 };
 
@@ -618,8 +622,23 @@ template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGr
 	double x2=deviceEnd.x; 
 	double y2=deviceEnd.y;
 	
-	gradient_func_type gradient_func; 
-	color_func_type color_func([shading function], [self isPremultiplied]); 
+	float startValue = 0;
+	float endValue = 0;
+
+	if ([shading isAxial]) {
+		startValue = 0;
+		endValue = agg::calc_distance(x1,y1,x2,y2);
+	} else {
+		double scale = sqrt((deviceTransform.a * deviceTransform.a) + (deviceTransform.c * deviceTransform.c));
+		startValue = scale*[shading startRadius];
+		endValue = scale*[shading endRadius];
+	}
+	int gradientSize = ceilf(endValue - startValue);
+	if (gradientSize < 1) {
+		gradientSize = 1;
+	}
+
+	color_func_type color_func([shading function], [self isPremultiplied], gradientSize); 
 	
 	agg::trans_affine gradient_mtx; 
 	gradient_mtx.reset(); 
@@ -630,9 +649,8 @@ template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGr
 	
 	interpolator_type span_interpolator(gradient_mtx); 
 	span_allocator_type span_allocator;
-	float startValue = [shading isAxial]?0.:[shading startRadius];
-	float endValue = [shading isAxial]?sqrt((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1)):[shading endRadius];
-	span_gradient_type  span_gradient(span_interpolator, gradient_func, color_func, startValue, endValue); 
+	gradient_func_type gradient_func; 
+	span_gradient_type span_gradient(span_interpolator, gradient_func, color_func, startValue, endValue); 
 	
 	// The rasterizing/scanline stuff
 	//----------------
