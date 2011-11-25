@@ -371,7 +371,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	
     if((SHGetFileInfoW(pszShortcut, 0, &info, sizeof(info), SHGFI_ATTRIBUTES) == 0)) {
 	
-		NSLog(@"failed to get attributes for %S", pszShortcut);
+//		NSLog(@"failed to get attributes for %S", pszShortcut);
 		DWORD errNum=GetLastError();
 		
 		if(errNum != ERROR_ALREADY_EXISTS && error != nil) {
