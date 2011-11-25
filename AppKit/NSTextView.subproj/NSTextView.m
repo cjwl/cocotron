@@ -241,6 +241,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [_insertionPointTimer invalidate];
    [_insertionPointTimer release];
    [_selectedRanges release];
+   [_initialRanges release];
    [_selectedTextAttributes release];
    [_fieldEditorUndoManager release];
    [_undoString release];
@@ -394,12 +395,23 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     if([ranges count]==0)
      [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] ranges should not be empty",isa,_cmd];
      
+	// Save the initial selected ranges so we can use it when we're done with the selection change 
+	if (_initialRanges == nil) {
+		_initialRanges = [[self selectedRanges] copy];
+	}
+	
     if (stillSelecting == NO && [[ranges objectAtIndex:0] rangeValue].length==0)
         _selectionOrigin = [[ranges objectAtIndex:0] rangeValue].length;
 
    NSArray *oldRanges=[[_selectedRanges copy] autorelease];
    
-   [_selectedRanges setArray:[self _delegateChangeSelectionFromRanges:oldRanges toRanges:ranges]];
+	// Tell the world the selection will change when the selection change is done
+	if (!stillSelecting) {
+		ranges = [self _delegateChangeSelectionFromRanges:_initialRanges toRanges:ranges];
+		[_initialRanges release];
+		_initialRanges = nil;
+	}
+   [_selectedRanges setArray:ranges];
    
    _selectionAffinity=affinity;
    _selectionGranularity=NSSelectByCharacter;
@@ -410,10 +422,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 		[self _updateTypingAttributes];
 	}
 	
-	// Note: when mouse selecting, we'll never enter this part because either we have stillSelecting and update the selectedRange, or have
-	// stillSelecting == NO but then the range was already set by some previous call
-	if((!stillSelecting) && ![oldRanges isEqual:[self selectedRanges]]){
-		// Tell the world the selection changed
+	// Tell the world the selection changed when the selection change is done
+	if (!stillSelecting) {
 		[[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [oldRanges objectAtIndex:0] forKey: NSOldSelectedCharacterRange]];
 	}
 	
@@ -2429,7 +2439,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 	[self _configureTextContainerSize];
 }
 
--(void)insertText:(NSString *)string {
+-(void)insertText:(id)object {
 #if 0
     // nb I don't think I like this behavior. If this is un-ifdef'ed, any key will accept the current user
     // completion string and move the insertion point beyond the chosen completion. it looked OK in a regular
@@ -2443,6 +2453,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                            isFinal:YES];
     }
 #endif
+	// object can be either a string or an attributed string
+	// Both will be inserted using the current typing attributes
+	NSString *string = object;
+	if ([object isKindOfClass:[NSAttributedString class]]) {
+		string = [object string];
+	}
     if (_rangeForUserCompletion.location != NSNotFound) {
         [self endUserCompletion];
     }
@@ -2699,7 +2715,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(NSArray *)_delegateChangeSelectionFromRanges:(NSArray *)from toRanges:(NSArray *)to {
     NSArray *result=to;
-	
     if ([_delegate respondsToSelector:@selector(textView:willChangeSelectionFromCharacterRanges:toCharacterRanges:)])
      result=[_delegate textView: self willChangeSelectionFromCharacterRanges:from toCharacterRanges:to];
     else if([_delegate respondsToSelector:@selector(textView:willChangeSelectionFromCharacterRange:toCharacterRange:)]){
