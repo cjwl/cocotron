@@ -342,21 +342,28 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 
 -(void)_setSelectedValue:(id)value
 {
+	if (value && ![value isKindOfClass:[NSString class]]) {
+		// Cocoa actually accepts non string values
+		value = [NSString stringWithFormat:@"%@", value];
+	}
 	[self selectItemWithTitle:value];
 }
 
 - (void) bind:(NSString *)binding toObject:(id)observable withKeyPath:(NSString *)keyPath options:(NSDictionary *)options
 {
-	[self addObserver:self 
-		   forKeyPath:@"cell.menu.itemArray" 
-			  options:NSKeyValueObservingOptionPrior
-			  context:NSPopUpButtonBindingObservationContext];
-	
-	[self addObserver:self 
-		   forKeyPath:@"cell.selectedItem" 
-			  options:NSKeyValueObservingOptionPrior
-			  context:NSPopUpButtonBindingObservationContext];
-	
+	// No need to observe the same thing many times when we have several bindings
+	if (!_observerAdded) {
+		_observerAdded = YES;
+		[self addObserver:self 
+			   forKeyPath:@"cell.menu.itemArray" 
+				  options:NSKeyValueObservingOptionPrior
+				  context:NSPopUpButtonBindingObservationContext];
+		
+		[self addObserver:self 
+			   forKeyPath:@"cell.selectedItem" 
+				  options:NSKeyValueObservingOptionPrior
+				  context:NSPopUpButtonBindingObservationContext];
+	}
 	[super bind:binding toObject:observable withKeyPath:keyPath options:options];
 }
 
