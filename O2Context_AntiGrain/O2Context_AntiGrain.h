@@ -76,8 +76,6 @@ typedef agg::amask_no_clip_gray8 MaskType;
 	NSArray *savedClipPhases;
 	BOOL maskValid;
 	BOOL useMask;
-	
-	KFont *kfont;
 }
 
 - (BOOL)useMask;

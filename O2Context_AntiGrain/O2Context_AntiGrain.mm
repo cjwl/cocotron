@@ -33,6 +33,8 @@ typedef enum {
 
 //#define DEBUG
 
+static const int kKFontCacheSize = 100;
+
 #ifdef O2AGG_GLYPH_SUPPORT
 // They are shared by all the contexts
 static font_engine_type      *font_engine = 0;
@@ -313,8 +315,10 @@ class context_renderer
 			typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
 			span_gen_type sg(ia, interpolator);
 			
+			unsigned oldBlendMode = pixelFormat->comp_op();
 			pixelFormat->comp_op(o2agg::comp_op_src_over); // Always use src_over when copying the shadow
 			agg::render_scanlines_aa(r, sl, *ren_base, sa, sg);
+			pixelFormat->comp_op(oldBlendMode);
 		}
 		
 		template<class Ras, class S, class T> void render_scanlines(Ras &rasterizer, S &sl, T &type)
@@ -384,6 +388,9 @@ class context_renderer
 			color.opacity(color.opacity() * alpha );
 			if (premultiply)
 				color.premultiply();
+			if (color.opacity() >= 1. && pixelFormat->comp_op() == o2agg::comp_op_src_over) {
+				pixelFormat->comp_op(o2agg::comp_op_src);
+			}
 			agg::render_scanlines_aa_solid(rasterizer, sl, *ren_base, color);
 		}
 		
@@ -966,6 +973,36 @@ static void transferPath(O2Context_AntiGrain *self,O2PathRef path, const O2Affin
 
 #ifdef O2AGG_GLYPH_SUPPORT
 
+- (KTFont*)_cachedKTFontWithFont:(O2Font *)font name:(NSString *)name size:(float)size
+{
+	static NSMutableDictionary *kfontCache = nil;
+	static NSMutableArray *kfontLRU = nil;
+	if (kfontCache == nil) {
+		kfontCache = [[NSMutableDictionary alloc] initWithCapacity:kKFontCacheSize];
+	}
+	if (kfontLRU == nil) {
+		kfontLRU = [[NSMutableArray alloc] initWithCapacity:kKFontCacheSize];
+	}
+	NSString *key=[NSString stringWithFormat:@"%@-%f", name, size];
+	KTFont *kfont = [kfontCache objectForKey:key];
+	if (kfont) {
+		[kfontLRU removeObject:key];
+	}
+	// Move the font to the top of our LRU list
+	[kfontLRU insertObject:key atIndex:0];
+	if (kfont == nil) {
+		kfont = [[[KTFont alloc] initWithFont:font size:size] autorelease];
+		[kfontCache setObject:kfont forKey:key];
+		// Remove the LRU if we reach the max size
+		if ([kfontLRU count] > kKFontCacheSize) {
+			id lastKey = [kfontLRU lastObject];
+			[kfontCache removeObjectForKey:lastKey];
+			[kfontLRU removeLastObject];
+		}
+	}
+	return kfont;
+}
+
 unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs, const O2Size *advances, unsigned count)
 {
 	unsigned num_glyphs = 0;
@@ -1012,6 +1049,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		font_engine->flip_y(false);
 
 		[self rasterizer]->reset();
+
 		if(font_engine->create_font([fontName UTF8String], agg::glyph_ren_outline))
 		{
 			agg::conv_transform<conv_curve_type, agg::trans_affine> trans(curves, transformMatrix);
@@ -1021,19 +1059,13 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 				// Using a KTFont because we need to get the advancements the same way the layout manager is 
 				// getting them.
 				// Of course, it would be better if the layout manager could give us the advances it wants us to use...
-				
-				if(gState->_fontIsDirty){
-					O2GStateClearFontIsDirty(gState);
-					[self->kfont release];
-					self->kfont = [[KTFont alloc] initWithFont:font size:pointSize];
-				}
-				[self->kfont getAdvancements:defaultAdvances forGlyphs:glyphs count:count];
+				KTFont *kfont = [self _cachedKTFontWithFont:font name:fontName size:pointSize];
+				[kfont getAdvancements:defaultAdvances forGlyphs:glyphs count:count];
 				for(int i=0;i<count;i++){
 					defaultAdvances[i].width+=gState->_characterSpacing;
-				}				
+				}	
+				advances = defaultAdvances;
 			}
-			font_manager->precache(' ', 127);
-			
 			double x = 0;
 			double y = 0;
 			
@@ -1057,13 +1089,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 					}
 					
 					// increment pen position
-					if (advances) {
-						x += advances[i].width;
-						y += advances[i].height;
-					}  else {
-						x += defaultAdvances[i].width;
-						y += defaultAdvances[i].height;
-					}
+					x += advances[i].width;
+					y += advances[i].height;
 					
 					++num_glyphs;
 				}
@@ -1071,7 +1098,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			}
 			
 			render_scanlines_aa_solid(self,aggFillColor);
-			O2ContextConcatAdvancesToTextMatrix(self,advances?advances:defaultAdvances,num_glyphs);
+			O2ContextConcatAdvancesToTextMatrix(self,advances,num_glyphs);
 		}
 	}
 	return num_glyphs;
@@ -1157,8 +1184,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 
 -(void)dealloc {
 	[savedClipPhases release];
-	[kfont release];;
-
+	
 	delete renderer;
 	delete renderingBuffer;
 	delete renderingBufferShadow;
@@ -1391,7 +1417,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	
 	[self updateMask];
 	[self updateBlendMode];
-	
+
 	rasterizer->reset();
 	rasterizer->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
 	

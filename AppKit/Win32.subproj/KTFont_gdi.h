@@ -52,6 +52,8 @@ typedef struct CGGlyphMetricsSet {
    struct CGGlyphRangeTable *_glyphRangeTable;
    struct CGGlyphMetricsSet *_glyphInfoSet;
    BOOL _useMacMetrics;
+	Win32Font *_winFont;
+	HDC _dc;
 }
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc;
