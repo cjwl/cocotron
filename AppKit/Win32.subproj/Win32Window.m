@@ -802,40 +802,60 @@ i=count;
    return convertFrameFromWin32ScreenCoordinates(CGRectFromRECT(rect));
 }
 
--(void)_GetWindowRectDidSize:(BOOL)didSize {
-   CGRect frame=[self queryFrame];
-   
-    if(frame.size.width>0 && frame.size.height>0){
-    [_delegate platformWindow:self frameChanged:frame didSize:didSize];
-    }
+-(void)_GetWindowRectDidSize:(BOOL)didSize
+{
+	CGRect frame=[self queryFrame];
+	// Windows can come back with some crazy values for origin and
+	// size so we need to guard ourselves against them.
+	if (frame.origin.x <= -32000 || frame.origin.y <= -32000) {
+		frame.origin = [_delegate frame].origin;
+	}
+	if (didSize) {
+		NSSize minSize = [_delegate minSize];
+		NSSize maxSize = [_delegate maxSize];
+		if (frame.size.width < minSize.width) {
+			frame.size.width = minSize.width;
+		}
+		if (frame.size.width > maxSize.width) {
+			frame.size.width = maxSize.width;
+		}
+		if (frame.size.height < minSize.height) {
+			frame.size.height = minSize.height;
+		}
+		if (frame.size.height > maxSize.height) {
+			frame.size.height = maxSize.height;
+		}
+	}
+	[_delegate platformWindow:self frameChanged:frame didSize:didSize];
 }
 
--(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
-
-   if(contentSize.width>0 && contentSize.height>0){
-       NSSize checkSize=[self queryFrame].size;
-       
-       if(NSEqualSizes(checkSize,_frame.size))
-           return 0;
-       
-    [self invalidateContextsWithNewSize:checkSize];
-
-    [self _GetWindowRectDidSize:YES];
-
-    switch(_backingType){
-
-     case CGSBackingStoreRetained:
-     case CGSBackingStoreNonretained:
-      break;
-
-     case CGSBackingStoreBuffered:
-      [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
-      break;
-    }
-   }
-
-   return 0;
+-(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam
+{
+	CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
+	
+	if (contentSize.width > 0 && contentSize.height > 0){
+		NSSize checkSize=[self queryFrame].size;
+		
+		if(NSEqualSizes(checkSize,_frame.size))
+			return 0;
+		
+		[self invalidateContextsWithNewSize:checkSize];
+		
+		[self _GetWindowRectDidSize:YES];
+		
+	}
+	
+	switch(_backingType){
+			
+		case CGSBackingStoreRetained:
+		case CGSBackingStoreNonretained:
+			break;
+			
+		case CGSBackingStoreBuffered:
+			[_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
+			break;
+	}
+	return 0;
 }
 
 -(int)WM_MOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
