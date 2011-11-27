@@ -7,9 +7,21 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSInputSource.h>
+#import <windows.h>
 
 @interface Win32EventInputSource : NSInputSource {
 // move eventMask and eventQueue here?
 }
 
 @end
+
+// this is becoming messy, we need a window server which handles OpenGL and main windows
+
+#define COCOTRON_CHILD_PAINT WM_APP+1
+#define COCOTRON_CHILD_EVENT WM_APP+2
+
+typedef struct {
+    MSG  msg;
+    BYTE keyboardState[256];
+} Win32ChildMSG;
+

@@ -22,8 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL hadPeriodic=[[Win32Display currentDisplay] containsAndRemovePeriodicEvents];
    MSG  msg;
 
-   if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
-        if(msg.message==WM_MOUSEMOVE){
+   if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){        
+        
+        if(msg.message==COCOTRON_CHILD_EVENT) {
+            Win32ChildMSG *childMSG=(Win32ChildMSG *)msg.wParam;
+            
+            if(childMSG->msg.message==WM_MOUSEMOVE){
                 // IMPORTANT: Since the OpenGL (child) window thread is pushing events through as fast
                 // as it receives them we need to coalesce mouse moved here, should anyway to prevent lag.
                 // flush all mouse moved
@@ -33,23 +37,56 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     if(!PeekMessage(&check,msg.hwnd,0,0,PM_NOREMOVE))
                         break;
                                                 
-                    if(check.message!=WM_MOUSEMOVE)
+                    if(msg.message==COCOTRON_CHILD_EVENT){
+                        if(childMSG->msg.message==WM_MOUSEMOVE){
+                            free(childMSG); // we're discarding this event, so free the data
+                        
+                            // I suppose it is posssible this fails after a PM_NOREMOVE
+                            PeekMessage(&msg,msg.hwnd,0,0,PM_REMOVE);
+                            
+                            childMSG=(Win32ChildMSG *)msg.wParam;
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                    else {
                         break;
-                    
-                    // I suppose it is posssible this fails after a PM_NOREMOVE
-                    PeekMessage(&msg,msg.hwnd,0,0,PM_REMOVE);
+                    }
                 }
+            }
         }
         
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
-
-    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg]){
+    
+    BYTE keyState[256];
+    BYTE *keyboardState=NULL;
+    
+    if(msg.message==COCOTRON_CHILD_EVENT){
+        Win32ChildMSG *childMSG=(Win32ChildMSG *)msg.wParam;
+        
+        keyboardState=childMSG->keyboardState;
+        msg.message=childMSG->msg.message;
+        msg.wParam=childMSG->msg.wParam;
+        msg.lParam=childMSG->msg.lParam;
+    }
+    else {
+        if(GetKeyboardState(keyState))
+            keyboardState=keyState;
+    }
+    
+    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg keyboardState:keyboardState]){
      Win32Event *cgEvent=[Win32Event eventWithMSG:msg];
      NSEvent    *event=[[[NSEvent_CoreGraphics alloc] initWithDisplayEvent:cgEvent] autorelease];
 
      [[Win32Display currentDisplay] postEvent:event atStart:NO];
     }
-
+    
+    if(msg.message==COCOTRON_CHILD_EVENT){
+        Win32ChildMSG *childMSG=(Win32ChildMSG *)msg.wParam;
+        free(childMSG);
+    }
+    
     [pool release];
     return YES;
    }

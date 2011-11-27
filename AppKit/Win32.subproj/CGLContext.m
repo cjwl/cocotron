@@ -10,6 +10,8 @@
 #import <pthread.h>
 #import "Win32Window.h"
 #import <windowsx.h>
+#import "Win32EventInputSource.h"
+
 /* There is essentially only two ways to implement a CGLContext on Windows.
 
    1) A double buffered off-screen window, using glReadPixels on the back buffer. You can't use a single buffered window because the front buffer is typically considered on-screen and will more likely fail the pixel ownership test. You can't use the front buffer in a double buffered window for the same reasons.
@@ -87,8 +89,10 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
     return 0;
    }
    
-   if(message==WM_MOUSEACTIVATE)
-    return MA_NOACTIVATE;
+   // If we don't activate we can't receive keyboard events, if we don't receive keyboard events we can't send
+   // them to the parent
+ //  if(message==WM_MOUSEACTIVATE)
+  //  return MA_NOACTIVATE;
     
  //  if(message==WM_ACTIVATE)
   //  return 1;
@@ -132,9 +136,18 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
     
     if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
         BOOL postToParent=NO;
-                
+        
         switch(msg.message){
 
+            case WM_PAINT: {
+                    HWND parentHandle=GetProp(msg.hwnd,"parent");
+
+                    if(parentHandle!=NULL){
+                        PostMessage(parentHandle,COCOTRON_CHILD_PAINT,0,0);
+                    }
+                }
+                break;
+                
             case WM_LBUTTONDOWN:
             case WM_LBUTTONDBLCLK:
                 SetCapture(msg.hwnd);
@@ -147,19 +160,6 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
                 break;
 
             case WM_MOUSEMOVE:
-                // flush all mouse moved
-                while(YES){
-                    MSG check;
-
-                    if(!PeekMessage(&check,msg.hwnd,0,0,PM_NOREMOVE))
-                        break;
-                                                
-                    if(check.message!=WM_MOUSEMOVE)
-                        break;
-                    
-                    // I suppose it is posssible this fails after a PM_NOREMOVE
-                    PeekMessage(&msg,msg.hwnd,0,0,PM_REMOVE);
-                }
                 postToParent=YES;
                 break;
                 
@@ -167,6 +167,9 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
             case WM_SYSKEYDOWN:
             case WM_KEYUP:
             case WM_SYSKEYUP:
+                postToParent=YES;
+                break;
+                
             case WM_RBUTTONDOWN:
             case WM_RBUTTONDBLCLK:
             case WM_RBUTTONUP:
@@ -184,6 +187,8 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
         if(!postToParent)
             DispatchMessage(&msg);
         else {
+            Win32ChildMSG *childMSG=malloc(sizeof(Win32ChildMSG));
+            
             HWND parentHandle=GetProp(msg.hwnd,"parent");
             int parentX=GET_X_LPARAM(msg.lParam);
             int parentY=GET_Y_LPARAM(msg.lParam);
@@ -206,8 +211,13 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
 
             parentX-=left;
             parentY-=top;
-            LPARAM lParam=MAKELPARAM(parentX,parentY);
-            PostMessage(parentHandle,msg.message,msg.wParam,lParam);
+            
+            childMSG->msg.message=msg.message;
+            childMSG->msg.wParam=msg.wParam;
+            childMSG->msg.lParam=MAKELPARAM(parentX,parentY);
+            GetKeyboardState(childMSG->keyboardState);
+            
+            PostMessage(parentHandle,COCOTRON_CHILD_EVENT,childMSG,0);
             SwitchToThread();
         }
         

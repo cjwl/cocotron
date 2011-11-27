@@ -792,16 +792,18 @@ The values should be upgraded to something which is more generic to implement, p
    return keyCode;
 }
 
--(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
+-(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window keyboardState:(BYTE *)keyboardState {
    unichar        buffer[256],ignoringBuffer[256];
    NSString      *characters;
    NSString      *charactersIgnoringModifiers;
    BOOL           isARepeat=NO;
    unsigned short keyCode;
    int            bufferSize=0,ignoringBufferSize=0;
-   BYTE           keyState[256];
+   BYTE          *keyState=keyboardState;
 
-   GetKeyboardState(keyState);
+    if(keyState==NULL)
+        return NO;
+        
    bufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
 
    keyState[VK_CONTROL]=0x00;
@@ -994,11 +996,11 @@ The values should be upgraded to something which is more generic to implement, p
    return YES;
 }
 
--(unsigned)currentModifierFlags {
+-(unsigned)currentModifierFlagsWithKeyboardState:(BYTE *)keyboardState {
    unsigned result=0;
-   BYTE     keyState[256];
+   BYTE    *keyState=keyboardState;
 
-   if(!GetKeyboardState(keyState))
+   if(keyState==NULL)
     return result;
 
    if(keyState[VK_LSHIFT]&0x80)
@@ -1062,7 +1064,7 @@ NSArray *CGSOrderedWindowNumbers(){
 }
 
 
--(BOOL)postMSG:(MSG)msg {
+-(BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState {
    NSEventType  type;
    id           platformWindow=(id)GetProp(msg.hwnd,"Win32Window");
    NSWindow    *window=nil;
@@ -1189,7 +1191,7 @@ NSArray *CGSOrderedWindowNumbers(){
      
     [platformWindow adjustEventLocation:&location];
     
-    modifierFlags=[self currentModifierFlags];
+    modifierFlags=[self currentModifierFlagsWithKeyboardState:keyboardState];
 
     switch(type){
      case NSLeftMouseDown:
@@ -1206,7 +1208,7 @@ NSArray *CGSOrderedWindowNumbers(){
      case NSKeyDown:
      case NSKeyUp:
      case NSFlagsChanged:
-      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window];
+      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window keyboardState:keyboardState];
 
      case NSScrollWheel:
       return [self postScrollWheelMSG:msg type:type location:location modifierFlags:modifierFlags window:window];

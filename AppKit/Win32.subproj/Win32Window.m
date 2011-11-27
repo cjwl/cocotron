@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <QuartzCore/CAWindowOpenGLContext.h>
 #import <Onyx2D/O2Surface_DIBSection.h>
 #import <CoreGraphics/CGLPixelSurface.h>
+#import "Win32EventInputSource.h"
 
 #import "opengl_dll.h"
 
@@ -1169,6 +1170,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    return 0;
 }
 
+-(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
+    [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
+}
+
 -(int)WM_PAINT_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
    PAINTSTRUCT paintStruct;
    RECT        updateRECT;
@@ -1356,6 +1361,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
     case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
     case WM_PAINT:         return [self WM_PAINT_wParam:wParam lParam:lParam];
+    case COCOTRON_CHILD_PAINT:         return [self WM_APP1_wParam:wParam lParam:lParam];
     case WM_CLOSE:         return [self WM_CLOSE_wParam:wParam lParam:lParam];
     case WM_SETCURSOR:     return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
     case WM_SIZING:        return [self WM_SIZING_wParam:wParam lParam:lParam];
