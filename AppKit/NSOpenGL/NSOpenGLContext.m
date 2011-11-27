@@ -115,9 +115,13 @@ static inline void _clearCurrentContext(){
    GLint origin[2]={
     rect.origin.x,
     rect.origin.y };
-        
+   GLint hidden[1]= {
+    [_view isHidden] ? 1 : 0
+   };
+   
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,size);
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingOrigin,origin);
+   CGLSetParameter(_glContext,kCGLCPSurfaceHidden,hidden);
 }
 
 -(void)setView:(NSView *)view {

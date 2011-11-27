@@ -24,6 +24,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){        
         
+        if(msg.message==COCOTRON_CHILD_PAINT) {
+            // IMPORTANT: Since the OpenGL (child) window thread is pushing events through as fast
+            // as it receives them we need to coalesce paints here to prevent pile up.
+            while(YES){
+                MSG check;
+
+                if(!PeekMessage(&check,msg.hwnd,0,0,PM_NOREMOVE))
+                    break;
+                                            
+                if(check.message==COCOTRON_CHILD_PAINT){
+                    // I suppose it is posssible this fails after a PM_NOREMOVE
+                    PeekMessage(&msg,msg.hwnd,0,0,PM_REMOVE);
+                }
+                else {
+                    break;
+                }
+            }
+        }
+
         if(msg.message==COCOTRON_CHILD_EVENT) {
             Win32ChildMSG *childMSG=(Win32ChildMSG *)msg.wParam;
             
@@ -37,8 +56,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     if(!PeekMessage(&check,msg.hwnd,0,0,PM_NOREMOVE))
                         break;
                                                 
-                    if(msg.message==COCOTRON_CHILD_EVENT){
-                        if(childMSG->msg.message==WM_MOUSEMOVE){
+                    if(check.message==COCOTRON_CHILD_EVENT){
+                        Win32ChildMSG *checkChildMSG=(Win32ChildMSG *)check.wParam;
+                        
+                        if(checkChildMSG->msg.message==WM_MOUSEMOVE){
                             free(childMSG); // we're discarding this event, so free the data
                         
                             // I suppose it is posssible this fails after a PM_NOREMOVE

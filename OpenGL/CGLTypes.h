@@ -101,6 +101,7 @@ typedef enum {
     
     kCGLCPSurfaceBackingOrigin=503,
     kCGLCPSurfaceWindowNumber=504,
+    kCGLCPSurfaceHidden=505,
 
 } CGLContextParameter;
 

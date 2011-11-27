@@ -108,6 +108,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(void)viewDidHide {
+// reflect hidden setting
+    [_context setView:self];
+}
+
+-(void)viewDidUnhide {
+// reflect hidden setting
+    [_context setView:self];
+}
+
 - (void)lockFocus {
 	[super lockFocus];
 

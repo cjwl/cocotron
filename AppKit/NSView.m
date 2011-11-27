@@ -466,35 +466,37 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setHidden:(BOOL)flag {
-   flag=flag?YES:NO;
+    flag=flag?YES:NO;
 
-   if (_isHidden != flag)
-   {
-    invalidateTransform(self);
-      if ((_isHidden = flag))
-      {
-         id view=[_window firstResponder];
-         if ([view isKindOfClass:[NSView class]])
-            for (; view; view = [view superview])
-            {
-               if (self==view)
-               {
-                  [_window makeFirstResponder:[self nextValidKeyView]];
-                  break;
-               }
-            }
-      }
+    if (_isHidden != flag) {
+        invalidateTransform(self);
+        if ((_isHidden = flag)) {
+            id view=[_window firstResponder];
+            
+            if ([view isKindOfClass:[NSView class]])
+                for (; view; view = [view superview]) {
+                    if (self==view) {
+                        [_window makeFirstResponder:[self nextValidKeyView]];
+                        break;
+                    }
+                }
+        }
 
-      [[self superview] setNeedsDisplay:YES];
+        [[self superview] setNeedsDisplay:YES];
+      
+        if(_isHidden)
+            [self viewDidHide];
+        else
+            [self viewDidUnhide];
    }
 }
 
 -(void)viewDidHide {
-   NSUnimplementedMethod();
+    // do nothing?
 }
 
 -(void)viewDidUnhide {
-   NSUnimplementedMethod();
+    // do nothing?
 }
 
 -(BOOL)canBecomeKeyView {

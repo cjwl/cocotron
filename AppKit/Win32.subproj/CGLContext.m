@@ -55,6 +55,8 @@ struct _CGLContextObj {
    int              w,h;
    int              resizeBacking;
    GLint            opacity;
+   GLint            hidden;
+   GLint            inParent;
    CGLPixelSurface  *overlay;
    CGLPBufferObj    staticpBuffer;
    CGLPBufferObj    dynamicpBuffer;
@@ -143,6 +145,7 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
                     HWND parentHandle=GetProp(msg.hwnd,"parent");
 
                     if(parentHandle!=NULL){
+                        ValidateRect(msg.hwnd, NULL);
                         PostMessage(parentHandle,COCOTRON_CHILD_PAINT,0,0);
                     }
                 }
@@ -764,6 +767,44 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
    return kCGLNoError;
 }
 
+static BOOL shouldBeChildWindow(CGLContextObj context) {
+    Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
+    
+    if(parentWindow==nil)
+        return NO;
+    
+    if([parentWindow isLayeredWindow])
+        return NO;
+        
+    if(context->hidden)
+        return NO;
+    
+    return YES;
+}
+
+static void reflectChildWindowState(CGLContextObj context,GLint force) {
+    if(shouldBeChildWindow(context)){
+        if(!context->inParent || force){
+            context->inParent=TRUE;
+            
+            Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
+        
+            SetParent(context->window,[parentWindow windowHandle]);
+            SetProp(context->window,"parent",[parentWindow windowHandle]);
+            ShowWindow(context->window,SW_SHOWNOACTIVATE);
+        }
+    }
+    else {
+        if(context->inParent || force){
+            context->inParent=FALSE;
+            
+            ShowWindow(context->window,SW_HIDE);
+            SetParent(context->window,NULL);
+            SetProp(context->window,"parent",NULL);
+        }
+    }
+}
+
 CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,const GLint *value) {
 
    switch(parameter){
@@ -798,29 +839,23 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
             }
             break;
 
-        case kCGLCPSurfaceWindowNumber:
-            if(context->parentWindowNumber!=value[0]){
-                [[CGWindow windowWithWindowNumber:context->parentWindowNumber] removeCGLContext:context]; 
-                context->parentWindowNumber=value[0];
-                [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context];
-                
-                Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
-                
-                if(parentWindow==nil){
-                        ShowWindow(context->window,SW_HIDE);
-                        SetParent(context->window,NULL);
-                        SetProp(context->window,"parent",NULL);
+        case kCGLCPSurfaceWindowNumber:{
+                GLint didChange=(context->parentWindowNumber!=value[0]);
+            
+                if(didChange){
+                    [[CGWindow windowWithWindowNumber:context->parentWindowNumber] removeCGLContext:context]; 
+                    context->parentWindowNumber=value[0];
+                    [[CGWindow windowWithWindowNumber:context->parentWindowNumber] addCGLContext:context];
                 }
-                else {
-                    if(![parentWindow isLayeredWindow]){
-                        SetParent(context->window,[parentWindow windowHandle]);
-                        SetProp(context->window,"parent",[parentWindow windowHandle]);
-                        ShowWindow(context->window,SW_SHOWNOACTIVATE);
-                    }
-                }
+                reflectChildWindowState(context,didChange);
             }
             break;
-        
+
+        case kCGLCPSurfaceHidden:
+            context->hidden=value[0];
+            reflectChildWindowState(context,FALSE);
+            break;
+            
         default:
             NSUnimplementedFunction();
             break;
