@@ -400,65 +400,46 @@ static int resizeBackingIfNeeded(CGLContextObj context){
 }
 
  CGLError _CGLSetCurrentContextFromThreadLocal(int value){
-   CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
+    CGLContextObj context=TlsGetValue(cglThreadStorageIndex());
    
-   if(context==NULL)
-    opengl_wglMakeCurrent(NULL,NULL);
-   else {
-
-    
-    if(context->resizeBacking){          
-     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-     reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-     
-     resizeBackingIfNeeded(context);
-    }
-    
-    if(context->dynamicpBuffer==NULL) {
-#if 0
-     HDC dc=GetDC([[CGWindow windowWithWindowNumber:context->parentWindowNumber] windowHandle]);
-        opengl_wglMakeCurrent(dc,context->windowGLContext);
-        ReleaseDC([[CGWindow windowWithWindowNumber:context->parentWindowNumber] windowHandle],dc);
-        
-        glViewport(context->x,context->y,context->w,context->h);
-        glEnable(GL_SCISSOR_TEST);
-        glScissor(context->x,context->y,context->w,context->h);
-#else
-     opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-#endif
-       reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    }
+    if(context==NULL)
+        opengl_wglMakeCurrent(NULL,NULL);
     else {
-     int lost;
-#if 0
-     opengl_wglQueryPbufferARB(context->dynamicpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
+        if(context->resizeBacking){          
+            opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
      
-     if(lost)
-      NSLog(@"lost dynamic pBuffer %d",value);
-
-     opengl_wglQueryPbufferARB(context->staticpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
-     
-     if(lost)
-      NSLog(@"lost static pBuffer %d",value);
-#endif
-
-#if 0
-     if(contextHasMakeCurrentReadExtension(context))
-      opengl_wglMakeContextCurrentARB(context->dynamicpBuffer->dc,context->dynamicpBuffer->dc,context->staticpBuffer->hglrc);
-     else  
-#endif
-
-      opengl_wglMakeCurrent(context->dynamicpBuffer->dc,context->staticpBuffer->hglrc);
-      if(context->needsViewport){
-       glViewport(0,0,context->w,context->h);
-       context->needsViewport=NO;
-      }
-    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-    }
+            resizeBackingIfNeeded(context);
+        }
     
-   }
+        if(context->dynamicpBuffer==NULL) {
+            opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        }
+        else {
+            int lost;
+#if 0
+            opengl_wglQueryPbufferARB(context->dynamicpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
+     
+            if(lost)
+                NSLog(@"lost dynamic pBuffer %d",value);
+
+            opengl_wglQueryPbufferARB(context->staticpBuffer->pBuffer, WGL_PBUFFER_LOST_ARB, &lost);
+     
+            if(lost)
+                NSLog(@"lost static pBuffer %d",value);
+#endif
+
+            opengl_wglMakeCurrent(context->dynamicpBuffer->dc,context->staticpBuffer->hglrc);
+            if(context->needsViewport){
+                glViewport(0,0,context->w,context->h);
+                context->needsViewport=NO;
+            }
+            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
+        }
+    }
    
-   return kCGLNoError;
+    return kCGLNoError;
 }
 
 CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
@@ -767,7 +748,7 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
    return kCGLNoError;
 }
 
-static BOOL shouldBeChildWindow(CGLContextObj context) {
+static BOOL usesChildWindow(CGLContextObj context){
     Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
     
     if(parentWindow==nil)
@@ -775,7 +756,14 @@ static BOOL shouldBeChildWindow(CGLContextObj context) {
     
     if([parentWindow isLayeredWindow])
         return NO;
-        
+
+    return YES;
+}
+
+static BOOL shouldPutChildInParent(CGLContextObj context) {
+    if(!usesChildWindow(context))
+        return NO;
+
     if(context->hidden)
         return NO;
     
@@ -783,7 +771,7 @@ static BOOL shouldBeChildWindow(CGLContextObj context) {
 }
 
 static void reflectChildWindowState(CGLContextObj context,GLint force) {
-    if(shouldBeChildWindow(context)){
+    if(shouldPutChildInParent(context)){
         if(!context->inParent || force){
             context->inParent=TRUE;
             
@@ -971,14 +959,15 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 }
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
-    Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
-    if([parentWindow isLayeredWindow]){
-        [parentWindow flushCGLContext:context];
-    }
-    else {
+    if(usesChildWindow(context)){
         SwapBuffers(context->windowDC);
     }
-    
+    else {
+        Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
+        
+        [parentWindow flushCGLContext:context];
+    }
+
     return kCGLNoError;
 }
 
