@@ -141,3 +141,8 @@ typedef enum {
 
 @end
 
+@protocol NSLayoutManagerDelegate <NSObject>
+@optional
+- (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag;
+@end
+

@@ -41,6 +41,7 @@ typedef struct {
 // Forward declaration
 @interface NSLayoutManager()
 -(NSRange)validateGlyphsAndLayoutForGlyphRange:(NSRange)glyphRange;
+-(NSRange)_glyphRangeForTextContainer:(NSTextContainer *)container;
 @end
 
 @implementation NSLayoutManager
@@ -289,12 +290,19 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(NSRange)validateGlyphsAndLayoutForGlyphRange:(NSRange)glyphRange {
-   // DO: Validate glyphs in glyph cache for glyph range
+   // TODO: Validate glyphs in glyph cache for glyph range
 
    if(_layoutInvalid){
     NSResetRangeEntries(_glyphFragments);
     [_typesetter layoutGlyphsInLayoutManager:self startingAtGlyphIndex:0 maxNumberOfLineFragments:0 nextGlyphIndex:NULL];
     _layoutInvalid=NO;
+	   
+	   if ([_delegate respondsToSelector:@selector(layoutManager:didCompleteLayoutForTextContainer:atEnd:)]) {
+		   NSTextContainer *container = [_textContainers lastObject];
+		   NSRange containerRange = [self _glyphRangeForTextContainer:container];
+		   BOOL finished = NSMaxRange(containerRange) >= NSMaxRange(glyphRange);
+		   [_delegate layoutManager:self didCompleteLayoutForTextContainer:container atEnd:finished];
+	   }
    }
 
    return glyphRange;
