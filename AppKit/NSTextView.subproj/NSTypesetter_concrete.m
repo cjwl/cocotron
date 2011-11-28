@@ -160,7 +160,6 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				fragmentExit=YES;
 				break;
 			}
-			
 			glyphMaxWidth=_positionOfGlyph(_font,NULL,NSNullGlyph,glyph,&isNominal).x;
 		}
 		
@@ -288,7 +287,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			NSRect  usedRect=[_layoutManager lineFragmentUsedRectForGlyphAtIndex:range.location effectiveRange:NULL];
 			NSPoint location=[_layoutManager locationForGlyphAtIndex:range.location];
 			
-			backRect.size.height=_scanRect.size.height;
+			usedRect.size.height=backRect.size.height=_scanRect.size.height;
 			location.y+=_maxAscender;
 			
 			if(i==0) {
@@ -302,6 +301,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				backRect.origin.x+=alignmentDelta;
 				backRect.size.width-=alignmentDelta;
 			}
+			
 			if(i+1<count || !advanceScanRect || endOfString) {
 				[_layoutManager setLineFragmentRect:usedRect forGlyphRange:range usedRect:usedRect];
 			} else {
