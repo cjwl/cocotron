@@ -102,7 +102,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     title=@"Alert";
 
    [self setTitle:title];
-
+	[self setLevel: NSModalPanelWindowLevel];
+	
    viewFrame.origin.y=BOTTOM_MARGIN;
    viewFrame.origin.x=LEFT_MARGIN+floor((panelSize.width-buttonTotalWidth)/2);
    viewFrame.size.width=buttonWidth;

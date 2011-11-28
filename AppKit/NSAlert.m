@@ -403,6 +403,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
   NSRect frame=[_window frameRectForContentRect:contentRect];
 
+	// This stops the platform window from trying to impose a different size on us
+	// Which for some reason it wants to do.
+	[_window setMinSize: frame.size]; 
+	[_window setMaxSize: frame.size];
+	
   [_window setFrame:frame display:NO];
   _needsLayout=NO;
 }
@@ -440,6 +445,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSInteger)runModal {
+	[_window setLevel: NSModalPanelWindowLevel];
    [_window setStyleMask:NSTitledWindowMask];
    [self layoutIfNeeded];
    [_window setDefaultButtonCell:[[_buttons objectAtIndex:0] cell]];

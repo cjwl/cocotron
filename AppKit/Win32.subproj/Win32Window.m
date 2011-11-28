@@ -432,7 +432,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)bringToTop {
-	SetWindowPos(_handle,(_level>kCGNormalWindowLevel)?HWND_TOPMOST:HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+	HWND insertAfter = HWND_TOP;
+	if (_level > kCGNormalWindowLevel) { // Only two levels on Windows
+		insertAfter = HWND_TOPMOST;
+	}
+	SetWindowPos(_handle,insertAfter,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
 }
 
 -(void)makeTransparent {
@@ -442,9 +446,13 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 -(void)placeAboveWindow:(Win32Window *)other {
    HWND otherHandle=[other windowHandle];
 
-   if(otherHandle==NULL)
-    otherHandle=(_level>kCGNormalWindowLevel)?HWND_TOPMOST:HWND_TOP;
-
+	if(otherHandle==NULL) {
+		otherHandle = HWND_TOP;
+		if (_level > kCGNormalWindowLevel) { // Only two levels on Windows
+			otherHandle = HWND_TOPMOST;
+		}
+	}
+	
    SetWindowPos(_handle,otherHandle,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
 }
 
