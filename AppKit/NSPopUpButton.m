@@ -277,6 +277,14 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
     
     [[menu itemAtIndex:i] setValue:[values objectAtIndex:i] forKey:key];
    }
+	// Remove any additional unwanted item
+	while (numberOfItems > count) {
+		[menu removeItemAtIndex:--numberOfItems];
+	}
+	if ([self indexOfSelectedItem] >= count) {
+		[self selectItem:nil];
+	}
+	[self synchronizeTitleAndSelectedItem];
 }
 
 -(id)_contentValues
