@@ -156,6 +156,10 @@ static BOOL NSViewLayersEnabled=NO;
 }
 
 -(void)dealloc {
+
+	// Do this first?
+	[self _unbindAllBindings];
+
    _window=nil;
    [_menu release];
 
@@ -165,7 +169,6 @@ static BOOL NSViewLayersEnabled=NO;
    [_subviews release];
    [_draggedTypes release];
    [_trackingAreas release];
-   [self _unbindAllBindings];
    [_contentFilters release];
 
    if(_invalidRects!=NULL)
