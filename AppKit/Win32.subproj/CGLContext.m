@@ -141,6 +141,10 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
         
         switch(msg.message){
 
+//            case WM_SETCURSOR:
+//                postToParent=YES;
+//                break;
+                
             case WM_PAINT: {
                     HWND parentHandle=GetProp(msg.hwnd,"parent");
 
@@ -187,8 +191,9 @@ static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
         if(GetProp(msg.hwnd,"parent")==NULL)
             postToParent=NO;
             
-        if(!postToParent)
+        if(!postToParent) {
             DispatchMessage(&msg);
+        }
         else {
             Win32ChildMSG *childMSG=malloc(sizeof(Win32ChildMSG));
             

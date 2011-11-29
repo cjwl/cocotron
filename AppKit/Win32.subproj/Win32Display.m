@@ -1046,6 +1046,16 @@ The values should be upgraded to something which is more generic to implement, p
    return result;
 }
 
+-(NSUInteger)currentModifierFlags {
+    BYTE keyState[256];
+    BYTE *keyboardState=NULL;
+    
+    if(GetKeyboardState(keyState))
+        keyboardState=keyState;
+
+    return [self currentModifierFlagsWithKeyboardState:keyboardState];
+}
+
 NSArray *CGSOrderedWindowNumbers(){
    NSMutableArray *result=[NSMutableArray array];
 

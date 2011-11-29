@@ -46,6 +46,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if(msg.message==COCOTRON_CHILD_EVENT) {
             Win32ChildMSG *childMSG=(Win32ChildMSG *)msg.wParam;
             
+            #warning investigate the flags on mouse moved to see if we are dropping enter/exit ones
+            
             if(childMSG->msg.message==WM_MOUSEMOVE){
                 // IMPORTANT: Since the OpenGL (child) window thread is pushing events through as fast
                 // as it receives them we need to coalesce mouse moved here, should anyway to prevent lag.
