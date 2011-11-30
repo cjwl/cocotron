@@ -208,7 +208,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
      target=[self target];
     }
 
-	   [NSApp sendAction:action to:target from:item];
+	   [NSApp sendAction:action to:target from:self];
    }
 	
 }
