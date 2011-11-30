@@ -182,7 +182,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     if([self hasMainMenu]){
     NSRect frame=NSMakeRect(contentViewFrame.origin.x,NSMaxY(contentViewFrame),contentViewFrame.size.width,[NSMainMenuView menuHeight]);
 
-    _menu=[[NSApp mainMenu] copy];
+		// We all need to share the main menu!
+    _menu=[[NSApp mainMenu] retain];
 
     _menuView=[[NSMainMenuView alloc] initWithFrame:frame menu:_menu];
     [_menuView setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
@@ -2439,7 +2440,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [self _resizeWithOldMenuViewSize:oldSize];
    }
 
-   _menu=[menu copy];
+	[menu retain];
+	[_menu release];
+   _menu = menu;
 }
 
 -(NSMenu *)menu {

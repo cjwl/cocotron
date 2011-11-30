@@ -2282,7 +2282,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)setMenu:(NSMenu *)menu {
-   menu=[menu copy];
+   menu=[menu retain];
    [_menu release];
    _menu=menu;
 }
