@@ -208,8 +208,9 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
      target=[self target];
     }
 
-    [self sendAction:action to:target];
+	   [NSApp sendAction:action to:target from:item];
    }
+	
 }
 
 -(void)mouseDown:(NSEvent *)event {
@@ -235,7 +236,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
      target=[self target];
     }
 
-    [self sendAction:action to:target];
+	   [self sendAction:action to:target];
    }
 #endif
 }

@@ -81,12 +81,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-copyWithZone:(NSZone *)zone {
+	NSMenuItem *copy=NSCopyObject(self, 0, zone);
+	
+	copy->_title=[_title copyWithZone:zone];
+	copy->_atitle=[_atitle copyWithZone:zone];
+	copy->_submenu=[_submenu copyWithZone:zone];
+	copy->_keyEquivalent=[_keyEquivalent copyWithZone:zone];;
+	copy->_image=[_image retain];
+	copy->_onStateImage=[_onStateImage retain];
+	copy->_mixedStateImage=[_mixedStateImage retain];
+	copy->_offStateImage=[_offStateImage retain];
+	copy->_representedObject=[_representedObject retain];
+	return copy;
+}
+
 -(NSMenu *)menu {
    return _menu;
 }
 
 -(void)_setMenu:(NSMenu *)menu {
    _menu=menu;
+   _submenu.supermenu=menu;
 }
 
 -(NSString *)title {
@@ -254,9 +270,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setSubmenu:(NSMenu *)submenu {
-   submenu=[submenu copy];
+	submenu=[submenu retain];
    [_submenu release];
    _submenu=submenu;
+	[submenu setSupermenu:_menu];
 }
 
 -(void)setEnabled:(BOOL)flag {

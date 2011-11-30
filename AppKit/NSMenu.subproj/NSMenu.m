@@ -83,7 +83,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -copyWithZone:(NSZone *)zone {
-   return [self retain];
+	NSMenu *copy=NSCopyObject(self, 0, zone);
+	
+	copy->_title=[_title copyWithZone:zone];
+	copy->_name=[_name copyWithZone:zone];
+	copy->_itemArray = [[NSMutableArray alloc] init];
+	for (NSMenuItem *item in _itemArray) {
+		[copy addItem: [[item copyWithZone:zone] autorelease]];
+    }
+	
+	return copy;
 }
 
 -(NSMenu *)supermenu {
@@ -269,10 +278,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    for(i=0;i<count;i++){
     NSMenuItem *item=[_itemArray objectAtIndex:i];
-
+	   
     if(_autoenablesItems){
      BOOL enabled=NO;
-
 		if([item action]!=NULL){
 			id target=[item target];
 			

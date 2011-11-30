@@ -5,6 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSEvent.h>
@@ -205,10 +206,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeAllItems {
    [_menu removeAllItems];
 	_selectedIndex = -1;
+	[self synchronizeTitleAndSelectedItem];
 }
 
 -(void)removeItemAtIndex:(NSInteger)index {
    [_menu removeItemAtIndex:index];
+	[self synchronizeTitleAndSelectedItem];
 }
 
 -(void)removeItemWithTitle:(NSString *)title {
@@ -218,6 +221,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index {
    [_menu insertItemWithTitle:title action:NULL keyEquivalent:nil atIndex:index];
+   [self synchronizeTitleAndSelectedItem];
 }
 
 -(void)selectItem:(NSMenuItem *)item {
@@ -402,7 +406,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag {
-   NSPopUpWindow *window;
    NSPoint        origin=[controlView bounds].origin;
    
 #if 0
@@ -423,15 +426,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	     break;
    }
 #endif
-  
-   origin=[controlView convertPoint:origin toView:nil];
+	origin=[controlView convertPoint:origin toView:nil];
    origin=[[controlView window] convertBaseToScreen:origin];
 
-   window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
-     cellFrame.size.width,cellFrame.size.height)];
 	[[_menu delegate] menuNeedsUpdate: _menu];
 //	[[_menu delegate] menuWillOpen: _menu];
-   [window setMenu:_menu];
+	NSMenu *menu = _menu;
+	if (_pullsDown && [_menu numberOfItems]) {
+		// Don't display the first item for pullDowns controls
+		menu = [[_menu copy] autorelease];
+		[menu removeItemAtIndex:0];
+	}
+	NSPopUpWindow *window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
+														   cellFrame.size.width,cellFrame.size.height)];
+	[window setMenu:menu];
    if([self font]!=nil)
     [window setFont:[self font]];
 
@@ -440,7 +448,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else
     [window selectItemAtIndex:_selectedIndex];
 
-   NSInteger itemIndex=[window runTrackingWithEvent:event];
+	NSInteger itemIndex=[window runTrackingWithEvent:event];
 	if(itemIndex!=NSNotFound) {
 		[(NSPopUpButton*)controlView selectItemAtIndex:itemIndex];
 	}
