@@ -197,6 +197,11 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
     SEL         action=[item action];
     id          target=[item target];
 
+	   if (action != NULL) {
+		   // The item has an explicit action - so it's going to be the sender
+		   sender = item;
+	   }
+	   
     [_cell setState:![_cell state]];
     [self setNeedsDisplay:YES];
 
@@ -208,7 +213,7 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
      target=[self target];
     }
 
-	   [NSApp sendAction:action to:target from:self];
+	   [NSApp sendAction:action to:target from: sender];
    }
 	
 }
