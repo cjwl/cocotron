@@ -56,11 +56,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 @interface NSTextView()
 -(void)_updateTypingAttributes;
 -(void)_replaceCharactersInRange:(NSRange)range 
-					  withString:(NSString *)string 
+					  withString:(id)string 
 			 useTypingAttributes:(BOOL)useTypingAttributes;
 // Same as above, with useTypingAttributes = YES
 - (void) _replaceCharactersInRange: (NSRange)    range
-                        withString: (NSString *) string;
+                        withString: (id) string;
 
 - (BOOL) _delegateChangeTextInRange: (NSRange)    range
                   replacementString: (NSString *) string;
@@ -2027,7 +2027,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [self _replaceCharactersInRange: range withString: string useTypingAttributes: NO];
 }
 
--(void)_replaceCharactersInRange:(NSRange)range withString:(NSString *)string useTypingAttributes:(BOOL)useTypingAttributes {
+-(void)_replaceCharactersInRange:(NSRange)range withString:(id)string useTypingAttributes:(BOOL)useTypingAttributes {
   NSUndoManager * undoManager = [self undoManager];
   
   if (_firstResponderButNotEditingYet)
@@ -2088,8 +2088,16 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         }
     }
 	if (_isRichText && useTypingAttributes && [string length]) {
+		NSAttributedString *attrString = nil;
 		// Use the typing attributes for the inserted string
-		NSAttributedString *attrString = [[[NSAttributedString alloc] initWithString:string attributes:[self typingAttributes]] autorelease];
+		if ([string isKindOfClass: [NSAttributedString class]]) {
+			// We're going to merge the attributes
+			NSMutableAttributedString* mutableAttrString = [[string mutableCopy] autorelease];
+			[mutableAttrString addAttributes: [self typingAttributes] range: NSMakeRange(0, [string length])];
+			attrString = mutableAttrString;
+		} else {
+			attrString = [[[NSAttributedString alloc] initWithString:string attributes:[self typingAttributes]] autorelease];
+		}
 		[_textStorage replaceCharactersInRange:range withAttributedString:attrString];
 	} else {
 		// Just replace the string
@@ -2102,7 +2110,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
   [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
 }
 
--(void)_replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
+-(void)_replaceCharactersInRange:(NSRange)range withString:(id)string {
 	[self _replaceCharactersInRange:range withString:string useTypingAttributes: YES];
 }
 
@@ -2453,20 +2461,22 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                            isFinal:YES];
     }
 #endif
-	// object can be either a string or an attributed string
-	// Both will be inserted using the current typing attributes
-	NSString *string = object;
-	if ([object isKindOfClass:[NSAttributedString class]]) {
-		string = [object string];
-	}
     if (_rangeForUserCompletion.location != NSNotFound) {
         [self endUserCompletion];
     }
 
-    if(![self shouldChangeTextInRange:[self selectedRange] replacementString:string])
+	// object can be either a string or an attributed string
+	// Both will be inserted using the current typing attributes
+	NSString *replacementString = object;
+	if ([object isKindOfClass:[NSAttributedString class]]) {
+		replacementString = [object string];
+	}
+	
+    if([self shouldChangeTextInRange:[self selectedRange] replacementString: replacementString] == NO) {
         return;
-
-	[self _replaceCharactersInRange:[self selectedRange] withString:string];
+	}
+	
+	[self _replaceCharactersInRange:[self selectedRange] withString: object];
 	
    [self didChangeText];
    [self scrollRangeToVisible:[self selectedRange]];

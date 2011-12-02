@@ -141,7 +141,8 @@ static NSUInteger decodeFromData(NSData* data, NSUInteger offset, NSUInteger *va
 }
 
 -(NSString *)string {
-   return _string;
+	// This string is mutable - so be kind to unwary callers
+   return [[_string retain] autorelease];
 }
 
 -(NSDictionary *)attributesAtIndex:(NSUInteger)location
@@ -157,7 +158,8 @@ static NSUInteger decodeFromData(NSData* data, NSUInteger offset, NSUInteger *va
    if(effectiveRangep!=NULL && effectiveRangep->length==NSNotFound)
     effectiveRangep->length=[self length]-effectiveRangep->location;
 
-   return result;
+	// The string could be being mutated so these attributes could disappear on an unwary caller
+   return [[result retain] autorelease];
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
