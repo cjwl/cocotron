@@ -226,9 +226,16 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
     
    }
    
-	NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, _bindingPath);
 	
-   [_source setValue:value forKeyPath:_bindingPath];
+	
+	id currentValue = [_source valueForKeyPath: _bindingPath];
+	if (currentValue != value && [currentValue isEqual: value] == NO) {
+		// Only update the source if the value is actually different
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, _bindingPath);
+		[_source setValue:value forKeyPath:_bindingPath];
+	} else {
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"skipping setting value on _source: %@ forKeyPath: %@", _source, _bindingPath);
+	}
 
    if([self conditionallySetsEditable])
       [_source setEditable:isEditable];
