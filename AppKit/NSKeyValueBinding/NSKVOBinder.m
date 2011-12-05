@@ -133,6 +133,7 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
    BOOL      isEditable=YES;
    BOOL      containsPlaceholder=NO;
       
+	
    if(count>1)
     peersIncludingSelf=[peersIncludingSelf sortedArrayUsingSelector:@selector(compare:)];
 
@@ -140,7 +141,7 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
     allBinders[0]=self;
    else
     [peersIncludingSelf getObjects:allBinders];
-        
+
    for(i=0;i<count;i++){
     _NSBinder *binder=allBinders[i];
     id         dstValue=[[binder destination] valueForKeyPath:[binder keyPath]];
@@ -232,7 +233,18 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 	if (currentValue != value && [currentValue isEqual: value] == NO) {
 		// Only update the source if the value is actually different
 		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, _bindingPath);
-		[_source setValue:value forKeyPath:_bindingPath];
+		[self stopObservingChanges];
+		@try {
+			[_source setValue:value forKeyPath:_bindingPath];
+		}
+		@catch(id ex) {
+			if([self raisesForNotApplicableKeys]){
+				[self startObservingChanges];
+				[ex raise];
+			}
+		}
+		[self startObservingChanges];
+		
 	} else {
 		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"skipping setting value on _source: %@ forKeyPath: %@", _source, _bindingPath);
 	}
@@ -248,13 +260,7 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 
 -(void)syncUp
 {
-	@try {
-      [self writeDestinationToSource];
-   }
-   @catch(id ex) {
-      if([self raisesForNotApplicableKeys])
-			[ex raise];
-   }
+	[self writeDestinationToSource];
 }
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -267,25 +273,11 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 // If this isn't how it's supposed to be, there must be some other logic which prevents writing back values
 // which are read only
    
-   if(context==&NSKVOBinderChangeContext)
-	{
-   [self stopObservingChanges];
-
-      @try {
-         [self writeDestinationToSource];
-      }
-      @catch(id ex) {
-         if([self raisesForNotApplicableKeys]){
-            [self startObservingChanges];
-            [ex raise];
-
-         }
-      }
-    [self startObservingChanges];
-	}
-	else {
+   if(context==&NSKVOBinderChangeContext) {
+		[self writeDestinationToSource];
+	} else {
 		NSBindingDebugLog(kNSBindingDebugLogLevel3, @"punting to super");
-      [super observeValueForKeyPath:kp ofObject:object change:change context:context];
+		[super observeValueForKeyPath:kp ofObject:object change:change context:context];
     }
 }
 
