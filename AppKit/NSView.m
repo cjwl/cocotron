@@ -103,6 +103,7 @@ static BOOL NSViewLayersEnabled=NO;
     if([keyed containsValueForKey:@"NSTag"])
      _tag=[keyed decodeIntForKey:@"NSTag"];
      
+	// Subviews come in from the nib in front to back order
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
 	[_subviews makeObjectsPerformSelector:@selector(viewWillMoveToSuperview:) withObject:self];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
@@ -607,30 +608,32 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return nil;
 }
 
--(NSView *)hitTest:(NSPoint)point {
-   if(_isHidden)
-    return nil;
-   
-   point=[self convertPoint:point fromView:[self superview]];
+-(NSView *)hitTest:(NSPoint)point
+{
+	if(_isHidden) {
+		return nil;
+	}
+	
+	point = [self convertPoint:point fromView:[self superview]];
+	
+	if(NSMouseInRect(point, [self visibleRect], [self isFlipped]) == NO){
+		return nil;
+	} else {
+		// Views are in front to back order
+		NSArray *subviews = [self subviews];
+		int      count = [subviews count];
+		int		 i=0;
+	   
+		for (i = 0; i < count; i++) {
+			NSView *check = [subviews objectAtIndex: i];
+			NSView *hit = [check hitTest: point];
 
-   if(!NSMouseInRect(point,[self visibleRect],[self isFlipped])){
-    return nil;
-   }
-   else {
-    NSArray *subviews=[self subviews];
-    int      count=[subviews count];
-
-    while(--count>=0){ // front to back
-     NSView *check=[subviews objectAtIndex:count];
-     NSView *hit=[check hitTest:point];
-
-     if(hit!=nil){
-      return hit;
-     }
-    }
-
-    return self;
-   }
+			if (hit != nil) {
+				return hit;
+			}
+		}
+	}
+	return self;
 }
 
 -(NSPoint)convertPoint:(NSPoint)point fromView:(NSView *)viewOrNil {
@@ -1939,16 +1942,24 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    [self displayRect:[self visibleRect]];
 }
 
+- (NSEnumerator*)_subviewsInDisplayOrderEnumerator
+{
+	// Subviews are ordered front to back - to we need to go in reverse order to display them correctly
+	return [_subviews reverseObjectEnumerator];
+}
+
 -(void)_displayIfNeededWithoutViewWillDraw {
    if([self needsDisplay]){
     [self displayRect:unionOfInvalidRects(self)];
     clearNeedsDisplay(self);
    }
 
-   int i,count=[_subviews count];
+	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
 
-   for(i=0;i<count;i++) // back to front
-    [[_subviews objectAtIndex:i] _displayIfNeededWithoutViewWillDraw];
+	NSView* subView = nil;
+	while ((subView = [viewEnumerator nextObject])) {
+		[subView _displayIfNeededWithoutViewWillDraw];
+	}
 }
 
 -(void)displayIfNeeded {
@@ -1963,42 +1974,47 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    if([self needsDisplay])
     [self displayRect:rect];
 
-   int i,count=[_subviews count];
-
-   for(i=0;i<count;i++){ // back to front
-    NSView *child=[_subviews objectAtIndex:i];
-    NSRect converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
-   
-    if(!NSIsEmptyRect(converted))
-     [child displayIfNeededInRect:converted];
-   }
+	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+	
+	NSView* child = nil;
+	while ((child = [viewEnumerator nextObject])) {
+		NSRect converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);   
+		if(!NSIsEmptyRect(converted)) {
+		 [child displayIfNeededInRect:converted];
+		}
+	}
 }
 
 -(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {
-   int i,count=[_subviews count];
    
    rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
 
    if([self needsDisplay])
     [self displayRectIgnoringOpacity:rect];
 
-   for(i=0;i<count;i++){ // back to front
-    NSView *child=[_subviews objectAtIndex:i];
-    NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
+	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+	
+	NSView* child = nil;
+	while ((child = [viewEnumerator nextObject])) {
+		NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
    
-    if(!NSIsEmptyRect(converted))
-     [child displayIfNeededInRectIgnoringOpacity:converted];
+		if(!NSIsEmptyRect(converted)) {
+			[child displayIfNeededInRectIgnoringOpacity:converted];
+		}
    }
 }
 
 -(void)displayIfNeededIgnoringOpacity {
-   int i,count=[_subviews count];
 
    if([self needsDisplay])
     [self displayRectIgnoringOpacity:unionOfInvalidRects(self)];
 
-   for(i=0;i<count;i++) // back to front
-    [[_subviews objectAtIndex:i] displayIfNeededIgnoringOpacity];
+	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+	
+	NSView* child = nil;
+	while ((child = [viewEnumerator nextObject])) {
+		[child displayIfNeededIgnoringOpacity];
+	}
 }
 
 -(void)displayRect:(NSRect)rect {
@@ -2045,18 +2061,18 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
     [self unlockFocus];
 
 	   
-    NSInteger i,count=[_subviews count];
-    
-    for(i=0;i<count;i++){
-     NSView *view=[_subviews objectAtIndex:i];
-     NSRect  check=[self convertRect:rect toView:view];
+	   NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+	   
+	   NSView* child = nil;
+	   while ((child = [viewEnumerator nextObject])) {
+		   NSRect  check=[self convertRect:rect toView:child];
 
-     check=NSIntersectionRect(check,[view bounds]);
-     
-     if(!NSIsEmptyRect(check)){
-      [view displayRectIgnoringOpacity:check];
-     }
-    }
+		   check=NSIntersectionRect(check,[child bounds]);
+		   
+		   if(!NSIsEmptyRect(check)){
+			   [child displayRectIgnoringOpacity:check];
+		   }
+	   }
    }
 
    [_layerContext render];
