@@ -164,7 +164,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSInteger)selectedTag
 {
 	NSInteger selectedSegment = [_cell selectedSegment];
-	NSInteger tag = [_cell tagForSegment: selectedSegment];
+	NSInteger tag = -1;
+	if (selectedSegment != -1) {
+		tag = [_cell tagForSegment: selectedSegment];
+	}
    return tag;
 }
 
