@@ -1659,12 +1659,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setViewsNeedDisplay:(BOOL)flag {
-   _viewsNeedDisplay=flag;
-   if(flag){
+   if(flag && !_viewsNeedDisplay){
     // NSApplication does a _displayAllWindowsIfNeeded before every event, but there are some things which wont generate
     // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this
-    [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
-}
+	   
+	   [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil]; // Be sure we don't accumulate unneeded perform operations
+	   [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+   }
+	_viewsNeedDisplay=flag;
 }
 
 -(void)disableFlushWindow {
