@@ -103,7 +103,7 @@ static BOOL NSViewLayersEnabled=NO;
     if([keyed containsValueForKey:@"NSTag"])
      _tag=[keyed decodeIntForKey:@"NSTag"];
      
-	// Subviews come in from the nib in front to back order
+	// Subviews come in from the nib in back to front order
     [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
 	[_subviews makeObjectsPerformSelector:@selector(viewWillMoveToSuperview:) withObject:self];
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
@@ -619,13 +619,13 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 	if(NSMouseInRect(point, [self visibleRect], [self isFlipped]) == NO){
 		return nil;
 	} else {
-		// Views are in front to back order
+		// Subviews are ordered back to front so we need to go
+		// front to back in order to hit test correctly.
 		NSArray *subviews = [self subviews];
 		int      count = [subviews count];
-		int		 i=0;
 	   
-		for (i = 0; i < count; i++) {
-			NSView *check = [subviews objectAtIndex: i];
+		while (--count >= 0) {
+			NSView *check = [subviews objectAtIndex: count];
 			NSView *hit = [check hitTest: point];
 
 			if (hit != nil) {
@@ -1944,8 +1944,8 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
 - (NSEnumerator*)_subviewsInDisplayOrderEnumerator
 {
-	// Subviews are ordered front to back - to we need to go in reverse order to display them correctly
-	return [_subviews reverseObjectEnumerator];
+	// Subviews are ordered back to front - 
+	return [_subviews objectEnumerator];
 }
 
 -(void)_displayIfNeededWithoutViewWillDraw {
