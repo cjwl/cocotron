@@ -30,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		_maxValue=[keyed decodeDoubleForKey:@"NSMaxValue"];
 		_valueWraps=[keyed decodeBoolForKey:@"NSValueWraps"];
 		_autorepeat=[keyed decodeBoolForKey:@"NSAutorepeat"];
-		_increment=[keyed decodeBoolForKey:@"NSIncrement"];
+		_increment=[keyed decodeDoubleForKey:@"NSIncrement"];
 	}
 	else {
 		[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
