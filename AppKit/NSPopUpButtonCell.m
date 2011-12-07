@@ -141,6 +141,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   if(_selectedIndex<0)
    return nil;
    
+	if (_selectedIndex >= [_menu numberOfItems]) {
+		return nil;
+	}
+	
   return [_menu itemAtIndex:_selectedIndex];
 }
 
@@ -450,6 +454,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 	NSInteger itemIndex=[window runTrackingWithEvent:event];
 	if(itemIndex!=NSNotFound) {
+		if (_pullsDown) {
+			// remember that thing we did with the first menu item?
+			itemIndex++;
+		}
 		[(NSPopUpButton*)controlView selectItemAtIndex:itemIndex];
 	}
    [window close]; // release when closed=YES
