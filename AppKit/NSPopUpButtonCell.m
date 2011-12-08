@@ -215,6 +215,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeItemAtIndex:(NSInteger)index {
    [_menu removeItemAtIndex:index];
+	
+	if (_selectedIndex >= [_menu numberOfItems]) {
+		// Don't know what to select anymore...
+		_selectedIndex = -1;
+	}
 	[self synchronizeTitleAndSelectedItem];
 }
 
