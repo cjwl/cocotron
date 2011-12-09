@@ -214,48 +214,91 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
    [self setColor:[sender color]];
 }
 
--(void)mouseDown:(NSEvent *)event {
+-(void)mouseDown:(NSEvent *)event
+{
+	
+	if(![self isEnabled]) {
+		return;
+	}
+	
+	if ([self isBordered]) {
+		/*
+		 * Bordered color wells have interesting logic:
 
-   if(![self isEnabled])
-    return;
-
-   if ([self isBordered]) {        
-    BOOL    wasActive=[self isActive];
-    NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
-    BOOL    mouseInBorder=!NSMouseInRect(point,NSInsetRect(_bounds,8,8),[self isFlipped]);
-
-    if(mouseInBorder){
-     do {            
-      point=[self convertPoint:[event locationInWindow] fromView:nil];
-      mouseInBorder=!NSMouseInRect(point,NSInsetRect(_bounds,8,8),[self isFlipped]);
-
-      if (mouseInBorder) {
-       if (wasActive)
-        [self deactivate];
-       else
-        [self activate:NO];
-      }
-      else {
-       if (wasActive)
-        [self activate:NO];
-       else
-        [self deactivate];
-      }
-            
-      event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
-     } while ([event type] != NSLeftMouseUp);
-
-     if ([self isActive] == YES) {
-      if (!([event modifierFlags] & NSShiftKeyMask))
-       [self activate:YES];
-      [[NSColorPanel sharedColorPanel] setColor:[self color]];
-      [NSApp orderFrontColorPanel:self];
-     }
-     return;
-    }
-   }
-
-   [NSColorPanel dragColor:_color withEvent:event fromView:self];
+		   o If the user clicks and drags in the swatch then they
+				can drag a color out - and the well becomes disabled
+		 
+		   o If the user clicks on the border and drags then the control
+				activates or not depending on whether the mouse is within the
+				control or not
+		 
+		   o If the user simply clicks in the swatch or the border
+				the well is toggled between active and inactive states
+		 */
+		BOOL    wasActive=[self isActive];
+		NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
+		BOOL    mouseInBorder=!NSMouseInRect(point,NSInsetRect(_bounds,8,8),[self isFlipped]);
+		BOOL canStartDrag = !mouseInBorder;
+		if (mouseInBorder) {
+			// Toggle the initial state
+			if (wasActive)
+				[self deactivate];
+			else
+				[self activate:NO];
+			wasActive = !wasActive;
+		}
+		
+		BOOL shouldStartDrag = NO;
+		do {            
+			event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
+			point=[self convertPoint:[event locationInWindow] fromView:nil];
+			BOOL mouseInBounds=NSMouseInRect(point,_bounds,[self isFlipped]);
+			if ([event type] == NSLeftMouseDragged) {
+				if (canStartDrag) {
+					// Get dragging the color
+					shouldStartDrag = YES;
+				} else{
+					// Toggle the state based on where the cursor is
+					if (mouseInBounds) {
+						if (wasActive) {
+							[self activate: NO];
+						} else {
+							[self deactivate];
+						}
+					} else {
+						if (wasActive) {
+							[self deactivate];
+						} else {
+							[self activate:NO];
+						}
+					}
+				}
+			} else if (mouseInBounds) {
+				// Just toggle the state
+				if (wasActive) {
+					[self deactivate];
+				} else {
+					[self activate:NO];
+				}
+			}
+		} while ([event type] != NSLeftMouseUp && shouldStartDrag == NO);
+		
+		if (shouldStartDrag == NO) {
+			if ([self isActive] == YES) {
+				if (!([event modifierFlags] & NSShiftKeyMask)) {
+					[self activate:YES];
+				}
+				[[NSColorPanel sharedColorPanel] setColor:[self color]];
+				[NSApp orderFrontColorPanel:self];
+			}
+			return;
+		} else {
+			// We're going to drag a swatch so deactivate (like Cocoa)
+			[self deactivate];
+		}
+	}
+	
+	[NSColorPanel dragColor:_color withEvent:event fromView:self];
 }
 
 -(unsigned)draggingSourceOperationMaskForLocal:(BOOL)isLocal {
