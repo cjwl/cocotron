@@ -35,6 +35,11 @@ typedef enum {
 
 static const int kKFontCacheSize = 100;
 
+inline float fract(float f)
+{
+	return f - truncf(f);
+}
+
 #ifdef O2AGG_GLYPH_SUPPORT
 // They are shared by all the contexts
 static font_engine_type      *font_engine = 0;
@@ -59,6 +64,101 @@ static void O2Log(const char *format,...)
 
 // Multiply the alpha spans with a ratio - used as a transformer to render alpha for non-plain color
 typedef agg::scanline_u8_am<MaskType> scanline_mask_type;
+
+
+// render_scanlines_aa_solid with some added translation parameter - we've just added the "+dx, +dy" part
+template<class Rasterizer, class Scanline, 
+class BaseRenderer, class ColorT>
+void render_scanlines_aa_solid_translate(Rasterizer& ras, Scanline& sl, 
+							   BaseRenderer& ren, const ColorT& color, int dx, int dy)
+{
+	if(ras.rewind_scanlines())
+	{
+		// Explicitly convert "color" to the BaseRenderer color type.
+		// For example, it can be called with color type "rgba", while
+		// "rgba8" is needed. Otherwise it will be implicitly 
+		// converted in the loop many times.
+		//----------------------
+		typename BaseRenderer::color_type ren_color(color);
+		
+		sl.reset(ras.min_x(), ras.max_x());
+		while(ras.sweep_scanline(sl))
+		{
+			//render_scanline_aa_solid(sl, ren, ren_color);
+			//
+			// This code is equivalent to the above call (copy/paste). 
+			// It's just a "manual" optimization for old compilers,
+			// like Microsoft Visual C++ v6.0
+			//-------------------------------
+			int y = sl.y();
+			unsigned num_spans = sl.num_spans();
+			typename Scanline::const_iterator span = sl.begin();
+			
+			for(;;)
+			{
+				int x = span->x;
+				if(span->len > 0)
+				{
+					ren.blend_solid_hspan(x+dx, y+dy, (unsigned)span->len, 
+										  ren_color, 
+										  span->covers);
+				}
+				else
+				{
+					ren.blend_hline(x+dx, y+dy, (unsigned)(x - span->len - 1), 
+									ren_color, 
+									*(span->covers));
+				}
+				if(--num_spans == 0) break;
+				++span;
+			}
+		}
+	}
+}
+
+// render_scanlines_aa with some added translation parameter - we've just added the "+dx, +dy" part
+template<class Scanline, class BaseRenderer, 
+class SpanAllocator, class SpanGenerator> 
+void render_scanline_aa_translate(const Scanline& sl, BaseRenderer& ren, 
+						SpanAllocator& alloc, SpanGenerator& span_gen, int dx, int dy)
+{
+	int y = sl.y();
+	
+	unsigned num_spans = sl.num_spans();
+	typename Scanline::const_iterator span = sl.begin();
+	for(;;)
+	{
+		int x = span->x;
+		int len = span->len;
+		const typename Scanline::cover_type* covers = span->covers;
+		
+		if(len < 0) len = -len;
+		typename BaseRenderer::color_type* colors = alloc.allocate(len);
+		span_gen.generate(colors, x, y, len);
+		ren.blend_color_hspan(x + dx, y + dy, len, colors, 
+							  (span->len < 0) ? 0 : covers, *covers);
+		
+		if(--num_spans == 0) break;
+		++span;
+	}
+}
+
+// render_scanlines_aa with some added translation parameter
+template<class Rasterizer, class Scanline, class BaseRenderer, 
+class SpanAllocator, class SpanGenerator>
+void render_scanlines_aa_translate(Rasterizer& ras, Scanline& sl, BaseRenderer& ren, 
+						 SpanAllocator& alloc, SpanGenerator& span_gen, int dx, int dy)
+{
+	if(ras.rewind_scanlines())
+	{
+		sl.reset(ras.min_x(), ras.max_x());
+		span_gen.prepare();
+		while(ras.sweep_scanline(sl))
+		{
+			render_scanline_aa_translate(sl, ren, alloc, span_gen, dx, dy);
+		}
+	}
+}
 
 // Apply some alpha value to its input spans
 template<class color_type> struct span_alpha_converter
@@ -91,21 +191,22 @@ private:
 };
 
 // Replace spans with a fixed color, keeping the original opacity - used as a transformer to render shadow for non-plain color
-template<class color_type> struct span_color_converter
+class span_color_converter
 {
-	span_color_converter(color_type &color, bool premultiply) : m_color(color), m_premultiply(premultiply) {};
+public:
+	span_color_converter(agg::rgba8 &color, bool premultiply) : m_color(color), m_premultiply(premultiply) {};
 	
 	void prepare() {}
 	
-	inline void generate(color_type* span, int x, int y, unsigned len)
+	inline void generate(agg::rgba8* span, int x, int y, unsigned len)
 	{
 		if (m_premultiply) {
 			do {
 				// Replace the span color, with m_color * span opacity
 				if (span->opacity() > 0) {
-					color_type color = m_color;
+					agg::rgba8 color = m_color;
 					color.opacity(color.opacity()*span->opacity());
-					span->premultiply();
+					color.premultiply();
 					*span = color;
 				}
 				++span;
@@ -114,7 +215,7 @@ template<class color_type> struct span_color_converter
 			do {
 				// Replace the span color, with m_color * span opacity
 				if (span->opacity() > 0) {
-					color_type color = m_color;
+					agg::rgba8 color = m_color;
 					color.opacity(color.opacity()*span->opacity());
 					*span = color;
 				}
@@ -124,7 +225,7 @@ template<class color_type> struct span_color_converter
 	}		
 private:
 	bool m_premultiply;
-	color_type m_color;
+	agg::rgba8 m_color;
 };
 
 class context_renderer
@@ -255,9 +356,9 @@ class context_renderer
 				xmax += radius;
 				ymin -= radius;
 				ymax += radius;
+				
 				xmin = max(xmin,0);
 				ymin = max(ymin,0);
-
 				O2Log("Shadow: blur shadow - area : ((%.0f,%.0f),(%.0f,%.0f))", xmin, ymin, xmax - xmin, ymax - ymin);
 				// Stack blur - not really a gaussian one but much faster and good enough
 				// Blur only the current clipped area - no need to process pixels we won't see
@@ -269,15 +370,16 @@ class context_renderer
 				O2Log("Shadow: done blur");
 			}
 			
-			// Add the offset to the area to copy
-			Ras r;
-			xmin += shadowOffset.width;
-			xmax += shadowOffset.width;
-			ymin -= shadowOffset.height;
-			ymax -= shadowOffset.height;
+			// Add the offset to the area to copy - the translated drawing only take the rounded translation into account
+			// So add the fractionary part
+ 			Ras r;
+			xmin += fract(shadowOffset.width);
+			xmax += fract(shadowOffset.width);
+			ymin -= fract(shadowOffset.height);
+			ymax -= fract(shadowOffset.height);
 			xmin = max(xmin,0);
 			ymin = max(ymin,0);
-
+			
 			xmin = floorf(xmin);
 			ymin = floorf(ymin);
 			xmax = ceilf(xmax);
@@ -297,7 +399,8 @@ class context_renderer
 			typedef agg::span_interpolator_linear<agg::trans_affine> interpolator_type;
 			
 			agg::path_storage aggPath;
-			
+
+			O2Log("Shadow: copying to area : ((%.0f,%.0f),(%.0f,%.0f))", xmin, ymin, xmax - xmin, ymax - ymin);
 			// We'll use a path that cover the current used rect, and render that path using the shadow image
 			aggPath.move_to(xmin, ymin);
 			aggPath.line_to(xmax, ymin);
@@ -310,7 +413,7 @@ class context_renderer
 			
 			img_accessor_type ia(*pixelFormatShadow);
 			agg::trans_affine transform;
-			transform.translate(-shadowOffset.width, shadowOffset.height);  // Transform from the shadow to the original content
+			transform.translate(-fract(shadowOffset.width), fract(shadowOffset.height)); // Translate using the fract part of the shadow offset
 			interpolator_type interpolator(transform);
 			typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
 			span_gen_type sg(ia, interpolator);
@@ -333,18 +436,25 @@ class context_renderer
 			if (shadowColor.a > 0.) {
 				O2Log("%p:Drawing shadow Image", this);
 				ren_shadow->clear(agg::rgba(0, 0, 0, 0));
-				
 				// Draw using our shadow rendererer using a transformer to transform original colors by the shadow color * original color alpha (and global alpha)
 				agg::rgba8 color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * alpha);
-				span_color_converter<agg::rgba8> color_converter(color, premultiply);
-				agg::span_converter<T, span_color_converter<agg::rgba8> > converter(type, color_converter);
-				agg::render_scanlines_aa(rasterizer, sl, *ren_shadow, span_allocator, converter);
+				span_color_converter color_converter(color, premultiply);
+				agg::span_converter<T, span_color_converter > converter(type, color_converter);
+
+				// Render to the shadow location (rounded - we are working with pixels here) so we're sure we can properly blur the shadow
+				// We'll take into account the fractional part when copying the shadow to the final buffer
+				render_scanlines_aa_translate(rasterizer, sl, *ren_shadow, span_allocator, converter, truncf(shadowOffset.width), -truncf(shadowOffset.height));
 
 				// Get the used part of the rasterizer - we don't need to blur a bigger area than that
 				float x1 = rasterizer.min_x();
 				float x2 = rasterizer.max_x();
 				float y1 = rasterizer.min_y();
 				float y2 = rasterizer.max_y();
+				// Add the translation done during the rendering
+				x1 += truncf(shadowOffset.width);
+				x2 += truncf(shadowOffset.width);
+				y1 -= truncf(shadowOffset.height);
+				y2 -= truncf(shadowOffset.height);
 				
 				// Blur the shadow buffer
 				blur<Ras>(sl, x1, x2, y1, y2);
@@ -368,18 +478,26 @@ class context_renderer
 		{
 			if (shadowColor.a > 0.) {
 				ren_shadow->clear(agg::rgba(0, 0, 0, 0));
-				
+
 				// Draw using our shadow rendererer using our shadow color (and global alpha)
 				T color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * type.opacity() * alpha);
 				color.premultiply();
-				agg::render_scanlines_aa_solid(rasterizer, sl, *ren_shadow, color);
 				
+				// Render to the shadow location (rounded - we are working with pixels here) so we're sure we can properly blur the shadow
+				// We'll take into account the fractional part when copying the shadow to the final buffer
+				render_scanlines_aa_solid_translate(rasterizer, sl, *ren_shadow, color, truncf(shadowOffset.width), -truncf(shadowOffset.height));
+
 				// Get the used part of the rasterizer - we don't need to blur a bigger area than that
 				float x1 = rasterizer.min_x();
 				float x2 = rasterizer.max_x();
 				float y1 = rasterizer.min_y();
 				float y2 = rasterizer.max_y();
-
+				// Add the translation done during the rendering
+				x1 += truncf(shadowOffset.width);
+				x2 += truncf(shadowOffset.width);
+				y1 -= truncf(shadowOffset.height);
+				y2 -= truncf(shadowOffset.height);
+				
 				// Blur the shadow buffer
 				blur<Ras>(sl, x1, x2, y1, y2);
 			}
