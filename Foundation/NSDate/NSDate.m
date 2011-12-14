@@ -194,6 +194,11 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
      [self timeIntervalSinceReferenceDate]+seconds];
 }
 
+-dateByAddingTimeInterval:(NSTimeInterval)seconds {
+    return [[self class] dateWithTimeIntervalSinceReferenceDate:
+            [self timeIntervalSinceReferenceDate]+seconds];
+}
+
 -(NSCalendarDate *)dateWithCalendarFormat:(NSString *)format timeZone:(NSTimeZone *)timeZone {
     NSCalendarDate *date = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:[self timeIntervalSinceReferenceDate]];
 
