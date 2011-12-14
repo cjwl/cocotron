@@ -223,6 +223,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    return [_textStorage length];
 }
 
+- (void)_rollbackLatestFragment
+{
+	NSRangeEntriesRemoveEntryAtIndex(_glyphFragments, NSCountRangeEntries(_glyphFragments)- 1);
+}
+
 -(NSFont *)_fontForGlyphRange:(NSRange)glyphRange {
    NSRange       characterRange=[self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
    NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
@@ -741,11 +746,11 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 			}
 			
 			_appendRectToCache(self,fill);
-			
-			// Remove the range we just processed
-			remainder.length=NSMaxRange(remainder)-NSMaxRange(range);
-			remainder.location=NSMaxRange(range);
 		}
+		// Remove the range we just processed
+		remainder.length=NSMaxRange(remainder)-NSMaxRange(range);
+		remainder.location=NSMaxRange(range);
+		
 	} while(remainder.length>0);
 
 	*rectCount=_rectCacheCount;

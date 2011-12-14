@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)count;
 -(NSRange)rangeAtIndex:(unsigned)index;
+-(void)removeRangeAtIndex:(unsigned)index;
 -(void)addRange:(NSRange)range;
 -(void)removeAllRanges;
 

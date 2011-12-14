@@ -41,8 +41,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRange             _lineRange;
    NSRangeArray       *_glyphRangesInLine;
    NSGlyph             _previousGlyph;
-   NSRect              _scanRect;
+	NSRect              _scanRect;
+	NSRect _wordWrapScanRect;
+	NSRect              _fullLineRect;
    float               _maxAscender;
+	
+	NSRange				_wordWrapRange;
+	float				_wordWrapWidth;
+	NSGlyph				_wordWrapPreviousGlyph;
 }
 
 @end

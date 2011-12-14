@@ -41,6 +41,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _ranges[_count++]=range;
 }
 
+-(void)removeRangeAtIndex:(unsigned)index
+{
+	NSAssert2(index<_count,@"index %d beyond count %d",index,_count);
+	
+	_count--;
+	for (;index<_count;++index)
+		_ranges[index]=_ranges[index+1];
+}
+
 -(void)removeAllRanges {
    _count=0;
 }
