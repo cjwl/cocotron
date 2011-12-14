@@ -66,12 +66,17 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 
 	_scanRect = proposedRect;
 	
-	_scanRect.size.height = MAX(proposedRect.size.height, fragmentHeight);
+	float wantedHeight = MAX(proposedRect.size.height, fragmentHeight);
+	_scanRect.size.height = wantedHeight;
 	_scanRect = [_container lineFragmentRectForProposedRect:_scanRect sweepDirection:NSLineSweepRight movementDirection:NSLineMovesDown remainingRect:remainingRect];
 	if ([_glyphRangesInLine count] != 0 && _scanRect.origin.y > proposedRect.origin.y) {
 		// We don't want the rects to move down, if it's not the first one of the line
 		// We could use NSLineNoMove with lineFragmentRectForProposedRect but Cocoa doesn't do that
 		_scanRect = NSZeroRect;
+	}
+	if (_scanRect.size.height < wantedHeight) {
+		// Too small for our text
+		_scanRect = NSZeroRect;		
 	}
 	if (!NSEqualRects(_scanRect, NSZeroRect)) {
 		// Add left/right padding
