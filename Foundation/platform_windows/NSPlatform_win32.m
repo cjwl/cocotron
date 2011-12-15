@@ -183,6 +183,12 @@ static NSString *processName(){
    return convertBackslashToSlash([drive stringByAppendingPathComponent:path]);
 }
 
+-(NSString *)libraryDirectory {
+	NSString *appdata=[[[NSProcessInfo processInfo] environment] objectForKey:@"APPDATA"];
+	
+	return convertBackslashToSlash([appdata stringByAppendingPathComponent:@"CocotronLibrary"]);
+}
+
 -(NSString *)temporaryDirectory {
    NSString *result=[[[NSProcessInfo processInfo] environment] objectForKey:@"TEMP"];
 

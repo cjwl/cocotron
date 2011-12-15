@@ -36,6 +36,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 -(NSString *)userName;
 -(NSString *)fullUserName;
 -(NSString *)homeDirectory;
+-(NSString *)libraryDirectory;
 -(NSString *)temporaryDirectory;
 
 -(NSArray *)arguments;
