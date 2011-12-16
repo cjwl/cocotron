@@ -9,6 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSNumber.h>
+#import <Foundation/NSArray.h>
+
+#include <locale.h>
 
 NSString * const NSLocaleCountryCode=@"NSLocaleCountryCode";
 NSString * const NSLocaleLanguageCode=@"NSLocaleLanguageCode";
@@ -124,36 +127,46 @@ static NSLocale *_sharedCurrentLocale = nil;
 -initWithLocaleIdentifier:(NSString *)identifier {
    [super init];
 
-   NSString *separator, *language;
-   NSNumber *usesMetric;
+	NSArray *parts = [identifier componentsSeparatedByString:@"_"];
+	NSString *language = [parts objectAtIndex:0];
+	NSString *country = nil;
+	if (parts.count > 1) {
+		country = [parts objectAtIndex:1];
+	} else {
+		country = identifier;
+	}
 
-   if ([identifier isEqualToString:@"de_DE"])
-   {
-      separator = @",";
-      language  = @"German";
-   }
-
-   else if ([identifier isEqualToString:@"pt_BR"])
-   {
-      separator = @",";
-      language  = @"pt_BR";
-   }
-
-   else
-   {
-      separator = @".";
-      language  = @"English";
-   }
-   
-   // FIXME: This is wrong in that it is using the current locales value, not the identified one
-   usesMetric=[NSNumber numberWithBool:NSCurrentLocaleIsMetric()];
-   
-   _locale = [[NSDictionary allocWithZone:NULL] initWithObjectsAndKeys:identifier, NSLocaleIdentifier,
-                                                          separator, NSLocaleDecimalSeparator,
-                                                           language, NSLocaleLanguageCode,
-                                                           usesMetric, NSLocaleUsesMetricSystem,
-                                                            nil];
-   return self;
+	NSMutableDictionary *localeInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									   identifier, NSLocaleIdentifier,
+									   language, NSLocaleLanguageCode,
+									   country, NSLocaleCountryCode,
+									   nil
+									   ];
+	
+	if([[self class] respondsToSelector:@selector(_platformLocaleAdditionalDescriptionForIdentifier:)]) {
+		// Use any platform specific method to fill the locale info if one is defined
+		NSDictionary *info = [[self class] performSelector:@selector(_platformLocaleAdditionalDescriptionForIdentifier:) withObject:identifier];
+		[localeInfo addEntriesFromDictionary:info];
+	} else {
+		// Else use setlocale & localeconv to try to get some locale info
+		char *currentLocale = setlocale(LC_ALL, NULL);
+		if (setlocale(LC_ALL, [identifier UTF8String]) == NULL) {
+			identifier = @"en_US";
+		}
+		struct lconv *conv = localeconv();
+		
+		// FIXME: This is wrong in that it is using the current locales value, not the identified one
+		NSNumber *usesMetric=[NSNumber numberWithBool:NSCurrentLocaleIsMetric()];
+		
+		[localeInfo setObject:[NSString stringWithUTF8String:conv->decimal_point] forKey: NSLocaleDecimalSeparator];
+		[localeInfo setObject:[NSString stringWithUTF8String:conv->currency_symbol] forKey: NSLocaleCurrencySymbol];
+		[localeInfo setObject:usesMetric forKey: NSLocaleUsesMetricSystem];
+		
+		// Restore the initial locale
+		setlocale(LC_ALL, currentLocale);
+	}
+	_locale = [[NSDictionary allocWithZone:NULL] initWithDictionary:localeInfo];
+	return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -183,4 +196,8 @@ static NSLocale *_sharedCurrentLocale = nil;
    return 0;
 }
 
+-(NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@:%p %@>", [self class], self, _locale];
+}
 @end
