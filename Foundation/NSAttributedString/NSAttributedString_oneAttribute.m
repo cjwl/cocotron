@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(range!=NULL)
     *range=NSMakeRange(0,[_string length]);
 
-   return _attributes;
+	return [[_attributes retain] autorelease];
 }
 
 -initWithString:(NSString *)string attributes:(NSDictionary *)attributes {
