@@ -316,7 +316,7 @@ id NSApp=nil;
    int i,count=[_windows count];
 
    [_mainMenu autorelease];
-   _mainMenu=[menu copy];
+   _mainMenu=[menu retain];
 
    for(i=0;i<count;i++){
     NSWindow *window=[_windows objectAtIndex:i];

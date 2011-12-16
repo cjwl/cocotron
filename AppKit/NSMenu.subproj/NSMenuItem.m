@@ -191,8 +191,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setTitle:(NSString *)title {
+	title=[title copy];
     [_title release];
-    _title=[title copy];
+    _title=title;
 }
 
 -(void)setAttributedTitle:(NSAttributedString *)title {
