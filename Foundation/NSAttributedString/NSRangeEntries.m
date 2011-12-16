@@ -251,6 +251,11 @@ static inline void removeEntryAtIndex(NSRangeEntries *self,NSUInteger index){
     self->entries[index]=self->entries[index+1];
 }
 
+void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self,NSUInteger index)
+{
+	removeEntryAtIndex(self, index);
+}
+
  void NSRangeEntriesExpandAndWipe(NSRangeEntries *self,NSRange range,NSInteger delta) {
    NSInteger  count=self->count;
    NSUInteger max=NSMaxRange(range);
