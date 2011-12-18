@@ -1187,7 +1187,10 @@ NSArray *CGSOrderedWindowNumbers(){
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
-    if(msg.hwnd!=[platformWindow windowHandle]){
+
+    BOOL childWindow=(msg.hwnd!=[platformWindow windowHandle]);
+    
+    if(childWindow){
      RECT child={0},parent={0};
 
 // There is no way to get a child's frame inside the parent, you have to get
@@ -1195,11 +1198,12 @@ NSArray *CGSOrderedWindowNumbers(){
 // GetClientRect always returns 0,0 for top,left which makes it useless     
      GetWindowRect(msg.hwnd,&child);
      GetWindowRect([platformWindow windowHandle],&parent);
+
      location.x+=child.left-parent.left;
      location.y+=child.top-parent.top;
     }
      
-    [platformWindow adjustEventLocation:&location];
+    [platformWindow adjustEventLocation:&location childWindow:childWindow];
     
     modifierFlags=[self currentModifierFlagsWithKeyboardState:keyboardState];
 

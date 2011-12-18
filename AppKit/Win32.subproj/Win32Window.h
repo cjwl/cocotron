@@ -96,9 +96,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSPoint)convertPOINTLToBase:(POINTL)point;
 -(NSPoint)mouseLocationOutsideOfEventStream;
 
--(void)adjustEventLocation:(NSPoint *)location;
+-(void)adjustEventLocation:(NSPoint *)location childWindow:(BOOL)childWindow;
 
 -(void)sendEvent:(CGEvent *)event;
+
+-(int)WM_SETCURSOR_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;
+-(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;   
 
 @end
 

@@ -15,13 +15,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-// this is becoming messy, we need a window server which handles OpenGL and main windows
-
-#define COCOTRON_CHILD_PAINT WM_APP+1
-#define COCOTRON_CHILD_EVENT WM_APP+2
-
-typedef struct {
-    MSG  msg;
-    BYTE keyboardState[256];
-} Win32ChildMSG;
-

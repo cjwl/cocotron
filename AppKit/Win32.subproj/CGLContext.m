@@ -50,6 +50,7 @@ struct _CGLPBufferObj {
 struct _CGLContextObj {
    GLuint           retainCount;
    CRITICAL_SECTION lock; // This must be a recursive lock.
+   HWND             parent;
    HWND             window;
    int              x,y;
    int              w,h;
@@ -86,21 +87,23 @@ static DWORD cglThreadStorageIndex(){
 }
 
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
-   if(message==WM_PAINT){    
-    ValidateRect(handle, NULL);
-    return 0;
-   }
-   
-   // If we don't activate we can't receive keyboard events, if we don't receive keyboard events we can't send
-   // them to the parent
- //  if(message==WM_MOUSEACTIVATE)
-  //  return MA_NOACTIVATE;
-    
- //  if(message==WM_ACTIVATE)
-  //  return 1;
 
- //  if(message==WM_ERASEBKGND)
-   // return 1;
+    if(message==WM_PAINT){    
+        Win32Window *parentWindow=GetProp(handle,"Win32Window");
+
+        ValidateRect(handle, NULL);
+
+        return [parentWindow WM_APP1_wParam:wParam lParam:lParam];
+    }
+
+    if(message==WM_SETCURSOR){
+        Win32Window *parentWindow=GetProp(handle,"Win32Window");
+
+        return [parentWindow WM_SETCURSOR_wParam:wParam lParam:lParam];
+    }
+    
+    if(message==WM_ACTIVATE)
+        return 0;
         
    return DefWindowProc(handle,message,wParam,lParam);
 }
@@ -119,147 +122,11 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
 
  */
 CRITICAL_SECTION requestCriticalSection;
-CRITICAL_SECTION sharingCriticalSection;
 
-static CGLContextObj callerContext=NULL;
-static HANDLE pingThreadEvent=NULL;
-static HANDLE pingCallerEvent=NULL;
-
-static DWORD WINAPI openGLWindowThread(LPVOID lpParameter ) {
-
-   do {
-    HANDLE objects[1];
-    
-    objects[0]=pingThreadEvent;
-    
-    MsgWaitForMultipleObjects(1,objects,FALSE,INFINITE,QS_ALLINPUT);
-    
-    MSG msg;
-    
-    if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
-        BOOL postToParent=NO;
-        
-        switch(msg.message){
-
-//            case WM_SETCURSOR:
-//                postToParent=YES;
-//                break;
-                
-            case WM_PAINT: {
-                    HWND parentHandle=GetProp(msg.hwnd,"parent");
-
-                    if(parentHandle!=NULL){
-                        ValidateRect(msg.hwnd, NULL);
-                        PostMessage(parentHandle,COCOTRON_CHILD_PAINT,0,0);
-                    }
-                }
-                break;
-                
-            case WM_LBUTTONDOWN:
-            case WM_LBUTTONDBLCLK:
-                SetCapture(msg.hwnd);
-                postToParent=YES;
-                break;
-
-            case WM_LBUTTONUP:
-                ReleaseCapture();
-                postToParent=YES;
-                break;
-
-            case WM_MOUSEMOVE:
-                postToParent=YES;
-                break;
-                
-            case WM_KEYDOWN:
-            case WM_SYSKEYDOWN:
-            case WM_KEYUP:
-            case WM_SYSKEYUP:
-                postToParent=YES;
-                break;
-                
-            case WM_RBUTTONDOWN:
-            case WM_RBUTTONDBLCLK:
-            case WM_RBUTTONUP:
-            case WM_MOUSEWHEEL:
-                postToParent=YES;
-                break;
-                
-            default:
-                break;
-        }
-        
-        if(GetProp(msg.hwnd,"parent")==NULL)
-            postToParent=NO;
-            
-        if(!postToParent) {
-            DispatchMessage(&msg);
-        }
-        else {
-            Win32ChildMSG *childMSG=malloc(sizeof(Win32ChildMSG));
-            
-            HWND parentHandle=GetProp(msg.hwnd,"parent");
-            int parentX=GET_X_LPARAM(msg.lParam);
-            int parentY=GET_Y_LPARAM(msg.lParam);
-        
-            RECT child={0},parent={0};
-            
-            // There is no way to get a child's frame inside the parent, you have to get
-            // them both in screen coordinates and do a delta
-            // GetClientRect always returns 0,0 for top,left which makes it useless     
-            GetWindowRect(msg.hwnd,&child);
-            GetWindowRect(parentHandle,&parent);
-            parentX+=child.left-parent.left;
-            parentY+=child.top-parent.top;
-            
-            CGFloat top,left,bottom,right;
-
-            Win32Window *parentWindow=GetProp(parentHandle,"Win32Window");
-            
-            CGNativeBorderFrameWidthsForStyle([parentWindow styleMask],&top,&left,&bottom,&right);
-
-            parentX-=left;
-            parentY-=top;
-            
-            childMSG->msg.message=msg.message;
-            childMSG->msg.wParam=msg.wParam;
-            childMSG->msg.lParam=MAKELPARAM(parentX,parentY);
-            GetKeyboardState(childMSG->keyboardState);
-            
-            PostMessage(parentHandle,COCOTRON_CHILD_EVENT,childMSG,0);
-            SwitchToThread();
-        }
-        
-    }
-
-    CGLContextObj check;
-    
-    EnterCriticalSection(&sharingCriticalSection);
-    check=callerContext;
-    callerContext=NULL;
-    LeaveCriticalSection(&sharingCriticalSection);
-
-    if(check!=NULL){
-     check->window=CreateWindowEx(WS_EX_TOOLWINDOW,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,check->w,check->h,NULL,NULL,GetModuleHandle(NULL),NULL);
-
-     SetEvent(pingCallerEvent);
-    }
-    
-   } while(1);
-   
-   return 0;
-}
 
 static void createWindowForContext(CGLContextObj context){
-    EnterCriticalSection(&requestCriticalSection);
-    
-    EnterCriticalSection(&sharingCriticalSection);
-    callerContext=context;
-    LeaveCriticalSection(&sharingCriticalSection);
-    
-    SetEvent(pingThreadEvent);
-    WaitForSingleObject(pingCallerEvent,INFINITE);
-    
-    LeaveCriticalSection(&requestCriticalSection);
+    context->parent=CreateWindowEx(WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,NULL,NULL,GetModuleHandle(NULL),NULL);
+    context->window=CreateWindowEx(WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,"CGLWindow","",WS_CHILD|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,context->parent,NULL,GetModuleHandle(NULL),NULL);
 }
 
 static void initializeRequest(){
@@ -295,14 +162,6 @@ void CGLInitializeIfNeeded(){
      NSLog(@"RegisterClass failed %s %d",__FILE__,__LINE__);
      
     registerWindowClass=TRUE;
-    
-    InitializeCriticalSection(&sharingCriticalSection);
-    
-    pingThreadEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
-    pingCallerEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
-    
-    CreateThread(NULL,0,openGLWindowThread,NULL,0,NULL);
-
    }
    LeaveCriticalSection(&requestCriticalSection);
 }
@@ -369,7 +228,7 @@ static int resizeBackingIfNeeded(CGLContextObj context){
    
       /* If we're using a Pbuffer we don't want the window large because it consumes resources */
 
-    if(context->staticpBuffer==NULL){
+    if(context->dynamicpBuffer==NULL){
         GLint x=context->x;
         GLint y=context->y;
         GLint w=context->w;
@@ -784,6 +643,7 @@ static void reflectChildWindowState(CGLContextObj context,GLint force) {
         
             SetParent(context->window,[parentWindow windowHandle]);
             SetProp(context->window,"parent",[parentWindow windowHandle]);
+            SetProp(context->window,"Win32Window",parentWindow);
             ShowWindow(context->window,SW_SHOWNOACTIVATE);
         }
     }
@@ -792,8 +652,9 @@ static void reflectChildWindowState(CGLContextObj context,GLint force) {
             context->inParent=FALSE;
             
             ShowWindow(context->window,SW_HIDE);
-            SetParent(context->window,NULL);
+            SetParent(context->window,context->parent);
             SetProp(context->window,"parent",NULL);
+            SetProp(context->window,"Win32Window",NULL);
         }
     }
 }

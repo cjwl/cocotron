@@ -1084,14 +1084,16 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    return [self convertPOINTLToBase:winPoint];
 }
 
--(void)adjustEventLocation:(CGPoint *)location {
-   CGFloat top,left,bottom,right;
+-(void)adjustEventLocation:(CGPoint *)location childWindow:(BOOL)childWindow {
+    if(!childWindow){
+        CGFloat top,left,bottom,right;
        
-   CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
-   location->x+=left;
-   location->y+=top;
-   
-   location->y=(_frame.size.height-1)-location->y;
+        CGNativeBorderFrameWidthsForStyle([self styleMask],&top,&left,&bottom,&right);
+        location->x+=left;
+        location->y+=top;
+    } 
+    
+    location->y=(_frame.size.height-1)-location->y;
 }
 
 -(void)sendEvent:(CGEvent *)eventX {
@@ -1234,10 +1236,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(int)WM_SETCURSOR_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   if([_delegate platformWindowSetCursorEvent:self])
-    return 0;
+    if([_delegate platformWindowSetCursorEvent:self])
+        return 0;
 
-   return DefWindowProc(_handle,WM_SETCURSOR,wParam,lParam);
+    return DefWindowProc(_handle,WM_SETCURSOR,wParam,lParam);
 }
 
 -(int)WM_SIZING_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
@@ -1361,7 +1363,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
     case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
     case WM_PAINT:         return [self WM_PAINT_wParam:wParam lParam:lParam];
-    case COCOTRON_CHILD_PAINT:         return [self WM_APP1_wParam:wParam lParam:lParam];
     case WM_CLOSE:         return [self WM_CLOSE_wParam:wParam lParam:lParam];
     case WM_SETCURSOR:     return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
     case WM_SIZING:        return [self WM_SIZING_wParam:wParam lParam:lParam];
