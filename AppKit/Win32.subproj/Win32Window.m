@@ -892,7 +892,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             opengl_wglMakeContextCurrentARB(dc,CGLGetDC(_surfaces[i]),_hglrc);
 
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-#if 1
+
             glBindTexture(GL_TEXTURE_2D, _textureIds[i]);						
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
@@ -939,17 +939,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);            
-#else            
-            glRasterPos2i(origin[0],origin[1]);
-            
-           // glReadBuffer(GL_BACK);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-           // glDrawBuffer(GL_BACK);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-            
-            glCopyPixels(0,0,size[0],size[1],GL_COLOR);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-#endif
         }
         else if(_hasReadback) {
             O2Surface *overlay=CGLGetSurface(_surfaces[i]);
@@ -979,7 +968,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 // look into using glAddSwapHintRectWIN when only the GL context changes
 
     SwapBuffers(dc);
-    
                 
     // restore previously set context
     CGLError _CGLSetCurrentContextFromThreadLocal(int);
