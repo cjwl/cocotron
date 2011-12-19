@@ -64,17 +64,17 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 }
 
 +(BOOL)isSubclassOfClass:(Class)cls {
-   Class check=self;
-   
-   do {
-    check=[check superclass];
+    Class	myClass;
     
-    if(check==cls)
-     return YES;
-     
-   }while(check!=[NSObject class]);
-   
-   return NO;
+    myClass = (Class)self;
+    while (myClass != nil) {
+        if (myClass == cls) {
+            return YES;
+        }
+        myClass = myClass->super_class;
+    }
+    
+    return NO;
 }
 
 +(BOOL)instancesRespondToSelector:(SEL)selector {
