@@ -46,6 +46,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)directoryContentsAtPath:(NSString *)path {
+    return [self contentsOfDirectoryAtPath:path error:NULL];
+}
+
+-(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error
+{
+//TODO fill error
     NSMutableArray *result=nil;
     DIR *dirp = NULL;
     struct dirent *dire;
@@ -55,24 +61,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     
     dirp = opendir([path fileSystemRepresentation]);
-
+    
     if (dirp == NULL)
         return nil;
     
     result=[NSMutableArray array];
-
-    while (dire = readdir(dirp)){
-	 if(strcmp(".",dire->d_name)==0)
-	  continue;
-	 if(strcmp("..",dire->d_name)==0)
-	  continue;
-     [result addObject:[NSString stringWithCString:dire->d_name]];
+    
+    while ((dire = readdir(dirp))){
+        if(strcmp(".",dire->d_name)==0)
+            continue;
+        if(strcmp("..",dire->d_name)==0)
+            continue;
+        [result addObject:[NSString stringWithCString:dire->d_name]];
     }
 	
     closedir(dirp);
-
+    
     return result;
 }
+
 
 -(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes {
     // you can set all these, but we don't respect 'em all yet
@@ -188,6 +195,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return YES;
 }
 
+- (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error
+{
+    BOOL isDirectory;
+    
+//TODO fill error
+    
+    if ([self fileExistsAtPath:srcPath isDirectory:&isDirectory] == NO)
+        return NO;
+    if ([self fileExistsAtPath:dstPath isDirectory:&isDirectory] == YES)
+        return NO;
+    
+    if ([self copyPath:srcPath toPath:dstPath handler:nil] == NO) {
+        [self removeFileAtPath:dstPath handler:nil];
+        return NO;
+    }
+    
+    // not much we can do if this fails
+    [self removeFileAtPath:srcPath handler:nil];
+    
+    return YES;
+}
+
 -(BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:handler {
     BOOL isDirectory;
 
@@ -207,7 +236,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if ((r = open([src fileSystemRepresentation], O_RDONLY)) == -1)
             return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: open() for reading"];
 
-        while (count = read(r, &buf, sizeof(buf))) {
+        while ((count = read(r, &buf, sizeof(buf)))) {
             if (count == -1) 
                 break;
 
