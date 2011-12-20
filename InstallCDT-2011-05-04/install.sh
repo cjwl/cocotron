@@ -98,9 +98,9 @@ installFolder=/Developer
 productName=Cocotron
 productVersion=1.0
 
-binutilsVersion=2.21
-mingwRuntimeVersion=3.18
-mingwAPIVersion=3.17.2
+binutilsVersion=2.21-20111025
+mingwRuntimeVersion=3.20
+mingwAPIVersion=3.17-2
 gmpVersion=4.2.3
 mpfrVersion=2.3.2
 
