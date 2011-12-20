@@ -183,6 +183,8 @@ NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar
             return NSGetMacOSRomanCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
         case NSWindowsCP1252StringEncoding:
             return NSGetWin1252CStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
+        case NSUTF8StringEncoding:
+            return NSGetUTF8CStringWithMaxLength(characters,length, location, cString, maxLength);
         default:
             if(encoding != defaultEncoding()) {
                 NSUnimplementedFunction();
