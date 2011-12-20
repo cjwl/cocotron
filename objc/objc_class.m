@@ -276,6 +276,8 @@ size_t class_getInstanceSize(Class class) {
 
 Ivar class_getInstanceVariable(Class class,const char *variableName) {
    for(;;class=class->super_class){
+    if(class==Nil)
+           break;
     struct objc_ivar_list *ivarList=class->ivars;
     int i;
 
@@ -283,8 +285,6 @@ Ivar class_getInstanceVariable(Class class,const char *variableName) {
      if(strcmp(ivarList->ivar_list[i].ivar_name,variableName)==0)
       return &(ivarList->ivar_list[i]);
     }
-    if(class->isa->isa==class)
-     break;
    }
 
    return NULL;
@@ -535,7 +535,7 @@ BOOL class_addIvar(Class cls,const char *name,size_t size,uint8_t alignment,cons
    if(objc_lookUpClass(cls->name) != Nil) {
      return NO;
    }
-   for(class=cls;(class->isa->isa==class);class=class->super_class){
+   for(class=cls;(class!=Nil);class=class->super_class){
      ivars=class->ivars;
      if(ivars){
        for(i=0;i<ivars->ivar_count;i++){
@@ -543,9 +543,6 @@ BOOL class_addIvar(Class cls,const char *name,size_t size,uint8_t alignment,cons
            return NO;           // name exists
          }
        }
-     }
-     if(class->isa->isa==class){
-       break;
      }
    }
     
@@ -660,6 +657,9 @@ BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
         return NO;
    }
    for(;;class=class->super_class){
+       if(class==Nil)
+           break;
+
     struct objc_protocol_list *protoList=class->protocols;
 
     for(;protoList!=NULL;protoList=protoList->next){
@@ -670,9 +670,6 @@ BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
        return YES;
      }
     }
-
-    if(class->isa->isa==class)
-     break;
    }
 
    return NO;
@@ -781,7 +778,7 @@ void OBJCRegisterClass(Class class) {
 
    if(class->super_class==NULL){
      // Root class
-    class->isa->isa=class;
+    class->isa->isa=class->isa;
     class->isa->super_class=class;
     class->info|=CLASS_INFO_LINKED;
    }
@@ -814,12 +811,14 @@ void OBJCRegisterCategoryInClass(Category category,Class class) {
 static void OBJCLinkClass(Class class) {
    if(!(class->info&CLASS_INFO_LINKED)){
     Class superClass=objc_lookUpClass((const char *)class->super_class);
+    Class metaRoot=objc_lookUpClass((const char *)class->isa->isa);
 	
-    if(superClass!=NULL){
+    if(superClass!=NULL && metaRoot!= NULL){
      class->super_class=superClass;
      class->info|=CLASS_INFO_LINKED;
      class->isa->super_class=class->super_class->isa;
      class->isa->info|=CLASS_INFO_LINKED;
+     class->isa->isa=metaRoot->isa;
 	}
    }
 }
