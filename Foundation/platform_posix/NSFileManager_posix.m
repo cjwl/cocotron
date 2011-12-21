@@ -134,6 +134,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
+- (BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error {
+    if([path isEqualToString:@"."] || [path isEqualToString:@".."])
+        NSRaiseException(NSInvalidArgumentException, self, _cmd, @"%@: invalid path", path);
+        
+    if(![self _isDirectory:path]){
+        if(remove([path fileSystemRepresentation]) == -1) {
+            if(error!=NULL)
+				*error=nil; //TODO set error
+            return NO;
+        }
+    }
+    else{
+        NSArray *contents=[self directoryContentsAtPath:path];
+        NSInteger i,count=[contents count];
+        
+        for(i=0;i<count;i++){
+            NSString *name = [contents objectAtIndex:i];
+            NSString *fullPath;
+            
+            if([name isEqualToString:@"."] || [name isEqualToString:@".."])
+                continue;
+            
+            fullPath=[path stringByAppendingPathComponent:name];
+            if(![self removeItemAtPath:fullPath error:error]) {
+                if(error!=NULL)
+                    *error=nil; //TODO set error
+                return NO;
+            }
+        }
+        
+        if(rmdir([path fileSystemRepresentation]) == -1) {
+            if(error!=NULL)
+				*error=nil; //TODO set error
+            return NO;
+        }
+    }
+    return YES;
+}
+
 -(BOOL)removeFileAtPath:(NSString *)path handler:handler {
     if([path isEqualToString:@"."] || [path isEqualToString:@".."])
         NSRaiseException(NSInvalidArgumentException, self, _cmd, @"%@: invalid path", path);
