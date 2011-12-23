@@ -88,12 +88,13 @@
         switch ((rc = pthread_cond_wait(&_cond, &_mutex))) {
             case 0:
                 break;
-            default:
+            default: {
                 int r;
                 if((r = pthread_mutex_unlock(&_mutex)) != 0) {
                     [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, r];
                 }
                 [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+            }
         }
         
     }
@@ -140,13 +141,14 @@
                 [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
             }
             return NO;
-        default:
+        default: {
             int r;
             if((r = pthread_mutex_unlock(&_mutex)) != 0) {
                 [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, r];
             }
             [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ before date %@ (errno: %d)", self, date, rc];
             return NO;
+        }
     }
 }
 
@@ -172,13 +174,14 @@
                     [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
                 }
                 return NO;
-            default:
+            default: {
                 int r;
                 if((r = pthread_mutex_unlock(&_mutex)) != 0) {
                     [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, r];
                 }
                 [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ before date %@ (errno: %d)", self, date, rc];
                 return NO;
+            }
         }
     }
     
