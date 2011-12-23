@@ -247,14 +247,19 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		NSArray *contents=[self directoryContentsAtPath:path];
 		NSInteger      i,count=[contents count];
 		
-        if (_delegate != nil) {
-            for(i=0;i<count;i++){
-                NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
+        for(i=0;i<count;i++){
+            NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
+            if (_delegate != nil) {
                 if(![_delegate fileManager:self shouldRemoveItemAtPath:fullPath]){
                     if(error!=NULL)
                         *error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
                     return NO;
                 }
+            }
+            if ([self removeItemAtPath:fullPath error:error] == NO) {
+                if(error!=NULL)
+                    *error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
+                return NO;
             }
         } 
 		
