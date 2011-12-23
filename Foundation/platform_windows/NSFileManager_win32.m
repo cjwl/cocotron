@@ -257,8 +257,6 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
                 }
             }
             if ([self removeItemAtPath:fullPath error:error] == NO) {
-                if(error!=NULL)
-                    *error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
                 return NO;
             }
         } 
