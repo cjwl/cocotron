@@ -53,7 +53,6 @@ struct _CGLContextObj {
    HWND             window;
    int              x,y;
    int              w,h;
-   int              resizeBacking;
    GLint            opacity;
    GLint            hidden;
    GLint            inParent;
@@ -215,16 +214,13 @@ static void adjustFrameInParent(CGLContextObj context,Win32Window *parentWindow,
    }
 }
 static int resizeBackingIfNeeded(CGLContextObj context){
-   if(!context->resizeBacking)
-    return 0;
+    opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
 
    if(context->w<0)
     context->w=0;
    if(context->h<0)
     context->h=0;
-    
-   context->resizeBacking=FALSE;
-   
+       
       /* If we're using a Pbuffer we don't want the window large because it consumes resources */
 
     if(usesChildWindow(context) || (context->dynamicpBuffer==NULL)){
@@ -268,13 +264,6 @@ static int resizeBackingIfNeeded(CGLContextObj context){
     if(context==NULL)
         opengl_wglMakeCurrent(NULL,NULL);
     else {
-        if(context->resizeBacking){          
-            opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
-            reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-     
-            resizeBackingIfNeeded(context);
-        }
-    
         if(usesChildWindow(context) || context->dynamicpBuffer==NULL) {
             opengl_wglMakeCurrent(context->windowDC,context->windowGLContext);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -650,7 +639,9 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      if(sizeChanged){
       context->w=value[0];
       context->h=value[1];
-      context->resizeBacking=TRUE;
+      
+      /* We immediately resize so that the resize happens on the thread does the resize, otherwise MoveWindow can deadlock. */ 
+      resizeBackingIfNeeded(context);
      }
      break;
      
@@ -660,7 +651,8 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
             if(originChanged){
                 context->x=value[0];
                 context->y=value[1];
-                context->resizeBacking=TRUE;
+                /* We immediately resize so that the resize happens on the thread does the resize, otherwise MoveWindow can deadlock. */ 
+                resizeBackingIfNeeded(context);
             }
             break;
 
@@ -723,7 +715,6 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
 }
 
 CGL_EXPORT CGLError CGLCopyPixelsFromSurface(O2Surface_DIBSection *srcSurface,CGLContextObj destination) {
-    resizeBackingIfNeeded(destination);
     
     O2Surface_DIBSection *dstSurface=(O2Surface_DIBSection *)[destination->overlay validSurface];
     BLENDFUNCTION blend;
@@ -767,8 +758,6 @@ O2Surface *CGLGetSurface(CGLContextObj context){
 }
 
 CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination) {
-    resizeBackingIfNeeded(destination);
-
     CGLPixelSurface *overlay=source->overlay;
         
     O2Surface_DIBSection *dstSurface=(O2Surface_DIBSection *)[destination->overlay validSurface];
@@ -953,6 +942,8 @@ CGLError CGLGetPBuffer(CGLContextObj context,CGLPBufferObj *pbuffer,GLenum *face
 
 CGLError CGLSetPBuffer(CGLContextObj context,CGLPBufferObj pbuffer,GLenum face,GLint level,GLint screen) {
    int piFormats[1];
+   
+   /** XXX: this must match window context setup. */
    int piAttribIList[]={
         WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
         WGL_DRAW_TO_PBUFFER_ARB,GL_TRUE,
