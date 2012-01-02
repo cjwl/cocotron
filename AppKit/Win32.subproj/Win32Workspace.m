@@ -272,7 +272,7 @@ static NSImageRep *imageRepForImageListAndIndex(HIMAGELIST imageListH, int index
 #ifndef SHIL_JUMBO
 #define SHIL_JUMBO			0x4
 #endif
-			static const IID IID_IImageList = {0x46EB5926L,0x582E,0x4017,0x9F,0xDF,0xE8,0x99,0x8D,0xAA,0x09,0x50};
+			static const IID IID_IImageList = {0x46EB5926L,0x582E,0x4017, {0x9F,0xDF,0xE8,0x99,0x8D,0xAA,0x09,0x50} };
 			if (isRunningVistaOrBetter) {
 				if (SHGetImageListPtr(SHIL_JUMBO, &IID_IImageList, &imageList) == S_OK) {
 					NSImageRep* rep = imageRepForImageListAndIndex(imageList, fileInfo.iIcon);

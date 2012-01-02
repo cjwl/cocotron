@@ -6,7 +6,7 @@
 
 -initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel {
 	
-	if (self = [super initWithPickerMask:mask colorPanel:colorPanel]) {
+	if ((self = [super initWithPickerMask:mask colorPanel:colorPanel])) {
 	}
     return self;
 }
