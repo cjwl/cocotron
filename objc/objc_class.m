@@ -400,12 +400,17 @@ static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL selector){
 
    if((method=class_getInstanceMethod(class,selector))!=NULL){
 
-    // When msg_tracing is on we don't cache the result so there is always a cache miss
-    // and we always get the chance to log the msg
-
-    if(!msg_tracing)
-     OBJCCacheMethodInClass(class,method);
-    
+   /**
+	* Method caching is broken - it seems the cache is always missed causing it to grow and
+	* grow making the caching method take longer and longer. Commenting this code
+	* prevents apps from slowing down over time.
+	*
+    * // When msg_tracing is on we don't cache the result so there is always a cache miss
+    * // and we always get the chance to log the msg
+	* if(!msg_tracing)
+	*	OBJCCacheMethodInClass(class,method);
+	*/
+	   
     return method->method_imp;
    }
 
