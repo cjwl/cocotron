@@ -228,6 +228,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -(void)dealloc {
    [self invalidate];
+	DeleteCriticalSection(&_lock);
    [_deviceDictionary release];
    [_overlays makeObjectsPerformSelector:@selector(setWindow:) withObject:nil];
    [_overlays release];
