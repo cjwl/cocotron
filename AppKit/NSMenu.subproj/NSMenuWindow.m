@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _view=view;
 
    [[self contentView] addSubview:_view];
-
+	[self setAcceptsMouseMovedEvents:YES];
    return self;
 }
 
@@ -39,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _view=view;
 
    [[self contentView] addSubview:_view];
+	[self setAcceptsMouseMovedEvents:YES];
 
    return self;
 }

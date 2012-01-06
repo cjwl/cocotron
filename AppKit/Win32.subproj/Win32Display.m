@@ -971,6 +971,11 @@ The values should be upgraded to something which is more generic to implement, p
     CGFloat deltaX=currentLocation.x-_pastLocation.x;
     CGFloat deltaY=-(currentLocation.y-_pastLocation.y);
     
+	if (type == NSMouseMoved) {
+		if (fabs(deltaX) < 1. && fabs(deltaY) < 1.) {
+			return YES;
+		}
+	}
    event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:deltaX deltaY:deltaY];
 
     _pastLocation = currentLocation;
