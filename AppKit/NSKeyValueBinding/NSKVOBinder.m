@@ -133,7 +133,6 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
    BOOL      isEditable=YES;
    BOOL      containsPlaceholder=NO;
       
-	
    if(count>1)
     peersIncludingSelf=[peersIncludingSelf sortedArrayUsingSelector:@selector(compare:)];
 
@@ -173,48 +172,44 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
    NSString *pattern=[[allBinders[0] options] objectForKey:NSDisplayPatternBindingOption];
    id        value;
    
-   if(pattern!=nil)
-    value=NSFormatDisplayPattern(pattern,allValues,count);
-   else if(count==1)
-    value=allValues[0];
-   else {
-// FIXME: multiple values without a display pattern
-#if 1
-    value=allValues[0];
-#else
-// This was broken/unused in the previous code
-		else if([[values lastObject] isKindOfClass:[NSNumber class]])
-		{
-			BOOL ret;
-			if([_binding isEqual:@"hidden"])
-			{
-				ret=NO;
-				for(i=0; i<[peers count]; i++)
-				{
-					id value=[values objectAtIndex:i];
-					if([value respondsToSelector:@selector(boolValue)])
-						ret|=[value boolValue];
-					else
-						ret=YES;
-				}
-			}
-			else
-			{
-				ret=YES;
-				for(i=0; i<[peers count]; i++)
-				{
-					id value=[values objectAtIndex:i];
-					if([value respondsToSelector:@selector(boolValue)])
-						ret&=[value boolValue];
-					else
-						ret=NO;
-				}				
-			}
-			return [NSNumber numberWithBool:ret];
-		}
-#endif
+	if(pattern!=nil) {
+		value=NSFormatDisplayPattern(pattern,allValues,count);
+	} else if(count==1) {
+		value=allValues[0];
+	} else {
+	   if([allValues[count -1] isKindOfClass:[NSNumber class]])
+	   {
+		   BOOL ret;
+		   if([_binding isEqual:@"hidden"])
+		   {
+			   ret=NO;
+			   for(i=0; i<count; i++)
+			   {
+				   id value=allValues[i];
+				   if([value respondsToSelector:@selector(boolValue)])
+					   ret|=[value boolValue];
+				   else
+					   ret=YES;
+			   }
+		   }
+		   else
+		   {
+			   ret=YES;
+			   for(i=0; i<count; i++)
+			   {
+				   id value=allValues[i];
+				   if([value respondsToSelector:@selector(boolValue)])
+					   ret&=[value boolValue];
+				   else
+					   ret=NO;
+			   }				
+		   }
+		   value = [NSNumber numberWithBool:ret];
+	   } else {
+		   value=allValues[0];
+	   }
    }
-   
+	
    // Somewhere in the binding logic it generates a proper instance for the formatter if there isn't one
    // More binding logic needs to be moved into the view per the KVB doc.s
    if([_source isKindOfClass:[NSControl class]]){
@@ -228,25 +223,40 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
    }
    
 	
-	
-	id currentValue = [_source valueForKeyPath: _bindingPath];
-	if (currentValue != value && [currentValue isEqual: value] == NO) {
+	BOOL isValidKeyPath = YES;
+	id currentValue = nil;
+	id bindingPath = [allBinders[0] bindingPath]; // We want the real one - not "xxxx2" fake path from non-main peers
+	@try {
+		[_source valueForKeyPath: bindingPath];
+	}
+	@catch (id ex) {
+		// This might be a "set-only" binding, like valuePath for image views - in these cases, there is nothing to 
+		// compare to
+		isValidKeyPath = NO;
+	}
+	if (isValidKeyPath == NO || (currentValue != value && [currentValue isEqual: value] == NO)) {
 		// Only update the source if the value is actually different
-		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, _bindingPath);
-		[self stopObservingChanges];
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, bindingPath);
+		for (int i = 0; i < count; ++i) {
+			[allBinders[i] stopObservingChanges];
+		}
 		@try {
-			[_source setValue:value forKeyPath:_bindingPath];
+			[_source setValue:value forKeyPath:bindingPath];
 		}
 		@catch(id ex) {
 			if([self raisesForNotApplicableKeys]){
-				[self startObservingChanges];
+				for (int i = 0; i < count; ++i) {
+					[allBinders[i] startObservingChanges];
+				}
 				[ex raise];
 			}
 		}
-		[self startObservingChanges];
+		for (int i = 0; i < count; ++i) {
+			[allBinders[i] startObservingChanges];
+		}
 		
 	} else {
-		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"skipping setting value on _source: %@ forKeyPath: %@", _source, _bindingPath);
+		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"skipping setting value on _source: %@ forKeyPath: %@", _source, bindingPath);
 	}
 
    if([self conditionallySetsEditable])

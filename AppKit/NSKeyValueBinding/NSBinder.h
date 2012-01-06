@@ -43,6 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)unbind;
 
 -(void)setBindingPath:(id)value;
+-(id)bindingPath;
 
 -(NSArray *)peerBinders;
 
