@@ -2294,6 +2294,15 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	NSRect zoomedFrame = [self zoomedFrame];
 	if (NSEqualRects( _frame, zoomedFrame )) zoomedFrame = _savedFrame;
 	
+	// Make sure we obey our minimums
+	NSSize minSize = [self minSize];
+	if (NSWidth(zoomedFrame) < minSize.width) {
+		zoomedFrame.size.width = minSize.width;
+	}
+	if (NSHeight(zoomedFrame) < minSize.height) {
+		zoomedFrame.size.height = minSize.height;
+	}
+	
 	BOOL shouldZoom = YES;
 	if (_delegate && [_delegate respondsToSelector: @selector( windowShouldZoom:toFrame: )]) {
 		shouldZoom = [_delegate windowShouldZoom: self toFrame: zoomedFrame];
