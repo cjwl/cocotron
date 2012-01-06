@@ -227,13 +227,14 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 	id currentValue = nil;
 	id bindingPath = [allBinders[0] bindingPath]; // We want the real one - not "xxxx2" fake path from non-main peers
 	@try {
-		[_source valueForKeyPath: bindingPath];
+		currentValue = [_source valueForKeyPath: bindingPath];
 	}
 	@catch (id ex) {
 		// This might be a "set-only" binding, like valuePath for image views - in these cases, there is nothing to 
 		// compare to
 		isValidKeyPath = NO;
 	}
+
 	if (isValidKeyPath == NO || (currentValue != value && [currentValue isEqual: value] == NO)) {
 		// Only update the source if the value is actually different
 		NSBindingDebugLog(kNSBindingDebugLogLevel2, @"setting value: %@ on _source: %@ forKeyPath: %@", value, _source, bindingPath);
@@ -241,7 +242,19 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 			[allBinders[i] stopObservingChanges];
 		}
 		@try {
-			[_source setValue:value forKeyPath:bindingPath];
+			// Not sure it's the right place to do that  - it's probably not - but on Cocoa, BOOL values bound to a nil value are set to NO,
+			// even if setting the same property by code to nil using setValue:forKey: is throwing an exception
+			// That's certainly the case for properties like "enabled" 
+			if (value == nil) {
+				@try {
+					[_source setValue:nil forKeyPath:bindingPath];
+				}
+				@catch(id ex) {
+					[_source setValue:[NSNumber numberWithBool:NO] forKeyPath:bindingPath];
+				}
+			} else {
+				[_source setValue:value forKeyPath:bindingPath];
+			}
 		}
 		@catch(id ex) {
 			if([self raisesForNotApplicableKeys]){
