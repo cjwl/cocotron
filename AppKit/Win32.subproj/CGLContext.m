@@ -54,6 +54,7 @@ struct _CGLContextObj {
    int              x,y;
    int              w,h;
    GLint            opacity;
+   GLint            forceChildWindow;
    GLint            hidden;
    GLint            inParent;
    CGLPixelSurface  *overlay;
@@ -89,9 +90,23 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
     if(message==WM_PAINT){    
         Win32Window *parentWindow=GetProp(handle,"Win32Window");
 
+#if 0
         ValidateRect(handle, NULL);
 
         return [parentWindow WM_APP1_wParam:wParam lParam:lParam];
+#else        
+        PAINTSTRUCT paintStruct;
+        RECT        updateRECT;
+        GetWindowRect(handle,&updateRECT);
+        InvalidateRect(handle,&updateRECT,FALSE);
+        if(GetUpdateRect(handle,&updateRECT,NO)){
+            BeginPaint(handle,&paintStruct);
+            [parentWindow WM_APP1_wParam:wParam lParam:lParam];
+            EndPaint(handle,&paintStruct);
+        }
+#endif
+
+        return 0;
     }
 
     if(message==WM_SETCURSOR){
@@ -120,12 +135,6 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
 
  */
 CRITICAL_SECTION requestCriticalSection;
-
-
-static void createWindowForContext(CGLContextObj context){
-    context->parent=CreateWindowEx(WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,10,10,NULL,NULL,GetModuleHandle(NULL),NULL);
-    context->window=CreateWindowEx(WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,"CGLWindow","",WS_CHILD|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,context->parent,NULL,GetModuleHandle(NULL),NULL);
-}
 
 static void initializeRequest(){
    InitializeCriticalSection(&requestCriticalSection);
@@ -180,22 +189,6 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    
    return error;
 }
-
-#if 0
-static BOOL contextHasMakeCurrentReadExtension(CGLContextObj context){
-   const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
-      
-   reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
-
-   if(extensions==NULL)
-    return NO;
-   
-   if(strstr(extensions,"WGL_ARB_make_current_read")==NULL)
-    return NO;
-
-   return YES;
-}
-#endif
 
 static void _CGLCreateDynamicPbufferBacking(CGLContextObj context);
 static void _CGLDestroyDynamicPbufferBacking(CGLContextObj context);
@@ -322,7 +315,10 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,CGLPixelFormatObj pixe
    /* It has to be double buffered regardless of what the application asks for, because we're reading from it, all the pixels must be
       valid. A single buffer context is problematic in that the driver may not render obscured pixels, all of them since it is off-screen.
       That isnt a problem with pbuffers but this is the fallback. */
-      
+#ifndef PFD_SUPPORT_COMPOSITION
+    #define PFD_SUPPORT_COMPOSITION 0x00008000
+#endif
+
    pfd->dwFlags=PFD_SUPPORT_OPENGL|PFD_DRAW_TO_WINDOW|PFD_DOUBLEBUFFER;
    pfd->iLayerType=PFD_MAIN_PLANE;
    pfd->iPixelType=PFD_TYPE_RGBA;
@@ -372,7 +368,7 @@ return;
 
 static BOOL contextHasPbufferExtension(CGLContextObj context){
     const char *extensions=opengl_wglGetExtensionsStringARB(context->windowDC);
-   
+            
   // NSLog(@"extensions=%s",extensions);
         
    reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
@@ -472,7 +468,10 @@ CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj
    context->w=64;
    context->h=64;
 
-   createWindowForContext(context);
+    context->forceChildWindow = TRUE;
+
+    context->parent=CreateWindowEx(WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,"CGLWindow","",WS_POPUP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,10,10,NULL,NULL,GetModuleHandle(NULL),NULL);
+    context->window=CreateWindowEx(WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,"CGLWindow","",WS_CHILD|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,0,0,context->w,context->h,context->parent,NULL,GetModuleHandle(NULL),NULL);
    
    context->windowDC=GetDC(context->window);
 
@@ -573,6 +572,9 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
 }
 
 static BOOL usesChildWindow(CGLContextObj context){
+    if(context->forceChildWindow)
+        return YES;
+        
     Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
     
     if(parentWindow==nil)
@@ -581,7 +583,7 @@ static BOOL usesChildWindow(CGLContextObj context){
     if([parentWindow isLayeredWindow])
         return NO;
 
-    return YES;
+    return NO;
 }
 
 static BOOL shouldPutChildInParent(CGLContextObj context) {
@@ -645,6 +647,13 @@ CGL_EXPORT CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter pa
      }
      break;
      
+        case kCGLCPSurfaceIsChildWindow:
+            if(context->forceChildWindow!=value[0]){
+                context->forceChildWindow=value[0];
+                reflectChildWindowState(context,YES);
+            }
+            break;
+            
         case kCGLCPSurfaceBackingOrigin:;
             BOOL originChanged=(context->x!=value[0] || context->y!=value[1])?YES:NO;
      
@@ -702,6 +711,10 @@ CGL_EXPORT CGLError CGLGetParameter(CGLContextObj context,CGLContextParameter pa
         value[1]=context->h;
             break;
             
+    case kCGLCPSurfaceIsChildWindow:
+     *value=context->forceChildWindow;
+     break;
+     
     case kCGLCPSurfaceBackingOrigin:
         value[0]=context->x;
         value[1]=context->y;
@@ -786,7 +799,8 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 
 CGLError CGLFlushDrawable(CGLContextObj context) {
     if(usesChildWindow(context)){
-        SwapBuffers(context->windowDC);
+        if(!SwapBuffers(context->windowDC))
+            NSLog(@"SwapBuffers failed, error = %d", GetLastError());
     }
     else {
         Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];

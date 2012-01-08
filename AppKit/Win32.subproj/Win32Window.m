@@ -240,7 +240,7 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
         NSZoneFree(NULL,_surfaces);  
     if(_textureIds!=NULL)
         NSZoneFree(NULL,_textureIds);  
-    CGLReleaseContext(_overlayResult);
+    [_overlayResult release];
     if(_hglrc!=NULL)
         opengl_wglDeleteContext(_hglrc);
 
@@ -500,7 +500,64 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
 
     if(_surfaceCount==0)
         return backingSurface;
+    
+#if 1
+    int resultWidth=O2ImageGetWidth(backingSurface);
+    int resultHeight=O2ImageGetHeight(backingSurface);
+
+    if(O2ImageGetWidth(_overlayResult)!=resultWidth || O2ImageGetHeight(_overlayResult)!=resultHeight){
+        [_overlayResult release];
+        _overlayResult=[[O2Surface_DIBSection alloc] initWithWidth:resultWidth height:resultHeight compatibleWithDeviceContext:nil];
+    }
+
+    BLENDFUNCTION blend;
+    
+    blend.BlendOp=AC_SRC_OVER;
+    blend.BlendFlags=0;
+    blend.SourceConstantAlpha=255;
+    blend.AlphaFormat=0;
+    
+    O2SurfaceLock(_overlayResult);
+        O2SurfaceLock(backingSurface);
+            AlphaBlend([[_overlayResult deviceContext] dc],0,0,resultWidth,resultHeight,[[backingSurface deviceContext] dc],0,0,resultWidth,resultHeight,blend);
+        O2SurfaceUnlock(backingSurface);
+    O2SurfaceUnlock(_overlayResult);
+
+    int i;
+    for(i=0;i<_surfaceCount;i++) {
+        CGLPixelSurface *overlay;
+        GLint sourceOrigin[2];
+        GLint sourceSize[2];
+        GLint sourceOpacity;
         
+        CGLGetParameter(_surfaces[i],kCGLCPOverlayPointer,&overlay);
+        CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingOrigin,sourceOrigin);
+        CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingSize,sourceSize);
+        CGLGetParameter(_surfaces[i],kCGLCPSurfaceOpacity,&sourceOpacity);
+        
+        O2Surface_DIBSection *srcSurface=(O2Surface_DIBSection *)[overlay validSurface];
+    
+        if(srcSurface==nil)
+            return kCGLNoError;
+
+        BLENDFUNCTION blend;
+    
+        blend.BlendOp=AC_SRC_OVER;
+        blend.BlendFlags=0;
+        blend.SourceConstantAlpha=255;
+        blend.AlphaFormat=sourceOpacity?0:AC_SRC_ALPHA;
+
+        int y=resultHeight-(sourceOrigin[1]+sourceSize[1]);
+     
+        O2SurfaceLock(_overlayResult);
+            O2SurfaceLock(srcSurface);
+                AlphaBlend([[_overlayResult deviceContext] dc],sourceOrigin[0],y,sourceSize[0],sourceSize[1],[[srcSurface deviceContext] dc],0,0,sourceSize[0],sourceSize[1],blend);
+            O2SurfaceUnlock(srcSurface);
+        O2SurfaceUnlock(_overlayResult);
+    }
+    
+    return _overlayResult;
+#else
     if(_overlayResult==NULL){
         CGLPixelFormatObj pf;
         GLint novs;
@@ -535,6 +592,7 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
     CGLGetParameter(_overlayResult,kCGLCPOverlayPointer,&pixelSurface);
     
     return (O2Surface_DIBSection *)[pixelSurface validSurface];
+#endif
 }
 
 static int reportGLErrorIfNeeded(const char *function,int line){
@@ -706,7 +764,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     if(!_hasMakeCurrentRead)
         _hasMakeCurrentRead=(extensions==NULL)?NO:((strstr(extensions,"WGL_EXT_make_current_read")==NULL)?NO:YES);
 
-    _hasSwapHintRect=(extensions==NULL)?NO:((strstr(extensions,"GL_WIN_swap_hint")==NULL)?NO:YES);;
+    _hasSwapHintRect=(extensions==NULL)?NO:((strstr(extensions,"GL_WIN_swap_hint")==NULL)?NO:YES);
 }
 
 -(void)openGLFlushBufferOnlyContext:(CGLContextObj)onlyContext {
@@ -854,7 +912,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
                 reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             }
             
-            opengl_wglBindTexImageARB(CGLGetPBUFFER(pBuffer),WGL_FRONT_LEFT_ARB);
+            opengl_wglBindTexImageARB(CGLGetPBUFFER(pBuffer),WGL_BACK_RIGHT_ARB);
             reportGLErrorIfNeeded(__PRETTY_FUNCTION__,__LINE__);
             
             GLint vertices[4*2];
@@ -959,7 +1017,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
             if(_hasRenderTexture) {
                 // This flushes the pipeline, we want to do it last before swap buffer, but not after
                 // swapbuffers as that is a lot slower.
-                opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_FRONT_LEFT_ARB);
+                opengl_wglReleaseTexImageARB(CGLGetPBUFFER(releasePbuffers[i]),WGL_BACK_RIGHT_ARB);
             }
             
             CGLReleasePBuffer(releasePbuffers[i]);
@@ -1162,6 +1220,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
 -(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
     [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
+    return 0;
 }
 
 -(int)WM_PAINT_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    

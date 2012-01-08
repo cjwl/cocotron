@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int _textureIdCount;
     GLint *_textureIds;
     
-    CGLContextObj   _overlayResult;
+    O2Surface_DIBSection *_overlayResult;
    NSMutableArray        *_overlays;
    
    int                    _disableFlushWindow;
