@@ -2410,8 +2410,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSNotification *note=[NSNotification notificationWithName:NSTextDidEndEditingNotification object:self userInfo:nil];
 
    [[NSNotificationCenter defaultCenter] postNotification:note];
+   _didSendTextDidEndNotification=NO;
    }
-
    
    return YES;
 }
