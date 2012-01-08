@@ -3,8 +3,6 @@
 #import <windows.h>
 #import <process.h>
 #import <errno.h>
-#import <stdio.h>
-#import <Foundation/Foundation.h>
 
 int sched_yield(void) {
    SwitchToThread();
