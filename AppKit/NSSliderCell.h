@@ -33,8 +33,6 @@ typedef enum {
     BOOL _allowsTickMarkValuesOnly;
 }
 
-+(BOOL)prefersTrackingUntilMouseUp;
-
 -(NSSliderType)sliderType;
 
 -(double)minValue;

@@ -27,9 +27,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSCell
 
+#pragma mark -
+#pragma mark Class Methods
+
 +(NSFocusRingType)defaultFocusRingType {
    return NSFocusRingTypeExterior;
 }
+
++ (NSMenu *)defaultMenu
+{
+	return nil;
+}
+
++(BOOL)prefersTrackingUntilMouseUp
+{
+	return NO;
+}
+
+#pragma mark -
 
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
@@ -740,7 +755,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
     }
 
-    if(isWithinCellFrame) {
+    if(untilMouseUp || isWithinCellFrame) {
      if(![self continueTracking:lastPoint at:[event locationInWindow] inView:view])
       break;
 
