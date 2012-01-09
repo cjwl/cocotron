@@ -475,12 +475,19 @@ static int untitled_document_number = 0;
 }
 
 -(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)type forSaveOperation:(NSSaveOperationType)operation originalContentsURL:(NSURL *)contentsURL error:(NSError **)error {
+	BOOL status = NO;
    if([self _isSelectorOverridden:@selector(writeToFile:ofType:originalFile:saveOperation:)]){
-    return [self writeToFile:[url path] ofType:type originalFile:[contentsURL path] saveOperation:operation];
+    status = [self writeToFile:[url path] ofType:type originalFile:[contentsURL path] saveOperation:operation];
    }
    else {
-    return [self writeToURL:url ofType:type error:error];
+    status = [self writeToURL:url ofType:type error:error];
    }
+	if (status == YES && [self fileURL] == nil) {
+		// It's a new file that's been successfully saved to a url...
+		// so note it for the open recent menu
+		[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL: url];
+	}
+	return status;
 }
 
 -(BOOL)writeSafelyToURL:(NSURL *)url ofType:(NSString *)type forSaveOperation:(NSSaveOperationType)operation error:(NSError **)error {
