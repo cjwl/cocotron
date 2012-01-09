@@ -649,7 +649,7 @@ static int untitled_document_number = 0;
 -(void)saveDocumentWithDelegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)info 
 {
 	// First make sure there are no uncommitted changes
-	for (id editor in [_activeEditors copy]) {
+	for (id editor in [[_activeEditors copy] autorelease]) {
         [editor commitEditing];
 	}
 	
@@ -876,7 +876,7 @@ forSaveOperation:(NSSaveOperationType)operation
 
    if(result==NSAlertDefaultReturn)
      {
-       for (id editor in [_activeEditors copy])
+       for (id editor in [[_activeEditors copy] autorelease])
          [editor discardEditing];
        [self revertToSavedFromFile:[self fileName] ofType:[self fileType]];
      }
@@ -1190,6 +1190,11 @@ forSaveOperation:(NSSaveOperationType)operation
        return YES;
 
       case NSAlertAlternateReturn:
+			 // Let's prep the document to close cleanly.
+			 for (id editor in [[_activeEditors copy] autorelease]) {
+				[editor discardEditing];
+			 }
+			 [self updateChangeCount: NSChangeCleared];
        return YES;
 
       case NSAlertOtherReturn:
