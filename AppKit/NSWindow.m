@@ -173,7 +173,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _backingType=backing;
    _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
-   _maxSize=NSMakeSize(0,0);
+	// "The default maximum size of a window is {FLT_MAX, FLT_MAX}"
+   _maxSize=NSMakeSize(FLT_MAX,FLT_MAX);
 
    _title=@"";
    _miniwindowTitle=@"";
