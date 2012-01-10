@@ -315,17 +315,22 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
 
    if(check->method->method_name==NULL)
     check->method=method;
-   else {
-    OBJCMethodCacheEntry *entry=allocateCacheEntry();
-    
-    entry->method=method;
-    
+   else {    
       BOOL success=NO;
       while(!success)
       {
          intptr_t offset=0;
-         while(offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL)
-            check=((void *)check)+offset;
+          do {
+              check=((void *)check)+offset;
+              if (method == check->method) {
+                  // already cached
+                  return;
+              }
+          } while (offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL);
+
+          OBJCMethodCacheEntry *entry=allocateCacheEntry();
+          
+          entry->method=method;
 
          success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
       }
