@@ -105,7 +105,7 @@ NSString * const NSFileSystemFreeSize=@"NSFileSystemFreeSize";
 
 -(NSDictionary *)fileSystemAttributesAtPath:(NSString *)path
 {
-	return [self attributesOfFileSystemForPath: path error: nil];
+	return [self attributesOfFileSystemForPath: path error: NULL];
 }
 
 -(BOOL)isDeletableFileAtPath:(NSString *)path {

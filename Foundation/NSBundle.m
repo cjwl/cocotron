@@ -449,7 +449,6 @@ static NSMapTable *pathToObject=NULL;
 -(NSString *)pathForAuxiliaryExecutable:(NSString *)executable {
    NSFileManager *fm=[NSFileManager defaultManager];
    NSString *path=[[self executablePath] stringByDeletingLastPathComponent];
-   NSString *pathexe;
 
    path=[path stringByAppendingPathComponent:executable];
    if ([fm isExecutableFileAtPath:path])

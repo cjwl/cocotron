@@ -31,7 +31,6 @@ NSString * const NSStreamSocketSecurityLevelNegotiatedSSL=@"kCFStreamSocketSecur
    NSSocket              *socket=[[[NSSocket alloc] initTCPStream] autorelease];
    NSError               *error;
    BOOL                   immediate;
-   NSStreamStatus         status;
    NSInputStream_socket  *input;
    NSOutputStream_socket *output;
       

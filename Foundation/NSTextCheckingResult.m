@@ -88,7 +88,7 @@
 
 -(NSTimeInterval)duration {
     NSUnimplementedMethod();
-    return nil;
+    return 0;
 }
 
 -(NSArray *)grammarDetails {

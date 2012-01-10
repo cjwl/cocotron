@@ -97,10 +97,10 @@ static void extractFormat(NSString *format,NSString **prefix,NSString **suffix,N
         prefixBuffer[prefixLength++]=code;
        }
        break;
-       
+
       case STATE_FIRST_PERIOD:
        if(numberOfFractionDigits!=NULL)
-        *numberOfFractionDigits++;
+        *numberOfFractionDigits += 1;
       case STATE_FIRST_HASH:
       case STATE_FIRST_ZERO:
       case STATE_FIRST_COMMA:
@@ -1084,17 +1084,18 @@ static BOOL numberIsPositive(NSNumber *number){
    
    NSString *prefix;
    NSString *suffix;
-   NSString *format;
+   //unused
+   //NSString *format;
 
    if(numberIsNegative(number)){
     prefix=[self negativePrefix];
     suffix=[self negativeSuffix];
-    format=[self negativeFormat];
+    //format=[self negativeFormat];
    }
    else {
     prefix=[self positivePrefix];
     suffix=[self positiveSuffix];
-    format=[self positiveFormat];
+    //format=[self positiveFormat];
    }
    
    NSString *result;

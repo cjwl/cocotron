@@ -21,7 +21,7 @@
 }
 
 -(id)initWithCondition:(NSInteger)value {
-   if(self = [super init]) {
+   if((self = [super init])) {
       pthread_cond_init(&_cond, NULL);
       pthread_mutex_init(&_mutex, NULL);
       _value=value;

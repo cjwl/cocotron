@@ -342,7 +342,8 @@ static void willChangeValueForKey(id object,NSString *key,NSDictionary *changeIn
     id                   rootObject=[keyPathObserver object];
     id                   rootObserver=[keyPathObserver observer];
     NSString            *rootKeyPath=[keyPathObserver keyPath];
-    void                *rootContext=[keyPathObserver context];
+    //unused
+    //void                *rootContext=[keyPathObserver context];
     NSMutableDictionary *changeDictionary=[keyPathObserver changeDictionaryWithInfo:changeInfo];
 
     if(observingOptions&NSKeyValueObservingOptionOld){
@@ -428,7 +429,8 @@ static void didChangeValueForKey(id object,NSString *key)  {
     id                   rootObject=[keyPathObserver object];
     id                   rootObserver=[keyPathObserver observer];
     NSString            *rootKeyPath=[keyPathObserver keyPath];
-    void                *rootContext=[keyPathObserver context];
+    //unused
+    //void                *rootContext=[keyPathObserver context];
     NSMutableDictionary *changeDictionary=[keyPathObserver changeDictionary];
 
     if(observerOptions&NSKeyValueObservingOptionNew){

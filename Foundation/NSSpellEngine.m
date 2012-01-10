@@ -27,8 +27,9 @@ static NSMutableArray *_allSpellEngines=nil;
      NSString *path=[allPaths objectAtIndex:i];
      NSBundle *check=[NSBundle bundleWithPath:path];
      Class     cls=[check principalClass];
-     NSArray  *engines=[cls spellEngines];
-          
+     //unused
+     //NSArray  *engines=[cls spellEngines];
+
      [_allSpellEngines addObjectsFromArray:[cls spellEngines]];
     }
    }

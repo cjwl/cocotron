@@ -1078,7 +1078,7 @@ static NSExpression *nextUnaryExpression(predicateScanner *scanner){
 
      // coalesce -'s
      if([right isKindOfClass:[NSExpression_operator class]]){
-      if([(NSExpression_operator *)right expressionType]==NSExpressionOperatorNegate)
+      if([(NSExpression_operator *)right expressionType]==(int)NSExpressionOperatorNegate)
        return [[(NSExpression_operator *)right arguments] objectAtIndex:0];
      }
      return [NSExpression_operator expressionForOperator:NSExpressionOperatorNegate arguments:[NSArray arrayWithObject:right]];
@@ -1308,7 +1308,7 @@ static NSPredicate *nextComparisonPredicate(predicateScanner *scanner){
    NSExpression *left=nextExpression(scanner);
    NSExpression *right;
    NSPredicate  *result;
-   NSPredicateOperatorType type;
+   NSPredicateOperatorType type = 0;
    unsigned options;
     
    switch(peekTokenType(scanner)){

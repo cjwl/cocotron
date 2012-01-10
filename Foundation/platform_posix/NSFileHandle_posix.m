@@ -81,6 +81,7 @@ static int descriptorForPath(NSString *path,int modes){
                 return -1;
             }
         }
+        return fd;
     } else {
         return open([path fileSystemRepresentation], modes, FOUNDATION_FILE_MODE);
     }

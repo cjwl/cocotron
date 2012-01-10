@@ -25,7 +25,7 @@ Boolean CFPreferencesAppValueIsForced(CFStringRef key,CFStringRef application) {
 
 CFArrayRef CFPreferencesCopyApplicationList(CFStringRef user,CFStringRef host) {
    NSUnimplementedFunction();
-   return nil;
+   return NULL;
 }
 
 CFPropertyListRef CFPreferencesCopyAppValue(CFStringRef key,CFStringRef application) {
@@ -45,12 +45,12 @@ CFIndex CFPreferencesGetAppIntegerValue(CFStringRef key,CFStringRef application,
 
 CFArrayRef CFPreferencesCopyKeyList(CFStringRef application,CFStringRef user,CFStringRef host) {
    NSUnimplementedFunction();
-   return nil;
+   return NULL;
 }
 
 CFDictionaryRef CFPreferencesCopyMultiple(CFArrayRef keysToFetch,CFStringRef application,CFStringRef user,CFStringRef host) {
    NSUnimplementedFunction();
-   return nil;
+   return NULL;
 }
 
 CFPropertyListRef CFPreferencesCopyValue(CFStringRef key,CFStringRef application,CFStringRef user,CFStringRef host) {

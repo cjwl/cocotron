@@ -311,7 +311,7 @@ static BONJOUR_CALL void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSSe
 }
 
 static BONJOUR_CALL void ResolverCallback(bonjour_DNSServiceRef sdRef, bonjour_DNSServiceFlags flags,uint32_t interfaceIndex,bonjour_DNSServiceErrorType errorCode,const char *fullname,const char *hosttarget,uint16_t port,uint16_t txtLen,const unsigned char *txtRecord,void *context){
-   [(NSNetService *) context resolverCallback:sdRef flags:flags interface:interfaceIndex error:errorCode fullname:fullname target:hosttarget port:port length:txtLen record:txtRecord];
+   [(NSNetService *) context resolverCallback:sdRef flags:flags interface:interfaceIndex error:errorCode fullname:fullname target:hosttarget port:port length:txtLen record:(const char *)txtRecord];
 }
 
 - (void) registerCallback:(bonjour_DNSServiceRef) sdRef

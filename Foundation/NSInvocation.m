@@ -428,6 +428,8 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 // FIX internal compiler error on windows/linux/bsd
 #if !defined(WIN32) && !defined(BSD) && !defined(LINUX)
        value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+#else
+        if (function) {/*avoid compiler warning*/}
 #endif
 
        [self setReturnValue:&value];

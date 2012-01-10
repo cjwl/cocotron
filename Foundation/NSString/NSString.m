@@ -260,8 +260,8 @@ int __CFConstantStringClassReference[1];
 }
 
 +(const NSStringEncoding *)availableStringEncodings {
-    static NSStringEncoding *stringEncodings = nil;
-    
+    static NSStringEncoding *stringEncodings = NULL;
+
     if (!stringEncodings) {
         NSString *path=[[NSBundle bundleForClass:self] pathForResource:@"NSStringEncodingNames" ofType:@"plist"];
         if(path!=nil){
@@ -774,7 +774,8 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
    unichar  buffer[range.length];
    NSUInteger i;
 
-    const BOOL isLiteral = (options & NSLiteralSearch) ? YES : NO;
+    //unused
+    //const BOOL isLiteral = (options & NSLiteralSearch) ? YES : NO;
     const BOOL isBackwards = (options & NSBackwardsSearch) ? YES : NO;
     options &= ~((unsigned)NSLiteralSearch);
     options &= ~((unsigned)NSBackwardsSearch);
@@ -1573,7 +1574,8 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    
    [self getCharacters:buffer];
     char *cstr=NSString_unicodeToAnyCString(encoding, buffer,length,NO,&resultLength,NULL,YES);
-    NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    //NSData *data=
+    [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     return cstr;
     
 }
@@ -1582,7 +1584,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     NSRange range={0,[self length]};
     
     unichar  unicode[maxLength];
-    NSUInteger location;
     [self getCharacters:unicode range:range];
     if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) ==NSNotFound) {
         return NO;

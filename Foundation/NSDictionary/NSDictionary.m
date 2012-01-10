@@ -339,7 +339,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)allKeys {
-   NSInteger i,count=[self count];
+   NSInteger count=[self count];
    id keys[count],objects[count];
 
    [self getObjects:objects andKeys:keys];

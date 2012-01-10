@@ -476,7 +476,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDecimal)decimalValue {
-   NSDecimal result;
+   NSDecimal result = {0};
    NSInvalidAbstractInvocation();
    return result;
 }

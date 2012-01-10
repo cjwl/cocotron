@@ -151,8 +151,6 @@ const unichar _mapMacOSRomanToUnichar(const unsigned char c)
 {
 	if(c>= 0x80)
 	{
-		static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
-		
         return mapping_array[c - 0x80].unicode;
 	}
 
@@ -239,7 +237,6 @@ NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInte
                                                NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
     NSUInteger i,result=0;
-    NSUInteger  bytesLength;
     
     
     if(length+1 > maxLength) {
