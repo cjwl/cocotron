@@ -313,21 +313,23 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
    uintptr_t             index=(uintptr_t)uniqueId&OBJCMethodCacheMask;
    OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
 
-   if(check->method->method_name==NULL)
-    check->method=method;
-   else {
-    OBJCMethodCacheEntry *entry=allocateCacheEntry();
-    
-    entry->method=method;
-    
+	if(check->method->method_name==NULL) {
+		check->method=method;
+	} else {
       BOOL success=NO;
       while(!success)
       {
-         intptr_t offset=0;
-         while(offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL)
-            check=((void *)check)+offset;
-
-         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
+		  intptr_t offset=0;
+		  do {
+			  check=((void *)check)+offset;
+			  if (method == check->method) {
+				  // already cached
+				  return;
+			  }
+		  } while (offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL);
+		  
+		  OBJCMethodCacheEntry *entry=allocateCacheEntry();
+		  entry->method=method;         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
       }
    }
 }
@@ -400,16 +402,10 @@ static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL selector){
 
    if((method=class_getInstanceMethod(class,selector))!=NULL){
 
-   /**
-	* Method caching is broken - it seems the cache is always missed causing it to grow and
-	* grow making the caching method take longer and longer. Commenting this code
-	* prevents apps from slowing down over time.
-	*
-    * // When msg_tracing is on we don't cache the result so there is always a cache miss
-    * // and we always get the chance to log the msg
-	* if(!msg_tracing)
-	*	OBJCCacheMethodInClass(class,method);
-	*/
+	 // When msg_tracing is on we don't cache the result so there is always a cache miss
+	 // and we always get the chance to log the msg
+	 if(!msg_tracing)
+	   OBJCCacheMethodInClass(class,method);
 	   
     return method->method_imp;
    }
