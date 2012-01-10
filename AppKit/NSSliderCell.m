@@ -359,11 +359,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[[NSColor grayColor] set];
 	[path stroke];
 	
-	double percent=0.;
-	if (_maxValue != _minValue) {
-		double value = [self doubleValue];
-		percent = (value-_minValue)/(_maxValue-_minValue);
-	}
+	double value=[self doubleValue];
+	double percent=(value-_minValue)/(_maxValue-_minValue);
 
 	double angle = percent * 360;
 	

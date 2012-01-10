@@ -37,10 +37,6 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 
 @implementation O2PDFContext
 
--(void)clipToState:(O2ClipState *)clipState 
-{
-}
-
 -initWithConsumer:(O2DataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    [super init];
    
@@ -291,8 +287,8 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    
    const char *objectName=[[NSString stringWithFormat:@"%s%d",categoryName,[next intValue]] cString];
    [category setObjectForKey:objectName value:pdfObject];
-
-	return [O2PDFObject_Name pdfObjectWithCString:objectName];
+   
+   return [O2PDFObject_Name pdfObjectWithCString:objectName];
 }
 
 -(void)emitPath:(O2PathRef)path {
@@ -550,9 +546,9 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
    [self emitSaveGState];
    [self emitCurrentGState];
-
-	O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
+   O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
+   
    [self contentWithString:@"q "];
 // FIXME: enable these ctm changes
 //   [self translateCTM:rect.origin.x:rect.origin.y];
@@ -591,8 +587,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
     unsigned        position=[_mutableData length];
     
     [entry setPosition:position];
-
-	   [self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
+    [self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
     [object encodeWithPDFContext:self];
     [self appendFormat:@"endobj\n"];
    }

@@ -308,11 +308,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(float)floatValue {
-	if (_objectValue == nil) {
-		// [nil someFloatMethod] doesn't return 0.f on Cocotron - tmp fix until the runtime is fixed
-		return 0.f;
-	}
-	NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
+   NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
    if([objString isKindOfClass:[NSString class]])
    {
       float f = 0.0;
@@ -324,11 +320,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(double)doubleValue {
-	if (_objectValue == nil) {
-		// [nil someDoubleMethod] doesn't return 0. on Cocotron - tmp fix until the runtime is fixed
-		return 0.;
-	}
-	
    NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
    if([objString isKindOfClass:[NSString class]])
    {

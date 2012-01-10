@@ -44,12 +44,9 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
 }
 
 -(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
-	O2PDFStream     *result=[O2PDFStream pdfStream];
-   O2PDFDictionary *dictionary=[result dictionary];
+   O2PDFStream     *result=[O2PDFStream pdfStream];
+   O2PDFDictionary *dictionary=[O2PDFDictionary pdfDictionary];
 
-	const void *bytes = [self directBytes];
-
-	NSLog(@"Encoding image = %@ - %@ - image lenght = %d %x", result, dictionary, _directLength, bytes);
    [dictionary setNameForKey:"Type" value:"XObject"];
    [dictionary setNameForKey:"Subtype" value:"Image"];
    [dictionary setIntegerForKey:"Width" value:_width];
@@ -63,18 +60,15 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
     [dictionary setObjectForKey:"Mask" value:[_mask encodeReferenceWithContext:context]];
    if(_decode!=NULL)
     [dictionary setObjectForKey:"Decode" value:[O2PDFArray pdfArrayWithNumbers:_decode count:O2ColorSpaceGetNumberOfComponents(_colorSpace)*2]];
-	[dictionary setBooleanForKey:"Interpolate" value:_interpolate];
-
-	/* FIX, generate soft mask
+   [dictionary setBooleanForKey:"Interpolate" value:_interpolate];
+   /* FIX, generate soft mask
     [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
     */
   
    /* FIX
     */
-//	[dictionary setNameForKey:"Filter" value:"FlateDecode"];
-
-	[[result mutableData] appendBytes:bytes length: _directLength];
-	return [context encodeIndirectPDFObject:result];
+    
+   return [context encodeIndirectPDFObject:result];
 }
 
 

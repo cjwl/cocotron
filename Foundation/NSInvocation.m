@@ -225,9 +225,6 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 }
 
 -(void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index {
-	if (index >= [_signature numberOfArguments]) {
-		[NSException raise: NSInvalidArgumentException format: @"Invalid index %d",index];
-	}
    NSUInteger naturalSize=_argumentSizes[index];
    NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
@@ -246,7 +243,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
    else
    {
 	   *(char*)0=0;
-	   [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
+    [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
    }
 }
 
