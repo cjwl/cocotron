@@ -230,6 +230,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [item _setItemViewFrame:frames[i]];
      if([item _enclosingView]!=self)
       [self addSubview:[item _enclosingView]];
+	  	[[item _enclosingView] setToolTip:[item toolTip]];
+
      x+=frames[i].size.width;
     }
    }

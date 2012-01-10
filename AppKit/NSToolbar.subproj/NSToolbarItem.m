@@ -263,7 +263,6 @@ extern NSSize _NSToolbarIconSizeSmall;
    view=[view retain];
    [_view release];
    _view=view;
-   
    if(view!=nil){
     _minSize=[_view frame].size;
     _maxSize=[_view frame].size;
