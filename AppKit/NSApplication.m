@@ -1034,7 +1034,7 @@ id NSApp=nil;
   if (didCloseAll)
     {
       if ([_delegate respondsToSelector:@selector(applicationShouldTerminate:)])
-        [self replyToApplicationShouldTerminate:[_delegate applicationShouldTerminate:self]];
+        [self replyToApplicationShouldTerminate: [_delegate applicationShouldTerminate:self] == NSTerminateNow];
       else
         [self replyToApplicationShouldTerminate:YES];
     }
@@ -1042,7 +1042,7 @@ id NSApp=nil;
 
 -(void)replyToApplicationShouldTerminate:(BOOL)terminate 
 {
-  if (terminate == NSTerminateNow)
+  if (terminate == YES)
     {
       [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillTerminateNotification object:self];
       
