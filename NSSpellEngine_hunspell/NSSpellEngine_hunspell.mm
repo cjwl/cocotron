@@ -143,10 +143,26 @@
 }
 
 -(NSArray *)suggestGuessesForWord:(NSString *)word inLanguage:(NSString *)language {
-   language=@"en_US";
-
    NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
-
+	if (dict == nil) {
+		// If the lang is "xx_YY", then try the first dict starting with "xx"
+		// So "fr_CA", "fr_BE"... can use the french dictionary for example if no canadian or belgium
+		// dictionary is available
+		NSArray *elements = [language componentsSeparatedByString:@"_"];
+		if ([elements count] >= 1) {
+			NSString *langPrefix = [elements objectAtIndex:0];
+			for (NSString *lang in _dictionaries.allKeys) {
+				if ([lang hasPrefix:langPrefix]) {
+					dict=[_dictionaries objectForKey:lang];
+				}
+			}
+		}
+	}
+	if (dict == nil) {
+		// Couldnt find any dictionary that seems interesting for the user
+		// Fallback to the US one
+		dict=[_dictionaries objectForKey:@"en_US"];
+	}
    return [dict suggestGuessesForWord:word];    
 }
 

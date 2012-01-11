@@ -2857,12 +2857,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [self setSelectedRange:range];
     
     NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
-    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
+    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:[[NSLocale currentLocale] localeIdentifier] inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
 
     NSMenu *menu=[[[NSMenu alloc] initWithTitle:@""] autorelease];
 
     if([guesses count]==0) {
-        NSMenuItem *item=[menu addItemWithTitle:@"No Guesses Found" action:@selector(cut:) keyEquivalent:@""];
+        NSMenuItem *item=[menu addItemWithTitle:NSLocalizedString(@"No Guesses Found", nil) action:@selector(cut:) keyEquivalent:@""];
         [item setEnabled:NO];
     }
     else {

@@ -77,7 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)ignore:sender {
-    [NSApp sendAction:@selector(ignoreSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+    [NSApp sendAction:@selector(ignoreSpelling:) to:nil from:_currentWord];
 }
 
 -(void)learn:sender {

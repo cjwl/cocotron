@@ -208,7 +208,7 @@ static NSSpellChecker *shared=nil;
 }
 
 -(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset {
-	return [self checkSpellingOfString:string startingAt:offset language:nil wrap:NO inSpellDocumentWithTag:0 wordCount:NULL];
+	return [self checkSpellingOfString:string startingAt:offset language:[[NSLocale currentLocale] localeIdentifier] wrap:NO inSpellDocumentWithTag:0 wordCount:NULL];
 }
 
 -(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount {
