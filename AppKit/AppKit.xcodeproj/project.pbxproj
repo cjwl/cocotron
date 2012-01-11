@@ -5435,6 +5435,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63EADBFB14BC9C73005B38BB /* NSSpellChecker */ = {
+			isa = PBXGroup;
+			children = (
+				63EADBFE14BC9C9F005B38BB /* Interface */,
+				FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */,
+				FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */,
+				FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */,
+				FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */,
+				FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */,
+				FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */,
+				FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */,
+			);
+			name = NSSpellChecker;
+			sourceTree = "<group>";
+		};
+		63EADBFE14BC9C9F005B38BB /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */,
+			);
+			name = Interface;
+			sourceTree = "<group>";
+		};
 		6E2B531A0976074C00DA0954 /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -5478,11 +5501,6 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */,
-				FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */,
-				FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */,
-				FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */,
-				FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */,
 				FE20C240118924A4006F01BA /* NSAccessibility.h */,
 				FE20C241118924A4006F01BA /* NSAccessibility.m */,
 				FE20C242118924A4006F01BA /* NSCIImageRep.h */,
@@ -5723,8 +5741,7 @@
 				6E2B53BB0976075200DA0954 /* NSSliderCell.m */,
 				FE2A11210B45C52C006C03DE /* NSSound.h */,
 				FE2A11220B45C52C006C03DE /* NSSound.m */,
-				FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */,
-				FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */,
+				63EADBFB14BC9C73005B38BB /* NSSpellChecker */,
 				6E2B54980976075200DA0954 /* NSSplitView.h */,
 				6E2B53BD0976075200DA0954 /* NSSplitView.m */,
 				FE2A113D0B45C58D006C03DE /* NSStatusBar.h */,
@@ -5865,7 +5882,6 @@
 		6E2B55050976075300DA0954 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */,
 				6E2B55060976075300DA0954 /* NSMenu.plist */,
 			);
 			name = Resources;

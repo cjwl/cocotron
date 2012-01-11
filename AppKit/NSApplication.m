@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDockTile.h>
 #import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSSpellChecker.h>
 #import <objc/message.h>
 #import <pthread.h>
 
@@ -1131,6 +1132,10 @@ standardAboutPanel] retain];
 
 -(void)activateContextHelpMode:sender {
    NSUnimplementedMethod();
+}
+
+-(void)showGuessPanel:sender {
+	[[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
 }
 
 -(void)showHelp:sender

@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSSpellingViewController.h"
 #import <Foundation/NSSpellEngine.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSMenuItem.h>
+#import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSTableView.h>
 #import <AppKit/NSSpellChecker.h>
 
@@ -15,35 +17,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSpellingViewController
 
--(NSArray *)availableLanguages {
-   NSMutableArray *result=[NSMutableArray array];
-   
-   for(NSSpellEngine *engine in [NSSpellEngine allSpellEngines]){
-    [result addObjectsFromArray:[engine languages]];
-   }
-   
-   [result sortUsingSelector:@selector(caseInsensitiveCompare:)];
-   
-   NSLog(@"result=%@",result);
-   return result;
+-(NSString *)_currentLanguage {
+    return [[NSLocale currentLocale] localeIdentifier];
 }
-
-
 
 -(NSSpellEngine *)currentSpellEngine {
     return [[NSSpellEngine allSpellEngines] objectAtIndex:0];
 }
 
 -(NSString *)currentWord {
-    return [_currentWord stringValue];
+    return _misspelledWord;
 }
 
--(NSString *)currentLanguage {
-    return [[NSLocale currentLocale] localeIdentifier];
-}
-
--(NSArray *)currentGuesses {
-    return [[self currentSpellEngine] suggestGuessesForWord:[self currentWord] inLanguage:[self currentLanguage]];
+-(NSArray *)currentGuesses
+{
+	NSString* currentWord = [self currentWord];
+	NSString* currentLanguage = [self _currentLanguage];
+    NSArray* currentGuesses = [[self currentSpellEngine] suggestGuessesForWord: currentWord inLanguage: currentLanguage];
+	
+	return currentGuesses;
 }
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
@@ -54,17 +46,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [[self currentGuesses] objectAtIndex:row];
 }
 
+-(BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(int)row
+{
+	NSString* selectedGuess = [[self currentGuesses] objectAtIndex: row];
+	[_currentWord setStringValue: selectedGuess];
+	[_spellingHint setHidden: YES];
+	return YES;
+}
+
 -(void)reloadGuessesForCurrentWord {
     [_suggestionTable reloadData];
 }
 
--(void)updateSpellingPanelWithMisspelledWord:(NSString *)word {
-    [_currentWord setStringValue:word];
+-(void)updateSpellingPanelWithMisspelledWord:(NSString *)word
+{
+	[_misspelledWord autorelease];
+	_misspelledWord = [word copy];
+    [_currentWord setStringValue: _misspelledWord];
+	[_suggestionTable deselectAll: nil];
     [self reloadGuessesForCurrentWord];
+	[_spellingHint setHidden: [word isEqualToString: @""]];
 }
 
 -(void)change:sender {
-    [NSApp sendAction:@selector(changeSpelling:) to:nil from:_currentWord];
+    [NSApp sendAction:@selector(changeSpelling:) to: nil from: _currentWord];
 }
 
 -(void)findNext:sender {

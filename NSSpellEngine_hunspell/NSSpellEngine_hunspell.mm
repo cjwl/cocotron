@@ -60,13 +60,10 @@
    NSMutableArray *result=[NSMutableArray array];
    
    NSString *language=[orthography dominantLanguage];
-   NSLog(@"language=%@",language);
    language=@"en_US";
    
    NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
-   
-   NSLog(@"dict=%@",dict);
-   
+      
    NSUInteger length=[stringToCheck length];
    
    NSUInteger bufferCapacity=10,bufferOffset=offset,bufferIndex=0,bufferLength=0;
