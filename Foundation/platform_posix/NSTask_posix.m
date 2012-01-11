@@ -27,45 +27,58 @@ static NSMutableArray *_liveTasks = nil;
 
 @implementation NSTask_posix
 
-void childSignalHandler(int sig) {
-    if (sig == SIGCHLD) {
-        NSTask_posix *task;
-        pid_t pid;
-        int status;
-
-        pid = wait3(&status, WNOHANG, NULL);
-        
-        if (pid < 0) {
-            NSCLog("Invalid wait4 result [%s] in child signal handler", strerror(errno));
+BOOL waitForChildProcess()
+{
+    NSTask_posix *task;
+    pid_t pid;
+    int status;
+    
+    pid = wait3(&status, WNOHANG, NULL);
+    
+    if (pid < 0) {
+        if (errno != ECHILD) {
+            NSCLog("Invalid wait3 result [%s] in child signal handler", strerror(errno));
         }
-        else if (pid == 0) {
-            // This can happen when a child is suspended (^Z'ing at the shell)
-            // something got out of synch here
-            // [NSException raise:NSInternalInconsistencyException format:@"wait4() returned 0, but data was fed to the pipe!"];
-        }
-        else {
-            @synchronized(_liveTasks) {
-                NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
-                while (task = [taskEnumerator nextObject]) {
-                    if ([task processIdentifier] == pid) {
-                        if (WIFEXITED(status))
-                            [task setTerminationStatus:WEXITSTATUS(status)];
-                        else
-                            [task setTerminationStatus:-1];
-                        
-                        [task retain];
-                        [task taskFinished];
-                        
-                        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:NSTaskDidTerminateNotification object:task]];
-                        [task release];
-                        
-                        return;
-                    }
+        return NO;
+    }
+    else if (pid == 0) {
+        //no child exited
+        return NO;
+    }
+    else {
+        @synchronized(_liveTasks) {
+            NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
+            while (task = [taskEnumerator nextObject]) {
+                if ([task processIdentifier] == pid) {
+                    if (WIFEXITED(status))
+                        [task setTerminationStatus:WEXITSTATUS(status)];
+                    else
+                        [task setTerminationStatus:-1];
+                    
+                    [task retain];
+                    [task taskFinished];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:NSTaskDidTerminateNotification object:task]];
+                    [task release];
+                    
+                    return YES;
                 }
             }
-            
-            // something got out of synch here
-            //[NSException raise:NSInternalInconsistencyException format:@"wait4() returned %d, but we have no matching task!", pid];
+        }
+        
+        //there was a different child (not a NSTask)
+        //just ignore it and return YES
+        return YES;
+    }    
+}
+
+void childSignalHandler(int sig) {
+    if (sig == SIGCHLD) {
+        while (YES) {
+            //if multiple signals are sent at the same time, we only get one signal
+            if (waitForChildProcess() == NO) {
+                break;
+            }
         }
     }
 }

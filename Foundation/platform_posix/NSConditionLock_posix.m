@@ -111,11 +111,11 @@
     _lockingThread=nil;
     _value=condition;
     int rc;
-    if((rc = pthread_cond_broadcast(&_cond)) != 0) {
-        [NSException raise:NSInvalidArgumentException format:@"failed to broadcast %@ (errno: %d)", self, rc];
-    }
     if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+    }
+    if((rc = pthread_cond_broadcast(&_cond)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to broadcast %@ (errno: %d)", self, rc];
     }
 }
 
