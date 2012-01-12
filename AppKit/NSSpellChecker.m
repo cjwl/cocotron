@@ -216,8 +216,6 @@ static NSSpellChecker *shared=nil;
 	
 	if(language==nil){
 		language=[self currentLanguage];
-		
-		NSLog(@"language=%@",language);
 	}
 	
 	if(language!=nil){
