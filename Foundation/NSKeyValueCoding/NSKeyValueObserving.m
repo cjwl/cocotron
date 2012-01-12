@@ -1012,9 +1012,9 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 			}
 			else if(strcmp(methodCString,"removeObjectForKey:")==0)
 			{
-				kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:forKey:);
+				kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:);
 			}
-
+			
 			// there's a suitable selector for us
 			if(kvoSelector!=0)
 			{
@@ -1033,7 +1033,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 				newMethod->method_types=strdup(method->method_types);
 				// and its implementation is the respective setter
 				newMethod->method_imp=[self methodForSelector:kvoSelector];
-
+				
 				currentMethod++;
 				
 				//NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
