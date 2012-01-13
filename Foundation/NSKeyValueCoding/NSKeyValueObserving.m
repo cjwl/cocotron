@@ -853,195 +853,174 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
    return result;
 }
 
--(Class)_KVO_swizzledClass
+
+- (Class)_KVO_swizzledClass
 {
-	// find swizzled class
-	const char* swizzledName=[[NSString stringWithFormat:@"KVONotifying_%@", [self className]] cString];
-	Class swizzledClass = objc_lookUpClass(swizzledName);
+    // find swizzled class
+    const char *swizzledName = [[NSString stringWithFormat:@"KVONotifying_%@", [self className]] cString];
+    Class swizzledClass = objc_lookUpClass(swizzledName);
 
-	if(swizzledClass)
-		return swizzledClass;
+    if (swizzledClass) {
+        return swizzledClass;
+    }
 
-	// swizzled class doesn't exist; create
-   swizzledClass = objc_allocateClassPair(isa, swizzledName, 0);
-	if(!swizzledClass)
-		[NSException raise:@"NSClassCreationException" format:@"couldn't swizzle class %@ for KVO", [self className]];
+    // swizzled class doesn't exist; create
+    swizzledClass = objc_allocateClassPair(isa, swizzledName, 0);
+    if(!swizzledClass) {
+        [NSException raise:@"NSClassCreationException" format:@"couldn't swizzle class %@ for KVO", [self className]];
+    }
 
-	// add KVO-Observing methods
-	int maxMethods=20;
-	struct objc_method *newMethods=calloc(sizeof(struct objc_method), maxMethods);
-	int currentMethod=0;
+    // add KVO-Observing methods
+    int maxMethods = 20;
+    struct objc_method *newMethods = calloc(sizeof(struct objc_method), maxMethods);
+    int currentMethod = 0;
 
-	{
-		// override className so it returns the original class name
-      Method className=class_getInstanceMethod([self class], @selector(_KVO_className));
-		newMethods[currentMethod].method_name=@selector(className);
-		newMethods[currentMethod].method_types=strdup(className->method_types);
-		newMethods[currentMethod].method_imp=className->method_imp;
-		currentMethod++;
+    {
+        // override className so it returns the original class name
+        Method className=class_getInstanceMethod([self class], @selector(_KVO_className));
+        newMethods[currentMethod].method_name = @selector(className);
+        newMethods[currentMethod].method_types = strdup(className->method_types);
+        newMethods[currentMethod].method_imp = className->method_imp;
+        currentMethod++;
 
-      className=class_getInstanceMethod([self class], @selector(_KVO_class));
-		newMethods[currentMethod].method_name=@selector(class);
-		newMethods[currentMethod].method_types=strdup(className->method_types);
-		newMethods[currentMethod].method_imp=className->method_imp;
-		currentMethod++;
+        className=class_getInstanceMethod([self class], @selector(_KVO_class));
+        newMethods[currentMethod].method_name = @selector(class);
+        newMethods[currentMethod].method_types = strdup(className->method_types);
+        newMethods[currentMethod].method_imp = className->method_imp;
+        currentMethod++;
 
-      className=class_getInstanceMethod([self class], @selector(_KVO_classForCoder));
-		newMethods[currentMethod].method_name=@selector(classForCoder);
-		newMethods[currentMethod].method_types=strdup(className->method_types);
-		newMethods[currentMethod].method_imp=className->method_imp;
-		currentMethod++;
-	}
+        className=class_getInstanceMethod([self class], @selector(_KVO_classForCoder));
+        newMethods[currentMethod].method_name = @selector(classForCoder);
+        newMethods[currentMethod].method_types = strdup(className->method_types);
+        newMethods[currentMethod].method_imp = className->method_imp;
+        currentMethod++;
+    }
 
-	Class currentClass=isa;
+    Class currentClass = isa;
 
-    for(;currentClass && currentClass->super_class!=currentClass;currentClass=currentClass->super_class){
-     void *iterator=0;
+    for (; currentClass && currentClass->super_class != currentClass; currentClass = currentClass->super_class) {
+        void *iterator=0;
 
-     struct objc_method_list *list=class_nextMethodList(currentClass,&iterator);
+        struct objc_method_list *list = class_nextMethodList(currentClass, &iterator);
 
-     while(list){
-        NSAutoreleasePool *pool=[NSAutoreleasePool new];
-		int i;
-		for(i=0; i<list->method_count; i++)
-		{
-			struct objc_method *method=&list->method_list[i];
-            const char         *methodCString=sel_getName(method->method_name);
-            NSUInteger          numberOfArguments=method_getNumberOfArguments(method);
-			SEL kvoSelector=0;
+        while (list) {
+            NSAutoreleasePool *pool = [NSAutoreleasePool new];
+            int i;
+            for (i = 0; i < list->method_count; i++) {
+                struct objc_method *method = &list->method_list[i];
+                const char *methodCString = sel_getName(method->method_name);
+                NSUInteger numberOfArguments = method_getNumberOfArguments(method);
+                SEL kvoSelector = 0;
 
-			// current method is a setter?
-			if(numberOfArguments==3 && methodIsAutoNotifyingSetter([self class],methodCString))
-			{
-                NSMethodSignature  *signature=[self methodSignatureForSelector:method->method_name];
-				const char* firstParameterType=[signature getArgumentTypeAtIndex:2];
-				const char* returnType=[signature methodReturnType];
+                // current method is a setter?
+                if (numberOfArguments == 3 && methodIsAutoNotifyingSetter([self class], methodCString)) {
+                    NSMethodSignature *signature = [self methodSignatureForSelector:method->method_name];
+                    const char *firstParameterType = [signature getArgumentTypeAtIndex:2];
+                    const char *returnType = [signature methodReturnType];
 
-            char *cleanFirstParameterType=__builtin_alloca(strlen(firstParameterType)+1);
-            [self _demangleTypeEncoding:firstParameterType to:cleanFirstParameterType];
+                    char *cleanFirstParameterType = __builtin_alloca(strlen(firstParameterType) + 1);
+                    [self _demangleTypeEncoding:firstParameterType to:cleanFirstParameterType];
 
+                    /* check for correct type: either perfect match
+                    or primitive signed type matching unsigned type
+                    (i.e. tolower(@encode(unsigned long)[0])==@encode(long)[0])
+                    */
+                    #define CHECK_AND_ASSIGN(a) \
+                            if (!strcmp(cleanFirstParameterType, @encode(a)) || \
+                                    (strlen(@encode(a)) == 1 && \
+                                    strlen(cleanFirstParameterType) == 1 && \
+                                    tolower(cleanFirstParameterType[0]) == @encode(a)[0])) { \
+                                kvoSelector = @selector(CHANGE_SELECTOR(a)); \
+                            }
+                    // FIX: add more types
+                    CHECK_AND_ASSIGN(id);
+                    CHECK_AND_ASSIGN(float);
+                    CHECK_AND_ASSIGN(double);
+                    CHECK_AND_ASSIGN(int);
+                    CHECK_AND_ASSIGN(NSSize);
+                    CHECK_AND_ASSIGN(NSPoint);
+                    CHECK_AND_ASSIGN(NSRect);
+                    CHECK_AND_ASSIGN(NSRange);
+                    CHECK_AND_ASSIGN(char);
+                    CHECK_AND_ASSIGN(long);
+                    CHECK_AND_ASSIGN(SEL);
 
-				/* check for correct type: either perfect match
-				or primitive signed type matching unsigned type
-				(i.e. tolower(@encode(unsigned long)[0])==@encode(long)[0])
-				*/
-#define CHECK_AND_ASSIGN(a) \
-				if(!strcmp(cleanFirstParameterType, @encode(a)) || \
-				   (strlen(@encode(a))==1 && \
-					strlen(cleanFirstParameterType)==1 && \
-					tolower(cleanFirstParameterType[0])==@encode(a)[0])) \
-				{ \
-					kvoSelector = @selector( CHANGE_SELECTOR(a) ); \
-				}
-				// FIX: add more types
-				CHECK_AND_ASSIGN(id);
-				CHECK_AND_ASSIGN(float);
-				CHECK_AND_ASSIGN(double);
-				CHECK_AND_ASSIGN(int);
-				CHECK_AND_ASSIGN(NSSize);
-				CHECK_AND_ASSIGN(NSPoint);
-				CHECK_AND_ASSIGN(NSRect);
-				CHECK_AND_ASSIGN(NSRange);
-				CHECK_AND_ASSIGN(char);
-				CHECK_AND_ASSIGN(long);
-				CHECK_AND_ASSIGN(SEL);
+                    if (kvoSelector == 0 && NSDebugEnabled) {
+                        NSLog(@"NSDebugEnabled type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, sel_getName(method->method_name), [self className]);
+                    }
+                    if (returnType[0] != _C_VOID) {
+                        kvoSelector = 0;
+                    }
+                }
 
-            if(kvoSelector==0 && NSDebugEnabled)
-				{
-					NSLog(@"NSDebugEnabled type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, sel_getName(method->method_name), [self className]);
-				}
-				if(returnType[0]!=_C_VOID)
-				{
-					kvoSelector=0;
-				}
+                // long selectors
+                if (kvoSelector == 0) {
+                    NSString *methodName = NSStringFromSelector(method->method_name);
+                    if (numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"insertObject:in" endingWith:@"AtIndex:"]) {
+                        kvoSelector = @selector(KVO_notifying_change_insertObject:inKeyAtIndex:);
+                    } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"removeObjectFrom" endingWith:@"AtIndex:"]) {
+                        kvoSelector = @selector(KVO_notifying_change_removeObjectFromKeyAtIndex:);
+                    } else if (numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"replaceObjectIn" endingWith:@"AtIndex:withObject:"]) {
+                        kvoSelector = @selector(KVO_notifying_change_replaceObjectInKeyAtIndex:withObject:);
+                    } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"remove" endingWith:@"Object:"]) {
+                        kvoSelector = @selector(KVO_notifying_change_removeKeyObject:);
+                    } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"add" endingWith:@"Object:"]) {
+                        kvoSelector = @selector(KVO_notifying_change_addKeyObject:);
+                    }
+                }
 
+                // these are swizzled so e.g. subclasses of NSMutableDictionary get change notifications in setObject:forKey:
+                if (strcmp(methodCString,"setObject:forKey:") == 0) {
+                    kvoSelector = @selector(KVO_notifying_change_setObject:forKey:);
+                } else if (strcmp(methodCString,"removeObjectForKey:") == 0) {
+                    kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:forKey:);
+                }
 
-			}
+                // there's a suitable selector for us
+                if (kvoSelector != 0) {
+                    // if we already added too many methods, increase the size of the method list array
+                    if (currentMethod >= maxMethods) {
+                        maxMethods *= 2;
+                        newMethods = realloc(newMethods, maxMethods * sizeof(struct objc_method));
+                    }
+                    struct objc_method *newMethod = &newMethods[currentMethod];
 
+                    // fill in the new method:
+                    // same name as the method in the superclass
+                    newMethod->method_name = method->method_name;
+                    // takes the same types
+                    newMethod->method_types = strdup(method->method_types);
+                    // and its implementation is the respective setter
+                    newMethod->method_imp = [self methodForSelector:kvoSelector];
 
+                    currentMethod++;
 
-			// long selectors
-			if(kvoSelector==0)
-			{
-		  	NSString         * methodName = NSStringFromSelector(method->method_name);
-				if(numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"insertObject:in" endingWith:@"AtIndex:"])
-				{
-					kvoSelector = @selector(KVO_notifying_change_insertObject:inKeyAtIndex:);
-				}
-				else if(numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"removeObjectFrom" endingWith:@"AtIndex:"])
-				{
-					kvoSelector = @selector(KVO_notifying_change_removeObjectFromKeyAtIndex:);
-				}
-				else if(numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"replaceObjectIn" endingWith:@"AtIndex:withObject:"])
-				{
-					kvoSelector = @selector(KVO_notifying_change_replaceObjectInKeyAtIndex:withObject:);
-				}
-				else if(numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"remove" endingWith:@"Object:"])
-				{
-					kvoSelector = @selector(KVO_notifying_change_removeKeyObject:);
-				}
-            else if(numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"add" endingWith:@"Object:"])
-				{
-					kvoSelector = @selector(KVO_notifying_change_addKeyObject:);
-				}
-			}
+                    //NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
+                }
+            }
 
-			// these are swizzled so e.g. subclasses of NSMutableDictionary get change notifications in setObject:forKey:
-			if(strcmp(methodCString,"setObject:forKey:")==0)
-			{
-				kvoSelector = @selector(KVO_notifying_change_setObject:forKey:);
-			}
-			else if(strcmp(methodCString,"removeObjectForKey:")==0)
-			{
-				kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:forKey:);
-			}
-
-			// there's a suitable selector for us
-			if(kvoSelector!=0)
-			{
-				// if we already added too many methods, increase the size of the method list array
-				if(currentMethod>=maxMethods)
-				{
-					maxMethods*=2;
-					newMethods=realloc(newMethods, maxMethods*sizeof(struct objc_method));
-				}
-				struct objc_method *newMethod=&newMethods[currentMethod];
-
-				// fill in the new method:
-				// same name as the method in the superclass
-				newMethod->method_name=method->method_name;
-				// takes the same types
-				newMethod->method_types=strdup(method->method_types);
-				// and its implementation is the respective setter
-				newMethod->method_imp=[self methodForSelector:kvoSelector];
-
-				currentMethod++;
-
-				//NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
-			}
-		}
-
-		list=class_nextMethodList(currentClass, &iterator);
-        [pool release];
-     }
+            list=class_nextMethodList(currentClass, &iterator);
+            [pool release];
+        }
     }
 #undef CHECK_AND_ASSIGN
 
-	// crop the method array to currently used size
-	struct objc_method_list *list = calloc(sizeof(struct objc_method_list)+currentMethod*sizeof(struct objc_method), 1);
-	list->method_count=currentMethod;
-	memcpy(list->method_list, newMethods, sizeof(struct objc_method)*currentMethod);
+    // crop the method array to currently used size
+    struct objc_method_list *list = calloc(sizeof(struct objc_method_list) + currentMethod * sizeof(struct objc_method), 1);
+    list->method_count = currentMethod;
+    memcpy(list->method_list, newMethods, sizeof(struct objc_method) * currentMethod);
 
-	// add methods
-	class_addMethods(swizzledClass, list);
+    // add methods
+    class_addMethods(swizzledClass, list);
 
-	free(newMethods);
+    free(newMethods);
 
-   objc_registerClassPair(swizzledClass);
+    objc_registerClassPair(swizzledClass);
 
-	// done
-	return swizzledClass;
+    // done
+    return swizzledClass;
 }
+
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key; {
    if([key isEqualToString:@"observationInfo"]) {
