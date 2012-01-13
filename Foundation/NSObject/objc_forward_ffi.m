@@ -1,4 +1,4 @@
-/* 
+/*
  Parts of this come from PyObjC, http://pyobjc.sourceforge.net/
  Copyright 2002, 2003 - Bill Bumgarner, Ronald Oussoren, Steve Majewski, Lele Gaifax, et.al.
  Copyright 2008 Johannes Fortmann
@@ -6,7 +6,7 @@
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 
@@ -33,14 +33,14 @@
 extern void* _NSClosureAlloc(size_t);
 extern void _NSClosureProtect(void*, size_t);
 
-#pragma mark Converting @encode to ffi type descriptors 
+#pragma mark Converting @encode to ffi type descriptors
 
 static inline OBJCHashTable *ffi_type_table(void) {
 	static OBJCHashTable *ffiTypeTable=NULL;
-	
+
 	if(ffiTypeTable==NULL)
 		ffiTypeTable=OBJCCreateHashTable(50);
-	
+
 	return ffiTypeTable;
 }
 
@@ -58,11 +58,11 @@ static size_t
 num_struct_fields(const char* argtype)
 {
 	size_t res = 0;
-	
+
 	if (*argtype != _C_STRUCT_B) [NSException raise:NSInternalInconsistencyException format:@"exception while encoding type"];
 	while (*argtype != _C_STRUCT_E && *argtype != '=') argtype++;
 	if (*argtype == _C_STRUCT_E) return 0;
-	
+
 	argtype++;
 	while (*argtype != _C_STRUCT_E) {
 		argtype = objc_skip_type_specifier(argtype,YES);
@@ -77,27 +77,27 @@ num_struct_fields(const char* argtype)
 
 static ffi_type* signature_to_ffi_type(const char* argtype);
 
-static ffi_type* 
+static ffi_type*
 array_to_ffi_type(const char* argtype)
-{	
+{
 	ffi_type* type=ffi_try_find_type(argtype);
 	if(type)
 		return type;
-	
-	/* We don't have a type description yet, dynamicly 
+
+	/* We don't have a type description yet, dynamicly
 	 * create it.
 	 */
 	size_t field_count = atoi(argtype+1);
 	size_t i;
-	
+
 	type = NSZoneMalloc(NULL, sizeof(*type));
 
 	type->size=objc_sizeof_type(argtype);
 	type->alignment=objc_alignof_type(argtype);
 
-	/* Libffi doesn't really know about arrays as part of larger 
+	/* Libffi doesn't really know about arrays as part of larger
 	 * data-structres (e.g. struct foo { int field[3]; };). We fake it
-	 * by treating the nested array as a struct. These seems to work 
+	 * by treating the nested array as a struct. These seems to work
 	 * fine on MacOS X.
 	 */
 	type->type = FFI_TYPE_STRUCT;
@@ -114,20 +114,20 @@ array_to_ffi_type(const char* argtype)
 	return type;
 }
 
-static ffi_type* 
+static ffi_type*
 struct_to_ffi_type(const char* argtype)
 {
 	ffi_type* type=ffi_try_find_type(argtype);
 	if(type)
 		return type;
 	const char* curtype;
-	
-	
-	/* We don't have a type description yet, dynamicly 
+
+
+	/* We don't have a type description yet, dynamicly
 	 * create it.
 	 */
 	size_t field_count = num_struct_fields(argtype);
-	
+
 	type = NSZoneMalloc(NULL, sizeof(*type));
 
 	type->size = objc_sizeof_type(argtype);
@@ -135,21 +135,21 @@ struct_to_ffi_type(const char* argtype)
 
 	type->type = FFI_TYPE_STRUCT;
 	type->elements = NSZoneMalloc(NULL, (1+field_count) * sizeof(ffi_type*));
-	
+
 	field_count = 0;
 	curtype = argtype+1;
 	while (*curtype != _C_STRUCT_E && *curtype != '=') curtype++;
 	if (*curtype == '=') {
 		curtype ++;
 		while (*curtype != _C_STRUCT_E) {
-			type->elements[field_count] = 
+			type->elements[field_count] =
 			signature_to_ffi_type(curtype);
 			field_count++;
 			curtype = objc_skip_type_specifier(curtype,YES);
 		}
 	}
 	type->elements[field_count] = NULL;
-		
+
 	ffi_insert_type(argtype, type);
 
 	return type;
@@ -162,7 +162,7 @@ signature_to_ffi_return_type(const char* argtype)
 #ifdef __ppc__
 	static const char long_type[] = { _C_LNG, 0 };
 	static const char ulong_type[] = { _C_ULNG, 0 };
-	
+
 	switch (*argtype) {
 		case _C_CHR: case _C_SHT: case _C_UNICHAR:
 			return signature_to_ffi_type(long_type);
@@ -170,8 +170,8 @@ signature_to_ffi_return_type(const char* argtype)
 			return signature_to_ffi_type(ulong_type);
 #ifdef _C_BOOL
 		case _C_BOOL: return signature_to_ffi_type(long_type);
-#endif	
-		case _C_NSBOOL: 
+#endif
+		case _C_NSBOOL:
 			return signature_to_ffi_type(long_type);
 		default:
 			return signature_to_ffi_type(argtype);
@@ -193,23 +193,23 @@ signature_to_ffi_type(const char* argtype)
 		case _C_SEL: return &ffi_type_pointer;
 		case _C_CHR: return &ffi_type_schar;
 #ifdef _C_BOOL
-		case _C_BOOL: 
+		case _C_BOOL:
 			/* sizeof(bool) == 4 on PPC32, and 1 on all others */
 #if defined(__ppc__) && !defined(__LP__)
 			return &ffi_type_sint;
 #else
 			return &ffi_type_schar;
 #endif
-			
-#endif	
+
+#endif
 		case _C_UCHR: return &ffi_type_uchar;
 		case _C_SHT: return &ffi_type_sshort;
 		case _C_USHT: return &ffi_type_ushort;
 		case _C_INT: return &ffi_type_sint;
 		case _C_UINT: return &ffi_type_uint;
-			
+
 			/* The next to defintions are incorrect, but the correct definitions
-			 * don't work (e.g. give testsuite failures). 
+			 * don't work (e.g. give testsuite failures).
 			 */
 #ifdef __LP64__
 		case _C_LNG: return &ffi_type_sint64;  /* ffi_type_slong */
@@ -224,11 +224,11 @@ signature_to_ffi_type(const char* argtype)
 		case _C_DBL: return &ffi_type_double;
 		case _C_CHARPTR: return &ffi_type_pointer;
 		case _C_PTR: return &ffi_type_pointer;
-		case _C_ARY_B: 
+		case _C_ARY_B:
 			return array_to_ffi_type(argtype);
 		case _C_IN: case _C_OUT: case _C_INOUT: case _C_CONST:
 			return signature_to_ffi_type(argtype+1);
-		case _C_STRUCT_B: 
+		case _C_STRUCT_B:
 			return struct_to_ffi_type(argtype);
 		case _C_UNDEF:
 			return &ffi_type_pointer;
@@ -322,7 +322,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 		}
 	}
 	NSAssert(_closureInfo, nil);
-	return _closureInfo;		
+	return _closureInfo;
 }
 
 -(void*)_closure
@@ -349,31 +349,33 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 
 @implementation NSInvocation (FFICalling)
 
--(void)_ffiInvokeWithTarget:target
+
+- (void)_ffiInvokeWithTarget:target
 {
-	NSInteger i, numArgs=[_signature numberOfArguments];
-	void* arguments[numArgs+8];
-	ffi_cif* cif=[_signature _callingInfo];
-	NSAssert(numArgs>=2, @"invocation must have target and selector");
-	const char *type=[_signature _realTypes];
-	type=objc_skip_type_specifier(type,YES);
-	for(i=0; i<numArgs; i++)
-	{
-		arguments[i]=_argumentFrame+_argumentOffsets[i];
-		type=objc_skip_type_specifier(type,YES);
-	}
+    NSInteger i, numArgs = [_signature numberOfArguments];
+    void *arguments[numArgs + 8];
+    ffi_cif *cif = [_signature _callingInfo];
+    NSAssert(numArgs >= 2, @"invocation must have target and selector");
+    const char *type = [_signature _realTypes];
+    type = objc_skip_type_specifier(type, YES);
+    for (i = 0; i < numArgs; i++) {
+        arguments[i] = _argumentFrame + _argumentOffsets[i];
+        type = objc_skip_type_specifier(type, YES);
+    }
 
-	IMP imp=objc_msg_lookup(target, [self selector]);
+    IMP imp = objc_msg_lookup(target, [self selector]);
 
-	ffi_call(cif, FFI_FN(imp), _returnValue, arguments);
+    ffi_call(cif, FFI_FN(imp), _returnValue, arguments);
 }
+
+
 @end
 
 id _objc_throwDoesNotRecognizeException(id object, SEL selector)
 {
 	Class       class=object->isa;
    NSRaiseException(NSInvalidArgumentException,
-                    object, 
+                    object,
                     selector,
                     @"Unrecognized selector sent to %p. Break on _objc_throwDoesNotRecognizeException to catch.", object);
    return nil;
@@ -382,7 +384,7 @@ id _objc_throwDoesNotRecognizeException(id object, SEL selector)
 IMP objc_forward_ffi(id object, SEL selector)
 {
 	NSMethodSignature *sig=[object methodSignatureForSelector:selector];
-	
+
 	if(sig)
 		return (IMP)[sig _closure];
 	return (IMP)_objc_throwDoesNotRecognizeException;

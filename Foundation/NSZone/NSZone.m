@@ -199,48 +199,56 @@ BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
    return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
 }
 
-id NSAllocateObject(Class class,NSUInteger extraBytes,NSZone *zone) {
-   id result;
 
-   if(zone==NULL)
-      zone=NSDefaultMallocZone();
+id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
+{
+    id result;
 
-   result=NSZoneCalloc(zone, 1, class->instance_size+extraBytes);
-   result->isa=class;
-	
-	if(!object_cxxConstruct(result, result->isa))
-	{
-		NSZoneFree(zone,result);
-		result=nil;
-	}
-	
-   return result;
+    if (zone == NULL) {
+        zone = NSDefaultMallocZone();
+    }
+
+    result = NSZoneCalloc(zone, 1, class->instance_size + extraBytes);
+    result->isa=class;
+
+    if (!object_cxxConstruct(result, result->isa)) {
+        NSZoneFree(zone, result);
+        result = nil;
+    }
+
+    return result;
 }
 
-void NSDeallocateObject(id object) {
-	object_cxxDestruct(object, object->isa);
 
-   if(NSZombieEnabled)
-      NSRegisterZombie(object);
-   else {
-      NSZone *zone=NULL;
+void NSDeallocateObject(id object)
+{
+    object_cxxDestruct(object, object->isa);
 
-      if(zone==NULL)
-         zone=NSDefaultMallocZone();
+    if (NSZombieEnabled) {
+        NSRegisterZombie(object);
+    } else {
+        NSZone *zone = NULL;
 
-      object->isa=0;
+        if (zone == NULL) {
+            zone = NSDefaultMallocZone();
+        }
 
-      NSZoneFree(zone,object);
-   }
+        object->isa = 0;
+
+        NSZoneFree(zone, object);
+    }
 }
 
-id NSCopyObject(id object,NSUInteger extraBytes,NSZone *zone) {
-   if (object==nil)
-      return nil;
 
-   id result=NSAllocateObject(object->isa,extraBytes,zone);
-   
-   memcpy(result, object, object->isa->instance_size+extraBytes);
+id NSCopyObject(id object, NSUInteger extraBytes, NSZone *zone)
+{
+    if (object == nil) {
+        return nil;
+    }
 
-   return result;
+    id result = NSAllocateObject(object->isa, extraBytes, zone);
+
+    memcpy(result, object, object->isa->instance_size + extraBytes);
+
+    return result;
 }

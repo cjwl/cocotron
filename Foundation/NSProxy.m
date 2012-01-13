@@ -115,19 +115,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--performSelector:(SEL)selector {
-   IMP imp = objc_msg_lookup(self, selector);
-   return imp(self, selector);
+- performSelector:(SEL)selector
+{
+    IMP imp = objc_msg_lookup(self, selector);
+    return imp(self, selector);
 }
 
--performSelector:(SEL)selector withObject:object1 {
-   IMP imp = objc_msg_lookup(self, selector);
-   return imp(self,selector,object1);
+
+- performSelector:(SEL)selector withObject:object1
+{
+    IMP imp = objc_msg_lookup(self, selector);
+    return imp(self, selector, object1);
 }
 
--performSelector:(SEL)selector withObject:object1 withObject:object2 {
-   IMP imp = objc_msg_lookup(self, selector);
-   return imp(self,selector,object1,object2);
+
+- performSelector:(SEL)selector withObject:object1 withObject:object2
+{
+    IMP imp = objc_msg_lookup(self, selector);
+    return imp(self, selector, object1, object2);
 }
 
 

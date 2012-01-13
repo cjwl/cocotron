@@ -18,18 +18,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/message.h>
 #import "forwarding.h"
 
-BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
-   struct objc_class *class=object->isa;
 
-   for(;;class=class->super_class){
-    if(kindOf==class)
-     return YES;
-    if(class->isa->isa==class)
-     break;
-   }
+BOOL NSObjectIsKindOfClass(id object, Class kindOf)
+{
+    struct objc_class *class = object->isa;
 
-   return NO;
+    for (;; class=class->super_class) {
+        if (kindOf == class) {
+            return YES;
+        }
+        if (class->isa->isa == class) {
+            break;
+        }
+    }
+
+    return NO;
 }
+
 
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
@@ -266,23 +271,25 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 }
 
 
--performSelector:(SEL)selector {
-   IMP imp = objc_msg_lookup(self, selector);
-
-   return imp(self, selector);
+- performSelector:(SEL)selector
+{
+    IMP imp = objc_msg_lookup(self, selector);
+    return imp(self, selector);
 }
 
--performSelector:(SEL)selector withObject:object0 {
-   IMP imp = objc_msg_lookup(self, selector);
 
-   return imp(self,selector,object0);
+- performSelector:(SEL)selector withObject:object0
+{
+    IMP imp = objc_msg_lookup(self, selector);
+    return imp(self, selector, object0);
 }
 
--performSelector:(SEL)selector withObject:object0 withObject:object1 {
-   IMP imp = objc_msg_lookup(self, selector);
-
-   return imp(self,selector,object0,object1);
+- performSelector:(SEL)selector withObject:object0 withObject:object1
+{
+    IMP imp = objc_msg_lookup(self, selector);
+    return imp(self, selector, object0, object1);
 }
+
 
 -(BOOL)isProxy {
    return NO;

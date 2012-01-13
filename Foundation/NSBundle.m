@@ -186,53 +186,57 @@ static NSMapTable *pathToObject=NULL;
    _isLoaded=loaded;
 }
 
+
 /*
   Executables support:
     MyProgram.app/Contents/<platform>/MyProgram[.exe]
    or
-	MyProgram[.exe]
-	MyProgram.app/Contents/
+    MyProgram[.exe]
+    MyProgram.app/Contents/
 
  */
-+(NSString *)bundlePathFromModulePath:(NSString *)path {
-   NSString *result=nil;
-   NSString *directory=[path stringByDeletingLastPathComponent];
-   NSString *extension=[[path pathExtension] lowercaseString];
-   NSString *name=[[path lastPathComponent] stringByDeletingPathExtension];
-   NSRange   version=[name rangeOfString:@"."];
++ (NSString *)bundlePathFromModulePath:(NSString *)path
+{
+    NSString *result = nil;
+    NSString *directory = [path stringByDeletingLastPathComponent];
+    NSString *extension = [[path pathExtension] lowercaseString];
+    NSString *name = [[path lastPathComponent] stringByDeletingPathExtension];
+    NSRange version = [name rangeOfString:@"."];
 
-   if(version.location!=NSNotFound)
-    name=[name substringToIndex:version.location];
+    if (version.location != NSNotFound) {
+        name = [name substringToIndex:version.location];
+    }
 
-   if(![extension isEqualToString:NSPlatformLoadableObjectFileExtension]){
-    NSString *check=[[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"app"];
+    if (![extension isEqualToString:NSPlatformLoadableObjectFileExtension]) {
+        NSString *check = [[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"app"];
 
-    if([[NSFileManager defaultManager] fileExistsAtPath:check])
-     result=check;
-	else
-     result=[[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
-   }
-   else {
-    NSString *loadablePrefix=NSPlatformLoadableObjectFilePrefix;
-    NSString *check;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
+            result = check;
+        } else {
+            result = [[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+        }
+    } else {
+        NSString *loadablePrefix = NSPlatformLoadableObjectFilePrefix;
+        NSString *check;
 
-    if([loadablePrefix length]>0 && [name hasPrefix:loadablePrefix])
-     name=[name substringFromIndex:[loadablePrefix length]];
+        if ([loadablePrefix length] > 0 && [name hasPrefix:loadablePrefix]) {
+            name = [name substringFromIndex:[loadablePrefix length]];
+        }
 
-	check=[[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"framework"];
+        check = [[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"framework"];
 
-    if([[NSFileManager defaultManager] fileExistsAtPath:check])
-     result=check;
-	else {
-   	 check=[[[directory stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Frameworks"] stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"framework"]];
-     if([[NSFileManager defaultManager] fileExistsAtPath:check])
-      result=check;
-	 else {
-      result=[[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
-	 }
-	}
-   }
-   return result;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
+            result = check;
+        } else {
+            check = [[[directory stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Frameworks"] stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"framework"]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
+                result = check;
+            } else {
+                result = [[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+            }
+        }
+    }
+    return result;
 }
 
 
@@ -248,37 +252,42 @@ static NSMapTable *pathToObject=NULL;
    return result;
 }
 
-+(void)registerFrameworks {
-   unsigned       i,count;
-   const char   **array=objc_copyImageNames(&count);
 
-   for(i=0;i<count;i++){
-    NSString *path=[NSString stringWithUTF8String:array[i]];
-    NSBundle *bundle=[NSBundle bundleWithModulePath:path];
++ (void)registerFrameworks
+{
+    unsigned i,count;
+    const char **array = objc_copyImageNames(&count);
 
-    [_allFrameworks addObject:bundle];
-   }
-   free(array);
+    for (i = 0; i < count; i++) {
+        NSString *path = [NSString stringWithUTF8String:array[i]];
+        NSBundle *bundle = [NSBundle bundleWithModulePath:path];
+
+        [_allFrameworks addObject:bundle];
+    }
+    free(array);
 }
 
-+(void)initialize {
-   if(self==[NSBundle class]){
-    const char *override=getenv("CFProcessPath");
-    const char *module=override ? override : objc_mainImageName();
-    NSString   *path=[NSString stringWithUTF8String:module];
 
-    if(module==NULL)
-     NSCLog("+[NSBundle initialize]: module path for process is NULL");
-    
-    _allBundles=[NSMutableArray new];
-    _allFrameworks=[NSMutableArray new];
-    pathToObject=NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
-    nameToBundle=NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
++ (void)initialize
+{
+    if (self == [NSBundle class]) {
+        const char *override = getenv("CFProcessPath");
+        const char *module = override ? override : objc_mainImageName();
+        NSString *path = [NSString stringWithUTF8String:module];
 
-    mainBundle=[NSBundle bundleWithModulePath:path];
+        if (module == NULL) {
+            NSCLog("+[NSBundle initialize]: module path for process is NULL");
+        }
 
-    [self registerFrameworks];
-   }
+        _allBundles = [NSMutableArray new];
+        _allFrameworks = [NSMutableArray new];
+        pathToObject = NSCreateMapTable(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 0);
+        nameToBundle = NSCreateMapTable(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 0);
+
+        mainBundle = [NSBundle bundleWithModulePath:path];
+
+        [self registerFrameworks];
+    }
 }
 
 
@@ -296,60 +305,68 @@ static NSMapTable *pathToObject=NULL;
    return mainBundle;
 }
 
-+(NSBundle *)bundleForClass:(Class)class {
-   NSBundle *bundle=NSMapGet(nameToBundle,NSStringFromClass(class));
 
-   if(bundle==nil){
-    const char *module=class_getImageName(class);
++ (NSBundle *)bundleForClass:(Class)class
+{
+    NSBundle *bundle = NSMapGet(nameToBundle, NSStringFromClass(class));
 
-    if(module==NULL)
-     return [self mainBundle]; // this is correct behaviour for Nil class
-    else {
-     NSString   *path=[NSString stringWithUTF8String:module];
+    if (bundle == nil) {
+        const char *module = class_getImageName(class);
 
-     bundle=[NSBundle bundleWithModulePath:path];
-     NSMapInsert(nameToBundle,NSStringFromClass(class),bundle);
+        if (module == NULL) {
+            return [self mainBundle]; // this is correct behaviour for Nil class
+        } else {
+            NSString *path = [NSString stringWithUTF8String:module];
+
+            bundle = [NSBundle bundleWithModulePath:path];
+            NSMapInsert(nameToBundle, NSStringFromClass(class), bundle);
+        }
     }
-   }
 
-   return bundle;
+    return bundle;
 }
+
 
 +(NSBundle *)bundleWithIdentifier:(NSString *)identifier {
    NSUnimplementedMethod();
    return 0;
 }
 
--initWithPath:(NSString *)path {
-   NSBundle *realBundle=NSMapGet(pathToObject,path);
 
-   if(realBundle!=nil){
-    [self dealloc];
-    return [realBundle retain];
-   }
+- initWithPath:(NSString *)path
+{
+    NSBundle *realBundle = NSMapGet(pathToObject, path);
 
-   _path=[path retain];
-   _resourcePath=[_path stringByAppendingPathComponent:@"Resources"];
-   if(![[NSFileManager defaultManager] fileExistsAtPath:_resourcePath])
-    _resourcePath=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Resources"];
-   [_resourcePath retain];
+    if (realBundle != nil) {
+        [self dealloc];
+        return [realBundle retain];
+    }
 
-	_pluginPath=[_path stringByAppendingPathComponent:@"PlugIns"];
-	if(![[NSFileManager defaultManager] fileExistsAtPath:_pluginPath])
-		_pluginPath=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"PlugIns"];
-	[_pluginPath retain];
+    _path = [path retain];
+    _resourcePath = [_path stringByAppendingPathComponent:@"Resources"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:_resourcePath]) {
+        _resourcePath = [[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Resources"];
+    }
+    [_resourcePath retain];
 
-	_infoDictionary=nil;
-   _localizedTables=nil;
-   _isLoaded=NO;
+    _pluginPath = [_path stringByAppendingPathComponent:@"PlugIns"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:_pluginPath]) {
+        _pluginPath = [[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"PlugIns"];
+    }
+    [_pluginPath retain];
 
-   NSMapInsert(pathToObject,path,self);
+    _infoDictionary = nil;
+    _localizedTables = nil;
+    _isLoaded = NO;
+
+    NSMapInsert(pathToObject, path, self);
 #ifndef WIN32
 // Need to verify this on Win32
-   [_allBundles addObject:self];
+    [_allBundles addObject:self];
 #endif
-   return self;
+    return self;
 }
+
 
 +(NSBundle *)bundleWithPath:(NSString *)path {
    return [[[self allocWithZone:NULL] initWithPath:path] autorelease];
