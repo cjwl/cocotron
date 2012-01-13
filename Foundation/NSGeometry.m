@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSRaise.h>
-#import <math.h>
-#import <stdio.h>
+#include <math.h>
+#include <stdio.h>
 
 const NSPoint NSZeroPoint={0,0};
 

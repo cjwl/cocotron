@@ -13,8 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread-Private.h>
 
-#import <windows.h>
-#import <process.h>
+#include <windows.h>
+#include <process.h>
 
 NSUInteger NSPageSize(void) {
    SYSTEM_INFO info;

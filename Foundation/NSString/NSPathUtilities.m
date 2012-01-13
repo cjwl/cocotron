@@ -13,8 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSRaise.h>
 
-#import <string.h>
-#import <stdio.h>
+#include <string.h>
+#include <stdio.h>
 
 
 /*  The rule of slash is to always use / for slash. All calls to platform API's must convert between

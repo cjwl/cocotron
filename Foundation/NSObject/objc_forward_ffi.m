@@ -17,11 +17,11 @@
 
 #import <objc/objc-class.h>
 #import <objc/message.h>
-#import <ctype.h>
+#include <ctype.h>
 #ifdef DARWIN
 #import <ffi/ffi.h>
 #else
-#import <ffi.h>
+#include <ffi.h>
 #endif
 #import <Foundation/NSMethodSignature.h>
 #import "ObjCHashTable.h"

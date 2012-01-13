@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSConditionLock.h>
 #import <Foundation/objc_debugHelpers.h>
 #import <Foundation/NSSelectSet.h>
-#import <pthread.h>
+#include <pthread.h>
 
 NSString * const NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString * const NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";

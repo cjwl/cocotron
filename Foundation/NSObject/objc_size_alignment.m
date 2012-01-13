@@ -13,8 +13,8 @@
 #import "objc_size_alignment.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
-#import <string.h>
-#import <ctype.h>
+#include <string.h>
+#include <ctype.h>
 
 static inline size_t 
 ROUND(size_t v, size_t a)

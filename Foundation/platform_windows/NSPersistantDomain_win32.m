@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSException.h>
 
-#import <windows.h>
+#include <windows.h>
 
 @implementation NSPersistantDomain_win32
 

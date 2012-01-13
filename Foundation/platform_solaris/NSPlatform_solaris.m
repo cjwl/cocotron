@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTask_solaris.h>
 
 #import <rpc/types.h>
-#import <time.h>
-#import <netdb.h>
+#include <time.h>
+#include <netdb.h>
 
 NSString *NSPlatformClassName=@"NSPlatform_solaris";
 

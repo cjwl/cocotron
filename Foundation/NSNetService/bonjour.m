@@ -4,7 +4,7 @@
 #import <Foundation/NSString.h>
 
 #ifdef WINDOWS
-#import <windows.h>
+#include <windows.h>
 
 HINSTANCE hDNSDLL = NULL;
 

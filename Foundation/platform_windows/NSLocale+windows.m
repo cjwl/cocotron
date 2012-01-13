@@ -1,7 +1,7 @@
 #import "NSLocale+windows.h"
 #import <Foundation/NSString.h>
 
-#import <windows.h>
+#include <windows.h>
 
 @implementation NSLocale(windows)
 

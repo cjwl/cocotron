@@ -2,8 +2,8 @@
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
 #ifdef WINDOWS
-#import <windows.h>
-#import <rpc.h>
+#include <windows.h>
+#include <rpc.h>
 #endif
 
 #define CastToCFUUID(x) ((CFUUID *)(x))

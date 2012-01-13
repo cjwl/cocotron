@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <errno.h>
+#include <errno.h>
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <sys/ioctl.h>
-#import <unistd.h>
+#include <unistd.h>
 #import <arpa/inet.h>
 
 #ifdef __svr4__ // Solaris

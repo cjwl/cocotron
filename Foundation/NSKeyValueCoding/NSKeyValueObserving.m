@@ -25,9 +25,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
-#import <string.h>
-#import <ctype.h>
-#import <pthread.h>
+#include <string.h>
+#include <ctype.h>
+#include <pthread.h>
 
 #import "NSString+KVCAdditions.h"
 #import "NSKeyValueObserving-Private.h"
@@ -897,9 +897,9 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 
     for(;currentClass && currentClass->super_class!=currentClass;currentClass=currentClass->super_class){
      void *iterator=0;
-    
+
      struct objc_method_list *list=class_nextMethodList(currentClass,&iterator);
-     
+
      while(list){
         NSAutoreleasePool *pool=[NSAutoreleasePool new];
 		int i;
@@ -1016,7 +1016,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 				newMethod->method_imp=[self methodForSelector:kvoSelector];
 
 				currentMethod++;
-				
+
 				//NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
 			}
 		}

@@ -6,12 +6,12 @@
 #import <Foundation/NSHandleMonitor_win32.h>
 #undef WINVER
 #define WINVER 0x501
-#import <windows.h>
-#import <winsock2.h>
-#import <ws2tcpip.h>
-#import <process.h>
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <process.h>
 #endif
-#import <pthread.h>
+#include <pthread.h>
 
 #if defined(WIN32) || defined(LINUX)
 #define MAXHOSTNAMELEN 512

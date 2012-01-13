@@ -8,7 +8,7 @@
 
 #import "NSCancelInputSource_win32.h"
 
-#import <windows.h>
+#include <windows.h>
 
 @implementation NSCancelInputSource_win32
 -(id)init {

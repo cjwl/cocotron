@@ -11,9 +11,9 @@
 #import <Foundation/NSRaiseException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
-#import <time.h>
-#import <math.h>
-#import <errno.h>
+#include <time.h>
+#include <math.h>
+#include <errno.h>
 
 @implementation NSConditionLock_posix
 -(id)init {

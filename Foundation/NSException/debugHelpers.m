@@ -10,7 +10,7 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
 
-#import <setjmp.h>
+#include <setjmp.h>
 
 #if 0
 static void *_objc_returnAddress(unsigned frame)
