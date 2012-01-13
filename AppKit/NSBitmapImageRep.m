@@ -18,7 +18,14 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
 @implementation NSBitmapImageRep
 
 +(NSArray *)imageUnfilteredFileTypes {
-   return [NSArray arrayWithObjects:@"tiff",@"tif",@"png",@"jpg",@"gif",@"bmp",@"icns",nil];
+   return [NSArray arrayWithObjects:	@"tiff", @"TIFF",
+										@"tif",  @"TIF",
+										@"png",  @"PNG",
+										@"jpg",  @"JPG",
+										@"gif",  @"GIF",
+										@"bmp",  @"BMP",
+										@"icns", @"ICNS",
+										nil];
 }
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
