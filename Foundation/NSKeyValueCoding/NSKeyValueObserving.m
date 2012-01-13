@@ -23,8 +23,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSUserDefaults.h>
 
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+#import <objc/runtime.h>
+#else
 #import <objc/objc-runtime.h>
-#import <objc/objc-class.h>
+#endif
 #include <string.h>
 #include <ctype.h>
 #include <pthread.h>
@@ -873,9 +876,16 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
     // add KVO-Observing methods
     // override className so it returns the original class name
     Method className = class_getInstanceMethod([self class], @selector(_KVO_className));
-    class_addMethod(swizzledClass, @selector(className), className->method_imp, className->method_types);
-    class_addMethod(swizzledClass, @selector(class), className->method_imp, className->method_types);
-    class_addMethod(swizzledClass, @selector(classForCoder), className->method_imp, className->method_types);
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = method_getImplementation(className);
+    const char *types = method_getTypeEncoding(className);
+#else
+    IMP imp = className->method_imp;
+    const char *types = className->method_types;
+#endif
+    class_addMethod(swizzledClass, @selector(className), imp, types);
+    class_addMethod(swizzledClass, @selector(class), imp, types);
+    class_addMethod(swizzledClass, @selector(classForCoder), imp, types);
 
     Class currentClass = isa;
 
@@ -885,13 +895,18 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         for (int i = 0; i < count; ++i) {
             Method method = methods[i];
-            const char *methodCString = sel_getName(method->method_name);
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+            SEL sel = method_getName(method);
+#else
+            SEL sel = method->method_name;
+#endif
+            const char *methodCString = sel_getName(sel);
             NSUInteger numberOfArguments = method_getNumberOfArguments(method);
             SEL kvoSelector = 0;
 
             // current method is a setter?
             if (numberOfArguments == 3 && methodIsAutoNotifyingSetter([self class], methodCString)) {
-                NSMethodSignature *signature = [self methodSignatureForSelector:method->method_name];
+                NSMethodSignature *signature = [self methodSignatureForSelector:sel];
                 const char *firstParameterType = [signature getArgumentTypeAtIndex:2];
                 const char *returnType = [signature methodReturnType];
 
@@ -924,7 +939,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
                 #undef CHECK_AND_ASSIGN
 
                 if (kvoSelector == 0 && NSDebugEnabled) {
-                    NSLog(@"NSDebugEnabled type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, sel_getName(method->method_name), [self className]);
+                    NSLog(@"NSDebugEnabled type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, methodCString, [self className]);
                 }
                 if (returnType[0] != _C_VOID) {
                     kvoSelector = 0;
@@ -933,7 +948,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 
             // long selectors
             if (kvoSelector == 0) {
-                NSString *methodName = NSStringFromSelector(method->method_name);
+                NSString *methodName = NSStringFromSelector(sel);
                 if (numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"insertObject:in" endingWith:@"AtIndex:"]) {
                     kvoSelector = @selector(KVO_notifying_change_insertObject:inKeyAtIndex:);
                 } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"removeObjectFrom" endingWith:@"AtIndex:"]) {
@@ -956,7 +971,12 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 
             // there's a suitable selector for us
             if (kvoSelector != 0) {
-                class_addMethod(swizzledClass, method->method_name, [self methodForSelector:kvoSelector], method->method_types);
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+                types = method_getTypeEncoding(method);
+#else
+                types = method->method_types;
+#endif
+                class_addMethod(swizzledClass, sel, [self methodForSelector:kvoSelector], types);
                 //NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
             }
         }

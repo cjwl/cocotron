@@ -24,8 +24,13 @@ void NSRegisterZombie(NSObject *object)
         objectToClassName = NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
     }
 
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    NSMapInsert(objectToClassName, object, object_getClass(object));
+    object_setClass(object, objc_lookUpClass("NSZombieObject"));
+#else
     NSMapInsert(objectToClassName, object, ((struct objc_object *)object)->isa);
     ((struct objc_object *)object)->isa = objc_lookUpClass("NSZombieObject");
+#endif
 
     pthread_mutex_unlock(&zombieLock);
 }

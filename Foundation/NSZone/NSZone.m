@@ -209,12 +209,19 @@ id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
     }
 
     result = NSZoneCalloc(zone, 1, class->instance_size + extraBytes);
-    result->isa=class;
+#if defined(GCC_RUNTIME_3)
+    object_setClass(result, class);
+    // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ constructor calling.
+#elif defined(APPLE_RUNTIME_4)
+    objc_constructInstance(class, result);
+#else
+    result->isa = class;
 
     if (!object_cxxConstruct(result, result->isa)) {
         NSZoneFree(zone, result);
         result = nil;
     }
+#endif
 
     return result;
 }
@@ -222,7 +229,13 @@ id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
 
 void NSDeallocateObject(id object)
 {
+#if defined(GCC_RUNTIME_3)
+    // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ destructor calling.
+#elif defined(APPLE_RUNTIME_4)
+    objc_destructInstance(object);
+#else
     object_cxxDestruct(object, object->isa);
+#endif
 
     if (NSZombieEnabled) {
         NSRegisterZombie(object);
@@ -233,7 +246,9 @@ void NSDeallocateObject(id object)
             zone = NSDefaultMallocZone();
         }
 
+#if !defined(GCC_RUNTIME_3) && !defined(APPLE_RUNTIME_4)
         object->isa = 0;
+#endif
 
         NSZoneFree(zone, object);
     }
@@ -246,9 +261,15 @@ id NSCopyObject(id object, NSUInteger extraBytes, NSZone *zone)
         return nil;
     }
 
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    id result = NSAllocateObject(object_getClass(object), extraBytes, zone);
+
+    memcpy(result, object, class_getInstanceSize(object_getClass(object)) + extraBytes);
+#else
     id result = NSAllocateObject(object->isa, extraBytes, zone);
 
     memcpy(result, object, object->isa->instance_size + extraBytes);
+#endif
 
     return result;
 }

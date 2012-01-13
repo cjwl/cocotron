@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSKeyValueObserving.h>
-#include <objc/objc-class.h>
+#include <objc/runtime.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -267,7 +267,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
         }
 
         if (ivar) {
-            id value = [self _wrapValue:(void*)self + ivar->ivar_offset ofType:ivar->ivar_type];
+            id value = [self _wrapValue:(void*)self + ivar_getOffset(ivar) ofType:ivar_getTypeEncoding(ivar)];
             return value;
         }
 
@@ -327,10 +327,10 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
                 [self willChangeValueForKey:key];
             }
             // if value is nil and ivar is not an object type
-            if (!value && ivar->ivar_type[0] != '@') {
+            if (!value && ivar_getTypeEncoding(ivar)[0] != '@') {
                 [self setNilValueForKey:key];
             } else {
-                [self _setValue:value toBuffer:(void*)self + ivar->ivar_offset ofType:ivar->ivar_type shouldRetain:YES];
+                [self _setValue:value toBuffer:(void*)self + ivar_getOffset(ivar) ofType:ivar_getTypeEncoding(ivar) shouldRetain:YES];
             }
             if (shouldNotify) {
                 [self didChangeValueForKey:key];

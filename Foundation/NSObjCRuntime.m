@@ -113,9 +113,9 @@ const char *NSGetSizeAndAlignment(const char *type, NSUInteger *size, NSUInteger
     *size = 0;
     *alignment = 0;
 
-    *size = objc_sizeof_type(type);
-    *alignment = objc_alignof_type(type);
-    return objc_skip_type_specifier(type, NO);
+    *size = objc_ext_sizeof_type(type);
+    *alignment = objc_ext_alignof_type(type);
+    return objc_ext_skip_type_specifier(type, NO);
 }
 
 

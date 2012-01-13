@@ -15,19 +15,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSRaise.h>
+#import <objc/runtime.h>
 #import <objc/message.h>
 #import "forwarding.h"
 
 
 BOOL NSObjectIsKindOfClass(id object, Class kindOf)
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    Class class = object_getClass(object);
+#else
     struct objc_class *class = object->isa;
+#endif
 
-    for (;; class=class->super_class) {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    for (;; class = class_getSuperclass(class)) {
+#else
+    for (;; class = class->super_class) {
+#endif
         if (kindOf == class) {
             return YES;
         }
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+        if (object_getClass(object_getClass(class)) == class) {
+#else
         if (class->isa->isa == class) {
+#endif
             break;
         }
     }
@@ -56,7 +69,11 @@ BOOL NSObjectIsKindOfClass(id object, Class kindOf)
 
 
 +(void)initialize {
-   objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
+#ifdef GCC_RUNTIME_3
+    __objc_msg_forward2 = objc_msg_forward;
+#else
+    objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
+#endif
 }
 
 +(Class)superclass {
@@ -273,20 +290,32 @@ BOOL NSObjectIsKindOfClass(id object, Class kindOf)
 
 - performSelector:(SEL)selector
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
     IMP imp = objc_msg_lookup(self, selector);
+#endif
     return imp(self, selector);
 }
 
 
 - performSelector:(SEL)selector withObject:object0
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
     IMP imp = objc_msg_lookup(self, selector);
+#endif
     return imp(self, selector, object0);
 }
 
 - performSelector:(SEL)selector withObject:object0 withObject:object1
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
     IMP imp = objc_msg_lookup(self, selector);
+#endif
     return imp(self, selector, object0, object1);
 }
 

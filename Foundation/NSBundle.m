@@ -41,6 +41,106 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 #include <unistd.h>
 #endif
 
+
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+#ifdef __APPLE__
+
+#include <mach-o/dyld.h>
+
+#elif defined(LINUX)
+
+#include <sys/stat.h>
+
+static int _NSGetExecutablePath(char *buf, uint32_t *bufsize)
+{
+   if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
+       *bufsize = MAXPATHLEN;
+       return -1;
+   }
+   return 0;
+}
+
+
+static inline unsigned int processMaps(char *maps, const char **soNames)
+{
+    unsigned int count = 0;
+    char *cur = maps;
+    char *eod = maps + strlen(maps);
+    char *lastName = NULL;
+    size_t lastNameLength = 0;
+    do {
+        char *eol = strchr(cur, '\n');
+        if (!eol) {
+            eol = eod;
+        }
+        *eol = 0;
+        char *name = strrchr(cur, ' ');
+        if (name) {
+            name++;
+        } else {
+            name = cur;
+        }
+        int nameLength = eol - name;
+        if (name && nameLength > 2 && (strcmp(eol - 3, ".so") == 0 || strstr(name, ".so.")) &&
+                (lastName == NULL || lastNameLength != nameLength ||
+                 strncmp(lastName, name, lastNameLength) != 0)) {
+            lastName = name;
+            lastNameLength = nameLength;
+            if (soNames) {
+                soNames[count] = name;
+            }
+            count++;
+        }
+        if (!soNames) {
+            *eol = '\n';
+        }
+        cur = eol + 1;
+    } while (cur < eod);
+    return count;
+}
+
+
+static const char **objc_copyImageNames(unsigned int *count)
+{
+    *count = 0;
+    FILE *f = fopen("/proc/self/maps", "r");
+    if (f) {
+#define SLICE_LENGTH 0xFFFE
+        long length = 0;
+        long pos = 0;
+        long lastSlice = 0;
+        char *maps = NULL;
+
+        do {
+            pos = length;
+            length += SLICE_LENGTH;
+            maps = realloc(maps, length + 1);
+        } while ((lastSlice = fread(maps + pos, 1, SLICE_LENGTH, f)) == SLICE_LENGTH);
+        maps[pos + lastSlice] = 0;
+        fclose(f);
+
+        *count = processMaps(maps, NULL);
+        if (*count > 0) {
+            int namesSize = (*count + 1) * sizeof(char*);
+            void *mem = calloc(1, namesSize + length + 1);
+            const char **names = mem;
+            char *newMaps = mem + namesSize;
+            memcpy(newMaps, maps, length + 1);
+            if (names != NULL) {
+                processMaps(newMaps, names);
+                return names;
+            } else {
+                *count = 0;
+            }
+        }
+        free(maps);
+    }
+    return NULL;
+}
+
+#endif //LINUX
+#endif //GCC_RUNTIME_3 || APPLE_RUNTIME_4
+
 #ifdef WIN32
 
 static char *lastErrorString(DWORD error) {
@@ -255,7 +355,7 @@ static NSMapTable *pathToObject=NULL;
 
 + (void)registerFrameworks
 {
-    unsigned i,count;
+    unsigned i, count;
     const char **array = objc_copyImageNames(&count);
 
     for (i = 0; i < count; i++) {
@@ -271,8 +371,20 @@ static NSMapTable *pathToObject=NULL;
 + (void)initialize
 {
     if (self == [NSBundle class]) {
-        const char *override = getenv("CFProcessPath");
-        const char *module = override ? override : objc_mainImageName();
+        char *module = getenv("CFProcessPath");
+        if (!module) {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+            uint32_t bufSize = MAXPATHLEN;
+            module = alloca(bufSize + 1);
+            if (_NSGetExecutablePath(module, &bufSize) < 0) {
+                module = alloca(bufSize + 1);
+                _NSGetExecutablePath(module, &bufSize);
+            }
+            module[bufSize] = 0;
+#else
+            module = objc_mainImageName();
+#endif
+        }
         NSString *path = [NSString stringWithUTF8String:module];
 
         if (module == NULL) {
@@ -311,7 +423,15 @@ static NSMapTable *pathToObject=NULL;
     NSBundle *bundle = NSMapGet(nameToBundle, NSStringFromClass(class));
 
     if (bundle == nil) {
+#ifdef GCC_RUNTIME_3
+        const char *module = NULL;
+        Dl_info info;
+        if (dladdr(class, &info)) {
+            module = info.dli_fname;
+        }
+#else
         const char *module = class_getImageName(class);
+#endif
 
         if (module == NULL) {
             return [self mainBundle]; // this is correct behaviour for Nil class
