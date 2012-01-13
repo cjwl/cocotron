@@ -211,16 +211,18 @@ Boolean CFArrayContainsValue(CFArrayRef self,CFRange range,const void *value) {
 	return [(NSArray*)self indexOfObject:(id)value inRange:inrange] != NSNotFound;
 }
 
-CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
+
+CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef self, CFRange range, const void *value)
+{
 	int i;
-	for(i=range.location;i<range.location+range.length;i++)
-	{
-		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value]) return i;
+	for (i = range.location; i < range.location + range.length; i++) {
+		if ([[(NSArray*)self objectAtIndex:i] isEqual:(id)value]) {
+			return i;
+        }
 	}
 	return NSNotFound;
-	
-   
 }
+
 
 CFIndex CFArrayGetLastIndexOfValue(CFArrayRef self,CFRange range,const void *value) {
     // backwards search

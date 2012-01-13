@@ -23,13 +23,17 @@ NSString *NSStringFromPoint(NSPoint point) {
     return [NSString stringWithFormat:@"{%g, %g}", point.x, point.y];
 }
 
-NSPoint NSPointFromString(NSString *string) {
-    NSPoint   result = NSZeroPoint;
+
+NSPoint NSPointFromString(NSString *string)
+{
+    NSPoint result = NSZeroPoint;
     
-    if(string != nil)
+    if (string != nil) {
         sscanf([string cString], "{%g, %g}", &result.x, &result.y);
+    }
     return result;
 }
+
 
 //
 const NSSize NSZeroSize={0,0};
@@ -42,13 +46,17 @@ NSString *NSStringFromSize(NSSize size) {
    return [NSString stringWithFormat:@"{%g, %g}", size.width, size.height];
 }
 
-NSSize NSSizeFromString(NSString *string) {
-   NSSize   result = NSZeroSize;
-   
-   if(string != nil)
-       sscanf([string cString], "{%g, %g}", &result.width, &result.height);
-   return result;
+
+NSSize NSSizeFromString(NSString *string)
+{
+    NSSize result = NSZeroSize;
+    
+    if (string != nil) {
+        sscanf([string cString], "{%g, %g}", &result.width, &result.height);
+    }
+    return result;
 }
+
 
 //
 const NSRect NSZeroRect={{0,0},{0,0}};
@@ -178,13 +186,17 @@ NSString *NSStringFromRect(NSRect rect) {
     return [NSString stringWithFormat:@"{{%g, %g}, {%g, %g}}", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-NSRect NSRectFromString(NSString *string) {
-    NSRect   result = NSZeroRect;
+
+NSRect NSRectFromString(NSString *string)
+{
+    NSRect result = NSZeroRect;
     
-    if(string != nil)
+    if (string != nil) {
         sscanf([string cString], "{{%g, %g}, {%g, %g}}", &result.origin.x, &result.origin.y, &result.size.width, &result.size.height);
+    }
     return result;
 }
+
 
 BOOL NSPointInRect(NSPoint point,NSRect rect) {
    return (point.x>=NSMinX(rect) && point.x<=NSMaxX(rect)) &&

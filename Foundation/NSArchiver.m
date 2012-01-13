@@ -144,77 +144,84 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bytes[_position++]='\0';
 }
 
--(void)_appendCString:(const char *)cString {
-   NSString *string,*lookup;
 
-   if(_pass==0)
-    return;
+- (void)_appendCString:(const char *)cString
+{
+    NSString *string, *lookup;
 
-   //NSLog(@"cString=%s",cString);
-   string=[NSString stringWithCString:cString];
-   //NSLog(@"string=%@",string);
-
-   if((lookup=NSHashGet(_cStrings,string))!=nil)
-    [self _appendWordFour:(unsigned)lookup];
-   else {
-    NSHashInsert(_cStrings,string);
-
-    [self _appendWordFour:(unsigned)string];
-    [self _appendCStringBytes:[string cString]];
-   }
-}
-
--(void)_appendClassVersion:(Class)class {
-   if(class==[NSObject class]){
-    [self _appendWordFour:0];
-    return;
-   }
-   
-   [self _appendWordFour:(unsigned)class];
-
-   if(NSHashGet(_classes,class)==NULL){
-    NSHashInsert(_classes,class);
-    [self _appendCString:[NSStringFromClass(class) cString]];
-    [self _appendWordFour:[class version]];
-    [self _appendClassVersion:[class superclass]];
-   }
-}
-
--(void)_appendObject:(id)object conditional:(BOOL)conditional {
-   if(_pass==0){
-
-    if(object!=nil){
-     //NSLog(@"%@ conditional=%s", NSStringFromClass([object class]) ,conditional?"YES":"NO");
-
-     if(!conditional){
-      if(NSHashGet(_conditionals,object)==NULL){
-       NSHashInsert(_conditionals,object);
-       [object encodeWithCoder:self];
-      }
-     }
+    if (_pass == 0) {
+        return;
     }
 
-   }
-   else {
-    if(conditional && (NSHashGet(_conditionals,object)==NULL))
-     object=nil;
+    //NSLog(@"cString=%s", cString);
+    string = [NSString stringWithCString:cString];
+    //NSLog(@"string=%@", string);
 
-    if(object==nil)
-     [self _appendWordFour:0];
-    else if(NSHashGet(_objects,object)!=NULL)
-     [self _appendWordFour:(unsigned)object];
-    else { // FIX do replacementForCoder ?
-     Class class=[object classForArchiver];
+    if ((lookup = NSHashGet(_cStrings, string)) != nil) {
+        [self _appendWordFour:(unsigned)lookup];
+    } else {
+        NSHashInsert(_cStrings, string);
 
-     NSHashInsert(_objects,object);
-
-     [self _appendWordFour:(unsigned)object];
-     [self _appendClassVersion:class];
-
-     [object encodeWithCoder:self];
+        [self _appendWordFour:(unsigned)string];
+        [self _appendCStringBytes:[string cString]];
     }
-   }
 }
+
+
+- (void)_appendClassVersion:(Class)class
+{
+    if (class == [NSObject class]) {
+        [self _appendWordFour:0];
+        return;
+    }
+    
+    [self _appendWordFour:(unsigned)class];
+
+    if (NSHashGet(_classes, class) == NULL)
+    {
+        NSHashInsert(_classes, class);
+        [self _appendCString:[NSStringFromClass(class) cString]];
+        [self _appendWordFour:[class version]];
+        [self _appendClassVersion:[class superclass]];
+    }
+}
+
+
+- (void)_appendObject:(id)object conditional:(BOOL)conditional
+{
+    if (_pass == 0) {
+        if (object != nil) {
+            //NSLog(@"%@ conditional=%s", NSStringFromClass([object class]), conditional ? "YES" : "NO");
+
+            if (!conditional) {
+                if (NSHashGet(_conditionals, object) == NULL) {
+                    NSHashInsert(_conditionals, object);
+                    [object encodeWithCoder:self];
+                }
+            }
+        }
+    } else {
+        if (conditional && (NSHashGet(_conditionals, object) == NULL)) {
+            object=nil;
+        }
+
+        if (object == nil) {
+            [self _appendWordFour:0];
+        } else if (NSHashGet(_objects, object) != NULL) {
+            [self _appendWordFour:(unsigned)object];
+        } else { // FIX do replacementForCoder ?
+            Class class = [object classForArchiver];
+
+            NSHashInsert(_objects, object);
+
+            [self _appendWordFour:(unsigned)object];
+            [self _appendClassVersion:class];
+
+            [object encodeWithCoder:self];
+        }
+    }
+}
+
 
 -(void)_appendArrayOfObjCType:(const char *)type length:(NSUInteger)length
   at:(const void *)addr {

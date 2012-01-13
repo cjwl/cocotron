@@ -89,23 +89,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(void)encodeArrayOfObjCType:(const char *)itemType
-                       count:(NSUInteger)count at:(const void *)ptr {
-   char typeBuf[1+sizeof(unsigned)*3+strlen(itemType)+2];
+- (void)encodeArrayOfObjCType:(const char *)itemType count:(NSUInteger)count at:(const void *)ptr
+{
+    char typeBuf[1 + sizeof(unsigned) * 3 + strlen(itemType) + 2];
 
-   sprintf(typeBuf,"[%u%s]",count,itemType);
-   [self encodeValueOfObjCType:typeBuf at:ptr];
+    sprintf(typeBuf, "[%u%s]", count, itemType);
+    [self encodeValueOfObjCType:typeBuf at:ptr];
 }
 
 
--(void)encodeBytes:(const void *)byteaddr length:(NSUInteger)length {
-   char typeBuf[1+sizeof(unsigned)*3+1+1+1];
+- (void)encodeBytes:(const void *)byteaddr length:(NSUInteger)length
+{
+    char typeBuf[1 + sizeof(unsigned) * 3 + 1 + 1 + 1];
 
-   sprintf(typeBuf,"[%uc]",length);
+    sprintf(typeBuf, "[%uc]", length);
 
-   [self encodeValueOfObjCType:@encode(unsigned) at:&length];
-   [self encodeValueOfObjCType:typeBuf at:byteaddr];
+    [self encodeValueOfObjCType:@encode(unsigned) at:&length];
+    [self encodeValueOfObjCType:typeBuf at:byteaddr];
 }
+
 
 -(void)encodePoint:(NSPoint)point {
    [self encodeValueOfObjCType:@encode(NSPoint) at:&point];
@@ -223,26 +225,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(void)decodeArrayOfObjCType:(const char *)itemType
-                       count:(NSUInteger)count at:(void *)ptr {
-   char typeBuf[1+sizeof(unsigned)*3+strlen(itemType)+1+1];
+- (void)decodeArrayOfObjCType:(const char *)itemType count:(NSUInteger)count at:(void *)ptr
+{
+    char typeBuf[1 + sizeof(unsigned) * 3 + strlen(itemType) + 1 + 1];
 
-   sprintf(typeBuf,"[%u%s]",count,itemType);
-   [self decodeValueOfObjCType:typeBuf at:ptr];
+    sprintf(typeBuf, "[%u%s]", count, itemType);
+    [self decodeValueOfObjCType:typeBuf at:ptr];
 }
 
 
--(void *)decodeBytesWithReturnedLength:(NSUInteger *)lengthp {
-   char  typeBuf[1+sizeof(unsigned)*3+3];
-   void *byteaddr;
+- (void *)decodeBytesWithReturnedLength:(NSUInteger *)lengthp
+{
+    char typeBuf[1 + sizeof(unsigned) * 3 + 3];
+    void *byteaddr;
 
-   [self decodeValueOfObjCType:@encode(unsigned) at:lengthp];
+    [self decodeValueOfObjCType:@encode(unsigned) at:lengthp];
 
-   byteaddr=NSZoneCalloc(NULL,*lengthp,sizeof(char));
-   sprintf(typeBuf,"[%uc]",*lengthp);
-   [self decodeValueOfObjCType:typeBuf at:byteaddr];
-   return byteaddr;
+    byteaddr = NSZoneCalloc(NULL, *lengthp, sizeof(char));
+    sprintf(typeBuf, "[%uc]", *lengthp);
+    [self decodeValueOfObjCType:typeBuf at:byteaddr];
+    return byteaddr;
 }
+
 
 -(NSPoint)decodePoint {
    NSPoint point;
