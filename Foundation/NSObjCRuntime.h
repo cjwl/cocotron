@@ -49,12 +49,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     #define NSIntegerMax  LONG_MAX
     #define NSIntegerMin  LONG_MIN
     #define NSUIntegerMax ULONG_MAX
+    #define NSIntegerFormat "%ld"
+    #define NSUIntegerFormat "%lu"
 #else
     typedef int           NSInteger;
     typedef unsigned int  NSUInteger;
     #define NSIntegerMax  INT_MAX
     #define NSIntegerMin  INT_MIN
     #define NSUIntegerMax UINT_MAX
+    #define NSIntegerFormat "%d"
+    #define NSUIntegerFormat "%u"
 #endif
 
 enum {

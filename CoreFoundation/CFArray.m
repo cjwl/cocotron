@@ -47,12 +47,12 @@ static Boolean defaultEqual(const void *value,const void *other) {
 
 -(void)dealloc {
    CFIndex count=_count;
-   
+
    while(--count>=0)
     _callBacks.release(NULL,_values[count]);
-    
+
    NSZoneFree(NULL,_values);
-   
+
    NSDeallocateObject(self);
    return;
    [super dealloc];
@@ -127,32 +127,32 @@ static Boolean defaultEqual(const void *value,const void *other) {
 
 -(BOOL)isEqualToArray:(NSArray *)array {
 	NSInteger i,count;
-	
+
 	if(self==array)
 		return YES;
-	
+
 	count=[self count];
 	if(count!=[array count])
 		return NO;
-	
+
 	for(i=0;i<count;i++)
 		if (!_callBacks.equal([self objectAtIndex:i], [array objectAtIndex:i]))
 			return NO;
-	
+
 	return YES;
 }
 
 -(NSUInteger)indexOfObject:object inRange:(NSRange)range {
 	NSInteger i,count=[self count];
-	
+
 	if(NSMaxRange(range)>count)
 		NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
 						 NSStringFromRange(range),[self count]);
-	
+
 	for(i=range.location;i<range.length;i++)
 		if (_callBacks.equal([self objectAtIndex:i], object))
 			return i;
-	
+
 	return NSNotFound;
 }
 
@@ -190,7 +190,7 @@ CFArrayRef CFArrayCreate(CFAllocatorRef allocator,const void **values,CFIndex co
 }
 
 CFArrayRef CFArrayCreateCopy(CFAllocatorRef allocator,CFArrayRef self) {
-	return (CFArrayRef)[(id) self copy]; 
+	return (CFArrayRef)[(id) self copy];
 }
 
 
@@ -228,7 +228,7 @@ CFIndex CFArrayGetLastIndexOfValue(CFArrayRef self,CFRange range,const void *val
     // backwards search
 	NSInteger i=range.location+range.length;
     NSInteger location=range.location;
-    
+
 	while(--i>=location) {
 		if([[(NSArray*)self objectAtIndex:i]isEqual:(id)value])
             return i;
@@ -246,7 +246,7 @@ CFIndex CFArrayGetCountOfValue(CFArrayRef self,CFRange range,const void *value) 
          count++;
 	}
 	return count;
-	
+
 }
 
 void CFArrayApplyFunction(CFArrayRef self,CFRange range,CFArrayApplierFunction function,void *context) {
@@ -255,7 +255,7 @@ void CFArrayApplyFunction(CFArrayRef self,CFRange range,CFArrayApplierFunction f
 	{
 		if([(NSArray*)self objectAtIndex:i]) function(self,context);
 	}
-	
+
 }
 
 CFIndex CFArrayBSearchValues(CFArrayRef self,CFRange range,const void *value,CFComparatorFunction function,void *context) {

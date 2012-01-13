@@ -381,7 +381,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
    [object release];
 }
 
-static int selectorCompare(id object1,id object2,void *userData){
+static NSInteger selectorCompare(id object1,id object2,void *userData){
    SEL selector=userData;
 
    return (NSComparisonResult)[object1 performSelector:selector withObject:object2];

@@ -43,8 +43,8 @@ FOUNDATION_EXPORT NSString * const NSInvalidArchiveOperationException;
 
 -(void)encodeBool:(BOOL)value forKey:(NSString *)key;
 -(void)encodeInt:(int)value forKey:(NSString *)key;
--(void)encodeInt32:(int)value forKey:(NSString *)key;
--(void)encodeInt64:(long long)value forKey:(NSString *)key;
+-(void)encodeInt32:(int32_t)value forKey:(NSString *)key;
+-(void)encodeInt64:(int64_t)value forKey:(NSString *)key;
 -(void)encodeFloat:(float)value forKey:(NSString *)key;
 -(void)encodeDouble:(double)value forKey:(NSString *)key;
 -(void)encodeBytes:(const void *)ptr length:(NSUInteger)length forKey:(NSString *)key;

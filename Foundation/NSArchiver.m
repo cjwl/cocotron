@@ -124,6 +124,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bytes[_position++]=value&0xFF;
 }
 
+
+- (void)_appendReference: (void *)value {
+#ifdef __LP64__
+	[self _appendWordEight: (uint64_t)value];
+#else
+	[self _appendWordFour: (uint32_t)value];
+#endif
+}
+
+
 -(void)_appendBytes:(const uint8_t *)bytes length:(NSUInteger)length {
    int i;
 
@@ -158,11 +168,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     //NSLog(@"string=%@", string);
 
     if ((lookup = NSHashGet(_cStrings, string)) != nil) {
-        [self _appendWordFour:(unsigned)lookup];
+        [self _appendReference:lookup];
     } else {
         NSHashInsert(_cStrings, string);
 
-        [self _appendWordFour:(unsigned)string];
+        [self _appendReference:string];
         [self _appendCStringBytes:[string cString]];
     }
 }
@@ -175,7 +185,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return;
     }
     
-    [self _appendWordFour:(unsigned)class];
+    [self _appendReference:class];
 
     if (NSHashGet(_classes, class) == NULL)
     {
@@ -208,13 +218,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (object == nil) {
             [self _appendWordFour:0];
         } else if (NSHashGet(_objects, object) != NULL) {
-            [self _appendWordFour:(unsigned)object];
+            [self _appendReference:object];
         } else { // FIX do replacementForCoder ?
             Class class = [object classForArchiver];
 
             NSHashInsert(_objects, object);
 
-            [self _appendWordFour:(unsigned)object];
+            [self _appendReference:object];
             [self _appendClassVersion:class];
 
             [object encodeWithCoder:self];
