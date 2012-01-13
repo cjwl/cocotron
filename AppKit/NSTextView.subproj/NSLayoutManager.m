@@ -41,7 +41,7 @@ typedef struct {
 // Forward declaration
 @interface NSLayoutManager()
 -(NSRange)validateGlyphsAndLayoutForGlyphRange:(NSRange)glyphRange;
--(NSRange)_glyphRangeForTextContainer:(NSTextContainer *)container;
+-(NSRange)_currentGlyphRangeForTextContainer:(NSTextContainer *)container;
 @end
 
 @implementation NSLayoutManager
@@ -257,12 +257,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 -(NSTextContainer *)textContainerForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange {
 	[self validateGlyphsAndLayoutForGlyphRange:NSMakeRange(glyphIndex, 1)];
 	NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
-	
 	if(fragment==NULL)
 		return nil;
 	
 	if (effectiveGlyphRange) {
-		*effectiveGlyphRange = [self glyphRangeForTextContainer:fragment->container];
+		*effectiveGlyphRange = [self _currentGlyphRangeForTextContainer:fragment->container];
 	}
 	return fragment->container;
 }
@@ -304,7 +303,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 	   
 	   if ([_delegate respondsToSelector:@selector(layoutManager:didCompleteLayoutForTextContainer:atEnd:)]) {
 		   NSTextContainer *container = [_textContainers lastObject];
-		   NSRange containerRange = [self _glyphRangeForTextContainer:container];
+		   NSRange containerRange = [self _currentGlyphRangeForTextContainer:container];
 		   BOOL finished = NSMaxRange(containerRange) >= NSMaxRange(glyphRange);
 		   [_delegate layoutManager:self didCompleteLayoutForTextContainer:container atEnd:finished];
 	   }
@@ -392,7 +391,6 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 	insert->usedRect=NSZeroRect;
 	insert->location=NSZeroPoint;
 	insert->container=container;
-
    NSRangeEntryInsert(_glyphFragments,glyphRange,insert);
 }
 
@@ -587,7 +585,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 // Returns the current glyph range for the given container
--(NSRange)_glyphRangeForTextContainer:(NSTextContainer *)container 
+-(NSRange)_currentGlyphRangeForTextContainer:(NSTextContainer *)container 
 {
 	NSRange            result=NSMakeRange(0, 0);
 	BOOL              assignFirst=YES;
@@ -615,7 +613,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 -(NSRange)glyphRangeForTextContainer:(NSTextContainer *)container 
 {
 	[self validateGlyphsAndLayoutForContainer:container];
-	return [self _glyphRangeForTextContainer: container];
+	return [self _currentGlyphRangeForTextContainer: container];
 }
 
 -(NSRange)glyphRangeForCharacterRange:(NSRange)charRange actualCharacterRange:(NSRangePointer)actualCharRange {
