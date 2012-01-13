@@ -54,7 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     if (_closeOnDealloc == YES)
         [self closeFile];
-    
+
     [super dealloc];
 }
 
@@ -66,7 +66,7 @@ static int descriptorForPath(NSString *path,int modes){
 
     if ([[fileAttributes objectForKey:NSFileType] isEqual:NSFileTypeSocket]) {
      int fd;
-     
+
         if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
          return -1;
         else {
@@ -92,7 +92,7 @@ static int descriptorForPath(NSString *path,int modes){
 
     if (fd == -1)
         return nil;
-    
+
     return [[[self allocWithZone:NULL] initWithFileDescriptor:fd] autorelease];
 }
 
@@ -153,7 +153,7 @@ CONFORMING TO
 
 - (uint64_t)offsetInFile {
     uint64_t result = lseek(_fileDescriptor, 0, SEEK_CUR);
-    
+
     if (result == -1) {
         NSRaiseException(NSFileHandleOperationException, self, _cmd,
                          @"lseek(%d):", _fileDescriptor, strerror(errno));
@@ -176,7 +176,7 @@ CONFORMING TO
                          @"lseek(%d): %s", _fileDescriptor, strerror(errno));
         return -1;
     }
-    
+
     return result;
 }
 
@@ -202,7 +202,7 @@ CONFORMING TO
         flags |= O_NONBLOCK;
     else
         flags &= ~O_NONBLOCK;
-    
+
     fcntl(_fileDescriptor, F_SETFL, flags);
 }
 
@@ -218,14 +218,14 @@ CONFORMING TO
             return nil;
         }
 
-        if (count == 0) {	// end of file 
+        if (count == 0) {	// end of file
             [mutableData setLength:total];
             break;
         }
 
         total += count;
     } while (total < length);
-    
+
     return mutableData;
 }
 
@@ -240,12 +240,12 @@ CONFORMING TO
                              @"read(%d): %s", _fileDescriptor, strerror(errno));
             return nil;
         }
-        
+
         if (count == 0) {	// end of file
             [mutableData setLength:total];
             break;
         }
-        
+
         [mutableData increaseLengthBy:4096];
 
         total += count;
@@ -259,14 +259,14 @@ CONFORMING TO
     int count;
     int length = 0;
     int err;
-    
+
     do {
         [mutableData increaseLengthBy:4096];
         [self setNonBlocking:YES];
         count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 4096);
         err = errno; // preserved so that the next fcntl doesn't clobber it
         [self setNonBlocking:NO];
-        
+
         if (count <= 0) {
             if (err == EAGAIN || err == EINTR) {
                 [self setNonBlocking: NO];
@@ -284,19 +284,19 @@ CONFORMING TO
                 }
             }
         }
-        
+
         if (count < 0) {
             NSRaiseException(NSFileHandleOperationException, self, _cmd,
                              @"read(%d): %s", _fileDescriptor, strerror(err));
         }
-        
+
         length += count;
-        
-        
+
+
     } while(count == 4096);
-    
+
     [mutableData setLength:length];
-    
+
     return mutableData;
 }
 
@@ -334,7 +334,7 @@ CONFORMING TO
 
 -(void)readInBackgroundAndNotifyForModes:(NSArray *)modes {
    NSInteger i, count = [modes count];
-    
+
    if (_inputSource != nil)
     [NSException raise:NSInternalInconsistencyException format:@"%@ already has background activity", [self description]];
 
@@ -342,7 +342,7 @@ CONFORMING TO
     [_inputSource setSelectEventMask:NSSelectReadEvent];
     [_inputSource setDelegate:self];
     _backgroundModes = [modes retain];
-    
+
    for(i = 0; i < count; ++i)
     [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:[modes objectAtIndex:i]];
 }
@@ -353,7 +353,7 @@ CONFORMING TO
     NSNotification *note;
 
     [self cancelBackgroundMonitoring];
-    
+
     userInfo=[NSDictionary dictionaryWithObject:availableData
                                          forKey:NSFileHandleNotificationDataItem];
     note=[NSNotification notificationWithName:NSFileHandleReadCompletionNotification

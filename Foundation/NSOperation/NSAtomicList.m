@@ -29,7 +29,7 @@ void NSAtomicListInsert( NSAtomicListRef *listPtr, void *elt )
 {
 	struct NSAtomicListNode *node = malloc( sizeof( *node ) );
 	node->elt = elt;
-	
+
 	do {
 		node->next = *listPtr;
 	} while( !OSAtomicCompareAndSwapPtrBarrier( node->next, node, (void **)listPtr ) );
@@ -49,21 +49,21 @@ void NSAtomicListReverse( NSAtomicListRef *listPtr )
 	struct NSAtomicListNode *cur = *listPtr;
 	struct NSAtomicListNode *prev = NULL;
 	struct NSAtomicListNode *next = NULL;
-	
+
 	if( !cur )
 		return;
-	
+
 	do {
 		next = cur->next;
 		cur->next = prev;
-		
+
 		if( next )
 		{
 			prev = cur;
 			cur = next;
 		}
 	} while( next );
-	
+
 	*listPtr = cur;
 }
 
@@ -72,9 +72,9 @@ void *NSAtomicListPop( NSAtomicListRef *listPtr)
 	struct NSAtomicListNode *node = *listPtr;
 	if( !node )
 		return NULL;
-	
+
 	*listPtr = node->next;
-	
+
 	void *elt = node->elt;
 	free( node );
 	return elt;

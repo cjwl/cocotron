@@ -17,18 +17,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdio.h>
 
 
-/*  The rule of slash is to always use / for slash. All calls to platform API's must convert between 
+/*  The rule of slash is to always use / for slash. All calls to platform API's must convert between
     the / and the platform slash. All public API, down to the Objective-C C string image name calls must use /.
-    
+
     As of now, this is not true, but that is where it is going. The main reason being that URL's
     expect all paths to use /, and there is a trend in Cocoa code to mix filesystem path strings
     and NSURL strings. If we accept \ in file system path strings at the Cocoa layer, you end up
     with broken URL's.
-    
+
     We understand \ when present in a string to be a /, but we don't put them in strings.
-    
+
  */
- 
+
 #define ISSLASH(X)  ((X)=='/' || (X)=='\\')
 
 #define SLASH '/'
@@ -101,14 +101,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByAppendingPathComponent:(NSString *)other {
    NSUInteger selfLength=[self length];
-   
+
    if(selfLength==0){
     if(other)
      return [NSString stringWithString:other];
     else
      return @"";
    }
-   
+
    NSUInteger otherLength=[other length];
    NSUInteger totalLength=selfLength+1+otherLength;
    unichar  characters[totalLength];
@@ -153,7 +153,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      else if(i+1<length)
       return [NSString stringWithCharacters:buffer length:i];
     }
-    
+
    return @"";
 }
 
@@ -237,7 +237,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSUInteger length = [self length];
     if (length < 1)
         return @"";
-    
+
     // expand tilde
     NSString *standardPath = self;
     if ([self characterAtIndex:0] == '~') {
@@ -251,10 +251,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int i;
 
     [standardPath getCharacters:buffer];
-    
+
     for (i = 0; i < length; i++) {
         cleanedBuffer[cleanedN++] = buffer[i];
-        
+
         if (ISSLASH(buffer[i])) {
             while (i+1 < length && ISSLASH(buffer[i+1])) {
                 i++;  // skip past all following slashes
@@ -263,9 +263,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 i+=2; // skip past "./" sequence
         }
     }
-    
+
     // this implementation doesn't do all transformations described in Cocoa documentation
-    
+
     return [NSString stringWithCharacters:cleanedBuffer length:cleanedN];
 }
 
@@ -299,15 +299,15 @@ NSArray *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory,NSS
 
 /* Callers expect the directories to exist, so create them if needed.
  */
-     
+
    if(directory==NSCachesDirectory){
     NSString *path=[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Caches"];
-    
+
     [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:NULL];
-    
+
     return [NSArray arrayWithObject:path];
    }
-   
+
    if(directory==NSApplicationSupportDirectory){
     NSString *path=[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"Application Support"];
 

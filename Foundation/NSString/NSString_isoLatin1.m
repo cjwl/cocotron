@@ -49,15 +49,15 @@ NSUInteger NSGetISOLatin1CStringWithMaxLength(const unichar *characters,NSUInteg
                                               NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
     NSUInteger i,result=0;
-    
-    
+
+
     if(length+1 > maxLength) {
         cString[0]='\0';
         return NSNotFound;
     }
     for(i=0;i<length && result<=maxLength;i++){
         const unichar code=characters[i];
-        
+
         if(code<256)
             cString[result++]=code;
         else {
@@ -68,13 +68,13 @@ NSUInteger NSGetISOLatin1CStringWithMaxLength(const unichar *characters,NSUInteg
             }
         }
     }
-    
+
     cString[result]='\0';
-    
+
     *location=i;
-    
+
     return result;
-    
+
 }
 
 NSString *NSISOLatin1CStringNewWithCharacters(NSZone *zone,
@@ -82,16 +82,16 @@ NSString *NSISOLatin1CStringNewWithCharacters(NSZone *zone,
     NSString    *string;
     NSUInteger  bytesLength;
     char        *bytes;
-    
+
     bytes=NSUnicodeToISOLatin1(characters,length,lossy,&bytesLength,zone, NO);
-    
+
     if(bytes==NULL)
         string=nil;
     else{
         string=NSString_isoLatin1NewWithBytes(zone,bytes,bytesLength);
         NSZoneFree(zone,bytes);
     }
-    
+
     return string;
 }
 

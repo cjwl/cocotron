@@ -47,9 +47,9 @@ id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
    if(signature==nil){
     [self dealloc];
     [NSException raise:NSInvalidArgumentException format:@"nil signature in NSInvocation creation"];
-    return nil;	
+    return nil;
    }
-	
+
    _signature=[signature retain];
 
    [self buildFrame];
@@ -204,24 +204,24 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 -(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index {
    NSUInteger naturalSize=_argumentSizes[index];
    NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
-   
+
    if(naturalSize==promotedSize)
     byteCopy(_argumentFrame+_argumentOffsets[index],pointerToValue,naturalSize);
    else if(promotedSize==4){
     uint8_t promoted[promotedSize];
-    
+
     byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
     if(naturalSize==1)
      *((char *)pointerToValue)=*((int *)promoted);
     else if(naturalSize==2)
      *((short *)pointerToValue)=*((int *)promoted);
-     
+
    }
    else
    {
     [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
    }
-    
+
 }
 
 -(void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index {
@@ -232,7 +232,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
     byteCopy(pointerToValue,_argumentFrame+_argumentOffsets[index],naturalSize);
    else if(promotedSize==4){
     uint8_t promoted[promotedSize];
-    
+
     if(naturalSize==1)
      *((int *)promoted)=*((char *)pointerToValue);
     else if(naturalSize==2)
@@ -250,7 +250,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 -(void)retainArguments {
     if (!_retainArguments) {
         NSInteger i, count = [_signature numberOfArguments];
-        
+
         _retainArguments=YES;
         for (i = 0; i < count; ++i) {
             const char *type = [_signature getArgumentTypeAtIndex:i];
@@ -263,7 +263,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
                     [object retain];
                     break;
                 }
-                    
+
                 case '*': {
                     char *ptr, *copy, length;
 
@@ -274,7 +274,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
                     [self setArgument:&copy atIndex:i];
                     break;
                 }
-                    
+
                 default:
                     break;
             }
@@ -314,7 +314,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
    [self invokeWithTarget:[self target]];
 }
 
--(void)invokeWithTarget:target {	
+-(void)invokeWithTarget:target {
    const char *returnType=[_signature methodReturnType];
    void *msgSendv=objc_msgSendv;
 

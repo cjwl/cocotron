@@ -49,16 +49,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMutableArray *result=nil;
     DIR *dirp = NULL;
     struct dirent *dire;
-    
+
     if(path == nil) {
         return nil;
     }
-    
+
     dirp = opendir([path fileSystemRepresentation]);
 
     if (dirp == NULL)
         return nil;
-    
+
     result=[NSMutableArray array];
 
     while ((dire = readdir(dirp))){
@@ -68,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	  continue;
      [result addObject:[NSString stringWithCString:dire->d_name]];
     }
-	
+
     closedir(dirp);
 
     return result;
@@ -95,7 +95,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     if(isDirectory!=NULL)
      *isDirectory=S_ISDIR(buf.st_mode);
-     
+
     return YES;
 }
 
@@ -133,7 +133,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
         [handler fileManager:self willProcessPath:path];
- 
+
     if(![self _isDirectory:path]){
         if(remove([path fileSystemRepresentation]) == -1)
             return [self _errorHandler:handler src:path dest:@"" operation:@"removeFile: remove()"];
@@ -202,7 +202,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         char buf[4096];
         size_t count;
 
-        if ((w = open([dest fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE)) == -1) 
+        if ((w = open([dest fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE)) == -1)
             return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: open() for writing"];
         if ((r = open([src fileSystemRepresentation], O_RDONLY)) == -1)
             return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: open() for reading"];
@@ -245,7 +245,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             subsrc=[src stringByAppendingPathComponent:name];
             subdst=[dest stringByAppendingPathComponent:name];
 
-            if([self copyPath:subsrc toPath:subdst handler:handler] == NO) 
+            if([self copyPath:subsrc toPath:subdst handler:handler] == NO)
                 return NO;
         }
 
@@ -284,7 +284,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     struct passwd *pwd;
     struct group *grp;
 
-    if (lstat([path fileSystemRepresentation], &statBuf) != 0) 
+    if (lstat([path fileSystemRepresentation], &statBuf) != 0)
         return nil;
 
     // (Not in POSIX.1-1996.)
@@ -368,16 +368,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error {
     char destination[MAXPATHLEN+1];
     ssize_t bytes;
-    
+
     bytes = readlink([path fileSystemRepresentation], destination, MAXPATHLEN);
-    
+
     if (bytes == -1) {
         //TODO fill error
         return nil;
     }
-    
+
     destination[bytes] = 0;
-    
+
     return [NSString stringWithCString:destination encoding:NSUTF8StringEncoding];
 }
 

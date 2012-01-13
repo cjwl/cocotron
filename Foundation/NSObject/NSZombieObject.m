@@ -17,14 +17,14 @@ static NSMapTable *objectToClassName=NULL;
 
 void NSRegisterZombie(NSObject *object) {
    pthread_mutex_lock(&zombieLock);
-   
+
    if(objectToClassName==NULL){
     objectToClassName=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
    }
 
    NSMapInsert(objectToClassName,object,((struct objc_object *)object)->isa);
    ((struct objc_object *)object)->isa=objc_lookUpClass("NSZombieObject");
-   
+
    pthread_mutex_unlock(&zombieLock);
 }
 
@@ -36,7 +36,7 @@ void NSRegisterZombie(NSObject *object) {
    pthread_mutex_unlock(&zombieLock);
 
    NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,sel_getName(selector),class_getName(cls));
-   
+
    return [cls instanceMethodSignatureForSelector:selector];
 }
 

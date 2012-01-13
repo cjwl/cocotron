@@ -98,7 +98,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 {
 	char* cleanType=__builtin_alloca(strlen(type)+1);
 	[self _demangleTypeEncoding:type to:cleanType];
-	
+
 	if(cleanType[0]!='@' && cleanType[0]!='#' && strlen(cleanType)>1)
 	{
 		if(strcmp([value objCType], cleanType))
@@ -109,7 +109,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		[value getValue:buffer];
 		return YES;
 	}
-	
+
 	switch(cleanType[0])
 	{
 		case '#':
@@ -124,7 +124,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
          else {
             *(id*)buffer = value;
          }
-         
+
 			return YES;
 		case 'i':
 			*(int*)buffer = [value intValue];
@@ -145,11 +145,11 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		case 'C':
 			*(unsigned char*)buffer = [value unsignedCharValue];
 			return YES;
-            
+
         case 'q':
             *(long long*)buffer = [value longLongValue];
             return YES;
-            
+
         case 'Q':
             *(unsigned long long*)buffer = [value unsignedLongLongValue];
             return YES;
@@ -170,11 +170,11 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		[inv setSelector:sel];
 		[inv setTarget:self];
 		[inv invoke];
-		
+
 		NSUInteger returnLength=[sig methodReturnLength];
 		void *returnValue=__builtin_alloca(returnLength);
 		[inv getReturnValue:returnValue];
-		
+
 		return [self _wrapValue:returnValue ofType:type];
 	}
 	return [self performSelector:sel];
@@ -195,12 +195,12 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		NSInvocation* inv=[NSInvocation invocationWithMethodSignature:sig];
 		[inv setSelector:sel];
 		[inv setTarget:self];
-		
+
 		NSGetSizeAndAlignment(type, &size, &align);
 		void *buffer=__builtin_alloca(size);
       memset(buffer, 0, size);
 		[self _setValue:value toBuffer:buffer ofType:type shouldRetain:NO];
-		
+
 		[inv setArgument:buffer atIndex:2];
 
 		[inv invoke];
@@ -218,12 +218,12 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		id value = [self valueForUndefinedKey:nil];
 		return value;
 	}
-	
+
    const char *keyCString=[key cString];
    SEL         sel=sel_getUid(keyCString);
 
 	// FIXME: getKey, _getKey, isKey, _isKey are missing
-	
+
 	if([self respondsToSelector:sel]) {
 		id value = [self _wrapReturnValueForSelector:sel];
 		return value;
@@ -234,7 +234,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 
    char *keyname=__builtin_alloca(keyCStringLength+1);
    strcpy(keyname,keyCString);
-		
+
 #define TRY_FORMAT( format ) \
 sprintf(selBuffer, format, keyname); \
 sel = sel_getUid(selBuffer); \
@@ -245,7 +245,7 @@ return value; \
 }
 		TRY_FORMAT("_%s");
 		keyname[0]=toupper(keyname[0]);
-		TRY_FORMAT("is%s");		
+		TRY_FORMAT("is%s");
 		TRY_FORMAT("_is%s");
 //		TRY_FORMAT("get%s");
 //		TRY_FORMAT("_get%s");
@@ -254,44 +254,44 @@ return value; \
 	if([isa accessInstanceVariablesDirectly]){
         sprintf(selBuffer,"_%s",keyCString);
 		sel=sel_getUid(selBuffer);
-        
+
 		if([self respondsToSelector:sel])
 		{
 			id value = [self _wrapReturnValueForSelector:sel];
 			return value;
 		}
-		
+
 
 		Ivar ivar = class_getInstanceVariable(isa,selBuffer);
 		if(!ivar)
 			ivar = class_getInstanceVariable(isa, keyCString);
-           
+
 		if(ivar)
 		{
 			id value = [self _wrapValue:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
-			return value;			
+			return value;
 		}
-		
+
 	}
-	
+
 	id value = [self valueForUndefinedKey:key];
 	return value;
 }
 
 -(void)setValue:(id)value forKey:(NSString *)key {
-	
-	
+
+
     NSUInteger cStringLength=[key length];
     char keyCString[cStringLength+1];
     char uppercaseKeyCString[cStringLength+1];
     char check[cStringLength+10]; // needs to accomodate key and set/_set: stuff
-    
+
     [key getCString:keyCString];
     strcpy(uppercaseKeyCString,keyCString);
     uppercaseKeyCString[0]=toupper(uppercaseKeyCString[0]);
-    
+
     strcpy(check,"set");strcat(check,uppercaseKeyCString);strcat(check,":");
-    
+
 	SEL sel = sel_getUid(check);
 	if([self respondsToSelector:sel])
 	{
@@ -303,7 +303,7 @@ return value; \
 	}
 	if([isa accessInstanceVariablesDirectly])
 	{
-		
+
 		// FIXME: doc.s don't mention _set, is that true?
        strcpy(check,"_set");strcat(check,uppercaseKeyCString);strcat(check,":");
 	   sel = sel_getUid(check);
@@ -335,7 +335,7 @@ return value; \
 			// if value is nil and ivar is not an object type
 			if(!value && ivar->ivar_type[0]!='@') {
 				[self setNilValueForKey:key];
-			} else {				
+			} else {
 				[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type shouldRetain:YES];
 			}
 			if(shouldNotify) {
@@ -344,12 +344,12 @@ return value; \
 			return;
 		}
 	}
-	
+
 	// Path of last resort - but still assume we're letting people know about changes
 	if(shouldNotify) {
 		[self willChangeValueForKey:key];
 	}
-	[self setValue:value forUndefinedKey:key];	
+	[self setValue:value forUndefinedKey:key];
 	if(shouldNotify) {
 		[self didChangeValueForKey:key];
 	}
@@ -391,10 +391,10 @@ return value; \
 }
 
 - (id)valueForKeyPath:(NSString*)keyPath {
-	
+
    NSString* firstPart, *rest;
    [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
-   
+
 	if(rest) {
 		return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
 	}
@@ -428,7 +428,7 @@ return value; \
 	{
 		ret = [ret valueForKey:pathComponent];
 	}
-	
+
 	BOOL valid = [self validateValue:ioValue forKey:lastPathComponent error:outError];
 
 	return valid;

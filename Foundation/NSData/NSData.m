@@ -75,15 +75,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     bytes=[[NSPlatform currentPlatform] mapContentsOfFile:path length:&length];
    else
     bytes=NSPlatformContentsOfFile(path,&length);
-  
+
    if(bytes==NULL){
-    
+
     if(errorp!=NULL){
      NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Could not open file %@", path] forKey:NSLocalizedDescriptionKey];
-     
+
      *errorp=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotOpenFile userInfo:userInfo];
     }
-    
+
     [self dealloc];
     return nil;
    }
@@ -94,7 +94,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
 
    if(![url isFileURL]){
-    
+
 	   if ( [[url scheme] isEqual:@"http"] || [[url scheme] isEqual:@"https"]) {
 		   NSError *error=nil;
 		   NSURLResponse *response=nil;
@@ -104,10 +104,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		   return [self initWithData:data];
 	   } else {
 		   [self dealloc];
-           
+
            if(errorp!=NULL){
             NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Could not open url %@", url] forKey:NSLocalizedDescriptionKey];
-            
+
             *errorp=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
 	   }
     return nil;
@@ -133,7 +133,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     NSData            *data=[keyed decodeObjectForKey:@"NS.data"];
-    
+
     return [self initWithData:data];
    }
    else {
@@ -145,7 +145,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)encodeWithCoder:(NSCoder *)coder {
    if([coder isKindOfClass:[NSKeyedArchiver class]]){
     NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
-    
+
     [keyed encodeObject:self forKey:@"NS.data"];
    }
    else {

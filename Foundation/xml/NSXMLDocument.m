@@ -32,29 +32,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributes {
    NSXMLElement *element=[[NSXMLElement alloc] initWithName:elementName];
-   
+
   // NSLog(@"element=%@",[element name]);
-   
+
    [element setAttributesAsDictionary:attributes];
-   
+
    NSXMLElement *parent=[_elementStack lastObject];
   // NSLog(@"parent=%@",[parent name]);
    [parent addChild:element];
-   
+
    [_elementStack addObject:element];
-   
+
    if([_elementStack count]==1)
     [self addChild:element];
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName {
-    
-   [_elementStack removeLastObject];     
+   [_elementStack removeLastObject];
 }
 
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
    NSXMLElement *element=[_elementStack lastObject];
-   
+
   // NSLog(@"foundCharacters=%@",string);
    [element setStringValue:[[element stringValue] stringByAppendingString:string]];
 }
@@ -63,7 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(_options&NSXMLDocumentTidyXML)
     return;
-    
+
    [self parser:parser foundCharacters:whitespace];
 }
 
@@ -71,17 +70,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithKind:NSXMLDocumentKind options:NSXMLNodeOptionsNone];
 //   NSLog(@"xml=%@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
    NSXMLParser *parser=[[NSXMLParser alloc] initWithData:data];
-   
+
    [parser setDelegate:self];
    _options=options;
    _elementStack=[[NSMutableArray alloc] init];
-   
+
    if(![parser parse]){
     [self dealloc];
-    
+
     if(error!=NULL)
      *error=[[[parser parserError] retain] autorelease];
-     
+
     [parser release];
    return nil;
 }
@@ -93,7 +92,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error {
    NSData *data=[NSData dataWithContentsOfURL:url options:0 error:error];
-   
+
    if(data==nil){
     [self dealloc];
    return nil;
@@ -198,7 +197,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index {
    NSInteger i,count=[children count];
-   
+
    for(i=0;i<count;i++)
     [_children insertObject:[children objectAtIndex:i] atIndex:index+i];
 }
@@ -220,7 +219,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableString *result=[NSMutableString string];
 
    [result appendString:@"<?xml version=\"1.0\" standalone=\"yes\"?>"];
-   
+
    for(NSXMLNode *node in _children)
     [result appendString:[node XMLStringWithOptions:options]];
 
@@ -233,7 +232,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)XMLDataWithOptions:(NSUInteger)options {
    NSString *string=[self XMLStringWithOptions:options];
-   
+
    return [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 

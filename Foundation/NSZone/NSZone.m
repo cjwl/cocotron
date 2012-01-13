@@ -147,7 +147,7 @@ static inline RefCountTable *refTable(void) {
 
    if(refCountTable==NULL)
     refCountTable=CreateRefCountTable();
-    
+
    return refCountTable;
 }
 
@@ -201,10 +201,10 @@ BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
 
 id NSAllocateObject(Class class,NSUInteger extraBytes,NSZone *zone) {
    id result;
-   
+
    if(zone==NULL)
       zone=NSDefaultMallocZone();
-   
+
    result=NSZoneCalloc(zone, 1, class->instance_size+extraBytes);
    result->isa=class;
 	
@@ -219,17 +219,17 @@ id NSAllocateObject(Class class,NSUInteger extraBytes,NSZone *zone) {
 
 void NSDeallocateObject(id object) {
 	object_cxxDestruct(object, object->isa);
-   
+
    if(NSZombieEnabled)
       NSRegisterZombie(object);
    else {
       NSZone *zone=NULL;
-      
+
       if(zone==NULL)
          zone=NSDefaultMallocZone();
 
       object->isa=0;
-      
+
       NSZoneFree(zone,object);
    }
 }
@@ -241,6 +241,6 @@ id NSCopyObject(id object,NSUInteger extraBytes,NSZone *zone) {
    id result=NSAllocateObject(object->isa,extraBytes,zone);
    
    memcpy(result, object, object->isa->instance_size+extraBytes);
-   
+
    return result;
 }
