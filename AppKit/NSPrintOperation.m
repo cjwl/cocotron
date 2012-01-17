@@ -208,12 +208,13 @@ static NSPrintOperation *_currentOperation=nil;
      [[_printInfo dictionary] removeObjectForKey:@"_NSView"];
      [[_printInfo dictionary] removeObjectForKey:@"_title"];
    
-     if(panelResult!=NSOKButton)
-      return NO;
+		if (panelResult != NSOKButton) {
+			return nil;
+		}
     }
     else {
      NSLog(@"Printing not implemented without print panel yet");
-     return NO;
+     return nil;
     }
    
     if((context=(CGContextRef)[[_printInfo dictionary] objectForKey:@"_KGContext"])==nil)
@@ -263,6 +264,11 @@ static NSPrintOperation *_currentOperation=nil;
    }
    
    graphicsContext=[self createContext];
+	if (graphicsContext == nil) {
+		// It'll be nil if the user cancelled the print panel for example.
+		return NO;
+	}
+	
    context=[graphicsContext graphicsPort];
    
    [_printInfo setUpPrintOperationDefaultValues];
