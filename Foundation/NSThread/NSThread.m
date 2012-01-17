@@ -178,7 +178,9 @@ static void *nsThreadStartThread(void* t)
 		isMultiThreaded = YES;
       // lazily initialize mainThread's lock
       mainThread->_sharedObjectLock=[NSLock new];
+#if !defined(GCC_RUNTIME_3) && !defined(APPLE_RUNTIME_4)
 		_NSInitializeSynchronizedDirective();
+#endif
 	}
    // if we were init'ed before didBecomeMultithreaded, we won't have a lock either
    if(!_sharedObjectLock)
