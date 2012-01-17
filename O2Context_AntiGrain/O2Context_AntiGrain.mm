@@ -1333,7 +1333,9 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	// We use two gray masks to render our alpha mask - one for the current mask, one to render a new clipping path using the current mask
 	for (int i = 0; i < 2; ++i) {
 		O2Surface *surface = [self surface];
-		void *alphaBuffer = malloc(O2SurfaceGetWidth(surface)*O2SurfaceGetHeight(surface));
+		// For some still mysterious reason, if we don't allocate one additional line, we sometimes get some crash when rendering the mask
+		// So we'll just extend that buffer until we fix the problem at its root
+		void *alphaBuffer = malloc(O2SurfaceGetWidth(surface)*(O2SurfaceGetHeight(surface)+1));
 		rBufAlphaMask[i] = new agg::rendering_buffer((unsigned char *)alphaBuffer, O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface), O2SurfaceGetWidth(surface));
 		alphaMask[i] = new MaskType(*rBufAlphaMask[i]);
 		pixelFormatAlphaMask[i] = new pixfmt_alphaMaskType(*rBufAlphaMask[i]);
