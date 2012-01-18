@@ -32,16 +32,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Exceptions.h>
 #import <Onyx2D/O2ClipState.h>
 #import <Onyx2D/O2ClipPhase.h>
+#import <Onyx2D/O2DataConsumer.h>
 
 const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 
 @implementation O2PDFContext
 
+-(void)clipToState:(O2ClipState *)clipState 
+{
+}
+
 -initWithConsumer:(O2DataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    [super init];
    
    _dataConsumer=[consumer retain];
-   _mutableData=[[consumer mutableData] retain];
    _fontCache=[NSMutableDictionary new];
    _objectToRef=NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
    _indirectObjects=[NSMutableArray new];
@@ -89,7 +93,6 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 
 -(void)dealloc {
    [_dataConsumer release];
-   [_mutableData release];
    [_fontCache release];
    NSFreeMapTable(_objectToRef);
    [_indirectObjects release];
@@ -107,29 +110,25 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 }
 
 -(unsigned)length {
-   return [_mutableData length];
-}
-
--(NSData *)data {
-   return _mutableData;
-}
-
--(void)appendData:(NSData *)data {
-   [_mutableData appendData:data];
+	return _length;
 }
 
 -(void)appendBytes:(const void *)ptr length:(unsigned)length {
-   [_mutableData appendBytes:ptr length:length];
+	_length += length;
+	O2DataConsumerPutBytes(_dataConsumer, ptr, length);
+}
+
+-(void)appendData:(NSData *)data {
+	[self appendBytes:[data bytes] length:[data length]];
 }
 
 -(void)appendCString:(const char *)cString {
-   [_mutableData appendBytes:cString length:strlen(cString)];
+	[self appendBytes:cString length:strlen(cString)];
 }
 
 -(void)appendString:(NSString *)string {
    NSData *data=[string dataUsingEncoding:NSASCIIStringEncoding];
-   
-   [_mutableData appendData:data];
+   [self appendData:data];
 }
 
 -(void)appendFormat:(NSString *)format,... {
@@ -145,7 +144,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    va_end(arguments);
 }
 
--(void)appendPDFStringWithBytes:(const void *)bytesV length:(unsigned)length mutableData:(NSMutableData *)data {
+-(void)appendPDFStringWithBytes:(const void *)bytesV length:(unsigned)length toObject:(id)data {
    const unsigned char *bytes=bytesV;
    BOOL hex=NO;
    int  i;
@@ -183,7 +182,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 }
 
 -(void)appendPDFStringWithBytes:(const void *)bytes length:(unsigned)length {
-   [self appendPDFStringWithBytes:bytes length:length mutableData:_mutableData];
+   [self appendPDFStringWithBytes:bytes length:length toObject:self];
 }
 
 -(BOOL)hasReferenceForObject:(O2PDFObject *)object {
@@ -247,7 +246,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 }
 
 -(void)contentPDFStringWithBytes:(const void *)bytes length:(unsigned)length {
-   [self appendPDFStringWithBytes:bytes length:length mutableData:[[_contentStreamStack lastObject] mutableData]];
+   [self appendPDFStringWithBytes:bytes length:length toObject:[[_contentStreamStack lastObject] mutableData]];
 }
 
 -(O2PDFObject *)referenceForFontWithName:(NSString *)name size:(float)size {
@@ -287,8 +286,8 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    
    const char *objectName=[[NSString stringWithFormat:@"%s%d",categoryName,[next intValue]] cString];
    [category setObjectForKey:objectName value:pdfObject];
-   
-   return [O2PDFObject_Name pdfObjectWithCString:objectName];
+
+	return [O2PDFObject_Name pdfObjectWithCString:objectName];
 }
 
 -(void)emitPath:(O2PathRef)path {
@@ -338,6 +337,15 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
       
     }
    }
+}
+
+- (void)translateCTM:(float)x:(float)y
+{
+	[self contentWithFormat:@"1 0 0 1 %f %f cm ", x, y];
+}
+- (void)scaleCTM:(float)x:(float)y
+{
+	[self contentWithFormat:@"%f 0 0 %f 0 0 cm ", x, y];
 }
 
 -(void)emitSaveGState {
@@ -436,7 +444,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    [self contentWithFormat:@"%g i ",gState->_flatness];
 
    O2AffineTransform matrix=gState->_userSpaceTransform;
-   [self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
+	[self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
    NSArray *clipPhases=[O2GStateClipState(gState) clipPhases];
    
@@ -457,7 +465,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
       }
       break;
       
-     case O2ClipPhaseMask:
+		case O2ClipPhaseMask: {
 #if 0
       O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
       O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
@@ -468,6 +476,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
      [self contentWithFormat:@"%@ Do ",name];
      [self contentWithString:@"Q "];
 #endif
+		}
       break;
     }
    }
@@ -545,16 +554,17 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
    [self emitSaveGState];
-   [self emitCurrentGState];
-   O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
+
+	O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
-   
-   [self contentWithString:@"q "];
-// FIXME: enable these ctm changes
-//   [self translateCTM:rect.origin.x:rect.origin.y];
-//   [self scaleCTM:rect.size.width:rect.size.height];
+	[self emitCurrentGState];
+	
+   [self emitSaveGState];
+   [self translateCTM:rect.origin.x:rect.origin.y];
+   [self scaleCTM:rect.size.width:rect.size.height];
    [self contentWithFormat:@"%@ Do ",name];
-   [self contentWithString:@"Q "];
+   [self emitRestoreGState];
+	
    [self emitRestoreGState];
 }
 
@@ -584,10 +594,11 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    for(i=0;i<[_indirectObjects count];i++){ // do not cache 'count', can grow during encoding
     O2PDFxrefEntry *entry=[_indirectEntries objectAtIndex:i];
     O2PDFObject    *object=[_indirectObjects objectAtIndex:i];
-    unsigned        position=[_mutableData length];
+    unsigned        position=[self length];
     
     [entry setPosition:position];
-    [self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
+
+	   [self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
     [object encodeWithPDFContext:self];
     [self appendFormat:@"endobj\n"];
    }
@@ -616,6 +627,8 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 -(void)close {
    [self internIndirectObjects];
    [self encodePDFObject:(id)_xref];
+	[_dataConsumer release];
+	_dataConsumer=nil;
 }
 
 @end

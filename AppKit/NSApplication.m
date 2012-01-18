@@ -73,7 +73,6 @@ id NSApp=nil;
 
 +(void)initialize {
    if(self==[NSApplication class]){
-
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
    }
 }

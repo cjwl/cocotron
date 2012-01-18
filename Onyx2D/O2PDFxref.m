@@ -151,7 +151,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++){
     O2PDFxrefEntry *entry=[_entriesInOrder objectAtIndex:i];
     
-    [encoder appendFormat:@"%010d %06d n\n",[entry position],[entry generation]];
+    [encoder appendFormat:@"%010d %05d n \n",[entry position],[entry generation]];
    }
    [_trailer setIntegerForKey:"Size" value:[[_entriesInOrder lastObject] number]+1];
    [encoder appendCString:"trailer\n"];

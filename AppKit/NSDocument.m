@@ -793,7 +793,6 @@ forSaveOperation:(NSSaveOperationType)operation
     if(operation==nil){
      return;
     }
-   
     [operation setShowsPrintPanel:showPrintPanel];
     [operation runOperation];
    }
