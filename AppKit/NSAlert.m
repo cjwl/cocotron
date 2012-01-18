@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -init {
    _style=NSWarningAlertStyle;
    _icon=[[NSImage imageNamed:@"NSAlertPanelExclamation"] retain];
-   _messageText=[NSLocalizedString(@"Alert",@"Default message text for NSAlert") copy];
+	_messageText=[NSLocalizedStringFromTableInBundle(@"Alert", nil, [NSBundle bundleForClass: [NSAlert class]], @"Default message text for NSAlert") copy];
    _informativeText=@"";
    _accessoryView=nil;
    _showsHelp=NO;
@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _window=[[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,10,10) styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:NO];
    _suppressionButton=[[NSButton alloc] init];
  //  [_suppressionButton setButtonType:NSSwitchButton];
-   [_suppressionButton setTitle:NSLocalizedString(@"Do not show this message again",@"Default NSAlert supression button title")];
+   [_suppressionButton setTitle:NSLocalizedStringFromTableInBundle(@"Do not show this message again", nil, [NSBundle bundleForClass: [NSAlert class]], @"Default NSAlert supression button title")];
    _needsLayout=YES;
    return self;
 }
@@ -90,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [result setMessageText:messageText];
    [result setInformativeText:informativeText];
    if(defaultTitle==nil)
-    defaultTitle=NSLocalizedString(@"OK",@"Default button title for NSAlert");
+    defaultTitle=NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass: [NSAlert class]], @"Default button title for NSAlert");
    [result addButtonWithTitle:defaultTitle];
    if(alternateTitle!=nil)
     [result addButtonWithTitle:alternateTitle];
@@ -416,7 +416,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // This isn't an optimization per se, it is to prevent relayout after a manual layout
    if(_needsLayout){
     if([_buttons count]==0){
-     [self addButtonWithTitle:NSLocalizedString(@"OK",@"Default button title for NSAlert")];
+     [self addButtonWithTitle:NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass: [NSAlert class]], @"Default button title for NSAlert")];
     }
     
     [self layout];

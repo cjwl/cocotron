@@ -38,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImageView    *imageView;
 
    if(defaultTitle==nil)
-    defaultTitle=@"OK";
+    defaultTitle= NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass: [NSAlertPanel class]], @"");
 
    defaultSize=[drawer sizeOfString:defaultTitle withAttributes:nil inSize:size];
    buttonWidth=defaultSize.width;
@@ -99,7 +99,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    self=[self initWithContentRect:contentRect styleMask:sheet?NSDocModalWindowMask:NSTitledWindowMask|NSClosableWindowMask backing:NSBackingStoreBuffered defer:NO];
 
    if([title length]==0)
-    title=@"Alert";
+    title= NSLocalizedStringFromTableInBundle(@"Alert", nil, [NSBundle bundleForClass: [NSAlertPanel class]], @"Alert panel title");
 
    [self setTitle:title];
 	[self setLevel: NSModalPanelWindowLevel];

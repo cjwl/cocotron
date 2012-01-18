@@ -342,11 +342,12 @@ static int untitled_document_number = 0;
 {
   if(_fileURL==nil) 
     {
+		NSString* untitledName = NSLocalizedStringFromTableInBundle(@"Untitled", nil, [NSBundle bundleForClass: [NSDocument class]], @"The name of a untitled document");
       if(_untitledNumber != 0)
-        return [NSString stringWithFormat:@"Untitled %d", _untitledNumber];
+        return [NSString stringWithFormat:@"%@ %d", untitledName, _untitledNumber];
       else
-        return @"Untitled";
-    } 
+        return untitledName;
+    }
   else 
     {
       return [[NSFileManager defaultManager] displayNameAtPath:[_fileURL path]];
@@ -664,8 +665,10 @@ static int untitled_document_number = 0;
       if (attributes != nil && ![dateModified isEqualToDate:_fileModificationDate])
         {
           int result = NSRunAlertPanel([self displayName],
-                                       @"Another user or process has changed this document's file on disk.\n\nIf you save now, those changes will be lost. Save anyway?",
-                                       @"Don't Save", @"Save", nil);
+                                       NSLocalizedStringFromTableInBundle(@"Another user or process has changed this document's file on disk.\n\nIf you save now, those changes will be lost. Save anyway?", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+                                       NSLocalizedStringFromTableInBundle(@"Don't Save", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+									   NSLocalizedStringFromTableInBundle(@"Save", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+									   nil);
           if (result == NSAlertDefaultReturn)
             {
               // The user canceled the save operation.
@@ -815,8 +818,10 @@ forSaveOperation:(NSSaveOperationType)operation
       if (fileName == nil)
         fileName = [self displayName];
       int result = NSRunAlertPanel([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"], 
-                                   @"Save changes to %@?", 
-                                   @"Yes", @"No", @"Cancel",
+                                   NSLocalizedStringFromTableInBundle(@"Save changes to %@?", nil, [NSBundle bundleForClass: [NSDocument class]], @""), 
+                                   NSLocalizedStringFromTableInBundle(@"Yes", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+								   NSLocalizedStringFromTableInBundle(@"No", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+								   NSLocalizedStringFromTableInBundle(@"Cancel", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
                                    fileName);
       if (result == NSAlertDefaultReturn)
         {
@@ -871,8 +876,12 @@ forSaveOperation:(NSSaveOperationType)operation
 
 
 -(void)revertDocumentToSaved:sender {
-   int result=NSRunAlertPanel(nil,@"%@ has been edited. Are you sure you want to undo changes?",
-    @"Revert",@"Cancel",nil,[self displayName]);
+   int result=NSRunAlertPanel(nil,
+							  NSLocalizedStringFromTableInBundle(@"%@ has been edited. Are you sure you want to undo changes?", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+							  NSLocalizedStringFromTableInBundle(@"Revert", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+							  NSLocalizedStringFromTableInBundle(@"Cancel", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+							  nil,
+							  [self displayName]);
 
    if(result==NSAlertDefaultReturn)
      {
@@ -986,7 +995,10 @@ forSaveOperation:(NSSaveOperationType)operation
 
 	error=nil;
    if(![self readFromURL:url ofType:type error:&error]){
-    NSRunAlertPanel(nil,@"Can't open file '%@'. Error = %@",@"Ok",nil,nil,path,error);
+	   NSRunAlertPanel(nil,
+					   NSLocalizedStringFromTableInBundle(@"Can't open file '%@'. Error = %@", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+					   NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+					   nil, nil, path, error);
     [self dealloc];
     return nil;
    }
@@ -1005,7 +1017,10 @@ forSaveOperation:(NSSaveOperationType)operation
 	[self setFileURL:url];
 	[self setFileType:type];
    if(![self readFromURL:url ofType:type error:&error]){
-    NSRunAlertPanel(nil,@"Can't open URL '%@'. Error = %@",@"Ok",nil,nil,url,error);
+		NSRunAlertPanel(nil,
+						NSLocalizedStringFromTableInBundle(@"Can't open file '%@'. Error = %@", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+						NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+						nil, nil, url, error);
     [self dealloc];
     return nil;
    }
@@ -1167,11 +1182,11 @@ forSaveOperation:(NSSaveOperationType)operation
 -(BOOL)windowShouldClose:sender {
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"useSheets"]){
     NSBeginAlertSheet(nil,
-					  @"Yes", @"No", @"Cancel",
+					  NSLocalizedStringFromTableInBundle(@"Yes", nil, [NSBundle bundleForClass: [NSDocument class]], @""), NSLocalizedStringFromTableInBundle(@"No", nil, [NSBundle bundleForClass: [NSDocument class]], @""), NSLocalizedStringFromTableInBundle(@"Cancel", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
 					  sender, self,
 					  @selector(didEndShouldCloseSheet:returnCode:contextInfo:),
 					  NULL, sender,
-					  @"Save changes to %@?", [self displayName]);
+					  NSLocalizedStringFromTableInBundle(@"Save changes to %@?", nil, [NSBundle bundleForClass: [NSDocument class]], @""), [self displayName]);
 
     return NO;
    }
@@ -1180,8 +1195,8 @@ forSaveOperation:(NSSaveOperationType)operation
      return YES;
     else {
      int result=NSRunAlertPanel(nil, 
-								@"Save changes to %@?",
-								@"Yes", @"No", @"Cancel",
+								NSLocalizedStringFromTableInBundle(@"Save changes to %@?", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
+								NSLocalizedStringFromTableInBundle(@"Yes", nil, [NSBundle bundleForClass: [NSDocument class]], @""), NSLocalizedStringFromTableInBundle(@"No", nil, [NSBundle bundleForClass: [NSDocument class]], @""), NSLocalizedStringFromTableInBundle(@"Cancel", nil, [NSBundle bundleForClass: [NSDocument class]], @""),
 								[self displayName]);
 
      switch(result){

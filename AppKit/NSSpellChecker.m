@@ -157,7 +157,7 @@ static NSSpellChecker *shared=nil;
 		NSRect frame = [view frame];
         _spellingPanel=[[NSPanel alloc] initWithContentRect: frame styleMask:NSUtilityWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:YES];
 		
-		[_spellingPanel setTitle: @"Spelling"];
+		[_spellingPanel setTitle: NSLocalizedStringFromTableInBundle(@"Spelling", nil, [NSBundle bundleForClass: [NSSpellChecker class]], @"The title of the spelling dialog")];
 		[view setFrameOrigin: NSMakePoint(0, 10)];
         [[_spellingPanel contentView] addSubview: view];
 		[_spellingPanel setMinSize: frame.size];
@@ -366,7 +366,7 @@ static NSSpellChecker *shared=nil;
 	NSArray *guesses=[engine suggestGuessesForWord:word inLanguage:[self currentLanguage]];
     
 	if([guesses count]==0){
-		NSMenuItem *item=[result addItemWithTitle:@"< No Suggestions >" action:NULL keyEquivalent:@""];
+		NSMenuItem *item=[result addItemWithTitle: NSLocalizedStringFromTableInBundle(@"< No Suggestions >", nil, [NSBundle bundleForClass: [NSSpellChecker class]], @"Shown when there are no selections from the spell checker") action:NULL keyEquivalent:@""];
 		[item setEnabled:NO];
 	}
 	else {

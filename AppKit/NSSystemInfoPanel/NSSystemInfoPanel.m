@@ -120,7 +120,7 @@ static NSSystemInfoPanel *_sharedInfoPanel = nil;
    if(!AppVerUsed)
    {
       if(VerUsed)
-          [versionField setStringValue:[NSString stringWithFormat:@"Version %@", VerUsed]];
+          [versionField setStringValue:[NSString stringWithFormat: @"Version %@", VerUsed]];
       else
           [versionField setStringValue:@""];
    }

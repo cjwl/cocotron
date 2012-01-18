@@ -19,6 +19,7 @@
 		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		6311B10A14C7396A007AD8C0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6311B10814C7396A007AD8C0 /* Localizable.strings */; };
 		631381D3145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
 		631381D4145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
 		631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
@@ -4448,6 +4449,7 @@
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
+		6311B10914C7396A007AD8C0 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerListIcon.png; path = NSColorPicker.subproj/NSColorPickerListIcon.png; sourceTree = "<group>"; };
 		631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerSlidersIcon.png; path = NSColorPicker.subproj/NSColorPickerSlidersIcon.png; sourceTree = "<group>"; };
 		631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerWheelIcon.png; path = NSColorPicker.subproj/NSColorPickerWheelIcon.png; sourceTree = "<group>"; };
@@ -4455,7 +4457,7 @@
 		63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorPickerWheel.m; sourceTree = "<group>"; };
 		63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColorPickerWheelView.h; sourceTree = "<group>"; };
 		63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorPickerWheelView.m; sourceTree = "<group>"; };
-		631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSColorPickerWheel.nib; sourceTree = "<group>"; };
+		631382A6145F72D200765AA7 /* NSColorPickerWheel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSColorPickerWheel.nib; path = en.lproj/NSColorPickerWheel.nib; sourceTree = "<group>"; };
 		631382B3145F734100765AA7 /* NSColorWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorWheel.png; path = NSColorPicker.subproj/NSColorWheel.png; sourceTree = "<group>"; };
 		6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
 		6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
@@ -4672,9 +4674,9 @@
 		6E2B54D80976075300DA0954 /* NSWindowAnimationContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSWindowAnimationContext.h; sourceTree = "<group>"; };
 		6E2B54DA0976075300DA0954 /* NSMeasurementUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSMeasurementUnit.h; sourceTree = "<group>"; };
 		6E2B54DC0976075300DA0954 /* NSWindow-Drag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSWindow-Drag.h"; sourceTree = "<group>"; };
-		6E2B54DF0976075300DA0954 /* NSFontPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSFontPanel.nib; sourceTree = "<group>"; };
-		6E2B54E10976075300DA0954 /* NSColorPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSColorPanel.nib; sourceTree = "<group>"; };
-		6E2B54E50976075300DA0954 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
+		6E2B54DF0976075300DA0954 /* NSFontPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSFontPanel.nib; path = en.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
+		6E2B54E10976075300DA0954 /* NSColorPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSColorPanel.nib; path = en.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
+		6E2B54E50976075300DA0954 /* NSToolbarCustomizationPalette.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSToolbarCustomizationPalette.nib; path = en.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
 		6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSSplitViewVDimple.tiff; sourceTree = "<group>"; };
 		6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSHighlightedBrowserCellArrow.tiff; sourceTree = "<group>"; };
 		6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSRulerMarkerTab.tiff; sourceTree = "<group>"; };
@@ -4688,7 +4690,7 @@
 		6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSHighlightedRadioButton.tiff; sourceTree = "<group>"; };
 		6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSSplitViewHDimple.tiff; sourceTree = "<group>"; };
 		6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSBrowserCellArrow.tiff; sourceTree = "<group>"; };
-		6E2B55080976075300DA0954 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = English; path = English.lproj/NSMenu.plist; sourceTree = "<group>"; };
+		6E2B55080976075300DA0954 /* NSMenu.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = NSMenu.plist; path = en.lproj/NSMenu.plist; sourceTree = "<group>"; };
 		6E2B55180976075300DA0954 /* NSNibOutletConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibOutletConnector.m; sourceTree = "<group>"; };
 		6E2B551A0976075300DA0954 /* NSNibControlConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibControlConnector.m; sourceTree = "<group>"; };
 		6E2B551C0976075300DA0954 /* NSNibConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibConnector.m; sourceTree = "<group>"; };
@@ -4752,8 +4754,8 @@
 		6E2B55EC0976075300DA0954 /* NSColorPickerColorList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColorPickerColorList.h; sourceTree = "<group>"; };
 		6E2B55EE0976075300DA0954 /* NSBrowserCellColorList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBrowserCellColorList.h; sourceTree = "<group>"; };
 		6E2B55F00976075300DA0954 /* NSColorPickerSliders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSColorPickerSliders.h; sourceTree = "<group>"; };
-		6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSColorPickerColorList.nib; sourceTree = "<group>"; };
-		6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSColorPickerSliders.nib; sourceTree = "<group>"; };
+		6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSColorPickerColorList.nib; path = en.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
+		6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSColorPickerSliders.nib; path = en.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
 		6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSColorPickerSlidersCMYK.tiff; sourceTree = "<group>"; };
 		6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSColorPickerColorList.tiff; sourceTree = "<group>"; };
 		6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSColorPickerSlidersHSB.tiff; sourceTree = "<group>"; };
@@ -5045,7 +5047,7 @@
 		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
 		FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellingViewController.h; sourceTree = "<group>"; };
 		FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSpellingViewController.m; sourceTree = "<group>"; };
-		FE2C93E314035935002E0CB4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
+		FE2C93E314035935002E0CB4 /* NSSpellingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NSSpellingViewController.xib; path = en.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
 		FE311FA40CCC430200EBD696 /* KTFont_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KTFont_gdi.h; sourceTree = "<group>"; };
 		FE311FA50CCC430200EBD696 /* KTFont_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KTFont_gdi.m; sourceTree = "<group>"; };
 		FE337FC90EE77A6C00D4A751 /* CTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFont.m; sourceTree = "<group>"; };
@@ -5255,7 +5257,7 @@
 		FE8286770D34727900F7489F /* NSApplicationIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSApplicationIcon.tiff; sourceTree = "<group>"; };
 		FE8286780D34727900F7489F /* NSSystemInfoPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSystemInfoPanel.h; sourceTree = "<group>"; };
 		FE8286790D34727900F7489F /* NSSystemInfoPanel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSystemInfoPanel.m; sourceTree = "<group>"; };
-		FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSSystemInfoPanel.nib; sourceTree = "<group>"; };
+		FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NSSystemInfoPanel.nib; path = en.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
 		FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_highlighted.tif; sourceTree = "<group>"; };
 		FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_normal.tif; sourceTree = "<group>"; };
 		FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_selected.tif; sourceTree = "<group>"; };
@@ -5882,6 +5884,7 @@
 		6E2B55050976075300DA0954 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6311B10814C7396A007AD8C0 /* Localizable.strings */,
 				6E2B55060976075300DA0954 /* NSMenu.plist */,
 			);
 			name = Resources;
@@ -8837,6 +8840,7 @@
 			buildConfigurationList = FE01AABF0C5D9BCB00AEA51A /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */;
 			buildPhases = (
 				FE4C081E1434A30A0034EE26 /* Detect Libraries */,
+				6311B0C214C6583E007AD8C0 /* Generate Strings */,
 				FE01A80A0C5D9BCB00AEA51A /* Headers */,
 				FE01A9530C5D9BCB00AEA51A /* Sources */,
 				FE01AA940C5D9BCB00AEA51A /* Resources */,
@@ -8917,6 +8921,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 6E2B531A0976074C00DA0954 /* AppKit */;
 			productRefGroup = 6E2B53230976074C00DA0954 /* Products */;
@@ -9309,6 +9314,7 @@
 				631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
 				631382AB145F72D200765AA7 /* NSColorPickerWheel.nib in Resources */,
 				631382B4145F734100765AA7 /* NSColorWheel.png in Resources */,
+				6311B10A14C7396A007AD8C0 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9495,6 +9501,20 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6311B0C214C6583E007AD8C0 /* Generate Strings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Strings";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rm -f \"${SRCROOT}/en.lproj/Localizable.strings\"\n# Then append the one from the code\ngenstrings -a -q -o \"${SRCROOT}/en.lproj\" \"${SRCROOT}\"/*m \"${SRCROOT}\"/NSColor.subproj/*m \"${SRCROOT}\"/NSColorPicker.subproj/*m \"${SRCROOT}\"/NSDrawer.subproj/*m \"\"${SRCROOT}\"/NSEvent.subproj/*m ${SRCROOT}\"/NSMenu.subproj/*m \"${SRCROOT}\"/NSTextView.subproj/*m \"${SRCROOT}\"/NSToolbar.subproj/*m \"${SRCROOT}\"/RTF.subproj/*m \"${SRCROOT}\"/Win32.subproj/*m";
+		};
 		FE4C081E1434A30A0034EE26 /* Detect Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -11536,10 +11556,18 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		6311B10814C7396A007AD8C0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6311B10914C7396A007AD8C0 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6E2B54E50976075300DA0954 /* English */,
+				6E2B54E50976075300DA0954 /* NSToolbarCustomizationPalette.nib */,
 			);
 			name = NSToolbarCustomizationPalette.nib;
 			sourceTree = "<group>";
@@ -11547,7 +11575,7 @@
 		6E2B55060976075300DA0954 /* NSMenu.plist */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6E2B55080976075300DA0954 /* English */,
+				6E2B55080976075300DA0954 /* NSMenu.plist */,
 			);
 			name = NSMenu.plist;
 			sourceTree = "<group>";
@@ -11555,7 +11583,7 @@
 		FE2C93E214035935002E0CB4 /* NSSpellingViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FE2C93E314035935002E0CB4 /* English */,
+				FE2C93E314035935002E0CB4 /* NSSpellingViewController.xib */,
 			);
 			name = NSSpellingViewController.xib;
 			sourceTree = "<group>";

@@ -1169,8 +1169,8 @@ standardAboutPanel] retain];
 	
    NSString *processName = [[NSProcessInfo processInfo] processName];
    NSAlert *alert = [[NSAlert alloc] init];
-   [alert setMessageText:@"Help"];
-   [alert setInformativeText:[NSString stringWithFormat:@"Help isn't available for %@.", processName]];
+   [alert setMessageText: NSLocalizedStringFromTableInBundle(@"Help", nil, [NSBundle bundleForClass: [NSApplication class]], @"Help alert title")];
+   [alert setInformativeText:[NSString stringWithFormat: NSLocalizedStringFromTableInBundle(@"Help isn't available for %@.", nil, [NSBundle bundleForClass: [NSApplication class]], @""), processName]];
    [alert runModal];
    [alert release];
 }
