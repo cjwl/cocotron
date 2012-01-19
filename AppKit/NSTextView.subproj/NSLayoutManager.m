@@ -971,6 +971,10 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 }
 
 -(void)drawSpellingState:(NSNumber *)spellingState glyphRange:(NSRange)glyphRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+	if ([container textView] == nil) {
+		// Don't draw anything if we aren't editing
+		return;
+	}
     unsigned i,rectCount;
 	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
     BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
