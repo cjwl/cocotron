@@ -180,22 +180,27 @@ static void ClearList( NSAtomicListRef *listPtr )
 // if both are empty, do nothing
 // returns YES if an operation was executed, NO otherwise
 // - (BOOL)_runOperationFromList: (NSAtomicListRef *)listPtr sourceList: (NSAtomicListRef *)sourceListPtr
-static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *sourceListPtr )
+static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *sourceListPtr, NSOperationQueue *opqueue )
 {
-	NSOperation *op = PopOperation( listPtr );
-	if( !op ) {
-		*listPtr = NSAtomicListSteal( sourceListPtr );
-		// source lists are in LIFO order, but we want to execute operations in the order they were enqueued
-		// so we reverse the list before we do anything with it
-		NSAtomicListReverse( listPtr );
+	NSOperation *op = nil;
+	@synchronized(opqueue) {
 		op = PopOperation( listPtr );
+		if( !op ) {
+			*listPtr = NSAtomicListSteal( sourceListPtr );
+			// source lists are in LIFO order, but we want to execute operations in the order they were enqueued
+			// so we reverse the list before we do anything with it
+			NSAtomicListReverse( listPtr );
+			op = PopOperation( listPtr );
+		}	
 	}
-	
 	if (op) {
-		if ([op isReady])
-         [op start];
-		else
-         NSAtomicListInsert( sourceListPtr, [op retain] );
+		if ([op isReady]) {
+			[op start];
+		} else {
+			@synchronized(opqueue) {
+				NSAtomicListInsert( sourceListPtr, [op retain] );
+			}
+		}
 	}
 	
 	return op != nil;
@@ -237,9 +242,7 @@ static BOOL RunOperationFromLists( NSAtomicListRef *listPtr, NSAtomicListRef *so
 		}
 		
 		for (int i = 0; i < NSOperationQueuePriority_Count; i++) {
-			@synchronized(self) {
-				didRun = RunOperationFromLists( &myQueues[i], ( NSAtomicListRef *)(&queues[i] ));
-			}
+			didRun = RunOperationFromLists( &myQueues[i], ( NSAtomicListRef *)(&queues[i] ), self);
 			if (didRun)
               break;
 		}
