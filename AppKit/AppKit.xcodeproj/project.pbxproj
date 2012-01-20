@@ -9523,7 +9523,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libfreetype for link phase\n echo \"libjpeg not found\"\n touch $DERIVED_FILE_DIR/libjpeg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\n";
+			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libfreetype for link phase\n echo \"libjpeg not found\"\n touch $DERIVED_FILE_DIR/libjpeg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_zlib.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5 ]; then\n\techo \"zlib present.\"\n\techo \"#define ZLIB_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_zlib.h\nelse\n# Create empty zlib for link phase\n echo \"zlib not found\"\n touch $DERIVED_FILE_DIR/zlib.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/zlib.c -c -o $DERIVED_FILE_DIR/zlib.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libz.a $DERIVED_FILE_DIR/zlib.o\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -11674,7 +11674,11 @@
 				GCC_UNROLL_LOOPS = NO;
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib";
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DAPPKIT_INSIDE_BUILD",
@@ -11683,6 +11687,7 @@
 					"-DCGL_INSIDE_BUILD",
 				);
 				OTHER_LDFLAGS = (
+					"-lz",
 					"-static",
 					"-ljpeg",
 					"-shared",
@@ -11694,7 +11699,6 @@
 					"-lopengl32",
 					"-lcomctl32",
 					"-lwinmm",
-					"-Wl,--enable-auto-import",
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
@@ -11953,7 +11957,14 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib",
+					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib\"";
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DQUARTZCORE_INSIDE_BUILD",

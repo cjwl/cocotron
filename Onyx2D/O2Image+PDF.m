@@ -6,6 +6,12 @@
 #import <Onyx2D/O2PDFStream.h>
 #import <Onyx2D/O2PDFContext.h>
 
+#import "O2Defines_zlib.h"
+
+#if ZLIB_PRESENT
+#import <zlib-1.2.5/include/zlib.h>
+#endif
+
 @implementation O2Image(PDF)
 
 O2ColorRenderingIntent O2ImageRenderingIntentWithName(const char *name) {
@@ -47,6 +53,29 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
 	O2PDFStream     *result=[O2PDFStream pdfStream];
    O2PDFDictionary *dictionary=[result dictionary];
 
+#define CHUNK 65536
+	
+	// Input buffer for image data
+    uint8_t in[CHUNK + 3]; // CHUNK size + some additional room for rgb
+	int idx = 0;
+	
+#if ZLIB_PRESENT
+    // allocate deflate state
+	unsigned have;
+    z_stream strm;
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    
+	deflateInit(&strm, 9);
+	
+	// Compressed output buffer
+    uint8_t out[CHUNK + 3];
+#else
+	// No compression : out buffer = in buffer
+	uint8_t *out = in;
+#endif
+	
 	const void *bytes = [self directBytes];
 
    [dictionary setNameForKey:"Type" value:"XObject"];
@@ -67,10 +96,11 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
 	/* FIX, generate soft mask for alpha data
     [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
     */
-	//[dictionary setNameForKey:"Filter" value:"FlateDecode"]; // Zipped
-  
-	// TODO : we should at least flate encode the data
-	// And it would be nice if jpg data would stay jpg data (instead of an uncompress stream), as it does
+#if ZLIB_PRESENT
+	[dictionary setNameForKey:"Filter" value:"FlateDecode"];
+#endif
+	
+	// It would be nice if jpg data would stay jpg data (instead of an uncompress stream), as it does
 	// with Quartz and CGImage
 	
 	// Export RGB bytes, without the alpha data, in the expected order
@@ -112,11 +142,34 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
 				g = *pixelPtr++;
 				r = *pixelPtr++;
 			}
-			[[result mutableData] appendBytes:&r length: 1];
-			[[result mutableData] appendBytes:&g length: 1];
-			[[result mutableData] appendBytes:&b length: 1];
+			in[idx++] = r;
+			in[idx++] = g;
+			in[idx++] = b;
+			BOOL flush = (i == _height - 1 && j == _width - 1) || (idx > CHUNK);
+			if (flush) {
+#if ZLIB_PRESENT
+				strm.avail_in = idx;
+				flush = ((i == _height - 1 && j == _width - 1)) ? Z_FINISH : Z_NO_FLUSH;
+				strm.next_in = in;
+				
+				// run deflate() on input until the output buffer is not full
+				do {
+					strm.avail_out = idx;
+					strm.next_out = out;
+					deflate(&strm, flush); 
+					have = idx - strm.avail_out;
+					[[result mutableData] appendBytes:out length: have];
+				} while (strm.avail_out == 0);
+#else
+				[[result mutableData] appendBytes:out length: idx];
+#endif
+				idx = 0;
+			}
 		}
 	}
+#if ZLIB_PRESENT
+	deflateEnd(&strm);
+#endif
 	return [context encodeIndirectPDFObject:result];
 }
 
@@ -246,8 +299,7 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
    O2DataProviderRelease(provider);
    O2ColorSpaceRelease(colorSpace);
    
-    return image;
-
+	return image;
    }
 
 @end
