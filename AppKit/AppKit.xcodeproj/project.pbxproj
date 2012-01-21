@@ -11961,10 +11961,10 @@
 					"/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib",
 					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib\"";
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DQUARTZCORE_INSIDE_BUILD",
@@ -11974,6 +11974,7 @@
 					"-DCGL_INSIDE_BUILD",
 				);
 				OTHER_LDFLAGS = (
+					"-lz",
 					"-static",
 					"-ljpeg",
 					"-shared",
