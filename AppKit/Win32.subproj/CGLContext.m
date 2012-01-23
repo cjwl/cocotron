@@ -90,7 +90,7 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
     if(message==WM_PAINT){    
         Win32Window *parentWindow=GetProp(handle,"Win32Window");
 
-#if 0
+#if 1
         ValidateRect(handle, NULL);
 
         return [parentWindow WM_APP1_wParam:wParam lParam:lParam];
@@ -571,10 +571,7 @@ CGL_EXPORT CGLError CGLUnlockContext(CGLContextObj context) {
    return kCGLNoError;
 }
 
-static BOOL usesChildWindow(CGLContextObj context){
-    if(context->forceChildWindow)
-        return YES;
-        
+static BOOL usesChildWindow(CGLContextObj context){        
     Win32Window *parentWindow=[CGWindow windowWithWindowNumber:context->parentWindowNumber];
     
     if(parentWindow==nil)
@@ -583,7 +580,7 @@ static BOOL usesChildWindow(CGLContextObj context){
     if([parentWindow isLayeredWindow])
         return NO;
 
-    return NO;
+    return context->forceChildWindow;
 }
 
 static BOOL shouldPutChildInParent(CGLContextObj context) {

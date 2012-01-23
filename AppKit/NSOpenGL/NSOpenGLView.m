@@ -120,10 +120,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)lockFocus {
 	[super lockFocus];
-
-    CGLLockContext([_context CGLContextObj]);
+    // create if needed
+    NSOpenGLContext *context = [self openGLContext];
+    
+    CGLLockContext([context CGLContextObj]);
     [_context setView:self];
-	[[self openGLContext] makeCurrentContext];
+	[context makeCurrentContext];
     
 	if (_needsReshape){
 		[self reshape];
