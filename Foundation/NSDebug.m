@@ -47,7 +47,7 @@ void NSCooperativeThreadBlocking() {
    }
 }
 
-void NSCooperativeThreadWaitin)g() {
+void NSCooperativeThreadWaiting() {
    if(NSCooperativeThreadsEnabled){
     WaitForSingleObject(NSCooperativeEvent(),0);
    }
