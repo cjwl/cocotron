@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSFontTypeface;
 
 @interface NSFontFamily : NSObject {
-   NSString       *_name;
+	NSString       *_name;
    NSMutableArray *_typefaces;
 }
 

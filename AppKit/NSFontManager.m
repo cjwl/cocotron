@@ -388,7 +388,6 @@ static Class _fontPanelFactory;
 	if(newface!=nil) {
 		return [NSFont fontWithName:[newface name] size:[font pointSize]];
 	}
-	
 	NSLog(@"%s failed, %@ %d",sel_getName(_cmd),[font fontName],trait);
 	return font;
 }

@@ -50,6 +50,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+// Font name mapping : platform specific font class may override
+// these methods in a category O2Font(<platformname>) if some
+// mapping is needed between the font postscript names and the
+// native names used by the platform
++ (NSString *)nativeFontNameForPostscriptName:(NSString *)name
+{
+	return name;
+}
+
++ (NSString *)postscriptNameForNativeName:(NSString *)name
+{
+	return name;
+}
+
++ (NSString *)postscriptNameForDisplayName:(NSString *)name
+{
+	return name;
+}
+
++ (NSString *)displayNameForPostscriptName:(NSString *)name
+{
+	return name;
+}
+
 NSString *O2MacRomanGlyphNames[256]={
 @".notdef",
 @".notdef",

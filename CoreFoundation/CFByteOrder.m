@@ -14,6 +14,51 @@ Float32 CFConvertFloat32SwappedToHost(CFSwappedFloat32 value) {
    return swap.f;
 }
 
+uint16_t CFSwapInt16(uint16_t value) {
+	uint16_t result;
+	
+	result=value<<8;
+	result|=value>>8;
+	
+	return result;
+}
+
+uint16_t CFSwapInt16BigToHost(uint16_t value) {
+#ifdef __LITTLE_ENDIAN__
+	return CFSwapInt16(value);
+#endif
+#ifdef __BIG_ENDIAN__
+	return value;
+#endif
+}
+
+uint16_t CFSwapInt16LittleToHost(uint16_t value) {
+#ifdef __BIG_ENDIAN__
+	return CFSwapInt16(value);
+#endif
+#ifdef __LITTLE_ENDIAN__
+	return value;
+#endif
+}
+
+uint16_t CFSwapInt16HostToBig(uint16_t value) {
+#ifdef __LITTLE_ENDIAN__
+	return CFSwapInt16(value);
+#endif
+#ifdef __BIG_ENDIAN__
+	return value;
+#endif
+}
+
+uint16_t CFSwapInt16HostToLittle(uint16_t value) {
+#ifdef __BIG_ENDIAN__
+	return CFSwapInt16(value);
+#endif
+#ifdef __LITTLE_ENDIAN__
+	return value;
+#endif
+}
+
 uint32_t CFSwapInt32(uint32_t value) {
    uint32_t result;
 
