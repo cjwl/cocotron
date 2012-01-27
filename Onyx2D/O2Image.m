@@ -467,17 +467,16 @@ O2ImageRef O2ImageCreateWithImageInRect(O2ImageRef self,O2Rect rect) {
    for(row=0;row<height;row++){
     const uint8_t *rowBytes=pixelBytes+(x*self->_bitsPerPixel)/8;
     
-    for(col=0;col<width;col++){
+    for(col=0;col<childBytesPerRow;col++){
+		// Copy all of the needed bytes for the row
      childPixelBytes[childIndex++]=rowBytes[col];
-}
+	}
 
     pixelBytes+=self->_bytesPerRow;
    }
    
    NSData *data=[NSData dataWithBytesNoCopy:childPixelBytes length:childIndex];
    O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
-   
-   [data release];
 
    O2ImageRef result=O2ImageCreate(width,height,self->_bitsPerComponent,self->_bitsPerPixel,childBytesPerRow,self->_colorSpace,self->_bitmapInfo,provider,self->_decode,self->_interpolate,self->_renderingIntent);
    

@@ -37,9 +37,17 @@ const float NSStringDrawerLargeDimension;
 
 // strange we need this frequently yet nothing like it is public
 @interface NSString(NSStringDrawer_private)
--(void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes;
+
+- (void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes truncatingTail:(BOOL)truncateTail;
+
+- (void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes;
+
 @end
 
 @interface NSAttributedString(NSStringDrawer_private)
--(void)_clipAndDrawInRect:(NSRect)rect;
+
+- (void)_clipAndDrawInRect:(NSRect)rect truncatingTail:(BOOL)truncateTail;
+
+- (void)_clipAndDrawInRect:(NSRect)rect;
+
 @end

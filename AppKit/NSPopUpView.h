@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSize  _cellSize;
    NSFont *_font;
    BOOL    _pullsDown;
-   unsigned _selectedIndex;
+   NSInteger _selectedIndex;
    int _keyboardUIState;
 	NSMutableArray* _cachedOffsets;
 }
@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFont:(NSFont *)font;
 -(BOOL)pullsDown;
 -(void)setPullsDown:(BOOL)pullsDown;
--(void)selectItemAtIndex:(int)index;
+-(void)selectItemAtIndex:(NSInteger)index;
 
 -(NSSize)sizeForContents;
 -(NSRect)rectForSelectedItem;

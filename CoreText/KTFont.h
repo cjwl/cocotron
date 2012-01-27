@@ -25,6 +25,7 @@ enum {
 
 -(CFStringRef)copyName;
 -(CGFloat)pointSize;
+-(CGFloat)fontSize;
 
 -(CGRect)boundingRect;
 -(CGFloat)ascender;

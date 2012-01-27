@@ -126,12 +126,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfURL:(NSURL *)url {
-   if(![url isFileURL]){
-    [self dealloc];
-    return nil;
-   }
-   
-   return [self initWithContentsOfFile:[url path]];
+	if ([url isFileURL]) { 
+		return [self initWithContentsOfFile:[url path]];
+	} else {
+		NSError* error = nil;
+		NSData* data = [NSData dataWithContentsOfURL:url options:0 error: &error];
+		NSDictionary* dict = nil;
+		if (data && [data length] > 0) {
+			dict = [NSPropertyListReader propertyListFromData: data];
+		}
+		if (dict) {
+			return [self initWithDictionary: dict];
+		} else {
+			[self dealloc];
+			return nil;
+		}
+	}
 }
 
 +dictionary {

@@ -1319,6 +1319,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSMatrix (Bindings)
 
+- (int)_selectedIndex
+{
+	return _selectedIndex;
+}
+
+- (void)_setSelectedIndex:(int)index
+{
+	if (_selectedIndex != index) {
+		if (index < [_cells count]) {
+			NSCell* cell = [_cells objectAtIndex: index];
+			[self selectCell: cell];
+		}
+	}
+}
+
 - (int) _selectedTag {
     return [[self selectedCell] tag];
 }

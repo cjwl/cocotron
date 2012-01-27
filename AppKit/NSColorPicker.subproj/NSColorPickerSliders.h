@@ -14,7 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     IBOutlet NSBox *rgbSubview;
     IBOutlet NSBox *cmykSubview;
     IBOutlet NSBox *hsbSubview;
-    IBOutlet NSMatrix *matrix;
+	IBOutlet NSPopUpButton* typeButton;
+	
     IBOutlet NSView *currentView;
     IBOutlet NSSlider *greyscaleSlider;
     IBOutlet NSTextField *greyscaleTextField;
@@ -38,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     IBOutlet NSMatrix *hsbTextFieldMatrix;
 }
 
-- (void)matrixClicked:(id)sender;
+- (void)typeChanged:(id)sender;
 
 -(void)greyscaleDidChange:(id)sender;
 -(void)grayscaleConstant:sender;

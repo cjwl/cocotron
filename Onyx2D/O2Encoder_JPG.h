@@ -1,4 +1,6 @@
-#ifdef HASLIBJPEG
+#import "O2Defines_libjpeg.h"
+
+#ifdef LIBJPEG_PRESENT
 #import <Onyx2D/O2DataConsumer.h>
 #import <Onyx2D/O2Image.h>
 #import <stdbool.h>

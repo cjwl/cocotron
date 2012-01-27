@@ -193,6 +193,7 @@ enum {
 -(short)subtype;
 -(NSInteger)data1;
 -(NSInteger)data2;
+-(NSInteger)trackingNumber;
 -(void *)userData;
 
 @end

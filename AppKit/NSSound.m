@@ -12,7 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSMutableDictionary.h>
 #import <AppKit/NSRaise.h>
+
+static NSMutableDictionary* sSounds = nil;
 
 @implementation NSSound
 
@@ -25,18 +28,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSSound *)soundNamed:(NSString *)name {
-	// FIXME: We really have to search in other places too, like the docs say
+	
+	if (sSounds == nil) {
+		sSounds = [[NSMutableDictionary dictionaryWithCapacity: 10] retain];
+	}
+	
+	NSSound* sound = [sSounds objectForKey: name];
+	if (sound == nil) {
+		@synchronized(sSounds) {
+			// Look for the sound in the bundle
+			// FIXME: We really have to search in other places too, like the docs say
 
-	NSArray *types = [NSSound soundUnfilteredFileTypes];
-	NSString *type;
-	NSEnumerator *enumerator = [types objectEnumerator];
-	while ((type = [enumerator nextObject]))
-	{
-		if ([[NSBundle mainBundle] pathForResource:name ofType:type])
-			return [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:type] byReference:NO];
-	}	
-	 
-   return nil;
+			NSArray *types = [NSSound soundUnfilteredFileTypes];
+			NSString *type;
+			NSEnumerator *enumerator = [types objectEnumerator];
+			while ((sound == nil) && (type = [enumerator nextObject]))
+			{
+				if ([[NSBundle mainBundle] pathForResource:name ofType:type]) {
+					sound =  [[[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:type] byReference:NO] autorelease];
+					// Store it for quick access if asked again
+					[sSounds setObject: sound forKey: name];
+				}
+			}	
+		}
+	}
+	return sound;
 }
 
 -initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {

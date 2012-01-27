@@ -84,7 +84,7 @@ O2ImageDestinationRef O2ImageDestinationCreateWithDataConsumer(O2DataConsumerRef
      break;
 
     case O2ImageFileJPEG:
-#ifdef HASLIBJPEG
+#ifdef LIBJPEG_PRESENT
 	 self->_encoder=O2JPGEncoderCreate(self->_consumer);
 #endif
      break;
@@ -130,7 +130,7 @@ void O2ImageDestinationAddImage(O2ImageDestinationRef self,O2ImageRef image,CFDi
      break;
 
     case O2ImageFileJPEG:
-#ifdef HASLIBJPEG
+#ifdef LIBJPEG_PRESENT
 	 O2JPGEncoderWriteImage(self->_encoder,image,properties);
 #endif
      break;
@@ -170,7 +170,7 @@ bool O2ImageDestinationFinalize(O2ImageDestinationRef self) {
      break;
 
     case O2ImageFileJPEG:
-#ifdef HASLIBJPEG
+#ifdef LIBJPEG_PRESENT
 	 O2JPGEncoderDealloc(self->_encoder);
 	 self->_encoder=NULL;
 #endif
@@ -184,7 +184,9 @@ bool O2ImageDestinationFinalize(O2ImageDestinationRef self) {
     case O2ImageFileJPEG2000:
      break;
    }
-
+	[self->_consumer release]; // This is needed so the consumer can finalize its work before we exit this function
+	self->_consumer = nil;
+	
    return TRUE;
 }
 

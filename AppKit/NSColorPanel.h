@@ -51,7 +51,8 @@ APPKIT_EXPORT NSString * const NSColorPanelColorDidChangeNotification;
     IBOutlet NSTextField *opacityTitle;
     IBOutlet NSSlider *opacitySlider;
     IBOutlet NSTextField *opacityTextField;
-    
+    IBOutlet NSTextField *opacityPercentLabel;
+	
     BOOL _showsAlpha;
     BOOL _continuous;
     int _mode;

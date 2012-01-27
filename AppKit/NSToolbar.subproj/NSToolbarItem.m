@@ -339,8 +339,10 @@ extern NSSize _NSToolbarIconSizeSmall;
    [_image release];
    _image=image;
     
-   if([_view respondsToSelector:@selector(setImage:)])
-    [(id)_view setImage:image];
+	if([_view respondsToSelector:@selector(setImage:)]) {
+		[(id)_view setImage:image];
+	}
+	[self _didChange];
 }
 
 -(void)setTarget:target {
@@ -375,11 +377,16 @@ extern NSSize _NSToolbarIconSizeSmall;
    _toolTip=tip;
 }
 
--(void)validate {
-   if ([[self target] respondsToSelector:[self action]])
-    [self setEnabled:YES];
-   else
-    [self setEnabled:NO];
+-(void)validate
+{
+	if ([[self target] respondsToSelector: @selector(validateToolbarItem:)]) {
+		BOOL valid =  [[self target] validateToolbarItem: [self action]];
+		[self setEnabled: valid];
+	} else if ([[self target] respondsToSelector:[self action]]) {
+		[self setEnabled:YES];
+	} else {
+		[self setEnabled:NO];
+	}
 }
 
 -(NSSize)_labelSize {

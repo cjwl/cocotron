@@ -285,7 +285,7 @@ static NSSpellChecker *shared=nil;
     if(_spellingViewController==nil)
         _spellingViewController=[[NSSpellingViewController alloc] initWithNibName:@"NSSpellingViewController" bundle:[NSBundle bundleForClass:[NSSpellingViewController class]]];
     
-    return _spellingViewController;
+    return (NSSpellingViewController *)_spellingViewController;
 }
 
 -(NSPanel *)spellingPanel {

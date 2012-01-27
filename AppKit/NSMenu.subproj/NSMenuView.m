@@ -172,7 +172,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      default:
       item=[[viewStack lastObject] itemAtSelectedIndex];
       if([event type]==NSLeftMouseUp){
-       if(([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu]))
+       if(item == nil || ([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu]))
         state=STATE_EXIT;
       }
       break;

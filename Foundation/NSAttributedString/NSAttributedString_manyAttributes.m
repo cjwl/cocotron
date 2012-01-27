@@ -56,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(effectiveRangep!=NULL && effectiveRangep->length==NSNotFound)
     effectiveRangep->length=[self length]-effectiveRangep->location;
 
-   return result;
+	return [[result retain] autorelease];
 }
 
 @end

@@ -33,7 +33,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGFloat)pointSize {
-   return _size;
+	return _size;
+}
+
+-(CGFloat)fontSize {
+	return _size;
 }
 
 -(CGRect)boundingRect {

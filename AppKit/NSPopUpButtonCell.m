@@ -5,6 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSEvent.h>
@@ -140,6 +141,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   if(_selectedIndex<0)
    return nil;
    
+	if (_selectedIndex >= [_menu numberOfItems]) {
+		return nil;
+	}
+	
   return [_menu itemAtIndex:_selectedIndex];
 }
 
@@ -205,10 +210,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeAllItems {
    [_menu removeAllItems];
 	_selectedIndex = -1;
+	[self synchronizeTitleAndSelectedItem];
 }
 
 -(void)removeItemAtIndex:(NSInteger)index {
    [_menu removeItemAtIndex:index];
+	
+	if (_selectedIndex >= [_menu numberOfItems]) {
+		// Don't know what to select anymore...
+		_selectedIndex = -1;
+	}
+	[self synchronizeTitleAndSelectedItem];
 }
 
 -(void)removeItemWithTitle:(NSString *)title {
@@ -218,6 +230,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index {
    [_menu insertItemWithTitle:title action:NULL keyEquivalent:nil atIndex:index];
+   [self synchronizeTitleAndSelectedItem];
 }
 
 -(void)selectItem:(NSMenuItem *)item {
@@ -294,38 +307,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSImage imageNamed:@"NSPopUpButtonCellPopUp"];
 }
 
+-(NSRect)_arrowRectForRect:(NSRect)frame
+{
+	NSRect result = NSZeroRect;
+	if( _arrowPosition != NSPopUpNoArrow ) {
+		NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
+		
+		if (arrowImage != nil) {
+			
+			// Scale down the arrows so they look proportional to the control size
+			float sizeFactor = 0;
+			
+			switch ([self controlSize]) {
+				case NSRegularControlSize:
+					sizeFactor = 0;
+					break;
+				case NSSmallControlSize:
+					sizeFactor = 1;
+					break;
+				case NSMiniControlSize:
+					sizeFactor = 2;
+					break;
+			}
+			NSRect otherFrame = frame;
+			NSSize arrowSize = [arrowImage size];
+			otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + (4 - sizeFactor) );
+			otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
+			otherFrame.size =  arrowSize;
+			
+			result = NSInsetRect(otherFrame, sizeFactor, sizeFactor);
+		}
+	}
+	return result;
+}
+
+-(NSRect)titleRectForBounds:(NSRect)rect 
+{
+	rect = [super titleRectForBounds:rect];
+	if (_arrowPosition != NSPopUpNoArrow) {
+		// Don't use the room used by the arrow, with some margin
+		NSRect arrowRect = [self _arrowRectForRect:rect];
+		rect.size.width = NSMinX(arrowRect) - NSMinX(rect) - 5.;
+	}
+	return rect;
+}
+
 -(void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView {
 
 	[super drawBezelWithFrame: frame inView: controlView];
 
-	NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
-	
-	if (arrowImage == NULL) return;
-	
 	// Now draw the arrow
     if( _arrowPosition != NSPopUpNoArrow )
 	{
-		// Scale down the arrows so they look proportional to the control size
-		float sizeFactor = 0;
-		switch ([self controlSize]) {
-			case NSRegularControlSize:
-				sizeFactor = 0;
-				break;
-			case NSSmallControlSize:
-				sizeFactor = 1;
-				break;
-			case NSMiniControlSize:
-				sizeFactor = 2;
-				break;
-		}
-		NSRect otherFrame = frame;
-		NSSize arrowSize = [arrowImage size];
-		otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + (4 - sizeFactor) );
-		otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
-		otherFrame.size =  arrowSize;
+		NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
 		
-		otherFrame = NSInsetRect(otherFrame, sizeFactor, sizeFactor);
-		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:otherFrame enabled:YES mixed:YES];
+		if (arrowImage == NULL) return;
+				
+		NSRect arrowFrame = [self _arrowRectForRect:frame];
+		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:arrowFrame enabled:YES mixed:YES];
 	}
 }
 
@@ -376,7 +415,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag {
-   NSPopUpWindow *window;
    NSPoint        origin=[controlView bounds].origin;
    
 #if 0
@@ -397,15 +435,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	     break;
    }
 #endif
-  
-   origin=[controlView convertPoint:origin toView:nil];
+	origin=[controlView convertPoint:origin toView:nil];
    origin=[[controlView window] convertBaseToScreen:origin];
 
-   window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
-     cellFrame.size.width,cellFrame.size.height)];
 	[[_menu delegate] menuNeedsUpdate: _menu];
 //	[[_menu delegate] menuWillOpen: _menu];
-   [window setMenu:_menu];
+	NSMenu *menu = _menu;
+	if (_pullsDown && [_menu numberOfItems]) {
+		// Don't display the first item for pullDowns controls
+		menu = [[_menu copy] autorelease];
+		[menu removeItemAtIndex:0];
+	}
+	NSPopUpWindow *window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
+														   cellFrame.size.width,cellFrame.size.height)];
+	[window setMenu:menu];
    if([self font]!=nil)
     [window setFont:[self font]];
 
@@ -414,8 +457,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else
     [window selectItemAtIndex:_selectedIndex];
 
-   NSInteger itemIndex=[window runTrackingWithEvent:event];
+	NSInteger itemIndex=[window runTrackingWithEvent:event];
 	if(itemIndex!=NSNotFound) {
+		if (_pullsDown) {
+			// remember that thing we did with the first menu item?
+			itemIndex++;
+		}
 		[(NSPopUpButton*)controlView selectItemAtIndex:itemIndex];
 	}
    [window close]; // release when closed=YES

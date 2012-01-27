@@ -39,7 +39,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          
          if([coder containsValueForKey:@"NSTag"])
              newView->_tag=[coder decodeIntForKey:@"NSTag"];
-         [newView->_subviews addObjectsFromArray:[coder decodeObjectForKey:@"NSSubviews"]];
+		  NSArray* subviews = [coder decodeObjectForKey:@"NSSubviews"];
+		  
+		  // For some unknown reason custom view subviews are presented in reverse order
+		  // in the nib - so we need to add them in reverse - this matches Cocoa behaviour
+		  NSEnumerator* reverseEnum = [subviews reverseObjectEnumerator];
+		  NSView* subview = nil;
+		  while ((subview = [reverseEnum nextObject])) {
+			  [newView->_subviews addObject: subview];
+		  }
+		  
          [newView->_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:newView];
          [_subviews removeAllObjects];
          

@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextView.h>
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSBezierPath.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 
@@ -40,6 +41,7 @@ typedef struct {
 // Forward declaration
 @interface NSLayoutManager()
 -(NSRange)validateGlyphsAndLayoutForGlyphRange:(NSRange)glyphRange;
+-(NSRange)_glyphRangeForTextContainer:(NSTextContainer *)container;
 @end
 
 @implementation NSLayoutManager
@@ -221,6 +223,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    return [_textStorage length];
 }
 
+- (void)_rollbackLatestFragment
+{
+	NSRangeEntriesRemoveEntryAtIndex(_glyphFragments, NSCountRangeEntries(_glyphFragments)- 1);
+}
+
 -(NSFont *)_fontForGlyphRange:(NSRange)glyphRange {
    NSRange       characterRange=[self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
    NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
@@ -249,12 +256,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 
 -(NSTextContainer *)textContainerForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange {
 	[self validateGlyphsAndLayoutForGlyphRange:NSMakeRange(glyphIndex, 1)];
-	
 	NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
 	
 	if(fragment==NULL)
 		return nil;
-
+	
 	if (effectiveGlyphRange) {
 		*effectiveGlyphRange = [self glyphRangeForTextContainer:fragment->container];
 	}
@@ -262,12 +268,12 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(NSRect)lineFragmentRectForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange {
-   NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
-
-   if(fragment==NULL)
-    return NSZeroRect;
-
-   return fragment->rect;
+	NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,glyphIndex,effectiveGlyphRange);
+	
+	if(fragment==NULL)
+		return NSZeroRect;
+	
+	return fragment->rect;
 }
 
 -(NSPoint)locationForGlyphAtIndex:(unsigned)glyphIndex {
@@ -289,12 +295,19 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(NSRange)validateGlyphsAndLayoutForGlyphRange:(NSRange)glyphRange {
-   // DO: Validate glyphs in glyph cache for glyph range
+   // TODO: Validate glyphs in glyph cache for glyph range
 
    if(_layoutInvalid){
     NSResetRangeEntries(_glyphFragments);
     [_typesetter layoutGlyphsInLayoutManager:self startingAtGlyphIndex:0 maxNumberOfLineFragments:0 nextGlyphIndex:NULL];
     _layoutInvalid=NO;
+	   
+	   if ([_delegate respondsToSelector:@selector(layoutManager:didCompleteLayoutForTextContainer:atEnd:)]) {
+		   NSTextContainer *container = [_textContainers lastObject];
+		   NSRange containerRange = [self _glyphRangeForTextContainer:container];
+		   BOOL finished = NSMaxRange(containerRange) >= NSMaxRange(glyphRange);
+		   [_delegate layoutManager:self didCompleteLayoutForTextContainer:container atEnd:finished];
+	   }
    }
 
    return glyphRange;
@@ -465,12 +478,18 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 -(void)fixupSelectionInRange:(NSRange)range changeInLength:(int)changeInLength {
    int i,count=[_textContainers count];
 
-   for(i=0;i<count;i++){
-    NSTextContainer *container=[_textContainers objectAtIndex:i];
-    NSTextView      *textView=[container textView];
-
-    [textView setSelectedRange:NSMakeRange([_textStorage length],0)];
-   }
+	for(i=0;i<count;i++){
+		NSTextContainer *container=[_textContainers objectAtIndex:i];
+		NSTextView      *textView=[container textView];
+		if (textView) {
+			NSRange selectedRange = [textView selectedRange];
+			NSRange textRange = NSMakeRange(0, [_textStorage length]);
+			NSRange range = NSIntersectionRange(selectedRange, textRange);
+			if (!NSEqualRanges(selectedRange, range)) {
+				[textView setSelectedRange:range];
+			}
+		}
+	}
 }
 
 -(void)textStorage:(NSTextStorage *)storage edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)changeInLength invalidatedRange:(NSRange)invalidateRange {
@@ -518,7 +537,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
      if(point.x<NSMinX(fragment->rect)){
       return range.location;
      }
-     else if(point.x<NSMaxX(fragment->rect)){
+     else if(point.x<NSMaxX(fragment->usedRect)){
       NSRect   glyphRect=fragment->usedRect;
       NSGlyph  glyphs[range.length];
       NSFont  *font=[self _fontForGlyphRange:range];
@@ -672,24 +691,33 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	NSRange remainder=(selGlyphRange.location==NSNotFound)?glyphRange:selGlyphRange;
 	
 	_rectCacheCount=0;
-	
 	do {
 		NSRange          range;
+		// Get the fragment to the range to process
 		NSGlyphFragment *fragment=fragmentAtGlyphIndex(self,remainder.location,&range);
 		
 		if(fragment==NULL)
 			break;
 		else if (fragment->container == container) {
+			// Part of the line fragment to process
 			NSRange intersect=NSIntersectionRange(remainder,range);
+			// The part of the that we are interested in - start with the full rect, we'll change it if we
+			// don't want the full fragment
 			NSRect  fill=fragment->rect;
-			
 			if(!NSEqualRanges(range,intersect)){
+				// We only want part of that fragment - so check the part we want by getting the 
+				// interesting glyphs locations
+				
+				// Use the usedRect - we're not interested in any potential white space lead
+				fill=fragment->usedRect;
+
 				NSGlyph glyphs[range.length],previousGlyph=NSNullGlyph;
 				int     i,length=[self getGlyphs:glyphs range:range];
 				NSFont *font=[self _fontForGlyphRange:range];
 				float   advance;
 				BOOL    ignore;
 				
+				// Starts with a 0 width - we'll grow it with the width of the glyphs from our intersect range
 				fill.size.width=0;
 				for(i=0;i<length;i++){
 					NSGlyph glyph=glyphs[i];
@@ -699,28 +727,32 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 					
 					advance=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
 					
-					if(range.location+i<=intersect.location)
+					if(range.location+i<=intersect.location) {
+						// Not yet part of intersect - advance the fill rect origin
 						fill.origin.x+=advance;
-					else if(range.location+i<=NSMaxRange(intersect))
+					} else if(range.location+i<=NSMaxRange(intersect)) {
+						// Part of intersect - grow the width
 						fill.size.width+=advance;
+					}
 					
 					previousGlyph=glyph;
 				}
-				advance=[font positionOfGlyph:NSNullGlyph precededByGlyph:previousGlyph isNominal:&ignore].x;
-				if(range.location+i<=NSMaxRange(intersect)){
+				if(NSMaxRange(range)<=NSMaxRange(remainder)){
+					// We want the full end of fragment, so grow the width to the end of the fragment rect
 					fill.size.width=NSMaxX(fragment->rect)-fill.origin.x;
 				}
 				
-				range=intersect;
+				range = intersect;
 			}
 			
 			_appendRectToCache(self,fill);
-			
-			remainder.length=NSMaxRange(remainder)-NSMaxRange(range);
-			remainder.location=NSMaxRange(range);
 		}
+		// Remove the range we just processed
+		remainder.length=NSMaxRange(remainder)-NSMaxRange(range);
+		remainder.location=NSMaxRange(range);
+		
 	} while(remainder.length>0);
-	
+
 	*rectCount=_rectCacheCount;
 	
 	return _rectCache;
@@ -760,13 +792,12 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 }
 
 -(void)showPackedGlyphs:(char *)glyphs length:(unsigned)length glyphRange:(NSRange)glyphRange atPoint:(NSPoint)point font:(NSFont *)font color:(NSColor *)color printingAdjustment:(NSSize)printingAdjustment {
-   CGContextRef context=NSCurrentGraphicsPort();
-   CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
-   int          cgGlyphsLength=length/2;
-
-   CGContextShowGlyphsAtPoint(context,point.x,point.y,cgGlyphs,cgGlyphsLength);
+	CGContextRef context=NSCurrentGraphicsPort();
+	CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
+	int          cgGlyphsLength=length/2;
+	
+	CGContextShowGlyphsAtPoint(context,point.x,point.y,cgGlyphs,cgGlyphsLength);
 }
-
 
 -(void)drawSelectionAtPoint:(NSPoint)origin {
    NSTextView *textView=[self textViewForBeginningOfSelection];
@@ -838,17 +869,33 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
      location=NSMaxRange(effectiveRange);
     }
    }
-   [self drawSelectionAtPoint:origin];
+	[self drawSelectionAtPoint:origin];
 }
 
--(void)drawSpellingState:(NSNumber *)spellingState characterRange:(NSRange)characterRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+- (void)drawUnderlineForGlyphRange:(NSRange)glyphRange underlineType:(NSInteger)underlineVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
     unsigned i,rectCount;
-    BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
-    float            usedHeight=[self usedRectForTextContainer:container].size.height;
-    NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
-    
-    [[NSColor redColor] setFill];
-    
+	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
+    BOOL             isFlipped = [[NSGraphicsContext currentContext] isFlipped];
+	NSTextContainer* container = [self textContainerForGlyphAtIndex: glyphRange.location effectiveRange: NULL];
+
+    NSRect *rects = [self rectArrayForCharacterRange: characterRange
+						withinSelectedCharacterRange: NSMakeRange(NSNotFound,0)
+									 inTextContainer: container
+										   rectCount:&rectCount];
+	
+	NSBezierPath *path = [NSBezierPath bezierPath];
+	
+	// Lots more stylistic options available than just this
+	[path setLineWidth: (underlineVal & NSUnderlineStyleThick) ? 1 : .5 ];
+	[path setLineCapStyle:NSSquareLineCapStyle];
+	if (underlineVal & NSUnderlinePatternDash) {
+		CGFloat lineDash[] = {.75, 3.25};
+		[path setLineDash:lineDash count:sizeof(lineDash)/sizeof(lineDash[0]) phase:0.0];
+	}
+	
+	NSPoint origin = containerOrigin;
+	
     for(i=0;i<rectCount;i++){
         NSRect fill=rects[i];
         
@@ -856,11 +903,102 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
             fill.origin.y+=(fill.size.height-1);
         
         fill.origin.x+=origin.x;
-        fill.origin.y+=origin.y;
-        fill.size.height=1;
-        
-        NSRectFill(fill);
+        fill.origin.y+=origin.y + baselineOffset;
+        [path moveToPoint:fill.origin];
+		float width = fill.size.width;
+		[path relativeLineToPoint:NSMakePoint(width, 0)];
     }
+
+	NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
+	NSColor* underlineColor = [attributes objectForKey: NSUnderlineColorAttributeName];
+	if (underlineColor == nil) {
+		underlineColor = [NSColor blackColor];
+	}
+	[underlineColor set];
+	[path stroke];
+	
+}
+
+- (void)underlineGlyphRange:(NSRange)glyphRange underlineType:(NSInteger)underlineVal lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
+	// A full implementation would honor options like breaking the underline for whitespace.
+	[self drawUnderlineForGlyphRange: glyphRange underlineType: underlineVal baselineOffset: 0 lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: containerOrigin];
+}
+
+- (void)drawStrikethroughForGlyphRange:(NSRange)glyphRange strikethroughType:(NSInteger)strikethroughVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
+    unsigned i,rectCount;
+	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
+    BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
+	NSTextContainer* container = [self textContainerForGlyphAtIndex: glyphRange.location effectiveRange: NULL];
+    NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
+	
+	NSBezierPath *path = [NSBezierPath bezierPath];
+	
+	// Lots more stylistic options available than just this
+	[path setLineWidth: (strikethroughVal & NSUnderlineStyleThick) ? 1 : .5 ];
+	[path setLineCapStyle:NSSquareLineCapStyle];
+	if (strikethroughVal & NSUnderlinePatternDash) {
+		CGFloat lineDash[] = {.75, 3.25};
+		[path setLineDash:lineDash count:sizeof(lineDash)/sizeof(lineDash[0]) phase:0.0];
+	}
+	
+	NSPoint origin = containerOrigin;
+	
+    for(i=0;i<rectCount;i++){
+        NSRect fill=rects[i];
+        
+		fill.origin.y+=(fill.size.height/2);
+        
+        fill.origin.x+=origin.x;
+        fill.origin.y+=origin.y + baselineOffset;
+        [path moveToPoint:fill.origin];
+		float width = fill.size.width;
+		[path relativeLineToPoint:NSMakePoint(width, 0)];
+    }
+	
+	NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
+	NSColor* underlineColor = [attributes objectForKey: NSUnderlineColorAttributeName];
+	if (underlineColor == nil) {
+		underlineColor = [NSColor blackColor];
+	}
+	[underlineColor set];
+	[path stroke];	
+}
+
+- (void)strikethroughGlyphRange:(NSRange)glyphRange strikethroughType:(NSInteger)strikethroughVal lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
+{
+	// A full implementation would honor options like breaking the strikethrough for whitespace.
+	[self drawStrikethroughForGlyphRange: glyphRange strikethroughType: strikethroughVal  baselineOffset: 0 lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: containerOrigin];
+}
+
+-(void)drawSpellingState:(NSNumber *)spellingState glyphRange:(NSRange)glyphRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+    unsigned i,rectCount;
+	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
+    BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
+    float            usedHeight=[self usedRectForTextContainer:container].size.height;
+    NSRect *rects=[self rectArrayForCharacterRange:characterRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
+        
+	NSBezierPath *path = [NSBezierPath bezierPath];
+	[path setLineWidth:2.];
+	[path setLineCapStyle:NSRoundLineCapStyle];
+    CGFloat lineDash[] = {.75, 3.25};
+	[path setLineDash:lineDash count:sizeof(lineDash)/sizeof(lineDash[0]) phase:0.0];
+
+    for(i=0;i<rectCount;i++){
+        NSRect fill=rects[i];
+        
+        if(isFlipped)
+            fill.origin.y+=(fill.size.height-1);
+        
+        fill.origin.x+=origin.x + 2; // some margin because of the line cap
+        fill.origin.y+=origin.y;
+        [path moveToPoint:fill.origin];
+		float width = fill.size.width;
+		[path relativeLineToPoint:NSMakePoint(width, 0)];
+    }
+    [[NSColor redColor] setStroke];
+	[path stroke];
 }
 
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin {
@@ -913,6 +1051,16 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 				} else {
 					NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
 					NSFont       *font=NSFontAttributeInDictionary(attributes);
+					BOOL		 underline = [[attributes objectForKey: NSUnderlineStyleAttributeName] boolValue];
+				
+					BOOL		 strikeThru = [[attributes objectForKey: NSStrikethroughStyleAttributeName] boolValue];
+					NSColor*	strikeThruColor = nil;
+					if (strikeThru) {
+						strikeThruColor = [attributes objectForKey: NSStrikethroughColorAttributeName];
+						if (strikeThruColor == nil) {
+							strikeThruColor = [NSColor blackColor];
+						}
+					}
                     NSNumber     *spellingState=[attributes objectForKey:NSSpellingStateAttributeName];
 					NSMultibyteGlyphPacking packing=NSNativeShortGlyphPacking;
 					NSGlyph       glyphs[range.length];
@@ -957,6 +1105,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 							else if(location==limit){
 								[color setFill];
 								
+								
 								start=NSMaxRange(intersectRange)-range.location;
 								length=NSMaxRange(range)-NSMaxRange(intersectRange);
 								showGlyphs=YES;
@@ -967,8 +1116,19 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 							else {
 								packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs+start,length,packing,packedGlyphs);
 								[self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
+								NSRange glyphRange = NSMakeRange(range.location+start,length);
+								if (underline || strikeThru) {
+									NSRange lineGlyphRange;
+									NSRect lineRect = [self lineFragmentRectForGlyphAtIndex: glyphRange.location effectiveRange: &lineGlyphRange];
+									if (underline) {
+										[self underlineGlyphRange: glyphRange underlineType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: NSZeroPoint];
+									}
+									if (strikeThru) {
+										[self strikethroughGlyphRange: glyphRange strikethroughType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: NSZeroPoint];
+									}
+								}
                                 if(spellingState!=nil){
-                                    [self drawSpellingState:spellingState characterRange:[self characterRangeForGlyphRange:NSMakeRange(range.location+start,length) actualGlyphRange:NULL] container:container origin:origin];
+                                    [self drawSpellingState:spellingState glyphRange: glyphRange container:container origin:origin];
                                 }
 								partWidth+=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
 								point.x+=partWidth;
@@ -982,8 +1142,18 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 						[color setFill];
 						packedGlyphsLength=NSConvertGlyphsToPackedGlyphs(glyphs,glyphsLength,packing,packedGlyphs);
 						[self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
-                        if(spellingState!=nil){
-                            [self drawSpellingState:spellingState characterRange:characterRange container:container origin:origin];
+						if (underline || strikeThru) {
+							NSRange lineGlyphRange;
+							NSRect lineRect = [self lineFragmentRectForGlyphAtIndex: range.location effectiveRange: &lineGlyphRange];
+							if (underline) {
+								[self underlineGlyphRange: range underlineType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: origin];
+							}
+							if (strikeThru) {
+								[self strikethroughGlyphRange: range strikethroughType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: origin];
+							}
+						}
+						if(spellingState!=nil){
+                            [self drawSpellingState:spellingState glyphRange: range container:container origin:origin];
                         }
 					}
 				}

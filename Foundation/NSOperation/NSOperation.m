@@ -128,8 +128,9 @@ NSString * const NSInvocationOperationCancelledException = @"NSInvocationOperati
 	
    [invocation setTarget:target];
    [invocation setSelector:selector];
-   [invocation setArgument:&argument atIndex:2];
-	
+	if ([signature numberOfArguments] > 2) {
+		[invocation setArgument:&argument atIndex:2];
+	}
 	return [self initWithInvocation:invocation];
 }
 

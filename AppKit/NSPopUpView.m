@@ -48,7 +48,7 @@ enum {
    [super initWithFrame:frame];
    _cellSize=frame.size;
    _font=[[NSFont messageFontOfSize:12] retain];
-   _selectedIndex=NSNotFound;
+   _selectedIndex=-1;
    _pullsDown=NO;
 
    NSSize sz = [@"ABCxyzgjX" sizeWithAttributes: [self itemAttributes] ];
@@ -162,7 +162,7 @@ enum {
 	return _cachedOffsets;
 }
 
--(NSRect)rectForItemAtIndex:(unsigned)index {
+-(NSRect)rectForItemAtIndex:(NSInteger)index {
    NSRect result=NSMakeRect(2,2,[self bounds].size.width,_cellSize.height);
 
    result.size.width-=4;
@@ -185,13 +185,13 @@ enum {
 -(NSRect)rectForSelectedItem {
    if(_pullsDown)
     return [self rectForItemAtIndex:0];
-   else if(_selectedIndex==NSNotFound || _selectedIndex==-1)
+   else if(_selectedIndex==-1)
     return [self rectForItemAtIndex:0];
    else
     return [self rectForItemAtIndex:_selectedIndex];
 }
 
--(void)drawItemAtIndex:(unsigned)index {
+-(void)drawItemAtIndex:(NSInteger)index {
    NSMenuItem   *item=[_menu itemAtIndex:index];
    NSDictionary *attributes;
    NSRect    itemRect=[self rectForItemAtIndex:index];
@@ -243,15 +243,21 @@ enum {
    }
 }
 
--(unsigned)itemIndexForPoint:(NSPoint)point {
-	unsigned result;
+/*
+ * Returns NSNotFound if the point is outside of the menu
+ * Returns -1 if the point is inside the menu but on a disabled or separator item
+ * Returns a usable index if the point is on a selectable item
+ */
+-(NSInteger)itemIndexForPoint:(NSPoint)point {
+	NSInteger result;
 	NSArray * items=[_menu itemArray];
 	int i, count = [items count];
 	
 	point.y-=2;
 	
-	if( point.y < 0 )
+	if( point.y < 0 ) {
 		return NSNotFound;
+	}
 	
 	for( i = 0; i < count; i++ )
 	{
@@ -262,7 +268,7 @@ enum {
 		if (NSPointInRect( point, itemRect)) {
 			if (([[items objectAtIndex: i] isEnabled] == NO) ||
 				([[items objectAtIndex: i] isSeparatorItem])) {
-				return NSNotFound;
+				return -1;
 			}
 			return i;
 		}
@@ -290,7 +296,8 @@ enum {
 }
 
 /*
- This method may return NSNotFound when the view positioned outside the initial tracking area due to preferredEdge settings and the user clicks the mouse. The NSPopUpButtonCell code deals with it. It might make sense for this to return the previous value.
+ * This method may return NSNotFound when the view positioned outside the initial tracking area due to preferredEdge settings and the user clicks the mouse.
+ * The NSPopUpButtonCell code deals with it. It might make sense for this to return the previous value.
  */
 -(int)runTrackingWithEvent:(NSEvent *)event {
    enum {
@@ -300,7 +307,7 @@ enum {
     STATE_EXIT
    } state=STATE_FIRSTMOUSEDOWN;
    NSPoint firstLocation,point=[event locationInWindow];
-   unsigned initialSelectedIndex = _selectedIndex;
+   NSInteger initialSelectedIndex = _selectedIndex;
 
    // Make sure we get mouse moved events, too, so we can respond apporpiately to
    // click-click actions as well as of click-and-drag
@@ -314,22 +321,22 @@ enum {
    firstLocation=point;
 
    do {
-    unsigned index=[self itemIndexForPoint:point];
+    NSInteger index=[self itemIndexForPoint:point];
     NSRect   screenVisible;
 
 /*
   If the popup is activated programmatically with performClick: index may be NSNotFound because the mouse starts out
   outside the view. We don't change _selectedIndex in this case.   
  */
-    if(index!=NSNotFound && _keyboardUIState == KEYBOARD_INACTIVE){
+    if(index!= NSNotFound && _keyboardUIState == KEYBOARD_INACTIVE){
      if(_selectedIndex!=index){
-      unsigned previous=_selectedIndex;
-		 if (previous != NSNotFound) {
+      NSInteger previous=_selectedIndex;
+		 if (previous != -1) {
 			 NSRect itemRect = [self rectForItemAtIndex: previous];
 			 [self setNeedsDisplayInRect: itemRect];
 		 }
       _selectedIndex=index;
-		 if (_selectedIndex != NSNotFound) {
+		 if (_selectedIndex != -1) {
 			 NSRect itemRect = [self rectForItemAtIndex: _selectedIndex];
 			 [self setNeedsDisplayInRect: itemRect];
 		 }
@@ -379,7 +386,7 @@ enum {
      if(change)
       [[self window] setFrameOrigin:origin];
     } else {
-		_selectedIndex == NSNotFound;
+		_selectedIndex == -1;
 	}
 
     point=[self convertPoint:[event locationInWindow] fromView:nil];
@@ -395,8 +402,16 @@ enum {
       break;
 
      default:
-      if([event type]==NSLeftMouseUp)
-       state=STATE_EXIT;
+			if([event type]==NSLeftMouseUp) {
+				// If the user clicked outside of the window - then they want
+				// to dismiss it without changing anything
+				NSPoint winPoint=[event locationInWindow];
+				winPoint=[[event window] convertBaseToScreen:winPoint];
+				if (NSPointInRect(winPoint,[[self window] frame]) == NO) {
+					_selectedIndex = -1;
+				}
+				state=STATE_EXIT;
+			}
       break;
     }
 
@@ -406,7 +421,7 @@ enum {
 
    _keyboardUIState = KEYBOARD_INACTIVE;
    
-   return _selectedIndex;
+	return (_selectedIndex == -1) ? NSNotFound : _selectedIndex;
 }
 
 - (void)keyDown:(NSEvent *)event {
@@ -414,11 +429,11 @@ enum {
 }
 
 - (void)moveUp:(id)sender {
-    int previous = _selectedIndex;
+    NSInteger previous = _selectedIndex;
 
 	// Find the previous visible item
 	NSArray *items = [_menu itemArray];
-	if( _selectedIndex == NSNotFound )
+	if( _selectedIndex == -1 )
 		_selectedIndex = [items count];
 
 	do
@@ -434,22 +449,22 @@ enum {
 }
 
 - (void)moveDown:(id)sender {
-    int previous = _selectedIndex;
+    NSInteger previous = _selectedIndex;
     
 	// Find the next visible item
 	NSArray *items = [_menu itemArray];
-	if( _selectedIndex == NSNotFound )
-		_selectedIndex = -1;
+	NSInteger searchIndex = _selectedIndex;
 		
 	do
 	{
-		_selectedIndex++;
-	} while( _selectedIndex < [items count] && ( [[items objectAtIndex: _selectedIndex] isHidden] ||
-									             [[items objectAtIndex: _selectedIndex] isSeparatorItem] )  );
+		searchIndex++;
+	} while( searchIndex < [items count] && ( [[items objectAtIndex: searchIndex] isHidden] ||
+									             [[items objectAtIndex: searchIndex] isSeparatorItem] )  );
 
-   if (_selectedIndex >= [items count])
+	if (searchIndex >= [items count]) {
         _selectedIndex = previous;
-
+	}
+	
     [self setNeedsDisplay:YES];
 }
 

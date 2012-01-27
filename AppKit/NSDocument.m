@@ -222,7 +222,7 @@ static int untitled_document_number = 0;
 }
 
 -(void)setPrintInfo:(NSPrintInfo *)value {
-   value=[value copy];
+	value=[value copy];
    [_printInfo release];
    _printInfo=value;
 }
@@ -572,33 +572,42 @@ static int untitled_document_number = 0;
                          didSaveSelector:(SEL)selector 
                              contextInfo:(void *)context 
 {
-  for (id editor in [_activeEditors copy])
-    [editor commitEditing];
+	NSString * path = [_fileURL path];
+	NSString * extension = [path pathExtension];
+	if([extension length] == 0) {
+		extension=[[[NSDocumentController sharedDocumentController] fileExtensionsFromType:[self fileType]] objectAtIndex:0];
+	}
+	NSSavePanel * savePanel = [NSSavePanel savePanel];
+	[savePanel setRequiredFileType:extension];
 
-  NSString * path = [_fileURL path];
-  NSString * extension = [path pathExtension];
-  if([extension length] == 0)
-    extension=[[[NSDocumentController sharedDocumentController] fileExtensionsFromType:[self fileType]] objectAtIndex:0];
-  
-  NSSavePanel * savePanel = [NSSavePanel savePanel];
-  [savePanel setRequiredFileType:extension];
-  
-  if(![self prepareSavePanel:savePanel])
-    return;
+	NSArray* writableTypes = [self writableTypesForSaveOperation: operation];
+	[savePanel setAllowedFileTypes: writableTypes];
+	
+	if([self prepareSavePanel:savePanel] == NO) { 
+		// subclass was unable to prepare the save panel successfully
+		// so bail
+		return;
+	}
+	
+	int saveResult;
+	if (_fileURL) {
+		// Suggest saving alongside the original file
+		saveResult = [savePanel runModalForDirectory:[path stringByDeletingLastPathComponent]
+												file:[path lastPathComponent]];
+	} else {
+		// Suggest saving in some reasonable directory
+		saveResult = [savePanel runModalForDirectory:[[NSDocumentController sharedDocumentController] currentDirectory]
+												file:[self displayName]];
+	}
+	if(saveResult) {
+		NSString *savePath=[savePanel filename];
+		NSString* extension = [savePath pathExtension];
+		NSString* fileType = [[NSDocumentController sharedDocumentController] typeFromFileExtension: extension];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:[savePath stringByDeletingLastPathComponent] 
+												  forKey:@"NSNavLastRootDirectory"];
 
-  int saveResult;
-  if (_fileURL)
-    saveResult = [savePanel runModalForDirectory:[path stringByDeletingLastPathComponent]
-                                            file:[path lastPathComponent]];
-  else
-    saveResult = [savePanel runModalForDirectory:[[NSDocumentController sharedDocumentController] currentDirectory]
-                                            file:[self displayName]];
-  
-  if(saveResult)
-    {
-      NSString *savePath=[savePanel filename];
-      [[NSUserDefaults standardUserDefaults] setObject:[savePath stringByDeletingLastPathComponent] 
-                                                forKey:@"NSNavLastRootDirectory"];
+		// Try the various saving methods that can be implemented by the document subclass
 		if([self _isSelectorOverridden:@selector(saveToFile:saveOperation:delegate:didSaveSelector:contextInfo:)])
         {
 			[self saveToFile:savePath 
@@ -610,31 +619,35 @@ static int untitled_document_number = 0;
 		else 
         {
 			[self saveToURL:[savePanel URL] 
-					 ofType:[self fileType] 
+					 ofType: fileType 
 		   forSaveOperation:operation 
 				   delegate:delegate 
 			didSaveSelector:selector 
 				contextInfo:context];
         }
     } 
-  else 
+	else 
     {
-      if ([delegate respondsToSelector:selector])
+		// User cancelled the save panel...
+		if ([delegate respondsToSelector:selector])
         {
-          // Tell delegate that file couldn't be saved.
-          void (*delegateMethod)(id, SEL, id, BOOL, void *);
-          delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
-          delegateMethod(delegate, selector, self, NO, context);
+			// Tell delegate that file couldn't be saved.
+			void (*delegateMethod)(id, SEL, id, BOOL, void *);
+			delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+			delegateMethod(delegate, selector, self, NO, context);
         }     
     }
 }
 
 -(void)saveDocumentWithDelegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)info 
 {
-  if (_fileURL != nil)
-    {
-      for (id editor in [_activeEditors copy])
+	// First make sure there are no uncommitted changes
+	for (id editor in [_activeEditors copy]) {
         [editor commitEditing];
+	}
+	
+	// Do we already have a file on disk for this document?
+	if (_fileURL != nil) {
       
       // Check if file has been changed by another process
       NSFileManager * fileManager = [NSFileManager defaultManager];
@@ -686,20 +699,24 @@ static int untitled_document_number = 0;
     }
 }
 
--(BOOL)saveToURL:(NSURL *)url ofType:(NSString *)type forSaveOperation:(NSSaveOperationType)operation error:(NSError **)error {
-   if(url==nil)
-    return NO;
-   else {
-    BOOL success=[self writeSafelyToURL:url ofType:type forSaveOperation:operation error:error];
+-(BOOL)saveToURL:(NSURL *)url ofType:(NSString *)type forSaveOperation:(NSSaveOperationType)operation error:(NSError **)error
+{
+	if(url==nil) {
+		return NO;
+	}
+	else {
+		BOOL success=[self writeSafelyToURL:url ofType:type forSaveOperation:operation error:error];
 
-    if(success){
-     if(operation!=NSSaveToOperation)
-      [self setFileURL:url];
-     [self updateChangeCount:NSChangeCleared];
-    }
-
-    return success;
-   }
+		if(success){
+			if(operation!=NSSaveToOperation) {
+				[self setFileURL:url];
+				[self setFileType: type];
+				[self setFileModificationDate: [NSDate date]];
+			}
+			[self updateChangeCount:NSChangeCleared];
+		}
+		return success;
+	}
 }
 
 -(void)saveToURL:(NSURL *)url 
@@ -737,7 +754,13 @@ forSaveOperation:(NSSaveOperationType)operation
 }
 
 -(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo delegate:delegate didRunSelector:(SEL)selector contextInfo:(void *)info {
-   NSUnimplementedMethod();
+	int button = [[NSPageLayout pageLayout] runModalWithPrintInfo:printInfo];
+	if ([delegate respondsToSelector:selector]) {
+		// Tell delegate if the print info was updated.
+		void (*delegateMethod)(id, SEL, id, BOOL, void *);
+		delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+		delegateMethod(delegate, selector, self, button == NSOKButton, info);
+	}
 }
 
 -(void)runModalPrintOperation:(NSPrintOperation *)printOperation delegate:delegate didRunSelector:(SEL)selector contextInfo:(void *)info {
@@ -785,7 +808,7 @@ forSaveOperation:(NSSaveOperationType)operation
       if (fileName == nil)
         fileName = [self displayName];
       int result = NSRunAlertPanel([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"], 
-                                   @"The %@ file has changed. \n\nDo you want to save the changes?", 
+                                   @"Save changes to %@?", 
                                    @"Yes", @"No", @"Cancel",
                                    fileName);
       if (result == NSAlertDefaultReturn)
@@ -1136,7 +1159,12 @@ forSaveOperation:(NSSaveOperationType)operation
 
 -(BOOL)windowShouldClose:sender {
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"useSheets"]){
-    NSBeginAlertSheet(nil,@"Save",@"Don't Save",@"Cancel",sender,self,@selector(didEndShouldCloseSheet:returnCode:contextInfo:),NULL,sender,@"%@ has changed. Save?",[self displayName]);
+    NSBeginAlertSheet(nil,
+					  @"Yes", @"No", @"Cancel",
+					  sender, self,
+					  @selector(didEndShouldCloseSheet:returnCode:contextInfo:),
+					  NULL, sender,
+					  @"Save changes to %@?", [self displayName]);
 
     return NO;
    }
@@ -1144,7 +1172,10 @@ forSaveOperation:(NSSaveOperationType)operation
     if(![self isDocumentEdited])
      return YES;
     else {
-     int result=NSRunAlertPanel(nil,@"%@ has changed. Save?",@"Save",@"Don't Save",@"Cancel",[self displayName]);
+     int result=NSRunAlertPanel(nil, 
+								@"Save changes to %@?",
+								@"Yes", @"No", @"Cancel",
+								[self displayName]);
 
      switch(result){
       case NSAlertDefaultReturn:

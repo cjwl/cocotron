@@ -39,8 +39,11 @@ static NSString *TranslatePath( NSString *path )
 	for(i=0;i<length;i++){
 		
 		if(i==0){
-			if(buffer[i]=='/' || buffer[i]=='\\')
-				continue;
+			if(buffer[0]=='/' || buffer[0]=='\\') {
+				// A leading "//" is actually legal for some network paths so don't skip them
+				if (length < 2 || buffer[1] != buffer[0])
+					continue;
+			}
         }
 		
 		if(resultLength==1 && buffer[i]=='|'){
@@ -356,7 +359,6 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 -(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error
 {
 // Code found at: http://www.catch22.net/tuts/tips2
-	
     IShellLink * psl;
 	
     SHFILEINFOW   info;
@@ -368,12 +370,10 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	WCHAR *pszShortcut = (WCHAR*)[path fileSystemRepresentationW];
 	
     // assume failure
-	
     if((SHGetFileInfoW(pszShortcut, 0, &info, sizeof(info), SHGFI_ATTRIBUTES) == 0)) {
 	
-		NSLog(@"failed to get attributes for %S", pszShortcut);
+//		NSLog(@"failed to get attributes for %S", pszShortcut);
 		DWORD errNum=GetLastError();
-		
 		if(errNum != ERROR_ALREADY_EXISTS && error != nil) {
 			*error = NSErrorForGetLastError();
 		}
@@ -387,9 +387,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		
 		// Docs say return nil on failure
 		return nil;
-    }
-	
-	
+    }	
 	
     // obtain the IShellLink interface
 	
@@ -397,7 +395,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	
 		NSLog(@"IShellLink CoCreateInstance failed");
 		DWORD errNum=GetLastError();
-		
+
 		if(errNum != ERROR_ALREADY_EXISTS && error != nil) {
 			*error = NSErrorForGetLastError();
 		}
@@ -409,7 +407,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
         if (SUCCEEDED(ppf->lpVtbl->Load(ppf, pszShortcut, STGM_READ))) {
 			
             // Resolve the link, this may post UI to find the link
-            if (SUCCEEDED(psl->lpVtbl->Resolve(psl, 0, SLR_NO_UI ))) {
+            if (SUCCEEDED(psl->lpVtbl->Resolve(psl, 0, SLR_NO_UI))) {
                 psl->lpVtbl->GetPath(psl, pszFilePath, nPathLen, NULL, 0);
 				
                 ppf->lpVtbl->Release(ppf);
@@ -418,6 +416,8 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 
 				// The actual returned value of GetPath seems to be a UTF8 string - not a wide char string
 				NSString* resolvedPath = [NSString stringWithUTF8String: pszFilePath];
+				// Mac-ify the path
+				resolvedPath = [resolvedPath stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
 				return resolvedPath;
             } else {
 				NSLog(@"Unable to resolve link");
@@ -691,6 +691,19 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
     return NO;
 
    return [[[path pathExtension] uppercaseString] isEqualToString:@"EXE"];
+}
+
+-(NSString *)displayNameAtPath:(NSString *)path {
+	NSString *result = [super displayNameAtPath:path];
+	if ([result isEqualToString:[path lastPathComponent]]) {
+		// Check if Win32 can find a better name
+		const unichar *pathCString=[path fileSystemRepresentationW];
+		SHFILEINFOW fileInfo;
+		if(SHGetFileInfoW(pathCString, FILE_ATTRIBUTE_NORMAL, &fileInfo, sizeof(SHFILEINFOW), SHGFI_DISPLAYNAME)) {
+			result = [NSString stringWithFormat:@"%S", fileInfo.szDisplayName];
+		}
+	}
+	return result;
 }
 
 #pragma mark -

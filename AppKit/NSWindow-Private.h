@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_removeTrackingRect:(NSTrackingRectTag)tag;
 -(void)_removeAllToolTips;
 -(void)_attachSheetContextOrderFrontAndAnimate:(NSSheetContext *)sheetContext;
+-(void)_setSheetContext:(NSSheetContext*)sheetContext;
 -(NSSheetContext *)_sheetContext;
 -(void)_detachSheetContextAnimateAndOrderOut;
 -(void)_attachDrawer:(NSDrawer *)drawer;

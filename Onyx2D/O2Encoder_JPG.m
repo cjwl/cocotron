@@ -1,6 +1,7 @@
-#ifdef HASLIBJPEG
 #import <CoreGraphics/CoreGraphics.h>
 #import <Onyx2D/O2Encoder_JPG.h>
+
+#ifdef LIBJPEG_PRESENT
 #import <libjpeg/include/jpeglib.h>
 
 O2JPGEncoderRef O2JPGEncoderCreate(O2DataConsumerRef consumer) {

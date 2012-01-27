@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKit.h>
 #import <AppKit/NSColorPickerColorList.h>
 #import <AppKit/NSColorPickerSliders.h>
+#import <AppKit/NSColorPickerWheel.h>
 #import <AppKit/NSRaise.h>
 
 NSString * const NSColorPanelColorDidChangeNotification=@"NSColorPanelColorDidChangeNotification";
@@ -93,9 +94,10 @@ static NSUInteger    _pickerMask=0;
 -(void)awakeFromNib {
     // time to load the color pickers. theoretically we should be searching all the /Library/ColorPickers out there, but...
     NSArray *colorPickersClassArray=[NSArray arrayWithObjects:
-        [NSColorPickerSliders class],
-        [NSColorPickerColorList class],
-        nil];
+									[NSColorPickerWheel class],
+									[NSColorPickerSliders class],
+									[NSColorPickerColorList class],
+									nil];
     unsigned i,count=[colorPickersClassArray count];
 
     [colorWell setBordered:NO];
@@ -122,6 +124,7 @@ static NSUInteger    _pickerMask=0;
    [opacityTitle setHidden:YES];
    [opacitySlider setHidden:YES];
    [opacityTextField setHidden:YES];
+   [opacityPercentLabel setHidden: YES];
    [opacitySlider setTarget:self];
    [opacitySlider setAction:@selector(_alphaChanged:)];
    [opacityTextField setTarget:self];
@@ -173,6 +176,15 @@ static NSUInteger    _pickerMask=0;
    [opacityTitle setHidden:_showsAlpha?NO:YES];
    [opacitySlider setHidden:_showsAlpha?NO:YES];
    [opacityTextField setHidden:_showsAlpha?NO:YES];
+   [opacityPercentLabel setHidden:_showsAlpha?NO:YES];
+	
+	if (_showsAlpha) {
+		// Update the controls!
+		NSColor* color = [self color];
+		float alpha = [color alphaComponent];
+		[opacitySlider setFloatValue: alpha * 100.f];
+		[opacityTextField setFloatValue: alpha * 100.f];
+	}
 }
 
 -(void)setContinuous:(BOOL)flag {
@@ -203,6 +215,11 @@ static NSUInteger    _pickerMask=0;
    CGFloat  alpha=MIN(MAX(0.0,[sender floatValue]/100.0),1.0);
    NSColor *color=[[self color] colorWithAlphaComponent:alpha];
 
+	if (sender == opacitySlider) {
+		[opacityTextField setFloatValue: [sender floatValue]];
+	} else {
+		[opacitySlider setFloatValue: [sender floatValue]];
+	}
    [self setColor:color];
 }
 

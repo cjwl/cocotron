@@ -68,6 +68,18 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
    return result;
 }
 
+-(Win32Font *)selectFontInDefaultDC
+{
+	if (_dc == NULL) {
+		_dc = GetDC(NULL);
+	}
+	if (_winFont == nil) {
+		_winFont = [(O2Font_gdi *)_font createGDIFontSelectedInDC:_dc pointSize:_size];
+	}
+	SelectObject(_dc,[_winFont fontHandle]);
+	return _winFont;
+}
+
 -(BOOL)fetchSharedGlyphRangeTable {
    static NSMapTable    *nameToGlyphRanges=NULL;
    CGGlyphRangeTable    *shared;
@@ -93,8 +105,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
    if([self fetchSharedGlyphRangeTable])
     return;
 
-   HDC                dc=GetDC(NULL);
-   Win32Font         *gdiFont=[(O2Font_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
+   Win32Font         *gdiFont=[self selectFontInDefaultDC];
    NSRange            range=NSMakeRange(0,MAXUNICHAR);
    unichar            characters[range.length];
    unsigned short     glyphs[range.length];
@@ -107,7 +118,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
 
 // GetGlyphIndicesW is around twice as fast as GetCharacterPlacementW, but only available on Win2k/XP
    if(getGlyphIndices!=NULL)
-    getGlyphIndices(dc,characters,range.length,glyphs,0);
+    getGlyphIndices(_dc,characters,range.length,glyphs,0);
    else {
     GCP_RESULTSW results;
 
@@ -121,11 +132,9 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
     results.nGlyphs=range.length;
     results.nMaxFit=0;
 
-    if(GetCharacterPlacementW(dc,characters,range.length,0,&results,0)==0)
+    if(GetCharacterPlacementW(_dc,characters,range.length,0,&results,0)==0)
      NSLog(@"GetCharacterPlacementW failed");
    }
-   ReleaseDC(NULL,dc);
-   [gdiFont release];
    
    _glyphRangeTable->numberOfGlyphs=0;
    for(i=0;i<range.length;i++){
@@ -158,14 +167,11 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
 }
 
 -(void)fetchGlyphKerning {
-   HDC         dc=GetDC(NULL);
-   Win32Font  *gdiFont=[(O2Font_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
-   int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
+   Win32Font  *gdiFont=[self selectFontInDefaultDC];
+   int         i,numberOfPairs=GetKerningPairs(_dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
 
-   GetKerningPairsW(dc,numberOfPairs,pairs);
-   ReleaseDC(NULL,dc);
-   [gdiFont release];
+   GetKerningPairsW(_dc,numberOfPairs,pairs);
    
    for(i=0;i<numberOfPairs;i++){
     unichar previousCharacter=pairs[i].wFirst;
@@ -221,8 +227,7 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KTFont_gdi *self,CGGlyph gl
 }
 
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
-   HDC        dc=GetDC(NULL);
-   Win32Font *gdiFont=[(O2Font_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
+   Win32Font *gdiFont=[self selectFontInDefaultDC];
    ABCFLOAT *abc;
    int       i,max;
 
@@ -245,7 +250,7 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KTFont_gdi *self,CGGlyph gl
 
    max=((max/128)+1)*128;
    abc=__builtin_alloca(sizeof(ABCFLOAT)*max);
-   if(!GetCharABCWidthsFloatW(dc,0,max-1,abc))
+   if(!GetCharABCWidthsFloatW(_dc,0,max-1,abc))
     NSLog(@"GetCharABCWidthsFloat failed");
    else {
     for(i=0;i<max;i++){
@@ -262,8 +267,6 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KTFont_gdi *self,CGGlyph gl
      }
     }
    }
-   ReleaseDC(NULL,dc);
-   [gdiFont release];
 }
 
 static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGGlyph glyph){
@@ -280,11 +283,10 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 }
 
 -(void)fetchMetrics {
-   HDC           dc=GetDC(NULL);
-   Win32Font    *gdiFont=[(O2Font_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
+   Win32Font    *gdiFont=[self selectFontInDefaultDC];
    TEXTMETRIC    gdiMetrics;
 
-   GetTextMetrics(dc,&gdiMetrics);
+   GetTextMetrics(_dc,&gdiMetrics);
 
    _metrics.emsquare=1;
    _metrics.scale=1;
@@ -305,27 +307,21 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    _metrics.underlinePosition=-(_metrics.underlineThickness*2);
 
    if(!(gdiMetrics.tmPitchAndFamily&TMPF_TRUETYPE)){
-    ReleaseDC(NULL,dc);
-    [gdiFont release];
     return;
    }
     
-   int size=GetOutlineTextMetricsA(dc,0,NULL);
+   int size=GetOutlineTextMetricsA(_dc,0,NULL);
    
-   _useMacMetrics=NO;
+	_useMacMetrics=NO;
    
    if(size<=0){
-    ReleaseDC(NULL,dc);
-    [gdiFont release];
     return;
    }
 
    OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
 
    ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
-   if(!GetOutlineTextMetricsA(dc,size,ttMetrics)){
-    ReleaseDC(NULL,dc);
-    [gdiFont release];
+   if(!GetOutlineTextMetricsA(_dc,size,ttMetrics)){
     return;
    }
        
@@ -339,19 +335,18 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    logFont.lfWidth=0;
      
    HFONT fontHandle=CreateFontIndirect(&logFont);
-   SelectObject(dc,fontHandle);
+   SelectObject(_dc,fontHandle);
    
    ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
-   size=GetOutlineTextMetricsA(dc,size,ttMetrics);
+   size=GetOutlineTextMetricsA(_dc,size,ttMetrics);
    DeleteObject(fontHandle);
-   ReleaseDC(NULL,dc);
-   [gdiFont release];
    
    if(size<=0){
     return;
    }
 
-   if(![(NSString *)_name isEqualToString:@"Marlett"])
+	// Don't use the magic pointSize scaling formula on these font (UI fonts) 
+   if(![(NSString *)_name isEqualToString:@"Marlett"] && ![(NSString *)_name isEqualToString:@"Segoe UI"] && ![(NSString *)_name isEqualToString:@"Tahoma"])
     _useMacMetrics=YES;
 
    _metrics.emsquare=ttMetrics->otmEMSquare;
@@ -404,30 +399,27 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    switch(uiFontType){
   
     case kCTFontMenuTitleFontType:
-    case kCTFontMenuItemFontType:
-     if(size==0)
-      size=10;
-     font=O2FontCreateWithFontName(@"Tahoma");
-     
-#if 0
-// We should be able to get the menu font but this doesnt work
-// MS Shell Dlg
-// MS Shell Dlg 2
-// DEFAULT_GUI_FONT
-   HGDIOBJ    font=GetStockObject(SYSTEM_FONT);
-   EXTLOGFONT fontData;
-
-   GetObject(font,sizeof(fontData),&fontData);
-
-   *pointSize=fontData.elfLogFont.lfHeight;
-
-   HDC dc=GetDC(NULL);
-   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps(dc,LOGPIXELSY);
-   ReleaseDC(NULL,dc);
-NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
-#endif
-
-     break;
+	case kCTFontMenuItemFontType: {
+		   NSString *name = @"Tahoma";
+		   // Try to ask the system which font we should use for menus
+		   NONCLIENTMETRICSW nm;
+		   nm.cbSize = sizeof (NONCLIENTMETRICSW);
+		   if (SystemParametersInfoW(SPI_GETNONCLIENTMETRICS,0,&nm,0)) {
+			   LOGFONTW fl = nm.lfMenuFont;
+			   name = [NSString stringWithFormat:@"%S", fl.lfFaceName];
+			   if (size == 0) {
+				   size = ABS(fl.lfHeight);
+			   }
+		   }
+		   font=O2FontCreateWithFontName(name);
+		   if (font == nil) {
+			   font=O2FontCreateWithFontName(@"Tahoma");
+		   }
+		   if(size==0) {
+			   size=10;
+		   }
+	   }
+		   break;
  
     default:
      NSUnimplementedMethod();
@@ -435,14 +427,15 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
    }
 
    id result=[self initWithFont:font size:size];
-   
    [font release];
    
    return result;
 }
 
 -(void)dealloc {
-   _glyphRangeTable=NULL;
+	[_winFont release];
+	ReleaseDC(NULL,_dc);
+  _glyphRangeTable=NULL;
 
    if(_glyphInfoSet!=NULL){
     if(_glyphInfoSet->info!=NULL){
@@ -592,16 +585,15 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
  ****************************************************************************/ 
 static FIXED fxDiv2(FIXED fxVal1, FIXED fxVal2)
 {
-    long l;
-	
-    l = (*((long far *)&(fxVal1)) + *((long far *)&(fxVal2)))/2;
-    return(*(FIXED *)&l);
+	// Note: the "volatile" is there to prevent some wrong result because of some compiler "optimisations"
+    int32_t l = (*((int32_t volatile *)&(fxVal1)) + *((int32_t volatile *)&(fxVal2)))/2;
+    return(*(FIXED volatile *)&l);
 }
 
 static FIXED FloatToFIXED(const float d)
 {
 	FIXED f;
-	uint32_t v = d * pow(2, 16);
+	int32_t v = d * 65536.;
 	
 	f.value = v >> 16;
 	f.fract = v & 0xFFFF;
@@ -850,20 +842,17 @@ static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2Mut
 
 -(O2Path *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
    O2MutablePath *result=[[O2MutablePath alloc] init];
-   HDC        dc=GetDC(NULL);
-   Win32Font *gdiFont=[(O2Font_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
-   int        size=GetOutlineTextMetricsA(dc,0,NULL);
+   Win32Font *gdiFont=[self selectFontInDefaultDC];
+   int        size=GetOutlineTextMetricsA(_dc,0,NULL);
     
    if(size<=0){
-    ReleaseDC(NULL,dc);
-    [gdiFont release];
     return result;
    }
 
    OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
 
    ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
-   if(!GetOutlineTextMetricsA(dc,size,ttMetrics))
+   if(!GetOutlineTextMetricsA(_dc,size,ttMetrics))
     return result;
     
 /* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
@@ -876,7 +865,7 @@ static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2Mut
    logFont.lfWidth=0;
      
    HFONT fontHandle=CreateFontIndirect(&logFont);
-   SelectObject(dc,fontHandle);
+   SelectObject(_dc,fontHandle);
    DeleteObject(fontHandle);
 
 	// _metrics.scale seems to be the configured font size
@@ -892,7 +881,7 @@ static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2Mut
 	
 	GLYPHMETRICS glyphMetrics;
 	
-	int          outlineSize=GetGlyphOutline(dc, glyph, GGO_NATIVE | GGO_GLYPH_INDEX, &glyphMetrics, 0, NULL, &mat2);
+	int          outlineSize=GetGlyphOutline(_dc, glyph, GGO_NATIVE | GGO_GLYPH_INDEX, &glyphMetrics, 0, NULL, &mat2);
 	if (outlineSize == GDI_ERROR) {
 		DWORD err = GetLastError();
 		NSLog(@"GetGlyphOutline failed(%d) for glyph: %d", err, glyph);
@@ -900,14 +889,11 @@ static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2Mut
 	
 		void *outline=__builtin_alloca(outlineSize);
 
-	   if(GetGlyphOutline(dc, glyph, GGO_NATIVE | GGO_GLYPH_INDEX, &glyphMetrics, outlineSize, outline, &mat2) != GDI_ERROR){
+	   if(GetGlyphOutline(_dc, glyph, GGO_NATIVE | GGO_GLYPH_INDEX, &glyphMetrics, outlineSize, outline, &mat2) != GDI_ERROR){
 		   ConvertTTPolygonToPath(outline, outlineSize, result);
 	   }
 	}
 	
-   ReleaseDC(NULL,dc);
-   [gdiFont release];
-   
    return result;
 }
 

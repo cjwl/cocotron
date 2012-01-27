@@ -62,6 +62,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSData allocWithZone:zone] initWithBytes:[self bytes] length:[self length]];
 }
 
+- (Class)classForKeyedArchiver
+{
+	// Keyed archiver doesn't like mutable data
+	return [NSData class];
+}
+
 -(Class)classForCoder {
    return [NSMutableData class];
 }

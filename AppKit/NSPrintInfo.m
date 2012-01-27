@@ -49,10 +49,17 @@ NSString * const NSPrintVerticallyCentered=@"NSPrintVerticallyCentered";
 }
 
 -init {
-   NSDictionary *defaults=[NSDictionary dictionaryWithObjectsAndKeys:
-    [NSNumber numberWithInt:1],NSPrintCopies,
-    [NSNumber numberWithBool:YES],NSPrintAllPages,
-    nil];
+   NSDictionary *defaults= [NSDictionary dictionaryWithObjectsAndKeys:
+						   [NSNumber numberWithInt: 1],		NSPrintCopies,
+						   [NSNumber numberWithBool: YES],	NSPrintAllPages,
+							@"US Letter",					NSPrintPaperName,
+							[NSValue valueWithSize: NSMakeSize(612, 792)], NSPrintPaperSize,
+							[NSNumber numberWithFloat: 36], NSPrintTopMargin,
+							[NSNumber numberWithFloat: 36], NSPrintLeftMargin,
+							[NSNumber numberWithFloat: 36], NSPrintRightMargin,
+							[NSNumber numberWithFloat: 36], NSPrintBottomMargin,
+							[NSNumber numberWithInt: NSPortraitOrientation], NSPrintOrientation,
+							nil];
     
    return [self initWithDictionary:defaults];
 }

@@ -188,8 +188,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
--(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
+-(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    NSInvalidAbstractInvocation();
+	return 0;
 }
 
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {

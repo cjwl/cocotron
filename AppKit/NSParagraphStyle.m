@@ -5,9 +5,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <AppKit/NSParagraphStyle.h>
-#import <AppKit/NSTextTab.h>
+
 #import <Foundation/NSKeyedArchiver.h>
+
+#import <AppKit/NSParagraphStyle.h>
+#import <AppKit/NSRaise.h>
+#import <AppKit/NSTextTab.h>
 
 @implementation NSParagraphStyle
 
@@ -60,7 +63,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
-    [self _initWithDefaults];
+	   _writingDirection = [coder decodeIntForKey: @"BaseWritingDirection"];
+	   _paragraphSpacing = [coder decodeFloatForKey: @"ParagraphSpacing"];
+	   _paragraphSpacingBefore = [coder decodeFloatForKey: @"ParagraphSpacingBefore"];
+	   _textBlocks = [[coder decodeObjectForKey: @"Blocks"] retain];
+	   _textLists = [coder decodeObjectForKey: @"Lists"];
+	   _headerLevel = [coder decodeIntForKey: @"HeaderLevel"];
+	   _firstLineHeadIndent = [coder decodeFloatForKey: @"FirstLineHeadIndent"];
+	   _headIndent = [coder decodeFloatForKey: @"HeadIndent"];
+	   _tailIndent = [coder decodeFloatForKey: @"TailIndent"];
+	   _alignment = [coder decodeIntForKey: @"Alignment"];
+	   _lineBreakMode = [coder decodeIntForKey: @"LineBreakMode"];
+	   _minimumLineHeight = [coder decodeFloatForKey: @"MinimumLineHeight"];
+	   _maximumLineHeight = [coder decodeFloatForKey: @"MaximumLineHeight"];
+	   _lineHeightMultiple = [coder decodeFloatForKey: @"LineHeightMultiple"];
+	   _lineSpacing = [coder decodeFloatForKey: @"LineSpacing"];
+	   _defaultTabInterval = [coder decodeFloatForKey: @"DefaultTabInterval"];
+	   _tabStops = [[coder decodeObjectForKey: @"Tabs"] retain];
+	   _hyphenationFactor = [coder decodeFloatForKey: @"HyphenationFactor"];
+	   _tighteningFactorForTruncation = [coder decodeFloatForKey: @"TighteningFactor"];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -95,6 +116,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _hyphenationFactor=other->_hyphenationFactor;
    _tighteningFactorForTruncation=other->_tighteningFactorForTruncation;
    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+	if ([coder isKindOfClass: [NSKeyedArchiver class]]) {
+		[coder encodeInt: _writingDirection forKey: @"BaseWritingDirection"];
+		[coder encodeFloat: _paragraphSpacing forKey: @"ParagraphSpacing"];
+		[coder encodeFloat: _paragraphSpacingBefore forKey: @"ParagraphSpacingBefore"];
+		[coder encodeObject: _textBlocks forKey: @"Blocks"];
+		[coder encodeObject: _textLists forKey: @"Lists"];
+		[coder encodeInt: _headerLevel forKey: @"HeaderLevel"];
+		[coder encodeFloat: _firstLineHeadIndent forKey: @"FirstLineHeadIndent"];
+		[coder encodeFloat: _headIndent forKey: @"HeadIndent"];
+		[coder encodeFloat: _tailIndent forKey: @"TailIndent"];
+		[coder encodeInt: _alignment forKey: @"Alignment"];
+		[coder encodeInt: _lineBreakMode forKey: @"LineBreakMode"];
+		[coder encodeFloat: _minimumLineHeight forKey: @"MinimumLineHeight"];
+		[coder encodeFloat: _maximumLineHeight forKey: @"MaximumLineHeight"];
+		[coder encodeFloat: _lineHeightMultiple forKey: @"LineHeightMultiple"];
+		[coder encodeFloat: _lineSpacing forKey: @"LineSpacing"];
+		[coder encodeFloat: _defaultTabInterval forKey: @"DefaultTabInterval"];
+		[coder encodeObject: _tabStops forKey: @"Tabs"];
+		[coder encodeFloat: _hyphenationFactor forKey: @"HyphenationFactor"];
+		[coder encodeFloat: _tighteningFactorForTruncation forKey: @"TighteningFactor"];
+	} else {
+		NSUnimplementedMethod();
+	}
 }
 
 -(void)dealloc {

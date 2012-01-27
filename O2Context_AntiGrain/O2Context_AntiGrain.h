@@ -17,7 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #ifdef ANTIGRAIN_PRESENT
 #include <agg_basics.h>
-#include <agg_pixfmt_rgba.h>
+#include "o2agg_pixfmt_rgba.h"
+
 #include <agg_pixfmt_gray.h>
 #include <agg_alpha_mask_u8.h>
 #include <agg_scanline_p.h>
@@ -34,13 +35,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <agg_conv_dash.h>
 #include <agg_conv_adaptor_vcgen.h>
 
+#ifdef WINDOWS
+#include "agg_font_win32_tt.h"
+
+typedef agg::font_engine_win32_tt_int32 font_engine_type;
+typedef agg::font_cache_manager<font_engine_type> font_manager_type;
+#define O2AGG_GLYPH_SUPPORT 1
+#endif
+
 @class O2Context_AntiGrain;
 
 class context_renderer;
+@class KFont;
 
-typedef agg::pixfmt_gray8 pixfmt_alphaMaskType;
+typedef agg::pixfmt_gray8_pre pixfmt_alphaMaskType;
 typedef agg::renderer_base<pixfmt_alphaMaskType> BaseRendererWithAlphaMaskType;
 typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased scanline rasterizer for AGG rendering.
+typedef agg::amask_no_clip_gray8 MaskType;
 
 @interface O2Context_AntiGrain : O2Context_builtin_gdi {
 	agg::rendering_buffer *renderingBuffer;
@@ -56,7 +67,7 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 	
 	// Rendering buffer to use for alpha masking (bezier path clipping)
 	agg::rendering_buffer*												rBufAlphaMask[2];
-	agg::alpha_mask_gray8*												alphaMask[2];
+	MaskType*															alphaMask[2];
 	pixfmt_alphaMaskType*												pixelFormatAlphaMask[2];
 	BaseRendererWithAlphaMaskType*										baseRendererAlphaMask[2];
 	agg::renderer_scanline_aa_solid<BaseRendererWithAlphaMaskType>*		solidScanlineRendererAlphaMask[2];
@@ -68,9 +79,10 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 }
 
 - (BOOL)useMask;
-- (agg::alpha_mask_gray8*)currentMask;
+- (MaskType*)currentMask;
 - (RasterizerType *)rasterizer;
 - (context_renderer *)renderer;
+- (BOOL)isPremultiplied;
 @end
 #else
 #import <Onyx2D/O2Context_builtin_gdi.h>

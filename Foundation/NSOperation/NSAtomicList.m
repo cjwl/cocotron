@@ -66,6 +66,15 @@ void NSAtomicListReverse( NSAtomicListRef *listPtr )
 	*listPtr = cur;
 }
 
+void NSAtomicListAddToArray(NSAtomicListRef *listPtr, NSMutableArray *array)
+{
+	struct NSAtomicListNode *node = NSAtomicListSteal(listPtr);
+	while (node) {
+		[array addObject:(id)node->elt];
+		 node = node->next;
+	};
+}
+
 void *NSAtomicListPop( NSAtomicListRef *listPtr)
 {
 	struct NSAtomicListNode *node = *listPtr;

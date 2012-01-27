@@ -94,6 +94,11 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
+-(NSString *)libraryDirectory {
+	NSInvalidAbstractInvocation();
+	return nil;
+}
+
 -(NSString *)temporaryDirectory {
    NSInvalidAbstractInvocation();
    return nil;

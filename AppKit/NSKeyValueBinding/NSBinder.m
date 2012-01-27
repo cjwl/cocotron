@@ -56,8 +56,8 @@ static void* NSBinderChangeContext;
 -(id)multipleValuesPlaceholder
 {
 	id ret=[_options objectForKey:NSMultipleValuesPlaceholderBindingOption];
-	if(!ret)
-		return NSMultipleValuesMarker;
+
+	// nil or whatever the was configured is fine
 
 	return ret;
 }
@@ -65,14 +65,18 @@ static void* NSBinderChangeContext;
 -(id)noSelectionPlaceholder
 {
 	id ret=[_options objectForKey:NSNoSelectionPlaceholderBindingOption];
-	if(!ret)
-		return NSNoSelectionMarker;
+
+	// nil or whatever the was configured is fine
 
 	return ret;
 }
 
 -(id)nullPlaceholder {
-	return [_options objectForKey:NSNullPlaceholderBindingOption];
+	id ret = [_options objectForKey:NSNullPlaceholderBindingOption];
+	
+	// nil or whatever the was configured is fine
+
+	return ret;
 }
 
 -valueTransformer {
@@ -272,19 +276,35 @@ static void* NSBinderChangeContext;
 	if(numberAtEnd.location==NSNotFound)
 		return nil;
    
+	// Check if the path is a valid path or some "fake" property like "enabled2", which then should be part of the "enabled"
+	// peers
+	BOOL isValidKeyPath = YES;
+	@try {
+		[_source valueForKeyPath: _bindingPath];
+	}
+	@catch (id e) {
+		// "XXXX[digit] is not a real property - could be something like "enable2" - it will be part of the peers for XXXX
+		isValidKeyPath = NO;
+	}
+	
+	if (isValidKeyPath == YES) {
+		// That's a real source property - won't be part of the peers
+		return nil;
+	}
+	
 	NSString       *baseName=[_binding substringToIndex:numberAtEnd.location];
 	NSMutableArray *result=[NSMutableArray array];
-    
+
    for(_NSBinder *check in allUsedBinders){
     if([[check binding] hasPrefix:baseName])
      [result addObject:check];
    }
-    
+
    return result;
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"%@: %@, %@ -> %@", [self class], _binding, _source, _destination];
+   return [NSString stringWithFormat:@"%@:%p %@, %@ -> %@", [self class], self, _binding, _source, _destination];
 }
 
 @end
