@@ -693,7 +693,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     }
 
        if(changed){
-     [self setFrame:frame display:YES];
+        [self setFrame:frame display:YES];
        }
        
     _makeSureIsOnAScreen=NO;
@@ -2302,6 +2302,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	}
 }
 
+-(void)platformWindowShouldZoom:(CGWindow *)window {
+    [self zoom:nil];
+}
+
 -(void)miniaturize:sender {
    [[self platformWindow] miniaturize];
 }
@@ -2607,8 +2611,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowMiniaturized:(CGWindow *)window {
-   _isActive=NO;
-
+    _isActive=NO;
+    
    [self _updatePlatformWindowTitle];
    if(_sheetContext!=nil){
     [[_sheetContext sheet] orderWindow:NSWindowOut relativeTo:0];
@@ -2629,7 +2633,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize {
-   _frame=frame;
+    // We don't want the miniaturized frame.
+   if(![self isMiniaturized])
+    _frame=frame;
    
    _makeSureIsOnAScreen=YES;
 

@@ -138,6 +138,7 @@ id NSApp=nil;
    _modalStack=[NSMutableArray new];
     
    _lock=NSZoneMalloc(NULL,sizeof(pthread_mutex_t));
+
    pthread_mutex_init(_lock,NULL);
    
    [self _showSplashImage];

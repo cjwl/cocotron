@@ -71,6 +71,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return _context;
 }
 
+- (void) _setWindow:(NSWindow *)window {
+    [super _setWindow:window];
+    [_context setView:self];
+}
+
 - (void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat {
 	pixelFormat = [pixelFormat retain];
 	[_pixelFormat release];
@@ -103,12 +108,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(void)viewDidHide {
+// reflect hidden setting
+    [_context setView:self];
+}
+
+-(void)viewDidUnhide {
+// reflect hidden setting
+    [_context setView:self];
+}
+
 - (void)lockFocus {
 	[super lockFocus];
-
-    CGLLockContext([_context CGLContextObj]);
+    // create if needed
+    NSOpenGLContext *context = [self openGLContext];
+    
+    CGLLockContext([context CGLContextObj]);
     [_context setView:self];
-	[[self openGLContext] makeCurrentContext];
+	[context makeCurrentContext];
     
 	if (_needsReshape){
 		[self reshape];
