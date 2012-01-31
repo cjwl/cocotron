@@ -73,7 +73,7 @@ static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETR
 							// That's a Postscript name record
 							if (platformID == 3 && platformSpecificID == 1)  {
 								// Win PS name - unicode encoding
-								NSString *name = [[NSString alloc] initWithBytes:strings + offset length:length encoding:NSUnicodeStringEncoding];
+								NSString *name = [[[NSString alloc] initWithBytes:strings + offset length:length encoding:NSUnicodeStringEncoding] autorelease];
 								if ([name length]) {
 									[sPSToWin32Table setObject:winName forKey:name];
 									[sWin32ToPSTable setObject:name forKey:winName];
@@ -118,11 +118,12 @@ static int EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETRICW* metr
 	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
 	EnumFontFamiliesW(dc, (LPCWSTR)NULL, (FONTENUMPROCW)EnumFamiliesCallBack, (LPARAM)families); 
 	for (NSString *familyName in families) {
-		const unichar *wideName=(const unichar *)[familyName cStringUsingEncoding:NSUnicodeStringEncoding];
-		
 		// Enum all of the faces for that family
-		LOGFONTW logFont;
-		[familyName getCString:(char*)logFont.lfFaceName maxLength:LF_FACESIZE*sizeof(unichar) encoding:NSUnicodeStringEncoding];
+		LOGFONTW logFont = { 0 };
+
+		int length = MIN([familyName length], LF_FACESIZE);
+		[familyName getCharacters: logFont.lfFaceName range: NSMakeRange(0, length)];
+		
 		logFont.lfCharSet = DEFAULT_CHARSET;
 		logFont.lfPitchAndFamily = 0;
 		EnumFontFamiliesExW(dc, &logFont, (FONTENUMPROCW)EnumFontFromFamilyCallBack, (LPARAM)dc, 0); 
