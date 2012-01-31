@@ -992,7 +992,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    if(range.length==0)
     return @"";
     
-   unicode=__builtin_alloca(sizeof(unichar)*range.length);
+   unicode=NSZoneMalloc(NULL, sizeof(unichar)*range.length);
 
    [self getCharacters:unicode range:range];
 
