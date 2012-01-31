@@ -996,7 +996,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:unicode range:range];
 
-   return [NSString stringWithCharacters:unicode length:range.length];
+   return [[[NSString alloc] initWithCharactersNoCopy:unicode length:range.length freeWhenDone:YES] autorelease];
 }
 
 -(NSString *)substringFromIndex:(NSUInteger)location {
