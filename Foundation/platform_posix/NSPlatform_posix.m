@@ -204,6 +204,11 @@ NSUInteger NSPlatformThreadID() {
 {
     struct in_addr addr;
     struct hostent *remoteHost;
+
+    if ([address length] == 0) {
+        return nil;
+    }
+
     addr.s_addr = inet_addr([address cString]);
     if (addr.s_addr == INADDR_NONE) {
         return nil;
