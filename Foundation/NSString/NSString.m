@@ -1159,35 +1159,42 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(NSString *)lowercaseString {
    NSUInteger length=[self length];
-   unichar  unicode[length];
+   unichar  *unicode = NSZoneMalloc(NULL, (length)*sizeof(unichar));
 
    [self getCharacters:unicode];
 
-   NSUnicodeToLowercase(unicode,length);
+    NSUnicodeToLowercase(unicode,length);
 
-   return [NSString stringWithCharacters:unicode length:length];
+    NSString * ret =  [NSString stringWithCharacters:unicode length:length];
+    NSZoneFree(NULL, unicode);
+    return ret;
+
 }
 
 -(NSString *)uppercaseString {
    NSUInteger length=[self length];
-   unichar  unicode[length];
+    unichar  *unicode = NSZoneMalloc(NULL, (length)*sizeof(unichar));
 
    [self getCharacters:unicode];
 
    NSUnicodeToUppercase(unicode,length);
 
-   return [NSString stringWithCharacters:unicode length:length];
+   NSString * ret = [NSString stringWithCharacters:unicode length:length];
+    NSZoneFree(NULL, unicode);
+    return ret;
 }
 
 -(NSString *)capitalizedString {
    NSUInteger length=[self length];
-   unichar  unicode[length];
+   unichar  *unicode = NSZoneMalloc(NULL, (length)*sizeof(unichar));
 
    [self getCharacters:unicode];
 
    NSUnicodeToCapitalized(unicode,length);
 
-   return [NSString stringWithCharacters:unicode length:length];
+   NSString * ret = [NSString stringWithCharacters:unicode length:length];
+   NSZoneFree(NULL, unicode);
+   return ret;
 }
 
 -(NSString *)stringByAppendingFormat:(NSString *)format,... {
@@ -1506,8 +1513,9 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 // FIXME: this ignores the encoding argument
 
    NSUInteger i,length=[self length],resultLength=0;
-   unichar    buffer[length];
-   unichar    result[length], firstCharacter=0,firstNibble=0;
+   unichar    *buffer= NSZoneMalloc(NULL,length*sizeof(unichar));
+    unichar   *result= NSZoneMalloc(NULL,length*sizeof(unichar));
+    unichar firstCharacter=0,firstNibble=0;
    enum {
     STATE_NORMAL,
     STATE_PERCENT,
@@ -1566,17 +1574,23 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     }
     
    }
+    NSZoneFree(NULL, buffer);
 
-   if(resultLength==length)
-   return self;
+
+   if(resultLength==length) {
+    NSZoneFree(NULL, result);
+    return self;
+   }
    
-   return [NSString stringWithCharacters:result length:resultLength];
+    NSString *ret = [NSString stringWithCharacters:result length:resultLength];
+    NSZoneFree(NULL, result);
+    return ret;
 }
 
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
    NSUInteger i,length=[self length],resultLength=0;
-   unichar    unicode[length];
-   unichar    result[length*3];
+   unichar    *unicode = NSZoneMalloc(NULL,length*sizeof(unichar));
+   unichar    *result = NSZoneMalloc(NULL,length*sizeof(unichar)*3);
    const char *hex="0123456789ABCDEF";
       
    [self getCharacters:unicode];
@@ -1595,17 +1609,25 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
      result[resultLength++]=code;
     }
    }
-   
-   if(length==resultLength)
-   return self;
     
-   return [NSString stringWithCharacters:result length:resultLength];
+   NSZoneFree(NULL, unicode);
+
+   
+    if(length==resultLength) {
+        NSZoneFree(NULL, result);
+        return self;
+    }
+    
+    NSString *ret = [NSString stringWithCharacters:result length:resultLength];
+    NSZoneFree(NULL, result);
+    
+    return ret;
 }
 
 -(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set {
    NSUInteger length=[self length];
    NSUInteger location=0;
-   unichar  buffer[length];
+   unichar  *buffer = NSZoneMalloc(NULL,length*sizeof(unichar));
    
    [self getCharacters:buffer];
    for(;location<length;location++)
@@ -1618,7 +1640,8 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
      
     length--;
    }
-   
+   NSZoneFree(NULL, buffer);
+
    return [self substringWithRange:NSMakeRange(location,length-location)];
 }
 
@@ -1637,13 +1660,14 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
     NSRange range={0,[self length]};
     
-    unichar  unicode[maxLength];
+    unichar  *unicode = NSZoneMalloc(NULL,maxLength*sizeof(unichar));
     NSUInteger location;
     [self getCharacters:unicode range:range];
     if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) ==NSNotFound) {
+        NSZoneFree(NULL, unicode);
         return NO;
     }
-
+    NSZoneFree(NULL, unicode);
     return YES;
 }
 
@@ -1652,12 +1676,13 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(void)getCString:(char *)cString maxLength:(NSUInteger)maxLength range:(NSRange)range remainingRange:(NSRange *)leftoverRange {
-   unichar  unicode[range.length];
+   unichar  *unicode = NSZoneMalloc(NULL,range.length*sizeof(unichar));
    NSUInteger location;
 
    [self getCharacters:unicode range:range];
 
    NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength+1,YES);
+   NSZoneFree(NULL, unicode);
 
    if(leftoverRange!=NULL){
     leftoverRange->location=range.location+location;
@@ -1673,11 +1698,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -(void)getCString:(char *)cString {
    NSInteger  length=[self length];
    NSUInteger location;
-   unichar    unicode[length];
+   unichar  *unicode = NSZoneMalloc(NULL,length*sizeof(unichar));
    
    [self getCharacters:unicode];
    
    NSGetCStringWithMaxLength(unicode,length,&location,cString,NSMaximumStringLength+1,YES);
+   NSZoneFree(NULL, unicode);
 }
 
 -(NSUInteger)cStringLength {
