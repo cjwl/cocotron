@@ -144,14 +144,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObjectForKey:(NSString *)key {
-   LONG      error;
 
-   [_cache removeObjectForKey:key];
+	if ([_cache objectForKey: key]) {
+		[_cache removeObjectForKey:key];
 
-   error=RegDeleteValueA(_handle,[key cString]);
-   if(error!=ERROR_SUCCESS){
-    NSLog(@"RegDeleteValue failed %@ %@",_path,key);
-   }
+		LONG error = RegDeleteValueA(_handle,[key cString]);
+		if(error != ERROR_SUCCESS){
+			NSLog(@"RegDeleteValue failed %@ %@",_path,key);
+		}
+	}
 }
 
 @end
