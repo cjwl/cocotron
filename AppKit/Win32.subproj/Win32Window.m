@@ -467,7 +467,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)makeKey {
-   SetActiveWindow(_handle);
+
+	if (SetForegroundWindow(_handle) == FALSE) {
+		NSLog(@"SetForegroundWindow failed, error: %d", GetLastError());
+	}
+
+	if (SetFocus(_handle) == NULL) {
+		NSLog(@"SetFocus failed, error: %d", GetLastError());
+	}		
 }
 
 -(void)makeMain {
@@ -913,6 +920,12 @@ i=count;
    return 0;
 }
 
+-(int)WM_SETFOCUS_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+
+	[_delegate platformWindowActivated:self displayIfNeeded:!_disableDisplay];
+	return 0;
+}
+
 -(int)WM_ACTIVATE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    if(HIWORD(wParam)){ // minimized
     if(LOWORD(wParam)){
@@ -1041,6 +1054,7 @@ i=count;
 
    switch(message){
 
+	case WM_SETFOCUS:	   return [self WM_SETFOCUS_wParam:wParam lParam:lParam];
     case WM_ACTIVATE:      return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
     case WM_MOUSEACTIVATE: return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
     case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
