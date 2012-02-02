@@ -541,10 +541,10 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
 
                     case 'z': {
                         NSInteger  secondsFromGMT = [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
-                        [result appendString:[[NSString allocWithZone:NULL] initWithFormat:@"%@%02d%02d",
+                        [result appendString:[[[NSString allocWithZone:NULL] initWithFormat:@"%@%02d%02d",
                                                                           (secondsFromGMT >= 0 ? @"+" : @""),
                                                                           secondsFromGMT/3600,
-                                                                          (secondsFromGMT % 3600)/60]];
+                                                                          (secondsFromGMT % 3600)/60] autorelease]];
                     }
                         break;
                 }

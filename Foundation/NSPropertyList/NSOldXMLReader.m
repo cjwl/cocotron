@@ -531,8 +531,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
    NSOldXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
    NSOldXMLDocument *document;
 
-   if(![reader tokenize])
-    return nil;
+    if(![reader tokenize]) {
+        [reader release];
+        return nil;
+    }
 
    document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];
@@ -546,8 +548,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
    NSOldXMLReader   *reader=[[self alloc] initWithData:data];
    NSOldXMLDocument *document;
 
-   if(![reader tokenize])
-    return nil;
+    if(![reader tokenize]) {
+        [reader release];
+        return nil;
+    }
 
    document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];

@@ -1486,6 +1486,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     
     memcpy(buffer, bytes, maxLength < byteLength ? maxLength : byteLength);
     NSZoneFree(NULL, unibuffer);
+    NSZoneFree(NULL, bytes);
     
     return YES;
 }
