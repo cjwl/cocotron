@@ -468,13 +468,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
 -(void)makeKey {
 
-	if (SetForegroundWindow(_handle) == FALSE) {
-		NSLog(@"SetForegroundWindow failed, error: %d", GetLastError());
-	}
-
-	if (SetFocus(_handle) == NULL) {
-		NSLog(@"SetFocus failed, error: %d", GetLastError());
-	}		
+	// SetForegroundWindow() seems to handle all kinds of windows. SetActiveWindow() seemed
+	// to leave secondary windows deactivated meaning the user had to click on a primary window
+	// first and then the secondary window in order to reset the focus. This makes it all
+	// happen as expected.
+	SetForegroundWindow(_handle);
 }
 
 -(void)makeMain {
