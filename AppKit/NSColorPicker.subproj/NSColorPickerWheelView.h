@@ -1,5 +1,5 @@
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/NSView.h>
 
 
 @interface NSColorPickerWheelView : NSView {
