@@ -32,6 +32,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(Class)classForCoder {
+	return objc_lookUpClass("NSMutableAttributedString");
+}
+
 -(id)copyWithZone:(NSZone *)zone {
    return [[NSAttributedString allocWithZone:NULL] initWithAttributedString:self];
 }

@@ -53,20 +53,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSString *mode=@"NSURLConnectionRequestMode";
    
     [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-    
+
 	[state receiveAllDataInMode:mode];
     [connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
 
-   NSData *result=[[connection->_mutableData retain] autorelease];
-
     [connection cancel];
-    
-   if(errorp!=NULL)
-    *errorp=[state error];
 
+	// Now let's see what we should return to the caller...
+	
+	NSData *result= nil; 
+
+	if([state error]) {
+		*errorp=[state error];
+	} else {
+		// Looks good - give them the data
+		result = [[connection->_mutableData retain] autorelease];
+	}
+	
    if(responsep!=NULL)
     *responsep=[[connection->_response retain] autorelease];
     
+	// The memory management isn't clear - NSURLConnection wants to request autorelease of self in some cases (see URLProtocolDidFinishLoading:
+	// But that conflicts with this explicit release - which matches the alloc of the connection above.
    [connection release];
  
    return result;
@@ -126,18 +134,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect {
-   [_delegate connection:self willSendRequest:request redirectResponse:redirect];
+#if DEBUG
+	NSLog(@"wasRedirectedToRequest: %@", request);
+#endif
+	[_delegate connection:self willSendRequest:request redirectResponse:redirect];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+#if DEBUG
+	NSLog(@"didReceiveAuthenticationChallenge: %@", challenge);
+#endif
   // [_delegate connection:self didReceiveAuthenticationChallenge];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+#if DEBUG
+	NSLog(@"didCancelAuthenticationChallenge: %@", challenge);
+#endif
   // [_delegate connection:self didCancelAuthenticationChallenge];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveResponse:(NSURLResponse *)response cacheStoragePolicy:(NSURLCacheStoragePolicy)policy {
+#if DEBUG
+	NSLog(@"didReceiveResponse: %@", response);
+#endif
     _response=[response retain];
     _storagePolicy=policy;
     
@@ -146,10 +166,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)cachedResponse {
+#if DEBUG
+	NSLog(@"cachedResponseIsValid: %@", cachedResponse);
+#endif
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data {
 
+#if DEBUG
+	NSLog(@"didLoadData: %@", data);
+#endif
+	
    if(_mutableData==nil)
     _mutableData=[[NSMutableData alloc] init];
     
@@ -159,12 +186,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didFailWithError:(NSError *)error {
-   [_delegate connection:self didFailWithError:error];
-   
-   [self autorelease];
+#if DEBUG
+	NSLog(@"didFailWithError: %@", error);
+#endif
+	
+	[_delegate connection:self didFailWithError:error];
+
+	// The memory-management isn't clear - see sendSynchronousRequest: - it explicitly releases the connection - so this
+	// autorelease means it will be over-released if there's an error (like a 404 code) and crash
+	// [self autorelease];	
 }
 
 -(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol {
+#if DEBUG
+	NSLog(@"URLProtocolDidFinishLoading: %@", urlProtocol);
+#endif
    if(_storagePolicy==NSURLCacheStorageNotAllowed){
     [[NSURLCache sharedURLCache] removeCachedResponseForRequest:_request];
    }
@@ -181,8 +217,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
 	if([_delegate respondsToSelector:@selector(connectionDidFinishLoading:)])
 		[_delegate performSelector:@selector(connectionDidFinishLoading:) withObject:self];
-        
-   [self autorelease];
+
+	// The memory-management isn't clear - see sendSynchronousRequest: - it explicitly releases the connection - so this
+	// autorelease means it will most likely be over-released on a successful download and crash
+	// [self autorelease];
+
 }
 
 

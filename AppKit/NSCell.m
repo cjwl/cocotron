@@ -760,7 +760,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSText *)setUpFieldEditorAttributes:(NSText *)editor {
    [editor setEditable:[self isEditable]];
    [editor setSelectable:[self isSelectable]];
-   [editor setString:[self stringValue]];
+	[editor setString:[self stringValue]];
    [editor setFont:[self font]];
    [editor setAlignment:[self alignment]];
    if([self respondsToSelector:@selector(drawsBackground)])
@@ -779,12 +779,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([self isScrollable]){
     NSClipView *clipView;
 
-    if([[editor superview] isKindOfClass:[NSClipView class]]){
+    if([[editor superview] isKindOfClass:[NSClipView class]] && [[editor superview] superview] == view){
      clipView=(NSClipView *)[editor superview];
      [clipView setFrame:frame];
     }
     else {
      clipView=[[[NSClipView alloc] initWithFrame:frame] autorelease];
+	 [editor setFrameOrigin:NSZeroPoint];
+	 [editor setFrameSize:frame.size];
      [clipView setDocumentView:editor];
      [view addSubview:clipView];
     }
@@ -797,8 +799,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [editor setNeedsDisplay:YES];
    }
    else {
-    [editor setFrame:frame];
-    [view addSubview:editor];
+	   [editor setHorizontallyResizable:NO];
+	   [editor setVerticallyResizable:NO];
+	   [editor setFrame:frame];
+	   [view addSubview:editor];
    }
    [[view window] makeFirstResponder:editor];
    [editor setDelegate:delegate];

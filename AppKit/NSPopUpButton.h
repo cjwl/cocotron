@@ -11,8 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 APPKIT_EXPORT NSString * const NSPopUpButtonWillPopUpNotification;
 
-@interface NSPopUpButton : NSButton
-
+@interface NSPopUpButton : NSButton {
+	BOOL _observerAdded;
+}
 -initWithFrame:(NSRect)frame pullsDown:(BOOL)pullsDown;
 
 -(BOOL)pullsDown;

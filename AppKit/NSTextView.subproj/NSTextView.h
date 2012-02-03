@@ -81,6 +81,7 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    BOOL             _allowsUndo;
 
    NSMutableArray        *_selectedRanges;
+   NSArray				 *_initialRanges; // selected ranges at the start of a selection change
    NSSelectionAffinity    _selectionAffinity;
    NSSelectionGranularity _selectionGranularity;
    NSDictionary          *_selectedTextAttributes;
@@ -118,6 +119,8 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
 
 -(NSLayoutManager *)layoutManager;
 -(NSTextStorage *)textStorage;
+
+-(void)insertText:(id)string;
 
 -(BOOL)usesRuler;
 -(BOOL)isRulerVisible;

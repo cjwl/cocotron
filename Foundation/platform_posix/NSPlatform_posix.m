@@ -99,6 +99,10 @@ static struct passwd *pwent = NULL;
     return [NSString stringWithCString:pwent->pw_dir];
 }
 
+-(NSString *)libraryDirectory {
+    return [[self homeDirectory] stringByAppendingPathComponent:@".CocotronLibrary"];
+}
+
 -(NSString *)temporaryDirectory {
    return @"/tmp";
 }

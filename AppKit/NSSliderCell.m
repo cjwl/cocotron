@@ -35,6 +35,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	_type = [keyed decodeIntForKey:@"NSSliderType"];
     _minValue=[keyed decodeDoubleForKey:@"NSMinValue"];
     _maxValue=[keyed decodeDoubleForKey:@"NSMaxValue"];
+	   if ([keyed containsValueForKey: @"NSValue"]) {
+		   // This cell prefers NSValue to NSContents
+		   [_objectValue release];
+		   _objectValue = [[keyed decodeObjectForKey: @"NSValue"] retain];
+	   }
     _numberOfTickMarks=[keyed decodeIntForKey:@"NSNumberOfTickMarks"];
     _tickMarkPosition=[keyed decodeIntForKey:@"NSTickMarkPosition"];
     _allowsTickMarkValuesOnly=[keyed decodeBoolForKey:@"NSAllowsTickMarkValuesOnly"];

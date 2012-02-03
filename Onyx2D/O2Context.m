@@ -61,21 +61,20 @@ static NSMutableArray *possibleContextClasses=nil;
     if(check!=Nil)
      [result addObject:check];
    }
-   
-   return result;
+
+	return result;
 }
 
 +(O2Context *)createContextWithSize:(O2Size)size window:(CGWindow *)window {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
-   
-   while(--count>=0){
+
+	while(--count>=0){
     Class check=[array objectAtIndex:count];
-        
     if([check canInitWithWindow:window]){
      O2Context *result=[[check alloc] initWithSize:size window:window];
-     
-     if(result!=nil)
+
+	if(result!=nil)
       return result;
     }
    }
@@ -92,7 +91,6 @@ static NSMutableArray *possibleContextClasses=nil;
     
     if([check canInitBackingWithContext:context deviceDictionary:deviceDictionary]){
      O2Context *result=[[check alloc] initWithSize:size context:context];
-
      if(result!=nil)
       return result;
     }
@@ -252,6 +250,10 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 -(void)drawPath:(O2PathDrawingMode)pathMode {
    O2InvalidAbstractInvocation();
 // reset path in subclass
+}
+
+-(void)replacePathWithStrokedPath {
+	O2UnimplementedFunction();
 }
 
 -(void)drawShading:(O2Shading *)shading {
@@ -507,7 +509,7 @@ void O2ContextReplacePathWithStrokedPath(O2ContextRef self) {
    if(self==nil)
     return;
 
-   O2UnimplementedFunction();
+	[self replacePathWithStrokedPath];
 }
 
 // gstate

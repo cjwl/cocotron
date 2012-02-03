@@ -43,11 +43,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+	NSUnimplementedMethod();
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+	NSUnimplementedMethod();
    return self;
 }
 
@@ -68,8 +68,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEqualToAttributedString:(NSAttributedString *)other {
-   NSUnimplementedMethod();
-   return NO;
+	if ([self length] != [other length]) {
+		return NO;
+	}
+	unsigned i = 0;
+	NSString* string = [self string];
+	NSString* otherString = [other string];
+	if (![string isEqualToString:otherString]) {
+		return NO;
+	}
+	unsigned length = [self length];
+	NSRange range;
+	while(i<length) {
+		NSDictionary* attributes = [self attributesAtIndex: i effectiveRange: &range];
+		NSRange otherRange;
+		NSDictionary* otherAttributes = [other attributesAtIndex: i effectiveRange: &otherRange];
+		if (![attributes isEqualToDictionary:otherAttributes]) {
+			return NO;
+		}
+		i = MIN(NSMaxRange(range), NSMaxRange(otherRange));
+	}
+	return YES;
+}
+
+- (NSUInteger)hash
+{
+	return [[self string] hash];
+}
+
+- (BOOL)isEqual:(id)other
+{
+	if (self == other) {
+		return YES;
+	}
+	if ([other isKindOfClass: [NSAttributedString class]]) {
+		return [self isEqualToAttributedString: other];
+	}
+	return NO;
 }
 
 -(NSUInteger)length {
@@ -130,9 +165,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (NSString*)description
 {
 	if ([self length] > 0) {
-		NSRange range;
-		NSDictionary* attributes = [self attributesAtIndex: 0 effectiveRange: &range];
-		return [NSString stringWithFormat: @"%@ {\n%@\n}", [self string], attributes];
+		NSMutableString *result = [NSMutableString string];
+		unsigned length = [self length];
+		int i = 0;
+		while(i<length) {
+			NSRange range;
+			NSDictionary* attributes = [self attributesAtIndex: i effectiveRange: &range];
+			NSString *string = [[self string] substringWithRange:range];
+			[result appendFormat:@"%@ {\n%@\n}\n", string, attributes];
+			i = NSMaxRange(range);
+		}
+		return result;
 	} else {
 		return [NSString stringWithFormat: @"%@ {}", [self string]];
 	}

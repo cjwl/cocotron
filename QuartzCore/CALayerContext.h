@@ -5,9 +5,9 @@
 @class CARenderer,CALayer,CGLPixelSurface,NSTimer,NSMutableArray,NSNumber;
 
 @interface CALayerContext : NSObject {
+    CGRect _frame;
    CGLPixelFormatObj _pixelFormat;
    CGLContextObj     _glContext;
-   CGLPixelSurface  *_pixelSurface;
    CALayer          *_layer;
    CARenderer       *_renderer;
    

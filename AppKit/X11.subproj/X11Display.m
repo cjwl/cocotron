@@ -267,8 +267,9 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
 }
 
 
--(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
+-(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    NSUnimplementedMethod();
+	return 0;
 }
 
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {

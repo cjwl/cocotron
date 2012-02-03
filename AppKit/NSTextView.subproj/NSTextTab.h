@@ -15,7 +15,7 @@ typedef enum {
    NSDecimalTabStopType
 } NSTextTabType;
 
-@interface NSTextTab : NSObject <NSCopying> {
+@interface NSTextTab : NSObject <NSCoding, NSCopying> {
    NSTextTabType _type;
    float         _location;
 }

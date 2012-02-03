@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(effectiveRangep!=NULL && effectiveRangep->length==NSNotFound)
     effectiveRangep->length=[self length]-effectiveRangep->location;
 
-   return result;
+	return [[result retain] autorelease];
 }
 
 static inline int replaceCharactersInRangeWithString(NSTextStorage_concrete *self,NSRange range,NSString *string){
@@ -100,8 +100,6 @@ static inline void replaceCharactersInRangeWithAttributedString(NSTextStorage_co
    unsigned limit=[string length];
    int      delta=replaceCharactersInRangeWithString(self,replaced,string);
 
-   [self edited:NSTextStorageEditedAttributes|NSTextStorageEditedCharacters range:replaced changeInLength:delta];
-
    while(location<limit){
     NSRange       effectiveRange;
     NSDictionary *attributes=[other attributesAtIndex:location effectiveRange:&effectiveRange];
@@ -112,7 +110,7 @@ static inline void replaceCharactersInRangeWithAttributedString(NSTextStorage_co
     location=NSMaxRange(effectiveRange);
    }
 
-   [self edited:NSTextStorageEditedAttributes range:NSMakeRange(replaced.location,limit) changeInLength:0];
+   [self edited:NSTextStorageEditedAttributes|NSTextStorageEditedCharacters range:replaced changeInLength:delta];
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {

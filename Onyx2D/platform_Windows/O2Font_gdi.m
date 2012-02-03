@@ -100,7 +100,8 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
      if(size!=0){
       _unitsPerEm=ttMetrics->otmEMSquare;
       
-      if([name isEqualToString:@"Marlett"]){
+	  // Don't use the magic pointSize scaling formula on these font (UI fonts) 
+      if([name isEqualToString:@"Marlett"] || [name isEqualToString:@"Segoe UI"] || [name isEqualToString:@"Tahoma"]){
        _useMacMetrics=NO;
        _ascent=ttMetrics->otmAscent;
        _descent=ttMetrics->otmDescent;

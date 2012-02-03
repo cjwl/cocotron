@@ -955,7 +955,7 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
    NSSize              imageSize=(image==nil)?NSMakeSize(0,0):[[controlView graphicsStyle] sizeOfButtonImage:image enabled:enabled mixed:mixed];
    NSPoint             imageOrigin=frame.origin;
    NSSize              titleSize=[title size];
-   NSRect              titleRect=frame;
+   NSRect              titleRect=[self titleRectForBounds:frame];
    BOOL                drawImage=YES,drawTitle=YES;
    NSCellImagePosition imagePosition=[self imagePosition];
 

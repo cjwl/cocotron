@@ -108,6 +108,13 @@ void *NSZoneRealloc(NSZone *zone,void *pointer,NSUInteger size){
 
 void NSPlatformSetCurrentThread(NSThread *thread) {
 	TlsSetValue(Win32ThreadStorageIndex(),thread);
+	if (thread) {
+		// Thread creation - be sure we have COM initialized. Some API use it
+		CoInitializeEx(NULL,COINIT_APARTMENTTHREADED);
+	} else {
+		// Uninitialize COM for the thread
+		CoUninitialize();
+	}
 }
 
 
@@ -145,7 +152,6 @@ NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *a
 	if (!win32Handle) {
 		threadId = 0; // just to be sure
 	}
-	
 	CloseHandle(win32Handle);
 	return threadId;
 }

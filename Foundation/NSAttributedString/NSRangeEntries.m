@@ -43,6 +43,9 @@ struct NSRangeEntries {
 }
 
  void NSFreeRangeEntries(NSRangeEntries *self) {
+	 if (self == nil) {
+		 return;
+	 }
    NSResetRangeEntries(self);
    NSZoneFree(NULL,self->entries);
    NSZoneFree(NULL,self);
@@ -246,6 +249,11 @@ static inline void removeEntryAtIndex(NSRangeEntries *self,NSUInteger index){
    self->count--;
    for(;index<self->count;index++)
     self->entries[index]=self->entries[index+1];
+}
+
+void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self,NSUInteger index)
+{
+	removeEntryAtIndex(self, index);
 }
 
  void NSRangeEntriesExpandAndWipe(NSRangeEntries *self,NSRange range,NSInteger delta) {

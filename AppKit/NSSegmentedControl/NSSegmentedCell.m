@@ -255,12 +255,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [cell setTitle:label];
    
    [cell setHighlighted:[segment isSelected]];
-   [cell setEnabled:[segment isEnabled]];
+	
+	// The control is enabled/disabled as a whole
+   [cell setEnabled:[self isEnabled]];
    
    NSImage *image=[segment image];
    if(image)
    {
       [cell setImage:image];
+	   // a button cell is created as a text cell - so we need to say that we want
+	   // image dimming
+	   [cell setImageDimsWhenDisabled: YES];
+	   
       if([label length])
       {
          [cell setImagePosition:NSImageLeft];

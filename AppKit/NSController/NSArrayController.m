@@ -166,6 +166,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)rearrangeObjects
 {
+	[self _selectionWillChange];
+	
 	// We may need to restore selection
 	NSArray* selectedObjects = [[self selectedObjects] retain];
 
@@ -183,6 +185,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		// restore the selection
 		[self setSelectedObjects: selectedObjects];
 	}
+	[self _selectionDidChange];
 }
 
 #pragma mark -

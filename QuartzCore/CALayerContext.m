@@ -1,7 +1,6 @@
 #import <QuartzCore/CALayerContext.h>
 #import <QuartzCore/CALayer.h>
 #import <QuartzCore/CARenderer.h>
-#import <CoreGraphics/CGLPixelSurface.h>
 #import <Foundation/NSString.h>
 
 @interface CALayer(private)
@@ -25,15 +24,19 @@
    if((error=CGLCreateContext(_pixelFormat,NULL,&_glContext))!=kCGLNoError)
     NSLog(@"CGLCreateContext failed with %d in %s %d",error,__FILE__,__LINE__);
 
+   _frame=rect;
+   
    GLint width=rect.size.width;
    GLint height=rect.size.height;
    
+   GLint backingOrigin[2]={rect.origin.x,rect.origin.y};
    GLint backingSize[2]={width,height};
 
+   CGLSetParameter(_glContext,kCGLCPSurfaceBackingOrigin,backingOrigin);
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,backingSize);
-
-   _pixelSurface=[[CGLPixelSurface alloc] initWithFrame:O2RectMake(0,0,width,height)];
-   [_pixelSurface setOpaque:NO];
+   
+   GLint opacity=0;
+   CGLSetParameter(_glContext,kCGLCPSurfaceOpacity,&opacity);
 
    _renderer=[[CARenderer rendererWithCGLContext:_glContext options:nil] retain];
       
@@ -46,19 +49,17 @@
    [super dealloc];
 }
 
--(CGLPixelSurface *)pixelSurface {
-   return _pixelSurface;
-}
-
 -(void)setFrame:(CGRect)rect {
+   _frame=rect;
+   
    GLint width=rect.size.width;
    GLint height=rect.size.height;
    
+   GLint backingOrigin[2]={rect.origin.x,rect.origin.y};
    GLint backingSize[2]={width,height};
 
+   CGLSetParameter(_glContext,kCGLCPSurfaceBackingOrigin,backingOrigin);
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,backingSize);
-   
-   [_pixelSurface setFrame:rect];
 }
 
 -(void)setLayer:(CALayer *)layer {
@@ -86,15 +87,14 @@
     [self assignTextureIdsToLayerTree:child];
 }
 
--(void)renderLayer:(CALayer *)layer intoSurface:(CGLPixelSurface *)pixelSurface {
+-(void)renderLayer:(CALayer *)layer {
    CGLSetCurrentContext(_glContext);
 
    glEnable(GL_DEPTH_TEST);
    glShadeModel(GL_SMOOTH);
 
-   CGRect frame=[_pixelSurface frame];
-   GLint width=frame.size.width;
-   GLint height=frame.size.height;
+   GLint width=_frame.size.width;
+   GLint height=_frame.size.height;
    
    glViewport(0,0,width,height);
    glMatrixMode(GL_PROJECTION);                      
@@ -115,12 +115,10 @@
    [self assignTextureIdsToLayerTree:layer];
    
    [_renderer render];
-   
-   [pixelSurface readBuffer];
 }
 
 -(void)render {
-   [self renderLayer:_layer intoSurface:_pixelSurface];
+   [self renderLayer:_layer];
 }
 
 -(void)timer:(NSTimer *)timer {

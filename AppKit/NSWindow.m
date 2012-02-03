@@ -182,7 +182,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     if([self hasMainMenu]){
     NSRect frame=NSMakeRect(contentViewFrame.origin.x,NSMaxY(contentViewFrame),contentViewFrame.size.width,[NSMainMenuView menuHeight]);
 
-    _menu=[[NSApp mainMenu] copy];
+		// We all need to share the main menu!
+    _menu=[[NSApp mainMenu] retain];
 
     _menuView=[[NSMainMenuView alloc] initWithFrame:frame menu:_menu];
     [_menuView setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
@@ -477,7 +478,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)worksWhenModal {
-   return NO;
+	// We do work when we're running a modal session
+	return (_sheetContext && [_sheetContext modalSession] != nil);
 }
 
 -(BOOL)isSheet {
@@ -693,7 +695,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     }
 
        if(changed){
-     [self setFrame:frame display:YES];
+        [self setFrame:frame display:YES];
        }
        
     _makeSureIsOnAScreen=NO;
@@ -845,7 +847,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    NSRect frame=[self frame];
 
    frame.origin=point;
-   [self setFrame:frame display:YES];
+   [self setFrame:frame display:NO];
 }
 
 -(void)setFrameTopLeftPoint:(NSPoint)point {
@@ -854,7 +856,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    frame.origin.x=point.x;
    frame.origin.y=point.y-frame.size.height;
 
-   [self setFrame:frame display:YES];
+   [self setFrame:frame display:NO];
 }
 
 -(void)setMinSize:(NSSize)size {
@@ -1657,12 +1659,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setViewsNeedDisplay:(BOOL)flag {
-   _viewsNeedDisplay=flag;
-   if(flag){
+   if(flag && !_viewsNeedDisplay){
     // NSApplication does a _displayAllWindowsIfNeeded before every event, but there are some things which wont generate
     // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this
-    [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
-}
+	   
+	   [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil]; // Be sure we don't accumulate unneeded perform operations
+	   [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+   }
+	_viewsNeedDisplay=flag;
 }
 
 -(void)disableFlushWindow {
@@ -2009,15 +2013,16 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
                 default:
                     break;
             }
+			return;
         }
         else if ([event type] == NSPlatformSpecific){
             //[self _setSheetOriginAndFront];
             [_platformWindow sendEvent:[(NSEvent_CoreGraphics *)event coreGraphicsEvent]];
+			return;
         }
-
-        return;
     }
 
+	// OK let's see if anyone else wants it
    switch([event type]){
 
     case NSLeftMouseDown:{
@@ -2289,6 +2294,15 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	NSRect zoomedFrame = [self zoomedFrame];
 	if (NSEqualRects( _frame, zoomedFrame )) zoomedFrame = _savedFrame;
 	
+	// Make sure we obey our minimums
+	NSSize minSize = [self minSize];
+	if (NSWidth(zoomedFrame) < minSize.width) {
+		zoomedFrame.size.width = minSize.width;
+	}
+	if (NSHeight(zoomedFrame) < minSize.height) {
+		zoomedFrame.size.height = minSize.height;
+	}
+	
 	BOOL shouldZoom = YES;
 	if (_delegate && [_delegate respondsToSelector: @selector( windowShouldZoom:toFrame: )]) {
 		shouldZoom = [_delegate windowShouldZoom: self toFrame: zoomedFrame];
@@ -2300,6 +2314,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 		_savedFrame = [self frame];
 		[self setFrame: zoomedFrame display: YES];
 	}
+}
+
+-(void)platformWindowShouldZoom:(CGWindow *)window {
+    [self zoom:nil];
 }
 
 -(void)miniaturize:sender {
@@ -2437,7 +2455,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     [self _resizeWithOldMenuViewSize:oldSize];
    }
 
-   _menu=[menu copy];
+	[menu retain];
+	[_menu release];
+   _menu = menu;
 }
 
 -(NSMenu *)menu {
@@ -2536,6 +2556,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self makeKeyWindow];
 }
 
+- (void)_setSheetContext:(NSSheetContext *)sheetContext
+{
+	[sheetContext retain];
+	[_sheetContext release];
+	_sheetContext = sheetContext;
+}
+
 -(NSSheetContext *)_sheetContext {
    return _sheetContext;
 }
@@ -2607,8 +2634,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowMiniaturized:(CGWindow *)window {
-   _isActive=NO;
-
+    _isActive=NO;
+    
    [self _updatePlatformWindowTitle];
    if(_sheetContext!=nil){
     [[_sheetContext sheet] orderWindow:NSWindowOut relativeTo:0];
@@ -2629,7 +2656,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize {
-   _frame=frame;
+    // We don't want the miniaturized frame.
+   if(![self isMiniaturized])
+    _frame=frame;
    
    _makeSureIsOnAScreen=YES;
 
@@ -2688,7 +2717,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowDidEndSizing:(CGWindow *)window {
-   [_backgroundView viewDidEndLiveResize];
+	[_backgroundView viewDidEndLiveResize];
    [self postNotificationName:NSWindowDidEndLiveResizeNotification];
 }
 

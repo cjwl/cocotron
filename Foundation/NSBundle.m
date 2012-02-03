@@ -356,6 +356,16 @@ static NSMapTable *pathToObject=NULL;
    return self;
 }
 
+-(void)dealloc
+{
+	[_path release];
+	[_resourcePath release];
+	[_pluginPath release];
+	[_infoDictionary release];
+	[_localizedTables release];
+	[super dealloc];
+}
+
 +(NSBundle *)bundleWithPath:(NSString *)path {
    return [[[self allocWithZone:NULL] initWithPath:path] autorelease];
 }
@@ -582,7 +592,6 @@ static NSMapTable *pathToObject=NULL;
     
    for(i=0;i<count;i++){
     NSString *path=[_resourcePath stringByAppendingPathComponent:[lookIn objectAtIndex:i]];
-
     if(directory!=nil)
      path=[path stringByAppendingPathComponent:directory];
     
@@ -601,7 +610,12 @@ static NSMapTable *pathToObject=NULL;
 -(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)directory {
    NSString *file,*path;
 
-   if(type && [type length]!=0)
+	if ([type length] && [[name pathExtension] isEqualToString:type]) {
+		// Kill the type form the extension part if it's already there
+		name = [name stringByDeletingPathExtension];
+	}	
+
+	if(type && [type length]!=0)
     file=[[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix] stringByAppendingPathExtension:type];
    else
     file=[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix];

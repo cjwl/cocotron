@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+	[_session release];
    [_sheet release];
    [super dealloc];
 }
@@ -49,6 +50,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSRect)frame {
    return _frame;
+}
+
+- (void)setModalSession:(NSModalSession)session
+{
+	[session retain];
+	[_session release];
+	_session = session;
+}
+
+- (NSModalSession)modalSession
+{
+	return _session;
 }
 
 @end

@@ -57,94 +57,143 @@ static NSNumberFormatterBehavior _defaultFormatterBehavior=NSNumberFormatterBeha
 
 // FIXME: doesnt do everything
 
-static void extractFormat(NSString *format,NSString **prefix,NSString **suffix,NSUInteger *numberOfFractionDigits,NSUInteger *groupingSizep,NSUInteger *secondaryGroupingSizep) {
-    NSInteger i,length=[format length],prefixLength=0,suffixLength=0,groupingSize=0,secondaryGroupingSize=0;
+/*
+ * The format string (on 10.4 - which Cocotron currently supports) follows this standard: http://unicode.org/reports/tr35/tr35-4.html#Number_Format_Patterns
+ * The parser isn't handling every option in the string but at least the common things such as: [prefix] #,##0.### [suffix]
+ * 
+ */
+
+static void extractFormat(NSString *format,
+						  NSString **prefix, NSString **suffix,
+						  NSUInteger *minimumIntegerDigitsp, NSUInteger *maximumIntegerDigitsp,
+						  NSUInteger *minimumFractionDigitsp, NSUInteger *maximumFractionDigitsp,
+						  NSUInteger *groupingSizep, NSUInteger *secondaryGroupingSizep)
+{
+    NSUInteger length=[format length];
+	NSUInteger prefixLength=0;
+	NSUInteger suffixLength=0;
+
+	NSUInteger groupingSize=0;
+	NSUInteger secondaryGroupingSize=0;
+	
     unichar   buffer[length];
-    unichar   prefixBuffer[length],suffixBuffer[length];
+    unichar   prefixBuffer[length], suffixBuffer[length];
     BOOL      addToGrouping=NO;
     
     enum {
      STATE_PREFIX,
-     STATE_FIRST_HASH,
-     STATE_FIRST_PERIOD,
-     STATE_FIRST_ZERO,
-     STATE_FIRST_COMMA,
+     STATE_INTEGER,
+     STATE_FRACTION,
      STATE_SUFFIX,
     } state=STATE_PREFIX;
     
-    if(numberOfFractionDigits!=NULL)
-     *numberOfFractionDigits=0;
-    
+	NSUInteger minimumIntegerDigits, maximumIntegerDigits, minimumFractionDigits, maximumFractionDigits;
+	minimumIntegerDigits = 0;
+	maximumIntegerDigits = 0;
+	minimumFractionDigits = 0;
+	maximumFractionDigits = 0;
+	
+	BOOL foundPrimaryGrouping = NO;
+	BOOL foundSecondaryGrouping = NO;
+	
     [format getCharacters:buffer];
     
-    for(i=0;i<length;i++){
-     unichar code=buffer[i];
+	NSInteger i = 0;
+    for( i=0; i < length; i++) {
+		unichar code=buffer[i];
      
-     switch(state){
+		switch(state) {
      
-      case STATE_PREFIX:
-       if(code=='#')
-        state=STATE_FIRST_HASH;
-       else if(code=='.')
-        state=STATE_FIRST_PERIOD;
-       else if(code=='0')
-        state=STATE_FIRST_ZERO;
-       else if(code==','){
-        state=STATE_FIRST_COMMA;
-        addToGrouping=YES;
-	}
-       else {
-        prefixBuffer[prefixLength++]=code;
-       }
-       break;
-       
-      case STATE_FIRST_PERIOD:
-       if(numberOfFractionDigits!=NULL)
-        *numberOfFractionDigits++;
-      case STATE_FIRST_HASH:
-      case STATE_FIRST_ZERO:
-      case STATE_FIRST_COMMA:
-       if(code=='#'){
-        if(addToGrouping)
-         groupingSize++;
-       }
-       else if(code=='.'){
-        addToGrouping=NO;
-       }
-       else if(code=='0'){
-        if(addToGrouping)
-         groupingSize++;
-       }
-       else if(code==','){
-        if(addToGrouping){
-         secondaryGroupingSize=groupingSize;
-         groupingSize=0;
-        }
-        addToGrouping=YES;
-       }
-       else {
-        suffixBuffer[suffixLength++]=code;
-        state=STATE_SUFFIX;
-       }
-       break;
-      
-      case STATE_SUFFIX:
-       suffixBuffer[suffixLength++]=code;
-       break;
-     }
-     
+			case STATE_PREFIX:
+				// Looking for non-numeric chars leading off the format - stop when we find a 0 or a # or a '.'
+				if (code == '.') {
+					state = STATE_FRACTION;
+				} else if(code=='#' || code == '0') {// starting off with a hash or a 0
+					state=STATE_INTEGER;
+					i--; // step back so we can process these chars in the right state
+				} else {
+					// Suck up chars into the prefix
+					prefixBuffer[prefixLength++]=code;
+				}
+				break;
+			case STATE_INTEGER:
+				if (code == '.') {
+					state = STATE_FRACTION;
+					// No need to step back - the '.' just marks the separation
+				} else if (code == '#') {
+					if (foundPrimaryGrouping) {
+						groupingSize++;
+					}
+					maximumIntegerDigits++;
+				} else if (code == '0') {
+					if (foundPrimaryGrouping) {
+						groupingSize++;
+					}
+					minimumIntegerDigits++;
+					maximumIntegerDigits++;
+				} else if (code ==',') {
+					if (foundPrimaryGrouping == NO) {
+						foundPrimaryGrouping = YES;
+					} else {
+						foundSecondaryGrouping = YES;
+						secondaryGroupingSize = groupingSize;
+						groupingSize = 0;
+					}					
+				} else {
+					// Anything we don't recognize means we're into the suffix part
+					state = STATE_SUFFIX;
+					i--;
+				}
+			 break;
+			case STATE_FRACTION:
+			 if (code == '#') {
+				maximumFractionDigits++;
+			 } else if (code == '0') {
+				 minimumFractionDigits++;
+				 maximumFractionDigits++;
+			 } else {
+				 state = STATE_SUFFIX;
+				 i--; // and step back one to catch the contents
+			 }
+			 break;
+			case STATE_SUFFIX:
+				suffixBuffer[suffixLength++]=code;
+				break;
+		}
     }
    
-   if(groupingSizep!=NULL)
-    *groupingSizep=groupingSize;
-   if(secondaryGroupingSizep!=NULL)
-    *secondaryGroupingSizep=secondaryGroupingSize;
-    
-    if(prefixLength>0)
-     *prefix=[[NSString allocWithZone:NULL] initWithCharacters:prefixBuffer length:prefixLength];
-     
-    if(suffixLength>0)
-     *suffix=[[NSString allocWithZone:NULL] initWithCharacters:suffixBuffer length:suffixLength];    
+	// Update all valud the parameters
+	if (minimumIntegerDigitsp != NULL) {
+		*minimumIntegerDigitsp = minimumIntegerDigits;
+	}
+	
+	if (maximumIntegerDigitsp != NULL) {
+		*maximumIntegerDigitsp = maximumIntegerDigits;
+	}
+	
+    if(minimumFractionDigitsp != NULL) {
+		*minimumFractionDigitsp = minimumFractionDigits;
+    }
+	
+	if(maximumFractionDigitsp != NULL) {
+		*maximumFractionDigitsp = maximumFractionDigits;
+    }
+	
+	if(groupingSizep != NULL) {
+		*groupingSizep = groupingSize;
+	}
+	
+	if(secondaryGroupingSizep != NULL) {
+		*secondaryGroupingSizep = secondaryGroupingSize;
+	}
+	
+    if(prefixLength > 0) {
+     *prefix = [[NSString allocWithZone: NULL] initWithCharacters: prefixBuffer length: prefixLength];
+	}
+	
+    if(suffixLength>0) {
+		*suffix = [[NSString allocWithZone: NULL] initWithCharacters: suffixBuffer length: suffixLength];
+	}
 }
 
 -(void)extractFromPositiveFormat {
@@ -155,9 +204,14 @@ static void extractFormat(NSString *format,NSString **prefix,NSString **suffix,N
     [_positiveSuffix release];
     _positiveSuffix=nil;
     
-    extractFormat(_positiveFormat,&_positivePrefix,&_positiveSuffix,&_maximumFractionDigits,&_groupingSize,&_secondaryGroupingSize);
+    extractFormat(_positiveFormat, &_positivePrefix, &_positiveSuffix,
+				  &_minimumIntegerDigits, &_maximumIntegerDigits,
+				  &_minimumFractionDigits, &_maximumFractionDigits,
+				  &_groupingSize,&_secondaryGroupingSize);
+	_customMaximumFractionDigits = YES;
    }
 }
+
 -(void)extractFromNegativeFormat {
    if([_negativeFormat length]){
    
@@ -166,7 +220,12 @@ static void extractFormat(NSString *format,NSString **prefix,NSString **suffix,N
     [_negativeSuffix release];
     _negativeSuffix=nil;
     
-    extractFormat(_negativeFormat,&_negativePrefix,&_negativeSuffix,NULL,NULL,NULL);
+    extractFormat(_negativeFormat, &_negativePrefix, &_negativeSuffix, NULL, NULL, NULL, NULL, NULL, NULL);
+	   if ([_negativePrefix isEqualToString: @"-"]) {
+		   // That's not a very interesting prefix...
+		   [_negativePrefix release];
+		   _negativePrefix = nil;
+	   }
    }
 }
 
@@ -176,7 +235,7 @@ static void extractFormat(NSString *format,NSString **prefix,NSString **suffix,N
    if([coder allowsKeyedCoding]){
     NSDictionary *attributes=[coder decodeObjectForKey:@"NS.attributes"];
     id check;
-
+	   
     if((check=[attributes objectForKey:@"formatterBehavior"])!=nil)
      _behavior=[check integerValue];
     if((check=[attributes objectForKey:@"numberStyle"])!=nil)
@@ -1045,7 +1104,7 @@ static NSString *stringWithFormatGrouping(NSString *format,id locale,NSString *g
     case _C_DBL:;
      NSString *format;
      
-     format=[NSString stringWithFormat:@"%%.%df",[self maximumFractionDigits]];
+     format=[NSString stringWithFormat:@"%%.%df",[self minimumFractionDigits]];
       
      string=stringWithFormatGrouping(format,_locale,[self groupingSeparator],[self groupingSize],[number doubleValue]);
      break;

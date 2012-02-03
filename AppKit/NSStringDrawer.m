@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextStorage.h>
 #import <AppKit/NSLayoutManager.h>
 #import <AppKit/NSTextContainer.h>
+#import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSView.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <ApplicationServices/ApplicationServices.h>
@@ -112,26 +113,52 @@ const float NSStringDrawerLargeDimension=1000000.;
 
 @implementation NSString(NSStringDrawer)
 
--(void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes {
-   CGContextRef graphicsPort=NSCurrentGraphicsPort();
+- (void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes truncatingTail:(BOOL)truncateTail
+{
+	NSAttributedString *string = [[[NSAttributedString alloc] initWithString:self attributes:attributes] autorelease];
+	[string _clipAndDrawInRect:rect truncatingTail: truncateTail];
+}
 
-   CGContextSaveGState(graphicsPort);
-   CGContextClipToRect(graphicsPort,rect);
-   [[NSStringDrawer sharedStringDrawer] drawString:self withAttributes:attributes inRect:rect];
-   CGContextRestoreGState(graphicsPort);
+// Draw self in the rect, clipped - add ellipsis if needed 
+-(void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes {
+	[self _clipAndDrawInRect: rect withAttributes: attributes truncatingTail: YES];
 }
 
 @end
 
 @implementation NSAttributedString(NSStringDrawer)
 
--(void)_clipAndDrawInRect:(NSRect)rect {
+// Draw self in the rect, clipped - add ellipsis if needed 
+-(void)_clipAndDrawInRect:(NSRect)rect truncatingTail:(BOOL)truncateTail
+{
    CGContextRef graphicsPort=NSCurrentGraphicsPort();
-
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);
-   [[NSStringDrawer sharedStringDrawer] drawAttributedString:self inRect:rect];
+	
+	// In a perfect world, we could use the NSLineBreakByTruncatingTail attribute, but that's not supported for now
+	// by Cocotron
+	NSAttributedString *string = self; 
+	NSSize size = [string size];
+	if (truncateTail && size.width > rect.size.width && [string length]) {
+		// Create a "..." attributed string with the attributes of the last char of this string
+		NSDictionary *attributes = [string attributesAtIndex:[string length]-1 effectiveRange:NULL];
+		NSAttributedString *ellipsis = [[[NSAttributedString alloc] initWithString:@"..." attributes:attributes] autorelease];
+		NSAttributedString *clippedTitle = string;
+		do {
+			clippedTitle = [clippedTitle attributedSubstringFromRange:NSMakeRange(0,[clippedTitle length]-1)];
+			NSMutableAttributedString *tmpString = [[clippedTitle mutableCopy] autorelease];
+			[tmpString appendAttributedString:ellipsis];
+			string = tmpString;
+			size = [string size];
+		} while ([clippedTitle length] && size.width > rect.size.width);
+	}
+	[[NSStringDrawer sharedStringDrawer] drawAttributedString:string inRect:rect];
    CGContextRestoreGState(graphicsPort);
+}
+
+-(void)_clipAndDrawInRect:(NSRect)rect
+{
+	[self _clipAndDrawInRect: rect truncatingTail: YES];
 }
 
 @end

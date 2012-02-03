@@ -139,8 +139,6 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 	[allPaths addObjectsFromArray: ttfPaths];
 	[allPaths addObjectsFromArray: TTFPaths];
 	
-	NSLog(@"Application Fonts: %@", allPaths);
-	
 	[self loadPrivateFontPaths: allPaths];
 }
 
@@ -792,16 +790,18 @@ The values should be upgraded to something which is more generic to implement, p
    return keyCode;
 }
 
--(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
+-(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window keyboardState:(BYTE *)keyboardState {
    unichar        buffer[256],ignoringBuffer[256];
    NSString      *characters;
    NSString      *charactersIgnoringModifiers;
    BOOL           isARepeat=NO;
    unsigned short keyCode;
    int            bufferSize=0,ignoringBufferSize=0;
-   BYTE           keyState[256];
+   BYTE          *keyState=keyboardState;
 
-   GetKeyboardState(keyState);
+    if(keyState==NULL)
+        return NO;
+        
    bufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
 
    keyState[VK_CONTROL]=0x00;
@@ -973,6 +973,11 @@ The values should be upgraded to something which is more generic to implement, p
     CGFloat deltaX=currentLocation.x-_pastLocation.x;
     CGFloat deltaY=-(currentLocation.y-_pastLocation.y);
     
+	if (type == NSMouseMoved) {
+		if (fabs(deltaX) < 1. && fabs(deltaY) < 1.) {
+			return YES;
+		}
+	}
    event = [NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:_clickCount deltaX:deltaX deltaY:deltaY];
 
     _pastLocation = currentLocation;
@@ -991,11 +996,11 @@ The values should be upgraded to something which is more generic to implement, p
    return YES;
 }
 
--(unsigned)currentModifierFlags {
+-(unsigned)currentModifierFlagsWithKeyboardState:(BYTE *)keyboardState {
    unsigned result=0;
-   BYTE     keyState[256];
+   BYTE    *keyState=keyboardState;
 
-   if(!GetKeyboardState(keyState))
+   if(keyState==NULL)
     return result;
 
    if(keyState[VK_LSHIFT]&0x80)
@@ -1041,6 +1046,16 @@ The values should be upgraded to something which is more generic to implement, p
    return result;
 }
 
+-(NSUInteger)currentModifierFlags {
+    BYTE keyState[256];
+    BYTE *keyboardState=NULL;
+    
+    if(GetKeyboardState(keyState))
+        keyboardState=keyState;
+
+    return [self currentModifierFlagsWithKeyboardState:keyboardState];
+}
+
 NSArray *CGSOrderedWindowNumbers(){
    NSMutableArray *result=[NSMutableArray array];
 
@@ -1078,7 +1093,7 @@ static HWND findWindowForScrollWheel(POINT point){
 }
 
 
--(BOOL)postMSG:(MSG)msg {
+-(BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState {
    NSEventType  type;
    HWND         windowHandle=msg.hwnd;
    id           platformWindow;
@@ -1217,8 +1232,10 @@ static HWND findWindowForScrollWheel(POINT point){
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
-// This is used for OpenGL child windows which will interfere will scrollwheel coordinates
-    if(windowHandle!=[platformWindow windowHandle]){
+
+    BOOL childWindow=(msg.hwnd!=[platformWindow windowHandle]);
+    
+    if(childWindow){
      RECT child={0},parent={0};
 
 // There is no way to get a child's frame inside the parent, you have to get
@@ -1226,13 +1243,14 @@ static HWND findWindowForScrollWheel(POINT point){
 // GetClientRect always returns 0,0 for top,left which makes it useless     
      GetWindowRect(msg.hwnd,&child);
      GetWindowRect([platformWindow windowHandle],&parent);
+
      location.x+=child.left-parent.left;
      location.y+=child.top-parent.top;
     }
      
-    [platformWindow adjustEventLocation:&location];
+    [platformWindow adjustEventLocation:&location childWindow:childWindow];
     
-    modifierFlags=[self currentModifierFlags];
+    modifierFlags=[self currentModifierFlagsWithKeyboardState:keyboardState];
 
     switch(type){
      case NSLeftMouseDown:
@@ -1249,7 +1267,7 @@ static HWND findWindowForScrollWheel(POINT point){
      case NSKeyDown:
      case NSKeyUp:
      case NSFlagsChanged:
-      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window];
+      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window keyboardState:keyboardState];
 
      case NSScrollWheel:
       return [self postScrollWheelMSG:msg type:type location:location modifierFlags:modifierFlags window:window];
@@ -1356,20 +1374,41 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    return GetSystemMetrics(SM_CXHTHUMB);
 }
 
--(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
+#define PTS2THOUSANDS(x) ((x/72.f) * 1000.f)
+#define THOUSANDS2PTS(x) ((x / 1000.f) * 72.f)
+
+-(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    PAGESETUPDLG setup;
 
    setup.lStructSize=sizeof(PAGESETUPDLG);
    setup.hwndOwner=[(Win32Window *)[[NSApp mainWindow] platformWindow] windowHandle];
    setup.hDevMode=NULL;
    setup.hDevNames=NULL;
-   setup.Flags=0;
-   //setup.ptPaperSize=0;
-   //setup.rtMinMargin=0;
+   setup.Flags=PSD_INTHOUSANDTHSOFINCHES;
+   setup.ptPaperSize.x = PTS2THOUSANDS([printInfo paperSize].width);
+   setup.ptPaperSize.y = PTS2THOUSANDS([printInfo paperSize].height);
+	setup.rtMargin.top = PTS2THOUSANDS([printInfo topMargin]);
+	setup.rtMargin.left = PTS2THOUSANDS([printInfo leftMargin]);
+	setup.rtMargin.right = PTS2THOUSANDS([printInfo rightMargin]);
+	setup.rtMargin.bottom = PTS2THOUSANDS([printInfo bottomMargin]);
 
    [self stopWaitCursor];
-   PageSetupDlg(&setup);
+   int check = PageSetupDlg(&setup);
    [self startWaitCursor];
+	if (check == 0) {
+		return NSCancelButton;
+	}
+	else {
+		NSSize size = NSMakeSize(THOUSANDS2PTS(setup.ptPaperSize.x),
+								 THOUSANDS2PTS(setup.ptPaperSize.y));
+		[printInfo setPaperSize: size];
+		
+		[printInfo setTopMargin: THOUSANDS2PTS(setup.rtMargin.top)];
+		[printInfo setLeftMargin: THOUSANDS2PTS(setup.rtMargin.left)];
+		[printInfo setRightMargin: THOUSANDS2PTS(setup.rtMargin.right)];
+		[printInfo setBottomMargin: THOUSANDS2PTS(setup.rtMargin.bottom)];
+	}
+	return NSOKButton;
 }
 
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {

@@ -40,4 +40,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return (void *)_pointer;
 }
 
+-(NSString *)description
+{
+	return [NSString stringWithFormat:@"0x%p", _pointer];
+}
 @end

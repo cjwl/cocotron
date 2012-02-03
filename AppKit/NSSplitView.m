@@ -167,8 +167,6 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 }
 
 -(void)drawDividerInRect:(NSRect)rect {
-   NSImage *image=[self dimpleImage];
-   NSPoint  point;
 
 	if (_dividerStyle != NSSplitViewDividerStylePaneSplitter) {
 		// Fill in the view - pane splitter means just draw the dimple
@@ -176,18 +174,21 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 		NSRectFill(rect);
 	}
 
-   point=rect.origin;
+	
+	NSImage *image=[self dimpleImage];
+	NSSize imageSize = [image size];
 
-   if([self isVertical]){
-    point.x+=floor((rect.size.width-[image size].width)/2);
-    point.y+=floor((rect.size.height-[image size].height)/2);
-   }
-   else {
-    point.x+=floor((rect.size.width-[image size].width)/2);
-    point.y+=floor((rect.size.height-[image size].height)/2);
+	NSPoint point = rect.origin;
+
+	if([self isVertical]){
+		point.x += floor((NSWidth(rect) - imageSize.width)/2);
+		point.y += floor((NSHeight(rect) - imageSize.height)/2);
+   } else {
+		point.x += floor((NSWidth(rect) - imageSize.width)/2);
+		point.y += floor((NSHeight(rect) - imageSize.height)/2);
    }
 
-   [image compositeToPoint:point operation:NSCompositeSourceOver];
+   [image drawAtPoint: point fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1.0];
 }
 
 -(void)addSubview:(NSView *)view {

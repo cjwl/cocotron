@@ -185,8 +185,13 @@ static NSTimer *_periodicTimer=nil;
 }
 
 -(void *)userData {
-   [NSException raise:NSInternalInconsistencyException format:@"No userData in %@",[self class]];
-   return 0;
+	[NSException raise:NSInternalInconsistencyException format:@"No userData in %@",[self class]];
+	return 0;
+}
+
+-(NSInteger)trackingNumber {
+	[NSException raise:NSInternalInconsistencyException format:@"No trackingNumber in %@",[self class]];
+	return 0;
 }
 
 

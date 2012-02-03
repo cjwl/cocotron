@@ -18,6 +18,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer {
    [super initWithContentRect:contentRect styleMask:styleMask backing:backing defer:defer];
+	if ((styleMask & NSUtilityWindowMask) ||
+		(styleMask & NSDocModalWindowMask)) {
+		_level = NSFloatingWindowLevel; // We want these panels to be above normal windows - so they don't get lost!
+	} else {
+		_level = NSNormalWindowLevel;
+	}
    _releaseWhenClosed=NO;
    return self;
 }

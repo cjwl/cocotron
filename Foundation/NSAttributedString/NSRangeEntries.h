@@ -23,6 +23,7 @@ FOUNDATION_EXPORT NSRangeEntries *NSCreateRangeToCopiedObjectEntries(NSUInteger 
 FOUNDATION_EXPORT void NSFreeRangeEntries(NSRangeEntries *self);
 FOUNDATION_EXPORT void  NSResetRangeEntries(NSRangeEntries *self);
 FOUNDATION_EXPORT NSUInteger NSCountRangeEntries(NSRangeEntries *self);
+FOUNDATION_EXPORT void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self,NSUInteger index);
 
 FOUNDATION_EXPORT void  NSRangeEntryInsert(NSRangeEntries *self,NSRange range,void *value);
 FOUNDATION_EXPORT void *NSRangeEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRange *effectiveRange);

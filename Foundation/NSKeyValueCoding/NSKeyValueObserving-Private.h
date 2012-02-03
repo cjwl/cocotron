@@ -12,4 +12,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(Class)_KVO_swizzledClass;
 -(void)_willChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)changeOptions;
 -(void)_didChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)ignored;
+-(BOOL)_hasObserverForKey:(NSString*)key;
 @end

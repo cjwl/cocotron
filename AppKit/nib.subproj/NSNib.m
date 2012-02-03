@@ -26,15 +26,14 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 -initWithContentsOfFile:(NSString *)path {
    NSString *keyedobjects=path;
    BOOL      isDirectory=NO;
-   
-   if([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory)
+
+	if([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory)
     keyedobjects=[[path stringByAppendingPathComponent:@"keyedobjects"] stringByAppendingPathExtension:@"nib"];
    
    if(!keyedobjects && !isDirectory)
       keyedobjects=path; // assume new-style compiled xib
    
    if((_data=[[NSData alloc] initWithContentsOfFile:keyedobjects])==nil){
-    NSLog(@"%s: unable to init nib from file '%@'", __PRETTY_FUNCTION__, keyedobjects);
     [self release];
     return nil;
    }
@@ -124,14 +123,16 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 		[NSApp setMainMenu:menu];
 	}
 	
-    // Top-level objects are always retained; if external table contains a mutable
-    // array for key NSNibTopLevelObjects, then this array retains all top-level objects,
-    // else we simply do a retain on them.
     topLevelObjects = [objectData topLevelObjects];
-    if([_nameTable objectForKey:NSNibTopLevelObjects])
+
+    // Top-level objects are always retained - this echoes observed Cocoa behaviour
+	[topLevelObjects makeObjectsPerformSelector:@selector(retain)];
+
+    // if external table contains a mutable array for key NSNibTopLevelObjects,
+	// then this array also retains all top-level objects,
+    if([_nameTable objectForKey:NSNibTopLevelObjects]) {
         [[_nameTable objectForKey:NSNibTopLevelObjects] setArray:topLevelObjects];
-    else
-        [topLevelObjects makeObjectsPerformSelector:@selector(retain)];
+	}
     
     // We do not need to add the objects from nameTable to allObjects as they get put into the uid->object table already
     // Do we send awakeFromNib to objects in the nameTable *not* present in the nib ?

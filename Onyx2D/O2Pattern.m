@@ -32,6 +32,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bounds;
 }
 
+-(O2AffineTransform)matrix {
+	return _matrix;
+}
+
+-(O2Float)xstep {
+	return _xstep;
+}
+
+-(O2Float)ystep {
+	return _ystep;
+}
+
 -(void)drawInContext:(O2ContextRef)context {
    if(_callbacks.drawPattern!=NULL)
     _callbacks.drawPattern(_info,context);

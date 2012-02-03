@@ -64,6 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_nibName release];
    [_nibPath release];
    [_windowFrameAutosaveName release];
+	[_topLevelObjects makeObjectsPerformSelector:@selector(release)];
    [_topLevelObjects release];
    [super dealloc];
 }
