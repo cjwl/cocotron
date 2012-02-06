@@ -359,14 +359,14 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 -(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error
 {
 // Code found at: http://www.catch22.net/tuts/tips2
-    IShellLink * psl;
+    IShellLinkW * psl;
 	
     SHFILEINFOW   info;
 	
     IPersistFile *ppf;
 	
 	int nPathLen = [path length];
-    TCHAR pszFilePath[1024];   
+    WCHAR pszFilePath[1024];   
 	WCHAR *pszShortcut = (WCHAR*)[path fileSystemRepresentationW];
 	
     // assume failure
@@ -391,7 +391,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	
     // obtain the IShellLink interface
 	
-    if(FAILED(CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, &IID_IShellLink, (LPVOID*)&psl))) {
+    if(FAILED(CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, &IID_IShellLinkW, (LPVOID*)&psl))) {
 	
 		NSLog(@"IShellLink CoCreateInstance failed");
 		DWORD errNum=GetLastError();
@@ -408,14 +408,13 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 			
             // Resolve the link, this may post UI to find the link
             if (SUCCEEDED(psl->lpVtbl->Resolve(psl, 0, SLR_NO_UI))) {
-                psl->lpVtbl->GetPath(psl, pszFilePath, nPathLen, NULL, 0);
+                psl->lpVtbl->GetPath(psl, pszFilePath, 1024, NULL, 0);
 				
                 ppf->lpVtbl->Release(ppf);
 				
                 psl->lpVtbl->Release(psl);
 
-				// The actual returned value of GetPath seems to be a UTF8 string - not a wide char string
-				NSString* resolvedPath = [NSString stringWithUTF8String: pszFilePath];
+				NSString* resolvedPath = [NSString stringWithFormat:@"%S", pszFilePath];
 				// Mac-ify the path
 				resolvedPath = [resolvedPath stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
 				return resolvedPath;
@@ -500,7 +499,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 
    do{
     if(wcscmp(findData.cFileName,L".")!=0 && wcscmp(findData.cFileName,L"..")!=0)
-     [result addObject:[NSString stringWithCharacters:findData.cFileName length:wcslen(findData.cFileName)]];
+      [result addObject:[NSString stringWithCharacters:findData.cFileName length:wcslen(findData.cFileName)]];
    }while(FindNextFileW(handle,&findData));
 
    FindClose(handle);
