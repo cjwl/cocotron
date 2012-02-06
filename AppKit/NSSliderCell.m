@@ -175,6 +175,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(double)closestTickMarkValueToValue:(double)value {
+	if (_numberOfTickMarks < 1) {
+		return value;
+	}
    double closestValue=[self tickMarkValueAtIndex:0];
    NSInteger i;
    
