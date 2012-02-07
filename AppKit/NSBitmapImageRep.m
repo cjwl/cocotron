@@ -121,6 +121,8 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
     
     if(imageRep!=nil)
      [result addObject:imageRep];
+	   
+	   [imageRep release];
 }
 
    CFRelease(imageSource);
@@ -370,10 +372,11 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
       if(_bitmapPlanes[i]!=NULL)
        NSZoneFree(NULL,_bitmapPlanes[i]);
        
-     NSZoneFree(NULL,_bitmapPlanes);
 }
    }
-
+	if(_bitmapPlanes!=NULL){
+	NSZoneFree(NULL,_bitmapPlanes);
+	}
    CGImageRelease(_cgImage);
    [super dealloc];
 }
@@ -584,6 +587,7 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
 	if ([properties count]) {
 		id compressionFactor = [properties valueForKey:NSImageCompressionFactor];
 		if (compressionFactor) {
+			CGProperties = [NSMutableDictionary dictionary];
 			[CGProperties setValue:compressionFactor forKey:(id)kCGImageDestinationLossyCompressionQuality];
 		}
 	}

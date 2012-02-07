@@ -11,6 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 
 @implementation NSNibHelpConnector
+- (void)dealloc
+{
+	[_file release];
+	[_marker release];
+	[super dealloc];
+}
 
 -file {
     return _file;
