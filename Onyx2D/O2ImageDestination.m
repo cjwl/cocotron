@@ -186,6 +186,9 @@ bool O2ImageDestinationFinalize(O2ImageDestinationRef self) {
    }
 	[self->_consumer release]; // This is needed so the consumer can finalize its work before we exit this function
 	self->_consumer = nil;
+   if (self->_options)
+	   CFRelease(self->_options);
+	self->_options = NULL;
 	
    return TRUE;
 }

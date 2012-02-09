@@ -105,10 +105,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_windowWillClose:(NSNotification *)note {
-   [_window setWindowController:nil];
-   _window=nil;
-   
-  if (_document){
+	[self setWindow:nil];
+
+	if (_document){
    [[self retain] autorelease];
 
    if([self shouldCloseDocument] || [[_document windowControllers] count]==1)
