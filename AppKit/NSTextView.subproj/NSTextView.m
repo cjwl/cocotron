@@ -2225,7 +2225,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if([self shouldDrawInsertionPoint])
     [self _displayInsertionPointWithState:[[self window] isKeyWindow]];
    _firstResponderButNotEditingYet = YES;
-
+	_didSendTextDidEndNotification = NO;
+	
    return YES;
 }
 
@@ -2250,6 +2251,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSNotification *note=[NSNotification notificationWithName:NSTextDidEndEditingNotification object:self userInfo:nil];
 
    [[NSNotificationCenter defaultCenter] postNotification:note];
+   _didSendTextDidEndNotification=NO;
    }
 
    
