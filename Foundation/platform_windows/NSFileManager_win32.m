@@ -29,6 +29,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #pragma mark -
 #pragma mark Utility Methods
 
+// Adapted from http://pastebin.com/bEkJVQx9
+static int CopyDirectoryW(CONST WCHAR* cszFrom, CONST WCHAR* cszTo) {
+	int success = CreateDirectoryW(cszTo, NULL) != 0;
+	if (success) {
+		WIN32_FIND_DATAW FindFileData;
+		HANDLE hFindFile;
+		
+		WCHAR cszDirectoryFindPattern[1024] = {0};
+		swprintf(cszDirectoryFindPattern, L"\\\\?\\%s\\*", cszFrom);
+		
+		if ((hFindFile = FindFirstFileW(cszDirectoryFindPattern, &FindFileData)) != INVALID_HANDLE_VALUE) {
+			do {
+				if (*FindFileData.cFileName == '.')
+					continue;
+				
+				WCHAR cszFileOrDirectoryFrom[1024] = {0};
+				WCHAR cszFileOrDirectoryTo[1024] = {0};
+				swprintf(cszFileOrDirectoryFrom, L"%s\\%s", cszFrom, FindFileData.cFileName);
+				swprintf(cszFileOrDirectoryTo, L"%s\\%s", cszTo, FindFileData.cFileName);
+				
+				if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+					success = CopyDirectoryW(cszFileOrDirectoryFrom, cszFileOrDirectoryTo);
+				}
+				else {
+					success = CopyFileW(cszFileOrDirectoryFrom, cszFileOrDirectoryTo, YES);
+				}
+				if (success == 0) {
+					break;
+				}
+			} while(FindNextFileW(hFindFile, &FindFileData));
+			FindClose(hFindFile);
+		}
+	}
+	return success;
+}
+
 static NSString *TranslatePath( NSString *path )
 {
 	NSInteger i,length=[path length],resultLength=0;
@@ -162,10 +198,6 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return NO;
 	}
 	
-	if([[srcAttributes fileType] isEqual:NSFileTypeRegular] == NO) {
-		return NO;
-	}
-	
 	NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];
 	
 	if(dstAttributes!=nil){
@@ -174,14 +206,31 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 			
 			*error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
 		}
-		
 		return NO;
 	}
 	
-	if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES)) {
-		return NO;
+	BOOL isDirectory = NO;
+	if ([self fileExistsAtPath:fromPath isDirectory:&isDirectory] && isDirectory) {
+		if(!CopyDirectoryW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW])) {
+			if(error!=NULL){
+				NSString *msg = [NSString stringWithFormat:@"Copy error (%d)", GetLastError()];
+				NSDictionary *userInfo=[NSDictionary dictionaryWithObject:msg forKey:NSLocalizedDescriptionKey];
+				*error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
+			}
+			NSLog(@"FILE Error %@ %@ %d", fromPath, toPath, GetLastError());
+			return NO;
+		}
+	} else {
+		if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES)) {
+			if(error!=NULL){
+				NSString *msg = [NSString stringWithFormat:@"Copy error (%d)", GetLastError()];
+				NSDictionary *userInfo=[NSDictionary dictionaryWithObject:msg forKey:NSLocalizedDescriptionKey];
+				*error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
+			}
+			NSLog(@"FILE Error %@ %@ %d", fromPath, toPath, GetLastError());
+			return NO;
+		}
 	}
-	
 	return YES;
 }
 
