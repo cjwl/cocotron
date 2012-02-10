@@ -32,6 +32,7 @@ typedef enum {
    NSString *_dateFormat;
    BOOL _allowsNaturalLanguage;
    NSDictionary *_locale;
+   NSTimeZone* _tz;
 }
 
 -initWithDateFormat:(NSString *)format allowNaturalLanguage:(BOOL)flag; // shouldn't this be "allows" ?
@@ -49,11 +50,14 @@ typedef enum {
 -(void)setDateFormat:(NSString *)format;
 
 - (NSString *)stringFromDate:(NSDate *)date;
+- (NSDate*)dateFromString:(NSString*)string;
 - (NSArray *)shortStandaloneWeekdaySymbols;
 - (NSArray *)standaloneWeekdaySymbols;
 
 -(void)setLenient:(BOOL)value;
 -(void)setFormatterBehavior:(NSDateFormatterBehavior)value;
+-(void)setTimeZone:(NSTimeZone*)tz;
+-(NSTimeZone*)timeZone;
 
 @end
 
@@ -89,4 +93,4 @@ NSInteger NSMillisecondsFromTimeInterval(NSTimeInterval interval); // 0-999
 // interval will be time-zone adjusted
 NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,NSDictionary *locale,NSTimeZone *timeZone);
 
-NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale);
+NSDate *NSDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale, NSTimeZone *timeZone);
