@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <objc/message.h>
 #import "forwarding.h"
-#import <stdio.h>
+
 
 BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    struct objc_class *class=object->isa;
