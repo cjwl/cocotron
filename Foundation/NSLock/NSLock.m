@@ -26,13 +26,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--(NSString *)name {
-   NSInvalidAbstractInvocation();
-   return nil;
+-(NSString *)name
+{
+    return _name;
 }
 
--(void)setName:(NSString *)value {
-   NSInvalidAbstractInvocation();
+-(void)setName:(NSString *)value
+{
+    if(value!=_name)
+    {
+        [_name release];
+        _name=[value retain];
+    }
 }
 
 -(void)lock {

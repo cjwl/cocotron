@@ -25,41 +25,27 @@
     self = [super init];
     if (self != nil)
     {
-        InitializeCriticalSection( &_lock );
+        InitializeCriticalSection( &_winlock );
     }
     return self;
 }
 
 - (void)dealloc
 {
-    DeleteCriticalSection(&_lock);
+    DeleteCriticalSection(&_winlock);
     [super dealloc];
 }
 
--(NSString *)name;
-{
-    return _name;
-}
-
--(void)setName:(NSString *)value;
-{
-    if(value!=_name)
-    {
-        [_name release];
-        _name=[value retain];
-    }
-}
-
 -(void) lock {
-    EnterCriticalSection(&_lock);
+    EnterCriticalSection(&_winlock);
 }
 
 -(BOOL) tryLock {
-    return TryEnterCriticalSection(&_lock);
+    return TryEnterCriticalSection(&_winlock);
 }
 
 -(void) unlock {
-    LeaveCriticalSection(&_lock);
+    LeaveCriticalSection(&_winlock);
 }
 
 

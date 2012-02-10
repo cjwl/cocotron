@@ -23,13 +23,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--(NSString *)name {
-   NSUnimplementedMethod();
-   return 0;
+-(NSString *)name
+{
+    return _name;
 }
 
--(void)setName:(NSString *)value {
-   NSUnimplementedMethod();
+-(void)setName:(NSString *)value
+{
+    if(value!=_name)
+    {
+        [_name release];
+        _name=[value retain];
+    }
 }
 
 -(NSInteger)condition {

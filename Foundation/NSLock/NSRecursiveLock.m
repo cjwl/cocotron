@@ -28,12 +28,12 @@
     [super dealloc];
 }
 
--(NSString *)name;
+-(NSString *)name
 {
     return _name;
 }
 
--(void)setName:(NSString *)value;
+-(void)setName:(NSString *)value
 {
     if(value!=_name)
     {
@@ -71,7 +71,7 @@
         NSCLog("tried to unlock lock 0x%x owned by thread 0x%x from thread 0x%x", self, _lockingThread, [NSThread currentThread]);
 }
 
--(BOOL)tryLock;
+-(BOOL)tryLock
 {
     BOOL ret=[_lock tryLock];
     if(ret)
