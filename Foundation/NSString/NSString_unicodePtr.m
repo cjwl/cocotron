@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSRaiseException.h>
+#import <Foundation/NSStringUTF8.h>
 
 @implementation NSString_unicodePtr
 
@@ -44,6 +45,20 @@ NSString *NSString_unicodePtrNew(NSZone *zone,const unichar *unicode,NSUInteger 
 
 -(NSUInteger)length {
    return _length;
+}
+
+-(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
+    switch (encoding) {
+        case NSUTF8StringEncoding:
+            return NSConvertUTF16toUTF8(_unicode, _length,NULL);
+        case NSUnicodeStringEncoding:
+            return _length;
+
+        default:
+            NSUnimplementedMethod();
+            NSLog(@"For encoding: %i", encoding);
+            return 0;
+    }
 }
 
 -(unichar)characterAtIndex:(NSUInteger)location {

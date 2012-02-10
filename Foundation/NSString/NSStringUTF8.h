@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSString.h>
 
+NSUInteger NSConvertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length,uint8_t *utf8);
+
 unichar *NSUTF8ToUnicode(const char *utf8,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone);
 

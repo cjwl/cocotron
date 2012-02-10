@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringSymbol.h>
 #import <Foundation/NSRaise.h>
 
-static NSUInteger convertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length,uint8_t *utf8){
+NSUInteger NSConvertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length,uint8_t *utf8){
    NSUInteger utf8Length=0;
    NSUInteger i;
    
@@ -49,10 +49,10 @@ static NSUInteger convertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length
 
 char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,
   BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate){
-  NSUInteger  utf8Length=convertUTF16toUTF8(characters,length,NULL);
+  NSUInteger  utf8Length=NSConvertUTF16toUTF8(characters,length,NULL);
   char     *utf8=NSZoneMalloc(NULL,(utf8Length+(zeroTerminate?1:0))*sizeof(unsigned char));
 
-  *resultLength=convertUTF16toUTF8(characters,length,(unsigned char *)utf8);
+  *resultLength=NSConvertUTF16toUTF8(characters,length,(unsigned char *)utf8);
   if(zeroTerminate){
    utf8[*resultLength]='\0';
    (*resultLength)++;
