@@ -26,6 +26,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _length;
 }
 
+-(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
+    switch (encoding) {
+        case NSUTF8StringEncoding:
+            return NSConvertUTF16toUTF8(_unicode, _length,NULL);
+        case NSUnicodeStringEncoding:
+            return _length;
+            
+        default:
+            NSUnimplementedMethod();
+            NSLog(@"For encoding: %i", encoding);
+            return 0;
+    }
+}
+
 -(unichar)characterAtIndex:(NSUInteger)location {
    if(location>=_length){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
