@@ -13,8 +13,6 @@ int OBJCRegisterDLL(HINSTANCE handle);
 
 int APIENTRY DllMain(HINSTANCE handle,DWORD reason,LPVOID _reserved) {
 
-    printf("Foundation dllMain: handle %p, reason %u, objcfunc is %p\n", handle, reason, OBJCRegisterDLL);
-    
    if(reason==DLL_PROCESS_ATTACH)
     return OBJCRegisterDLL(handle);
 
