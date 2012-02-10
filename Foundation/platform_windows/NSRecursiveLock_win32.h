@@ -9,7 +9,7 @@
 #import <windows.h>
 
 @interface NSRecursiveLock_win32 : NSRecursiveLock {
-    CRITICAL_SECTION _winlock;
+    CRITICAL_SECTION _lock;
 }
 
 @end

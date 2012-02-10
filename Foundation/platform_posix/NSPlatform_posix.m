@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle_posix.h>
 #import <Foundation/NSFileManager_posix.h>
 #import <Foundation/NSLock_posix.h>
+#import <Foundation/NSRecursiveLock_posix.h>
 #import <Foundation/NSCondition_posix.h>
 #import <Foundation/NSConditionLock_posix.h>
 #import <Foundation/NSPersistantDomain_posix.h>
@@ -60,6 +61,10 @@ BOOL NSCurrentLocaleIsMetric(){
 
 -(Class)conditionLockClass {
    return [NSConditionLock_posix class];
+}
+
+-(Class)recursiveLockClass {
+    return [NSRecursiveLock_posix class];
 }
 
 -(Class)persistantDomainClass {

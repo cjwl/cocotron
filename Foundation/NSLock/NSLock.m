@@ -26,6 +26,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(void)dealloc
+{
+    [_name release];
+    [super dealloc];
+}
+
 -(NSString *)name
 {
     return _name;
