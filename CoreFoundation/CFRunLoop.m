@@ -96,7 +96,7 @@ CFAbsoluteTime CFRunLoopGetNextTimerFireDate(CFRunLoopRef self,CFStringRef mode)
 }
 
 CFInteger CFRunLoopRunInMode(CFStringRef mode,CFTimeInterval seconds,Boolean returnAfterSourceHandled) {
-   CFRunLoopRef runLoop=CFRunLoopGetCurrent();
+   NSRunLoop    *runLoop=(NSRunLoop*)CFRunLoopGetCurrent();
    NSDate      *before=[NSDate dateWithTimeIntervalSinceNow:seconds];
    
    [runLoop->_continue addObject:[NSNumber numberWithBool:YES]];
@@ -120,8 +120,9 @@ CFInteger CFRunLoopRunInMode(CFStringRef mode,CFTimeInterval seconds,Boolean ret
 }
 
 void CFRunLoopStop(CFRunLoopRef self) {
-   [self->_continue removeLastObject];
-   [self->_continue addObject:[NSNumber numberWithBool:NO]];
+    NSRunLoop    *runLoop=(NSRunLoop*)self;
+   [runLoop->_continue removeLastObject];
+   [runLoop->_continue addObject:[NSNumber numberWithBool:NO]];
 }
 
 void CFRunLoopWakeUp(CFRunLoopRef self) {

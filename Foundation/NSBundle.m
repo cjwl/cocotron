@@ -490,16 +490,14 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(BOOL)isLoaded {
-   NSUnimplementedMethod();
-   return 0;
+   return _isLoaded;
 }
 -(BOOL)preflightAndReturnError:(NSError **)error {
    NSUnimplementedMethod();
    return 0;
 }
 -(BOOL)loadAndReturnError:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   return [self load];
 }
 
 /*

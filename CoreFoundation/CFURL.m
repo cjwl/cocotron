@@ -22,8 +22,8 @@ static NSString *notLegalURLCharacters(){
 }
 
 CFStringRef CFURLCreateStringByAddingPercentEscapes(CFAllocatorRef allocator,CFStringRef self,CFStringRef charactersToLeaveUnescaped,CFStringRef charactersToBeEscaped,CFStringEncoding encoding) {
-   NSCharacterSet *dontEscapeSet=[NSCharacterSet characterSetWithCharactersInString:charactersToLeaveUnescaped?ToNSString(charactersToLeaveUnescaped):@""];
-   NSCharacterSet *escapeSet=[NSCharacterSet characterSetWithCharactersInString:charactersToBeEscaped?ToNSString(charactersToBeEscaped):@""];
+   NSCharacterSet *dontEscapeSet=[NSCharacterSet characterSetWithCharactersInString:charactersToLeaveUnescaped?ToNSString(charactersToLeaveUnescaped):(NSString *)@""];
+   NSCharacterSet *escapeSet=[NSCharacterSet characterSetWithCharactersInString:charactersToBeEscaped?ToNSString(charactersToBeEscaped):(NSString *)@""];
    NSCharacterSet *notLegalEscapeSet=[NSCharacterSet characterSetWithCharactersInString:notLegalURLCharacters()];
    NSUInteger i,length=[ToNSString(self) length],resultLength=0;
    unichar    unicode[length];

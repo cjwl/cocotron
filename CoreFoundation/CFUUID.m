@@ -110,27 +110,27 @@ CFUUIDRef CFUUIDGetConstantUUIDWithBytes(CFAllocatorRef allocator,uint8_t byte0,
 }
 
 CFUUIDBytes CFUUIDGetUUIDBytes(CFUUIDRef self){
-   return self->_bytes;
+    return ((CFUUID *)self)->_bytes;
 }
 
 CFStringRef CFUUIDCreateString(CFAllocatorRef allocator,CFUUIDRef self){
    return (CFStringRef)[[NSString alloc] initWithFormat:@"%02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X%02X%02X",
-    self->_bytes.byte0,
-    self->_bytes.byte1,
-    self->_bytes.byte2,
-    self->_bytes.byte3,
-    self->_bytes.byte4,
-    self->_bytes.byte5,
-    self->_bytes.byte6,
-    self->_bytes.byte7,
-    self->_bytes.byte8,
-    self->_bytes.byte9,
-    self->_bytes.byte10,
-    self->_bytes.byte11,
-    self->_bytes.byte12,
-    self->_bytes.byte13,
-    self->_bytes.byte14,
-    self->_bytes.byte15];
+    ((CFUUID *)self)->_bytes.byte0,
+    ((CFUUID *)self)->_bytes.byte1,
+    ((CFUUID *)self)->_bytes.byte2,
+    ((CFUUID *)self)->_bytes.byte3,
+    ((CFUUID *)self)->_bytes.byte4,
+    ((CFUUID *)self)->_bytes.byte5,
+    ((CFUUID *)self)->_bytes.byte6,
+    ((CFUUID *)self)->_bytes.byte7,
+    ((CFUUID *)self)->_bytes.byte8,
+    ((CFUUID *)self)->_bytes.byte9,
+    ((CFUUID *)self)->_bytes.byte10,
+    ((CFUUID *)self)->_bytes.byte11,
+    ((CFUUID *)self)->_bytes.byte12,
+    ((CFUUID *)self)->_bytes.byte13,
+    ((CFUUID *)self)->_bytes.byte14,
+    ((CFUUID *)self)->_bytes.byte15];
 }
 
 @end

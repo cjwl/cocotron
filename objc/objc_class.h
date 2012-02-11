@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc.h>
 #import "objc_sel.h"
 #import <objc/runtime.h>
+#import <objc/message.h>
 
 enum {
    CLASS_INFO_CLASS=0x001,
