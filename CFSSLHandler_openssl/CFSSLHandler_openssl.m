@@ -3,7 +3,7 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSRaiseException.h>
 
-#import <pthread.h>
+#include <pthread.h>
 #import <openssl/err.h>
 
 @implementation CFSSLHandler(openssl)

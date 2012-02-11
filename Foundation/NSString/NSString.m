@@ -54,8 +54,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaiseException.h>
 #import <Foundation/NSCFTypeID.h>
 #import <Foundation/NSBundle.h>
-#import <limits.h>
-#import <string.h>
+#include <limits.h>
+#include <string.h>
 
 extern BOOL NSObjectIsKindOfClass(id object,Class kindOf);
 

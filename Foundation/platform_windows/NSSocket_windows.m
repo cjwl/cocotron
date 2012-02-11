@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #undef WINVER
 #define WINVER 0x501
-#import <ws2tcpip.h>
+#include <ws2tcpip.h>
 
 // The treatment of SOCKET's as int's is lame, there should probably be a little more formality on the [fF]ileDescriptor methods (typedef int/SOCKET NSFileDescriptor?)
 // What would be nice is enough API in NSFileHandle/NSStream to never need the fd

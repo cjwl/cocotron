@@ -19,8 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/runtime.h>
 #import <Foundation/objc_size_alignment.h>
 #import <objc/objc.h>
-#import <ctype.h>
-#import <assert.h>
+#include <ctype.h>
+#include <assert.h>
 
 typedef void (*NSLogCStringFunc)(const char *string, unsigned length, BOOL withSyslogBanner);
 

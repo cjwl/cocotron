@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 
 #import <sys/param.h>
-#import <string.h>
+#include <string.h>
 #import <objc/message.h>
 
 id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame);

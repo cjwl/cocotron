@@ -16,8 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <sys/resource.h>
 #include <sys/wait.h>
 
-#import <signal.h>
-#import <errno.h>
+#include <signal.h>
+#include <errno.h>
 
 @interface NSTask(NSTask_posix)
 -(void)setTerminationStatus:(int)terminationStatus;

@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaiseException.h>
 
 #import <objc/objc.h>
-#import <stdio.h>
+#include <stdio.h>
 
 typedef void *NSModuleHandle;
 
@@ -32,13 +32,13 @@ OBJC_EXPORT const char *NSLastModuleError(void);
 OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 
 #ifdef WIN32
-#import <windows.h>
+#include <windows.h>
 #else
-#import <dlfcn.h>
+#include <dlfcn.h>
 #import <sys/param.h>
-#import <string.h>
-#import <stdlib.h>
-#import <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #endif
 
 #ifdef WIN32

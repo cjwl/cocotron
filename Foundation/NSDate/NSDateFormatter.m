@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSAttributedString.h>
 #import <Foundation/NSTimeZone.h>
-#import <math.h>
+#include <math.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSCharacterSet.h>

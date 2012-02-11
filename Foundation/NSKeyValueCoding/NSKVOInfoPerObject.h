@@ -1,5 +1,5 @@
 #import <Foundation/NSObject.h>
-#import <pthread.h>
+#include <pthread.h>
 
 @class NSMutableDictionary,NSMutableArray,NSArray,NSKeyObserver;
 

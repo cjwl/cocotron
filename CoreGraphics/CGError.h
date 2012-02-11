@@ -1,3 +1,3 @@
-#import <stdint.h>
+#include <stdint.h>
 
 typedef int32_t CGError;

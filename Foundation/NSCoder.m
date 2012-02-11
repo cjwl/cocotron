@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSRaise.h>
-#import <string.h>
-#import <stdio.h>
+#include <string.h>
+#include <stdio.h>
 
 @implementation NSCoder
 

@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop-InputSource.h>
 #import <Foundation/NSString_win32.h>
 #import <Foundation/NSPlatform_win32.h>
-#import <windows.h>
+#include <windows.h>
 #import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>

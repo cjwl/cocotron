@@ -27,11 +27,11 @@
 #import <Foundation/NSDebug.h>
 
 #ifdef WIN32
-#import <winsock2.h> // for ntohs
+#include <winsock2.h> // for ntohs
 #else
 #include <arpa/inet.h>
 #endif
-#import <string.h>
+#include <string.h>
 
 #import "bonjour.h"
 

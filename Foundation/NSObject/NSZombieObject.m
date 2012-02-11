@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSInvocation.h>
-#import <pthread.h>
+#include <pthread.h>
 
 static pthread_mutex_t zombieLock=PTHREAD_MUTEX_INITIALIZER;
 static NSMapTable *objectToClassName=NULL;

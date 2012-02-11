@@ -9,9 +9,9 @@
 
 #import <Foundation/NSString_defaultEncoding.h>
 #import <Foundation/NSException.h>
-#import <string.h>
-#import <stdlib.h>
-#import <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 NSStringEncoding defaultEncoding()
 {
