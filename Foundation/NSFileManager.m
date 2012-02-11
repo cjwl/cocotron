@@ -140,7 +140,7 @@ NSString * const NSFileSystemFreeSize=@"NSFileSystemFreeSize";
    return 0;
 }
 
--(void)_subpathsAtPath:(NSString *)path basePath:(NSString*)basePath 
+-(void)_subpathsAtPath:(NSString *)path basePath:(NSString*)basePath
 paths:(NSMutableArray*)paths
 {
 	NSArray* files = [self directoryContentsAtPath:path];
@@ -149,21 +149,21 @@ paths:(NSMutableArray*)paths
 	{
 		[paths addObject:[basePath stringByAppendingPathComponent:[files objectAtIndex:x]]];
 	}
-	
+
 	for (x = 0; x < [files count]; x++)
 	{
 		BOOL isDir = NO;
 		NSString* newPath = [path stringByAppendingPathComponent:[files objectAtIndex:x]];
 		[self fileExistsAtPath:newPath isDirectory:&isDir];
 		if (isDir)
-			[self _subpathsAtPath:newPath basePath:[basePath 
+			[self _subpathsAtPath:newPath basePath:[basePath
 stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
 	}
 }
 
 -(NSArray *)subpathsAtPath:(NSString *)path {
 	NSMutableArray *result=[NSMutableArray array];
-	
+
 	[self _subpathsAtPath:path basePath:@"" paths:result];
 	return result;
 }
@@ -177,7 +177,7 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
    return [NSData dataWithContentsOfFile:path];
 }
 
--(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data 
+-(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data
              attributes:(NSDictionary *)attributes {
    NSInvalidAbstractInvocation();
    return NO;

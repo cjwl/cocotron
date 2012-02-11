@@ -107,17 +107,17 @@ static void *nsThreadStartThread(void* t)
 
 +(BOOL)setThreadPriority:(double)value {
    struct sched_param scheduling;
-   
+
    value=MAX(0,MIN(value,1.0));
-   
+
    int policy;
-   
+
    pthread_getschedparam(pthread_self(),&policy,&scheduling);
    int min=sched_get_priority_min(policy);
    int max=sched_get_priority_min(policy);
-   
+
    scheduling.sched_priority=min+(max-min)*value;
-   
+
    pthread_setschedparam(pthread_self(),policy,&scheduling);
 
    return YES;
@@ -180,7 +180,7 @@ static void *nsThreadStartThread(void* t)
    // if we were init'ed before didBecomeMultithreaded, we won't have a lock either
    if(!_sharedObjectLock)
       _sharedObjectLock=[NSLock new];
-    
+
 	if (NSPlatformDetachThread( &nsThreadStartThread, self) == 0) {
 		// No thread has been created. Don't leak:
 		[self release];
@@ -326,11 +326,11 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
    NSConditionLock *waitingLock=[selectorAndArguments objectAtIndex:0];
    SEL              selector=NSSelectorFromString([selectorAndArguments objectAtIndex:1]);
    id               object=[[selectorAndArguments objectAtIndex:2] pointerValue];
-   
+
    [waitingLock lockWhenCondition:0];
-   
+
    [self performSelector:selector withObject:object];
-   
+
    [waitingLock unlockWithCondition:1];
    [selectorAndArguments release];
 }
@@ -356,9 +356,9 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 
          // array retain balanced in _performSelectorOnThreadHelper:
 			[runloop performSelector:@selector(_performSelectorOnThreadHelper:)
-							  target:self 
-							argument:[[NSArray arrayWithObjects:waitingLock, NSStringFromSelector(selector), [NSValue valueWithPointer:object], nil] retain] 
-							   order:0 
+							  target:self
+							argument:[[NSArray arrayWithObjects:waitingLock, NSStringFromSelector(selector), [NSValue valueWithPointer:object], nil] retain]
+							   order:0
 							   modes:modes];
 
 			[waitingLock lockWhenCondition:1];

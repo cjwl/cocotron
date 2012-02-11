@@ -1,9 +1,9 @@
 /* Copyright (c) 2009 Glenn Ganz
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSString_macOSRoman.h>
 #import <Foundation/NSRaise.h>
@@ -160,12 +160,12 @@ unichar *NSMacOSRomanToUnicode(const char *cString,NSUInteger length,
                             NSUInteger *resultLength,NSZone *zone) {
 	unichar *characters=NSZoneMalloc(zone,sizeof(unichar)*length);
 	int      i;
-	
+
 	for(i=0;i<length;i++)
 	{
 		characters[i]=_mapMacOSRomanToUnichar(cString[i]);
 	}
-    
+
 	*resultLength=i;
 	return characters;
 }
@@ -174,18 +174,18 @@ char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
                          BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate) {
 	char *macOSRoman=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
 	int   i;
-	
+
 	for(i=0;i<length;i++){
-		
+
 		if(characters[i]<0x80)
 			macOSRoman[i]=characters[i];
 		else
 		{
-			
+
 			static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
 			int j = 0;
 			BOOL found = NO;
-			
+
 			for(;j < size;j++)
 			{
 				if(mapping_array[j].unicode == characters[i])
@@ -211,7 +211,7 @@ char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
         macOSRoman[i++]='\0';
     }
 	*resultLength=i;
-	
+
 	return macOSRoman;
 }
 
@@ -220,16 +220,16 @@ NSString *NSMacOSRomanCStringNewWithCharacters(NSZone *zone,
     NSString *string;
     NSUInteger  bytesLength;
     char     *bytes;
-    
+
     bytes=NSUnicodeToMacOSRoman(characters,length,lossy,&bytesLength,zone, NO);
-    
+
     if(bytes==NULL)
         string=nil;
     else{
         string=NSString_macOSRomanNewWithBytes(zone,bytes,bytesLength);
         NSZoneFree(zone,bytes);
     }
-    
+
     return string;
 }
 
@@ -237,24 +237,24 @@ NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInte
                                                NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
     NSUInteger i,result=0;
-    
-    
+
+
     if(length+1 > maxLength) {
         cString[0]='\0';
         return NSNotFound;
     }
     for(i=0;i<length && result<=maxLength;i++){
         const unichar code=characters[i];
-        
+
         if(code<0x80)
             cString[result++]=code;
         else {
             unsigned int j;
-            
+
             for(j=0x80;j<=0xFF;j++)
                 if(code==_mapMacOSRomanToUnichar(j))
                     break;
-            
+
             if(j<=0xFF)
                 cString[result++]=j;
             else if(lossy)
@@ -264,13 +264,13 @@ NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInte
             }
         }
     }
-    
+
     cString[result]='\0';
-    
+
     *location=i;
-    
+
     return result;
-    
+
 }
 
 @implementation NSString_macOSRoman
@@ -279,14 +279,14 @@ NSString *NSString_macOSRomanNewWithBytes(NSZone *zone,
                                        const char *bytes,NSUInteger length) {
 	NSString_macOSRoman *string;
 	int                i;
-	
+
 	string=NSAllocateObject([NSString_macOSRoman class],length*sizeof(char),zone);
-	
+
 	string->_length=length;
 	for(i=0;i<length;i++)
 		string->_bytes[i]=((uint8_t *)bytes)[i];
-	string->_bytes[i]='\0';	
-	
+	string->_bytes[i]='\0';
+
 	return string;
 }
 
@@ -299,25 +299,25 @@ NSString *NSString_macOSRomanNewWithBytes(NSZone *zone,
 		NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
 						 location,[self length]);
 	}
-	
+
 	return _mapMacOSRomanToUnichar(_bytes[location]);
 }
 
 -(void)getCharacters:(unichar *)buffer {
 	int i;
-	
+
 	for(i=0;i<_length;i++)
 		buffer[i]=_mapMacOSRomanToUnichar(_bytes[i]);
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
 	NSInteger i,loc=range.location,len=range.length;
-	
+
 	if(NSMaxRange(range)>_length){
 		NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
 						 NSStringFromRange(range),[self length]);
 	}
-	
+
 	for(i=0;i<len;i++)
 		buffer[i]=_mapMacOSRomanToUnichar(_bytes[loc+i]);
 }

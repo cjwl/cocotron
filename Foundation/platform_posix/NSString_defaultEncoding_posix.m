@@ -1,9 +1,9 @@
 /* Copyright (c) 2009 Glenn Ganz
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 
@@ -16,11 +16,11 @@
 NSStringEncoding defaultEncoding()
 {
     //don't use objc calls because they call often defaultCStringEncoding
-    
+
     static int defaultEncoding = -1;
-    
+
 	if(defaultEncoding == -1) {
-		
+
         char *lang = getenv("LANG");
 		if (lang && *lang) {
 			const char* firstpart = strtok (lang, ".");
@@ -28,12 +28,12 @@ NSStringEncoding defaultEncoding()
 				char* secondpart = strtok (NULL, "\0");
 				if (secondpart != NULL) {
 					int i;
-					
+
 					//make all upper
 					for(i = 0; i < strlen(secondpart);i++)
 					{
 						secondpart[i] = toupper(secondpart[i]);
-					}					
+					}
 					if(strcmp(secondpart, "UTF-8") == 0 || strcmp(secondpart, "UTF8") == 0)
 					{
 						defaultEncoding = NSUTF8StringEncoding;
@@ -83,20 +83,20 @@ defaultEncoding = NSISOLatin1StringEncoding;
 						defaultEncoding = NSWindowsCP1254StringEncoding;
 // FIXME: use until the right encoding is implemented
 defaultEncoding = NSISOLatin1StringEncoding;
-					}					
-                    
+					}
+
                     //TODO: add more encodings
 				}
 			}
 		}
-		
+
 		if(defaultEncoding == -1)
 		{
 			//set the default to ASCII
 			defaultEncoding = NSISOLatin1StringEncoding; // FIXME: should be utf8?
 		}
 	}
-	
-	return defaultEncoding;	
-    
+
+	return defaultEncoding;
+
 }

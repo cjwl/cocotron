@@ -14,8 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPredicate.h>
-#import <Foundation/NSSortDescriptor.h> 
-#import <Foundation/NSIndexSet.h> 
+#import <Foundation/NSSortDescriptor.h>
+#import <Foundation/NSIndexSet.h>
 #import <Foundation/NSRaiseException.h>
 #import <string.h>
 #import <stdlib.h>
@@ -111,7 +111,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      objects[i]=va_arg(arguments,id);
     va_end(arguments);
    }
-   
+
    if(self==[NSMutableArray class])
     return NSAutorelease(NSMutableArray_concreteNew(NULL,objects,count));
 
@@ -231,26 +231,26 @@ static inline void memswp(void* a, void* b, size_t width)
 
 
 // iterative mergesort based on
-//  http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm  
+//  http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm
 
-static int mergesortL(void *base, size_t nel, size_t width, int (*compar)(const  
+static int mergesortL(void *base, size_t nel, size_t width, int (*compar)(const
 void *, const void *))
 {
 	NSInteger h, i, j, k, l, m, n = nel;
 	void* A; // points to an element
 	void* B = NSZoneMalloc(NULL,(n/2 + 1) * width); // points to a temp array
-	
+
 
 	for (h = 1; h < n; h += h) {
 		for (m = n - 1 - h; m >= 0; m -= h + h) {
 			l = m - h + 1;
 			if (l < 0)
 				l = 0;
-			
+
 			// Copy first half of the array into helper B:
 			j = m+1;
 			memcpy(B, base + (l * width), (j-l) * width);
-			
+
 			for (i = 0, k = l; k < j && j <= m + h; k++) {
 				A = base + (width * j); // A = [self objectAtIndex:j];
 				if (compar(A, B + (i * width)) > 0) {
@@ -259,7 +259,7 @@ void *, const void *))
 					memswp(base+(k*width), A, width); j+=1;
 				}
 			}
-			
+
 			while (k < j) // This loop could be optimized
 				memswp(base+(k++*width), B+(i++*width), width);
 		}
@@ -269,33 +269,33 @@ void *, const void *))
 	return 0;
 }
 
-static int _nsmutablearraycompareindices(const void* v1, const void* v2) 
-{ 
-        int i1 = (*(int*)v1); 
-        int i2 = (*(int*)v2); 
-        int result = i1 == i2 ? 0 : (i1<i2 ? -1 : 1); 
-        return result; 
-} 
+static int _nsmutablearraycompareindices(const void* v1, const void* v2)
+{
+        int i1 = (*(int*)v1);
+        int i2 = (*(int*)v2);
+        int result = i1 == i2 ? 0 : (i1<i2 ? -1 : 1);
+        return result;
+}
 
--(void) removeObjectsFromIndices: (NSUInteger*) indices 
-                                         numIndices: (NSUInteger) count 
-{ 
-        if (count) { 
-                NSUInteger lastIndex = NSNotFound; 
-                NSUInteger sortedIndices[count]; 
-                NSInteger i; 
-                memcpy(sortedIndices, indices, sizeof(NSUInteger)*count); 
-                mergesortL(sortedIndices, sizeof(NSUInteger), count,   
-&_nsmutablearraycompareindices); 
-                for(i=count-1;i>=0;i--) { 
-                        NSUInteger index = sortedIndices[i]; 
-                        if (index!=lastIndex) { 
-                                [self removeObjectAtIndex: index]; 
-                        } 
-                        lastIndex = index; 
-                }       
-        } 
-} 
+-(void) removeObjectsFromIndices: (NSUInteger*) indices
+                                         numIndices: (NSUInteger) count
+{
+        if (count) {
+                NSUInteger lastIndex = NSNotFound;
+                NSUInteger sortedIndices[count];
+                NSInteger i;
+                memcpy(sortedIndices, indices, sizeof(NSUInteger)*count);
+                mergesortL(sortedIndices, sizeof(NSUInteger), count,
+&_nsmutablearraycompareindices);
+                for(i=count-1;i>=0;i--) {
+                        NSUInteger index = sortedIndices[i];
+                        if (index!=lastIndex) {
+                                [self removeObjectAtIndex: index];
+                        }
+                        lastIndex = index;
+                }
+        }
+}
 
 -(void)removeObjectsInArray:(NSArray *)other {
    NSInteger count=[other count];
@@ -306,30 +306,30 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
    }
 }
 
--(void)removeObjectsAtIndexes:(NSIndexSet *)indexes { 
-        NSUInteger index = [indexes lastIndex]; 
+-(void)removeObjectsAtIndexes:(NSIndexSet *)indexes {
+        NSUInteger index = [indexes lastIndex];
 
-        while(index != NSNotFound) 
-        { 
-                [self removeObjectAtIndex:index]; 
-                index = [indexes indexLessThanIndex:index]; 
-        } 
+        while(index != NSNotFound)
+        {
+                [self removeObjectAtIndex:index];
+                index = [indexes indexLessThanIndex:index];
+        }
 
-} 
+}
 
 -(void)insertObject:object atIndex:(NSUInteger)index {
    NSInvalidAbstractInvocation();
 }
 
--(void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes { 
-        NSInteger i; 
-        NSInteger index = [indexes firstIndex]; 
-        for(i = 0; i < [objects count]; i++) 
-        { 
-                [self insertObject:[objects objectAtIndex:i] atIndex:index]; 
-                index = [indexes indexGreaterThanIndex:index]; 
-        } 
-} 
+-(void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
+        NSInteger i;
+        NSInteger index = [indexes firstIndex];
+        for(i = 0; i < [objects count]; i++)
+        {
+                [self insertObject:[objects objectAtIndex:i] atIndex:index];
+                index = [indexes indexGreaterThanIndex:index];
+        }
+}
 
 -(void)setArray:(NSArray *)other {
    [self removeAllObjects];
@@ -349,13 +349,13 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
 -(void)replaceObjectsInRange:(NSRange)range
         withObjectsFromArray:(NSArray *)array range:(NSRange)arrayRange {
    NSInteger i;
-   
+
    for(i=0;i<range.length && i<arrayRange.length;i++)
     [self replaceObjectAtIndex:range.location+i withObject:[array objectAtIndex:arrayRange.location+i]];
-    
+
    if(i<range.length)
     [self removeObjectsInRange:NSMakeRange(range.location+i,range.length-i)];
-    
+
    if(i<arrayRange.length){
     for(;i<arrayRange.length;i++)
      [self insertObject:[array objectAtIndex:arrayRange.location+i] atIndex:range.location+i];
@@ -375,7 +375,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
 -(void)exchangeObjectAtIndex:(NSUInteger)index withObjectAtIndex:(NSUInteger)other {
    id object=[[self objectAtIndex:index] retain];
    id otherObject=[self objectAtIndex:other];
-   
+
    [self replaceObjectAtIndex:index withObject:otherObject];
    [self replaceObjectAtIndex:other withObject:object];
    [object release];
@@ -389,7 +389,7 @@ static int selectorCompare(id object1,id object2,void *userData){
 
 
 -(void)sortUsingSelector:(SEL)selector {
-   [self sortUsingFunction:selectorCompare context:selector];
+   [self sortUsingFunction:selectorCompare context:(void *)selector];
 }
 
 // iterative mergesort based on
@@ -401,10 +401,10 @@ static int selectorCompare(id object1,id object2,void *userData){
    NSInteger h, i, j, k, l, m, n = [self count];
    id  A, *B = NSZoneMalloc(NULL,(n/2 + 1) * sizeof(id));
 
-// to prevent retain counts from temporarily hitting zero.  
+// to prevent retain counts from temporarily hitting zero.
    for(i=0;i<n;i++)
     [[self objectAtIndex:i] retain];
-    
+
    for (h = 1; h < n; h += h)
    {
       for (m = n - 1 - h; m >= 0; m -= h + h)
@@ -432,10 +432,10 @@ static int selectorCompare(id object1,id object2,void *userData){
             [self replaceObjectAtIndex:k++ withObject:B[i++]];
       }
    }
-   
+
    for(i=0;i<n;i++)
     [[self objectAtIndex:i] release];
-    
+
    free(B);
 }
 
@@ -461,12 +461,12 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
    NSUInteger start=0;
    NSUInteger end=[self count];
    NSUInteger mid=0;
-   
+
    // do a binary search to find an object NSOrderedSame
    while (mid = (start + end) / 2, start < end) {
       id other=[self objectAtIndex:mid];
       NSComparisonResult res=compareObjectsUsingDescriptors(obj, other, descriptors);
-      
+
       if(res==NSOrderedAscending) {
             end = mid;
       }
@@ -489,12 +489,12 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] predicate is nil",isa,_cmd];
     return;
    }
-   
+
    NSInteger count=[self count];
-   
+
    while(--count>=0){
     id check=[self objectAtIndex:count];
-    
+
     if(![predicate evaluateWithObject:check])
      [self removeObjectAtIndex:count];
    }

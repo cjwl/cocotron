@@ -116,7 +116,7 @@ const char * const *NSProcessInfoArgv=NULL;
    if(_arguments==nil){
     _arguments=[[[NSPlatform currentPlatform] arguments] retain];
    }
-  
+
    return _arguments;
 }
 

@@ -54,7 +54,7 @@ static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOO
                       descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S.%F"
                       timeZone:[NSTimeZone systemTimeZone] locale:nil];
       NSString *process=[[NSProcessInfo processInfo] processName];
-      
+
       NSLogFormat(@"%@ %@[%d:%lx] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),message);
    }
    else
@@ -66,16 +66,16 @@ static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOO
 
 void NSLogv(NSString *format,va_list arguments) {
    NSString *string=NSStringNewWithFormat(format,nil,arguments,NULL);
-   
+
    NSUInteger length=[string length],byteLength;
    unichar  unicode[length];
    char    *bytes;
-   
+
    [string getCharacters:unicode];
    bytes=NSString_cStringFromCharacters(unicode,length,YES,&byteLength,NULL,NO);
    [string release];
    if (bytes == NULL) return;
-   
+
    assert(sNSLogCString != NULL);
    sNSLogCString(bytes,byteLength,YES);
    NSZoneFree(NULL,bytes);
@@ -114,7 +114,7 @@ const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *
 	return objc_skip_type_specifier(type,NO);
 }
 
-SEL NSSelectorFromString(NSString *selectorName) {   
+SEL NSSelectorFromString(NSString *selectorName) {
    NSUInteger length=[selectorName length];
    char     cString[length+1];
 

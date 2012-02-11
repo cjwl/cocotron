@@ -65,15 +65,15 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 +(BOOL)isSubclassOfClass:(Class)cls {
    Class check=self;
-   
+
    do {
     check=[check superclass];
-    
+
     if(check==cls)
      return YES;
-     
+
    }while(check!=[NSObject class]);
-   
+
    return NO;
 }
 
@@ -210,7 +210,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 -(NSUInteger)_frameLengthForSelector:(SEL)selector {
    NSMethodSignature *signature=[self methodSignatureForSelector:selector];
-   
+
    return [signature frameLength];
 }
 
@@ -268,7 +268,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 -performSelector:(SEL)selector {
    IMP imp = objc_msg_lookup(self, selector);
-   
+
    return imp(self, selector);
 }
 

@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 extern NSMutableArray *_liveTasks; // = nil;
 
 @implementation NSTask_linux
- 
+
 +(void)initialize {
    if (self == [NSTask_linux class]) {
        struct sigaction sa;
@@ -56,7 +56,7 @@ extern NSMutableArray *_liveTasks; // = nil;
    int status;
 
    [super signalPipeReadNotification:note];
-   
+
    pid = wait4(-1, &status, WNOHANG, NULL);
    if (pid < 0) {
        [NSException raise:NSInvalidArgumentException
@@ -76,20 +76,20 @@ extern NSMutableArray *_liveTasks; // = nil;
                        [task setTerminationStatus:WEXITSTATUS(status)];
                    else
                        [task setTerminationStatus:-1];
-                   
+
                    [task taskFinished];
-                   
+
                    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName: NSTaskDidTerminateNotification object:task]];
-                   
+
                    return;
                }
            }
        }
-       
+
        // something got out of synch here
        [NSException raise:NSInternalInconsistencyException
                    format:@"wait4() returned %d, but we have no matching task!", pid];
    }
 }
-   
+
 @end

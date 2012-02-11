@@ -72,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isAtEnd {
     NSUInteger length = [_string length];
     NSUInteger currentLocation = _location;
-    
+
     for(;currentLocation < length;currentLocation++){
         if([_skipSet characterIsMember:[_string characterAtIndex:currentLocation]] == YES) {
             continue;
@@ -81,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             return NO;
         }
     }
-    
+
     return YES;
 }
 
@@ -95,7 +95,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)scanInt:(int *)valuep {
 	long long scanValue=0;
-	
+
 	// This assumes sizeof(long long) >= sizeof(int).
 	if(![self scanLongLong:&scanValue])
 		return NO;
@@ -107,13 +107,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		else
 			*valuep=(int)scanValue;
 	}
-	
+
 	return YES;
 }
 
 -(BOOL)scanInteger:(NSInteger *)valuep{
 	long long scanValue=0;
-	
+
 	// This assumes sizeof(long long) >= sizeof(NSInteger).
 	if(![self scanLongLong:&scanValue])
 		return NO;
@@ -125,7 +125,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		else
 			*valuep=(NSInteger)scanValue;
 	}
-	
+
 	return YES;
 }
 
@@ -158,7 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      if(!hasOverflow){
       int c=unicode-'0';
 
-      // Inspired by http://www.math.utoledo.edu/~dbastos/overflow.html 
+      // Inspired by http://www.math.utoledo.edu/~dbastos/overflow.html
       if ((long_long_MAX-c)/10<value)
        hasOverflow=YES;
       else
@@ -217,7 +217,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    for (i = 0; i < len; i++)
    {
-      c  = [_string characterAtIndex:i + _location];    
+      c  = [_string characterAtIndex:i + _location];
       if (c == decimalSeperator) c = '.';
       p[i] = (char)c;
    }
@@ -325,12 +325,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned value=0;
    BOOL     hasValue=NO;
    BOOL     overflow=NO;
-   
+
    for(;_location<[_string length];_location++){
     unichar unicode=[_string characterAtIndex:_location];
 
     switch(state){
-    
+
      case STATE_SPACE:
       if([_skipSet characterIsMember:unicode])
        state=STATE_SPACE;
@@ -356,7 +356,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else
        return NO;
       break;
-      
+
      case STATE_ZERO:
       state=STATE_HEX;
       if(unicode=='x' || unicode=='X')
@@ -388,7 +388,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(unicode>='A' && unicode<='F'){
        if(!overflow){
         unsigned check=value*16+(unicode-'A')+10;
-        
+
         if(check>=value)
          value=check;
         else {
@@ -400,20 +400,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else {
        if(valuep!=NULL)
         *valuep=value;
-        
+
        return YES;
       }
       break;
     }
    }
-   
+
    if(hasValue){
     if(valuep!=NULL)
      *valuep=value;
-     
+
     return YES;
    }
-    
+
    return NO;
 }
 
@@ -426,12 +426,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned long long value=0;
    BOOL     hasValue=NO;
    BOOL     overflow=NO;
-   
+
    for(;_location<[_string length];_location++){
 		unichar unicode=[_string characterAtIndex:_location];
-		
+
 		switch(state){
-				
+
 			case STATE_SPACE:
 				if([_skipSet characterIsMember:unicode])
 					state=STATE_SPACE;
@@ -457,7 +457,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				else
 					return NO;
 				break;
-				
+
 			case STATE_ZERO:
 				state=STATE_HEX;
 				if(unicode=='x' || unicode=='X')
@@ -489,7 +489,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				else if(unicode>='A' && unicode<='F'){
 					if(!overflow){
 						unsigned check=value*16+(unicode-'A')+10;
-						
+
 						if(check>=value)
 							value=check;
 						else {
@@ -501,20 +501,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				else {
 					if(valuep!=NULL)
 						*valuep=value;
-					
+
 					return YES;
 				}
 				break;
 		}
    }
-   
+
    if(hasValue){
 		if(valuep!=NULL)
 			*valuep=value;
-		
+
 		return YES;
    }
-	
+
    return NO;
 }
 
@@ -524,13 +524,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSStringCompareOptions compareOption = 0;
     NSRange range = {0,[string length]};
     NSInteger oldLocation =_location;
-    
+
     BOOL result = NO;
-    
+
     if(!_isCaseSensitive) {
         compareOption = NSCaseInsensitiveSearch;
     }
-    
+
     for(;_location<length;_location++) {
         unichar     unicode=[_string characterAtIndex:_location];
         NSString    *subStr = [_string substringFromIndex:_location];
@@ -538,30 +538,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             result = NO;
             break;
         }
-        
-        if([_skipSet characterIsMember:unicode] == YES) 
+
+        if([_skipSet characterIsMember:unicode] == YES)
         {
             continue;
         }
         if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
             if (stringp != NULL)
                 *stringp = string;
-            
+
             _location += [string length];
             result = YES;
             break;
-        } 
+        }
         else {
             result = NO;
             break;
         }
 
     }
-    
+
     if(result == NO) {
         _location = oldLocation;
     }
-    
+
     return result;
 }
 
@@ -573,7 +573,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSStringCompareOptions compareOption = 0;
     NSRange range = {0,[string length]};
     NSInteger oldLocation =_location;
-    
+
     if(!_isCaseSensitive) {
         compareOption = NSCaseInsensitiveSearch;
     }
@@ -581,11 +581,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     for(;_location<length;_location++) {
         unichar unicode=[_string characterAtIndex:_location];
         NSString    *subStr = [_string substringFromIndex:_location];
-        
+
         if([subStr length] < [string length]) {
-            _location = oldLocation;  
+            _location = oldLocation;
             return NO;
-        } 
+        }
         if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
             if (scanStarted) {
                 if (stringp != NULL)
@@ -611,7 +611,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return YES;
     }
     else {
-        _location = oldLocation;  
+        _location = oldLocation;
         return NO;
     }
 }
@@ -661,10 +661,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int resultLength = 0;
     BOOL scanStarted = NO;
     NSInteger oldLocation =_location;
-    
+
     for(;_location<length;_location++) {
         unichar unicode=[_string characterAtIndex:_location];
-        
+
         if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
             continue;
         else if ([charset characterIsMember:unicode])
@@ -674,16 +674,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             result[resultLength++] = unicode;
         }
     }
-    
+
     if (resultLength > 0) {
         if (stringp != NULL)
             *stringp = [NSString stringWithCharacters:result length:resultLength];
-        
+
         return YES;
     }
     else {
         _location = oldLocation;
-        
+
         return NO;
     }
 }
