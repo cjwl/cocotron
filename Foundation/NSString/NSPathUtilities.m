@@ -178,7 +178,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByExpandingTildeInPath {
-   NSString *user,*homedir,*rest;
+   NSString *homedir,*rest;
    NSUInteger  length=[self length];
    unichar   buffer[length];
    int       i;
@@ -196,7 +196,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(i==1)
     homedir=NSHomeDirectory();
    else{
-    user=[NSString stringWithCharacters:buffer+1 length:i-1];
+    //NSString *user=[NSString stringWithCharacters:buffer+1 length:i-1];
     homedir=nil; //NSHomeDirectoryForUser(user);
    }
 

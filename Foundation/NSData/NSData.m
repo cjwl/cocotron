@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSURLError.h>
 #import <Foundation/NSCFTypeID.h>
 #import <Foundation/NSError.h>
-#import <Foundation/NSDIctionary.h>
+#import <Foundation/NSDictionary.h>
 
 @implementation NSData
 

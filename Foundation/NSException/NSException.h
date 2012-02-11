@@ -69,7 +69,8 @@ FOUNDATION_EXPORT void __NSPopExceptionFrame(NSExceptionFrame *frame);
     __NSPopExceptionFrame(&__exceptionFrame); \
    } \
    else{ \
-    NSException *localException=__exceptionFrame.exception;
+    NSException *localException=__exceptionFrame.exception;\
+    if (localException) { /* caller does not have to read localException */ }
 
 #define NS_ENDHANDLER \
    } \

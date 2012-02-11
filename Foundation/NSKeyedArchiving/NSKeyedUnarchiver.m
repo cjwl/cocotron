@@ -82,7 +82,8 @@ static inline int integerFromCFUID(id object){
    Class         result;
    NSDictionary *plist=[classReference objectForKey:@"$class"];
    NSDictionary *profile=[_objects objectAtIndex:integerFromCFUID(plist)];
-   NSDictionary *classes=[profile objectForKey:@"$classes"];
+   //unused
+   //NSDictionary *classes=[profile objectForKey:@"$classes"];
    NSString     *className=[profile objectForKey:@"$classname"];
    
    // TODO: decode class version
@@ -430,22 +431,22 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 
 -(NSPoint)decodePointForKey:(NSString *)key {
    float    array[4]={ 0,0,0,0 };
-   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
-   
+   [self decodeArrayOfFloats:array forKey:key];
+
    return NSMakePoint(array[0],array[1]);
 }
 
 -(NSSize)decodeSizeForKey:(NSString *)key {
    float     array[4]={ 0,0,0,0 };
-   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
-   
+   [self decodeArrayOfFloats:array forKey:key];
+
    return NSMakeSize(array[0],array[1]);
 }
 
 -(NSRect)decodeRectForKey:(NSString *)key {
    float    array[4]={ 0,0,0,0 };
-   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
-   
+   [self decodeArrayOfFloats:array forKey:key];
+
    return NSMakeRect(array[0],array[1],array[2],array[3]);
 }
 

@@ -9,9 +9,9 @@
 #import <windows.h>
 #import <winsock2.h>
 #import <ws2tcpip.h>
+#import <process.h>
 #endif
 #import <pthread.h>
-#import <process.h>
 
 #if defined(WIN32) || defined(LINUX)
 #define MAXHOSTNAMELEN 512
@@ -440,12 +440,14 @@ Boolean    CFHostSetClient(CFHostRef self,CFHostClientCallBack callback,CFHostCl
 }
 
 static void CFHostCreateEventIfNeeded(CFHostRef self){
+#ifdef WINDOWS
    if(self->_event==NULL){
     self->_event=CreateEvent(NULL,FALSE,FALSE,NULL);
     self->_monitor=[[NSHandleMonitor_win32 handleMonitorWithHandle:self->_event] retain];
     [self->_monitor setDelegate:self];
     [self->_monitor setCurrentActivity:Win32HandleSignaled];
    }
+#endif
 }
 
 Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStreamError *streamError) {
@@ -476,7 +478,9 @@ Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStrea
       self->_request->_name=cStringName;
       self->_request->_addressList=NULL;
       CFHostCreateEventIfNeeded(self);
+#ifdef WINDOWS
       self->_request->_event=self->_event;
+#endif
 
       queueHostToAddressResolver(self);
       return TRUE;
@@ -526,14 +530,18 @@ void CFHostScheduleWithRunLoop(CFHostRef self,CFRunLoopRef runLoop,CFStringRef m
     NSUnimplementedFunction();
 
    CFHostCreateEventIfNeeded(self);
+#ifdef WINDOWS
    [(NSRunLoop *)runLoop addInputSource:self->_monitor forMode:(NSString *)mode];
+#endif
 }
 
 void CFHostUnscheduleFromRunLoop(CFHostRef self,CFRunLoopRef runLoop,CFStringRef mode) {
    if(runLoop!=CFRunLoopGetCurrent())
      NSUnimplementedFunction();
 
+#ifdef WINDOWS
    [(NSRunLoop *)runLoop removeInputSource:self->_monitor forMode:(NSString *)mode];
+#endif
 }
 
 @end

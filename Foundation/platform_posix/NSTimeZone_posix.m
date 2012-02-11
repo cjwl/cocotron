@@ -84,8 +84,9 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         const struct    tzhead *tzHeader;
         const char      *tzData;
         const char      *typeIndices;
-        int             numberOfGMTFlags, numberOfStandardFlags;
-        int             numberOfTransitionTimes, numberOfLocalTimes, numberOfAbbreviationCharacters;
+        //unused
+        //int             numberOfGMTFlags, numberOfStandardFlags, numberOfAbbreviationCharacters;
+        int             numberOfTransitionTimes, numberOfLocalTimes;
         int             i;
     
         const struct tzType {
@@ -112,12 +113,13 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
         tzHeader= (struct tzhead *)[data bytes];
         tzData=(const char *)tzHeader+sizeof(struct tzhead);
-        
-        numberOfGMTFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisgmtcnt));
-        numberOfStandardFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisstdcnt));
+
+        //unused
+        //numberOfGMTFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisgmtcnt));
+        //numberOfStandardFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisstdcnt));
+        //numberOfAbbreviationCharacters = NSSwapBigIntToHost(*((int *)tzHeader->tzh_charcnt));
         numberOfTransitionTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_timecnt));
         numberOfLocalTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_typecnt));
-        numberOfAbbreviationCharacters = NSSwapBigIntToHost(*((int *)tzHeader->tzh_charcnt));
 
         typeIndices = tzData+(numberOfTransitionTimes * 4);
         for (i = 0; i < numberOfTransitionTimes; ++i) {
@@ -136,7 +138,6 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         for (i = 0; i < numberOfLocalTimes; ++i) {
             
          tzTypes=(struct tzType *)tzTypesBytes;
-            NSString *abb = [NSString stringWithCString:abbreviations+tzTypes->abbrevIndex];
             [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
                                                                         isDaylightSavingTime:tzTypes->isDST
                                                                                 abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
@@ -177,8 +178,6 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     
     NSTimeZone      *systemTimeZone = nil;
     NSString        *timeZoneName;
-    NSInteger       secondsFromGMT;
-    NSDictionary    *dictionary;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
         NSError     *error;
@@ -307,6 +306,8 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         else {
             [NSException raise:NSInternalInconsistencyException
                         format:@"could not find zoneinfo directory"];
+            // compiler does not know if NSException+raise:… throws
+            return nil;
         }
     }
     else {

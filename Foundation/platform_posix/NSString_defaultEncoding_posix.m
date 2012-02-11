@@ -21,7 +21,6 @@ NSStringEncoding defaultEncoding()
     
 	if(defaultEncoding == -1) {
 		
-        char charset[20];
         char *lang = getenv("LANG");
 		if (lang && *lang) {
 			const char* firstpart = strtok (lang, ".");

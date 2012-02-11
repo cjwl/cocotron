@@ -61,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     result=[NSMutableArray array];
 
-    while (dire = readdir(dirp)){
+    while ((dire = readdir(dirp))){
 	 if(strcmp(".",dire->d_name)==0)
 	  continue;
 	 if(strcmp("..",dire->d_name)==0)
@@ -76,9 +76,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes {
     // you can set all these, but we don't respect 'em all yet
-    NSDate *date = [attributes objectForKey:NSFileModificationDate];
-    NSString *owner = [attributes objectForKey:NSFileOwnerAccountName];
-    NSString *group = [attributes objectForKey:NSFileGroupOwnerAccountName];
+    //NSDate *date = [attributes objectForKey:NSFileModificationDate];
+    //NSString *owner = [attributes objectForKey:NSFileOwnerAccountName];
+    //NSString *group = [attributes objectForKey:NSFileGroupOwnerAccountName];
     int mode = [[attributes objectForKey:NSFilePosixPermissions] intValue];
 
     if (mode == 0)
@@ -207,10 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if ((r = open([src fileSystemRepresentation], O_RDONLY)) == -1)
             return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: open() for reading"];
 
-        while (count = read(r, &buf, sizeof(buf))) {
-            if (count == -1) 
-                break;
-
+        while ((count = read(r, &buf, sizeof(buf))) > 0) {
             if (write(w, &buf, count) != count) {
                 count = -1;
                 break;
@@ -286,7 +283,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     struct stat statBuf;
     struct passwd *pwd;
     struct group *grp;
-    NSString *type;
 
     if (lstat([path fileSystemRepresentation], &statBuf) != 0) 
         return nil;

@@ -245,7 +245,6 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
 
     daysOfCommonEra = numberOfDaysInCommonEraOfDayMonthAndYear(day, month, year);
     daysOfCommonEra -= NSDaysOfCommonEraOfReferenceDate;
-    daysOfCommonEra;
 
     interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + (milliseconds/1000);
 

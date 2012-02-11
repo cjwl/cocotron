@@ -58,8 +58,6 @@ static CharMapping mapping_array[]=
 const unichar _mapWin1252ToUnichar(const unsigned char c)
 {
 	if (c>= 0x80 && c<=0x9F) {
-		static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
-        
         return mapping_array[c - 0x80].unicode;
 	}
 
@@ -144,7 +142,6 @@ NSString *NSWin1252CStringNewWithCharacters(NSZone *zone,
 
 NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy) {
     NSUInteger i,result=0;
-    NSUInteger  bytesLength;
 
     
     if(length+1 > maxLength) {

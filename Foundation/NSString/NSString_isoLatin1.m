@@ -49,7 +49,6 @@ NSUInteger NSGetISOLatin1CStringWithMaxLength(const unichar *characters,NSUInteg
                                               NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
     NSUInteger i,result=0;
-    NSUInteger  bytesLength;
     
     
     if(length+1 > maxLength) {

@@ -30,8 +30,6 @@ void NSRaiseException(NSString *name,id self,SEL cmd,NSString *fmt,...) {
 void NSCLogThreadId(){
 #ifdef WINDOWS
    fprintf(stderr,"threadId=%p:tick=%d:",GetCurrentThreadId(),GetTickCount());
-#else
-   fprintf(stderr,"");
 #endif
 }
 

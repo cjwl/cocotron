@@ -70,7 +70,7 @@ extern NSMutableArray *_liveTasks; // = nil;
    else {
        @synchronized(_liveTasks) {
            NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
-           while (task = [taskEnumerator nextObject]) {
+           while ((task = [taskEnumerator nextObject])) {
                if ([task processIdentifier] == pid) {
                    if (WIFEXITED(status))
                        [task setTerminationStatus:WEXITSTATUS(status)];

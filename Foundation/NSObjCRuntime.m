@@ -100,8 +100,6 @@ void _NSSetLogCStringFunction(NSLogCStringFunc proc)
 }
 
 const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment) {
-   BOOL quit=NO;
-	
 	NSUInteger ignore=0;
 	if(!size)
 		size=&ignore;

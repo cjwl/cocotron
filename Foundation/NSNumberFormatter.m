@@ -1143,17 +1143,18 @@ static BOOL numberIsPositive(NSNumber *number){
    
    NSString *prefix;
    NSString *suffix;
-   NSString *format;
+   //unused
+   //NSString *format;
 
    if(numberIsNegative(number)){
     prefix=[self negativePrefix];
     suffix=[self negativeSuffix];
-    format=[self negativeFormat];
+    //format=[self negativeFormat];
    }
    else {
     prefix=[self positivePrefix];
     suffix=[self positiveSuffix];
-    format=[self positiveFormat];
+    //format=[self positiveFormat];
    }
    
    NSString *result;
