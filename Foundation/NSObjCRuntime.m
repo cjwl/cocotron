@@ -99,20 +99,25 @@ void _NSSetLogCStringFunction(NSLogCStringFunc proc)
    sNSLogCString=proc?proc:NSLogDefaultCStringFunction;
 }
 
-const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment) {
-	NSUInteger ignore=0;
-	if(!size)
-		size=&ignore;
-	if(!alignment)
-		alignment=&ignore;
 
-   *size=0;
-   *alignment=0;
+const char *NSGetSizeAndAlignment(const char *type, NSUInteger *size, NSUInteger *alignment)
+{
+    NSUInteger ignore = 0;
+    if (!size) {
+        size = &ignore;
+    }
+    if (!alignment) {
+        alignment = &ignore;
+    }
 
-	*size=objc_sizeof_type(type);
-	*alignment=objc_alignof_type(type);
-	return objc_skip_type_specifier(type,NO);
+    *size = 0;
+    *alignment = 0;
+
+    *size = objc_sizeof_type(type);
+    *alignment = objc_alignof_type(type);
+    return objc_skip_type_specifier(type, NO);
 }
+
 
 SEL NSSelectorFromString(NSString *selectorName) {
    NSUInteger length=[selectorName length];

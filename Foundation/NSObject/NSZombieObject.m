@@ -15,18 +15,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static pthread_mutex_t zombieLock=PTHREAD_MUTEX_INITIALIZER;
 static NSMapTable *objectToClassName=NULL;
 
-void NSRegisterZombie(NSObject *object) {
-   pthread_mutex_lock(&zombieLock);
 
-   if(objectToClassName==NULL){
-    objectToClassName=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
-   }
+void NSRegisterZombie(NSObject *object)
+{
+    pthread_mutex_lock(&zombieLock);
 
-   NSMapInsert(objectToClassName,object,((struct objc_object *)object)->isa);
-   ((struct objc_object *)object)->isa=objc_lookUpClass("NSZombieObject");
+    if (objectToClassName == NULL) {
+        objectToClassName = NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
+    }
 
-   pthread_mutex_unlock(&zombieLock);
+    NSMapInsert(objectToClassName, object, ((struct objc_object *)object)->isa);
+    ((struct objc_object *)object)->isa = objc_lookUpClass("NSZombieObject");
+
+    pthread_mutex_unlock(&zombieLock);
 }
+
 
 @implementation NSZombieObject
 
