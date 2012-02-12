@@ -10,23 +10,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSInvocation.h>
-#import <pthread.h>
+#include <pthread.h>
 
 static pthread_mutex_t zombieLock=PTHREAD_MUTEX_INITIALIZER;
 static NSMapTable *objectToClassName=NULL;
 
-void NSRegisterZombie(NSObject *object) {
-   pthread_mutex_lock(&zombieLock);
-   
-   if(objectToClassName==NULL){
-    objectToClassName=NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
-   }
 
-   NSMapInsert(objectToClassName,object,((struct objc_object *)object)->isa);
-   ((struct objc_object *)object)->isa=objc_lookUpClass("NSZombieObject");
-   
-   pthread_mutex_unlock(&zombieLock);
+void NSRegisterZombie(NSObject *object)
+{
+    pthread_mutex_lock(&zombieLock);
+
+    if (objectToClassName == NULL) {
+        objectToClassName = NSCreateMapTable(NSNonOwnedPointerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
+    }
+
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    NSMapInsert(objectToClassName, object, object_getClass(object));
+    object_setClass(object, objc_lookUpClass("NSZombieObject"));
+#else
+    NSMapInsert(objectToClassName, object, ((struct objc_object *)object)->isa);
+    ((struct objc_object *)object)->isa = objc_lookUpClass("NSZombieObject");
+#endif
+
+    pthread_mutex_unlock(&zombieLock);
 }
+
 
 @implementation NSZombieObject
 
@@ -36,7 +44,7 @@ void NSRegisterZombie(NSObject *object) {
    pthread_mutex_unlock(&zombieLock);
 
    NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,sel_getName(selector),class_getName(cls));
-   
+
    return [cls instanceMethodSignatureForSelector:selector];
 }
 

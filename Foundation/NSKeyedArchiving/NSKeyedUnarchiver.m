@@ -69,7 +69,7 @@ NSString* NSInvalidUnarchiveOperationException=@"NSInvalidUnarchiveOperationExce
 static inline int integerFromCFUID(id object){
 // We can deal with CFUID's and dictionaries
    unsigned typeID=[object _cfTypeID];
-   
+
    if(typeID==kNSCFTypeDictionary){
     NSNumber *uid=[object objectForKey:@"CF$UID"];
     return [uid integerValue];
@@ -82,25 +82,26 @@ static inline int integerFromCFUID(id object){
    Class         result;
    NSDictionary *plist=[classReference objectForKey:@"$class"];
    NSDictionary *profile=[_objects objectAtIndex:integerFromCFUID(plist)];
-   NSDictionary *classes=[profile objectForKey:@"$classes"];
+   //unused
+   //NSDictionary *classes=[profile objectForKey:@"$classes"];
    NSString     *className=[profile objectForKey:@"$classname"];
-   
+
    // TODO: decode class version
-   
+
    if((result=[_nameToReplacementClass objectForKey:className])==Nil)
     if((result=NSClassFromString(className))==Nil)
      [NSException raise:NSInvalidArgumentException format:@"Unable to find class named %@",className];
-    
+
    return result;
 }
 
 -decodeObjectForUID:(NSInteger )uidIntValue {
    id result=NSMapGet(_uidToObject,(void *)uidIntValue);
-            
+
    if(result==nil){
     id plist=[_objects objectAtIndex:uidIntValue];
     unsigned typeID=[plist _cfTypeID];
-    
+
     if(typeID==kNSCFTypeString){
      if([plist isEqualToString:@"$null"])
       result=nil;
@@ -112,7 +113,7 @@ static inline int integerFromCFUID(id object){
     }
     else if(typeID==kNSCFTypeDictionary){
      Class class=[self decodeClassFromDictionary:plist];
-   
+
      [_plistStack addObject:plist];
      result=[class allocWithKeyedUnarchiver:self];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
@@ -141,8 +142,8 @@ static inline int integerFromCFUID(id object){
     else
      NSLog(@"plist of class %@",[plist class]);
    }
-   
-   return result;  
+
+   return result;
 }
 
 -decodeRootObject {
@@ -155,20 +156,20 @@ static inline int integerFromCFUID(id object){
    }
    else {
     NSDictionary *object=[values objectAtIndex:0];
-    
+
     return [self decodeObjectForUID:integerFromCFUID(object)];
    }
 }
 
 +unarchiveObjectWithData:(NSData *)data {
    NSKeyedUnarchiver *unarchiver=[[[self alloc] initForReadingWithData:data] autorelease];
-   
+
    return [unarchiver decodeRootObject];
 }
 
 +unarchiveObjectWithFile:(NSString *)path {
    NSData *data=[NSData dataWithContentsOfFile:path];
-   
+
    return [self unarchiveObjectWithData:data];
 }
 
@@ -180,7 +181,7 @@ static inline int integerFromCFUID(id object){
    NSData *data=[[_plistStack lastObject] objectForKey:key];
 
    *lengthp=[data length];
-   
+
    return [data bytes];
 }
 
@@ -189,45 +190,45 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 
    if(result==nil)
     return result;
-    
+
    unsigned typeID=[result _cfTypeID];
-  
+
    if(typeID==kNSCFTypeNumber || typeID==kNSCFTypeBoolean)
     return result;
-    
+
    [NSException raise:@"NSKeyedUnarchiverException" format:@"Expecting number, got %@, for key=%@",result,key];
    return [NSNumber numberWithInt:0];
 }
 
 -(BOOL)decodeBoolForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
-   
+
    if(number==nil)
     return NO;
-    
+
    return [number boolValue];
 }
 
 -(char)decodeCharForKey:(NSString *)key {
     NSNumber *number=_numberForKey(self,key);
-    
+
     if(number==nil)
         return NO;
-    
+
     return [number charValue];
 }
 -(unsigned char)decodeUnsignedCharForKey:(NSString *)key {
     NSNumber *number=_numberForKey(self,key);
-    
+
     if(number==nil)
         return NO;
-    
+
     return [number unsignedCharValue];
 }
 
 -(double)decodeDoubleForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
-   
+
    if(number==nil)
     return 0;
 
@@ -236,54 +237,54 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 
 -(float)decodeFloatForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
-   
+
    if(number==nil)
     return 0;
-   
+
    return [number floatValue];
 }
 
 -(int)decodeIntForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
-   
+
    if(number==nil)
     return 0;
-    
+
    return [number intValue];
 }
 -(short)decodeShortForKey:(NSString *)key {
     NSNumber *number=_numberForKey(self,key);
-    
+
     if(number==nil)
         return 0;
-    
+
     return [number shortValue];
 }
 
 -(int32_t)decodeInt32ForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
-   
+
    if(number==nil)
     return 0;
-    
+
    return [number intValue];
 }
 
 -(int64_t)decodeInt64ForKey:(NSString *)key {
    NSNumber *number=_numberForKey(self,key);
-   
+
    if(number==nil)
     return 0;
-    
+
    return [number intValue];
 }
 
 -(NSInteger)decodeIntegerForKey:(NSString *)key {
 	NSNumber *number=_numberForKey(self,key);
-	
+
 	if(number==nil)
 		return 0;
-    
+
    return [number integerValue];
 }
 
@@ -303,30 +304,30 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
     expectingCommaBraceOrSpace,
     expectingSpace
    } state=expectingBraceOrSpace;
-  
+
    if(string==nil)
     return NSNotFound;
-    
+
    [string getCharacters:buffer];
-    
+
    for(i=0;i<length;i++){
     unichar code=buffer[i];
-     
+
     switch(state){
-     
+
      case expectingBraceOrSpace:
       if(code=='{')
        state=expectingBraceSpaceOrInteger;
       else if(code>' ')
        [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
-      
+
      case expectingBraceSpaceOrInteger:
       if(code=='{'){
        state=expectingSpaceOrInteger;
        break;
       }
-      // fallthru     
+      // fallthru
      case expectingSpaceOrInteger:
       if(code<=' ')
        break;
@@ -362,7 +363,7 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
       else
        [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
-       
+
      case expectingFraction:
       if(code>='0' && code<='9'){
        result[resultLength]=result[resultLength]+multiplier*(code-'0');
@@ -385,7 +386,7 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
       else
        [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
-     
+
      case expectingExponent:
       if(code=='+')
        break;
@@ -408,7 +409,7 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
       else
        [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
-     
+
      case expectingCommaBraceOrSpace:
       if(code==',')
        state=expectingBraceSpaceOrInteger;
@@ -417,35 +418,35 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
       else if(code>=' ')
        [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
-      
+
      case expectingSpace:
       if(code>=' ')
        [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
     }
    }
-   
-   return resultLength; 
+
+   return resultLength;
 }
 
 -(NSPoint)decodePointForKey:(NSString *)key {
    float    array[4]={ 0,0,0,0 };
-   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
-   
+   [self decodeArrayOfFloats:array forKey:key];
+
    return NSMakePoint(array[0],array[1]);
 }
 
 -(NSSize)decodeSizeForKey:(NSString *)key {
    float     array[4]={ 0,0,0,0 };
-   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
-   
+   [self decodeArrayOfFloats:array forKey:key];
+
    return NSMakeSize(array[0],array[1]);
 }
 
 -(NSRect)decodeRectForKey:(NSString *)key {
    float    array[4]={ 0,0,0,0 };
-   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
-   
+   [self decodeArrayOfFloats:array forKey:key];
+
    return NSMakeRect(array[0],array[1],array[2],array[3]);
 }
 
@@ -536,18 +537,18 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
             [NSException raise:@"NSKeyedUnarchiverException" format:@"Unable to decode unnamed ObjC value with unsupported type '%s'",type];
             break;
     }
-    
+
     //NSUnimplementedMethod();
 }
 
 -_decodeObjectWithPropertyList:plist {
    unsigned typeID=[plist _cfTypeID];
-    
+
     int backupUnnamedKeyIndex = _unnamedKeyIndex;
     _unnamedKeyIndex = 0;
 
     id result = nil;
-    
+
     if(typeID==kNSCFTypeString || typeID==kNSCFTypeData || typeID==kNSCFTypeNumber) {
         result = plist;
     } else if(typeID==kNSCFTypeDictionary) {
@@ -555,10 +556,10 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
     } else if(typeID==kNSCFTypeArray){
         result=[NSMutableArray array];
         NSInteger       i,count=[plist count];
-    
+
         for(i=0;i<count;i++){
             id sibling=[plist objectAtIndex:i];
-     
+
             [result addObject:[self _decodeObjectWithPropertyList:sibling]];
         }
     } else if([plist isKindOfClass:[CFUID class]]) {
@@ -566,17 +567,17 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
     } else {
         [NSException raise:@"NSKeyedUnarchiverException" format:@"Unable to decode property list with class %@",[plist class]];
     }
-    
+
     _unnamedKeyIndex = backupUnnamedKeyIndex;
-    
+
     return result;
 }
 
 -decodeObjectForKey:(NSString *)key {
    id result;
-      
+
    id plist=[[_plistStack lastObject] objectForKey:key];
-   
+
    if(plist==nil)
     result=nil;
    else
@@ -585,20 +586,24 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    return result;
 }
 
--(void)replaceObject:object withObject:replacement {
-   int uid=(int)NSMapGet(_objectToUid,object);
-   id check=NSMapGet(_uidToObject,(void *)uid);
-   
-   if(check!=object)
-    NSLog(@"fail %d %p %p",uid,check,object);
-   else {
-     if([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)])
-      [_delegate unarchiver:self willReplaceObject:object withObject:replacement];
-      
-     NSMapInsert(_uidToObject,(void *)uid,replacement);
-     NSMapInsert(_uidToObject,replacement,(void *)uid);
+
+- (void)replaceObject:object withObject:replacement
+{
+    int uid = (int)NSMapGet(_objectToUid, object);
+    id check = NSMapGet(_uidToObject, (void *)uid);
+
+    if (check != object) {
+        NSLog(@"fail %d %p %p", uid, check, object);
+    } else {
+        if ([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)]) {
+            [_delegate unarchiver:self willReplaceObject:object withObject:replacement];
+        }
+
+        NSMapInsert(_uidToObject, (void *)uid, replacement);
+        NSMapInsert(_uidToObject, replacement, (void *)uid);
     }
-   }
+}
+
 
 -(void)finishDecoding {
 }

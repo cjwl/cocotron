@@ -22,9 +22,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_win32.h>
 #import <Foundation/NSString_win32.h>
 
-#import <windows.h>
-#import <shlobj.h>
-#import <objbase.h>
+#include <windows.h>
+#include <shlobj.h>
+#include <objbase.h>
 
 #pragma mark -
 #pragma mark Utility Methods

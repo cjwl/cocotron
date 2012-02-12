@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNotificationCenter.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSRunLoop.h>
-#import <pthread.h>
+#include <pthread.h>
 
 @implementation NSSelectSet(windows)
 

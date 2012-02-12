@@ -15,22 +15,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSRaise.h>
+#import <objc/runtime.h>
 #import <objc/message.h>
 #import "forwarding.h"
 
 
-BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
-   struct objc_class *class=object->isa;
+BOOL NSObjectIsKindOfClass(id object, Class kindOf)
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    Class class = object_getClass(object);
+#else
+    struct objc_class *class = object->isa;
+#endif
 
-   for(;class!=0;class=class->super_class){
-    if((struct objc_class *)kindOf==class)
-     return YES;
-    if(class->isa->isa==class)
-     break;
-   }
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    for (;class != 0; class = class_getSuperclass(class)) {
+#else
+    for (;class != 0; class = class->super_class) {
+#endif
+        if (kindOf == class) {
+            return YES;
+        }
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+        if (object_getClass(object_getClass(class)) == class) {
+#else
+        if (class->isa->isa == class) {
+#endif
+            break;
+        }
+    }
 
-   return NO;
+    return NO;
 }
+
 
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
@@ -52,7 +69,11 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 
 +(void)initialize {
-   objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
+#ifdef GCC_RUNTIME_3
+    __objc_msg_forward2 = objc_msg_forward;
+#else
+    objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
+#endif
 }
 
 +(Class)superclass {
@@ -66,15 +87,15 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 +(BOOL)isSubclassOfClass:(Class)cls {
    Class check=self;
-   
+
    do {
     check=[check superclass];
-    
+
     if(check==cls)
      return YES;
-     
+
    }while(check!=[NSObject class]);
-   
+
    return NO;
 }
 
@@ -211,7 +232,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 -(NSUInteger)_frameLengthForSelector:(SEL)selector {
    NSMethodSignature *signature=[self methodSignatureForSelector:selector];
-   
+
    return [signature frameLength];
 }
 
@@ -267,23 +288,37 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 }
 
 
--performSelector:(SEL)selector {
-   IMP imp = objc_msg_lookup(self, selector);
-   
-   return imp(self, selector);
+- performSelector:(SEL)selector
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
+    IMP imp = objc_msg_lookup(self, selector);
+#endif
+    return imp(self, selector);
 }
 
--performSelector:(SEL)selector withObject:object0 {
-   IMP imp = objc_msg_lookup(self, selector);
 
-   return imp(self,selector,object0);
+- performSelector:(SEL)selector withObject:object0
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
+    IMP imp = objc_msg_lookup(self, selector);
+#endif
+    return imp(self, selector, object0);
 }
 
--performSelector:(SEL)selector withObject:object0 withObject:object1 {
-   IMP imp = objc_msg_lookup(self, selector);
-
-   return imp(self,selector,object0,object1);
+- performSelector:(SEL)selector withObject:object0 withObject:object1
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
+    IMP imp = objc_msg_lookup(self, selector);
+#endif
+    return imp(self, selector, object0, object1);
 }
+
 
 -(BOOL)isProxy {
    return NO;

@@ -19,8 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/runtime.h>
 #import <Foundation/objc_size_alignment.h>
 #import <objc/objc.h>
-#import <ctype.h>
-#import <assert.h>
+#include <ctype.h>
+#include <assert.h>
 
 typedef void (*NSLogCStringFunc)(const char *string, unsigned length, BOOL withSyslogBanner);
 
@@ -54,7 +54,7 @@ static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOO
                       descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S.%F"
                       timeZone:[NSTimeZone systemTimeZone] locale:nil];
       NSString *process=[[NSProcessInfo processInfo] processName];
-      
+
       NSLogFormat(@"%@ %@[%d:%lx] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),message);
    }
    else
@@ -66,16 +66,16 @@ static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOO
 
 void NSLogv(NSString *format,va_list arguments) {
    NSString *string=NSStringNewWithFormat(format,nil,arguments,NULL);
-   
+
    NSUInteger length=[string length],byteLength;
    unichar  unicode[length];
    char    *bytes;
-   
+
    [string getCharacters:unicode];
    bytes=NSString_cStringFromCharacters(unicode,length,YES,&byteLength,NULL,NO);
    [string release];
    if (bytes == NULL) return;
-   
+
    assert(sNSLogCString != NULL);
    sNSLogCString(bytes,byteLength,YES);
    NSZoneFree(NULL,bytes);
@@ -99,24 +99,27 @@ void _NSSetLogCStringFunction(NSLogCStringFunc proc)
    sNSLogCString=proc?proc:NSLogDefaultCStringFunction;
 }
 
-const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment) {
-   BOOL quit=NO;
-	
-	NSUInteger ignore=0;
-	if(!size)
-		size=&ignore;
-	if(!alignment)
-		alignment=&ignore;
 
-   *size=0;
-   *alignment=0;
+const char *NSGetSizeAndAlignment(const char *type, NSUInteger *size, NSUInteger *alignment)
+{
+    NSUInteger ignore = 0;
+    if (!size) {
+        size = &ignore;
+    }
+    if (!alignment) {
+        alignment = &ignore;
+    }
 
-	*size=objc_sizeof_type(type);
-	*alignment=objc_alignof_type(type);
-	return objc_skip_type_specifier(type,NO);
+    *size = 0;
+    *alignment = 0;
+
+    *size = objc_ext_sizeof_type(type);
+    *alignment = objc_ext_alignof_type(type);
+    return objc_ext_skip_type_specifier(type, NO);
 }
 
-SEL NSSelectorFromString(NSString *selectorName) {   
+
+SEL NSSelectorFromString(NSString *selectorName) {
    NSUInteger length=[selectorName length];
    char     cString[length+1];
 

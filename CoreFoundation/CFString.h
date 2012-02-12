@@ -15,7 +15,7 @@ typedef struct __CFString *CFMutableStringRef;
 #import <CoreFoundation/CFLocale.h>
 #import <CoreFoundation/CFData.h>
 #import <CoreFoundation/CFCharacterSet.h>
-#import <stdarg.h>
+#include <stdarg.h>
 
 typedef CFOptionFlags CFStringCompareFlags;
 

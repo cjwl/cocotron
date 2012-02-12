@@ -15,17 +15,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if([key hasPrefix:@"@"]) // operator
 	{
 		/*
-		"If key indicates an operation that doesn't require an argument, 
+		"If key indicates an operation that doesn't require an argument,
 		valueForKey performs the operation and returns the result. key indicates
-		an operation if its first character is "@". For example, if key is 
-		"@count", valueForKey invokes compute on the "count" operator. This has 
-		the effect of computing and returning the number of elements in the 
+		an operation if its first character is "@". For example, if key is
+		"@count", valueForKey invokes compute on the "count" operator. This has
+		the effect of computing and returning the number of elements in the
 		receiver.
-		Don't use valueForKey for operations that take arguments; instead use 
+		Don't use valueForKey for operations that take arguments; instead use
 		valueForKeyPath." - from the standard
 		*/
 		if([key rangeOfString:@"."].location!=NSNotFound)
-			[NSException raise:@"NSKeyValueCodingException" 
+			[NSException raise:@"NSKeyValueCodingException"
 						format:@"valueForKey called for operator with parameters %@. Use valueForKeyPath: instead", key];
 
 		id operator=[key substringFromIndex:1];
@@ -67,7 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	{
 		/*
 		 If keyPath indicates an operation takes an argument (such as computing
-		 an average), valueForKeyPath performs the operation and returns the 
+		 an average), valueForKeyPath performs the operation and returns the
 		 result. key indicates an aggregate operation if its first character
 		 is "@". For example, if key is "@avg.salary", valueForKey invokes
 		 compute on the "avg" operator specifying the array and "salary" as
@@ -84,11 +84,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						format:@"operator %@: NSArray selector %@ not implemented (parameter was %@)", operator, NSStringFromSelector(operatorSelector), parameter];
 
 		return [self performSelector:operatorSelector withObject:parameter];
-	}	
+	}
 
 	/*
 	 Otherwise, valueForKeyPath behaves similarly to valueForKey and produces a
-	 new NSArray whose elements correspond to the results of invoking 
+	 new NSArray whose elements correspond to the results of invoking
 	 valueForKeyPath on each element of this array.
 	 */
     NSMutableArray *array=[NSMutableArray array];
@@ -141,7 +141,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSArray* objects=[self valueForKeyPath:parameter];
 	NSInteger count=[objects count];
 	NSInteger i;
-	
+
 	id currentMinimum=[objects lastObject];
 	for(i=0; i<count; i++)
 	{
@@ -170,14 +170,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSArray* objects=[self valueForKeyPath:parameter];
 	NSInteger count=[objects count];
 	NSInteger i;
-	
+
 	double sum=0.0;
 	for(i=0; i<count; i++)
 	{
 		id obj=[objects objectAtIndex:i];
 		sum+=[obj doubleValue];
 	}
-	return [NSNumber numberWithDouble:sum];	
+	return [NSNumber numberWithDouble:sum];
 }
 
 
@@ -243,7 +243,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 {
 	if([isa instanceMethodForSelector:_cmd]==[NSArray instanceMethodForSelector:_cmd])
-		NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);	
+		NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);
 	else
 		[super removeObserver:observer
 				   forKeyPath:keyPath];

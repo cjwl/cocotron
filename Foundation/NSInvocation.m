@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 
 #import <sys/param.h>
-#import <string.h>
+#include <string.h>
 #import <objc/message.h>
 
 id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
@@ -47,9 +47,9 @@ id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
    if(signature==nil){
     [self dealloc];
     [NSException raise:NSInvalidArgumentException format:@"nil signature in NSInvocation creation"];
-    return nil;	
+    return nil;
    }
-	
+
    _signature=[signature retain];
 
    [self buildFrame];
@@ -204,53 +204,55 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 -(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index {
    NSUInteger naturalSize=_argumentSizes[index];
    NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
-   
+
    if(naturalSize==promotedSize)
     byteCopy(_argumentFrame+_argumentOffsets[index],pointerToValue,naturalSize);
    else if(promotedSize==4){
     uint8_t promoted[promotedSize];
-    
+
     byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
     if(naturalSize==1)
      *((char *)pointerToValue)=*((int *)promoted);
     else if(naturalSize==2)
      *((short *)pointerToValue)=*((int *)promoted);
-     
+
    }
    else
    {
     [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
    }
-    
+
 }
 
--(void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index {
-   NSUInteger naturalSize=_argumentSizes[index];
-   NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
-   if(naturalSize==promotedSize)
-    byteCopy(pointerToValue,_argumentFrame+_argumentOffsets[index],naturalSize);
-   else if(promotedSize==4){
-    uint8_t promoted[promotedSize];
-    
-    if(naturalSize==1)
-     *((int *)promoted)=*((char *)pointerToValue);
-    else if(naturalSize==2)
-     *((int *)promoted)=*((short *)pointerToValue);
+- (void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index
+{
+    NSUInteger naturalSize = _argumentSizes[index];
+    NSUInteger promotedSize = ((naturalSize + sizeof(long) - 1) / sizeof(long)) * sizeof(long);
 
-    byteCopy(promoted,_argumentFrame+_argumentOffsets[index],promotedSize);
-   }
-   else
-   {
-	   *(char*)0=0;
-    [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
-   }
+    if (naturalSize == promotedSize) {
+        byteCopy(pointerToValue, _argumentFrame + _argumentOffsets[index], naturalSize);
+    } else if (promotedSize == 4) {
+        uint8_t promoted[promotedSize];
+
+        if (naturalSize == 1) {
+            *((int *)promoted) = *((char *)pointerToValue);
+        } else if (naturalSize == 2) {
+            *((int *)promoted) = *((short *)pointerToValue);
+        }
+
+        byteCopy(promoted, _argumentFrame + _argumentOffsets[index], promotedSize);
+    } else {
+        *(char*)0 = 0;
+        [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d", naturalSize, promotedSize];
+    }
 }
+
 
 -(void)retainArguments {
     if (!_retainArguments) {
         NSInteger i, count = [_signature numberOfArguments];
-        
+
         _retainArguments=YES;
         for (i = 0; i < count; ++i) {
             const char *type = [_signature getArgumentTypeAtIndex:i];
@@ -263,7 +265,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
                     [object retain];
                     break;
                 }
-                    
+
                 case '*': {
                     char *ptr, *copy, length;
 
@@ -274,7 +276,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
                     [self setArgument:&copy atIndex:i];
                     break;
                 }
-                    
+
                 default:
                     break;
             }
@@ -310,132 +312,147 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
    [self setArgument:&target atIndex:0];
 }
 
--(void)invoke {
-   [self invokeWithTarget:[self target]];
+
+- (void)invoke
+{
+    [self invokeWithTarget:[self target]];
 }
 
--(void)invokeWithTarget:target {	
-   const char *returnType=[_signature methodReturnType];
-   void *msgSendv=objc_msgSendv;
 
-   switch(returnType[0]){
-    case 'r':
-    case 'n':
-    case 'N':
-    case 'o':
-    case 'O':
-    case 'R':
-    case 'V':
-     returnType++;
-     break;
-   }
+- (void)invokeWithTarget:target
+{
+    [self setTarget: target];
+    const char *returnType = [_signature methodReturnType];
+    void *msgSendv = objc_msgSendv;
 
-   switch(returnType[0]){
-    case 'c':
-    case 'C': {
-      char (*function)()=msgSendv;
-      char value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+    switch (returnType[0]) {
+        case 'r':
+        case 'n':
+        case 'N':
+        case 'o':
+        case 'O':
+        case 'R':
+        case 'V':
+            returnType++;
+            break;
+    }
 
-      [self setReturnValue:&value];
-     }
-     break;
+    switch (returnType[0]) {
+        case 'c':
+        case 'C':
+            {
+                char (*function)() = msgSendv;
+                char value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    case 's':
-    case 'S':{
-      short (*function)()=msgSendv;
-      short value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                [self setReturnValue:&value];
+            }
+            break;
 
-      [self setReturnValue:&value];
-     }
-     break;
+        case 's':
+        case 'S':
+            {
+                short (*function)() = msgSendv;
+                short value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    case 'i':
-    case 'I':
-    case 'l':
-    case 'L':{
-      int (*function)()=msgSendv;
-      int value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                [self setReturnValue:&value];
+            }
+            break;
 
-     [self setReturnValue:&value];
-     }
-     break;
+        case 'i':
+        case 'I':
+        case 'l':
+        case 'L':
+            {
+                int (*function)() = msgSendv;
+                int value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    case 'q':
-    case 'Q':{
-      long long (*function)()=msgSendv;
-      long long value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                [self setReturnValue:&value];
+            }
+            break;
 
-      [self setReturnValue:&value];
-     }
-     break;
+        case 'q':
+        case 'Q':
+            {
+                long long (*function)() = msgSendv;
+                long long value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    case 'f':{
-      float (*function)()=msgSendv;
-      float value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                [self setReturnValue:&value];
+            }
+            break;
 
-      [self setReturnValue:&value];
-     }
-     break;
+        case 'f':
+            {
+                float (*function)() = msgSendv;
+                float value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    case 'd':{
-      double (*function)()=msgSendv;
-      double value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                [self setReturnValue:&value];
+            }
+            break;
 
-      [self setReturnValue:&value];
-     }
-     break;
+        case 'd':
+            {
+                double (*function)() = msgSendv;
+                double value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    case 'v':{
-      void (*function)()=msgSendv;
+                [self setReturnValue:&value];
+            }
+            break;
 
-     function(target,[self selector],_argumentFrameSize,_argumentFrame);
-     }
-     break;
+        case 'v':
+            {
+                void (*function)() = msgSendv;
 
-    case '*':
-    case '@':
-    case '#':
-    case ':':{
-      void *(*function)()=msgSendv;
-      void *value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                function(target, [self selector], _argumentFrameSize, _argumentFrame);
+            }
+            break;
 
-      [self setReturnValue:&value];
-     }
-     break;
+        case '*':
+        case '@':
+        case '#':
+        case ':':
+            {
+                void *(*function)() = msgSendv;
+                void *value=function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-    default: {
-     NSUInteger size,alignment;
+                [self setReturnValue:&value];
+            }
+            break;
 
-      NSGetSizeAndAlignment(returnType,&size,&alignment);
-      if(size<=sizeof(int)){
-       int (*function)()=msgSendv;
-       int value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+        default:
+            {
+                NSUInteger size, alignment;
 
-       [self setReturnValue:&value];
-      }
-      else if(size<=sizeof(long long)){
-       long long (*function)()=msgSendv;
-       long long value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                NSGetSizeAndAlignment(returnType, &size, &alignment);
+                if (size <= sizeof(int)) {
+                    int (*function)() = msgSendv;
+                    int value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
 
-       [self setReturnValue:&value];
-      }
-      else {
-       struct structReturn {
-        char result[size];
-       } (*function)()=(struct structReturn (*)())msgSendv; // should be msgSend_stret
-       struct structReturn value;
+                    [self setReturnValue:&value];
+                } else if (size <= sizeof(long long)) {
+                    long long (*function)() = msgSendv;
+                    long long value=function(target, [self selector], _argumentFrameSize, _argumentFrame);
+
+                    [self setReturnValue:&value];
+                } else {
+                    struct structReturn {
+                        char result[size];
+                    } (*function)() = (struct structReturn (*)())msgSendv; // should be msgSend_stret
+                    struct structReturn value;
 
 // FIX internal compiler error on windows/linux/bsd
 #if !defined(WIN32) && !defined(BSD) && !defined(LINUX)
-       value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
+                    value = function(target, [self selector], _argumentFrameSize, _argumentFrame);
+#else
+                    if (function) {/*avoid compiler warning*/}
 #endif
 
-       [self setReturnValue:&value];
-      }
-     }
-     break;
-   }
+                    [self setReturnValue:&value];
+                }
+            }
+            break;
+    }
 }
+
 
 -(id)description
 {
