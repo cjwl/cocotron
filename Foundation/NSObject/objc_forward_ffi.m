@@ -363,7 +363,11 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
         type = objc_skip_type_specifier(type, YES);
     }
 
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(target), [self selector]);
+#else
     IMP imp = objc_msg_lookup(target, [self selector]);
+#endif
 
     ffi_call(cif, FFI_FN(imp), _returnValue, arguments);
 }

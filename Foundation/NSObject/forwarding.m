@@ -4,8 +4,10 @@
 #include <stdio.h>
 
 #define NSABISizeofRegisterReturn 8
+#ifndef GCC_RUNTIME_3
 #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
 #define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret")
+#endif
 
 #if !COCOTRON_DISALLOW_FORWARDING
 @interface NSObject(fastforwarding)
@@ -28,6 +30,7 @@ static void OBJCRaiseException(const char *name,const char *format,...) {
    va_end(arguments);
 }
 
+#ifndef GCC_RUNTIME_3
 id NSObjCGetFastForwardTarget(id object,SEL selector){
    id check=nil;
 
@@ -37,6 +40,7 @@ id NSObjCGetFastForwardTarget(id object,SEL selector){
 
    return check;
 }
+#endif
 
 void NSObjCForwardInvocation(void *returnValue,id object,SEL selector,va_list arguments){
    NSMethodSignature *signature=[object methodSignatureForSelector:selector];
@@ -52,12 +56,14 @@ void NSObjCForwardInvocation(void *returnValue,id object,SEL selector,va_list ar
 }
 
 void NSObjCForward(id object,SEL selector,...){
+#ifndef GCC_RUNTIME_3
    id check=NSObjCGetFastForwardTarget(object,selector);
 
    if(check!=nil){
     object=check;
     NSABIasm_jmp_objc_msgSend;
    }
+#endif
 
    uint8_t returnValue[NSABISizeofRegisterReturn];
 
@@ -71,12 +77,14 @@ void NSObjCForward(id object,SEL selector,...){
 }
 
 void NSObjCForward_stret(void *returnValue,id object,SEL selector,...){
+#ifndef GCC_RUNTIME_3
    id check=NSObjCGetFastForwardTarget(object,selector);
 
    if(check!=nil){
     object=check;
     NSABIasm_jmp_objc_msgSend_stret;
    }
+#endif
 
    va_list arguments;
 
@@ -93,7 +101,11 @@ void NSObjCForward_stret(void *returnValue,id object,SEL selector,...){
 #ifdef SOLARIS
 id objc_msgForward(id object, SEL message, ...)
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    Class class = object_getClass(object);
+#else
     Class class = object->isa;
+#endif
     struct objc_method *method;
     va_list arguments;
     unsigned i, frameLength, limit;
@@ -103,7 +115,12 @@ id objc_msgForward(id object, SEL message, ...)
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
         return nil;
     }
-    frameLength = method->method_imp(object, @selector(_frameLengthForSelector:), message);
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = method_getImplementation(method);
+#else
+    IMP imp = method->method_imp;
+#endif
+    frameLength = imp(object, @selector(_frameLengthForSelector:), message);
     frame = __builtin_alloca(frameLength);
 
     va_start(arguments, message);
@@ -114,7 +131,12 @@ id objc_msgForward(id object, SEL message, ...)
     }
 
     if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
-        return method->method_imp(object, @selector(forwardSelector:arguments:), message, frame);
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+        imp = method_getImplementation(method);
+#else
+        imp = method->method_imp;
+#endif
+        return imp(object, @selector(forwardSelector:arguments:), message, frame);
     } else {
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
         return nil;
@@ -130,12 +152,21 @@ void objc_msgForward_stret(void *result, id object, SEL message, ...)
 
 id objc_msgForward(id object, SEL message, ...)
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    Class class = object_getClass(object);
+#else
     Class class = object->isa;
+#endif
     struct objc_method *method;
     void *arguments = &object;
 
     if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
-        return method->method_imp(object, @selector(forwardSelector:arguments:), message, arguments);
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+        IMP imp = method_getImplementation(method);
+#else
+        IMP imp = method->method_imp;
+#endif
+        return imp(object, @selector(forwardSelector:arguments:), message, arguments);
     } else {
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
         return nil;
@@ -147,5 +178,14 @@ void objc_msgForward_stret(void *result, id object, SEL message, ...)
 {
 }
 
+#endif
 
+#ifdef GCC_RUNTIME_3
+// TODO Forwarding currently only works for methods returning types not wider than id. The result
+// is cropped to min(sizeof(returntype_of_forward_imp), sizeof(returntype_of_selector || id)).
+// TODO Struct returning methods have to be handled separatly.
+IMP objc_msg_forward(id rcv, SEL message)
+{
+    return objc_msgForward;
+}
 #endif

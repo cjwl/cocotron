@@ -1574,6 +1574,8 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:buffer];
     char *cstr=NSString_unicodeToAnyCString(encoding, buffer,length,NO,&resultLength,NULL,YES);
+    // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
+    //       that's bad design
     //NSData *data=
     [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     return cstr;

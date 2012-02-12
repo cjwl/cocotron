@@ -117,21 +117,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - performSelector:(SEL)selector
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
     IMP imp = objc_msg_lookup(self, selector);
+#endif
     return imp(self, selector);
 }
 
 
 - performSelector:(SEL)selector withObject:object1
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
     IMP imp = objc_msg_lookup(self, selector);
+#endif
     return imp(self, selector, object1);
 }
 
 
 - performSelector:(SEL)selector withObject:object1 withObject:object2
 {
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
     IMP imp = objc_msg_lookup(self, selector);
+#endif
     return imp(self, selector, object1, object2);
 }
 

@@ -23,7 +23,7 @@ typedef struct
 
 static const NSNumber_double_Def kPositiveInfinityDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    INFINITY
 };
@@ -31,7 +31,7 @@ static const NSNumber_double_Def kPositiveInfinityDef =
 
 static const NSNumber_double_Def kNegativeInfinityDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    -INFINITY
 };
@@ -39,7 +39,7 @@ static const NSNumber_double_Def kNegativeInfinityDef =
 
 static const NSNumber_double_Def kNaNDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    NAN
 };
@@ -47,7 +47,7 @@ static const NSNumber_double_Def kNaNDef =
 
 static const NSNumber_double_Def kPositiveZeroDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    0.0
 };
@@ -55,7 +55,7 @@ static const NSNumber_double_Def kPositiveZeroDef =
 
 static const NSNumber_double_Def kNegativeZeroDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    -0.0
 };
@@ -63,7 +63,7 @@ static const NSNumber_double_Def kNegativeZeroDef =
 
 static const NSNumber_double_Def kPositiveOneDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    1.0
 };
@@ -71,7 +71,7 @@ static const NSNumber_double_Def kPositiveOneDef =
 
 static const NSNumber_double_Def kNegativeOneDef =
 {
-   &_OBJC_CLASS_NSNumber_double_const,
+   &NS_CLASS_SYMBOL(NSNumber_double_const),
    kCFNumberDoubleType,
    -1.0
 };

@@ -23,7 +23,7 @@ typedef struct
 
 static const NSNumber_BOOL_Def kTrueDef =
 {
-   &_OBJC_CLASS_NSNumber_BOOL,
+   &NS_CLASS_SYMBOL(NSNumber_BOOL),
    kCFNumberCharType,
    YES
 };
@@ -31,7 +31,7 @@ static const NSNumber_BOOL_Def kTrueDef =
 
 static const NSNumber_BOOL_Def kFalseDef =
 {
-   &_OBJC_CLASS_NSNumber_BOOL,
+   &NS_CLASS_SYMBOL(NSNumber_BOOL),
    kCFNumberCharType,
    NO
 };

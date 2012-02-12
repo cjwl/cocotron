@@ -23,10 +23,10 @@ void OBJCInitializeProcess_Darwin(void)
 {
    int i;
    int count = _dyld_image_count();
-   
-   
+
+
    //Fix up sel references
-  
+
    for (i = 0; i < count; i++) {
 #ifdef __LP64__
       const struct mach_header_64 *head = (struct mach_header_64 *) _dyld_get_image_header(i);
@@ -41,12 +41,12 @@ void OBJCInitializeProcess_Darwin(void)
 #endif
       if(head->filetype == MH_DYLIB)
          section += _dyld_get_image_vmaddr_slide(i);
-      
+
       long nmess = size / sizeof(SEL);
-      
+
       SEL *sels = (SEL*)section;
-      
-      
+
+
       int j;
       for(j=0; j<nmess; j++)
       {
@@ -54,18 +54,18 @@ void OBJCInitializeProcess_Darwin(void)
       }
    } //iterate mach_headers
 
-   
+
    // queue each module.
-   
+
    for (i = 0; i < count; i++) {
       long nmodules = 0;
-      
+
       OBJCModule *mods = 0;
       char *section = 0;
 
 #ifdef __LP64__
       const struct mach_header_64 *head = (struct mach_header_64 *)_dyld_get_image_header(i);
-      
+
       uint64_t size=0;
       section = getsectdatafromheader_64(head,"__OBJC","__module_info",&size);
 #else
@@ -76,25 +76,25 @@ void OBJCInitializeProcess_Darwin(void)
 #endif
       if(head->filetype == MH_DYLIB)
          section += _dyld_get_image_vmaddr_slide(i);
-      
+
       mods = (OBJCModule*)section;
-      
+
       nmodules = size / sizeof(OBJCModule);
-      
+
       long j;
       for(j=0; j<nmodules; j++)
       {
          OBJCModule *m = &mods[j];
          OBJCQueueModule(m);
-      }     
+      }
    }  //iterate mach_headers
-   
-   
-   
+
+
+
    /*
    * Now all classes should have been seen. Now fix class references.
    */
-   
+
    for (i = 0; i < count; i++) {
 #ifdef __LP64__
       const struct mach_header_64 *head = (struct mach_header_64 *)_dyld_get_image_header(i);
@@ -108,7 +108,7 @@ void OBJCInitializeProcess_Darwin(void)
       char *section  = getsectdatafromheader (head,"__OBJC", "__cls_refs", &size);
 #endif
       typeof(size) nrefs = size / sizeof(struct objc_class *);
-      
+
       if(head->filetype == MH_DYLIB)
          section += _dyld_get_image_vmaddr_slide(i);
 
@@ -117,28 +117,18 @@ void OBJCInitializeProcess_Darwin(void)
       for(j=0; j<nrefs; j++)
       {
           const char *aref = (const char*)refs[j]; // yes these are strings !
-          
+
           Class c = objc_lookUpClass(aref);
           if(c)
           {
              refs[j] = c; //replace with actual Class
           }
-          else 
+          else
           {
             // when could this happen?
              NSCLog("%s does not exist yet!? Is it a ref?\n", aref );
           }
       }
    } //iterate mach_headers
-   
-   // init NSConstantString reference-tag (see http://lists.apple.com/archives/objc-language/2006/Jan/msg00013.html)
-   // only Darwin ppc!?
-   Class cls = objc_lookUpClass("NSConstantString");
-   memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
-   cls=objc_lookUpClass("NSDarwinString");
-   memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
-
-   // Override the compiler version of the class
-   //objc_addClass(&_NSConstantStringClassReference);
 }
 

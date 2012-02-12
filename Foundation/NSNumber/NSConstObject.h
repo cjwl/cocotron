@@ -27,10 +27,16 @@
    If using GCC or Clang, the same __asm__ approach as used for Darwin can be
    used to get the appropriate symbol.
 */
-#if __APPLE__
-#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class _OBJC_CLASS_##className __asm__(".objc_class_name_"#className)
+#ifdef GCC_RUNTIME_3
+#define NS_CLASS_SYMBOL(className) _OBJC_Class_##className
 #else
-#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class _OBJC_CLASS_##className
+#define NS_CLASS_SYMBOL(className) _OBJC_CLASS_##className
+#endif
+
+#if __APPLE__
+#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__(".objc_class_name_"#className)
+#else
+#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className)
 #endif
 
 
