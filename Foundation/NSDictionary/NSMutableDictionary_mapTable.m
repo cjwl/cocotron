@@ -101,9 +101,12 @@ const void *defaultRetainCallBack(CFAllocatorRef allocator,const void *value) {
 static void defaultReleaseCallBack(CFAllocatorRef allocator,const void *value) {
 }
 
-static CFHashCode defaultHashCallBack(const void *value) {
-   return (CFHashCode)value>>4;
+
+static CFHashCode defaultHashCallBack(const void *value)
+{
+    return (CFHashCode)value >> 4;
 }
+
 
 static Boolean defaultEqualCallBack(const void *value,const void *other) {
    return (value==other)?TRUE:FALSE;

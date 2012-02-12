@@ -586,20 +586,24 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
    return result;
 }
 
--(void)replaceObject:object withObject:replacement {
-   int uid=(int)NSMapGet(_objectToUid,object);
-   id check=NSMapGet(_uidToObject,(void *)uid);
 
-   if(check!=object)
-    NSLog(@"fail %d %p %p",uid,check,object);
-   else {
-     if([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)])
-      [_delegate unarchiver:self willReplaceObject:object withObject:replacement];
+- (void)replaceObject:object withObject:replacement
+{
+    int uid = (int)NSMapGet(_objectToUid, object);
+    id check = NSMapGet(_uidToObject, (void *)uid);
 
-     NSMapInsert(_uidToObject,(void *)uid,replacement);
-     NSMapInsert(_uidToObject,replacement,(void *)uid);
+    if (check != object) {
+        NSLog(@"fail %d %p %p", uid, check, object);
+    } else {
+        if ([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)]) {
+            [_delegate unarchiver:self willReplaceObject:object withObject:replacement];
+        }
+
+        NSMapInsert(_uidToObject, (void *)uid, replacement);
+        NSMapInsert(_uidToObject, replacement, (void *)uid);
     }
-   }
+}
+
 
 -(void)finishDecoding {
 }
