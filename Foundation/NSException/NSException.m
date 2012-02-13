@@ -54,7 +54,7 @@ void __NSPopExceptionFrame(NSExceptionFrame *frame) {
    NSThreadSetCurrentHandler(frame->parent);
 }
 
-static void defaultHandler(NSException *exception){  
+static void defaultHandler(NSException *exception){
    fprintf(stderr,"*** Uncaught exception <%s> *** %s\n",[[exception name] cString],[[exception reason] cString]);
 }
 
@@ -155,6 +155,8 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 
 @end
 
+#if !defined(GCC_RUNTIME_3) && !defined(APPLE_RUNTIME_4)
+
 void __gnu_objc_personality_sj0()
 {
 	printf("shouldn't get here");
@@ -171,20 +173,21 @@ void objc_exception_try_exit(void* exceptionFrame)
 	__NSPopExceptionFrame((NSExceptionFrame *)exceptionFrame);
 }
 
-id objc_exception_extract(void *exceptionFrame) 
+id objc_exception_extract(void *exceptionFrame)
 {
     NSExceptionFrame *frame = (NSExceptionFrame *)exceptionFrame;
     return (id)frame->exception;
 }
 
-void objc_exception_throw(id exception) 
+void objc_exception_throw(id exception)
 {
 	_NSRaiseException(exception);
 	abort();
 }
 
-int objc_exception_match(Class exceptionClass, id exception) 
+int objc_exception_match(Class exceptionClass, id exception)
 {
 	return [exception isKindOfClass:exceptionClass];
 }
 
+#endif
