@@ -140,7 +140,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[_selection release];
 	[_objectClassName release];
 	[_content release];
-   [_observedKeys release];
+    [_observedKeys release];
 	[super dealloc];
 }
 

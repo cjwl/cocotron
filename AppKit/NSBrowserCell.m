@@ -30,6 +30,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initTextCell:@""];
 }
 
+-(void)dealloc
+{
+	[_alternateImage release];
+	[super dealloc];
+}
+
 -(BOOL)isLeaf {
    return _isLeaf;
 }
