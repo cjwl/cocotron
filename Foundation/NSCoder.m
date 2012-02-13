@@ -91,20 +91,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)encodeArrayOfObjCType:(const char *)itemType count:(NSUInteger)count at:(const void *)ptr
 {
-    char typeBuf[1 + sizeof(unsigned) * 3 + strlen(itemType) + 2];
+    char typeBuf[1 + sizeof(NSUInteger) * 3 + strlen(itemType) + 2];
 
-    sprintf(typeBuf, "[%u%s]", count, itemType);
+    sprintf(typeBuf, "[" NSUIntegerFormat "%s]", count, itemType);
     [self encodeValueOfObjCType:typeBuf at:ptr];
 }
 
 
 - (void)encodeBytes:(const void *)byteaddr length:(NSUInteger)length
 {
-    char typeBuf[1 + sizeof(unsigned) * 3 + 1 + 1 + 1];
+    char typeBuf[1 + sizeof(NSUInteger) * 3 + 1 + 1 + 1];
 
-    sprintf(typeBuf, "[%uc]", length);
+    sprintf(typeBuf, "[" NSUIntegerFormat "c]", length);
 
-    [self encodeValueOfObjCType:@encode(unsigned) at:&length];
+    [self encodeValueOfObjCType:@encode(NSUInteger) at:&length];
     [self encodeValueOfObjCType:typeBuf at:byteaddr];
 }
 
@@ -227,22 +227,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)decodeArrayOfObjCType:(const char *)itemType count:(NSUInteger)count at:(void *)ptr
 {
-    char typeBuf[1 + sizeof(unsigned) * 3 + strlen(itemType) + 1 + 1];
+    char typeBuf[1 + sizeof(NSUInteger) * 3 + strlen(itemType) + 1 + 1];
 
-    sprintf(typeBuf, "[%u%s]", count, itemType);
+    sprintf(typeBuf, "[" NSUIntegerFormat "%s]", count, itemType);
     [self decodeValueOfObjCType:typeBuf at:ptr];
 }
 
 
 - (void *)decodeBytesWithReturnedLength:(NSUInteger *)lengthp
 {
-    char typeBuf[1 + sizeof(unsigned) * 3 + 3];
+    char typeBuf[1 + sizeof(NSUInteger) * 3 + 3];
     void *byteaddr;
 
-    [self decodeValueOfObjCType:@encode(unsigned) at:lengthp];
+    [self decodeValueOfObjCType:@encode(NSUInteger) at:lengthp];
 
     byteaddr = NSZoneCalloc(NULL, *lengthp, sizeof(char));
-    sprintf(typeBuf, "[%uc]", *lengthp);
+    sprintf(typeBuf, "[" NSUIntegerFormat "c]", *lengthp);
     [self decodeValueOfObjCType:typeBuf at:byteaddr];
     return byteaddr;
 }

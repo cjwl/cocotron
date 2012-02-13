@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #include <assert.h>
 #include <stdint.h>
 #include <time.h>
+#import <Foundation/NSObjCRuntime.h>
 
 #ifdef __cplusplus
 
@@ -27,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #if defined(COREFOUNDATION_INSIDE_BUILD)
 #define COREFOUNDATION_EXPORT extern "C" __declspec(dllexport)
 #else
-#define COREFOUNDATION_EXPORT extern "C" __declspec(dllimport) 
+#define COREFOUNDATION_EXPORT extern "C" __declspec(dllimport)
 #endif
 #else
 #define COREFOUNDATION_EXPORT extern "C"
@@ -50,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 /* Apple's Foundation imports CoreGraphics in order to get some of the basic CG* types, unfortunately
    this is a hassle on platforms where you just want to use Foundation, so we put them in CoreFoundation and see what happens
 */
- 
+
 enum
 {
 	kCFNotFound = LONG_MAX
@@ -60,10 +61,12 @@ enum
 typedef double CGFloat;
 #define CGFLOAT_MIN DBL_MIN
 #define CGFLOAT_MAX DBL_MAX
+#define CGFLOAT_SCAN  "%lg"
 #else
 typedef float CGFloat;
 #define CGFLOAT_MIN FLT_MIN
 #define CGFLOAT_MAX FLT_MAX
+#define CGFLOAT_SCAN  "%g"
 #endif
 
 typedef struct CGPoint {
@@ -80,7 +83,7 @@ typedef struct CGRect {
    CGPoint origin;
    CGSize  size;
 } CGRect;
- 
+
 
 typedef unsigned short UniChar;
 typedef unsigned long UTF32Char;
@@ -88,8 +91,8 @@ typedef float Float32;
 typedef double Float64;
 // ---
 
-typedef unsigned CFUInteger;
-typedef int CFInteger;
+typedef NSUInteger CFUInteger;
+typedef NSInteger CFInteger;
 typedef int8_t SInt8;
 typedef uint8_t UInt8;
 typedef int16_t SInt16;
@@ -119,7 +122,7 @@ typedef struct {
 
 static inline CFRange CFRangeMake(CFIndex loc,CFIndex len){
    CFRange result={loc,len};
-   
+
    return result;
 }
 

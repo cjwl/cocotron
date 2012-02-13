@@ -29,7 +29,7 @@ NSPoint NSPointFromString(NSString *string)
     NSPoint result = NSZeroPoint;
     
     if (string != nil) {
-        sscanf([string cString], "{%g, %g}", &result.x, &result.y);
+        sscanf([string cString], "{" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}", &result.x, &result.y);
     }
     return result;
 }
@@ -52,7 +52,7 @@ NSSize NSSizeFromString(NSString *string)
     NSSize result = NSZeroSize;
     
     if (string != nil) {
-        sscanf([string cString], "{%g, %g}", &result.width, &result.height);
+        sscanf([string cString], "{" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}", &result.width, &result.height);
     }
     return result;
 }
@@ -192,7 +192,7 @@ NSRect NSRectFromString(NSString *string)
     NSRect result = NSZeroRect;
     
     if (string != nil) {
-        sscanf([string cString], "{{%g, %g}, {%g, %g}}", &result.origin.x, &result.origin.y, &result.size.width, &result.size.height);
+        sscanf([string cString], "{{" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}, {" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}}", &result.origin.x, &result.origin.y, &result.size.width, &result.size.height);
     }
     return result;
 }

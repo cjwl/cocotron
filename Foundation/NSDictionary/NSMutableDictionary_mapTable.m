@@ -133,7 +133,7 @@ static CFStringRef defaultCopyDescription(const void *value) {
 
 static CFDictionaryEnumerator keyEnumeratorState(NSMutableDictionary_CF *self){
   CFDictionaryEnumerator state;
-  
+
    state._nBuckets=self->_nBuckets;
    state._buckets=self->_buckets;
    for(state._i=0;state._i<state._nBuckets;state._i++)
@@ -263,9 +263,9 @@ static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
    _count=0;
    _nBuckets=4;
    _buckets=NSZoneCalloc(NULL,_nBuckets,sizeof(NSDictNode *));
-   
+
    NSInteger i;
-   
+
    for(i=0;i<count;i++)
     setValueForKey(self,values[i],keys[i]);
 
@@ -304,26 +304,26 @@ static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
    id keys[otherCount],objects[otherCount];
 
    [dictionary getObjects:objects andKeys:keys];
-   
+
    for(i=0;i<otherCount;i++)
     setObjectForKey(self,objects[i],keys[i]);
 }
 
 -(void)getObjects:(id *)objects andKeys:(id *)keys {
    NSInteger i;
-   
+
    CFDictionaryEnumerator state=keyEnumeratorState(self);
-   
+
    for(i=0;i<self->_count;i++)
     NSNextDictionaryEnumeratorPair(&state,(void **)&(keys[i]),(void **)&(objects[i]));
 }
- 
+
 static NSDictionary *copyWithClassAndZone(NSMutableDictionary_CF *self,Class cls,NSZone *zone){
    void **keys=__builtin_alloca(sizeof(void *)*self->_count);
    void **values=__builtin_alloca(sizeof(void *)*self->_count);
 
    [self getObjects:(id *)values andKeys:(id *)keys];
-    
+
    return [[cls alloc] initWithKeys:(const void **)keys values:(const void **)values count:self->_count keyCallBacks:&(self->_keyCallBacks) valueCallBacks:&(self->_valueCallBacks)];
 }
 

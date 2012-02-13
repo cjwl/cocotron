@@ -589,11 +589,11 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 
 - (void)replaceObject:object withObject:replacement
 {
-    int uid = (int)NSMapGet(_objectToUid, object);
+    NSInteger uid = (NSInteger)NSMapGet(_objectToUid, object);
     id check = NSMapGet(_uidToObject, (void *)uid);
 
     if (check != object) {
-        NSLog(@"fail %d %p %p", uid, check, object);
+        NSLog(@"fail " NSIntegerFormat " %p %p", uid, check, object);
     } else {
         if ([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)]) {
             [_delegate unarchiver:self willReplaceObject:object withObject:replacement];
