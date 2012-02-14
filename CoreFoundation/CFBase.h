@@ -20,7 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #include <assert.h>
 #include <stdint.h>
 #include <time.h>
-#import <Foundation/NSObjCRuntime.h>
 
 #ifdef __cplusplus
 
@@ -91,8 +90,14 @@ typedef float Float32;
 typedef double Float64;
 // ---
 
-typedef NSUInteger CFUInteger;
-typedef NSInteger CFInteger;
+#if defined(__LP64__)
+    typedef long          CFInteger;
+    typedef unsigned long CFUInteger;
+#else
+    typedef int           CFInteger;
+    typedef unsigned int  CFUInteger;
+#endif
+
 typedef int8_t SInt8;
 typedef uint8_t UInt8;
 typedef int16_t SInt16;
