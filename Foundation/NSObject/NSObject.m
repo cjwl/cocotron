@@ -29,9 +29,9 @@ BOOL NSObjectIsKindOfClass(id object, Class kindOf)
 #endif
 
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-    for (;; class = class_getSuperclass(class)) {
+    for (;class != 0; class = class_getSuperclass(class)) {
 #else
-    for (;; class = class->super_class) {
+    for (;class != 0; class = class->super_class) {
 #endif
         if (kindOf == class) {
             return YES;
