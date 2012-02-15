@@ -110,7 +110,7 @@ id objc_msgForward(id object, SEL message, ...)
     va_list arguments;
     unsigned i, frameLength, limit;
     unsigned *frame;
-    
+
     if ((method = class_getInstanceMethod(class, @selector(_frameLengthForSelector:))) == NULL) {
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
         return nil;
@@ -122,14 +122,14 @@ id objc_msgForward(id object, SEL message, ...)
 #endif
     frameLength = imp(object, @selector(_frameLengthForSelector:), message);
     frame = __builtin_alloca(frameLength);
-    
+
     va_start(arguments, message);
     frame[0] = object;
     frame[1] = message;
     for (i = 2; i < frameLength / sizeof(unsigned); i++) {
         frame[i] = va_arg(arguments, unsigned);
     }
-    
+
     if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
         imp = method_getImplementation(method);

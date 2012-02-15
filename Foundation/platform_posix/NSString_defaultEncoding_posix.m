@@ -18,8 +18,9 @@ NSStringEncoding defaultEncoding()
     //don't use objc calls because they call often defaultCStringEncoding
 
     static int defaultEncoding = -1;
-    
-	if(defaultEncoding == -1) {		
+
+	if(defaultEncoding == -1) {
+
         char *lang = getenv("LANG");
 		if (lang && *lang) {
 			const char* firstpart = strtok (lang, ".");

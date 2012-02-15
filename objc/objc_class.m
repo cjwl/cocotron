@@ -106,7 +106,7 @@ Class objc_getFutureClass(const char *name) {
 
 id objc_getMetaClass(const char *name) {
    Class c=objc_getClass(name);
-   return (id)c->isa;
+   return c->isa;
 }
 
 id objc_getRequiredClass(const char *name) {
@@ -229,7 +229,7 @@ Method class_getClassMethod(Class class, SEL selector)
 	if (class == Nil) {
      return NULL;   
     }
-    return class_getInstanceMethod(class->isa, selector);
+	return class_getInstanceMethod(class->isa, selector);
 }
 
 Ivar class_getClassVariable(Class cls,const char *name) {

@@ -27,27 +27,27 @@ BOOL NSObjectIsKindOfClass(id object, Class kindOf)
 #else
     struct objc_class *class = object->isa;
 #endif
-    
+
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
     for (;class != 0; class = class_getSuperclass(class)) {
 #else
-        for (;class != 0; class = class->super_class) {
+    for (;class != 0; class = class->super_class) {
 #endif
-            if (kindOf == class) {
-                return YES;
-            }
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-            if (object_getClass(object_getClass(class)) == class) {
-#else
-                if (class->isa->isa == class) {
-#endif
-                    break;
-                }
-            }
-            
-            return NO;
+        if (kindOf == class) {
+            return YES;
         }
-        
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+        if (object_getClass(object_getClass(class)) == class) {
+#else
+        if (class->isa->isa == class) {
+#endif
+            break;
+        }
+    }
+
+    return NO;
+}
+
 
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
@@ -86,21 +86,21 @@ BOOL NSObjectIsKindOfClass(id object, Class kindOf)
 }
 
 +(BOOL)isSubclassOfClass:(Class)cls {
-    Class check=self;
-    
-    do {
-        check=[check superclass];
-        
-        if(check==cls)
-            return YES;
-        
-    }while(check!=[NSObject class]);
-    
-    return NO;
+   Class check=self;
+
+   do {
+    check=[check superclass];
+
+    if(check==cls)
+     return YES;
+
+   }while(check!=[NSObject class]);
+
+   return NO;
 }
 
 +(BOOL)instancesRespondToSelector:(SEL)selector {
-    return class_respondsToSelector(self,selector);
+   return class_respondsToSelector(self,selector);
 }
 
 +(BOOL)conformsToProtocol:(Protocol *)protocol {

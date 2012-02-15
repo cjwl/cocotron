@@ -145,10 +145,10 @@ second, 0);
 
 -(void)setCalendarFormat:(NSString *)format {
     if (format != nil) {
-        format=[format copy];
-        [_format release];
-        _format=format;
-    }
+   format=[format copy];
+   [_format release];
+   _format=format;
+}
     else {
         [_format release];
         _format=[defaultCalendarDate copy];

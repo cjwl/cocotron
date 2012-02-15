@@ -12,7 +12,7 @@ Class object_getClass(id object) {
     if (object == nil) {
         return Nil;
     }
-    return object->isa;
+   return object->isa;
 }
 
 const char *object_getClassName(id object) {

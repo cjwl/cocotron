@@ -528,37 +528,37 @@ static inline BOOL codeIsNameContinue(uint8_t code){
 }
 
 +(NSOldXMLDocument *)documentWithContentsOfFile:(NSString *)path {
-    NSOldXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
-    NSOldXMLDocument *document;
-    
+   NSOldXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
+   NSOldXMLDocument *document;
+
     if(![reader tokenize]) {
         [reader release];
-        return nil;
+    return nil;
     }
-    
-    document=[[[NSOldXMLDocument alloc] init] autorelease];
-    [document setRootElement:[reader rootElement]];
-    
-    [reader release];
-    
-    return document;
+
+   document=[[[NSOldXMLDocument alloc] init] autorelease];
+   [document setRootElement:[reader rootElement]];
+
+   [reader release];
+
+   return document;
 }
 
 +(NSOldXMLDocument *)documentWithData:(NSData *)data {
-    NSOldXMLReader   *reader=[[self alloc] initWithData:data];
-    NSOldXMLDocument *document;
-    
+   NSOldXMLReader   *reader=[[self alloc] initWithData:data];
+   NSOldXMLDocument *document;
+
     if(![reader tokenize]) {
         [reader release];
-        return nil;
+    return nil;
     }
-    
-    document=[[[NSOldXMLDocument alloc] init] autorelease];
-    [document setRootElement:[reader rootElement]];
-    
-    [reader release];
-    
-    return document;
+
+   document=[[[NSOldXMLDocument alloc] init] autorelease];
+   [document setRootElement:[reader rootElement]];
+
+   [reader release];
+
+   return document;
 }
 
 @end
