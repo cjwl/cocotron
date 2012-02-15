@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSAttributedString.h>
 #import <Foundation/NSTimeZone.h>
-#import <math.h>
+#include <math.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSCharacterSet.h>
@@ -51,10 +51,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCoder:(NSCoder*)coder {
    [super initWithCoder:coder];
-   
+
    if([coder allowsKeyedCoding]){
     NSDictionary *attributes=[coder decodeObjectForKey:@"NS.attributes"];
-     
+
     _dateFormat10_0=[[attributes objectForKey:@"dateFormat_10_0"] copy];
     _behavior=[[attributes objectForKey:@"formatterBehavior"] intValue];
     _dateStyle=[[attributes objectForKey:@"dateStyle"] intValue];
@@ -62,7 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _dateFormat=[[coder decodeObjectForKey:@"NS.format"] retain];
     _allowsNaturalLanguage=[coder decodeBoolForKey:@"NS.natural"];
    }
-   
+
    return self;
 }
 
@@ -86,7 +86,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    format=[format copy];
    [_dateFormat10_0 release];
    _dateFormat10_0 = format;
-    
+
    format=[format copy];
    [_dateFormat release];
    _dateFormat = format;
@@ -105,17 +105,17 @@ NSTimeZone *getTimeZoneFromDate(NSDate *date) {
 
 - (NSString *)stringFromDate:(NSDate *)date {
 	NSTimeZone *tz = getTimeZoneFromDate(date);
-	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self 
+	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self
 dateFormat], nil, tz);
 }
 
 - (NSArray *)shortStandaloneWeekdaySymbols {
-	
-	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
+
+	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:
 NSShortWeekDayNameArray];
 }
 - (NSArray *)standaloneWeekdaySymbols {
-	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
+	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:
 NSWeekDayNameArray];
 }
 
@@ -127,12 +127,12 @@ NSWeekDayNameArray];
 }
 
 -(NSString *)stringForObjectValue:(id)object {
-   
+
    if([object isKindOfClass:[NSDate class]])
     return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [NSTimeZone defaultTimeZone]);
-   if([object isKindOfClass:[NSCalendarDate class]]) 
+   if([object isKindOfClass:[NSCalendarDate class]])
     return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [object timeZone]);
-    
+
    return nil;
 }
 
@@ -232,7 +232,7 @@ static inline NSInteger numberOfDaysInCommonEraOfDayMonthAndYear(NSInteger day, 
     result += (year - 1)/4;
     result -= (year - 1)/100;
     result += (year - 1)/400;
-    
+
     // wtf, i tried this using day as the result variable and it started from zero
     result += day;
 
@@ -245,7 +245,6 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
 
     daysOfCommonEra = numberOfDaysInCommonEraOfDayMonthAndYear(day, month, year);
     daysOfCommonEra -= NSDaysOfCommonEraOfReferenceDate;
-    daysOfCommonEra;
 
     interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + milliseconds/1000.0 + 0.0001;
 
@@ -260,7 +259,7 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
     NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
     NSInteger year = days/366;
 
-    while (days >= numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1)) 
+    while (days >= numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1))
         year++;
 
     return year;
@@ -269,10 +268,10 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
 NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 1-366
     NSInteger year = NSYearFromTimeInterval(interval);
     NSInteger result;
-    
+
     result = NSDayOfCommonEraFromTimeInterval(interval) - numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year) + 1;
     if(result == 0) { result = 366; };
-    
+
     return result;
 }
 
@@ -446,11 +445,11 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
                     }
                         break;
 
-                    case 'e':{ 
-                        id fmt=@"%d"; 
-                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)]; 
-                    } 
-                        break; 
+                    case 'e':{
+                        id fmt=@"%d";
+                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)];
+                    }
+                        break;
 
                    case 'F':{
                         id fmt=(suppressZero)?@"%d":((fillChar==' ')?@"%3d":@"%03d");
@@ -607,7 +606,7 @@ NSInteger NSReadIntegerInString(NSString *aString, NSCharacterSet *characterSet,
 // might as well use the same code since they're the exact same formatting specifiers
 // ok. we need at minimum the year. everything else is optional.
 // weekday information is useless.
-NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, 
+NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format,
 NSDictionary *locale) {
     NSUInteger         pos,fmtLength=[format length];
     unichar          fmtBuffer[fmtLength],unicode;
@@ -642,7 +641,7 @@ NSDictionary *locale) {
         [[locale objectForKey:NSShortWeekDayNameArray] count] > 7 ||
         [[locale objectForKey:NSWeekDayNameArray] count] > 7)
         return nil;
-    
+
     [format getCharacters:fmtBuffer];
 
     for(pos=0;pos<fmtLength;pos++){
@@ -696,20 +695,20 @@ NSDictionary *locale) {
                         while ((shortMonthName = [enumerator nextObject]) != nil) {
                             if ([shortMonthName caseInsensitiveCompare:temp] == NSOrderedSame) {
                                 months = month;
-                                break; 
+                                break;
                             }
                             else {
                                 month++;
                             }
                         }
-                        
+
                         //month not found
                         if(months == NSNotFound) {
                             return nil;
                         }
                         break;
                     }
-                                        
+
                     case 'B':{
                         NSString *temp;
                         NSEnumerator *enumerator = [monthNames objectEnumerator];
@@ -722,20 +721,20 @@ NSDictionary *locale) {
                         while ((monthName = [enumerator nextObject]) != nil) {
                             if ([monthName caseInsensitiveCompare:temp] == NSOrderedSame) {
                                 months = month;
-                                break; 
+                                break;
                             }
                             else {
                                 month++;
                             }
                         }
-                        
+
                         //month not found
                         if(months == NSNotFound) {
                             return nil;
                         }
                         break;
                     }
-                        
+
                     case 'c':
                         return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeDateFormatString], locale);
 
@@ -872,7 +871,7 @@ NSDictionary *locale) {
 
 	timeInterval = timeInterval-[timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval]];
 
-    calendarDate = [[[NSCalendarDate allocWithZone:NULL] 
+    calendarDate = [[[NSCalendarDate allocWithZone:NULL]
 initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
     [calendarDate setTimeZone:timeZone];
 

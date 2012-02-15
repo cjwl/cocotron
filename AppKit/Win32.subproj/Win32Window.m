@@ -25,6 +25,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "opengl_dll.h"
 
+@interface Win32Window(ForwardRefs)
+-(void)setupPixelFormat;
+-(void)flushBuffer:(BOOL)reloadBackingTexture only:(CGLContextObj)onlyContext;
+@end
+
 @implementation Win32Window
 
 static CGRect convertFrameToWin32ScreenCoordinates(CGRect rect){
@@ -542,7 +547,7 @@ CGL_EXPORT CGLError CGLCopyPixels(CGLContextObj source,CGLContextObj destination
         GLint sourceSize[2];
         GLint sourceOpacity;
         
-        CGLGetParameter(_surfaces[i],kCGLCPOverlayPointer,&overlay);
+        CGLGetParameter(_surfaces[i],kCGLCPOverlayPointer,(GLint *)&overlay);
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingOrigin,sourceOrigin);
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceBackingSize,sourceSize);
         CGLGetParameter(_surfaces[i],kCGLCPSurfaceOpacity,&sourceOpacity);
@@ -643,7 +648,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    
         CGLPixelSurface *overlay;
     
-        CGLGetParameter(cglContext,kCGLCPOverlayPointer,&overlay);
+        CGLGetParameter(cglContext,kCGLCPOverlayPointer,(GLint *)&overlay);
 
         [overlay readBuffer];
    
@@ -781,7 +786,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
 -(void)openGLFlushBufferOnlyContext:(CGLContextObj)onlyContext {
     CGLError error;
-    O2Surface_DIBSection *surface=[_backingContext surface];
+    O2Surface_DIBSection *surface=(O2Surface_DIBSection *)[_backingContext surface];
 
     if(surface==nil){
         NSLog(@"no surface on %@",_backingContext);
@@ -1490,7 +1495,8 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
 static void initializeWindowClass(WNDCLASS *class){
 /* WS_EX_LAYERED windows can not use CS_OWNDC or CS_CLASSDC */
 /* OpenGL windows want CS_OWNDC, so don't use OpenGL on a top level window */
-#warning different windows class, one with CS_OWNDC and one without
+// #warning different windows class, one with CS_OWNDC and one without
+// NT and above don't seem to care about this
    class->style=CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS;
    class->lpfnWndProc=windowProcedure;
    class->cbClsExtra=0;

@@ -16398,6 +16398,8 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -16425,6 +16427,7 @@
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
 				PRODUCT_NAME = Foundation;
+				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
 		};
@@ -16581,10 +16584,11 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_UNROLL_LOOPS = NO;
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -16620,6 +16624,7 @@
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
 				PRODUCT_NAME = Foundation;
+				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Release;
 		};

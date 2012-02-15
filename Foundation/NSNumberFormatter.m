@@ -1088,7 +1088,11 @@ static NSString *stringWithFormatGrouping(NSString *format,id locale,NSString *g
 #ifdef __LP64__    
     case _C_LNG:
 #endif
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    case _C_LNG_LNG:
+#else
     case _C_LNGLNG:
+#endif
      string=stringWithFormatGrouping(@"%qd",_locale,[self groupingSeparator],[self groupingSize],[number longLongValue]);
      break;
      break;
@@ -1096,7 +1100,11 @@ static NSString *stringWithFormatGrouping(NSString *format,id locale,NSString *g
 #ifdef __LP64__    
     case _C_ULNG:
 #endif
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    case _C_ULNG_LNG:
+#else
     case _C_ULNGLNG:
+#endif
      string=stringWithFormatGrouping(@"%qu",_locale,[self groupingSeparator],[self groupingSize],[number unsignedLongLongValue]);
      break;
 
@@ -1143,17 +1151,18 @@ static BOOL numberIsPositive(NSNumber *number){
    
    NSString *prefix;
    NSString *suffix;
-   NSString *format;
+   //unused
+   //NSString *format;
 
    if(numberIsNegative(number)){
     prefix=[self negativePrefix];
     suffix=[self negativeSuffix];
-    format=[self negativeFormat];
+    //format=[self negativeFormat];
    }
    else {
     prefix=[self positivePrefix];
     suffix=[self positiveSuffix];
-    format=[self positiveFormat];
+    //format=[self positiveFormat];
    }
    
    NSString *result;

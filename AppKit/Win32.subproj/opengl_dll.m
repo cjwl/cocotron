@@ -433,7 +433,7 @@ void opengl_glAddSwapHintRectWIN(GLint x,GLint y,GLsizei width,GLsizei height) {
 
    if(function==NULL){
     NSLog(@"wglGetProcAddress(glAddSwapHintRectWIN) failed");
-    return NO;
+    return ;
    }
    
     return function(x,y,width,height);

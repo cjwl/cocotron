@@ -12,10 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread.h>
 #import <Foundation/NSAutoreleasePool.h>
 
-#import <stdio.h>
-#import <stdlib.h>
-#import <unistd.h>
-#import <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
 // some notes:
 // - this uses POSIX thread local storage functions

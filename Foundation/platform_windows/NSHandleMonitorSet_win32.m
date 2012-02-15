@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread.h>
 #import <Foundation/NSDebug.h>
 
-#import <windows.h>
+#include <windows.h>
 
 @interface NSInputSource(Win32EventInputSource)
 -(NSUInteger)waitForEventsAndMultipleObjects:(HANDLE *)objects count:(NSUInteger)count milliseconds:(DWORD)milliseconds;

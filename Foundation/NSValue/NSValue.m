@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue_nonRetainedObject.h>
 #import <Foundation/NSValue_pointer.h>
 #import <Foundation/NSData_concrete.h>
-#import <string.h>
+#include <string.h>
 
 @implementation NSValue
 

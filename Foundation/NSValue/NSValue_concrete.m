@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue_concrete.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSData_concrete.h>
-#import <string.h>
+#include <string.h>
 
 @implementation NSValue_concrete
 

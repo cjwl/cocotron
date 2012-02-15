@@ -40,7 +40,7 @@ NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger le
             utf8Length+=tmpLength;
         else{
             if (tmpLength + utf8Length <= maxLength){ 
-                while(--tmpLength>=0)	{ 
+                while(--tmpLength>=0)   { 
                     cString[utf8Length++]=tmp[tmpLength];
                 }
             }

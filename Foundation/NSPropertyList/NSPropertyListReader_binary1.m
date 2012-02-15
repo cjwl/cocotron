@@ -17,8 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/CFUID.h>
-#import <assert.h>
-#import <string.h>
+#include <assert.h>
+#include <string.h>
 
 @implementation NSPropertyListReader_binary1
 

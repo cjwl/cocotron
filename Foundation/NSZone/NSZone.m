@@ -12,11 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSDebug.h>
-#import <string.h>
+#include <string.h>
 #ifdef WIN32
-#import <windows.h>
+#include <windows.h>
 #else
-#import <unistd.h>
+#include <unistd.h>
 #endif
 // NSZone functions implemented in platform subproject
 
@@ -147,7 +147,7 @@ static inline RefCountTable *refTable(void) {
 
    if(refCountTable==NULL)
     refCountTable=CreateRefCountTable();
-    
+
    return refCountTable;
 }
 
@@ -199,48 +199,77 @@ BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
    return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
 }
 
-id NSAllocateObject(Class class,NSUInteger extraBytes,NSZone *zone) {
-   id result;
-   
-   if(zone==NULL)
-      zone=NSDefaultMallocZone();
-   
-   result=NSZoneCalloc(zone, 1, class->instance_size+extraBytes);
-   result->isa=class;
-	
-	if(!object_cxxConstruct(result, result->isa))
-	{
-		NSZoneFree(zone,result);
-		result=nil;
-	}
-	
-   return result;
+
+id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
+{
+    id result;
+
+    if (zone == NULL) {
+        zone = NSDefaultMallocZone();
+    }
+
+    result = NSZoneCalloc(zone, 1, class->instance_size + extraBytes);
+#if defined(GCC_RUNTIME_3)
+    object_setClass(result, class);
+    // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ constructor calling.
+#elif defined(APPLE_RUNTIME_4)
+    objc_constructInstance(class, result);
+#else
+    result->isa = class;
+
+    if (!object_cxxConstruct(result, result->isa)) {
+        NSZoneFree(zone, result);
+        result = nil;
+    }
+#endif
+
+    return result;
 }
 
-void NSDeallocateObject(id object) {
-	object_cxxDestruct(object, object->isa);
-   
-   if(NSZombieEnabled)
-      NSRegisterZombie(object);
-   else {
-      NSZone *zone=NULL;
-      
-      if(zone==NULL)
-         zone=NSDefaultMallocZone();
 
-      object->isa=0;
-      
-      NSZoneFree(zone,object);
-   }
+void NSDeallocateObject(id object)
+{
+#if defined(GCC_RUNTIME_3)
+    // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ destructor calling.
+#elif defined(APPLE_RUNTIME_4)
+    objc_destructInstance(object);
+#else
+    object_cxxDestruct(object, object->isa);
+#endif
+
+    if (NSZombieEnabled) {
+        NSRegisterZombie(object);
+    } else {
+        NSZone *zone = NULL;
+
+        if (zone == NULL) {
+            zone = NSDefaultMallocZone();
+        }
+
+#if !defined(GCC_RUNTIME_3) && !defined(APPLE_RUNTIME_4)
+        object->isa = 0;
+#endif
+
+        NSZoneFree(zone, object);
+    }
 }
 
-id NSCopyObject(id object,NSUInteger extraBytes,NSZone *zone) {
-   if (object==nil)
-      return nil;
 
-   id result=NSAllocateObject(object->isa,extraBytes,zone);
-   
-   memcpy(result, object, object->isa->instance_size+extraBytes);
-   
-   return result;
+id NSCopyObject(id object, NSUInteger extraBytes, NSZone *zone)
+{
+    if (object == nil) {
+        return nil;
+    }
+
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    id result = NSAllocateObject(object_getClass(object), extraBytes, zone);
+
+    memcpy(result, object, class_getInstanceSize(object_getClass(object)) + extraBytes);
+#else
+    id result = NSAllocateObject(object->isa, extraBytes, zone);
+
+    memcpy(result, object, object->isa->instance_size + extraBytes);
+#endif
+
+    return result;
 }

@@ -160,12 +160,12 @@ NSString * const NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessExc
    return nil;
 }
 
--(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power {
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power {
    NSUnimplementedMethod();
    return nil;
 }
 
--(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
    NSUnimplementedMethod();
    return nil;
 }

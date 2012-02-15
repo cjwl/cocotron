@@ -106,7 +106,7 @@ Class objc_getFutureClass(const char *name) {
 
 id objc_getMetaClass(const char *name) {
    Class c=objc_getClass(name);
-   return c->isa;
+   return (id)c->isa;
 }
 
 id objc_getRequiredClass(const char *name) {

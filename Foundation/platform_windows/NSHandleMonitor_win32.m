@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop-InputSource.h>
 #import <Foundation/NSString.h>
 
-#import <windows.h>
+#include <windows.h>
 
 @implementation NSHandleMonitor_win32
 

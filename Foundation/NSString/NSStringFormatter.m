@@ -14,9 +14,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "unibuffer.h"
 #import <Foundation/NSRaiseException.h>
 
-#import <stdio.h>
-#import <string.h>
-#import <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 typedef struct {
    NSZone *zone;

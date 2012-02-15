@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_solaris.h>
 
 #import <rpc/types.h>
-#import <time.h>
-#import <netdb.h>
-#import <unistd.h>
+#include <time.h>
+#include <netdb.h>
+#include <unistd.h>
 
 NSString *NSPlatformClassName=@"NSPlatform_solaris";
 

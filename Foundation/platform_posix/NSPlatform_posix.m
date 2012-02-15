@@ -22,8 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPipe_posix.h>
 #import <Foundation/NSRaiseException.h>
 
-#import <pwd.h>
-#import <unistd.h>
+#include <pwd.h>
+#include <unistd.h>
 #import <rpc/types.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -39,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <poll.h>
 #include <pthread.h>
 #import <sys/socket.h>
-#import <errno.h>
+#include <errno.h>
 
 BOOL NSCurrentLocaleIsMetric(){
    return NO;
