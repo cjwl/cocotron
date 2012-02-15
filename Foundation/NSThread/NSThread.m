@@ -100,6 +100,8 @@ static void *nsThreadStartThread(void* t)
 }
 
 +(NSArray *)callStackReturnAddresses {
+extern id _NSStackTrace();
+
    return _NSStackTrace();
 }
 

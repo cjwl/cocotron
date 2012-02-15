@@ -18,7 +18,6 @@
 
 -initWithFrame:(CGRect)rect;
 
--(CGLPixelSurface *)pixelSurface;
 -(void)setFrame:(CGRect)value;
 -(void)setLayer:(CALayer *)layer;
 
