@@ -47,6 +47,12 @@ enum {
    NSAnchoredSearch=0x08,
    NSNumericSearch= 0x40,
 };
+
+enum {
+    NSStringEncodingConversionAllowLossy=1,
+    NSStringEncodingConversionExternalRepresentation=2
+};
+
 typedef NSUInteger NSStringCompareOptions;
 typedef NSUInteger NSStringEncodingConversionOptions;
 

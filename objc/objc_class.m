@@ -226,6 +226,9 @@ int class_getVersion(Class class) {
 
 Method class_getClassMethod(Class class, SEL selector)
 {
+	if (class == Nil) {
+     return NULL;   
+    }
 	return class_getInstanceMethod(class->isa, selector);
 }
 

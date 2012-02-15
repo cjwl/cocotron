@@ -47,6 +47,7 @@ FOUNDATION_EXPORT const NSTimeInterval NSTimeIntervalSince1970;
 -(NSDate *)laterDate:(NSDate *)date;
 
 -addTimeInterval:(NSTimeInterval)seconds;
+-dateByAddingTimeInterval:(NSTimeInterval)seconds;
 
 -(NSCalendarDate *)dateWithCalendarFormat:(NSString *)format
   timeZone:(NSTimeZone *)timeZone;

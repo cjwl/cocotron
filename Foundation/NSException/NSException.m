@@ -111,7 +111,7 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"<NSException: %@ %@>",_name,_reason];
+   return _reason;
 }
 
 -copyWithZone:(NSZone *)zone {
