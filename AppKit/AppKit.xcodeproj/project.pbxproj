@@ -5535,7 +5535,6 @@
 				6E2B55050976075300DA0954 /* Resources */,
 				6E2B575A0976075500DA0954 /* External Frameworks and Libraries */,
 				6E2B53230976074C00DA0954 /* Products */,
-				630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */,
 				630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */,
 				630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */,
 				630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */,
@@ -5888,6 +5887,7 @@
 		6E2B54DE0976075300DA0954 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */,
 				6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */,
 				6311B16014C74B00007AD8C0 /* NSFontPanel.nib */,
 				6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */,
