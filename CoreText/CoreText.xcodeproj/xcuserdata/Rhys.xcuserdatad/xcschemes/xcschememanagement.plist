@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>CoreText-Darwin-i386.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>58</integer>
+		</dict>
+		<key>CoreText-FreeBSD-i386.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>18</integer>
+		</dict>
+		<key>CoreText-Linux-i386.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>36</integer>
+		</dict>
+		<key>CoreText-Windows-i386.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>45</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>8DC2EF4F0486A6940098B216</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE5A887C10C6F2F5005E348A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FECF92310FFB29FF007AECF1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FECF92410FFB2A0D007AECF1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
