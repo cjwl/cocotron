@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #undef WINVER
 #define WINVER 0x501 // XP drop shadow constants
+#define WM_NSTRAYACTIVATE 9001
 #import <windows.h>
 
 @class O2Context_gdi,O2Surface,O2Surface_DIBSection;

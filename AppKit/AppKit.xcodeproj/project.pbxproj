@@ -64,6 +64,16 @@
 		631382B6145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		631382B7145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		631382B8145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		98214B8F14EE566B006DB3BD /* NSStatusItem+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		98214B9014EE566B006DB3BD /* NSStatusItem+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		98214B9114EE566B006DB3BD /* NSStatusItem+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		98214B9214EE566B006DB3BD /* NSStatusItem+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		98214B9314EE566B006DB3BD /* NSStatusItem+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9824ACBB14EDE5A100245AEF /* NSStatusBar_(Private).h in Headers */ = {isa = PBXBuildFile; fileRef = 9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9824ACBD14EDE63D00245AEF /* NSStatusBar_(Private).h in Headers */ = {isa = PBXBuildFile; fileRef = 9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9824ACBE14EDE64100245AEF /* NSStatusBar_(Private).h in Headers */ = {isa = PBXBuildFile; fileRef = 9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9824ACBF14EDE64200245AEF /* NSStatusBar_(Private).h in Headers */ = {isa = PBXBuildFile; fileRef = 9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9824ACC014EDE64200245AEF /* NSStatusBar_(Private).h in Headers */ = {isa = PBXBuildFile; fileRef = 9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
 		A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
@@ -4884,6 +4894,8 @@
 		6EC4ADE50A37294300E8D6CA /* NSButtonImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSButtonImageSource.m; sourceTree = "<group>"; };
 		6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomView.h; sourceTree = "<group>"; };
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
+		98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSStatusItem+Private.h"; sourceTree = "<group>"; };
+		9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSStatusBar_(Private).h"; sourceTree = "<group>"; };
 		A149E81710069B5B00616E2D /* NSCellUndoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCellUndoManager.h; sourceTree = "<group>"; };
 		A149E81810069B5B00616E2D /* NSCellUndoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCellUndoManager.m; sourceTree = "<group>"; };
 		A1CC7017100534AB00DB9974 /* NSCachingBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCachingBinder.h; sourceTree = "<group>"; };
@@ -5727,8 +5739,10 @@
 				FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */,
 				6E2B54980976075200DA0954 /* NSSplitView.h */,
 				6E2B53BD0976075200DA0954 /* NSSplitView.m */,
+				9824ACB914EDE5A000245AEF /* NSStatusBar_(Private).h */,
 				FE2A113D0B45C58D006C03DE /* NSStatusBar.h */,
 				FE2A113E0B45C58D006C03DE /* NSStatusBar.m */,
+				98214B8D14EE566B006DB3BD /* NSStatusItem+Private.h */,
 				FE2A11450B45C59A006C03DE /* NSStatusItem.h */,
 				FE2A11460B45C59A006C03DE /* NSStatusItem.m */,
 				6E2B54A20976075200DA0954 /* NSStepper.h */,
@@ -7214,6 +7228,8 @@
 				FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				9824ACBD14EDE63D00245AEF /* NSStatusBar_(Private).h in Headers */,
+				98214B9014EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7622,6 +7638,8 @@
 				FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				9824ACBE14EDE64100245AEF /* NSStatusBar_(Private).h in Headers */,
+				98214B9114EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8027,6 +8045,8 @@
 				FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				9824ACBB14EDE5A100245AEF /* NSStatusBar_(Private).h in Headers */,
+				98214B8F14EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8437,6 +8457,8 @@
 				FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				9824ACC014EDE64200245AEF /* NSStatusBar_(Private).h in Headers */,
+				98214B9314EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8764,6 +8786,8 @@
 				FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				9824ACBF14EDE64200245AEF /* NSStatusBar_(Private).h in Headers */,
+				98214B9214EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

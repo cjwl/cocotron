@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Display.h>
+#import <AppKit/NSStatusBar_(Private).h>
 #import <Foundation/NSString_win32.h>
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2Surface.h>
@@ -1461,6 +1462,11 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
     // This can avoid OpenGL flickering
     case WM_ERASEBKGND: return 1;
+           
+   case WM_COMMAND:
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"WIN32_WM_COMMAND" object:[NSValue valueWithPoint:CGPointMake(lParam, wParam)]];
+           return 1;
+       break;
 
 #if 0
 // doesn't seem to work
@@ -1469,6 +1475,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
      [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
      break;
 #endif
+   case WM_NSTRAYACTIVATE:
+     [[NSStatusBar systemStatusBar] _trayNotificationForID:wParam event:lParam];
+     return 1;
 
     default:
      break;
