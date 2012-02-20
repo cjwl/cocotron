@@ -292,7 +292,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSUInteger)selectionIndex
 {
-	return [_selectionIndexes firstIndex];
+	if (_selectionIndexes == nil) {
+		return NSNotFound;
+	} else {
+		return [_selectionIndexes firstIndex];
+	}
 }
 
 -(BOOL)setSelectionIndex:(unsigned)index
