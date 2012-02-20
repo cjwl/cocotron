@@ -10,51 +10,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 
 NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength){
-   NSUInteger utf8Length=0;
-   NSUInteger i;
-   
+    NSUInteger utf8Length=0;
+    NSUInteger i;
+    
     for(i=0;i<length && utf8Length < maxLength;i++){
         uint32_t      code32=characters[i];
-    uint8_t       tmp[4];
-	int           tmpLength=0;
-	
-	if(code32<0x80)
-	 tmp[tmpLength++]=code32;
-	else if(code32<0x800){
-	 tmp[tmpLength++]=0x80|(code32&0x3F);
-	 tmp[tmpLength++]=0xC0|(code32>>6);
-	}
-	else if(code32<0x10000) {
-	 tmp[tmpLength++]=0x80|(code32&0x3F);
-	 tmp[tmpLength++]=0x80|((code32>>6) & 0x3F);
-	 tmp[tmpLength++]=0xE0|((code32>>12) & 0x0F);
-	}
-	else {
-	 tmp[tmpLength++]=0x80|(code32&0x3F);
-	 tmp[tmpLength++]=0x80|((code32>>6) & 0x3F);
-	 tmp[tmpLength++]=0x80|((code32>>12) & 0x3F);
-	 tmp[tmpLength++]=0xF0|((code32>>18) & 0x07);
-	}
-	
+        uint8_t       tmp[4];
+        int           tmpLength=0;
+        
+        if(code32<0x80)
+            tmp[tmpLength++]=code32;
+        else if(code32<0x800){
+            tmp[tmpLength++]=0x80|(code32&0x3F);
+            tmp[tmpLength++]=0xC0|(code32>>6);
+        }
+        else if(code32<0x10000) {
+            tmp[tmpLength++]=0x80|(code32&0x3F);
+            tmp[tmpLength++]=0x80|((code32>>6) & 0x3F);
+            tmp[tmpLength++]=0xE0|((code32>>12) & 0x0F);
+        }
+        else {
+            tmp[tmpLength++]=0x80|(code32&0x3F);
+            tmp[tmpLength++]=0x80|((code32>>6) & 0x3F);
+            tmp[tmpLength++]=0x80|((code32>>12) & 0x3F);
+            tmp[tmpLength++]=0xF0|((code32>>18) & 0x07);
+        }
+        
         if(cString==NULL)
-	 utf8Length+=tmpLength;
-	else{
+            utf8Length+=tmpLength;
+        else{
             if (tmpLength + utf8Length <= maxLength){ 
-                while(--tmpLength>=0)	{ 
+                while(--tmpLength>=0)   { 
                     cString[utf8Length++]=tmp[tmpLength];
-	}
-   }
+                }
+            }
             else {
                 break;
             }
         }
     }
-   
+    
     if (location != NULL) {
         *location=i;
     }
     
-   return utf8Length;
+    return utf8Length;
 }
 
 char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,

@@ -253,6 +253,14 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	}
 	
 	if(![self _isDirectory:path]){
+        if (_delegate != nil) {
+            if(![_delegate fileManager:self shouldRemoveItemAtPath:path]){
+                if(error!=NULL)
+                    *error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
+                return NO;
+            }
+        }
+        
 		if(!DeleteFileW(fsrep)){
 			if(error!=NULL)
 				*error=NSErrorForGetLastError();
@@ -263,14 +271,19 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		NSArray *contents=[self directoryContentsAtPath:path];
 		NSInteger      i,count=[contents count];
 		
-		for(i=0;i<count;i++){
-			NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
-			if(![_delegate fileManager:self shouldRemoveItemAtPath:fullPath ]){
-				if(error!=NULL)
-					*error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
-				return NO;
-			}
-		}
+        for(i=0;i<count;i++){
+            NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
+            if (_delegate != nil) {
+                if(![_delegate fileManager:self shouldRemoveItemAtPath:fullPath]){
+                    if(error!=NULL)
+                        *error=nil; // FIXME; is there a Cocoa error for the delegate cancelling?
+                    return NO;
+                }
+            }
+            if ([self removeItemAtPath:fullPath error:error] == NO) {
+                return NO;
+            }
+        } 
 		
 		if(!RemoveDirectoryW(fsrep)){
 			if(error!=NULL)

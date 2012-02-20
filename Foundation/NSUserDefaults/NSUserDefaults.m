@@ -73,7 +73,7 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
    NSDictionary *plist=[NSDictionary dictionaryWithContentsOfFile:path];
 
    if(plist==nil)
-    NSCLog("internal error, unable to locate NSUserDefaults.plist, path=%s, bundle at %s",[path cString],[[[NSBundle bundleForClass:[self class]]  resourcePath] cString]);
+    NSCLog("internal error, unable to locate NSUserDefaults.plist, path=%s, bundle at %s",path == nil ? "" : [path cString],[[[NSBundle bundleForClass:[self class]]  resourcePath] cString]);
    else
     [_domains setObject:plist forKey:@"Foundation"];
 }

@@ -54,7 +54,7 @@ extern NSString *NSPlatformClassName;
 
 -(Class)recursiveLockClass
 {
-    // NSRecursiveLock is an *okay* default (doesn't use atomic operations)
+    NSInvalidAbstractInvocation();
    return Nil;
 }
 

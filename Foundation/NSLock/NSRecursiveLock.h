@@ -12,9 +12,6 @@
 #import <Foundation/NSString.h>
 
 @interface NSRecursiveLock : NSObject <NSLocking> {
-    NSLock *_lock;
-    volatile NSThread *_lockingThread;
-    volatile int _numberOfLocks;
     NSString *_name;
 }
 -(NSString *)name;
@@ -22,10 +19,4 @@
 
 -(BOOL)tryLock;
 -(BOOL)lockBeforeDate:(NSDate *)value;
-@end
-
-
-
-@interface NSRecursiveLock (Private)
--(BOOL)isLocked;
 @end

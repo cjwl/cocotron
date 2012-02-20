@@ -593,7 +593,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
                 return YES;
             } else {
-                return NO;
+                if ([_skipSet characterIsMember:unicode] == YES) {
+                    continue;
+                }
+                else {
+                    if (stringp != NULL)
+                        *stringp = [NSString stringWithCharacters:result length:resultLength];
+                    
+                    return YES;                    
+                }
             }
         }
         else if ([_skipSet characterIsMember:unicode] && scanStarted == NO)

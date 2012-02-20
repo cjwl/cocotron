@@ -16,9 +16,7 @@
    HANDLE     _waitersDone;
    HANDLE     _mutex;
    CRITICAL_SECTION     _waitersNumber;
-   NSInteger  _value;
-   
-   NSString *_name;
+   NSInteger  _value;   
 }
 
 @end

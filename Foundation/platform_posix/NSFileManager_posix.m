@@ -46,6 +46,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)directoryContentsAtPath:(NSString *)path {
+    return [self contentsOfDirectoryAtPath:path error:NULL];
+}
+
+-(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error
+{
+//TODO fill error
     NSMutableArray *result=nil;
     DIR *dirp = NULL;
     struct dirent *dire;
@@ -55,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     dirp = opendir([path fileSystemRepresentation]);
-
+    
     if (dirp == NULL)
         return nil;
 
@@ -70,9 +76,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     closedir(dirp);
-
+    
     return result;
 }
+
 
 -(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes {
     // you can set all these, but we don't respect 'em all yet
@@ -255,7 +262,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     return YES;
 }
-
 -(NSString *)currentDirectoryPath {
     char  path[MAXPATHLEN+1];
 

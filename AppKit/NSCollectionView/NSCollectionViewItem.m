@@ -36,32 +36,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _collectionView;
 }
 
--(NSView *)view {
-   return _view;
-}
-
 -(BOOL)isSelected {
    return _isSelected;
 }
 
--representedObject {
-   return _representedObject;
-}
-
--(void)setView:(NSView *)view {
-   view=[view retain];
-   [_view release];
-   _view=view;
-}
-
 -(void)setSelected:(BOOL)value {
    _isSelected=value;
-}
-
--(void)setRepresentedObject:value {
-   value=[value retain];
-   [_representedObject release];
-   _representedObject=value;
 }
 
 @end

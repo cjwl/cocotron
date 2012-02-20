@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDate;
 
 @interface NSConditionLock : NSObject <NSLocking> {
+    NSString *_name;
 }
 
 -initWithCondition:(NSInteger)condition;

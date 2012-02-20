@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle_win32.h>
 #import <Foundation/NSHandleMonitor_win32.h>
 #import <Foundation/NSRunLoop-InputSource.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString_win32.h>
 #import <Foundation/NSPlatform_win32.h>
 #include <windows.h>
@@ -110,16 +111,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
    ZeroMemory(& _processInfo,sizeof(_processInfo));
-
+    
+    char    *cenv = NULL, *cenvp = NULL;
+    if(environment != nil) {
+        //alloc enough space for environment
+        //maybe a better solution is with realloc
+        cenv =  NSZoneMalloc(NULL, [[[environment description] dataUsingEncoding:[NSString defaultCStringEncoding]] length]); 
+        cenvp = cenv;
+        
+        NSString *key;
+        
+        for (key in environment) {
+            id          value = [environment objectForKey:key];
+            NSData		*data;
+            
+            data = [key dataUsingEncoding:[NSString defaultCStringEncoding]];
+            memcpy(cenvp, [data bytes], [data length]);
+            cenvp += [data length];
+            *cenvp++ = '=';
+            data = [value dataUsingEncoding:[NSString defaultCStringEncoding]];
+            memcpy(cenvp, [data bytes], [data length]);
+            cenvp += [data length];
+            *cenvp++ = 0;
+        }
+        *cenvp++ = 0;
+        
+    }
+    
+    
+    
    if(!CreateProcess([[self launchPath] fileSystemRepresentation],
     (char *)[[self _argumentsData] bytes],
-    NULL,NULL,TRUE,CREATE_NO_WINDOW,NULL,
+    NULL,NULL,TRUE,CREATE_NO_WINDOW,cenv,
     [currentDirectoryPath fileSystemRepresentation],
     &startupInfo,&_processInfo)){
+    if(cenv) {
+        NSZoneFree(NULL, cenv);
+    }
     [NSException raise:NSInvalidArgumentException
                 format:@"CreateProcess(%@,%@,%@) failed", launchPath,[arguments componentsJoinedByString:@" "], currentDirectoryPath];
     return;
    }
+    if(cenv) {
+        NSZoneFree(NULL, cenv);
+    }
 
    if([standardInput isKindOfClass:[NSPipe class]])
     [[standardInput fileHandleForReading] closeFile];
@@ -136,7 +171,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)terminate {
    TerminateProcess(_processInfo.hProcess,0);
-   Win32Assert("TerminateProcess");
 }
 
 -(int)terminationStatus {

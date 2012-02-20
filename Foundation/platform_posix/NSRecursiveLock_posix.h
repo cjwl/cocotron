@@ -6,67 +6,24 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+
 #import <Foundation/NSRecursiveLock.h>
-#import <Foundation/NSRaiseException.h>
-#import <Foundation/NSPlatform.h>
-#import <Foundation/NSRaise.h>
+#import <Foundation/NSLock.h>
+#import <Foundation/NSThread.h>
+#import <Foundation/NSString.h>
 
-@implementation NSRecursiveLock
-
-+allocWithZone:(NSZone *)zone {
-    if(self==[NSRecursiveLock class])
-        return NSAllocateObject([[NSPlatform currentPlatform] recursiveLockClass],0,zone);
-    else
-        return NSAllocateObject(self,0,zone);
+@interface NSRecursiveLock_posix : NSRecursiveLock {
+    NSLock *_lock;
+    volatile NSThread *_lockingThread;
+    volatile int _numberOfLocks;
 }
 
--(id)init
-{
-    NSUnimplementedMethod();
-    return self;
-}
-
--(void)dealloc
-{
-    [_name release];
-    [super dealloc];
-}
-
--(NSString *)name
-{
-    return _name;
-}
-
--(void)setName:(NSString *)value
-{
-    if(value!=_name)
-    {
-        [_name release];
-        _name=[value retain];
-    }
-}
-
--(void)lock
-{
-    NSUnimplementedMethod();
-}
-
--(void)unlock
-{
-    NSUnimplementedMethod();
-}
-
--(BOOL)tryLock
-{
-    NSUnimplementedMethod();
-    return NO;
-}
-
+-(BOOL)tryLock;
 -(BOOL)lockBeforeDate:(NSDate *)value;
-{
-    NSUnimplementedMethod();
-    return NO;
-}
-
 @end
 
+
+
+@interface NSRecursiveLock (Private)
+-(BOOL)isLocked;
+@end

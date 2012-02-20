@@ -13,6 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <math.h>
 #include <stdio.h>
 
+#define STRINGIFY2( x) #x
+#define STRINGIFY(x) STRINGIFY2(x)
+
 const NSPoint NSZeroPoint={0,0};
 
 BOOL NSEqualPoints(NSPoint point0,NSPoint point1) {
@@ -29,7 +32,7 @@ NSPoint NSPointFromString(NSString *string)
     NSPoint result = NSZeroPoint;
     
     if (string != nil) {
-        sscanf([string cString], "{" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}", &result.x, &result.y);
+        sscanf([string cString], "{" STRINGIFY(CGFLOAT_SCAN) ", " STRINGIFY(CGFLOAT_SCAN) "}", &result.x, &result.y);
     }
     return result;
 }
@@ -52,7 +55,7 @@ NSSize NSSizeFromString(NSString *string)
     NSSize result = NSZeroSize;
     
     if (string != nil) {
-        sscanf([string cString], "{" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}", &result.width, &result.height);
+        sscanf([string cString], "{" STRINGIFY(CGFLOAT_SCAN) ", " STRINGIFY(CGFLOAT_SCAN) "}", &result.width, &result.height);
     }
     return result;
 }
@@ -192,7 +195,7 @@ NSRect NSRectFromString(NSString *string)
     NSRect result = NSZeroRect;
     
     if (string != nil) {
-        sscanf([string cString], "{{" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}, {" CGFLOAT_SCAN ", " CGFLOAT_SCAN "}}", &result.origin.x, &result.origin.y, &result.size.width, &result.size.height);
+        sscanf([string cString], "{{" STRINGIFY(CGFLOAT_SCAN) ", " STRINGIFY(CGFLOAT_SCAN) "}, {" STRINGIFY(CGFLOAT_SCAN) ", " STRINGIFY(CGFLOAT_SCAN) "}}", &result.origin.x, &result.origin.y, &result.size.width, &result.size.height);
     }
     return result;
 }

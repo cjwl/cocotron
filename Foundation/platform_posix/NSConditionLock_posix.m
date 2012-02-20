@@ -11,7 +11,7 @@
 #import <Foundation/NSRaiseException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
-#include <time.h>
+#include <sys/time.h>
 #include <math.h>
 #include <errno.h>
 
@@ -88,11 +88,13 @@
         switch ((rc = pthread_cond_wait(&_cond, &_mutex))) {
             case 0:
                 break;
-            default:
-                if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
-                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+            default: {
+                int r;
+                if((r = pthread_mutex_unlock(&_mutex)) != 0) {
+                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, r];
                 }
                 [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+            }
         }
 
     }
@@ -109,21 +111,23 @@
     _lockingThread=nil;
     _value=condition;
     int rc;
-    if((rc = pthread_cond_broadcast(&_cond)) != 0) {
-        [NSException raise:NSInvalidArgumentException format:@"failed to broadcast %@ (errno: %d)", self, rc];
-    }
     if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+    }
+    if((rc = pthread_cond_broadcast(&_cond)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to broadcast %@ (errno: %d)", self, rc];
     }
 }
 
 -(BOOL)lockBeforeDate:(NSDate *)date {
+    struct timeval tv;
+    struct timespec t;
     int rc;
-    struct timespec t={0};
+    gettimeofday(&tv,NULL);
     NSTimeInterval d=[date timeIntervalSinceNow];
-    t.tv_sec=(unsigned int)d;
-    t.tv_nsec=fmod(d, 1.0)*1000000.0;
-
+    t.tv_sec= tv.tv_sec + (unsigned int)d + 1;
+    t.tv_nsec=tv.tv_usec*1000 + fmod(d, 1.0)*1000000.0;
+    
     if((rc = pthread_mutex_lock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
     }
@@ -137,21 +141,25 @@
                 [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
             }
             return NO;
-        default:
-            if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
-                [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+        default: {
+            int r;
+            if((r = pthread_mutex_unlock(&_mutex)) != 0) {
+                [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, r];
             }
             [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ before date %@ (errno: %d)", self, date, rc];
             return NO;
+        }
     }
 }
 
 -(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date {
-    struct timespec t={0};
+    struct timeval tv;
+    struct timespec t;
     int rc;
+    gettimeofday(&tv,NULL);
     NSTimeInterval d=[date timeIntervalSinceNow];
-    t.tv_sec=(unsigned int)d;
-    t.tv_nsec=fmod(d, 1.0)*1000000.0;
+    t.tv_sec= tv.tv_sec + (unsigned int)d + 1;
+    t.tv_nsec=tv.tv_usec*1000 + fmod(d, 1.0)*1000000.0;
 
     if((rc = pthread_mutex_lock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
@@ -166,12 +174,14 @@
                     [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
                 }
                 return NO;
-            default:
-                if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
-                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+            default: {
+                int r;
+                if((r = pthread_mutex_unlock(&_mutex)) != 0) {
+                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, r];
                 }
                 [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ before date %@ (errno: %d)", self, date, rc];
                 return NO;
+            }
         }
     }
 

@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/Protocol.h>
 #import "ObjCException.h"
 #import "objc_malloc.h"
+#import "objc_protocol.h"
  
 #import <string.h>
 
@@ -18,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #ifdef SOLARIS
     #import <stdio.h>
-#define PATH_MAX 1024
+    #define PATH_MAX 1024
 #endif
 
 #ifdef WIN32
@@ -396,15 +397,40 @@ void OBJCSendLoadMessages() {
 
 static void OBJCSymbolTableRegisterClasses(OBJCSymbolTable *symbolTable){
    unsigned i,count=symbolTable->classCount;
-
+    
    for(i=0;i<count;i++){
       struct objc_class *class=(struct objc_class *)symbolTable->definitions[i];
-      
+             
       // mark class and metaclass as having a direct method list pointer
       class->info|=CLASS_NO_METHOD_ARRAY;
       class->isa->info|=CLASS_NO_METHOD_ARRAY;
       
       OBJCRegisterClass(class);
+      OBJCAddToUnResolvedClasses(class);
+              
+       if(strcmp(class_getName(class), "Protocol") == 0) {
+           // Fix protocol classes where isa is not yet set. This is the case for all
+           // classes loaded before Protocol class is loaded.
+           int   i,capacity=objc_getClassList(NULL,0);
+           Class list[capacity];
+           
+           objc_getClassList(list,capacity);
+           
+           for(i=0;i<capacity;i++){
+               Class class = list[i];
+               struct objc_protocol_list *protocols;
+               
+               for(protocols=class->protocols;protocols!=NULL;protocols=protocols->next){
+                   unsigned i;
+                   
+                   for(i=0;i<protocols->count;i++){
+                       OBJCProtocolTemplate *template=(OBJCProtocolTemplate *)protocols->list[i];
+                       
+                       OBJCRegisterProtocol(template);
+                   }
+               }
+           }           
+       }
    }
 }
 
@@ -414,7 +440,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
    unsigned offset=symbolTable->classCount;
    unsigned i,count=symbolTable->categoryCount;
 
-   if(unlinkedCategories!=NULL){
+   if(unlinkedCategories!=NULL && objc_lookUpClass("Protocol") != Nil){
     int unlinkedIndex=unlinkedCategories->count;
    
     while(--unlinkedIndex>=0){
@@ -432,7 +458,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
     Category category=(Category)symbolTable->definitions[offset+i];
     Class         class=objc_lookUpClass(category->className);
 
-    if(class!=Nil)
+    if(class!=Nil && objc_lookUpClass("Protocol") != Nil)
      OBJCRegisterCategoryInClass(category,class);
 	else {
 	 if(unlinkedCategories==NULL)
@@ -588,4 +614,3 @@ const char **objc_copyImageNames(unsigned *countp) {
    
    return result;
 }
-

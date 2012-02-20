@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaiseException.h>
 
-// structures in tzfiles are big-endian, from public doman tzfile.h
+// structures in tzfiles are big-endian, from public domain tzfile.h
 
 #define	TZ_MAGIC	"TZif"
 
@@ -87,13 +87,15 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         //unused
         //int             numberOfGMTFlags, numberOfStandardFlags, numberOfAbbreviationCharacters;
         int             numberOfTransitionTimes, numberOfLocalTimes;
-        int             i;
-
+        int             i;        
+    #pragma pack(1)
         const struct tzType {
             unsigned int offset;
             unsigned char isDST;
             unsigned char abbrevIndex;
         } *tzTypes;
+    #pragma pack()
+    
         const char *tzTypesBytes;
         const char *abbreviations;
 
@@ -104,8 +106,10 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
             data = [NSData dataWithContentsOfFile:zonePath];
         }
-        if (data == nil)
+        if (data == nil) {
+            [self release];
             return nil;
+        }
 
         transitions = [NSMutableArray array];
         sortedTransitions = [NSArray array];
@@ -134,15 +138,17 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
         // this is a bit more awkward, but i want to support non-3 character abbreviations theoretically.
         tzTypesBytes = (tzData+(numberOfTransitionTimes * 5));
-        abbreviations = tzTypesBytes + numberOfLocalTimes * 6; //sizeof struct tzType
+        abbreviations = tzTypesBytes + numberOfLocalTimes * sizeof(struct tzType);
         for (i = 0; i < numberOfLocalTimes; ++i) {
-
          tzTypes=(struct tzType *)tzTypesBytes;
+            NSString *abb = [NSString stringWithCString:abbreviations+tzTypes->abbrevIndex];
+            if(name == nil) {
+                name = abb;
+            }
             [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
-                    isDaylightSavingTime:tzTypes->isDST
-                    abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
-            tzTypesBytes += 6;	// wtf, implementing as arrays didn't work.
-            				// a-ha! sizeof(struct tzType) returns *8*, not 6 as it should!!!
+                                                                        isDaylightSavingTime:tzTypes->isDST
+                                                                                abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
+            tzTypesBytes += sizeof(struct tzType);
         }
 
         return [self initWithName:name data:data transitions:sortedTransitions types:types];
@@ -174,22 +180,35 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     return _data;
 }
 
-+(NSTimeZone *)systemTimeZone {
-
-    NSTimeZone      *systemTimeZone = nil;
-    NSString        *timeZoneName;
-
++(NSTimeZone *)systemTimeZone {    
+    NSTimeZone          *systemTimeZone = nil;
+    NSString            *timeZoneName;
+    NSInteger           secondsFromGMT;
+    NSDictionary        *dictionary;
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
         NSError     *error;
         NSString    *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
-
-        timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
-
-        systemTimeZone = [self timeZoneWithName:timeZoneName];
+        
+        if(path != nil) {
+            //localtime is a symlink
+            timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
+            systemTimeZone = [self timeZoneWithName:timeZoneName];        
+        }
+        else {
+            //localtime is a file
+            systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
+        }
     }
-
-#ifdef LINUX
-// FIXME: BSD does not have 'timezone' or __timezone
+    
+    if (systemTimeZone == nil) {
+        //try to use TZ environment variable
+        const char  *envTimeZoneName = getenv("TZ");
+        
+        if (envTimeZoneName != NULL) {
+            systemTimeZone = [self timeZoneWithName:[NSString stringWithCString:envTimeZoneName]];        
+        }
+    }
 
     if (systemTimeZone == nil) {
         NSString        *abbreviation;
@@ -199,6 +218,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
         systemTimeZone = [self timeZoneWithAbbreviation:abbreviation];
 
+#ifdef LINUX
         if(systemTimeZone == nil) {
             //check if the error is because of a missing entry in NSTimeZoneAbbreviations.plist (only for logging)
             if([[self abbreviationDictionary] objectForKey:abbreviation] == nil) {
@@ -208,11 +228,11 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
                 NSCLog("TimeZone [%s] not instantiable -> using absolute timezone (no daylight saving)", [[[self abbreviationDictionary] objectForKey:abbreviation] cString]);
             }
 
-            systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:-timezone];
+            systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:timezone];
         }
-    }
 #endif
-
+    }
+    
     return systemTimeZone;
 }
 
@@ -241,10 +261,12 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             else
                 return [_timeZoneTypes objectAtIndex:[previousTransition typeIndex]];
         }
+        
+        return [_timeZoneTypes lastObject];
     }
-
+    //don't use date description in exception text, because of recursion
     [NSException raise:NSInternalInconsistencyException
-                format:@"%@ could not determine seconds from GMT for %@", self, date];
+                format:@"%@ could not determine seconds from GMT for timeInterval %d since reference date", self, [date timeIntervalSinceReferenceDate]];
     return nil;
 }
 

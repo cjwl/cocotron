@@ -6346,7 +6346,7 @@
 		FEE97EB90BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
 		FEE97EBA0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEE97EBB0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
-		FEEA64B512B674A200E6E2C8 /* NSRecursiveLock_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEA64B312B674A200E6E2C8 /* NSRecursiveLock_win32.h */; };
+		FEEA64B512B674A200E6E2C8 /* NSRecursiveLock_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEA64B312B674A200E6E2C8 /* NSRecursiveLock_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEEA64B612B674A200E6E2C8 /* NSRecursiveLock_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEA64B412B674A200E6E2C8 /* NSRecursiveLock_win32.m */; };
 		FEF5B4D40BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */; };
 		FEF5B4D50BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */; };

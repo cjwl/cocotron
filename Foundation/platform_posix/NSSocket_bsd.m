@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #ifdef __svr4__ // Solaris
 #import <sys/filio.h>
-#import <sys/signal.h>
+#import <signal.h>
 #endif
 
 @implementation NSSocket(bsd)
@@ -206,7 +206,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
-   return recv(_descriptor,(void *)buffer,length,0);
+   NSInteger i = recv(_descriptor,(void *)buffer,length,0);
+
+    return i;
 }
 
 -(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {

@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSMutableString_unicodePtr.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
@@ -337,31 +338,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding {
-#if 0
-   if(encoding==NSString_cStringEncoding)
-    return NSString_cStringInitWithBytes(NULL,[data bytes],[data length]);
-
-   switch(encoding){
-
-    case NSString_unicodeEncoding:
-     return NSString_unicodeInit(NULL,[data bytes],[data length]);
-
-    case NSNEXTSTEPStringEncoding:
-     return NSNEXTSTEPStringInitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSISOLatin1StringEncoding:
-     return NSString_isoLatin1InitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSSymbolStringEncoding:
-     break;
-
-    default:
-     break;
-   }
-#endif
-
-   NSInvalidAbstractInvocation();
-   return nil;
+    return [self initWithBytes:[data bytes] length:[data length] encoding:encoding];
 }
 
 -initWithContentsOfFile:(NSString *)path {

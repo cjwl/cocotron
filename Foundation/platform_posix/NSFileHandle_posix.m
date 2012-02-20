@@ -270,7 +270,7 @@ CONFORMING TO
         if (count <= 0) {
             if (err == EAGAIN || err == EINTR) {
                 [self setNonBlocking: NO];
-                count = read(_fileDescriptor, [mutableData mutableBytes], 1);
+                count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 1);
                 err = errno; // preserved so that the next fcntl doesn't clobber it
                 [self setNonBlocking: YES];
                 if (count > 0) {
