@@ -1451,22 +1451,56 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return [self dataUsingEncoding:encoding allowLossyConversion:NO];
 }
 
--(BOOL)getBytes:(void *)bytes maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange {
-   NSUnimplementedMethod();
-   return 0;
+-(BOOL)getBytes:(void *)buffer maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange {
+    NSUInteger  length=[self length];
+        
+    unichar     *unibuffer = NSZoneMalloc(NULL, (1+range.length)*sizeof(unichar));
+    char        *bytes=NULL;
+    NSUInteger byteLength=0;
+
+    [self getCharacters:unibuffer range:range];
+    
+    bytes=NSString_unicodeToAnyCString(encoding,unibuffer, range.length,options&NSStringEncodingConversionAllowLossy ? YES : NO,&byteLength,[self zone], NO);
+    if (bytes==NULL) {
+        NSZoneFree(NULL, unibuffer);
+        return NO;
+    }
+    
+    if (usedLength != NULL) {
+        *usedLength = maxLength < byteLength ? maxLength : byteLength;
+    }
+    if (remainingRange != NULL) {    
+        remainingRange->length = 0;
+        if (maxLength < byteLength) {
+            remainingRange->length = byteLength - maxLength;
+        }
+        remainingRange->location = range.location + range.length - remainingRange->length;
+    }
+    
+    memcpy(buffer, bytes, maxLength < byteLength ? maxLength : byteLength);
+    NSZoneFree(NULL, unibuffer);
+    NSZoneFree(NULL, bytes);
+    
+    return YES;
 }
 
 -(const char *)UTF8String {
-   NSUInteger length=[self length],byteLength;
-   unichar  unicode[length];
-   char    *bytes;
-
-   [self getCharacters:unicode];
-
-   if((bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,YES))==NULL)
-    return NULL;
-
-   return [[NSData dataWithBytesNoCopy:bytes length:byteLength] bytes];
+    NSZone  *zone=[self zone];
+    NSUInteger length=[self length];
+    unichar  *buffer = NSZoneMalloc(NULL, (1+length)*sizeof(unichar));
+    NSUInteger byteLength=0;
+    char    *bytes=NULL;
+    
+    [self getCharacters:buffer];
+    bytes=NSString_unicodeToAnyCString(NSUTF8StringEncoding,buffer,length,NO,&byteLength,zone,YES);
+    if(bytes==NULL) {
+        NSZoneFree(NULL, buffer);
+        return nil;
+    }
+    
+    NSData* result =  [NSData dataWithBytesNoCopy:bytes length:byteLength];
+    NSZoneFree(NULL, buffer);
+    return [result bytes];
 }
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {

@@ -234,9 +234,8 @@ NSModuleHandle NSLoadModule(const char *path) {
    }
 
    handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
-   if (NSLastModuleError() != NULL){
+   if (handle == NULL){
        NSCLog(NSLastModuleError());
-       handle = NULL;
    }
 
    return handle;

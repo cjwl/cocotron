@@ -280,49 +280,10 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 -initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
    NSUInteger resultLength;
    unichar   *characters;
+    
+    characters = NSString_anyCStringToUnicode(encoding,bytes,length,&resultLength,NSZoneFromPointer(self));
    
-   switch(encoding){
-
-    case NSUnicodeStringEncoding:
-     characters=NSUnicodeFromBytes(bytes,length,&resultLength);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSNEXTSTEPStringEncoding:
-     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-// FIX, not nextstep
-    case NSASCIIStringEncoding:
-     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSISOLatin1StringEncoding:
-     characters=NSISOLatin1ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSSymbolStringEncoding:
-     characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSUTF8StringEncoding:
-     characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-	case NSWindowsCP1252StringEncoding:
-     characters=NSWin1252ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSUTF16BigEndianStringEncoding:
-     characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    default:
-     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"encoding %d not (yet) implemented",encoding); 
-     break;
-   }
-   
-   NSDeallocateObject(self);
-   return nil;
+    return NSMutableString_unicodePtrInitNoCopy(self,characters,resultLength, NSZoneFromPointer(self));
 }
 
 -initWithFormat:(NSString *)format
