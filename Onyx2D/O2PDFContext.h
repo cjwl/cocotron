@@ -15,7 +15,6 @@ const NSString *kO2PDFContextTitle;
 
 @interface O2PDFContext : O2Context {
    O2DataConsumer  *_dataConsumer;
-   NSMutableData   *_mutableData;
    NSMutableDictionary *_fontCache;
    NSMapTable     *_objectToRef;
    NSMutableArray *_indirectObjects;
@@ -30,12 +29,12 @@ const NSString *kO2PDFContextTitle;
    NSMutableDictionary *_categoryToNext;
    NSMutableArray  *_textStateStack;
    NSMutableArray  *_contentStreamStack;
+   size_t _length;
 }
 
 -initWithConsumer:(O2DataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
 
 -(unsigned)length;
--(NSData *)data;
 
 -(void)appendData:(NSData *)data;
 -(void)appendBytes:(const void *)ptr length:(unsigned)length;

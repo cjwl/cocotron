@@ -359,8 +359,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[[NSColor grayColor] set];
 	[path stroke];
 	
-	double value=[self doubleValue];
-	double percent=(value-_minValue)/(_maxValue-_minValue);
+	double percent=0.;
+	if (_maxValue != _minValue) {
+		double value = [self doubleValue];
+		percent = (value-_minValue)/(_maxValue-_minValue);
+	}
 
 	double angle = percent * 360;
 	
@@ -528,11 +531,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (NSMouseInRect(localPoint,[self knobRectFlipped:[controlView isFlipped]],[controlView isFlipped])) {
         [self highlight:YES withFrame:_lastRect inView:controlView];
     }
-    else if (NSMouseInRect(localPoint, _lastRect,[controlView isFlipped])) {
-        [self _setLinearDoubleValueFromPoint:localPoint];
-        //NSLog(@"bar click; new doubleValue is %g", [self doubleValue]);
-        return YES;
-    }
+
+	[self _setLinearDoubleValueFromPoint:localPoint];
 	return YES;
 }
 
@@ -540,11 +540,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     NSPoint localPoint = [controlView convertPoint:startPoint fromView:nil];
 	
-	if (NSMouseInRect(localPoint, _lastRect, [controlView isFlipped])) {			
-		[self _setCircularDoubleValueFromPoint: localPoint flipped: [controlView isFlipped]];
-		return YES;
-	}
-	return NO;
+	[self _setCircularDoubleValueFromPoint: localPoint flipped: [controlView isFlipped]];
+	return YES;
 }
 
 -(BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView
@@ -565,7 +562,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSPoint localPoint = [controlView convertPoint:currentPoint fromView:nil];
     [self _setLinearDoubleValueFromPoint:localPoint];
     [controlView setNeedsDisplayInRect:_lastRect];
-	//    NSLog(@"tracking; new doubleValue is %g", [self doubleValue]);
 	
 	return YES;
 }

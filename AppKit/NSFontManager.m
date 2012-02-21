@@ -281,21 +281,21 @@ static Class _fontPanelFactory;
      if(tag&(NSItalicFontMask|NSUnitalicFontMask)){
       if(traits&NSItalicFontMask){
        [item setTag:NSUnitalicFontMask];
-       [item setTitle:@"Unitalic"];
+       [item setTitle: NSLocalizedStringFromTableInBundle(@"Unitalic", nil, [NSBundle bundleForClass: [NSFontManager class]], @"Remove the italic font trait")];
       }
       else {
        [item setTag:NSItalicFontMask];
-       [item setTitle:@"Italic"];
+       [item setTitle: NSLocalizedStringFromTableInBundle(@"Italic", nil, [NSBundle bundleForClass: [NSFontManager class]], @"Add the italic font trait")];
       }
      }
      if(tag&(NSBoldFontMask|NSUnboldFontMask)){
       if(traits& NSBoldFontMask){
        [item setTag:NSUnboldFontMask];
-       [item setTitle:@"Unbold"];
+       [item setTitle: NSLocalizedStringFromTableInBundle(@"Unbold", nil, [NSBundle bundleForClass: [NSFontManager class]], @"Remove the bold font trait")];
       }
       else {
        [item setTag:NSBoldFontMask];
-       [item setTitle:@"Bold"];
+		[item setTitle: NSLocalizedStringFromTableInBundle(@"Bold", nil, [NSBundle bundleForClass: [NSFontManager class]], @"Add the bold font trait")];
       }
      }
     }

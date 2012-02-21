@@ -43,99 +43,97 @@ enum {
 typedef NSInteger NSCorrectionResponse;
 
 @interface NSSpellChecker : NSObject {
-   NSPanel *_spellingPanel;
-   NSViewController *_spellingViewController;
-   NSView *_accessoryView;
-   NSPanel *_substitutionsPanel;
-   NSMutableDictionary *_tagToData;
-   NSMutableSet *_learnedWords;
-   NSString *_language;
+	NSPanel *_spellingPanel;
+	NSViewController *_spellingViewController;
+	NSView *_accessoryView;
+	NSPanel *_substitutionsPanel;
+	NSMutableDictionary *_tagToData;
+	NSMutableSet *_learnedWords;
+	NSString *_language;
+	BOOL	_automaticallyIdentifiesLanguages;
 }
+
+#pragma mark -
+#pragma mark Getting the Spell Checker
 
 +(NSSpellChecker *)sharedSpellChecker;
 +(BOOL)sharedSpellCheckerExists;
 
-+(BOOL)isAutomaticSpellingCorrectionEnabled;
-+(BOOL)isAutomaticTextReplacementEnabled;
-+(NSInteger)uniqueSpellDocumentTag;
-
--(NSView *)accessoryView;
--(void)setAccessoryView:(NSView *)view;
-
--(BOOL)automaticallyIdentifiesLanguages;
+#pragma mark -
+#pragma mark Configuring Spell Checkers Languages
 
 -(NSArray *)availableLanguages;
-
--(NSRange)checkGrammarOfString:(NSString *)string startingAt:(NSInteger)start language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)documentTag details:(NSArray **)outDetails;
--(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset;
-
--(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount;
-
--(NSArray *)checkString:(NSString *)string range:(NSRange)range types:(NSTextCheckingTypes)types options:(NSDictionary *)options inSpellDocumentWithTag:(NSInteger)tag orthography:(NSOrthography **)orthography wordCount:(NSInteger *)wordCount;
-
--(void)closeSpellDocumentWithTag:(NSInteger)tag;
-
--(NSArray *)completionsForPartialWordRange:(NSRange)partialWordRange inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
-
--(NSString *)correctionForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
-
--(NSInteger)countWordsInString:(NSString *)string language:(NSString *)language;
-
--(void)dismissCorrectionIndicatorForView:(NSView *)view;
-
--(NSArray *)guessesForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
-
--(void)learnWord:(NSString *)word;
--(BOOL)hasLearnedWord:(NSString *)word;
-
+-(NSArray *)userPreferredLanguages;
+-(BOOL)automaticallyIdentifiesLanguages;
+-(void)setAutomaticallyIdentifiesLanguages:(BOOL)flag;
 -(NSString *)language;
 -(BOOL)setLanguage:(NSString *)language;
 
+#pragma mark -
+#pragma mark Managing Panels
 
--(NSMenu *)menuForResult:(NSTextCheckingResult *)result string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view;
+-(NSPanel *)spellingPanel;
+-(NSPanel *)substitutionsPanel;
+-(void)updateSpellingPanelWithGrammarString:(NSString *)problemString detail:(NSDictionary *)detail;
+-(void)updatePanels;
+-(NSView *)accessoryView;
+-(void)setAccessoryView:(NSView *)view;
+-(NSViewController *)substitutionsPanelAccessoryViewController;
+-(void)setSubstitutionsPanelAccessoryViewController:(NSViewController *)viewController;
 
--(void)recordResponse:(NSCorrectionResponse)response toCorrection:(NSString *)correction forWord:(NSString *)word language :(NSString *)language inSpellDocumentWithTag :(NSInteger)tag;
+#pragma mark -
+#pragma mark Checking Strings for Spelling and Grammar
+
+-(NSInteger)countWordsInString:(NSString *)string language:(NSString *)language;
+-(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset;
+-(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount;
+-(NSRange)checkGrammarOfString:(NSString *)string startingAt:(NSInteger)start language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)documentTag details:(NSArray **)outDetails;
+-(NSArray *)checkString:(NSString *)string range:(NSRange)range types:(NSTextCheckingTypes)types options:(NSDictionary *)options inSpellDocumentWithTag:(NSInteger)tag orthography:(NSOrthography **)orthography wordCount:(NSInteger *)wordCount;
 
 #ifdef NS_BLOCKS
 -(NSInteger)requestCheckingOfString:(NSString *)stringToCheck range:(NSRange)range types:(NSTextCheckingTypes)checkingTypes options:(NSDictionary *)options inSpellDocumentWithTag:(NSInteger)tag completionHandler:(void (^)(NSInteger sequenceNumber, NSArray *results, NSOrthography *orthography, NSInteger wordCount))completionHandler;
 #endif
 
+-(NSArray *)guessesForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
 
--(void)setAutomaticallyIdentifiesLanguages:(BOOL)flag;
+#pragma mark -
+#pragma mark Managing the Spell-Checking Process
 
++(NSInteger)uniqueSpellDocumentTag;
+-(void)closeSpellDocumentWithTag:(NSInteger)tag;
 -(void)ignoreWord:(NSString *)word inSpellDocumentWithTag:(NSInteger)tag;
-
--(NSArray *)ignoredWordsInSpellDocumentWithTag:(NSInteger)tag;
-
 -(void)setIgnoredWords:(NSArray *)ignoredWords inSpellDocumentWithTag:(NSInteger)tag;
-
-
--(void)setSubstitutionsPanelAccessoryViewController:(NSViewController *)viewController;
-
+-(NSArray *)ignoredWordsInSpellDocumentWithTag:(NSInteger)tag;
 -(void)setWordFieldStringValue:(NSString *)string;
+-(void)updateSpellingPanelWithMisspelledWord:(NSString *)word;
+-(NSArray *)completionsForPartialWordRange:(NSRange)partialWordRange inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
+-(BOOL)hasLearnedWord:(NSString *)word;
+-(void)unlearnWord:(NSString *)word;
+-(void)learnWord:(NSString *)word;
+-(NSArray *)userQuotesArrayForLanguage:(NSString *)language;
+-(NSDictionary *)userReplacementsDictionary;
+
+#pragma mark -
+#pragma mark Data Detector Interaction
+
+-(NSMenu *)menuForResult:(NSTextCheckingResult *)result string:(NSString *)checkedString options:(NSDictionary *)options atLocation:(NSPoint)location inView:(NSView *)view;
+
+#pragma mark -
+#pragma mark Automatic Spelling Correction
+
+-(NSString *)correctionForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language inSpellDocumentWithTag:(NSInteger)tag;
++(BOOL)isAutomaticSpellingCorrectionEnabled;
 
 #ifdef NS_BLOCKS
 -(void)showCorrectionIndicatorOfType:(NSCorrectionIndicatorType)type primaryString:(NSString *)primaryString alternativeStrings:(NSArray *)alternativeStrings forStringInRect:(NSRect)rect view:(NSView *)view completionHandler:(void (^)(NSString *acceptedString))completionBlock;
 #endif
 
--(NSPanel *)spellingPanel;
+-(void)dismissCorrectionIndicatorForView:(NSView *)view;
+-(void)recordResponse:(NSCorrectionResponse)response toCorrection:(NSString *)correction forWord:(NSString *)word language :(NSString *)language inSpellDocumentWithTag :(NSInteger)tag;
 
--(NSPanel *)substitutionsPanel;
+#pragma mark -
+#pragma mark Automatic Text Replacement
 
--(NSViewController *)substitutionsPanelAccessoryViewController;
-
--(void)unlearnWord:(NSString *)word;
-
--(void)updatePanels;
-
--(void)updateSpellingPanelWithGrammarString:(NSString *)problemString detail:(NSDictionary *)detail;
-
--(void)updateSpellingPanelWithMisspelledWord:(NSString *)word;
-
--(NSArray *)userPreferredLanguages;
-
--(NSArray *)userQuotesArrayForLanguage:(NSString *)language;
-
--(NSDictionary *)userReplacementsDictionary;
++(BOOL)isAutomaticTextReplacementEnabled;
 
 @end

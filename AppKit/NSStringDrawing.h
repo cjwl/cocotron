@@ -24,6 +24,8 @@ typedef NSInteger NSStringDrawingOptions;
 -(void)drawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes;
 
 -(NSSize)sizeWithAttributes:(NSDictionary *)attributes;
+-(NSRect)boundingRectWithSize:(NSSize)size options:(NSStringDrawingOptions)options attributes:(NSDictionary *)attributes;
+
 @end
 
 @interface NSAttributedString(NSStringDrawing)
@@ -32,4 +34,5 @@ typedef NSInteger NSStringDrawingOptions;
 -(void)drawWithRect:(NSRect)rect options:(NSStringDrawingOptions)options;
 
 -(NSSize)size;
+
 @end

@@ -358,7 +358,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSRectFill(titleRect);
 #endif
     titleRect.origin.x+=TEXTGAP;
-    titleRect.size.width-=TEXTGAP*2;
 
 	// Ask the cell to draw itself now
 	// TODO: Should we be doing some sort of clipping setup here?

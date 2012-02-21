@@ -56,17 +56,40 @@
    return result;
 }
 
+- (NSSpellEngine_hunspellDictionary *)_dictionaryForLanguage:(NSString *)language
+{
+	if (language == nil) {
+		language = [[NSLocale currentLocale] localeIdentifier];
+	}
+	
+	NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
+	if (dict == nil) {
+		// If the lang is "xx_YY", then try the first dict starting with "xx"
+		// So "fr_CA", "fr_BE"... can use the french dictionary for example if no canadian or belgium
+		// dictionary is available
+		NSArray *elements = [language componentsSeparatedByString:@"_"];
+		if ([elements count] >= 1) {
+			NSString *langPrefix = [elements objectAtIndex:0];
+			for (NSString *lang in _dictionaries.allKeys) {
+				if ([lang hasPrefix:langPrefix]) {
+					dict=[_dictionaries objectForKey:lang];
+				}
+			}
+		}
+	}
+	if (dict == nil) {
+		// Couldnt find any dictionary that seems interesting for the user
+		// Fallback to the US one
+		dict=[_dictionaries objectForKey:@"en_US"];
+	}	
+}
+
 -(NSArray *)checkString:(NSString *)stringToCheck offset:(NSUInteger)offset types:(NSTextCheckingTypes)checkingTypes options:(NSDictionary *)options orthography:(NSOrthography *)orthography wordCount:(NSInteger *)wordCount {
    NSMutableArray *result=[NSMutableArray array];
    
    NSString *language=[orthography dominantLanguage];
-   NSLog(@"language=%@",language);
-   language=@"en_US";
-   
-   NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
-   
-   NSLog(@"dict=%@",dict);
-   
+   NSSpellEngine_hunspellDictionary *dict=[self _dictionaryForLanguage:language];
+      
    NSUInteger length=[stringToCheck length];
    
    NSUInteger bufferCapacity=10,bufferOffset=offset,bufferIndex=0,bufferLength=0;
@@ -146,10 +169,7 @@
 }
 
 -(NSArray *)suggestGuessesForWord:(NSString *)word inLanguage:(NSString *)language {
-   language=@"en_US";
-
-   NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
-
+	NSSpellEngine_hunspellDictionary *dict = [self _dictionaryForLanguage:language];
    return [dict suggestGuessesForWord:word];    
 }
 

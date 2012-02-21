@@ -55,36 +55,36 @@ static NSString *DriveLetterInPath(NSString* path)
 	*isWritable = YES;
 	*isRemovable = NO;
 	*isUnmountable = NO;
-	*type = @"WinFS";
+	*type = NSLocalizedStringFromTableInBundle(@"WinFS", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"");
 	
 	NSString* driveLetter = DriveLetterInPath(path);
 	
 	UINT driveType = GetDriveTypeW([driveLetter fileSystemRepresentationW]);
 	switch (driveType) {
 		case DRIVE_UNKNOWN:
-			*description = @"Unrecognized drive";
+			*description = NSLocalizedStringFromTableInBundle(@"Unrecognized drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Error description for a disk drive");
 			break;
 		case DRIVE_NO_ROOT_DIR:
-			*description = @"Corrupted drive";
+			*description = NSLocalizedStringFromTableInBundle(@"Corrupted drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Error description for a disk drive");
 			break;
 		case DRIVE_REMOVABLE:
-			*description = @"Removable drive";
+			*description = NSLocalizedStringFromTableInBundle(@"Removable drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Describes a removable disk drive");
 			*isRemovable = YES;
 			break;
 		case DRIVE_FIXED:
-			*description = @"Fixed drive";
+			*description = NSLocalizedStringFromTableInBundle(@"Fixed drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Describes a standard hard disk drive");
 			break;
 		case DRIVE_REMOTE:
-			*description = @"Network drive";
+			*description = NSLocalizedStringFromTableInBundle(@"Network drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Describes a disk drive accessable over a network");
 			*isUnmountable = YES;
 			break;
 		case DRIVE_CDROM:
-			*description = @"CD-ROM drive";
+			*description = NSLocalizedStringFromTableInBundle(@"CD-ROM drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Describes a CD-ROM drive");
 			*isUnmountable = YES;
 			*isRemovable = YES;
 			break;
 		case DRIVE_RAMDISK:
-			*description = @"RAM drive";
+			*description = NSLocalizedStringFromTableInBundle(@"RAM drive", nil, [NSBundle bundleForClass: [Win32Workspace class]], @"Describes a RAM drive");
 			*isUnmountable = YES;
 			break;
 	}

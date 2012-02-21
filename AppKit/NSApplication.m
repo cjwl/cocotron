@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDockTile.h>
 #import <CoreGraphics/CGWindow.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSSpellChecker.h>
 #import <objc/message.h>
 #import <pthread.h>
 
@@ -72,7 +73,6 @@ id NSApp=nil;
 
 +(void)initialize {
    if(self==[NSApplication class]){
-
     [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
    }
 }
@@ -1034,7 +1034,7 @@ id NSApp=nil;
   if (didCloseAll)
     {
       if ([_delegate respondsToSelector:@selector(applicationShouldTerminate:)])
-        [self replyToApplicationShouldTerminate:[_delegate applicationShouldTerminate:self]];
+        [self replyToApplicationShouldTerminate: [_delegate applicationShouldTerminate:self] == NSTerminateNow];
       else
         [self replyToApplicationShouldTerminate:YES];
     }
@@ -1042,7 +1042,7 @@ id NSApp=nil;
 
 -(void)replyToApplicationShouldTerminate:(BOOL)terminate 
 {
-  if (terminate == NSTerminateNow)
+  if (terminate == YES)
     {
       [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillTerminateNotification object:self];
       
@@ -1134,6 +1134,10 @@ standardAboutPanel] retain];
    NSUnimplementedMethod();
 }
 
+-(void)showGuessPanel:sender {
+	[[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
+}
+
 -(void)showHelp:sender
 {
 	NSString *helpBookFolder = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleHelpBookFolder"];
@@ -1165,8 +1169,8 @@ standardAboutPanel] retain];
 	
    NSString *processName = [[NSProcessInfo processInfo] processName];
    NSAlert *alert = [[NSAlert alloc] init];
-   [alert setMessageText:@"Help"];
-   [alert setInformativeText:[NSString stringWithFormat:@"Help isn't available for %@.", processName]];
+   [alert setMessageText: NSLocalizedStringFromTableInBundle(@"Help", nil, [NSBundle bundleForClass: [NSApplication class]], @"Help alert title")];
+   [alert setInformativeText:[NSString stringWithFormat: NSLocalizedStringFromTableInBundle(@"Help isn't available for %@.", nil, [NSBundle bundleForClass: [NSApplication class]], @""), processName]];
    [alert runModal];
    [alert release];
 }

@@ -24,6 +24,13 @@ APPKIT_EXPORT NSString * const NSPrintPrinterName;
 APPKIT_EXPORT NSString * const NSPrintJobDisposition; 
 APPKIT_EXPORT NSString * const NSPrintDetailedErrorReporting; 
 
+APPKIT_EXPORT NSString * const NSPrintSpoolJob;
+APPKIT_EXPORT NSString * const NSPrintPreviewJob;
+APPKIT_EXPORT NSString * const NSPrintSaveJob;
+APPKIT_EXPORT NSString * const NSPrintCancelJob;
+
+APPKIT_EXPORT NSString * const NSPrintSavePath;
+
 APPKIT_EXPORT NSString * const NSPrintCopies; 
 APPKIT_EXPORT NSString * const NSPrintAllPages; 
 APPKIT_EXPORT NSString * const NSPrintFirstPage; 

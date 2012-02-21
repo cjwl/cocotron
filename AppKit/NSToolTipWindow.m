@@ -92,9 +92,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         messageSize.width += 2.; // Shouldn't be neccessary.
         messageSize.height += TEXTFIELD_MARGIN * 2;
 
-        [_textField setBoundsSize:messageSize];
         [_textField setFrameSize:messageSize];
-
+		
         windowFrame.origin = [NSEvent mouseLocation];
         windowFrame.origin.x += 10.;
         windowFrame.origin.y += 10.;

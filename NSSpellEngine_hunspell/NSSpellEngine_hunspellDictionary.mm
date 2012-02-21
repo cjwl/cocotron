@@ -44,7 +44,7 @@
    char *encoding=hunspell_get_dic_encoding((Hunspell *)_hunspell);
    char *result=NULL;
    
-   if(encoding==NULL || strcmp(encoding,"ISO8859-1")==0){
+   if(encoding==NULL || strcmp(encoding,"ISO8859-1")==0 || strcmp(encoding,"UTF-8")==0){
     NSUInteger i;
     
     result=(char *)malloc(length+1);
