@@ -31,7 +31,8 @@ typedef enum {
    NSPlatformSpecificDisplayEvent=16,
    NSAppKitSystem=17,
    NSScrollWheel=18,
-   NSApplicationDefined=19
+   NSApplicationDefined=19,
+   NSAppKitDefined=20
 } NSEventType;
 
 enum {
@@ -51,6 +52,7 @@ enum {
    NSCursorUpdateMask=1<<NSCursorUpdate,
    NSScrollWheelMask=1<<NSScrollWheel,
    NSApplicationDefinedMask=1<<NSApplicationDefined,
+   NSAppKitDefinedMask=1<<NSAppKitDefined,
    NSAnyEventMask=0xffffffff,
    
    NSPlatformSpecificDisplayMask=1<<NSPlatformSpecificDisplayEvent,
@@ -141,6 +143,11 @@ enum {
    NSFindFunctionKey=0xF745,
    NSHelpFunctionKey=0xF746,
    NSModeSwitchFunctionKey=0xF747
+};
+
+enum {
+	NSApplicationActivated=0,
+	NSApplicationDeactivated=1
 };
 
 @interface NSEvent : NSObject {

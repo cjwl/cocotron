@@ -211,6 +211,7 @@ enum {
    NSPoint firstLocation,point=[event locationInWindow];
    unsigned initialSelectedIndex = _selectedIndex;
 
+
 // point comes in on controls window
    point=[[event window] convertBaseToScreen:point];
    point=[[self window] convertScreenToBase:point];
@@ -220,6 +221,9 @@ enum {
    [self lockFocus];
    [self drawRect:[self bounds]];
 
+	// Make sure we know if the user clicks away from the app in the middle of this
+	BOOL cancelled = NO;
+    	
    do {
     unsigned index=[self itemIndexForPoint:point];
     NSRect   screenVisible;
@@ -258,7 +262,12 @@ enum {
     }
     else
         _keyboardUIState = KEYBOARD_INACTIVE;
-    
+
+	   if ([event type] == NSAppKitDefined) {
+		   if ([event subtype] == NSApplicationDeactivated) {
+			   cancelled = YES;
+		   }
+	   }
     point=[event locationInWindow];
     point=[[event window] convertBaseToScreen:point];
     screenVisible=NSInsetRect([[[self window] screen] visibleFrame],4,4);
@@ -298,7 +307,7 @@ enum {
       break;
     }
 
-   }while(state!=STATE_EXIT);
+   }while(cancelled == NO && state!=STATE_EXIT);
 
    [self unlockFocus];
 

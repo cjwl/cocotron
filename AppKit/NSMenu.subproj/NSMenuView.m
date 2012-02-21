@@ -111,6 +111,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [viewStack addObject:self];
 
    [event retain];
+	
+	BOOL cancelled = NO;
+
    do {
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
     int                count=[viewStack count];
@@ -150,9 +153,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     [event release];
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSAppKitDefinedMask];
     [event retain];
 
+	   // We use this special AppKitDefined event to let the menu respond to the app deactivation - it *has*
+	   // to be passed through the event system, unfortunately
+	   if ([event type] == NSAppKitDefined) {
+		   if ([event subtype] == NSApplicationDeactivated) {
+			   cancelled = YES;
+		   }
+	   }
+	   
+	if (cancelled == NO && [event type] != NSAppKitDefined) {
+		   
     point=[event locationInWindow];
 
     switch(state){
@@ -177,11 +190,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
       break;
     }
-
+	   }
     [pool release];
-   }while(state!=STATE_EXIT);
+   }while(cancelled == NO && state!=STATE_EXIT);
    [event release];
-   
+
    if([viewStack count]>0)
     item=[[viewStack lastObject] itemAtSelectedIndex];
 
@@ -201,7 +214,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)mouseDown:(NSEvent *)event {
    BOOL        didAccept=[[self window] acceptsMouseMovedEvents];
    NSMenuItem *item;
-   
+
    [[self window] setAcceptsMouseMovedEvents:YES];
    item=[self trackForEvent:event];
    [[self window] setAcceptsMouseMovedEvents:didAccept];
