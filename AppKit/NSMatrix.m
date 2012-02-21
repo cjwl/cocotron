@@ -622,12 +622,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_setSelectedIndexFromCell:(NSCell *)select {
+	[self willChangeValueForKey:@"selectedTag"];
+	[self willChangeValueForKey:@"selectedIndex"];
    if(select==nil)
     _selectedIndex=-1;
    else
     _selectedIndex=[_cells indexOfObjectIdenticalTo:select];
 
    _keyCellIndex=_selectedIndex;
+	[self didChangeValueForKey:@"selectedIndex"];
+	[self didChangeValueForKey:@"selectedTag"];
 }
 
 -(void)_selectCell:(NSCell *)select deselectOthers:(BOOL)deselectOthers {

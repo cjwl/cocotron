@@ -987,7 +987,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
             if (strcmp(methodCString,"setObject:forKey:") == 0) {
                 kvoSelector = @selector(KVO_notifying_change_setObject:forKey:);
             } else if (strcmp(methodCString,"removeObjectForKey:") == 0) {
-                kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:forKey:);
+                kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:);
             }
 
             // there's a suitable selector for us

@@ -45,9 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)dealloc
 {
-	if (_textView && (_widthTracksTextView || _heightTracksTextView)) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewFrameDidChangeNotification object:_textView];
-	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super dealloc];
 }
 -(NSSize)containerSize {

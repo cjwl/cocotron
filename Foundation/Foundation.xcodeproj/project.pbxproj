@@ -7712,8 +7712,6 @@
 				FE463E57102CD5C700B265D6 /* NSPointerFunctions.m */,
 				FE463E44102CD5B700B265D6 /* NSGarbageCollector.h */,
 				FE463E45102CD5B800B265D6 /* NSGarbageCollector.m */,
-				FE463E19102CD59500B265D6 /* NSSpellServer.h */,
-				FE463E1A102CD59500B265D6 /* NSSpellServer.m */,
 				FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
@@ -7814,6 +7812,10 @@
 				6E28033C0974796E00EC542B /* NSSet */,
 				FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */,
 				FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */,
+				FEB3F2B81404A92400059C8F /* NSSpellEngine.h */,
+				FEB3F2B91404A92400059C8F /* NSSpellEngine.m */,
+				FE463E19102CD59500B265D6 /* NSSpellServer.h */,
+				FE463E1A102CD59500B265D6 /* NSSpellServer.m */,
 				6E28033D0974797500EC542B /* NSStream */,
 				6E28033E0974799000EC542B /* NSString */,
 				6E28033F0974799800EC542B /* NSStringsFileFormat */,
@@ -7841,8 +7843,6 @@
 				034768DFFF38A50411DB9C8B /* Products */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				6E28034B09747A8200EC542B /* xml */,
-				FEB3F2B81404A92400059C8F /* NSSpellEngine.h */,
-				FEB3F2B91404A92400059C8F /* NSSpellEngine.m */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";

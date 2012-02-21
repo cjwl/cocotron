@@ -471,7 +471,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
      [_cell highlight:YES withFrame:[self bounds] inView:self];
      [self setNeedsDisplay:YES];
 
-     if([_cell trackMouse:event inRect:[self bounds] ofView:self untilMouseUp:NO]){
+     if([_cell trackMouse:event inRect:[self bounds] ofView:self untilMouseUp: [[_cell class] prefersTrackingUntilMouseUp]]){
       [_cell setState:![_cell state]];
       [self setNeedsDisplay:YES];
       sendAction=YES;

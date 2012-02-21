@@ -48,7 +48,7 @@ extern NSSize _NSToolbarIconSizeSmall;
     NSSize size;
     
     [self setLabel:@""];
-    [self setPaletteLabel:@"Separator"];
+	[self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Separator", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Describes a toolbar separator item")];
     [self setEnabled:NO];
     
     size = [self minSize];
@@ -63,7 +63,7 @@ extern NSSize _NSToolbarIconSizeSmall;
     NSSize size;
     
     [self setLabel:@""];
-    [self setPaletteLabel:@"Space"];
+    [self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Space", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Describes a toolbar space item")];
     [self setEnabled:NO];
 
     size = [self minSize];
@@ -78,7 +78,7 @@ extern NSSize _NSToolbarIconSizeSmall;
     NSSize size;
     
     [self setLabel:@""];
-    [self setPaletteLabel:@"Flexible Space"];
+    [self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Flexible Space", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Describes a toolbar flexible space item")];
     [self setEnabled:NO];
     
     size = [self minSize];
@@ -89,36 +89,36 @@ extern NSSize _NSToolbarIconSizeSmall;
    
    }
    else if ([_itemIdentifier isEqualToString:NSToolbarShowColorsItemIdentifier]){
-    [self setLabel:@"Colors"];
-    [self setPaletteLabel:@"Show Colors"];
+    [self setLabel: NSLocalizedStringFromTableInBundle(@"Colors", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a color picker")];
+    [self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Show Colors", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a color picker")];
     [self setTarget:[NSApplication sharedApplication]];
     [self setAction:@selector(orderFrontColorPanel:)];
     [self setImage:[NSImage imageNamed:NSToolbarShowColorsItemIdentifier]];
-    [self setToolTip:@"Show the Colors panel."];
+    [self setToolTip: NSLocalizedStringFromTableInBundle(@"Show the Colors panel.", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a color picker")];
    }
    else if ([_itemIdentifier isEqualToString:NSToolbarShowFontsItemIdentifier]){
-    [self setLabel:@"Fonts"];
-    [self setPaletteLabel:@"Show Fonts"];
+    [self setLabel: NSLocalizedStringFromTableInBundle(@"Fonts", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a font picker")];
+    [self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Show Fonts", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a font picker")];
     [self setTarget:[NSFontManager sharedFontManager]];
     [self setAction:@selector(orderFrontFontPanel:)];
     [self setImage:[NSImage imageNamed:NSToolbarShowFontsItemIdentifier]];
-    [self setToolTip:@"Show the Fonts panel."];
+    [self setToolTip: NSLocalizedStringFromTableInBundle(@"Show the Fonts panel.", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a font picker")];
    }
    else if ([_itemIdentifier isEqualToString:NSToolbarCustomizeToolbarItemIdentifier]){
-    [self setLabel:@"Customize"];
-    [self setPaletteLabel:@"Customize"];
+    [self setLabel: NSLocalizedStringFromTableInBundle(@"Customize", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a toolbar customization dialog")];
+    [self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Customize", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a toolbar customization dialog")];
     [self setTarget:nil];
     [self setAction:@selector(runToolbarCustomizationPalette:)];
     [self setImage:[NSImage imageNamed:NSToolbarCustomizeToolbarItemIdentifier]];
-    [self setToolTip:@"Customize this toolbar."];
+    [self setToolTip: NSLocalizedStringFromTableInBundle(@"Customize this toolbar.", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"Reveals a toolbar customization dialog")];
    }
    else if ([_itemIdentifier isEqualToString:NSToolbarPrintItemIdentifier]){
-    [self setLabel:@"Print"];
-    [self setPaletteLabel:@"Print Document"];
+	[self setLabel: NSLocalizedStringFromTableInBundle(@"Print", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"")];
+	[self setPaletteLabel: NSLocalizedStringFromTableInBundle(@"Print Document", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"")];
     [self setTarget:nil];
     [self setAction:@selector(printDocument:)];
     [self setImage:[NSImage imageNamed:NSToolbarPrintItemIdentifier]];
-    [self setToolTip:@"Print this document."];
+    [self setToolTip: NSLocalizedStringFromTableInBundle(@"Print this document.", nil, [NSBundle bundleForClass: [NSToolbarItem class]], @"")];
    }
 }
 
@@ -263,7 +263,6 @@ extern NSSize _NSToolbarIconSizeSmall;
    view=[view retain];
    [_view release];
    _view=view;
-   
    if(view!=nil){
     _minSize=[_view frame].size;
     _maxSize=[_view frame].size;
