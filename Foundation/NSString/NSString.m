@@ -1578,9 +1578,10 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    }
     NSZoneFree(NULL, buffer);
 
-   if(resultLength==length)
+    if(resultLength==length) {
        NSZoneFree(NULL, result);
-   return self;
+       return self;
+    }
    
     NSString *ret = [NSString stringWithCharacters:result length:resultLength];
     NSZoneFree(NULL, result);
