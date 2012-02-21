@@ -19,80 +19,52 @@
 		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
-		5AD0CBA214F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
-		5AD0CBA314F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
-		5AD0CBA414F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
-		5AD0CBA514F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
-		5AD0CBA614F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
-		630DC9DA14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9DB14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9DC14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9DE14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9E114CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E214CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E314CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E414CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E814CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9E914CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9EA14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9EC14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9EF14CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F014CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F214CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F314CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F814CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DC9F914CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DC9FA14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DC9FC14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DCA0114CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0214CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0314CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0414CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA0914CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		630DCA1414CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		6311B10A14C7396A007AD8C0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6311B10814C7396A007AD8C0 /* Localizable.strings */; };
-		6311B16314C74B00007AD8C0 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */; };
-		6311B16414C74B00007AD8C0 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B16014C74B00007AD8C0 /* NSFontPanel.nib */; };
-		6311B17F14C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */; };
-		6311B18014C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */; };
-		6311B18114C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */; };
-		6311B18214C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */; };
-		6311B18314C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */; };
-		6311B18414C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */; };
-		6311B18514C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */; };
-		6311B18614C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */; };
-		6311B18714C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */; };
-		6311B18814C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */; };
-		6311B18914C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */; };
-		6311B18A14C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */; };
-		6311B18B14C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */; };
-		6311B18C14C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */; };
-		6311B18D14C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */; };
-		6311B19514C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */; };
-		6311B19614C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */; };
-		6311B19714C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */; };
-		6311B19814C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */; };
-		6311B19914C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */; };
-		6311B19D14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */; };
-		6311B19E14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */; };
-		6311B19F14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */; };
-		6311B1A014C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */; };
-		6311B1A114C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */; };
->>>>>>> other
+		5A2F8B2C14F39AEE00A9E4F1 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */; };
+		5A2F8B2F14F39B0400A9E4F1 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */; };
+		5A2F8B3014F39B0400A9E4F1 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */; };
+		5A2F8B3114F39B0400A9E4F1 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */; };
+		5A2F8B3214F39B0400A9E4F1 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */; };
+		5A2F8B3314F39B0400A9E4F1 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */; };
+		5A2F8B3414F39B0400A9E4F1 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */; };
+		5A2F8B3514F39B0400A9E4F1 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */; };
+		5A2F8B3614F39B0400A9E4F1 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */; };
+		5A2F8B3714F39B0400A9E4F1 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */; };
+		5A2F8B3814F39B0400A9E4F1 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */; };
+		5A2F8B3B14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */; };
+		5A2F8B3C14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */; };
+		5A2F8B3D14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */; };
+		5A2F8B3E14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */; };
+		5A2F8B3F14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */; };
+		5A2F8B4414F39B9000A9E4F1 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */; };
+		5A2F8B4514F39B9000A9E4F1 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */; };
+		5A2F8B4614F39B9000A9E4F1 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */; };
+		5A2F8B4714F39B9000A9E4F1 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */; };
+		5A2F8B4814F39B9000A9E4F1 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */; };
+		5A2F8B4914F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */; };
+		5A2F8B4A14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */; };
+		5A2F8B4B14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */; };
+		5A2F8B4C14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */; };
+		5A2F8B4D14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */; };
+		5A2F8B5414F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */; };
+		5A2F8B5514F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */; };
+		5A2F8B5614F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */; };
+		5A2F8B5714F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */; };
+		5A2F8B5814F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */; };
+		5A2F8B5914F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */; };
+		5A2F8B5A14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */; };
+		5A2F8B5B14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */; };
+		5A2F8B5C14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */; };
+		5A2F8B5D14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */; };
+		5A2F8B5E14F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */; };
+		5A2F8B5F14F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */; };
+		5A2F8B6014F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */; };
+		5A2F8B6114F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */; };
+		5A2F8B6214F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */; };
+		5A2F8B6514F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */; };
+		5A2F8B6614F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */; };
+		5A2F8B6714F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */; };
+		5A2F8B6814F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */; };
+		5A2F8B6914F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */; };
 		631381D3145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
 		631381D4145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
 		631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
@@ -786,7 +758,6 @@
 		C88976D90EA0BF3100D0A0A2 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
 		C88976DA0EA0BF3100D0A0A2 /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		C88976DB0EA0BF3100D0A0A2 /* NSUserDefaultsControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */; };
-		C88976DF0EA0BF3100D0A0A2 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
 		C88976E00EA0BF3100D0A0A2 /* NSSplitViewVDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */; };
 		C88976E10EA0BF3100D0A0A2 /* NSHighlightedBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */; };
 		C88976E20EA0BF3100D0A0A2 /* NSRulerMarkerTab.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */; };
@@ -800,7 +771,6 @@
 		C88976EA0EA0BF3100D0A0A2 /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
 		C88976EC0EA0BF3100D0A0A2 /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		C88976ED0EA0BF3100D0A0A2 /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		C88976EF0EA0BF3100D0A0A2 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		C88976F20EA0BF3100D0A0A2 /* NSColorPickerSlidersCMYK.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */; };
 		C88976F30EA0BF3100D0A0A2 /* NSColorPickerColorList.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */; };
 		C88976F40EA0BF3100D0A0A2 /* NSColorPickerSlidersHSB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */; };
@@ -1449,7 +1419,6 @@
 		C8A2E53E0F07EA1F0054397C /* O2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* O2Font.m */; };
 		C8A2E53F0F07EA1F0054397C /* NSDictionaryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C85D91940EE6A806004EBAEA /* NSDictionaryController.m */; };
 		C8A2E5400F07EA1F0054397C /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE337FC90EE77A6C00D4A751 /* CTFont.m */; };
-		C8A2E5450F07EA1F0054397C /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
 		C8A2E5460F07EA1F0054397C /* NSSplitViewVDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */; };
 		C8A2E5470F07EA1F0054397C /* NSHighlightedBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */; };
 		C8A2E5480F07EA1F0054397C /* NSRulerMarkerTab.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */; };
@@ -1463,7 +1432,6 @@
 		C8A2E5500F07EA1F0054397C /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
 		C8A2E5520F07EA1F0054397C /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		C8A2E5530F07EA1F0054397C /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		C8A2E5550F07EA1F0054397C /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		C8A2E5580F07EA1F0054397C /* NSColorPickerSlidersCMYK.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */; };
 		C8A2E5590F07EA1F0054397C /* NSColorPickerColorList.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */; };
 		C8A2E55A0F07EA1F0054397C /* NSColorPickerSlidersHSB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */; };
@@ -2085,7 +2053,6 @@
 		FE01AA900C5D9BCB00AEA51A /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KTFont.m */; };
 		FE01AA920C5D9BCB00AEA51A /* O2DeviceContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8D10C46B68C0078FFC1 /* O2DeviceContext_gdi.m */; };
 		FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */; };
-		FE01AA970C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
 		FE01AA980C5D9BCB00AEA51A /* NSSplitViewVDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */; };
 		FE01AA990C5D9BCB00AEA51A /* NSHighlightedBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */; };
 		FE01AA9A0C5D9BCB00AEA51A /* NSRulerMarkerTab.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */; };
@@ -2099,7 +2066,6 @@
 		FE01AAA20C5D9BCB00AEA51A /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
 		FE01AAA40C5D9BCB00AEA51A /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		FE01AAA50C5D9BCB00AEA51A /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		FE01AAA70C5D9BCB00AEA51A /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		FE01AAAA0C5D9BCB00AEA51A /* NSColorPickerSlidersCMYK.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */; };
 		FE01AAAB0C5D9BCB00AEA51A /* NSColorPickerColorList.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */; };
 		FE01AAAC0C5D9BCB00AEA51A /* NSColorPickerSlidersHSB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */; };
@@ -3242,7 +3208,6 @@
 		FE5A8BAE10C6F50E005E348A /* O2ImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C01CD10C59ADA00FE4072 /* O2ImageDestination.m */; };
 		FE5A8BAF10C6F50E005E348A /* O2Encoder_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C01D710C59B0600FE4072 /* O2Encoder_TIFF.m */; };
 		FE5A8BB010C6F50E005E348A /* CGImageDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF0889E10C5B06400D38A2F /* CGImageDestination.m */; };
-		FE5A8BB410C6F50E005E348A /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
 		FE5A8BB510C6F50E005E348A /* NSSplitViewVDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */; };
 		FE5A8BB610C6F50E005E348A /* NSHighlightedBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */; };
 		FE5A8BB710C6F50E005E348A /* NSRulerMarkerTab.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */; };
@@ -3256,7 +3221,6 @@
 		FE5A8BBF10C6F50E005E348A /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
 		FE5A8BC110C6F50E005E348A /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		FE5A8BC210C6F50E005E348A /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		FE5A8BC410C6F50E005E348A /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		FE5A8BC710C6F50E005E348A /* NSColorPickerSlidersCMYK.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */; };
 		FE5A8BC810C6F50E005E348A /* NSColorPickerColorList.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */; };
 		FE5A8BC910C6F50E005E348A /* NSColorPickerSlidersHSB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */; };
@@ -3985,7 +3949,6 @@
 		FEA316180FD5667D00F480D4 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
 		FEA316190FD5667D00F480D4 /* NSToolbarItemGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6BE4450F446B92007D7F3F /* NSToolbarItemGroup.m */; };
 		FEA3161A0FD5667D00F480D4 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
-		FEA3161E0FD5667D00F480D4 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
 		FEA3161F0FD5667D00F480D4 /* NSSplitViewVDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */; };
 		FEA316200FD5667D00F480D4 /* NSHighlightedBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */; };
 		FEA316210FD5667D00F480D4 /* NSRulerMarkerTab.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */; };
@@ -3999,7 +3962,6 @@
 		FEA316290FD5667D00F480D4 /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
 		FEA3162B0FD5667D00F480D4 /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
 		FEA3162C0FD5667D00F480D4 /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
-		FEA3162E0FD5667D00F480D4 /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
 		FEA316310FD5667D00F480D4 /* NSColorPickerSlidersCMYK.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */; };
 		FEA316320FD5667D00F480D4 /* NSColorPickerColorList.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */; };
 		FEA316330FD5667D00F480D4 /* NSColorPickerSlidersHSB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */; };
@@ -4487,36 +4449,15 @@
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
-		5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Defines_libjpeg.h; sourceTree = "<group>"; };
-		630DC9D914CE3F2D0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
-		630DC9E014CE3F6A0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
-		630DC9E714CE40B80009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
-		630DC9EE14CE41290009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerWheel.nib; sourceTree = "<group>"; };
-		630DC9F714CE459A0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
-		630DCA0014CE45E60009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSSystemInfoPanel/de.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
-		630DCA0714CE475C0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
-		630DCA1114CE48210009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
-		630DCA1C14CE48790009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		630DCA1D14CE48860009A039 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6311B10914C7396A007AD8C0 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6311B13B14C7430F007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = fr; path = fr.lproj/NSMenu.plist; sourceTree = "<group>"; };
-		6311B15F14C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
-		6311B16114C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
-		6311B16214C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
-		6311B16814C74B57007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
-		6311B16914C74B57007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
-		6311B16A14C74B57007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
-		6311B17A14C74EED007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
-		6311B17C14C74EED007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
-		6311B17E14C74EED007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPickerWheel.nib; sourceTree = "<group>"; };
-		6311B18E14C74EFC007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
-		6311B18F14C74EFC007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
-		6311B19014C74EFC007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSColorPickerWheel.nib; sourceTree = "<group>"; };
-		6311B19414C750BE007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
-		6311B19A14C750E0007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
-		6311B19C14C7515B007AD8C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
-		6311B1A214C75168007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
->>>>>>> other
+		5A2F8B2B14F39AED00A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
+		5A2F8B2E14F39B0400A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
+		5A2F8B3A14F39B1300A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
+		5A2F8B4114F39B9000A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = en; path = en.lproj/NSMenu.plist; sourceTree = "<group>"; };
+		5A2F8B4314F39B9000A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
+		5A2F8B4F14F39BB000A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
+		5A2F8B5114F39BB000A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
+		5A2F8B5314F39BB000A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSColorPickerWheel.nib; sourceTree = "<group>"; };
+		5A2F8B6414F39BD700A9E4F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
 		631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerListIcon.png; path = NSColorPicker.subproj/NSColorPickerListIcon.png; sourceTree = "<group>"; };
 		631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerSlidersIcon.png; path = NSColorPicker.subproj/NSColorPickerSlidersIcon.png; sourceTree = "<group>"; };
 		631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerWheelIcon.png; path = NSColorPicker.subproj/NSColorPickerWheelIcon.png; sourceTree = "<group>"; };
@@ -4753,7 +4694,6 @@
 		6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSHighlightedRadioButton.tiff; sourceTree = "<group>"; };
 		6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSSplitViewHDimple.tiff; sourceTree = "<group>"; };
 		6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSBrowserCellArrow.tiff; sourceTree = "<group>"; };
-		6E2B55080976075300DA0954 /* NSMenu.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = NSMenu.plist; path = en.lproj/NSMenu.plist; sourceTree = "<group>"; };
 		6E2B55180976075300DA0954 /* NSNibOutletConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibOutletConnector.m; sourceTree = "<group>"; };
 		6E2B551A0976075300DA0954 /* NSNibControlConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibControlConnector.m; sourceTree = "<group>"; };
 		6E2B551C0976075300DA0954 /* NSNibConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNibConnector.m; sourceTree = "<group>"; };
@@ -5496,29 +5436,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		63EADBFB14BC9C73005B38BB /* NSSpellChecker */ = {
-			isa = PBXGroup;
-			children = (
-				63EADBFE14BC9C9F005B38BB /* Interface */,
-				FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */,
-				FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */,
-				FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */,
-				FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */,
-				FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */,
-				FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */,
-				FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */,
-			);
-			name = NSSpellChecker;
-			sourceTree = "<group>";
-		};
-		63EADBFE14BC9C9F005B38BB /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */,
-			);
-			name = Interface;
-			sourceTree = "<group>";
-		};
 		6E2B531A0976074C00DA0954 /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -5543,13 +5460,6 @@
 				6E2B55050976075300DA0954 /* Resources */,
 				6E2B575A0976075500DA0954 /* External Frameworks and Libraries */,
 				6E2B53230976074C00DA0954 /* Products */,
-				630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */,
-				630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */,
-				630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */,
-				630DC9F614CE459A0009A039 /* NSFontPanel.nib */,
-				630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */,
-				630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */,
-				630DCA1014CE48210009A039 /* NSSpellingViewController.xib */,
 			);
 			name = AppKit;
 			sourceTree = "<group>";
@@ -5569,6 +5479,11 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */,
+				FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */,
+				FE2C93D214035649002E0CB4 /* NSSpellingViewController.h */,
+				FE2C93D314035649002E0CB4 /* NSSpellingViewController.m */,
+				FE09AF3413FCC56600B53D10 /* NSSpellProtocol.h */,
 				FE20C240118924A4006F01BA /* NSAccessibility.h */,
 				FE20C241118924A4006F01BA /* NSAccessibility.m */,
 				FE20C242118924A4006F01BA /* NSCIImageRep.h */,
@@ -5809,7 +5724,8 @@
 				6E2B53BB0976075200DA0954 /* NSSliderCell.m */,
 				FE2A11210B45C52C006C03DE /* NSSound.h */,
 				FE2A11220B45C52C006C03DE /* NSSound.m */,
-				63EADBFB14BC9C73005B38BB /* NSSpellChecker */,
+				FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */,
+				FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */,
 				6E2B54980976075200DA0954 /* NSSplitView.h */,
 				6E2B53BD0976075200DA0954 /* NSSplitView.m */,
 				FE2A113D0B45C58D006C03DE /* NSStatusBar.h */,
@@ -5895,10 +5811,9 @@
 		6E2B54DE0976075300DA0954 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */,
-				6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */,
-				6311B16014C74B00007AD8C0 /* NSFontPanel.nib */,
-				6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */,
+				5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */,
+				5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */,
+				5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -5951,8 +5866,8 @@
 		6E2B55050976075300DA0954 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6311B10814C7396A007AD8C0 /* Localizable.strings */,
-				6E2B55060976075300DA0954 /* NSMenu.plist */,
+				5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */,
+				5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -6126,9 +6041,9 @@
 		6E2B55F20976075300DA0954 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */,
-				6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */,
-				6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */,
+				5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */,
+				5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */,
+				5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -6557,7 +6472,6 @@
 				FE5F4BF712A83CA600F5F334 /* platform_Windows */,
 				49A7975114224021001CE4C2 /* O2Encoder_JPG.h */,
 				49A7975214224021001CE4C2 /* O2Encoder_JPG.m */,
-				5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */,
 				FE99DA72128396B6006D789F /* O2Encoder_PNG.h */,
 				FE99DA73128396B6006D789F /* O2Encoder_PNG.m */,
 				FE587952126961BC009B9EDF /* O2ClipMask.h */,
@@ -6771,7 +6685,7 @@
 		FE8286760D34725900F7489F /* NSSystemInfoPanel */ = {
 			isa = PBXGroup;
 			children = (
-				6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */,
+				5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */,
 				FE8286770D34727900F7489F /* NSApplicationIcon.tiff */,
 				FE8286780D34727900F7489F /* NSSystemInfoPanel.h */,
 				FE8286790D34727900F7489F /* NSSystemInfoPanel.m */,
@@ -7301,7 +7215,6 @@
 				FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
-				5AD0CBA314F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7710,7 +7623,6 @@
 				FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
-				5AD0CBA414F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8116,7 +8028,6 @@
 				FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
-				5AD0CBA214F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8527,7 +8438,6 @@
 				FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
-				5AD0CBA614F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8855,7 +8765,6 @@
 				FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
-				5AD0CBA514F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8913,7 +8822,6 @@
 			buildConfigurationList = FE01AABF0C5D9BCB00AEA51A /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */;
 			buildPhases = (
 				FE4C081E1434A30A0034EE26 /* Detect Libraries */,
-				6311B0C214C6583E007AD8C0 /* Generate Strings */,
 				FE01A80A0C5D9BCB00AEA51A /* Headers */,
 				FE01A9530C5D9BCB00AEA51A /* Sources */,
 				FE01AA940C5D9BCB00AEA51A /* Resources */,
@@ -8995,8 +8903,6 @@
 				French,
 				German,
 				en,
-				fr,
-				de,
 			);
 			mainGroup = 6E2B531A0976074C00DA0954 /* AppKit */;
 			productRefGroup = 6E2B53230976074C00DA0954 /* Products */;
@@ -9182,7 +9088,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C88976DF0EA0BF3100D0A0A2 /* NSToolbarCustomizationPalette.nib in Resources */,
 				C88976E00EA0BF3100D0A0A2 /* NSSplitViewVDimple.tiff in Resources */,
 				C88976E10EA0BF3100D0A0A2 /* NSHighlightedBrowserCellArrow.tiff in Resources */,
 				C88976E20EA0BF3100D0A0A2 /* NSRulerMarkerTab.tiff in Resources */,
@@ -9196,7 +9101,6 @@
 				C88976EA0EA0BF3100D0A0A2 /* NSHighlightedRadioButton.tiff in Resources */,
 				C88976EC0EA0BF3100D0A0A2 /* NSSplitViewHDimple.tiff in Resources */,
 				C88976ED0EA0BF3100D0A0A2 /* NSBrowserCellArrow.tiff in Resources */,
-				C88976EF0EA0BF3100D0A0A2 /* NSMenu.plist in Resources */,
 				C88976F20EA0BF3100D0A0A2 /* NSColorPickerSlidersCMYK.tiff in Resources */,
 				C88976F30EA0BF3100D0A0A2 /* NSColorPickerColorList.tiff in Resources */,
 				C88976F40EA0BF3100D0A0A2 /* NSColorPickerSlidersHSB.tiff in Resources */,
@@ -9239,19 +9143,15 @@
 				631381D7145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
 				631381D8145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
 				631382B6145F734100765AA7 /* NSColorWheel.png in Resources */,
-				6311B18214C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */,
-				6311B18314C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */,
-				6311B18414C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
-				6311B19614C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
-				6311B19E14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DA14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E114CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9E914CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9F314CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9F814CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0414CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B3014F39B0400A9E4F1 /* NSColorPanel.nib in Resources */,
+				5A2F8B3514F39B0400A9E4F1 /* NSFontPanel.nib in Resources */,
+				5A2F8B3C14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */,
+				5A2F8B4514F39B9000A9E4F1 /* NSMenu.plist in Resources */,
+				5A2F8B4A14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B5514F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */,
+				5A2F8B5A14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */,
+				5A2F8B5F14F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */,
+				5A2F8B6614F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9259,7 +9159,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8A2E5450F07EA1F0054397C /* NSToolbarCustomizationPalette.nib in Resources */,
 				C8A2E5460F07EA1F0054397C /* NSSplitViewVDimple.tiff in Resources */,
 				C8A2E5470F07EA1F0054397C /* NSHighlightedBrowserCellArrow.tiff in Resources */,
 				C8A2E5480F07EA1F0054397C /* NSRulerMarkerTab.tiff in Resources */,
@@ -9273,7 +9172,6 @@
 				C8A2E5500F07EA1F0054397C /* NSHighlightedRadioButton.tiff in Resources */,
 				C8A2E5520F07EA1F0054397C /* NSSplitViewHDimple.tiff in Resources */,
 				C8A2E5530F07EA1F0054397C /* NSBrowserCellArrow.tiff in Resources */,
-				C8A2E5550F07EA1F0054397C /* NSMenu.plist in Resources */,
 				C8A2E5580F07EA1F0054397C /* NSColorPickerSlidersCMYK.tiff in Resources */,
 				C8A2E5590F07EA1F0054397C /* NSColorPickerColorList.tiff in Resources */,
 				C8A2E55A0F07EA1F0054397C /* NSColorPickerSlidersHSB.tiff in Resources */,
@@ -9316,19 +9214,15 @@
 				631381DA145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
 				631381DB145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
 				631382B7145F734100765AA7 /* NSColorWheel.png in Resources */,
-				6311B18514C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */,
-				6311B18614C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */,
-				6311B18714C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
-				6311B19714C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
-				6311B19F14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DC14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E414CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9EA14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9F214CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9FA14CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0314CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B3114F39B0400A9E4F1 /* NSColorPanel.nib in Resources */,
+				5A2F8B3614F39B0400A9E4F1 /* NSFontPanel.nib in Resources */,
+				5A2F8B3D14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */,
+				5A2F8B4614F39B9000A9E4F1 /* NSMenu.plist in Resources */,
+				5A2F8B4B14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B5614F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */,
+				5A2F8B5B14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */,
+				5A2F8B6014F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */,
+				5A2F8B6714F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9336,7 +9230,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE01AA970C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.nib in Resources */,
 				FE01AA980C5D9BCB00AEA51A /* NSSplitViewVDimple.tiff in Resources */,
 				FE01AA990C5D9BCB00AEA51A /* NSHighlightedBrowserCellArrow.tiff in Resources */,
 				FE01AA9A0C5D9BCB00AEA51A /* NSRulerMarkerTab.tiff in Resources */,
@@ -9350,7 +9243,6 @@
 				FE01AAA20C5D9BCB00AEA51A /* NSHighlightedRadioButton.tiff in Resources */,
 				FE01AAA40C5D9BCB00AEA51A /* NSSplitViewHDimple.tiff in Resources */,
 				FE01AAA50C5D9BCB00AEA51A /* NSBrowserCellArrow.tiff in Resources */,
-				FE01AAA70C5D9BCB00AEA51A /* NSMenu.plist in Resources */,
 				FE01AAAA0C5D9BCB00AEA51A /* NSColorPickerSlidersCMYK.tiff in Resources */,
 				FE01AAAB0C5D9BCB00AEA51A /* NSColorPickerColorList.tiff in Resources */,
 				FE01AAAC0C5D9BCB00AEA51A /* NSColorPickerSlidersHSB.tiff in Resources */,
@@ -9394,22 +9286,16 @@
 				631381D4145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
 				631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
 				631382B4145F734100765AA7 /* NSColorWheel.png in Resources */,
-				6311B10A14C7396A007AD8C0 /* Localizable.strings in Resources */,
-				6311B16314C74B00007AD8C0 /* NSColorPanel.nib in Resources */,
-				6311B16414C74B00007AD8C0 /* NSFontPanel.nib in Resources */,
-				6311B17F14C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */,
-				6311B18014C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */,
-				6311B18114C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
-				6311B19514C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
-				6311B19D14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B2C14F39AEE00A9E4F1 /* NSFontPanel.nib in Resources */,
+				5A2F8B2F14F39B0400A9E4F1 /* NSColorPanel.nib in Resources */,
+				5A2F8B3414F39B0400A9E4F1 /* NSFontPanel.nib in Resources */,
+				5A2F8B3B14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */,
+				5A2F8B4414F39B9000A9E4F1 /* NSMenu.plist in Resources */,
+				5A2F8B4914F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B5414F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */,
+				5A2F8B5914F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */,
+				5A2F8B5E14F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */,
+				5A2F8B6514F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9417,7 +9303,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5A8BB410C6F50E005E348A /* NSToolbarCustomizationPalette.nib in Resources */,
 				FE5A8BB510C6F50E005E348A /* NSSplitViewVDimple.tiff in Resources */,
 				FE5A8BB610C6F50E005E348A /* NSHighlightedBrowserCellArrow.tiff in Resources */,
 				FE5A8BB710C6F50E005E348A /* NSRulerMarkerTab.tiff in Resources */,
@@ -9431,7 +9316,6 @@
 				FE5A8BBF10C6F50E005E348A /* NSHighlightedRadioButton.tiff in Resources */,
 				FE5A8BC110C6F50E005E348A /* NSSplitViewHDimple.tiff in Resources */,
 				FE5A8BC210C6F50E005E348A /* NSBrowserCellArrow.tiff in Resources */,
-				FE5A8BC410C6F50E005E348A /* NSMenu.plist in Resources */,
 				FE5A8BC710C6F50E005E348A /* NSColorPickerSlidersCMYK.tiff in Resources */,
 				FE5A8BC810C6F50E005E348A /* NSColorPickerColorList.tiff in Resources */,
 				FE5A8BC910C6F50E005E348A /* NSColorPickerSlidersHSB.tiff in Resources */,
@@ -9474,19 +9358,15 @@
 				631381E0145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
 				631381E1145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
 				631382B5145F734100765AA7 /* NSColorWheel.png in Resources */,
-				6311B18B14C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */,
-				6311B18C14C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */,
-				6311B18D14C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
-				6311B19914C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
-				6311B1A114C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DE14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E214CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9EC14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9EF14CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9FC14CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0114CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B3314F39B0400A9E4F1 /* NSColorPanel.nib in Resources */,
+				5A2F8B3814F39B0400A9E4F1 /* NSFontPanel.nib in Resources */,
+				5A2F8B3F14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */,
+				5A2F8B4814F39B9000A9E4F1 /* NSMenu.plist in Resources */,
+				5A2F8B4D14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B5814F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */,
+				5A2F8B5D14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */,
+				5A2F8B6214F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */,
+				5A2F8B6914F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9494,7 +9374,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEA3161E0FD5667D00F480D4 /* NSToolbarCustomizationPalette.nib in Resources */,
 				FEA3161F0FD5667D00F480D4 /* NSSplitViewVDimple.tiff in Resources */,
 				FEA316200FD5667D00F480D4 /* NSHighlightedBrowserCellArrow.tiff in Resources */,
 				FEA316210FD5667D00F480D4 /* NSRulerMarkerTab.tiff in Resources */,
@@ -9508,7 +9387,6 @@
 				FEA316290FD5667D00F480D4 /* NSHighlightedRadioButton.tiff in Resources */,
 				FEA3162B0FD5667D00F480D4 /* NSSplitViewHDimple.tiff in Resources */,
 				FEA3162C0FD5667D00F480D4 /* NSBrowserCellArrow.tiff in Resources */,
-				FEA3162E0FD5667D00F480D4 /* NSMenu.plist in Resources */,
 				FEA316310FD5667D00F480D4 /* NSColorPickerSlidersCMYK.tiff in Resources */,
 				FEA316320FD5667D00F480D4 /* NSColorPickerColorList.tiff in Resources */,
 				FEA316330FD5667D00F480D4 /* NSColorPickerSlidersHSB.tiff in Resources */,
@@ -9551,19 +9429,15 @@
 				631381DD145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */,
 				631381DE145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */,
 				631382B8145F734100765AA7 /* NSColorWheel.png in Resources */,
-				6311B18814C74EED007AD8C0 /* NSColorPickerColorList.nib in Resources */,
-				6311B18914C74EED007AD8C0 /* NSColorPickerSliders.nib in Resources */,
-				6311B18A14C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
-				6311B19814C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
-				6311B1A014C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DB14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E314CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9E814CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9F014CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9F914CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0214CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0914CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1414CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B3214F39B0400A9E4F1 /* NSColorPanel.nib in Resources */,
+				5A2F8B3714F39B0400A9E4F1 /* NSFontPanel.nib in Resources */,
+				5A2F8B3E14F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib in Resources */,
+				5A2F8B4714F39B9000A9E4F1 /* NSMenu.plist in Resources */,
+				5A2F8B4C14F39B9000A9E4F1 /* NSSpellingViewController.xib in Resources */,
+				5A2F8B5714F39BB100A9E4F1 /* NSColorPickerColorList.nib in Resources */,
+				5A2F8B5C14F39BB100A9E4F1 /* NSColorPickerSliders.nib in Resources */,
+				5A2F8B6114F39BB100A9E4F1 /* NSColorPickerWheel.nib in Resources */,
+				5A2F8B6814F39BD700A9E4F1 /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9608,20 +9482,6 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6311B0C214C6583E007AD8C0 /* Generate Strings */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Generate Strings";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "rm -f \"${SRCROOT}/en.lproj/Localizable.strings\"\n# Then append the one from the code\ngenstrings -a -q -o \"${SRCROOT}/en.lproj\" \"${SRCROOT}\"/*m \"${SRCROOT}\"/NSColor.subproj/*m \"${SRCROOT}\"/NSColorPicker.subproj/*m \"${SRCROOT}\"/NSDrawer.subproj/*m \"\"${SRCROOT}\"/NSEvent.subproj/*m ${SRCROOT}\"/NSMenu.subproj/*m \"${SRCROOT}\"/NSTextView.subproj/*m \"${SRCROOT}\"/NSToolbar.subproj/*m \"${SRCROOT}\"/RTF.subproj/*m \"${SRCROOT}\"/Win32.subproj/*m";
-		};
 		FE4C081E1434A30A0034EE26 /* Detect Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -9635,7 +9495,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libfreetype for link phase\n echo \"libjpeg not found\"\n touch $DERIVED_FILE_DIR/libjpeg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_zlib.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5 ]; then\n\techo \"zlib present.\"\n\techo \"#define ZLIB_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_zlib.h\nelse\n# Create empty zlib for link phase\n echo \"zlib not found\"\n touch $DERIVED_FILE_DIR/zlib.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/zlib.c -c -o $DERIVED_FILE_DIR/zlib.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libz.a $DERIVED_FILE_DIR/zlib.o\nfi\n\n";
+			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\necho \"FreeType 2.3.5 present.\"\necho \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\necho \"FreeType 2.3.5 not found\"\ntouch $DERIVED_FILE_DIR/libfreetype.c\n/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\necho \"libjpeg present.\"\necho \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libfreetype for link phase\necho \"libjpeg not found\"\ntouch $DERIVED_FILE_DIR/libjpeg.c\n/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_zlib.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5 ]; then\necho \"zlib present.\"\necho \"#define ZLIB_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_zlib.h\nelse\n# Create empty zlib for link phase\necho \"zlib not found\"\ntouch $DERIVED_FILE_DIR/zlib.c\n/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/zlib.c -c -o $DERIVED_FILE_DIR/zlib.o\n/Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libz.a $DERIVED_FILE_DIR/zlib.o\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -11663,159 +11523,76 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */ = {
+		5A2F8B2A14F39AED00A9E4F1 /* NSFontPanel.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				630DC9D914CE3F2D0009A039 /* de */,
-			);
-			name = NSColorPanel.nib;
-			sourceTree = "<group>";
-		};
-		630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				630DC9E014CE3F6A0009A039 /* de */,
-			);
-			name = NSColorPickerColorList.nib;
-			sourceTree = "<group>";
-		};
-		630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				630DC9E714CE40B80009A039 /* de */,
-			);
-			name = NSColorPickerSliders.nib;
-			sourceTree = "<group>";
-		};
-		630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				630DC9EE14CE41290009A039 /* de */,
-			);
-			name = NSColorPickerWheel.nib;
-			sourceTree = "<group>";
-		};
-		630DC9F614CE459A0009A039 /* NSFontPanel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				630DC9F714CE459A0009A039 /* de */,
+				5A2F8B2B14F39AED00A9E4F1 /* en */,
 			);
 			name = NSFontPanel.nib;
 			sourceTree = "<group>";
 		};
-		630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */ = {
+		5A2F8B2D14F39B0400A9E4F1 /* NSColorPanel.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				630DCA0014CE45E60009A039 /* de */,
-			);
-			name = NSSystemInfoPanel.nib;
-			sourceTree = "<group>";
-		};
-		630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				630DCA0714CE475C0009A039 /* de */,
-			);
-			name = NSToolbarCustomizationPalette.nib;
-			sourceTree = "<group>";
-		};
-		630DCA1014CE48210009A039 /* NSSpellingViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				630DCA1114CE48210009A039 /* de */,
-			);
-			name = NSSpellingViewController.xib;
-			sourceTree = "<group>";
-		};
-		6311B10814C7396A007AD8C0 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B10914C7396A007AD8C0 /* en */,
-				630DCA1C14CE48790009A039 /* de */,
-				630DCA1D14CE48860009A039 /* fr */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B15F14C74B00007AD8C0 /* fr */,
-				6311B16814C74B57007AD8C0 /* en */,
+				5A2F8B2E14F39B0400A9E4F1 /* en */,
 			);
 			name = NSColorPanel.nib;
 			sourceTree = "<group>";
 		};
-		6311B16014C74B00007AD8C0 /* NSFontPanel.nib */ = {
+		5A2F8B3914F39B1300A9E4F1 /* NSToolbarCustomizationPalette.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6311B16114C74B00007AD8C0 /* fr */,
-				6311B16914C74B57007AD8C0 /* en */,
-			);
-			name = NSFontPanel.nib;
-			sourceTree = "<group>";
-		};
-		6311B17914C74EED007AD8C0 /* NSColorPickerColorList.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B17A14C74EED007AD8C0 /* en */,
-				6311B18E14C74EFC007AD8C0 /* fr */,
-			);
-			name = NSColorPickerColorList.nib;
-			sourceTree = "<group>";
-		};
-		6311B17B14C74EED007AD8C0 /* NSColorPickerSliders.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B17C14C74EED007AD8C0 /* en */,
-				6311B18F14C74EFC007AD8C0 /* fr */,
-			);
-			name = NSColorPickerSliders.nib;
-			sourceTree = "<group>";
-		};
-		6311B17D14C74EED007AD8C0 /* NSColorPickerWheel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B17E14C74EED007AD8C0 /* en */,
-				6311B19014C74EFC007AD8C0 /* fr */,
-			);
-			name = NSColorPickerWheel.nib;
-			sourceTree = "<group>";
-		};
-		6311B19314C750BE007AD8C0 /* NSSystemInfoPanel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B19414C750BE007AD8C0 /* en */,
-				6311B19A14C750E0007AD8C0 /* fr */,
-			);
-			name = NSSystemInfoPanel.nib;
-			sourceTree = "<group>";
-		};
-		6311B19B14C7515B007AD8C0 /* NSSpellingViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B19C14C7515B007AD8C0 /* en */,
-				6311B1A214C75168007AD8C0 /* fr */,
-			);
-			name = NSSpellingViewController.xib;
-			sourceTree = "<group>";
-		};
-		6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6311B16214C74B00007AD8C0 /* fr */,
-				6311B16A14C74B57007AD8C0 /* en */,
+				5A2F8B3A14F39B1300A9E4F1 /* en */,
 			);
 			name = NSToolbarCustomizationPalette.nib;
 			sourceTree = "<group>";
 		};
-		6E2B55060976075300DA0954 /* NSMenu.plist */ = {
+		5A2F8B4014F39B9000A9E4F1 /* NSMenu.plist */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6E2B55080976075300DA0954 /* NSMenu.plist */,
-				6311B13B14C7430F007AD8C0 /* fr */,
+				5A2F8B4114F39B9000A9E4F1 /* en */,
 			);
 			name = NSMenu.plist;
+			sourceTree = "<group>";
+		};
+		5A2F8B4214F39B9000A9E4F1 /* NSSpellingViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5A2F8B4314F39B9000A9E4F1 /* en */,
+			);
+			name = NSSpellingViewController.xib;
+			sourceTree = "<group>";
+		};
+		5A2F8B4E14F39BB000A9E4F1 /* NSColorPickerColorList.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5A2F8B4F14F39BB000A9E4F1 /* en */,
+			);
+			name = NSColorPickerColorList.nib;
+			sourceTree = "<group>";
+		};
+		5A2F8B5014F39BB000A9E4F1 /* NSColorPickerSliders.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5A2F8B5114F39BB000A9E4F1 /* en */,
+			);
+			name = NSColorPickerSliders.nib;
+			sourceTree = "<group>";
+		};
+		5A2F8B5214F39BB000A9E4F1 /* NSColorPickerWheel.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5A2F8B5314F39BB000A9E4F1 /* en */,
+			);
+			name = NSColorPickerWheel.nib;
+			sourceTree = "<group>";
+		};
+		5A2F8B6314F39BD700A9E4F1 /* NSSystemInfoPanel.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5A2F8B6414F39BD700A9E4F1 /* en */,
+			);
+			name = NSSystemInfoPanel.nib;
 			sourceTree = "<group>";
 		};
 		FE71E83711FA88BE00E6F801 /* InfoPlist.strings */ = {
@@ -11840,7 +11617,7 @@
 			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -11851,7 +11628,10 @@
 				GCC_UNROLL_LOOPS = NO;
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib",
+					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,
+				);
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DAPPKIT_INSIDE_BUILD",
@@ -11860,7 +11640,6 @@
 					"-DCGL_INSIDE_BUILD",
 				);
 				OTHER_LDFLAGS = (
-					"-lz",
 					"-static",
 					"-shared",
 					"-lmsimg32",
@@ -11871,11 +11650,13 @@
 					"-lopengl32",
 					"-lcomctl32",
 					"-lwinmm",
+					"-Wl,--enable-auto-import",
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
-				PREBINDING = NO;
+				PREBINDING = "";
 				PRODUCT_NAME = AppKit;
+				WARNING_LDFLAGS = "";
 			};
 			name = Debug;
 		};
@@ -12109,7 +11890,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = stabs;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -12129,9 +11910,9 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib",
+					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,
 				);
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -12143,7 +11924,9 @@
 				);
 				OTHER_LDFLAGS = (
 					"-lz",
-					"-static",
+					"-ljpeg",
+					"-B,static",
+					"-B,dynamic",
 					"-shared",
 					"-lmsimg32",
 					"-lole32",
@@ -12157,8 +11940,9 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
-				PREBINDING = NO;
+				PREBINDING = "";
 				PRODUCT_NAME = AppKit;
+				WARNING_LDFLAGS = "";
 			};
 			name = Release;
 		};
