@@ -22,9 +22,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    IBOutlet NSButton *_defineButton;
    IBOutlet NSButton *_guessButton;
    IBOutlet NSPopUpButton *_languagesPopUp;
+	NSString		*_misspelledWord;
+	IBOutlet NSTextField *_spellingHint;
 }
-
--(NSArray *)availableLanguages;
 
 -(void)updateSpellingPanelWithMisspelledWord:(NSString *)word;
 

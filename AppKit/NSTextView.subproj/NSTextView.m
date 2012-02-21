@@ -78,14 +78,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
    if(menu==nil){
     menu=[[NSMenu alloc] initWithTitle:@""];
-    [menu addItemWithTitle:@"Cut"
+	[menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Cut", nil, [NSBundle bundleForClass: [NSTextView class]], @"Cut the selection")
                     action:@selector(cut:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Copy"
+    [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Copy", nil, [NSBundle bundleForClass: [NSTextView class]], @"Copy the selection")
                     action:@selector(copy:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Paste"
+    [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Paste", nil, [NSBundle bundleForClass: [NSTextView class]], @"Paste the selection")
                     action:@selector(paste:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:@"Select All"
+	[menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Select All", nil, [NSBundle bundleForClass: [NSTextView class]], @"Select all the content")
                     action:@selector(selectAll:) keyEquivalent:@""];
    }
    [self setMenu:menu];
@@ -1818,9 +1818,13 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     [self updateRuler];    
 
-    // NB localize
-    if ([sender isKindOfClass:[NSMenuItem class]])
-        [sender setTitle:[NSString stringWithFormat:@"%@ Ruler", flag ? @"Hide" : @"Show"]];
+    if ([sender isKindOfClass:[NSMenuItem class]]) {
+		if (flag) {
+			[sender setTitle: NSLocalizedStringFromTableInBundle(@"Hide Ruler", nil, [NSBundle bundleForClass: [NSTextView class]], @"Hide the page ruler")];
+		} else {
+			[sender setTitle: NSLocalizedStringFromTableInBundle(@"Show Ruler", nil, [NSBundle bundleForClass: [NSTextView class]], @"Show the page ruler")];
+		}
+	}
 }
 
 
@@ -2746,7 +2750,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 	}
 	else
 	{
-		[_textStorage setAttributedString:[[[NSAttributedString alloc] initWithString:NSLocalizedString(@"",@"") attributes:nil] autorelease]];
+		[_textStorage setAttributedString:[[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTableInBundle(@"", nil, [NSBundle bundleForClass: [NSTextView class]],@"") attributes:nil] autorelease]];
 	}
 }
 
@@ -2857,12 +2861,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [self setSelectedRange:range];
     
     NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
-    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:nil inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
+    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:[[NSLocale currentLocale] localeIdentifier] inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
 
     NSMenu *menu=[[[NSMenu alloc] initWithTitle:@""] autorelease];
 
     if([guesses count]==0) {
-        NSMenuItem *item=[menu addItemWithTitle:@"No Guesses Found" action:@selector(cut:) keyEquivalent:@""];
+        NSMenuItem *item=[menu addItemWithTitle:NSLocalizedStringFromTableInBundle(@"No Guesses Found", nil, [NSBundle bundleForClass: [NSTextView class]], @"Spell checker guesses") action:@selector(cut:) keyEquivalent:@""];
         [item setEnabled:NO];
     }
     else {
@@ -2872,11 +2876,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     }
     [menu addItem:[NSMenuItem separatorItem]];
 
-    [menu addItemWithTitle:@"Cut" action:@selector(cut:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Copy" action:@selector(copy:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@""];
+    [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Cut", nil, [NSBundle bundleForClass: [NSTextView class]], @"Cut the selection") action:@selector(cut:) keyEquivalent:@""];
+    [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Copy", nil, [NSBundle bundleForClass: [NSTextView class]], @"Copy the selection") action:@selector(copy:) keyEquivalent:@""];
+    [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Paste", nil, [NSBundle bundleForClass: [NSTextView class]], @"Paste the selection") action:@selector(paste:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:@"Select All" action:@selector(selectAll:) keyEquivalent:@""];
+    [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Select All", nil, [NSBundle bundleForClass: [NSTextView class]], @"Select all the content") action:@selector(selectAll:) keyEquivalent:@""];
                     
     return menu;
 }

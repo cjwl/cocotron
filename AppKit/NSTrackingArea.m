@@ -51,7 +51,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_owner release];
    if(_retainUserData)
     [(id)_userData release];
-   [_view release];
    [super dealloc];
 }
 
@@ -88,11 +87,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_setView:(NSView *)newView {
-   if(_view!=newView){
-    newView=[newView retain];
-    [_view release];
-    _view=newView;
-   }
+	// Don't retain or we could create a retain loop between the view array of tracking
+	// areas and this tracking area
+   _view=newView;
 }
 
 -(BOOL)_isToolTip {

@@ -104,10 +104,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc
 {
-	[_selectionIndexes release];
-	[_sortDescriptors release];
-	[_filterPredicate release];
-	[_arrangedObjects release];
+	// Autorelease things, don't release them - [super dealloc] is doing 
+	// some cleaning that need these things to be still alive
+	[_selectionIndexes autorelease];
+	[_sortDescriptors autorelease];
+	[_filterPredicate autorelease];
+	[_arrangedObjects autorelease];
 	[super dealloc];
 }
 
@@ -290,7 +292,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSUInteger)selectionIndex
 {
-	return [_selectionIndexes firstIndex];
+	if (_selectionIndexes == nil) {
+		return NSNotFound;
+	} else {
+		return [_selectionIndexes firstIndex];
+	}
 }
 
 -(BOOL)setSelectionIndex:(unsigned)index

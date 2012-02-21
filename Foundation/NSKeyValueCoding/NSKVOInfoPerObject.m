@@ -2,6 +2,7 @@
 #import "NSKeyObserver.h"
 #import "NSKeyPathObserver.h"
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 
 @implementation NSKVOInfoPerObject
 
@@ -53,4 +54,8 @@
     [_dictionary removeObjectForKey:key];
 }
 
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"%@:%p %@", [self class], self, _dictionary];
+}
 @end

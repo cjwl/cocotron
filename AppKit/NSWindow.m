@@ -173,7 +173,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _backingType=backing;
    _level=NSNormalWindowLevel;
    _minSize=NSMakeSize(0,0);
-   _maxSize=NSMakeSize(0,0);
+	// "The default maximum size of a window is {FLT_MAX, FLT_MAX}"
+   _maxSize=NSMakeSize(FLT_MAX,FLT_MAX);
 
    _title=@"";
    _miniwindowTitle=@"";
@@ -1533,6 +1534,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)becomeKeyWindow {
+	
+	// The platform should always be told to become key when we want to 
+	// become key
+	[self makeKeyWindow];
+	
    if([self isKeyWindow]) // if we don't return early we may resign ourself
     return;
 
@@ -2591,7 +2597,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidActivate:) withObject:self];
 
    _isActive=YES;
-   if([self canBecomeKeyWindow] && ![self isKeyWindow])
+   if([self canBecomeKeyWindow])
     [self becomeKeyWindow];
    if([self canBecomeMainWindow] && ![self isMainWindow])
     [self becomeMainWindow];
@@ -2773,32 +2779,37 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     BOOL mouseIsInside=NSPointInRect(mousePoint,[area _rectInWindow]);
     id owner=[area owner];
 
-    if([area _isToolTip]==YES){
-     NSToolTipWindow *toolTipWindow=[NSToolTipWindow sharedToolTipWindow];
-
-     if([self isKeyWindow]==NO || [self _sheetContext]!=nil)
-      mouseIsInside=NO;
-
-     if(mouseWasInside==YES && mouseIsInside==NO && [toolTipWindow _trackingArea]==area){
-      [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
-      [toolTipWindow orderOut:nil];
-     }
-     if(mouseWasInside==NO && mouseIsInside==YES){ // AllowsToolTipsWhenApplicationIsInactive
-                                                   // is handled when rebuilding areas.
-      [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
-      [toolTipWindow orderOut:nil];
-
-      if([owner respondsToSelector:@selector(view:stringForToolTip:point:userData:)]==YES)
-       [toolTipWindow setToolTip:[owner view:[area _view] stringForToolTip:area point:mousePoint userData:[area userInfo]]];
-      else
-       [toolTipWindow setToolTip:[owner description]];
-      // This gives us some protection when ToolTip areas overlap:
-      [toolTipWindow _setTrackingArea:area];
-
-      raiseToolTipWindow=YES;
-     }
-    }
-    else{ // not ToolTip
+	   if([area _isToolTip]==YES){
+		   NSToolTipWindow *toolTipWindow=[NSToolTipWindow sharedToolTipWindow];
+		   
+		   if([self isKeyWindow]==NO || [self _sheetContext]!=nil)
+			   mouseIsInside=NO;
+		   
+		   if(mouseWasInside==YES && mouseIsInside==NO && [toolTipWindow _trackingArea]==area){
+			   [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
+			   [toolTipWindow orderOut:nil];
+		   }
+		   if(mouseWasInside==NO && mouseIsInside==YES){ // AllowsToolTipsWhenApplicationIsInactive
+			   // is handled when rebuilding areas.
+			   [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
+			   [toolTipWindow orderOut:nil];
+			   NSString *tooltip = nil;
+			   
+			   if([owner respondsToSelector:@selector(view:stringForToolTip:point:userData:)]==YES) {
+				   NSPoint pt =[[area _view] convertPoint:mousePoint fromView:nil];
+				   tooltip = [owner view:[area _view] stringForToolTip:area point:pt userData:[area userInfo]];
+			   } else {
+				   tooltip = [owner description];
+			   }
+			   [toolTipWindow setToolTip:tooltip];
+			   
+			   // This gives us some protection when ToolTip areas overlap:
+			   [toolTipWindow _setTrackingArea:area];
+			   
+			   raiseToolTipWindow=YES;
+		   }
+	   }
+	   else{ // not ToolTip
      NSTrackingAreaOptions options=[area options];
 
      // Options by view activation.

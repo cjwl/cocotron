@@ -94,9 +94,11 @@
 		
 		_fileOwner=[[keyed decodeObjectForKey:@"NSRoot"] retain];
 		if([_fileOwner isKindOfClass:[NSCustomObject class]]) {
-			id formerFileOwner = [_fileOwner autorelease];
-			_fileOwner = [owner retain];
-			[keyed replaceObject:formerFileOwner withObject:_fileOwner];
+			if (_fileOwner != owner) {
+				id formerFileOwner = [_fileOwner autorelease];
+				_fileOwner = [owner retain];
+				[keyed replaceObject:formerFileOwner withObject:_fileOwner];
+			}
 		}
 		
 		_accessibilityConnectors=[[keyed decodeObjectForKey:@"NSAccessibilityConnectors"] retain];
@@ -108,11 +110,10 @@
 		_fontManager=[[keyed decodeObjectForKey:@"NSFontManager"] retain];
 		_framework=[[keyed decodeObjectForKey:@"NSFramework"] retain];
 		_nextOid=[keyed decodeIntForKey:@"NSNextOid"];
-		_objectsKeys=[[keyed decodeObjectForKey:@"NSObjectsKeys"] mutableCopy];
-		_objectsValues=[[keyed decodeObjectForKey:@"NSObjectsValues"] mutableCopy];
+		_objectsKeys=[[keyed decodeObjectForKey:@"NSObjectsKeys"] retain];
+		_objectsValues=[[keyed decodeObjectForKey:@"NSObjectsValues"] retain];
 		_oidKeys=[[keyed decodeObjectForKey:@"NSOidsKeys"] retain];
 		_oidValues=[[keyed decodeObjectForKey:@"NSOidsValues"] retain];
-		_fileOwner=[[keyed decodeObjectForKey:@"NSRoot"] retain];
 		_visibleWindows=[[keyed decodeObjectForKey:@"NSVisibleWindows"] retain];
 		
 		
@@ -127,6 +128,11 @@
 					[keyed replaceObject:aKey withObject:replacement];
 					// Update the connections
 					[self replaceObject:aKey withObject:replacement];
+					
+					if (![_objectsKeys isKindOfClass:[NSMutableArray class]]) {
+						[_objectsKeys autorelease];
+						_objectsKeys = [_objectsKeys mutableCopy];
+					}					
 					[(NSMutableArray *)_objectsKeys replaceObjectAtIndex:i withObject:replacement];
 					[replacement release];
 				}
@@ -198,20 +204,20 @@
 
 -(void)buildConnectionsWithNameTable:(NSDictionary *)nameTable {
 	id owner=[nameTable objectForKey:NSNibOwner];
-	
-	[self replaceObject:_fileOwner withObject:owner];
-	id formerOwner = [_fileOwner autorelease];
-	_fileOwner=[owner retain];
-	
-	[_objectsKeys autorelease];
-	_objectsKeys = [_objectsKeys mutableCopy];
-	[_objectsValues autorelease];
-	_objectsValues = [_objectsValues mutableCopy];
-	
-	for(int i = [_objectsValues count] - 1; i >= 0; i--){
-		id  aValue = [_objectsValues objectAtIndex:i];
-		if (aValue == formerOwner) {
-			[(NSMutableArray *)_objectsValues replaceObjectAtIndex:i withObject:_fileOwner];
+	if (_fileOwner != owner) {
+		[self replaceObject:_fileOwner withObject:owner];
+		id formerOwner = [_fileOwner autorelease];
+		_fileOwner=[owner retain];
+		
+		if (![_objectsValues isKindOfClass:[NSMutableArray class]]) {
+			[_objectsValues autorelease];
+			_objectsValues = [_objectsValues mutableCopy];
+		}
+		for(int i = [_objectsValues count] - 1; i >= 0; i--){
+			id  aValue = [_objectsValues objectAtIndex:i];
+			if (aValue == formerOwner) {
+				[(NSMutableArray *)_objectsValues replaceObjectAtIndex:i withObject:_fileOwner];
+			}
 		}
 	}
 	[self establishConnections];

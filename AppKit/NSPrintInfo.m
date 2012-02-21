@@ -18,6 +18,13 @@ NSString * const NSPrintPrinterName=@"NSPrintPrinterName";
 NSString * const NSPrintJobDisposition=@"NSPrintJobDisposition"; 
 NSString * const NSPrintDetailedErrorReporting=@"NSPrintDetailedErrorReporting"; 
 
+NSString * const NSPrintSpoolJob = @"NSPrintSpoolJob";
+NSString * const NSPrintPreviewJob = @"NSPrintPreviewJob";
+NSString * const NSPrintSaveJob = @"NSPrintSaveJob";
+NSString * const NSPrintCancelJob = @"NSPrintCancelJob";
+
+NSString * const NSPrintSavePath = @"NSPrintSavePath";
+
 NSString * const NSPrintCopies=@"NSPrintCopies"; 
 NSString * const NSPrintAllPages=@"NSPrintAllPages"; 
 NSString * const NSPrintFirstPage=@"NSPrintFirstPage"; 

@@ -30,7 +30,7 @@ typedef enum {
     BOOL _isBezeled;
     BOOL _isIndeterminate;
     BOOL _usesThreadedAnimation;
-
+	BOOL _endThreadedAnimation;
 }
 
 -(NSProgressIndicatorStyle)style;

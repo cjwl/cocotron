@@ -89,8 +89,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // FIXME: does it do this? Or does it add it to the current mode?
 // Apple's does work in a modal panel (right?)_                                                 
-    [[NSRunLoop mainRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
-    [[NSRunLoop mainRunLoop] addTimer:_animationTimer forMode:NSModalPanelRunLoopMode];
+    [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
+    [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSModalPanelRunLoopMode];
     
     [self didChangeValueForKey:@"animate"];
    }
@@ -285,20 +285,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)sizeToFit {
 }
 
+- (void)_runThreadedAnimation:(id)arg
+{
+	_endThreadedAnimation = NO;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
+	[self _buildTimer];
+	[self setNeedsDisplay:YES];
+	
+	BOOL isRunning = YES;
+	do {
+		isRunning = [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+								 beforeDate:[NSDate distantFuture]];
+	} while (isRunning && _endThreadedAnimation == NO);
+	
+	[self _invalidateTimer];
+	
+	[pool drain];
+}
+
+- (void)_stopThreadedAnimation
+{
+	_endThreadedAnimation = YES;
+}
+
 -(void)startAnimation:sender {
-   if (!_isIndeterminate)
-    return;
-   
-   [self _buildTimer];
-   [self setNeedsDisplay:YES];
+	if (!_isIndeterminate)
+		return;
+
+	if (_usesThreadedAnimation) {
+		[NSThread detachNewThreadSelector: @selector(_runThreadedAnimation:) toTarget: self withObject: nil];
+	} else {
+		[self _buildTimer];
+		[self setNeedsDisplay:YES];
+	}
 }
 
 -(void)stopAnimation:sender {
-   if (!_isIndeterminate)
-    return;
 
-   [self _invalidateTimer];
-   [self setNeedsDisplay:YES];
+	if (!_isIndeterminate)
+		return;
+
+	if (_usesThreadedAnimation) {
+		[self _stopThreadedAnimation];
+	} else {
+
+		[self _invalidateTimer];
+		[self setNeedsDisplay:YES];
+	}
 }
 
 -(void)animate:sender {

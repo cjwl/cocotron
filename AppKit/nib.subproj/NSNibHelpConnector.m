@@ -11,6 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 
 @implementation NSNibHelpConnector
+- (void)dealloc
+{
+	[_file release];
+	[_marker release];
+	[super dealloc];
+}
 
 -file {
     return _file;
@@ -33,15 +39,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)establishConnection  {
-#if 0
    if ([[self file] isEqualToString:@"NSToolTipHelpKey"])
         [_destination setToolTip:[self marker]];
-#endif
 }
 
 -initWithCoder:(NSCoder *)coder {
-
-    return self;
+	if ((self = [super initWithCoder:coder])) {
+		if ([coder allowsKeyedCoding]) {
+			if ([coder containsValueForKey: @"NSFile"]) {
+				_file = [[coder decodeObjectForKey: @"NSFile"] retain];
+			}
+			if ([coder containsValueForKey: @"NSMarker"]) {
+				_marker = [[coder decodeObjectForKey: @"NSMarker"] retain];
+			}
+		}
+	}
+	return self;
 }
 
 @end

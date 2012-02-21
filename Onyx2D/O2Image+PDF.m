@@ -6,6 +6,12 @@
 #import <Onyx2D/O2PDFStream.h>
 #import <Onyx2D/O2PDFContext.h>
 
+#import "O2Defines_zlib.h"
+
+#if ZLIB_PRESENT
+#import <zlib-1.2.5/include/zlib.h>
+#endif
+
 @implementation O2Image(PDF)
 
 O2ColorRenderingIntent O2ImageRenderingIntentWithName(const char *name) {
@@ -44,8 +50,33 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
 }
 
 -(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
-   O2PDFStream     *result=[O2PDFStream pdfStream];
-   O2PDFDictionary *dictionary=[O2PDFDictionary pdfDictionary];
+	O2PDFStream     *result=[O2PDFStream pdfStream];
+   O2PDFDictionary *dictionary=[result dictionary];
+
+#define CHUNK 65536
+	
+	// Input buffer for image data
+    uint8_t in[CHUNK + 3]; // CHUNK size + some additional room for rgb
+	int idx = 0;
+	
+#if ZLIB_PRESENT
+    // allocate deflate state
+	unsigned have;
+    z_stream strm;
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    
+	deflateInit(&strm, 9);
+	
+	// Compressed output buffer
+    uint8_t out[CHUNK + 3];
+#else
+	// No compression : out buffer = in buffer
+	uint8_t *out = in;
+#endif
+	
+	const void *bytes = [self directBytes];
 
    [dictionary setNameForKey:"Type" value:"XObject"];
    [dictionary setNameForKey:"Subtype" value:"Image"];
@@ -60,15 +91,86 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
     [dictionary setObjectForKey:"Mask" value:[_mask encodeReferenceWithContext:context]];
    if(_decode!=NULL)
     [dictionary setObjectForKey:"Decode" value:[O2PDFArray pdfArrayWithNumbers:_decode count:O2ColorSpaceGetNumberOfComponents(_colorSpace)*2]];
-   [dictionary setBooleanForKey:"Interpolate" value:_interpolate];
-   /* FIX, generate soft mask
+	[dictionary setBooleanForKey:"Interpolate" value:_interpolate];
+
+	/* FIX, generate soft mask for alpha data
     [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
     */
-  
-   /* FIX
-    */
-    
-   return [context encodeIndirectPDFObject:result];
+#if ZLIB_PRESENT
+	[dictionary setNameForKey:"Filter" value:"FlateDecode"];
+#endif
+	
+	// It would be nice if jpg data would stay jpg data (instead of an uncompress stream), as it does
+	// with Quartz and CGImage
+	
+	// Export RGB bytes, without the alpha data, in the expected order
+	// TODO : support non 32 bits pixels, respect the premultiplied state, non-RGB pixels...
+	const uint8_t *ptr = bytes;
+	int alphaInfo = _bitmapInfo & kO2BitmapAlphaInfoMask;
+	BOOL hasAlpha = alphaInfo != kO2ImageAlphaNone;
+	BOOL alphaFirst = alphaInfo == kO2ImageAlphaPremultipliedFirst || alphaInfo == kO2ImageAlphaFirst || alphaInfo == kO2ImageAlphaNoneSkipFirst;
+	BOOL alphaLast = hasAlpha && (alphaFirst == NO);
+	BOOL bigEndian = _bitmapInfo & kO2BitmapByteOrder32Big;
+	BOOL littleEndian = bigEndian == NO;
+	int bytesPerPixel = _bitsPerPixel/8;
+	for (int i = 0; i < _height; i++, ptr += _bytesPerRow) {
+		const uint8_t *linePtr = ptr;
+		for (int j = 0; j < _width; j++, linePtr += bytesPerPixel) {
+			const uint8_t *pixelPtr = linePtr;			
+			/*
+			 AlphaFirst => The Alpha channel is next to the Red channel
+			 (ARGB and BGRA are both Alpha First formats)
+			 AlphaLast => The Alpha channel is next to the Blue channel
+			 (RGBA and ABGR are both Alpha Last formats)
+			 
+			 LittleEndian => Blue comes before Red 
+			 (BGRA and ABGR are Little endian formats)
+			 BigEndian => Red comes before Blue 
+			 (ARGB and RGBA are Big endian formats).
+			 */	
+			uint8_t r = 0, g = 0, b = 0;
+			if ((alphaFirst && bigEndian) || (alphaLast && littleEndian)) {
+				// Skip the alpha
+				++pixelPtr;
+			}
+			if (bigEndian) {
+				r = *pixelPtr++;
+				g = *pixelPtr++;
+				b = *pixelPtr++;
+			} else {
+				b = *pixelPtr++;
+				g = *pixelPtr++;
+				r = *pixelPtr++;
+			}
+			in[idx++] = r;
+			in[idx++] = g;
+			in[idx++] = b;
+			BOOL flush = (i == _height - 1 && j == _width - 1) || (idx > CHUNK);
+			if (flush) {
+#if ZLIB_PRESENT
+				strm.avail_in = idx;
+				flush = ((i == _height - 1 && j == _width - 1)) ? Z_FINISH : Z_NO_FLUSH;
+				strm.next_in = in;
+				
+				// run deflate() on input until the output buffer is not full
+				do {
+					strm.avail_out = idx;
+					strm.next_out = out;
+					deflate(&strm, flush); 
+					have = idx - strm.avail_out;
+					[[result mutableData] appendBytes:out length: have];
+				} while (strm.avail_out == 0);
+#else
+				[[result mutableData] appendBytes:out length: idx];
+#endif
+				idx = 0;
+			}
+		}
+	}
+#if ZLIB_PRESENT
+	deflateEnd(&strm);
+#endif
+	return [context encodeIndirectPDFObject:result];
 }
 
 
@@ -90,8 +192,6 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
    BOOL              interpolate;
    O2PDFStream *softMaskStream=nil;
    O2Image *softMask=NULL;
-    
-   NSLog(@"PDF Image=%@",dictionary);
     
    if(![dictionary getIntegerForKey:"Width" value:&width]){
     O2PDFError(__FILE__,__LINE__,@"Image has no Width");
@@ -199,9 +299,7 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
    O2DataProviderRelease(provider);
    O2ColorSpaceRelease(colorSpace);
    
-   NSLog(@"image=%@",image);
-    return image;
-
+	return image;
    }
 
 @end

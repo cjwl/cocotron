@@ -573,20 +573,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSStringCompareOptions compareOption = 0;
     NSRange range = {0,[string length]};
     NSInteger oldLocation =_location;
-
+    
     if(!_isCaseSensitive) {
         compareOption = NSCaseInsensitiveSearch;
     }
 
     for(;_location<length;_location++) {
-        unichar unicode=[_string characterAtIndex:_location];
         NSString    *subStr = [_string substringFromIndex:_location];
-
+        
         if([subStr length] < [string length]) {
-            _location = oldLocation;
+            _location = oldLocation;  
             return NO;
-        }
-        if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
+        } 
+		
+		// Skip any leading char from the skip set
+        unichar unicode=[_string characterAtIndex:_location];
+		if (scanStarted == NO && [_skipSet characterIsMember:unicode]) {
+            continue;
+	    } 
+		
+		if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
             if (scanStarted) {
                 if (stringp != NULL)
                     *stringp = [NSString stringWithCharacters:result length:resultLength];
@@ -595,10 +601,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             } else {
                 return NO;
             }
-        }
-        else if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
-            continue;
-        else {
+        } else {
             scanStarted = YES;
             result[resultLength++] = unicode;
         }
@@ -611,7 +614,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return YES;
     }
     else {
-        _location = oldLocation;
+        _location = oldLocation;  
         return NO;
     }
 }

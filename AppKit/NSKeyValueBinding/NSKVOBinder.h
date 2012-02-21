@@ -10,7 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface _NSKVOBinder : _NSBinder
 {
-	id _bindingKeyPath;
    BOOL _isObserving;
 }
 @end

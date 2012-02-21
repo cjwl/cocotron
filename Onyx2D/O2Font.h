@@ -43,6 +43,16 @@ typedef enum {
    O2Glyph  *_MacRomanEncoding;
 }
 
+// Font name mapping : platform specific font class may override
+// these methods in a category O2Font(<platformname>) if some
+// mapping is needed between the font postscript names and the
+// native names used by the platform
++ (NSString *)nativeFontNameForPostscriptName:(NSString *)name;
++ (NSString *)postscriptNameForNativeName:(NSString *)name;
++ (NSString *)postscriptNameForDisplayName:(NSString *)name;
++ (NSString *)displayNameForPostscriptName:(NSString *)name;
+
+
 -initWithFontName:(NSString *)name;
 -initWithDataProvider:(O2DataProviderRef)provider;
 

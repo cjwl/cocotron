@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super init];
    _filenames=[NSArray new];
    [_dialogTitle release];
-   _dialogTitle=@"Open";
+   _dialogTitle= [NSLocalizedStringFromTableInBundle(@"Open", nil, [NSBundle bundleForClass: [NSOpenPanel class]], @"The title of the open panel") copy];
    _allowsMultipleSelection=NO;
    _canChooseDirectories=NO;
    _canChooseFiles=YES;

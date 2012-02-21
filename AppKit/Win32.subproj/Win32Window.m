@@ -484,7 +484,12 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)makeKey {
-   SetActiveWindow(_handle);
+
+	// SetForegroundWindow() seems to handle all kinds of windows. SetActiveWindow() seemed
+	// to leave secondary windows deactivated meaning the user had to click on a primary window
+	// first and then the secondary window in order to reset the focus. This makes it all
+	// happen as expected.
+	SetForegroundWindow(_handle);
 }
 
 -(void)makeMain {
@@ -1293,6 +1298,12 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    return 0;
 }
 
+-(int)WM_SETFOCUS_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+
+	[_delegate platformWindowActivated:self displayIfNeeded:!_disableDisplay];
+	return 0;
+}
+
 -(int)WM_ACTIVATE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    if(HIWORD(wParam)){ // minimized
     if(LOWORD(wParam)){
@@ -1442,6 +1453,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
    switch(message){
 
+	case WM_SETFOCUS:	   return [self WM_SETFOCUS_wParam:wParam lParam:lParam];
     case WM_ACTIVATE:      return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
     case WM_MOUSEACTIVATE: return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
     case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];

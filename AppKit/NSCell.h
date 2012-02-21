@@ -111,7 +111,14 @@ enum {
    BOOL      _sendsActionOnEndEditing;
 }
 
+#pragma mark -
+#pragma mark Class Methods
+
 +(NSFocusRingType)defaultFocusRingType;
++(NSMenu *)defaultMenu;
++(BOOL)prefersTrackingUntilMouseUp;
+
+#pragma mark -
 
 -initTextCell:(NSString *)string;
 -initImageCell:(NSImage *)image;

@@ -67,6 +67,13 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
    return self;
 }
 
+-(void)dealloc
+{
+	[_provider release];
+	[_options release];
+	[super dealloc];
+}
+
 -(unsigned)count {
    O2InvalidAbstractInvocation();
    return 0;
@@ -82,7 +89,7 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
 }
 
 O2ImageRef O2ImageSourceCreateImageAtIndex(O2ImageSourceRef self,size_t index,CFDictionaryRef options) {
-   return [self createImageAtIndex:index options:options];
+  return [self createImageAtIndex:index options:options];
 }
 
 @end
