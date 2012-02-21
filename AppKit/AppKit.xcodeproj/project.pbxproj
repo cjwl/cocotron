@@ -19,6 +19,11 @@
 		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		5AD0CBA214F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
+		5AD0CBA314F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
+		5AD0CBA414F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
+		5AD0CBA514F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
+		5AD0CBA614F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */; };
 		631381D3145F2FFA00765AA7 /* NSColorPickerListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */; };
 		631381D4145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */; };
 		631381D5145F2FFA00765AA7 /* NSColorPickerWheelIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */; };
@@ -4448,6 +4453,7 @@
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
+		5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Defines_libjpeg.h; sourceTree = "<group>"; };
 		631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerListIcon.png; path = NSColorPicker.subproj/NSColorPickerListIcon.png; sourceTree = "<group>"; };
 		631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerSlidersIcon.png; path = NSColorPicker.subproj/NSColorPickerSlidersIcon.png; sourceTree = "<group>"; };
 		631381D2145F2FFA00765AA7 /* NSColorPickerWheelIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorPickerWheelIcon.png; path = NSColorPicker.subproj/NSColorPickerWheelIcon.png; sourceTree = "<group>"; };
@@ -6471,6 +6477,7 @@
 				FE5F4BF712A83CA600F5F334 /* platform_Windows */,
 				49A7975114224021001CE4C2 /* O2Encoder_JPG.h */,
 				49A7975214224021001CE4C2 /* O2Encoder_JPG.m */,
+				5AD0CBA114F2E6BA002F0A2B /* O2Defines_libjpeg.h */,
 				FE99DA72128396B6006D789F /* O2Encoder_PNG.h */,
 				FE99DA73128396B6006D789F /* O2Encoder_PNG.m */,
 				FE587952126961BC009B9EDF /* O2ClipMask.h */,
@@ -7214,6 +7221,7 @@
 				FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				5AD0CBA314F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7622,6 +7630,7 @@
 				FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				5AD0CBA414F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8027,6 +8036,7 @@
 				FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				5AD0CBA214F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8437,6 +8447,7 @@
 				FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				5AD0CBA614F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8764,6 +8775,7 @@
 				FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				5AD0CBA514F2E6BA002F0A2B /* O2Defines_libjpeg.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
