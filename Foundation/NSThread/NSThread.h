@@ -41,6 +41,8 @@ FOUNDATION_EXPORT NSString * const NSThreadWillExitNotification;
 
 +(NSThread *)currentThread;
 +(NSArray *)callStackReturnAddresses;
++(NSArray *)callStackSymbols;
+
 +(double)threadPriority;
 +(BOOL)setThreadPriority:(double)value;
 

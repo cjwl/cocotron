@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSError.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -120,8 +121,12 @@ NSThread *NSPlatformCurrentThread() {
 	return thread;
 }
 
-NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg) {
+NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg, NSError **errorp) {
 	pthread_t thread;
-	pthread_create(&thread, NULL, func, arg);
+    int err;
+	if ((err = pthread_create(&thread, NULL, func, arg)) != 0) {
+        if (errorp) *errorp = [NSError errorWithDomain:NSPOSIXErrorDomain code:err userInfo:nil];
+        return 0;
+    }
 	return (NSUInteger)thread;
 }

@@ -8,8 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-// register this for SIGCHLD in your subclass' +initialize method.
-extern void childSignalHandler(int sig);
+void waitForTaskChildProcess();
 
 @interface NSTask_posix : NSTask {
    int _processID;

@@ -145,7 +145,7 @@ NSThread *NSPlatformCurrentThread() {
 }
 
 /* Create a new thread of execution. */
-NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg) {
+NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg, NSError **errorp) {
 	uint32_t	threadId = 0;
 	HANDLE win32Handle = (HANDLE)_beginthreadex(NULL, 0, func, arg, 0, &threadId);
 	

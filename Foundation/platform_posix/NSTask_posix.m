@@ -24,69 +24,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <errno.h>
 
 static NSMutableArray *_liveTasks = nil;
+static BOOL           _taskFinished = NO;
 
 @implementation NSTask_posix
 
-BOOL waitForChildProcess()
+void waitForTaskChildProcess()
 {
     NSTask_posix *task;
     pid_t pid;
     int status;
     
-    pid = wait3(&status, WNOHANG, NULL);
     
-    if (pid < 0) {
-        if (errno != ECHILD) {
-            NSCLog("Invalid wait3 result [%s] in child signal handler", strerror(errno));
-        }
-        return NO;
-    }
-    else if (pid == 0) {
-        //no child exited
-        return NO;
-    }
-    else {
-        @synchronized(_liveTasks) {
-            NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
-            while (task = [taskEnumerator nextObject]) {
-                if ([task processIdentifier] == pid) {
-                    if (WIFEXITED(status))
-                        [task setTerminationStatus:WEXITSTATUS(status)];
-                    else
-                        [task setTerminationStatus:-1];
-                    
-                    [task retain];
-                    [task taskFinished];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:NSTaskDidTerminateNotification object:task]];
-                    [task release];
-                    
-                    return YES;
+    if (_taskFinished == YES) {
+        _taskFinished = NO;
+        while(YES) {
+            pid = wait3(&status, WNOHANG, NULL);
+            
+            if (pid < 0) {
+                if (errno == ECHILD) {
+                    break; // no child exists
                 }
+                
+                NSCLog("Invalid wait3 result [%s] in child signal handler", strerror(errno));
             }
-        }
-        
-        //there was a different child (not a NSTask)
-        //just ignore it and return YES
-        return YES;
+            else if (pid == 0) {
+                //no child exited
+                break;
+            }
+            else {
+                @synchronized(_liveTasks) {
+                    NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
+                    while (task = [taskEnumerator nextObject]) {
+                        if ([task processIdentifier] == pid) {
+                            if (WIFEXITED(status))
+                                [task setTerminationStatus:WEXITSTATUS(status)];
+                            else
+                                [task setTerminationStatus:-1];
+                            
+                            [task retain];
+                            [task taskFinished];
+                            
+                            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:NSTaskDidTerminateNotification object:task]];
+                            [task release];
+                            
+                        }
+                    }
+                }
+                
+            } 
+        }  
     }    
 }
 
 void childSignalHandler(int sig) {
     if (sig == SIGCHLD) {
-        while (YES) {
-            //if multiple signals are sent at the same time, we only get one signal
-            if (waitForChildProcess() == NO) {
-                break;
-            }
-        }
+        _taskFinished = YES;
     }
 }
 
 +(void)initialize {
     if (self == [NSTask_posix class]) {
         _liveTasks=[[NSMutableArray alloc] init];
-
         struct sigaction sa;        
         sigaction (SIGCHLD, (struct sigaction *)0, &sa);
         sa.sa_flags |= SA_RESTART;
@@ -148,7 +146,7 @@ void childSignalHandler(int sig) {
         i++;
     }
     
-    cenv[[env count]] = NULL;    
+    cenv[[env count]] = NULL;
     
     _processID = fork(); 
     if (_processID == 0) {  // child process               
@@ -194,11 +192,14 @@ void childSignalHandler(int sig) {
             close(i);
         }
         
+        for (i = 0; i < 32; i++){
+            signal(i, SIG_DFL);
+        }
+        
         chdir([currentDirectoryPath fileSystemRepresentation]);
                
         execve(path, (char**)args, (char**)cenv);
-        [NSException raise:NSInvalidArgumentException
-                    format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
+        exit(-1);
     }
     else if (_processID != -1) {
         
