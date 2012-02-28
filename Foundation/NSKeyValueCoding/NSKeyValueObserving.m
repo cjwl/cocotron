@@ -897,16 +897,26 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
     // add KVO-Observing methods
     // override className so it returns the original class name
     Method className = class_getInstanceMethod([self class], @selector(_KVO_className));
+    Method class = class_getInstanceMethod([self class], @selector(_KVO_class));
+    Method classForCoder = class_getInstanceMethod([self class], @selector(_KVO_classForCoder));
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-    IMP imp = method_getImplementation(className);
-    const char *types = method_getTypeEncoding(className);
+    IMP classNameImp = method_getImplementation(className);
+    IMP classImp = method_getImplementation(class);
+    IMP classForCoderImp = method_getImplementation(classForCoder);
+    const char *classNameTypes = method_getTypeEncoding(className);
+    const char *classTypes = method_getTypeEncoding(class);
+    const char *classForCoderTypes = method_getTypeEncoding(classForCoder);
 #else
-    IMP imp = className->method_imp;
-    const char *types = className->method_types;
+    IMP classNameImp = className->method_imp;
+    IMP classImp = class->method_imp;
+    IMP classForCoderImp = classForCoder->method_imp;
+    const char *classNameTypes = className->method_types;
+    const char *classTypes = class->method_types;
+    const char *classForCoderTypes = classForCoder->method_types;
 #endif
-    class_addMethod(swizzledClass, @selector(className), imp, types);
-    class_addMethod(swizzledClass, @selector(class), imp, types);
-    class_addMethod(swizzledClass, @selector(classForCoder), imp, types);
+    class_addMethod(swizzledClass, @selector(className), classNameImp, classNameTypes);
+    class_addMethod(swizzledClass, @selector(class), classImp, classTypes);
+    class_addMethod(swizzledClass, @selector(classForCoder), classForCoderImp, classForCoderTypes);
 
     Class currentClass = isa;
 
@@ -993,9 +1003,9 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
             // there's a suitable selector for us
             if (kvoSelector != 0) {
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-                types = method_getTypeEncoding(method);
+                const char *types = method_getTypeEncoding(method);
 #else
-                types = method->method_types;
+                const char *types = method->method_types;
 #endif
                 class_addMethod(swizzledClass, sel, [self methodForSelector:kvoSelector], types);
                 //NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
