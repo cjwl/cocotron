@@ -143,10 +143,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
-     _currentEditor=[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-
-     [_currentEditor retain];
+     NSText* editor =[[self window] fieldEditor:YES forObject:self];
+     _currentEditor=[[cell setUpFieldEditorAttributes: editor] retain];
     }
 
     [cell selectWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self start:range.location length:range.length];
@@ -205,9 +203,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else {
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
-     _currentEditor=[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-     [_currentEditor retain];
+     NSText* editor =[[self window] fieldEditor:YES forObject:self];
+     _currentEditor=[[cell setUpFieldEditorAttributes: editor] retain];
     }
 
     [cell editWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self event:event];
