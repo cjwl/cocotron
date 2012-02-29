@@ -589,21 +589,44 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 }
 
 -(void)internIndirectObjects {
-   int i;
+	int i;
+	
+	for(i=0;i<[_indirectObjects count];i++){ // do not cache 'count', can grow during encoding
+		O2PDFObject    *object=[_indirectObjects objectAtIndex:i];
+		O2PDFxrefEntry *entry=[_indirectEntries objectAtIndex:i];
+		if (![object isKindOfClass:[NSNull class]]) {
+			unsigned        position=[self length];
+			[entry setPosition:position];
+			
+			[self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
+			[object encodeWithPDFContext:self];
+			[self appendFormat:@"endobj\n"];
+		}
+	}
+	[_indirectObjects removeAllObjects];
+	[_indirectEntries removeAllObjects];
+}
 
-   for(i=0;i<[_indirectObjects count];i++){ // do not cache 'count', can grow during encoding
-    O2PDFxrefEntry *entry=[_indirectEntries objectAtIndex:i];
-    O2PDFObject    *object=[_indirectObjects objectAtIndex:i];
-    unsigned        position=[self length];
-    
-    [entry setPosition:position];
-
-	   [self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
-    [object encodeWithPDFContext:self];
-    [self appendFormat:@"endobj\n"];
-   }
-   [_indirectObjects removeAllObjects];
-   [_indirectEntries removeAllObjects];
+-(void)internIndirectObjectsExcluding:(NSArray *)array {
+	int i;
+	
+	for(i=0;i<[_indirectObjects count];i++){ // do not cache 'count', can grow during encoding
+		O2PDFObject    *object=[[[_indirectObjects objectAtIndex:i] retain] autorelease];
+		if (![array containsObject:object]) {
+			O2PDFxrefEntry *entry=[_indirectEntries objectAtIndex:i];
+			[_indirectObjects replaceObjectAtIndex:i withObject:[NSNull null]];
+			if (![object isKindOfClass:[NSNull class]]) {
+				unsigned        position=[self length];
+				[entry setPosition:position];
+				
+				[object encodeWithPDFContext:self];
+				[self appendFormat:@"endobj\n"];
+				
+				// We're done with this object
+				NSMapRemove(_objectToRef,object);
+			}
+		}
+	}
 }
 
 -(void)endPage {
@@ -620,13 +643,15 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    [_page release];
    _page=nil;
    
-   // Do not invoke [self internIndirectObjects], it's too early: do it only after -endPrinting,
+   // Encode any indirect object now, so they can be released - don't encode kids or pages now
    // else subsequent pages are not saved, because the 'Kids' array has already been encoded!
+	[self internIndirectObjectsExcluding:[NSArray arrayWithObjects:_kids,_pages,nil]]; 
 }
 
 -(void)close {
-   [self internIndirectObjects];
-   [self encodePDFObject:(id)_xref];
+	// Encode the remaining references
+	[self internIndirectObjects];
+	[self encodePDFObject:(id)_xref];
 	[_dataConsumer release];
 	_dataConsumer=nil;
 }
