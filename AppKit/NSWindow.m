@@ -240,8 +240,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    [_backgroundView addSubview:_contentView];
    [_backgroundView setNeedsDisplay:YES];
-   [[NSApplication sharedApplication] _addWindow:self];
-
+	if (!(_styleMask & NSAppKitPrivateWindow)) {
+		[[NSApplication sharedApplication] _addWindow:self];
+	}
    return self;
 }
 

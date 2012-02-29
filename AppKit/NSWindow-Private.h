@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class CGWindow;
 
+// style flag for private windows (that NSApp doesn't have to know about)
+#define NSAppKitPrivateWindow 0x8000000
+
 @interface NSWindow(NSWindow_private)
 -(CGWindow *)platformWindow;
 -(CGContextRef)cgContext;

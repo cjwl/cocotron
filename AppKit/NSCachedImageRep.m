@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _origin=rect.origin;
 
 // this is a little broken, the windows get resized to larger size when on-screen
-   if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSShowAllWindows"])
+	if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSShowAllWindows"])
     [_window orderFront:nil];
    return self;
 }
@@ -28,7 +28,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
 // FIXME: Implement shared caches, but also update NSImage to handle caching in them
 
-   NSWindow *window=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+	int styleMask = NSBorderlessWindowMask;
+	if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSShowAllWindows"] == NO) {
+		styleMask |= NSAppKitPrivateWindow;
+	}
+	NSWindow *window=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height) styleMask:styleMask backing:NSBackingStoreBuffered defer:NO];
 
    NSDictionary *entries=[NSDictionary dictionaryWithObject:@"Onyx" forKey:@"CGContext"];
    
