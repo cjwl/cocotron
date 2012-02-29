@@ -249,8 +249,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setFont:(NSFont *)font {
-  [super setFont:font];
-  [_currentEditor setFont:[self font]];
+	// Don't do extra work if we don't need to...
+	if (font != [self font]) {
+		[super setFont:font];
+		[_currentEditor setFont:[self font]];
+	}
 }
 
 -(void)setAlignment:(NSTextAlignment)alignment {
