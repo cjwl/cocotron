@@ -11,7 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2ImageSource.h>
 
+#import "O2Defines_libjpeg.h"
+
 @class NSData,NSDictionary;
+
+#ifdef LIBJPEG_PRESENT
+typedef int jpeg; // Not actually needed when using libjpeg
+#else
 
 #define STBI_NO_STDIO
 
@@ -85,6 +91,7 @@ typedef struct
    int scan_n, order[4];
    int restart_interval, todo;
 } jpeg;
+#endif
 
 // definition of jpeg image component
 
