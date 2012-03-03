@@ -529,4 +529,27 @@ static inline float roundFloat(float value){
 
 }
 
+-(void)scrollWheel:(NSEvent *)event {
+    NSRect  slotRect=[self rectForPart:NSScrollerKnobSlot];
+    NSRect  knobRect=[self rectForPart:NSScrollerKnob];
+        
+    if([self isVertical]) {
+        float delta=[event deltaY];
+        float totalSize=slotRect.size.height-knobRect.size.height;
+        
+        if(totalSize==0)
+            _floatValue=0;
+        else
+            _floatValue=_floatValue-(delta/totalSize);
+        
+        if(_floatValue<0)
+            _floatValue=0;
+        else if(_floatValue>1.0)
+            _floatValue=1.0;
+
+        [self setNeedsDisplay:YES];
+        [self sendAction:_action to:_target];
+    }
+}
+
 @end

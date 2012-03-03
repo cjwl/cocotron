@@ -2059,23 +2059,24 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)scrollWheel:(NSEvent *)event {
-   NSScrollView *scrollView=[self enclosingScrollView];
-
-   if(scrollView!=nil){
-    NSRect bounds=[self bounds];
-    NSRect visible=[self visibleRect];
-    float  direction=[self isFlipped]?-1:1;
-
-    visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
-
-// Something equivalent to this should be in scrollRectToVisible:
-    if(visible.origin.y<bounds.origin.y)
-     visible.origin.y=bounds.origin.y;
-    if(NSMaxY(visible)>NSMaxY(bounds))
-     visible.origin.y=NSMaxY(bounds)-visible.size.height;
-
-    [self scrollRectToVisible:visible];
-   }
+    NSScrollView *scrollView=[self enclosingScrollView];
+    
+    if(scrollView!=nil){
+        NSView *documentView=[scrollView documentView];
+        NSRect bounds=[documentView bounds];
+        NSRect visible=[documentView visibleRect];
+        float  direction=[documentView isFlipped]?-1:1;
+        
+        visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
+        
+        // Something equivalent to this should be in scrollRectToVisible:
+        if(visible.origin.y<bounds.origin.y)
+            visible.origin.y=bounds.origin.y;
+        if(NSMaxY(visible)>NSMaxY(bounds))
+            visible.origin.y=NSMaxY(bounds)-visible.size.height;
+        
+        [documentView scrollRectToVisible:visible];
+    }
 }
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {
