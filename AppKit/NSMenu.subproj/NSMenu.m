@@ -318,7 +318,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       
      if([key isEqualToString:characters]){
       if ([item isEnabled])
-       [NSApp sendAction:[item action] to:[item target] from:item];
+       return [NSApp sendAction:[item action] to:[item target] from:item];
       else
        NSBeep();
       return YES;
