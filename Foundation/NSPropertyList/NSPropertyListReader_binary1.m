@@ -90,9 +90,11 @@ static inline double _readFloatOfSize(NSPropertyListReader_binary1 *self, size_t
 
     if (size == 4) {
         uint32_t val32 = (uint32_t)val;
-        return *(float *)&val32;
+        void *p = &val32;
+        return *((float *)p);
     } else if (size == 8) {
-        return *(double *)&val;
+        void *p = &val;
+        return *((double *)p);
     }
 
     [NSException raise: @"Invalid size" format: @"Don't know how to read float of size %u", size];
@@ -212,10 +214,12 @@ static id _readObjectAtOffset(NSPropertyListReader_binary1 *self,NSUInteger *off
 
         if (size == 4) {
             uint32_t val32 = (uint32_t)val;
-            return [[NSNumber alloc] initWithFloat: *(float*)&val32];
+            void *p = &val32;
+            return [[NSNumber alloc] initWithFloat: *(float*)p];
         }
         if (size == 8) {
-            return [[NSNumber alloc] initWithDouble: *(double*)&val];
+            void *p = &val;
+            return [[NSNumber alloc] initWithDouble: *(double*)p];
         }
         return [[NSNumber alloc] initWithDouble:0.0];
     }

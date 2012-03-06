@@ -209,14 +209,16 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 
     if (naturalSize == promotedSize) {
         byteCopy(_argumentFrame + _argumentOffsets[index], pointerToValue, naturalSize);
-    } else if (promotedSize == 4) {
-        uint8_t promoted[promotedSize];
+    } else if (promotedSize == sizeof(long)) {
+        long promoted;
 
-        byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
+        byteCopy(_argumentFrame + _argumentOffsets[index], &promoted, promotedSize);
         if (naturalSize == 1) {
-            *((char *)pointerToValue) = *((int *)promoted);
+            *((char *)pointerToValue) = (char)promoted;
         } else if (naturalSize == 2) {
-            *((short *)pointerToValue) = *((int *)promoted);
+            *((short *)pointerToValue) = (short)promoted;
+        } else if (naturalSize == 4) {
+            *((int32_t *)pointerToValue) = (int32_t)promoted;
         }
     } else {
         [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d", naturalSize, promotedSize];
@@ -232,17 +234,17 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
     if (naturalSize == promotedSize) {
         byteCopy(pointerToValue, _argumentFrame + _argumentOffsets[index], naturalSize);
     } else if (promotedSize == sizeof(long)) {
-        uint8_t promoted[promotedSize];
+        long promoted;
 
         if (naturalSize == 1) {
-            *((long *)promoted) = *((char *)pointerToValue);
+            promoted = *((char *)pointerToValue);
         } else if (naturalSize == 2) {
-            *((long *)promoted) = *((short *)pointerToValue);
+            promoted = *((short *)pointerToValue);
         } else if (naturalSize == 4) {
-            *((long *)promoted) = *((int *)pointerToValue);
+            promoted = *((int32_t *)pointerToValue);
         }
 
-        byteCopy(promoted, _argumentFrame + _argumentOffsets[index], promotedSize);
+        byteCopy(&promoted, _argumentFrame + _argumentOffsets[index], promotedSize);
     } else {
         [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=" NSUIntegerFormat " to promotedSize=" NSUIntegerFormat, naturalSize, promotedSize];
     }
