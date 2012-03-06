@@ -27,17 +27,6 @@
 		FE9C1E071125DFAD002DA20B /* SecTrustedApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9C1E051125DFAD002DA20B /* SecTrustedApplication.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE9C1C141125B8B7002DA20B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		508B1C39113E3519009D8909 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -303,7 +292,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
-				FE9C1C141125B8B7002DA20B /* PBXBuildRule */,
 			);
 			dependencies = (
 				508B1C5B113E3522009D8909 /* PBXTargetDependency */,

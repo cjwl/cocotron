@@ -6467,26 +6467,6 @@
 			);
 			script = "";
 		};
-		FE01A7E80C5D9B6900AEA51A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE01A7E90C5D9B6900AEA51A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
 		FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
@@ -12197,8 +12177,6 @@
 				FE01A7DB0C5D9B6900AEA51A /* Resources */,
 			);
 			buildRules = (
-				FE01A7E80C5D9B6900AEA51A /* PBXBuildRule */,
-				FE01A7E90C5D9B6900AEA51A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE01A7F30C5D9B9100AEA51A /* PBXTargetDependency */,
@@ -16397,7 +16375,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -16589,7 +16566,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_UNROLL_LOOPS = NO;
-				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;

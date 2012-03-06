@@ -59,17 +59,6 @@
 		FEDE52F61209C3AE003D3EF1 /* NSEntityDescription-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDE52F51209C3AE003D3EF1 /* NSEntityDescription-Private.h */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FED50C130D52BED300195B38 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FE39C6841203D5F800A80A71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -434,7 +423,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
-				FED50C130D52BED300195B38 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE39C6851203D5F800A80A71 /* PBXTargetDependency */,

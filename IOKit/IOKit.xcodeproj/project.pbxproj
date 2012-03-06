@@ -19,17 +19,6 @@
 		FEF5A8E411E503DB009B0041 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FEAEFAF711E41B6E00CA0912 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		FE43032811E2675700EBDD56 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -214,7 +203,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
-				FEAEFAF711E41B6E00CA0912 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);

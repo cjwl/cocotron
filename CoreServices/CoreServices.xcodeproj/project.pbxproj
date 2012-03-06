@@ -18,14 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
-		FE7433A310A89EB5004CDF00 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
 		FE8492ED119A5EA000E252CC /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
@@ -309,7 +301,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
-				FE7433A310A89EB5004CDF00 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE7433B510A89F63004CDF00 /* PBXTargetDependency */,
