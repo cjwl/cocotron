@@ -78,81 +78,82 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     return [d1 compare:d2];
 }
 
--initWithName:(NSString *)name data:(NSData *)data {
-        NSMutableArray  *transitions, *types;
-        NSArray         *sortedTransitions;
-        const struct    tzhead *tzHeader;
-        const char      *tzData;
-        const char      *typeIndices;
-        //unused
-        //int             numberOfGMTFlags, numberOfStandardFlags, numberOfAbbreviationCharacters;
-        int             numberOfTransitionTimes, numberOfLocalTimes;
-        int             i;        
+
+-initWithName:(NSString *)name data:(NSData *)data
+{
+    NSMutableArray *transitions, *types;
+    NSArray *sortedTransitions;
+    const struct tzhead *tzHeader;
+    const char *tzData;
+    const char *typeIndices;
+    //unused
+    //int numberOfGMTFlags, numberOfStandardFlags, numberOfAbbreviationCharacters;
+    int numberOfTransitionTimes, numberOfLocalTimes;
+    int i;
+
     #pragma pack(1)
-        const struct tzType {
-            unsigned int offset;
-            unsigned char isDST;
-            unsigned char abbrevIndex;
-        } *tzTypes;
+    const struct tzType {
+        unsigned int offset;
+        unsigned char isDST;
+        unsigned char abbrevIndex;
+    } *tzTypes;
     #pragma pack()
-    
-        const char *tzTypesBytes;
-        const char *abbreviations;
 
-        if (data == nil) {
-            NSString    *zonePath = [NSTimeZone_posix _zoneinfoPath];
+    const char *tzTypesBytes;
+    const char *abbreviations;
 
-            zonePath = [zonePath stringByAppendingPathComponent:name];
+    if (data == nil) {
+        NSString *zonePath = [NSTimeZone_posix _zoneinfoPath];
+        zonePath = [zonePath stringByAppendingPathComponent:name];
+        data = [NSData dataWithContentsOfFile:zonePath];
+    }
+    if (data == nil) {
+        [self release];
+        return nil;
+    }
 
-            data = [NSData dataWithContentsOfFile:zonePath];
+    transitions = [NSMutableArray array];
+    sortedTransitions = [NSArray array];
+    types = [NSMutableArray array];
+
+    tzHeader = (struct tzhead *)[data bytes];
+    tzData = (const char *)tzHeader + sizeof(struct tzhead);
+
+    //unused
+    //numberOfGMTFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisgmtcnt));
+    //numberOfStandardFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisstdcnt));
+    //numberOfAbbreviationCharacters = NSSwapBigIntToHost(*((int *)tzHeader->tzh_charcnt));
+    numberOfTransitionTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_timecnt));
+    numberOfLocalTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_typecnt));
+
+    typeIndices = tzData + (numberOfTransitionTimes * 4);
+    for (i = 0; i < numberOfTransitionTimes; ++i) {
+        NSDate *d1 = [NSDate dateWithTimeIntervalSince1970:NSSwapBigIntToHost(((int *)tzData)[i])];
+        [transitions addObject:[NSTimeZoneTransition timeZoneTransitionWithTransitionDate:d1
+                typeIndex:typeIndices[i]]];
+    }
+
+    //sort date array
+    sortedTransitions = [transitions sortedArrayUsingFunction:sortTransitions context:NULL];
+
+    // this is a bit more awkward, but i want to support non-3 character abbreviations theoretically.
+    tzTypesBytes = (tzData + (numberOfTransitionTimes * 5));
+    abbreviations = tzTypesBytes + numberOfLocalTimes * sizeof(struct tzType);
+    for (i = 0; i < numberOfLocalTimes; ++i) {
+        tzTypes = (struct tzType *)tzTypesBytes;
+        NSString *abb = [NSString stringWithCString:abbreviations + tzTypes->abbrevIndex];
+        if (name == nil) {
+            name = abb;
         }
-        if (data == nil) {
-            [self release];
-            return nil;
-        }
+        [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
+                isDaylightSavingTime:tzTypes->isDST
+                abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
+        tzTypesBytes += sizeof(struct tzType);
+    }
 
-        transitions = [NSMutableArray array];
-        sortedTransitions = [NSArray array];
-        types = [NSMutableArray array];
-
-        tzHeader= (struct tzhead *)[data bytes];
-        tzData=(const char *)tzHeader+sizeof(struct tzhead);
-
-        //unused
-        //numberOfGMTFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisgmtcnt));
-        //numberOfStandardFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisstdcnt));
-        //numberOfAbbreviationCharacters = NSSwapBigIntToHost(*((int *)tzHeader->tzh_charcnt));
-        numberOfTransitionTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_timecnt));
-        numberOfLocalTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_typecnt));
-
-        typeIndices = tzData+(numberOfTransitionTimes * 4);
-        for (i = 0; i < numberOfTransitionTimes; ++i) {
-            NSDate *d1 = [NSDate dateWithTimeIntervalSince1970:NSSwapBigIntToHost(((int *)tzData)[i])];
-            [transitions addObject:[NSTimeZoneTransition
-                timeZoneTransitionWithTransitionDate:d1
-                                           typeIndex:typeIndices[i]]];
-        }
-
-        //sort date array
-        sortedTransitions = [transitions sortedArrayUsingFunction:sortTransitions context:NULL];
-
-        // this is a bit more awkward, but i want to support non-3 character abbreviations theoretically.
-        tzTypesBytes = (tzData+(numberOfTransitionTimes * 5));
-        abbreviations = tzTypesBytes + numberOfLocalTimes * sizeof(struct tzType);
-        for (i = 0; i < numberOfLocalTimes; ++i) {
-         tzTypes=(struct tzType *)tzTypesBytes;
-            NSString *abb = [NSString stringWithCString:abbreviations+tzTypes->abbrevIndex];
-            if(name == nil) {
-                name = abb;
-            }
-            [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
-                                                                        isDaylightSavingTime:tzTypes->isDST
-                                                                                abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
-            tzTypesBytes += sizeof(struct tzType);
-        }
-
-        return [self initWithName:name data:data transitions:sortedTransitions types:types];
+    return [self initWithName:name data:data transitions:sortedTransitions types:types];
 }
+
 
 -initWithName:(NSString *)name data:(NSData *)data transitions:(NSArray *)transitions types:(NSArray *)types {
     _name = [name retain];
@@ -180,33 +181,33 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     return _data;
 }
 
-+(NSTimeZone *)systemTimeZone {    
++(NSTimeZone *)systemTimeZone {
     NSTimeZone          *systemTimeZone = nil;
     NSString            *timeZoneName;
     NSInteger           secondsFromGMT;
     NSDictionary        *dictionary;
-    
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
         NSError     *error;
         NSString    *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
-        
+
         if(path != nil) {
             //localtime is a symlink
             timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
-            systemTimeZone = [self timeZoneWithName:timeZoneName];        
+            systemTimeZone = [self timeZoneWithName:timeZoneName];
         }
         else {
             //localtime is a file
             systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
         }
     }
-    
+
     if (systemTimeZone == nil) {
         //try to use TZ environment variable
         const char  *envTimeZoneName = getenv("TZ");
-        
+
         if (envTimeZoneName != NULL) {
-            systemTimeZone = [self timeZoneWithName:[NSString stringWithCString:envTimeZoneName]];        
+            systemTimeZone = [self timeZoneWithName:[NSString stringWithCString:envTimeZoneName]];
         }
     }
 
@@ -232,7 +233,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         }
 #endif
     }
-    
+
     return systemTimeZone;
 }
 
@@ -261,7 +262,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             else
                 return [_timeZoneTypes objectAtIndex:[previousTransition typeIndex]];
         }
-        
+
         return [_timeZoneTypes lastObject];
     }
     //don't use date description in exception text, because of recursion

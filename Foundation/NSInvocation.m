@@ -201,27 +201,26 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
    byteCopy(pointerToValue,_returnValue,_returnSize);
 }
 
--(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index {
-   NSUInteger naturalSize=_argumentSizes[index];
-   NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
-   if(naturalSize==promotedSize)
-    byteCopy(_argumentFrame+_argumentOffsets[index],pointerToValue,naturalSize);
-   else if(promotedSize==4){
-    uint8_t promoted[promotedSize];
+-(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index
+{
+    NSUInteger naturalSize = _argumentSizes[index];
+    NSUInteger promotedSize = ((naturalSize + sizeof(long) - 1) / sizeof(long)) * sizeof(long);
 
-    byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
-    if(naturalSize==1)
-     *((char *)pointerToValue)=*((int *)promoted);
-    else if(naturalSize==2)
-     *((short *)pointerToValue)=*((int *)promoted);
+    if (naturalSize == promotedSize) {
+        byteCopy(_argumentFrame + _argumentOffsets[index], pointerToValue, naturalSize);
+    } else if (promotedSize == 4) {
+        uint8_t promoted[promotedSize];
 
-   }
-   else
-   {
-    [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
-   }
-
+        byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
+        if (naturalSize == 1) {
+            *((char *)pointerToValue) = *((int *)promoted);
+        } else if (naturalSize == 2) {
+            *((short *)pointerToValue) = *((int *)promoted);
+        }
+    } else {
+        [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d", naturalSize, promotedSize];
+    }
 }
 
 
