@@ -479,7 +479,8 @@ static inline unsigned uctoi(unichar *c, NSUInteger *len)
     char num[n + 1];
 
     while (i < n && isNumChar(c[i])) {
-        num[i] = c[i++];
+        num[i] = c[i];
+        i++;
     }
     num[i] = '\0';
     *len = i;
