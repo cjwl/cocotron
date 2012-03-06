@@ -12282,6 +12282,9 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 6E2801B909746B8900EC542B /* Build configuration list for PBXProject "Foundation" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -16168,7 +16171,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/arm;
 			};
@@ -16205,7 +16207,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/arm;
 			};
@@ -16242,7 +16243,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/ppc;
 			};
@@ -16277,7 +16277,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/ppc;
 			};
@@ -16319,7 +16318,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Solaris/sparc;
 				VALID_ARCHS = sparc;
@@ -16358,7 +16356,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/i386;
 			};
@@ -16401,7 +16398,6 @@
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -16437,7 +16433,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Linux/i386;
 			};
@@ -16472,7 +16467,6 @@
 					"-ldl",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Solaris/sparc;
 				VALID_ARCHS = sparc;
@@ -16506,7 +16500,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -16535,7 +16528,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/ppc;
 			};
@@ -16600,7 +16592,6 @@
 					"-Wl,--image-base=0x10000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -16637,7 +16628,6 @@
 					"-lm",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -16672,7 +16662,6 @@
 					"-lm",
 					"-lpthread",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -16706,7 +16695,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/x86_64;
 			};
@@ -16739,7 +16727,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/x86_64;
 			};
@@ -16773,7 +16760,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -16803,7 +16789,6 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = build/Darwin/ppc;
 			};
