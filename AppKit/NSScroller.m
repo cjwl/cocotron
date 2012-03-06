@@ -136,6 +136,21 @@ static NSAppleScrollBarVariant appleScrollBarVariant(NSScroller *self){
    [self setNeedsDisplay:YES];
 }
 
+-(double)doubleValue {
+    return _floatValue;
+}
+
+-(void)setDoubleValue:(double)zeroToOneValue {
+   _floatValue=zeroToOneValue;
+   if(_floatValue<=0)
+        _floatValue=0;
+        
+   if(_floatValue>1)
+        _floatValue=1;
+        
+   [self setNeedsDisplay:YES];
+}
+
 -(void)setArrowsPosition:(NSScrollArrowPosition)position {
    _arrowsPosition=position;
 }
