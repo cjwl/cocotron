@@ -370,16 +370,17 @@ static NSMapTable *pathToObject=NULL;
 + (void)initialize
 {
     if (self == [NSBundle class]) {
-        char *module = getenv("CFProcessPath");
+        const char *module = getenv("CFProcessPath");
         if (!module) {
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
             uint32_t bufSize = MAXPATHLEN;
-            module = alloca(bufSize + 1);
-            if (_NSGetExecutablePath(module, &bufSize) < 0) {
-                module = alloca(bufSize + 1);
-                _NSGetExecutablePath(module, &bufSize);
+            char *executablePath = alloca(bufSize + 1);
+            if (_NSGetExecutablePath(executablePath, &bufSize) < 0) {
+                executablePath = alloca(bufSize + 1);
+                _NSGetExecutablePath(executablePath, &bufSize);
             }
-            module[bufSize] = 0;
+            executablePath[bufSize] = 0;
+            module=executablePath;
 #else
             module = objc_mainImageName();
 #endif
