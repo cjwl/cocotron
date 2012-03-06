@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -8903,8 +8903,11 @@
 /* Begin PBXProject section */
 		6E2B57700976075500DA0954 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -11686,7 +11689,6 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 			};
 			name = Debug;
@@ -11744,7 +11746,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Linux/i386;
@@ -11797,7 +11798,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Linux/i386;
 			};
@@ -11854,7 +11854,6 @@
 					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Darwin/i386;
@@ -11911,7 +11910,6 @@
 					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -11965,7 +11963,6 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 			};
 			name = Release;
@@ -12016,7 +12013,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = build/FreeBSD/i386;
@@ -12067,7 +12063,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -12106,7 +12101,6 @@
 					"-framework",
 					ApplicationServices,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/MacOS/i386;
@@ -12161,7 +12155,6 @@
 					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/MacOS/i386;
 			};
