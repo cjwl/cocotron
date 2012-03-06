@@ -471,18 +471,21 @@ static inline BOOL isNumChar(unichar c)
    return ('0' <= c && c <= '9');
 }
 
+
 static inline unsigned uctoi(unichar *c, NSUInteger *len)
 {
-   NSUInteger  i = 0;
-   NSUInteger  n = *len;
-   char      num[n+1];
+    NSUInteger i = 0;
+    NSUInteger n = *len;
+    char num[n + 1];
 
-   while (i < n && isNumChar(c[i]))
-      num[i] = c[i++];
-   num[i] = '\0';
-   *len = i;
-   return atoi(num);
+    while (i < n && isNumChar(c[i])) {
+        num[i] = c[i++];
+    }
+    num[i] = '\0';
+    *len = i;
+    return atoi(num);
 }
+
 
 static NSComparisonResult compareWithOptions(NSString *self,NSString *other,NSStringCompareOptions options,NSRange range){
    NSUInteger i,j,il,jl;
