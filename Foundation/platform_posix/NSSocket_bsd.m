@@ -95,11 +95,14 @@ static inline void byteZero(void *vsrc,size_t size){
 - initConnectedToSocket: (NSSocket **)otherX
 {
     int pipes[2];
-    pipe(pipes);
-
-    *otherX = [[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
-
-    return [self initWithDescriptor:pipes[1]];
+    if (pipe(pipes)) {
+        *otherX = [[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
+        return [self initWithDescriptor:pipes[1]];
+    } else {
+        NSLog(@"NSSocket: could not create pipe: (%d) %s", errno, strerror(errno));
+        [self release];
+        return nil;
+    }
 }
 
 

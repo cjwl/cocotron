@@ -124,11 +124,14 @@ void childSignalHandler(int sig) {
             close(i);
         }
 
-        chdir([currentDirectoryPath fileSystemRepresentation]);
-
-        execve(path, (char**)args, NSPlatform_environ());
-        [NSException raise:NSInvalidArgumentException
-                format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
+        if (chdir([currentDirectoryPath fileSystemRepresentation]) == 0) {
+            execve(path, (char**)args, NSPlatform_environ());
+            [NSException raise:NSInvalidArgumentException
+                    format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
+        } else {
+            [NSException raise: NSGenericException format: @"chdir(%s) failed: (%d) %s",
+                    [currentDirectoryPath fileSystemRepresentation], errno, strerror(errno)];
+        }
     } else if (_processID != -1) {
         isRunning = YES;
 
