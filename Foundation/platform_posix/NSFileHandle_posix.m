@@ -315,8 +315,10 @@ CONFORMING TO
     } while (total < length);
 }
 
-- (void)truncateFileAtOffset:(uint64_t)offset {
-   ftruncate(_fileDescriptor,offset);
+
+- (void)truncateFileAtOffset:(uint64_t)offset
+{
+    ftruncate(_fileDescriptor, offset);
 }
 
 
