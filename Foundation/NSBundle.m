@@ -224,9 +224,15 @@ NSModuleHandle NSLoadModule(const char *path)
         char buf[MAXPATHLEN];
 
         if (getcwd(buf, MAXPATHLEN) != NULL) {
-            strncat(buf, "/", MAXPATHLEN);
-            strncat(buf, path, MAXPATHLEN);
-            path = buf;
+            if (strlen(buf) < MAXPATHLEN - (1 + strlen(path))) {
+                strncat(buf, "/", 1);
+                strncat(buf, path, MAXPATHLEN - (1 + strlen(buf)));
+                path = buf;
+            } else {
+                NSCLog("NSLoadModule: resulting path '%s/%s' exceeds MAXPATHLEN (%d)",
+                        buf, path, MAXPATHLEN);
+                return NULL;
+            }
         } else {
             NSCLog("NSLoadModule: cannot find cwd and relative path specified");
             return NULL;
