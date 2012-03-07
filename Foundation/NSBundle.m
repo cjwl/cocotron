@@ -35,7 +35,7 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 #include <windows.h>
 #else
 #include <dlfcn.h>
-#import <sys/param.h>
+#include <sys/param.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
