@@ -113,9 +113,9 @@ static inline bool CGRectIsNull(CGRect rect) {
 	return CGRectEqualToRect(rect, CGRectNull);
 }
 
-extern CGRect CGRectUnion(CGRect a, CGRect b);
-extern CGRect CGRectIntersection(CGRect a, CGRect b);
-extern CGRect CGRectIntegral(CGRect rect);
+COREGRAPHICS_EXPORT CGRect CGRectUnion(CGRect a, CGRect b);
+COREGRAPHICS_EXPORT CGRect CGRectIntersection(CGRect a, CGRect b);
+COREGRAPHICS_EXPORT CGRect CGRectIntegral(CGRect rect);
 
 static inline bool CGRectContainsRect(CGRect a, CGRect b)
 {
