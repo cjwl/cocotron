@@ -13,6 +13,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSMenuView.h>
 #import <AppKit/NSToolbarView.h>
+#import <AppKit/NSMainMenuView.h>
+
+@interface NSWindow(private)
+-(BOOL)hasMainMenu;
++(BOOL)hasMainMenuForStyleMask:(NSUInteger)styleMask;
+@end
 
 @implementation NSThemeFrame
 
@@ -78,6 +84,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    // subtracts menu height but not toolbar height
    NSRect contentFrame=[[[self window] class] contentRectForFrameRect:[self bounds] styleMask:[[self window] styleMask]];
+
+   // If the class thinks there is a menu but the instance does not want an instance
+   // we need to add the menu height back to the content view as contentRectForFrameRect subtracts it
+   
+   if([[[self window] class] hasMainMenuForStyleMask:[[self window] styleMask]]) {
+        if(![[self window] hasMainMenu])
+            contentFrame.size.height+=[NSMainMenuView menuHeight];
+   }
 
    NSRect menuFrame=(menuView!=nil)?[menuView frame]:NSZeroRect;
    NSRect toolbarFrame=(toolbarView!=nil)?[toolbarView frame]:NSZeroRect;
