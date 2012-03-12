@@ -148,6 +148,8 @@ void childSignalHandler(int sig) {
     
     cenv[[env count]] = NULL;
     
+    const char *pwd = [currentDirectoryPath fileSystemRepresentation];
+    
     _processID = fork(); 
     if (_processID == 0) {  // child process               
         if ([standardInput isKindOfClass:[NSFileHandle class]] || [standardInput isKindOfClass:[NSPipe class]]) {
@@ -196,7 +198,7 @@ void childSignalHandler(int sig) {
             signal(i, SIG_DFL);
         }
         
-        chdir([currentDirectoryPath fileSystemRepresentation]);
+        chdir(pwd);
                
         execve(path, (char**)args, (char**)cenv);
         exit(-1);
