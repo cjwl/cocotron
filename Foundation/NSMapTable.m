@@ -420,6 +420,10 @@ NSString *NSStringFromMapTable(NSMapTable *table){
    return string;
 }
 
++mapTableWithWeakToWeakObjects {
+    return [NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSNonRetainedObjectMapValueCallBacks,0) autorelease];
+}
+
 +mapTableWithWeakToStrongObjects {
    return [NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0) autorelease];
 }
