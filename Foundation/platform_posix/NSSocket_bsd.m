@@ -228,6 +228,10 @@ static inline void byteZero(void *vsrc,size_t size){
    return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];
 }
 
+- (CFSSLHandler*)sslHandler {
+    return nil;
+}
+
 @end
 
 
