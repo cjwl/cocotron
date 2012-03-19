@@ -79,7 +79,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if(sharedInstance)
       {
          [self release];
-         self=[NSUserDefaultsController sharedUserDefaultsController];
+         // Be sure to retain the shared object - the caller must be able to call 
+         // release on it when done
+         self=[[NSUserDefaultsController sharedUserDefaultsController] retain];
       }
    }
    return self;
