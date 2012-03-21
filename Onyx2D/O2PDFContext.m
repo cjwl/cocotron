@@ -619,6 +619,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 				unsigned        position=[self length];
 				[entry setPosition:position];
 				
+				[self appendFormat:@"%d %d obj\n",[entry number],[entry generation]];
 				[object encodeWithPDFContext:self];
 				[self appendFormat:@"endobj\n"];
 				
@@ -643,9 +644,10 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    [_page release];
    _page=nil;
    
-   // Encode any indirect object now, so they can be released - don't encode kids or pages now
-   // else subsequent pages are not saved, because the 'Kids' array has already been encoded!
-	[self internIndirectObjectsExcluding:[NSArray arrayWithObjects:_kids,_pages,nil]]; 
+   // Encode any indirect object now, so they can be released - don't encode the catalog, kids or pages now
+   // else subsequent pages are not saved, because the 'Kids' array has already been encoded and we get
+   // some invalid PDF
+	[self internIndirectObjectsExcluding:[NSArray arrayWithObjects:_kids, _pages, _catalog, nil]]; 
 }
 
 -(void)close {
