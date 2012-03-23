@@ -27,7 +27,7 @@ BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
 
 BUILD=/tmp/build_zlib
 
-$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://zlib.net/zlib-1.2.5.tar.bz2
+$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libpng/zlib/1.2.5/zlib-1.2.5.tar.bz2
 
 mkdir -p $BUILD
 cd $BUILD
