@@ -181,8 +181,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setAccessoryView:(NSView *)value {
    value=[value retain];
+   
+   [_accessoryView removeFromSuperview];
    [_accessoryView release];
    _accessoryView=value;
+   
+   // We must add it as a subview here such that a makeFirstResponder: immediately after
+   // works properly by setting up the field editor
+   [[_window contentView] addSubview:_accessoryView];
+
    _needsLayout=YES;
 }
 
@@ -382,7 +389,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    frame.origin.x=LEFT_MARGIN+iconSize.width+ICON_MAIN_GAP;
    frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-messageInformativeGap-informativeSize.height-informativeSuppressionGap-supressionSize.height-suppressionAccessoryGap-frame.size.height;
    [_accessoryView setFrame:frame];
-   [[_window contentView] addSubview:_accessoryView];
   }
 
   NSPoint origin={panelSize.width-RIGHT_MARGIN,BOTTOM_MARGIN};
