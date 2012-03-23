@@ -1493,12 +1493,14 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)makeKeyWindow {
-   [[self platformWindow] makeKey];
-   
-   if(!_hasBeenOnScreen){
-    _hasBeenOnScreen=YES;
-   [self makeFirstResponder:[self initialFirstResponder]];
-}
+    [[self platformWindow] makeKey];
+    
+    if(!_hasBeenOnScreen){
+        _hasBeenOnScreen=YES;
+        if([self initialFirstResponder]!=nil) {
+            [self makeFirstResponder:[self initialFirstResponder]];
+        }
+    }
 }
 
 -(void)makeMainWindow {
