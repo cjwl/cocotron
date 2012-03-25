@@ -1154,6 +1154,7 @@ static HWND findWindowForScrollWheel(POINT point){
     _lastPosition=msg.lParam;
    }
 
+
    switch(msg.message){
 
      case WM_KEYDOWN:
@@ -1233,21 +1234,34 @@ static HWND findWindowForScrollWheel(POINT point){
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
 
-    BOOL childWindow=(msg.hwnd!=[platformWindow windowHandle]);
+    BOOL childWindow=NO;
     
-    if(childWindow){
-     RECT child={0},parent={0};
-
-// There is no way to get a child's frame inside the parent, you have to get
-// them both in screen coordinates and do a delta
-// GetClientRect always returns 0,0 for top,left which makes it useless     
-     GetWindowRect(msg.hwnd,&child);
-     GetWindowRect([platformWindow windowHandle],&parent);
-
-     location.x+=child.left-parent.left;
-     location.y+=child.top-parent.top;
+    if(msg.message==WM_MOUSEWHEEL){
+            // WM_MOUSEWHEEL coordinates are on screen coordinates, others are in window
+            RECT frame={0};
+            
+            GetWindowRect([platformWindow windowHandle],&frame);
+            
+            location.x=location.x-frame.left;
+            location.y=location.y-frame.top;
     }
-     
+    else {
+        childWindow=(msg.hwnd!=[platformWindow windowHandle]);
+        
+        if(childWindow){
+            RECT child={0},parent={0};
+            
+            // There is no way to get a child's frame inside the parent, you have to get
+            // them both in screen coordinates and do a delta
+            // GetClientRect always returns 0,0 for top,left which makes it useless     
+            GetWindowRect(msg.hwnd,&child);
+            GetWindowRect([platformWindow windowHandle],&parent);
+            
+            location.x+=child.left-parent.left;
+            location.y+=child.top-parent.top;
+        }
+    }
+    
     [platformWindow adjustEventLocation:&location childWindow:childWindow];
     
     modifierFlags=[self currentModifierFlagsWithKeyboardState:keyboardState];

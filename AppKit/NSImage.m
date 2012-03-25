@@ -607,7 +607,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
      
      [self lockFocusOnRepresentation:image];
-     [check draw];
+     // we should probably use -draw here but not all reps implement it, or not?
+     [check drawInRect:NSMakeRect(0,0,size.width,size.height)];
      [self unlockFocus];
      
      [bitmaps addObject:image];
