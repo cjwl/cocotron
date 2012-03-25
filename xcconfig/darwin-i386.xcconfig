@@ -1,0 +1,5 @@
+#include "darwin"
+
+GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+
+ARCHS = i386

@@ -1,0 +1,4 @@
+#include "linux"
+
+GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.default
+
