@@ -655,8 +655,30 @@ CHANGE_DECLARATION(SEL)
 	[key release];
 }
 
--(void)KVO_notifying_change_addKeyObject:(id)object {
+-(void)KVO_notifying_change_insertKey:(NSArray*)objects atIndexes:(NSIndexSet*)indexes {
 	const char* origName = sel_getName(_cmd);
+    
+	size_t selLen=strlen(origName);
+	char *sel=__builtin_alloca(selLen+1);
+	strcpy(sel, origName);
+	sel[selLen-1]='\0';
+	sel+=strlen("insert");
+	sel[strlen(sel)-strlen(":atIndexes:")+1]='\0';
+    
+	sel[0]=tolower(sel[0]);
+	NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
+    
+	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:key];
+	typedef id (*sender)(id obj, SEL selector, NSArray* value, NSIndexSet* indexes);
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
+	(void)*implementation(self, _cmd, objects, indexes);
+	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:key];
+	[key release];
+}
+
+-(void)KVO_notifying_change_addKeyObject:(id)object {
+    //This behavior is WRONG--reimplement for unordered relationships
+	/*const char* origName = sel_getName(_cmd);
 
 	size_t selLen=strlen(origName);
 	char *sel=__builtin_alloca(selLen+1);
@@ -665,12 +687,23 @@ CHANGE_DECLARATION(SEL)
 	sel+=strlen("add");
 	sel[strlen(sel)-strlen("Object:")+1]='\0';
 
-   char *countSelName=__builtin_alloca(strlen(sel)+strlen("countOf")+1);
-   strcpy(countSelName, "countOf");
-   strcat(countSelName, sel);
-
-   NSUInteger idx=(NSUInteger)[self performSelector:sel_getUid(countSelName)];
-
+    char *countSelName=__builtin_alloca(strlen(sel)+strlen("countOf")+1);
+    strcpy(countSelName, "countOf");
+    strcat(countSelName, sel);
+    
+    NSLog(@"%s",countSelName);
+    
+    NSUInteger idx=0;
+    if ([self respondsToSelector:sel_getUid(countSelName)])
+    {
+        idx=(NSUInteger)[self performSelector:sel_getUid(countSelName)];
+    }
+    else if ([self respondsToSelector:sel_getUid(sel)])
+    {
+        id array=[self performSelector:sel_getUid(sel)];
+        idx=[array count];
+    }
+    
 	sel[0]=tolower(sel[0]);
 
 	NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
@@ -679,11 +712,12 @@ CHANGE_DECLARATION(SEL)
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
 	(void)*implementation(self, _cmd, object);
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
-	[key release];
+	[key release];*/
 }
 
 -(void)KVO_notifying_change_removeKeyObject:(id)object {
-	const char* origName = sel_getName(_cmd);
+    //This behavior is WRONG--reimplement for unordered relationships
+	/*const char* origName = sel_getName(_cmd);
 
 	size_t selLen=strlen(origName);
 	char *sel=__builtin_alloca(selLen+1);
@@ -706,7 +740,7 @@ CHANGE_DECLARATION(SEL)
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
 	(void)*implementation(self, _cmd, object);
 	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
-	[key release];
+	[key release];*/
 }
 
 -(void)KVO_notifying_change_removeObjectFromKeyAtIndex:(int)index {
@@ -725,6 +759,25 @@ CHANGE_DECLARATION(SEL)
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
 	(void)*implementation(self, _cmd, index);
 	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	[key release];
+}
+
+-(void)KVO_notifying_change_removeKeyAtIndexes:(NSIndexSet*)indexes {
+	const char* origName = sel_getName(_cmd);
+	size_t selLen=strlen(origName);
+	char *sel=__builtin_alloca(selLen+1);
+	strcpy(sel, origName);
+	sel[selLen-1]='\0';
+	sel+=strlen("remove");
+	sel[strlen(sel)-strlen("AtIndexes:")+1]='\0';
+    
+	sel[0]=tolower(sel[0]);
+	NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
+	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:key];
+	typedef id (*sender)(id obj, SEL selector, NSIndexSet* indexes);
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
+	(void)*implementation(self, _cmd, indexes);
+	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:key];
 	[key release];
 }
 
@@ -986,11 +1039,17 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
                     kvoSelector = @selector(KVO_notifying_change_removeObjectFromKeyAtIndex:);
                 } else if (numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"replaceObjectIn" endingWith:@"AtIndex:withObject:"]) {
                     kvoSelector = @selector(KVO_notifying_change_replaceObjectInKeyAtIndex:withObject:);
-                } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"remove" endingWith:@"Object:"]) {
+                } else if (numberOfArguments == 4 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"insert" endingWith:@":atIndexes:"]) {
+                    kvoSelector = @selector(KVO_notifying_change_insertKey:atIndexes:);
+                } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"remove" endingWith:@"AtIndexes:"]) {
+                    kvoSelector = @selector(KVO_notifying_change_removeKeyAtIndexes:);
+                }
+                //Re-add once behavior has been fixed
+                /* else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"remove" endingWith:@"Object:"]) {
                     kvoSelector = @selector(KVO_notifying_change_removeKeyObject:);
                 } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"add" endingWith:@"Object:"]) {
                     kvoSelector = @selector(KVO_notifying_change_addKeyObject:);
-                }
+                }*/
             }
 
             // these are swizzled so e.g. subclasses of NSMutableDictionary get change notifications in setObject:forKey:
