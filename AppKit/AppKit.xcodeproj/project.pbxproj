@@ -2107,6 +2107,14 @@
 		FE1708061260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FE1707FC1260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf */; };
 		FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
+		FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */; };
+		FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65071508165000C24624 /* darwin-ppc-framework.xcconfig */; };
+		FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65081508165000C24624 /* darwin-x86_64-framework.xcconfig */; };
+		FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */; };
+		FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650A1508165000C24624 /* linux-arm-framework.xcconfig */; };
+		FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */; };
+		FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650C1508165000C24624 /* linux-ppc-framework.xcconfig */; };
+		FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650D1508165100C24624 /* solaris-sparc-framework.xcconfig */; };
 		FE20C20E11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
 		FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
 		FE20C21011892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
@@ -4956,6 +4964,14 @@
 		FE1E54ED1430303F000D60A1 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle.h; sourceTree = "<group>"; };
 		FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle.m; sourceTree = "<group>"; };
+		FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F65071508165000C24624 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F65081508165000C24624 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F650A1508165000C24624 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F650C1508165000C24624 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FE1F650D1508165100C24624 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FE20C20711892436006F01BA /* CAAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAAnimation.m; path = ../QuartzCore/CAAnimation.m; sourceTree = SOURCE_ROOT; };
 		FE20C20811892436006F01BA /* CIAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIAffineTransform.m; path = ../QuartzCore/CIAffineTransform.m; sourceTree = SOURCE_ROOT; };
 		FE20C20911892436006F01BA /* CIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIColor.m; path = ../QuartzCore/CIColor.m; sourceTree = SOURCE_ROOT; };
@@ -6347,20 +6363,28 @@
 		FE1E54DE1430303F000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
-				FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */,
+				FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */,
 				FE1E54DF1430303F000D60A1 /* darwin-i386.xcconfig */,
+				FE1F65071508165000C24624 /* darwin-ppc-framework.xcconfig */,
 				FE1E54E01430303F000D60A1 /* darwin-ppc.xcconfig */,
+				FE1F65081508165000C24624 /* darwin-x86_64-framework.xcconfig */,
 				FE1E54E11430303F000D60A1 /* darwin-x86_64.xcconfig */,
 				FE1E54E21430303F000D60A1 /* darwin.xcconfig */,
+				FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */,
 				FE1E54E31430303F000D60A1 /* freebsd-i386.xcconfig */,
 				FE1E54E41430303F000D60A1 /* freebsd.xcconfig */,
+				FE1F650A1508165000C24624 /* linux-arm-framework.xcconfig */,
 				FE1E54E51430303F000D60A1 /* linux-arm.xcconfig */,
+				FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */,
 				FE1E54E61430303F000D60A1 /* linux-i386.xcconfig */,
+				FE1F650C1508165000C24624 /* linux-ppc-framework.xcconfig */,
 				FE1E54E71430303F000D60A1 /* linux-ppc.xcconfig */,
 				FE1E54E81430303F000D60A1 /* linux.xcconfig */,
 				FE1E54E91430303F000D60A1 /* platform.xcconfig */,
+				FE1F650D1508165100C24624 /* solaris-sparc-framework.xcconfig */,
 				FE1E54EA1430303F000D60A1 /* solaris-sparc.xcconfig */,
 				FE1E54EB1430303F000D60A1 /* solaris.xcconfig */,
+				FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */,
 				FE1E54EC1430303F000D60A1 /* windows-i386.xcconfig */,
 				FE1E54ED1430303F000D60A1 /* windows.xcconfig */,
 			);
@@ -9306,6 +9330,14 @@
 				6311B18114C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
 				6311B19514C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
 				6311B19D14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
+				FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */,
+				FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */,
+				FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */,
+				FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */,
+				FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */,
+				FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */,
+				FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */,
+				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11647,6 +11679,7 @@
 		6E2B57760976075500DA0954 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 			};
 			name = Release;
 		};
@@ -11696,6 +11729,7 @@
 		7E891F4E0D4967B6008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 			};
 			name = Debug;
 		};
@@ -11819,7 +11853,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					/usr/X11/include/fontconfig,
 					/usr/X11/include/freetype2,
@@ -11876,6 +11910,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Darwin/i386/include,
 					/Developer/Cocotron/1.0/Darwin/i386/include/X11,
