@@ -171,7 +171,8 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    BOOL      _isMovableByWindowBackground;
    BOOL      _allowsToolTipsWhenApplicationIsInactive;
    BOOL      _defaultButtonCellKeyEquivalentDisabled;
-   BOOL      _autorecalculatesKeyViewLoop;
+   BOOL      _autorecalculatesKeyViewLoop:4;
+   BOOL      _needsKeyViewLoop:4;
    BOOL      _hasBeenOnScreen;
    
    BOOL      _preservesContentDuringLiveResize;

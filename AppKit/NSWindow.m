@@ -73,6 +73,65 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)_setKeyWindow:(NSWindow *)window;
 @end
 
+@interface _NSKeyViewPosition : NSObject {
+    NSView *_view;
+    NSRect  _rect;
+}
+
++(NSArray *)sortedKeyViewPositionsWithView:(NSView *)view;
+
+-initWithView:(NSView *)view;
+
+-(NSView *)view;
+
+-(NSComparisonResult)compareKeyViewPosition:(_NSKeyViewPosition *)other;
+
+@end
+
+@implementation _NSKeyViewPosition
+
++(void)addKeyViewPositionsWithView:(NSView *)view toArray:(NSMutableArray *)array {
+    [array addObject:[[[_NSKeyViewPosition alloc] initWithView:view] autorelease]];
+    
+    for(NSView *child in [view subviews])
+        [self addKeyViewPositionsWithView:child toArray:array];
+}
+
++(NSArray *)sortedKeyViewPositionsWithView:(NSView *)view {
+    NSMutableArray *result=[NSMutableArray array];
+    
+    [self addKeyViewPositionsWithView:view toArray:result];
+    [result sortUsingSelector:@selector(compareKeyViewPosition:)];
+    
+    return result;
+}
+
+-initWithView:(NSView *)view {
+    _view=view;
+    _rect=[[_view superview] convertRect:[_view frame] toView:nil];
+    return self;
+}
+
+-(NSView *)view {
+    return _view;
+}
+
+-(NSComparisonResult)compareKeyViewPosition:(_NSKeyViewPosition *)other {
+
+    // Sort by larger Y (cartesian coordinates)
+    if(NSMaxY(_rect)<NSMaxY(other->_rect))
+        return NSOrderedDescending;
+    else {    
+        // Then sort by smaller X
+        if(NSMinX(_rect)<NSMinX(other->_rect))
+            return NSOrderedAscending;
+        else
+            return NSOrderedDescending;
+    }
+}
+
+@end
+
 @implementation NSWindow
 
 +(NSWindowDepth)defaultDepthLimit {
@@ -1497,8 +1556,19 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     
     if(!_hasBeenOnScreen){
         _hasBeenOnScreen=YES;
-        if([self initialFirstResponder]!=nil) {
+        
+        // Ref. http://www.cocoadev.com/index.pl?KeyViewLoopGuidelines
+        
+        // If there is an initial first responder there is a manual key view loop and we don't calculate one
+        if([self initialFirstResponder]!=nil)
             [self makeFirstResponder:[self initialFirstResponder]];
+        else {
+            // otherwise calculate one and set the first responder
+            
+            [self recalculateKeyViewLoop];
+            
+            if([self firstResponder]==self)
+                [self makeFirstResponder:[_contentView nextValidKeyView]];
         }
     }
 }
@@ -1572,6 +1642,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)selectKeyViewFollowingView:(NSView *)view {
    NSView *next=[view nextValidKeyView];
+      
    [self makeFirstResponder:next];
 }
 
@@ -1581,8 +1652,30 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self makeFirstResponder:next];
 }
 
+-(void)recalculateKeyViewLoopIfNeeded {
+    if(_needsKeyViewLoop){
+        _needsKeyViewLoop=NO;
+        
+        NSArray *sorted=[_NSKeyViewPosition sortedKeyViewPositionsWithView:_contentView];
+        NSUInteger i,count=[sorted count];
+        
+        for(i=0;i<count;i++){
+            _NSKeyViewPosition *position=[sorted objectAtIndex:i];
+            
+            if(i+1<count){
+                [[position view] setNextKeyView:[[sorted objectAtIndex:i+1] view]];
+            }
+            else {
+                [[position view] setNextKeyView:[[sorted objectAtIndex:0] view]];
+            }
+        }
+    }
+}
+
 -(void)recalculateKeyViewLoop {
-//   NSUnimplementedMethod();
+    _needsKeyViewLoop=YES;
+    // This should be deferred
+    [self recalculateKeyViewLoopIfNeeded];
 }
 
 -(NSSelectionDirection)keyViewSelectionDirection {
