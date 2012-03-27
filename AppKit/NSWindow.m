@@ -580,7 +580,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)autorecalculatesKeyViewLoop {
-    return NO;//_autorecalculatesKeyViewLoop;
+    return _autorecalculatesKeyViewLoop;
 }
 
 -(BOOL)canHide {
@@ -1136,7 +1136,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAutorecalculatesKeyViewLoop:(BOOL)value {
-   //_autorecalculatesKeyViewLoop=value;
+    _autorecalculatesKeyViewLoop=value;
 }
 
 -(void)setCanHide:(BOOL)value {
@@ -1653,8 +1653,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)recalculateKeyViewLoopIfNeeded {
-    if(_needsKeyViewLoop){
-        _needsKeyViewLoop=NO;
+    if(YES){
+      //  _needsKeyViewLoop=NO;
         
         NSArray *sorted=[_NSKeyViewPosition sortedKeyViewPositionsWithView:_contentView];
         NSUInteger i,count=[sorted count];
@@ -1673,7 +1673,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)recalculateKeyViewLoop {
-    _needsKeyViewLoop=YES;
+    //_needsKeyViewLoop=YES;
     // This should be deferred
     [self recalculateKeyViewLoopIfNeeded];
 }

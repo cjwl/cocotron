@@ -514,8 +514,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSView *)nextValidKeyView {
    NSView *result=[self nextKeyView];
 
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result nextKeyView];
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        
+        result=[result nextKeyView];
+    }
+    
 
    return result;
 }
@@ -525,12 +531,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSView *)previousValidKeyView {
-   NSView *result=[self previousKeyView];
-
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result previousKeyView];
-
-   return result;
+    NSView *result=[self previousKeyView];
+    
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        result=[result previousKeyView];
+    }
+    
+    return result;
 }
 
 -(NSMenu *)menu {
