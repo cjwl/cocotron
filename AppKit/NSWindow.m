@@ -580,7 +580,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)autorecalculatesKeyViewLoop {
-   return _autorecalculatesKeyViewLoop;
+    return NO;//_autorecalculatesKeyViewLoop;
 }
 
 -(BOOL)canHide {
@@ -1136,7 +1136,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAutorecalculatesKeyViewLoop:(BOOL)value {
-   _autorecalculatesKeyViewLoop=value;
+   //_autorecalculatesKeyViewLoop=value;
 }
 
 -(void)setCanHide:(BOOL)value {
