@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSLocale.h>
+#import <Foundation/NSAutoreleasePool.h>
 #include <limits.h>
 #include <stdlib.h>
 
@@ -579,36 +580,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     for(;_location<length;_location++) {
+        NSAutoreleasePool *pool = [NSAutoreleasePool new];
         unichar unicode=[_string characterAtIndex:_location];
         NSString    *subStr = [_string substringFromIndex:_location];
 
         if([subStr length] < [string length]) {
             _location = oldLocation;
+            [pool drain];
             return NO;
         }
         if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
             if (scanStarted) {
                 if (stringp != NULL)
-                    *stringp = [NSString stringWithCharacters:result length:resultLength];
-
+                    *stringp = [[NSString alloc] initWithCharacters:result length:resultLength];
+                
+                [pool drain];
+                [*stringp autorelease];
                 return YES;
             } else {
                 if ([_skipSet characterIsMember:unicode] == YES) {
+                    [pool drain];
                     continue;
                 }
                 else {
                     if (stringp != NULL)
-                        *stringp = [NSString stringWithCharacters:result length:resultLength];
+                        *stringp = [[NSString alloc] initWithCharacters:result length:resultLength];
                     
-                    return YES;                    
+                    [pool drain];
+                    [*stringp autorelease];
+                    return YES;
                 }
             }
         }
-        else if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
+        else if ([_skipSet characterIsMember:unicode] && scanStarted == NO) {
+            [pool drain];
             continue;
-        else {
+        } else {
             scanStarted = YES;
             result[resultLength++] = unicode;
+            [pool drain];
         }
     }
 
