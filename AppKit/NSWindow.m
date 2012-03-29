@@ -1731,7 +1731,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    if(flag){
     // NSApplication does a _displayAllWindowsIfNeeded before every event, but there are some things which wont generate
     // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this
-    [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+    [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode, nil]];
 }
 }
 
@@ -2967,7 +2967,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return cursorIsSet;
 }
 
--(NSUndoManager *)undoManager {
+-(NSUndoManager *)undoManager {    
     if ([_delegate respondsToSelector:@selector(windowWillReturnUndoManager:)])
         return [_delegate windowWillReturnUndoManager:self];
     
@@ -2980,7 +2980,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     //  If the delegate does not implement this method, the NSWindow creates an NSUndoManager for the window and all its views. -- seems like some duplication vs. NSDocument, but oh well..
     if (_undoManager == nil){
         _undoManager = [[NSUndoManager alloc] init];
-        [_undoManager setRunLoopModes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSEventTrackingRunLoopMode,nil]];
+        [_undoManager setRunLoopModes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode,nil]];
     }
 
     return _undoManager;
