@@ -123,7 +123,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)acceptsFirstResponder {
-    return [self isEditable];
+    return YES;
+}
+
+-(BOOL)canBecomeKeyView {
+    if(![self isEditable])
+        return NO;
+    
+    return [super canBecomeKeyView];
 }
 
 -(BOOL)needsPanelToBecomeKey {

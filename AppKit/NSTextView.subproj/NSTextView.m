@@ -229,7 +229,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(BOOL)acceptsFirstResponder {
-   return [self isEditable];
+   return YES;
+}
+
+-(BOOL)canBecomeKeyView {
+    if(![self isEditable])
+        return NO;
+    
+    return [super canBecomeKeyView];
 }
 
 -(BOOL)needsPanelToBecomeKey {
