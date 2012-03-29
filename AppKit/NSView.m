@@ -527,8 +527,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSView *)nextValidKeyView {
    NSView *result=[self nextKeyView];
 
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result nextKeyView];
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        
+        result=[result nextKeyView];
+    }
+    
 
    return result;
 }
@@ -538,12 +544,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSView *)previousValidKeyView {
-   NSView *result=[self previousKeyView];
-
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result previousKeyView];
-
-   return result;
+    NSView *result=[self previousKeyView];
+    
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        result=[result previousKeyView];
+    }
+    
+    return result;
 }
 
 -(NSMenu *)menu {
@@ -816,15 +826,21 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)_setWindow:(NSWindow *)window {
-   [self viewWillMoveToWindow:window];
-
-   _window=window;
-       
-   [_subviews makeObjectsPerformSelector:_cmd withObject:window];
-   _validTrackingAreas=NO;
-   [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
-
-   [self viewDidMoveToWindow];
+    if(_window!=window)
+        [self setNextKeyView:nil];
+    
+    [self viewWillMoveToWindow:window];
+    
+    _window=window;
+    
+    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
+    _validTrackingAreas=NO;
+    [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
+    
+    if([_window autorecalculatesKeyViewLoop])
+        [_window recalculateKeyViewLoop];
+    
+    [self viewDidMoveToWindow];
 }
 
 -(void)_setSuperview:superview {
@@ -938,8 +954,12 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setNextKeyView:(NSView *)next {
-   _nextKeyView=next;
-   [_nextKeyView _setPreviousKeyView:self];
+    if(next==nil)
+        [_nextKeyView _setPreviousKeyView:nil];
+    else
+        [_nextKeyView _setPreviousKeyView:self];
+
+    _nextKeyView=next;
 }
 
 -(BOOL)acceptsFirstMouse:(NSEvent *)event {
