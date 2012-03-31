@@ -23,17 +23,6 @@
 		FEF2CA190B35153A005449C7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FEF2CA500B351742005449C7 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FEB4EF3A15267D2100EC3CA1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -228,7 +217,6 @@
 				FEB6746C0D2F2909006EE835 /* ShellScript */,
 			);
 			buildRules = (
-				FEF2CA500B351742005449C7 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FEB4EF4315267D3400EC3CA1 /* PBXTargetDependency */,
@@ -430,6 +418,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_LDFLAGS = (
 					"-Wl,--enable-auto-import",

@@ -25,17 +25,6 @@
 		FEF2EB7E0C87B959001FC5A8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE4733600C876FDE002B72EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FE386A3C15267FB1007CC8C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -236,7 +225,6 @@
 				FE2D932D0D491258005B7813 /* ShellScript */,
 			);
 			buildRules = (
-				FE4733600C876FDE002B72EF /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE386A4915267FC9007CC8C7 /* PBXTargetDependency */,
@@ -449,6 +437,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
