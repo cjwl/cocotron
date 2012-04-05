@@ -755,7 +755,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     if(_superview!=nil)
         layerFrame=[_superview convertRect:layerFrame toView:nil];
     
-    [[_layerContext pixelSurface] setFrame:layerFrame];
+    [_layerContext setFrame:layerFrame];
        
    invalidateTransform(self);
 
