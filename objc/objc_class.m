@@ -439,8 +439,27 @@ const char *class_getWeakIvarLayout(Class cls) {
 }
 
 Ivar *class_copyIvarList(Class cls,unsigned int *countp) {
-   // UNIMPLEMENTED
-   return NULL;
+    Ivar *result = NULL;
+    struct objc_ivar_list *ivars=cls->ivars;
+    
+    if(countp != NULL) {
+        if (ivars != NULL) {
+            *countp = ivars->ivar_count;
+        }
+        else {
+            *countp = 0;
+        }
+    }
+    
+    if (ivars != NULL) {
+        result=malloc(sizeof(Ivar)*ivars->ivar_count);
+        
+        for(int i=0;i<ivars->ivar_count;i++){
+            result[i] = &ivars->ivar_list[i];
+        }
+    }
+    
+    return result;
 }
 
 Method *class_copyMethodList(Class cls,unsigned int *countp) {
