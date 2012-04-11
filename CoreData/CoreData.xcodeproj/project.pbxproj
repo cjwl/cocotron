@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -438,8 +438,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreData" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -611,7 +614,6 @@
 					"-DCOREDATA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CoreData;
 			};
 			name = Debug;
@@ -635,7 +637,6 @@
 					"-DCOREDATA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CoreData;
 			};
 			name = Release;

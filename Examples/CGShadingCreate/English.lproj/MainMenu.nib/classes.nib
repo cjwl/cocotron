@@ -1,0 +1,39 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                selectType = id; 
+                takeEndColorFromSender = id; 
+                takeEndXFromSender = id; 
+                takeEndYFromSender = id; 
+                takeExtendEndFromSender = id; 
+                takeExtendStartFromSender = id; 
+                takeInnerRadiusFromSender = id; 
+                takeOuterRadiusFromSender = id; 
+                takeStartColorFromSender = id; 
+                takeStartXFromSender = id; 
+                takeStartYFromSender = id; 
+            }; 
+            CLASS = GradientView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "_endColor" = NSColorWell; 
+                "_endExtend" = NSButton; 
+                "_endXTextField" = NSTextField; 
+                "_endYTextField" = NSTextField; 
+                "_innerRadius" = NSFormCell; 
+                "_innerRadiusSlider" = NSSlider; 
+                "_outerRadius" = NSFormCell; 
+                "_outerRadiusSlider" = NSSlider; 
+                "_shadingType" = NSMatrix; 
+                "_startColor" = NSColorWell; 
+                "_startExtend" = NSButton; 
+                "_startXTextField" = NSTextField; 
+                "_startYTextField" = NSTextField; 
+            }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

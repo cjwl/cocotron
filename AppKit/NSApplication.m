@@ -796,31 +796,40 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
-
-   while([session stopCode]==NSRunContinuesResponse) {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
+    NSMutableArray *savedEvents=[NSMutableArray array];
+    
+    while([session stopCode]==NSRunContinuesResponse) {
+        NSAutoreleasePool *pool=[NSAutoreleasePool new];
+        NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
         
-    if(event==nil){
-     [pool release];
-     break;
+        if(event==nil){
+            [pool release];
+            break;
+        }
+        
+        NSWindow          *window=[event window];
+        
+        // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
+        if([event type]==NSKeyDown && window == [session modalWindow])
+            [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+        
+        if(window==[session modalWindow] || [window worksWhenModal])
+            [self sendEvent:event];
+        else if([event type]==NSLeftMouseDown)
+            [[session modalWindow] makeKeyAndOrderFront:self];
+        else {
+            // We need to preserve events which are not processed in the modal loop and requeue them.
+            // Ideally we would never dequeue them, we need a nextEventMatchingMask: which takes a set of windows too.
+            [savedEvents addObject: event];
+        }
+        [pool release];
     }
-     
-   NSWindow          *window=[event window];
-
-   // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
-   if([event type]==NSKeyDown && window == [session modalWindow])
-       [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-   
-   if(window==[session modalWindow] || [window worksWhenModal])
-    [self sendEvent:event];
-   else if([event type]==NSLeftMouseDown)
-    [[session modalWindow] makeKeyAndOrderFront:self];
-
-   [pool release];
-   }
-
-   return [session stopCode];
+    
+    for(NSEvent *requeue in savedEvents){
+        [self postEvent:requeue atStart:YES];
+    }
+    
+    return [session stopCode];
 }
 
 -(void)endModalSession:(NSModalSession)session {
