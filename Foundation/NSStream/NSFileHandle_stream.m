@@ -33,7 +33,7 @@ enum {
 -(void)dealloc {
    if(_closeOnDealloc)
     [self closeFile];
-   
+
    [_inputStream setDelegate:nil];
    [_inputStream release];
    [_outputStream setDelegate:nil];
@@ -46,10 +46,10 @@ enum {
 -(int)fileDescriptor {
    if([_inputStream respondsToSelector:@selector(fileDescriptor)])
     return [(id)_inputStream fileDescriptor];
-    
+
    if([_outputStream respondsToSelector:@selector(fileDescriptor)])
     return [(id)_outputStream fileDescriptor];
-    
+
    return -1;
 }
 
@@ -79,9 +79,9 @@ enum {
 -(NSData *)readDataOfLength:(NSUInteger)length {
    void   *bytes=NSZoneMalloc(NULL,length);
    NSInteger bytesRead=[_inputStream read:bytes maxLength:length];
-   
+
 // FIX, should raise exception
-   if(bytesRead==-1) 
+   if(bytesRead==-1)
     return nil;
 
    return [NSData dataWithBytesNoCopy:bytes length:bytesRead freeWhenDone:YES];
@@ -90,10 +90,10 @@ enum {
 -(NSData *)readDataToEndOfFile {
    NSMutableData *result=[NSMutableData data];
    NSData        *chunk;
-   
+
    while([(chunk=[self readDataOfLength:8192]) length]>0)
     [result appendData:chunk];
-   
+
    return result;
 }
 
@@ -101,13 +101,16 @@ enum {
    return [self readDataOfLength:8192];
 }
 
--(void)writeData:(NSData *)data {
-   NSInteger check=[_outputStream write:[data bytes] maxLength:[data length]];
-   
-// FIX, should raise exception
-   if(check!=[data length])
-     ;
+
+- (void)writeData:(NSData *)data
+{
+    NSInteger check = [_outputStream write:[data bytes] maxLength:[data length]];
+
+    if (check != [data length]) {
+        // FIX, should raise exception
+    }
 }
+
 
 -(void)truncateFileAtOffset:(uint64_t)offset {
    [self doesNotRecognizeSelector:_cmd];
@@ -115,22 +118,22 @@ enum {
 
 -(void)_setAsyncState:(int)state forModes:(NSArray *)modes {
    NSInteger i,count;
-   
+
 // NSFileHandle will retain itself if asked to do an async activity
    if(_asyncState==NSFileHandleStateNone && state!=NSFileHandleStateNone)
     [self retain];
    else if(state==NSFileHandleStateNone && _asyncState!=NSFileHandleStateNone)
     [self autorelease];
-    
+
    _asyncState=state;
-   
+
    count=[_modes count];
    for(i=0;i<count;i++)
     [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:[_modes objectAtIndex:i]];
-    
+
    [_modes release];
    _modes=[modes copy];
-   
+
    count=[_modes count];
    for(i=0;i<count;i++)
     [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[_modes objectAtIndex:i]];
@@ -141,33 +144,33 @@ enum {
    if(stream==_inputStream){
     NSString     *notificationName=nil;
     NSDictionary *userInfo=nil;
-    
+
     int eventState=_asyncState;
-    
-    
+
+
     switch(eventState){
-    
+
      case NSFileHandleStateNone:
       // do nothing, shouldn't get here
       break;
-      
+
      case NSFileHandleStateRead:{
        NSData *data=[self availableData];
-       
+
        notificationName=NSFileHandleReadCompletionNotification;
        // FIX, need error key too
        userInfo=[NSDictionary dictionaryWithObject:data forKey:NSFileHandleNotificationDataItem];
        [self _setAsyncState:NSFileHandleStateNone forModes:nil];
       }
       break;
-      
+
      case NSFileHandleStateReadToEndOfFile:{
        NSData *data=[self availableData];
-       
+
        if([data length]>0){
         if(_endOfFileBuffer==nil)
          _endOfFileBuffer=[NSMutableData new];
-         
+
         [_endOfFileBuffer appendData:data];
        }
        else {
@@ -176,40 +179,40 @@ enum {
         userInfo=[NSDictionary dictionaryWithObject:_endOfFileBuffer forKey:NSFileHandleNotificationDataItem];
         [_endOfFileBuffer release];
         _endOfFileBuffer=nil;
-        
+
         [self _setAsyncState:NSFileHandleStateNone forModes:nil];
        }
       }
       break;
-      
+
      case NSFileHandleStateAccept:{
        NSError  *error;
        NSSocket *socket=[[(NSInputStream_socket *)_inputStream socket] acceptWithError:&error];
-       
+
        notificationName=NSFileHandleConnectionAcceptedNotification;
 
        if(socket==nil){
-        // FIX, need error key 
+        // FIX, need error key
        }
        else {
         NSFileHandle *other=[[[NSFileHandle_stream alloc] initWithSocket:socket closeOnDealloc:YES] autorelease];
-        
+
         userInfo=[NSDictionary dictionaryWithObject:other forKey:NSFileHandleNotificationFileHandleItem];
        }
        [self _setAsyncState:NSFileHandleStateNone forModes:nil];
       }
       break;
-      
+
      case NSFileHandleStateWait:
       notificationName=NSFileHandleDataAvailableNotification;
       [self _setAsyncState:NSFileHandleStateNone forModes:nil];
       break;
 
     }
-    
+
     if(notificationName!=nil)
      [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];
-    
+
    }
 }
 

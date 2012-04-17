@@ -367,14 +367,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSInteger)versionForClassName:(NSString *)className {
-   void *oKey,*oVal;
 
-   if(!NSMapMember(_classVersions,className,&oKey,&oVal))
-    ;//NSLog(@"no version for %@",className);
+- (NSInteger)versionForClassName:(NSString *)className
+{
+    void *oKey, *oVal;
 
-   return (NSInteger)NSMapGet(_classVersions,className);
+    if (!NSMapMember(_classVersions, className, &oKey, &oVal)) {
+        //NSLog(@"no version for %@",className);
+    }
+
+    return (NSInteger)NSMapGet(_classVersions, className);
 }
+
 
 -(BOOL)invalidHeader {
    NSString *label;
