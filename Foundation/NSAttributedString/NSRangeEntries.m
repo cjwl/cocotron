@@ -350,10 +350,13 @@ NSLog(@"DUMP BEGIN");
 NSLog(@"DUMP END");
 }
 
- void NSRangeEntriesDumpAndAbort(NSRangeEntries *self) {
-  NSRangeEntriesDump(self);
-*(char *)0=0;
+
+void NSRangeEntriesDumpAndAbort(NSRangeEntries *self)
+{
+    NSRangeEntriesDump(self);
+    *(char *)0 = 0;
 }
+
 
  void NSRangeEntriesVerify(NSRangeEntries *self,NSUInteger length) {
 #if 0

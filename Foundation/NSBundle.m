@@ -51,13 +51,14 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 
 #include <sys/stat.h>
 
+
 static int _NSGetExecutablePath(char *buf, uint32_t *bufsize)
 {
-   if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
-       *bufsize = MAXPATHLEN;
-       return -1;
-   }
-   return 0;
+    if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
+        *bufsize = MAXPATHLEN;
+        return -1;
+    }
+    return 0;
 }
 
 

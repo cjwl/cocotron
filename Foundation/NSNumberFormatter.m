@@ -63,6 +63,7 @@ static NSNumberFormatterBehavior _defaultFormatterBehavior=NSNumberFormatterBeha
  *
  */
 
+
 static void extractFormat(NSString *format,
                           NSString **prefix, NSString **suffix,
                           NSUInteger *minimumIntegerDigitsp, NSUInteger *maximumIntegerDigitsp,

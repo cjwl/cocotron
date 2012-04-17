@@ -54,14 +54,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(context!=NULL && context->info!=NULL && context->retain!=NULL)
     context->retain(context->info);
-   
+
    _context.version=0;
    if(_context.info!=NULL && _context.release!=NULL)
     _context.release(_context.info);
    _context.info=NULL;
    _context.retain=NULL;
    _context.release=NULL;
-   
+
    if(context!=NULL)
     _context=*context;
 }
@@ -75,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -propertyForKey:(NSString *)key {
    if([key isEqualToString:(NSString *)kCFStreamPropertySocketNativeHandle]){
     CFSocketNativeHandle value=(_socket==nil)?-1:[_socket fileDescriptor];
-    
+
     return [NSData dataWithBytes:&value length:sizeof(value)];
    }
 
@@ -111,7 +111,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_inputSource setDelegate:self];
     [_inputSource setSelectEventMask:NSSelectReadEvent];
    }
-   
+
    [runLoop addInputSource:_inputSource forMode:mode];
 }
 
@@ -134,10 +134,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)hasBytesAvailable {
    BOOL result=NO;
-   
+
    if(_status==NSStreamStatusOpen){
     CFSSLHandler *sslHandler=[_socket sslHandler];
-    
+
     if(sslHandler==nil)
      result=[_socket hasBytesAvailable];
     else {
@@ -146,25 +146,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        // If the read failed we want to return YES so that the end of stream can be read
        return YES;
       }
-      
+
      result=([sslHandler readBytesAvailable]>0)?YES:NO;
     }
    }
-   
+
    return result;
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)maxLength {
    NSInteger result;
-   
+
    if(_status==NSStreamStatusAtEnd)
     return 0;
-    
+
    if(_status!=NSStreamStatusOpen && _status!=NSStreamStatusOpening)
     return -1;
-  
+
    CFSSLHandler *sslHandler=[_socket sslHandler];
-   
+
    if(sslHandler==nil)
     result=[_socket read:buffer maxLength:maxLength];
    else {
@@ -174,53 +174,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [sslHandler runWithSocket:_socket];
    }
-      
+
    if(result==0)
     _status=NSStreamStatusAtEnd;
    if(result==-1)
     _status=NSStreamStatusError;
-    
+
    return result;
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
-   NSStreamEvent event;
 
-   switch(_status){
-   
-    case NSStreamStatusOpening:
-     _status=NSStreamStatusOpen;
-     event=NSStreamEventOpenCompleted;
-     break;
-    
-    case NSStreamStatusOpen:;
-     if([self hasBytesAvailable])
-      event=NSStreamEventHasBytesAvailable;
-     else
-      event=NSStreamEventNone;
-     break;
+- (void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent
+{
+    NSStreamEvent event;
 
-    case NSStreamStatusAtEnd:
-     event=NSStreamEventEndEncountered;
-     break;
-     
-    default:
-     event=NSStreamEventNone;
-     break;
-   }
-   
-   if(event!=NSStreamEventNone){
-    if(_callBack!=NULL){
-     if(_events&event){
-      _callBack((CFReadStreamRef)self,event,_context.info);
-     }
+    switch(_status) {
+        case NSStreamStatusOpening:
+            _status = NSStreamStatusOpen;
+            event = NSStreamEventOpenCompleted;
+            break;
+
+        case NSStreamStatusOpen:;
+            if ([self hasBytesAvailable]) {
+                event = NSStreamEventHasBytesAvailable;
+            } else {
+                event = NSStreamEventNone;
+            }
+            break;
+
+        case NSStreamStatusAtEnd:
+            event = NSStreamEventEndEncountered;
+            break;
+
+        default:
+            event = NSStreamEventNone;
+            break;
     }
-    else {
-     if([_delegate respondsToSelector:@selector(stream:handleEvent:)]){
-      [_delegate stream:self handleEvent:event];
-     }
+
+    if (event != NSStreamEventNone) {
+        if (_callBack != NULL) {
+            if (_events & event) {
+                _callBack((CFReadStreamRef)self, event, _context.info);
+            }
+        } else {
+            if ([_delegate respondsToSelector:@selector(stream:handleEvent:)]) {
+                [_delegate stream:self handleEvent:event];
+            }
+        }
     }
-   }
 }
+
 
 @end

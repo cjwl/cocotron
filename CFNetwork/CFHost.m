@@ -375,13 +375,16 @@ CFHostRef  CFHostCreateWithAddress(CFAllocatorRef allocator,CFDataRef address) {
    return 0;
 }
 
-CFHostRef  CFHostCreateWithName(CFAllocatorRef allocator,CFStringRef name) {
-   CFHostRef result=[__CFHost allocWithZone:NULL];
 
-   result->_name=CFStringCreateCopy(allocator,name);
+CFHostRef CFHostCreateWithName(CFAllocatorRef allocator, CFStringRef name)
+{
+    CFHostRef result = [__CFHost allocWithZone:NULL];
 
-   return result;
+    result->_name = CFStringCreateCopy(allocator, name);
+
+    return result;
 }
+
 
 -(void)dealloc {
    CFRelease(_name);

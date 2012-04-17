@@ -12,9 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSValue_placeholder
 
--initWithBytes:(const void *)value objCType:(const char *)type {
-   [self dealloc];
-   return NSValue_concreteNew(NULL,value,type);
+
+- initWithBytes:(const void *)value objCType:(const char *)type
+{
+    [self dealloc];
+    return NSValue_concreteNew(NULL, value, type);
 }
+
 
 @end
