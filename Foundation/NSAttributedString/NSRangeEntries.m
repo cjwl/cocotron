@@ -354,7 +354,7 @@ NSLog(@"DUMP END");
 void NSRangeEntriesDumpAndAbort(NSRangeEntries *self)
 {
     NSRangeEntriesDump(self);
-    *(char *)0 = 0;
+    __builtin_trap();
 }
 
 
