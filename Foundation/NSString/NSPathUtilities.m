@@ -118,8 +118,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [self getCharacters:characters];
     NSUInteger p = selfLength;
-    while (--p >= 0 && ISSLASH(characters[p]));
-    characters[++p] = SLASH;
+    while (--p > 0 && ISSLASH(characters[p]));
+    if (!ISSLASH(characters[p])) {
+        ++p;
+    }
+    characters[p] = SLASH;
     NSUInteger q = 0;
     while (q < otherLength && ISSLASH([other characterAtIndex:q])) {
         q++;
