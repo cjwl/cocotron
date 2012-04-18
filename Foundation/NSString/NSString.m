@@ -591,8 +591,8 @@ static inline BOOL isEqualString(NSString *str1,NSString *str2){
     if(length1==0)
      return YES;
     else {
-    unichar  *buffer1 = NSZoneMalloc(NULL, sizeof(unichar) * length1); 
-    unichar  *buffer2 = NSZoneMalloc(NULL, sizeof(unichar) * length2); 
+    unichar  *buffer1 = NSZoneMalloc(NULL, sizeof(unichar) * length1);
+    unichar  *buffer2 = NSZoneMalloc(NULL, sizeof(unichar) * length2);
 
      int      i;
 
@@ -988,7 +988,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    if(range.length==0)
     return @"";
-    
+
    unicode=NSZoneMalloc(NULL, sizeof(unichar)*range.length);
 
    [self getCharacters:unicode range:range];
@@ -1455,57 +1455,62 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return [self dataUsingEncoding:encoding allowLossyConversion:NO];
 }
 
--(BOOL)getBytes:(void *)buffer maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange {
-    NSUInteger  length=[self length];
-        
-    unichar     *unibuffer = NSZoneMalloc(NULL, (1+range.length)*sizeof(unichar));
-    char        *bytes=NULL;
-    NSUInteger byteLength=0;
+
+- (BOOL)getBytes:(void *)buffer maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange
+{
+    NSUInteger length = [self length];
+
+    unichar *unibuffer = NSZoneMalloc(NULL, (1 + range.length) * sizeof(unichar));
+    char *bytes = NULL;
+    NSUInteger byteLength = 0;
 
     [self getCharacters:unibuffer range:range];
-    
-    bytes=NSString_unicodeToAnyCString(encoding,unibuffer, range.length,options&NSStringEncodingConversionAllowLossy ? YES : NO,&byteLength,[self zone], NO);
-    if (bytes==NULL) {
+
+    bytes = NSString_unicodeToAnyCString(encoding, unibuffer, range.length, options & NSStringEncodingConversionAllowLossy ? YES : NO, &byteLength, [self zone], NO);
+    if (bytes == NULL) {
         NSZoneFree(NULL, unibuffer);
         return NO;
     }
-    
+
     if (usedLength != NULL) {
         *usedLength = maxLength < byteLength ? maxLength : byteLength;
     }
-    if (remainingRange != NULL) {    
+    if (remainingRange != NULL) {
         remainingRange->length = 0;
         if (maxLength < byteLength) {
             remainingRange->length = byteLength - maxLength;
         }
         remainingRange->location = range.location + range.length - remainingRange->length;
     }
-    
+
     memcpy(buffer, bytes, maxLength < byteLength ? maxLength : byteLength);
     NSZoneFree(NULL, unibuffer);
     NSZoneFree(NULL, bytes);
-    
+
     return YES;
 }
 
--(const char *)UTF8String {
-    NSZone  *zone=[self zone];
-    NSUInteger length=[self length];
-    unichar  *buffer = NSZoneMalloc(NULL, (1+length)*sizeof(unichar));
-    NSUInteger byteLength=0;
-    char    *bytes=NULL;
-    
+
+- (const char *)UTF8String
+{
+    NSZone *zone = [self zone];
+    NSUInteger length = [self length];
+    unichar *buffer = NSZoneMalloc(NULL, (1 + length) * sizeof(unichar));
+    NSUInteger byteLength = 0;
+    char *bytes = NULL;
+
     [self getCharacters:buffer];
-    bytes=NSString_unicodeToAnyCString(NSUTF8StringEncoding,buffer,length,NO,&byteLength,zone,YES);
-    if(bytes==NULL) {
+    bytes = NSString_unicodeToAnyCString(NSUTF8StringEncoding, buffer, length, NO, &byteLength, zone, YES);
+    if (bytes == NULL) {
         NSZoneFree(NULL, buffer);
         return nil;
     }
-    
-    NSData* result =  [NSData dataWithBytesNoCopy:bytes length:byteLength];
+
+    NSData* result = [NSData dataWithBytesNoCopy:bytes length:byteLength];
     NSZoneFree(NULL, buffer);
     return [result bytes];
 }
+
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
 // FIXME: this ignores the encoding argument
@@ -1600,17 +1605,17 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
      result[resultLength++]=code;
     }
    }
-    
+
    NSZoneFree(NULL, unicode);
-   
+
     if(length==resultLength) {
         NSZoneFree(NULL, result);
         return self;
     }
-    
+
     NSString *ret = [NSString stringWithCharacters:result length:resultLength];
     NSZoneFree(NULL, result);
-    
+
     return ret;
 }
 
@@ -1618,7 +1623,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUInteger length=[self length];
    NSUInteger location=0;
    unichar  *buffer = NSZoneMalloc(NULL,length*sizeof(unichar));
-   
+
    [self getCharacters:buffer];
    for(;location<length;location++)
     if(![set characterIsMember:buffer[location]])
@@ -1635,33 +1640,38 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return [self substringWithRange:NSMakeRange(location,length-location)];
 }
 
--(const char *)cStringUsingEncoding:(NSStringEncoding)encoding {
-   NSUInteger length=[self length];
-   unichar   *buffer = NSZoneMalloc(NULL,length*sizeof(unichar));
-   NSUInteger resultLength;
 
-   [self getCharacters:buffer];
-    char *cstr=NSString_unicodeToAnyCString(encoding, buffer,length,NO,&resultLength,NULL,YES);
+- (const char *)cStringUsingEncoding:(NSStringEncoding)encoding
+{
+    NSUInteger length = [self length];
+    unichar *buffer = NSZoneMalloc(NULL, length * sizeof(unichar));
+    NSUInteger resultLength;
+
+    [self getCharacters:buffer];
+    char *cstr = NSString_unicodeToAnyCString(encoding, buffer, length, NO, &resultLength, NULL, YES);
     // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
     //       that's bad design
     //NSData *data=
-    NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    NSData *data = [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     NSZoneFree(NULL, buffer);
     return cstr;
 }
 
--(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
-    NSRange range={0,[self length]};    
-    unichar  *unicode = NSZoneMalloc(NULL,maxLength*sizeof(unichar));
+
+- (BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding
+{
+    NSRange range = {0, [self length]};
+    unichar *unicode = NSZoneMalloc(NULL, maxLength * sizeof(unichar));
     NSUInteger location;
     [self getCharacters:unicode range:range];
-    if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) ==NSNotFound) {
+    if (NSGetAnyCStringWithMaxLength(encoding, unicode, range.length, &range.location, cString, maxLength, YES) == NSNotFound) {
         NSZoneFree(NULL, unicode);
         return NO;
     }
     NSZoneFree(NULL, unicode);
     return YES;
 }
+
 
 +(NSStringEncoding)defaultCStringEncoding {
    return defaultEncoding();
@@ -1719,17 +1729,19 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 
--(const char *)lossyCString {
-    NSUInteger length=[self length];
-    unichar   *buffer = NSZoneMalloc(NULL,length*sizeof(unichar));
+- (const char *)lossyCString
+{
+    NSUInteger length = [self length];
+    unichar *buffer = NSZoneMalloc(NULL, length * sizeof(unichar));
     NSUInteger resultLength;
-    
+
     [self getCharacters:buffer];
-    char *cstr=NSString_unicodeToAnyCString(defaultEncoding(), buffer,length,YES,&resultLength,NULL,YES);
-    NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    char *cstr = NSString_unicodeToAnyCString(defaultEncoding(), buffer, length, YES, &resultLength, NULL, YES);
+    NSData *data = [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     NSZoneFree(NULL, buffer);
     return cstr;
 }
+
 
 @end
 

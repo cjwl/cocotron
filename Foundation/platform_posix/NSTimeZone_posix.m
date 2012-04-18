@@ -162,22 +162,23 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     return _data;
 }
 
-+(NSTimeZone *)systemTimeZone {
-    NSTimeZone          *systemTimeZone = nil;
-    NSString            *timeZoneName;
-    NSInteger           secondsFromGMT;
-    NSDictionary        *dictionary;
+
++ (NSTimeZone *)systemTimeZone
+{
+    NSTimeZone *systemTimeZone = nil;
+    NSString *timeZoneName;
+    NSInteger secondsFromGMT;
+    NSDictionary *dictionary;
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
-        NSError     *error;
-        NSString    *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
+        NSError *error;
+        NSString *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
 
-        if(path != nil) {
+        if (path != nil) {
             //localtime is a symlink
             timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
             systemTimeZone = [self timeZoneWithName:timeZoneName];
-        }
-        else {
+        } else {
             //localtime is a file
             systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
         }
@@ -185,7 +186,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
     if (systemTimeZone == nil) {
         //try to use TZ environment variable
-        const char  *envTimeZoneName = getenv("TZ");
+        const char *envTimeZoneName = getenv("TZ");
 
         if (envTimeZoneName != NULL) {
             systemTimeZone = [self timeZoneWithName:[NSString stringWithCString:envTimeZoneName]];
@@ -193,7 +194,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     }
 
     if (systemTimeZone == nil) {
-        NSString        *abbreviation;
+        NSString *abbreviation;
 
         tzset();
         abbreviation = [NSString stringWithCString:tzname[0]];
@@ -201,12 +202,11 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         systemTimeZone = [self timeZoneWithAbbreviation:abbreviation];
 
 #ifdef LINUX
-        if(systemTimeZone == nil) {
+        if (systemTimeZone == nil) {
             //check if the error is because of a missing entry in NSTimeZoneAbbreviations.plist (only for logging)
-            if([[self abbreviationDictionary] objectForKey:abbreviation] == nil) {
+            if ([[self abbreviationDictionary] objectForKey:abbreviation] == nil) {
                 NSCLog("Abbreviation [%s] not found in NSTimeZoneAbbreviations.plist -> using absolute timezone (no daylight saving)", [abbreviation cString]);
-            }
-            else {
+            } else {
                 NSCLog("TimeZone [%s] not instantiable -> using absolute timezone (no daylight saving)", [[[self abbreviationDictionary] objectForKey:abbreviation] cString]);
             }
 
@@ -217,6 +217,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
     return systemTimeZone;
 }
+
 
 -(NSTimeZoneType *)timeZoneTypeForDate:(NSDate *)date {
     if ([_timeZoneTransitions count] == 0 ||

@@ -42,14 +42,17 @@ struct NSRangeEntries {
    return result;
 }
 
- void NSFreeRangeEntries(NSRangeEntries *self) {
-	 if (self == nil) {
-		 return;
-	 }
-   NSResetRangeEntries(self);
-   NSZoneFree(NULL,self->entries);
-   NSZoneFree(NULL,self);
+
+void NSFreeRangeEntries(NSRangeEntries *self)
+{
+    if (self == nil) {
+         return;
+    }
+    NSResetRangeEntries(self);
+    NSZoneFree(NULL, self->entries);
+    NSZoneFree(NULL, self);
 }
+
 
  void NSResetRangeEntries(NSRangeEntries *self) {
    NSInteger i;
