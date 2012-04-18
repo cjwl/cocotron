@@ -6,47 +6,85 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+#import <Foundation/NSException.h>
 #import <Foundation/NSNumber_double.h>
 #import <Foundation/NSStringFormatter.h>
 
-#if __APPLE__
-#import <Foundation/NSNumber_double_const.h>
-#else
-#import <Foundation/NSNumber_double_const_impl.h>
-#endif
+
+@implementation NSNumber_double
 
 
-NSNumber *NSNumber_doubleSpecial(double value)
+NSNumber *kNSNumberPositiveInfinity;
+NSNumber *kNSNumberNegativeInfinity;
+NSNumber *kNSNumberNaN;
+NSNumber *kNSNumberPositiveZero;
+NSNumber *kNSNumberNegativeZero;
+NSNumber *kNSNumberPositiveOne;
+NSNumber *kNSNumberNegativeOne;
+const CFNumberRef kCFNumberPositiveInfinity = (CFNumberRef)&kNSNumberPositiveInfinity;
+const CFNumberRef kCFNumberNegativeInfinity = (CFNumberRef)&kNSNumberNegativeInfinity;
+const CFNumberRef kCFNumberNaN = (CFNumberRef)&kNSNumberNaN;
+
+
++ (void)initialize
 {
-   switch (fpclassify(value))
-   {
+    kNSNumberPositiveInfinity = [[self allocWithZone: NULL] initWithDouble: INFINITY];
+    kNSNumberNegativeInfinity = [[self allocWithZone: NULL] initWithDouble: -INFINITY];
+    kNSNumberNaN = [[self allocWithZone: NULL] initWithDouble: NAN];
+    kNSNumberPositiveZero = [[self allocWithZone: NULL] initWithDouble: 0.0];
+    kNSNumberNegativeZero = [[self allocWithZone: NULL] initWithDouble: -0.0];
+    kNSNumberPositiveOne = [[self allocWithZone: NULL] initWithDouble: 1.0];
+    kNSNumberNegativeOne = [[self allocWithZone: NULL] initWithDouble: -1.0];
+}
+
+
++ numberWithSpecialDouble: (double)value
+{
+   switch (fpclassify(value)) {
       case FP_INFINITE:
-         return signbit(value)?kNSNumberNegativeInfinity:kNSNumberPositiveInfinity;
+         return signbit(value) ? kNSNumberNegativeInfinity : kNSNumberPositiveInfinity;
       case FP_NAN:
          return kNSNumberNaN;
       case FP_ZERO:
-         return signbit(value)?kNSNumberNegativeZero:kNSNumberPositiveZero;
+         return signbit(value) ? kNSNumberNegativeZero : kNSNumberPositiveZero;
       default:
-         if(0) {}  // Without profiling, I'm assuming no one value is more likely than every other value put together, and the compiler will optimize for the first if() branch.
-         else if (value == 1.0) return kNSNumberPositiveOne;
-         else if (value == -1.0) return kNSNumberNegativeOne;
+         if (0) {
+             // Without profiling, I'm assuming no one value is more likely than every other value put together, and the compiler will optimize for the first if() branch.
+         } else if (value == 1.0) {
+             return kNSNumberPositiveOne;
+         } else if (value == -1.0) {
+             return kNSNumberNegativeOne;
+         }
          return nil;
    }
 }
 
-@implementation NSNumber_double
 
-NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
-   NSNumber *result=NSNumber_doubleSpecial(value);
-   if (result==nil)
-   {
-      NSNumber_double *self=NSAllocateObject([NSNumber_double class],0,zone);
-      self->_type=kCFNumberDoubleType;
-      self->_value=value;
-      result=self;
-   }
-   return result;
++ numberWithDouble: (double)value
+{
+    NSNumber *result = [self numberWithSpecialDouble: value];
+    if (result == nil) {
+        result = [[[self allocWithZone: NULL] initWithDouble: value] autorelease];
+    }
+    return result;
 }
+
+
+- init
+{
+    [super init];
+    _type = kCFNumberDoubleType;
+    return self;
+}
+
+
+- initWithDouble: (double)value
+{
+    [self init];
+    _value = value;
+    return self;
+}
+
 
 -(void)getValue:(void *)value {
    *((double *)value)=_value;
@@ -118,44 +156,6 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
    return NSStringWithFormatAndLocale(@"%0.15g",locale,_value);
-}
-
-@end
-
-
-@implementation NSNumber_double_const
-
-+ (id) allocWithZone:(NSZone *)zone {
-   [NSException raise:NSInternalInconsistencyException format:@"Private class NSNumber_double_const is not intended to be alloced."];
-   return nil;
-}
-
--(void)dealloc {
-   return;
-   [super dealloc];  // Silence compiler warning
-}
-
--(id)retain {
-   return self;
-}
-
-
-- (oneway void)release
-{
-    // will never be released
-}
-
-
--(id)autorelease {
-   return self;
-}
-
--(NSUInteger)retainCount {
-   /* "For objects that never get released (that is, their release method
-      does nothing), this method should return UINT_MAX, as defined in
-      <limits.h>." -- NSObject Protocol Reference
-   */
-   return UINT_MAX;
 }
 
 @end

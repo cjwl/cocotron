@@ -226,7 +226,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       double value;
 
       [coder decodeValueOfObjCType:type at:&value];
-      return NSNumber_doubleNew(NULL,value);
+      return [NSNumber_double numberWithDouble: value];
      }
      break;
 
@@ -333,7 +333,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 +(NSNumber *)numberWithBool:(BOOL)value {
-   return NSNumber_BOOLNew(NULL,value);
+   return [NSNumber_BOOL numberWithBool: value];
 }
 
 +(NSNumber *)numberWithChar:(char)value {

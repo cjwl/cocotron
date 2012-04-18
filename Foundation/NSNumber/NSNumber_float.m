@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSNumber_float
 
 NSNumber *NSNumber_floatNew(NSZone *zone,float value) {
-   NSNumber *result=NSNumber_doubleSpecial(value);
+    NSNumber *result = [NSNumber_double numberWithSpecialDouble: value];
    if (result==nil)
    {
       NSNumber_float *self=NSAllocateObject([NSNumber_float class],0,zone);
