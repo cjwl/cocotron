@@ -22,7 +22,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSNotificationCenter
 
 +(NSNotificationCenter *)defaultCenter {
-   return NSThreadSharedInstance(@"NSNotificationCenter");
+    @synchronized(self) {
+        static NSNotificationCenter* defaultCenter;
+        if (!defaultCenter) defaultCenter = [[NSNotificationCenter alloc] init];
+        return defaultCenter;
+    }
 }
 
 -init {
