@@ -52,7 +52,7 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 #include <sys/stat.h>
 
 
-static int _NSGetExecutablePath(char *buf, uint32_t *bufsize)
+static int _NSGetExecutablePath(char *buf, ssize_t *bufsize)
 {
     if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
         *bufsize = MAXPATHLEN;
@@ -380,14 +380,14 @@ static NSMapTable *pathToObject=NULL;
         const char *module = getenv("CFProcessPath");
         if (!module) {
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-            uint32_t bufSize = MAXPATHLEN;
+            ssize_t bufSize = MAXPATHLEN;
             char *executablePath = alloca(bufSize + 1);
             if (_NSGetExecutablePath(executablePath, &bufSize) < 0) {
                 executablePath = alloca(bufSize + 1);
                 _NSGetExecutablePath(executablePath, &bufSize);
             }
             executablePath[bufSize] = 0;
-            module=executablePath;
+            module = executablePath;
 #else
             module = objc_mainImageName();
 #endif
