@@ -45,7 +45,7 @@ void NSRegisterZombie(NSObject *object)
     Class cls = NSMapGet(objectToClassName, self);
     pthread_mutex_unlock(&zombieLock);
 
-    NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s", self, sel_getName(selector), class_getName(cls));
+    NSLog(@"-[NSZombieObject %p methodSignatureForSelector:%s] %s", self, sel_getName(selector), class_getName(cls));
 
     return [cls instanceMethodSignatureForSelector:selector];
 }
@@ -57,7 +57,7 @@ void NSRegisterZombie(NSObject *object)
     Class cls = NSMapGet(objectToClassName, self);
     pthread_mutex_unlock(&zombieLock);
 
-    NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s", self, sel_getName([invocation selector]), class_getName(cls));
+    NSLog(@"-[NSZombieObject %p forwardInvocation:%s] %s", self, sel_getName([invocation selector]), class_getName(cls));
 }
 
 
@@ -67,7 +67,7 @@ void NSRegisterZombie(NSObject *object)
     Class cls = NSMapGet(objectToClassName, self);
     pthread_mutex_unlock(&zombieLock);
 
-    NSLog(@"-[NSZombieObject %x %s] %s", self, sel_getName(selector), class_getName(cls));
+    NSLog(@"-[NSZombieObject %p %s] %s", self, sel_getName(selector), class_getName(cls));
     return nil;
 }
 
