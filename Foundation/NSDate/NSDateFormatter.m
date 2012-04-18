@@ -790,7 +790,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
 
                     // again, weekdays are useless
                     case 'w': {
-                        NSInteger nothing = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 1, &currentPostion);
+                        NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 1, &currentPostion);
                         break;
                     }
 

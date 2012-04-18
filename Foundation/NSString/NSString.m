@@ -1458,8 +1458,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 - (BOOL)getBytes:(void *)buffer maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange
 {
-    NSUInteger length = [self length];
-
     unichar *unibuffer = NSZoneMalloc(NULL, (1 + range.length) * sizeof(unichar));
     char *bytes = NULL;
     NSUInteger byteLength = 0;
@@ -1503,9 +1501,11 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     bytes = NSString_unicodeToAnyCString(NSUTF8StringEncoding, buffer, length, NO, &byteLength, zone, YES);
     if (bytes == NULL) {
         NSZoneFree(NULL, buffer);
-        return nil;
+        return NULL;
     }
 
+    // FIXME obviously the char* shall be handled by the autorelease pool or garbage collector
+    //       that's bad design
     NSData* result = [NSData dataWithBytesNoCopy:bytes length:byteLength];
     NSZoneFree(NULL, buffer);
     return [result bytes];
@@ -1649,10 +1649,9 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
     [self getCharacters:buffer];
     char *cstr = NSString_unicodeToAnyCString(encoding, buffer, length, NO, &resultLength, NULL, YES);
-    // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
+    // FIXME obviously the char* shall be handled by the autorelease pool or garbage collector
     //       that's bad design
-    //NSData *data=
-    NSData *data = [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     NSZoneFree(NULL, buffer);
     return cstr;
 }
@@ -1662,7 +1661,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 {
     NSRange range = {0, [self length]};
     unichar *unicode = NSZoneMalloc(NULL, maxLength * sizeof(unichar));
-    NSUInteger location;
     [self getCharacters:unicode range:range];
     if (NSGetAnyCStringWithMaxLength(encoding, unicode, range.length, &range.location, cString, maxLength, YES) == NSNotFound) {
         NSZoneFree(NULL, unicode);
@@ -1737,7 +1735,9 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
     [self getCharacters:buffer];
     char *cstr = NSString_unicodeToAnyCString(defaultEncoding(), buffer, length, YES, &resultLength, NULL, YES);
-    NSData *data = [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    // FIXME obviously the char* shall be handled by the autorelease pool or garbage collector
+    //       that's bad design
+    [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     NSZoneFree(NULL, buffer);
     return cstr;
 }

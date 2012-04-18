@@ -167,8 +167,6 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 {
     NSTimeZone *systemTimeZone = nil;
     NSString *timeZoneName;
-    NSInteger secondsFromGMT;
-    NSDictionary *dictionary;
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
         NSError *error;

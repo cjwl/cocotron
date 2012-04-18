@@ -45,7 +45,7 @@ struct NSRangeEntries {
 
 void NSFreeRangeEntries(NSRangeEntries *self)
 {
-    if (self == nil) {
+    if (self == NULL) {
          return;
     }
     NSResetRangeEntries(self);

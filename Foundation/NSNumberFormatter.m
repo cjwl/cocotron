@@ -78,7 +78,6 @@ static void extractFormat(NSString *format,
 
     unichar buffer[length];
     unichar prefixBuffer[length], suffixBuffer[length];
-    BOOL addToGrouping = NO;
 
     enum {
         STATE_PREFIX,
@@ -94,7 +93,6 @@ static void extractFormat(NSString *format,
     maximumFractionDigits = 0;
 
     BOOL foundPrimaryGrouping = NO;
-    BOOL foundSecondaryGrouping = NO;
 
     [format getCharacters:buffer];
 
@@ -135,7 +133,6 @@ static void extractFormat(NSString *format,
                     if (foundPrimaryGrouping == NO) {
                         foundPrimaryGrouping = YES;
                     } else {
-                        foundSecondaryGrouping = YES;
                         secondaryGroupingSize = groupingSize;
                         groupingSize = 0;
                     }
