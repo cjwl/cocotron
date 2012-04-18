@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:CGShadingCreate"
+      name = "CGShadingCreate">
+      <FileRef
+         location = "group:CGShadingCreate.xcodeproj">
+      </FileRef>
+      <Group
+         location = "group:English.lproj"
+         name = "English.lproj">
+         <FileRef
+            location = "group:InfoPlist.strings">
+         </FileRef>
+         <FileRef
+            location = "group:MainMenu.nib">
+         </FileRef>
+      </Group>
+      <FileRef
+         location = "group:GradientView.h">
+      </FileRef>
+      <FileRef
+         location = "group:GradientView.m">
+      </FileRef>
+      <FileRef
+         location = "group:Info.plist">
+      </FileRef>
+      <FileRef
+         location = "group:main.m">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:NSOpenGLView"
+      name = "NSOpenGLView">
+      <Group
+         location = "group:English.lproj"
+         name = "English.lproj">
+         <FileRef
+            location = "group:InfoPlist.strings">
+         </FileRef>
+         <FileRef
+            location = "group:Localizable-windows.strings">
+         </FileRef>
+         <FileRef
+            location = "group:Localizable.strings">
+         </FileRef>
+         <FileRef
+            location = "group:MainMenu.nib">
+         </FileRef>
+      </Group>
+      <FileRef
+         location = "group:Info.plist">
+      </FileRef>
+      <FileRef
+         location = "group:main.m">
+      </FileRef>
+      <FileRef
+         location = "group:MyOpenGLView.h">
+      </FileRef>
+      <FileRef
+         location = "group:MyOpenGLView.m">
+      </FileRef>
+      <FileRef
+         location = "group:NSOpenGLView.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:TextEditor"
+      name = "TextEditor">
+      <Group
+         location = "group:English.lproj"
+         name = "English.lproj">
+         <FileRef
+            location = "group:Credits.rtf">
+         </FileRef>
+         <FileRef
+            location = "group:MainMenu.nib">
+         </FileRef>
+         <FileRef
+            location = "group:MyDocument.nib">
+         </FileRef>
+      </Group>
+      <FileRef
+         location = "group:Info.plist">
+      </FileRef>
+      <FileRef
+         location = "group:main.m">
+      </FileRef>
+      <FileRef
+         location = "group:MyDocument.h">
+      </FileRef>
+      <FileRef
+         location = "group:MyDocument.m">
+      </FileRef>
+      <FileRef
+         location = "group:TextEditor.xcodeproj">
+      </FileRef>
+   </Group>
+</Workspace>

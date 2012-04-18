@@ -170,7 +170,7 @@ static inline void byteZero(void *vsrc,size_t size){
     byteZero(&try,sizeof(struct sockaddr_in));
     try.sin_addr.s_addr=address;
     try.sin_family=AF_INET;
-    try.sin_port=portNumber;
+    try.sin_port=htons(portNumber);
 
     if(connect(_descriptor,(struct sockaddr *)&try,(socklen_t)sizeof(try))==0){
      if(!block){
@@ -231,6 +231,10 @@ static inline void byteZero(void *vsrc,size_t size){
     *errorp=error;
 
    return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];
+}
+
+- (CFSSLHandler*)sslHandler {
+    return nil;
 }
 
 @end

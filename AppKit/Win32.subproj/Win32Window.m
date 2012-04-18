@@ -193,6 +193,14 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 
    [self setupPixelFormat];
 
+    HMENU systemMenu;
+    
+	if ((systemMenu = GetSystemMenu(_handle, FALSE)) != NULL) {
+        UINT dwExtra = (_styleMask&NSClosableWindowMask) ? MF_ENABLED : (MF_DISABLED | MF_GRAYED);
+        EnableMenuItem(systemMenu, SC_CLOSE, MF_BYCOMMAND | dwExtra);
+    }
+
+
     CGNativeBorderFrameWidthsForStyle([self styleMask],&_borderTop,&_borderLeft,&_borderBottom,&_borderRight);
 }
 
@@ -1289,8 +1297,10 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(int)WM_CLOSE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   [_delegate platformWindowWillClose:self];
-   return 0;
+    if(_styleMask&NSClosableWindowMask)
+        [_delegate platformWindowWillClose:self];
+        
+    return 0;
 }
 
 -(int)WM_ACTIVATE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {

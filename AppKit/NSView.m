@@ -527,8 +527,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSView *)nextValidKeyView {
    NSView *result=[self nextKeyView];
 
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result nextKeyView];
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        
+        result=[result nextKeyView];
+    }
+    
 
    return result;
 }
@@ -538,12 +544,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSView *)previousValidKeyView {
-   NSView *result=[self previousKeyView];
-
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result previousKeyView];
-
-   return result;
+    NSView *result=[self previousKeyView];
+    
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        result=[result previousKeyView];
+    }
+    
+    return result;
 }
 
 -(NSMenu *)menu {
@@ -745,7 +755,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     if(_superview!=nil)
         layerFrame=[_superview convertRect:layerFrame toView:nil];
     
-    [[_layerContext pixelSurface] setFrame:layerFrame];
+    [_layerContext setFrame:layerFrame];
        
    invalidateTransform(self);
 
@@ -816,15 +826,21 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)_setWindow:(NSWindow *)window {
-   [self viewWillMoveToWindow:window];
-
-   _window=window;
-       
-   [_subviews makeObjectsPerformSelector:_cmd withObject:window];
-   _validTrackingAreas=NO;
-   [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
-
-   [self viewDidMoveToWindow];
+    if(_window!=window)
+        [self setNextKeyView:nil];
+    
+    [self viewWillMoveToWindow:window];
+    
+    _window=window;
+    
+    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
+    _validTrackingAreas=NO;
+    [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
+    
+    if([_window autorecalculatesKeyViewLoop])
+        [_window recalculateKeyViewLoop];
+    
+    [self viewDidMoveToWindow];
 }
 
 -(void)_setSuperview:superview {
@@ -938,8 +954,12 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setNextKeyView:(NSView *)next {
-   _nextKeyView=next;
-   [_nextKeyView _setPreviousKeyView:self];
+    if(next==nil)
+        [_nextKeyView _setPreviousKeyView:nil];
+    else
+        [_nextKeyView _setPreviousKeyView:self];
+
+    _nextKeyView=next;
 }
 
 -(BOOL)acceptsFirstMouse:(NSEvent *)event {
@@ -2237,23 +2257,24 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)scrollWheel:(NSEvent *)event {
-   NSScrollView *scrollView=[self enclosingScrollView];
-
-   if(scrollView!=nil){
-    NSRect bounds=[self bounds];
-    NSRect visible=[self visibleRect];
-    float  direction=[self isFlipped]?-1:1;
-
-    visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
-
-// Something equivalent to this should be in scrollRectToVisible:
-    if(visible.origin.y<bounds.origin.y)
-     visible.origin.y=bounds.origin.y;
-    if(NSMaxY(visible)>NSMaxY(bounds))
-     visible.origin.y=NSMaxY(bounds)-visible.size.height;
-
-    [self scrollRectToVisible:visible];
-   }
+    NSScrollView *scrollView=[self enclosingScrollView];
+    
+    if(scrollView!=nil){
+        NSView *documentView=[scrollView documentView];
+        NSRect bounds=[documentView bounds];
+        NSRect visible=[documentView visibleRect];
+        float  direction=[documentView isFlipped]?-1:1;
+        
+        visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
+        
+        // Something equivalent to this should be in scrollRectToVisible:
+        if(visible.origin.y<bounds.origin.y)
+            visible.origin.y=bounds.origin.y;
+        if(NSMaxY(visible)>NSMaxY(bounds))
+            visible.origin.y=NSMaxY(bounds)-visible.size.height;
+        
+        [documentView scrollRectToVisible:visible];
+    }
 }
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {

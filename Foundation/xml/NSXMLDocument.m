@@ -20,6 +20,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return class;
 }
 
+-init {
+    [super initWithKind:NSXMLDocumentKind options:NSXMLNodeOptionsNone];
+    return self;
+}
+
 -initWithRootElement:(NSXMLElement *)element {
    NSUnimplementedMethod();
    return nil;

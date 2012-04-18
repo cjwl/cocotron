@@ -30,6 +30,51 @@
 		FEAD497311E90D0500063B34 /* PDFKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAD497211E90D0500063B34 /* PDFKitExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FE386EB915269311007CC8C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
+		FE386EBB15269311007CC8C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
+			remoteInfo = "AppKit-Linux-i386";
+		};
+		FE386EBD15269311007CC8C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
+			remoteInfo = "AppKit-Darwin-i386";
+		};
+		FE386EBF15269311007CC8C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
+			remoteInfo = "AppKit-MacOS-i386";
+		};
+		FE386EC115269311007CC8C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE5A8BE310C6F50E005E348A;
+			remoteInfo = "AppKit-FreeBSD-i386";
+		};
+		FE386ECC15269320007CC8C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A8070C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -54,6 +99,7 @@
 		FE1FBF9D11E769D300A9A87A /* PDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFPage.m; sourceTree = "<group>"; };
 		FE2758F71233FE7A00BD6643 /* PDFSelectedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFSelectedRange.h; sourceTree = "<group>"; };
 		FE2758F81233FE7A00BD6643 /* PDFSelectedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFSelectedRange.m; sourceTree = "<group>"; };
+		FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = "<group>"; };
 		FE43024E11E259EE00EBDD56 /* PDFKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFKit.h; sourceTree = "<group>"; };
 		FE4302AF11E2637A00EBDD56 /* PDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFDocument.h; sourceTree = "<group>"; };
 		FE4302B011E2637A00EBDD56 /* PDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFDocument.m; sourceTree = "<group>"; };
@@ -96,6 +142,7 @@
 		0867D691FE84028FC02AAC07 /* PDFKit */ = {
 			isa = PBXGroup;
 			children = (
+				FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */,
 				FE06B4541430E9600071169B /* xcconfig */,
 				FE2758F71233FE7A00BD6643 /* PDFSelectedRange.h */,
 				FE2758F81233FE7A00BD6643 /* PDFSelectedRange.m */,
@@ -180,6 +227,18 @@
 			path = ../xcconfig;
 			sourceTree = SOURCE_ROOT;
 		};
+		FE386E6D1526930D007CC8C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE386EBA15269311007CC8C7 /* AppKit.framework */,
+				FE386EBC15269311007CC8C7 /* AppKit.framework */,
+				FE386EBE15269311007CC8C7 /* AppKit.framework */,
+				FE386EC015269311007CC8C7 /* AppKit.framework */,
+				FE386EC215269311007CC8C7 /* AppKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -214,6 +273,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FE386ECD15269320007CC8C7 /* PBXTargetDependency */,
 			);
 			name = "PDFKit-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -239,12 +299,56 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* PDFKit */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE386E6D1526930D007CC8C7 /* Products */;
+					ProjectRef = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* PDFKit-Windows-i386 */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE386EBA15269311007CC8C7 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE386EB915269311007CC8C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE386EBC15269311007CC8C7 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE386EBB15269311007CC8C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE386EBE15269311007CC8C7 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE386EBD15269311007CC8C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE386EC015269311007CC8C7 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE386EBF15269311007CC8C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE386EC215269311007CC8C7 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE386EC115269311007CC8C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {
@@ -275,6 +379,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE386ECD15269320007CC8C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppKit-Windows-i386";
+			targetProxy = FE386ECC15269320007CC8C7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
