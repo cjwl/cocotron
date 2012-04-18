@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    void *bytes=NULL;
 
    if (options&NSUncachedRead)
-    NSLog(@"-[%@ %s] option NSUncachedRead currently ignored.",[self class],_cmd);
+    NSLog(@"-[%@ %s] option NSUncachedRead currently ignored.",[self class],sel_getName(_cmd));
 
    if (options&NSMappedRead)
     bytes=[[NSPlatform currentPlatform] mapContentsOfFile:path length:&length];
@@ -292,7 +292,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
   if(![url isFileURL]){
-   NSLog(@"-[%@ %s]: Only file: URLs are supported so far.",[self class],_cmd);
+   NSLog(@"-[%@ %s]: Only file: URLs are supported so far.",[self class],sel_getName(_cmd));
    return NO;
   }
   return [self writeToFile:[url path] options:options error:errorp];
