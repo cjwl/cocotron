@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D94DD62153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD63153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD64153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD65153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD66153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD67153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD68153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD69153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D94DD6A153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD6B153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD6C153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD6D153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD6E153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD6F153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD70153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
+		0D94DD71153E859F0048B351 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
 		0DE1C159151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		0DE1C15A151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */; };
 		0DE1C15B151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */; };
@@ -6795,6 +6811,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSocketPort_posix.h; path = platform_posix/NSSocketPort_posix.h; sourceTree = "<group>"; };
+		0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSocketPort_posix.m; path = platform_posix/NSSocketPort_posix.m; sourceTree = "<group>"; };
 		0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRecursiveLock_posix.h; path = platform_posix/NSRecursiveLock_posix.h; sourceTree = "<group>"; };
 		0DE1C158151665AB003781E1 /* NSRecursiveLock_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRecursiveLock_posix.m; path = platform_posix/NSRecursiveLock_posix.m; sourceTree = "<group>"; };
 		151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc_msg_sendv-Disabled.m"; sourceTree = "<group>"; };
@@ -7792,8 +7810,8 @@
 				6E2803380974795100EC542B /* NSObject */,
 				6E28061B09747D5800EC542B /* NSPipe.h */,
 				6E28061C09747D5800EC542B /* NSPipe.m */,
-				6E28061D09747D5800EC542B /* NSPlatform.h */,
 				FE1365D70F154B3A000F2657 /* NSOperation */,
+				6E28061D09747D5800EC542B /* NSPlatform.h */,
 				6E28061E09747D5800EC542B /* NSPlatform.m */,
 				FEB9D6A90B443EA600C239BB /* NSPortNameServer */,
 				FEB9D47D0B4432C400C239BB /* NSPredicate */,
@@ -8452,6 +8470,8 @@
 				0DE1C158151665AB003781E1 /* NSRecursiveLock_posix.m */,
 				C89B473D0F5C6AB50070120D /* NSCancelInputSource_posix.h */,
 				C89B473E0F5C6AB50070120D /* NSCancelInputSource_posix.m */,
+				0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */,
+				0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */,
 			);
 			name = platform_posix;
 			sourceTree = "<group>";
@@ -9409,6 +9429,7 @@
 				FEFAA53B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07581434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15F151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD68153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9744,6 +9765,7 @@
 				FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07561434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15E151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD67153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10079,6 +10101,7 @@
 				FEFAA5471429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C074E1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15A151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD63153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10414,6 +10437,7 @@
 				FEFAA53D1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C074C1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C159151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD62153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11088,6 +11112,7 @@
 				FEFAA5491429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C075A1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C160151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD69153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11424,6 +11449,7 @@
 				FEFAA5431429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07541434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15D151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD66153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11760,6 +11786,7 @@
 				FEFAA5451429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07501434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15B151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD64153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12096,6 +12123,7 @@
 				FEFAA53F1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07521434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15C151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
+				0D94DD65153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13031,6 +13059,7 @@
 				FEFAA53C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07591434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C167151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD70153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13404,6 +13433,7 @@
 				FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07571434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C166151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD6F153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13778,6 +13808,7 @@
 				FEFAA5481429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C162151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD6B153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14153,6 +14184,7 @@
 				FEFAA53E1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C161151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD6A153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14909,6 +14941,7 @@
 				FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C075B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C168151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD71153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15287,6 +15320,7 @@
 				FEFAA5441429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07551434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C165151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD6E153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15666,6 +15700,7 @@
 				FEFAA5461429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C163151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD6C153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16045,6 +16080,7 @@
 				FEFAA5401429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C164151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
+				0D94DD6D153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

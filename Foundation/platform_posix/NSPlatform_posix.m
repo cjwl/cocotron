@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPersistantDomain_posix.h>
 #import <Foundation/NSTimeZone_posix.h>
 #import <Foundation/NSTask_posix.h>
+#import <Foundation/NSSocketPort_posix.h>
 #import <Foundation/NSPipe_posix.h>
 #import <Foundation/NSRaiseException.h>
 
@@ -59,6 +60,10 @@ BOOL NSCurrentLocaleIsMetric(){
     }
     
     return NSTaskClass;
+}
+
+-(Class)socketPortClass {
+    return [NSSocketPort_posix class];
 }
 
 -(Class)pipeClass {

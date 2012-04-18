@@ -21,6 +21,7 @@ typedef int NSSocketNativeHandle;
 -init;
 -initRemoteWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address;
 -initRemoteWithTCPPort:(uint16_t)port host:(NSString *)hostName;
+-initWithTCPPort:(unsigned short)port;
 -initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address;
 -initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol socket:(NSSocketNativeHandle)nativeSocket;
 

@@ -9,8 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocketPort.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSStream.h>
+#import <Foundation/NSPlatform.h>
 
 @implementation NSSocketPort
+
++allocWithZone:(NSZone *)zone {
+    if(self==[NSSocketPort class])
+        return NSAllocateObject([[NSPlatform currentPlatform] socketPortClass],0,zone);
+    else
+        return NSAllocateObject(self,0,zone);
+}
 
 -init {
   NSUnimplementedMethod();
@@ -25,6 +33,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initRemoteWithTCPPort:(uint16_t)port host:(NSString *)hostName {
   NSUnimplementedMethod();
   return nil;
+}
+
+-initWithTCPPort:(unsigned short)port {
+    NSUnimplementedMethod();
+    return nil;
 }
 
 -initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address {

@@ -110,6 +110,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSOperationQueue.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSPipe.h>
+#import <Foundation/NSPort.h>
 #import <Foundation/NSPortCoder.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSProcessInfo.h>
