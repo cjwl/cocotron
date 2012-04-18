@@ -214,7 +214,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (event != NSStreamEventNone) {
         if (_callBack != NULL) {
             if (_events & event) {
-                _callBack((CFReadStreamRef)self, event, _context.info);
+                _callBack((CFReadStreamRef)self, (CFStreamEventType)event, _context.info);
             }
         } else {
             if ([_delegate respondsToSelector:@selector(stream:handleEvent:)]) {

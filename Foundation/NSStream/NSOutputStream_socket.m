@@ -211,7 +211,7 @@ static BOOL socketHasSpaceAvailable(NSSocket *socket){
     if (event != NSStreamEventNone) {
         if (_callBack != NULL) {
             if (_events & event) {
-                _callBack((CFWriteStreamRef)self, event, _context.info);
+                _callBack((CFWriteStreamRef)self, (CFStreamEventType)event, _context.info);
             }
         } else {
             if ([_delegate respondsToSelector:@selector(stream:handleEvent:)]) {

@@ -21,7 +21,7 @@
 // We should warn here, but this needs to be ignored for an app, maybe at least construct a float?
 //   NSUnimplementedMethod();
     [self dealloc];
-    return [[NSNumber alloc] initWithInteger:0]; // NSNumber is implemented
+    return (NSDecimalNumberPlaceholder *)[[NSNumber alloc] initWithInteger:0]; // NSNumber is implemented
 }
 
 

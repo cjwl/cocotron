@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - initWithObjects:(id *)objects count:(NSUInteger)count
 {
     NSDeallocateObject(self);
-    return NSArray_concreteNew(NULL, objects, count);
+    return (NSArray_placeholder *)NSArray_concreteNew(NULL, objects, count);
 }
 
 

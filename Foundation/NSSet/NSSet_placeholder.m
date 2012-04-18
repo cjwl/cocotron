@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - init
 {
     [self dealloc];
-    return NSSet_concreteNew(NULL, NULL, 0);
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, NULL, 0);
 }
 
 
@@ -30,14 +30,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [self dealloc];
 
-    return NSSet_concreteNew(NULL, objects, count);
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, objects, count);
 }
 
 
 - initWithObjects:(id *)objects count:(NSUInteger)count
 {
     [self dealloc];
-    return NSSet_concreteNew(NULL, objects, count);
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, objects, count);
 }
 
 
@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [self dealloc];
 
-    return NSSet_concreteNew(NULL, objects, count);
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, objects, count);
 }
 
 

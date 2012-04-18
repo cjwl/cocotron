@@ -18,7 +18,7 @@ static inline NSUInteger roundCapacityUp(NSUInteger capacity){
 }
 
 
-NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self, id *objects, NSUInteger count, NSZone *zone)
+NSMutableArray_concrete *NSMutableArray_concreteInit(NSMutableArray_concrete *self, id *objects, NSUInteger count, NSZone *zone)
 {
     NSUInteger i;
 
@@ -33,7 +33,7 @@ NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self, id *objects,
 }
 
 
-NSArray *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self, NSUInteger capacity, NSZone *zone)
+NSMutableArray_concrete *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self, NSUInteger capacity, NSZone *zone)
 {
     self->_count = 0;
     self->_capacity = roundCapacityUp(capacity);

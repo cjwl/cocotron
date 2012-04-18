@@ -103,7 +103,7 @@ static inline NSUInteger roundCapacityUp(NSUInteger capacity){
 }
 
 
-NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *self, const char *cString, NSUInteger length, NSZone *zone)
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *self, const char *cString, NSUInteger length, NSZone *zone)
 {
     self->_unicode = NSCharactersFromCString(cString, length, &(self->_length), zone);
     self->_capacity = self->_length;
@@ -112,7 +112,7 @@ NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *
 }
 
 
-NSString *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self, const unichar *unicode, NSUInteger length, NSZone *zone)
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self, const unichar *unicode, NSUInteger length, NSZone *zone)
 {
     NSInteger i;
 
@@ -127,7 +127,7 @@ NSString *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self, const
 }
 
 
-NSString *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self, unichar *unicode, NSUInteger length, NSZone *zone)
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self, unichar *unicode, NSUInteger length, NSZone *zone)
 {
     self->_length = length;
     self->_capacity = length;
@@ -137,7 +137,7 @@ NSString *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self,
 }
 
 
-NSString *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr *self, NSUInteger capacity, NSZone *zone)
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr *self, NSUInteger capacity, NSZone *zone)
 {
     self->_length = 0;
     self->_capacity = roundCapacityUp(capacity);
@@ -194,7 +194,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
 - initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone
 {
-    NSString *string = NSMutableString_unicodePtrInit(self, characters, length, NSZoneFromPointer(self));
+    NSMutableString_unicodePtr *string = NSMutableString_unicodePtrInit(self, characters, length, NSZoneFromPointer(self));
 
     if (freeWhenDone) {
         NSZoneFree(NSZoneFromPointer(characters), characters);
@@ -212,7 +212,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
 - initWithCStringNoCopy:(char *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone
 {
-    NSString *string = NSMutableString_unicodePtrInitWithCString(self, bytes, length, NSZoneFromPointer(self));
+    NSMutableString_unicodePtr *string = NSMutableString_unicodePtrInitWithCString(self, bytes, length, NSZoneFromPointer(self));
 
     if (freeWhenDone) {
         NSZoneFree(NSZoneFromPointer(bytes), bytes);

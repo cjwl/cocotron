@@ -267,7 +267,7 @@ CFIndex CFArrayBSearchValues(CFArrayRef self,CFRange range,const void *value,CFC
 // mutable
 CFMutableArrayRef CFArrayCreateMutable(CFAllocatorRef allocator, CFIndex capacity, const CFArrayCallBacks *callBacks)
 {
-    return [[__CFArray allocWithZone:NULL] initWithCallBacks:callBacks];
+    return (CFMutableArrayRef)[[__CFArray allocWithZone:NULL] initWithCallBacks:callBacks];
 }
 
 

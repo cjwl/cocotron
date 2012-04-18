@@ -188,7 +188,7 @@ static void transferNativeToSetWithOriginals(native_set *sset,NSMutableSet *set,
     }
 
     if (result == nil) {
-        NSSelectSet_bsd *outputSet = [[[NSSelectSet alloc] init] autorelease];
+        NSSelectSet_bsd *outputSet = (NSSelectSet_bsd *)[[[NSSelectSet alloc] init] autorelease];
         if (numFds) {
             transferNativeToSetWithOriginals(activeRead, outputSet->_readSet, _readSet, cheater);
             transferNativeToSetWithOriginals(activeWrite, outputSet->_writeSet, _writeSet, cheater);
