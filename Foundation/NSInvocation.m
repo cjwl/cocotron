@@ -444,6 +444,10 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 
                     [self setReturnValue:&value];
                 } else {
+#ifdef __clang__
+// see http://llvm.org/bugs/show_bug.cgi?id=9254
+                    @throw @"NSInvocation: current implementation of struct returning invocation is not supported by Clang.";
+#else
                     struct structReturn {
                         char result[size];
                     } (*function)() = (struct structReturn (*)())msgSendv; // should be msgSend_stret
@@ -457,6 +461,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 #endif
 
                     [self setReturnValue:&value];
+#endif
                 }
             }
             break;
