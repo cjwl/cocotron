@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSURLResponse : NSObject <NSCoding,NSCopying>
 {
-    NSString *_url;
+    NSURL *_url;
     NSString *_mimeType;
     NSInteger _expectedContentLength;
     NSString *_encoding;
@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - initWithURL:(NSURL *)url MIMEType:(NSString *)mimeType expectedContentLength:(NSInteger)expectedLength textEncodingName:(NSString *)encoding;
 
-- (NSString *)URL;
+- (NSURL *)URL;
 - (NSString *)MIMEType;
 - (long long)expectedContentLength;
 - (NSString *)textEncodingName;
