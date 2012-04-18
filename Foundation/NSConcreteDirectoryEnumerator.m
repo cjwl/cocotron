@@ -38,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if ((self = [super init])) {
         startPath = [aPath copy];
         fm = [[NSFileManager defaultManager] retain];
-        list = [[fm directoryContentsAtPath: aPath] retain];
+        list = [[fm directoryContentsAtPath: aPath] mutableCopy];
         lastFilePath = @"";
     }
     return self;
