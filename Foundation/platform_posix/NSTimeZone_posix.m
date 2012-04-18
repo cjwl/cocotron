@@ -32,6 +32,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define TZ_MAGIC "TZif"
 
+#pragma pack(push)
+#pragma pack(1)
 struct tzhead {
     char tzh_magic[4];       /* TZ_MAGIC */
     char tzh_version[1];     /* version of the file's format (as of 2005, either an ASCII NUL ('\0')
@@ -44,6 +46,13 @@ struct tzhead {
     int32_t tzh_typecnt;     /* coded number of local time types */
     int32_t tzh_charcnt;     /* coded number of abbr. chars */
 };
+
+struct tzType {
+    uint32_t offset;
+    uint8_t isDST;
+    uint8_t abbrevIndex;
+};
+#pragma pack(pop)
 
 
 // private classes
@@ -72,14 +81,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     int numberOfTransitionTimes, numberOfLocalTimes;
     int i;
 
-    #pragma pack(1)
-    const struct tzType {
-        unsigned int offset;
-        unsigned char isDST;
-        unsigned char abbrevIndex;
-    } *tzTypes;
-    #pragma pack()
-
+    const struct tzType *tzTypes;
     const char *tzTypesBytes;
     const char *abbreviations;
 
