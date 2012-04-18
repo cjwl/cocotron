@@ -658,7 +658,7 @@ CHANGE_DECLARATION(SEL)
 	implementation(self, _cmd, object, key);
 	if (shouldNotify) {
 		[self didChangeValueForKey:key];
-	}	
+	}
 }
 
 -(void)KVO_notifying_change_removeObjectForKey:(NSString*)key {
@@ -1031,7 +1031,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 
     Class currentClass = isa;
 
-    for (; currentClass && currentClass->super_class != currentClass; currentClass = currentClass->super_class) {
+    for (; currentClass && class_getSuperclass(currentClass) != currentClass; currentClass = class_getSuperclass(currentClass)) {
         unsigned int count;
         Method *methods = class_copyMethodList(currentClass, &count);
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
