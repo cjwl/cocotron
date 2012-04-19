@@ -14,20 +14,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSProxy.h>
 #import <Foundation/NSRaise.h>
 #import <objc/message.h>
 #import "forwarding.h"
 
+
+// From Apple docs:
+// Returns a Boolean value that indicates whether the receiver is an instance of given class
+// or an instance of any class that inherits from that class.
+
 BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    struct objc_class *class=object->isa;
 
-   for(;;class=class->super_class){
-    if(kindOf==class)
-     return YES;
-    if(class->isa->isa==class)
-     break;
-   }
+	while (class->isa->isa != class) {
 
+		if(kindOf == class) {
+			return YES;
+		}
+		
+		class = class->super_class;
+	}
+	
    return NO;
 }
 
@@ -63,16 +71,21 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    return self;
 }
 
+// From Apple docs:
+// Returns a Boolean value that indicates whether the receiving class is a subclass of, or identical to, a given class.
+
 +(BOOL)isSubclassOfClass:(Class)cls {
    Class check=self;
    
    do {
-    check=[check superclass];
-    
+	   
     if(check==cls)
      return YES;
-     
-   }while(check!=[NSObject class]);
+
+	check=[check superclass];
+
+   }while(check != [NSObject class] &&
+		  check != [NSProxy class]);
    
    return NO;
 }
