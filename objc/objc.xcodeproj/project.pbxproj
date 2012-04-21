@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -943,9 +943,16 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "objc" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* objc */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -1063,7 +1070,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Linux/arm;
 			};
@@ -1087,7 +1093,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Linux/arm;
 			};
@@ -1097,7 +1102,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
-				PREBINDING = NO;
 			};
 			name = Release;
 		};
@@ -1119,7 +1123,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Linux/ppc;
 			};
@@ -1143,7 +1146,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Linux/ppc;
 			};
@@ -1167,7 +1169,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Linux/i386;
 			};
@@ -1191,7 +1192,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Solaris/sparc;
 			};
@@ -1201,7 +1201,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				PRODUCT_NAME = objc;
 				ZERO_LINK = NO;
@@ -1225,7 +1224,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -1248,7 +1246,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Darwin/ppc;
 			};
@@ -1276,7 +1273,6 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Windows/i386;
 			};
@@ -1287,7 +1283,6 @@
 			buildSettings = {
 				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
-				PREBINDING = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
@@ -1315,7 +1310,6 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Windows/i386;
 			};
@@ -1339,7 +1333,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Linux/i386;
 			};
@@ -1363,7 +1356,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Solaris/sparc;
 			};
@@ -1373,7 +1365,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				PRODUCT_NAME = objc;
 				ZERO_LINK = NO;
@@ -1398,7 +1389,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -1422,7 +1412,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -1445,7 +1434,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Darwin/x86_64;
 			};
@@ -1468,7 +1456,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -1491,7 +1478,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/arwin/i386;
 			};
@@ -1514,7 +1500,6 @@
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = objc;
 				SYMROOT = build/Darwin/ppc;
 			};

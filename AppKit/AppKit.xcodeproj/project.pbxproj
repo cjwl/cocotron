@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -5231,7 +5231,7 @@
 		FED38C3310E13DCA00A2A651 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CATransform3D.m; path = ../QuartzCore/CATransform3D.m; sourceTree = SOURCE_ROOT; };
 		FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = QuartzCore.xcodeproj; sourceTree = "<group>"; };
 		FED56E6411A2D87100D6D09B /* CGGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGradient.m; sourceTree = "<group>"; };
-		FEDE655E1210A294003D3EF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Cocotron/1.0/Windows/i386/Frameworks/CoreData.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		FEDE655E1210A294003D3EF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Cocotron/1.0/Windows/i386/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		FEDEA8AC12C112E5008E5A59 /* CATransactionGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransactionGroup.m; sourceTree = "<group>"; };
 		FEDEA8B212C112EE008E5A59 /* CATransactionGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransactionGroup.h; sourceTree = "<group>"; };
 		FEDEA95312C13368008E5A59 /* CABase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CABase.m; sourceTree = "<group>"; };
@@ -8700,8 +8700,11 @@
 /* Begin PBXProject section */
 		6E2B57700976075500DA0954 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -11340,7 +11343,6 @@
 					"-Wl,--image-base=0x20000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Windows/i386;
 			};
@@ -11400,7 +11402,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Linux/i386;
@@ -11453,7 +11454,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Linux/i386;
 			};
@@ -11510,7 +11510,6 @@
 					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Darwin/i386;
@@ -11567,7 +11566,6 @@
 					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Darwin/i386;
 			};
@@ -11630,7 +11628,6 @@
 					"-Wl,--image-base=0x20000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Windows/i386;
@@ -11683,7 +11680,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = build/FreeBSD/i386;
@@ -11734,7 +11730,6 @@
 					"-lfreetype",
 					"-lfontconfig",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/FreeBSD/i386;
 			};
@@ -11773,7 +11768,6 @@
 					"-framework",
 					ApplicationServices,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/MacOS/i386;
@@ -11828,7 +11822,6 @@
 					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
-				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/MacOS/i386;
 			};
