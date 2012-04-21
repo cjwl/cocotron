@@ -878,9 +878,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_fieldEditCell:(NSCell *)cell row:(int)row column:(int)column {
    [self selectCell:cell];
 
-   _currentEditor=[[self window] fieldEditor:YES forObject:self];
-   _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-   [_currentEditor retain];
+    NSText *editor=[[self window] fieldEditor:YES forObject:self];
+    _currentEditor=[[cell setUpFieldEditorAttributes:editor] retain];
 }
 
 -(void)_selectTextCell:(NSCell *)cell {
