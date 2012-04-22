@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32EventInputSource.h"
 
 #import "opengl_dll.h"
+#define WM_MSG_DEBUGGING 0
 
 @implementation Win32Window
 
@@ -475,7 +476,12 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)makeKey {
-   SetActiveWindow(_handle);
+    
+	// SetForegroundWindow() seems to handle all kinds of windows. SetActiveWindow() seemed
+	// to leave secondary windows deactivated meaning the user had to click on a primary window
+	// first and then the secondary window in order to reset the focus. This makes it all
+	// happen as expected.
+	SetForegroundWindow(_handle);
 }
 
 -(void)makeMain {
@@ -1226,6 +1232,51 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    return 0;
 }
 
+// According the Microsoft Docs and general web opinion handling window size and move operations
+// via WM_WINDOWPOSCHANGED is much more efficient than WM_SIZE and WM_MOVE. Implementing a WM_WINDOWPOSCHANGED
+// handler means that WM_SIZE and WM_MOVE are no longer delivered.
+- (int)WM_WINDOWPOSCHANGED_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+    
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_WINDOWPOSCHANGED_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
+	
+	WINDOWPOS* pWP = (WINDOWPOS*)lParam;
+	
+    if (!(pWP->flags & SWP_NOMOVE)) {
+		[_delegate platformWindowWillMove:self];
+		CGRect frame=_frame;
+		frame.origin = CGPointMake(pWP->x, pWP->y);
+		frame = convertFrameFromWin32ScreenCoordinates(frame);
+		[_delegate platformWindow:self frameChanged:frame didSize:NO];
+		[_delegate platformWindowDidMove:self];
+    }
+    if (!(pWP->flags & SWP_NOSIZE)) {
+		// Sizing can of course change the origin as well as the size - so handle them all
+		CGRect frame=_frame;
+		frame.origin = CGPointMake(pWP->x, pWP->y);
+		frame.size = CGSizeMake(pWP->cx, pWP->cy);
+		frame = convertFrameFromWin32ScreenCoordinates(frame);
+		[self invalidateContextsWithNewSize: frame.size];
+		[_delegate platformWindow:self frameChanged:frame didSize:YES];
+        
+		_sentBeginSizing=NO;
+        
+		switch(_backingType){
+				
+			case CGSBackingStoreRetained:
+			case CGSBackingStoreNonretained:
+				break;
+				
+			case CGSBackingStoreBuffered:
+				[_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
+				break;
+		}
+    }
+	
+	return 0;
+}
+
 -(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
     [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
     return 0;
@@ -1382,7 +1433,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     switch(wParam&0xFFF0){
    
         case SC_MAXIMIZE:
+            [_delegate platformWindowWillBeginSizing:self];
             [_delegate platformWindowShouldZoom:self];
+            [_delegate platformWindowDidEndSizing:self];
             return 0;
         
         case SC_MINIMIZE:
@@ -1417,8 +1470,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
     case WM_ACTIVATE:      return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
     case WM_MOUSEACTIVATE: return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
-    case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
-    case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
+    case WM_WINDOWPOSCHANGED:	return [self WM_WINDOWPOSCHANGED_wParam: wParam lParam: lParam];
+//    case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
+//    case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
     case WM_PAINT:         return [self WM_PAINT_wParam:wParam lParam:lParam];
     case WM_CLOSE:         return [self WM_CLOSE_wParam:wParam lParam:lParam];
     case WM_SETCURSOR:     return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
