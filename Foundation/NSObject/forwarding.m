@@ -101,11 +101,7 @@ void NSObjCForward_stret(void *returnValue,id object,SEL selector,...){
 #ifdef SOLARIS
 id objc_msgForward(id object, SEL message, ...)
 {
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
     Class class = object_getClass(object);
-#else
-    Class class = object->isa;
-#endif
     struct objc_method *method;
     va_list arguments;
     unsigned i, frameLength, limit;
@@ -115,11 +111,7 @@ id objc_msgForward(id object, SEL message, ...)
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
         return nil;
     }
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
     IMP imp = method_getImplementation(method);
-#else
-    IMP imp = method->method_imp;
-#endif
     frameLength = imp(object, @selector(_frameLengthForSelector:), message);
     frame = __builtin_alloca(frameLength);
 
@@ -131,11 +123,8 @@ id objc_msgForward(id object, SEL message, ...)
     }
 
     if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
         imp = method_getImplementation(method);
-#else
-        imp = method->method_imp;
-#endif
+
         return imp(object, @selector(forwardSelector:arguments:), message, frame);
     } else {
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
@@ -152,20 +141,13 @@ void objc_msgForward_stret(void *result, id object, SEL message, ...)
 
 id objc_msgForward(id object, SEL message, ...)
 {
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
     Class class = object_getClass(object);
-#else
-    Class class = object->isa;
-#endif
     struct objc_method *method;
     void *arguments = &object;
 
     if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
         IMP imp = method_getImplementation(method);
-#else
-        IMP imp = method->method_imp;
-#endif
+
         return imp(object, @selector(forwardSelector:arguments:), message, arguments);
     } else {
         OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
