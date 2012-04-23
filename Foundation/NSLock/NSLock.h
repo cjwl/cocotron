@@ -16,6 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 @interface NSLock : NSObject <NSLocking>
+{
+    NSString *_name;
+}
 
 -(NSString *)name;
 -(void)setName:(NSString *)value;

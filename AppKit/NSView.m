@@ -30,7 +30,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2Context.h>
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSViewBackingLayer.h>
-#import <CoreGraphics/CGLPixelSurface.h>
 #import <CoreGraphics/CGWindow.h>
 #import <QuartzCore/CALayerContext.h>
 #import <QuartzCore/CATransaction.h>
@@ -182,8 +181,7 @@ static BOOL NSViewLayersEnabled=NO;
    
    [_layerContext invalidate];
    [_layerContext release];
-   [_overlay release];
-   
+
    [super dealloc];
 }
 
@@ -481,35 +479,37 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setHidden:(BOOL)flag {
-   flag=flag?YES:NO;
+    flag=flag?YES:NO;
 
-   if (_isHidden != flag)
-   {
-    invalidateTransform(self);
-      if ((_isHidden = flag))
-      {
-         id view=[_window firstResponder];
-         if ([view isKindOfClass:[NSView class]])
-            for (; view; view = [view superview])
-            {
-               if (self==view)
-               {
-                  [_window makeFirstResponder:[self nextValidKeyView]];
-                  break;
-               }
-            }
-      }
+    if (_isHidden != flag) {
+        invalidateTransform(self);
+        if ((_isHidden = flag)) {
+            id view=[_window firstResponder];
+            
+            if ([view isKindOfClass:[NSView class]])
+                for (; view; view = [view superview]) {
+                    if (self==view) {
+                        [_window makeFirstResponder:[self nextValidKeyView]];
+                        break;
+                    }
+                }
+        }
 
-      [[self superview] setNeedsDisplay:YES];
+        [[self superview] setNeedsDisplay:YES];
+      
+        if(_isHidden)
+            [self viewDidHide];
+        else
+            [self viewDidUnhide];
    }
 }
 
 -(void)viewDidHide {
-   NSUnimplementedMethod();
+    // do nothing?
 }
 
 -(void)viewDidUnhide {
-   NSUnimplementedMethod();
+    // do nothing?
 }
 
 -(BOOL)canBecomeKeyView {
@@ -527,8 +527,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSView *)nextValidKeyView {
    NSView *result=[self nextKeyView];
 
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result nextKeyView];
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        
+        result=[result nextKeyView];
+    }
+    
 
    return result;
 }
@@ -538,12 +544,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSView *)previousValidKeyView {
-   NSView *result=[self previousKeyView];
-
-   while(result!=nil && ![result canBecomeKeyView])
-    result=[result previousKeyView];
-
-   return result;
+    NSView *result=[self previousKeyView];
+    
+    while(result!=nil && ![result canBecomeKeyView]) {
+        // prevent an infinite loop
+        if(result==self)
+            return nil;
+        result=[result previousKeyView];
+    }
+    
+    return result;
 }
 
 -(NSMenu *)menu {
@@ -740,15 +750,17 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self resizeSubviewsWithOldSize:oldSize];
    }
 
-   if(_superview==nil)
-    [_overlay setFrame:_frame];
-   else
-    [_overlay setFrame:[_superview convertRect:_frame toView:nil]];
-   
-	invalidateTransform(self);
-	
-	if(_postsNotificationOnFrameChange)
-		[[NSNotificationCenter defaultCenter] postNotificationName:NSViewFrameDidChangeNotification object:self];
+    NSRect layerFrame=_frame;
+    
+    if(_superview!=nil)
+        layerFrame=[_superview convertRect:layerFrame toView:nil];
+    
+    [_layerContext setFrame:layerFrame];
+       
+   invalidateTransform(self);
+
+   if(_postsNotificationOnFrameChange)
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSViewFrameDidChangeNotification object:self];
 }
 
 -(void)setFrameSize:(NSSize)size {
@@ -813,40 +825,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    _postsNotificationOnBoundsChange=flag;
 }
 
--(void)_setOverlay:(CGLPixelSurface *)overlay {
-   if(overlay!=_overlay){
-    [[[self window] platformWindow] removeOverlay:_overlay];
-
-    overlay=[overlay retain];
-    [_overlay release];
-    _overlay=overlay;
-    
-    if(_superview==nil)
-     [_overlay setFrame:[self frame]];
-    else
-     [_overlay setFrame:[_superview convertRect:[self frame] toView:nil]];
-     
-    if(_overlay!=nil)
-     [[[self window] platformWindow] addOverlay:_overlay];
-   }
-}
-
 -(void)_setWindow:(NSWindow *)window {
-   [self viewWillMoveToWindow:window];
-
-   if(_overlay!=nil)
-    [[_window platformWindow] removeOverlay:_overlay];
+    if(_window!=window)
+        [self setNextKeyView:nil];
     
-   _window=window;
-   
-   if(_overlay!=nil)
-    [[_window platformWindow] addOverlay:_overlay];
+    [self viewWillMoveToWindow:window];
     
-   [_subviews makeObjectsPerformSelector:_cmd withObject:window];
-   _validTrackingAreas=NO;
-   [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
-
-   [self viewDidMoveToWindow];
+    _window=window;
+    
+    [_subviews makeObjectsPerformSelector:_cmd withObject:window];
+    _validTrackingAreas=NO;
+    [_window invalidateCursorRectsForView:self]; // this also invalidates tracking areas
+    
+    if([_window autorecalculatesKeyViewLoop])
+        [_window recalculateKeyViewLoop];
+    
+    [self viewDidMoveToWindow];
 }
 
 -(void)_setSuperview:superview {
@@ -960,8 +954,12 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)setNextKeyView:(NSView *)next {
-   _nextKeyView=next;
-   [_nextKeyView _setPreviousKeyView:self];
+    if(next==nil)
+        [_nextKeyView _setPreviousKeyView:nil];
+    else
+        [_nextKeyView _setPreviousKeyView:self];
+
+    _nextKeyView=next;
 }
 
 -(BOOL)acceptsFirstMouse:(NSEvent *)event {
@@ -1458,7 +1456,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)_removeLayerFromSuperlayer {
    [_layer removeFromSuperlayer];    
-   [self _setOverlay:nil];
    [_layerContext invalidate];
    [_layerContext release];
    _layerContext=nil;
@@ -1468,7 +1465,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    if([_superview layer]==nil){
     _layerContext=[[CALayerContext alloc] initWithFrame:[self frame]];
     [_layerContext setLayer:_layer];
-    [self _setOverlay:[_layerContext pixelSurface]];
    }
 }
 
@@ -2261,23 +2257,24 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 }
 
 -(void)scrollWheel:(NSEvent *)event {
-   NSScrollView *scrollView=[self enclosingScrollView];
-
-   if(scrollView!=nil){
-    NSRect bounds=[self bounds];
-    NSRect visible=[self visibleRect];
-    float  direction=[self isFlipped]?-1:1;
-
-    visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
-
-// Something equivalent to this should be in scrollRectToVisible:
-    if(visible.origin.y<bounds.origin.y)
-     visible.origin.y=bounds.origin.y;
-    if(NSMaxY(visible)>NSMaxY(bounds))
-     visible.origin.y=NSMaxY(bounds)-visible.size.height;
-
-    [self scrollRectToVisible:visible];
-   }
+    NSScrollView *scrollView=[self enclosingScrollView];
+    
+    if(scrollView!=nil){
+        NSView *documentView=[scrollView documentView];
+        NSRect bounds=[documentView bounds];
+        NSRect visible=[documentView visibleRect];
+        float  direction=[documentView isFlipped]?-1:1;
+        
+        visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
+        
+        // Something equivalent to this should be in scrollRectToVisible:
+        if(visible.origin.y<bounds.origin.y)
+            visible.origin.y=bounds.origin.y;
+        if(NSMaxY(visible)>NSMaxY(bounds))
+            visible.origin.y=NSMaxY(bounds)-visible.size.height;
+        
+        [documentView scrollRectToVisible:visible];
+    }
 }
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {

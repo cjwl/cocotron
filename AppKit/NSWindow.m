@@ -73,6 +73,65 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)_setKeyWindow:(NSWindow *)window;
 @end
 
+@interface _NSKeyViewPosition : NSObject {
+    NSView *_view;
+    NSRect  _rect;
+}
+
++(NSArray *)sortedKeyViewPositionsWithView:(NSView *)view;
+
+-initWithView:(NSView *)view;
+
+-(NSView *)view;
+
+-(NSComparisonResult)compareKeyViewPosition:(_NSKeyViewPosition *)other;
+
+@end
+
+@implementation _NSKeyViewPosition
+
++(void)addKeyViewPositionsWithView:(NSView *)view toArray:(NSMutableArray *)array {
+    [array addObject:[[[_NSKeyViewPosition alloc] initWithView:view] autorelease]];
+    
+    for(NSView *child in [view subviews])
+        [self addKeyViewPositionsWithView:child toArray:array];
+}
+
++(NSArray *)sortedKeyViewPositionsWithView:(NSView *)view {
+    NSMutableArray *result=[NSMutableArray array];
+    
+    [self addKeyViewPositionsWithView:view toArray:result];
+    [result sortUsingSelector:@selector(compareKeyViewPosition:)];
+    
+    return result;
+}
+
+-initWithView:(NSView *)view {
+    _view=view;
+    _rect=[[_view superview] convertRect:[_view frame] toView:nil];
+    return self;
+}
+
+-(NSView *)view {
+    return _view;
+}
+
+-(NSComparisonResult)compareKeyViewPosition:(_NSKeyViewPosition *)other {
+
+    // Sort by larger Y (cartesian coordinates)
+    if(NSMaxY(_rect)<NSMaxY(other->_rect))
+        return NSOrderedDescending;
+    else {    
+        // Then sort by smaller X
+        if(NSMinX(_rect)<NSMinX(other->_rect))
+            return NSOrderedAscending;
+        else
+            return NSOrderedDescending;
+    }
+}
+
+@end
+
 @implementation NSWindow
 
 +(NSWindowDepth)defaultDepthLimit {
@@ -525,7 +584,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)autorecalculatesKeyViewLoop {
-   return _autorecalculatesKeyViewLoop;
+    return _autorecalculatesKeyViewLoop;
 }
 
 -(BOOL)canHide {
@@ -697,7 +756,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     }
 
        if(changed){
-     [self setFrame:frame display:YES];
+        [self setFrame:frame display:YES];
        }
        
     _makeSureIsOnAScreen=NO;
@@ -1055,16 +1114,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)setWindowController:(NSWindowController *)value {
    _windowController=value;
-/*
-   Cocoa does not setReleasedWhenClosed:NO when setWindowController: is called.
-   The NSWindowController class does setReleasedWhenClosed:NO in conjunction with setWindowController:
-   
-   However, there is one application (AC), which calls setWindowController: standalone and does
-   _something else_ which also does setReleasedWhenClosed:NO. Perhaps some byproduct of NSDOcument, NSWindowController or NSWindow.
-   THis hasn't been figured out yet. So, in the meantime we do setReleasedWhenClosed:NO since all cases which do call setWindowCOntroller: also
-   want setReleasedWhenClosed:NO.
- */
-   [self setReleasedWhenClosed:NO];
 }
 
 -(void)setDocumentEdited:(BOOL)flag {
@@ -1092,7 +1141,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setAutorecalculatesKeyViewLoop:(BOOL)value {
-   _autorecalculatesKeyViewLoop=value;
+    _autorecalculatesKeyViewLoop=value;
 }
 
 -(void)setCanHide:(BOOL)value {
@@ -1522,12 +1571,25 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)makeKeyWindow {
-   [[self platformWindow] makeKey];
-   
-   if(!_hasBeenOnScreen){
-    _hasBeenOnScreen=YES;
-   [self makeFirstResponder:[self initialFirstResponder]];
-}
+    [[self platformWindow] makeKey];
+    
+    if(!_hasBeenOnScreen){
+        _hasBeenOnScreen=YES;
+        
+        // Ref. http://www.cocoadev.com/index.pl?KeyViewLoopGuidelines
+        
+        // If there is an initial first responder there is a manual key view loop and we don't calculate one
+        if([self initialFirstResponder]!=nil)
+            [self makeFirstResponder:[self initialFirstResponder]];
+        else {
+            // otherwise calculate one and set the first responder
+            
+            [self recalculateKeyViewLoop];
+            
+            if([self firstResponder]==self)
+                [self makeFirstResponder:[_contentView nextValidKeyView]];
+        }
+    }
 }
 
 -(void)makeMainWindow {
@@ -1604,6 +1666,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)selectKeyViewFollowingView:(NSView *)view {
    NSView *next=[view nextValidKeyView];
+      
    [self makeFirstResponder:next];
 }
 
@@ -1613,8 +1676,30 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [self makeFirstResponder:next];
 }
 
+-(void)recalculateKeyViewLoopIfNeeded {
+    if(YES){
+      //  _needsKeyViewLoop=NO;
+        
+        NSArray *sorted=[_NSKeyViewPosition sortedKeyViewPositionsWithView:_contentView];
+        NSUInteger i,count=[sorted count];
+        
+        for(i=0;i<count;i++){
+            _NSKeyViewPosition *position=[sorted objectAtIndex:i];
+            
+            if(i+1<count){
+                [[position view] setNextKeyView:[[sorted objectAtIndex:i+1] view]];
+            }
+            else {
+                [[position view] setNextKeyView:[[sorted objectAtIndex:0] view]];
+            }
+        }
+    }
+}
+
 -(void)recalculateKeyViewLoop {
-//   NSUnimplementedMethod();
+    //_needsKeyViewLoop=YES;
+    // This should be deferred
+    [self recalculateKeyViewLoopIfNeeded];
 }
 
 -(NSSelectionDirection)keyViewSelectionDirection {
@@ -1668,10 +1753,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)setViewsNeedDisplay:(BOOL)flag {
    if(flag && !_viewsNeedDisplay){
     // NSApplication does a _displayAllWindowsIfNeeded before every event, but there are some things which wont generate
-    // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this
-	   
+    // an event such as performOnMainThread, so we do the callout here too. There is probably a better way to do this	   
 	   [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil]; // Be sure we don't accumulate unneeded perform operations
-	   [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+	   [[NSRunLoop currentRunLoop] performSelector:@selector(_displayAllWindowsIfNeeded) target:NSApp argument:nil order:0 modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode, nil]];
    }
 	_viewsNeedDisplay=flag;
 }
@@ -2323,6 +2407,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 	}
 }
 
+-(void)platformWindowShouldZoom:(CGWindow *)window {
+    [self zoom:nil];
+}
+
 -(void)miniaturize:sender {
    [[self platformWindow] miniaturize];
 }
@@ -2637,8 +2725,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindowMiniaturized:(CGWindow *)window {
-   _isActive=NO;
-
+    _isActive=NO;
+    
    [self _updatePlatformWindowTitle];
    if(_sheetContext!=nil){
     [[_sheetContext sheet] orderWindow:NSWindowOut relativeTo:0];
@@ -2659,7 +2747,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize {
-   _frame=frame;
+    // We don't want the miniaturized frame.
+   if(![self isMiniaturized])
+    _frame=frame;
    
    _makeSureIsOnAScreen=YES;
 
@@ -2956,7 +3046,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    return cursorIsSet;
 }
 
--(NSUndoManager *)undoManager {
+-(NSUndoManager *)undoManager {    
     if ([_delegate respondsToSelector:@selector(windowWillReturnUndoManager:)])
         return [_delegate windowWillReturnUndoManager:self];
     
@@ -2969,7 +3059,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     //  If the delegate does not implement this method, the NSWindow creates an NSUndoManager for the window and all its views. -- seems like some duplication vs. NSDocument, but oh well..
     if (_undoManager == nil){
         _undoManager = [[NSUndoManager alloc] init];
-        [_undoManager setRunLoopModes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSEventTrackingRunLoopMode,nil]];
+        [_undoManager setRunLoopModes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode,nil]];
     }
 
     return _undoManager;

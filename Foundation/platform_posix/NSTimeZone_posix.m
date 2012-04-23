@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - David Young <daver@geeks.org>
-#import <time.h>
+#include <time.h>
 #import <Foundation/NSTimeZone_posix.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSString.h>
@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaiseException.h>
 
-// structures in tzfiles are big-endian, from public doman tzfile.h
+// structures in tzfiles are big-endian, from public domain tzfile.h
 
 #define	TZ_MAGIC	"TZif"
 
@@ -74,7 +74,7 @@ struct tzhead {
 NSInteger sortTransitions(id trans1, id trans2, void *context) {
     NSDate  *d1 = [trans1 transitionDate];
     NSDate  *d2 = [trans2 transitionDate];
-    
+
     return [d1 compare:d2];
 }
 
@@ -84,27 +84,32 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         const struct    tzhead *tzHeader;
         const char      *tzData;
         const char      *typeIndices;
-        int             numberOfGMTFlags, numberOfStandardFlags;
-        int             numberOfTransitionTimes, numberOfLocalTimes, numberOfAbbreviationCharacters;
-        int             i;
-    
+        //unused
+        //int             numberOfGMTFlags, numberOfStandardFlags, numberOfAbbreviationCharacters;
+        int             numberOfTransitionTimes, numberOfLocalTimes;
+        int             i;        
+    #pragma pack(1)
         const struct tzType {
             unsigned int offset;
             unsigned char isDST;
             unsigned char abbrevIndex;
         } *tzTypes;
+    #pragma pack()
+    
         const char *tzTypesBytes;
         const char *abbreviations;
 
         if (data == nil) {
             NSString    *zonePath = [NSTimeZone_posix _zoneinfoPath];
-            
+
             zonePath = [zonePath stringByAppendingPathComponent:name];
 
             data = [NSData dataWithContentsOfFile:zonePath];
         }
-        if (data == nil)
+        if (data == nil) {
+            [self release];
             return nil;
+        }
 
         transitions = [NSMutableArray array];
         sortedTransitions = [NSArray array];
@@ -112,12 +117,13 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
         tzHeader= (struct tzhead *)[data bytes];
         tzData=(const char *)tzHeader+sizeof(struct tzhead);
-        
-        numberOfGMTFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisgmtcnt));
-        numberOfStandardFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisstdcnt));
+
+        //unused
+        //numberOfGMTFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisgmtcnt));
+        //numberOfStandardFlags = NSSwapBigIntToHost(*((int *)tzHeader->tzh_ttisstdcnt));
+        //numberOfAbbreviationCharacters = NSSwapBigIntToHost(*((int *)tzHeader->tzh_charcnt));
         numberOfTransitionTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_timecnt));
         numberOfLocalTimes = NSSwapBigIntToHost(*((int *)tzHeader->tzh_typecnt));
-        numberOfAbbreviationCharacters = NSSwapBigIntToHost(*((int *)tzHeader->tzh_charcnt));
 
         typeIndices = tzData+(numberOfTransitionTimes * 4);
         for (i = 0; i < numberOfTransitionTimes; ++i) {
@@ -126,22 +132,23 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
                 timeZoneTransitionWithTransitionDate:d1
                                            typeIndex:typeIndices[i]]];
         }
-    
+
         //sort date array
         sortedTransitions = [transitions sortedArrayUsingFunction:sortTransitions context:NULL];
 
         // this is a bit more awkward, but i want to support non-3 character abbreviations theoretically.
         tzTypesBytes = (tzData+(numberOfTransitionTimes * 5));
-        abbreviations = tzTypesBytes + numberOfLocalTimes * 6; //sizeof struct tzType
+        abbreviations = tzTypesBytes + numberOfLocalTimes * sizeof(struct tzType);
         for (i = 0; i < numberOfLocalTimes; ++i) {
-            
          tzTypes=(struct tzType *)tzTypesBytes;
             NSString *abb = [NSString stringWithCString:abbreviations+tzTypes->abbrevIndex];
+            if(name == nil) {
+                name = abb;
+            }
             [types addObject:[NSTimeZoneType timeZoneTypeWithSecondsFromGMT:NSSwapBigIntToHost(tzTypes->offset)
                                                                         isDaylightSavingTime:tzTypes->isDST
                                                                                 abbreviation:[NSString stringWithCString:abbreviations+tzTypes->abbrevIndex]]];
-            tzTypesBytes += 6;	// wtf, implementing as arrays didn't work.
-            				// a-ha! sizeof(struct tzType) returns *8*, not 6 as it should!!!
+            tzTypesBytes += sizeof(struct tzType);
         }
 
         return [self initWithName:name data:data transitions:sortedTransitions types:types];
@@ -173,33 +180,45 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     return _data;
 }
 
-+(NSTimeZone *)systemTimeZone {
-    
-    NSTimeZone      *systemTimeZone = nil;
-    NSString        *timeZoneName;
-    NSInteger       secondsFromGMT;
-    NSDictionary    *dictionary;
++(NSTimeZone *)systemTimeZone {    
+    NSTimeZone          *systemTimeZone = nil;
+    NSString            *timeZoneName;
+    NSInteger           secondsFromGMT;
+    NSDictionary        *dictionary;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/localtime"] == YES) {
         NSError     *error;
         NSString    *path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:@"/etc/localtime" error:&error];
         
-        timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
-        
-        systemTimeZone = [self timeZoneWithName:timeZoneName];
+        if(path != nil) {
+            //localtime is a symlink
+            timeZoneName = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [NSTimeZone_posix _zoneinfoPath]] withString:@""];
+            systemTimeZone = [self timeZoneWithName:timeZoneName];        
+        }
+        else {
+            //localtime is a file
+            systemTimeZone = [[[NSTimeZone alloc] initWithName:nil data:[NSData dataWithContentsOfFile:@"/etc/localtime"]] autorelease];
+        }
     }
-
-#ifdef LINUX
-// FIXME: BSD does not have 'timezone' or __timezone
+    
+    if (systemTimeZone == nil) {
+        //try to use TZ environment variable
+        const char  *envTimeZoneName = getenv("TZ");
+        
+        if (envTimeZoneName != NULL) {
+            systemTimeZone = [self timeZoneWithName:[NSString stringWithCString:envTimeZoneName]];        
+        }
+    }
 
     if (systemTimeZone == nil) {
         NSString        *abbreviation;
-        
+
         tzset();
         abbreviation = [NSString stringWithCString:tzname[0]];
-        
+
         systemTimeZone = [self timeZoneWithAbbreviation:abbreviation];
-        
+
+#ifdef LINUX
         if(systemTimeZone == nil) {
             //check if the error is because of a missing entry in NSTimeZoneAbbreviations.plist (only for logging)
             if([[self abbreviationDictionary] objectForKey:abbreviation] == nil) {
@@ -209,18 +228,18 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
                 NSCLog("TimeZone [%s] not instantiable -> using absolute timezone (no daylight saving)", [[[self abbreviationDictionary] objectForKey:abbreviation] cString]);
             }
 
-            systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:-timezone];
+            systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:timezone];
         }
-    }
 #endif
+    }
     
     return systemTimeZone;
 }
 
--(NSTimeZoneType *)timeZoneTypeForDate:(NSDate *)date {    
+-(NSTimeZoneType *)timeZoneTypeForDate:(NSDate *)date {
     if ([_timeZoneTransitions count] == 0 ||
         [date compare:[[_timeZoneTransitions objectAtIndex:0] transitionDate]] == NSOrderedAscending) {
-        
+
         NSEnumerator *timeZoneTypeEnumerator = [_timeZoneTypes objectEnumerator];
         NSTimeZoneType *type;
 
@@ -231,7 +250,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
 
         return [_timeZoneTypes objectAtIndex:0];
     }
-    else {        
+    else {
         NSEnumerator *timeZoneTransitionEnumerator = [_timeZoneTransitions objectEnumerator];
         NSTimeZoneTransition *transition, *previousTransition = nil;
 
@@ -242,10 +261,12 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
             else
                 return [_timeZoneTypes objectAtIndex:[previousTransition typeIndex]];
         }
+        
+        return [_timeZoneTypes lastObject];
     }
-
+    //don't use date description in exception text, because of recursion
     [NSException raise:NSInternalInconsistencyException
-                format:@"%@ could not determine seconds from GMT for %@", self, date];
+                format:@"%@ could not determine seconds from GMT for timeInterval %d since reference date", self, [date timeIntervalSinceReferenceDate]];
     return nil;
 }
 
@@ -283,8 +304,8 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     _data = [[coder decodeObject] retain];
     _timeZoneTransitions = [[coder decodeObject] retain];
     _timeZoneTypes = [[coder decodeObject] retain];
-    
-    return self;    
+
+    return self;
 }
 
 +(NSString*)_zoneinfoPath
@@ -293,7 +314,7 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
     if(zoneinfoPath == nil) {
         BOOL            isDir;
         NSFileManager   *fileManager = [NSFileManager defaultManager];
-        
+
         //we can create some subclasses for all os or a method on NSPlatform instead of this if else cascade
         if ([fileManager fileExistsAtPath:@"/usr/share/zoneinfo" isDirectory:&isDir] && isDir) { // os x & linux
             return @"/usr/share/zoneinfo";
@@ -307,6 +328,8 @@ NSInteger sortTransitions(id trans1, id trans2, void *context) {
         else {
             [NSException raise:NSInternalInconsistencyException
                         format:@"could not find zoneinfo directory"];
+            // compiler does not know if NSException+raise:… throws
+            return nil;
         }
     }
     else {

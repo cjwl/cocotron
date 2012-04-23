@@ -12,17 +12,6 @@
 		FE43023E11E2599200EBDD56 /* Quartz.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43023D11E2599200EBDD56 /* Quartz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE43023A11E2597B00EBDD56 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FE43021F11E2593F00EBDD56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -227,7 +216,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
-				FE43023A11E2597B00EBDD56 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE43023011E2595300EBDD56 /* PBXTargetDependency */,

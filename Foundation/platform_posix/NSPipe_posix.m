@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <Foundation/NSRaiseException.h>
 
-#import <unistd.h>
-#import <errno.h>
+#include <unistd.h>
+#include <errno.h>
 
 @implementation NSPipe_posix
 

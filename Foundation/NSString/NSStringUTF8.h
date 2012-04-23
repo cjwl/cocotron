@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 unichar *NSUTF8ToUnicode(const char *utf8,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone);
 
+NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength);
 char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,
   BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 

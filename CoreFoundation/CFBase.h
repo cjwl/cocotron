@@ -7,19 +7,19 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <sys/types.h>
-#import <stdlib.h>
-#import <ctype.h>
-#import <errno.h>
-#import <float.h>
-#import <limits.h>
-#import <math.h>
-#import <stdarg.h>
-#import <stddef.h>
-#import <stdio.h>
-#import <string.h>
-#import <assert.h>
-#import <stdint.h>
-#import <time.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <errno.h>
+#include <float.h>
+#include <limits.h>
+#include <math.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include <stdint.h>
+#include <time.h>
 
 #ifdef __cplusplus
 
@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #if defined(COREFOUNDATION_INSIDE_BUILD)
 #define COREFOUNDATION_EXPORT extern "C" __declspec(dllexport)
 #else
-#define COREFOUNDATION_EXPORT extern "C" __declspec(dllimport) 
+#define COREFOUNDATION_EXPORT extern "C" __declspec(dllimport)
 #endif
 #else
 #define COREFOUNDATION_EXPORT extern "C"
@@ -50,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 /* Apple's Foundation imports CoreGraphics in order to get some of the basic CG* types, unfortunately
    this is a hassle on platforms where you just want to use Foundation, so we put them in CoreFoundation and see what happens
 */
- 
+
 enum
 {
 	kCFNotFound = LONG_MAX
@@ -60,10 +60,12 @@ enum
 typedef double CGFloat;
 #define CGFLOAT_MIN DBL_MIN
 #define CGFLOAT_MAX DBL_MAX
+#define CGFLOAT_SCAN  "%lg"
 #else
 typedef float CGFloat;
 #define CGFLOAT_MIN FLT_MIN
 #define CGFLOAT_MAX FLT_MAX
+#define CGFLOAT_SCAN  "%g"
 #endif
 
 typedef struct CGPoint {
@@ -80,7 +82,7 @@ typedef struct CGRect {
    CGPoint origin;
    CGSize  size;
 } CGRect;
- 
+
 
 typedef unsigned short UniChar;
 typedef unsigned long UTF32Char;
@@ -88,8 +90,14 @@ typedef float Float32;
 typedef double Float64;
 // ---
 
-typedef unsigned CFUInteger;
-typedef int CFInteger;
+#if defined(__LP64__)
+    typedef long          CFInteger;
+    typedef unsigned long CFUInteger;
+#else
+    typedef int           CFInteger;
+    typedef unsigned int  CFUInteger;
+#endif
+
 typedef int8_t SInt8;
 typedef uint8_t UInt8;
 typedef int16_t SInt16;
@@ -119,7 +127,7 @@ typedef struct {
 
 static inline CFRange CFRangeMake(CFIndex loc,CFIndex len){
    CFRange result={loc,len};
-   
+
    return result;
 }
 

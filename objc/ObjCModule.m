@@ -11,11 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/Protocol.h>
 #import "ObjCException.h"
 #import "objc_malloc.h"
+#import "objc_protocol.h"
  
 #import <string.h>
 
+#define INITIAL_CLASS_ARRAY_SIZE 512
+
 #ifdef SOLARIS
-#define PATH_MAX 1024
+    #import <stdio.h>
+    #define PATH_MAX 1024
 #endif
 
 #ifdef WIN32
@@ -30,6 +34,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #ifdef BSD
 #import <sys/sysctl.h>
 #endif
+
+static Class *unresolvedClasses = NULL;
+static int unresolvedClassesSize = 0;
+static Class *sentLoadMessageClasses = NULL;
+static int sentLoadMessageClassesSize = 0;
+
+
 
 static OBJCArray *OBJCObjectFileImageArray(void) {
    static OBJCArray *objectFileImageArray=NULL;
@@ -246,17 +257,180 @@ static void OBJCSymbolTableRegisterSelectors(OBJCSymbolTable *symbolTable){
    }
 }
 
+void OBJCAddToUnResolvedClasses(Class class) {
+    Class superClass = class->super_class;
+    
+    //check for root object
+    if(superClass) {
+        for(int i= 0; i < unresolvedClassesSize; i++) {
+            Class currentClass = unresolvedClasses[i];
+            if(currentClass == NULL || currentClass == (Class)-1) {
+                unresolvedClasses[i] = class;
+                return;
+            }
+        }
+        int newCSize = 0;
+        if(unresolvedClassesSize == 0) {
+            newCSize = INITIAL_CLASS_ARRAY_SIZE;
+        }
+        else {
+            newCSize = 2 * unresolvedClassesSize;
+
+        }
+        unresolvedClasses = (Class *)realloc(unresolvedClasses, newCSize * sizeof(Class));
+
+        for(int i = unresolvedClassesSize;i  < newCSize;i ++) {
+            unresolvedClasses [i] = NULL;
+        }
+        unresolvedClasses[unresolvedClassesSize] = class;
+        
+        unresolvedClassesSize = newCSize;
+        
+    }    
+}
+
+BOOL OBJCCheckClassIsResolved(Class class)
+{
+    if(class->super_class == 0) {
+        //root object
+        return YES;
+    }
+    
+    Class superClass;
+    if(!(class->info&CLASS_INFO_LINKED)){
+        return NO;
+    }
+    else {
+        superClass = class_getSuperclass(class);
+    }
+    
+    if(superClass != Nil) {
+        return OBJCCheckClassIsResolved(superClass);
+    }
+    else {
+        return NO;
+    }
+    
+    
+}
+void OBJCSendLoadMessage(Class class) {
+    
+    int i = 0;
+
+    for(;i < sentLoadMessageClassesSize;i++) {
+        if(sentLoadMessageClasses[i] == NULL) {
+            break;
+        }
+        else if(sentLoadMessageClasses[i] == class) {
+            //message already sent
+            return;
+        }
+    }
+	
+	if(class->super_class != 0) {
+		//send load first to the superclass
+        OBJCSendLoadMessage(class->super_class);
+    }
+
+    //check for space and increase size if neeeded
+    if(i == sentLoadMessageClassesSize) {
+        int newCSize = 0;
+        if(sentLoadMessageClassesSize == 0) {
+            newCSize = INITIAL_CLASS_ARRAY_SIZE;
+        }
+        else {
+            newCSize = 2 * sentLoadMessageClassesSize;
+        }
+        sentLoadMessageClasses = (Class *)realloc(sentLoadMessageClasses, newCSize * sizeof(Class));        
+        for(int j=sentLoadMessageClassesSize;j < newCSize;j++) {
+            sentLoadMessageClasses [j] = NULL;
+        }
+        sentLoadMessageClasses[sentLoadMessageClassesSize] = class;
+        sentLoadMessageClassesSize = newCSize;
+    }
+	else {
+		sentLoadMessageClasses[i] = class;
+	}
+    
+       
+    Method m = class_getClassMethod(class, @selector(load));
+    if(m) {
+        IMP imp = method_getImplementation(m);
+        if(imp) {
+            (*imp)(class, @selector(load));
+        }
+    }
+}
+void OBJCSendLoadMessages() {
+    
+    //until NSObject is not in runtime we don't need to check
+    if(objc_lookUpClass("NSObject") == Nil) {
+        return;
+    }
+    
+    for(int i= 0; i < unresolvedClassesSize; i++) {
+        Class class = unresolvedClasses[i];
+        if(class == NULL) {
+            continue;
+        }
+        
+        if(OBJCCheckClassIsResolved(class) == YES) {
+            //remove it from unresolved
+            unresolvedClasses[i] = NULL;
+        }
+        else {
+            //still unresolved classes, wait for more classes
+            return;
+        }
+    }
+    
+    int   i,capacity=objc_getClassList(NULL,0);
+    Class list[capacity];
+    
+    objc_getClassList(list,capacity);
+    
+    for(i=0;i<capacity;i++){
+
+        OBJCSendLoadMessage(list[i]);
+    }
+}
+
 static void OBJCSymbolTableRegisterClasses(OBJCSymbolTable *symbolTable){
    unsigned i,count=symbolTable->classCount;
-
+    
    for(i=0;i<count;i++){
       struct objc_class *class=(struct objc_class *)symbolTable->definitions[i];
-      
+             
       // mark class and metaclass as having a direct method list pointer
       class->info|=CLASS_NO_METHOD_ARRAY;
       class->isa->info|=CLASS_NO_METHOD_ARRAY;
       
       OBJCRegisterClass(class);
+      OBJCAddToUnResolvedClasses(class);
+              
+       if(strcmp(class_getName(class), "Protocol") == 0) {
+           // Fix protocol classes where isa is not yet set. This is the case for all
+           // classes loaded before Protocol class is loaded.
+           int   i,capacity=objc_getClassList(NULL,0);
+           Class list[capacity];
+           
+           objc_getClassList(list,capacity);
+           
+           for(i=0;i<capacity;i++){
+               Class class = list[i];
+               struct objc_protocol_list *protocols;
+               
+               for(protocols=class->protocols;protocols!=NULL;protocols=protocols->next){
+                   unsigned i;
+                   
+                   for(i=0;i<protocols->count;i++){
+                       OBJCProtocolTemplate *template=(OBJCProtocolTemplate *)protocols->list[i];
+                       
+                       OBJCRegisterProtocol(template);
+                   }
+               }
+           }           
+       }
    }
 }
 
@@ -266,7 +440,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
    unsigned offset=symbolTable->classCount;
    unsigned i,count=symbolTable->categoryCount;
 
-   if(unlinkedCategories!=NULL){
+   if(unlinkedCategories!=NULL && objc_lookUpClass("Protocol") != Nil){
     int unlinkedIndex=unlinkedCategories->count;
    
     while(--unlinkedIndex>=0){
@@ -284,7 +458,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
     Category category=(Category)symbolTable->definitions[offset+i];
     Class         class=objc_lookUpClass(category->className);
 
-    if(class!=Nil)
+    if(class!=Nil && objc_lookUpClass("Protocol") != Nil)
      OBJCRegisterCategoryInClass(category,class);
 	else {
 	 if(unlinkedCategories==NULL)
@@ -440,4 +614,3 @@ const char **objc_copyImageNames(unsigned *countp) {
    
    return result;
 }
-

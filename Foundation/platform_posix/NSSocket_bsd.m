@@ -11,17 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <errno.h>
+#include <errno.h>
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <sys/ioctl.h>
-#import <unistd.h>
+#include <unistd.h>
 #import <arpa/inet.h>
 
 #ifdef __svr4__ // Solaris
 #import <sys/filio.h>
-#import <sys/signal.h>
+#import <signal.h>
 #endif
 
 @implementation NSSocket(bsd)
@@ -165,7 +165,7 @@ static inline void byteZero(void *vsrc,size_t size){
     byteZero(&try,sizeof(struct sockaddr_in));
     try.sin_addr.s_addr=address;
     try.sin_family=AF_INET;
-    try.sin_port=portNumber;
+    try.sin_port=htons(portNumber);
 
     if(connect(_descriptor,(struct sockaddr *)&try,(socklen_t)sizeof(try))==0){
      if(!block){
@@ -206,7 +206,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
-   return recv(_descriptor,(void *)buffer,length,0);
+   NSInteger i = recv(_descriptor,(void *)buffer,length,0);
+
+    return i;
 }
 
 -(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
@@ -224,6 +226,10 @@ static inline void byteZero(void *vsrc,size_t size){
     *errorp=error;
     
    return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];
+}
+
+- (CFSSLHandler*)sslHandler {
+    return nil;
 }
 
 @end

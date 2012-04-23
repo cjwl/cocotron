@@ -22,16 +22,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL hadPeriodic=[[Win32Display currentDisplay] containsAndRemovePeriodicEvents];
    MSG  msg;
 
-   if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+   if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){        
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
-
-    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg]){
+    
+    BYTE keyState[256];
+    BYTE *keyboardState=NULL;
+    
+    if(GetKeyboardState(keyState))
+        keyboardState=keyState;
+    
+    if(![(Win32Display *)[Win32Display currentDisplay] postMSG:msg keyboardState:keyboardState]){
      Win32Event *cgEvent=[Win32Event eventWithMSG:msg];
      NSEvent    *event=[[[NSEvent_CoreGraphics alloc] initWithDisplayEvent:cgEvent] autorelease];
 
      [[Win32Display currentDisplay] postEvent:event atStart:NO];
     }
-
+        
     [pool release];
     return YES;
    }

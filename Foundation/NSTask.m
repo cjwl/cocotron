@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSFileManager.h>
+#import <Foundation/NSProcessInfo.h>
 
 NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 
@@ -52,6 +53,7 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
   [standardInput release];
   [standardOutput release];
   [standardError release];
+  [environment release];
   [super dealloc];
 }
 
@@ -68,8 +70,7 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
 }
 
 -(NSDictionary *)environment {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return environment;
 }
 
 -(id)standardError {
@@ -100,7 +101,8 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
 }
 
 -(void)setEnvironment:(NSDictionary *)values {
-   NSInvalidAbstractInvocation();
+    [environment autorelease];
+    environment=[values copy];
 }
 
 -(void)setStandardInput:(id)input {
@@ -150,9 +152,10 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
 }
 
 -(void)waitUntilExit {
-   while(isRunning)
+    while(isRunning) {
      [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode 
                               beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
+}
 }
 
 -(int)processIdentifier {

@@ -260,6 +260,13 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    return YES;
 }
 
+-(BOOL)canBecomeKeyView {
+    if(![self isEditable])
+        return NO;
+    
+    return [super canBecomeKeyView];
+}
+
 -(BOOL)needsPanelToBecomeKey {
     return YES;
 }
@@ -2414,8 +2421,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSNotification *note=[NSNotification notificationWithName:NSTextDidEndEditingNotification object:self userInfo:nil];
 
    [[NSNotificationCenter defaultCenter] postNotification:note];
+   _didSendTextDidEndNotification=NO;
    }
-
    
    return YES;
 }

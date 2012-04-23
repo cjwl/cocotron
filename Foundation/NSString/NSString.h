@@ -47,6 +47,12 @@ enum {
    NSAnchoredSearch=0x08,
    NSNumericSearch= 0x40,
 };
+
+enum {
+    NSStringEncodingConversionAllowLossy=1,
+    NSStringEncodingConversionExternalRepresentation=2
+};
+
 typedef NSUInteger NSStringCompareOptions;
 typedef NSUInteger NSStringEncodingConversionOptions;
 
@@ -190,7 +196,7 @@ FOUNDATION_EXPORT const NSUInteger NSMaximumStringLength;
         allowLossyConversion:(BOOL)lossy;
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding;
 
--(BOOL)getBytes:(void *)bytes maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange;
+-(BOOL)getBytes:(void *)buffer maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange;
 
 -(const char *)UTF8String;
 

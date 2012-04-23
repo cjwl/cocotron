@@ -12,11 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTask_darwin.h>
 
 #import <rpc/types.h>
-#import <time.h>
+#include <time.h>
 #import <sys/param.h>
-#import <netdb.h>
-#import <unistd.h>
-#import <crt_externs.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <crt_externs.h>
 #import <sys/sysctl.h>
 
 // Handy functions for extracting various values from sysctl.

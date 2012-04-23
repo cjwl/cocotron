@@ -23,13 +23,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static inline void resolveStorageIfNeeded(NSConstantString *self){
 // FIX: There might be some hazard here modifying self->_length with multiple threads
    uint32_t length=self->_length;
-   
+
    if((length&(STORAGE_ASCII|STORAGE_UTF8))==0){
     NSInteger check=NSConvertUTF8toUTF16(self->_bytes,length,NULL);
-    
+
     if(check==length)
      self->_length|=STORAGE_ASCII;
-    else 
+    else
      self->_length|=STORAGE_UTF8;
    }
 }
@@ -52,7 +52,7 @@ static inline NSUInteger lengthOfUTF8(NSConstantString *self){
 
 static inline NSUInteger lengthInUnicode(NSConstantString *self){
    resolveStorageIfNeeded(self);
-   
+
    if(storageIsASCII(self))
     return lengthOfASCII(self);
    else
@@ -94,7 +94,7 @@ static inline NSUInteger lengthInUnicode(NSConstantString *self){
 
 -(unichar)characterAtIndex:(NSUInteger)location {
    NSUInteger length=lengthInUnicode(self);
-   
+
    if(location>=length)
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",location,length);
 
@@ -102,27 +102,29 @@ static inline NSUInteger lengthInUnicode(NSConstantString *self){
     return ((uint8_t *)_bytes)[location];
    else {
     unichar   unicode[length];
-    NSInteger check=NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
+    //NSInteger check=
+    NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
 
     return unicode[location];
    }
 }
 
--(void)getCharacters:(unichar *)buffer {   
+-(void)getCharacters:(unichar *)buffer {
    NSUInteger i,length=lengthInUnicode(self);
-   
+
    if(storageIsASCII(self)){
     for(i=0;i<length;i++)
      buffer[i]=((uint8_t *)_bytes)[i];
    }
    else {
     unichar   unicode[length];
-    NSInteger check=NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
+    //NSInteger check=
+    NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
 
     for(i=0;i<length;i++)
      buffer[i]=unicode[i];
    }
-   
+
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
@@ -133,14 +135,15 @@ static inline NSUInteger lengthInUnicode(NSConstantString *self){
    }
 
    NSInteger i,loc=range.location,len=range.length;
-   
+
    if(storageIsASCII(self)){
     for(i=0;i<len;i++)
      buffer[i]=((uint8_t *)_bytes)[loc+i];
    }
    else {
     unichar   unicode[length];
-    NSInteger check=NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
+    //NSInteger check=
+    NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
 
     for(i=0;i<len;i++)
      buffer[i]=unicode[loc+i];
@@ -154,7 +157,8 @@ static inline NSUInteger lengthInUnicode(NSConstantString *self){
     return NSStringHashASCII(_bytes,MIN(length,NSHashStringLength));
    else {
     unichar   unicode[length];
-    NSInteger check=NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
+    //NSInteger check=
+    NSConvertUTF8toUTF16(self->_bytes,lengthOfBytes(self),unicode);
 
     return NSStringHashUnicode(unicode,MIN(length,NSHashStringLength));
    }

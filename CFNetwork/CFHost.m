@@ -6,12 +6,12 @@
 #import <Foundation/NSHandleMonitor_win32.h>
 #undef WINVER
 #define WINVER 0x501
-#import <windows.h>
-#import <winsock2.h>
-#import <ws2tcpip.h>
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <process.h>
 #endif
-#import <pthread.h>
-#import <process.h>
+#include <pthread.h>
 
 #if defined(WIN32) || defined(LINUX)
 #define MAXHOSTNAMELEN 512
@@ -66,23 +66,23 @@ static int preXP_getaddrinfo(const char *host,const char *service,const struct a
 
    if((hp=gethostbyname(host))==NULL)
     return EAI_FAIL;
-    
+
    switch(hp->h_addrtype){
-       
+
     case AF_INET:;
      uint32_t **addr_list;
-         
+
      addr_list=(uint32_t **)hp->h_addr_list;
      for(;*addr_list!=NULL;addr_list++){
       struct addrinfo    *node=NSZoneCalloc(NULL,1,sizeof(struct addrinfo));
       struct sockaddr_in *ipv4=NSZoneCalloc(NULL,1,sizeof(struct sockaddr_in));
-      
+
       node->ai_family=AF_INET;
       node->ai_addrlen=sizeof(struct sockaddr_in);
       node->ai_addr=(struct sockaddr *)ipv4;
       ipv4->sin_family=AF_INET;
       ipv4->sin_addr.s_addr=**addr_list;
-     
+
       if(list==NULL)
        list=current=node;
       else {
@@ -92,14 +92,14 @@ static int preXP_getaddrinfo(const char *host,const char *service,const struct a
      }
      break;
    }
-   
+
    *result=list;
    return 0;
 }
 
 static void preXP_freeaddrinfo(struct addrinfo *info){
    struct addrinfo *next;
-   
+
    for(;info!=NULL;info=next){
     next=info->ai_next;
     NSZoneFree(NULL,info->ai_addr);
@@ -133,10 +133,10 @@ static void any_freeaddrinfo(struct addrinfo *info){
 
 static struct addrinfo *blockingRequest(CFHostRequest *request){
    struct addrinfo *result;
-   
+
    if(any_getaddrinfo(request->_name,NULL,NULL,&result)!=0)
     return NULL;
-    
+
    return result;
 }
 
@@ -149,20 +149,20 @@ static unsigned addressResolverThread(void *arg){
     EnterCriticalSection(&(info->queueLock));
      queueEmpty=(info->queueCount==0)?TRUE:FALSE;
     LeaveCriticalSection(&(info->queueLock));
-    
+
     if(queueEmpty){
      NSCooperativeThreadBlocking();
      WaitForSingleObject(info->queueEvent,INFINITE);
      NSCooperativeThreadWaiting();
     }
-    
+
     CFHostRequest *request=NULL;
-    
+
     EnterCriticalSection(&(info->queueLock));
- 
+
     while(info->queueCount>0 && request==NULL){
      request=info->queue[0];
-     
+
      info->queueCount--;
 
      int i;
@@ -171,14 +171,14 @@ static unsigned addressResolverThread(void *arg){
     }
     if(request!=NULL)
      request->_state=CFHostRequestInProgress;
-     
+
     LeaveCriticalSection(&(info->queueLock));
 
-    if(request!=NULL){     
+    if(request!=NULL){
      struct addrinfo *addressList=blockingRequest(request);
 
      HANDLE event=NULL;
-     
+
      EnterCriticalSection(&(info->queueLock));
       request->_addressList=addressList;
 
@@ -188,7 +188,7 @@ static unsigned addressResolverThread(void *arg){
        request=NULL;
       }
      LeaveCriticalSection(&(info->queueLock));
-    
+
      if(request!=NULL){
       if(request->_addressList!=NULL)
        any_freeaddrinfo(request->_addressList);
@@ -202,7 +202,7 @@ static unsigned addressResolverThread(void *arg){
     }
    }
    return 0;
-   
+
 }
 
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
@@ -211,14 +211,14 @@ static unsigned addressResolverThread(void *arg){
     // cancelled
     return;
    }
-   
+
    CloseHandle(_request->_event);
    _request->_event=NULL;
    [_monitor invalidate];
    [_monitor setDelegate:nil];
    [_monitor autorelease];
    _monitor=nil;
-   
+
    if(_addressing!=NULL){
     CFRelease(_addressing);
     _addressing=NULL;
@@ -229,13 +229,13 @@ static unsigned addressResolverThread(void *arg){
    }
    else {
     int i;
-    
+
     _addressing=CFArrayCreateMutable(NULL,0,&kCFTypeArrayCallBacks);
-    
+
     struct addrinfo *check=_request->_addressList,*next;
     for(;check!=NULL;check=next){
      next=check->ai_next;
-    
+
      CFDataRef data=CFDataCreate(NULL,(void *)check->ai_addr,check->ai_addrlen);
 
      CFArrayAppendValue(_addressing,data);
@@ -247,7 +247,7 @@ static unsigned addressResolverThread(void *arg){
    NSZoneFree(NULL,_request->_name);
    NSZoneFree(NULL,_request);
    _request=NULL;
-   
+
    if(_callback!=NULL)
     _callback(self,kCFHostAddresses,NULL,_context.info);
 }
@@ -260,23 +260,23 @@ static CFAddressResolverThreadInfo *asyncInfo;
 
 static CFAddressResolverThreadInfo *startResolverThreadIfNeeded(){
    pthread_mutex_lock(&asyncCreationLock);
-  
+
   if(asyncInfo==NULL){
    asyncInfo=NSZoneMalloc(NULL,sizeof(CFAddressResolverThreadInfo));
-   
+
    InitializeCriticalSection(&(asyncInfo->queueLock));
    asyncInfo->queueEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
-   
+
    asyncInfo->queueCapacity=1;
    asyncInfo->queueCount=0;
    asyncInfo->queue=NSZoneMalloc(NULL,sizeof(CFHostRequest *)*asyncInfo->queueCapacity);
-         
+
    unsigned threadAddr;
-    
+
    _beginthreadex(NULL,0,addressResolverThread,asyncInfo,0,&threadAddr);
   }
   pthread_mutex_unlock(&asyncCreationLock);
-  
+
   return asyncInfo;
 }
 
@@ -307,7 +307,7 @@ static void queueHostToAddressResolver(CFHostRef host){
    }
    info->queue[info->queueCount++]=host->_request;
    LeaveCriticalSection(&(info->queueLock));
-   
+
    SetEvent(info->queueEvent);
    }
 }
@@ -316,24 +316,24 @@ static void cancelHostInAddressResolverIfNeeded(CFHostRef self){
 
    if(self->_request==NULL)
     return;
-    
+
    if(SYNCHRONOUS){
    }
    else {
    CFAddressResolverThreadInfo *info;
-   
+
    if((info=asyncInfo)==NULL)
     return;
-    
+
    EnterCriticalSection(&(info->queueLock));
-      
+
     if(self->_request->_state==CFHostRequestInProgress){
      self->_request->_state=CFHostRequestDeallocate;
      self->_request=NULL;
     }
     else {
      int i;
-       
+
      for(i=0;i<info->queueCount;i++)
       if(info->queue[i]==self->_request){
        info->queueCount--;
@@ -342,9 +342,9 @@ static void cancelHostInAddressResolverIfNeeded(CFHostRef self){
        break;
       }
      }
-      
+
    LeaveCriticalSection(&(info->queueLock));
-   
+
    if(self->_request!=NULL){
     NSZoneFree(NULL,self->_request->_name);
     NSZoneFree(NULL,self->_request);
@@ -379,7 +379,7 @@ CFHostRef  CFHostCreateWithName(CFAllocatorRef allocator,CFStringRef name) {
    CFHostRef result=[__CFHost allocWithZone:NULL];
 
    result->_name=CFStringCreateCopy(allocator,name);
-   
+
    return result;
 }
 
@@ -391,7 +391,7 @@ CFHostRef  CFHostCreateWithName(CFAllocatorRef allocator,CFStringRef name) {
 #ifdef WINDOWS
    if(self->_event!=NULL)
     CloseHandle(self->_event);
-   
+
    [self->_monitor setDelegate:nil];
    [self->_monitor invalidate];
    [self->_monitor release];
@@ -435,23 +435,25 @@ Boolean    CFHostSetClient(CFHostRef self,CFHostClientCallBack callback,CFHostCl
     if(self->_context.info!=NULL && self->_context.retain!=NULL)
      self->_context.info=(void *)self->_context.retain(self->_context.info);
    }
-   
+
    return TRUE;
 }
 
 static void CFHostCreateEventIfNeeded(CFHostRef self){
+#ifdef WINDOWS
    if(self->_event==NULL){
     self->_event=CreateEvent(NULL,FALSE,FALSE,NULL);
     self->_monitor=[[NSHandleMonitor_win32 handleMonitorWithHandle:self->_event] retain];
     [self->_monitor setDelegate:self];
     [self->_monitor setCurrentActivity:Win32HandleSignaled];
    }
+#endif
 }
 
 Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStreamError *streamError) {
 
    switch(infoType){
-   
+
     case kCFHostAddresses:
      if(self->_hasResolvedAddressing){
       NSLog(@"CFHostStartInfoResolution, addressing already resolved");
@@ -470,13 +472,15 @@ Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStrea
         NSZoneFree(NULL,cStringName);
         return FALSE;
       }
-      
+
       self->_request=NSZoneMalloc(NULL,sizeof(CFHostRequest));
       self->_request->_state=CFHostRequestInQueue;
       self->_request->_name=cStringName;
       self->_request->_addressList=NULL;
       CFHostCreateEventIfNeeded(self);
+#ifdef WINDOWS
       self->_request->_event=self->_event;
+#endif
 
       queueHostToAddressResolver(self);
       return TRUE;
@@ -485,15 +489,15 @@ Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStrea
       NSUnimplementedFunction();
       return FALSE;
      }
-         
+
     case kCFHostNames:
      NSUnimplementedFunction();
      return FALSE;
-     
+
     case kCFHostReachability:
      NSUnimplementedFunction();
      return FALSE;
-     
+
     default:
      [NSException raise:NSInvalidArgumentException format:@"CFHostStartInfoResolution CFHostInfoType is not valid (%d)",infoType];
      return FALSE;
@@ -502,19 +506,19 @@ Boolean CFHostStartInfoResolution(CFHostRef self,CFHostInfoType infoType,CFStrea
 
 void CFHostCancelInfoResolution(CFHostRef self,CFHostInfoType infoType) {
    switch(infoType){
-   
+
     case kCFHostAddresses:
      cancelHostInAddressResolverIfNeeded(self);
      break;
-     
+
     case kCFHostNames:
      NSUnimplementedFunction();
      break;
-     
+
     case kCFHostReachability:
      NSUnimplementedFunction();
      break;
-     
+
     default:
      [NSException raise:NSInvalidArgumentException format:@"CFHostCancelInfoResolution CFHostInfoType is not valid (%d)",infoType];
      break;
@@ -526,14 +530,18 @@ void CFHostScheduleWithRunLoop(CFHostRef self,CFRunLoopRef runLoop,CFStringRef m
     NSUnimplementedFunction();
 
    CFHostCreateEventIfNeeded(self);
+#ifdef WINDOWS
    [(NSRunLoop *)runLoop addInputSource:self->_monitor forMode:(NSString *)mode];
+#endif
 }
 
 void CFHostUnscheduleFromRunLoop(CFHostRef self,CFRunLoopRef runLoop,CFStringRef mode) {
    if(runLoop!=CFRunLoopGetCurrent())
      NSUnimplementedFunction();
 
+#ifdef WINDOWS
    [(NSRunLoop *)runLoop removeInputSource:self->_monitor forMode:(NSString *)mode];
+#endif
 }
 
 @end

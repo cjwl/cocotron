@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSMutableString_unicodePtr.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
@@ -18,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSRaiseException.h>
-#import <string.h>
+#include <string.h>
 
 @implementation NSMutableString_unicodePtr
 
@@ -279,49 +280,10 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 -initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
    NSUInteger resultLength;
    unichar   *characters;
+    
+    characters = NSString_anyCStringToUnicode(encoding,bytes,length,&resultLength,NSZoneFromPointer(self));
    
-   switch(encoding){
-
-    case NSUnicodeStringEncoding:
-     characters=NSUnicodeFromBytes(bytes,length,&resultLength);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSNEXTSTEPStringEncoding:
-     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-// FIX, not nextstep
-    case NSASCIIStringEncoding:
-     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSISOLatin1StringEncoding:
-     characters=NSISOLatin1ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSSymbolStringEncoding:
-     characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSUTF8StringEncoding:
-     characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-	case NSWindowsCP1252StringEncoding:
-     characters=NSWin1252ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSUTF16BigEndianStringEncoding:
-     characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    default:
-     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"encoding %d not (yet) implemented",encoding); 
-     break;
-   }
-   
-   NSDeallocateObject(self);
-   return nil;
+    return NSMutableString_unicodePtrInitNoCopy(self,characters,resultLength, NSZoneFromPointer(self));
 }
 
 -initWithFormat:(NSString *)format
@@ -337,31 +299,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding {
-#if 0
-   if(encoding==NSString_cStringEncoding)
-    return NSString_cStringInitWithBytes(NULL,[data bytes],[data length]);
-
-   switch(encoding){
-
-    case NSString_unicodeEncoding:
-     return NSString_unicodeInit(NULL,[data bytes],[data length]);
-
-    case NSNEXTSTEPStringEncoding:
-     return NSNEXTSTEPStringInitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSISOLatin1StringEncoding:
-     return NSString_isoLatin1InitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSSymbolStringEncoding:
-     break;
-
-    default:
-     break;
-   }
-#endif
-
-   NSInvalidAbstractInvocation();
-   return nil;
+    return [self initWithBytes:[data bytes] length:[data length] encoding:encoding];
 }
 
 -initWithContentsOfFile:(NSString *)path {

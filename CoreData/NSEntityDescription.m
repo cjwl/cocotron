@@ -65,86 +65,69 @@ id keyObjectForSelector(SEL selector){
 }
 
 
-static struct objc_method_list *appendMethodToList(struct objc_method_list *list,NSString *selectorName,IMP imp,const char *types,SEL *selectorp){
-
-   if(list==NULL){
-    list=malloc(sizeof(struct objc_method_list)+sizeof(struct objc_method));
-    list->method_count=1;
-   }
-   else {
-    list->method_count++;
-    list=realloc(list,sizeof(struct objc_method_list)+list->method_count*sizeof(struct objc_method));
-   }
-   
-   SEL selector=NSSelectorFromString(selectorName);
-   
-   list->method_list[list->method_count-1].method_name=selector;
-   list->method_list[list->method_count-1].method_types=(char *)types;
-   list->method_list[list->method_count-1].method_imp=imp;
-   
-   *selectorp=selector;
-   
-   return list;
+static void appendMethodToList(Class class,NSString *selectorName,IMP imp,const char *types,SEL *selectorp){
+    
+    SEL selector=NSSelectorFromString(selectorName);
+    
+    class_addMethod(class, selector, imp, types);
+    
+    *selectorp=selector;
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if(![coder allowsKeyedCoding]) {
-    [NSException raise: NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
-    return nil;
-   }
-
-   _className = [[coder decodeObjectForKey: @"NSClassNameForEntity"] retain];
-   _name = [[coder decodeObjectForKey: @"NSEntityName"] retain];
-   _model = [coder decodeObjectForKey: @"NSManagedObjectModel"];
-   _properties = [[coder decodeObjectForKey: @"NSProperties"] retain];
-   _subentities = [[coder decodeObjectForKey: @"NSSubentities"] retain];
-   _superentity = [[coder decodeObjectForKey: @"NSSuperentity"] retain];
-   _userInfo = [[coder decodeObjectForKey: @"NSUserInfo"] retain];
-   _versionHashModifier= [[coder decodeObjectForKey: @"NSVersionHashModifier"] retain];
-
-   _selectorPropertyMap = [[NSMutableDictionary alloc] init];
-
-   _hasBeenInstantiated = NO;
-       
-   if(_className) {
-    Class                    class=NSClassFromString(_className);
-    struct objc_method_list *methodList=NULL;
-    
-    for(NSPropertyDescription *property in [_properties allValues]) {
-     NSString *propertyName=[property name];
-     NSString *upperName=[[[propertyName substringToIndex:1] uppercaseString] stringByAppendingString:[propertyName substringFromIndex: 1]];
-     NSString *selectorName;
-     SEL       selector;
-     
-     methodList=appendMethodToList(methodList,propertyName,(IMP) getValue,"@@:",&selector);
-     [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
-
-     methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"set%@:",upperName],(IMP) setValue,"v@:@",&selector);     
-     [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
-
-     if([property isKindOfClass: [NSRelationshipDescription class]]) {
-      NSRelationshipDescription *relationship= (NSRelationshipDescription *) property;
-            
-      if([relationship isToMany]){
-       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"add%@Object:",upperName],(IMP)addObject,"v@:@",&selector);     
-       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
-
-       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"remove%@Object:",upperName],(IMP)removeObject,"v@:@",&selector);     
-       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
-
-       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"add%@:",upperName],(IMP)addObjectSet,"v@:@",&selector);     
-       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
-
-       methodList=appendMethodToList(methodList,[NSString stringWithFormat: @"remove%@:",upperName],(IMP)removeObjectSet,"v@:@",&selector);     
-       [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
-      }
-     }
+    if(![coder allowsKeyedCoding]) {
+        [NSException raise: NSInvalidArgumentException format: @"%@ can not initWithCoder:%@", isa, [coder class]];
+        return nil;
     }
-
-    if(methodList!=NULL)
-     class_addMethods(class,methodList);
-   }
-   return self;
+    
+    _className = [[coder decodeObjectForKey: @"NSClassNameForEntity"] retain];
+    _name = [[coder decodeObjectForKey: @"NSEntityName"] retain];
+    _model = [coder decodeObjectForKey: @"NSManagedObjectModel"];
+    _properties = [[coder decodeObjectForKey: @"NSProperties"] retain];
+    _subentities = [[coder decodeObjectForKey: @"NSSubentities"] retain];
+    _superentity = [[coder decodeObjectForKey: @"NSSuperentity"] retain];
+    _userInfo = [[coder decodeObjectForKey: @"NSUserInfo"] retain];
+    _versionHashModifier= [[coder decodeObjectForKey: @"NSVersionHashModifier"] retain];
+    
+    _selectorPropertyMap = [[NSMutableDictionary alloc] init];
+    
+    _hasBeenInstantiated = NO;
+    
+    if(_className) {
+        Class class=NSClassFromString(_className);
+        
+        for(NSPropertyDescription *property in [_properties allValues]) {
+            NSString *propertyName=[property name];
+            NSString *upperName=[[[propertyName substringToIndex:1] uppercaseString] stringByAppendingString:[propertyName substringFromIndex: 1]];
+            NSString *selectorName;
+            SEL       selector;
+            
+            appendMethodToList(class,propertyName,(IMP) getValue,"@@:",&selector);
+            [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+            
+            appendMethodToList(class,[NSString stringWithFormat: @"set%@:",upperName],(IMP) setValue,"v@:@",&selector);     
+            [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+            
+            if([property isKindOfClass: [NSRelationshipDescription class]]) {
+                NSRelationshipDescription *relationship= (NSRelationshipDescription *) property;
+                
+                if([relationship isToMany]){
+                    appendMethodToList(class,[NSString stringWithFormat: @"add%@Object:",upperName],(IMP)addObject,"v@:@",&selector);     
+                    [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+                    
+                    appendMethodToList(class,[NSString stringWithFormat: @"remove%@Object:",upperName],(IMP)removeObject,"v@:@",&selector);     
+                    [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+                    
+                    appendMethodToList(class,[NSString stringWithFormat: @"add%@:",upperName],(IMP)addObjectSet,"v@:@",&selector);     
+                    [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+                    
+                    appendMethodToList(class,[NSString stringWithFormat: @"remove%@:",upperName],(IMP)removeObjectSet,"v@:@",&selector);     
+                    [_selectorPropertyMap setObject:property forKey:keyObjectForSelector(selector)];
+                }
+            }
+        }
+    }
+    return self;
 }
 
 

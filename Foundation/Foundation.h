@@ -13,25 +13,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 
 #include <sys/types.h>
-#import <stdlib.h>
-#import <ctype.h>
-#import <errno.h>
-#import <float.h>
-#import <limits.h>
-#import <math.h>
-#import <stdarg.h>
-#import <stddef.h>
-#import <stdio.h>
-#import <string.h>
-#import <assert.h>
-#import <locale.h>
-#import <setjmp.h>
-#import <signal.h>
-#import <time.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <errno.h>
+#include <float.h>
+#include <limits.h>
+#include <math.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include <locale.h>
+#include <setjmp.h>
+#include <signal.h>
+#include <time.h>
 #if (__STDC_VERSION__ >= 199901L)
-  #import <stdbool.h>
-  #import <stdint.h>
-  #import <inttypes.h>
+  #include <stdbool.h>
+  #include <stdint.h>
+  #include <inttypes.h>
 #endif
 
 #import <CoreFoundation/CoreFoundation.h>

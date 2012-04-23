@@ -8,25 +8,12 @@
 #import "NSRecursiveLock_win32.h"
 #import <Foundation/NSRaiseException.h>
 
-@implementation NSRecursiveLock(win32)
-+allocWithZone:(NSZone *)zone {
-   if(self==[NSRecursiveLock class])
-    return NSAllocateObject([NSRecursiveLock_win32 class],0,zone);
-   else
-    return NSAllocateObject(self,0,zone);
-}
-
-@end
-
 @implementation NSRecursiveLock_win32
 
 - (id)init
 {
-    self = [super init];
-    if (self != nil)
-    {
-        InitializeCriticalSection( &_lock );
-    }
+    InitializeCriticalSection( &_lock );
+
     return self;
 }
 
@@ -34,20 +21,6 @@
 {
     DeleteCriticalSection(&_lock);
     [super dealloc];
-}
-
--(NSString *)name;
-{
-    return _name;
-}
-
--(void)setName:(NSString *)value;
-{
-    if(value!=_name)
-    {
-        [_name release];
-        _name=[value retain];
-    }
 }
 
 -(void) lock {

@@ -792,16 +792,18 @@ The values should be upgraded to something which is more generic to implement, p
    return keyCode;
 }
 
--(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
+-(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window keyboardState:(BYTE *)keyboardState {
    unichar        buffer[256],ignoringBuffer[256];
    NSString      *characters;
    NSString      *charactersIgnoringModifiers;
    BOOL           isARepeat=NO;
    unsigned short keyCode;
    int            bufferSize=0,ignoringBufferSize=0;
-   BYTE           keyState[256];
+   BYTE          *keyState=keyboardState;
 
-   GetKeyboardState(keyState);
+    if(keyState==NULL)
+        return NO;
+        
    bufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
 
    keyState[VK_CONTROL]=0x00;
@@ -996,11 +998,11 @@ The values should be upgraded to something which is more generic to implement, p
    return YES;
 }
 
--(unsigned)currentModifierFlags {
+-(unsigned)currentModifierFlagsWithKeyboardState:(BYTE *)keyboardState {
    unsigned result=0;
-   BYTE     keyState[256];
+   BYTE    *keyState=keyboardState;
 
-   if(!GetKeyboardState(keyState))
+   if(keyState==NULL)
     return result;
 
    if(keyState[VK_LSHIFT]&0x80)
@@ -1046,6 +1048,16 @@ The values should be upgraded to something which is more generic to implement, p
    return result;
 }
 
+-(NSUInteger)currentModifierFlags {
+    BYTE keyState[256];
+    BYTE *keyboardState=NULL;
+    
+    if(GetKeyboardState(keyState))
+        keyboardState=keyState;
+
+    return [self currentModifierFlagsWithKeyboardState:keyboardState];
+}
+
 NSArray *CGSOrderedWindowNumbers(){
    NSMutableArray *result=[NSMutableArray array];
 
@@ -1083,7 +1095,7 @@ static HWND findWindowForScrollWheel(POINT point){
 }
 
 
--(BOOL)postMSG:(MSG)msg {
+-(BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState {
    NSEventType  type;
    HWND         windowHandle=msg.hwnd;
    id           platformWindow;
@@ -1143,6 +1155,7 @@ static HWND findWindowForScrollWheel(POINT point){
     _lastTickCount=tickCount;
     _lastPosition=msg.lParam;
    }
+
 
    switch(msg.message){
 
@@ -1222,22 +1235,38 @@ static HWND findWindowForScrollWheel(POINT point){
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
-// This is used for OpenGL child windows which will interfere will scrollwheel coordinates
-    if(windowHandle!=[platformWindow windowHandle]){
-     RECT child={0},parent={0};
 
-// There is no way to get a child's frame inside the parent, you have to get
-// them both in screen coordinates and do a delta
-// GetClientRect always returns 0,0 for top,left which makes it useless     
-     GetWindowRect(msg.hwnd,&child);
-     GetWindowRect([platformWindow windowHandle],&parent);
-     location.x+=child.left-parent.left;
-     location.y+=child.top-parent.top;
-    }
-     
-    [platformWindow adjustEventLocation:&location];
+    BOOL childWindow=NO;
     
-    modifierFlags=[self currentModifierFlags];
+    if(msg.message==WM_MOUSEWHEEL){
+            // WM_MOUSEWHEEL coordinates are on screen coordinates, others are in window
+            RECT frame={0};
+            
+            GetWindowRect([platformWindow windowHandle],&frame);
+            
+            location.x=location.x-frame.left;
+            location.y=location.y-frame.top;
+    }
+    else {
+        childWindow=(msg.hwnd!=[platformWindow windowHandle]);
+        
+        if(childWindow){
+            RECT child={0},parent={0};
+            
+            // There is no way to get a child's frame inside the parent, you have to get
+            // them both in screen coordinates and do a delta
+            // GetClientRect always returns 0,0 for top,left which makes it useless     
+            GetWindowRect(msg.hwnd,&child);
+            GetWindowRect([platformWindow windowHandle],&parent);
+            
+            location.x+=child.left-parent.left;
+            location.y+=child.top-parent.top;
+        }
+    }
+    
+    [platformWindow adjustEventLocation:&location childWindow:childWindow];
+    
+    modifierFlags=[self currentModifierFlagsWithKeyboardState:keyboardState];
 
     switch(type){
      case NSLeftMouseDown:
@@ -1254,7 +1283,7 @@ static HWND findWindowForScrollWheel(POINT point){
      case NSKeyDown:
      case NSKeyUp:
      case NSFlagsChanged:
-      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window];
+      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window keyboardState:keyboardState];
 
      case NSScrollWheel:
       return [self postScrollWheelMSG:msg type:type location:location modifierFlags:modifierFlags window:window];

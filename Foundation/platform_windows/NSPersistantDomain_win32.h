@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSPersistantDomain.h>
-#import <windows.h>
+#include <windows.h>
 
 @class NSArray, NSDictionary;
 

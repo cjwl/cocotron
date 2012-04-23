@@ -138,6 +138,7 @@ id NSApp=nil;
    _modalStack=[NSMutableArray new];
     
    _lock=NSZoneMalloc(NULL,sizeof(pthread_mutex_t));
+
    pthread_mutex_init(_lock,NULL);
    
    [self _showSplashImage];
@@ -796,39 +797,67 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
-
-   while([session stopCode]==NSRunContinuesResponse) {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
+    NSMutableArray *savedEvents=[NSMutableArray array];
+    
+    while([session stopCode]==NSRunContinuesResponse) {
+        NSAutoreleasePool *pool=[NSAutoreleasePool new];
+        NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];
         
-    if(event==nil){
-     [pool release];
-     break;
+        if(event==nil){
+            [pool release];
+            break;
+        }
+        
+        NSWindow          *window=[event window];
+        
+        
+        // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
+        if([event type]==NSKeyDown && window == [session modalWindow])
+            [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+        
+        if(window==[session modalWindow] || [window worksWhenModal])
+            [self sendEvent:event];
+        else if([event type]==NSLeftMouseDown)
+            [[session modalWindow] makeKeyAndOrderFront:self];
+        else {
+            // We need to preserve some events which are not processed in the modal loop and requeue them.
+            // The particular case we need to handle is mouse down. run modal. then actually receive the mouse up when the modal is done.
+            // So we know this works in Cocoa, save the mouse up here.
+            // We don't want to save mouse moved or such.
+            // There is kind of adhoc, probably a better way to do it, find out which combinations should work (e.g. mouse enter, do we get mouse exit?) 
+            if([[session unprocessedEvents] count]==0){
+                
+                switch([event type]){
+                        
+                    case NSLeftMouseUp:
+                    case NSRightMouseUp:
+                        [session addUnprocessedEvent: event];
+                        break;
+                        
+                    default:
+                        // don't save
+                        break;
+                }
+            }
+        }
+        [pool release];
     }
-     
-   NSWindow          *window=[event window];
+    
 
-   // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
-   if([event type]==NSKeyDown && window == [session modalWindow])
-       [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-   
-   if(window==[session modalWindow] || [window worksWhenModal])
-    [self sendEvent:event];
-   else if([event type]==NSLeftMouseDown)
-    [[session modalWindow] makeKeyAndOrderFront:self];
-
-   [pool release];
-   }
-
-   return [session stopCode];
+    
+    return [session stopCode];
 }
 
 -(void)endModalSession:(NSModalSession)session {
-   if(session!=[_modalStack lastObject])   
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] modal session %@ is not the current one %@",isa,sel_getName(_cmd),session,[_modalStack lastObject]];
-
-   [[session modalWindow] _showMenuViewIfNeeded];
-   [_modalStack removeLastObject];
+    if(session!=[_modalStack lastObject])   
+        [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] modal session %@ is not the current one %@",isa,sel_getName(_cmd),session,[_modalStack lastObject]];
+    
+    for(NSEvent *requeue in [session unprocessedEvents]){
+        [self postEvent:requeue atStart:YES];
+    }
+    
+    [[session modalWindow] _showMenuViewIfNeeded];
+    [_modalStack removeLastObject];
 }
 
 -(void)stopModalWithCode:(int)code {

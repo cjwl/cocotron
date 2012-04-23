@@ -800,7 +800,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    a different cell or the same cell is being edited after a makeFirstResponder
    This needs to be straightened out
  */
-   if([self isScrollable]){
+   if([self isScrollable] || [self wraps]){
     NSClipView *clipView;
 
     if([[editor superview] isKindOfClass:[NSClipView class]] && [[editor superview] superview] == view){
@@ -817,7 +817,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [clipView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
     [editor setAutoresizingMask:0];
-    [editor setHorizontallyResizable:YES];
+    [editor setHorizontallyResizable:[self isScrollable]];
     [editor setVerticallyResizable:YES];
     [editor sizeToFit];
     [editor setNeedsDisplay:YES];

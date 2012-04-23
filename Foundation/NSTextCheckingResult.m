@@ -13,7 +13,7 @@
 
 -initWithResultType:(NSTextCheckingType)resultType range:(NSRange)range property:property name:(NSString *)name {
    NSDictionary *properties=[NSDictionary dictionaryWithObject:property forKey:name];
-   
+
    return [self initWithResultType:resultType range:range properties:properties];
 }
 
@@ -88,7 +88,7 @@
 
 -(NSTimeInterval)duration {
     NSUnimplementedMethod();
-    return nil;
+    return 0;
 }
 
 -(NSArray *)grammarDetails {

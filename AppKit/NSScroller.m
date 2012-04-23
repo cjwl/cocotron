@@ -139,6 +139,21 @@ static NSAppleScrollBarVariant appleScrollBarVariant(NSScroller *self){
    [self setNeedsDisplay:YES];
 }
 
+-(double)doubleValue {
+    return _floatValue;
+}
+
+-(void)setDoubleValue:(double)zeroToOneValue {
+   _floatValue=zeroToOneValue;
+   if(_floatValue<=0)
+        _floatValue=0;
+        
+   if(_floatValue>1)
+        _floatValue=1;
+        
+   [self setNeedsDisplay:YES];
+}
+
 -(void)setArrowsPosition:(NSScrollArrowPosition)position {
    _arrowsPosition=position;
 }
@@ -535,6 +550,29 @@ static inline float roundFloat(float value){
      break;
    }
 
+}
+
+-(void)scrollWheel:(NSEvent *)event {
+    NSRect  slotRect=[self rectForPart:NSScrollerKnobSlot];
+    NSRect  knobRect=[self rectForPart:NSScrollerKnob];
+        
+    if([self isVertical]) {
+        float delta=[event deltaY];
+        float totalSize=slotRect.size.height-knobRect.size.height;
+        
+        if(totalSize==0)
+            _floatValue=0;
+        else
+            _floatValue=_floatValue-(delta/totalSize);
+        
+        if(_floatValue<0)
+            _floatValue=0;
+        else if(_floatValue>1.0)
+            _floatValue=1.0;
+
+        [self setNeedsDisplay:YES];
+        [self sendAction:_action to:_target];
+    }
 }
 
 @end

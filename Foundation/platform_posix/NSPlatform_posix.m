@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle_posix.h>
 #import <Foundation/NSFileManager_posix.h>
 #import <Foundation/NSLock_posix.h>
+#import <Foundation/NSRecursiveLock_posix.h>
 #import <Foundation/NSCondition_posix.h>
 #import <Foundation/NSConditionLock_posix.h>
 #import <Foundation/NSPersistantDomain_posix.h>
@@ -21,8 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPipe_posix.h>
 #import <Foundation/NSRaiseException.h>
 
-#import <pwd.h>
-#import <unistd.h>
+#include <pwd.h>
+#include <unistd.h>
 #import <rpc/types.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -38,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <poll.h>
 #include <pthread.h>
 #import <sys/socket.h>
-#import <errno.h>
+#include <errno.h>
 
 BOOL NSCurrentLocaleIsMetric(){
    return NO;
@@ -70,6 +71,10 @@ BOOL NSCurrentLocaleIsMetric(){
 
 -(Class)conditionLockClass {
    return [NSConditionLock_posix class];
+}
+
+-(Class)recursiveLockClass {
+    return [NSRecursiveLock_posix class];
 }
 
 -(Class)persistantDomainClass {
@@ -218,6 +223,11 @@ NSUInteger NSPlatformThreadID() {
 {
     struct in_addr addr;
     struct hostent *remoteHost;
+
+    if ([address length] == 0) {
+        return nil;
+    }
+
     addr.s_addr = inet_addr([address cString]);
     if (addr.s_addr == INADDR_NONE) {
         return nil;

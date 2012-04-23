@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSAtomicList.h"
 #import <Foundation/NSRaise.h>
-#import <string.h>
+#include <string.h>
 
 // The @synchronized on the lists heads kind of kill the use of atomic list but we need to protect
 // the list walking done in "operations" from the changes done by the worker thread

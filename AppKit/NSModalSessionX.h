@@ -9,8 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow.h>
 
 @interface NSModalSessionX : NSObject {
-   NSWindow *_window;
-   int       _stopCode;
+    NSWindow *_window;
+    NSMutableArray *_unprocessedEvents;
+    int       _stopCode;
 }
 
 +sessionWithWindow:(NSWindow *)window;
@@ -18,5 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)stopModalWithCode:(int)code;
 -(NSWindow *)modalWindow;
 -(int)stopCode;
+
+-(void)addUnprocessedEvent:(NSEvent *)event;
+-(NSArray *)unprocessedEvents;
 
 @end

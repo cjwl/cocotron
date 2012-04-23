@@ -853,7 +853,8 @@ _dataSource);
      if ([_selectedRowIndexes containsIndex:i] != [newIndexes containsIndex:i]) {
       if (_editedRow == i && _editingCell != nil)
        [self abortEditing];
-      [self setNeedsDisplayInRect:NSInsetRect([self rectOfRow:i], 0, -1)];
+
+      [self setNeedsDisplay:YES];
       changed = YES;
       // NSLog(@"NSTableView row %d for redraw.", i);
      }

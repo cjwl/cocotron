@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -89,14 +89,6 @@
 
 /* Begin PBXBuildRule section */
 		FE4477E01039F3E700ECD6A6 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FECA819E10EBB231003472F1 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
 			fileType = sourcecode.c;
@@ -617,7 +609,6 @@
 				FE2BFAEE10FB6D5300D3E136 /* Frameworks */,
 			);
 			buildRules = (
-				FECA819E10EBB231003472F1 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FECA81AE10EBB2AC003472F1 /* PBXTargetDependency */,
@@ -656,8 +647,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "QuartzCore" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -868,7 +862,6 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/FreeBSD/i386;
@@ -909,7 +902,6 @@
 					"-Wl,--image-base=0x20000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME)a",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 			};
 			name = Release;
@@ -938,7 +930,6 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = QuartzCore;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Darwin/i386;

@@ -7,9 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <objc/objc.h>
-#import <stdarg.h>
-#import <stdint.h>
-#import <limits.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <limits.h>
 
 #ifdef __cplusplus
 
@@ -49,12 +49,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     #define NSIntegerMax  LONG_MAX
     #define NSIntegerMin  LONG_MIN
     #define NSUIntegerMax ULONG_MAX
+    #define NSIntegerFormat "%ld"
+    #define NSUIntegerFormat "%lu"
 #else
     typedef int           NSInteger;
     typedef unsigned int  NSUInteger;
     #define NSIntegerMax  INT_MAX
     #define NSIntegerMin  INT_MIN
     #define NSUIntegerMax UINT_MAX
+    #define NSIntegerFormat "%d"
+    #define NSUIntegerFormat "%u"
 #endif
 
 enum {

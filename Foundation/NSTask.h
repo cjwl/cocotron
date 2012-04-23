@@ -16,6 +16,7 @@ FOUNDATION_EXPORT NSString * const NSTaskDidTerminateNotification;
   NSString *launchPath;
   NSArray  *arguments;
   NSString *currentDirectoryPath;
+  NSDictionary *environment;
 
   id standardInput;
   id standardOutput;

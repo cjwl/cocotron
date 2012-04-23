@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSStringUTF8.h>
-#import <string.h>
+#include <string.h>
 
 enum {
    STATE_content,
@@ -531,8 +531,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
    NSOldXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
    NSOldXMLDocument *document;
 
-   if(![reader tokenize])
+    if(![reader tokenize]) {
+        [reader release];
     return nil;
+    }
 
    document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];
@@ -546,8 +548,10 @@ static inline BOOL codeIsNameContinue(uint8_t code){
    NSOldXMLReader   *reader=[[self alloc] initWithData:data];
    NSOldXMLDocument *document;
 
-   if(![reader tokenize])
+    if(![reader tokenize]) {
+        [reader release];
     return nil;
+    }
 
    document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];

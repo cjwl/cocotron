@@ -8,8 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CGWindowLevel.h>
+#import <OpenGL/CGLTypes.h>
 
-@class O2Context,CGEvent,CGLPixelSurface;
+@class O2Context,CGEvent;
 
 typedef enum {
    CGSBackingStoreRetained=0,
@@ -70,10 +71,10 @@ typedef enum {
 -(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
 -(void)flashWindow;
 
--(void)addOverlay:(CGLPixelSurface *)overlay;
--(void)removeOverlay:(CGLPixelSurface *)overlay;
+-(void)addCGLContext:(CGLContextObj)cglContext;
+-(void)removeCGLContext:(CGLContextObj)cglContext;
 
--(void)flushOverlay:(CGLPixelSurface *)overlay;
+-(void)flushCGLContext:(CGLContextObj)cglContext;
 
 @end
 
@@ -102,6 +103,8 @@ typedef enum {
 -(BOOL)platformWindowSetCursorEvent:(CGWindow *)window;
 
 -(void)platformWindowDidInvalidateCGContext:(CGWindow *)window;
+
+-(void)platformWindowShouldZoom:(CGWindow *)window;
 
 @end
 
