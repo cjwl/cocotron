@@ -1470,9 +1470,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
     case WM_ACTIVATE:      return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
     case WM_MOUSEACTIVATE: return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
-    case WM_WINDOWPOSCHANGED:	return [self WM_WINDOWPOSCHANGED_wParam: wParam lParam: lParam];
-//    case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
-//    case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
+//    case WM_WINDOWPOSCHANGED:	return [self WM_WINDOWPOSCHANGED_wParam: wParam lParam: lParam];
+    case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
+    case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
     case WM_PAINT:         return [self WM_PAINT_wParam:wParam lParam:lParam];
     case WM_CLOSE:         return [self WM_CLOSE_wParam:wParam lParam:lParam];
     case WM_SETCURSOR:     return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
