@@ -2081,7 +2081,11 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 -(void)scrollWheel:(NSEvent *)event {
     NSScrollView *scrollView=[self enclosingScrollView];
     
-    if(scrollView!=nil){
+    if(scrollView==nil) {
+        /* If we can't handle it, pass up responder chain, yep, it does this. */
+        [super scrollWheel:event];
+    }
+    else {
         NSView *documentView=[scrollView documentView];
         NSRect bounds=[documentView bounds];
         NSRect visible=[documentView visibleRect];
