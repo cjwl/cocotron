@@ -595,7 +595,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     *stringp = [[NSString alloc] initWithCharacters:result length:resultLength];
                 
                 [pool drain];
-                [*stringp autorelease];
+                if (stringp != NULL) [*stringp autorelease];
                 return YES;
             } else {
                 if ([_skipSet characterIsMember:unicode] == YES) {
@@ -607,7 +607,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                         *stringp = [[NSString alloc] initWithCharacters:result length:resultLength];
                     
                     [pool drain];
-                    [*stringp autorelease];
+                    if (stringp != NULL) [*stringp autorelease];
                     return YES;
                 }
             }
