@@ -132,7 +132,13 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
 
 +(NSUserDefaults *)standardUserDefaults {
-   return NSThreadSharedInstance(@"NSUserDefaults");
+	static NSUserDefaults* stdUserDefaults = nil;
+	@synchronized(self) {
+		if (nil == stdUserDefaults) {
+			stdUserDefaults = [[NSUserDefaults alloc] init];
+		}
+	}
+	return stdUserDefaults;
 }
 
 +(void)resetStandardUserDefaults {
@@ -152,41 +158,50 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 }
 
 -(void)setSearchList:(NSArray *)array {
-   [array retain];
-   [_searchList release];
-   _searchList=array;
+	@synchronized(self) {
+		[array retain];
+	   [_searchList release];
+	   _searchList=array;
+	}
 }
 
 -(NSDictionary *)_buildDictionaryRep {
-   NSMutableDictionary *result=[NSMutableDictionary dictionary];
-   NSInteger                  i,count=[_searchList count];
+	NSMutableDictionary *result=[NSMutableDictionary dictionary];
+	@synchronized(self) {
+	   NSInteger                  i,count=[_searchList count];
 
-   for(i=0;i<count;i++){
-    NSDictionary *domain=[_domains objectForKey:[_searchList objectAtIndex:i]];
-    NSEnumerator *state=[domain keyEnumerator];
-    id            key;
+	   for(i=0;i<count;i++){
+		NSDictionary *domain=[_domains objectForKey:[_searchList objectAtIndex:i]];
+		NSEnumerator *state=[domain keyEnumerator];
+		id            key;
 
-    while((key=[state nextObject])!=nil){
-     id value=[domain objectForKey:key];
+		while((key=[state nextObject])!=nil){
+		 id value=[domain objectForKey:key];
 
-// NSPersistantDomain may return nil, addEntriesFromDictionary doesn't do that test
-     if(value!=nil)
-      [result setObject:value forKey:key];
-    }
-   }
-
+	// NSPersistantDomain may return nil, addEntriesFromDictionary doesn't do that test
+		 if(value!=nil)
+		  [result setObject:value forKey:key];
+		}
+	   }
+	}
    return result;
 }
 
 -(NSDictionary *)dictionaryRepresentation {
-   if(_dictionaryRep==nil)
-    _dictionaryRep=[[self _buildDictionaryRep] retain];
+	NSDictionary* dictRep = nil;
+	@synchronized(self) {
+	   if(_dictionaryRep==nil)
+		_dictionaryRep=[[self _buildDictionaryRep] retain];
 
-   return _dictionaryRep;
+		dictRep = _dictionaryRep;
+	}
+	return dictRep;
 }
 
 -(void)registerDefaults:(NSDictionary *)values {
-   [[_domains objectForKey:NSRegistrationDomain] addEntriesFromDictionary:values];
+	@synchronized(self) {
+		[[_domains objectForKey:NSRegistrationDomain] addEntriesFromDictionary:values];
+	}
 }
 
 
@@ -244,20 +259,26 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 }
 
 -(NSMutableDictionary *)persistantDomain {
-   return [_domains objectForKey:[[NSProcessInfo processInfo] processName]];
+	NSMutableDictionary *dict = nil;
+	@synchronized(self) {
+		dict = [_domains objectForKey:[[NSProcessInfo processInfo] processName]];
+		[[dict retain] autorelease];
+	}
+	return dict;
 }
 
 -objectForKey:(NSString *)defaultName {
-   NSInteger i,count=[_searchList count];
+	@synchronized(self) {
+	   NSInteger i,count=[_searchList count];
 
-   for(i=0;i<count;i++){
-    NSDictionary *domain=[_domains objectForKey:[_searchList objectAtIndex:i]];
-    id            object=[domain objectForKey:defaultName];
+	   for(i=0;i<count;i++){
+		NSDictionary *domain=[_domains objectForKey:[_searchList objectAtIndex:i]];
+		id            object=[domain objectForKey:defaultName];
 
-    if(object!=nil)
-     return object;
-   }
-
+		if(object!=nil)
+		 return object;
+	   }
+	}
    return nil;
 }
 
@@ -336,11 +357,13 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 }
 
 -(void)setObject:value forKey:(NSString *)key {
-   [[self persistantDomain] setObject:value forKey:key];
-   [_dictionaryRep autorelease];
-   _dictionaryRep=nil;
-   
-   [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:self];
+	@synchronized(self) {
+	   [[self persistantDomain] setObject:value forKey:key];
+	   [_dictionaryRep autorelease];
+	   _dictionaryRep=nil;
+	   
+	   [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:self];
+	}
 }
 
 -(void)setBool:(BOOL)value forKey:(NSString *)defaultName {
@@ -360,9 +383,11 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 }
 
 -(void)removeObjectForKey:(NSString *)key {
-   [[self persistantDomain] removeObjectForKey:key];
-   
-   [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:self];
+	@synchronized(self) {
+	   [[self persistantDomain] removeObjectForKey:key];
+	   
+	   [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:self];
+	}
 }
 
 -(BOOL)objectIsForcedForKey:(NSString *)key {
