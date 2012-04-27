@@ -46,10 +46,10 @@ static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETR
 	HFONT font = CreateFontIndirectW(&longFont->elfLogFont);
 	if (font) {
 		SelectObject(dc, font);
-		
+
 		// Get the full face name
 		NSString *winName = [NSString stringWithFormat:@"%S", longFont->elfFullName];
-		
+
 		// Get the PS name for the font...
 		DWORD bufferSize = GetFontData(dc, CFSwapInt32HostToBig('name'), 0, NULL, 0);
 		if (bufferSize >= 6 && bufferSize != GDI_ERROR) {
@@ -70,24 +70,29 @@ static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETR
 						uint16_t length = CFSwapInt16BigToHost(nameRecords[i].length);
 						uint16_t offset = CFSwapInt16BigToHost(nameRecords[i].offset);
 						if (nameID == 6) {
-							// That's a Postscript name record
-							if (platformID == 3 && platformSpecificID == 1)  {
-								// Win PS name - unicode encoding
-								NSString *name = [[[NSString alloc] initWithBytes:strings + offset length:length encoding:NSUnicodeStringEncoding] autorelease];
-								if ([name length]) {
-									[sPSToWin32Table setObject:winName forKey:name];
-									[sWin32ToPSTable setObject:name forKey:winName];
+							// First check we get a string that's in our buffer, in case of some corrupted font or font entry
+							if (stringsOffset + offset + length <= bufferSize) {
+								// Check for Win+Unicode encoding or Mac+Roman encoding
+								// Other entries should be ignored (see http://www.microsoft.com/typography/otspec/name.htm )
+								
+								// That's a Postscript name record
+								if (platformID == 3 && platformSpecificID == 1)  {
+									// Win PS name - unicode encoding
+									NSString *name = [[[NSString alloc] initWithBytes:strings + offset length:length encoding:NSUnicodeStringEncoding] autorelease];
+									if ([name length]) {
+										[sPSToWin32Table setObject:winName forKey:name];
+										[sWin32ToPSTable setObject:name forKey:winName];
+									}
+									break;
+								} else if (platformID == 1 && platformSpecificID == 0) {
+									// Mac PS name - ASCII
+									NSString *name = [NSString stringWithCString:strings + offset length:length];
+									if ([name length]) {
+										[sPSToWin32Table setObject:winName forKey:name];
+										[sWin32ToPSTable setObject:name forKey:winName];
+									}	
+									break;
 								}
-								break;
-							}
-							if (platformID == 1) {
-								// Mac PS name - ASCII
-								NSString *name = [NSString stringWithCString:strings + offset length:length];
-								if ([name length]) {
-									[sPSToWin32Table setObject:winName forKey:name];
-									[sWin32ToPSTable setObject:name forKey:winName];
-								}							
-								break;
 							}
 						}
 					}
