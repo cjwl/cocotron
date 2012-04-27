@@ -140,7 +140,7 @@ static NSNumber_placeholder *sSharedInstance;
 
 - initWithDouble:(double)value
 {
-    return (NSNumber_placeholder *)[NSNumber_double numberWithDouble: value];
+    return (NSNumber_placeholder *)NSNumber_doubleNew(NULL, value);
 }
 
 
@@ -166,7 +166,7 @@ static NSNumber_placeholder *sSharedInstance;
 
 - initWithBool:(BOOL)value
 {
-    return (NSNumber_placeholder *)[NSNumber_BOOL numberWithBool: value];
+    return (NSNumber_placeholder *)NSNumber_BOOLNew(NULL, value);
 }
 
 

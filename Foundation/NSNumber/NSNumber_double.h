@@ -8,21 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSNumber_CF.h>
 
-
-extern NSNumber *kNSNumberPositiveInfinity;
-extern NSNumber *kNSNumberNegativeInfinity;
-extern NSNumber *kNSNumberNaN;
-extern NSNumber *kNSNumberPositiveZero;
-extern NSNumber *kNSNumberNegativeZero;
-extern NSNumber *kNSNumberPositiveOne;
-extern NSNumber *kNSNumberNegativeOne;
-
-
 @interface NSNumber_double : NSNumber_CF {
    double _value;
 }
+@end
+
+@interface NSNumber_double_const : NSNumber_double
+@end
+
+NSNumber *NSNumber_doubleNew(NSZone *zone,double value);
 
 // Returns a constant value if one matches, otherwise nil.
-+ numberWithSpecialDouble: (double)value;
-
-@end
+NSNumber *NSNumber_doubleSpecial(double value);
