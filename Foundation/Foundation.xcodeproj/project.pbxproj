@@ -16419,7 +16419,7 @@
 					"-lole32",
 					"-lws2_32",
 					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0x10000000",
+					"-Wl,--image-base=0xa10000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
 				PREBINDING = NO;
@@ -16617,7 +16617,7 @@
 					"-lrpcrt4",
 					"-lws2_32",
 					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0x10000000",
+					"-Wl,--image-base=0xa10000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
 				PREBINDING = NO;
