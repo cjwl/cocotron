@@ -14,6 +14,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSString * const NSColorPanelColorDidChangeNotification=@"NSColorPanelColorDidChangeNotification";
 
+@interface NSColorPicker(PrivateInterface)
+
+- (void)setColor:(NSColor*)color;
+
+@end
+
 @implementation NSColorPanel
 
 static NSColorPanel *_colorPanel=nil;
@@ -160,10 +166,22 @@ static NSUInteger    _pickerMask=0;
     [NSApp sendAction:_action to:_target from:self];
 }
 
+- (NSColorPicker*)_selectedColorPicker
+{
+	int index = [colorPickersMatrix selectedTag];
+	NSColorPicker *picker = [_colorPickers objectAtIndex: index];
+	return picker;
+}
+
 -(void)setColor:(NSColor *)color {
    [colorWell setColor:color];
    [self setColorButtonClicked:nil];
-
+	
+	NSColorPicker *picker = [self _selectedColorPicker];
+	if ([picker respondsToSelector: @selector(setColor:)]) {
+		[picker setColor: color];
+	}
+	
    [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:NSColorPanelColorDidChangeNotification object:self] postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];  
 }
 
