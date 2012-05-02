@@ -593,7 +593,7 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
 	}
    CGImageDestinationRef dest=CGImageDestinationCreateWithData((CFMutableDataRef)result,uti,1,(CFDictionaryRef)CGProperties);
    
-   CGImageDestinationAddImage(dest,[self CGImage],NULL);
+   CGImageDestinationAddImage(dest,[self CGImage],(CFDictionaryRef)CGProperties);
 
    CGImageDestinationFinalize(dest);
    CFRelease(dest);
