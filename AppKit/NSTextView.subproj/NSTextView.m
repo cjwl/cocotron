@@ -115,6 +115,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _isEditable=[sharedData isEditable];
     _isSelectable=[sharedData isSelectable];
     _isRichText=[sharedData isRichText];
+	   
     _backgroundColor=[[sharedData backgroundColor] retain];
     _drawsBackground=[sharedData drawsBackground];
     _font=[[NSFont userFontOfSize:0] retain];
@@ -123,6 +124,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _textAlignment=[[sharedData defaultParagraphStyle] alignment];
     _insertionPointColor=[[sharedData insertionColor] retain];
 
+	_usesFontPanel=YES;
+	   
     _isFieldEditor=NO;
     _maxSize=[self bounds].size;
     _minSize=NSMakeSize(0,0);
@@ -170,6 +173,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _isEditable=YES;
    _isSelectable=YES;
    _isRichText=YES;
+	_usesFontPanel=YES;
    _backgroundColor=[[NSColor whiteColor] copy];
    _drawsBackground=YES;
    _font=[[NSFont userFontOfSize:0] retain];
@@ -346,6 +350,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [[self enclosingScrollView] setRulersVisible:_rulerVisible];
 
     [self updateRuler];    
+}
+
+-(void)setUsesFontPanel:(BOOL)flag {
+	_usesFontPanel = flag;
+}
+
+-(BOOL)usesFontPanel
+{
+	return _usesFontPanel;
 }
 
 -(void)setAllowsUndo:(BOOL)flag {
@@ -1952,6 +1965,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 - (void)updateFontPanel
 {
+	if ([self usesFontPanel] == NO) {
+		return;
+	}
+	
 	NSRange selectedRange = [self selectedRange];
 	if (selectedRange.length == 0) {
 		// Use the font from the typing attributes

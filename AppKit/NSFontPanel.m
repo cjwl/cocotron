@@ -67,6 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_sizeMatrix renewRows:0 columns:1];
    [_sizeMatrix setDoubleAction:@selector(set:)];
    [self buildFamilyMatrix];
+   [[self fieldEditor: YES forObject: self] setUsesFontPanel: NO];
 }
 
 +(BOOL)sharedFontPanelExists {
