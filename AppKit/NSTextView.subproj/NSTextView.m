@@ -2811,7 +2811,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    NSUInteger start, end;
 
         // TODO, truncate invalidated range to string size if needed
-        
+
+	// Collapse all the following attribute changes into a single update to the textStorage
+	[[self textStorage] beginEditing];
+	
    // round range to nearest paragraphs
 
    [string getParagraphStart:&start end:&end contentsEnd:NULL forRange:invalidatedRange];
@@ -2836,6 +2839,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
       [self setSpellingState:NSSpellingStateSpellingFlag range:range];
     }
    }
+	[[self textStorage] endEditing];
 }
 
 -(void)_continuousSpellCheck {
