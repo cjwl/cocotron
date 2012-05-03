@@ -17,25 +17,31 @@ static inline NSUInteger roundCapacityUp(NSUInteger capacity){
    return (capacity<1)?1:capacity;
 }
 
-NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self,id *objects,NSUInteger count,NSZone *zone) {
-   NSUInteger i;
 
-   self->_count=count;
-   self->_capacity=roundCapacityUp(count);
-   self->_objects=NSZoneMalloc(zone,sizeof(id)*self->_capacity);
-   for(i=0;i<count;i++)
-    self->_objects[i]=[objects[i] retain];
+NSMutableArray_concrete *NSMutableArray_concreteInit(NSMutableArray_concrete *self, id *objects, NSUInteger count, NSZone *zone)
+{
+    NSUInteger i;
 
-   return self;
+    self->_count = count;
+    self->_capacity = roundCapacityUp(count);
+    self->_objects = NSZoneMalloc(zone, sizeof(id) * self->_capacity);
+    for (i = 0; i < count; i++) {
+        self->_objects[i] = [objects[i] retain];
+    }
+
+    return self;
 }
 
-NSArray *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self,NSUInteger capacity,NSZone *zone) {
-   self->_count=0;
-   self->_capacity=roundCapacityUp(capacity);
-   self->_objects=NSZoneMalloc(zone,sizeof(id)*self->_capacity);
 
-   return self;
+NSMutableArray_concrete *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self, NSUInteger capacity, NSZone *zone)
+{
+    self->_count = 0;
+    self->_capacity = roundCapacityUp(capacity);
+    self->_objects = NSZoneMalloc(zone, sizeof(id) * self->_capacity);
+
+    return self;
 }
+
 
 NSArray *NSMutableArray_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
    NSMutableArray_concrete *self=NSAllocateObject([NSMutableArray_concrete class],0,zone);
@@ -133,7 +139,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
     return;
    }
-   
+
    [object retain];
 
    _count++;
@@ -149,7 +155,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
     return;
    }
-   
+
    if(index>=_count){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,[self count]);
     return;
@@ -174,7 +180,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
     return;
    }
-   
+
    if(index>_count){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",index,[self count]);
     return;
@@ -230,10 +236,10 @@ static void removeObjectAtIndex(NSMutableArray_concrete *self,NSUInteger index) 
 
 -(void)removeAllObjects {
    NSUInteger i;
-   
+
    for(i=0;i<_count;i++)
     [_objects[i] release];
-    
+
    _count=0;
    if(self->_capacity>8){
     self->_capacity=8;
@@ -278,7 +284,7 @@ static inline NSUInteger indexOfObject(NSMutableArray_concrete *self,id object){
 
 -(void)makeObjectsPerformSelector:(SEL)selector {
 	NSInteger i, count = [self count];
-	
+
 	for (i = 0; i < count; i++)
 		[_objects[i] performSelector:selector];
 }
@@ -323,12 +329,12 @@ static inline NSUInteger indexOfObject(NSMutableArray_concrete *self,id object){
 {
    if(state->state>=_count)
     return 0;
-   
+
    state->itemsPtr=_objects;
    state->state=_count;
-   
+
    state->mutationsPtr=(unsigned long*)self;
-	
+
    return _count;
 }
 

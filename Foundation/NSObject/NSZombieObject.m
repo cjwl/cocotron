@@ -33,32 +33,38 @@ void NSRegisterZombie(NSObject *object)
 
 @implementation NSZombieObject
 
--(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
-   pthread_mutex_lock(&zombieLock);
-   Class cls=NSMapGet(objectToClassName,self);
-   pthread_mutex_unlock(&zombieLock);
 
-   NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,sel_getName(selector),class_getName(cls));
+- (NSMethodSignature *)methodSignatureForSelector: (SEL)selector
+{
+    pthread_mutex_lock(&zombieLock);
+    Class cls = NSMapGet(objectToClassName, self);
+    pthread_mutex_unlock(&zombieLock);
 
-   return [cls instanceMethodSignatureForSelector:selector];
+    NSLog(@"-[NSZombieObject %p methodSignatureForSelector:%s] %s", self, sel_getName(selector), class_getName(cls));
+
+    return [cls instanceMethodSignatureForSelector:selector];
 }
 
--(void)forwardInvocation:(NSInvocation *)invocation {
-   pthread_mutex_lock(&zombieLock);
-   Class cls=NSMapGet(objectToClassName,self);
-   pthread_mutex_unlock(&zombieLock);
 
-   NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s",self,sel_getName([invocation selector]),class_getName(cls));
+- (void)forwardInvocation:(NSInvocation *)invocation
+{
+    pthread_mutex_lock(&zombieLock);
+    Class cls = NSMapGet(objectToClassName, self);
+    pthread_mutex_unlock(&zombieLock);
+
+    NSLog(@"-[NSZombieObject %p forwardInvocation:%s] %s", self, sel_getName([invocation selector]), class_getName(cls));
 }
 
--(id)forwardSelector:(SEL)selector arguments:(void *)arguments {
-   pthread_mutex_lock(&zombieLock);
-   Class cls=NSMapGet(objectToClassName,self);
-   pthread_mutex_unlock(&zombieLock);
 
-   NSLog(@"-[NSZombieObject %x %s] %s",self,sel_getName(selector),class_getName(cls));
-   return nil;
+- (id)forwardSelector:(SEL)selector arguments:(void *)arguments
+{
+    pthread_mutex_lock(&zombieLock);
+    Class cls = NSMapGet(objectToClassName, self);
+    pthread_mutex_unlock(&zombieLock);
+
+    NSLog(@"-[NSZombieObject %p %s] %s", self, sel_getName(selector), class_getName(cls));
+    return nil;
 }
+
 
 @end
-

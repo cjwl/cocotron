@@ -315,8 +315,12 @@ CONFORMING TO
     } while (total < length);
 }
 
-- (void)truncateFileAtOffset:(uint64_t)offset {
-   ftruncate(_fileDescriptor,offset);
+
+- (void)truncateFileAtOffset:(uint64_t)offset
+{
+    if (ftruncate(_fileDescriptor, offset) != 0) {
+        NSLog(@"NSFileHandle: could not truncate file: (%d) %s", errno, strerror(errno));
+    }
 }
 
 

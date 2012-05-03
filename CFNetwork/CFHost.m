@@ -47,6 +47,21 @@ typedef struct {
 }
 
 @end
+#ifdef __clang__
+// has to be in sync with the __CFHost interface
+struct __CFHost {
+   CFStringRef          _name;
+   CFHostClientCallBack _callback;
+   CFHostClientContext  _context;
+   Boolean              _hasResolvedAddressing;
+   CFArrayRef           _addressing;
+   CFHostRequest       *_request;
+#ifdef WINDOWS
+   HANDLE                 _event;
+   NSHandleMonitor_win32 *_monitor;
+#endif
+};
+#endif
 
 @implementation __CFHost
 
@@ -375,13 +390,16 @@ CFHostRef  CFHostCreateWithAddress(CFAllocatorRef allocator,CFDataRef address) {
    return 0;
 }
 
-CFHostRef  CFHostCreateWithName(CFAllocatorRef allocator,CFStringRef name) {
-   CFHostRef result=[__CFHost allocWithZone:NULL];
 
-   result->_name=CFStringCreateCopy(allocator,name);
+CFHostRef CFHostCreateWithName(CFAllocatorRef allocator, CFStringRef name)
+{
+    CFHostRef result = (CFHostRef)[__CFHost allocWithZone:NULL];
 
-   return result;
+    result->_name = CFStringCreateCopy(allocator, name);
+
+    return result;
 }
+
 
 -(void)dealloc {
    CFRelease(_name);

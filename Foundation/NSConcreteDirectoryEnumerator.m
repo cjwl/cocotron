@@ -13,8 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSConcreteDirectoryEnumerator
 
-- (void) skipDescendents 
-{ 
+- (void) skipDescendents
+{
 	skipDescendents = YES;
 }
 
@@ -32,49 +32,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [NSString stringWithFormat: @"%@, to enumerate: %@", [super description], list];
 }
 
-- (id) initWithPath: (NSString*) aPath
+
+- (id)initWithPath: (NSString*)aPath
 {
-	if ((self = [super init])) {
-		startPath = [aPath copy];
-		fm        = [[NSFileManager defaultManager] retain];
-		list      = [[fm directoryContentsAtPath: aPath] retain];
-		lastFilePath = @"";
-	}
-	return self;
+    if ((self = [super init])) {
+        startPath = [aPath copy];
+        fm = [[NSFileManager defaultManager] retain];
+        list = [[fm directoryContentsAtPath: aPath] mutableCopy];
+        lastFilePath = @"";
+    }
+    return self;
 }
+
 
 - (void) setLastFilePath: (NSString*) aPath
 	/*" Sets the lastFilePath (relative) to aPath and its file attributes. "*/
 {
 	NSString* fullPath  = [startPath stringByAppendingPathComponent: aPath];
-	NSDictionary* attrs = [fm fileAttributesAtPath: fullPath 
+	NSDictionary* attrs = [fm fileAttributesAtPath: fullPath
 									  traverseLink: NO];
-	
+
 	//NSLog(@"Found '%@' to have attributes %@", fullPath, attrs);
 	[lastFilePath release];
 	lastFilePath = [aPath retain];
-	
+
 	[lastFileAttributes release];
 	lastFileAttributes = [attrs retain];
 }
 
-- (id) nextObject 
+- (id) nextObject
 {
 	NSString* result = nil;
 	if ([[lastFileAttributes fileType] isEqualToString: NSFileTypeDirectory]) {
-		// last enumerated file was a directory	
+		// last enumerated file was a directory
 		if (! skipDescendents) {
 			// Add all files in the directory to the list,
 			// after making them relative to the lastFilePath:
 			NSString* lastFilePathAbs = [startPath stringByAppendingPathComponent: lastFilePath];
 			NSArray* dirContent = [fm directoryContentsAtPath: lastFilePathAbs];
-			
+
 			if ([dirContent count]) {
 				NSEnumerator* dirContentEnumerator = [dirContent reverseObjectEnumerator];
 				NSString* filename;
-				
+
 				//NSLog(@"Found dir content of '%@' to be %@", lastFilePathAbs, dirContent);
-				
+
 				while ((filename = [dirContentEnumerator nextObject])) {
 					NSString* filePath = [lastFilePath stringByAppendingPathComponent: filename];
 					[list insertObject: filePath atIndex: 0];
@@ -82,17 +84,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			}
 		}
 	}
-	
+
 	if ([list count] > 0) {
 		result = [[[list objectAtIndex: 0] retain] autorelease];
 		[list removeObjectAtIndex: 0];
 	}
-	
+
 	if (result) [self setLastFilePath: result];
-	skipDescendents = NO;	
-	
+	skipDescendents = NO;
+
 	//NSLog(@"Enumerating %@", result);
-	
+
 	return result;
 }
 
@@ -115,7 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	++state->state;
 	state->itemsPtr = stackbuf;
 	state->mutationsPtr = (unsigned long *)self;
-	
+
 	id next = [self nextObject];
 	if (nil == next) return 0;
 

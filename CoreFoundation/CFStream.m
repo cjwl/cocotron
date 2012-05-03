@@ -6,12 +6,6 @@
 #import <Foundation/NSOutputStream_socket.h>
 #import <Foundation/NSHost.h>
 
-@interface __CFStream : NSStream
-@end
-@interface __CFReadStream : NSInputStream
-@end
-@interface __CFWriteStream : NSOutputStream
-@end
 
 const CFStringRef kCFStreamPropertyFileCurrentOffset=(CFStringRef)@"kCFStreamPropertyFileCurrentOffset";
 const CFStringRef kCFStreamPropertyAppendToFile=(CFStringRef)@"kCFStreamPropertyAppendToFile";
@@ -32,14 +26,19 @@ void CFStreamCreatePairWithSocket(CFAllocatorRef allocator,CFSocketNativeHandle 
    NSUnimplementedFunction();
 }
 
-void CFStreamCreatePairWithSocketToHost(CFAllocatorRef allocator,CFStringRef hostName,CFUInteger port,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream) {
-   NSHost *host=[NSHost hostWithName:(NSString *)hostName];
-   [NSStream getStreamsToHost:host port:port inputStream:readStream outputStream:writeStream];
-   if(readStream!=NULL)
-    [*readStream retain];
-   if(writeStream!=NULL)
-    [*writeStream retain];
+
+void CFStreamCreatePairWithSocketToHost(CFAllocatorRef allocator, CFStringRef hostName, CFUInteger port, CFReadStreamRef *readStream, CFWriteStreamRef *writeStream)
+{
+    NSHost *host = [NSHost hostWithName:(NSString *)hostName];
+    [NSStream getStreamsToHost:host port:port inputStream:(NSInputStream **)readStream outputStream:(NSOutputStream **)writeStream];
+    if (readStream != NULL) {
+        [(id)*readStream retain];
+    }
+    if (writeStream!=NULL) {
+        [(id)*writeStream retain];
+    }
 }
+
 
 CFTypeID CFReadStreamGetTypeID(void) {
    NSUnimplementedFunction();
@@ -55,46 +54,61 @@ CFReadStreamRef CFReadStreamCreateWithFile(CFAllocatorRef allocator,CFURLRef url
    return 0;
 }
 
-Boolean CFReadStreamSetClient(CFReadStreamRef self,CFOptionFlags events,CFReadStreamClientCallBack callback,CFStreamClientContext *context) {
-   if([self isKindOfClass:[NSInputStream_socket class]]){
-    [(NSInputStream_socket *)self setClientEvents:events callBack:callback context:context];
-    return TRUE;
-   }
-   else {
-    NSUnimplementedFunction();
-    return 0;
-   }
+
+Boolean CFReadStreamSetClient(CFReadStreamRef self, CFOptionFlags events, CFReadStreamClientCallBack callback, CFStreamClientContext *context)
+{
+    if ([(id)self isKindOfClass:[NSInputStream_socket class]]) {
+        [(NSInputStream_socket *)self setClientEvents:events callBack:callback context:context];
+        return TRUE;
+    } else {
+        NSUnimplementedFunction();
+        return 0;
+    }
 }
 
-CFTypeRef CFReadStreamCopyProperty(CFReadStreamRef self,CFStringRef key) {
-   return [[self propertyForKey:(NSString *)key] copy];
+
+CFTypeRef CFReadStreamCopyProperty(CFReadStreamRef self, CFStringRef key)
+{
+    return [[(id)self propertyForKey:(NSString *)key] copy];
 }
 
-Boolean CFReadStreamSetProperty(CFReadStreamRef self,CFStringRef key,CFTypeRef value) {
-   return [self setProperty:(id)value forKey:(NSString *)key];
+
+Boolean CFReadStreamSetProperty(CFReadStreamRef self, CFStringRef key, CFTypeRef value)
+{
+   return [(id)self setProperty:(id)value forKey:(NSString *)key];
 }
+
 
 const uint8_t * CFReadStreamGetBuffer(CFReadStreamRef self,CFIndex limit,CFIndex *available) {
    NSUnimplementedFunction();
    return 0;
 }
 
-Boolean CFReadStreamOpen(CFReadStreamRef self) {
-   [self open];
-   return TRUE;
+
+Boolean CFReadStreamOpen(CFReadStreamRef self)
+{
+    [(id)self open];
+    return TRUE;
 }
 
-void CFReadStreamClose(CFReadStreamRef self) {
-   [self close];
+
+void CFReadStreamClose(CFReadStreamRef self)
+{
+    [(NSInputStream *)self close];
 }
 
-Boolean CFReadStreamHasBytesAvailable(CFReadStreamRef self) {
-   return [self hasBytesAvailable];
+
+Boolean CFReadStreamHasBytesAvailable(CFReadStreamRef self)
+{
+    return [(id)self hasBytesAvailable];
 }
 
-CFIndex CFReadStreamRead(CFReadStreamRef self,uint8_t *bytes,CFIndex length) {
-   return [self read:bytes maxLength:length];
+
+CFIndex CFReadStreamRead(CFReadStreamRef self, uint8_t *bytes, CFIndex length)
+{
+    return [(id)self read:bytes maxLength:length];
 }
+
 
 CFErrorRef CFReadStreamCopyError(CFReadStreamRef self) {
    NSUnimplementedFunction();
@@ -112,13 +126,18 @@ CFStreamStatus CFReadStreamGetStatus(CFReadStreamRef self) {
    return 0;
 }
 
-void CFReadStreamScheduleWithRunLoop(CFReadStreamRef self,CFRunLoopRef runLoop,CFStringRef mode) {
-   [self scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
+
+void CFReadStreamScheduleWithRunLoop(CFReadStreamRef self, CFRunLoopRef runLoop, CFStringRef mode)
+{
+    [(id)self scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
 }
 
-void CFReadStreamUnscheduleFromRunLoop(CFReadStreamRef self,CFRunLoopRef runLoop,CFStringRef mode) {
-   [self removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
+
+void CFReadStreamUnscheduleFromRunLoop(CFReadStreamRef self, CFRunLoopRef runLoop, CFStringRef mode)
+{
+    [(id)self removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
 }
+
 
 CFTypeID CFWriteStreamGetTypeID(void) {
    NSUnimplementedFunction();
@@ -138,41 +157,55 @@ CFWriteStreamRef CFWriteStreamCreateWithFile(CFAllocatorRef allocator,CFURLRef u
    return 0;
 }
 
-Boolean CFWriteStreamSetClient(CFWriteStreamRef self,CFOptionFlags events,CFWriteStreamClientCallBack callback,CFStreamClientContext *context) {
-   if([self isKindOfClass:[NSOutputStream_socket class]]){
-    [(NSOutputStream_socket *)self setClientEvents:events callBack:callback context:context];
+
+Boolean CFWriteStreamSetClient(CFWriteStreamRef self, CFOptionFlags events, CFWriteStreamClientCallBack callback, CFStreamClientContext *context)
+{
+    if ([(id)self isKindOfClass:[NSOutputStream_socket class]]) {
+        [(NSOutputStream_socket *)self setClientEvents:events callBack:callback context:context];
+        return TRUE;
+    } else {
+        NSUnimplementedFunction();
+        return 0;
+    }
+}
+
+
+CFTypeRef CFWriteStreamCopyProperty(CFWriteStreamRef self, CFStringRef key)
+{
+    return [[(id)self propertyForKey:(NSString *)key] copy];
+}
+
+
+Boolean CFWriteStreamSetProperty(CFWriteStreamRef self, CFStringRef key, CFTypeRef value)
+{
+    return [(id)self setProperty:(id)value forKey:(NSString *)key];
+}
+
+
+Boolean CFWriteStreamOpen(CFWriteStreamRef self)
+{
+    [(id)self open];
     return TRUE;
-   }
-   else {
-    NSUnimplementedFunction();
-    return 0;
-   }
 }
 
-CFTypeRef CFWriteStreamCopyProperty(CFWriteStreamRef self,CFStringRef key) {
-   return [[self propertyForKey:(NSString *)key] copy];
+
+void CFWriteStreamClose(CFWriteStreamRef self)
+{
+    [(NSOutputStream *)self close];
 }
 
-Boolean CFWriteStreamSetProperty(CFWriteStreamRef self,CFStringRef key,CFTypeRef value) {
-   return [self setProperty:(id)value forKey:(NSString *)key];
+
+Boolean CFWriteStreamCanAcceptBytes(CFWriteStreamRef self)
+{
+    return [(id)self hasSpaceAvailable];
 }
 
-Boolean CFWriteStreamOpen(CFWriteStreamRef self) {
-   [self open];
-   return TRUE;
+
+CFIndex CFWriteStreamWrite(CFWriteStreamRef self, const uint8_t *bytes, CFIndex length)
+{
+    return [(id)self write:bytes maxLength:length];
 }
 
-void CFWriteStreamClose(CFWriteStreamRef self) {
-   [self close];
-}
-
-Boolean CFWriteStreamCanAcceptBytes(CFWriteStreamRef self) {
-   return [self hasSpaceAvailable];
-}
-
-CFIndex CFWriteStreamWrite(CFWriteStreamRef self,const uint8_t *bytes,CFIndex length) {
-   return [self write:bytes maxLength:length];
-}
 
 CFErrorRef CFWriteStreamCopyError(CFReadStreamRef self) {
    NSUnimplementedFunction();
@@ -190,10 +223,14 @@ CFStreamStatus CFWriteStreamGetStatus(CFWriteStreamRef self) {
    return 0;
 }
 
-void CFWriteStreamScheduleWithRunLoop(CFWriteStreamRef self,CFRunLoopRef runLoop,CFStringRef mode) {
-   [self scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
+
+void CFWriteStreamScheduleWithRunLoop(CFWriteStreamRef self, CFRunLoopRef runLoop, CFStringRef mode)
+{
+    [(id)self scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
 }
 
-void CFWriteStreamUnscheduleFromRunLoop(CFWriteStreamRef self,CFRunLoopRef runLoop,CFStringRef mode) {
-   [self removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
+
+void CFWriteStreamUnscheduleFromRunLoop(CFWriteStreamRef self, CFRunLoopRef runLoop, CFStringRef mode)
+{
+    [(id)self removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode];
 }

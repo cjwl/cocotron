@@ -13,54 +13,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSet_placeholder
 
--init {
-   [self dealloc];
 
-   return NSSet_concreteNew(NULL,NULL,0);
+- init
+{
+    [self dealloc];
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, NULL, 0);
 }
 
--initWithArray:(NSArray *)array {
-   NSUInteger count=[array count];
-   id      *objects=__builtin_alloca(sizeof(id)*count);
 
-   [array getObjects:objects];
+- initWithArray:(NSArray *)array
+{
+    NSUInteger count = [array count];
+    id *objects = __builtin_alloca(sizeof(id) * count);
 
-   [self dealloc];
+    [array getObjects:objects];
 
-   return NSSet_concreteNew(NULL,objects,count);
+    [self dealloc];
+
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, objects, count);
 }
 
--initWithObjects:(id *)objects count:(NSUInteger)count {
-   [self dealloc];
 
-   return NSSet_concreteNew(NULL,objects,count);
+- initWithObjects:(id *)objects count:(NSUInteger)count
+{
+    [self dealloc];
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, objects, count);
 }
 
--initWithObjects:(id)object,... {
-   va_list  arguments;
-   NSUInteger i,count;
-   id      *objects;
-    
-   if(object==nil)
-       return [self init];
-    
-   va_start(arguments,object);
-   count=1;
-   while(va_arg(arguments,id)!=nil)
-    count++;
-   va_end(arguments);
-    
-   objects=__builtin_alloca(sizeof(id)*count);
-    
-   va_start(arguments,object);
-   objects[0]=object;
-   for(i=1;i<count;i++)
-    objects[i]=va_arg(arguments,id);
-   va_end(arguments);
-    
-   [self dealloc];
 
-   return NSSet_concreteNew(NULL,objects,count);
+- initWithObjects:(id)object,...
+{
+    va_list arguments;
+    NSUInteger i, count;
+    id *objects;
+
+    if (object == nil) {
+        return [self init];
+    }
+
+    va_start(arguments, object);
+    count = 1;
+    while (va_arg(arguments, id) != nil) {
+        count++;
+    }
+    va_end(arguments);
+
+    objects = __builtin_alloca(sizeof(id) * count);
+
+    va_start(arguments, object);
+    objects[0] = object;
+    for (i = 1; i < count; i++) {
+        objects[i] = va_arg(arguments, id);
+    }
+    va_end(arguments);
+
+    [self dealloc];
+
+    return (NSSet_placeholder *)NSSet_concreteNew(NULL, objects, count);
 }
+
 
 @end

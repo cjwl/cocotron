@@ -139,7 +139,12 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
    return self;
 }
 
--(void)release {}
+
+- (oneway void)release
+{
+    // will never be released
+}
+
 
 -(id)autorelease {
    return self;
