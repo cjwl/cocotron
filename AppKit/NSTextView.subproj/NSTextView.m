@@ -2803,6 +2803,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)showGuessPanel:sender {
+	[self moveToBeginningOfDocument: sender];
    [[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
 }
 
@@ -2849,6 +2850,19 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)checkSpelling:sender {
    NSString *string=[self string];
    NSRange selection=[self selectedRange];
+
+	// If we're at the end start over again
+	if (NSMaxRange(selection) == [string length]) {
+		[self moveToBeginningOfDocument: sender];
+		selection=[self selectedRange];
+	}
+	else if (selection.length < [string length]) {
+		selection.location += selection.length;
+		if (NSMaxRange(selection) > [string length]) {
+			selection.length = [string length] - selection.location;
+		}
+	}
+	
    NSRange range=NSMakeRange(selection.location,[string length]-selection.location);
    
    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];

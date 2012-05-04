@@ -17,6 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSpellingViewController
 
+- (void)awakeFromNib
+{
+	// Look for the first mis-spelled word
+	[self findNext: nil];
+}
+
 -(NSString *)_currentLanguage {
     return [[NSLocale currentLocale] localeIdentifier];
 }
@@ -70,6 +76,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)change:sender {
     [NSApp sendAction:@selector(changeSpelling:) to: nil from: _currentWord];
+	// And automatically move to the next word - this matches Cocoa Spelling panel behaviour
+    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)findNext:sender {
@@ -78,10 +86,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)ignore:sender {
     [NSApp sendAction:@selector(ignoreSpelling:) to:nil from:_currentWord];
+	// And automatically move to the next word - this matches Cocoa Spelling panel behaviour
+    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)learn:sender {
     [[NSSpellChecker sharedSpellChecker] learnWord:[_currentWord stringValue]];
+	// And automatically move to the next word - this matches Cocoa Spelling panel behaviour
+    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)guess:sender {
