@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32EventInputSource.h"
 
 #import "opengl_dll.h"
+#define WM_MSG_DEBUGGING 0
 
 @interface Win32Window(ForwardRefs)
 -(void)setupPixelFormat;
@@ -496,7 +497,6 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)makeKey {
-
 	// SetForegroundWindow() seems to handle all kinds of windows. SetActiveWindow() seemed
 	// to leave secondary windows deactivated meaning the user had to click on a primary window
 	// first and then the secondary window in order to reset the focus. This makes it all
@@ -1195,7 +1195,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 // via WM_WINDOWPOSCHANGED is much more efficient than WM_SIZE and WM_MOVE. Implementing a WM_WINDOWPOSCHANGED
 // handler means that WM_SIZE and WM_MOVE are no longer delivered.
 - (int)WM_WINDOWPOSCHANGED_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-
+    
 #if WM_MSG_DEBUGGING
 	NSLog(@"WM_WINDOWPOSCHANGED_wParam: %d, lParam: %ld", wParam, lParam);
 #endif
@@ -1218,9 +1218,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 		frame = convertFrameFromWin32ScreenCoordinates(frame);
 		[self invalidateContextsWithNewSize: frame.size];
 		[_delegate platformWindow:self frameChanged:frame didSize:YES];
-
+        
 		_sentBeginSizing=NO;
-
+        
 		switch(_backingType){
 				
 			case CGSBackingStoreRetained:
@@ -1519,7 +1519,9 @@ const int kWindowMaxDim = 10000;
     switch(wParam&0xFFF0){
    
         case SC_MAXIMIZE:
+            [_delegate platformWindowWillBeginSizing:self];
             [_delegate platformWindowShouldZoom:self];
+            [_delegate platformWindowDidEndSizing:self];
             return 0;
         
         case SC_MINIMIZE:

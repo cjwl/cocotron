@@ -35,7 +35,7 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 #include <windows.h>
 #else
 #include <dlfcn.h>
-#import <sys/param.h>
+#include <sys/param.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,13 +51,14 @@ OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
 
 #include <sys/stat.h>
 
-static int _NSGetExecutablePath(char *buf, uint32_t *bufsize)
+
+static int _NSGetExecutablePath(char *buf, ssize_t *bufsize)
 {
-   if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
-       *bufsize = MAXPATHLEN;
-       return -1;
-   }
-   return 0;
+    if ((*bufsize = readlink("/proc/self/exe", buf, *bufsize)) < 0) {
+        *bufsize = MAXPATHLEN;
+        return -1;
+    }
+    return 0;
 }
 
 
@@ -215,30 +216,36 @@ NSModuleHandle NSLoadModule(const char *path) {
 }
 #else
 
-NSModuleHandle NSLoadModule(const char *path) {
-   NSModuleHandle handle;
+NSModuleHandle NSLoadModule(const char *path)
+{
+    NSModuleHandle handle;
 
-   // dlopen doesn't accept partial paths.
-   if (path[0] != '/' && path[0] != '.') {
-      char buf[MAXPATHLEN];
+    // dlopen doesn't accept partial paths.
+    if (path[0] != '/' && path[0] != '.') {
+        char buf[MAXPATHLEN];
 
-      if (getcwd(buf, MAXPATHLEN) != NULL) {
-          strncat(buf, "/", MAXPATHLEN);
-          strncat(buf, path, MAXPATHLEN);
-          path = buf;
-      }
-      else {
-          NSCLog("NSLoadModule: cannot find cwd and relative path specified");
-          return NULL;
-      }
-   }
+        if (getcwd(buf, MAXPATHLEN) != NULL) {
+            if (strlen(buf) < MAXPATHLEN - (1 + strlen(path))) {
+                strncat(buf, "/", 1);
+                strncat(buf, path, MAXPATHLEN - (1 + strlen(buf)));
+                path = buf;
+            } else {
+                NSCLog("NSLoadModule: resulting path '%s/%s' exceeds MAXPATHLEN (%d)",
+                        buf, path, MAXPATHLEN);
+                return NULL;
+            }
+        } else {
+            NSCLog("NSLoadModule: cannot find cwd and relative path specified");
+            return NULL;
+        }
+    }
 
-   handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
-   if (handle == NULL){
-       NSCLog(NSLastModuleError());
-   }
+    handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
+    if (handle == NULL) {
+        NSCLog(NSLastModuleError());
+    }
 
-   return handle;
+    return handle;
 }
 #endif
 
@@ -373,14 +380,14 @@ static NSMapTable *pathToObject=NULL;
         const char *module = getenv("CFProcessPath");
         if (!module) {
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-            uint32_t bufSize = MAXPATHLEN;
+            ssize_t bufSize = MAXPATHLEN;
             char *executablePath = alloca(bufSize + 1);
             if (_NSGetExecutablePath(executablePath, &bufSize) < 0) {
                 executablePath = alloca(bufSize + 1);
                 _NSGetExecutablePath(executablePath, &bufSize);
             }
             executablePath[bufSize] = 0;
-            module=executablePath;
+            module = executablePath;
 #else
             module = objc_mainImageName();
 #endif
@@ -743,7 +750,7 @@ static NSMapTable *pathToObject=NULL;
 	if ([type length] && [[name pathExtension] isEqualToString:type]) {
 		// Kill the type form the extension part if it's already there
 		name = [name stringByDeletingPathExtension];
-	}	
+	}
 
 	if(type && [type length]!=0)
     file=[[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix] stringByAppendingPathExtension:type];

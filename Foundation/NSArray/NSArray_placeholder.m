@@ -12,13 +12,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSArray_placeholder
 
--initWithObjects:(id *)objects count:(NSUInteger)count {
-   NSDeallocateObject(self);
-   return NSArray_concreteNew(NULL,objects,count);
+
+- initWithObjects:(id *)objects count:(NSUInteger)count
+{
+    NSDeallocateObject(self);
+    return (NSArray_placeholder *)NSArray_concreteNew(NULL, objects, count);
 }
 
--init {
-   return [self initWithObjects:NULL count:0];
+
+-init
+{
+    return [self initWithObjects:NULL count:0];
 }
+
 
 @end

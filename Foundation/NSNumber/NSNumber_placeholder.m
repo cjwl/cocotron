@@ -53,7 +53,11 @@ static NSNumber_placeholder *sSharedInstance;
    return self;
 }
 
--(void)release {}
+
+- (oneway void)release
+{
+}
+
 
 -(id)autorelease {
    return self;
@@ -67,72 +71,103 @@ static NSNumber_placeholder *sSharedInstance;
    return UINT_MAX;
 }
 
--initWithChar:(char)value {
-   return NSNumber_charNew(NULL,value);
+
+- initWithChar:(char)value
+{
+    return (NSNumber_placeholder *)NSNumber_charNew(NULL, value);
 }
 
--initWithUnsignedChar:(unsigned char)value {
-   return NSNumber_unsignedCharNew(NULL,value);
+
+- initWithUnsignedChar:(unsigned char)value
+{
+    return (NSNumber_placeholder *)NSNumber_unsignedCharNew(NULL, value);
 }
 
--initWithShort:(short)value {
-   return NSNumber_shortNew(NULL,value);
+
+- initWithShort:(short)value
+{
+    return (NSNumber_placeholder *)NSNumber_shortNew(NULL, value);
 }
 
--initWithUnsignedShort:(unsigned short)value {
-   return NSNumber_unsignedShortNew(NULL,value);
+
+- initWithUnsignedShort:(unsigned short)value
+{
+    return (NSNumber_placeholder *)NSNumber_unsignedShortNew(NULL, value);
 }
 
--initWithInt:(int)value {
-   return NSNumber_intNew(NULL,value);
+
+- initWithInt:(int)value
+{
+    return (NSNumber_placeholder *)NSNumber_intNew(NULL, value);
 }
 
--initWithUnsignedInt:(unsigned int)value {
-   return NSNumber_unsignedIntNew(NULL,value);
+
+- initWithUnsignedInt:(unsigned int)value
+{
+    return (NSNumber_placeholder *)NSNumber_unsignedIntNew(NULL, value);
 }
 
--initWithLong:(long)value {
-   return NSNumber_longNew(NULL,value);
+
+- initWithLong:(long)value
+{
+    return (NSNumber_placeholder *)NSNumber_longNew(NULL, value);
 }
 
--initWithUnsignedLong:(unsigned long)value {
-   return NSNumber_unsignedLongNew(NULL,value);
+
+- initWithUnsignedLong:(unsigned long)value
+{
+    return (NSNumber_placeholder *)NSNumber_unsignedLongNew(NULL, value);
 }
 
--initWithLongLong:(long long)value {
-   return NSNumber_longLongNew(NULL,value);
+
+- initWithLongLong:(long long)value
+{
+    return (NSNumber_placeholder *)NSNumber_longLongNew(NULL, value);
 }
 
--initWithUnsignedLongLong:(unsigned long long)value {
-   return NSNumber_unsignedLongLongNew(NULL,value);
+
+- initWithUnsignedLongLong:(unsigned long long)value
+{
+    return (NSNumber_placeholder *)NSNumber_unsignedLongLongNew(NULL, value);
 }
 
--initWithFloat:(float)value {
-   return NSNumber_floatNew(NULL,value);
+
+- initWithFloat:(float)value
+{
+    return (NSNumber_placeholder *)NSNumber_floatNew(NULL, value);
 }
 
--initWithDouble:(double)value {
-   return NSNumber_doubleNew(NULL,value);
+
+- initWithDouble:(double)value
+{
+    return (NSNumber_placeholder *)NSNumber_doubleNew(NULL, value);
 }
 
--initWithInteger:(NSInteger)value {
+
+- initWithInteger:(NSInteger)value
+{
 #if defined(__LP64__)
-   return NSNumber_longNew(NULL,value);
+    return (NSNumber_placeholder *)NSNumber_longNew(NULL, value);
 #else
-   return NSNumber_intNew(NULL,value);
+    return (NSNumber_placeholder *)NSNumber_intNew(NULL, value);
 #endif
 }
 
--initWithUnsignedInteger:(NSUInteger)value {
+
+- initWithUnsignedInteger:(NSUInteger)value
+{
 #if defined(__LP64__)
-   return NSNumber_unsignedLongNew(NULL,value);
+    return (NSNumber_placeholder *)NSNumber_unsignedLongNew(NULL, value);
 #else
-   return NSNumber_unsignedIntNew(NULL,value);
+    return (NSNumber_placeholder *)NSNumber_unsignedIntNew(NULL, value);
 #endif
 }
 
--initWithBool:(BOOL)value {
-   return NSNumber_BOOLNew(NULL,value);
+
+- initWithBool:(BOOL)value
+{
+    return (NSNumber_placeholder *)NSNumber_BOOLNew(NULL, value);
 }
+
 
 @end

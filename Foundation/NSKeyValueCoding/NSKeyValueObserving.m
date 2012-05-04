@@ -23,11 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSUserDefaults.h>
 
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
 #import <objc/runtime.h>
-#else
-#import <objc/objc-runtime.h>
-#endif
 #include <string.h>
 #include <ctype.h>
 #include <pthread.h>
@@ -658,7 +654,7 @@ CHANGE_DECLARATION(SEL)
 	implementation(self, _cmd, object, key);
 	if (shouldNotify) {
 		[self didChangeValueForKey:key];
-	}	
+	}
 }
 
 -(void)KVO_notifying_change_removeObjectForKey:(NSString*)key {
@@ -1010,38 +1006,26 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
     Method className = class_getInstanceMethod([self class], @selector(_KVO_className));
     Method class = class_getInstanceMethod([self class], @selector(_KVO_class));
     Method classForCoder = class_getInstanceMethod([self class], @selector(_KVO_classForCoder));
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
     IMP classNameImp = method_getImplementation(className);
     IMP classImp = method_getImplementation(class);
     IMP classForCoderImp = method_getImplementation(classForCoder);
     const char *classNameTypes = method_getTypeEncoding(className);
     const char *classTypes = method_getTypeEncoding(class);
     const char *classForCoderTypes = method_getTypeEncoding(classForCoder);
-#else
-    IMP classNameImp = className->method_imp;
-    IMP classImp = class->method_imp;
-    IMP classForCoderImp = classForCoder->method_imp;
-    const char *classNameTypes = className->method_types;
-    const char *classTypes = class->method_types;
-    const char *classForCoderTypes = classForCoder->method_types;
-#endif
+
     class_addMethod(swizzledClass, @selector(className), classNameImp, classNameTypes);
     class_addMethod(swizzledClass, @selector(class), classImp, classTypes);
     class_addMethod(swizzledClass, @selector(classForCoder), classForCoderImp, classForCoderTypes);
 
     Class currentClass = isa;
 
-    for (; currentClass && currentClass->super_class != currentClass; currentClass = currentClass->super_class) {
+    for (; currentClass && class_getSuperclass(currentClass) != currentClass; currentClass = class_getSuperclass(currentClass)) {
         unsigned int count;
         Method *methods = class_copyMethodList(currentClass, &count);
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         for (int i = 0; i < count; ++i) {
             Method method = methods[i];
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
             SEL sel = method_getName(method);
-#else
-            SEL sel = method->method_name;
-#endif
             const char *methodCString = sel_getName(sel);
             NSUInteger numberOfArguments = method_getNumberOfArguments(method);
             SEL kvoSelector = 0;
@@ -1121,11 +1105,8 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 
             // there's a suitable selector for us
             if (kvoSelector != 0) {
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
                 const char *types = method_getTypeEncoding(method);
-#else
-                const char *types = method->method_types;
-#endif
+
                 class_addMethod(swizzledClass, sel, [self methodForSelector:kvoSelector], types);
                 //NSLog(@"replaced method %s by %@ in class %@", methodNameCString, NSStringFromSelector(newMethod->method_name), [self className]);
             }

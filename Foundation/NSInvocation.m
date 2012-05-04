@@ -201,27 +201,28 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
    byteCopy(pointerToValue,_returnValue,_returnSize);
 }
 
--(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index {
-   NSUInteger naturalSize=_argumentSizes[index];
-   NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
-   if(naturalSize==promotedSize)
-    byteCopy(_argumentFrame+_argumentOffsets[index],pointerToValue,naturalSize);
-   else if(promotedSize==4){
-    uint8_t promoted[promotedSize];
+-(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index
+{
+    NSUInteger naturalSize = _argumentSizes[index];
+    NSUInteger promotedSize = ((naturalSize + sizeof(long) - 1) / sizeof(long)) * sizeof(long);
 
-    byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
-    if(naturalSize==1)
-     *((char *)pointerToValue)=*((int *)promoted);
-    else if(naturalSize==2)
-     *((short *)pointerToValue)=*((int *)promoted);
+    if (naturalSize == promotedSize) {
+        byteCopy(_argumentFrame + _argumentOffsets[index], pointerToValue, naturalSize);
+    } else if (promotedSize == sizeof(long)) {
+        long promoted;
 
-   }
-   else
-   {
-    [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
-   }
-
+        byteCopy(_argumentFrame + _argumentOffsets[index], &promoted, promotedSize);
+        if (naturalSize == 1) {
+            *((char *)pointerToValue) = (char)promoted;
+        } else if (naturalSize == 2) {
+            *((short *)pointerToValue) = (short)promoted;
+        } else if (naturalSize == 4) {
+            *((int32_t *)pointerToValue) = (int32_t)promoted;
+        }
+    } else {
+        [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d", naturalSize, promotedSize];
+    }
 }
 
 
@@ -233,17 +234,17 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
     if (naturalSize == promotedSize) {
         byteCopy(pointerToValue, _argumentFrame + _argumentOffsets[index], naturalSize);
     } else if (promotedSize == sizeof(long)) {
-        uint8_t promoted[promotedSize];
+        long promoted;
 
         if (naturalSize == 1) {
-            *((long *)promoted) = *((char *)pointerToValue);
+            promoted = *((char *)pointerToValue);
         } else if (naturalSize == 2) {
-            *((long *)promoted) = *((short *)pointerToValue);
+            promoted = *((short *)pointerToValue);
         } else if (naturalSize == 4) {
-            *((long *)promoted) = *((int *)pointerToValue);
+            promoted = *((int32_t *)pointerToValue);
         }
 
-        byteCopy(promoted, _argumentFrame + _argumentOffsets[index], promotedSize);
+        byteCopy(&promoted, _argumentFrame + _argumentOffsets[index], promotedSize);
     } else {
         [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=" NSUIntegerFormat " to promotedSize=" NSUIntegerFormat, naturalSize, promotedSize];
     }
@@ -443,6 +444,10 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 
                     [self setReturnValue:&value];
                 } else {
+#ifdef __clang__
+// see http://llvm.org/bugs/show_bug.cgi?id=9254
+                    @throw @"NSInvocation: current implementation of struct returning invocation is not supported by Clang.";
+#else
                     struct structReturn {
                         char result[size];
                     } (*function)() = (struct structReturn (*)())msgSendv; // should be msgSend_stret
@@ -456,6 +461,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 #endif
 
                     [self setReturnValue:&value];
+#endif
                 }
             }
             break;

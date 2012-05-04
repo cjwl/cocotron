@@ -42,14 +42,17 @@ struct NSRangeEntries {
    return result;
 }
 
- void NSFreeRangeEntries(NSRangeEntries *self) {
-	 if (self == nil) {
-		 return;
-	 }
-   NSResetRangeEntries(self);
-   NSZoneFree(NULL,self->entries);
-   NSZoneFree(NULL,self);
+
+void NSFreeRangeEntries(NSRangeEntries *self)
+{
+    if (self == NULL) {
+         return;
+    }
+    NSResetRangeEntries(self);
+    NSZoneFree(NULL, self->entries);
+    NSZoneFree(NULL, self);
 }
+
 
  void NSResetRangeEntries(NSRangeEntries *self) {
    NSInteger i;
@@ -347,10 +350,13 @@ NSLog(@"DUMP BEGIN");
 NSLog(@"DUMP END");
 }
 
- void NSRangeEntriesDumpAndAbort(NSRangeEntries *self) {
-  NSRangeEntriesDump(self);
-*(char *)0=0;
+
+void NSRangeEntriesDumpAndAbort(NSRangeEntries *self)
+{
+    NSRangeEntriesDump(self);
+    __builtin_trap();
 }
+
 
  void NSRangeEntriesVerify(NSRangeEntries *self,NSUInteger length) {
 #if 0

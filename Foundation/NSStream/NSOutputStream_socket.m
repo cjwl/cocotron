@@ -178,46 +178,48 @@ static BOOL socketHasSpaceAvailable(NSSocket *socket){
    }
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
-   NSStreamEvent event;
 
-   switch(_status){
+- (void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent
+{
+    NSStreamEvent event;
 
-    case NSStreamStatusOpening:
-     _status=NSStreamStatusOpen;
-     event=NSStreamEventOpenCompleted;
-     break;
+    switch (_status) {
+        case NSStreamStatusOpening:
+            _status = NSStreamStatusOpen;
+            event = NSStreamEventOpenCompleted;
+            break;
 
-    case NSStreamStatusOpen:;
-     if(![self hasSpaceAvailable])
-      event=NSStreamEventNone;
-     else {
-      event=NSStreamEventHasSpaceAvailable;
-     /* Streams only signal when space is available once, then it reactivates on a write, so we turn it off before notifying */
-      [_inputSource setSelectEventMask:[_inputSource selectEventMask]&~NSSelectWriteEvent];
-     }
-     break;
+        case NSStreamStatusOpen:
+            if(![self hasSpaceAvailable]) {
+                event = NSStreamEventNone;
+            } else {
+                event = NSStreamEventHasSpaceAvailable;
+                /* Streams only signal when space is available once, then it reactivates on a write, so we turn it off before notifying */
+                [_inputSource setSelectEventMask:[_inputSource selectEventMask] &~ NSSelectWriteEvent];
+            }
+            break;
 
-    case NSStreamStatusAtEnd:
-     event=NSStreamEventEndEncountered;
-     break;
+        case NSStreamStatusAtEnd:
+            event = NSStreamEventEndEncountered;
+            break;
 
-    default:
-     event=NSStreamEventNone;
-     break;
-   }
-
-   if(event!=NSStreamEventNone){
-    if(_callBack!=NULL){
-     if(_events&event){
-      _callBack((CFWriteStreamRef)self,event,_context.info);
-     }
+        default:
+            event = NSStreamEventNone;
+            break;
     }
-    else {
-     if([_delegate respondsToSelector:@selector(stream:handleEvent:)]){
-      [_delegate stream:self handleEvent:event];
-     }
+
+    if (event != NSStreamEventNone) {
+        if (_callBack != NULL) {
+            if (_events & event) {
+                _callBack((CFWriteStreamRef)self, (CFStreamEventType)event, _context.info);
+            }
+        } else {
+            if ([_delegate respondsToSelector:@selector(stream:handleEvent:)]) {
+                [_delegate stream:self handleEvent:event];
+            }
+        }
     }
-   }
 }
+
+
 @end

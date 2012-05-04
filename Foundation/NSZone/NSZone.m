@@ -261,15 +261,9 @@ id NSCopyObject(id object, NSUInteger extraBytes, NSZone *zone)
         return nil;
     }
 
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
     id result = NSAllocateObject(object_getClass(object), extraBytes, zone);
 
     memcpy(result, object, class_getInstanceSize(object_getClass(object)) + extraBytes);
-#else
-    id result = NSAllocateObject(object->isa, extraBytes, zone);
-
-    memcpy(result, object, object->isa->instance_size + extraBytes);
-#endif
 
     return result;
 }

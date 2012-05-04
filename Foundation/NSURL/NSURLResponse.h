@@ -9,20 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSURL;
 
-@interface NSURLResponse : NSObject <NSCoding,NSCopying> {
-   NSString *_url;
-   NSString *_mimeType;
-   NSInteger _expectedContentLength;
-   NSString *_encoding;
+@interface NSURLResponse : NSObject <NSCoding,NSCopying>
+{
+    NSURL *_url;
+    NSString *_mimeType;
+    NSInteger _expectedContentLength;
+    NSString *_encoding;
 }
 
--initWithURL:(NSURL *)url MIMEType:(NSString *)mimeType expectedContentLength:(NSInteger)expectedLength textEncodingName:(NSString *)encoding;
+- initWithURL:(NSURL *)url MIMEType:(NSString *)mimeType expectedContentLength:(NSInteger)expectedLength textEncodingName:(NSString *)encoding;
 
--(NSString *)URL;
--(NSString *)MIMEType;
--(long long)expectedContentLength;
--(NSString *)textEncodingName;
+- (NSURL *)URL;
+- (NSString *)MIMEType;
+- (long long)expectedContentLength;
+- (NSString *)textEncodingName;
 
--(NSString *)suggestedFilename;
+- (NSString *)suggestedFilename;
 
 @end
