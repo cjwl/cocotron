@@ -78,6 +78,7 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    BOOL             _isVerticallyResizable;
    BOOL             _usesRuler;
    BOOL             _rulerVisible;
+   BOOL				_usesFontPanel;
    BOOL             _allowsUndo;
 
    NSMutableArray        *_selectedRanges;

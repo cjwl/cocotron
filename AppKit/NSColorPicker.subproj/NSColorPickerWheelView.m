@@ -24,9 +24,10 @@
 	
 	float colorWheelRadius = .5 * MIN(NSWidth(bounds), NSHeight(bounds));
 	
-	float angle = 2*M_PI * _hueValue/360.f - M_PI;
-	location.x += colorWheelRadius * sin(angle) * _saturationValue/100.f;
-	location.y -= colorWheelRadius * cos(angle) * _saturationValue/100.f;
+	float angle = M_PI * _hueValue/ 180.f;
+	
+	location.x -= colorWheelRadius * sin(angle) * _saturationValue/100.f;
+	location.y += colorWheelRadius * cos(angle) * _saturationValue/100.f;
 	
 	if (!NSEqualPoints(location, _handleLocation)) {
 		_handleLocation = location;
@@ -57,7 +58,7 @@
 
 - (void)setSaturation:(CGFloat)saturation
 {
-	if (saturation != _saturationValue) {
+	if (saturation != _saturationValue) {		
 		_saturationValue = saturation;
 		[self _updateHandleLocation];
 	}
@@ -125,15 +126,17 @@
 	NSPoint center = NSMakePoint(NSMidX(bounds), NSMidY(bounds));
 	location.x -= center.x;
 	location.y -= center.y;
-	location.y = -location.y; // flip y
 	
 	float relativeDistanceFromCenter = hypot(location.x, location.y)/colorWheelRadius;
 	if (relativeDistanceFromCenter > 1)
 		relativeDistanceFromCenter = 1;
 	
-	float angle = atan2(location.x, location.y);
+	// Get the angle and ensure it's in 0..2*PI
+	float angle = fmod(atan2(location.y, location.x) - M_PI_2 + M_PI * 2.f, M_PI * 2.f);
 	
-	_hueValue = (angle + M_PI)/(2*M_PI) * 360;
+	// Hue is stored in degrees
+	_hueValue = angle * 180.f / M_PI;
+	
 	_saturationValue = relativeDistanceFromCenter * 100.f;
 	
 	[self _updateHandleLocation];

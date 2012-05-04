@@ -11,20 +11,26 @@
     return self;
 }
 
-- (void)awakeFromNib
+- (void)_syncToNewColor
 {
-	_subview = currentView;
 	NSColor* color = [[self colorPanel] color];
 	
 	float hue, saturation, brightness, alpha;
+
+	color = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
 	
 	[color getHue: &hue saturation: &saturation brightness: &brightness alpha: &alpha];
 	
 	[_wheelView setHue: hue * 360];
-	[_wheelView setSaturation: brightness * 100];
+	[_wheelView setSaturation: saturation * 100];
 	[_wheelView setBrightness: brightness * 100];
 	
 	[valueSlider setFloatValue: brightness * 100];
+}
+
+- (void)awakeFromNib
+{
+	_subview = currentView;
 }
 
 - (NSImage *)provideNewButtonImage
@@ -35,10 +41,15 @@
 - (void)colorPickerWheelView:(NSColorPickerWheelView*)view didSelectHue:(CGFloat)hue saturation:(CGFloat)saturation andBrightness:(CGFloat)brightness
 {
 
-	[[self colorPanel] setColor:[NSColor colorWithCalibratedHue: hue/359.0
+	[[self colorPanel] setColor:[NSColor colorWithCalibratedHue: hue/360.0
 													 saturation: saturation/100.0
 													 brightness: brightness/100.0
 														  alpha:[[self colorPanel] alpha]]];
+}
+
+- (void)setColor:(NSColor *)color
+{
+	[self _syncToNewColor];
 }
 
 @end

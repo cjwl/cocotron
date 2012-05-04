@@ -151,9 +151,20 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 	if(NSIsControllerMarker(color))
 		return [self setColor:[NSColor blackColor]];
 
+	if ([_color isEqual: color]) {
+		return;
+	}
+	
    color=[color retain];
    [_color release];
    _color=color;
+
+	if ([self isActive] && color != nil) {
+		// Pass it on
+		_notifyingColorPanel = YES;
+		[[NSColorPanel sharedColorPanel] setColor: color];
+		_notifyingColorPanel = NO;
+	}
    [self setNeedsDisplay:YES];
 }
 
@@ -162,24 +173,30 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 }
 
 -(void)activate:(BOOL)exclusive {
-    if (exclusive) {
-        [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:_NSColorWellDidBecomeExclusiveNotification object:self] postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
-    }
 
-    if ([self isActive])
-        return;
+    if (_isActive == YES) {
+		return;
+	}
+	
+	if (exclusive) {
+		[[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:_NSColorWellDidBecomeExclusiveNotification object:self] postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeColorWhenActive:)
+												 name:NSColorPanelColorDidChangeNotification
+											   object:[NSColorPanel sharedColorPanel]];
 
-    _isActive = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeColorWhenActive:)
-                                                 name:NSColorPanelColorDidChangeNotification
-                                               object:[NSColorPanel sharedColorPanel]];
-    [self setNeedsDisplay:YES];
-
+	// Update the color panel with our color
+	[[NSColorPanel sharedColorPanel] setColor: [self color]];
+	
 	[NSApp orderFrontColorPanel: self];
+		
+    _isActive = YES;
+
+	[self setNeedsDisplay:YES];
 }
 
 -(void)deactivate {
-    if (![self isActive])
+    if (_isActive == NO)
         return;
     
     _isActive = NO;
@@ -190,8 +207,10 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 }
 
 -(void)changeColorWhenActive:(NSNotification *)note {
-   [self setColor:[[note object] color]];
-   [self sendAction:_action to:_target];
+	if (_notifyingColorPanel == NO) {
+	   [self setColor:[[note object] color]];
+	   [self sendAction:_action to:_target];
+	}
 }
 
 -(BOOL)isOpaque {
@@ -244,7 +263,7 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 			if (wasActive)
 				[self deactivate];
 			else
-				[self activate:NO];
+				[self activate: YES];
 			wasActive = !wasActive;
 		}
 		
@@ -261,7 +280,7 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 					// Toggle the state based on where the cursor is
 					if (mouseInBounds) {
 						if (wasActive) {
-							[self activate: NO];
+							[self activate: YES];
 						} else {
 							[self deactivate];
 						}
@@ -269,7 +288,7 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 						if (wasActive) {
 							[self deactivate];
 						} else {
-							[self activate:NO];
+							[self activate: YES];
 						}
 					}
 				}
@@ -278,7 +297,7 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 				if (wasActive) {
 					[self deactivate];
 				} else {
-					[self activate:NO];
+					[self activate: YES];
 				}
 			}
 		} while ([event type] != NSLeftMouseUp && shouldStartDrag == NO);

@@ -7,69 +7,88 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // NSColorHSBToRGB, NSColorRGBToHSB 
-// Algorithms from "Computer Graphics Principles and Practice" by Foley, van Dam, Feiner, Hughes
+// Algorithms derived from: http://en.wikipedia.org/wiki/HSL_and_HSV
 
 static inline void NSColorHSBToRGB(float hue,float saturation,float brightness,float *redp,float *greenp,float *bluep) {
    float red=brightness,green=brightness,blue=brightness;
 
-   if(saturation!=0){
-    float frac,p,q,t;
-    int   intHue;
+	float H = hue * 360.f; // convert to degrees
+	float S = saturation;
+	float V = brightness;
+	float m = 0; // the brightness delta.
+	
+	if (V != 0){
+		// We have enough color information to do a conversion
 
-    hue=hue*360;
-    if(hue==360)
-     hue=0;
-    hue=hue/60;
-    intHue=hue;
-    frac=hue-intHue;
+		float C = V * S;
 
-    p=brightness*(1.0-saturation);
-    q=brightness*(1.0-(saturation*frac));
-    t=brightness*(1.0-(saturation*(1.0-frac)));
-    switch(intHue){
-     case 0: red=brightness; green=t; blue=p; break;
-     case 1: red=q; green=brightness; blue=p; break;
-     case 2: red=p; green=brightness; blue=t; break;
-     case 3: red=p; green=q; blue=brightness; break;
-     case 4: red=t; green=p; blue=brightness; break;
-     case 5: red=brightness; green=p; blue=q; break;
-    }
-   }
+		H = fmod(H, 360.f);
+		H /= 60.f; // convert to hexagonal segments
 
-   *redp=red;
-   *greenp=green;
-   *bluep=blue;
+		int hueFace = H; // cube face index
+
+		float X = C * (1 - fabs(fmod(H, 2) - 1));
+
+		switch (hueFace) {
+			case 0: red = C; green = X; blue = 0; break;
+			case 1: red = X; green = C; blue = 0; break;
+			case 2: red = 0; green = C; blue = X; break;
+			case 3: red = 0; green = X; blue = C; break;
+			case 4: red = X; green = 0; blue = C; break;
+			case 5: red = C; green = 0; blue = X; break;
+		}
+
+		m = V - C;
+	}
+
+	// Finally add in the brightness delta
+	*redp = red + m;
+	*greenp = green + m;
+	*bluep = blue + m;
+
+	//	NSLog(@"RGB(%f, %f, %f) <- HSB(%f, %f, %f)", *redp, *greenp, *bluep, hue, saturation, brightness);
 }
 
 static inline void NSColorRGBToHSB(float red,float green,float blue,float *huep,float *saturationp,float *brightnessp) {
-   float hue=0,saturation=0,brightness,min,max;
 
-   max=MAX(red,MAX(green,blue));
-   min=MIN(red,MIN(green,blue));
+	float M = MAX(red,MAX(green,blue));
+	float m = MIN(red,MIN(green,blue));
 
-   brightness=max;
-   if(max>0){
-    float delta=max-min;
+	float H = 0;
+	float S = 0;
+	float V = M;
 
-    saturation=delta/max;
-    if(red==max)
-     hue=(green-blue)/delta;
-    else if(green==max)
-     hue=2+(blue-red)/delta;
-    else if(blue==max)
-     hue=4+(red-green)/delta;
-    hue=hue*60;
-    if(hue<0)
-     hue=hue+360;
-   }
+	if (V > 0) {
+		float C = M - m;
+		S = C / V;
+		if (C == 0) {
+		   H = 0;
+		}
+		else if (red == M) {
+		   H = (green - blue)/C;
+		   H = fmod(H, 6);
+		}
+		else if (green == M) {
+		   H = 2 + (blue - red)/C;
+		}
+		else if (blue == M) {
+		   H = 4 + (red - green)/C;
+		}
 
-   if(hue!=hue)
-    hue=0;
+		H *= 60.f;
+		if (H < 0) {
+		   H += 360.f;
+		}
+	}
 
-   if(huep!=NULL)
-    *huep=hue/360.0;
-   if(saturationp!=NULL)
-    *saturationp=saturation;
-   if(brightnessp!=NULL)
-    *brightnessp=brightness;
+	if (huep != NULL) {
+	   *huep = H/360.0;
+	}
+	if (saturationp != NULL) {
+		*saturationp = S;
+	}
+	if (brightnessp != NULL) {
+		*brightnessp = V;
+	}
+	//	NSLog(@"RGB(%f, %f, %f) -> HSB(%f, %f, %f)", red, green, blue, H/360.f, S, V);
 }
