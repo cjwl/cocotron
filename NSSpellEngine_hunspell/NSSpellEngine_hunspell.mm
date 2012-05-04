@@ -61,7 +61,6 @@
 	if (language == nil) {
 		language = [[NSLocale currentLocale] localeIdentifier];
 	}
-	
 	NSSpellEngine_hunspellDictionary *dict=[_dictionaries objectForKey:language];
 	if (dict == nil) {
 		// If the lang is "xx_YY", then try the first dict starting with "xx"
@@ -82,6 +81,7 @@
 		// Fallback to the US one
 		dict=[_dictionaries objectForKey:@"en_US"];
 	}	
+	return [[dict retain] autorelease];
 }
 
 -(NSArray *)checkString:(NSString *)stringToCheck offset:(NSUInteger)offset types:(NSTextCheckingTypes)checkingTypes options:(NSDictionary *)options orthography:(NSOrthography *)orthography wordCount:(NSInteger *)wordCount {
@@ -89,7 +89,6 @@
    
    NSString *language=[orthography dominantLanguage];
    NSSpellEngine_hunspellDictionary *dict=[self _dictionaryForLanguage:language];
-      
    NSUInteger length=[stringToCheck length];
    
    NSUInteger bufferCapacity=10,bufferOffset=offset,bufferIndex=0,bufferLength=0;
