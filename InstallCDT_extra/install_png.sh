@@ -27,11 +27,11 @@ BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
 
 BUILD=/tmp/build_png
 
-$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libpng/libpng15/1.5.10/libpng-1.5.10.tar.xz
+$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libpng/libpng15/1.5.10/libpng-1.5.10.tar.bz2
 
 mkdir -p $BUILD
 cd $BUILD
-tar -xvzf $downloadFolder/libpng-1.5.10.tar.xz
+tar -xvjf $downloadFolder/libpng-1.5.10.tar.bz2
 cd libpng-1.5.10
 
 pwd 
