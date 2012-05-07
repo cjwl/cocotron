@@ -33,6 +33,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSTextFieldCell class];
 }
 
+#if 0
+ // The "special" _NSTextFieldBinder class seems to be interfering more than
+ // helping so cutting it out for now: http://code.google.com/p/cocotron/issues/detail?id=956&thanks=956&ts=1336420140
 +(Class)_binderClassForBinding:(id)binding
 {
   if ([binding isEqual:@"value"])
@@ -40,6 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   else
     return [super _binderClassForBinding:binding];
 }
+#endif
 
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
