@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSTableView.h>
 #import <AppKit/NSSpellChecker.h>
+#import <AppKit/NSWindow.h>
 
 @class NSTableColumn;
 
@@ -75,25 +76,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)change:sender {
-    [NSApp sendAction:@selector(changeSpelling:) to: nil from: _currentWord];
+    [[[NSApp mainWindow] firstResponder] tryToPerform:@selector(changeSpelling:) with: _currentWord];
 	// And automatically move to the next word - this matches Cocoa Spelling panel behaviour
-    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+    [[[NSApp mainWindow] firstResponder] tryToPerform:@selector(checkSpelling:) with:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)findNext:sender {
-    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+    [[[NSApp mainWindow] firstResponder] tryToPerform:@selector(checkSpelling:) with:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)ignore:sender {
-    [NSApp sendAction:@selector(ignoreSpelling:) to:nil from:_currentWord];
+    [[[NSApp mainWindow] firstResponder] tryToPerform:@selector(ignoreSpelling:) with:_currentWord];
 	// And automatically move to the next word - this matches Cocoa Spelling panel behaviour
-    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+    [[[NSApp mainWindow] firstResponder] tryToPerform:@selector(checkSpelling:) with:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)learn:sender {
     [[NSSpellChecker sharedSpellChecker] learnWord:[_currentWord stringValue]];
 	// And automatically move to the next word - this matches Cocoa Spelling panel behaviour
-    [NSApp sendAction:@selector(checkSpelling:) to:nil from:[NSSpellChecker sharedSpellChecker]];
+    [[[NSApp mainWindow] firstResponder] tryToPerform:@selector(checkSpelling:) with:[NSSpellChecker sharedSpellChecker]];
 }
 
 -(void)guess:sender {
