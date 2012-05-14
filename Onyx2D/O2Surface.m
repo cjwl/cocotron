@@ -580,7 +580,7 @@ size_t O2SurfaceGetBytesPerRow(O2Surface *surface) {
 
 O2ImageRef O2SurfaceCreateImage(O2Surface *self) {
    NSData           *data=[[NSData alloc] initWithBytes:self->_pixelBytes length:self->_bytesPerRow*self->_height];
-   O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+   O2DataProviderRef provider=O2DataProviderCreateWithCFData((CFDataRef)data);
   
   O2Image *result=O2ImageCreate(self->_width,self->_height,self->_bitsPerComponent,self->_bitsPerPixel,self->_bytesPerRow,self->_colorSpace,
      self->_bitmapInfo,provider,self->_decode,self->_interpolate,self->_renderingIntent);

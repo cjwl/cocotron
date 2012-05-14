@@ -30,7 +30,7 @@ typedef void (*O2DataProviderReleaseDataCallback)(void *info,const void *data,si
 -initWithURL:(NSURL *)url;
 
 O2DataProviderRef O2DataProviderCreateWithData(void *info,const void *data,size_t size,O2DataProviderReleaseDataCallback releaseCallback);
-O2DataProviderRef O2DataProviderCreateWithCFData(NSData *data);
+O2DataProviderRef O2DataProviderCreateWithCFData(CFDataRef data);
 O2DataProviderRef O2DataProviderCreateWithURL(NSURL *url);
 O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString);
 O2DataProviderRef O2DataProviderRetain(O2DataProviderRef self);

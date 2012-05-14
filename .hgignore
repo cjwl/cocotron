@@ -13,3 +13,6 @@ build
 *~.nib
 
 *.orig
+
+xcuserdata
+project.xcworkspace

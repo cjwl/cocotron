@@ -3481,6 +3481,9 @@
 		FE99DA7B128396B6006D789F /* O2Encoder_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE99DA73128396B6006D789F /* O2Encoder_PNG.m */; };
 		FE99DA7C128396B6006D789F /* O2Encoder_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE99DA72128396B6006D789F /* O2Encoder_PNG.h */; };
 		FE99DA7D128396B6006D789F /* O2Encoder_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE99DA73128396B6006D789F /* O2Encoder_PNG.m */; };
+		FE9ACF13155EF59D002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACF10155EF59D002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
+		FE9ACF14155EF59D002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACF11155EF59D002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
+		FE9ACF15155EF59D002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACF12155EF59D002AFCA9 /* O2ImageDecoder.m */; };
 		FE9DB3D50FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FE9DB3D70FD6BD5B00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
@@ -5340,6 +5343,9 @@
 		FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSEvent_other.m; sourceTree = "<group>"; };
 		FE99DA72128396B6006D789F /* O2Encoder_PNG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_PNG.h; sourceTree = "<group>"; };
 		FE99DA73128396B6006D789F /* O2Encoder_PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_PNG.m; sourceTree = "<group>"; };
+		FE9ACF10155EF59D002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = O2ImageDecoder_JPEG_libjpeg.m; sourceTree = "<group>"; };
+		FE9ACF11155EF59D002AFCA9 /* O2ImageDecoder_JPEG_stb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = O2ImageDecoder_JPEG_stb.m; sourceTree = "<group>"; };
+		FE9ACF12155EF59D002AFCA9 /* O2ImageDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = O2ImageDecoder.m; sourceTree = "<group>"; };
 		FEA25F960EECCE4D008750D0 /* NSSound_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSound_win32.h; sourceTree = "<group>"; };
 		FEA25F970EECCE4D008750D0 /* NSSound_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSound_win32.m; sourceTree = "<group>"; };
 		FEA2CD1C10D6C1C0003C8FF5 /* O2Surface_cairo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Surface_cairo.h; sourceTree = "<group>"; };
@@ -6546,6 +6552,9 @@
 		FE5C0EE511638FC600065D1C /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE9ACF10155EF59D002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */,
+				FE9ACF11155EF59D002AFCA9 /* O2ImageDecoder_JPEG_stb.m */,
+				FE9ACF12155EF59D002AFCA9 /* O2ImageDecoder.m */,
 				FE5F4BF712A83CA600F5F334 /* platform_Windows */,
 				49A7975114224021001CE4C2 /* O2Encoder_JPG.h */,
 				49A7975214224021001CE4C2 /* O2Encoder_JPG.m */,
@@ -10439,6 +10448,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE9ACF13155EF59D002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
+				FE9ACF14155EF59D002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
+				FE9ACF15155EF59D002AFCA9 /* O2ImageDecoder.m in Sources */,
 				FE01A9540C5D9BCB00AEA51A /* NSActionCell.m in Sources */,
 				FE01A9550C5D9BCB00AEA51A /* NSAlertPanel.m in Sources */,
 				FE01A9560C5D9BCB00AEA51A /* NSApplication.m in Sources */,

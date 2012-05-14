@@ -316,7 +316,7 @@ ONYX2D_STATIC BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerCompon
 
    _clampExternalPixels=NO; // only do this if premultiplied format
    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo)){
-    NSLog(@"O2Image failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=0x%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+    NSLog(@"O2Image failed to init with bpc=%zu, bpp=%zu,colorSpace=%@,bitmapInfo=0x%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
     [self dealloc];
     return nil;
    }
@@ -476,7 +476,7 @@ O2ImageRef O2ImageCreateWithImageInRect(O2ImageRef self,O2Rect rect) {
    }
    
    NSData *data=[NSData dataWithBytesNoCopy:childPixelBytes length:childIndex];
-   O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+   O2DataProviderRef provider=O2DataProviderCreateWithCFData((CFDataRef)data);
 
    O2ImageRef result=O2ImageCreate(width,height,self->_bitsPerComponent,self->_bitsPerPixel,childBytesPerRow,self->_colorSpace,self->_bitmapInfo,provider,self->_decode,self->_interpolate,self->_renderingIntent);
    
