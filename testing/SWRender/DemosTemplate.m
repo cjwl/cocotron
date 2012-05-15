@@ -250,7 +250,7 @@ static CGColorRef createCGColor(float r,float g,float b,float a){
    if(_pdfDocument!=NULL)
     CGPDFDocumentRelease(_pdfDocument);
    
-   CGDataProviderRef provider=CGDataProviderCreateWithCFData(data);
+   CGDataProviderRef provider=CGDataProviderCreateWithCFData((CFDataRef)data);
    
    _pdfDocument=CGPDFDocumentCreateWithProvider(provider);
    CGDataProviderRelease(provider);
@@ -545,7 +545,7 @@ static void evaluate(void *info,const float *in, float *output) {
    
    for(i=0;i<length;i++){
     NSString *name=[string substringWithRange:NSMakeRange(i,1)];
-    glyphs[i]=CGFontGetGlyphWithGlyphName(_font,name);
+    glyphs[i]=CGFontGetGlyphWithGlyphName(_font,(CFStringRef)name);
    }
    
    CGContextSetFont(_context,_font);
@@ -574,7 +574,7 @@ static void evaluate(void *info,const float *in, float *output) {
 }
 
 -(void)drawLayers {
-   CGAffineTransform ctm=[self ctm];
+ //  CGAffineTransform ctm=[self ctm];
    
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));

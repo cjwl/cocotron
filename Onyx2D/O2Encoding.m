@@ -144,7 +144,7 @@ void O2EncodingGetWinAnsiUnicode(unichar *codes) {
 
 -(void)setGlyph:(O2Glyph)glyph unicode:(uint16_t)code atIndex:(int)index {
    if(index<0 || index>=256){
-    NSLog(@"%s %d, index (%d) out of range",index);
+    NSLog(@"%s %d, index (%d) out of range",__FILE__,__LINE__,index);
     return;
    }
    

@@ -557,10 +557,10 @@ static uint32_t nextUnsigned32(O2ImageSource_ICNS *self) {
     
     O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
     NSData         *bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:pixelCount*sizeof(O2rgba8u_BE)];
-    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
+       O2DataProvider *provider=O2DataProviderCreateWithCFData((CFDataRef)bitmap);
     O2BitmapInfo    info=kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast;
 
-    O2Image *result=[[O2Image alloc] initWithWidth:iconNode->width height:iconNode->height bitsPerComponent:8 bitsPerPixel:32 bytesPerRow:iconNode->width*sizeof(O2rgba8u_BE) colorSpace:colorSpace bitmapInfo:info provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
+    O2Image *result=[[O2Image alloc] initWithWidth:iconNode->width height:iconNode->height bitsPerComponent:8 bitsPerPixel:32 bytesPerRow:iconNode->width*sizeof(O2rgba8u_BE) colorSpace:colorSpace bitmapInfo:info decoder:NULL provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
 
     O2ColorSpaceRelease(colorSpace);
     O2DataProviderRelease(provider);

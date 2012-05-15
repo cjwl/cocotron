@@ -495,7 +495,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
    }
    else {
     if(bytesPerRow>0 && bytesPerRow<(width*bitsPerPixel)/8){
-     NSLog(@"invalid bytes per row=%d",bytesPerRow);
+     NSLog(@"invalid bytes per row=%zu",bytesPerRow);
      bytesPerRow=0;
     }
     
@@ -503,7 +503,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
      bytesPerRow=(width*bitsPerPixel)/8;
      
     NSMutableData *data=[NSMutableData dataWithLength:bytesPerRow*height*sizeof(uint8_t)]; // this will also zero the bytes
-    provider=[[[O2DataProvider alloc] initWithData:data] autorelease];
+    provider=[O2DataProviderCreateWithCFData((CFDataRef)data) autorelease];
   	m_ownsData=YES;
    }
    
@@ -556,7 +556,7 @@ void O2SurfaceUnlock(O2Surface *surface) {
     [_provider release];
     
     NSMutableData *data=[NSMutableData dataWithLength:size];
-    _provider=[[O2DataProvider alloc] initWithData:data];
+       _provider=O2DataProviderCreateWithCFData((CFDataRef)data);
     _pixelBytes=[data mutableBytes];
    }
 }

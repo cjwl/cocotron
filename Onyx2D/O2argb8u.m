@@ -49,10 +49,8 @@ void O2argb8u_sover_by_coverage(O2argb8u *src,O2argb8u *dst,unsigned coverage,in
       uint32_t sag=srb>>8;
       uint32_t drb=*(uint32_t *)dst;
       uint32_t dag=drb>>8;
-      O2argb8u r;
 
       uint32_t sa=255-(sag>>16);
-      uint32_t trb,tag;
     
       srb&=0x00FF00FF;
       drb&=0x00FF00FF;
@@ -77,7 +75,6 @@ void O2argb8u_sover_by_coverage(O2argb8u *src,O2argb8u *dst,unsigned coverage,in
      O2argb8u r;
 
      uint32_t sa=255-(sag>>16);
-     uint32_t trb,tag;
     
      srb&=0x00FF00FF;
      drb&=0x00FF00FF;
@@ -174,8 +171,6 @@ void O2argb8u_copy_by_coverage(O2argb8u *src,O2argb8u *dst,unsigned coverage,int
      uint32_t drb=*(uint32_t *)dst;
      uint32_t dag=drb>>8;
      O2argb8u r;
-
-     uint32_t trb,tag;
     
      srb&=0x00FF00FF;
      drb&=0x00FF00FF;
@@ -211,7 +206,6 @@ void O2BlendSpanNormal_8888(O2argb8u *src,O2argb8u *dst,int length){
     O2argb8u r;
 
     uint32_t sa=255-(sag>>16);
-    uint32_t trb,tag;
     
     srb&=0x00FF00FF;
     drb&=0x00FF00FF;

@@ -298,7 +298,7 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
      data=mutable;
     }
         
-    provider=[[O2DataProvider alloc] initWithData:data];
+    provider=O2DataProviderCreateWithCFData((CFDataRef)data);
     if(isImageMask){      
      image=[[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
     }

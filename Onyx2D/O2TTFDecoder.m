@@ -745,7 +745,7 @@ void O2TTFDecoderGetNameTable(O2TTFDecoderRef self) {
     
     NSLog(@"platformID=%d,languageId=%d,nameID=%d",platformID,languageID,nameID);
     
-    NSLog(@"position=%d,stringOffset=%d,offset=%d",self->_position,stringOffset,offset);
+    NSLog(@"position=%ld,stringOffset=%d,offset=%d",self->_position,stringOffset,offset);
     
     NSString *string=[NSString stringWithCString:self->_bytes+location length:length];
     

@@ -561,10 +561,10 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
 
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
-   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
+    O2DataProvider *provider=O2DataProviderCreateWithCFData((CFDataRef)bitmap);
    O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Image *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kO2ImageAlphaPremultipliedLast|kO2BitmapByteOrder32Big provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kO2ImageAlphaPremultipliedLast|kO2BitmapByteOrder32Big decoder:NULL provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
       
    [colorSpace release];
    [provider release];
