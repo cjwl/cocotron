@@ -457,7 +457,7 @@ NSData   *O2FontCopyTableForTag(O2FontRef self,uint32_t tag) {
    return [self copyTableForTag:(uint32_t)tag];
 }
 
-uint16_t O2FontUnicodeForGlyphName(NSString *name){
+uint16_t O2FontUnicodeForGlyphName(CFStringRef name){
    struct {
     NSString *name;
     unichar   code;
@@ -4770,7 +4770,7 @@ uint16_t O2FontUnicodeForGlyphName(NSString *name){
    int i;
    
    for(i=0;entries[i].name!=nil;i++)
-    if([entries[i].name isEqualToString:name])
+    if([entries[i].name isEqualToString:(NSString *)name])
      return entries[i].code;
    
    NSLog(@"%s %d unable to map glyph name %@",__FILE__,__LINE__,name);

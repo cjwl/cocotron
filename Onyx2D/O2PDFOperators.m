@@ -1137,7 +1137,7 @@ void O2PDF_render_Tj(O2PDFScanner *scanner,void *info) {
     return;
    }
    
-   O2ContextShowText(context,O2PDFStringGetBytePtr(string),O2PDFStringGetLength(string));
+   O2ContextShowText(context,(const char *)O2PDFStringGetBytePtr(string),O2PDFStringGetLength(string));
 }
 
 // Show text, alowing individual glyph positioning
@@ -1169,7 +1169,7 @@ void O2PDF_render_TJ(O2PDFScanner *scanner,void *info) {
      O2ContextSetTextMatrix(context,Tm);
     }
     else if([object checkForType:kO2PDFObjectTypeString value:&string]){
-     O2ContextShowText(context,O2PDFStringGetBytePtr(string),O2PDFStringGetLength(string));
+     O2ContextShowText(context,(const char *)O2PDFStringGetBytePtr(string),O2PDFStringGetLength(string));
     }
     else {
      O2PDFFix(__FILE__,__LINE__,@"Invalid object in TJ array");
@@ -1352,7 +1352,7 @@ void O2PDF_render_dquote(O2PDFScanner *scanner,void *info) {
    O2ContextSetWordSpacing(context,wspacing);
    O2ContextSetCharacterSpacing(context,cspacing);
    O2PDF_render_T_star(scanner,info);
-   O2ContextShowText(context,O2PDFStringGetBytePtr(string),O2PDFStringGetLength(string));
+   O2ContextShowText(context,(const char *)O2PDFStringGetBytePtr(string),O2PDFStringGetLength(string));
 }
 
 void O2PDF_render_populateOperatorTable(O2PDFOperatorTable *table) {

@@ -28,6 +28,7 @@ typedef void (*O2DataProviderReleaseDataCallback)(void *info,const void *data,si
 }
 
 -initWithURL:(NSURL *)url;
+-initWithBytes:(const void *)bytes length:(size_t)length;
 
 O2DataProviderRef O2DataProviderCreateWithData(void *info,const void *data,size_t size,O2DataProviderReleaseDataCallback releaseCallback);
 O2DataProviderRef O2DataProviderCreateWithCFData(CFDataRef data);

@@ -187,8 +187,8 @@ static inline O2TextEncoding textEncodingWithName(const char *name){
      else if([check checkForType:kO2PDFObjectTypeName value:&name]){
       NSString *string=[[NSString alloc] initWithCString:name];
       
-      O2Glyph glyph=O2FontGetGlyphWithGlyphName(_graphicsFont,string);
-      uint16_t unicode=O2FontUnicodeForGlyphName(string);
+      O2Glyph glyph=O2FontGetGlyphWithGlyphName(_graphicsFont,(CFStringRef)string);
+      uint16_t unicode=O2FontUnicodeForGlyphName((CFStringRef)string);
       
       [newEncoding setGlyph:glyph unicode:unicode atIndex:currentIndex];
       

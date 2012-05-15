@@ -735,7 +735,7 @@ void O2TTFDecoderGetNameTable(O2TTFDecoderRef self) {
    
    for(i=0;i<count;i++){
     uint16_t platformID=decode_uint16(self);
-    uint16_t platformSpecificID=decode_uint16(self);
+    /*uint16_t platformSpecificID=*/decode_uint16(self);
     uint16_t languageID=decode_uint16(self);
     uint16_t nameID=decode_uint16(self);
     uint16_t length=decode_uint16(self);
@@ -747,7 +747,7 @@ void O2TTFDecoderGetNameTable(O2TTFDecoderRef self) {
     
     NSLog(@"position=%ld,stringOffset=%d,offset=%d",self->_position,stringOffset,offset);
     
-    NSString *string=[NSString stringWithCString:self->_bytes+location length:length];
+    NSString *string=[NSString stringWithCString:(const char *)self->_bytes+location length:length];
     
     NSLog(@"platformID=%d,languageID=%d,string=%@",platformID,languageID,string);
    }

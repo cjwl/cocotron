@@ -111,6 +111,7 @@ enum {
 }
 
 -initWithContentsOfFile:(NSString *)path;
+-initWithData:(NSData *)data;
 
 -(NSData *)data;
 

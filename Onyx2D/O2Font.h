@@ -90,6 +90,6 @@ NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,O2Glyph glyph);
 
 NSData   *O2FontCopyTableForTag(O2FontRef self,uint32_t tag);
 
-uint16_t  O2FontUnicodeForGlyphName(NSString *name);
+uint16_t  O2FontUnicodeForGlyphName(CFStringRef name);
 
 @end

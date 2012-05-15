@@ -15,16 +15,16 @@ typedef O2PDFString *O2PDFStringRef;
 @interface O2PDFString : O2PDFObject {
    unsigned _length:31;
    unsigned _noCopyNoFree:1;
-   char    *_bytes;
+   unsigned char *_bytes;
 }
 
-+pdfObjectWithBytes:(const char *)bytes length:(unsigned)length;
-+pdfObjectWithBytesNoCopyNoFree:(const char *)bytes length:(unsigned)length;
++pdfObjectWithBytes:(const unsigned char *)bytes length:(unsigned)length;
++pdfObjectWithBytesNoCopyNoFree:(const unsigned char *)bytes length:(unsigned)length;
 +pdfObjectWithCString:(const char *)cString;
 +pdfObjectWithString:(NSString *)string;
 
 -(unsigned)length;
--(const char *)bytes;
+-(const unsigned char *)bytes;
 
 size_t O2PDFStringGetLength(O2PDFStringRef string);
 const unsigned char *O2PDFStringGetBytePtr(O2PDFStringRef string);
