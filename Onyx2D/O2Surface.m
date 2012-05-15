@@ -507,7 +507,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
   	m_ownsData=YES;
    }
    
-   if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:provider decode:NULL interpolate:YES renderingIntent:kO2RenderingIntentDefault]==nil)
+    if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo decoder: NULL provider:provider decode:NULL interpolate:YES renderingIntent:kO2RenderingIntentDefault]==nil)
     return nil;
    
    if([provider isDirectAccess])
