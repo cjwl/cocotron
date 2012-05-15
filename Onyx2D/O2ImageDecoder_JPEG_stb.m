@@ -1109,6 +1109,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
 
 -initWithDataProvider:(O2DataProviderRef)dataProvider {
     
+    _compressionType=O2ImageCompressionJPEG;
     _dataProvider=[dataProvider retain];
     
     CFDataRef encodedData=O2DataProviderCopyData(dataProvider);

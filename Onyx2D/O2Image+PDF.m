@@ -96,6 +96,19 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
     [dictionary setObjectForKey:"Decode" value:[O2PDFArray pdfArrayWithNumbers:_decode count:O2ColorSpaceGetNumberOfComponents(_colorSpace)*2]];
 	[dictionary setBooleanForKey:"Interpolate" value:_interpolate];
 
+    if(O2ImageDecoderGetCompressionType(_decoder)==O2ImageCompressionJPEG){
+        O2DataProviderRef dataProvider=O2ImageDecoderGetDataProvider(_decoder);
+        CFDataRef dctData=O2DataProviderCopyData(dataProvider);
+        
+        [dictionary setNameForKey:"Filter" value:"DCTDecode"];
+        
+        result=[O2PDFStream pdfStreamWithData:(NSData *)dctData];
+        
+        CFRelease(dctData);
+        
+        return result;
+    }
+    
 	/* FIX, generate soft mask for alpha data
     [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
     */
@@ -290,7 +303,7 @@ const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
      image=[[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
     }
     else {
-     image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:O2ImageRenderingIntentWithName(intent)];
+        image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 decoder:NULL provider:provider decode:decode interpolate:interpolate renderingIntent:O2ImageRenderingIntentWithName(intent)];
 
      if(softMask!=NULL)
      [image setMask:softMask];

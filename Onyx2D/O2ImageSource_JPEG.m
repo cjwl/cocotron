@@ -74,10 +74,8 @@ NSData *O2DCTDecode(NSData *data) {
 -(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options {
     O2DataProviderRef encodedProvider=O2DataProviderCreateWithCFData(_jpg);
     O2ImageDecoderRef decoder=createImageDecoderWithDataProvider(encodedProvider);
-    CFDataRef bitmap=O2ImageDecoderCreatePixelData(decoder);
-    
-    O2DataProvider *provider=O2DataProviderCreateWithCFData(bitmap);
-    
+    O2DataProviderRef provider=O2ImageDecoderCreatePixelDataProvider(decoder);
+        
     O2Image        *image=[[O2Image alloc] initWithWidth:O2ImageDecoderGetWidth(decoder)
                                                   height:O2ImageDecoderGetHeight(decoder)
                                         bitsPerComponent:O2ImageDecoderGetBitsPerComponent(decoder)
@@ -85,13 +83,13 @@ NSData *O2DCTDecode(NSData *data) {
                                              bytesPerRow:O2ImageDecoderGetBytesPerRow(decoder)
                                               colorSpace:O2ImageDecoderGetColorSpace(decoder)
                                               bitmapInfo:O2ImageDecoderGetBitmapInfo(decoder)
+                                                 decoder:decoder
                                                 provider:provider
                                                   decode:NULL
                                              interpolate:NO
                                          renderingIntent:kO2RenderingIntentDefault];
     
     O2DataProviderRelease(provider);
-    CFRelease(bitmap);
     [decoder release];
     O2DataProviderRelease(encodedProvider);
     

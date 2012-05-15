@@ -1,13 +1,20 @@
 #import <Foundation/NSObject.h>
 #import <Onyx2D/O2DataProvider.h>
 #import <Onyx2D/O2ColorSpace.h>
-#import <Onyx2D/O2Image.h>
 
 @class O2ImageDecoder;
 
 typedef O2ImageDecoder *O2ImageDecoderRef;
 
+#import <Onyx2D/O2Image.h>
+
+typedef enum {
+    O2ImageCompressionPrivate,
+    O2ImageCompressionJPEG,
+} O2ImageCompressionType;
+
 @interface O2ImageDecoder : NSObject {
+    O2ImageCompressionType _compressionType;
     O2DataProviderRef _dataProvider;
     size_t _width;
     size_t _height;
@@ -17,6 +24,8 @@ typedef O2ImageDecoder *O2ImageDecoderRef;
     O2ColorSpaceRef _colorSpace;
     O2BitmapInfo _bitmapInfo;
 }
+
+O2ImageCompressionType O2ImageDecoderGetCompressionType(O2ImageDecoderRef self);
 
 O2DataProviderRef O2ImageDecoderGetDataProvider(O2ImageDecoderRef self);
 
@@ -33,6 +42,7 @@ O2BitmapInfo O2ImageDecoderGetBitmapInfo(O2ImageDecoderRef self);
 -(CFDataRef)createPixelData;
 
 CFDataRef O2ImageDecoderCreatePixelData(O2ImageDecoderRef self);
+O2DataProviderRef O2ImageDecoderCreatePixelDataProvider(O2ImageDecoderRef self);
 
 @end
 
