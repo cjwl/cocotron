@@ -85,11 +85,11 @@ O2Rect    O2FontGetFontBBox(O2FontRef self);
 size_t    O2FontGetNumberOfGlyphs(O2FontRef self);
 BOOL      O2FontGetGlyphAdvances(O2FontRef self,const O2Glyph *glyphs,size_t count,int *advances);
 
-O2Glyph   O2FontGetGlyphWithGlyphName(O2FontRef self,NSString *name);
+O2Glyph   O2FontGetGlyphWithGlyphName(O2FontRef self,CFStringRef name);
 NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,O2Glyph glyph);
 
 NSData   *O2FontCopyTableForTag(O2FontRef self,uint32_t tag);
 
-uint16_t  O2FontUnicodeForGlyphName(NSString *name);
+uint16_t  O2FontUnicodeForGlyphName(CFStringRef name);
 
 @end

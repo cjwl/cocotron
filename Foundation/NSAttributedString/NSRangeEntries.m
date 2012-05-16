@@ -122,14 +122,16 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRa
 
    if(self->objects){
     if(insertAt>0){
+		// Check if we can just merge the new entry with the previous one
      if([(id)(self->entries[insertAt-1].value) isEqual:value]){
       self->entries[insertAt-1].range=NSUnionRange(self->entries[insertAt-1].range,range);
       return;
      }
     }
-    if(insertAt+1<self->count){
-     if([(id)(self->entries[insertAt+1].value) isEqual:value]){
-      self->entries[insertAt+1].range=NSUnionRange(self->entries[insertAt+1].range,range);
+    if(insertAt<self->count){
+		// Check if we can just merge the new entry with the next one
+     if([(id)(self->entries[insertAt].value) isEqual:value]){
+      self->entries[insertAt].range=NSUnionRange(self->entries[insertAt].range,range);
       return;
      }
     }
@@ -311,34 +313,38 @@ void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self,NSUInteger index)
    }
 }
 
- void NSRangeEntriesDivideAndConquer(NSRangeEntries *self,NSRange range) {
-   NSInteger  count=self->count;
-   NSUInteger max=NSMaxRange(range);
-
-   while(--count>=0){
-    NSRange check=self->entries[count].range;
-
-    if(check.location<max){
-     NSUInteger maxCheck=NSMaxRange(check);
-
-     if(check.location>=range.location){
-      if(maxCheck<=max)
-       removeEntryAtIndex(self,count);
-      else {
-       self->entries[count].range.length=maxCheck-max;
-       self->entries[count].range.location=max;
-      }
-     }
-     else if(maxCheck<=range.location)
-       break;
-     else {
-      if(maxCheck>max)
-       insertEntryAtIndex(self,count+1,NSMakeRange(max,maxCheck-max),self->entries[count].value);
-
-      self->entries[count].range.length=range.location-check.location;
-     }
-    }
-   }
+void NSRangeEntriesDivideAndConquer(NSRangeEntries *self,NSRange range) {
+	NSInteger  count=self->count;
+	NSUInteger max=NSMaxRange(range);
+	
+	while(--count>=0){
+		NSRange check=self->entries[count].range;
+		
+		if(check.location<max){
+			NSUInteger maxCheck=NSMaxRange(check);
+			
+			if(check.location>=range.location){
+				if(maxCheck<=max) {
+					// The entry is completely covered by the added range - it's not needed anymore
+					removeEntryAtIndex(self,count);
+				} else {
+					// Remove the part of the entry covered by the added range 
+					self->entries[count].range.length=maxCheck-max;
+					self->entries[count].range.location=max;
+				}
+			} else if(maxCheck<=range.location) {
+				// The entry is completely before the new range - we're done
+				break;
+			} else {
+				// The end of the entry is covered by the added one
+				if(maxCheck>max) {
+					insertEntryAtIndex(self,count+1,NSMakeRange(max,maxCheck-max),self->entries[count].value);
+				}
+				// Shorten the entry to make room for the added one
+				self->entries[count].range.length=range.location-check.location;
+			}
+		}
+	}
 }
 
  void NSRangeEntriesDump(NSRangeEntries *self) {

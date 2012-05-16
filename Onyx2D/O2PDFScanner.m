@@ -285,7 +285,7 @@ BOOL O2PDFScanVersion(const char *bytes,unsigned length,O2PDFString **versionp) 
    if(strncmp(bytes,"%PDF-",5)!=0)
     return debugError(bytes,length,0,@"Does not begin with %%PDF-");
    
-   *versionp=[O2PDFString pdfObjectWithBytes:bytes+5 length:3];
+   *versionp=[O2PDFString pdfObjectWithBytes:(const unsigned char *)bytes+5 length:3];
    
    position=length;
    
@@ -443,7 +443,7 @@ BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2P
 
      case STATE_STRING_NOFREE:
       if(code==')'){
-       *objectp=[O2PDFString pdfObjectWithBytesNoCopyNoFree:bytes+inlineLocation length:position-inlineLocation];
+       *objectp=[O2PDFString pdfObjectWithBytesNoCopyNoFree:(const unsigned char *)bytes+inlineLocation length:position-inlineLocation];
        *lastPosition=position+1;
        return YES;
       }

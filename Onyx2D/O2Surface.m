@@ -495,7 +495,7 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
    }
    else {
     if(bytesPerRow>0 && bytesPerRow<(width*bitsPerPixel)/8){
-     NSLog(@"invalid bytes per row=%d",bytesPerRow);
+     NSLog(@"invalid bytes per row=%zu",bytesPerRow);
      bytesPerRow=0;
     }
     
@@ -503,11 +503,11 @@ static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,s
      bytesPerRow=(width*bitsPerPixel)/8;
      
     NSMutableData *data=[NSMutableData dataWithLength:bytesPerRow*height*sizeof(uint8_t)]; // this will also zero the bytes
-    provider=[[[O2DataProvider alloc] initWithData:data] autorelease];
+    provider=[O2DataProviderCreateWithCFData((CFDataRef)data) autorelease];
   	m_ownsData=YES;
    }
    
-   if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:provider decode:NULL interpolate:YES renderingIntent:kO2RenderingIntentDefault]==nil)
+    if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo decoder: NULL provider:provider decode:NULL interpolate:YES renderingIntent:kO2RenderingIntentDefault]==nil)
     return nil;
    
    if([provider isDirectAccess])
@@ -556,7 +556,7 @@ void O2SurfaceUnlock(O2Surface *surface) {
     [_provider release];
     
     NSMutableData *data=[NSMutableData dataWithLength:size];
-    _provider=[[O2DataProvider alloc] initWithData:data];
+       _provider=O2DataProviderCreateWithCFData((CFDataRef)data);
     _pixelBytes=[data mutableBytes];
    }
 }
@@ -580,7 +580,7 @@ size_t O2SurfaceGetBytesPerRow(O2Surface *surface) {
 
 O2ImageRef O2SurfaceCreateImage(O2Surface *self) {
    NSData           *data=[[NSData alloc] initWithBytes:self->_pixelBytes length:self->_bytesPerRow*self->_height];
-   O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+   O2DataProviderRef provider=O2DataProviderCreateWithCFData((CFDataRef)data);
   
   O2Image *result=O2ImageCreate(self->_width,self->_height,self->_bitsPerComponent,self->_bitsPerPixel,self->_bytesPerRow,self->_colorSpace,
      self->_bitmapInfo,provider,self->_decode,self->_interpolate,self->_renderingIntent);

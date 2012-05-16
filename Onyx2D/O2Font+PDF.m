@@ -13,7 +13,7 @@ uint8_t O2PDFMacRomanPositionOfGlyphName(NSString *name){
    static NSDictionary *map=nil;
    
    if(map==nil){
-    NSMutableDictionary *mutmap=[NSDictionary new];
+    NSMutableDictionary *mutmap=[NSMutableDictionary new];
     int i;
     for(i=0;i<256;i++)
      [mutmap setObject:[NSNumber numberWithInt:i] forKey:O2MacRomanGlyphNames[i]];
@@ -97,7 +97,6 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Encoding *encodin
    if(reference==nil){
     O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
     O2Encoding      *encoding=[self createEncodingForTextEncoding:kO2EncodingMacRoman];
-    int              i;    
      
     [result setNameForKey:"Type" value:"Font"];
     [result setNameForKey:"Subtype" value:"TrueType"];

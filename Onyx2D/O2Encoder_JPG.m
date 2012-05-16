@@ -1,5 +1,5 @@
-#import <CoreGraphics/CoreGraphics.h>
 #import <Onyx2D/O2Encoder_JPG.h>
+#import <Onyx2D/O2ImageDestination.h>
 
 #ifdef LIBJPEG_PRESENT
 #import <libjpeg/include/jpeglib.h>
@@ -48,7 +48,7 @@ void O2JPGEncoderWriteImage(O2JPGEncoderRef self,O2ImageRef image,CFDictionaryRe
 	cinfo.in_color_space = JCS_RGB;
 	
 	jpeg_set_defaults(&cinfo);
-	NSNumber *compression = [properties objectForKey:(NSString *)kCGImageDestinationLossyCompressionQuality];
+	NSNumber *compression = [properties objectForKey:(NSString *)kO2ImageDestinationLossyCompressionQuality];
 	if (compression) {
 		jpeg_set_quality(&cinfo, 100*[compression floatValue], TRUE);
 	}
