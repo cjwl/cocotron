@@ -264,69 +264,81 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [item setSubmenu:submenu];
 }
 
+BOOL itemIsEnabled(NSMenuItem *item) {
+    BOOL enabled=NO;
+    
+    if([item action]!=NULL){
+        id target=[item target];
+        
+        target=[NSApp targetForAction:[item action] to:[item target] from:nil];
+        
+        if ((target == nil) || ![target respondsToSelector:[item action]]) {
+            enabled = NO;
+        } else if ([target respondsToSelector:@selector(validateMenuItem:)]) {
+            enabled = [target validateMenuItem:item];
+        } else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)]) { // New validation scheme
+            enabled = [target validateUserInterfaceItem:item];
+        } else {
+            enabled = YES;
+        }
+    } 
+
+    return enabled;
+}
+
 -(void)update {
-   int i,count=[_itemArray count];
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[_itemArray objectAtIndex:i];
-
-    if(_autoenablesItems){
-     BOOL enabled=NO;
-
-		if([item action]!=NULL){
-			id target=[item target];
-			
-			target=[NSApp targetForAction:[item action] to:[item target] from:nil];
-			
-			if ((target == nil) || ![target respondsToSelector:[item action]]) {
-				enabled = NO;
-			} else if ([target respondsToSelector:@selector(validateMenuItem:)]) {
-				enabled = [target validateMenuItem:item];
-			} else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)]) { // New validation scheme
-				enabled = [target validateUserInterfaceItem:item];
-			} else {
-				enabled = YES;
-			}
-		} 
-	   if(enabled!=[item isEnabled] && ![item _binderForBinding:@"enabled" create:NO]){
-      [item setEnabled:enabled];
-      [self itemChanged:item];
-     }
+    int i,count=[_itemArray count];
+    
+    for(i=0;i<count;i++){
+        NSMenuItem *item=[_itemArray objectAtIndex:i];
+        
+        if(_autoenablesItems){
+            BOOL enabled = itemIsEnabled(item) ? YES : NO;
+            BOOL currentlyEnabled = [item isEnabled] ? YES : NO;
+            
+            if(enabled!=currentlyEnabled && ![item _binderForBinding:@"enabled" create:NO]){
+                [item setEnabled:enabled];
+                [self itemChanged:item];
+            }
+        }
+        
+        [[item submenu] update];
     }
-
-    [[item submenu] update];
-   }
 }
 
 -(void)itemChanged:(NSMenuItem *)item {
 }
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {
-   int       i,count=[_itemArray count];
-   NSString *characters=[event charactersIgnoringModifiers];
-   unsigned  modifiers=[event modifierFlags];
-
-   if (_autoenablesItems)
-    [self update];
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[_itemArray objectAtIndex:i];
-    unsigned    itemModifiers=[item keyEquivalentModifierMask]&(NSCommandKeyMask|NSAlternateKeyMask);
-     NSString *key=[item keyEquivalent];
-     
-    if((modifiers&(NSCommandKeyMask|NSAlternateKeyMask))==itemModifiers){
-      
-     if([key isEqualToString:characters]){
-      if ([item isEnabled])
-       return [NSApp sendAction:[item action] to:[item target] from:item];
-     }
+    int       i,count=[_itemArray count];
+    NSString *characters=[event charactersIgnoringModifiers];
+    unsigned  modifiers=[event modifierFlags];
+    
+    if (_autoenablesItems)
+        [self update];
+    
+    for(i=0;i<count;i++){
+        NSMenuItem *item=[_itemArray objectAtIndex:i];
+        unsigned    itemModifiers=[item keyEquivalentModifierMask]&(NSCommandKeyMask|NSAlternateKeyMask);
+        NSString *key=[item keyEquivalent];
+        
+        if((modifiers&(NSCommandKeyMask|NSAlternateKeyMask))==itemModifiers){
+            
+            if([key isEqualToString:characters]){
+                /* This *must* accurately reflect menu validation when ignoring or processing
+                    key equivalents. Relying on update to keep isEnabled in the proper state is
+                    unfortunately too tenuous.
+                 */
+                if (itemIsEnabled(item))
+                    return [NSApp sendAction:[item action] to:[item target] from:item];
+            }
+        }
+        
+        if([[item submenu] performKeyEquivalent:event])
+            return YES;
     }
     
-    if([[item submenu] performKeyEquivalent:event])
-     return YES;
-   }
-
-   return NO;
+    return NO;
 }
 
 -(NSString *)_name {
