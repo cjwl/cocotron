@@ -12,11 +12,197 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2LZW.h>
 #import <Foundation/NSDebug.h>
 
+#import "O2Defines_libtiff.h"
+
+#if LIBTIFF_PRESENT
+#import <libtiff/include/tiffio.h>
+
+// TIFF Reader from NSData memory
+@interface O2TIFFReader : NSObject
+{
+	NSData *_data;
+	toff_t _currentOffset;
+}
+
+- (id)initWithData:(NSData *)data;
+
+// Data access methods for libtiff
+- (int)write:(tdata_t)data size:(tsize_t)size;
+- (int)read:(tdata_t)data size:(tsize_t)size;
+- (toff_t)seek:(tsize_t)offset whence:(int)whence;
+- (int)map:(tdata_t *)data size:(toff_t *)size;
+- (void)unmap:(tdata_t)data size:(toff_t)size;
+- (toff_t)size;
+- (int)close;
+
+@end
+
+static tsize_t sTIFFWriteProc(thandle_t userData, tdata_t data, tsize_t size)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	return [reader write:data size:size];
+}
+
+static tsize_t sTIFFReadProc(thandle_t userData, tdata_t data, tsize_t size)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	return [reader read:data size:size];
+}
+
+static toff_t sTIFFSeekProc(thandle_t userData, toff_t offset, int whence)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	return [reader seek:offset whence:whence];
+}
+
+static int sTIFFCloseProc(thandle_t userData)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	return [reader close];
+}
+
+static toff_t sTIFFSizeProc(thandle_t userData)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	return [reader size];
+}
+
+static int sTIFFMapFileProc(thandle_t userData, tdata_t* data, toff_t* size)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	return [reader map:data size:size];
+}
+
+static void sTIFFUnmapFileProc(thandle_t userData, tdata_t data, toff_t size)
+{
+	O2TIFFReader *reader = (O2TIFFReader *)userData;
+	[reader unmap:data size:size];
+}
+#endif
+
+@implementation O2TIFFReader
+- (id)initWithData:(NSData *)data
+{
+	if ((self = [super init])) {
+		_data = [data retain];
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[_data release];
+	[super dealloc];
+}
+
+- (int)write:(tdata_t)data size:(tsize_t)size
+{
+	return 0;
+}
+
+- (int)read:(tdata_t)data size:(tsize_t)size
+{
+	int bytesCount = MIN(size, [_data length] - _currentOffset);
+	memcpy(data, [_data bytes]+_currentOffset, bytesCount);
+	_currentOffset += bytesCount;
+	return bytesCount;
+}
+
+-(toff_t)seek:(tsize_t)offset whence:(int)whence
+{
+	/*
+	If whence is SEEK_SET, the offset is set to offset bytes.
+	If whence is SEEK_CUR, the offset is set to its current location plus offset bytes.
+	If whence is SEEK_END, the offset is set to the size of the file plus offset bytes.
+	*/
+	switch(whence) {
+		case SEEK_SET:
+			_currentOffset = offset;
+			break;
+		case SEEK_CUR:
+			_currentOffset += offset;
+			break;
+		case SEEK_END:
+			_currentOffset = [_data length] + offset - 1;
+			break;
+	}
+	if (_currentOffset > [_data length]) {
+		_currentOffset = -1;
+	}
+	if (_currentOffset < 0) {
+		_currentOffset = -1;
+	}
+
+	return _currentOffset; 
+}
+
+- (int)map:(tdata_t *)data size:(toff_t *)size
+{
+	*data = (tdata_t)[_data bytes];
+	*size = [_data length];
+	return 0;
+}
+
+- (void)unmap:(tdata_t)data size:(toff_t)size
+{
+}
+
+-(toff_t)size 
+{
+	return [_data length];
+}
+
+-(int)close 
+{
+	return 0;
+}
+
+- (void)readImage:(void *)pixelBytes directory:(int)directory
+{
+	const char *data = [_data bytes];
+	
+	// Temporary disable warnings - we're getting too many at app launch 
+	// and with a lot of tiff files
+	TIFFErrorHandler prevHandler = TIFFSetWarningHandler(NULL);
+	TIFF *tif = TIFFClientOpen([NSStringFromClass([self class]) UTF8String], 
+							   "r", 
+							   self,
+							   sTIFFReadProc, sTIFFWriteProc, 
+							   sTIFFSeekProc,
+							   sTIFFCloseProc, sTIFFSizeProc, 
+							   sTIFFMapFileProc,
+							   sTIFFUnmapFileProc
+							   );
+	
+	uint32 width = 0;
+	uint32 height = 0;
+	TIFFSetDirectory(tif, directory);
+	if (TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &width) != 0 &&
+		TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height) != 0) {
+		// We want top-left orientation - libtiff default is bottom-left, which is giving flipped bitmaps
+		// libtiff is giving us pixels in the same order we need - so we can just fill the pixels using libtiff and
+		// no post-processing is needed
+		if (TIFFReadRGBAImageOriented(tif, width, height, pixelBytes, ORIENTATION_TOPLEFT, 1) == 0) {
+			NSLog(@"Couldn't not decode TIFF Image at index %d", directory);
+		}
+	} else {
+		NSLog(@"Couldn't not read TIFF Image dimensions at index %d", directory);
+	}
+	TIFFClose(tif);
+	
+	TIFFSetWarningHandler(prevHandler);
+}	
+@end
+
 @implementation O2TIFFImageDirectory
 
 -initWithTIFFReader:(O2Decoder_TIFF *)reader {
    unsigned i,numberOfEntries=O2DecoderNextUnsigned16_TIFF(reader);
 
+#if LIBTIFF_PRESENT
+	// Save the index for the current directory object
+	_idx = [[reader imageFileDirectory] count];
+#endif
    _xPosition=0;
    _xResolution=72.0;
    _yPosition=0;
@@ -271,6 +457,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _imageWidth;
 }
 
+#if !LIBTIFF_PRESENT
 static void decode_R8_G8_B8_A8(const unsigned char *stripBytes,unsigned byteCount,unsigned char *pixelBytes,int bytesPerRow,int *pixelBytesRowp,int height){
    int pixelBytesRow=*pixelBytesRowp;
    int pixelBytesCol=0;
@@ -335,8 +522,17 @@ void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height
     pixelBytes+=bytesPerRow;
    }
 }
+#endif
 
 -(BOOL)getRGBAImageBytes:(unsigned char *)pixelBytes data:(NSData *)data {
+#if LIBTIFF_PRESENT
+	// Note: it would be much more efficient to use LIBTIFF for all of the TIFF processing
+	// but we're doing minimal changes to the non-libtiff version - so we're just using LIBTIFF to do the image decoding
+	// for an image directory object (in order to support more image codecs than the one supported natively by cocotron)
+	O2TIFFReader *tiffReader = [[O2TIFFReader alloc] initWithData:data];
+	[tiffReader readImage:pixelBytes directory:_idx];
+	[tiffReader release];
+#else
    const unsigned char *bytes=[data bytes];
    unsigned             length=[data length];
    unsigned             strip,i;
@@ -453,7 +649,7 @@ void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height
      NSLog(@"TIFF predictor error, floating point unsupported");
      break;
    }
-   
+#endif
    return YES;
 }
 

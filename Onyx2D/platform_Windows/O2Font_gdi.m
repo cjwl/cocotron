@@ -398,7 +398,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
    if(_useMacMetrics){
     if (pointSize <= 10.0)
-       pointSize=pointSize;
+		pointSize=pointSize;
     else if (pointSize < 20.0)
        pointSize=pointSize/(1.0 + 0.2*sqrtf(0.0390625*(pointSize - 10.0)));
     else
