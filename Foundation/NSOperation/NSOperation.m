@@ -47,7 +47,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setQueuePriority:(NSOperationQueuePriority)newPriority {
+	// Queue priority is supposed to be coerced into one of the legit values
+	if (newPriority < NSOperationQueuePriorityVeryLow) {
+		newPriority = NSOperationQueuePriorityVeryLow;
+	}
+	else if (newPriority < NSOperationQueuePriorityLow) {
+		newPriority = NSOperationQueuePriorityLow;
+	}
+	else if (newPriority > NSOperationQueuePriorityVeryHigh) {
+		newPriority = NSOperationQueuePriorityVeryHigh;
+	}
+	else if (newPriority > NSOperationQueuePriorityHigh) {
+		newPriority = NSOperationQueuePriorityHigh;
+	}
+	else {
+		newPriority = NSOperationQueuePriorityNormal;
+	}
+	
 	priority = newPriority;
+}
+
+- (NSComparisonResult)comparePriority:(NSOperation*)op
+{
+	if ([op queuePriority] > priority) {
+		return NSOrderedDescending;
+	}
+	if ([op queuePriority] < priority) {
+		return NSOrderedAscending;
+	}
+	return NSOrderedSame;
 }
 
 -(BOOL)isCancelled {
