@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUnicodeCaseMapping.h>
 
 #import <AppKit/NSPasteboard.h>
+#import <AppKit/NSBitmapImageRep.h>
 
 @implementation Win32IDataObjectClient
 
@@ -85,7 +86,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
 
      case CF_DIB:
-      break;
+	  type=NSTIFFPboardType;
+	  break;
 
      case CF_PALETTE:
       break;
@@ -180,6 +182,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     formatEtc.cfFormat=CF_UNICODETEXT;
    else if([type isEqualToString:NSFilenamesPboardType])
     formatEtc.cfFormat=CF_HDROP;
+   else if([type isEqualToString:NSTIFFPboardType])
+	   formatEtc.cfFormat=CF_DIB;
    else {
     if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
 #if DEBUG
@@ -206,7 +210,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    switch(storageMedium.tymed){
 
     case TYMED_GDI: // hBitmap
-     break;
+	 break;
 
     case TYMED_MFPICT: // hMetaFilePict
      break;
@@ -218,7 +222,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
            { // hGlobal 
            uint8_t  *bytes=GlobalLock(storageMedium.hGlobal); 
            NSUInteger byteLength=GlobalSize(storageMedium.hGlobal); 
-           if(formatEtc.cfFormat==CF_UNICODETEXT && (byteLength > 0)) { 
+			   if(formatEtc.cfFormat==CF_DIB && (byteLength > 0)) {
+				   NSBitmapImageRep *imageRep = nil;
+				   
+				   // Make TIFF data from the DIB data
+				   LPBITMAPINFO    lpBI = (LPBITMAPINFO)bytes;
+				   void*            pDIBBits = (void*)(lpBI + 1); 
+
+				   int w = lpBI->bmiHeader.biWidth;
+				   int h = lpBI->bmiHeader.biHeight;
+
+				   // To convert the DIB into data Cocotron can understand, we'll draw the DIB into a CGImage 
+				   // and return a TIFF representation of it
+				   CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+				   CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
+				   CGColorSpaceRelease(colorspace);
+				   // Contexts created on the Win32 platform are supposed to have a "dc" method
+				   HDC dc = [(id)ctx dc];
+				   if (dc) {
+					    StretchDIBits(
+									  dc,
+									  0, 0, w, h,
+									  0, 0, w, h,
+									  pDIBBits, lpBI, DIB_RGB_COLORS, SRCCOPY
+									  );
+					   CGImageRef image = CGBitmapContextCreateImage(ctx);
+					   if (image) {
+						   imageRep = [[[NSBitmapImageRep alloc] initWithCGImage: image] autorelease];
+						   CGImageRelease(image);
+					   }
+				   }
+				   CGContextRelease(ctx);
+				   
+				   if (imageRep) {
+					   result = [imageRep TIFFRepresentation];
+				   }
+				   
+			   } else if(formatEtc.cfFormat==CF_UNICODETEXT && (byteLength > 0)) { 
                 if(byteLength % 2)  { // odd data length. WTF? 
                     uint8_t lastbyte = bytes[byteLength-1]; 
                     if(lastbyte != 0) { // not a null oddbyte, log it. 
@@ -256,12 +296,12 @@ lastbyte);
                   byteLength*=2;
                 }
                 
-            } 
-            if(copyData)
-             result=[NSData dataWithBytes:bytes length:byteLength]; 
-            else
-             result=[NSData dataWithBytesNoCopy:bytes length:byteLength freeWhenDone:YES]; 
-             
+				   if(copyData)
+					   result=[NSData dataWithBytes:bytes length:byteLength]; 
+				   else
+					   result=[NSData dataWithBytesNoCopy:bytes length:byteLength freeWhenDone:YES]; 
+				   
+			   }
             GlobalUnlock(storageMedium.hGlobal); 
            } 
         break; 
@@ -299,7 +339,6 @@ lastbyte);
     while(ptr[length]!='\0'){
      while(ptr[length]!='\0')
       length++;
-
      [result addObject:[NSString stringWithCharacters:ptr length:length]];
      length++;
      ptr+=length;
