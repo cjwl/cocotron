@@ -173,101 +173,101 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)dataForType:(NSString *)type {
-   NSData   *result=nil;
-   BOOL      copyData=YES;
-   FORMATETC formatEtc;
-   STGMEDIUM storageMedium;
-
-   if([type isEqualToString:NSStringPboardType])
-    formatEtc.cfFormat=CF_UNICODETEXT;
-   else if([type isEqualToString:NSFilenamesPboardType])
-    formatEtc.cfFormat=CF_HDROP;
-   else if([type isEqualToString:NSTIFFPboardType])
-	   formatEtc.cfFormat=CF_DIB;
-   else {
-    if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
+	NSData   *result=nil;
+	BOOL      copyData=YES;
+	FORMATETC formatEtc;
+	STGMEDIUM storageMedium;
+	
+	if([type isEqualToString:NSStringPboardType])
+		formatEtc.cfFormat=CF_UNICODETEXT;
+	else if([type isEqualToString:NSFilenamesPboardType])
+		formatEtc.cfFormat=CF_HDROP;
+	else if([type isEqualToString:NSTIFFPboardType])
+		formatEtc.cfFormat=CF_DIB;
+	else {
+		if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
 #if DEBUG
-     NSLog(@"RegisterClipboardFormat failed for type: %@", type);
+			NSLog(@"RegisterClipboardFormat failed for type: %@", type);
 #endif
-     return nil;
-    }
-   }
-
-   formatEtc.ptd=NULL;
-   formatEtc.dwAspect=DVASPECT_CONTENT;
-   formatEtc.lindex=-1;
-   formatEtc.tymed=TYMED_HGLOBAL|TYMED_ISTREAM;
-
-   if((_dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc))!=S_OK){
+			return nil;
+		}
+	}
+	
+	formatEtc.ptd=NULL;
+	formatEtc.dwAspect=DVASPECT_CONTENT;
+	formatEtc.lindex=-1;
+	formatEtc.tymed=TYMED_HGLOBAL|TYMED_ISTREAM;
+	
+	if((_dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc))!=S_OK){
 #if DEBUG
-    NSLog(@"QueryGetData failed for type: %@", type);
+		NSLog(@"QueryGetData failed for type: %@", type);
 #endif
-    return nil;
-   }
-
-   _dataObject->lpVtbl->GetData(_dataObject,&formatEtc,&storageMedium);
-
-   switch(storageMedium.tymed){
-
-    case TYMED_GDI: // hBitmap
-	 break;
-
-    case TYMED_MFPICT: // hMetaFilePict
-     break;
-
-    case TYMED_ENHMF: // hEnhMetaFile
-     break;
-
-    case TYMED_HGLOBAL: 
-           { // hGlobal 
-           uint8_t  *bytes=GlobalLock(storageMedium.hGlobal); 
-           NSUInteger byteLength=GlobalSize(storageMedium.hGlobal); 
-			   if(formatEtc.cfFormat==CF_DIB && (byteLength > 0)) {
-				   NSBitmapImageRep *imageRep = nil;
-				   
-				   // Make TIFF data from the DIB data
-				   LPBITMAPINFO    lpBI = (LPBITMAPINFO)bytes;
-				   void*            pDIBBits = (void*)(lpBI + 1); 
-
-				   int w = lpBI->bmiHeader.biWidth;
-				   int h = lpBI->bmiHeader.biHeight;
-
-				   // To convert the DIB into data Cocotron can understand, we'll draw the DIB into a CGImage 
-				   // and return a TIFF representation of it
-				   CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-				   CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
-				   CGColorSpaceRelease(colorspace);
-				   // Contexts created on the Win32 platform are supposed to have a "dc" method
-				   HDC dc = [(id)ctx dc];
-				   if (dc) {
-					    StretchDIBits(
-									  dc,
-									  0, 0, w, h,
-									  0, 0, w, h,
-									  pDIBBits, lpBI, DIB_RGB_COLORS, SRCCOPY
-									  );
-					   CGImageRef image = CGBitmapContextCreateImage(ctx);
-					   if (image) {
-						   imageRep = [[[NSBitmapImageRep alloc] initWithCGImage: image] autorelease];
-						   CGImageRelease(image);
-					   }
-				   }
-				   CGContextRelease(ctx);
-				   
-				   if (imageRep) {
-					   result = [imageRep TIFFRepresentation];
-				   }
-				   
-			   } else if(formatEtc.cfFormat==CF_UNICODETEXT && (byteLength > 0)) { 
+		return nil;
+	}
+	
+	_dataObject->lpVtbl->GetData(_dataObject,&formatEtc,&storageMedium);
+	
+	switch(storageMedium.tymed){
+			
+		case TYMED_GDI: // hBitmap
+			break;
+			
+		case TYMED_MFPICT: // hMetaFilePict
+			break;
+			
+		case TYMED_ENHMF: // hEnhMetaFile
+			break;
+			
+		case TYMED_HGLOBAL: 
+		{ // hGlobal 
+			uint8_t  *bytes=GlobalLock(storageMedium.hGlobal); 
+			NSUInteger byteLength=GlobalSize(storageMedium.hGlobal); 
+			if(formatEtc.cfFormat==CF_DIB && (byteLength > 0)) {
+				NSBitmapImageRep *imageRep = nil;
+				
+				// Make TIFF data from the DIB data
+				LPBITMAPINFO    lpBI = (LPBITMAPINFO)bytes;
+				void*            pDIBBits = (void*)(lpBI + 1); 
+				
+				int w = lpBI->bmiHeader.biWidth;
+				int h = lpBI->bmiHeader.biHeight;
+				
+				// To convert the DIB into data Cocotron can understand, we'll draw the DIB into a CGImage 
+				// and return a TIFF representation of it
+				CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+				CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
+				CGColorSpaceRelease(colorspace);
+				// Contexts created on the Win32 platform are supposed to have a "dc" method
+				HDC dc = [(id)ctx dc];
+				if (dc) {
+					StretchDIBits(
+								  dc,
+								  0, 0, w, h,
+								  0, 0, w, h,
+								  pDIBBits, lpBI, DIB_RGB_COLORS, SRCCOPY
+								  );
+					CGImageRef image = CGBitmapContextCreateImage(ctx);
+					if (image) {
+						imageRep = [[[NSBitmapImageRep alloc] initWithCGImage: image] autorelease];
+						CGImageRelease(image);
+					}
+				}
+				CGContextRelease(ctx);
+				
+				if (imageRep) {
+					result = [imageRep TIFFRepresentation];
+				}
+				
+			} else if(formatEtc.cfFormat==CF_UNICODETEXT && (byteLength > 0)) { 
                 if(byteLength % 2)  { // odd data length. WTF? 
                     uint8_t lastbyte = bytes[byteLength-1]; 
                     if(lastbyte != 0) { // not a null oddbyte, log it. 
                         NSLog(@"%s:%u[%s] -- \n*****CF_UNICODETEXT byte count not even and odd byte (%0X,'%c') not null",__FILE__, __LINE__, __PRETTY_FUNCTION__,(unsigned)lastbyte, 
-lastbyte); 
+							  lastbyte); 
                     } 
-                        --byteLength; // truncate regardless 
+					--byteLength; // truncate regardless 
                 }  
-                     
+				
                 while(byteLength>0)  { // zortch any terminating null unichars 
                     if(((unichar *) bytes)[(byteLength-2)/2] != 0) { 
                         break; 
@@ -276,55 +276,55 @@ lastbyte);
                         byteLength -= 2; 
                     } 
                 }; 
-
-/* check for BOM, if not it is big endian. */
+				
+				/* check for BOM, if not it is big endian. */
                 if(byteLength>=2){
-                 if(bytes[0]==0xFE && bytes[1]==0xFF){
-                  copyData=NO;
-                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes+2, byteLength-2, &byteLength);
-                  byteLength*=2;
-                 }
-                 else if(bytes[0]==0xFF && bytes[1]==0xFE){
-                  copyData=NO;
-                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16LittleEndian(bytes+2, byteLength-2, &byteLength);
-                  byteLength*=2;
-                 }
+					if(bytes[0]==0xFE && bytes[1]==0xFF){
+						copyData=NO;
+						bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes+2, byteLength-2, &byteLength);
+						byteLength*=2;
+					}
+					else if(bytes[0]==0xFF && bytes[1]==0xFE){
+						copyData=NO;
+						bytes=(uint8_t *)NSUnicodeFromBytesUTF16LittleEndian(bytes+2, byteLength-2, &byteLength);
+						byteLength*=2;
+					}
                 }
                 if(copyData){
-                  copyData=NO;
-                  bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes, byteLength, &byteLength);
-                  byteLength*=2;
+					copyData=NO;
+					bytes=(uint8_t *)NSUnicodeFromBytesUTF16BigEndian(bytes, byteLength, &byteLength);
+					byteLength*=2;
                 }
-                
-				   if(copyData)
-					   result=[NSData dataWithBytes:bytes length:byteLength]; 
-				   else
-					   result=[NSData dataWithBytesNoCopy:bytes length:byteLength freeWhenDone:YES]; 
-				   
-			   }
+			}
+			if (result == nil) {
+				if(copyData)
+					result=[NSData dataWithBytes:bytes length:byteLength]; 
+				else
+					result=[NSData dataWithBytesNoCopy:bytes length:byteLength freeWhenDone:YES]; 
+			}				
             GlobalUnlock(storageMedium.hGlobal); 
-           } 
-        break; 
-
-    case TYMED_FILE: // lpszFileName
-     break;
-
-    case TYMED_ISTREAM:{ // pstm
-      Win32IStreamClient *stream=[[Win32IStreamClient alloc] initWithIStream:storageMedium.pstm release:NO];
-
-      result=[stream readDataToEndOfFile];
-
-      [stream release];
-     }
-     break;
-
-    case TYMED_ISTORAGE: // pstg
-     break;
-   }
-
-   ReleaseStgMedium(&storageMedium);
-
-   return result;
+		}
+			break; 
+			
+		case TYMED_FILE: // lpszFileName
+			break;
+			
+		case TYMED_ISTREAM:{ // pstm
+			Win32IStreamClient *stream=[[Win32IStreamClient alloc] initWithIStream:storageMedium.pstm release:NO];
+			
+			result=[stream readDataToEndOfFile];
+			
+			[stream release];
+		}
+			break;
+			
+		case TYMED_ISTORAGE: // pstg
+			break;
+	}
+	
+	ReleaseStgMedium(&storageMedium);
+	
+	return result;
 }
 
 -(NSArray *)filenamesFromDROPFILES:(const DROPFILES *)dropFiles {
