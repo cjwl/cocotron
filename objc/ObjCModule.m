@@ -540,6 +540,9 @@ void OBJCQueueModule(OBJCModule *module) {
 #endif
 
    OBJCLinkClassTable();
+#ifndef __APPLE__
+    OBJCSendLoadMessages();
+#endif
 }
 
 void OBJCResetModuleQueue(void) {

@@ -16,6 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "ObjCException.h"
 #import <Foundation/NSRaiseException.h>
 
+
+extern void OBJCSendLoadMessages();
+
 /*
  * Fetches all Objective-C-Modules via the mach-o/dyld.h interface and initializes them.
  */
@@ -130,5 +133,7 @@ void OBJCInitializeProcess_Darwin(void)
           }
       }
    } //iterate mach_headers
+    
+    OBJCSendLoadMessages();
 }
 
