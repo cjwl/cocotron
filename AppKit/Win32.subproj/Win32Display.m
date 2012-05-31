@@ -991,6 +991,8 @@ The values should be upgraded to something which is more generic to implement, p
    NSEvent *event;
    float deltaY=((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
 
+	deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
+	
    event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaY:deltaY];
    [self postEvent:event atStart:NO];
    return YES;
@@ -1098,26 +1100,35 @@ static HWND findWindowForScrollWheel(POINT point){
    deviceLocation.y=GET_Y_LPARAM(msg.lParam);
 
    if(msg.message==WM_MOUSEWHEEL) {
-// Scroll wheel events go to the window under the mouse regardless of key. Win32 set hwnd to the active window
-// So we look for the window under the mouse and use that for the event.
-    POINT pt={GET_X_LPARAM(msg.lParam),GET_Y_LPARAM(msg.lParam)};
-    RECT  r;
+	   // The deviceLocation is relative to the screen - not the window - so we need to translate it into the
+	   // client area
+		RECT  r;
+		
+		GetWindowRect(windowHandle,&r);
+		deviceLocation.x-=r.left;
+		deviceLocation.y-=r.top;
+		HWND scrollWheelWindow=findWindowForScrollWheel(deviceLocation);
     
-    GetWindowRect(windowHandle,&r);
-    pt.x+=r.left;
-    pt.y+=r.top;
-    
-    HWND scrollWheelWindow=findWindowForScrollWheel(pt);
-    
-    if(scrollWheelWindow!=NULL)
-     windowHandle=scrollWheelWindow;
-     
+	   if(scrollWheelWindow!=NULL) {
+		   windowHandle=scrollWheelWindow;
+	   }
+	   
+   }
+
     platformWindow=(id)GetProp(windowHandle,"Win32Window");
-   }
-   else {
-    platformWindow=(id)GetProp(msg.hwnd,"Win32Window");
-   }
-   
+
+	if (msg.message == WM_MOUSEWHEEL) {
+		// We've got more tweakage to do because we're not yet in client space - but now
+		// we know the window we can find out how thick the frame edges are and compensate for them
+		CGFloat top;
+		CGFloat left;
+		CGFloat bottom; 
+		CGFloat right;
+		CGNativeBorderFrameWidthsForStyle( [platformWindow styleMask], &top, &left, &bottom, &right);
+		deviceLocation.x -= left;
+		deviceLocation.y -= top;
+	}
+	
    if([platformWindow respondsToSelector:@selector(appkitWindow)])
     window=[platformWindow performSelector:@selector(appkitWindow)];
 
