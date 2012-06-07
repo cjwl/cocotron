@@ -14,6 +14,56 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSBitmapImageRep.h>
 
+// These methods come from MS sample code
+static WORD DibNumColors (VOID FAR * pv)
+{
+    INT                 bits;
+    LPBITMAPINFOHEADER  lpbi;
+    LPBITMAPCOREHEADER  lpbc;
+	
+    lpbi = ((LPBITMAPINFOHEADER)pv);
+    lpbc = ((LPBITMAPCOREHEADER)pv);
+	
+    /*  With the BITMAPINFO format headers, the size of the palette
+     *  is in biClrUsed, whereas in the BITMAPCORE - style headers, it
+     *  is dependent on the bits per pixel ( = 2 raised to the power of
+     *  bits/pixel).
+     */
+    if (lpbi->biSize != sizeof(BITMAPCOREHEADER)){
+        if (lpbi->biClrUsed != 0)
+            return (WORD)lpbi->biClrUsed;
+        bits = lpbi->biBitCount;
+    }
+    else
+        bits = lpbc->bcBitCount;
+	
+    switch (bits){
+        case 1:
+			return 2;
+        case 4:
+			return 16;
+        case 8:
+			return 256;
+        default:
+			/* A 24 bitcount DIB has no color table */
+			return 0;
+    }
+}
+
+static WORD PaletteSize (VOID FAR * pv)
+{
+    LPBITMAPINFOHEADER lpbi;
+    WORD               NumColors;
+	
+    lpbi      = (LPBITMAPINFOHEADER)pv;
+    NumColors = DibNumColors(lpbi);
+	
+    if (lpbi->biSize == sizeof(BITMAPCOREHEADER))
+        return (WORD)(NumColors * sizeof(RGBTRIPLE));
+    else
+        return (WORD)(NumColors * sizeof(RGBQUAD));
+}
+
 @implementation Win32IDataObjectClient
 
 -initWithIDataObject:(struct IDataObject *)dataObject {
@@ -227,11 +277,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				
 				// Make TIFF data from the DIB data
 				LPBITMAPINFO    lpBI = (LPBITMAPINFO)bytes;
-				void*            pDIBBits = (void*)(lpBI + 1); 
-				
+				void*            pDIBBits = (LPBYTE)lpBI + (WORD)lpBI->bmiHeader.biSize + PaletteSize(lpBI); 
 				int w = lpBI->bmiHeader.biWidth;
 				int h = lpBI->bmiHeader.biHeight;
-				
+
 				// To convert the DIB into data Cocotron can understand, we'll draw the DIB into a CGImage 
 				// and return a TIFF representation of it
 				CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
@@ -239,6 +288,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				CGColorSpaceRelease(colorspace);
 				// Contexts created on the Win32 platform are supposed to have a "dc" method
 				HDC dc = [(id)ctx dc];
+
 				if (dc) {
 					StretchDIBits(
 								  dc,
@@ -246,6 +296,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 								  0, 0, w, h,
 								  pDIBBits, lpBI, DIB_RGB_COLORS, SRCCOPY
 								  );
+					if (lpBI->bmiHeader.biBitCount != 32) {
+						// We need to manually set the alpha to 0xFF or we get a transparent image
+						char *bytes = CGBitmapContextGetData(ctx);
+						for (int i = 3; i < 4*w*h; i+=4) {
+							bytes[i] = 0xff; 
+						}
+					}
 					CGImageRef image = CGBitmapContextCreateImage(ctx);
 					if (image) {
 						imageRep = [[[NSBitmapImageRep alloc] initWithCGImage: image] autorelease];
