@@ -256,6 +256,8 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
 		// So let's do it our own way
 		integral = trunc(value);
 		fractional = roundDouble(power * (value - integral)) / power;;
+		// Add some epsilon smaller than the precision to fix rounding problems
+		fractional+= pow(10., -precision-2);
 		if (fractional >= 1.) {
 			// Rounding to next integral
 			integral++;
