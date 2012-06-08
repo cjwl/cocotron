@@ -80,7 +80,11 @@ static void *nsThreadStartThread(void* t)
    [thread main];
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
+	// We need a pool here in case release triggers some autoreleased object allocations
+	// so they won't stay in limbo
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
    [thread release];
+	[pool release];
    NSSelectSetShutdownForCurrentThread();
    NSPlatformSetCurrentThread(nil);
 	return 0;
