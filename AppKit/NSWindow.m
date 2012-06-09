@@ -299,8 +299,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    [_backgroundView addSubview:_contentView];
    [_backgroundView setNeedsDisplay:YES];
-   [[NSApplication sharedApplication] _addWindow:self];
-
+	if (!(_styleMask & NSAppKitPrivateWindow)) {
+		[[NSApplication sharedApplication] _addWindow:self];
+	}
    return self;
 }
 
@@ -1596,6 +1597,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)becomeKeyWindow {
+	
+	// The platform should always be told to become key when we want to 
+	// become key
+	[self makeKeyWindow];
+	
    if([self isKeyWindow]) // if we don't return early we may resign ourself
     return;
 
@@ -2676,7 +2682,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidActivate:) withObject:self];
 
    _isActive=YES;
-   if([self canBecomeKeyWindow] && ![self isKeyWindow])
+   if([self canBecomeKeyWindow])
     [self becomeKeyWindow];
    if([self canBecomeMainWindow] && ![self isMainWindow])
     [self becomeMainWindow];

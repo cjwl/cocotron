@@ -2168,6 +2168,14 @@
 		6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
+		C64663DC15590E7B00A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DB15590E7B00A162B8 /* libmain.m */; };
+		C64663DE15590E9400A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DD15590E9400A162B8 /* libmain.m */; };
+		C64663E015590EAF00A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DF15590EAF00A162B8 /* libmain.m */; };
+		C64663E115590EAF00A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DF15590EAF00A162B8 /* libmain.m */; };
+		C64663E215590EAF00A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DF15590EAF00A162B8 /* libmain.m */; };
+		C64663E415590EC600A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663E315590EC600A162B8 /* libmain.m */; };
+		C64663E715590FBE00A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DB15590E7B00A162B8 /* libmain.m */; };
+		C64663E815590FBE00A162B8 /* libmain.m in Sources */ = {isa = PBXBuildFile; fileRef = C64663DB15590E7B00A162B8 /* libmain.m */; };
 		C6BC3CB11162303400DFC16C /* NSTimeZone_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C6BC3CB21162303400DFC16C /* NSTimeZone_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */; };
 		C6BC3CB51162305000DFC16C /* NSTimeZone_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -7238,6 +7246,10 @@
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C64663DB15590E7B00A162B8 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = libmain.m; sourceTree = "<group>"; };
+		C64663DD15590E9400A162B8 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = libmain.m; sourceTree = "<group>"; };
+		C64663DF15590EAF00A162B8 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = libmain.m; path = platform_linux/libmain.m; sourceTree = "<group>"; };
+		C64663E315590EC600A162B8 /* libmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = libmain.m; path = platform_solaris/libmain.m; sourceTree = "<group>"; };
 		C6BC3CAF1162303400DFC16C /* NSTimeZone_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTimeZone_win32.h; sourceTree = "<group>"; };
 		C6BC3CB01162303400DFC16C /* NSTimeZone_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTimeZone_win32.m; sourceTree = "<group>"; };
 		C6BC3CB31162305000DFC16C /* NSTimeZone_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTimeZone_posix.h; path = platform_posix/NSTimeZone_posix.h; sourceTree = "<group>"; };
@@ -8426,6 +8438,7 @@
 		6E28034709747A4900EC542B /* platform_linux */ = {
 			isa = PBXGroup;
 			children = (
+				C64663DF15590EAF00A162B8 /* libmain.m */,
 				6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */,
 				6E28056C09747CE100EC542B /* NSPlatform_linux.h */,
 				6E28056D09747CE100EC542B /* NSPlatform_linux.m */,
@@ -8479,6 +8492,7 @@
 		6E28034909747A6B00EC542B /* platform_solaris */ = {
 			isa = PBXGroup;
 			children = (
+				C64663E315590EC600A162B8 /* libmain.m */,
 				6E28059509747CF900EC542B /* NSPlatform_solaris.h */,
 				6E28059609747CF900EC542B /* NSPlatform_solaris.m */,
 				6E28059709747CF900EC542B /* NSTask_solaris.h */,
@@ -8818,6 +8832,7 @@
 		FE5EA8000FA3896500536850 /* platform_bsd */ = {
 			isa = PBXGroup;
 			children = (
+				C64663DD15590E9400A162B8 /* libmain.m */,
 				FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */,
 				FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */,
 				FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */,
@@ -9075,6 +9090,7 @@
 		FED70AF80C3B41F7000CBE5B /* platform_darwin */ = {
 			isa = PBXGroup;
 			children = (
+				C64663DB15590E7B00A162B8 /* libmain.m */,
 				FE6014251042FD5A008A7357 /* NSString_defaultEncoding_darwin.m */,
 				FED70AFF0C3B4255000CBE5B /* DarwinMemoryFunctions.m */,
 				FED70B000C3B4255000CBE5B /* NSPlatform_darwin.h */,
@@ -13059,7 +13075,7 @@
 				FEFAA53C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07591434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C167151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD70153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663E215590EAF00A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13433,7 +13449,7 @@
 				FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07571434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C166151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD6F153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663E115590EAF00A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13808,7 +13824,7 @@
 				FEFAA5481429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C162151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD6B153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663E415590EC600A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14184,7 +14200,7 @@
 				FEFAA53E1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C161151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD6A153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663E015590EAF00A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14941,7 +14957,7 @@
 				FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C075B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C168151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD71153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663DE15590E9400A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15320,7 +15336,7 @@
 				FEFAA5441429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07551434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C165151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD6E153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663E815590FBE00A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15700,7 +15716,7 @@
 				FEFAA5461429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C163151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD6C153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663DC15590E7B00A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16080,7 +16096,7 @@
 				FEFAA5401429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C164151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
-				0D94DD6D153E859F0048B351 /* NSSocketPort_posix.m in Sources */,
+				C64663E715590FBE00A162B8 /* libmain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16467,7 +16483,7 @@
 					"-lole32",
 					"-lws2_32",
 					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0x10000000",
+					"-Wl,--image-base=0xa10000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
 				PRODUCT_NAME = Foundation;
@@ -16661,7 +16677,7 @@
 					"-lrpcrt4",
 					"-lws2_32",
 					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0x10000000",
+					"-Wl,--image-base=0xa10000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);
 				PRODUCT_NAME = Foundation;

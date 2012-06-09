@@ -1,5 +1,9 @@
 #import <Onyx2D/O2Encoder_PNG.h>
 
+#ifndef __APPLE__
+#import "O2Defines_libpng.h"
+#endif
+
 O2PNGEncoderRef O2PNGEncoderCreate(O2DataConsumerRef consumer) {
    O2PNGEncoderRef self=NSZoneCalloc(NULL,1,sizeof(struct O2PNGEncoder));
    self->_consumer=(id)CFRetain(consumer);
@@ -12,6 +16,115 @@ void O2PNGEncoderDealloc(O2PNGEncoderRef self) {
    NSZoneFree(NULL,self);
 }
 
+#ifdef LIBPNG_PRESENT
+#include <libpng/include/png.h>
+#include <zlib-1.2.5/include/zlib.h>
+
+static void o2png_write_data(png_structp png_ptr, png_bytep data, png_size_t length)
+{
+	O2PNGEncoderRef self = (O2PNGEncoderRef)png_get_io_ptr(png_ptr);
+	O2DataConsumerPutBytes(self->_consumer,data,length);
+}
+
+void O2PNGEncoderWriteImage(O2PNGEncoderRef self,O2ImageRef image,CFDictionaryRef props) 
+{
+	// Note: only encoding 32 bits RGBA images have been tested
+	NSDictionary *properties = (NSDictionary *)props;
+	
+	unsigned long length = 0;
+	size_t width = O2ImageGetWidth(image);
+	size_t height = O2ImageGetHeight(image);
+	
+	int bpr = O2ImageGetBytesPerRow(image);
+	png_bytep *row_pointers = calloc(sizeof(void *), height);
+	const uint8_t *bytes = [image directBytes];
+	for (int i = 0; i < height; ++i) {
+		row_pointers[i] = (uint8_t *)(bytes + i*bpr);
+	}
+	
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+
+	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
+
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		NSLog(@"Error initializing png encoder");
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		return;
+	}
+	png_set_write_fn(png_ptr, self, o2png_write_data, NULL);
+	
+	
+	png_byte color_type = PNG_COLOR_TYPE_RGB_ALPHA;
+	png_byte bit_depth = 8;
+	
+	switch(O2ImageGetBitmapInfo(image)&kO2BitmapAlphaInfoMask){
+		case kO2ImageAlphaNone:
+			color_type = PNG_COLOR_TYPE_RGB;
+			break;
+		case kO2ImageAlphaNoneSkipLast:
+			png_set_filler(png_ptr, 0, PNG_FILLER_AFTER);
+			color_type = PNG_COLOR_TYPE_RGB;
+			break;
+		case kO2ImageAlphaNoneSkipFirst:
+			png_set_filler(png_ptr, 0, PNG_FILLER_BEFORE);
+			color_type = PNG_COLOR_TYPE_RGB;
+			break;
+		default:
+			color_type = PNG_COLOR_TYPE_RGB_ALPHA;
+			break;
+	}
+	
+	png_set_IHDR(png_ptr, info_ptr, width, height,
+				 bit_depth, color_type, PNG_INTERLACE_NONE,
+				 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		NSLog(@"Error writing png header");
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		return;
+	}
+	png_write_info(png_ptr, info_ptr);
+	
+	switch (O2ImageGetBitmapInfo(image) & kO2BitmapByteOrderMask) {
+		case kO2BitmapByteOrder16Little:
+			bit_depth = 4;
+			png_set_bgr(png_ptr);
+			break;
+		case kO2BitmapByteOrder32Little:
+			png_set_bgr(png_ptr);
+			break;
+		case kO2BitmapByteOrder16Big:
+			bit_depth = 4;
+			break;
+		case kO2BitmapByteOrder32Big:
+			break;
+		case kO2BitmapByteOrderDefault:
+		default:
+#ifdef __LITTLE_ENDIAN__
+			png_set_bgr(png_ptr);
+#endif
+			break;
+	}
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		NSLog(@"Error writing png image data");
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		return;
+	}
+	png_write_image(png_ptr, row_pointers);
+	
+	
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		NSLog(@"Error finishing png image data");
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		return;
+	}
+	png_write_end(png_ptr, NULL);
+	
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	free(row_pointers);
+}
+#else
 /* stbiw-0.92 - public domain - http://nothings.org/stb/stb_image_write.h
    writes out PNG/BMP/TGA images to C stdio - Sean Barrett 2010
                             no warranty implied; use at your own risk
@@ -308,36 +421,38 @@ unsigned char *stbi_write_png_to_mem(O2ImageRef image, int x, int y, int *out_le
    
    O2argb8u *pixelBuffer=malloc(x*sizeof(O2argb8u));
    O2argb8u *pixels;
-   unsigned char *z=malloc(x*n);
-   
+    unsigned char *lastZ=calloc(1,x*n);
+   unsigned char *z=calloc(1,x*n);
+       
    for (j=0; j < y; ++j) {
       static int mapping[] = { 0,1,2,3,4 };
       static int firstmap[] = { 0,1,0,5,6 };
       int *mymap = j ? mapping : firstmap;
       int best = 0, bestval = 0x7fffffff;
-      for (p=0; p < 2; ++p) {
+
+       pixels=O2Image_read_argb8u(image,0,j,pixelBuffer,x);
+       
+       if(pixels==NULL)
+           pixels=pixelBuffer;
+
+       for(i=0;i<x*n;i+=4){
+           z[i+0]=pixels[i/4].r;
+           z[i+1]=pixels[i/4].g;
+           z[i+2]=pixels[i/4].b;
+           z[i+3]=pixels[i/4].a;
+       }
+
+       for (p=0; p < 2; ++p) {
          for (k= p?best:0; k < 5; ++k) {
             int type = mymap[k],est=0;
-            
-            pixels=O2Image_read_argb8u(image,0,j,pixelBuffer,x);
-            
-            if(pixels==NULL)
-             pixels=pixelBuffer;
-
-            for(i=0;i<x*n;i+=4){
-             z[i+0]=pixels[i/4].r;
-             z[i+1]=pixels[i/4].g;
-             z[i+2]=pixels[i/4].b;
-             z[i+3]=pixels[i/4].a;
-            }
                          
             for (i=0; i < n; ++i)
                switch (type) {
                   case 0: line_buffer[i] = z[i]; break;
                   case 1: line_buffer[i] = z[i]; break;
-                  case 2: line_buffer[i] = z[i] - z[i-stride_bytes]; break;
-                  case 3: line_buffer[i] = z[i] - (z[i-stride_bytes]>>1); break;
-                  case 4: line_buffer[i] = (signed char) (z[i] - stbi__paeth(0,z[i-stride_bytes],0)); break;
+                  case 2: line_buffer[i] = z[i] - lastZ[i]; break;
+                  case 3: line_buffer[i] = z[i] - (lastZ[i]>>1); break;
+                  case 4: line_buffer[i] = (signed char) (z[i] - stbi__paeth(0,lastZ[i],0)); break;
                   case 5: line_buffer[i] = z[i]; break;
                   case 6: line_buffer[i] = z[i]; break;
                }
@@ -345,9 +460,9 @@ unsigned char *stbi_write_png_to_mem(O2ImageRef image, int x, int y, int *out_le
                switch (type) {
                   case 0: line_buffer[i] = z[i]; break;
                   case 1: line_buffer[i] = z[i] - z[i-n]; break;
-                  case 2: line_buffer[i] = z[i] - z[i-stride_bytes]; break;
-                  case 3: line_buffer[i] = z[i] - ((z[i-n] + z[i-stride_bytes])>>1); break;
-                  case 4: line_buffer[i] = z[i] - stbi__paeth(z[i-n], z[i-stride_bytes], z[i-stride_bytes-n]); break;
+                  case 2: line_buffer[i] = z[i] - lastZ[i]; break;
+                  case 3: line_buffer[i] = z[i] - ((z[i-n] + lastZ[i])>>1); break;
+                  case 4: line_buffer[i] = z[i] - stbi__paeth(z[i-n], lastZ[i], lastZ[i-n]); break;
                   case 5: line_buffer[i] = z[i] - (z[i-n]>>1); break;
                   case 6: line_buffer[i] = z[i] - stbi__paeth(z[i-n], 0,0); break;
                }
@@ -361,8 +476,13 @@ unsigned char *stbi_write_png_to_mem(O2ImageRef image, int x, int y, int *out_le
       // when we get here, best contains the filter type, and line_buffer contains the data
       filt[j*(x*n+1)] = (unsigned char) best;
       memcpy(filt+j*(x*n+1)+1, line_buffer, x*n);
+       
+       unsigned char *tmp=lastZ;
+       lastZ=z;
+       z=tmp;
    }
    free(z);
+    free(lastZ);
    free(pixelBuffer);
    free(line_buffer);
    
@@ -401,7 +521,6 @@ unsigned char *stbi_write_png_to_mem(O2ImageRef image, int x, int y, int *out_le
 
    return out;
 }
-
 /* Revision history
 
       0.92 (2010-08-01)
@@ -423,5 +542,5 @@ void O2PNGEncoderWriteImage(O2PNGEncoderRef self,O2ImageRef image,CFDictionaryRe
    
    free(png);
 }
-
+#endif
 

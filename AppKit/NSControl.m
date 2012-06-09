@@ -69,6 +69,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
 }
 
 -(void)dealloc {
+
+	// Don't do anything with the cell until we've cleared the bindings!
+	[self _unbindAllBindings];
+	
    [_cell release];
    [super dealloc];
 }

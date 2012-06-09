@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if((self=[super init]))
 	{
 		_cachedValues=[NSMutableDictionary new];
-		_controller = [cont retain];
+		_controller = cont; // Don't retain that or we'll get a retain loop with the controller
       _observationProxies = [NSMutableArray new];
 	}
 	return self;
@@ -49,7 +49,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
    [_cachedKeysForKVO release];
 	[_cachedValues release];
-	[_controller release];
    [_observableSelection release];
    
    if([_observationProxies count]>0)

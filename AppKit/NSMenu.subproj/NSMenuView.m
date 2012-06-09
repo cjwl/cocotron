@@ -102,6 +102,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    } state=STATE_FIRSTMOUSEDOWN;
    NSPoint point=[event locationInWindow];
    NSPoint firstPoint=point;
+	NSTimeInterval firstTimestamp = [event timestamp];
    NSMutableArray *viewStack=[NSMutableArray array];
    BOOL oldAcceptsMouseMovedEvents = [[self window] acceptsMouseMovedEvents];
    [[self window] setAcceptsMouseMovedEvents:YES];
@@ -111,6 +112,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [viewStack addObject:self];
 
    [event retain];
+	
+	BOOL cancelled = NO;
    do {
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
     int                count=[viewStack count];
@@ -128,7 +131,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
      if(NSMouseInRect(checkPoint,[checkView bounds],[checkView isFlipped])){
       unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
-
+		 
       if(itemIndex!=[checkView selectedItemIndex]){
        NSMenuView *branch;
 
@@ -139,49 +142,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        [checkView setSelectedItemIndex:itemIndex];
 
        if((branch=[checkView viewAtSelectedIndexPositionOnScreen:screen])!=nil)
-        [viewStack addObject:branch];
-      }
+		   [viewStack addObject:branch];
+	  }
       break;
-     }
-    } 
+	 } else {
+		 if (checkView == [viewStack lastObject]) {
+			 // The mouse is outside of the top menu - be sure no item is selected anymore
+			 [checkView setSelectedItemIndex:NSNotFound];
+		 }
+	 }
+	}
 
     if(count<0){
      [[viewStack lastObject] setSelectedItemIndex:NSNotFound];
     }
 
     [event release];
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSAppKitDefinedMask];
     [event retain];
-
+	   // We use this special AppKitDefined event to let the menu respond to the app deactivation - it *has*
+	   // to be passed through the event system, unfortunately
+	   if ([event type] == NSAppKitDefined) {
+		   if ([event subtype] == NSApplicationDeactivated) {
+			   cancelled = YES;
+		   }
+	   }
+	   
+	if (cancelled == NO && [event type] != NSAppKitDefined) {
+		   
     point=[event locationInWindow];
-
+	// Don't test for "== 0." - we tend to receive some delta with some .000000... values while the mouse doesn't move
+	BOOL mouseMoved = ([event type] != NSAppKitDefined) && (fabs([event deltaX]) > .001 || fabs([event deltaY]) > .001);
     switch(state){
-     case STATE_FIRSTMOUSEDOWN:
-      item=[[viewStack lastObject] itemAtSelectedIndex];
-
-      if(([viewStack count]==1) && [item isEnabled] && ![item hasSubmenu])
-       state=STATE_EXIT;
-      else if(NSEqualPoints(firstPoint,point)){
-       if([event type]==NSLeftMouseUp)
-        state=STATE_MOUSEUP;
-      }
-      else
-       state=STATE_MOUSEDOWN;
-      break;
-
-     default:
-      item=[[viewStack lastObject] itemAtSelectedIndex];
-      if([event type]==NSLeftMouseUp){
-       if(item == nil || ([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu]))
-        state=STATE_EXIT;
-      }
-      break;
+		case STATE_FIRSTMOUSEDOWN:
+			item=[[viewStack lastObject] itemAtSelectedIndex];
+			
+			if([event type]==NSLeftMouseUp) {
+				// The menu is really active after a mouse up (which means the menu will stay sticky)...
+				if ([event timestamp] - firstTimestamp > .05 && [viewStack count]==1 && [item isEnabled] && ![item hasSubmenu]) {
+					state=STATE_EXIT;
+				} else {
+					state=STATE_MOUSEUP;
+				}
+			} else if([event type]==NSLeftMouseDown || mouseMoved) {
+				// .. Or a mouse down (second click after the sticky menu) or a real move
+				state=STATE_MOUSEDOWN;
+			}
+			break;
+			
+		default:
+			item=[[viewStack lastObject] itemAtSelectedIndex];
+			if([event type]==NSLeftMouseUp){
+				if(item == nil || ([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu]))
+					state=STATE_EXIT;
+			}
+			break;
     }
-
+	   }
     [pool release];
-   }while(state!=STATE_EXIT);
+   }while(cancelled == NO && state!=STATE_EXIT);
    [event release];
-   
+
    if([viewStack count]>0)
     item=[[viewStack lastObject] itemAtSelectedIndex];
 
@@ -201,7 +222,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)mouseDown:(NSEvent *)event {
    BOOL        didAccept=[[self window] acceptsMouseMovedEvents];
    NSMenuItem *item;
-   
+
    [[self window] setAcceptsMouseMovedEvents:YES];
    item=[self trackForEvent:event];
    [[self window] setAcceptsMouseMovedEvents:didAccept];

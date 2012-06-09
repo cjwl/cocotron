@@ -132,6 +132,7 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
     {
       _currentlyTransferring = YES;
       [self setCachedValue:newValue];
+	  newValue=[self reverseTransformedObject:newValue];
       [_destination setValue:newValue forKeyPath:_keyPath];
       _currentlyTransferring = NO;
     }

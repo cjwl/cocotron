@@ -5,7 +5,9 @@
 #import <Onyx2D/O2ImageSource.h>
 #import <stdbool.h>
 
-typedef struct _O2ImageDestination *O2ImageDestinationRef;
+@class O2ImageDestination;
+
+typedef O2ImageDestination *O2ImageDestinationRef;
 
 const CFStringRef kO2ImageDestinationLossyCompressionQuality;
 const CFStringRef kO2ImageDestinationBackgroundColor;

@@ -150,10 +150,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
-     _currentEditor=[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-
-     [_currentEditor retain];
+     NSText* editor =[[self window] fieldEditor:YES forObject:self];
+     _currentEditor=[[cell setUpFieldEditorAttributes: editor] retain];
     }
 
     [cell selectWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self start:range.location length:range.length];
@@ -212,9 +210,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else {
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
-     _currentEditor=[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[cell setUpFieldEditorAttributes:_currentEditor];
-     [_currentEditor retain];
+     NSText* editor =[[self window] fieldEditor:YES forObject:self];
+     _currentEditor=[[cell setUpFieldEditorAttributes: editor] retain];
     }
 
     [cell editWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self event:event];
@@ -251,13 +248,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setStringValue:(NSString *)value {
-  [super setStringValue:value];
-  [_currentEditor setString:[self stringValue]];
+    NSRange selectedRange=[_currentEditor selectedRange];
+    BOOL isEntireString=NSEqualRanges(selectedRange, NSMakeRange(0, [[_currentEditor string] length]));
+    
+    [super setStringValue:value];
+    [_currentEditor setString:[self stringValue]];
+    NSRange entireString=NSMakeRange(0, [[_currentEditor string] length]);
+    
+    if(isEntireString) {
+        // NSTextField will re-select entire string on a setString: if the previous value is completely selected
+        [_currentEditor setSelectedRange:entireString];
+    }
+    else {
+        // otherwise it will re-select what it can
+        selectedRange=NSIntersectionRange(selectedRange, entireString);
+        
+        if(selectedRange.length==0) // 0 on intersection is undefined location, so we have to set it
+            selectedRange.location=0;
+        [_currentEditor setSelectedRange:entireString]; 
+    }
 }
 
 -(void)setFont:(NSFont *)font {
-  [super setFont:font];
-  [_currentEditor setFont:[self font]];
+	// Don't do extra work if we don't need to...
+	if (font != [self font]) {
+		[super setFont:font];
+		[_currentEditor setFont:[self font]];
+	}
 }
 
 -(void)setAlignment:(NSTextAlignment)alignment {

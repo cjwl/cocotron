@@ -581,15 +581,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     for(;_location<length;_location++) {
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
-        unichar unicode=[_string characterAtIndex:_location];
         NSString    *subStr = [_string substringFromIndex:_location];
 
         if([subStr length] < [string length]) {
             _location = oldLocation;
             [pool drain];
             return NO;
-        }
-        if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
+        } 
+		
+		// Skip any leading char from the skip set
+        unichar unicode=[_string characterAtIndex:_location];
+		if (scanStarted == NO && [_skipSet characterIsMember:unicode]) {
+                 [pool drain];
+           continue;
+	    } 
+		
+		if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
             if (scanStarted) {
                 if (stringp != NULL)
                     *stringp = [[NSString alloc] initWithCharacters:result length:resultLength];
@@ -611,10 +618,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     return YES;
                 }
             }
-        }
-        else if ([_skipSet characterIsMember:unicode] && scanStarted == NO) {
-            [pool drain];
-            continue;
         } else {
             scanStarted = YES;
             result[resultLength++] = unicode;

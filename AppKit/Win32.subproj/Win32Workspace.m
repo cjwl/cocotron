@@ -187,7 +187,7 @@ static NSImageRep *imageRepForIcon(HICON icon) {
 			CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
 			CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
 			CGColorSpaceRelease(colorspace);
-			// Contexts created on the Win32 plateform are supposed to have an "dc" method
+			// Contexts created on the Win32 platform are supposed to have an "dc" method
 			HDC dc = [(id)ctx dc];
 			if (dc) {
 				DrawIcon(dc, 0, 0, icon);
@@ -212,7 +212,7 @@ static NSImageRep *imageRepForImageListAndIndex(HIMAGELIST imageListH, int index
 			CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
 			CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
 			CGColorSpaceRelease(colorspace);
-			// Contexts created on the Win32 plateform are supposed to have an "dc" method
+			// Contexts created on the Win32 platform are supposed to have an "dc" method
 			HDC dc = [(id)ctx dc];
 			if (dc) {
 				ImageList_Draw(imageListH, index, dc, 0, 0, ILD_TRANSPARENT);

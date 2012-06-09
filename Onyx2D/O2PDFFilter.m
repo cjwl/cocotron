@@ -79,11 +79,13 @@ NSData *O2PDFFilterWithName(const char *name,NSData *data,O2PDFDictionary *param
       bytesPerRow=(((colors*bitsPerComponent)*columns)+7)/8;
       rowLength=bytesPerRow+1;
       numberOfRows=length/rowLength;
-      
+
+#if 0
       if((length%rowLength)!=0)
        ;//NSLog(@"length mod rowLength=%d",length%rowLength);
         
-       char *change=__builtin_alloca(rowLength);
+#endif
+      char *change=__builtin_alloca(rowLength);
        
       for(row=0;row<numberOfRows;row++){
        int i,filter=bytes[0];

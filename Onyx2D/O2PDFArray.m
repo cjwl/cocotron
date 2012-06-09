@@ -136,7 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [object checkForType:kO2PDFObjectTypeReal value:valuep];
 }
 
--(BOOL)getNameAtIndex:(unsigned)index value:(char **)namep {
+-(BOOL)getNameAtIndex:(unsigned)index value:(const char **)namep {
    O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kO2PDFObjectTypeName value:namep];

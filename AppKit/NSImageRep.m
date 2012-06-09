@@ -21,7 +21,11 @@ static NSMutableArray *_registeredClasses=nil;
    if(self==[NSImageRep class]){
     _registeredClasses=[NSMutableArray new];
     [_registeredClasses addObject:[NSBitmapImageRep class]];
-    [_registeredClasses addObject:[NSPDFImageRep class]];
+/*
+ * // PDF is not ready for primetime
+ * [_registeredClasses addObject:[NSPDFImageRep class]];
+ */
+	   
    }
 }
 
@@ -124,9 +128,22 @@ static NSMutableArray *_registeredClasses=nil;
 }
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
+	// Try to guess which class to use from the path extension
    NSString *type=[path pathExtension];
    Class     class=[self imageRepClassForFileType:type];
-   
+	if (class == nil) {
+		// Else use the content of the file to guess the class to use
+		NSData *data=[NSData dataWithContentsOfFile:path];
+		
+		if(data==nil) {
+			return nil;
+		}
+		
+		if((self==[NSImageRep class])){    
+			class=[self imageRepClassForData:data];
+		}
+		return [class imageRepsWithData:data];
+	}
    return [class imageRepsWithContentsOfFile:path];
 }
 

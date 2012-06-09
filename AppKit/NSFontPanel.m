@@ -67,6 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_sizeMatrix renewRows:0 columns:1];
    [_sizeMatrix setDoubleAction:@selector(set:)];
    [self buildFamilyMatrix];
+   [[self fieldEditor: YES forObject: self] setUsesFontPanel: NO];
 }
 
 +(BOOL)sharedFontPanelExists {
@@ -173,11 +174,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)buildSampleTextField {
-   NSString *name=[self selectedFontName];
+   NSFont *font=[self selectedFont];
    float     pointSize=[self selectedPointSize];
 
-   [_sampleTextField setStringValue:[name stringByAppendingFormat:@" %g pt",pointSize]];
-   [_sampleTextField setFont:[self selectedFont]];
+   [_sampleTextField setStringValue:[[font displayName] stringByAppendingFormat:@" %g pt",pointSize]];
+   [_sampleTextField setFont:font];
 }
 
 -(void)setPanelFont:(NSFont *)font isMultiple:(BOOL)isMultiple {

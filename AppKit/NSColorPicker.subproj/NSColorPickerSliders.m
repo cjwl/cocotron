@@ -38,12 +38,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return self;
 }
 
-- (void)typeChanged:(id)sender
+- (void)_syncSlidersToNewColor
 {
-    NSView *newView = nil;
     NSColor *color = [[self colorPanel] color];
 	
-    switch ([[sender selectedItem] tag]) {
+    switch ([[typeButton selectedItem] tag]) {
         case NSGrayModeColorPanel: {
             float gray, alpha;
 			
@@ -52,7 +51,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			
             [greyscaleSlider setIntValue:gray*100];
             [greyscaleTextField setIntValue:gray*100];
-            newView = greyscaleSubview;
             break;
         }
             
@@ -69,7 +67,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             [[rgbTextFieldMatrix cellAtRow:1 column:0] setIntValue:green*255];
             [[rgbTextFieldMatrix cellAtRow:2 column:0] setIntValue:blue*255];
             
-            newView = rgbSubview;
             break;
         }
 			
@@ -88,7 +85,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             [[cmykTextFieldMatrix cellAtRow:2 column:0] setIntValue:yellow*100];
             [[cmykTextFieldMatrix cellAtRow:3 column:0] setIntValue:black*100];
 			
-            newView = cmykSubview;
             break;
         }
 			
@@ -105,6 +101,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             [[hsbTextFieldMatrix cellAtRow:1 column:0] setIntValue:saturation*100];
             [[hsbTextFieldMatrix cellAtRow:2 column:0] setIntValue:brightness*100];
             
+            break;
+        }
+            
+        default:
+            return;
+    }
+}
+
+- (void)typeChanged:(id)sender
+{
+    NSView *newView = nil;
+
+	[self _syncSlidersToNewColor];
+	
+    switch ([[sender selectedItem] tag]) {
+        case NSGrayModeColorPanel: {
+            newView = greyscaleSubview;
+            break;
+        }
+            
+        case NSRGBModeColorPanel: {
+            newView = rgbSubview;
+            break;
+        }
+			
+        case NSCMYKModeColorPanel: {
+            newView = cmykSubview;
+            break;
+        }
+			
+        case NSHSBModeColorPanel: {
             newView = hsbSubview;
             break;
         }
@@ -123,8 +150,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         [sliderSubview addSubview:newView];
         currentView = [newView retain];
     }
-	
+
+	NSColor *color = [[self colorPanel] color];
+
     [[self colorPanel] setColor:color];
+}
+
+- (void)setColor:(NSColor *)color
+{
+	[self _syncSlidersToNewColor];
 }
 
 // doesn't matter who sends these actions, the sliders or the textfields.

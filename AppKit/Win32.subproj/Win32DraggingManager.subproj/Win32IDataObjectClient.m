@@ -25,7 +25,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    struct IDataObject *data;
 
    if(OleGetClipboard(&data)!=S_OK){
+#if DEBUG
     NSLog(@"OleGetClipboard(&data) failed");
+#endif
     [self dealloc];
     return nil;
    }
@@ -46,7 +48,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    struct IEnumFORMATETC *enumerator;
 
    if(_dataObject->lpVtbl->EnumFormatEtc(_dataObject,DATADIR_GET,&enumerator)!=S_OK){
+#if DEBUG
     NSLog(@"EnumFormatEtc failed");
+#endif
     return nil;
    }
 
@@ -178,7 +182,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     formatEtc.cfFormat=CF_HDROP;
    else {
     if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
-     NSLog(@"RegisterClipboardFormat failed");
+#if DEBUG
+     NSLog(@"RegisterClipboardFormat failed for type: %@", type);
+#endif
      return nil;
     }
    }
@@ -189,7 +195,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    formatEtc.tymed=TYMED_HGLOBAL|TYMED_ISTREAM;
 
    if((_dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc))!=S_OK){
-    NSLog(@"QueryGetData failed");
+#if DEBUG
+    NSLog(@"QueryGetData failed for type: %@", type);
+#endif
     return nil;
    }
 

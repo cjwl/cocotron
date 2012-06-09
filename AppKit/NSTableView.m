@@ -741,9 +741,8 @@ _dataSource);
       [_editingCell setBackgroundColor:_backgroundColor];
       
       NSText *oldEditor = _currentEditor;
-      _currentEditor=[[self window] fieldEditor:YES forObject:self];
-      _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
-      [_currentEditor retain];
+      NSText* editor =[[self window] fieldEditor:YES forObject:self];
+      _currentEditor=[[_editingCell setUpFieldEditorAttributes: editor] retain];
       [oldEditor release];
       
       if (select == YES)

@@ -14,38 +14,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSProxy.h>
 #import <Foundation/NSRaise.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "forwarding.h"
 
 
-BOOL NSObjectIsKindOfClass(id object, Class kindOf)
-{
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-    Class class = object_getClass(object);
-#else
-    struct objc_class *class = object->isa;
-#endif
+// From Apple docs:
+// Returns a Boolean value that indicates whether the receiver is an instance of given class
+// or an instance of any class that inherits from that class.
 
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-    for (;class != 0; class = class_getSuperclass(class)) {
-#else
-    for (;class != 0; class = class->super_class) {
-#endif
-        if (kindOf == class) {
-            return YES;
-        }
-#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-        if (object_getClass(object_getClass(class)) == class) {
-#else
-        if (class->isa->isa == class) {
-#endif
-            break;
-        }
-    }
+BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
+   struct objc_class *class=object->isa;
 
-    return NO;
+	while (object_getClass(object_getClass(class)) != class) {
+
+		if(kindOf == class) {
+			return YES;
+		}
+		
+		class = class_getSuperclass(class);
+	}
+	
+   return NO;
 }
 
 
@@ -85,18 +77,23 @@ BOOL NSObjectIsKindOfClass(id object, Class kindOf)
    return self;
 }
 
+// From Apple docs:
+// Returns a Boolean value that indicates whether the receiving class is a subclass of, or identical to, a given class.
+
 +(BOOL)isSubclassOfClass:(Class)cls {
-    Class       myClass;
-    
-    myClass = (Class)self;
-    while (myClass != Nil) {
-        if (myClass == cls) {
-            return YES;
-        }
-        myClass = [myClass superclass];
-    }
-    
-    return NO;
+   Class check=self;
+   
+   do {
+	   
+    if(check==cls)
+     return YES;
+
+	check=[check superclass];
+
+   }while(check != [NSObject class] &&
+		  check != [NSProxy class]);
+   
+   return NO;
 }
 
 +(BOOL)instancesRespondToSelector:(SEL)selector {

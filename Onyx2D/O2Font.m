@@ -50,6 +50,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    O2InvalidAbstractInvocation();
 }
 
+// Font name mapping : platform specific font class may override
+// these methods in a category O2Font(<platformname>) if some
+// mapping is needed between the font postscript names and the
+// native names used by the platform
++ (NSString *)nativeFontNameForPostscriptName:(NSString *)name
+{
+	return name;
+}
+
++ (NSString *)postscriptNameForNativeName:(NSString *)name
+{
+	return name;
+}
+
++ (NSString *)postscriptNameForDisplayName:(NSString *)name
+{
+	return name;
+}
+
++ (NSString *)displayNameForPostscriptName:(NSString *)name
+{
+	return name;
+}
+
 NSString *O2MacRomanGlyphNames[256]={
 @".notdef",
 @".notdef",
@@ -316,7 +340,7 @@ NSString *O2MacRomanGlyphNames[256]={
     _MacRomanEncoding=NSZoneMalloc(NULL,sizeof(O2Glyph)*256);
     
     for(i=0;i<256;i++)
-     _MacRomanEncoding[i]=O2FontGetGlyphWithGlyphName(self,O2MacRomanGlyphNames[i]);
+     _MacRomanEncoding[i]=O2FontGetGlyphWithGlyphName(self,(CFStringRef)O2MacRomanGlyphNames[i]);
    }
    return _MacRomanEncoding;
 }
@@ -421,8 +445,8 @@ BOOL O2FontGetGlyphAdvances(O2FontRef self,const O2Glyph *glyphs,size_t count,in
    return YES;
 }
 
-O2Glyph   O2FontGetGlyphWithGlyphName(O2FontRef self,NSString *name) {
-   return [self glyphWithGlyphName:name];
+O2Glyph   O2FontGetGlyphWithGlyphName(O2FontRef self,CFStringRef name) {
+   return [self glyphWithGlyphName:(NSString *)name];
 }
 
 NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,O2Glyph glyph) {
@@ -433,7 +457,7 @@ NSData   *O2FontCopyTableForTag(O2FontRef self,uint32_t tag) {
    return [self copyTableForTag:(uint32_t)tag];
 }
 
-uint16_t O2FontUnicodeForGlyphName(NSString *name){
+uint16_t O2FontUnicodeForGlyphName(CFStringRef name){
    struct {
     NSString *name;
     unichar   code;
@@ -4746,10 +4770,10 @@ uint16_t O2FontUnicodeForGlyphName(NSString *name){
    int i;
    
    for(i=0;entries[i].name!=nil;i++)
-    if([entries[i].name isEqualToString:name])
+    if([entries[i].name isEqualToString:(NSString *)name])
      return entries[i].code;
    
-   NSLog(@"%s %d unable to map glyph name %@",name);
+   NSLog(@"%s %d unable to map glyph name %@",__FILE__,__LINE__,name);
    return 0;
 }
 

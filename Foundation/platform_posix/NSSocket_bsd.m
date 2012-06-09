@@ -91,13 +91,18 @@ static inline void byteZero(void *vsrc,size_t size){
    [self dealloc];
 }
 
--initConnectedToSocket:(NSSocket **)otherX {
-   int pipes[2];
-   pipe(pipes);
-   
-   *otherX=[[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
 
-   return [self initWithDescriptor:pipes[1]];
+- initConnectedToSocket: (NSSocket **)otherX
+{
+    int pipes[2];
+    if (pipe(pipes)) {
+        *otherX = [[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
+        return [self initWithDescriptor:pipes[1]];
+    } else {
+        NSLog(@"NSSocket: could not create pipe: (%d) %s", errno, strerror(errno));
+        [self release];
+        return nil;
+    }
 }
 
 
@@ -120,7 +125,7 @@ static inline void byteZero(void *vsrc,size_t size){
 -(BOOL)isEqual:other {
    if(![other isKindOfClass:[NSSocket_bsd class]])
     return NO;
-    
+
    return (_descriptor==((NSSocket_bsd *)other)->_descriptor)?YES:NO;
 }
 
@@ -143,25 +148,25 @@ static inline void byteZero(void *vsrc,size_t size){
    NSArray *addresses=[host addresses];
    NSInteger      i,count=[addresses count];
    NSError *error=nil;
-   
+
    *immediate=NO;
 
    if(!block){
     if((error=[self setOperationWouldBlock:NO])!=nil)
      return error;
    }
-   
+
    for(i=0;i<count;i++){
     struct sockaddr_in try;
     NSString     *stringAddress=[addresses objectAtIndex:i];
     char          cString[[stringAddress cStringLength]+1];
     in_addr_t     address;
-    
+
     [stringAddress getCString:cString];
     if((address=inet_addr(cString))==-1){
  // FIX
     }
-    
+
     byteZero(&try,sizeof(struct sockaddr_in));
     try.sin_addr.s_addr=address;
     try.sin_family=AF_INET;
@@ -189,7 +194,7 @@ static inline void byteZero(void *vsrc,size_t size){
 
    if(error==nil)
     error=[NSError errorWithDomain:NSPOSIXErrorDomain code:EHOSTUNREACH userInfo:nil];
-    
+
    return error;
 }
 
@@ -218,13 +223,13 @@ static inline void byteZero(void *vsrc,size_t size){
 -(NSSocket *)acceptWithError:(NSError **)errorp {
    struct sockaddr addr;
    socklen_t       addrlen=(socklen_t)sizeof(struct sockaddr);
-   int             newSocket; 
+   int             newSocket;
    NSError        *error;
-   
+
    error=[self errorForReturnValue:newSocket=accept(_descriptor,&addr,&addrlen)];
    if(errorp!=NULL)
     *errorp=error;
-    
+
    return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];
 }
 
@@ -235,6 +240,6 @@ static inline void byteZero(void *vsrc,size_t size){
 @end
 
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface) {   
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface) {
    return nil;
 }

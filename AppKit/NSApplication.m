@@ -515,8 +515,9 @@ id NSApp=nil;
 #if 1
    if([self isActive])
     [_windows makeObjectsPerformSelector:@selector(_showForActivation)];
-   else
+   else {
     [_windows makeObjectsPerformSelector:@selector(_hideForDeactivation)];
+   }
 #endif
 }
 
@@ -809,6 +810,7 @@ id NSApp=nil;
         
         NSWindow          *window=[event window];
         
+        
         // in theory this could get weird, but all we want is the ESC-cancel keybinding, afaik NSApp doesn't respond to any other doCommandBySelectors...
         if([event type]==NSKeyDown && window == [session modalWindow])
             [self interpretKeyEvents:[NSArray arrayWithObject:event]];
@@ -818,26 +820,44 @@ id NSApp=nil;
         else if([event type]==NSLeftMouseDown)
             [[session modalWindow] makeKeyAndOrderFront:self];
         else {
-            // We need to preserve events which are not processed in the modal loop and requeue them.
-            // Ideally we would never dequeue them, we need a nextEventMatchingMask: which takes a set of windows too.
-            [savedEvents addObject: event];
+            // We need to preserve some events which are not processed in the modal loop and requeue them.
+            // The particular case we need to handle is mouse down. run modal. then actually receive the mouse up when the modal is done.
+            // So we know this works in Cocoa, save the mouse up here.
+            // We don't want to save mouse moved or such.
+            // There is kind of adhoc, probably a better way to do it, find out which combinations should work (e.g. mouse enter, do we get mouse exit?) 
+            if([[session unprocessedEvents] count]==0){
+                
+                switch([event type]){
+                        
+                    case NSLeftMouseUp:
+                    case NSRightMouseUp:
+                        [session addUnprocessedEvent: event];
+                        break;
+                        
+                    default:
+                        // don't save
+                        break;
+                }
+            }
         }
         [pool release];
     }
     
-    for(NSEvent *requeue in savedEvents){
-        [self postEvent:requeue atStart:YES];
-    }
+
     
     return [session stopCode];
 }
 
 -(void)endModalSession:(NSModalSession)session {
-   if(session!=[_modalStack lastObject])   
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] modal session %@ is not the current one %@",isa,sel_getName(_cmd),session,[_modalStack lastObject]];
-
-   [[session modalWindow] _showMenuViewIfNeeded];
-   [_modalStack removeLastObject];
+    if(session!=[_modalStack lastObject])   
+        [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] modal session %@ is not the current one %@",isa,sel_getName(_cmd),session,[_modalStack lastObject]];
+    
+    for(NSEvent *requeue in [session unprocessedEvents]){
+        [self postEvent:requeue atStart:YES];
+    }
+    
+    [[session modalWindow] _showMenuViewIfNeeded];
+    [_modalStack removeLastObject];
 }
 
 -(void)stopModalWithCode:(int)code {
@@ -1216,13 +1236,22 @@ standardAboutPanel] retain];
 
 -(void)_windowWillBecomeDeactive:(NSWindow *)window {
    if(![self isActiveExcludingWindow:window]){
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillResignActiveNotification object:self];
+	   [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillResignActiveNotification object:self];
    }
 }
 
 -(void)_windowDidBecomeDeactive:(NSWindow *)window {
    if(![self isActive]){
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidResignActiveNotification object:self];
+	   
+	   // Exposed menus are running tight event tracking loops and would remain visible when the app deactivates (making
+	   // the UI less than community minded) - unfortunately because they're in these tracking loops they're waiting
+	   // on events and even though they could receive the notification sent here they can't deal with it until an event is
+	   // received to let them proceed. This special event type was added to help them get unstuck and remove the menu on
+	   // deactivation
+	   NSEvent* appKitEvent = [NSEvent otherEventWithType: NSAppKitDefined location: NSZeroPoint modifierFlags: 0 timestamp: 0 windowNumber: 0 context: nil subtype: NSApplicationDeactivated data1: 0 data2: 0];
+	   [self postEvent: appKitEvent atStart: YES];
+	   
+	   [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidResignActiveNotification object:self];
    }
 }
   //private method called when the application is reopened

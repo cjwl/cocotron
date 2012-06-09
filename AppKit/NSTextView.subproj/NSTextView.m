@@ -115,6 +115,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _isEditable=[sharedData isEditable];
     _isSelectable=[sharedData isSelectable];
     _isRichText=[sharedData isRichText];
+	   
     _backgroundColor=[[sharedData backgroundColor] retain];
     _drawsBackground=[sharedData drawsBackground];
     _font=[[NSFont userFontOfSize:0] retain];
@@ -123,6 +124,8 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _textAlignment=[[sharedData defaultParagraphStyle] alignment];
     _insertionPointColor=[[sharedData insertionColor] retain];
 
+	_usesFontPanel=YES;
+	   
     _isFieldEditor=NO;
     _maxSize=[self bounds].size;
     _minSize=NSMakeSize(0,0);
@@ -170,6 +173,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _isEditable=YES;
    _isSelectable=YES;
    _isRichText=YES;
+	_usesFontPanel=YES;
    _backgroundColor=[[NSColor whiteColor] copy];
    _drawsBackground=YES;
    _font=[[NSFont userFontOfSize:0] retain];
@@ -353,6 +357,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [[self enclosingScrollView] setRulersVisible:_rulerVisible];
 
     [self updateRuler];    
+}
+
+-(void)setUsesFontPanel:(BOOL)flag {
+	_usesFontPanel = flag;
+}
+
+-(BOOL)usesFontPanel
+{
+	return _usesFontPanel;
 }
 
 -(void)setAllowsUndo:(BOOL)flag {
@@ -1959,6 +1972,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 - (void)updateFontPanel
 {
+	if ([self usesFontPanel] == NO) {
+		return;
+	}
+	
 	NSRange selectedRange = [self selectedRange];
 	if (selectedRange.length == 0) {
 		// Use the font from the typing attributes
@@ -2314,17 +2331,20 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if(![self isVerticallyResizable])
     size.height=[self frame].size.height;
    else {
-
-    size.height=MAX([self frame].size.height,size.height);
-    
-    NSView *clipView=(NSClipView *)[self superview];
-    
-    if([clipView isKindOfClass:[NSClipView class]]){
-     if(size.height<[clipView bounds].size.height)
-      size.height=[clipView bounds].size.height;
-     if(size.width<[clipView bounds].size.width)
-      size.width=[clipView bounds].size.width;
-    }
+       
+       NSClipView *clipView=[self superview];
+       
+       if([clipView isKindOfClass:[NSClipView class]]){   
+           // if we're in a clip view we should at be at least as big as the clip view
+           if(size.height<[clipView bounds].size.height)
+               size.height=[clipView bounds].size.height;
+           if(size.width<[clipView bounds].size.width)
+               size.width=[clipView bounds].size.width;
+       }
+       else {
+           // we should at least be our frame size if we're not in a clip view
+           size.height=MAX([self frame].size.height,size.height);
+       }
    }
    if([self isHorizontallyResizable] || [self isVerticallyResizable])
     [self setFrameSize:size];
@@ -2793,6 +2813,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)showGuessPanel:sender {
+	[self moveToBeginningOfDocument: sender];
    [[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront: self];
 }
 
@@ -2801,7 +2822,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    NSUInteger start, end;
 
         // TODO, truncate invalidated range to string size if needed
-        
+
+	// Collapse all the following attribute changes into a single update to the textStorage
+	[[self textStorage] beginEditing];
+	
    // round range to nearest paragraphs
 
    [string getParagraphStart:&start end:&end contentsEnd:NULL forRange:invalidatedRange];
@@ -2826,6 +2850,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
       [self setSpellingState:NSSpellingStateSpellingFlag range:range];
     }
    }
+	[[self textStorage] endEditing];
 }
 
 -(void)_continuousSpellCheck {
@@ -2835,6 +2860,19 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)checkSpelling:sender {
    NSString *string=[self string];
    NSRange selection=[self selectedRange];
+
+	// If we're at the end start over again
+	if (NSMaxRange(selection) == [string length]) {
+		[self moveToBeginningOfDocument: sender];
+		selection=[self selectedRange];
+	}
+	else if (selection.length < [string length]) {
+		selection.location += selection.length;
+		if (NSMaxRange(selection) > [string length]) {
+			selection.length = [string length] - selection.location;
+		}
+	}
+	
    NSRange range=NSMakeRange(selection.location,[string length]-selection.location);
    
    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];

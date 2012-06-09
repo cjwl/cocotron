@@ -57,8 +57,8 @@ O2DataProviderRef O2DataProviderCreateWithData(void *info,const void *data,size_
    return [[O2DataProvider alloc] initWithBytes:data length:size];
 }
 
-O2DataProviderRef O2DataProviderCreateWithCFData(NSData *data) {
-   return [[O2DataProvider alloc] initWithData:data];
+O2DataProviderRef O2DataProviderCreateWithCFData(CFDataRef data) {
+   return [[O2DataProvider alloc] initWithData:(NSData *)data];
 }
 
 O2DataProviderRef O2DataProviderCreateWithURL(NSURL *url) {

@@ -14,32 +14,32 @@ CFArrayRef CGImageDestinationCopyTypeIdentifiers(void) {
 }
 
 CGImageDestinationRef CGImageDestinationCreateWithData(CFMutableDataRef data,CFStringRef type,size_t imageCount,CFDictionaryRef options) {
-   return O2ImageDestinationCreateWithData(data,type,imageCount,options);
+   return (CGImageDestinationRef)O2ImageDestinationCreateWithData(data,type,imageCount,options);
 }
 
 CGImageDestinationRef CGImageDestinationCreateWithDataConsumer(CGDataConsumerRef dataConsumer,CFStringRef type,size_t imageCount,CFDictionaryRef options) {
-   return O2ImageDestinationCreateWithDataConsumer(dataConsumer,type,imageCount,options);
+   return (CGImageDestinationRef)O2ImageDestinationCreateWithDataConsumer(dataConsumer,type,imageCount,options);
 }
 
 CGImageDestinationRef CGImageDestinationCreateWithURL(CFURLRef url,CFStringRef type,size_t imageCount,CFDictionaryRef options) {
-   return O2ImageDestinationCreateWithURL(url,type,imageCount,options);
+   return (CGImageDestinationRef)O2ImageDestinationCreateWithURL(url,type,imageCount,options);
 }
 
 void CGImageDestinationSetProperties(CGImageDestinationRef self,CFDictionaryRef properties) {
-   O2ImageDestinationSetProperties(self,properties);
+   O2ImageDestinationSetProperties((O2ImageDestinationRef)self,properties);
 }
 
 void CGImageDestinationAddImage(CGImageDestinationRef self,CGImageRef image,CFDictionaryRef properties) {
-   O2ImageDestinationAddImage(self,image,properties);
+   O2ImageDestinationAddImage((O2ImageDestinationRef)self,image,properties);
 }
 
 void CGImageDestinationAddImageFromSource(CGImageDestinationRef self,CGImageSourceRef imageSource,size_t index,CFDictionaryRef properties) {
-   O2ImageDestinationAddImageFromSource(self,imageSource,index,properties);
+   O2ImageDestinationAddImageFromSource((O2ImageDestinationRef)self,imageSource,index,properties);
 }
 
 
 bool CGImageDestinationFinalize(CGImageDestinationRef self) {
-   return O2ImageDestinationFinalize(self);
+   return O2ImageDestinationFinalize((O2ImageDestinationRef)self);
 }
 
 

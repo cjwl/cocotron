@@ -24,11 +24,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32EventInputSource.h"
 
 #import "opengl_dll.h"
+#define WM_MSG_DEBUGGING 0
 
 @interface Win32Window(ForwardRefs)
 -(void)setupPixelFormat;
 -(void)flushBuffer:(BOOL)reloadBackingTexture only:(CGLContextObj)onlyContext;
 @end
+
+#define WM_MSG_DEBUGGING 0
 
 @implementation Win32Window
 
@@ -220,7 +223,9 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    
    _styleMask=styleMask;
    _isPanel=isPanel;
-   
+
+	_ignoreMinMaxMessage=YES; // creating a window can cause bogus GETMINMAX messages to be sent
+	
    [self createWindowHandle];
 
    _cgContext=nil;
@@ -492,7 +497,11 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
 }
 
 -(void)makeKey {
-   SetActiveWindow(_handle);
+	// SetForegroundWindow() seems to handle all kinds of windows. SetActiveWindow() seemed
+	// to leave secondary windows deactivated meaning the user had to click on a primary window
+	// first and then the secondary window in order to reset the focus. This makes it all
+	// happen as expected.
+	SetForegroundWindow(_handle);
 }
 
 -(void)makeMain {
@@ -1182,85 +1191,49 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    FlashWindow(_handle,TRUE);
 }
 
--(CGRect)queryFrame {
-   RECT rect;
-   
-   if(GetWindowRect(_handle,&rect)==0){
-    NSLog(@"GetWindowRect failed, handle=%p, %s %d",_handle,__FILE__,__LINE__);
+// According the Microsoft Docs and general web opinion handling window size and move operations
+// via WM_WINDOWPOSCHANGED is much more efficient than WM_SIZE and WM_MOVE. Implementing a WM_WINDOWPOSCHANGED
+// handler means that WM_SIZE and WM_MOVE are no longer delivered.
+- (int)WM_WINDOWPOSCHANGED_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
     
-    return CGRectMake(0,0,0,0);
-   }
-   
-   return convertFrameFromWin32ScreenCoordinates(CGRectFromRECT(rect));
-}
-
--(void)_GetWindowRectDidSize:(BOOL)didSize
-{
-	CGRect frame=[self queryFrame];
-	// Windows can come back with some crazy values for origin and
-	// size so we need to guard ourselves against them.
-	if (frame.origin.x <= -32000 || frame.origin.y <= -32000) {
-		frame.origin = [_delegate frame].origin;
-	}
-	if (didSize) {
-		NSSize minSize = [_delegate minSize];
-		NSSize maxSize = [_delegate maxSize];
-		if (frame.size.width < minSize.width) {
-			frame.size.width = minSize.width;
-		}
-		if (frame.size.width > maxSize.width) {
-			frame.size.width = maxSize.width;
-		}
-		if (frame.size.height < minSize.height) {
-			frame.size.height = minSize.height;
-		}
-		if (frame.size.height > maxSize.height) {
-			frame.size.height = maxSize.height;
-		}
-	}
-	[_delegate platformWindow:self frameChanged:frame didSize:didSize];
-}
-
--(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam
-{
-	CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_WINDOWPOSCHANGED_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
 	
-	if (contentSize.width > 0 && contentSize.height > 0){
-		NSSize checkSize=[self queryFrame].size;
-		
-		if(NSEqualSizes(checkSize,_frame.size))
-			return 0;
-		
-		[self invalidateContextsWithNewSize:checkSize];
-		
-		[self _GetWindowRectDidSize:YES];
-		
-	}
+	WINDOWPOS* pWP = (WINDOWPOS*)lParam;
 	
-	switch(_backingType){
-			
-		case CGSBackingStoreRetained:
-		case CGSBackingStoreNonretained:
-			break;
-			
-		case CGSBackingStoreBuffered:
-			[_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
-			break;
-	}
+    if (!(pWP->flags & SWP_NOMOVE)) {
+		[_delegate platformWindowWillMove:self];
+		CGRect frame=_frame;
+		frame.origin = CGPointMake(pWP->x, pWP->y);
+		frame = convertFrameFromWin32ScreenCoordinates(frame);
+		[_delegate platformWindow:self frameChanged:frame didSize:NO];
+		[_delegate platformWindowDidMove:self];
+    }
+    if (!(pWP->flags & SWP_NOSIZE)) {
+		// Sizing can of course change the origin as well as the size - so handle them all
+		CGRect frame=_frame;
+		frame.origin = CGPointMake(pWP->x, pWP->y);
+		frame.size = CGSizeMake(pWP->cx, pWP->cy);
+		frame = convertFrameFromWin32ScreenCoordinates(frame);
+		[self invalidateContextsWithNewSize: frame.size];
+		[_delegate platformWindow:self frameChanged:frame didSize:YES];
+        
+		_sentBeginSizing=NO;
+        
+		switch(_backingType){
+				
+			case CGSBackingStoreRetained:
+			case CGSBackingStoreNonretained:
+				break;
+				
+			case CGSBackingStoreBuffered:
+				[_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
+				break;
+		}
+    }
+	
 	return 0;
-}
-
--(int)WM_MOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   NSPoint checkOrigin=[self queryFrame].origin;
-    
-   if(NSEqualPoints(checkOrigin,_frame.origin))
-    return 0;
-
-    [_delegate platformWindowWillMove:self];
-   [self _GetWindowRectDidSize:NO];
-   [_delegate platformWindowDidMove:self];
-
-   return 0;
 }
 
 -(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
@@ -1269,7 +1242,12 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(int)WM_PAINT_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {    
-   PAINTSTRUCT paintStruct;
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_PAINT_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
+
+	PAINTSTRUCT paintStruct;
+
    RECT        updateRECT;
 //   CGRect      displayRect;
 
@@ -1297,47 +1275,120 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(int)WM_CLOSE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_CLOSE_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
+	
     if(_styleMask&NSClosableWindowMask)
         [_delegate platformWindowWillClose:self];
-        
-    return 0;
+   return 0;
+}
+
+-(int)WM_SETFOCUS_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_SETFOCUS_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
+
+	[_delegate platformWindowActivated:self displayIfNeeded:!_disableDisplay];
+	return 0;
 }
 
 -(int)WM_ACTIVATE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   if(HIWORD(wParam)){ // minimized
-    if(LOWORD(wParam)){
-     [_delegate platformWindowDeminiaturized:self];
-    }
-    else {
-     [_delegate platformWindowMiniaturized:self];
-    }
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_ACTIVATE_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_ACTIVATE_DEBUGGING 0
+#endif
+
+	BOOL isMinimized = HIWORD(wParam) != 0;
+	BOOL activated = LOWORD(wParam) != 0;
+	
+#if WM_ACTIVATE_DEBUGGING
+	NSLog(@"isMinimized: %@, activated: %@", isMinimized ? @"YES" : @"NO", activated ? @"YES" : @"NO");
+#endif
+	
+	if (isMinimized) {
+		if (activated) {
+			[_delegate platformWindowDeminiaturized:self];
+		}
+		else {
+			[_delegate platformWindowMiniaturized:self];
+		}
    }
    else {
-    if(LOWORD(wParam)){
+    if(activated){
      [_delegate platformWindowActivated:self displayIfNeeded:!_disableDisplay];
     }
-    else
+    else {
      [_delegate platformWindowDeactivated:self checkForAppDeactivation:(lParam==0)];
+	}
    }
    return 0;
 }
 
 -(int)WM_MOUSEACTIVATE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   if([_delegate canBecomeKeyWindow])
-    return MA_ACTIVATE;
-   else
-    return MA_NOACTIVATE;
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_MOUSEACTIVATE_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_MOUSEACTIVATE_DEBUGGING 0
+#endif
+	
+	if([_delegate canBecomeKeyWindow]) {
+#if WM_MOUSEACTIVATE_DEBUGGING
+		NSLog(@"   MA_ACTIVATE");
+#endif
+		return MA_ACTIVATE;
+	}
+	else {
+#if WM_MOUSEACTIVATE_DEBUGGING
+		NSLog(@"   MA_NOACTIVATE");
+#endif
+		return MA_NOACTIVATE;
+	}
 }
 
 -(int)WM_SETCURSOR_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-    if([_delegate platformWindowSetCursorEvent:self])
-        return 0;
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_SETCURSOR_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
+	
+	
+	if([_delegate platformWindowSetCursorEvent:self])
+    return 0;
 
     return DefWindowProc(_handle,WM_SETCURSOR,wParam,lParam);
 }
 
 -(int)WM_SIZING_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   RECT   rect=*(RECT *)lParam;
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_SIZING_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_SIZING_DEBUGGING 0
+#endif
+	
+	RECT   rect=*(RECT *)lParam;
+
+#if WM_SIZING_DEBUGGING
+	NSString* wmParamValues[] = { @"None",
+								  @"WMSZ_LEFT",
+								  @"WMSZ_RIGHT",
+								  @"WMSZ_TOP",
+								  @"WMSZ_TOPLEFT",
+								  @"WMSZ_TOPRIGHT",
+								  @"WMSZ_BOTTOM",
+								  @"WMSZ_BOTTOMLEFT",
+								  @"WMSZ_BOTTOMRIGHT"
+	};
+	
+	if (wParam > 0 && wParam <= WMSZ_BOTTOMRIGHT) {
+		NSLog(@"   wParam: %@", wmParamValues[wParam]);
+	}
+	NSLog(@"   rect left: %ld, right: %ld, bottom: %ld, top: %ld", rect.left, rect.right, rect.bottom, rect.top);
+#endif
+	
    CGSize size=NSMakeSize(rect.right-rect.left,rect.bottom-rect.top);
 
    if(!_sentBeginSizing){
@@ -1376,34 +1427,74 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 
    *(RECT *)lParam=rect;
 
+#if WM_SIZING_DEBUGGING
+	NSLog(@"   adjusted rect left: %ld, right: %ld, bottom: %ld, top: %ld", rect.left, rect.right, rect.bottom, rect.top);
+#endif
+			
    return 0;
 }
 
+const int kWindowMaxDim = 10000;
 -(int)WM_GETMINMAXINFO_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   MINMAXINFO *info=(MINMAXINFO *)lParam;
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_GETMINMAXINFO_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_GETMINMAXINFO_DEBUGGING 0
+#endif
+
+	MINMAXINFO *info=(MINMAXINFO *)lParam;
 
    if(_ignoreMinMaxMessage)
     return 0;
 
-   info->ptMaxTrackSize.x=10000;
-   info->ptMaxTrackSize.y=10000;
+   info->ptMaxTrackSize.x=kWindowMaxDim;
+   info->ptMaxTrackSize.y=kWindowMaxDim;
 
    if([_delegate minSize].width>0)
     info->ptMinTrackSize.x=[_delegate minSize].width;
    if([_delegate minSize].height>0)
     info->ptMinTrackSize.y=[_delegate minSize].height;
 
+	if ([_delegate maxSize].width < kWindowMaxDim) {
+		info->ptMaxTrackSize.x = [_delegate maxSize].width;
+	}
+	
+	if ([_delegate maxSize].height < kWindowMaxDim) {
+		info->ptMaxTrackSize.y = [_delegate maxSize].height;
+	}
+	
+#if WM_GETMINMAXINFO_DEBUGGING
+	NSLog(@"  info {");
+	NSLog(@"    ptReserved: %ld, %ld", info->ptReserved.x, info->ptReserved.y);
+	NSLog(@"    ptMaxSize: %ld, %ld", info->ptMaxSize.x, info->ptMaxSize.y);
+	NSLog(@"    ptMaxPosition: %ld, %ld", info->ptMaxPosition.x, info->ptMaxPosition.y);
+	NSLog(@"    ptMinTrackSize: %ld, %ld", info->ptMinTrackSize.x, info->ptMaxPosition.y);
+	NSLog(@"    ptMaxTrackSize: %ld, %ld", info->ptMaxTrackSize.x, info->ptMaxTrackSize.y);
+	NSLog(@"  }");
+#endif
+	
    return 0;
 }
 
 -(int)WM_ENTERSIZEMOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    
-   return 0;
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_ENTERSIZEMOVE_wParam: %d, lParam: %ld", wParam, lParam);
+#endif
+	return 0;
 }
 
 -(int)WM_EXITSIZEMOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-   
+
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_EXITSIZEMOVE_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_EXITSIZEMOVE_DEBUGGING 0
+#endif
+	
    if(_sentBeginSizing){
+#if WM_EXITSIZEMOVE_DEBUGGING
+	   NSLog(@"telling delegate platformWindowDidEndSizing:");
+#endif
     [_delegate platformWindowDidEndSizing:self];
    }
    
@@ -1414,12 +1505,23 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    return 0;
 }
 
+- (int)WM_SYSCOLORCHANGE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_SYSCOLORCHANGE");
+#endif
+	[[Win32Display currentDisplay] invalidateSystemColors];
+	[_delegate platformWindowStyleChanged:self];
+	return 0;
+}
+
 -(int)WM_SYSCOMMAND_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
 
     switch(wParam&0xFFF0){
    
         case SC_MAXIMIZE:
+            [_delegate platformWindowWillBeginSizing:self];
             [_delegate platformWindowShouldZoom:self];
+            [_delegate platformWindowDidEndSizing:self];
             return 0;
         
         case SC_MINIMIZE:
@@ -1435,42 +1537,58 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    }
 }
 
+- (int)WM_ERASEBKGND_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+#if WM_MSG_DEBUGGING
+	NSLog(@"WM_ERASEBKGND");
+#endif
+    // This can avoid OpenGL flickering
+	return 1;
+}
+
 -(LRESULT)windowProcedure:(UINT)message wParam:(WPARAM)wParam
   lParam:(LPARAM)lParam {
 
+#if WM_MSG_DEBUGGING
+	NSLog(@"windowProcedure: %u wParam: %d, lParam: %ld", message, wParam, lParam);
+#endif
+	
    if([_delegate platformWindowIgnoreModalMessages:self]){
 // these messages are sent directly, so we can't drop them in NSApplication's modal run loop
     switch(message){
      case WM_SETCURSOR:
      case WM_MOUSEACTIVATE:
-      return 0;
+			
+#if WM_MSG_DEBUGGING
+			NSLog(@"bailing on WM_SETCURSOR or WM_MOUSEACTIVATE");
+#endif
+			return 0;
 
      case WM_NCHITTEST:
-      return HTCLIENT;
+#if WM_MSG_DEBUGGING
+			NSLog(@"bailing on WM_NCHITTEST");
+#endif
+			return HTCLIENT;
     }
    }
 
    switch(message){
 
-    case WM_ACTIVATE:      return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
-    case WM_MOUSEACTIVATE: return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
-    case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
-    case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
-    case WM_PAINT:         return [self WM_PAINT_wParam:wParam lParam:lParam];
-    case WM_CLOSE:         return [self WM_CLOSE_wParam:wParam lParam:lParam];
-    case WM_SETCURSOR:     return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
-    case WM_SIZING:        return [self WM_SIZING_wParam:wParam lParam:lParam];
-    case WM_GETMINMAXINFO: return [self WM_GETMINMAXINFO_wParam:wParam lParam:lParam];
-    case WM_ENTERSIZEMOVE: return [self WM_ENTERSIZEMOVE_wParam:wParam lParam:lParam];
-    case WM_EXITSIZEMOVE:  return [self WM_EXITSIZEMOVE_wParam:wParam lParam:lParam];
+	case WM_SETFOCUS:			return [self WM_SETFOCUS_wParam:wParam lParam:lParam];
+    case WM_ACTIVATE:			return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
+    case WM_MOUSEACTIVATE:		return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
+    case WM_WINDOWPOSCHANGED:	return [self WM_WINDOWPOSCHANGED_wParam: wParam lParam: lParam];
+   // case WM_SIZE: // these are now covered by WM_WINDOWPOSCHANGED
+   // case WM_MOVE:
+    case WM_PAINT:				return [self WM_PAINT_wParam:wParam lParam:lParam];
+    case WM_CLOSE:				return [self WM_CLOSE_wParam:wParam lParam:lParam];
+    case WM_SETCURSOR:			return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
+    case WM_SIZING:				return [self WM_SIZING_wParam:wParam lParam:lParam];
+    case WM_GETMINMAXINFO:		return [self WM_GETMINMAXINFO_wParam:wParam lParam:lParam];
+    case WM_ENTERSIZEMOVE:		return [self WM_ENTERSIZEMOVE_wParam:wParam lParam:lParam];
+    case WM_EXITSIZEMOVE:		return [self WM_EXITSIZEMOVE_wParam:wParam lParam:lParam];
     case WM_SYSCOMMAND:    return [self WM_SYSCOMMAND_wParam:wParam lParam:lParam];
-    case WM_SYSCOLORCHANGE:
-     [[Win32Display currentDisplay] invalidateSystemColors];
-     [_delegate platformWindowStyleChanged:self];
-     return 0;
-    
-    // This can avoid OpenGL flickering
-    case WM_ERASEBKGND: return 1;
+	case WM_SYSCOLORCHANGE:		return [self WM_SYSCOLORCHANGE_wParam: wParam lParam: lParam];
+	case WM_ERASEBKGND:			return [self WM_ERASEBKGND_wParam: wParam lParam: lParam];
 
 #if 0
 // doesn't seem to work
@@ -1483,7 +1601,11 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     default:
      break;
    }
-
+	
+#if WM_MSG_DEBUGGING
+	NSLog(@"delegating to DefWindowProc()");
+#endif
+	
    return DefWindowProc(_handle,message,wParam,lParam);
 }
 

@@ -67,7 +67,7 @@ static inline O2TextEncoding textEncodingWithName(const char *name){
      if(data==nil)
       O2PDFError(__FILE__,__LINE__,@"No data on FontFile stream");
      else {
-      O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+      O2DataProviderRef provider=O2DataProviderCreateWithCFData((CFDataRef)data);
       _resourceFont=O2FontCreateWithDataProvider(provider);
             
       O2DataProviderRelease(provider);
@@ -79,7 +79,7 @@ static inline O2TextEncoding textEncodingWithName(const char *name){
      if(data==nil)
       O2PDFError(__FILE__,__LINE__,@"No data on FontFile2 stream");
      else {
-      O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+      O2DataProviderRef provider=O2DataProviderCreateWithCFData((CFDataRef)data);
       _resourceFont=O2FontCreateWithDataProvider(provider);
             
       O2DataProviderRelease(provider);
@@ -97,7 +97,7 @@ static inline O2TextEncoding textEncodingWithName(const char *name){
      if(data==nil)
       O2PDFError(__FILE__,__LINE__,@"No data on FontFile3 stream");
      else {
-      O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+      O2DataProviderRef provider=O2DataProviderCreateWithCFData((CFDataRef)data);
       _resourceFont=O2FontCreateWithDataProvider(provider);
             
       O2DataProviderRelease(provider);
@@ -187,8 +187,8 @@ static inline O2TextEncoding textEncodingWithName(const char *name){
      else if([check checkForType:kO2PDFObjectTypeName value:&name]){
       NSString *string=[[NSString alloc] initWithCString:name];
       
-      O2Glyph glyph=O2FontGetGlyphWithGlyphName(_graphicsFont,string);
-      uint16_t unicode=O2FontUnicodeForGlyphName(string);
+      O2Glyph glyph=O2FontGetGlyphWithGlyphName(_graphicsFont,(CFStringRef)string);
+      uint16_t unicode=O2FontUnicodeForGlyphName((CFStringRef)string);
       
       [newEncoding setGlyph:glyph unicode:unicode atIndex:currentIndex];
       

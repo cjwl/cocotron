@@ -84,6 +84,7 @@ typedef unsigned O2BitmapInfo;
 
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2Pattern.h>
+#import <Onyx2D/O2ImageDecoder.h>
 #import <Onyx2D/O2DataProvider.h>
 #import <Onyx2D/VGmath.h>
 
@@ -101,6 +102,7 @@ typedef O2Float    *(*O2ImageFunction_read_a32f)(O2Image *self,int x,int y,O2Flo
    
    O2ColorSpaceRef        _colorSpace;
    O2BitmapInfo           _bitmapInfo;
+   O2ImageDecoder        *_decoder;
    O2DataProvider        *_provider;
    O2Float               *_decode;
    BOOL                   _interpolate;
@@ -119,7 +121,18 @@ typedef O2Float    *(*O2ImageFunction_read_a32f)(O2Image *self,int x,int y,O2Flo
    O2ImageFunction_read_a32f    _read_a32f;
 }
 
--initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo provider:(O2DataProvider *)provider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent;
+-initWithWidth:(size_t)width
+        height:(size_t)height
+bitsPerComponent:(size_t)bitsPerComponent
+  bitsPerPixel:(size_t)bitsPerPixel
+   bytesPerRow:(size_t)bytesPerRow
+    colorSpace:(O2ColorSpaceRef)colorSpace
+    bitmapInfo:(O2BitmapInfo)bitmapInfo
+       decoder:(O2ImageDecoder *)decoder
+      provider:(O2DataProvider *)provider
+        decode:(const O2Float *)decode
+   interpolate:(BOOL)interpolate 
+renderingIntent:(O2ColorRenderingIntent)renderingIntent;
 
 -initMaskWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow provider:(O2DataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate ;
 
@@ -163,6 +176,8 @@ O2ColorRenderingIntent O2ImageGetRenderingIntent(O2ImageRef self);
 O2BitmapInfo O2ImageGetBitmapInfo(O2ImageRef self);
 
 O2ImageRef O2ImageGetMask(O2ImageRef self);
+
+O2ImageDecoderRef O2ImageGetImageDecoder(O2ImageRef self);
 
 -(NSData *)directData;
 -(const void *)directBytes;

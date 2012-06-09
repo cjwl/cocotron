@@ -13,18 +13,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2PDFString
 
--initWithBytes:(const char *)bytes length:(unsigned)length {
+-initWithBytes:(const unsigned char *)bytes length:(unsigned)length {
    _length=length;
    _noCopyNoFree=NO;
    _bytes=NSZoneMalloc(NULL,length);
-   strncpy(_bytes,bytes,length);
+   strncpy((char *)_bytes,(const char *)bytes,length);
    return self;
 }
 
--initWithBytesNoCopyNoFree:(const char *)bytes length:(unsigned)length {
+-initWithBytesNoCopyNoFree:(const unsigned char *)bytes length:(unsigned)length {
    _length=length;
    _noCopyNoFree=YES;
-   _bytes=(char *)bytes;
+   _bytes=(unsigned char *)bytes;
    return self;
 }
 
@@ -34,16 +34,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
-+pdfObjectWithBytes:(const char *)bytes length:(unsigned)length {
++pdfObjectWithBytes:(const unsigned char *)bytes length:(unsigned)length {
    return [[(O2PDFString *)[self alloc] initWithBytes:bytes length:length] autorelease];
 }
 
-+pdfObjectWithBytesNoCopyNoFree:(const char *)bytes length:(unsigned)length {
++pdfObjectWithBytesNoCopyNoFree:(const unsigned char *)bytes length:(unsigned)length {
    return [[(O2PDFString *)[self alloc] initWithBytesNoCopyNoFree:bytes length:length] autorelease];
 }
 
 +pdfObjectWithCString:(const char *)cString {
-   return [[(O2PDFString *)[self alloc] initWithBytes:cString length:strlen(cString)] autorelease];
+   return [[(O2PDFString *)[self alloc] initWithBytes:(const unsigned char *)cString length:strlen(cString)] autorelease];
 }
 
 +pdfObjectWithString:(NSString *)string {
@@ -68,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _length;
 }
 
--(const char *)bytes {
+-(const unsigned char *)bytes {
    return _bytes;
 }
 
@@ -88,7 +88,7 @@ const unsigned char *O2PDFStringGetBytePtr(O2PDFStringRef string) {
 -(NSString *)description {
    char s[_length+1];
    
-   strncpy(s,_bytes,_length);
+   strncpy(s,(const char *)_bytes,_length);
    s[_length]='\0';
    return [NSString stringWithFormat:@"<%@ %s>",isa,s];
 }

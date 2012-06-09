@@ -300,7 +300,7 @@ enum {
  * The NSPopUpButtonCell code deals with it. It might make sense for this to return the previous value.
  */
 -(int)runTrackingWithEvent:(NSEvent *)event {
-   enum {
+	enum {
     STATE_FIRSTMOUSEDOWN,
     STATE_MOUSEDOWN,
     STATE_MOUSEUP,
@@ -320,6 +320,9 @@ enum {
    point=[self convertPoint:point fromView:nil];
    firstLocation=point;
 
+	// Make sure we know if the user clicks away from the app in the middle of this
+	BOOL cancelled = NO;	
+	
    do {
     NSInteger index=[self itemIndexForPoint:point];
     NSRect   screenVisible;
@@ -345,7 +348,7 @@ enum {
     
     [[self window] flushWindow];
 
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask|NSAppKitDefinedMask];
     if ([event type] == NSKeyDown) {
         [self interpretKeyEvents:[NSArray arrayWithObject:event]];
         switch (_keyboardUIState) {
@@ -365,7 +368,12 @@ enum {
     }
     else
         _keyboardUIState = KEYBOARD_INACTIVE;
-    
+ 
+	   if ([event type] == NSAppKitDefined) {
+		   if ([event subtype] == NSApplicationDeactivated) {
+			   cancelled = YES;
+		   }
+	   }
     point=[event locationInWindow];
     point=[[event window] convertBaseToScreen:point];
     screenVisible=NSInsetRect([[[self window] screen] visibleFrame],4,4);
@@ -415,7 +423,7 @@ enum {
       break;
     }
 
-   }while(state!=STATE_EXIT);
+   }while(cancelled == NO && state!=STATE_EXIT);
 
    [[self window] setAcceptsMouseMovedEvents: oldAcceptsMouseMovedEvents];
 

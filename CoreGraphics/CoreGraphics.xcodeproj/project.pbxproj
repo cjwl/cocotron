@@ -343,6 +343,15 @@
 		FE8C021C10C59BB300FE4072 /* CGImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020A10C59BB300FE4072 /* CGImageDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8C021E10C59BB300FE4072 /* O2Encoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020C10C59BB300FE4072 /* O2Encoder_TIFF.h */; };
 		FE8C022010C59BB300FE4072 /* O2ImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020E10C59BB300FE4072 /* O2ImageDestination.h */; };
+		FE9ACFEB15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
+		FE9ACFEC15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
+		FE9ACFED15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
+		FE9ACFEF15614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
+		FE9ACFF015614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
+		FE9ACFF115614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
+		FE9ACFF315614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
+		FE9ACFF415614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
+		FE9ACFF515614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
 		FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -756,6 +765,9 @@
 		FE8C020D10C59BB300FE4072 /* O2Encoder_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2Encoder_TIFF.m; path = ../Onyx2D/O2Encoder_TIFF.m; sourceTree = "<group>"; };
 		FE8C020E10C59BB300FE4072 /* O2ImageDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O2ImageDestination.h; path = ../Onyx2D/O2ImageDestination.h; sourceTree = "<group>"; };
 		FE8C020F10C59BB300FE4072 /* O2ImageDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2ImageDestination.m; path = ../Onyx2D/O2ImageDestination.m; sourceTree = "<group>"; };
+		FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageDecoder_JPEG_libjpeg.m; sourceTree = "<group>"; };
+		FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageDecoder_JPEG_stb.m; sourceTree = "<group>"; };
+		FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ImageDecoder.m; sourceTree = "<group>"; };
 		FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGDataConsumer.h; sourceTree = "<group>"; };
 		FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGDataConsumer.m; sourceTree = "<group>"; };
 		FEA313490FD5642000F480D4 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1118,6 +1130,9 @@
 		FE5C0A1D1162953300065D1C /* Onyx2D */ = {
 			isa = PBXGroup;
 			children = (
+				FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */,
+				FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */,
+				FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */,
 				FE39C40C120357EA00A80A71 /* O2ClipState.h */,
 				FE39C40D120357EA00A80A71 /* O2ClipState.m */,
 				FE43BE4511FFBAC100119833 /* O2PDFBlock.h */,
@@ -2118,6 +2133,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE9ACFED15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
+				FE9ACFF115614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
+				FE9ACFF515614CE4002AFCA9 /* O2ImageDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2125,6 +2143,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE9ACFEB15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
+				FE9ACFEF15614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
+				FE9ACFF315614CE4002AFCA9 /* O2ImageDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2132,6 +2153,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE9ACFEC15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
+				FE9ACFF015614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
+				FE9ACFF415614CE4002AFCA9 /* O2ImageDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

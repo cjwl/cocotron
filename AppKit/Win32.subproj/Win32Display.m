@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSColor_CGColor.h>
 #import <Onyx2D/O2ColorSpace.h>
+#import <Onyx2D/O2Font.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSSavePanel-Win32.h>
 #import <AppKit/NSOpenPanel-Win32.h>
@@ -47,6 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
 
 @implementation Win32Display
 
@@ -1356,7 +1358,12 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
     if(textMetric->ntmTm.ntmFlags&NTM_BOLD)
      traits|=NSBoldFontMask;
 
-    typeface=[[[NSFontTypeface alloc] initWithName:name traitName:traitName traits:traits] autorelease];
+	   NSString *psName = [O2Font postscriptNameForNativeName:name];
+	   NSString *displayName = [O2Font displayNameForPostscriptName:psName];
+	   typeface=[[[NSFontTypeface alloc] initWithName:psName 
+										  displayName:displayName 
+											traitName:traitName 
+											   traits:traits] autorelease];
 
     [result setObject:typeface forKey:name];
    }
