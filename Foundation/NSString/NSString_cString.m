@@ -67,20 +67,23 @@ unichar *NSString_anyCStringToUnicode(NSStringEncoding encoding, const char *cSt
     switch(encoding) {
         case NSNEXTSTEPStringEncoding:
             return NSNEXTSTEPToUnicode(cString,length,resultLength,zone);
+        case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSISOLatin1ToUnicode(cString,length,resultLength,zone);
         case NSWindowsCP1252StringEncoding:
             return NSWin1252ToUnicode(cString,length,resultLength,zone);
         case NSMacOSRomanStringEncoding:
             return NSMacOSRomanToUnicode(cString,length,resultLength,zone);
+        case NSUTF8StringEncoding:
+            return NSUTF8ToUnicode(cString,length,resultLength,zone);
         default:
             if(encoding != defaultEncoding()) {
                 NSUnimplementedFunction();
             }
             else {
                 //we cannot use the macro :-(, because we will get into an infinite loop
-                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);                
-            }            
+                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);
+            }
             //assuming NextSTEP
             return NSNEXTSTEPToUnicode(cString,length,resultLength,zone);
     }
@@ -126,6 +129,7 @@ NSString *NSString_anyCStringNewWithBytes(NSStringEncoding encoding, NSZone *zon
             return NSNEXTSTEPCStringNewWithBytes(zone,bytes,length);
         case NSMacOSRomanStringEncoding:
             return NSString_macOSRomanNewWithBytes(zone,bytes,length);
+        case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSString_isoLatin1NewWithBytes(zone,bytes,length);
         case NSWindowsCP1252StringEncoding:

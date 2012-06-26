@@ -17,6 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSError.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSPlatform.h>
 #import <objc/runtime.h>
 #import <Foundation/NSRaiseException.h>
@@ -29,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef void *NSModuleHandle;
 
-OBJC_EXPORT NSModuleHandle NSLoadModule(const char *path);
+OBJC_EXPORT NSModuleHandle NSLoadModule(const char *path, NSError **error);
 OBJC_EXPORT BOOL NSUnloadModule(NSModuleHandle handle);
 OBJC_EXPORT const char *NSLastModuleError(void);
 OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
@@ -204,21 +206,27 @@ int OBJCRegisterDLL(HINSTANCE handle){
    return 1;
 }
 
-NSModuleHandle NSLoadModule(const char *path) {
+NSModuleHandle NSLoadModule(const char *path, NSError **error) {
    NSModuleHandle handle;
 
    OBJCResetModuleQueue();
 
    handle=LoadLibrary(path);
 
-   if(handle!=NULL)
-    OBJCRegisterDLL(handle);
+    if(handle!=NULL) {
+        OBJCRegisterDLL(handle);
+    }
+    else {
+        if (error != NULL) {
+            *error = [NSError errorWithDomain:NSWin32ErrorDomain code:GetLastError() userInfo:nil];
+        }
+    }
 
    return handle;
 }
 #else
 
-NSModuleHandle NSLoadModule(const char *path) {
+NSModuleHandle NSLoadModule(const char *path, NSError **error) {
    NSModuleHandle handle;
 
    // dlopen doesn't accept partial paths.
@@ -231,15 +239,19 @@ NSModuleHandle NSLoadModule(const char *path) {
           path = buf;
       }
       else {
-          NSCLog("NSLoadModule: cannot find cwd and relative path specified");
+          if (error != NULL) {
+              *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:0 userInfo:[NSDictionary dictionaryWithObject:@"NSLoadModule: cannot find cwd and relative path specified" forKey:NSLocalizedDescriptionKey]];
+          }
           return NULL;
       }
    }
 
    handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
    if (handle == NULL){
-       NSCLog(NSLastModuleError());
-   }
+       if (error != NULL) {
+           *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:0 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%s", NSLastModuleError()] forKey:NSLocalizedDescriptionKey]];
+       }
+    }
 #ifdef __APPLE__    
     OBJCRegisterModule_Darwin(path);
 #endif
@@ -298,6 +310,9 @@ static NSMapTable *pathToObject=NULL;
    or
     MyProgram[.exe]
     MyProgram.app/Contents/
+  or
+    MyProgram.app/MyProgram[.exe]
+    [MyProgram.app/Resources]
 
  */
 + (NSString *)bundlePathFromModulePath:(NSString *)path
@@ -313,12 +328,18 @@ static NSMapTable *pathToObject=NULL;
     }
 
     if (![extension isEqualToString:NSPlatformLoadableObjectFileExtension]) {
-        NSString *check = [[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"app"];
-
-        if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
-            result = check;
-        } else {
-            result = [[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+        // Support for MyProgram.app/MyProgram[.exe]
+        if ([[directory lastPathComponent] isEqualToString:[NSString stringWithFormat:@"%@.app", name]] == YES) {
+            return directory;
+        }
+        else {
+            NSString *check = [[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"app"];
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
+                result = check;
+            } else {
+                result = [[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+            }
         }
     } else {
         NSString *loadablePrefix = NSPlatformLoadableObjectFilePrefix;
@@ -327,17 +348,22 @@ static NSMapTable *pathToObject=NULL;
         if ([loadablePrefix length] > 0 && [name hasPrefix:loadablePrefix]) {
             name = [name substringFromIndex:[loadablePrefix length]];
         }
-
-        check = [[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"framework"];
-
-        if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
-            result = check;
-        } else {
-            check = [[[directory stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Frameworks"] stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"framework"]];
+        
+        if ([[directory lastPathComponent] isEqualToString:[NSString stringWithFormat:@"%@.bundle", name]] == YES) {
+            return directory;
+        }
+        else {
+            check = [[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"framework"];
+            
             if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
                 result = check;
             } else {
-                result = [[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+                check = [[[directory stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Frameworks"] stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"framework"]];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:check]) {
+                    result = check;
+                } else {
+                    result = [[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+                }
             }
         }
     }
@@ -543,6 +569,9 @@ static NSMapTable *pathToObject=NULL;
 
     if(path==nil)
      path=[self pathForResource:@"Info" ofType:@"plist" inDirectory:@"Resources"];
+       
+    if(![[NSFileManager defaultManager] fileExistsAtPath:path])
+        path=[[_path stringByAppendingPathComponent:@"Info"] stringByAppendingPathExtension:@"plist"];
 
     _infoDictionary=[[NSDictionary allocWithZone:NULL] initWithContentsOfFile:path];
 
@@ -636,9 +665,6 @@ static NSMapTable *pathToObject=NULL;
    NSUnimplementedMethod();
    return 0;
 }
--(BOOL)loadAndReturnError:(NSError **)error {
-   return [self load];
-}
 
 /*
   Frameworks are organized as:
@@ -649,7 +675,7 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSString *)_findExecutable {
    NSString *type=[_path pathExtension];
-   NSString *name=[[self infoDictionary] objectForKey:@"CFBundleExecutable"];
+   NSString *name=[[[self infoDictionary] objectForKey:@"CFBundleExecutable"] stringByDeletingPathExtension];
    NSString *checkDir;
    NSArray  *contents;
    NSInteger       i,count;
@@ -677,8 +703,12 @@ static NSMapTable *pathToObject=NULL;
       return [checkDir stringByAppendingPathComponent:check];
     }
    }
-
-   return [[_path stringByAppendingPathComponent:name] stringByAppendingPathExtension:NSPlatformLoadableObjectFileExtension];
+    if ([type isEqualToString:@"app"] == YES) {
+        return [[_path stringByAppendingPathComponent:name] stringByAppendingPathExtension:NSPlatformExecutableFileExtension];
+    }
+    else {
+        return [[_path stringByAppendingPathComponent:name] stringByAppendingPathExtension:NSPlatformLoadableObjectFileExtension];
+    }
 }
 
 -(NSString *)executablePath {
@@ -690,16 +720,26 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(BOOL)load {
+    NSError *error = nil;
+    BOOL result = [self loadAndReturnError:&error]; 
+    
+    if (result == NO) {
+        NSLog(@"load of %@ FAILED [%@]", [self executablePath] , [error localizedDescription]);
+    }
+    
+    return result;
+}
+
+-(BOOL)loadAndReturnError:(NSError **)error {
 	if(!_isLoaded){
 		NSString *load=[self executablePath];
-
-    if(NSLoadModule([load fileSystemRepresentation]) == NULL){
-     NSLog(@"load of %@ FAILED",load);
-     return NO;
+        
+        if(NSLoadModule([load fileSystemRepresentation], error) == NULL){
+            return NO;
+        }
     }
-   }
 	_isLoaded=YES;
-   return YES;
+    return YES;
 }
 
 -(BOOL)unload {
