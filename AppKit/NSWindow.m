@@ -2659,6 +2659,18 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize {
+
+	// Don't allow the platform window changes to violate our window size limits (if we have them)
+	// Windows (for example) likes to make the platform window very small so it fits in the task bar...
+	if (NSEqualSizes([self minSize], NSMakeSize(0, 0)) == NO) {
+		frame.size.width = MAX(NSWidth(frame), [self minSize].width);
+		frame.size.height = MAX(NSHeight(frame), [self minSize].height);
+	}
+	
+	if (NSEqualSizes([self maxSize], NSMakeSize(FLT_MAX, FLT_MAX)) == NO) {
+		frame.size.width = MIN(NSWidth(frame), [self maxSize].width);
+		frame.size.height = MIN(NSHeight(frame), [self maxSize].height);
+	}
    _frame=frame;
    
    _makeSureIsOnAScreen=YES;
