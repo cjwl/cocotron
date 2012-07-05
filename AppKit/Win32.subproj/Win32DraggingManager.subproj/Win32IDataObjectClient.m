@@ -232,9 +232,11 @@ static WORD PaletteSize (VOID FAR * pv)
 		formatEtc.cfFormat=CF_UNICODETEXT;
 	else if([type isEqualToString:NSFilenamesPboardType])
 		formatEtc.cfFormat=CF_HDROP;
-	else if([type isEqualToString:NSTIFFPboardType])
+	else if([type isEqualToString:NSTIFFPboardType]) {
+		// TIFF data can actually arrive as DIB data (from a paste for example), so we'll have to convert it.
+		// But in the eventuality that it's not (from a drag within our app), we'll go back to trying TIFF to in a moment.
 		formatEtc.cfFormat=CF_DIB;
-	else {
+	} else { 
 		if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
 #if DEBUG
 			NSLog(@"RegisterClipboardFormat failed for type: %@", type);
@@ -248,7 +250,19 @@ static WORD PaletteSize (VOID FAR * pv)
 	formatEtc.lindex=-1;
 	formatEtc.tymed=TYMED_HGLOBAL|TYMED_ISTREAM;
 	
-	if((_dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc))!=S_OK){
+	HRESULT hresult = S_OK;
+	hresult = _dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc);
+	if (hresult != S_OK) {
+		if (formatEtc.cfFormat == CF_DIB) {
+			// Perhaps it's really a TIFF? RegisterClipboardFormat seems to conjure a cfFormat value
+			// that QueryGetData likes. CF_TIFF surprisingly is not that value - so there's some Win32 magic
+			// happening somewhere.
+			formatEtc.cfFormat=RegisterClipboardFormat([type cString]);
+			hresult = _dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc);
+		}
+	}
+	
+	if (hresult != S_OK) {
 #if DEBUG
 		NSLog(@"QueryGetData failed for type: %@", type);
 #endif
