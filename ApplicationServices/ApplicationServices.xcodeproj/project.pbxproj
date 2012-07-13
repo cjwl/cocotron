@@ -41,6 +41,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		0DC4731915B02C780075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEC11BB10FD4B86500082282 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE6F7AF80FD554A800C3244F;
+			remoteInfo = "CoreGraphics-Linux-i386";
+		};
 		FE0D38D910ADE87B0003382F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
@@ -446,6 +453,7 @@
 				C88977360EA0C0CD00D0A0A2 /* PBXBuildRule */,
 			);
 			dependencies = (
+				0DC4731A15B02C780075BCAB /* PBXTargetDependency */,
 				FECF92960FFB2D4B007AECF1 /* PBXTargetDependency */,
 			);
 			name = "ApplicationServices-Linux-i386";
@@ -748,6 +756,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0DC4731A15B02C780075BCAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-Linux-i386";
+			targetProxy = 0DC4731915B02C780075BCAB /* PBXContainerItemProxy */;
+		};
 		FE0D38DA10ADE87B0003382F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreText-Darwin-i386";
