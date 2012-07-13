@@ -20,6 +20,7 @@
 #import <AppKit/O2Font_FT.h>
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSFontTypeface.h>
+#import <AppKit/NSWindow.h>
 #import <fcntl.h>
 #import <fontconfig.h>
 #import <X11/Xutil.h>

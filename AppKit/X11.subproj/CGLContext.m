@@ -8,6 +8,7 @@
 #import <X11/Xlib.h>
 #import <GL/gl.h>
 #import <GL/glx.h>
+#import <GL/glext.h>
 #import <pthread.h>
 
 struct _CGLContextObj {
@@ -421,4 +422,30 @@ CGLError CGLDescribePixelFormat(CGLPixelFormatObj pixelFormat,GLint screenNumber
      return kCGLNoError;
 }
 
+void CGLBufferData(GLenum target,GLsizeiptr size,const GLvoid *data,GLenum usage) {
+    glBufferData(target,size,data,usage);
+}
 
+void CGLGenBuffers(GLsizei n,GLuint *buffers) {
+    glGenBuffers(n,buffers);
+}
+
+void CGLDeleteBuffers(GLsizei n,const GLuint *buffers) {
+    glDeleteBuffers(n,buffers);
+}
+
+void CGLBindBuffer(GLenum target,GLuint buffer) {
+    glBindBuffer(target,buffer);
+}
+
+void *CGLMapBuffer(GLenum target,GLenum access) {
+    return glMapBuffer(target,access);
+}
+
+CGL_EXPORT GLboolean CGLUnmapBuffer(GLenum target) {
+    return glUnmapBuffer(target);
+}
+
+void CGLBufferSubData(GLenum target,GLintptr offset,GLsizeiptr size,const GLvoid *data) {
+    glBufferSubData(target,offset,size,data);
+}
