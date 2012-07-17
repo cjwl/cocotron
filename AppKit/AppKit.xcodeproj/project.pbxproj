@@ -25,40 +25,32 @@
 		630DC9DA14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DB14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DC14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DE14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9E114CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E214CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E314CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E414CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E814CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9E914CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9EA14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9EC14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9EF14CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F014CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F214CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F314CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F814CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DC9F914CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DC9FA14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DC9FC14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DCA0114CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0214CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0314CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0414CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA0914CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
 		630DCA1414CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
 		630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
 		630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
@@ -2150,14 +2142,6 @@
 		FE1708061260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FE1707FC1260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf */; };
 		FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
-		FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */; };
-		FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65071508165000C24624 /* darwin-ppc-framework.xcconfig */; };
-		FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65081508165000C24624 /* darwin-x86_64-framework.xcconfig */; };
-		FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */; };
-		FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650A1508165000C24624 /* linux-arm-framework.xcconfig */; };
-		FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */; };
-		FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650C1508165000C24624 /* linux-ppc-framework.xcconfig */; };
-		FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650D1508165100C24624 /* solaris-sparc-framework.xcconfig */; };
 		FE20C20E11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
 		FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
 		FE20C21011892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
@@ -9461,22 +9445,6 @@
 				6311B18114C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
 				6311B19514C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
 				6311B19D14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */,
-				FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */,
-				FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */,
-				FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */,
-				FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */,
-				FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */,
-				FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */,
-				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
