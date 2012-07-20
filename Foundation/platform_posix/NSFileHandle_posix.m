@@ -193,17 +193,30 @@ CONFORMING TO
 // POSIX programmer's guide p. 272
 - (BOOL)isNonBlocking {
     int flags = fcntl(_fileDescriptor, F_GETFL);
+    if (flags == -1) {
+        NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                         @"isNonBlocking: %s", strerror(errno));
+    }
+    
     return (flags & O_NONBLOCK)?YES:NO;
 }
 
 - (void)setNonBlocking:(BOOL)flag {
     int flags = fcntl(_fileDescriptor, F_GETFL);
+    if (flags == -1) {
+        NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                         @"setNonBlocking(GETFL)(%d): %s", flag, strerror(errno));
+    }
+
     if (flag)
         flags |= O_NONBLOCK;
     else
         flags &= ~O_NONBLOCK;
 
-    fcntl(_fileDescriptor, F_SETFL, flags);
+    if (fcntl(_fileDescriptor, F_SETFL, flags) == -1) {
+        NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                         @"setNonBlocking(SETFL)(%d): %s", flag, strerror(errno));
+    }
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length {
