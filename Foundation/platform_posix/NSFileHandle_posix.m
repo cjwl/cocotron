@@ -278,14 +278,20 @@ CONFORMING TO
         [self setNonBlocking:YES];
         count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 4096);
         err = errno; // preserved so that the next fcntl doesn't clobber it
+
+        if (err == 0 && count == -1) {
+            //in some cases on solaris we get -1 and errno == 0 in non blocking mode
+            err = EINTR;
+        }
+        
         [self setNonBlocking:NO];
 
         if (count <= 0) {
-            if (err == EAGAIN || err == EINTR) {
-                [self setNonBlocking: NO];
+            while (err == EAGAIN || err == EINTR) {
+                [self setNonBlocking:NO];
                 count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 1);
                 err = errno; // preserved so that the next fcntl doesn't clobber it
-                [self setNonBlocking: YES];
+                [self setNonBlocking:YES];
                 if (count > 0) {
                     count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length + 1], 4096-1);
                     if (count > 0) {
@@ -294,6 +300,11 @@ CONFORMING TO
                     else {
                         count = 1;
                     }
+                    break;
+                }
+                else if (count == 0) {
+                    //no more data available
+                    break;
                 }
             }
         }

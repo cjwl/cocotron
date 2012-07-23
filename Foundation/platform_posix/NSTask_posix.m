@@ -44,6 +44,9 @@ void waitForTaskChildProcess()
                 if (errno == ECHILD) {
                     break; // no child exists
                 }
+                else if (errno == EINTR) {
+                    continue;
+                }
                 
                 NSCLog("Invalid wait3 result [%s] in child signal handler", strerror(errno));
             }
