@@ -223,6 +223,8 @@ CONFORMING TO
     NSMutableData *mutableData = [NSMutableData dataWithLength:length];
     ssize_t count, total = 0;
 
+    [self setNonBlocking:NO];
+
     do {
         count = read(_fileDescriptor, [mutableData mutableBytes]+total, length-total);
         if (count == -1) {
@@ -245,6 +247,8 @@ CONFORMING TO
 - (NSData *)readDataToEndOfFile {
     NSMutableData *mutableData = [NSMutableData dataWithLength:4096];
     ssize_t count, total = 0;
+
+    [self setNonBlocking:NO];
 
     do {
         count = read(_fileDescriptor, [mutableData mutableBytes]+total, 4096);
