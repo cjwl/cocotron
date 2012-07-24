@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSString_nextstep.h>
 #import <Foundation/NSString_isoLatin1.h>
+#import <Foundation/NSString_isoLatin2.h>
 #import <Foundation/NSString_win1252.h>
 #import <Foundation/NSString_macOSRoman.h>
 #import <Foundation/NSStringFormatter.h>
@@ -66,6 +67,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case NSISOLatin1StringEncoding:
      return NSString_isoLatin1NewWithBytes(NULL,bytes,length);
+    case NSISOLatin2StringEncoding:
+           return NSString_isoLatin2NewWithBytes(NULL,bytes,length);
 
     case NSSymbolStringEncoding:
      characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
