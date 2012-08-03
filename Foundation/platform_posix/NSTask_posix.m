@@ -34,7 +34,6 @@ void waitForTaskChildProcess()
     pid_t pid;
     int status;
     
-    
     if (_taskFinished == YES) {
         _taskFinished = NO;
         while(YES) {

@@ -16357,6 +16357,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
+					"-pthread",
 					"-DCOCOTRON_DISALLOW_FORWARDING",
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16509,6 +16510,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
+					"-pthread",
 					"-DCOCOTRON_DISALLOW_FORWARDING",
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",

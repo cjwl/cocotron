@@ -282,11 +282,6 @@ CONFORMING TO
         [self setNonBlocking:YES];
         count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 4096);
         err = errno; // preserved so that the next fcntl doesn't clobber it
-
-        if (err == 0 && count == -1) {
-            //in some cases on solaris we get -1 and errno == 0 in non blocking mode
-            err = EINTR;
-        }
         
         [self setNonBlocking:NO];
 
