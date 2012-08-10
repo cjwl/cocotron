@@ -755,10 +755,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImageRep        *any=[[[self _bestUncachedFallbackCachedRepresentationForDevice:nil size:rect.size] retain] autorelease];
    NSImageRep        *cachedRep=nil;
    CGContextRef       context;
-      
-	if(NSIsEmptyRect(source) && !_isFlipped) {
-		// If we're drawing a subset of the image and the image isn't flipped then
-		// we can just draw from a cached rep or a bitmap rep(assuming we have one)
+	NSRect fullRect = { .origin = NSZeroPoint, .size = self.size };
+	BOOL drawFullImage = (NSIsEmptyRect(source) || NSEqualRects(source, fullRect));
+	BOOL canCache = drawFullImage && !_isFlipped;
+	
+	if (canCache) {
+		// If we're drawing the full image unflipped then we can just draw from a cached rep or a bitmap rep (assuming we have one)
 		if([any isKindOfClass:[NSCachedImageRep class]] ||
 		   [any isKindOfClass:[NSBitmapImageRep class]]) {
 			cachedRep=any;
@@ -793,8 +795,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		[self unlockFocus];
     
-		// And add it
-		[self addRepresentation: cached];
+		// And keep it if it makes sense
+		if (canCache) {
+			[self addRepresentation: cached];
+		}
 		
 		cachedRep=cached;
 	}
