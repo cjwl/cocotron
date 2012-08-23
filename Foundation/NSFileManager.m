@@ -27,6 +27,7 @@ NSString * const NSFileTypeSocket = @"NSFileTypeSocket";
 NSString * const NSFileTypeUnknown = @"NSFileTypeUnknown";
 
 NSString * const NSFileSize = @"NSFileSize";
+NSString * const NSFileCreationDate = @"NSFileCreationDate";
 NSString * const NSFileModificationDate = @"NSFileModificationDate";
 NSString * const NSFileOwnerAccountName = @"NSFileOwnerAccountName";
 NSString * const NSFileGroupOwnerAccountName = @"NSFileGroupOwnerAccountName";
