@@ -558,9 +558,12 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	return result;
 }
 
--(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path
+-(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error
 {
-	NSUnimplementedMethod();
+    if (error != NULL) {
+        //TODO set error
+    }
+    
 	return NO;
 #if 0
 	NSDate *date=[attributes objectForKey:NSFileModificationDate];
@@ -570,8 +573,10 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		if(utime((unichar *)[path fileSystemRepresentationW],timep)<0)
 			return NO;
 	}
+    
 	return YES;
 #endif
+
 }
 
 -(NSDictionary *)fileAttributesAtPath:(NSString *)path traverseLink:(BOOL)traverse

@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <fcntl.h>
 #include <pwd.h>
 #include <grp.h>
+#include <time.h>
 #include <dirent.h>
 #include <errno.h>
 
@@ -435,8 +436,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return (symlink([otherPath fileSystemRepresentation], [path fileSystemRepresentation]) == 0);
 }
 
--(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path {
-    NSUnimplementedMethod();
+-(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error
+{
+    if (error != NULL) {
+        //TODO set error
+    }
+    
     return NO;
 }
 

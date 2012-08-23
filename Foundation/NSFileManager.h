@@ -27,6 +27,7 @@ FOUNDATION_EXPORT NSString * const NSFileTypeUnknown;
 
 FOUNDATION_EXPORT NSString * const NSFileSize;
 FOUNDATION_EXPORT NSString * const NSFileModificationDate;
+FOUNDATION_EXPORT NSString * const NSFileCreationDate;
 FOUNDATION_EXPORT NSString * const NSFileOwnerAccountName;
 FOUNDATION_EXPORT NSString * const NSFileGroupOwnerAccountName;
 

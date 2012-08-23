@@ -284,8 +284,7 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
 }
 
 -(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path {
-   NSInvalidAbstractInvocation();
-   return NO;
+    return [self setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:NULL];
 }
 
 -(const char *)fileSystemRepresentationWithPath:(NSString *)path {
