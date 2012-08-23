@@ -1184,10 +1184,13 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(void)_GetWindowRectDidSize:(BOOL)didSize {
-   CGRect frame=[self queryFrame];
-   
+    CGRect frame=[self queryFrame];
+    
     if(frame.size.width>0 && frame.size.height>0){
-    [_delegate platformWindow:self frameChanged:frame didSize:didSize];
+        if(![self isMiniaturized])
+            _frame=frame;
+        
+        [_delegate platformWindow:self frameChanged:frame didSize:didSize];
     }
 }
 
