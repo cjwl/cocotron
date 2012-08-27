@@ -208,7 +208,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else
       seperatorString = [[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator];
    decimalSeperator = ([seperatorString length] > 0 ) ? [seperatorString characterAtIndex:0] : '.';
-
+	
    NSInteger     i;
    NSInteger     len = [_string length] - _location;
    char    p[len + 1], *q;
@@ -216,7 +216,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    for (i = 0; i < len; i++)
    {
-      c  = [_string characterAtIndex:i + _location];    
+      c  = [_string characterAtIndex:i + _location];
+      // Just replace any char from the skip set with space - the double parser will then skip them automatically 
+      if ([_skipSet characterIsMember:c]) c = ' ';
       if (c == decimalSeperator) c = '.';
       p[i] = (char)c;
    }
