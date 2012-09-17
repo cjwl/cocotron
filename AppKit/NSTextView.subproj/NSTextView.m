@@ -830,11 +830,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     }
 }
 
-// kind of hackish, not necessary if we don't want space bar as an NSButton performClick
--(void)performClick:sender {
-   [self insertText:@" "];
-}
-
 -(void)insertNewline:sender {
     if(_isFieldEditor){
         [self _textDidEndWithMovement:NSReturnTextMovement];

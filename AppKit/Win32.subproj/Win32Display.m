@@ -157,7 +157,8 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
     _cursorDisplayCount=1;
     _cursorCache=[NSMutableDictionary new];
 	_pastLocation = [self mouseLocation];
-    
+	   
+	   _ignoringModifiersString = [NSMutableString new];
     [self loadPrivateFonts];
    }
    return self;
@@ -797,13 +798,27 @@ The values should be upgraded to something which is more generic to implement, p
    NSString      *characters;
    NSString      *charactersIgnoringModifiers;
    BOOL           isARepeat=NO;
-   unsigned short keyCode;
    int            bufferSize=0,ignoringBufferSize=0;
    BYTE           keyState[256];
 
+	// !!!! This code is able to get proper char events even for chars built using dead-keys, but we're loosing contents of KeyUp events.
+	//      No idea why, but we are more in need for proper chars (especially for international users) than for proper KeyUp messages contents
+	//!!!!!!!!!!!!!!!!!!!!!
    GetKeyboardState(keyState);
-   bufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
-
+	if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
+		// wParam is our unicode char
+		*buffer = msg.wParam;
+		bufferSize = 1;
+	} else {
+		// No idea why but not calling that one (when we don't need it) leads to WM_CHAR translated messages not being received
+		ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
+		
+		if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
+			bufferSize = 0;
+		} else {
+			bufferSize = ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
+		}
+	}
    keyState[VK_CONTROL]=0x00;
    keyState[VK_LCONTROL]=0x00;
    keyState[VK_RCONTROL]=0x00;
@@ -812,10 +827,29 @@ The values should be upgraded to something which is more generic to implement, p
    keyState[VK_MENU]=0x00;
    keyState[VK_LMENU]=0x00;
    keyState[VK_RMENU]=0x00;
-   ignoringBufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,ignoringBuffer,256,0);
+	if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
+		// Let's save that for later
+		ignoringBufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,ignoringBuffer,256,0);
+		if (ignoringBufferSize > 0) {
+			[_ignoringModifiersString appendString:[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]];
+		}
+		ignoringBufferSize = 0;
+	} else if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
+		// Let's get what we previously saved from our keydown events
+		[_ignoringModifiersString getCharacters:ignoringBuffer];
+		ignoringBufferSize = [_ignoringModifiersString length];
+		// Reset the saved ignoring modifiers string
+		[_ignoringModifiersString release];
+		_ignoringModifiersString = [NSMutableString new];
+	}
+	
+	if (msg.message != WM_CHAR && msg.message != WM_SYSCHAR) {
+		// Let's save the current keyCode
+		_keyCode=appleKeyCodeForWindowsKeyCode(msg.wParam,msg.lParam,&_isKeypad);
+	}
 
-   if(bufferSize==0){
-
+	if(bufferSize==0){
+		// Handle the special keys - we won't receive any char message from them
     switch(msg.wParam){
      case VK_LBUTTON: break;
      case VK_RBUTTON: break;
@@ -823,7 +857,6 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_MBUTTON: break;
 
      case VK_BACK:    break;
-     case VK_TAB:     buffer[bufferSize++]='\t';                     break;
 
      case VK_CLEAR:   buffer[bufferSize++]=NSClearDisplayFunctionKey;break;
      case VK_RETURN:  break;
@@ -838,8 +871,6 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_PAUSE:    buffer[bufferSize++]=NSPauseFunctionKey;       break;
      case VK_CAPITAL:  break;
 
-     case VK_ESCAPE:   buffer[bufferSize++]='\x1B';                   break;
-     case VK_SPACE:    buffer[bufferSize++]=' ';                      break;
      case VK_PRIOR:    buffer[bufferSize++]=NSPageUpFunctionKey;      break;
      case VK_NEXT:     buffer[bufferSize++]=NSPageDownFunctionKey;    break;
      case VK_END:      buffer[bufferSize++]=NSEndFunctionKey;         break;
@@ -855,36 +886,10 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_INSERT:   buffer[bufferSize++]=NSInsertFunctionKey;      break;
      case VK_DELETE:   buffer[bufferSize++]=NSDeleteFunctionKey;      break;
      case VK_HELP:     buffer[bufferSize++]=NSHelpFunctionKey;        break;
-
-     case '0': case '1': case '2': case '3': case '4':
-     case '5': case '6': case '7': case '8': case '9':
-      buffer[bufferSize++]=msg.wParam;
-      break;
-
-     case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': 
-     case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': 
-     case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': 
-     case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': 
-     case 'Y': case 'Z':
-      buffer[bufferSize++]=msg.wParam;
-      break;
- 
      case VK_LWIN:     break;
      case VK_RWIN:     break;
      case VK_APPS:     break;
 
-     case VK_NUMPAD0:  buffer[bufferSize++]='0'; break;
-     case VK_NUMPAD1:  buffer[bufferSize++]='1'; break;
-     case VK_NUMPAD2:  buffer[bufferSize++]='2'; break;
-     case VK_NUMPAD3:  buffer[bufferSize++]='3'; break;
-     case VK_NUMPAD4:  buffer[bufferSize++]='4'; break;
-     case VK_NUMPAD5:  buffer[bufferSize++]='5'; break;
-     case VK_NUMPAD6:  buffer[bufferSize++]='6'; break;
-     case VK_NUMPAD7:  buffer[bufferSize++]='7'; break;
-     case VK_NUMPAD8:  buffer[bufferSize++]='8'; break;
-     case VK_NUMPAD9:  buffer[bufferSize++]='9'; break;
-     case VK_MULTIPLY: buffer[bufferSize++]='*'; break;
-     case VK_ADD:      buffer[bufferSize++]='+'; break;
      case VK_SEPARATOR:break;
      case VK_SUBTRACT: break;
      case VK_DECIMAL:  break;
@@ -937,31 +942,29 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_PA1: break;
      case VK_OEM_CLEAR: break;
     }
-
    }
+	// Don't send events on empty WM_KEYDOWN messages - we'll send a message when we get the WM_CHAR
+	if ((msg.message != WM_KEYDOWN && msg.message != WM_SYSKEYDOWN) || bufferSize > 0) {
+		if(ignoringBufferSize<=0 && bufferSize > 0) {
+			for(ignoringBufferSize=0;ignoringBufferSize<bufferSize;ignoringBufferSize++) {
+				ignoringBuffer[ignoringBufferSize]=buffer[ignoringBufferSize];
+			}
+		}
+		
+		NSEvent *event;
+		BOOL     isKeypad;
+		
+		characters=(bufferSize>0)?[NSString stringWithCharacters:buffer length:bufferSize]:@"";
+		charactersIgnoringModifiers=(ignoringBufferSize>0)?[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]:@"";
+		
+		if(_isKeypad)
+			modifierFlags|=NSNumericPadKeyMask;
 
-   if(ignoringBufferSize==0)
-    for(ignoringBufferSize=0;ignoringBufferSize<bufferSize;ignoringBufferSize++)
-     ignoringBuffer[ignoringBufferSize]=buffer[ignoringBufferSize];
-   
-   if(bufferSize>0){
-    NSEvent *event;
-    BOOL     isKeypad;
-
-    characters=[NSString stringWithCharacters:buffer length:bufferSize];
-    charactersIgnoringModifiers=[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize];
-
-    keyCode=appleKeyCodeForWindowsKeyCode(msg.wParam,msg.lParam,&isKeypad);
-    
-    if(isKeypad)
-     modifierFlags|=NSNumericPadKeyMask;
-
-    event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:keyCode];
-    [self postEvent:event atStart:NO];
-    return YES;
-   }
-
-   return NO;
+		event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
+		[self postEvent:event atStart:NO];
+		return YES;
+	}
+	return NO;
 }
 
 -(BOOL)postMouseMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
@@ -1155,19 +1158,27 @@ static HWND findWindowForScrollWheel(POINT point){
     _lastPosition=msg.lParam;
    }
 
-   switch(msg.message){
+	TranslateMessage(&msg);
 
-     case WM_KEYDOWN:
-     case WM_SYSKEYDOWN:
-      type=NSKeyDown;
-      break;
+	switch(msg.message){
 
-     case WM_KEYUP:
-     case WM_SYSKEYUP:
-      type=NSKeyUp;
-      break;
+	   case WM_KEYDOWN:
+	   case WM_SYSKEYDOWN:
+		   type=NSKeyDown;
+		   break;
+		   
+	   case WM_KEYUP:
+	   case WM_SYSKEYUP:
+		   type=NSKeyUp;
+		   break;
+		   
+		case WM_CHAR:
+		case WM_SYSCHAR:
+		   type=NSKeyDown;
+		   break;
 
-     case WM_MOUSEMOVE:
+		   
+	   case WM_MOUSEMOVE:
       [self _unhideCursorForMouseMove];
       
       if(msg.wParam&MK_LBUTTON)
