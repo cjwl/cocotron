@@ -22,6 +22,8 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
 										@"tif",  @"TIF",
 										@"png",  @"PNG",
 										@"jpg",  @"JPG",
+										@"jpeg", @"JPEG",
+										@"jpe",  @"JPE",
 										@"gif",  @"GIF",
 										@"bmp",  @"BMP",
 										@"icns", @"ICNS",
