@@ -34,7 +34,7 @@ enum
 };
 
 typedef unsigned char stbi_uc;
-static uint32 img_x, img_y;
+static int32 img_x, img_y;
 static int img_n, img_out_n;
 
 static uint8  *out;
