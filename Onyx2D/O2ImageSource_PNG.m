@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2Image.h>
 
+#import "O2Defines_libpng.h"
 #import <assert.h>
 
 
@@ -25,9 +26,6 @@ typedef   signed short  int16;
 typedef unsigned int   uint32;
 typedef   signed int    int32;
 typedef unsigned int   uint;
-
-static uint32 img_x, img_y;
-static int img_n, img_out_n;
 
 enum
 {
@@ -45,6 +43,148 @@ enum
    STBI_rgb        = 3,
    STBI_rgb_alpha  = 4,
 };
+
+#if LIBPNG_PRESENT
+#include <libpng/include/png.h>
+
+typedef struct png_data_t {
+	const uint8_t *data;
+	int len;
+} png_data_t;
+
+static void png_read_data(png_structp pngPtr, png_bytep data, png_size_t length) {
+    //Here we get our IO pointer back from the read struct.
+    //This is the parameter we passed to the png_set_read_fn() function.
+    //Our std::istream pointer.
+    png_data_t *a = (png_data_t *)png_get_io_ptr(pngPtr);
+    //Cast the pointer to std::istream* and read 'length' bytes into 'data'
+    memcpy(data, a->data, length);
+	a->data += length;
+}
+
+// Load an unpacked image into outData - RGBA 8 bits/pixels
+// Adapted from libpng sample code
+bool load_png_image(const unsigned char *buffer, int length, int *outWidth, int *outHeight, void **outData) {
+    png_structp png_ptr;
+    png_infop info_ptr;
+    unsigned int sig_read = 0;
+	
+    /* Create and initialize the png_struct
+     * with the desired error handler
+     * functions.  If you want to use the
+     * default stderr and longjump method,
+     * you can supply NULL for the last
+     * three parameters.  We also supply the
+     * the compiler header file version, so
+     * that we know if the application
+     * was compiled with a compatible version
+     * of the library.  REQUIRED
+     */
+    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
+									 NULL, NULL, NULL);
+	
+    if (png_ptr == NULL) {
+        return false;
+    }
+	
+    /* Allocate/initialize the memory
+     * for image information.  REQUIRED. */
+    info_ptr = png_create_info_struct(png_ptr);
+    if (info_ptr == NULL) {
+        png_destroy_read_struct(&png_ptr, NULL, NULL);
+        return false;
+    }
+	
+    /* Set error handling if you are
+     * using the setjmp/longjmp method
+     * (this is the normal method of
+     * doing things with libpng).
+     * REQUIRED unless you  set up
+     * your own error handlers in
+     * the png_create_read_struct()
+     * earlier.
+     */
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        /* Free all of the memory associated
+         * with the png_ptr and info_ptr */
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        /* If we get here, we had a
+         * problem reading the file */
+        return false;
+    }
+	
+    /* Set up the output control if
+     * you are using standard C streams */
+	png_data_t data = {
+		.data = buffer,
+		.len = length
+	};
+	png_set_read_fn(png_ptr,(png_voidp)&data, png_read_data);
+
+    /* If we have already
+     * read some of the signature */
+    png_set_sig_bytes(png_ptr, sig_read);
+	
+    png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_SHIFT | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, NULL);
+	
+	int nb_comp = png_get_channels(png_ptr, info_ptr);
+    int width = png_get_image_width(png_ptr, info_ptr);
+    int height = png_get_image_height(png_ptr, info_ptr);
+	
+	// Adjust the size to adding the alpha if needed
+    unsigned int row_bytes = png_get_rowbytes(png_ptr, info_ptr);
+	if (nb_comp == 3) {
+		row_bytes += width; // Add some room for the alpha
+	}
+    *outData = (unsigned char*) malloc(row_bytes * height);
+	
+    png_bytepp row_pointers = png_get_rows(png_ptr, info_ptr);
+	
+    for (int i = 0; i < height; i++) {
+		if (nb_comp == 3) {
+			// Add the alpha bytes
+			uint8_t *src = row_pointers[i];
+			uint8_t *dest = *outData+(row_bytes * i);
+			for (int j = 0; j < width; ++j, src += 3, dest += 4) {
+				dest[0]=src[0];
+				dest[1]=src[1];
+				dest[2]=src[2];
+				dest[3]=0xff;
+			}
+		} else {
+			// Just copy the bytes
+			memcpy(*outData+(row_bytes * i), row_pointers[i], row_bytes);
+		}
+    }
+	
+	*outWidth = width;
+	*outHeight = height;
+
+    /* Clean up after the read,
+     * and free any memory allocated */
+    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+	
+    /* That's it */
+    return true;
+}
+
+// Note: we ignore req_comp - we always returns RGBA 8 bits/component
+unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, int *x, int *y, int *comp, int req_comp)
+{
+	void* result = NULL;
+	if (comp) {
+		*comp = 4;
+	}
+	if (load_png_image(buffer, len, x, y, &result) == NO) {
+		result = NULL;
+	}
+	return result;
+}
+
+#else
+
+static uint32 img_x, img_y;
+static int img_n, img_out_n;
 
 static const uint8 *img_buffer, *img_buffer_end;
 
@@ -96,9 +236,8 @@ static void skip(int n)
 
 static uint8 compute_y(int r, int g, int b)
 {
-   return (uint8) (((r*77) + (g*150) +  (29*b)) >> 8);
+	return (uint8) (((r*77) + (g*150) +  (29*b)) >> 8);
 }
-
 
 static unsigned char *convert_format(unsigned char *data, int img_n, int req_comp)
 {
@@ -500,6 +639,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    start_mem(buffer,len);
    return do_png(x,y,comp,req_comp);
 }
+#endif
 
 @implementation O2ImageSource_PNG
 
