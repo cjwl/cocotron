@@ -233,7 +233,9 @@ extern NSSize _NSToolbarIconSizeSmall;
 }
 
 -(void)_didChange {
-   [_toolbar itemSizeDidChange];
+	// Changing a toolbar item doesn't change the height of the toolbar - so this call is not helping
+	// [_toolbar itemSizeDidChange];
+	
    [_enclosingView setNeedsDisplay:YES];
 }
 
