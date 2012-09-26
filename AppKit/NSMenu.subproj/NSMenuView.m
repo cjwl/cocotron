@@ -91,132 +91,226 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [screens objectAtIndex:0];// should not happen
 }
 
+#if 0
+#define MENUDEBUG(x, ...) NSLog(x, __VA_ARGS__)
+#else
+#define MENUDEBUG(x, ...)
+#endif
+
+const float kMenuInitialClickThreshold = 0.1f;
+const float kMouseMovementThreshold = .001f;
+
 -(NSMenuItem *)trackForEvent:(NSEvent *)event {
-   NSMenuItem *item=nil;
-
-   enum {
-    STATE_FIRSTMOUSEDOWN,
-    STATE_MOUSEDOWN,
-    STATE_MOUSEUP,
-    STATE_EXIT
-   } state=STATE_FIRSTMOUSEDOWN;
-   NSPoint point=[event locationInWindow];
-   NSPoint firstPoint=point;
+	NSMenuItem *item=nil;
+	
+	enum {
+		STATE_FIRSTMOUSEDOWN,
+		STATE_MOUSEDOWN,
+		STATE_MOUSEUP,
+		STATE_EXIT
+	} state=STATE_FIRSTMOUSEDOWN;
+	
+	// Get the menu management ball rolling
+	NSPoint point=[event locationInWindow];
+	NSPoint firstPoint=point;
 	NSTimeInterval firstTimestamp = [event timestamp];
-   NSMutableArray *viewStack=[NSMutableArray array];
-   BOOL oldAcceptsMouseMovedEvents = [[self window] acceptsMouseMovedEvents];
-   [[self window] setAcceptsMouseMovedEvents:YES];
-
-   [[self menu] update];
-
-   [viewStack addObject:self];
-
-   [event retain];
+	
+	// Cascading menus we manage will be pushed and popped on the viewStack
+	NSMutableArray *viewStack=[NSMutableArray array];
+	
+	// Make sure we can put things back the way we found them
+	BOOL oldAcceptsMouseMovedEvents = [[self window] acceptsMouseMovedEvents];
+	
+	// But while we're dealing with menus we want to track the mouse...
+	[[self window] setAcceptsMouseMovedEvents:YES];
+	
+	// Make sure the menu contents are up to date
+	[[self menu] update];
+	
+	// And we, of course, are first on the stack
+	[viewStack addObject:self];
+	
+	[event retain];
 	
 	BOOL cancelled = NO;
-   do {
-    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    int                count=[viewStack count];
-    NSScreen          *screen=[self _screenForPoint:[[event window] convertBaseToScreen:point]];
-
-    point=[[event window] convertBaseToScreen:point];
-    if(count==1)
-     screen=[self _screenForPoint:point];
-
-    while(--count>=0){
-     NSMenuView *checkView=[viewStack objectAtIndex:count];
-     NSPoint     checkPoint=[[checkView window] convertScreenToBase:point];
-
-     checkPoint=[checkView convertPoint:checkPoint fromView:nil];
-
-     if(NSMouseInRect(checkPoint,[checkView bounds],[checkView isFlipped])){
-      unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
-		 
-      if(itemIndex!=[checkView selectedItemIndex]){
-       NSMenuView *branch;
-
-       while(count+1<[viewStack count]){
-        [[(NSView *)[viewStack lastObject] window] close];
-        [viewStack removeLastObject];
-       }
-       [checkView setSelectedItemIndex:itemIndex];
-
-       if((branch=[checkView viewAtSelectedIndexPositionOnScreen:screen])!=nil)
-		   [viewStack addObject:branch];
-	  }
-      break;
-	 } else {
-		 if (checkView == [viewStack lastObject]) {
-			 // The mouse is outside of the top menu - be sure no item is selected anymore
-			 [checkView setSelectedItemIndex:NSNotFound];
-		 }
-	 }
-	}
-
-    if(count<0){
-     [[viewStack lastObject] setSelectedItemIndex:NSNotFound];
-    }
-
-    [event release];
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSAppKitDefinedMask];
-    [event retain];
-	   // We use this special AppKitDefined event to let the menu respond to the app deactivation - it *has*
-	   // to be passed through the event system, unfortunately
-	   if ([event type] == NSAppKitDefined) {
-		   if ([event subtype] == NSApplicationDeactivated) {
-			   cancelled = YES;
-		   }
-	   }
-	   
-	if (cancelled == NO && [event type] != NSAppKitDefined) {
-		   
-    point=[event locationInWindow];
-	// Don't test for "== 0." - we tend to receive some delta with some .000000... values while the mouse doesn't move
-	BOOL mouseMoved = ([event type] != NSAppKitDefined) && (fabs([event deltaX]) > .001 || fabs([event deltaY]) > .001);
-    switch(state){
-		case STATE_FIRSTMOUSEDOWN:
-			item=[[viewStack lastObject] itemAtSelectedIndex];
+	
+	MENUDEBUG(@"entering outer loop");
+	
+	// Start tracking the mouse movements and clicks
+	do {
+		// Lots of objects are going to come and go as we track the mouse
+		// so a tactical autorelease pool keeps a lid on things
+		NSAutoreleasePool *pool=[NSAutoreleasePool new];
+		int                count=[viewStack count];
+		NSScreen          *screen=[self _screenForPoint:[[event window] convertBaseToScreen:point]];
+		
+		point=[[event window] convertBaseToScreen:point];
+		
+		// We've not pushed any views yet so the screen is where our window is
+		if(count==1) {
+			screen=[self _screenForPoint:point];
+		}
+		
+		// Take a look at the visible menu stack (we're within a big loop so views can come and
+		// go and the mouse can wander all over) deepest first
+		while(--count>=0){
 			
-			if([event type]==NSLeftMouseUp) {
-				// The menu is really active after a mouse up (which means the menu will stay sticky)...
-				if ([event timestamp] - firstTimestamp > .05 && [viewStack count]==1 && [item isEnabled] && ![item hasSubmenu]) {
-					state=STATE_EXIT;
-				} else {
-					state=STATE_MOUSEUP;
+			// get the deepest one
+			NSMenuView *checkView=[viewStack objectAtIndex:count];
+			
+			// And find out where the mouse is relative to it
+			NSPoint     checkPoint=[[checkView window] convertScreenToBase:point];
+			
+			checkPoint=[checkView convertPoint:checkPoint fromView:nil];
+			
+			// If it's inside the menu view
+			if(NSMouseInRect(checkPoint,[checkView bounds],[checkView isFlipped])){
+				
+				MENUDEBUG(@"found a menu: %@", checkView);
+				
+				// Which item is the cursor on top of?
+				unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
+
+				MENUDEBUG(@"index: %u", itemIndex);
+
+				// If it's not the currently selected item
+				if(itemIndex!=[checkView selectedItemIndex]){
+					NSMenuView *branch;
+					
+					// This looks like it's dealing with pushed cascading menu
+					// views that are no longer needed because the user has moved
+					// on - so pop them all off.
+					while (count+1<[viewStack count]) {
+						NSView* view = [viewStack lastObject];
+						MENUDEBUG(@"popping cascading view: %@", view);
+						[[view window] close];
+						[viewStack removeLastObject];
+					}
+					
+					// And now select the new item
+					[checkView setSelectedItemIndex:itemIndex];
+					
+					// If it's got a cascading menu then push that on the stack
+					if((branch=[checkView viewAtSelectedIndexPositionOnScreen:screen])!=nil) {
+						MENUDEBUG(@"adding a new cascading view: %@", branch);
+						[viewStack addObject:branch];
+					}
 				}
-			} else if([event type]==NSLeftMouseDown || mouseMoved) {
-				// .. Or a mouse down (second click after the sticky menu) or a real move
-				state=STATE_MOUSEDOWN;
+				// And bail out of the while loop - we're in the right place
+				break;
+			} else {
+				// We've wandered off the menu so don't show anything selected if it's the deepest
+				// visible view
+				if (checkView == [viewStack lastObject]) {
+					MENUDEBUG(@"clearing selection in view: %@", checkView);
+					// The mouse is outside of the top menu - be sure no item is selected anymore
+					[checkView setSelectedItemIndex:NSNotFound];
+				}
 			}
-			break;
+		}
+		
+		// Looks like we've popped everything so nothing can be selected
+		if(count<0){
+			MENUDEBUG(@"clearing all selection");
+			[[viewStack lastObject] setSelectedItemIndex:NSNotFound];
+		}
+		
+		[event release];
+		
+		// Let's take a look at what's come in on the event queue
+		event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSAppKitDefinedMask];
+		[event retain];
+		
+		// We use this special AppKitDefined event to let the menu respond to the app deactivation - it *has*
+		// to be passed through the event system, unfortunately
+		if ([event type] == NSAppKitDefined) {
+			if ([event subtype] == NSApplicationDeactivated) {
+				MENUDEBUG(@"NSApplicationDeactivated");
+				cancelled = YES;
+			}
+		}
+		
+		if (cancelled == NO && [event type] != NSAppKitDefined) {
 			
-		default:
-			item=[[viewStack lastObject] itemAtSelectedIndex];
-			if([event type]==NSLeftMouseUp){
-				if(item == nil || ([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu]))
-					state=STATE_EXIT;
+			// looks like we can keep rolling
+			
+			point=[event locationInWindow];
+			// Don't test for "== 0." - we tend to receive some delta with some .000000... values while the mouse doesn't move
+			BOOL mouseMoved = ([event type] != NSAppKitDefined) &&
+								(fabs([event deltaX]) > kMouseMovementThreshold || fabs([event deltaY]) > kMouseMovementThreshold);
+			
+			NSMenuView* activeView = nil;
+
+			// We may not have a menuview here - so be cautious - and we may have added a cascading menu
+			// so lastObject is also not the right thing to look at - we need to look at the menuview found in
+			// the preceeding block (if there was one found - the user could have moused somewhere else entirely
+			// remember)
+			if (count >= 0) {
+				activeView = [viewStack objectAtIndex: count];
 			}
-			break;
-    }
-	   }
-    [pool release];
-   }while(cancelled == NO && state!=STATE_EXIT);
-   [event release];
-
-   if([viewStack count]>0)
-    item=[[viewStack lastObject] itemAtSelectedIndex];
-
-   while([viewStack count]>1){
-    [[(NSView *)[viewStack lastObject] window] close];
-    [viewStack removeLastObject];
-   }
-   [viewStack removeLastObject];
-
-   _selectedItemIndex=NSNotFound;
-   [[self window] setAcceptsMouseMovedEvents:oldAcceptsMouseMovedEvents];
-   [self setNeedsDisplay:YES];
-
-   return ([item isEnabled] && ![item hasSubmenu])?item:(NSMenuItem *)nil;
+			
+			switch(state){
+				case STATE_FIRSTMOUSEDOWN:
+					// Let's take a look at the item under the cursor (if there is one)
+					item=[activeView itemAtSelectedIndex];
+					
+					if([event type]==NSLeftMouseUp) {
+						// The menu is really active after a mouse up (which means the menu will stay sticky)...
+						// The timestamp is to avoid false clicks - make sure there's a delay so the user can
+						if ([event timestamp] - firstTimestamp > kMenuInitialClickThreshold &&
+							[viewStack count]==1 && [item isEnabled] && ![item hasSubmenu]) {
+							MENUDEBUG(@"Handling selected item - exiting");
+							state=STATE_EXIT;
+						} else {
+							MENUDEBUG(@"mouse up - continuing");
+							state=STATE_MOUSEUP;
+						}
+					} else if([event type]==NSLeftMouseDown || mouseMoved) {
+						// .. Or a mouse down (second click after the sticky menu) or a real move
+						state=STATE_MOUSEDOWN;
+					}
+					break;
+					
+				default:
+					item=[activeView itemAtSelectedIndex];
+					if([event type]==NSLeftMouseUp){
+						MENUDEBUG(@"mouseUp on item: %@", item);
+						if(item == nil || ([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu])) {
+							MENUDEBUG(@"mouse up - exiting because of many possible reasons...");
+							state=STATE_EXIT;
+						} else {
+							MENUDEBUG(@"mouse up");
+							state=STATE_MOUSEUP;
+						}
+					}
+					break;
+			}
+		}
+		[pool release];
+	}while(cancelled == NO && state!=STATE_EXIT);
+	[event release];
+	
+	MENUDEBUG(@"done with the event loop");
+	
+	// If we've got a menu still visible
+	if([viewStack count]>0) {
+		// Get the selected item
+		item=[[viewStack lastObject] itemAtSelectedIndex];
+		MENUDEBUG(@"got the selected item at the top most menu view: %@", item);
+	}
+	
+	MENUDEBUG(@"removing the visible menu views");
+	while([viewStack count]>1){
+		[[(NSView *)[viewStack lastObject] window] close];
+		[viewStack removeLastObject];
+	}
+	[viewStack removeLastObject];
+	
+	_selectedItemIndex=NSNotFound;
+	[[self window] setAcceptsMouseMovedEvents:oldAcceptsMouseMovedEvents];
+	[self setNeedsDisplay:YES];
+	
+	return ([item isEnabled] && ![item hasSubmenu])?item:(NSMenuItem *)nil;
 }
 
 -(void)mouseDown:(NSEvent *)event {
