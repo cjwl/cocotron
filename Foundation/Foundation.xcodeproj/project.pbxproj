@@ -16445,6 +16445,7 @@
 					"-DDEBUG",
 					"-march=i686",
 					"$(OTHER_CFLAGS)",
+					"-DWINDOWS",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",
@@ -16458,6 +16459,7 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--image-base=0xa10000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
+					"-v",
 				);
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -16640,6 +16642,7 @@
 					"-D__LITTLE_ENDIAN__",
 					"-march=i686",
 					"$(OTHER_CFLAGS)",
+					"-DWINDOWS",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",
@@ -16653,6 +16656,7 @@
 					"-Wl,--export-all-symbols",
 					"-Wl,--image-base=0xa10000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
+					"-v",
 				);
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
