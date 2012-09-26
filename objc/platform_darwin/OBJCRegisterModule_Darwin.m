@@ -15,7 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <string.h>
 #import "ObjCException.h"
 #import <Foundation/NSRaiseException.h>
-#import <stdio.h>
 
 /*
  * Fetches all Objective-C-Modules via the mach-o/dyld.h interface and initializes them.
@@ -47,7 +46,6 @@ void OBJCRegisterModule_Darwin(const char * name)
       uint32_t size;
       char *section = getsectdatafromheader(head,"__OBJC", "__message_refs", &size);
 #endif
-      //if(head->filetype == MH_DYLIB || head->filetype == MH_BUNDLE)
       section += _dyld_get_image_vmaddr_slide(i);
       
       long nmess = size / sizeof(SEL);
