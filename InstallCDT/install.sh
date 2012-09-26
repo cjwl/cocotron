@@ -19,31 +19,56 @@
 #OR OTHER DEALINGS IN THE SOFTWARE.
 #
 # Inspired by the build-cross.sh script by Sam Lantinga, et al
-# Usage: install.sh <platform> <architecture> <gcc-version>"
+# Usage: install.sh <platform> <architecture> [<compiler>] [<compiler-version>]"
 # Windows i386, Linux i386, Solaris sparc
 
+#target platform
 if [ ""$1"" = "" ];then
 	targetPlatform="Windows"
 else
 	targetPlatform=$1
 fi
 
+#target architecture
 if [ ""$2"" = "" ];then
 	targetArchitecture="i386"
 else
 	targetArchitecture=$2
 fi
 
+#compiler
 if [ ""$3"" = "" ];then
-	gccVersion="4.3.1"
+        compiler="llvm-clang"
 else
-	gccVersion=$3
+        compiler=$3
 fi
 
+#switchable compiler
 if [ ""$4"" = "" ];then
-        gccVersionDate="-02242010"
+        if [ "$compiler" = "gcc" ]; then
+                gccVersion="4.3.1"
+        elif [ "$compiler" = "llvm-clang" ]; then
+                gccVersion="trunk"
+        else
+                /bin/echo "Unknown compiler "$compiler
+                exit 1
+        fi
 else
-	gccVersionDate="-"$4
+        gccVersion=$4
+fi
+
+#compiler version
+if [ ""$5"" = "" ];then
+        if [ "$compiler" = "gcc" ]; then
+        gccVersionDate="-02242010"
+        elif [ "$compiler" = "llvm-clang" ]; then
+        gccVersionDate="-09182011"
+        else
+                /bin/echo "Unknown compiler "$compiler
+                exit 1
+        fi
+else
+        gccVersionDate="-"$5
 fi
 
 set -eu
@@ -72,7 +97,7 @@ binutilsConfigureFlags=""
 
 if [ $targetPlatform = "Windows" ];then
 	if [ $targetArchitecture = "i386" ];then
-		compilerTarget=i386-mingw32msvc
+		compilerTarget=i386-pc-mingw32msvc
 		compilerConfigureFlags=""
 	else
 		/bin/echo "Unsupported architecture $targetArchitecture on $targetPlatform"
@@ -129,15 +154,15 @@ downloadFolder=$productFolder/Downloads
 sourceFolder=$productFolder/Source
 interfaceFolder=$productFolder/PlatformInterfaces/$compilerTarget
 buildFolder=$productFolder/build/$targetPlatform/$targetArchitecture
-resultFolder=$productFolder/$targetPlatform/$targetArchitecture/gcc-$gccVersion
+resultFolder=$productFolder/$targetPlatform/$targetArchitecture/$compiler-$gccVersion
 toolFolder=$productFolder/bin
 
 PATH="$resultFolder/bin:$PATH"
 
 downloadCompilerIfNeeded(){
-	$scriptResources/downloadFilesIfNeeded.sh $downloadFolder "http://cocotron-tools-gpl3.googlecode.com/files/gcc-$gccVersion$gccVersionDate.tar.bz2 http://ftp.sunet.se/pub/gnu/gmp/gmp-$gmpVersion.tar.bz2 http://cocotron-binutils-2-21.googlecode.com/files/binutils-$binutilsVersion.tar.gz http://cocotron-tools-gpl3.googlecode.com/files/mpfr-$mpfrVersion.tar.bz2"
+	$scriptResources/downloadFilesIfNeeded.sh $downloadFolder "http://cocotron-tools-gpl3.googlecode.com/files/$compiler-$gccVersion$gccVersionDate.tar.bz2 http://ftp.sunet.se/pub/gnu/gmp/gmp-$gmpVersion.tar.bz2 http://cocotron-binutils-2-21.googlecode.com/files/binutils-$binutilsVersion.tar.gz http://cocotron-tools-gpl3.googlecode.com/files/mpfr-$mpfrVersion.tar.bz2"
 
-	$scriptResources/unarchiveFiles.sh $downloadFolder $sourceFolder "gcc-$gccVersion$gccVersionDate binutils-$binutilsVersion gmp-$gmpVersion mpfr-$mpfrVersion"
+	$scriptResources/unarchiveFiles.sh $downloadFolder $sourceFolder "$compiler-$gccVersion$gccVersionDate binutils-$binutilsVersion gmp-$gmpVersion mpfr-$mpfrVersion"
 }
 
 createWindowsInterfaceIfNeeded(){
@@ -203,19 +228,36 @@ configureAndInstall_gmpAndMpfr() {
 }
 
 configureAndInstall_gcc() {
-	/bin/echo "Configuring, building and installing gcc "$gccVersion
-	rm -rf $buildFolder/gcc-$gccVersion
-	mkdir -p $buildFolder/gcc-$gccVersion
-	pushd $buildFolder/gcc-$gccVersion
-	CFLAGS="-m32" $sourceFolder/gcc-$gccVersion/configure -v --prefix="$resultFolder" --target=$compilerTarget \
-		--with-gnu-as --with-gnu-ld --with-headers=$resultFolder/$compilerTarget/include \
-		--without-newlib --disable-multilib --disable-libssp --disable-nls --enable-languages="$enableLanguages" \
-		--with-gmp=$buildFolder/gmp-$gmpVersion --enable-decimal-float --with-mpfr=$resultFolder --enable-checking=release \
-		--enable-objc-gc \
-		$compilerConfigureFlags
-	make 
-	make install
-	popd
+	/bin/echo "Configuring, building and installing $compiler "$gccVersion
+	if [ "$compiler" = "gcc" ]; then
+		rm -rf $buildFolder/$compiler-$gccVersion
+		mkdir -p $buildFolder/$compiler-$gccVersion
+		pushd $buildFolder/$compiler-$gccVersion
+		CFLAGS="-m32" $sourceFolder/$compiler-$gccVersion/configure -v --prefix="$resultFolder" --target=$compilerTarget \
+			--with-gnu-as --with-gnu-ld --with-headers=$resultFolder/$compilerTarget/include \
+			--without-newlib --disable-multilib --disable-libssp --disable-nls --enable-languages="$enableLanguages" \
+			--with-gmp=$buildFolder/gmp-$gmpVersion --enable-decimal-float --with-mpfr=$resultFolder --enable-checking=release \
+			--enable-objc-gc \
+			$compilerConfigureFlags
+		make 
+		make install
+		popd
+	elif [ "$compiler" = "llvm-clang" ]; then
+		if [ ! -e "$productFolder/$compiler-$gccVersion/bin/clang" ]; then
+			rm -rf $productFolder/build/$compiler-$gccVersion
+			mkdir -p $productFolder/build/$compiler-$gccVersion
+			pushd $productFolder/build/$compiler-$gccVersion
+			$sourceFolder/$compiler-$gccVersion/configure --enable-optimized --prefix="$productFolder/$compiler-$compilerVersion"
+			make
+			make install
+			popd
+		else
+			/bin/echo "compiler $compiler already exists"
+		fi
+	else
+		/bin/echo "Unknown compiler $compiler"
+        exit 1
+	fi
 }
 
 stripBinaries() {
@@ -228,10 +270,12 @@ stripBinaries() {
 	do
 		strip $x
 	done
-	for x in `find $resultFolder/libexec/gcc/$compilerTarget/$gccVersion -type f -print`
-	do
-		strip $x
-	done
+	if [ "$compiler" = "gcc" ]; then
+		for x in `find $resultFolder/libexec/gcc/$compilerTarget/$gccVersion -type f -print`
+		do
+			strip $x
+		done
+	fi
 	/bin/echo "done."
 }
 
@@ -249,7 +293,7 @@ configureAndInstall_gcc
 stripBinaries
 
 /bin/echo -n "Creating specifications ..."
-$scriptResources/createSpecifications.sh $targetPlatform $targetArchitecture $productName $productVersion $compilerTarget $installResources/Specifications $gccVersion
+$scriptResources/createSpecifications.sh $targetPlatform $targetArchitecture $productName $productVersion $compilerTarget $installResources/Specifications $compiler $gccVersion
 /bin/echo "done."
 
 /bin/echo "Building tools ..."
@@ -257,6 +301,13 @@ mkdir -p $toolFolder
 cc $toolResources/retargetBundle.m -framework Foundation -o $toolFolder/retargetBundle
 /bin/echo "done."
 
-(cd $resultFolder/..;ln -fs gcc-$gccVersion g++-$gccVersion)
+if [ "$compiler" = "gcc" ]; then
+        (cd $resultFolder/..;ln -fs $compiler-$gccVersion g++-$gccVersion)
+elif [ "$compiler" = "llvm-clang" ]; then       
+        (cd $resultFolder/..;ln -fs $compiler-$gccVersion llvm-clang++-$gccVersion)
+else
+        /bin/echo "Unknown compiler $compiler"
+        exit 1
+fi
 
 /bin/echo "Script completed"

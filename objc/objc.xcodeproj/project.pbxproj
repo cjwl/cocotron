@@ -1234,6 +1234,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.llvm.clang.trunk;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
@@ -1256,6 +1257,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.llvm.clang.trunk;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
