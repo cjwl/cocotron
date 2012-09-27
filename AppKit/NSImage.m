@@ -598,24 +598,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor {
    NSMutableArray *bitmaps=[NSMutableArray array];
-   
-   for(NSImageRep *check in _representations){
-    if([check isKindOfClass:[NSBitmapImageRep class]])
-     [bitmaps addObject:check];
-    else {
-     NSSize size=[check size];
-     NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
-     
-     [self lockFocusOnRepresentation:image];
-     [check draw];
-     [self unlockFocus];
-     
-     [bitmaps addObject:image];
-    }
-    
-   }
-   
-   return [NSBitmapImageRep TIFFRepresentationOfImageRepsInArray:bitmaps usingCompression:compression factor:factor];
+	for(NSImageRep *check in _representations){
+		if([check isKindOfClass:[NSBitmapImageRep class]]) {
+			[bitmaps addObject:check];
+		} else if([check isKindOfClass:[NSCachedImageRep class]]) {
+			// We don't use the general case else we get flipped results for flipped images since lockFocusOnRepresention is flipping and the Cache content
+			// is already flipped
+			NSRect r = { .origin = NSZeroPoint, .size = check.size };
+			[self lockFocus];
+			NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithFocusedViewRect: r];
+			[self unlockFocus];
+
+			[bitmaps addObject:image];
+			[image release];
+		} else {
+			NSSize size=[check size];
+			NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
+			
+			[self lockFocusOnRepresentation:image];
+			[check draw];
+			[self unlockFocus];
+			
+			[bitmaps addObject:image];
+			[image release];
+		}
+		
+	}
+	return [NSBitmapImageRep TIFFRepresentationOfImageRepsInArray:bitmaps usingCompression:compression factor:factor];
 }
 
 -(void)lockFocus {
@@ -668,13 +677,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
 	// Some fake view, just so the context knows if it's flipped or not
 	NSView *view = [[[NSImageCacheView alloc] initWithFlipped:[self isFlipped]] autorelease];
-    [[context focusStack] addObject:self];
+	[[context focusStack] addObject:self];
 
 	if([self isFlipped]){
     CGAffineTransform flip={1,0,0,-1,0,[self size].height};
     CGContextConcatCTM(graphicsPort,flip);
    }
-
 }
 
 -(void)unlockFocus {
