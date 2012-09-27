@@ -546,6 +546,7 @@
 			baseConfigurationReference = FE06B1CB1430E7AF0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.llvm.clang.trunk;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
 				PRODUCT_NAME = CoreServices;
@@ -558,6 +559,7 @@
 			baseConfigurationReference = FE06B1CB1430E7AF0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.llvm.clang.trunk;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
 				PRODUCT_NAME = CoreServices;

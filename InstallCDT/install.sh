@@ -247,7 +247,7 @@ configureAndInstall_gcc() {
 			rm -rf $productFolder/build/$compiler-$gccVersion
 			mkdir -p $productFolder/build/$compiler-$gccVersion
 			pushd $productFolder/build/$compiler-$gccVersion
-			$sourceFolder/$compiler-$gccVersion/configure --enable-optimized --prefix="$productFolder/$compiler-$compilerVersion"
+			$sourceFolder/$compiler-$gccVersion/configure --enable-optimized --prefix="$productFolder/$compiler-$gccVersion"
 			make
 			make install
 			popd
@@ -309,5 +309,17 @@ else
         /bin/echo "Unknown compiler $compiler"
         exit 1
 fi
+
+if [ "$compiler" = "llvm-clang" ]; then
+# you need to install also gcc because -ccc-gcc-name is required for cross compiling with clang (this is required for choosing the right assembler 'as' tool. 
+# there is no flag for referencing only this tool :-(
+/bin/echo -n "Creating clang script for architecture $targetArchitecture ..."
+/bin/echo '#!/bin/sh' > $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$gccVersion/bin/$compilerTarget-llvm-clang
+/bin/echo "$productFolder/$compiler-$gccVersion/bin/clang -fcocotron-runtime -ccc-host-triple $compilerTarget -ccc-gcc-name $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/gcc-$gccVersion/bin/$compilerTarget-gcc \
+-I$installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$gccVersion/$compilerTarget/include \"\$@\"" >> $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$gccVersion/bin/$compilerTarget-llvm-clang
+chmod +x $installFolder/$productName/$productVersion/$targetPlatform/$targetArchitecture/llvm-clang-$gccVersion/bin/$compilerTarget-llvm-clang
+/bin/echo "done."
+fi
+echo 
 
 /bin/echo "Script completed"

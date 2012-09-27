@@ -1130,6 +1130,7 @@
 			baseConfigurationReference = FE7085E51431179200B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.llvm.clang.trunk;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD";
 				PRODUCT_NAME = CoreFoundation;
@@ -1142,6 +1143,7 @@
 			baseConfigurationReference = FE7085E51431179200B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.llvm.clang.trunk;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD";
 				PRODUCT_NAME = CoreFoundation;
