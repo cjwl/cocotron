@@ -317,6 +317,8 @@ static NSMapTable *pathToObject=NULL;
  */
 + (NSString *)bundlePathFromModulePath:(NSString *)path
 {
+    path = [path stringByStandardizingPath];
+
     NSString *result = nil;
     NSString *directory = [path stringByDeletingLastPathComponent];
     NSString *extension = [[path pathExtension] lowercaseString];
@@ -493,7 +495,7 @@ static NSMapTable *pathToObject=NULL;
         return [realBundle retain];
     }
 
-    _path = [path retain];
+    _path = [[path stringByStandardizingPath] retain];
     _resourcePath = [_path stringByAppendingPathComponent:@"Resources"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:_resourcePath]) {
         _resourcePath = [[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Resources"];
