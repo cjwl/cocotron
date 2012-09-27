@@ -14,6 +14,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSBitmapImageRep.h>
 
+#ifndef CF_DIBV5
+#define CF_DIBV5 17
+#endif
+
+
 // These methods come from MS sample code
 static WORD DibNumColors (VOID FAR * pv)
 {
@@ -118,7 +123,7 @@ static WORD PaletteSize (VOID FAR * pv)
       break;
 
      case CF_BITMAP: 
-      break;
+     break;
 
      case CF_METAFILEPICT:
       break;
@@ -135,11 +140,11 @@ static WORD PaletteSize (VOID FAR * pv)
      case CF_OEMTEXT:
       break;
 
-     case CF_DIB:
-	  type=NSTIFFPboardType;
-	  break;
-
-     case CF_PALETTE:
+		case CF_DIBV5:
+			type=NSTIFFPboardType;
+			break;
+			
+		case CF_PALETTE:
       break;
 
      case CF_PENDATA:
@@ -235,7 +240,7 @@ static WORD PaletteSize (VOID FAR * pv)
 	else if([type isEqualToString:NSTIFFPboardType]) {
 		// TIFF data can actually arrive as DIB data (from a paste for example), so we'll have to convert it.
 		// But in the eventuality that it's not (from a drag within our app), we'll go back to trying TIFF to in a moment.
-		formatEtc.cfFormat=CF_DIB;
+		formatEtc.cfFormat=CF_DIBV5;
 	} else { 
 		if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
 #if DEBUG
@@ -253,7 +258,7 @@ static WORD PaletteSize (VOID FAR * pv)
 	HRESULT hresult = S_OK;
 	hresult = _dataObject->lpVtbl->QueryGetData(_dataObject,&formatEtc);
 	if (hresult != S_OK) {
-		if (formatEtc.cfFormat == CF_DIB) {
+		if (formatEtc.cfFormat == CF_DIBV5) {
 			// Perhaps it's really a TIFF? RegisterClipboardFormat seems to conjure a cfFormat value
 			// that QueryGetData likes. CF_TIFF surprisingly is not that value - so there's some Win32 magic
 			// happening somewhere.
@@ -286,14 +291,14 @@ static WORD PaletteSize (VOID FAR * pv)
 		{ // hGlobal 
 			uint8_t  *bytes=GlobalLock(storageMedium.hGlobal); 
 			NSUInteger byteLength=GlobalSize(storageMedium.hGlobal); 
-			if(formatEtc.cfFormat==CF_DIB && (byteLength > 0)) {
+			if(formatEtc.cfFormat==CF_DIBV5 && (byteLength > 0)) {
 				NSBitmapImageRep *imageRep = nil;
 				
 				// Make TIFF data from the DIB data
 				LPBITMAPINFO    lpBI = (LPBITMAPINFO)bytes;
 				void*            pDIBBits = (LPBYTE)lpBI + (WORD)lpBI->bmiHeader.biSize + PaletteSize(lpBI); 
-				int w = lpBI->bmiHeader.biWidth;
-				int h = lpBI->bmiHeader.biHeight;
+				int w = ABS(lpBI->bmiHeader.biWidth);
+				int h = ABS(lpBI->bmiHeader.biHeight);
 
 				// To convert the DIB into data Cocotron can understand, we'll draw the DIB into a CGImage 
 				// and return a TIFF representation of it
@@ -302,12 +307,11 @@ static WORD PaletteSize (VOID FAR * pv)
 				CGColorSpaceRelease(colorspace);
 				// Contexts created on the Win32 platform are supposed to have a "dc" method
 				HDC dc = [(id)ctx dc];
-
 				if (dc) {
 					StretchDIBits(
 								  dc,
-								  0, 0, w, h,
-								  0, 0, w, h,
+								  0, 0, ABS(w), ABS(h),
+								  0, 0, ABS(w), ABS(h),
 								  pDIBBits, lpBI, DIB_RGB_COLORS, SRCCOPY
 								  );
 					if (lpBI->bmiHeader.biBitCount != 32) {
