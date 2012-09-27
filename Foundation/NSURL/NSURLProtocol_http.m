@@ -484,18 +484,19 @@ NSLog(@"parse error %d",__LINE__);
     switch(streamEvent){
     
      case NSStreamEventHasBytesAvailable:
-	  uint8_t   buffer[8192];
-	  NSInteger size=[stream read:buffer maxLength:8192];
-			switch (size) {
-				case 0: // We're actually at the end - the stream was lying
-				case -1: // Or the stream is not even open - so no data for us.
-					[self advanceStateWithData:[NSData data]];
-					break;
-				default:
-					[self advanceStateWithData:[NSData dataWithBytes:buffer length:size]];
-					break;
-			}
-      
+		{
+		uint8_t   buffer[8192];
+		NSInteger size=[stream read:buffer maxLength:8192];
+		switch (size) {
+			case 0: // We're actually at the end - the stream was lying
+			case -1: // Or the stream is not even open - so no data for us.
+				[self advanceStateWithData:[NSData data]];
+				break;
+			default:
+				[self advanceStateWithData:[NSData dataWithBytes:buffer length:size]];
+				break;
+		}
+		}  
       break;
      
      case NSStreamEventEndEncountered:
