@@ -2137,14 +2137,12 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 
    [NSCurrentFocusStack() addObject:self];
 
-   CGContextBeginPage(graphicsPort,&mediaBox);
-   CGContextSaveGState(graphicsPort);
-   
-   transform=CGAffineTransformTranslate(transform,imageableRect.origin.x,imageableRect.origin.y);
+	CGContextBeginPage(graphicsPort,&mediaBox);
+	CGContextSaveGState(graphicsPort);
+
+   transform=CGAffineTransformIdentity;
    if([self isFlipped]){
-    CGAffineTransform flip={1,0,0,-1,0,imageableRect.size.height};
-     
-    transform=CGAffineTransformConcat(flip,transform);
+	   transform=CGAffineTransformMake(1,0,0,-1,0,[printInfo paperSize].height);
    }
 
    transform=CGAffineTransformTranslate(transform,-rect.origin.x,-rect.origin.y);

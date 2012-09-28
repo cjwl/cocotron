@@ -1405,7 +1405,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 	setup.rtMargin.left = PTS2THOUSANDS([printInfo leftMargin]);
 	setup.rtMargin.right = PTS2THOUSANDS([printInfo rightMargin]);
 	setup.rtMargin.bottom = PTS2THOUSANDS([printInfo bottomMargin]);
-
+	
    [self stopWaitCursor];
    int check = PageSetupDlg(&setup);
    [self startWaitCursor];
@@ -1470,6 +1470,11 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 	   [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];
 	   [attributes setObject:[NSNumber numberWithInt:printProperties.nFromPage] forKey:NSPrintFirstPage];
 	   [attributes setObject:[NSNumber numberWithInt:printProperties.nToPage] forKey:NSPrintLastPage];
+	   
+	   // It seems Windows is drawing relatively to the imageable area, not the paper area, like Cocoa does - so translate the context
+	   // to make Cocotron happy
+	   O2AffineTransform translation = O2AffineTransformMakeTranslation(-imageable.origin.x, -imageable.origin.y);
+	   O2ContextConcatCTM(context, translation);
    }
      
    return NSOKButton;
