@@ -41,7 +41,7 @@ typedef struct name_records_t {
 } name_records_t;
 
 // Fill the name mapping dictionaries with the longFont face info
-static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
+static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
 {
 	HFONT font = CreateFontIndirectW(&longFont->elfLogFont);
 	if (font) {
@@ -105,14 +105,15 @@ static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETR
 }
 
 // Add the longFont family to the list of known families
-static int EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p)
-{
+static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p) {
 	NSMutableArray *families = (NSMutableArray *)p;
-	NSString *winName = [NSString stringWithFormat:@"%S", longFont->lfFaceName];
+	NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
+
 	[families addObject:winName];
+	
 	return 1;
 }
-
+	
 + (void)_buildNativePSmapping
 {
 	HDC dc=GetDC(NULL);
@@ -121,7 +122,11 @@ static int EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETRICW* metr
 	
 	// Get a list of all of the families
 	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
-	EnumFontFamiliesW(dc, (LPCWSTR)NULL, (FONTENUMPROCW)EnumFamiliesCallBack, (LPARAM)families); 
+	LOGFONTW logFont = { 0 };
+	
+	logFont.lfCharSet=DEFAULT_CHARSET;
+	EnumFontFamiliesExW(dc,&logFont,(FONTENUMPROCW)EnumFamiliesCallBackW,(LPARAM)families,0);
+	
 	for (NSString *familyName in families) {
 		// Enum all of the faces for that family
 		LOGFONTW logFont = { 0 };
