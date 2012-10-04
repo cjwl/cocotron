@@ -283,7 +283,7 @@ NSString *NSString_macOSRomanNewWithBytes(NSZone *zone,
 	NSString_macOSRoman *string;
 	int                i;
 	
-	string=NSAllocateObject([NSString_macOSRoman class],length*sizeof(char),zone);
+	string=NSAllocateObject([NSString_macOSRoman class],(length+1)*sizeof(char),zone);
 	
 	string->_length=length;
 	for(i=0;i<length;i++)

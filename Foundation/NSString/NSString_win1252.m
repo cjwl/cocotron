@@ -187,7 +187,7 @@ NSString *NSString_win1252NewWithBytes(NSZone *zone,
 	NSString_win1252 *string;
 	int                i;
 	
-	string=NSAllocateObject( [NSString_win1252 class],length*sizeof(char),zone);
+	string=NSAllocateObject( [NSString_win1252 class],(length+1)*sizeof(char),zone);
 	
 	string->_length=length;
 	for(i=0;i<length;i++) {
