@@ -51,6 +51,7 @@ typedef enum {
 + (NSString *)postscriptNameForNativeName:(NSString *)name;
 + (NSString *)postscriptNameForDisplayName:(NSString *)name;
 + (NSString *)displayNameForPostscriptName:(NSString *)name;
++ (NSString *)postscriptNameForFontName:(NSString *)name;
 
 
 -initWithFontName:(NSString *)name;
