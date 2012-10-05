@@ -119,7 +119,7 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 	HDC dc=GetDC(NULL);
 	sPSToWin32Table = [[NSMutableDictionary alloc] initWithCapacity:100];
 	sWin32ToPSTable = [[NSMutableDictionary alloc] initWithCapacity:100];
-	
+
 	// Get a list of all of the families
 	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
 	LOGFONTW logFont = { 0 };
@@ -177,6 +177,17 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 {
 	// For now, we're using the Win32 name as the display name
 	return [self postscriptNameForNativeName:name];
+}
+
++ (NSString *)postscriptNameForFontName:(NSString *)name
+{
+	// If name is an available PS name, then use that
+	// Else check if 'name' is an available display name
+	if ([sPSToWin32Table objectForKey:name]) {
+		return name;
+	} else {
+		return [self postscriptNameForDisplayName:name];
+	}
 }
 
 + (NSString *)displayNameForPostscriptName:(NSString *)name

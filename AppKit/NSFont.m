@@ -312,6 +312,9 @@ static NSFont **_fontCache=NULL;
    if(name==nil)
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] name==nil",self,sel_getName(_cmd)];
 
+	// Name can be PS name or a display name - internally we want a PS name - that's what Cocoa is doing
+	name = [O2Font postscriptNameForFontName:name];
+
    result=[self cachedFontWithName:name size:size];
 
    if(result==nil)

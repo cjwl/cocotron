@@ -74,6 +74,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return name;
 }
 
++ (NSString *)postscriptNameForFontName:(NSString *)name
+{
+	return name;
+}
+
 NSString *O2MacRomanGlyphNames[256]={
 @".notdef",
 @".notdef",
