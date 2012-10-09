@@ -49,7 +49,7 @@ NSString *NSNEXTSTEPCStringNewWithBytes(NSZone *zone,
    NSString_nextstepCString *string;
    NSInteger                i;
 
-   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),length*sizeof(char),zone);
+   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),(length+1)*sizeof(char),zone);
 
    string->_length=length;
    for(i=0;i<length;i++)
