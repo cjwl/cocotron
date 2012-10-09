@@ -81,7 +81,7 @@ NSString *NSNEXTSTEPCStringNewWithCapacity(NSZone *zone,
   NSUInteger capacity,char **ptr) {
    NSString_nextstepCString *string;
 
-   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),capacity*sizeof(char),zone);
+   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),(capacity+1)*sizeof(char),zone);
 
    string->_length=capacity;
    *ptr=string->_bytes;
