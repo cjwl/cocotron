@@ -669,12 +669,18 @@ BOOL class_addProtocol(Class cls,Protocol *protocol) {
 	protocolList->next = 0;
 	protocolList->list[0] = protocol;
     protocolList->count = 1;
-	struct objc_protocol_list *protoList = cls->protocols;
-	struct objc_protocol_list *lastList = protoList;
-	while((protoList=protoList->next) != NULL) {
-		lastList = protoList;
-	}
-	lastList->next = protocolList;
+    if (cls->protocols != NULL) {
+        struct objc_protocol_list *protoList = cls->protocols;
+        struct objc_protocol_list *lastList = protoList;
+        while((protoList=protoList->next) != NULL) {
+            lastList = protoList;
+        }
+        lastList->next = protocolList;
+    }
+    else {
+        cls->protocols = protocolList;
+    }
+
 	return YES;
 }
 
