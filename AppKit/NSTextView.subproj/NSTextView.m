@@ -2103,7 +2103,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
                                                                         withString:[[_textStorage string] substringWithRange:range]];
         }
     }
-	if (_isRichText && useTypingAttributes && [string length]) {
+	if (_isRichText && useTypingAttributes) {
 		NSAttributedString *attrString = nil;
 		// Use the typing attributes for the inserted string
 		if ([string isKindOfClass: [NSAttributedString class]]) {
