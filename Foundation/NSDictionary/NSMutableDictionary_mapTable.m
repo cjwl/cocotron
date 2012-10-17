@@ -268,12 +268,12 @@ static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
     
     for(i=0;i<count;i++) {
         if (keys[i]==nil){
+            [self autorelease];
             NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert object with nil key");
-            return;
         }
         else if(values[i]==nil){
+            [self autorelease];
             NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert nil object for key %@", keys[i]);
-            return;
         }
         setValueForKey(self,values[i],keys[i]);
     }

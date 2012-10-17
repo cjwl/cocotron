@@ -40,12 +40,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    for(i=0;i<count;i++){
        if (keys[i]==nil){
+           [self autorelease];
            NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert object with nil key");
-           return;
        }
        else if(objects[i]==nil){
+           [self autorelease];
            NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert nil object for key %@", keys[i]);
-           return;
        }
 
     id key=[keys[i] copy];
