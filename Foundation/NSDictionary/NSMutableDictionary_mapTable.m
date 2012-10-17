@@ -261,13 +261,22 @@ static void NSDictRemove(NSMutableDictionary_CF *self,const void *key){
    _valueCallBacks.copyDescription=(valueCallBacks->copyDescription!=NULL)?valueCallBacks->copyDescription:defaultCopyDescription;
 
    _count=0;
-   _nBuckets=4;
-   _buckets=NSZoneCalloc(NULL,_nBuckets,sizeof(NSDictNode *));
-
-   NSInteger i;
-
-   for(i=0;i<count;i++)
-    setValueForKey(self,values[i],keys[i]);
+    _nBuckets=4;
+    _buckets=NSZoneCalloc(NULL,_nBuckets,sizeof(NSDictNode *));
+    
+    NSInteger i;
+    
+    for(i=0;i<count;i++) {
+        if (keys[i]==nil){
+            NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert object with nil key");
+            return;
+        }
+        else if(values[i]==nil){
+            NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert nil object for key %@", keys[i]);
+            return;
+        }
+        setValueForKey(self,values[i],keys[i]);
+    }
 
    return self;
 }

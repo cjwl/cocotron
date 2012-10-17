@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary_mapTable.h>
 #import <Foundation/NSEnumerator_dictionaryKeys.h>
 #import <Foundation/NSAutoreleasePool-private.h>
+#import <Foundation/NSRaise.h>
+#import <Foundation/NSRaiseException.h>
 #import <Foundation/NSCoder.h>
 
 @implementation NSDictionary_mapTable
@@ -37,6 +39,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSObjectMapValueCallBacks,count,NULL);
 
    for(i=0;i<count;i++){
+       if (keys[i]==nil){
+           NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert object with nil key");
+           return;
+       }
+       else if(objects[i]==nil){
+           NSRaiseException(NSInvalidArgumentException,self,_cmd,@"Attempt to insert nil object for key %@", keys[i]);
+           return;
+       }
+
     id key=[keys[i] copy];
     NSMapInsert(_table,key,objects[i]);
     [key release];
