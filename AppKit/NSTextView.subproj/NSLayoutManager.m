@@ -523,6 +523,19 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    [self invalidateDisplayForCharacterRange:actualRange];
 
    [self fixupSelectionInRange:range changeInLength:changeInLength];
+	
+	// We also have to fix the temporary attributes on that range
+	if (editedMask & NSTextStorageEditedCharacters) {
+		// Update the temporary attributes ranges according to the changes
+		NSRange oldRange = range;
+		oldRange.length -= changeInLength;
+		NSRangeEntriesExpandAndWipe(_rangeToTemporaryAttributes,oldRange,changeInLength);
+		// And clear the attributes for the new part
+		if (range.length) {
+			[self setTemporaryAttributes:nil forCharacterRange:range];
+		}
+		NSRangeEntriesVerify(_rangeToTemporaryAttributes,[_textStorage length]);
+	}
 }
 
 -(void)textContainerChangedGeometry:(NSTextContainer *)container {
