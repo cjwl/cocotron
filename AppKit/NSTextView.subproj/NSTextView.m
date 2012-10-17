@@ -442,7 +442,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 	
 	
    if(!_isContinuousSpellCheckingEnabled)
-    [[self textStorage] removeAttribute:NSSpellingStateAttributeName range:NSMakeRange(0,[[self string] length])];
+    [[self layoutManager] removeTemporaryAttribute:NSSpellingStateAttributeName forCharacterRange:NSMakeRange(0,[[self string] length])];
 	
 }
 
@@ -2816,7 +2816,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [string getParagraphStart:&start end:&end contentsEnd:NULL forRange:invalidatedRange];
    invalidatedRange=NSMakeRange(start,end-start);
 
-   [[self textStorage] removeAttribute:NSSpellingStateAttributeName range:invalidatedRange];
+   [[self layoutManager] removeTemporaryAttribute:NSSpellingStateAttributeName forCharacterRange:invalidatedRange];
 
    if(_isContinuousSpellCheckingEnabled) {
     NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
@@ -2976,7 +2976,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)setSpellingState:(NSInteger)value range:(NSRange)characterRange {
-   [[self textStorage] addAttribute:NSSpellingStateAttributeName value:[NSNumber numberWithUnsignedInt:value] range:characterRange];
+   [[self layoutManager] addTemporaryAttribute:NSSpellingStateAttributeName value:[NSNumber numberWithUnsignedInt:value] forCharacterRange:characterRange];
 }
 
 @end
