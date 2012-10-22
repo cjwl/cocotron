@@ -67,8 +67,8 @@ void AssociationTableInsert(AssociationTable *table,id key, AssociationObjectEnt
     
     for(j=table->buckets[i];j!=NULL;j=j->next)
         if(j->key==key){
-            void *oldKey=j->key;
-            void *oldValue=j->value;
+            id oldKey=j->key;
+            AssociationObjectEntry *oldValue=j->value;
             
             j->key=key;
             j->value=value;            
@@ -152,7 +152,7 @@ void AssociationSpinLockUnlock( volatile AssociationSpinLock *__lock )
 static AssociationSpinLock AssociationLock=0;
 static AssociationTable *associationTable = NULL;
 
-void object_remove_associations(id object)
+void objc_removeAssociatedObjects(id object)
 {
     if (associationTable == NULL) {
         return;

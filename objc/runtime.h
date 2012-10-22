@@ -111,7 +111,7 @@ typedef enum {
 
 OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_AssociationPolicy policy);
 OBJC_EXPORT id objc_getAssociatedObject(id object, const void *key);
-
+OBJC_EXPORT void objc_removeAssociatedObjects(id object);
 // FIXME. Non-compliant API. TO BE CLEANED UP.
 
 OBJC_EXPORT const char *objc_mainImageName();

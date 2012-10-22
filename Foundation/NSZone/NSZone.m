@@ -21,8 +21,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 // NSZone functions implemented in platform subproject
 
-extern void object_remove_associations(id object);
-
 typedef unsigned int OSSpinLock;
 
 #import <Foundation/NSAtomicCompareAndSwap.h>
@@ -242,23 +240,17 @@ void NSDeallocateObject(id object)
     
 #if !defined(APPLE_RUNTIME_4)
     //delete associations
-    object_remove_associations(object);
+    objc_removeAssociatedObjects(object);
 
 #endif
     if (NSZombieEnabled) {
         NSRegisterZombie(object);
     } else {
-        NSZone *zone = NULL;
-
-        if (zone == NULL) {
-            zone = NSDefaultMallocZone();
-        }
-
 #if !defined(GCC_RUNTIME_3) && !defined(APPLE_RUNTIME_4)
         object->isa = 0;
 #endif
 
-        NSZoneFree(zone, object);
+        NSZoneFree(NULL, object);
     }
 }
 
