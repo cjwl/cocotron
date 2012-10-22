@@ -286,6 +286,7 @@
 		15D921E5105E922600171406 /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D484FD0FE04DDD00DC03EF /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C6065BB0163575CC0007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_association.m; sourceTree = "<group>"; };
 		FE01A5890C5D9B3100AEA51A /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1344481151B89600404745 /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
 		FE1344491151B89600404745 /* objc_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_class.h; sourceTree = "<group>"; };
@@ -376,6 +377,7 @@
 		0867D691FE84028FC02AAC07 /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				C6065BB0163575CC0007217E /* objc_association.m */,
 				FE1E53B4143029F7000D60A1 /* xcconfig */,
 				FE6CF82A11526D3000B6D893 /* objc_malloc.h */,
 				FE6CF82B11526D3000B6D893 /* objc_malloc.m */,

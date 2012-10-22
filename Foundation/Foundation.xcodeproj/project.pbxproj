@@ -2123,6 +2123,15 @@
 		6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
+		C6065BBC1635808D0007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BBB1635808C0007217E /* objc_association.m */; };
+		C6065BBE163580BA0007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BBD163580B90007217E /* objc_association.m */; };
+		C6065BC0163580C00007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BBF163580C00007217E /* objc_association.m */; };
+		C6065BC2163580C70007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BC1163580C60007217E /* objc_association.m */; };
+		C6065BC4163580CD0007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BC3163580CD0007217E /* objc_association.m */; };
+		C6065BC6163580D30007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BC5163580D30007217E /* objc_association.m */; };
+		C6065BC8163580D90007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BC7163580D90007217E /* objc_association.m */; };
+		C6065BCA163580DF0007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BC9163580DE0007217E /* objc_association.m */; };
+		C6065BCC163580E50007217E /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = C6065BCB163580E50007217E /* objc_association.m */; };
 		C6133E8412BB5B1200655807 /* OBJCRegisterModule_Darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = C6133E8312BB5B1100655807 /* OBJCRegisterModule_Darwin.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C633FFB515BE91FB0085E929 /* NSString_isoLatin2.h in Headers */ = {isa = PBXBuildFile; fileRef = C633FFB315BE91FB0085E929 /* NSString_isoLatin2.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C633FFB615BE91FB0085E929 /* NSString_isoLatin2.h in Headers */ = {isa = PBXBuildFile; fileRef = C633FFB315BE91FB0085E929 /* NSString_isoLatin2.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -7229,6 +7238,15 @@
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C6065BBB1635808C0007217E /* objc_association.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BBD163580B90007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BBF163580C00007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BC1163580C60007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BC3163580CD0007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BC5163580D30007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BC7163580D90007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BC9163580DE0007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
+		C6065BCB163580E50007217E /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_association.m; path = ../objc/objc_association.m; sourceTree = "<group>"; };
 		C6133E8312BB5B1100655807 /* OBJCRegisterModule_Darwin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBJCRegisterModule_Darwin.h; sourceTree = "<group>"; };
 		C633FFB315BE91FB0085E929 /* NSString_isoLatin2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_isoLatin2.h; sourceTree = "<group>"; };
 		C633FFB415BE91FB0085E929 /* NSString_isoLatin2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_isoLatin2.m; sourceTree = "<group>"; };
@@ -7712,6 +7730,15 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				C6065BCB163580E50007217E /* objc_association.m */,
+				C6065BC9163580DE0007217E /* objc_association.m */,
+				C6065BC7163580D90007217E /* objc_association.m */,
+				C6065BC5163580D30007217E /* objc_association.m */,
+				C6065BC3163580CD0007217E /* objc_association.m */,
+				C6065BC1163580C60007217E /* objc_association.m */,
+				C6065BBF163580C00007217E /* objc_association.m */,
+				C6065BBD163580B90007217E /* objc_association.m */,
+				C6065BBB1635808C0007217E /* objc_association.m */,
 				FE1E546214303009000D60A1 /* xcconfig */,
 				FE09AF8213FCC69200B53D10 /* NSTextCheckingResult.h */,
 				FE09AF8313FCC69200B53D10 /* NSTextCheckingResult.m */,
@@ -13044,6 +13071,7 @@
 				FEADE5CF12FEF1120048F5DE /* NSValueTransformer_KeyedUnarchiveFromData.m in Sources */,
 				FE937F4F1358DC8000C93531 /* NSNumber_CF.m in Sources */,
 				FE09AF8113FCC68100B53D10 /* NSOrthography.m in Sources */,
+				C6065BCA163580DF0007217E /* objc_association.m in Sources */,
 				FE09AF9513FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				C6E2B3A01410CA930094D33E /* NSPlatform_linux.m in Sources */,
 				FEB3F2BB1404A92400059C8F /* NSSpellEngine.m in Sources */,
@@ -13419,6 +13447,7 @@
 				FE09AF7D13FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9113FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				C6E2B39E1410CA930094D33E /* NSPlatform_linux.m in Sources */,
+				C6065BC8163580D90007217E /* objc_association.m in Sources */,
 				FEB3F2CB1404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07571434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
@@ -13794,6 +13823,7 @@
 				FE09AF7513FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8913FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C71404A92400059C8F /* NSSpellEngine.m in Sources */,
+				C6065BC0163580C00007217E /* objc_association.m in Sources */,
 				FEFAA5481429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				C683D61114E562740081DF9F /* NSRecursiveLock_posix.m in Sources */,
@@ -14171,6 +14201,7 @@
 				C6E2B3A21410CA930094D33E /* NSPlatform_linux.m in Sources */,
 				FEB3F2BD1404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA53E1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				C6065BBE163580BA0007217E /* objc_association.m in Sources */,
 				FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				C683D61014E562740081DF9F /* NSRecursiveLock_posix.m in Sources */,
 				C633FFBF15BE91FB0085E929 /* NSString_isoLatin2.m in Sources */,
@@ -14181,6 +14212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6065BBC1635808D0007217E /* objc_association.m in Sources */,
 				FE01A6BE0C5D9B6900AEA51A /* NSArray_concrete.m in Sources */,
 				FE01A6BF0C5D9B6900AEA51A /* NSArray_placeholder.m in Sources */,
 				FE01A6C00C5D9B6900AEA51A /* NSArray.m in Sources */,
@@ -14926,6 +14958,7 @@
 				FE937F511358DC8000C93531 /* NSNumber_CF.m in Sources */,
 				FE09AF7F13FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF9313FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
+				C6065BCC163580E50007217E /* objc_association.m in Sources */,
 				FEB3F2C91404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C075B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
@@ -15306,6 +15339,7 @@
 				FE09AF8F13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C31404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5441429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				C6065BC6163580D30007217E /* objc_association.m in Sources */,
 				FE4C07551434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				C683D61414E562740081DF9F /* NSRecursiveLock_posix.m in Sources */,
 				C633FFC315BE91FB0085E929 /* NSString_isoLatin2.m in Sources */,
@@ -15685,6 +15719,7 @@
 				FE09AF8B13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2C51404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5461429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
+				C6065BC2163580C70007217E /* objc_association.m in Sources */,
 				FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				C683D61214E562740081DF9F /* NSRecursiveLock_posix.m in Sources */,
 				C633FFC115BE91FB0085E929 /* NSString_isoLatin2.m in Sources */,
@@ -16063,6 +16098,7 @@
 				FE09AF7913FCC68100B53D10 /* NSOrthography.m in Sources */,
 				FE09AF8D13FCC69200B53D10 /* NSTextCheckingResult.m in Sources */,
 				FEB3F2BF1404A92400059C8F /* NSSpellEngine.m in Sources */,
+				C6065BC4163580CD0007217E /* objc_association.m in Sources */,
 				FEFAA5401429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				C683D61314E562740081DF9F /* NSRecursiveLock_posix.m in Sources */,

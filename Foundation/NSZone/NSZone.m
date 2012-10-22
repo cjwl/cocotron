@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSDebug.h>
+
 #include <string.h>
 #ifdef WIN32
 #include <windows.h>
@@ -19,6 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <unistd.h>
 #endif
 // NSZone functions implemented in platform subproject
+
+extern void object_remove_assocations(id object);
 
 typedef unsigned int OSSpinLock;
 
@@ -236,7 +239,12 @@ void NSDeallocateObject(id object)
 #else
     object_cxxDestruct(object, object->isa);
 #endif
+    
+#if !defined(APPLE_RUNTIME_4)
+    //delete associations
+    object_remove_assocations(object);
 
+#endif
     if (NSZombieEnabled) {
         NSRegisterZombie(object);
     } else {

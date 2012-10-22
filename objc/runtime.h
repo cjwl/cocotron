@@ -100,6 +100,18 @@ OBJC_EXPORT id          object_copy(id object,size_t size);
 OBJC_EXPORT id          object_dispose(id object);
 
 
+//Associations
+typedef enum {
+    OBJC_ASSOCIATION_ASSIGN = 0,
+    OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1,
+    OBJC_ASSOCIATION_COPY_NONATOMIC = 3,
+    OBJC_ASSOCIATION_RETAIN = 01401,
+    OBJC_ASSOCIATION_COPY = 01403
+} objc_AssociationPolicy;
+
+OBJC_EXPORT void objc_setAssociatedObject(id object, const void *key, id value, objc_AssociationPolicy policy);
+OBJC_EXPORT id objc_getAssociatedObject(id object, const void *key);
+
 // FIXME. Non-compliant API. TO BE CLEANED UP.
 
 OBJC_EXPORT const char *objc_mainImageName();
