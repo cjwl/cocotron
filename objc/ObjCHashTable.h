@@ -42,7 +42,7 @@ static inline unsigned OBJCHashString (const void *data) {
     result=5381;
 
     for(i=0;s[i]!='\0';i++)
-     result=((result<<5)+result)+s[i]; // hash*33+c
+     result=(((result<<5)|(result>>27))+result)+s[i]; // hash*33 % (2^32-1) + c (barring overflow during additions)
    }
 
    return result;
