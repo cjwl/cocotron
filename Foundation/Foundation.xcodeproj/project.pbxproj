@@ -16579,7 +16579,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -16597,6 +16597,7 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
+				SDKROOT = macosx;
 				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
@@ -16840,7 +16841,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -16858,6 +16859,7 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
+				SDKROOT = macosx;
 				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
