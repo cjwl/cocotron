@@ -286,6 +286,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _viewsNeedDisplay=YES;
    _flushNeeded=YES;
 
+   _isInLiveResize=NO;
+
    _resizeIncrements=NSMakeSize(1,1);
    _contentResizeIncrements=NSMakeSize(1,1);
    
@@ -687,6 +689,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     { NSWindowDidResignKeyNotification,@selector(windowDidResignKey:) },
     { NSWindowDidResignMainNotification,@selector(windowDidResignMain:) },
     { NSWindowDidResizeNotification,@selector(windowDidResize:) },
+    { NSWindowWillStartLiveResizeNotification,@selector(windowWillStartLiveResize:) },
+    { NSWindowDidEndLiveResizeNotification,@selector(windowDidEndLiveResize:) },
     { NSWindowDidUpdateNotification,@selector(windowDidUpdate:) },
     { NSWindowWillCloseNotification,@selector(windowWillClose:) },
     { NSWindowWillMiniaturizeNotification,@selector(windowWillMiniaturize:) },
@@ -1415,8 +1419,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)inLiveResize {
-   NSUnimplementedMethod();
-   return NO;
+   return _isInLiveResize;
 }
 
 -(BOOL)canBecomeKeyWindow {
@@ -2805,10 +2808,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 -(void)platformWindowWillBeginSizing:(CGWindow *)window {
    [self postNotificationName:NSWindowWillStartLiveResizeNotification];
    [_backgroundView viewWillStartLiveResize];
+   _isInLiveResize=YES;
 }
 
 -(void)platformWindowDidEndSizing:(CGWindow *)window {
-	[_backgroundView viewDidEndLiveResize];
+   _isInLiveResize=NO;
+   [_backgroundView viewDidEndLiveResize];
    [self postNotificationName:NSWindowDidEndLiveResizeNotification];
 }
 
