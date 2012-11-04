@@ -420,16 +420,36 @@ NSString *NSStringFromMapTable(NSMapTable *table){
    return string;
 }
 
++mapTableWithStrongToStrongObjects {
+    return [NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0) autorelease];
+}
+
++mapTableWithStrongToWeakObjects {
+    return [NSCreateMapTable(NSObjectMapKeyCallBacks,NSNonRetainedObjectMapValueCallBacks,0) autorelease];
+}
+
++mapTableWithWeakToStrongObjects {
+    return [NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0) autorelease];
+}
+
 +mapTableWithWeakToWeakObjects {
     return [NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSNonRetainedObjectMapValueCallBacks,0) autorelease];
 }
 
-+mapTableWithWeakToStrongObjects {
-   return [NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0) autorelease];
++strongToStrongObjectsMapTable {
+    return [self mapTableWithStrongToStrongObjects];
 }
 
-+mapTableWithStrongToStrongObjects {
-   return [NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0) autorelease];
++strongToWeakObjectsMapTable {
+    return [self mapTableWithStrongToWeakObjects];
+}
+
++weakToStrongObjectsMapTable {
+    return [self mapTableWithWeakToStrongObjects];
+}
+
++weakToWeakObjectsMapTable {
+    return [self mapTableWithWeakToWeakObjects];
 }
 
 -(void)dealloc {
