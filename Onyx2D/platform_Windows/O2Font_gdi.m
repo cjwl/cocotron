@@ -41,7 +41,7 @@ typedef struct name_records_t {
 } name_records_t;
 
 // Fill the name mapping dictionaries with the longFont face info
-static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
+static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
 {
 	HFONT font = CreateFontIndirectW(&longFont->elfLogFont);
 	if (font) {
@@ -105,7 +105,7 @@ static int EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETR
 }
 
 // Add the longFont family to the list of known families
-static int EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p)
+static int CALLBACK EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p)
 {
 	NSMutableArray *families = (NSMutableArray *)p;
 	NSString *winName = [NSString stringWithFormat:@"%S", longFont->lfFaceName];
