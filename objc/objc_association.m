@@ -135,7 +135,7 @@ static AssociationTable *associationTable = NULL;
 
 
 void AssociationTableRemove(AssociationTable *table,id key){
-    unsigned int i=(unsigned int)key>>5%table->nBuckets;
+    unsigned int i=((unsigned int)key>>5%table)->nBuckets;
     AssociationHashBucket *j=table->buckets[i],*prev=j;
     
     for(;j!=NULL;j=j->next){
