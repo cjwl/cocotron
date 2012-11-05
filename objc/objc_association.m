@@ -111,25 +111,6 @@ void *AssociationTableInsertIfAbsent(AssociationTable *table, id key, Associatio
     return NULL;
 }
 
-void AssociationTableRemove(AssociationTable *table,id key){
-    unsigned int i=(unsigned int)key>>5%table->nBuckets;
-    AssociationHashBucket *j=table->buckets[i],*prev=j;
-    
-    for(;j!=NULL;j=j->next){
-        if(j->key==key){
-            if(prev==j)
-                table->buckets[i]=j->next;
-            else
-                prev->next=j->next;
-            free(j->value);
-            free(j);
-            table->count--;
-            return;
-        }
-        prev=j;
-    }
-}
-
 typedef unsigned int AssociationSpinLock;
 
 void AssociationSpinLockLock( volatile AssociationSpinLock *__lock )
@@ -152,6 +133,45 @@ void AssociationSpinLockUnlock( volatile AssociationSpinLock *__lock )
 static AssociationSpinLock AssociationLock=0;
 static AssociationTable *associationTable = NULL;
 
+
+void AssociationTableRemove(AssociationTable *table,id key){
+    unsigned int i=(unsigned int)key>>5%table->nBuckets;
+    AssociationHashBucket *j=table->buckets[i],*prev=j;
+    
+    for(;j!=NULL;j=j->next){
+        if(j->key==key){
+            if(prev==j)
+                table->buckets[i]=j->next;
+            else
+                prev->next=j->next;
+            
+            AssociationObjectEntry *entry = j->value;
+            do {
+                for (int i = 0; i < AssociationObjectEntrySize; i++) {
+                    AssociationObjectEntry *e = (void *)entry + i;
+                    
+                    switch (e->policy) {
+                        case OBJC_ASSOCIATION_ASSIGN:
+                            break;
+                        case OBJC_ASSOCIATION_RETAIN_NONATOMIC:
+                        case OBJC_ASSOCIATION_RETAIN:
+                        case OBJC_ASSOCIATION_COPY_NONATOMIC:
+                        case OBJC_ASSOCIATION_COPY:
+                            [e->object release];
+                            break;
+                    }
+                }
+            } while (entry->nextEntry != nil);
+
+            free(j->value);
+            free(j);
+            table->count--;
+            return;
+        }
+        prev=j;
+    }
+}
+
 void objc_removeAssociatedObjects(id object)
 {
     if (associationTable == NULL) {
@@ -159,30 +179,8 @@ void objc_removeAssociatedObjects(id object)
     }
     
     AssociationSpinLockLock(&AssociationLock);
-    
-    AssociationObjectEntry   *objectTable = AssociationTableGet(associationTable, object);
-    if (objectTable == NULL) {
-        AssociationSpinLockUnlock(&AssociationLock);
-        return;
-    }
-    
-    AssociationObjectEntry *entry = objectTable;
-    do {
-        for (int i = 0; i < AssociationObjectEntrySize; i++) {
-            AssociationObjectEntry *e = (void *)entry + i;
-
-            switch (e->policy) {
-                case OBJC_ASSOCIATION_ASSIGN:
-                    break;
-                case OBJC_ASSOCIATION_RETAIN_NONATOMIC:
-                case OBJC_ASSOCIATION_RETAIN:
-                case OBJC_ASSOCIATION_COPY_NONATOMIC:
-                case OBJC_ASSOCIATION_COPY:
-                    [e->object release];
-                    break;
-            }
-        }
-    } while (entry->nextEntry != nil);
+        
+    AssociationTableRemove(associationTable, object);
     
     AssociationSpinLockUnlock(&AssociationLock);
 }
