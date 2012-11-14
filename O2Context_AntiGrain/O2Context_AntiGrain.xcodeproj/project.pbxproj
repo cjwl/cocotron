@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -255,7 +255,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "O2Context_AntiGrain" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -405,6 +405,7 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Debug;
@@ -435,6 +436,7 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Release;
