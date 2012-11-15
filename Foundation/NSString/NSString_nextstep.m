@@ -136,7 +136,7 @@ NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
    NSString_nextstep *string;
    NSInteger               i;
 
-   string=NSAllocateObject([NSString_nextstep class],(length+1)*sizeof(char),zone);
+   string=NSAllocateObject([NSString_nextstep class],length*sizeof(char),zone);
 
    string->_length=length;
    for(i=0;i<length;i++)

@@ -248,7 +248,7 @@ NSString *NSString_isoLatin2NewWithBytes(NSZone *zone,
 	NSString_isoLatin2 *string;
 	int                i;
     
-	string=NSAllocateObject([NSString_isoLatin2 class],(length+1)*sizeof(char),zone);
+	string=NSAllocateObject([NSString_isoLatin2 class],length*sizeof(char),zone);
     
 	string->_length=length;
 	for(i=0;i<length;i++) {
