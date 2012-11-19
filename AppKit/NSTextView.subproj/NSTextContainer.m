@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextContainer.h>
 #import <AppKit/NSLayoutManager.h>
 #import <AppKit/NSTextView.h>
+#import <AppKit/NSTextStorage.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
 
@@ -135,7 +136,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)replaceLayoutManager:(NSLayoutManager *)layoutManager {
-   _layoutManager=layoutManager;
+    if (layoutManager != _layoutManager) {
+        NSLayoutManager *currentLayoutManager = _layoutManager;
+        NSArray *textContainers = [currentLayoutManager textContainers];
+
+        // Move ourself from the old layout manager to the new one
+        int count = [textContainers count];
+        for (int i = 0; i < count; ++i) {
+            NSTextContainer *container = [textContainers objectAtIndex:i];
+            if (container == self) {
+                [layoutManager addTextContainer: container];
+                [currentLayoutManager removeTextContainerAtIndex: i];
+               break;
+            }
+        }
+        
+        // Update our textStorage to use the new layout manager instead of the old one
+        NSTextStorage *textStorage = [currentLayoutManager textStorage];
+        [textStorage addLayoutManager: layoutManager];
+        [textStorage removeLayoutManager: currentLayoutManager];
+    }
 }
 
 -(void)setLineFragmentPadding:(float)padding {
