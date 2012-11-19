@@ -23,7 +23,9 @@ static Class _rulerViewClass = nil;
 
 +(void)initialize
 {
-    _rulerViewClass = [NSRulerView class];
+    if (self == [NSScrollView class]) {
+        _rulerViewClass = [NSRulerView class];
+    }
 }
 
 +(NSSize)frameSizeForContentSize:(NSSize)contentSize hasHorizontalScroller:(BOOL)hasHorizontalScroller hasVerticalScroller:(BOOL)hasVerticalScroller borderType:(NSBorderType)borderType {
@@ -788,7 +790,9 @@ static Class _rulerViewClass = nil;
     [_horizontalScroller setFrame:[self horizontalScrollerFrame]];
     [_clipView setFrame:[self clipViewFrame]];
 
-
+    [_horizontalRuler invalidateHashMarks];
+    [_verticalRuler invalidateHashMarks];
+       
     // keep the header in line with the document
     // using scrollToPoint: ran into some ordering issues, since scrollToPoint calls
     // constrainScrollPoint *and* this method.

@@ -54,7 +54,7 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    NSTextContainer *_textContainer;
    NSSize           _textContainerInset;
    BOOL             _ownsTextStorage;
-   NSDictionary    *_typingAttributes;
+   NSMDictionary*   _typingAttributes;
 
    id               _delegate;
    BOOL             _isEditable;

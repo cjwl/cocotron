@@ -29,6 +29,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSRaiseException.h>
 
+#import "NSRulerMarker+NSTextExtensions.h"
+
 typedef struct {
    NSRect  rect;
    NSRect  usedRect;
@@ -1560,5 +1562,61 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	[self addTemporaryAttributes: [NSDictionary dictionaryWithObject: value forKey: attrName] forCharacterRange: charRange];
 }
 
+- (NSArray *)rulerMarkersForTextView:(NSTextView *)view paragraphStyle:(NSParagraphStyle *)style ruler:(NSRulerView *)ruler
+{
+    NSMutableArray *markers = [NSMutableArray array];
+    
+    float delta = view.textContainer.lineFragmentPadding;
+    
+    // Add the margins markers
+#if 0
+    // Don't add these markers for now - their values are ignored by the layout manager
+    NSRulerMarker *marker = nil;
+    
+    marker = [NSRulerMarker leftMarginMarkerWithRulerView:ruler location:style.headIndent + delta];
+    [marker setRepresentedObject:@"NSHeadIndentRulerMarkerTag"];
+    [markers addObject:marker];
+    
+    // Looks like tailIndent value is a bit more complex - see Cocoa specs
+    marker = [NSRulerMarker rightMarginMarkerWithRulerView:ruler location:view.textContainer.containerSize.width - style.tailIndent - delta];
+    [marker setRepresentedObject:@"NSTailIndentRulerMarkerTag"];
+    [markers addObject:marker];
+    
+    marker = [NSRulerMarker firstIndentMarkerWithRulerView:ruler location:style.firstLineHeadIndent + delta];
+    [marker setRepresentedObject:@"NSFirstLineHeadIndentRulerMarkerTag"];
+    [markers addObject:marker];
+#endif
+    // Add the tab stops markers
+    for (NSTextTab *textTab in style.tabStops) {
+        NSRulerMarker *marker = nil;
+        switch (textTab.tabStopType) {
+            case NSLeftTabStopType:
+                marker = [NSRulerMarker leftTabMarkerWithRulerView:ruler location:textTab.location + delta];
+                break;
+            case NSRightTabStopType:
+                marker = [NSRulerMarker rightTabMarkerWithRulerView:ruler location:textTab.location + delta];
+                break;
+            case NSCenterTabStopType:
+                marker = [NSRulerMarker centerTabMarkerWithRulerView:ruler location:textTab.location + delta];
+                break;
+            case NSDecimalTabStopType:
+                marker = [NSRulerMarker decimalTabMarkerWithRulerView:ruler location:textTab.location + delta];
+                break;
+            default:
+                break;
+        }
+        if (marker) {
+            [marker setRepresentedObject:textTab];
+            [marker setRemovable:YES];
+            [markers addObject:marker];
+        }
+    }
+    return markers;
+}
+
+- (NSView *)rulerAccessoryViewForTextView:(NSTextView *)view paragraphStyle:(NSParagraphStyle *)style ruler:(NSRulerView *)ruler enabled:(BOOL)isEnabled
+{
+    return nil;
+}
 @end
 

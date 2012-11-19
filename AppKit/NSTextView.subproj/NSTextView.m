@@ -42,6 +42,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSpellChecker.h>
 #import <AppKit/NSControl.h>
 
+#import "NSRulerMarker+NSTextExtensions.h"
+
 NSString * const NSTextViewDidChangeSelectionNotification=@"NSTextViewDidChangeSelectionNotification";
 NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
@@ -375,7 +377,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)setTypingAttributes:(NSDictionary *)attributes {
    attributes=[attributes retain];
    [_typingAttributes release];
-   _typingAttributes=attributes;
+    _typingAttributes=attributes;
+    
+    [self updateRuler];
 }
 
 -(void)setSelectedTextAttributes:(NSDictionary *)attributes {
@@ -705,27 +709,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSRulerView *ruler = [[self enclosingScrollView] horizontalRulerView];
 
     if(ruler!=nil){
-     NSParagraphStyle *deStijl;
-     NSArray *tabStops;
-     int i, count;
-    
-     [ruler removeAllMarkers];
-    
-     if ([[self textStorage] length] > 0) {
-        // Do tab stops.
-         deStijl = [[self textStorage] attribute:NSParagraphStyleAttributeName atIndex:[self selectedRange].location effectiveRange:NULL];
-         tabStops = [deStijl tabStops];
-        
-        count = [tabStops count];
-        for (i = 0; i < count; ++i) {
-            NSTextTab *tab = [tabStops objectAtIndex:i];
-            
-            [ruler addMarker:[[[NSRulerMarker alloc] initWithRulerView:ruler markerLocation:[tab location] image:[NSImage imageNamed:@"NSRulerMarkerTab"] imageOrigin:NSMakePoint(0, 0)] autorelease]];
+        NSDictionary *typingAttributes = [self typingAttributes];
+        NSParagraphStyle  *style=[typingAttributes objectForKey:NSParagraphStyleAttributeName];
+        if(style==nil) {
+            // This should be the NSTextView defaultParagraphStyle but it's not supported yet in Cocoton
+            style=[NSParagraphStyle defaultParagraphStyle];
         }
-     }
-     else
-         [ruler addMarkersWithImage:nil measurementUnit:nil];
-   }
+        NSArray *markers = [[self layoutManager] rulerMarkersForTextView:self paragraphStyle:style ruler:ruler];
+        [ruler setMarkers:markers];
+    }
 }
 
 -(void)undo:sender {
@@ -2403,6 +2395,16 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _firstResponderButNotEditingYet = YES;
 	_didSendTextDidEndNotification = NO;
 	
+    NSScrollView *enclosingScrollView = [self enclosingScrollView];
+    if ([self usesRuler] == NO) {
+        BOOL usesRuler = [enclosingScrollView rulersVisible];
+        [self setUsesRuler:usesRuler];
+    }
+    if ([self usesRuler]) {
+        [[enclosingScrollView horizontalRulerView] setClientView:self];
+        [self updateRuler];
+    }
+    
    return YES;
 }
 
@@ -2411,6 +2413,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
      if ([_delegate respondsToSelector:@selector(textShouldEndEditing:)])
        if ([_delegate textShouldEndEditing:self] == NO)
          return NO;
+
+    if ([self usesRuler]) {
+        [[[self enclosingScrollView] horizontalRulerView] setClientView:nil];
+    }
 
    if([self shouldDrawInsertionPoint]){
     [self _displayInsertionPointWithState:NO];
@@ -2978,5 +2984,227 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)setSpellingState:(NSInteger)value range:(NSRange)characterRange {
    [[self layoutManager] addTemporaryAttribute:NSSpellingStateAttributeName value:[NSNumber numberWithUnsignedInt:value] forCharacterRange:characterRange];
 }
+
+#pragma mark Ruler client view
+-(void)rulerView:(NSRulerView *)rulerView willSetClientView:(NSView *)clientView
+{
+}
+
+-(void)rulerView:(NSRulerView *)rulerView handleMouseDown:(NSEvent *)event
+{
+    // Add a new tab stop - PQRulerView style
+    NSPoint point = [self convertPoint: event.locationInWindow fromView: nil];
+    NSRulerMarker *marker = [NSRulerMarker leftTabMarkerWithRulerView:rulerView
+                                                             location:point.x + self.textContainer.lineFragmentPadding];
+    NSTextTab *tabstop = [[[NSTextTab alloc] initWithType: NSLeftTabStopType location: point.x] autorelease];
+    [marker setRepresentedObject: tabstop];
+    [rulerView trackMarker: marker withMouseEvent: event];
+}
+
+-(BOOL)rulerView:(NSRulerView *)rulerView shouldMoveMarker:(NSRulerMarker *)marker
+{
+    return YES;
+}
+
+-(float)rulerView:(NSRulerView *)rulerView willMoveMarker:(NSRulerMarker *)marker toLocation:(float)location
+{
+    return location;
+}
+
+-(void)rulerView:(NSRulerView *)rulerView didMoveMarker:(NSRulerMarker *)marker
+{
+    float delta = self.textContainer.lineFragmentPadding;
+    float location = marker.markerLocation - delta;
+    
+    id representedObject = marker.representedObject;
+    if ([representedObject isKindOfClass:[NSTextTab class]]) {
+        NSTextTab *textTab = (NSTextTab *)representedObject;
+        NSTextTab *newTab = [[[NSTextTab alloc] initWithType:[textTab tabStopType] location:location] autorelease];
+        
+       // We need to expand the range to full paragraphs
+        NSRange range = [self rangeForUserParagraphAttributeChange];
+
+        // Change the tab stop value for all of the selection
+        unsigned  location = range.location;
+        [_textStorage beginEditing];
+        while (location < NSMaxRange(range)) {
+            NSRange effectiveRange;
+            NSParagraphStyle *style = [_textStorage attribute: NSParagraphStyleAttributeName atIndex:location effectiveRange: &effectiveRange];
+            NSRange rangeToChange = NSIntersectionRange (effectiveRange, range);
+            if (style == nil) {
+                style = [NSParagraphStyle defaultParagraphStyle];
+            }
+            // Copy the paragraph style, changing only the tab
+            NSMutableParagraphStyle *newStyle = [[style mutableCopy] autorelease];
+            NSMutableArray *tabstops = [[[newStyle tabStops] mutableCopy] autorelease];
+            [tabstops addObject: newTab];
+            [tabstops removeObject: textTab];
+            // keep the tabstops sorted
+            [tabstops sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"location" ascending:YES]]];
+            [newStyle setTabStops:tabstops];
+            [_textStorage addAttribute: NSParagraphStyleAttributeName value: newStyle range: rangeToChange];
+            location = NSMaxRange(effectiveRange);
+        }
+        [_textStorage endEditing];
+        [self didChangeText];
+
+        // Update the typing attributes too
+        NSParagraphStyle *style = [_typingAttributes objectForKey: NSParagraphStyleAttributeName];
+        if (style == nil) {
+            style = [NSParagraphStyle defaultParagraphStyle];
+        }
+        // Copy the paragraph style, changing only the tab
+        NSMutableParagraphStyle *newStyle = [[style mutableCopy] autorelease];
+        NSMutableArray *tabstops = [[[newStyle tabStops] mutableCopy] autorelease];
+        [tabstops addObject: newTab];
+        [tabstops removeObject: textTab];
+        // keep the tabstops sorted
+        [tabstops sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"location" ascending:YES]]];
+        [newStyle setTabStops:tabstops];
+        if (![_typingAttributes isKindOfClass:[NSMutableDictionary class]]) {
+            NSDictionary *dict = [_typingAttributes mutableCopy];
+            [_typingAttributes release];
+            _typingAttributes = dict;
+        }
+        [(NSMutableDictionary *)_typingAttributes setObject: newStyle forKey: NSParagraphStyleAttributeName];
+
+        marker.representedObject = newTab;
+    } else if ([representedObject isEqual:@"NSHeadIndentRulerMarkerTag"] ||
+               [representedObject isEqual:@"NSTailIndentRulerMarkerTag"] ||
+               [representedObject isEqual:@"NSFirstLineHeadIndentRulerMarkerTag"]) {
+        // TODO
+        // style.headIndent = location
+        // style.tailIndent = view.textContainer.containerSize.width - location
+        // style.firstLineHeadIndent = location
+    }
+}
+
+-(BOOL)rulerView:(NSRulerView *)rulerView shouldAddMarker:(NSRulerMarker *)marker
+{
+    return YES;
+}
+
+-(float)rulerView:(NSRulerView *)rulerView willAddMarker:(NSRulerMarker *)marker atLocation:(float)location
+{
+    return location;
+}
+
+-(void)rulerView:(NSRulerView *)rulerView didAddMarker:(NSRulerMarker *)marker
+{
+    float delta = self.textContainer.lineFragmentPadding;
+    float location = marker.markerLocation - delta;
+    
+    id representedObject = marker.representedObject;
+    if ([representedObject isKindOfClass:[NSTextTab class]]) {
+        NSTextTab *textTab = (NSTextTab *)representedObject;
+        NSTextTab *newTab = [[[NSTextTab alloc] initWithType:[textTab tabStopType] location:location] autorelease];
+        
+        // Change the tab stop value for all of the selection
+        NSRange range = [self rangeForUserParagraphAttributeChange];
+        unsigned  location = range.location;
+        [_textStorage beginEditing];
+        while (location < NSMaxRange(range)) {
+            NSRange effectiveRange;
+            NSParagraphStyle *style = [_textStorage attribute: NSParagraphStyleAttributeName atIndex:location effectiveRange: &effectiveRange];
+            NSRange rangeToChange = NSIntersectionRange (effectiveRange, range);
+            if (style == nil) {
+                style = [NSParagraphStyle defaultParagraphStyle];
+            }
+            // Copy the paragraph style, changing only the tab
+            NSMutableParagraphStyle *newStyle = [[style mutableCopy] autorelease];
+            NSMutableArray *tabstops = [[[newStyle tabStops] mutableCopy] autorelease];
+            [tabstops addObject: newTab];
+            // keep the tabstops sorted
+            [tabstops sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"location" ascending:YES]]];
+            [newStyle setTabStops:tabstops];
+            [_textStorage addAttribute: NSParagraphStyleAttributeName value: newStyle range: rangeToChange];
+            location = NSMaxRange(effectiveRange);
+        }
+        [_textStorage endEditing];
+        
+        // Update the typing attributes too
+        NSParagraphStyle *style = [_typingAttributes objectForKey: NSParagraphStyleAttributeName];
+        if (style == nil) {
+            style = [NSParagraphStyle defaultParagraphStyle];
+        }
+        // Copy the paragraph style, changing only the tab
+        NSMutableParagraphStyle *newStyle = [[style mutableCopy] autorelease];
+        NSMutableArray *tabstops = [[[newStyle tabStops] mutableCopy] autorelease];
+        [tabstops addObject: newTab];
+        // keep the tabstops sorted
+        [tabstops sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"location" ascending:YES]]];
+        [newStyle setTabStops:tabstops];
+        if (![_typingAttributes isKindOfClass:[NSMutableDictionary class]]) {
+            NSDictionary *dict = [_typingAttributes mutableCopy];
+            [_typingAttributes release];
+            _typingAttributes = dict;
+        }
+        [(NSMutableDictionary *)_typingAttributes setObject: newStyle forKey: NSParagraphStyleAttributeName];
+        
+        marker.representedObject = newTab;
+        
+        [self didChangeText];
+    }
+}
+
+
+-(BOOL)rulerView:(NSRulerView *)rulerView shouldRemoveMarker:(NSRulerMarker *)marker
+{
+    return [marker.representedObject isKindOfClass:[NSTextTab class]];
+}
+
+-(void)rulerView:(NSRulerView *)rulerView didRemoveMarker:(NSRulerMarker *)marker
+{
+    float delta = self.textContainer.lineFragmentPadding;
+    float location = marker.markerLocation - delta;
+    
+    id representedObject = marker.representedObject;
+    if ([representedObject isKindOfClass:[NSTextTab class]]) {
+        NSTextTab *textTab = (NSTextTab *)representedObject;
+        
+        // Change the tab stop value for all of the selection
+        NSRange range = [self rangeForUserParagraphAttributeChange];
+        unsigned  location = range.location;
+        [_textStorage beginEditing];
+        while (location < NSMaxRange(range)) {
+            NSRange effectiveRange;
+            NSParagraphStyle *style = [_textStorage attribute: NSParagraphStyleAttributeName atIndex:location effectiveRange: &effectiveRange];
+            NSRange rangeToChange = NSIntersectionRange (effectiveRange, range);
+            if (style == nil) {
+                style = [NSParagraphStyle defaultParagraphStyle];
+            }
+            // Copy the paragraph style, changing only the tab
+            NSMutableParagraphStyle *newStyle = [[style mutableCopy] autorelease];
+            NSMutableArray *tabstops = [[[newStyle tabStops] mutableCopy] autorelease];
+            [tabstops removeObject: textTab];
+            [newStyle setTabStops:tabstops];
+            [_textStorage addAttribute: NSParagraphStyleAttributeName value: newStyle range: rangeToChange];
+            location = NSMaxRange(effectiveRange);
+        }
+        [_textStorage endEditing];
+        
+        // Update the typing attributes
+        NSParagraphStyle *style = [_typingAttributes objectForKey: NSParagraphStyleAttributeName];
+        if (style == nil) {
+            style = [NSParagraphStyle defaultParagraphStyle];
+        }
+        // Copy the paragraph style, changing only the tab
+        NSMutableParagraphStyle *newStyle = [[style mutableCopy] autorelease];
+        NSMutableArray *tabstops = [[[newStyle tabStops] mutableCopy] autorelease];
+        [tabstops removeObject: textTab];
+        [newStyle setTabStops:tabstops];
+        if (![_typingAttributes isKindOfClass:[NSMutableDictionary class]]) {
+            NSDictionary *dict = [_typingAttributes mutableCopy];
+            [_typingAttributes release];
+            _typingAttributes = dict;
+        }
+        [(NSMutableDictionary *)_typingAttributes setObject: newStyle forKey: NSParagraphStyleAttributeName];
+        
+        marker.representedObject = nil;
+        
+        [self didChangeText];
+    }
+}
+
 
 @end

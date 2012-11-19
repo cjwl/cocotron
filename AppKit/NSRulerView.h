@@ -29,7 +29,6 @@ typedef enum {
     float _thicknessForAccessoryView;
     
     NSRulerOrientation _orientation;
-    BOOL               _scrollViewNeedsTiling;
 }
 
 +(void)registerUnitWithName:(NSString *)name abbreviation:(NSString *)abbreviation unitToPointsConversionFactor:(float)conversionFactor stepUpCycle:(NSArray *)stepUpCycle stepDownCycle:(NSArray *)stepDownCycle;
@@ -92,9 +91,3 @@ typedef enum {
 -(void)rulerView:(NSRulerView *)rulerView didMoveMarker:(NSRulerMarker *)marker;
 
 @end
-
-@interface NSRulerView(NSRulerView_private)
--(void)removeAllMarkers;
--(void)addMarkersWithImage:(NSImage *)image measurementUnit:(NSMeasurementUnit *)unit;
-@end
-
