@@ -60,5 +60,5 @@ sed -e 's/%REPLACE%gccVersion%REPLACE%/'$gccVersion'/g' | \
 sed -e 's/%REPLACE%TARGET%REPLACE%/'$compilerTarget'/g' > "$defaultSpecification"
 
 if [ $targetPlatform = "Windows" ];then
- cp $specificationTemplates/Windows.pbfilespec "$destinationDirectory/$productName-$productVersion-Windows.pbfilespec"
+ cp "$specificationTemplates/Windows.pbfilespec" "$destinationDirectory/$productName-$productVersion-Windows.pbfilespec"
 fi
