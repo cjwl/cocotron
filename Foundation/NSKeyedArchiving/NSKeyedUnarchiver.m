@@ -244,12 +244,21 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 }
 
 -(int)decodeIntForKey:(NSString *)key {
-   NSNumber *number=_numberForKey(self,key);
-   
-   if(number==nil)
-    return 0;
+    NSNumber *number=_numberForKey(self,key);
     
-   return [number intValue];
+    if(number==nil)
+        return 0;
+    
+    return [number intValue];
+}
+
+-(NSInteger)decodeIntegerForKey:(NSString *)key {
+    NSNumber *number=_numberForKey(self,key);
+    
+    if(number==nil)
+        return 0;
+    
+    return [number integerValue];
 }
 -(short)decodeShortForKey:(NSString *)key {
     NSNumber *number=_numberForKey(self,key);
@@ -276,15 +285,6 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
     return 0;
     
    return [number intValue];
-}
-
--(NSInteger)decodeIntegerForKey:(NSString *)key {
-	NSNumber *number=_numberForKey(self,key);
-	
-	if(number==nil)
-		return 0;
-    
-   return [number integerValue];
 }
 
 // not a lot of validation
