@@ -825,7 +825,10 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
 -(void)getLineStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
    NSUInteger start=range.location;
-   NSUInteger end=NSMaxRange(range);
+    NSUInteger end=start;
+    if (range.length) {
+        end += range.length - 1; // -1 : the range might end on a NL - we don't want to expand it in that case, so we'll check this char
+    }
    NSUInteger contentsEnd=end;
    NSUInteger length=[self length];
    unichar  buffer[length];
