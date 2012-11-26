@@ -52,7 +52,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSBorderType)borderType;
 -(NSScroller *)verticalScroller;
 -(NSScroller *)horizontalScroller;
+- (void)setVerticalRulerView:(NSRulerView *)ruler;
 -(NSRulerView *)verticalRulerView;
+- (void)setHorizontalRulerView:(NSRulerView *)ruler;
 -(NSRulerView *)horizontalRulerView;
 -(BOOL)hasVerticalScroller;
 -(BOOL)hasHorizontalScroller;
