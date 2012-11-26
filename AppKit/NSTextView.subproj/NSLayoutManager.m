@@ -546,6 +546,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    [self invalidateLayoutForCharacterRange:range isSoft:NO actualCharacterRange:NULL];
 }
 
+-(void)ensureLayoutForTextContainer:(NSTextContainer *)container
+{
+    [self validateGlyphsAndLayoutForContainer:container];
+}
+
 -(unsigned)glyphIndexForPoint:(NSPoint)point inTextContainer:(NSTextContainer *)container fractionOfDistanceThroughGlyph:(float *)fraction {
    unsigned          endOfFragment=0;
    NSRange           range;
@@ -936,19 +941,36 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
         NSRect fill=rects[i];
         
         if(isFlipped)
-            fill.origin.y+=(fill.size.height-1);
+            fill.origin.y+=(fill.size.height - 1);
         
         fill.origin.x+=origin.x;
-        fill.origin.y+=origin.y + baselineOffset;
+        fill.origin.y+=origin.y + baselineOffset - .5; // .5 so it's better aligned on pixels - looks sharper
         [path moveToPoint:fill.origin];
 		float width = fill.size.width;
 		[path relativeLineToPoint:NSMakePoint(width, 0)];
     }
-
+    
 	NSDictionary *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
+    // Don't forget the temporary attributes
+    NSDictionary *tmpAttrs = [self temporaryAttributesAtCharacterIndex:characterRange.location effectiveRange:NULL];
+    if ([tmpAttrs count] > 0) {
+        BOOL checkTemporaryAttributesUsage = [_delegate respondsToSelector:@selector(layoutManager:shouldUseTemporaryAttributes:forDrawingToScreen:atCharacterIndex:effectiveRange:)];
+        if (checkTemporaryAttributesUsage) {
+            tmpAttrs = [_delegate layoutManager: self shouldUseTemporaryAttributes: tmpAttrs forDrawingToScreen: [[NSGraphicsContext currentContext] isDrawingToScreen] atCharacterIndex: characterRange.location effectiveRange: NULL];
+        }
+        NSMutableDictionary *dict = [[attributes mutableCopy] autorelease];
+        [dict addEntriesFromDictionary:tmpAttrs];
+        attributes = dict;
+    }
+
 	NSColor* underlineColor = [attributes objectForKey: NSUnderlineColorAttributeName];
 	if (underlineColor == nil) {
-		underlineColor = [NSColor blackColor];
+        // Default to foreground color attribute...
+        underlineColor = [attributes objectForKey: NSForegroundColorAttributeName];
+        if (underlineColor == nil) {
+            // ... and to black if still no luck
+            underlineColor = [NSColor blackColor];
+        }
 	}
 	[underlineColor set];
 	[path stroke];
@@ -1083,7 +1105,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 		NSRect lineRect = [self lineFragmentRectForGlyphAtIndex: glyphRange.location effectiveRange: &lineGlyphRange];
 		
 		if (underline) {
-			[self underlineGlyphRange: glyphRange underlineType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: NSZeroPoint];
+			[self underlineGlyphRange: glyphRange underlineType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: origin];
 		}
 		
 		if (strikeThru) {
@@ -1092,7 +1114,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 			if (strikeThruColor == nil) {
 				strikeThruColor = [NSColor blackColor];
 			}
-			[self strikethroughGlyphRange: glyphRange strikethroughType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: NSZeroPoint];
+			[self strikethroughGlyphRange: glyphRange strikethroughType: NSUnderlineStyleThick lineFragmentRect: lineRect lineFragmentGlyphRange: lineGlyphRange containerOrigin: origin];
 		}
 	}
 	
@@ -1282,25 +1304,26 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 - (void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin
 {
-	
 	NSTextView *textView = [self textViewForBeginningOfSelection];
 	NSRange selectedRange = (textView == nil) ? NSMakeRange(0,0) : [textView selectedRange];
 	
     glyphRange=[self validateGlyphsAndLayoutForGlyphRange:glyphRange];
 	
-	NSTextContainer *container=[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:&glyphRange];
+	NSTextContainer *container=[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:NULL];
 	if (container == nil) {
 		// Not sure if this is ever a good thing - but it's certainly a bad thing and if there's no container within
 		// which to layout - we're done.
 		return;
 	}
-
 	float usedHeight = [self usedRectForTextContainer:container].size.height;
 
 	NSRangeEnumerator state = NSRangeEntryEnumerator(_glyphFragments);
 	NSRange range;
 	NSGlyphFragment *fragment;
 	
+    
+    BOOL checkTemporaryAttributesUsage = [_delegate respondsToSelector:@selector(layoutManager:shouldUseTemporaryAttributes:forDrawingToScreen:atCharacterIndex:effectiveRange:)];
+    
 	// Iterate over the glyph fragments (which identify runs of common attributes)
 	while (NSNextRangeEnumeratorEntry(&state,&range,(void **)&fragment)) {
 
@@ -1323,17 +1346,14 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 				// But we do have to worry about the temporary attributes so let's do a quick check with the character range and find out
 				// if we have any temp attributes to be concerned about
 				NSRange tempRange;
-				NSRangeEntryAtIndex(_rangeToTemporaryAttributes, characterRange.location, &tempRange);
-				if (NSIntersectionRange(characterRange, tempRange).length > 0) {
-						tempAttributesInRange = YES;
+                NSDictionary *tmpAttrs = [self temporaryAttributesAtCharacterIndex:characterRange.location effectiveRange:&tempRange];
+				if (tmpAttrs.count > 0 && NSIntersectionRange(characterRange, tempRange).length > 0) {
+                    tempAttributesInRange = YES;
 				}
 			}
 			if (tempAttributesInRange) {
 				
 				// Ok - so we've got to proceed with caution - there are temp attributes
-				
-				BOOL checkTemporaryAttributesUsage = [_delegate respondsToSelector:@selector(layoutManager:shouldUseTemporaryAttributes:forDrawingToScreen:atCharacterIndex:effectiveRange:)];
-
 				unsigned length = 0;
 				unsigned offset = characterRange.location;
 				
@@ -1541,20 +1561,75 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 - (id)temporaryAttribute:(NSString *)attrName atCharacterIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range
 {
-	NSUnimplementedMethod();
-	return nil;
+    return [[self temporaryAttributesAtCharacterIndex:location effectiveRange:range] objectForKey:attrName];
 }
 
 - (id)temporaryAttribute:(NSString *)attrName atCharacterIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit
 {
-	NSUnimplementedMethod();
-	return nil;
+    id result = [self temporaryAttribute:attrName atCharacterIndex:location effectiveRange:range];
+    if (range) {
+        // Check if we can expand the range
+
+        // Check if we can expand it before the found range
+        NSRange effectiveRange;
+        while (range->location > rangeLimit.location) {
+            id attr = [self temporaryAttribute:attrName atCharacterIndex:range->location - 1 effectiveRange:&effectiveRange];
+            if (attr == result || [attr isEqual:result]) {
+                // Expand the found range location
+                range->length = NSMaxRange(*range) - effectiveRange.location;
+                range->location = effectiveRange.location;
+            }  else {
+                break;
+            }
+        }
+        // Check if we can expand it after the found range
+        while (NSMaxRange(*range) < NSMaxRange(rangeLimit)) {
+            id attr = [self temporaryAttribute:attrName atCharacterIndex:NSMaxRange(*range) effectiveRange:&effectiveRange];
+            if (attr == result || [attr isEqual:result]) {
+                // Expand the found range length
+                range->length = NSMaxRange(effectiveRange) - range->location;
+            }  else {
+                break;
+            }
+        }
+        // Ensure we don't go outside of the rangeLimit
+        *range = NSIntersectionRange(*range,rangeLimit);
+    }
+    return result;
 }
 
 - (NSDictionary *)temporaryAttributesAtCharacterIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit
 {
-	NSUnimplementedMethod();
-	return nil;
+    id result = [self temporaryAttributesAtCharacterIndex:location effectiveRange:range];
+    if (range) {
+        // Check if we can expand the range
+        
+        // Check if we can expand it before the found range
+        NSRange effectiveRange;
+        while (range->location > rangeLimit.location) {
+            id attr = [self temporaryAttributesAtCharacterIndex:range->location - 1 effectiveRange:&effectiveRange];
+            if (attr == result || [attr isEqual:result]) {
+                // Expand the found range location
+                range->length = NSMaxRange(*range) - effectiveRange.location;
+                range->location = effectiveRange.location;
+            }  else {
+                break;
+            }
+        }
+        // Check if we can expand it after the found range
+        while (NSMaxRange(*range) < NSMaxRange(rangeLimit)) {
+            id attr = [self temporaryAttributesAtCharacterIndex:NSMaxRange(*range) effectiveRange:&effectiveRange];
+            if (attr == result || [attr isEqual:result]) {
+                // Expand the found range length
+                range->length = NSMaxRange(effectiveRange) - range->location;
+            }  else {
+                break;
+            }
+        }
+        // Ensure we don't go outside of the rangeLimit
+        *range = NSIntersectionRange(*range,rangeLimit);
+    }
+    return result;
 }
 
 - (void)addTemporaryAttribute:(NSString *)attrName value:(id)value forCharacterRange:(NSRange)charRange

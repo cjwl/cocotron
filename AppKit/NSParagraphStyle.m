@@ -248,6 +248,36 @@ static inline id mutableCopyWithZone(NSParagraphStyle *self,NSZone *zone){
    return _tighteningFactorForTruncation;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if (self == object)  {
+        return YES;
+    }
+    if (![object isKindOfClass:[NSParagraphStyle class]]) {
+        return NO;
+    }
+    NSParagraphStyle *other = (NSParagraphStyle *)object;
+    return (_writingDirection == other->_writingDirection &&
+            _paragraphSpacing == other->_paragraphSpacing &&
+            _paragraphSpacingBefore == other->_paragraphSpacingBefore &&
+            _headerLevel == other->_headerLevel &&
+            _firstLineHeadIndent == other->_firstLineHeadIndent &&
+            _headIndent == other->_headIndent &&
+            _tailIndent == other->_tailIndent &&
+            _alignment == other->_alignment &&
+            _lineBreakMode == other->_lineBreakMode &&
+            _minimumLineHeight == other->_minimumLineHeight &&
+            _maximumLineHeight == other->_maximumLineHeight &&
+            _lineHeightMultiple == other->_lineHeightMultiple &&
+            _lineSpacing == other->_lineSpacing &&
+            _defaultTabInterval == other->_defaultTabInterval &&
+            _hyphenationFactor == other->_hyphenationFactor &&
+            _tighteningFactorForTruncation == other->_tighteningFactorForTruncation &&
+            (_tabStops == other->_tabStops || [_tabStops isEqual:other->_tabStops]) &&
+            (_textBlocks == other->_textBlocks || [_textBlocks isEqual:other->_textBlocks]) &&
+            (_textLists == other->_textLists || [_textLists isEqual:other->_textLists]));
+}
+
 - (NSString*)description
 {
 	NSMutableString* tabsString = [NSMutableString stringWithString: @" (\n"];
@@ -271,13 +301,15 @@ static inline id mutableCopyWithZone(NSParagraphStyle *self,NSZone *zone){
 	[tabsString appendString: @")"];
 		
 	return [NSString stringWithFormat: @"Alignment %d, LineSpacing %f, ParagraphSpacing %f, "
-										@"ParagraphSpacingBefore %f, HeadIndent %f, TailIndent %f, FirstLineHeadIndent %f, "
-										@"LineHeight %f/%f, LineHeightMultiple %f, LineBreakMode %d, Tabs %@, "
-										@"DefaultTabInterval %f, Blocks %@, Lists %@, BaseWritingDirection %d, "
-										@"HyphenationFactor %f, TighteningFactor %f, HeaderLevel %d",
-										_alignment, _lineSpacing, _paragraphSpacing, _paragraphSpacingBefore, _headIndent, _firstLineHeadIndent,
-										_minimumLineHeight, _maximumLineHeight, _lineHeightMultiple, _lineBreakMode, _tabStops, _defaultTabInterval,
-			_textBlocks, _textLists, _writingDirection, _hyphenationFactor, _tighteningFactorForTruncation, _headerLevel];
+            @"ParagraphSpacingBefore %f, HeadIndent %f, TailIndent %f, FirstLineHeadIndent %f, "
+            @"LineHeight %f/%f, LineHeightMultiple %f, LineBreakMode %d, Tabs %@, "
+            @"DefaultTabInterval %f, Blocks %@, Lists %@, BaseWritingDirection %d, "
+            @"HyphenationFactor %f, TighteningFactor %f, HeaderLevel %d",
+            _alignment, _lineSpacing, _paragraphSpacing,
+            _paragraphSpacingBefore, _headIndent, _tailIndent, _firstLineHeadIndent,
+            _minimumLineHeight, _maximumLineHeight, _lineHeightMultiple, _lineBreakMode, tabsString,
+            _defaultTabInterval, _textBlocks, _textLists, _writingDirection,
+            _hyphenationFactor, _tighteningFactorForTruncation, _headerLevel];
 }
 
 @end

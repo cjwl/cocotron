@@ -49,6 +49,8 @@ typedef enum {
 APPKIT_EXPORT NSString * const NSTextViewDidChangeSelectionNotification;
 APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
 
+@class NSUndoTyping;
+
 @interface NSTextView : NSText <NSTextInput> {
    NSTextStorage   *_textStorage;
    NSTextContainer *_textContainer;
@@ -98,8 +100,6 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    int                    _userCompletionSelectedItem;	// index within completion array
   
    NSUndoManager         *_fieldEditorUndoManager;
-   NSString              *_undoString; // The text that is being replaced by the current typing operation
-   NSRange                _undoRange; // The range of text that was entered in the current typing operation
    BOOL                   _processingKeyEvent;
    BOOL                   _firstResponderButNotEditingYet;
    
@@ -107,6 +107,8 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    BOOL _isContinuousSpellCheckingEnabled;
    BOOL _isAutomaticSpellingCorrectionEnabled;
    NSTextCheckingTypes _enabledTextCheckingTypes;
+    
+    NSUndoTyping *_undoTyping;
 }
 
 -initWithFrame:(NSRect)frame textContainer:(NSTextContainer *)container;

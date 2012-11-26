@@ -57,4 +57,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _location;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if (self == object)  {
+        return YES;
+    }
+    if (![object isKindOfClass:[NSTextTab class]]) {
+        return NO;
+    }
+    NSTextTab *other = (NSTextTab *)object;
+    return self.location == other.location && self.tabStopType == other.tabStopType;
+}
 @end

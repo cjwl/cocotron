@@ -106,6 +106,7 @@ typedef enum {
 -(void)textStorage:(NSTextStorage *)storage edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)changeInLength invalidatedRange:(NSRange)invalidateRange;
 
 -(void)textContainerChangedGeometry:(NSTextContainer *)container;
+-(void)ensureLayoutForTextContainer:(NSTextContainer *)container;
 
 -(unsigned)glyphIndexForPoint:(NSPoint)point inTextContainer:(NSTextContainer *)container fractionOfDistanceThroughGlyph:(float *)fraction;
 -(unsigned)glyphIndexForPoint:(NSPoint)point inTextContainer:(NSTextContainer *)container;
