@@ -234,7 +234,7 @@ static Class _rulerViewClass = nil;
     NSRect result=[self insetBounds];
     
     result.size.height = [_horizontalRuler requiredThickness];
-    if ([self hasVerticalRuler]) {
+    if ([self rulersVisible] && [self hasVerticalRuler]) {
         result.origin.x += [_verticalRuler requiredThickness];
         result.size.width -= [_verticalRuler requiredThickness];
     }
@@ -246,7 +246,7 @@ static Class _rulerViewClass = nil;
     NSRect result=[self insetBounds];
     
     result.size.width = [_verticalRuler requiredThickness];
-    if ([self hasHorizontalRuler]) {
+    if ([self rulersVisible] && [self hasHorizontalRuler]) {
         result.origin.y += [_horizontalRuler requiredThickness];
         result.size.height -= [_horizontalRuler requiredThickness];
     }
@@ -301,7 +301,7 @@ static Class _rulerViewClass = nil;
        result.origin.y+=[self headerClipViewFrame].size.height;
        result.size.height-=[self headerClipViewFrame].size.height;
    }
-   if ([self rulersVisible] && _horizontalRuler != nil) {
+    if([self rulersVisible] && [self hasHorizontalRuler]) {
        result.origin.y+=[_horizontalRuler requiredThickness];
        result.size.height-=[_horizontalRuler requiredThickness];
    }
@@ -321,7 +321,7 @@ static Class _rulerViewClass = nil;
 
    result.size.height=[NSScroller scrollerWidth];
 
-   if ([self rulersVisible] && _verticalRuler != nil) {
+    if([self rulersVisible] && [self hasVerticalRuler]) {
        result.origin.x+=[_verticalRuler requiredThickness];
        result.size.width-=[_verticalRuler requiredThickness];
    }
@@ -475,6 +475,34 @@ static Class _rulerViewClass = nil;
 -(NSRulerView *)verticalRulerView
 {
     return _verticalRuler;
+}
+
+- (void)setVerticalRulerView:(NSRulerView *)ruler
+{
+    ruler = [ruler retain];
+    if (_verticalRuler) {
+        [_verticalRuler removeFromSuperview];
+        [_verticalRuler release];
+    }
+    _verticalRuler = ruler;
+    [_verticalRuler setScrollView:self];
+    [_verticalRuler setOrientation:NSVerticalRuler];
+    [self addSubview:_verticalRuler];
+    [self tile];
+}
+
+- (void)setHorizontalRulerView:(NSRulerView *)ruler
+{
+    ruler = [ruler retain];
+    if (_horizontalRuler) {
+        [_horizontalRuler removeFromSuperview];
+        [_horizontalRuler release];
+    }
+    _horizontalRuler = ruler;
+    [_horizontalRuler setScrollView:self];
+    [_horizontalRuler setOrientation:NSHorizontalRuler];
+    [self addSubview:_horizontalRuler];
+    [self tile];
 }
 
 -(NSRulerView *)horizontalRulerView
@@ -717,9 +745,14 @@ static Class _rulerViewClass = nil;
    frame=[self cornerViewFrame];
    [_cornerView setFrame:frame];
 
-   [_verticalScroller setFrame:[self verticalScrollerFrame]];
-   [_horizontalScroller setFrame:[self horizontalScrollerFrame]];
-   [_clipView setFrame:[self clipViewFrame]];
+    frame = [self verticalScrollerFrame];
+   [_verticalScroller setFrame:frame];
+
+    frame = [self horizontalScrollerFrame];
+   [_horizontalScroller setFrame:frame];
+    
+    frame = [self clipViewFrame];
+   [_clipView setFrame:frame];
 
    frame=[self horizontalRulerFrame];
    [_horizontalRuler setFrame:frame];
