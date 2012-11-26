@@ -446,7 +446,7 @@
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				SDKROOT = "cocotron-win32";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 			};
 			name = Debug;
 		};
@@ -454,7 +454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_OPTIMIZATION_LEVEL = 3;
-				SDKROOT = "cocotron-win32";
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 			};
 			name = Release;
 		};
