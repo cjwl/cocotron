@@ -93,6 +93,11 @@ NSString * const NSRulerPboard=@"NSRulerPboard";
    return 0;
 }
 
+-(int)addTypes:(NSArray *)types owner:(id)owner {
+    NSUnimplementedMethod();
+    return 0;
+}
+
 -(BOOL)setData:(NSData *)data forType:(NSString *)type {
    NSUnimplementedMethod();
    return NO;
