@@ -12,13 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_class.h"
 #import "ObjCException.h"
 
-static id nil_message(id object,SEL message,...){
-   return nil;
+//we must return a 64 bit type for clearing both registers (32 bit systems)
+static unsigned long long nil_message(id object,SEL message,...) {
+   return 0;
 }
 
 IMP objc_msg_lookup(id object,SEL selector) {
    if(object==nil)
-    return nil_message;
+    return (IMP)nil_message;
    else {
     OBJCMethodCache      *cache=object->isa->cache;
     uintptr_t              index=(uintptr_t)selector&OBJCMethodCacheMask;

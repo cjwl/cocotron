@@ -11,17 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <errno.h>
+#include <errno.h>
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <sys/ioctl.h>
-#import <unistd.h>
+#include <unistd.h>
 #import <arpa/inet.h>
 
 #ifdef __svr4__ // Solaris
 #import <sys/filio.h>
-#import <sys/signal.h>
+#import <signal.h>
 #endif
 
 @implementation NSSocket(bsd)
@@ -91,13 +91,18 @@ static inline void byteZero(void *vsrc,size_t size){
    [self dealloc];
 }
 
--initConnectedToSocket:(NSSocket **)otherX {
-   int pipes[2];
-   pipe(pipes);
-   
-   *otherX=[[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
 
-   return [self initWithDescriptor:pipes[1]];
+- initConnectedToSocket: (NSSocket **)otherX
+{
+    int pipes[2];
+    if (pipe(pipes)) {
+        *otherX = [[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
+        return [self initWithDescriptor:pipes[1]];
+    } else {
+        NSLog(@"NSSocket: could not create pipe: (%d) %s", errno, strerror(errno));
+        [self release];
+        return nil;
+    }
 }
 
 
@@ -120,7 +125,7 @@ static inline void byteZero(void *vsrc,size_t size){
 -(BOOL)isEqual:other {
    if(![other isKindOfClass:[NSSocket_bsd class]])
     return NO;
-    
+
    return (_descriptor==((NSSocket_bsd *)other)->_descriptor)?YES:NO;
 }
 
@@ -143,29 +148,29 @@ static inline void byteZero(void *vsrc,size_t size){
    NSArray *addresses=[host addresses];
    NSInteger      i,count=[addresses count];
    NSError *error=nil;
-   
+
    *immediate=NO;
 
    if(!block){
     if((error=[self setOperationWouldBlock:NO])!=nil)
      return error;
    }
-   
+
    for(i=0;i<count;i++){
     struct sockaddr_in try;
     NSString     *stringAddress=[addresses objectAtIndex:i];
     char          cString[[stringAddress cStringLength]+1];
     in_addr_t     address;
-    
+
     [stringAddress getCString:cString];
     if((address=inet_addr(cString))==-1){
  // FIX
     }
-    
+
     byteZero(&try,sizeof(struct sockaddr_in));
     try.sin_addr.s_addr=address;
     try.sin_family=AF_INET;
-    try.sin_port=portNumber;
+    try.sin_port=htons(portNumber);
 
     if(connect(_descriptor,(struct sockaddr *)&try,(socklen_t)sizeof(try))==0){
      if(!block){
@@ -189,7 +194,7 @@ static inline void byteZero(void *vsrc,size_t size){
 
    if(error==nil)
     error=[NSError errorWithDomain:NSPOSIXErrorDomain code:EHOSTUNREACH userInfo:nil];
-    
+
    return error;
 }
 
@@ -206,7 +211,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
-   return recv(_descriptor,(void *)buffer,length,0);
+   NSInteger i = recv(_descriptor,(void *)buffer,length,0);
+
+    return i;
 }
 
 -(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
@@ -216,19 +223,23 @@ static inline void byteZero(void *vsrc,size_t size){
 -(NSSocket *)acceptWithError:(NSError **)errorp {
    struct sockaddr addr;
    socklen_t       addrlen=(socklen_t)sizeof(struct sockaddr);
-   int             newSocket; 
+   int             newSocket;
    NSError        *error;
-   
+
    error=[self errorForReturnValue:newSocket=accept(_descriptor,&addr,&addrlen)];
    if(errorp!=NULL)
     *errorp=error;
-    
+
    return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];
+}
+
+- (CFSSLHandler*)sslHandler {
+    return nil;
 }
 
 @end
 
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface) {   
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,uint16_t port,uint32_t interface) {
    return nil;
 }

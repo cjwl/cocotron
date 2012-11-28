@@ -71,7 +71,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 
 -(NSArray *)statesForMode:(NSString *)mode {
    NSMutableArray *result=[NSMutableArray array];
-   
+
    if([mode isEqualToString:NSRunLoopCommonModes]){
     for(NSString *common in _commonModes)
      [result addObject:[self stateForMode:common]];
@@ -79,7 +79,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
    else {
     [result addObject:[self stateForMode:mode]];
    }
-   
+
    return result;
 }
 
@@ -141,23 +141,28 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
    [[self stateForMode:_currentMode] wakeUp];
 }
 
--(NSDate *)limitDateForMode:(NSString *)mode {
-   NSRunLoopState *state=[self stateForMode:mode];
-   
-   mode=[mode retain];   
-    [_currentMode release];
-   _currentMode=mode;
-   
-   [state startingInMode:mode];
-   
-   if([self _orderedPerforms])
-      ;//[self _wakeUp];
-   if([state fireFirstTimer])
-      ;//[self _wakeUp];
-   [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
-   return [state limitDateForMode:mode];
+- (NSDate *)limitDateForMode:(NSString *)mode
+{
+    NSRunLoopState *state = [self stateForMode:mode];
+
+    mode = [mode retain];
+    [_currentMode release];
+    _currentMode = mode;
+
+    [state startingInMode:mode];
+
+    if ([self _orderedPerforms]) {
+        //[self _wakeUp];
+    }
+    if ([state fireFirstTimer]) {
+        //[self _wakeUp];
+    }
+    [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
+
+    return [state limitDateForMode:mode];
 }
+
 
 -(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
    NSRunLoopState *state=[self stateForMode:mode];
@@ -193,14 +198,14 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
      [pool release];
      return didProcessAnything;
     }
-    
+
     limitDate=[limitDate earlierDate:date];
-    
+
     didProcessAnything=YES;
-    
+
     NSRunLoopState *state=[self stateForMode:mode];
 
-    
+
     if([[NSNotificationQueue defaultQueue] hasIdleNotificationsInMode:mode]){
      if([state pollInputForMode:mode]){
       [pool release];
@@ -215,11 +220,11 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
      [pool release];
      return YES;
     }
-   
+
    [pool release];
 
    }while([date timeIntervalSinceNow]>0);
-   
+
    return YES;
 }
 
@@ -251,7 +256,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 
 -(void)addInputSource:(NSInputSource *)source forMode:(NSString *)mode {
    NSArray *modeStates=[self statesForMode:mode];
-   
+
    for(NSRunLoopState *state in modeStates)
     [state addInputSource:source];
 
@@ -259,27 +264,27 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 
 -(void)removeInputSource:(NSInputSource *)source forMode:(NSString *)mode {
    NSArray *modeStates=[self statesForMode:mode];
-   
+
    for(NSRunLoopState *state in modeStates)
     [state removeInputSource:source];
 }
 
 -(void)addTimer:(NSTimer *)timer forMode:(NSString *)mode {
    NSArray *modeStates=[self statesForMode:mode];
-   
+
    for(NSRunLoopState *state in modeStates)
     [state addTimer:timer];
 }
 
 -(NSArray *)resolveCommonModes:(NSArray *)modes {
    NSMutableArray *result=[NSMutableArray array];
-   
+
    for(NSString *check in modes)
     if([check isEqualToString:NSRunLoopCommonModes])
      [result addObjectsFromArray:_commonModes];
     else
      [result addObject:check];
-     
+
    return result;
 }
 
@@ -308,7 +313,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 
 		while(--count>=0){
 			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
-			
+
 			if([check selector]==selector && [check target]==target && [check argument]==argument)
 				[_orderedPerforms removeObjectAtIndex:count];
 		}
@@ -322,7 +327,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
 
 		while(--count>=0){
 			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
-			
+
 			if([check target]==target)
 				[_orderedPerforms removeObjectAtIndex:count];
 		}
@@ -357,7 +362,7 @@ NSString * const NSRunLoopCommonModes=@"kCFRunLoopCommonModes";
    NSDelayedPerform *delayed=[NSDelayedPerform delayedPerformWithObject:object selector:selector argument:argument];
    NSTimer          *timer=[NSTimer timerWithTimeInterval:delay target:[NSObject class] selector:@selector(_delayedPerform:) userInfo:delayed repeats:NO];
    NSInteger         i,count=[modes count];
-   
+
    for(i=0;i<count;i++)
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:[modes objectAtIndex:i]];
 }

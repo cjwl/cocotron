@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -290,14 +290,6 @@
 			outputFiles = (
 			);
 		};
-		FEE0F9D60DC9634200598037 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
@@ -305,14 +297,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC0C705546C1D00DB518D /* pthread.1.0.dll */;
+			remoteGlobalIDString = D2AAC0C705546C1D00DB518D;
 			remoteInfo = pthread;
 		};
 		FE6784E4143389D10009A0A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6784DB143389C80009A0A0 /* pthread.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC0C605546C1D00DB518D /* pthread */;
+			remoteGlobalIDString = D2AAC0C605546C1D00DB518D;
 			remoteInfo = pthread;
 		};
 /* End PBXContainerItemProxy section */
@@ -858,7 +850,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
-				FEE0F9D60DC9634200598037 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE6784E5143389D10009A0A0 /* PBXTargetDependency */,
@@ -974,8 +965,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreFoundation" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (

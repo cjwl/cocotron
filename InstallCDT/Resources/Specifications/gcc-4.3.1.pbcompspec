@@ -1,0 +1,97 @@
+(
+	{
+		Identifier = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%gccVersion%REPLACE%;
+		BasedOn    = com.apple.compilers.llvmgcc42;
+		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% gcc %REPLACE%gccVersion%REPLACE%";
+		Version    = "org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%gccVersion%REPLACE%";
+		Vendor     = "cocotron.org";
+		ExecPath   = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/gcc-%REPLACE%gccVersion%REPLACE%/bin/%REPLACE%TARGET%REPLACE%-gcc";
+		Architectures = (%REPLACE%architecture%REPLACE%);
+
+		SupportsZeroLink              = No;
+		SupportsPredictiveCompilation = No;
+    	SupportsHeadermaps            = No;
+    	DashIFlagAcceptsHeadermaps    = No;
+
+        Options = (
+        {   Name = SDKROOT;
+            Type = Path;
+            CommandLineArgs = ();
+        },
+	{
+		Name=%REPLACE%PRODUCTNAME%REPLACE%_FRAMEWORK_SEARCH_PATH;
+		Type = string;
+		DefaultValue = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/Frameworks";
+		CommandLineArgs = ( "-F$(value)" );
+	},
+	{
+		Name=%REPLACE%PRODUCTNAME%REPLACE%_DEFINE;
+		Type = bool;
+		DefaultValue = YES;
+		CommandLineArgs = { YES = (-D__%REPLACE%PRODUCTNAME%REPLACE%__); NO = (); };
+	},
+        {   Name = GCC_ENABLE_OBJC_PERIOD_SYMBOLS;
+            Type = bool;
+            DefaultValue = NO;
+            CommandLineArgs = { YES = (-fobjc-period-symbols); NO = (); };
+            Category = CodeGeneration;
+        },
+        {   Name = GCC_PLATFORM_DEFINES;
+            Type = string;
+            DefaultValue = "-D%REPLACE%PLATFORM%REPLACE%";
+            CommandLineArgs = ( "$(value)" );
+            Category = CodeGeneration;
+        },
+	{   Name= GCC_CONSTANT_STRING_CLASS;
+            CommandLineArgs = ( "-fconstant-string-class=NSConstantString" );
+            Category = CodeGeneration;
+	},
+        /* overrides */
+        {   Name = arch;
+            CommandLineArgs = ( );
+/* despite overriding arch here, the link command still generates it, so we have to implement it in the compiler too */
+        },
+        {   Name = USE_HEADERMAP;
+            Type = bool;
+            DefaultValue = NO;
+        },
+        {   Name = PREBINDING; /* this override doesn't work */
+            Type = bool;
+            DefaultValue = NO;
+        },
+        {   Name = GCC_PREFIX_HEADER; /* this override doesn't work */
+            CommandLineArgs = ( );
+        },    
+         {   Name = GCC_PRECOMPILE_PREFIX_HEADER; /* this override doesn't work */
+            Type = bool;
+            DefaultValue = NO;
+        },
+       {   Name = GCC_ENABLE_PASCAL_STRINGS;
+            Type = bool;
+            DefaultValue = NO;
+            CommandLineArgs = { YES = (-fpascal-strings); NO = (); };
+            Category = Language;
+        },
+        {   Name =  GCC_CW_ASM_SYNTAX;
+            Type = bool;
+            DefaultValue = NO;
+            CommandLineArgs = { YES = (-fasm-blocks); NO = (); };
+            AppearsAfter = GCC_ALTIVEC_EXTENSIONS;
+            Category = Language;
+        },
+        {   Name = GCC_MODEL_TUNING;
+            Type = enum;
+            AllowedValues = ("");
+            DefaultValue = "";
+            CommandLineArgs = { "" = (); "<<otherwise>>" = (""); };
+            Architectures = ();
+            Category = CodeGeneration;
+        },
+        {   Name = WARNING_CFLAGS;
+            CommandLineArgs = ( );
+        },
+
+		);
+
+	}
+)

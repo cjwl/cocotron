@@ -598,6 +598,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor {
    NSMutableArray *bitmaps=[NSMutableArray array];
+   
 	for(NSImageRep *check in _representations){
 		if([check isKindOfClass:[NSBitmapImageRep class]]) {
 			[bitmaps addObject:check];
@@ -616,15 +617,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
 			
 			[self lockFocusOnRepresentation:image];
+     // we should probably use -draw here but not all reps implement it, or not?
 			[check draw];
 			[self unlockFocus];
 			
 			[bitmaps addObject:image];
 			[image release];
-		}
-		
-	}
-	return [NSBitmapImageRep TIFFRepresentationOfImageRepsInArray:bitmaps usingCompression:compression factor:factor];
+    }
+    
+   }
+   
+   return [NSBitmapImageRep TIFFRepresentationOfImageRepsInArray:bitmaps usingCompression:compression factor:factor];
 }
 
 -(void)lockFocus {
@@ -677,12 +680,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
 	// Some fake view, just so the context knows if it's flipped or not
 	NSView *view = [[[NSImageCacheView alloc] initWithFlipped:[self isFlipped]] autorelease];
-	[[context focusStack] addObject:self];
+    [[context focusStack] addObject:self];
 
 	if([self isFlipped]){
     CGAffineTransform flip={1,0,0,-1,0,[self size].height};
     CGContextConcatCTM(graphicsPort,flip);
    }
+
 }
 
 -(void)unlockFocus {

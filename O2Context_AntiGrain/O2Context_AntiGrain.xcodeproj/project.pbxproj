@@ -383,12 +383,11 @@
 			baseConfigurationReference = FE06B3A71430E8DC0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 1;
 				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(INSTALL_PATH)/AppKit.framework/Resources";
@@ -405,7 +404,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Debug;
@@ -415,7 +413,6 @@
 			baseConfigurationReference = FE06B3A71430E8DC0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_MODEL_TUNING = G5;
@@ -436,7 +433,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = O2Context_AntiGrain;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = cgContext;
 			};
 			name = Release;
@@ -444,9 +440,7 @@
 		1DEB911F08733D790010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 			};
 			name = Debug;
 		};
@@ -454,7 +448,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 			};
 			name = Release;
 		};

@@ -11,7 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSRaise.h>
-#import <string.h>
+#include <string.h>
+#include <stdlib.h>
 
 @implementation NSIndexPath
 
@@ -29,10 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -  initWithIndexes: (NSUInteger*) indexes length: (NSUInteger) length {
    int i;
-		
+
    _length  = length;
    _indexes = NSZoneMalloc(NULL,length*sizeof(NSUInteger));
-   
+
    for(i=0;i<length;i++)
     _indexes[i]=indexes[i];
 
@@ -56,11 +57,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (NSIndexPath*) indexPathByAddingIndex: (NSUInteger) index {
    NSUInteger length=[self length];
    NSUInteger buffer[length+1];
-   
+
    [self getIndexes:buffer];
    buffer[length]=index;
    length++;
-   
+
    return [[[NSIndexPath alloc] initWithIndexes:buffer length:length] autorelease];
 }
 
@@ -69,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[NSException raise:NSInvalidArgumentException format:@"Unable to remove index from zero length path."];
     return nil;
    }
-   
+
    return [[[NSIndexPath alloc] initWithIndexes: _indexes length: _length-1] autorelease];
 }
 
@@ -112,12 +113,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSUInteger) hash {
    NSUInteger result=0;
    int i;
-		   
+
    for(i=0;i<_length;i++){
     result = result*2 + _indexes[i];
    }
    result = 2*result + _length;
-   
+
    return result;
 }
 

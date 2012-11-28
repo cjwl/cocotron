@@ -197,60 +197,62 @@ static GLint interpolationFromName(NSString *name){
     return GL_LINEAR;   
 }
 
+void CATexImage2DCGImage(CGImageRef image){
+    size_t            imageWidth=CGImageGetWidth(image);
+    size_t            imageHeight=CGImageGetHeight(image);
+    CGBitmapInfo      bitmapInfo=CGImageGetBitmapInfo(image);
+   
+    CGDataProviderRef provider=CGImageGetDataProvider(image);
+    CFDataRef         data=CGDataProviderCopyData(provider);
+    const uint8_t    *pixelBytes=CFDataGetBytePtr(data);
+   
+   
+    GLenum glFormat=GL_BGRA;
+    GLenum glType=GL_UNSIGNED_INT_8_8_8_8_REV;
+   
+    CGImageAlphaInfo alphaInfo=bitmapInfo&kCGBitmapAlphaInfoMask;
+    CGBitmapInfo     byteOrder=bitmapInfo&kCGBitmapByteOrderMask;
+   
+    switch(alphaInfo){
+   
+        case kCGImageAlphaNone:
+            break;
+
+        case kCGImageAlphaPremultipliedLast:
+            if(byteOrder==kO2BitmapByteOrder32Big){
+                glFormat=GL_RGBA;
+                glType=GL_UNSIGNED_INT_8_8_8_8_REV;
+            }
+            break;
+
+        case kCGImageAlphaPremultipliedFirst: // ARGB
+            if(byteOrder==kCGBitmapByteOrder32Little){
+                glFormat=GL_BGRA;
+                glType=GL_UNSIGNED_INT_8_8_8_8_REV;
+            }
+            break;
+
+        case kCGImageAlphaLast:
+            break;
+
+        case kCGImageAlphaFirst:
+            break;
+
+        case kCGImageAlphaNoneSkipLast:
+            break;
+
+        case kCGImageAlphaNoneSkipFirst:
+            break;
+
+        case kCGImageAlphaOnly:
+            break;
+    }
+
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,imageWidth,imageHeight,0,glFormat,glType,pixelBytes);
+}
+
+
 -(void)_renderLayer:(CALayer *)layer z:(float)z currentTime:(CFTimeInterval)currentTime {
-   CGImageRef image=layer.contents;
-    
-   size_t            imageWidth=CGImageGetWidth(image);
-   size_t            imageHeight=CGImageGetHeight(image);
-   CGBitmapInfo      bitmapInfo=CGImageGetBitmapInfo(image);
-   
-   CGDataProviderRef provider=CGImageGetDataProvider(image);
-   CFDataRef         data=CGDataProviderCopyData(provider);
-   const uint8_t    *pixelBytes=CFDataGetBytePtr(data);
-   
-   
-   GLenum glFormat=GL_BGRA;
-   GLenum glType=GL_UNSIGNED_INT_8_8_8_8_REV;
-   
-   CGImageAlphaInfo alphaInfo=bitmapInfo&kCGBitmapAlphaInfoMask;
-   CGBitmapInfo     byteOrder=bitmapInfo&kCGBitmapByteOrderMask;
-   
-   switch(alphaInfo){
-   
-    case kCGImageAlphaNone:
-     break;
-
-    case kCGImageAlphaPremultipliedLast:
-     if(byteOrder==kO2BitmapByteOrder32Big){
-      glFormat=GL_RGBA;
-      glType=GL_UNSIGNED_INT_8_8_8_8_REV;
-     }
-     
-     break;
-
-    case kCGImageAlphaPremultipliedFirst: // ARGB
-     if(byteOrder==kCGBitmapByteOrder32Little){
-      glFormat=GL_BGRA;
-      glType=GL_UNSIGNED_INT_8_8_8_8_REV;
-     }
-     break;
-
-    case kCGImageAlphaLast:
-     break;
-
-    case kCGImageAlphaFirst:
-     break;
-
-    case kCGImageAlphaNoneSkipLast:
-     break;
-
-    case kCGImageAlphaNoneSkipFirst:
-     break;
-
-    case kCGImageAlphaOnly:
-     break;
-   }
-
    NSNumber *textureId=[layer _textureId];
    GLuint    texture=[textureId unsignedIntValue];
    GLboolean loadPixelData=GL_FALSE;
@@ -266,17 +268,19 @@ static GLint interpolationFromName(NSString *name){
     
    }
 
-   if(loadPixelData){
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,imageWidth,imageHeight,0,glFormat,glType,pixelBytes);
+    if(loadPixelData){
+        CGImageRef image=layer.contents;
+    
+        CATexImage2DCGImage(image);
 
-    GLint minFilter=interpolationFromName(layer.minificationFilter);
-    GLint magFilter=interpolationFromName(layer.magnificationFilter);
+        GLint minFilter=interpolationFromName(layer.minificationFilter);
+        GLint magFilter=interpolationFromName(layer.magnificationFilter);
    
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,minFilter);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,magFilter);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,minFilter);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,magFilter);
 
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
    }
    
    CGPoint anchorPoint=interpolatePointInLayerKey(layer,@"anchorPoint",currentTime);

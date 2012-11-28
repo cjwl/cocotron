@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 @interface NSTimeZone_posix : NSTimeZone {
-    NSMutableArray *_timeZoneTransitions;
-    NSMutableArray *_timeZoneTypes;
+    NSArray     *_timeZoneTransitions;
+    NSArray     *_timeZoneTypes;
 }
 
 // interface for providing alternate time zone data sources...

@@ -26,81 +26,89 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSData.h>
 #import <Foundation/NSCoder.h>
-#import <string.h>
+#include <string.h>
 
 @implementation NSString_placeholder
 
--init {
-   NSDeallocateObject(self);
-   return @"";
+- init
+{
+    NSDeallocateObject(self);
+    return (NSString_placeholder *)@"";
 }
 
--initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
-   NSDeallocateObject(self);
 
-   return NSString_unicodePtrNewNoCopy(NULL,characters,length,freeWhenDone);
+- initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone
+{
+    NSDeallocateObject(self);
+    return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, length, freeWhenDone);
 }
+
 
 // Copied from former -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
--initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
-   NSDeallocateObject(self);
+- initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding
+{
+    NSDeallocateObject(self);
 
-   if(encoding==defaultEncoding())
-    return NSString_cStringNewWithBytes(NULL,bytes,length);
+    if (encoding == defaultEncoding()) {
+        return (NSString_placeholder *)NSString_cStringNewWithBytes(NULL, bytes, length);
+    }
 
-   switch(encoding){
-    NSUInteger resultLength;
-    unichar *characters;
+    switch(encoding) {
+        NSUInteger resultLength;
+        unichar *characters;
 
-    case NSUnicodeStringEncoding:
-     characters=NSUnicodeFromBytes(bytes,length,&resultLength);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
+        case NSUnicodeStringEncoding:
+            characters = NSUnicodeFromBytes(bytes, length, &resultLength);
+            return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, resultLength, YES);
 
-    case NSNEXTSTEPStringEncoding:
-     return NSNEXTSTEPStringNewWithBytes(NULL,bytes,length);
+        case NSNEXTSTEPStringEncoding:
+            return (NSString_placeholder *)NSNEXTSTEPStringNewWithBytes(NULL, bytes, length);
 
 // FIX, not nextstep
-    case NSASCIIStringEncoding:
-    case NSNonLossyASCIIStringEncoding:
-     return NSNEXTSTEPStringNewWithBytes(NULL,bytes,length);
+        case NSASCIIStringEncoding:
+        case NSNonLossyASCIIStringEncoding:
+            return (NSString_placeholder *)NSNEXTSTEPStringNewWithBytes(NULL, bytes, length);
 
-    case NSISOLatin1StringEncoding:
-     return NSString_isoLatin1NewWithBytes(NULL,bytes,length);
+        case NSISOLatin1StringEncoding:
+            return (NSString_placeholder *)NSString_isoLatin1NewWithBytes(NULL, bytes, length);
 
-    case NSSymbolStringEncoding:
-     characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
+        case NSSymbolStringEncoding:
+            characters = NSSymbolToUnicode(bytes, length, &resultLength, NULL);
+            return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, resultLength, YES);
 
-    case NSUTF8StringEncoding:
-     characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
+        case NSUTF8StringEncoding:
+            characters = NSUTF8ToUnicode(bytes, length, &resultLength, NULL);
+            return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, resultLength, YES);
 
-	 case NSWindowsCP1252StringEncoding:
-     return NSString_win1252NewWithBytes(NULL,bytes,length);
+        case NSWindowsCP1252StringEncoding:
+            return (NSString_placeholder *)NSString_win1252NewWithBytes(NULL, bytes, length);
 
-    case NSMacOSRomanStringEncoding:
-      return NSString_macOSRomanNewWithBytes(NULL,bytes,length);
-         
-    case NSUTF16LittleEndianStringEncoding:
-     characters=NSUnicodeFromBytesUTF16LittleEndian(bytes,length,&resultLength);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
+        case NSMacOSRomanStringEncoding:
+            return (NSString_placeholder *)NSString_macOSRomanNewWithBytes(NULL, bytes, length);
 
-      case NSUTF16BigEndianStringEncoding:
-     characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
-     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength,YES);
+        case NSUTF16LittleEndianStringEncoding:
+            characters = NSUnicodeFromBytesUTF16LittleEndian(bytes, length, &resultLength);
+            return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, resultLength, YES);
 
-    default:
-      NSRaiseException(NSInvalidArgumentException,nil,_cmd,@"encoding %d not (yet) implemented",encoding); 
-    break;
-  }
+        case NSUTF16BigEndianStringEncoding:
+            characters = NSUnicodeFromBytesUTF16BigEndian(bytes, length, &resultLength);
+            return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, resultLength, YES);
 
-  return nil;
+        default:
+            NSRaiseException(NSInvalidArgumentException, nil, _cmd, @"encoding %d not (yet) implemented", encoding);
+            break;
+    }
+
+    return nil;
 }
 
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments {
-   NSDeallocateObject(self);
 
-   return NSStringNewWithFormat(format,locale,arguments,NULL);
+- initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments
+{
+    NSDeallocateObject(self);
+
+    return (NSString_placeholder *)NSStringNewWithFormat(format, locale, arguments, NULL);
 }
+
 
 @end

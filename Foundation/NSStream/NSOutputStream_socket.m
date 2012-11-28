@@ -46,17 +46,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setClientEvents:(CFOptionFlags)events callBack:(CFWriteStreamClientCallBack)callBack context:(CFStreamClientContext *)context {
    _events=events;
    _callBack=callBack;
-   
+
    if(context!=NULL && context->info!=NULL && context->retain!=NULL)
     context->retain(context->info);
-   
+
    _context.version=0;
    if(_context.info!=NULL && _context.release!=NULL)
     _context.release(_context.info);
    _context.info=NULL;
    _context.retain=NULL;
    _context.release=NULL;
-   
+
    if(context!=NULL)
     _context=*context;
 }
@@ -70,10 +70,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -propertyForKey:(NSString *)key {
    if([key isEqualToString:(NSString *)kCFStreamPropertySocketNativeHandle]){
     CFSocketNativeHandle value=(_socket==nil)?-1:[_socket fileDescriptor];
-    
+
     return [NSData dataWithBytes:&value length:sizeof(value)];
    }
-   
+
    NSUnimplementedMethod();
    return nil;
 }
@@ -106,7 +106,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_inputSource setDelegate:self];
     [_inputSource setSelectEventMask:NSSelectWriteEvent];
    }
-   
+
    [runLoop addInputSource:_inputSource forMode:mode];
 }
 
@@ -124,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static BOOL socketHasSpaceAvailable(NSSocket *socket){
    NSSelectSet *selectSet=[[[NSSelectSet alloc] init] autorelease];
    NSSelectSet *outputSet;
-    
+
    [selectSet addObjectForWrite:socket];
    if([selectSet waitForSelectWithOutputSet:&outputSet beforeDate:[NSDate date]]==nil)
     return [outputSet containsObjectForWrite:socket];
@@ -134,9 +134,9 @@ static BOOL socketHasSpaceAvailable(NSSocket *socket){
 
 -(BOOL)hasSpaceAvailable {
    if(_status==NSStreamStatusOpen){
-     
+
     CFSSLHandler *sslHandler=[_socket sslHandler];
-    
+
     if(sslHandler==nil)
      return socketHasSpaceAvailable(_socket);
     else {
@@ -147,7 +147,7 @@ static BOOL socketHasSpaceAvailable(NSSocket *socket){
      }
     }
    }
-   
+
    return NO;
 }
 
@@ -157,7 +157,7 @@ static BOOL socketHasSpaceAvailable(NSSocket *socket){
     return -1;
 
    CFSSLHandler *sslHandler=[_socket sslHandler];
-   
+
    if(sslHandler==nil){
     [_inputSource setSelectEventMask:[_inputSource selectEventMask]|NSSelectWriteEvent];
     return [_socket write:buffer maxLength:length];
@@ -165,59 +165,61 @@ static BOOL socketHasSpaceAvailable(NSSocket *socket){
    else {
 
     [sslHandler runHandshakeIfNeeded:_socket];
-     
+
     NSInteger check=[sslHandler writePlaintext:buffer maxLength:length];
 
     if(check!=length)
      NSCLog("failure writePlaintext:%d=%d",length,check);
-    
+
     [sslHandler runWithSocket:_socket];
     [_inputSource setSelectEventMask:[_inputSource selectEventMask]|NSSelectWriteEvent];
-    
+
     return check;
    }
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
-   NSStreamEvent event;
 
-   switch(_status){
-   
-    case NSStreamStatusOpening:
-     _status=NSStreamStatusOpen;
-     event=NSStreamEventOpenCompleted;
-     break;
-    
-    case NSStreamStatusOpen:;
-     if(![self hasSpaceAvailable])
-      event=NSStreamEventNone;
-     else {
-      event=NSStreamEventHasSpaceAvailable;
-     /* Streams only signal when space is available once, then it reactivates on a write, so we turn it off before notifying */
-      [_inputSource setSelectEventMask:[_inputSource selectEventMask]&~NSSelectWriteEvent];
-     }
-     break;
+- (void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent
+{
+    NSStreamEvent event;
 
-    case NSStreamStatusAtEnd:
-     event=NSStreamEventEndEncountered;
-     break;
-     
-    default:
-     event=NSStreamEventNone;
-     break;
-   }
-         
-   if(event!=NSStreamEventNone){
-    if(_callBack!=NULL){
-     if(_events&event){
-      _callBack((CFWriteStreamRef)self,event,_context.info);
-     }
+    switch (_status) {
+        case NSStreamStatusOpening:
+            _status = NSStreamStatusOpen;
+            event = NSStreamEventOpenCompleted;
+            break;
+
+        case NSStreamStatusOpen:
+            if(![self hasSpaceAvailable]) {
+                event = NSStreamEventNone;
+            } else {
+                event = NSStreamEventHasSpaceAvailable;
+                /* Streams only signal when space is available once, then it reactivates on a write, so we turn it off before notifying */
+                [_inputSource setSelectEventMask:[_inputSource selectEventMask] &~ NSSelectWriteEvent];
+            }
+            break;
+
+        case NSStreamStatusAtEnd:
+            event = NSStreamEventEndEncountered;
+            break;
+
+        default:
+            event = NSStreamEventNone;
+            break;
     }
-    else {
-     if([_delegate respondsToSelector:@selector(stream:handleEvent:)]){
-      [_delegate stream:self handleEvent:event];
-     }
+
+    if (event != NSStreamEventNone) {
+        if (_callBack != NULL) {
+            if (_events & event) {
+                _callBack((CFWriteStreamRef)self, (CFStreamEventType)event, _context.info);
+            }
+        } else {
+            if ([_delegate respondsToSelector:@selector(stream:handleEvent:)]) {
+                [_delegate stream:self handleEvent:event];
+            }
+        }
     }
-   }
 }
+
+
 @end

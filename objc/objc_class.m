@@ -226,6 +226,9 @@ int class_getVersion(Class class) {
 
 Method class_getClassMethod(Class class, SEL selector)
 {
+	if (class == Nil) {
+     return NULL;   
+    }
 	return class_getInstanceMethod(class->isa, selector);
 }
 
@@ -276,6 +279,8 @@ size_t class_getInstanceSize(Class class) {
 
 Ivar class_getInstanceVariable(Class class,const char *variableName) {
    for(;;class=class->super_class){
+    if(class==Nil)
+           break;
     struct objc_ivar_list *ivarList=class->ivars;
     int i;
 
@@ -283,8 +288,6 @@ Ivar class_getInstanceVariable(Class class,const char *variableName) {
      if(strcmp(ivarList->ivar_list[i].ivar_name,variableName)==0)
       return &(ivarList->ivar_list[i]);
     }
-    if(class->isa->isa==class)
-     break;
    }
 
    return NULL;
@@ -313,23 +316,26 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
    uintptr_t             index=(uintptr_t)uniqueId&OBJCMethodCacheMask;
    OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
 
-	if(check->method->method_name==NULL) {
-		check->method=method;
-	} else {
+   if(check->method->method_name==NULL)
+    check->method=method;
+   else {    
       BOOL success=NO;
       while(!success)
       {
-		  intptr_t offset=0;
-		  do {
-			  check=((void *)check)+offset;
-			  if (method == check->method) {
-				  // already cached
-				  return;
-			  }
-		  } while (offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL);
-		  
-		  OBJCMethodCacheEntry *entry=allocateCacheEntry();
-		  entry->method=method;         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
+         intptr_t offset=0;
+          do {
+              check=((void *)check)+offset;
+              if (method == check->method) {
+                  // already cached
+                  return;
+              }
+          } while (offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL);
+
+          OBJCMethodCacheEntry *entry=allocateCacheEntry();
+          
+          entry->method=method;
+
+         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
       }
    }
 }
@@ -402,11 +408,12 @@ static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL selector){
 
    if((method=class_getInstanceMethod(class,selector))!=NULL){
 
-	 // When msg_tracing is on we don't cache the result so there is always a cache miss
-	 // and we always get the chance to log the msg
-	 if(!msg_tracing)
-	   OBJCCacheMethodInClass(class,method);
-	   
+    // When msg_tracing is on we don't cache the result so there is always a cache miss
+    // and we always get the chance to log the msg
+
+    if(!msg_tracing)
+     OBJCCacheMethodInClass(class,method);
+    
     return method->method_imp;
    }
 
@@ -432,13 +439,58 @@ const char *class_getWeakIvarLayout(Class cls) {
 }
 
 Ivar *class_copyIvarList(Class cls,unsigned int *countp) {
-   // UNIMPLEMENTED
-   return NULL;
+    Ivar *result = NULL;
+    struct objc_ivar_list *ivars=cls->ivars;
+    
+    if(countp != NULL) {
+        if (ivars != NULL) {
+            *countp = ivars->ivar_count;
+        }
+        else {
+            *countp = 0;
+        }
+    }
+    
+    if (ivars != NULL) {
+        result=malloc(sizeof(Ivar)*ivars->ivar_count);
+        
+        for(int i=0;i<ivars->ivar_count;i++){
+            result[i] = &ivars->ivar_list[i];
+        }
+    }
+    
+    return result;
 }
 
 Method *class_copyMethodList(Class cls,unsigned int *countp) {
-   // UNIMPLEMENTED
-   return NULL;
+    int methodCount = 0;
+    void *iterator = 0;
+    struct objc_method_list *list;
+    Method *result = NULL;
+    int j = 0;
+    
+    while((list = class_nextMethodList(cls, &iterator)) != NULL)
+    {
+        methodCount += list->method_count;
+    }
+    
+    if(countp != NULL) {
+        *countp = methodCount;
+    }
+    
+    result=malloc(sizeof(Method)*methodCount);
+    iterator = 0;
+    
+    while((list = class_nextMethodList(cls, &iterator)) != NULL)
+    {
+        int mCount = list->method_count;
+        for(int i = 0;i < mCount; i++) {
+            result[j] = &list->method_list[i];
+            j++;
+        }
+    }
+    
+    return result;
 }
 
 objc_property_t *class_copyPropertyList(Class cls,unsigned int *countp) {
@@ -510,7 +562,7 @@ BOOL class_addIvar(Class cls,const char *name,size_t size,uint8_t alignment,cons
    if(objc_lookUpClass(cls->name) != Nil) {
      return NO;
    }
-   for(class=cls;(class->isa->isa==class);class=class->super_class){
+   for(class=cls;(class!=Nil);class=class->super_class){
      ivars=class->ivars;
      if(ivars){
        for(i=0;i<ivars->ivar_count;i++){
@@ -518,9 +570,6 @@ BOOL class_addIvar(Class cls,const char *name,size_t size,uint8_t alignment,cons
            return NO;           // name exists
          }
        }
-     }
-     if(class->isa->isa==class){
-       break;
      }
    }
     
@@ -614,13 +663,30 @@ BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
 }
 
 BOOL class_addProtocol(Class cls,Protocol *protocol) {
-   // UNIMPLEMENTED
-   return NO;
+	//TODO: check if protocol already exists
+	
+	struct objc_protocol_list *protocolList = malloc(sizeof(struct objc_protocol_list));
+	protocolList->next = 0;
+	protocolList->list[0] = protocol;
+    protocolList->count = 1;
+	struct objc_protocol_list *protoList = cls->protocols;
+	struct objc_protocol_list *lastList = protoList;
+	while((protoList=protoList->next) != NULL) {
+		lastList = protoList;
+	}
+	lastList->next = protocolList;
+	return YES;
 }
 
 BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
 
+   if (class == Nil) {
+        return NO;
+   }
    for(;;class=class->super_class){
+       if(class==Nil)
+           break;
+
     struct objc_protocol_list *protoList=class->protocols;
 
     for(;protoList!=NULL;protoList=protoList->next){
@@ -631,9 +697,6 @@ BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
        return YES;
      }
     }
-
-    if(class->isa->isa==class)
-     break;
    }
 
    return NO;
@@ -742,7 +805,7 @@ void OBJCRegisterClass(Class class) {
 
    if(class->super_class==NULL){
      // Root class
-    class->isa->isa=class;
+    class->isa->isa=class->isa;
     class->isa->super_class=class;
     class->info|=CLASS_INFO_LINKED;
    }
@@ -763,21 +826,26 @@ void OBJCRegisterCategoryInClass(Category category,Class class) {
 
    for(protos=category->protocols;protos!=NULL;protos=protos->next){
     unsigned i;
-
-    for (i=0;i<protos->count;i++)
-     OBJCRegisterProtocol((OBJCProtocolTemplate *)protos->list[i]);
+	   
+	   for (i=0;i<protos->count;i++) {
+		   OBJCRegisterProtocol((OBJCProtocolTemplate *)protos->list[i]);
+		   //add protocols from category to class
+		   class_addProtocol(class, protos->list[i]);
+	   }
    }
 }
 
 static void OBJCLinkClass(Class class) {
    if(!(class->info&CLASS_INFO_LINKED)){
     Class superClass=objc_lookUpClass((const char *)class->super_class);
+    Class metaRoot=objc_lookUpClass((const char *)class->isa->isa);
 	
-    if(superClass!=NULL){
+    if(superClass!=NULL && metaRoot!= NULL){
      class->super_class=superClass;
      class->info|=CLASS_INFO_LINKED;
      class->isa->super_class=class->super_class->isa;
      class->isa->info|=CLASS_INFO_LINKED;
+     class->isa->isa=metaRoot->isa;
 	}
    }
 }

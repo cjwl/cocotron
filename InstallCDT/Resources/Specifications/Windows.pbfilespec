@@ -1,0 +1,10 @@
+(
+   {
+      Identifier = sourcecode.rc;
+      BasedOn = sourcecode;
+      Name = "Windows resource files";
+      Extensions = (rc);
+      AppliesToBuildRules = yes;
+   }
+)
+

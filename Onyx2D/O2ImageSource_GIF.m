@@ -87,7 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    for(r=0;r<height;r++){
 
-    for(c=0;c<width;c++,gifRaster){
+    for(c=0;c<width;c++){
      unsigned char colorIndex=*gifRaster;
      
      if(colorIndex==bgColorIndex){
@@ -137,10 +137,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
   
-   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
+    O2DataProvider *provider=O2DataProviderCreateWithCFData((CFDataRef)bitmap);
    O2BitmapInfo    info=kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast;
 
-   O2Image        *result=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:info provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
+   O2Image        *result=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:info decoder:NULL provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
 
    [colorSpace release];
    [provider release];

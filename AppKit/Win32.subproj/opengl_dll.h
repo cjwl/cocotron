@@ -29,6 +29,7 @@ GLvoid   *opengl_glMapBuffer(GLenum target,GLenum access);
 GLboolean opengl_glUnmapBuffer(GLenum target);
 
 const char *opengl_wglGetExtensionsStringARB(HDC hdc);
+const char *opengl_wglGetExtensionsStringEXT(HDC hdc);
 
 HPBUFFERARB opengl_wglCreatePbufferARB(HDC hDC,int iPixelFormat,int iWidth,int iHeight,const int *piAttribList);
 
@@ -45,11 +46,6 @@ BOOL opengl_wglGetPixelFormatAttribivARB(HDC hdc,int iPixelFormat,int iLayerPlan
 BOOL opengl_wglGetPixelFormatAttribfvARB(HDC hdc,int iPixelFormat,int iLayerPlane,UINT nAttributes,const int *piAttributes,FLOAT *pfValues);
 
 BOOL opengl_wglChoosePixelFormatARB(HDC hdc,const int *piAttribIList,const FLOAT *pfAttribFList,UINT nMaxFormats,int *piFormats,UINT *nNumFormats);
-
-BOOL opengl_wglBindTexImageARB(HPBUFFERARB hPbuffer, int iBuffer);
-BOOL opengl_wglReleaseTexImageARB(HPBUFFERARB hPbuffer, int iBuffer); 
-BOOL opengl_wglSetPbufferAttribARB(HPBUFFERARB hPbuffer, const int *piAttribList);
-
 
 void opengl_glGenFramebuffersEXT (GLsizei, GLuint *);
 void opengl_glDeleteFramebuffersEXT (GLsizei, const GLuint *);
@@ -68,3 +64,11 @@ void opengl_glFramebufferTexture2DEXT(GLenum target, GLenum attachmentPoint,GLen
 
 
 BOOL opengl_wglMakeContextCurrentARB(HDC hDrawDC,HDC hReadDC,HGLRC hglrc);
+
+BOOL opengl_wglBindTexImageARB(HPBUFFERARB hPbuffer,int iBuffer);
+BOOL opengl_wglReleaseTexImageARB(HPBUFFERARB hPbuffer,int iBuffer);
+BOOL opengl_wglSetPbufferAttribARB(HPBUFFERARB hPbuffer,const int *piAttribList);
+
+BOOL opengl_wglSwapIntervalEXT (int interval);
+
+void opengl_glAddSwapHintRectWIN(GLint x,GLint y,GLsizei width,GLsizei height);

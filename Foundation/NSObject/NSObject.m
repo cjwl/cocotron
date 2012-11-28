@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSProxy.h>
 #import <Foundation/NSRaise.h>
+#import <objc/runtime.h>
 #import <objc/message.h>
 #import "forwarding.h"
 
@@ -27,17 +28,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    struct objc_class *class=object->isa;
 
-	while (class->isa->isa != class) {
+	while (object_getClass(object_getClass(class)) != class) {
 
 		if(kindOf == class) {
 			return YES;
 		}
 		
-		class = class->super_class;
+		class = class_getSuperclass(class);
 	}
 	
    return NO;
 }
+
 
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
@@ -59,7 +61,11 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 
 +(void)initialize {
-   objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
+#ifdef GCC_RUNTIME_3
+    __objc_msg_forward2 = objc_msg_forward;
+#else
+    objc_setForwardHandler(objc_msgForward,objc_msgForward_stret);
+#endif
 }
 
 +(Class)superclass {
@@ -133,6 +139,14 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    NSInvalidAbstractInvocation();
    return nil;
 }
+
++ (void)poseAsClass:(Class)aClass
+{
+    NSAutoreleasePool * pool = [NSAutoreleasePool new];
+    NSUnimplementedMethod();
+    [pool release];
+}
+
 
 +(NSString *)description {
    return NSStringFromClass(self);
@@ -223,7 +237,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 -(NSUInteger)_frameLengthForSelector:(SEL)selector {
    NSMethodSignature *signature=[self methodSignatureForSelector:selector];
-   
+
    return [signature frameLength];
 }
 
@@ -279,23 +293,37 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 }
 
 
--performSelector:(SEL)selector {
-   IMP imp = objc_msg_lookup(self, selector);
-   
-   return imp(self, selector);
+- performSelector:(SEL)selector
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
+    IMP imp = objc_msg_lookup(self, selector);
+#endif
+    return imp(self, selector);
 }
 
--performSelector:(SEL)selector withObject:object0 {
-   IMP imp = objc_msg_lookup(self, selector);
 
-   return imp(self,selector,object0);
+- performSelector:(SEL)selector withObject:object0
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
+    IMP imp = objc_msg_lookup(self, selector);
+#endif
+    return imp(self, selector, object0);
 }
 
--performSelector:(SEL)selector withObject:object0 withObject:object1 {
-   IMP imp = objc_msg_lookup(self, selector);
-
-   return imp(self,selector,object0,object1);
+- performSelector:(SEL)selector withObject:object0 withObject:object1
+{
+#if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
+    IMP imp = class_getMethodImplementation(object_getClass(self), selector);
+#else
+    IMP imp = objc_msg_lookup(self, selector);
+#endif
+    return imp(self, selector, object0, object1);
 }
+
 
 -(BOOL)isProxy {
    return NO;

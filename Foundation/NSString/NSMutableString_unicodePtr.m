@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSMutableString_unicodePtr.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
@@ -18,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSRaiseException.h>
-#import <string.h>
+#include <string.h>
 
 @implementation NSMutableString_unicodePtr
 
@@ -71,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(_length>_capacity){
      if(_capacity==0)
       _capacity=1;
-      
+
      while(_length>_capacity)
       _capacity*=2;
 
@@ -101,47 +102,50 @@ static inline NSUInteger roundCapacityUp(NSUInteger capacity){
    return (capacity<4)?4:capacity;
 }
 
-NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *self,
- const char *cString,NSUInteger length,NSZone *zone){
 
-   self->_unicode=NSCharactersFromCString(cString,length,&(self->_length),zone);
-   self->_capacity=self->_length;
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *self, const char *cString, NSUInteger length, NSZone *zone)
+{
+    self->_unicode = NSCharactersFromCString(cString, length, &(self->_length), zone);
+    self->_capacity = self->_length;
 
-   return self;
+    return self;
 }
 
-NSString *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self,
- const unichar *unicode,NSUInteger length,NSZone *zone){
-   NSInteger i;
 
-   self->_length=length;
-   self->_capacity=roundCapacityUp(length);
-   self->_unicode=NSZoneMalloc(zone,sizeof(unichar)*self->_capacity);
-   for(i=0;i<length;i++)
-    self->_unicode[i]=unicode[i];
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self, const unichar *unicode, NSUInteger length, NSZone *zone)
+{
+    NSInteger i;
 
-   return self;
+    self->_length = length;
+    self->_capacity = roundCapacityUp(length);
+    self->_unicode = NSZoneMalloc(zone, sizeof(unichar) * self->_capacity);
+    for (i = 0; i < length; i++) {
+        self->_unicode[i] = unicode[i];
+    }
+
+    return self;
 }
 
-NSString *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self,
- unichar *unicode,NSUInteger length,NSZone *zone){
 
-   self->_length=length;
-   self->_capacity=length;
-   self->_unicode=unicode;
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self, unichar *unicode, NSUInteger length, NSZone *zone)
+{
+    self->_length = length;
+    self->_capacity = length;
+    self->_unicode = unicode;
 
-   return self;
+    return self;
 }
 
-NSString *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr *self,
- NSUInteger capacity,NSZone *zone) {
 
-   self->_length=0;
-   self->_capacity=roundCapacityUp(capacity);
-   self->_unicode=NSZoneMalloc(zone,sizeof(unichar)*self->_capacity);
+NSMutableString_unicodePtr *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr *self, NSUInteger capacity, NSZone *zone)
+{
+    self->_length = 0;
+    self->_capacity = roundCapacityUp(capacity);
+    self->_unicode = NSZoneMalloc(zone, sizeof(unichar) * self->_capacity);
 
-   return self;
+    return self;
 }
+
 
 NSString *NSMutableString_unicodePtrNewWithCString(NSZone *zone,
  const char *cString,NSUInteger length) {
@@ -177,209 +181,158 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
 -(void)dealloc {
    NSZoneFree(NSZoneFromPointer(self->_unicode),self->_unicode);
-   NSDeallocateObject(self); 
+   NSDeallocateObject(self);
    return;
    [super dealloc];
 }
 
--init {
-   return NSMutableString_unicodePtrInitWithCapacity(self,0,
-     NSZoneFromPointer(self));
+- init
+{
+    return NSMutableString_unicodePtrInitWithCapacity(self, 0, NSZoneFromPointer(self));
 }
 
--initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
-             freeWhenDone:(BOOL)freeWhenDone {
-   NSString *string=NSMutableString_unicodePtrInit(self,characters,length,
-     NSZoneFromPointer(self));
 
-   if(freeWhenDone)
-    NSZoneFree(NSZoneFromPointer(characters),characters);
+- initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone
+{
+    NSMutableString_unicodePtr *string = NSMutableString_unicodePtrInit(self, characters, length, NSZoneFromPointer(self));
 
-   return string;
+    if (freeWhenDone) {
+        NSZoneFree(NSZoneFromPointer(characters), characters);
+    }
+
+    return string;
 }
 
--initWithCharacters:(const unichar *)characters length:(NSUInteger)length {
-   return NSMutableString_unicodePtrInit(self,characters,length,
-     NSZoneFromPointer(self));
+
+- initWithCharacters:(const unichar *)characters length:(NSUInteger)length
+{
+    return NSMutableString_unicodePtrInit(self, characters, length, NSZoneFromPointer(self));
 }
 
--initWithCStringNoCopy:(char *)bytes length:(NSUInteger)length
-          freeWhenDone:(BOOL)freeWhenDone {
-   NSString *string=NSMutableString_unicodePtrInitWithCString(self,bytes,length,
-     NSZoneFromPointer(self));
 
-   if(freeWhenDone)
-    NSZoneFree(NSZoneFromPointer(bytes),bytes);
+- initWithCStringNoCopy:(char *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone
+{
+    NSMutableString_unicodePtr *string = NSMutableString_unicodePtrInitWithCString(self, bytes, length, NSZoneFromPointer(self));
 
-   return string;
+    if (freeWhenDone) {
+        NSZoneFree(NSZoneFromPointer(bytes), bytes);
+    }
+
+    return string;
 }
 
--initWithCString:(const char *)bytes length:(NSUInteger)length {
-   return NSMutableString_unicodePtrInitWithCString(self,bytes,length,
-     NSZoneFromPointer(self));
+
+- initWithCString:(const char *)bytes length:(NSUInteger)length
+{
+    return NSMutableString_unicodePtrInitWithCString(self, bytes, length, NSZoneFromPointer(self));
 }
 
--initWithCString:(const char *)bytes {
-   NSUInteger length=strlen(bytes);
 
-   return NSMutableString_unicodePtrInitWithCString(self,bytes,length,
-     NSZoneFromPointer(self));
+- initWithCString:(const char *)bytes
+{
+    NSUInteger length = strlen(bytes);
+
+    return NSMutableString_unicodePtrInitWithCString(self, bytes, length, NSZoneFromPointer(self));
 }
 
--initWithString:(NSString *)string {
-   NSUInteger length=[string length];
-   unichar  unicode[length];
 
-   [string getCharacters:unicode];
+- initWithString:(NSString *)string
+{
+    NSUInteger length = [string length];
+    unichar  unicode[length];
 
-   return NSMutableString_unicodePtrInit(self,unicode,length,NSZoneFromPointer(self));
+    [string getCharacters:unicode];
+
+    return NSMutableString_unicodePtrInit(self, unicode, length, NSZoneFromPointer(self));
 }
 
--initWithFormat:(NSString *)format,... {
-   va_list   arguments;
-   NSUInteger  length;
-   unichar  *unicode;
 
-   va_start(arguments,format);
+- initWithFormat:(NSString *)format, ...
+{
+    va_list arguments;
+    NSUInteger length;
+    unichar *unicode;
 
-   unicode=NSCharactersNewWithFormat(format,nil,arguments,&length,
-     NSZoneFromPointer(self));
-   va_end(arguments);
-   
-   return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
-     NSZoneFromPointer(self));
+    va_start(arguments, format);
+
+    unicode = NSCharactersNewWithFormat(format, nil, arguments, &length, NSZoneFromPointer(self));
+    va_end(arguments);
+
+    return NSMutableString_unicodePtrInitNoCopy(self, unicode, length, NSZoneFromPointer(self));
 }
 
--initWithFormat:(NSString *)format arguments:(va_list)arguments {
-   NSUInteger  length;
-   unichar  *unicode;
 
-   unicode=NSCharactersNewWithFormat(format,nil,arguments,&length,
-     NSZoneFromPointer(self));
+- initWithFormat:(NSString *)format arguments:(va_list)arguments
+{
+    NSUInteger length;
+    unichar *unicode;
 
-   return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
-     NSZoneFromPointer(self));
+    unicode = NSCharactersNewWithFormat(format, nil, arguments, &length, NSZoneFromPointer(self));
+
+    return NSMutableString_unicodePtrInitNoCopy(self, unicode, length, NSZoneFromPointer(self));
 }
 
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale,... {
-   va_list   arguments;
-   NSUInteger  length;
-   unichar  *unicode;
 
-   va_start(arguments,locale);
+- initWithFormat:(NSString *)format locale:(NSDictionary *)locale, ...
+{
+    va_list arguments;
+    NSUInteger length;
+    unichar *unicode;
 
-   unicode=NSCharactersNewWithFormat(format,locale,arguments,&length,
-     NSZoneFromPointer(self));
-   va_end(arguments);
-   
-   return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
-     NSZoneFromPointer(self));
+    va_start(arguments, locale);
+
+    unicode = NSCharactersNewWithFormat(format, locale, arguments, &length, NSZoneFromPointer(self));
+    va_end(arguments);
+
+    return NSMutableString_unicodePtrInitNoCopy(self, unicode, length, NSZoneFromPointer(self));
 }
 
--initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
-   NSUInteger resultLength;
-   unichar   *characters;
-   
-   switch(encoding){
 
-    case NSUnicodeStringEncoding:
-     characters=NSUnicodeFromBytes(bytes,length,&resultLength);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+- initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding
+{
+    NSUInteger resultLength;
+    unichar *characters;
 
-    case NSNEXTSTEPStringEncoding:
-     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+    characters = NSString_anyCStringToUnicode(encoding, bytes, length, &resultLength, NSZoneFromPointer(self));
 
-// FIX, not nextstep
-    case NSASCIIStringEncoding:
-     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSISOLatin1StringEncoding:
-     characters=NSISOLatin1ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSSymbolStringEncoding:
-     characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSUTF8StringEncoding:
-     characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-	case NSWindowsCP1252StringEncoding:
-     characters=NSWin1252ToUnicode(bytes,length,&resultLength,NULL);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    case NSUTF16BigEndianStringEncoding:
-     characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
-     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
-
-    default:
-     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"encoding %d not (yet) implemented",encoding); 
-     break;
-   }
-   
-   NSDeallocateObject(self);
-   return nil;
+    return NSMutableString_unicodePtrInitNoCopy(self, characters, resultLength, NSZoneFromPointer(self));
 }
 
--initWithFormat:(NSString *)format
-             locale:(NSDictionary *)locale arguments:(va_list)arguments {
-   NSUInteger  length;
-   unichar  *unicode;
 
-   unicode=NSCharactersNewWithFormat(format,locale,arguments,&length,
-     NSZoneFromPointer(self));
+- initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments
+{
+    NSUInteger length;
+    unichar *unicode;
 
-   return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
-     NSZoneFromPointer(self));
+    unicode = NSCharactersNewWithFormat(format, locale, arguments, &length, NSZoneFromPointer(self));
+
+    return NSMutableString_unicodePtrInitNoCopy(self, unicode, length, NSZoneFromPointer(self));
 }
+
 
 -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding {
-#if 0
-   if(encoding==NSString_cStringEncoding)
-    return NSString_cStringInitWithBytes(NULL,[data bytes],[data length]);
-
-   switch(encoding){
-
-    case NSString_unicodeEncoding:
-     return NSString_unicodeInit(NULL,[data bytes],[data length]);
-
-    case NSNEXTSTEPStringEncoding:
-     return NSNEXTSTEPStringInitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSISOLatin1StringEncoding:
-     return NSString_isoLatin1InitWithBytes(NULL,[data bytes],[data length]);
-
-    case NSSymbolStringEncoding:
-     break;
-
-    default:
-     break;
-   }
-#endif
-
-   NSInvalidAbstractInvocation();
-   return nil;
+    return [self initWithBytes:[data bytes] length:[data length] encoding:encoding];
 }
 
--initWithContentsOfFile:(NSString *)path {
-   NSUInteger  length;
-   unichar  *unicode;
 
-   if((unicode=NSCharactersWithContentsOfFile(path,&length,NSZoneFromPointer(self)))==NULL){
-    NSDeallocateObject(self); 
-    return nil;
-   }
+- initWithContentsOfFile:(NSString *)path
+{
+    NSUInteger length;
+    unichar *unicode;
 
-   return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
-     NSZoneFromPointer(self));
+    if ((unicode = NSCharactersWithContentsOfFile(path, &length, NSZoneFromPointer(self))) == NULL) {
+        NSDeallocateObject(self);
+        return nil;
+    }
+
+    return NSMutableString_unicodePtrInitNoCopy(self, unicode, length, NSZoneFromPointer(self));
 }
 
--initWithCapacity:(NSUInteger)capacity {
-   return NSMutableString_unicodePtrInitWithCapacity(self,capacity,
-     NSZoneFromPointer(self));
+
+- initWithCapacity:(NSUInteger)capacity
+{
+    return NSMutableString_unicodePtrInitWithCapacity(self, capacity, NSZoneFromPointer(self));
 }
+
 
 @end

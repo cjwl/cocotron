@@ -306,7 +306,7 @@ static WORD PaletteSize (VOID FAR * pv)
 				CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
 				CGColorSpaceRelease(colorspace);
 				// Contexts created on the Win32 platform are supposed to have a "dc" method
-				HDC dc = [(id)ctx dc];
+				HDC dc = (HDC)[(id)ctx dc];
 				if (dc) {
 					StretchDIBits(
 								  dc,

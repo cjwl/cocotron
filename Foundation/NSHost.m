@@ -58,8 +58,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEqualToHost:(NSHost *)host {
-   NSUnimplementedMethod();
-   return 0;
+    for(NSString *address in [self addresses])
+    {
+        if ([[host addresses] containsObject:address] == YES) {
+            return YES;
+}
+    }
+    return NO;
 }
 
 -(void)_resolveAddressesIfNeeded {

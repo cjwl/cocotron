@@ -128,14 +128,35 @@ static NSAppleScrollBarVariant appleScrollBarVariant(NSScroller *self){
     return _controlSize; }
 
 -(void)setFloatValue:(float)zeroToOneValue knobProportion:(float)zeroToOneKnob {
-   _floatValue=zeroToOneValue;
-   if(_floatValue>1)
-    _floatValue=1;
+    if(zeroToOneValue>1)
+        zeroToOneValue=1;
+    if(zeroToOneValue<0)
+        zeroToOneValue=0;
+    if(zeroToOneKnob>1)
+        zeroToOneKnob=1;
+    if(zeroToOneKnob<0)
+        zeroToOneKnob=0;
 
+    _floatValue=zeroToOneValue;
    _knobProportion=zeroToOneKnob;
    if(_knobProportion>1)
     _knobProportion=1;
 
+   [self setNeedsDisplay:YES];
+}
+
+-(double)doubleValue {
+    return _floatValue;
+}
+
+-(void)setDoubleValue:(double)zeroToOneValue {
+    if(zeroToOneValue>1)
+        zeroToOneValue=1;
+    if(zeroToOneValue<0)
+        zeroToOneValue=0;
+    
+    _floatValue=zeroToOneValue;
+    
    [self setNeedsDisplay:YES];
 }
 
@@ -535,6 +556,29 @@ static inline float roundFloat(float value){
      break;
    }
 
+}
+
+-(void)scrollWheel:(NSEvent *)event {
+    NSRect  slotRect=[self rectForPart:NSScrollerKnobSlot];
+    NSRect  knobRect=[self rectForPart:NSScrollerKnob];
+        
+    if([self isVertical]) {
+        float delta=[event deltaY];
+        float totalSize=slotRect.size.height-knobRect.size.height;
+        
+        if(totalSize==0)
+            _floatValue=0;
+        else
+            _floatValue=_floatValue-(delta/totalSize);
+        
+        if(_floatValue<0)
+            _floatValue=0;
+        else if(_floatValue>1.0)
+            _floatValue=1.0;
+
+        [self setNeedsDisplay:YES];
+        [self sendAction:_action to:_target];
+    }
 }
 
 @end

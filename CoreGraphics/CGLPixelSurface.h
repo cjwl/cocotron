@@ -5,8 +5,7 @@
 @class O2Surface,CGWindow;
 
 @interface CGLPixelSurface : NSObject {
-   CGWindow  *_window;
-   int        _x,_y,_width,_height;
+   int        _width,_height;
    BOOL       _isOpaque,_validBuffers;
    int        _numberOfBuffers;
    int        _rowsPerBuffer;
@@ -17,19 +16,13 @@
    O2Surface *_surface;
 }
 
--initWithFrame:(O2Rect)frame;
+-initWithSize:(O2Size)size;
 
--(CGWindow *)window;
--(BOOL)isOpaque;
--(O2Rect)frame;
-
--(void)setWindow:(CGWindow *)window;
--(void)setFrame:(O2Rect)frame;
 -(void)setFrameSize:(O2Size)value;
-
 -(void)setOpaque:(BOOL)value;
 
 -(void)readBuffer;
+
 -(O2Surface *)validSurface;
 
 @end

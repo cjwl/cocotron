@@ -5,10 +5,12 @@
 #import <Onyx2D/O2ImageSource.h>
 #import <stdbool.h>
 
-typedef struct _O2ImageDestination *O2ImageDestinationRef;
+@class O2ImageDestination;
 
-const CFStringRef kO2ImageDestinationLossyCompressionQuality;
-const CFStringRef kO2ImageDestinationBackgroundColor;
+typedef O2ImageDestination *O2ImageDestinationRef;
+
+extern const CFStringRef kO2ImageDestinationLossyCompressionQuality;
+extern const CFStringRef kO2ImageDestinationBackgroundColor;
 
 @interface O2ImageDestination : NSObject {
 @public

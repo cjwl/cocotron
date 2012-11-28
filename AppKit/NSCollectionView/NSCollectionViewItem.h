@@ -11,19 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSCollectionViewItem : NSViewController <NSCoding,NSCopying> {
    NSCollectionView *_collectionView;
-   id _representedObject;
-   NSView *_view;
    BOOL _isSelected;
 }
 
 -(NSCollectionView *)collectionView;
 
--(NSView *)view;
 -(BOOL)isSelected;
--representedObject;
 
--(void)setView:(NSView *)view;
 -(void)setSelected:(BOOL)value;
--(void)setRepresentedObject:value;
 
 @end

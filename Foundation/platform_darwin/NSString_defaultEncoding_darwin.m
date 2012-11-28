@@ -9,10 +9,10 @@
 
 #import <Foundation/NSString_defaultEncoding.h>
 #import <Foundation/NSException.h>
-#import <pwd.h>
-#import <string.h>
-#import <stdio.h>
-#import <unistd.h>
+#include <pwd.h>
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
 
 NSStringEncoding defaultEncoding()
 {

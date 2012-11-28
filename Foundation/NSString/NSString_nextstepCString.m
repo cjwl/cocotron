@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_nextstepCString.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSRaiseException.h>
-#import <stdio.h>
+#include <stdio.h>
 
 @implementation NSString_nextstepCString
 
@@ -49,7 +49,7 @@ NSString *NSNEXTSTEPCStringNewWithBytes(NSZone *zone,
    NSString_nextstepCString *string;
    NSInteger                i;
 
-   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),(length+1)*sizeof(char),zone);
+   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),length*sizeof(char),zone);
 
    string->_length=length;
    for(i=0;i<length;i++)
@@ -81,7 +81,7 @@ NSString *NSNEXTSTEPCStringNewWithCapacity(NSZone *zone,
   NSUInteger capacity,char **ptr) {
    NSString_nextstepCString *string;
 
-   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),(capacity+1)*sizeof(char),zone);
+   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),capacity*sizeof(char),zone);
 
    string->_length=capacity;
    *ptr=string->_bytes;

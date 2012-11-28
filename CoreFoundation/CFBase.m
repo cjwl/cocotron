@@ -4,7 +4,7 @@
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSFileManager.h>
 #ifdef WINDOWS
-#import <windows.h>
+#include <windows.h>
 #endif
 #import <Foundation/NSPlatform.h>
 

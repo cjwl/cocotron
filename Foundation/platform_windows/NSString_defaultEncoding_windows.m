@@ -10,7 +10,7 @@
 #import <Foundation/NSString_defaultEncoding.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSRaiseException.h>
-#import <windows.h>
+#include <windows.h>
 
 NSStringEncoding defaultEncoding()
 {

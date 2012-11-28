@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSAttributedString.h>
 #import <Foundation/NSTimeZone.h>
-#import <math.h>
+#include <math.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSCharacterSet.h>
@@ -51,10 +51,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCoder:(NSCoder*)coder {
    [super initWithCoder:coder];
-   
+
    if([coder allowsKeyedCoding]){
     NSDictionary *attributes=[coder decodeObjectForKey:@"NS.attributes"];
-     
+
     _dateFormat10_0=[[attributes objectForKey:@"dateFormat_10_0"] copy];
     _behavior=[[attributes objectForKey:@"formatterBehavior"] intValue];
     _dateStyle=[[attributes objectForKey:@"dateStyle"] intValue];
@@ -62,7 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _dateFormat=[[coder decodeObjectForKey:@"NS.format"] retain];
     _allowsNaturalLanguage=[coder decodeBoolForKey:@"NS.natural"];
    }
-   
+
    return self;
 }
 
@@ -86,7 +86,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    format=[format copy];
    [_dateFormat10_0 release];
    _dateFormat10_0 = format;
-    
+
    format=[format copy];
    [_dateFormat release];
    _dateFormat = format;
@@ -105,17 +105,17 @@ NSTimeZone *getTimeZoneFromDate(NSDate *date) {
 
 - (NSString *)stringFromDate:(NSDate *)date {
 	NSTimeZone *tz = getTimeZoneFromDate(date);
-	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self 
+	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self
 dateFormat], nil, tz);
 }
 
 - (NSArray *)shortStandaloneWeekdaySymbols {
-	
-	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
+
+	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:
 NSShortWeekDayNameArray];
 }
 - (NSArray *)standaloneWeekdaySymbols {
-	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
+	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:
 NSWeekDayNameArray];
 }
 
@@ -127,12 +127,12 @@ NSWeekDayNameArray];
 }
 
 -(NSString *)stringForObjectValue:(id)object {
-   
+
    if([object isKindOfClass:[NSDate class]])
     return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [NSTimeZone defaultTimeZone]);
-   if([object isKindOfClass:[NSCalendarDate class]]) 
+   if([object isKindOfClass:[NSCalendarDate class]])
     return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [object timeZone]);
-    
+
    return nil;
 }
 
@@ -232,7 +232,7 @@ static inline NSInteger numberOfDaysInCommonEraOfDayMonthAndYear(NSInteger day, 
     result += (year - 1)/4;
     result -= (year - 1)/100;
     result += (year - 1)/400;
-    
+
     // wtf, i tried this using day as the result variable and it started from zero
     result += day;
 
@@ -245,9 +245,8 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
 
     daysOfCommonEra = numberOfDaysInCommonEraOfDayMonthAndYear(day, month, year);
     daysOfCommonEra -= NSDaysOfCommonEraOfReferenceDate;
-    daysOfCommonEra;
 
-    interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + (milliseconds/1000);
+    interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + milliseconds/1000.0 + 0.0001;
 
     return interval;
 }
@@ -260,7 +259,7 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
     NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
     NSInteger year = days/366;
 
-    while (days >= numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1)) 
+    while (days >= numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1))
         year++;
 
     return year;
@@ -269,10 +268,10 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
 NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 1-366
     NSInteger year = NSYearFromTimeInterval(interval);
     NSInteger result;
-    
+
     result = NSDayOfCommonEraFromTimeInterval(interval) - numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year) + 1;
     if(result == 0) { result = 366; };
-    
+
     return result;
 }
 
@@ -345,7 +344,7 @@ NSInteger NSMinuteFromTimeInterval(NSTimeInterval interval){ // 0-59
 }
 
 NSInteger NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
-    NSInteger seconds = fmod(interval,60);
+    NSInteger seconds = fmod(floor(interval),60);
     if (seconds < 0)
         seconds = (60 + seconds);
 
@@ -353,7 +352,11 @@ NSInteger NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
 }
 
 NSInteger NSMillisecondsFromTimeInterval(NSTimeInterval interval){ // 0-999
-    return fabs(fmod(interval*1000,1000));
+    NSInteger milli = fmod(interval*1000,1000);
+    if (milli < 0) {
+        milli = (1000 + milli);
+    }
+    return milli;
 }
 
 NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,NSDictionary *locale,NSTimeZone *timeZone) {
@@ -442,11 +445,11 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
                     }
                         break;
 
-                    case 'e':{ 
-                        id fmt=@"%d"; 
-                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)]; 
-                    } 
-                        break; 
+                    case 'e':{
+                        id fmt=@"%d";
+                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)];
+                    }
+                        break;
 
                    case 'F':{
                         id fmt=(suppressZero)?@"%d":((fillChar==' ')?@"%3d":@"%03d");
@@ -537,10 +540,10 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
 
                     case 'z': {
                         NSInteger  secondsFromGMT = [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:interval]];
-                        [result appendString:[[NSString allocWithZone:NULL] initWithFormat:@"%@%02d%02d",
+                        [result appendString:[[[NSString allocWithZone:NULL] initWithFormat:@"%@%02d%02d",
                                                                           (secondsFromGMT >= 0 ? @"+" : @""),
                                                                           secondsFromGMT/3600,
-                                                                          (secondsFromGMT % 3600)/60]];
+                                                                          (secondsFromGMT % 3600)/60] autorelease]];
                     }
                         break;
                 }
@@ -553,35 +556,80 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
     return result;
 }
 
+NSString *NSReadStringInString(NSString *aString, NSCharacterSet *characterSet, NSUInteger position, NSUInteger maxLength, NSUInteger *endPosition)
+{
+    NSMutableString *resultString = [NSMutableString stringWithCapacity:maxLength];
+
+    for(NSUInteger i = 0; i < maxLength; i++) {
+        if(position+i >= [aString length]) {
+            break;
+        }
+
+        unichar c = [aString characterAtIndex:position+i];
+        if([characterSet characterIsMember:c] == NO) {
+            break;
+        }
+        [resultString appendFormat:@"%c", c];
+    }
+    *endPosition = position + [resultString length];
+    return resultString;
+}
+
+NSInteger NSReadIntegerInString(NSString *aString, NSCharacterSet *characterSet, NSUInteger position, NSUInteger maxLength, NSUInteger *endPosition)
+{
+    NSString    *str;
+    unichar     firstChar = [aString characterAtIndex:position];
+    BOOL        negate = NO;
+    NSInteger   i;
+
+    if (firstChar == '+') {
+        position++;
+    }
+    else  if (firstChar == '-') {
+        position++;
+        negate = YES;
+    }
+
+    str = NSReadStringInString(aString, characterSet, position, maxLength, endPosition);
+    i = [str integerValue];
+
+    if (negate == YES) {
+        i *= -1;
+    }
+
+    return i;
+}
+
+
 // might as well use the same code since they're the exact same formatting specifiers
 // ok. we need at minimum the year. everything else is optional.
 // weekday information is useless.
-NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, 
-NSDictionary *locale) {
-    NSScanner       *scanner = [NSScanner scannerWithString:string];
-    NSUInteger         pos,fmtLength=[format length];
-    unichar          fmtBuffer[fmtLength],unicode;
-    NSInteger		     years = NSNotFound, months = NSNotFound, days = NSNotFound, hours = NSNotFound, minutes = NSNotFound, seconds = NSNotFound, milliseconds = NSNotFound;
-    NSInteger		     AMPMMultiplier = 0;
-    NSTimeInterval   adjustment = 0;
-    NSArray	    *monthNames, *shortMonthNames, *AMPMDesignations;
-    NSTimeZone      *timeZone = nil;
-    NSTimeInterval   timeInterval;
-    NSCalendarDate  *calendarDate;
-    
-    [scanner setCharactersToBeSkipped:nil];
+NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale)
+{
+    NSUInteger pos, fmtLength = [format length];
+    unichar fmtBuffer[fmtLength], unicode;
+    NSInteger years = NSNotFound, months = NSNotFound, days = NSNotFound, hours = NSNotFound, minutes = NSNotFound, seconds = NSNotFound, milliseconds = NSNotFound;
+    NSInteger AMPMMultiplier = 0;
+    NSTimeInterval adjustment = 0;
+    NSArray *monthNames, *shortMonthNames, *AMPMDesignations;
+    NSTimeZone *timeZone = nil;
+    NSTimeInterval timeInterval;
+    NSCalendarDate *calendarDate;
+    NSUInteger currentPostion = 0;
 
     enum {
         STATE_SCANNING,
         STATE_PERCENT,
         STATE_CONVERSION
-    } state=STATE_SCANNING;
+    } state = STATE_SCANNING;
 
-    if ([string length] == 0)
+    if ([string length] == 0) {
         return nil;
+    }
 
-    if (locale == nil)
+    if (locale == nil) {
         locale = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    }
 
     monthNames = [locale objectForKey:NSMonthNameArray];
     shortMonthNames = [locale objectForKey:NSShortMonthNameArray];
@@ -590,222 +638,211 @@ NSDictionary *locale) {
     // although we don't use the weekday arrays for anything, the spec
     // says to check them anyway.
     if ([monthNames count] > 12 || [shortMonthNames count] > 12 ||
-        [[locale objectForKey:NSShortWeekDayNameArray] count] > 7 ||
-        [[locale objectForKey:NSWeekDayNameArray] count] > 7)
+            [[locale objectForKey:NSShortWeekDayNameArray] count] > 7 ||
+            [[locale objectForKey:NSWeekDayNameArray] count] > 7) {
         return nil;
-    
+    }
+
     [format getCharacters:fmtBuffer];
 
-    for(pos=0;pos<fmtLength;pos++){
-        unicode=fmtBuffer[pos];
+    for (pos = 0; pos < fmtLength; pos++) {
+        unicode = fmtBuffer[pos];
 
-        switch(state){
+        switch (state) {
             case STATE_SCANNING:
-                if(unicode=='%') {
-                    state=STATE_PERCENT;
+                if (unicode == '%') {
+                    state = STATE_PERCENT;
+                } else {
+                    currentPostion++;
                 }
-                else if (![scanner scanString:[NSString stringWithCharacters:&unicode length:1] intoString:NULL])
-                    return nil;
                 break;
 
             case STATE_PERCENT:
-                switch(unicode){
+                switch (unicode) {
                     case '.':
                     case ' ':
                     default:
                         pos--;
-                        state=STATE_CONVERSION;
+                        state = STATE_CONVERSION;
                         break;
                 }
                 break;
 
             case STATE_CONVERSION:
-                switch(unicode){
+                switch (unicode) {
                     case '%':
-                        if (![scanner scanString:[NSString stringWithCharacters:&unicode length:1] intoString:NULL])
-                            return nil;
+                        currentPostion++;
                         break;
 
                         // can't really do anything with the day of the week, but we have to skip it.
                     case 'a':
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:NULL])
-                            return nil;
+                        NSReadStringInString(string, [NSCharacterSet letterCharacterSet], currentPostion, 255, &currentPostion);
                         break;
-                        break;
-
                     case 'A':
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:NULL])
-                            return nil;
+                        NSReadStringInString(string, [NSCharacterSet letterCharacterSet], currentPostion, 255, &currentPostion);
                         break;
 
                         // month or its abbreviation. look it up in the arrays..
-                    case 'b':{
+                    case 'b': {
                         NSString *temp;
                         NSEnumerator *enumerator = [shortMonthNames objectEnumerator];
                         NSString *shortMonthName;
                         months = NSNotFound;
                         int month = 1;
-                        
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
-                            return nil;
+
+                        temp = NSReadStringInString(string, [NSCharacterSet letterCharacterSet], currentPostion, 255, &currentPostion);
+
                         while ((shortMonthName = [enumerator nextObject]) != nil) {
                             if ([shortMonthName caseInsensitiveCompare:temp] == NSOrderedSame) {
                                 months = month;
-                                break; 
-                            }
-                            else {
+                                break;
+                            } else {
                                 month++;
                             }
                         }
-                        
+
                         //month not found
-                        if(months == NSNotFound) {
+                        if (months == NSNotFound) {
                             return nil;
                         }
                         break;
                     }
-                                        
-                    case 'B':{
+
+                    case 'B': {
                         NSString *temp;
                         NSEnumerator *enumerator = [monthNames objectEnumerator];
                         NSString *monthName;
                         months = NSNotFound;
                         int month = 1;
 
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
-                            return nil;
+                        temp = NSReadStringInString(string, [NSCharacterSet letterCharacterSet], currentPostion, 255, &currentPostion);
+
                         while ((monthName = [enumerator nextObject]) != nil) {
                             if ([monthName caseInsensitiveCompare:temp] == NSOrderedSame) {
                                 months = month;
-                                break; 
-                            }
-                            else {
+                                break;
+                            } else {
                                 month++;
                             }
                         }
-                        
+
                         //month not found
-                        if(months == NSNotFound) {
+                        if (months == NSNotFound) {
                             return nil;
                         }
                         break;
                     }
-                        
+
                     case 'c':
                         return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeDateFormatString], locale);
 
                     case 'd':
-                        if (![scanner scanInteger:&days])
-                            return nil;
+                        days = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
                         break;
 
                     case 'F':
-                        if (![scanner scanInteger:&milliseconds])
-                            return nil;
+                        milliseconds = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 3, &currentPostion);
                         break;
 
                     case 'H':
-                        if (![scanner scanInteger:&hours])
-                            return nil;
+                        hours = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
                         break;
 
                     case 'I':
-                        if (![scanner scanInteger:&hours])
-                            return nil;
+                        hours = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
+
                         AMPMMultiplier = 1;
                         break;
 
                     // grr
                     case 'j': {
-                        NSInteger numberOfDays = 0;
-                        if (![scanner scanInteger:&numberOfDays])
-                            return nil;
+                        NSInteger numberOfDays = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 3, &currentPostion);
+
                         adjustment += numberOfDays * 86400.0;
-                    }
                         break;
+                    }
 
                     case 'm':
-                        if (![scanner scanInteger:&months])
-                            return nil;
+                        months = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
+
                         break;
 
                     case 'M':
-                        if (![scanner scanInteger:&minutes])
-                            return nil;
+                        minutes = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
                         break;
 
                     case 'p': {
                         NSString *temp;
 
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
-                            return nil;
+                        temp = NSReadStringInString(string, [NSCharacterSet letterCharacterSet], currentPostion, 255, &currentPostion);
+
                         AMPMMultiplier = [AMPMDesignations indexOfObject:temp];
-                        if (AMPMMultiplier == NSNotFound)
+                        if (AMPMMultiplier == NSNotFound) {
                             return nil;
-                        AMPMMultiplier++;		// e.g. 0 = 1, 1 = 2...
+                        }
+                        AMPMMultiplier++; // e.g. 0 = 1, 1 = 2...
                         break;
                     }
 
                     case 'S':
-                        if (![scanner scanInteger:&seconds])
-                            return nil;
+                        seconds = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
                         break;
 
                     // again, weekdays are useless
                     case 'w': {
-                        NSInteger nothing;
-                        if (![scanner scanInteger:&nothing])
-                            return nil;
+                        NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 1, &currentPostion);
                         break;
                     }
 
                     case 'x':
-                        return NSCalendarDateWithStringDateFormatLocale(string,[locale objectForKey:NSDateFormatString],locale);
+                        return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSDateFormatString], locale);
 
                     case 'X':
-                        return NSCalendarDateWithStringDateFormatLocale(string,[locale objectForKey:NSTimeFormatString],locale);
+                        return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeFormatString], locale);
 
                     case 'y':
-                        if (![scanner scanInteger:&years])
-                            return nil;
+                        years = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
+
 // FIX QUESTIONABLE
 // 1900 or 2000??, YB does 2000, for some? all?
                         years += 2000;
                         break;
 
                     case 'Y':
-                        if (![scanner scanInteger:&years])
-                            return nil;
+                        years = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 4, &currentPostion);
+                        /*if (![scanner scanInteger:&years])
+                            return nil;*/
                         break;
 
                     case 'Z': {
                         NSString *temp;
 
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
-                            return nil;
+                        temp = NSReadStringInString(string, [NSCharacterSet letterCharacterSet], currentPostion, 255, &currentPostion);
+
                         timeZone = [NSTimeZone timeZoneWithName:temp];
                         break;
                     }
 
                     case 'z': {
                         NSInteger hoursMinutes, tzHours, tzMinutes;
-                        if (![scanner scanInteger:&hoursMinutes])
-                            return nil;
+                        hoursMinutes = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 4, &currentPostion);
+
                         tzHours = hoursMinutes / 100;
                         tzMinutes = hoursMinutes % 100;
                         timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(tzHours * 3600) + (tzMinutes * 60)];
                         break;
                     }
                 }
-                state=STATE_SCANNING;
+                state = STATE_SCANNING;
                 break;
         }
-   }
+    }
 
-   // now that we've got whatever information we can get from the string,
-   // try to make an NSCalendarDate of it.
-    if (AMPMMultiplier != 0 && hours != NSNotFound)
+    // now that we've got whatever information we can get from the string,
+    // try to make an NSCalendarDate of it.
+    if (AMPMMultiplier != 0 && hours != NSNotFound) {
         hours *= AMPMMultiplier;
+    }
 
     // maybe we've been given the number of days in the year but not the month/day
     if (months == NSNotFound && days == NSNotFound) {
@@ -814,30 +851,34 @@ NSDictionary *locale) {
     }
 
     // if no year, then this year
-    if (years == NSNotFound)
+    if (years == NSNotFound) {
         years = [[NSCalendarDate date] yearOfCommonEra];
+    }
 
-    if (hours == NSNotFound)
+    if (hours == NSNotFound) {
         hours = 0;
-    if (minutes == NSNotFound)
+    }
+    if (minutes == NSNotFound) {
         minutes = 0;
-    if (seconds == NSNotFound)
+    }
+    if (seconds == NSNotFound) {
         seconds = 0;
-    if (milliseconds == NSNotFound)
+    }
+    if (milliseconds == NSNotFound) {
         milliseconds = 0;
+    }
 
-    if (timeZone == nil)
+    if (timeZone == nil) {
         timeZone = [NSTimeZone defaultTimeZone];
+    }
 
     timeInterval = NSTimeIntervalWithComponents(years, months, days, hours, minutes, seconds, milliseconds);
     timeInterval += adjustment;
 
-	timeInterval = timeInterval-[timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval]];
+    timeInterval = timeInterval - [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval]];
 
-    calendarDate = [[[NSCalendarDate allocWithZone:NULL] 
-initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
+    calendarDate = [[[NSCalendarDate allocWithZone:NULL] initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
     [calendarDate setTimeZone:timeZone];
 
     return calendarDate;
 }
-

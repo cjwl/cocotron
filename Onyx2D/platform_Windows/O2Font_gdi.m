@@ -110,23 +110,21 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 	NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
 
 	[families addObject:winName];
-	
 	return 1;
 }
-	
+
 + (void)_buildNativePSmapping
 {
 	HDC dc=GetDC(NULL);
 	sPSToWin32Table = [[NSMutableDictionary alloc] initWithCapacity:100];
 	sWin32ToPSTable = [[NSMutableDictionary alloc] initWithCapacity:100];
-
+	
 	// Get a list of all of the families
 	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
 	LOGFONTW logFont = { 0 };
 	
 	logFont.lfCharSet=DEFAULT_CHARSET;
 	EnumFontFamiliesExW(dc,&logFont,(FONTENUMPROCW)EnumFamiliesCallBackW,(LPARAM)families,0);
-	
 	for (NSString *familyName in families) {
 		// Enum all of the faces for that family
 		LOGFONTW logFont = { 0 };
@@ -414,7 +412,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
    if(_useMacMetrics){
     if (pointSize <= 10.0)
-		pointSize=pointSize;
+       pointSize=pointSize;
     else if (pointSize < 20.0)
        pointSize=pointSize/(1.0 + 0.2*sqrtf(0.0390625*(pointSize - 10.0)));
     else

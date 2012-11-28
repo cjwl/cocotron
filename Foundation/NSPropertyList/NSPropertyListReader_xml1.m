@@ -42,7 +42,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 	[sc scanInt:&mi];
 	[sc scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@":"] intoString:&str];
 	[sc scanInt:&s];
-	
+
 	NSCalendarDate* date= [NSCalendarDate dateWithYear:y month:mo day:d-1 hour:h minute:mi second:s timeZone: [NSTimeZone localTimeZone]];
 	return date;
 }
@@ -55,18 +55,18 @@ NSDate* NSDateFromPlistString(NSString* string)
    NSArray             *contents=[element contents];
    NSInteger            i,count=[contents count];
    id                   currentKey=nil;
-   
+
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
-    
+
     if([check isKindOfClass:[NSOldXMLElement class]]){
      if([[check name] isEqualToString:@"key"])
       currentKey=[check stringValue];
      else
       [result setObject:[self propertyListFromElement:check] forKey:currentKey];
-     
+
     }
-   }   
+   }
    return result;
 }
 
@@ -74,14 +74,14 @@ NSDate* NSDateFromPlistString(NSString* string)
    NSMutableArray *result=[NSMutableArray array];
    NSArray        *contents=[element contents];
    NSInteger       i,count=[contents count];
-   
+
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
-    
+
     if([check isKindOfClass:[NSOldXMLElement class]])
      [result addObject:[self propertyListFromElement:check]];
    }
-   
+
    return result;
 }
 
@@ -91,13 +91,13 @@ NSDate* NSDateFromPlistString(NSString* string)
    uint8_t result[length];
    uint8_t partial=0;
    enum { load6High, load2Low, load4Low, load6Low } state=load6High;
-   
+
    [string getCharacters:buffer];
-   
+
    for(i=0;i<length;i++){
     unichar       code=buffer[i];
     unsigned char bits;
-    
+
     if(code>='A' && code<='Z')
      bits=code-'A';
     else if(code>='a' && code<='z')
@@ -113,21 +113,21 @@ NSDate* NSDateFromPlistString(NSString* string)
     }
     else
      continue;
-     
+
     switch(state){
-    
+
      case load6High:
       partial=bits<<2;
       state=load2Low;
       break;
-    
+
      case load2Low:
       partial|=bits>>4;
       result[resultLength++]=partial;
       partial=bits<<4;
       state=load4Low;
       break;
-     
+
      case load4Low:
       partial|=bits>>2;
       result[resultLength++]=partial;
@@ -142,8 +142,8 @@ NSDate* NSDateFromPlistString(NSString* string)
       break;
     }
    }
-   
-   
+
+
    return [NSData dataWithBytes:result length:resultLength];
 }
 
@@ -151,10 +151,10 @@ NSDate* NSDateFromPlistString(NSString* string)
    NSMutableData *result=[NSMutableData data];
    NSArray       *strings=[element contents];
    NSInteger            i,count=[strings count];
-   
+
    for(i=0;i<count;i++)
     [result appendData:[self dataFromBase64String:[strings objectAtIndex:i]]];
-   
+
    return result;
 }
 
@@ -166,7 +166,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 +(NSObject *)propertyListFromElement:(NSOldXMLElement *)element {
    NSString *name=[element name];
    id        result=nil;
-      
+
    if([name isEqualToString:@"dict"])
     result=[self dictionaryFromElement:element];
    else if([name isEqualToString:@"array"])
@@ -185,7 +185,7 @@ NSDate* NSDateFromPlistString(NSString* string)
     result=[self dataFromElement:element];
    else if([name isEqualToString:@"date"])
     result=[self dateFromElement:element];
-        
+
    return result;
 }
 
@@ -193,36 +193,36 @@ NSDate* NSDateFromPlistString(NSString* string)
    id       result=nil;
    NSArray *contents=[element contents];
    NSInteger      i,count=[contents count];
-   
+
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
-    
+
     if([check isKindOfClass:[NSOldXMLElement class]])
      result=[self propertyListFromElement:check];
    }
-   
+
    return result;
 }
 
 +(NSObject *)propertyListFromDocument:(NSOldXMLDocument *)document {
    NSOldXMLElement *root=[document rootElement];
-   
+
    return [self propertyListFromContentsOfElement:root];
 }
 
 +(NSObject *)propertyListFromData:(NSData *)data {
    id result=nil;
-   
+
    NS_DURING
     NSOldXMLDocument *document=[NSOldXMLReader documentWithData:data];
-   
+
     if(document!=nil){
      result=[self propertyListFromDocument:document];
     }
    NS_HANDLER
 
    NS_ENDHANDLER
-      
+
    return result;
 }
 

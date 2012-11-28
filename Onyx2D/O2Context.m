@@ -1212,7 +1212,7 @@ void O2ContextDefaultShowText(O2ContextRef self,const char *text,unsigned length
    O2PDFCharWidths *widths=O2GStateCharWidths(gState);
    O2Glyph          glyphs[length];
    
-   O2EncodingGetGlyphsForBytes(encoding,glyphs,text,length);
+   O2EncodingGetGlyphsForBytes(encoding,glyphs,(const uint8_t *)text,length);
    if(widths==nil && gState->_characterSpacing==0)
     self->_showGlyphsFunction(self,NULL,glyphs,NULL,length);
    else {
@@ -1220,7 +1220,7 @@ void O2ContextDefaultShowText(O2ContextRef self,const char *text,unsigned length
     int    i;
     
     if(widths!=nil)
-     O2PDFCharWidthsGetAdvances(widths,advances,text,length);
+     O2PDFCharWidthsGetAdvances(widths,advances,(const uint8_t *)text,length);
     else
      O2ContextGetDefaultAdvances(self,glyphs,advances,length);
     

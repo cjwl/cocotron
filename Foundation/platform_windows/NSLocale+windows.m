@@ -3,7 +3,7 @@
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSMutableDictionary.h>
 
-#import <windows.h>
+#include <windows.h>
 
 @implementation NSLocale(windows)
 

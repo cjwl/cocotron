@@ -12,17 +12,6 @@
 		FE5C8314121D81470063E96F /* CFSSLHandler_openssl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C8313121D81470063E96F /* CFSSLHandler_openssl.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE5C82FA121D67BB0063E96F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FE0513B6121E05F70097BA92 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -223,7 +212,6 @@
 				8D576313048677EA00EA77CD /* Frameworks */,
 			);
 			buildRules = (
-				FE5C82FA121D67BB0063E96F /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE0513C9121E05FD0097BA92 /* PBXTargetDependency */,

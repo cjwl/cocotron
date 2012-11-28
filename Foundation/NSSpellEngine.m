@@ -17,18 +17,19 @@ static NSMutableArray *_allSpellEngines=nil;
 
 +(void)initialize {
    if(self==[NSSpellEngine class]){
-        
+
     NSArray *allPaths=[[NSBundle bundleForClass:self] pathsForResourcesOfType:@"spellEngine" inDirectory:nil];
     int      i,count=[allPaths count];
-    
+
     _allSpellEngines=[[NSMutableArray alloc] init];
-    
+
     for(i=0;i<count;i++){
      NSString *path=[allPaths objectAtIndex:i];
      NSBundle *check=[NSBundle bundleWithPath:path];
      Class     cls=[check principalClass];
-     NSArray  *engines=[cls spellEngines];
-          
+     //unused
+     //NSArray  *engines=[cls spellEngines];
+
      [_allSpellEngines addObjectsFromArray:[cls spellEngines]];
     }
    }

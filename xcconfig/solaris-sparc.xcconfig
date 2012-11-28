@@ -1,0 +1,3 @@
+#include "solaris"
+
+GCC_VERSION = org.cocotron.1.0.solaris.sparc.gcc.default

@@ -5,18 +5,15 @@
 
 @implementation CGLPixelSurface
 
--initWithFrame:(O2Rect)frame {
-   _x=frame.origin.x;
-   _y=frame.origin.y;
-   _width=frame.size.width;
-   _height=frame.size.height;
-   _isOpaque=YES;
-   _validBuffers=NO;
-   _numberOfBuffers=0;
-   _bufferObjects=NULL;
-   _readPixels=NULL;
-   _staticPixels=NULL;
-   return self;
+-initWithSize:(O2Size)size {
+    _width=size.width;
+    _height=size.height;
+    _validBuffers=NO;
+    _numberOfBuffers=0;
+    _bufferObjects=NULL;
+    _readPixels=NULL;
+    _staticPixels=NULL;
+    return self;
 }
 
 -(void)dealloc {
@@ -24,40 +21,15 @@
    [super dealloc];
 }
 
--(CGWindow *)window {
-   return _window;
-}
-
--(BOOL)isOpaque {
-   return _isOpaque;
-}
-
--(O2Rect)frame {
-   return O2RectMake(_x,_y,_width,_height);
-}
-
--(void)setWindow:(CGWindow *)window {
-   _window=window;
-}
-
--(void)setFrame:(O2Rect)frame {
-   _x=frame.origin.x;
-   _y=frame.origin.y;
-   _width=frame.size.width;
-   _height=frame.size.height;
+-(void)setFrameSize:(O2Size)value {
+    _width=value.width;
+    _height=value.height;
+   
    _validBuffers=NO;
 }
 
--(void)setFrameSize:(O2Size)value {
-   NSRect rect=[self frame];
-   
-   rect.size=value;
-   
-   [self setFrame:rect];
-}
-
 -(void)setOpaque:(BOOL)value {
-   _isOpaque=value;
+    _isOpaque=value;
 }
 
 -(void)validateBuffersIfNeeded {
@@ -163,8 +135,9 @@ static inline uint32_t premultiplyPixel(uint32_t value){
    return value;
 }
 
--(O2Surface *)validSurface {   
-   return _surface;
+-(O2Surface *)validSurface { 
+    [self validateBuffersIfNeeded];
+    return _surface;
 }
 
 -(void)readBuffer {
@@ -278,7 +251,7 @@ static inline uint32_t premultiplyPixel(uint32_t value){
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %p:frame={ %d %d %d %d } surface=%@",isa,self,_x,_y,_width,_height,_surface];
+   return [NSString stringWithFormat:@"<%@ %p:size={  %d %d } surface=%@",isa,self,_width,_height,_surface];
 }
 
 @end

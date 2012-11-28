@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)stopWaitCursor;
 -(void)startWaitCursor;
 
--(BOOL)postMSG:(MSG)msg;
+-(BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState;
 
 -(void)beep;
 

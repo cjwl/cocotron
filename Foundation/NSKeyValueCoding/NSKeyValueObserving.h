@@ -33,6 +33,15 @@ enum {
 };
 typedef NSUInteger NSKeyValueChange;
 
+enum {
+    NSKeyValueUnionSetMutation = 1,
+    NSKeyValueMinusSetMutation = 2,
+    NSKeyValueIntersectSetMutation = 3,
+    NSKeyValueSetSetMutation = 4
+    
+};
+typedef NSUInteger NSKeyValueSetMutationKind;
+
 @interface NSObject (NSKeyValueObserving)
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key;
 +(NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key;
@@ -46,6 +55,8 @@ typedef NSUInteger NSKeyValueChange;
 -(void)didChangeValueForKey:(NSString*)key;
 -(void)willChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key;
 -(void)didChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key;
+-(void)willChangeValueForKey:(NSString *)key withSetMutation:(NSKeyValueSetMutationKind)mutation usingObjects:(NSSet*)objects;
+-(void)didChangeValueForKey:(NSString *)key withSetMutation:(NSKeyValueSetMutationKind)mutation usingObjects:(NSSet*)objects;
 
 -(void)setObservationInfo:(void*)newInfo;
 -(void*)observationInfo;

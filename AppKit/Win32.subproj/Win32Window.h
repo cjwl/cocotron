@@ -24,14 +24,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                   _hasShadow;
    CGFloat                _alphaValue;
    HWND                   _handle;
+   HGLRC                  _hglrc;
+   GLint                  _backingTextureId;
+   BOOL                   _hasRenderTexture;
+   BOOL                   _hasMakeCurrentRead;
+   BOOL                   _hasReadback;
+   BOOL                   _hasSwapHintRect;
+   BOOL                   _reloadBackingTexture;
+   CGFloat                _borderTop,_borderLeft,_borderBottom,_borderRight;
    O2Context_gdi         *_cgContext;
 
    CGSBackingStoreType    _backingType;
    O2Context             *_backingContext;
-   CGLContextObj          _cglContext;
 
+    int _surfaceCount;
+    void **_surfaces;
+    
+    int _textureIdCount;
+    GLint *_textureIds;
+    
+    O2Surface_DIBSection *_overlayResult;
    NSMutableArray        *_overlays;
-   O2Surface_DIBSection  *_overlayResult;
    
    int                    _disableFlushWindow;
    NSString              *_title;
@@ -41,7 +54,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL                  _disableDisplay;
    unsigned              _styleMask;
    BOOL                  _isPanel;
-
+   BOOL                  _isMiniaturized;
+   
    id                    _delegate;
    NSMutableDictionary  *_deviceDictionary;
 
@@ -76,14 +90,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)deminiaturize;
 -(BOOL)isMiniaturized;
 
+-(BOOL)isLayeredWindow;
+
 -(void)flushBuffer;
 
 -(NSPoint)convertPOINTLToBase:(POINTL)point;
 -(NSPoint)mouseLocationOutsideOfEventStream;
 
--(void)adjustEventLocation:(NSPoint *)location;
+-(void)adjustEventLocation:(NSPoint *)location childWindow:(BOOL)childWindow;
 
 -(void)sendEvent:(CGEvent *)event;
+
+-(int)WM_SETCURSOR_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;
+-(int)WM_APP1_wParam:(WPARAM)wParam lParam:(LPARAM)lParam;   
 
 @end
 

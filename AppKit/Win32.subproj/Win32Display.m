@@ -157,8 +157,9 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
     _cursorDisplayCount=1;
     _cursorCache=[NSMutableDictionary new];
 	_pastLocation = [self mouseLocation];
-	   
-	   _ignoringModifiersString = [NSMutableString new];
+
+    _ignoringModifiersString = [NSMutableString new];
+       
     [self loadPrivateFonts];
    }
    return self;
@@ -793,18 +794,18 @@ The values should be upgraded to something which is more generic to implement, p
    return keyCode;
 }
 
--(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
+-(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window keyboardState:(BYTE *)keyboardState {
    unichar        buffer[256],ignoringBuffer[256];
    NSString      *characters;
    NSString      *charactersIgnoringModifiers;
    BOOL           isARepeat=NO;
    int            bufferSize=0,ignoringBufferSize=0;
-   BYTE           keyState[256];
+   BYTE    *keyState=keyboardState;
+ //   GetKeyboardState(keyState);
 
 	// !!!! This code is able to get proper char events even for chars built using dead-keys, but we're loosing contents of KeyUp events.
 	//      No idea why, but we are more in need for proper chars (especially for international users) than for proper KeyUp messages contents
 	//!!!!!!!!!!!!!!!!!!!!!
-   GetKeyboardState(keyState);
 	if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
 		// wParam is our unicode char
 		*buffer = msg.wParam;
@@ -886,6 +887,7 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_INSERT:   buffer[bufferSize++]=NSInsertFunctionKey;      break;
      case VK_DELETE:   buffer[bufferSize++]=NSDeleteFunctionKey;      break;
      case VK_HELP:     buffer[bufferSize++]=NSHelpFunctionKey;        break;
+
      case VK_LWIN:     break;
      case VK_RWIN:     break;
      case VK_APPS:     break;
@@ -994,18 +996,18 @@ The values should be upgraded to something which is more generic to implement, p
    NSEvent *event;
    float deltaY=((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
 
-	deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
-	
+   deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
+
    event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaY:deltaY];
    [self postEvent:event atStart:NO];
    return YES;
 }
 
--(unsigned)currentModifierFlags {
+-(unsigned)currentModifierFlagsWithKeyboardState:(BYTE *)keyboardState {
    unsigned result=0;
-   BYTE     keyState[256];
+   BYTE    *keyState=keyboardState;
 
-   if(!GetKeyboardState(keyState))
+   if(keyState==NULL)
     return result;
 
    if(keyState[VK_LSHIFT]&0x80)
@@ -1051,6 +1053,16 @@ The values should be upgraded to something which is more generic to implement, p
    return result;
 }
 
+-(NSUInteger)currentModifierFlags {
+    BYTE keyState[256];
+    BYTE *keyboardState=NULL;
+    
+    if(GetKeyboardState(keyState))
+        keyboardState=keyState;
+
+    return [self currentModifierFlagsWithKeyboardState:keyboardState];
+}
+
 NSArray *CGSOrderedWindowNumbers(){
    NSMutableArray *result=[NSMutableArray array];
 
@@ -1088,7 +1100,7 @@ static HWND findWindowForScrollWheel(POINT point){
 }
 
 
--(BOOL)postMSG:(MSG)msg {
+-(BOOL)postMSG:(MSG)msg keyboardState:(BYTE *)keyboardState {
    NSEventType  type;
    HWND         windowHandle=msg.hwnd;
    id           platformWindow;
@@ -1103,35 +1115,26 @@ static HWND findWindowForScrollWheel(POINT point){
    deviceLocation.y=GET_Y_LPARAM(msg.lParam);
 
    if(msg.message==WM_MOUSEWHEEL) {
-	   // The deviceLocation is relative to the screen - not the window - so we need to translate it into the
-	   // client area
-		RECT  r;
-		
-		GetWindowRect(windowHandle,&r);
-		deviceLocation.x-=r.left;
-		deviceLocation.y-=r.top;
-		HWND scrollWheelWindow=findWindowForScrollWheel(deviceLocation);
+// Scroll wheel events go to the window under the mouse regardless of key. Win32 set hwnd to the active window
+// So we look for the window under the mouse and use that for the event.
+    POINT pt={GET_X_LPARAM(msg.lParam),GET_Y_LPARAM(msg.lParam)};
+    RECT  r;
     
-	   if(scrollWheelWindow!=NULL) {
-		   windowHandle=scrollWheelWindow;
-	   }
-	   
-   }
-
+    GetWindowRect(windowHandle,&r);
+    pt.x+=r.left;
+    pt.y+=r.top;
+    
+    HWND scrollWheelWindow=findWindowForScrollWheel(pt);
+    
+    if(scrollWheelWindow!=NULL)
+     windowHandle=scrollWheelWindow;
+     
     platformWindow=(id)GetProp(windowHandle,"Win32Window");
-
-	if (msg.message == WM_MOUSEWHEEL) {
-		// We've got more tweakage to do because we're not yet in client space - but now
-		// we know the window we can find out how thick the frame edges are and compensate for them
-		CGFloat top;
-		CGFloat left;
-		CGFloat bottom; 
-		CGFloat right;
-		CGNativeBorderFrameWidthsForStyle( [platformWindow styleMask], &top, &left, &bottom, &right);
-		deviceLocation.x -= left;
-		deviceLocation.y -= top;
-	}
-	
+   }
+   else {
+    platformWindow=(id)GetProp(msg.hwnd,"Win32Window");
+   }
+   
    if([platformWindow respondsToSelector:@selector(appkitWindow)])
     window=[platformWindow performSelector:@selector(appkitWindow)];
 
@@ -1158,27 +1161,26 @@ static HWND findWindowForScrollWheel(POINT point){
     _lastPosition=msg.lParam;
    }
 
-	TranslateMessage(&msg);
+   TranslateMessage(&msg);
+    
+   switch(msg.message){
 
-	switch(msg.message){
+     case WM_KEYDOWN:
+     case WM_SYSKEYDOWN:
+      type=NSKeyDown;
+      break;
 
-	   case WM_KEYDOWN:
-	   case WM_SYSKEYDOWN:
-		   type=NSKeyDown;
-		   break;
-		   
-	   case WM_KEYUP:
-	   case WM_SYSKEYUP:
-		   type=NSKeyUp;
-		   break;
-		   
-		case WM_CHAR:
-		case WM_SYSCHAR:
-		   type=NSKeyDown;
-		   break;
+     case WM_KEYUP:
+     case WM_SYSKEYUP:
+      type=NSKeyUp;
+      break;
 
-		   
-	   case WM_MOUSEMOVE:
+     case WM_CHAR:
+     case WM_SYSCHAR:
+      type=NSKeyDown;
+      break;
+
+     case WM_MOUSEMOVE:
       [self _unhideCursorForMouseMove];
       
       if(msg.wParam&MK_LBUTTON)
@@ -1244,22 +1246,38 @@ static HWND findWindowForScrollWheel(POINT point){
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
-// This is used for OpenGL child windows which will interfere will scrollwheel coordinates
-    if(windowHandle!=[platformWindow windowHandle]){
-     RECT child={0},parent={0};
 
-// There is no way to get a child's frame inside the parent, you have to get
-// them both in screen coordinates and do a delta
-// GetClientRect always returns 0,0 for top,left which makes it useless     
-     GetWindowRect(msg.hwnd,&child);
-     GetWindowRect([platformWindow windowHandle],&parent);
-     location.x+=child.left-parent.left;
-     location.y+=child.top-parent.top;
-    }
-     
-    [platformWindow adjustEventLocation:&location];
+    BOOL childWindow=NO;
     
-    modifierFlags=[self currentModifierFlags];
+    if(msg.message==WM_MOUSEWHEEL){
+            // WM_MOUSEWHEEL coordinates are on screen coordinates, others are in window
+            RECT frame={0};
+            
+            GetWindowRect([platformWindow windowHandle],&frame);
+            
+            location.x=location.x-frame.left;
+            location.y=location.y-frame.top;
+    }
+    else {
+        childWindow=(msg.hwnd!=[platformWindow windowHandle]);
+        
+        if(childWindow){
+            RECT child={0},parent={0};
+            
+            // There is no way to get a child's frame inside the parent, you have to get
+            // them both in screen coordinates and do a delta
+            // GetClientRect always returns 0,0 for top,left which makes it useless     
+            GetWindowRect(msg.hwnd,&child);
+            GetWindowRect([platformWindow windowHandle],&parent);
+            
+            location.x+=child.left-parent.left;
+            location.y+=child.top-parent.top;
+        }
+    }
+    
+    [platformWindow adjustEventLocation:&location childWindow:childWindow];
+    
+    modifierFlags=[self currentModifierFlagsWithKeyboardState:keyboardState];
 
     switch(type){
      case NSLeftMouseDown:
@@ -1276,7 +1294,7 @@ static HWND findWindowForScrollWheel(POINT point){
      case NSKeyDown:
      case NSKeyUp:
      case NSFlagsChanged:
-      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window];
+      return [self postKeyboardMSG:msg type:type location:location modifierFlags:modifierFlags window:window keyboardState:keyboardState];
 
      case NSScrollWheel:
       return [self postScrollWheelMSG:msg type:type location:location modifierFlags:modifierFlags window:window];
@@ -1405,7 +1423,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 	setup.rtMargin.left = PTS2THOUSANDS([printInfo leftMargin]);
 	setup.rtMargin.right = PTS2THOUSANDS([printInfo rightMargin]);
 	setup.rtMargin.bottom = PTS2THOUSANDS([printInfo bottomMargin]);
-	
+
    [self stopWaitCursor];
    int check = PageSetupDlg(&setup);
    [self startWaitCursor];
@@ -1463,18 +1481,18 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
     NSRect imageable;
     
     if([context getImageableRect:&imageable])
-	   [attributes setObject:[NSValue valueWithRect:imageable] forKey:@"_imageableRect"];
+     [attributes setObject:[NSValue valueWithRect:imageable] forKey:@"_imageableRect"];
      
-	   [attributes setObject:context forKey:@"_KGContext"];
+    [attributes setObject:context forKey:@"_KGContext"];
     
-	   [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];
-	   [attributes setObject:[NSNumber numberWithInt:printProperties.nFromPage] forKey:NSPrintFirstPage];
-	   [attributes setObject:[NSNumber numberWithInt:printProperties.nToPage] forKey:NSPrintLastPage];
-	   
-	   // It seems Windows is drawing relatively to the imageable area, not the paper area, like Cocoa does - so translate the context
-	   // to make Cocotron happy
-	   O2AffineTransform translation = O2AffineTransformMakeTranslation(-imageable.origin.x, -imageable.origin.y);
-	   O2ContextConcatCTM(context, translation);
+    [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];
+    [attributes setObject:[NSNumber numberWithInt:printProperties.nFromPage] forKey:NSPrintFirstPage];
+    [attributes setObject:[NSNumber numberWithInt:printProperties.nToPage] forKey:NSPrintLastPage];
+
+    // It seems Windows is drawing relatively to the imageable area, not the paper area, like Cocoa does - so translate the context
+    // to make Cocotron happy
+    O2AffineTransform translation = O2AffineTransformMakeTranslation(-imageable.origin.x, -imageable.origin.y);
+    O2ContextConcatCTM(context, translation);
    }
      
    return NSOKButton;

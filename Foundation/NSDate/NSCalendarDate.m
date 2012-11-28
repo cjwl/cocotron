@@ -94,11 +94,11 @@ second, 0);
 
 +dateWithString:(NSString *)string calendarFormat:(NSString *)format
          locale:(NSDictionary *)locale {
-    return [[[self allocWithZone:NULL] initWithString:string calendarFormat:format locale:locale] autorelease];;
+    return [[[self allocWithZone:NULL] initWithString:string calendarFormat:format locale:locale] autorelease];
 }
 
 +dateWithString:(NSString *)string calendarFormat:(NSString *)format {
-    return [[[self allocWithZone:NULL] initWithString:string calendarFormat:format] autorelease];;
+    return [[[self allocWithZone:NULL] initWithString:string calendarFormat:format] autorelease];
 }
 
 -(Class)classForCoder {
@@ -144,9 +144,15 @@ second, 0);
 
 
 -(void)setCalendarFormat:(NSString *)format {
-   [format retain];
+    if (format != nil) {
+   format=[format copy];
    [_format release];
    _format=format;
+}
+    else {
+        [_format release];
+        _format=[defaultCalendarDate copy];
+    }
 }
 
 -(void)setTimeZone:(NSTimeZone *)timeZone {

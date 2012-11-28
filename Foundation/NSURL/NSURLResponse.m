@@ -39,9 +39,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(NSString *)URL {
+
+- (NSURL *)URL
+{
    return _url;
 }
+
 
 -(NSString *)MIMEType {
    return _mimeType;

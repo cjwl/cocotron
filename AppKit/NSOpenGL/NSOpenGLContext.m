@@ -14,10 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <OpenGL/OpenGL.h>
 #import <Foundation/NSThread-Private.h>
 
-@interface NSView(private)
--(void)_setOverlay:(CGLPixelSurface *)overlay;
-@end
-
 @interface NSOpenGLContext(private)
 -(void)_clearCurrentContext;
 @end
@@ -70,6 +66,8 @@ static inline void _clearCurrentContext(){
       _clearCurrentContext();
    [_pixelFormat release];
    _view=nil;
+   
+   
    CGLReleaseContext(_glContext);
    [super dealloc];
 }
@@ -98,15 +96,11 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)getValues:(GLint *)vals forParameter:(NSOpenGLContextParameter)parameter {   
-   CGLLockContext(_glContext);
    CGLGetParameter(_glContext,parameter,vals);
-   CGLUnlockContext(_glContext);
 }
 
 -(void)setValues:(const GLint *)vals forParameter:(NSOpenGLContextParameter)parameter {   
-   CGLLockContext(_glContext);
    CGLSetParameter(_glContext,parameter,vals);
-   CGLUnlockContext(_glContext);
 }
 
 -(void)updateViewParameters {
@@ -118,28 +112,33 @@ static inline void _clearCurrentContext(){
    GLint size[2]={
     rect.size.width,
     rect.size.height };
-        
-   CGLLockContext(_glContext);
+   GLint origin[2]={
+    rect.origin.x,
+    rect.origin.y };
+   GLint hidden[1]= {
+    [_view isHidden] ? 1 : 0
+   };
+   
    CGLSetParameter(_glContext,kCGLCPSurfaceBackingSize,size);
-   CGLUnlockContext(_glContext);
+   CGLSetParameter(_glContext,kCGLCPSurfaceBackingOrigin,origin);
+   CGLSetParameter(_glContext,kCGLCPSurfaceHidden,hidden);
 }
 
 -(void)setView:(NSView *)view {
    if(_view!=view)
     _hasPrepared=NO;
     
-   [_view _setOverlay:nil];
    _view=view;
-   
-   CGLPixelSurface *overlay=nil;
-   
+      
    CGLLockContext(_glContext);
-   CGLGetParameter(_glContext,kCGLCPOverlayPointer,(GLint *)&overlay);
-   CGLUnlockContext(_glContext);
    
-   [_view _setOverlay:overlay];
+   GLint num[1]={[[_view window] windowNumber]};
+   
+   CGLSetParameter(_glContext,kCGLCPSurfaceWindowNumber,num);
    
    [self update];
+
+   CGLUnlockContext(_glContext);
 }
 
 -(void)makeCurrentContext {
@@ -207,12 +206,11 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)update {
-   [self updateViewParameters];
-   }
+    [self updateViewParameters];
+}
 
 -(void)clearDrawable {
-   _view=nil;
-   [self updateViewParameters];
+    [self setView:nil];
 }
 
 -(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {

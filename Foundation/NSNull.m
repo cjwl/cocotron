@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCoder:(NSCoder *)coder {
-   return self; 
+   return self;
 }
 
 -(void)dealloc {
@@ -51,12 +51,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-retain {
+    return self;
+}
+
 -autorelease {
    return self;
 }
 
--(void)release {
+
+- (oneway void)release
+{
 }
+
 
 // yes, it does this
 -valueForKey:(NSString *)key {

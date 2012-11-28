@@ -14,3 +14,8 @@ FOUNDATION_EXPORT BOOL NSCooperativeThreadsEnabled;
 
 void NSCooperativeThreadBlocking();
 void NSCooperativeThreadWaiting();
+
+FOUNDATION_EXPORT void *NSFrameAddress(NSUInteger level);
+FOUNDATION_EXPORT unsigned NSCountFrames(void);
+FOUNDATION_EXPORT void *NSReturnAddress(int level);
+

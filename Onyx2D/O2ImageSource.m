@@ -44,10 +44,10 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
 }
 
 +(O2ImageSourceRef)newImageSourceWithData:(CFDataRef)data options:(CFDictionaryRef)options {
-   O2DataProviderRef provider=[[O2DataProvider alloc] initWithData:(NSData *)data];
-   O2ImageSourceRef result=[self newImageSourceWithDataProvider:provider options:options];
-   O2DataProviderRelease(provider);
-   return result;
+    O2DataProviderRef provider=O2DataProviderCreateWithCFData(data);
+    O2ImageSourceRef result=[self newImageSourceWithDataProvider:provider options:options];
+    O2DataProviderRelease(provider);
+    return result;
 }
 
 +(O2ImageSourceRef)newImageSourceWithURL:(NSURL *)url options:(CFDictionaryRef)options {
@@ -89,7 +89,7 @@ NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
 }
 
 O2ImageRef O2ImageSourceCreateImageAtIndex(O2ImageSourceRef self,size_t index,CFDictionaryRef options) {
-  return [self createImageAtIndex:index options:options];
+  return [(O2ImageSource *)self createImageAtIndex:index options:options];
 }
 
 @end

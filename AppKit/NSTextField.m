@@ -123,7 +123,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)acceptsFirstResponder {
-   return YES;
+    return YES;
+}
+
+-(BOOL)canBecomeKeyView {
+    if(![self isEditable])
+        return NO;
+    
+    return [super canBecomeKeyView];
 }
 
 -(BOOL)needsPanelToBecomeKey {
@@ -241,8 +248,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setStringValue:(NSString *)value {
-  [super setStringValue:value];
-  [_currentEditor setString:[self stringValue]];
+    NSRange selectedRange=[_currentEditor selectedRange];
+    BOOL isEntireString=NSEqualRanges(selectedRange, NSMakeRange(0, [[_currentEditor string] length]));
+    
+    [super setStringValue:value];
+    [_currentEditor setString:[self stringValue]];
+    NSRange entireString=NSMakeRange(0, [[_currentEditor string] length]);
+    
+    if(isEntireString) {
+        // NSTextField will re-select entire string on a setString: if the previous value is completely selected
+        [_currentEditor setSelectedRange:entireString];
+    }
+    else {
+        // otherwise it will re-select what it can
+        selectedRange=NSIntersectionRange(selectedRange, entireString);
+        
+        if(selectedRange.length==0) // 0 on intersection is undefined location, so we have to set it
+            selectedRange.location=0;
+        [_currentEditor setSelectedRange:entireString]; 
+    }
 }
 
 -(void)setFont:(NSFont *)font {

@@ -162,14 +162,6 @@
    [super dealloc];
 }
 
-- (NSString *)name {
-   return _name; }
-    
-- (void)setName:(NSString *)name {
-   [_name release];
-   _name = [name copy];
-}
-
 -(NSInteger)condition {
     return _value;
 }

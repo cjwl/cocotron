@@ -59,6 +59,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_cell imageScaling];
 }
 
+-(BOOL)refusesFirstResponder {
+    // we don't have an NSCell
+    return YES;
+}
+
 -(BOOL)isEditable {
    return [_cell isEditable];
 }

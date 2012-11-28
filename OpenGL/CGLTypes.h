@@ -92,12 +92,19 @@ enum {
 typedef uint32_t CGLPixelFormatAttribute;
 
 typedef enum {
-   kCGLCPSwapInterval  =222,
-   kCGLCPSurfaceOpacity=236,
-   kCGLCPSurfaceBackingSize=304,
+    kCGLCPSwapInterval  =222,
+    kCGLCPSurfaceOpacity=236,
+    kCGLCPSurfaceBackingSize=304,
 
 // internal, do not use   
-   kCGLCPOverlayPointer=502,
+    kCGLCPSurfaceIsChildWindow=500,
+
+    kCGLCPOverlayPointer=502,
+    
+    kCGLCPSurfaceBackingOrigin=503,
+    kCGLCPSurfaceWindowNumber=504,
+    kCGLCPSurfaceHidden=505,
+
 } CGLContextParameter;
 
 typedef struct _CGLContextObj *CGLContextObj;

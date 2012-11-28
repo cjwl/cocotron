@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle_win32.h>
 #import <Foundation/NSPipe_win32.h>
 #import <Foundation/NSLock_win32.h>
+#import <Foundation/NSRecursiveLock_win32.h>
 #import <Foundation/NSPersistantDomain_win32.h>
 #import <Foundation/NSTimeZone_win32.h>
 #import <Foundation/NSString.h>
@@ -29,13 +30,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSError.h>
-#import <stdlib.h>
-#import <winsock.h>
+#include <stdlib.h>
+#include <winsock.h>
 #import <Foundation/NSSocket_windows.h>
 #import <Foundation/NSParentDeathMonitor_win32.h>
 #import <Foundation/NSSelectInputSourceSet.h>
 #import <Foundation/NSCondition_win32.h>
-#import <stdio.h>
+#include <stdio.h>
 
 #import <objc/runtime.h>
 
@@ -138,6 +139,10 @@ static NSString *processName(){
 
 -(Class)conditionLockClass {
    return [NSConditionLock_win32 class];
+}
+
+-(Class)recursiveLockClass {
+    return [NSRecursiveLock_win32 class];
 }
 
 -(Class)persistantDomainClass {
