@@ -171,20 +171,20 @@ CGRect CGOutsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask){
    return frame;
 }
 
-static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow) {
+static const unichar *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow) {
    if(styleMask==NSBorderlessWindowMask)
-    return  hasShadow?"Win32BorderlessWindowWithShadow":"Win32BorderlessWindow";
+    return  hasShadow?L"Win32BorderlessWindowWithShadow":L"Win32BorderlessWindow";
    else
-    return "NSWin32StandardWindow";
+    return L"NSWin32StandardWindow";
 }
 
 -(void)createWindowHandle {
    CGRect win32Frame=convertFrameToWin32ScreenCoordinates(_frame);
    DWORD  style=Win32StyleForStyleMask(_styleMask,_isPanel,[self isLayeredWindow]);
    DWORD  extendStyle=Win32ExtendedStyleForStyleMask(_styleMask,_isPanel,[self isLayeredWindow]);
-   const char *className=Win32ClassNameForStyleMask(_styleMask,_hasShadow);
+   const unichar *className=Win32ClassNameForStyleMask(_styleMask,_hasShadow);
     
-   _handle=CreateWindowEx(extendStyle,className,"", style,
+   _handle=CreateWindowExW(extendStyle,className,L"", style,
      win32Frame.origin.x, win32Frame.origin.y,
      win32Frame.size.width, win32Frame.size.height,
      NULL,NULL, GetModuleHandle (NULL),NULL);
@@ -366,7 +366,6 @@ static const char *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShadow)
    title=[title copy];
    [_title release];
    _title=title;
-   
    SetWindowTextW(_handle,(const unichar *)[_title cStringUsingEncoding:NSUnicodeStringEncoding]);
 }
 
@@ -1359,7 +1358,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 	if([_delegate platformWindowSetCursorEvent:self])
     return 0;
 
-    return DefWindowProc(_handle,WM_SETCURSOR,wParam,lParam);
+    return DefWindowProcW(_handle,WM_SETCURSOR,wParam,lParam);
 }
 
 -(int)WM_SIZING_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
@@ -1526,14 +1525,14 @@ const int kWindowMaxDim = 10000;
         
         case SC_MINIMIZE:
             _isMiniaturized=YES;
-            return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
+            return DefWindowProcW(_handle,WM_SYSCOMMAND,wParam,lParam);
             
         case SC_RESTORE:
             _isMiniaturized=NO;
-            return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
+            return DefWindowProcW(_handle,WM_SYSCOMMAND,wParam,lParam);
             
         default:
-            return DefWindowProc(_handle,WM_SYSCOMMAND,wParam,lParam);
+            return DefWindowProcW(_handle,WM_SYSCOMMAND,wParam,lParam);
    }
 }
 
@@ -1603,10 +1602,10 @@ const int kWindowMaxDim = 10000;
    }
 	
 #if WM_MSG_DEBUGGING
-	NSLog(@"delegating to DefWindowProc()");
+	NSLog(@"delegating to DefWindowProcW()");
 #endif
 	
-   return DefWindowProc(_handle,message,wParam,lParam);
+   return DefWindowProcW(_handle,message,wParam,lParam);
 }
 
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
@@ -1615,7 +1614,7 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
    LRESULT            result;
 
    if(self==nil)
-    result=DefWindowProc(handle,message,wParam,lParam);
+    result=DefWindowProcW(handle,message,wParam,lParam);
    else
     result=[self windowProcedure:message wParam:wParam lParam:lParam];
 
@@ -1624,7 +1623,7 @@ static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,L
    return result;
 }
 
-static void initializeWindowClass(WNDCLASS *class){
+static void initializeWindowClass(WNDCLASSW *class){
 /* WS_EX_LAYERED windows can not use CS_OWNDC or CS_CLASSDC */
 /* OpenGL windows want CS_OWNDC, so don't use OpenGL on a top level window */
 // #warning different windows class, one with CS_OWNDC and one without
@@ -1647,7 +1646,7 @@ static void initializeWindowClass(WNDCLASS *class){
     NSString *path=[[NSBundle mainBundle] pathForResource:name ofType:@"ico"];
     HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,16,16,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
-    static WNDCLASS _standardWindowClass,_borderlessWindowClass,_borderlessWindowClassWithShadow;
+    static WNDCLASSW _standardWindowClass,_borderlessWindowClass,_borderlessWindowClassWithShadow;
 
     if(icon==NULL)
      icon=LoadImage(NULL,IDI_APPLICATION,IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_SHARED);
@@ -1656,24 +1655,24 @@ static void initializeWindowClass(WNDCLASS *class){
     initializeWindowClass(&_borderlessWindowClass);
     initializeWindowClass(&_borderlessWindowClassWithShadow);
 
-    _standardWindowClass.lpszClassName="NSWin32StandardWindow";
+    _standardWindowClass.lpszClassName=L"NSWin32StandardWindow";
     _standardWindowClass.hIcon=icon;
     
-    _borderlessWindowClass.lpszClassName="Win32BorderlessWindow";
+    _borderlessWindowClass.lpszClassName=L"Win32BorderlessWindow";
     
-    _borderlessWindowClassWithShadow.lpszClassName="Win32BorderlessWindowWithShadow";
+    _borderlessWindowClassWithShadow.lpszClassName=L"Win32BorderlessWindowWithShadow";
     
     if(NSPlatformGreaterThanOrEqualToWindowsXP())
      _borderlessWindowClassWithShadow.style|=CS_DROPSHADOW;
         
-    if(RegisterClass(&_standardWindowClass)==0)
-     NSLog(@"RegisterClass failed");
+    if(RegisterClassW(&_standardWindowClass)==0)
+     NSLog(@"RegisterClassW failed");
 
-    if(RegisterClass(&_borderlessWindowClass)==0)
-     NSLog(@"RegisterClass failed");
+    if(RegisterClassW(&_borderlessWindowClass)==0)
+     NSLog(@"RegisterClassW failed");
      
-    if(RegisterClass(&_borderlessWindowClassWithShadow)==0)
-     NSLog(@"RegisterClass failed");
+    if(RegisterClassW(&_borderlessWindowClassWithShadow)==0)
+     NSLog(@"RegisterClassW failed");
    }
 }
 

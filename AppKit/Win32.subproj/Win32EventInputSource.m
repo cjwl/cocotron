@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL hadPeriodic=[[Win32Display currentDisplay] containsAndRemovePeriodicEvents];
    MSG  msg;
 
-   if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)){        
+   if(PeekMessageW(&msg,NULL,0,0,PM_REMOVE)){
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
     
     BYTE keyState[256];

@@ -405,7 +405,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
      Win32Event *win32Event=(Win32Event *)[(NSEvent_CoreGraphics *)result coreGraphicsEvent];
      MSG msg=[win32Event msg];
      
-     DispatchMessage(&msg);
+     DispatchMessageW(&msg);
      result=nil;
     }
     
@@ -862,8 +862,8 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_CLEAR:   buffer[bufferSize++]=NSClearDisplayFunctionKey;break;
      case VK_RETURN:  break;
 
-     case VK_SHIFT:
-     case VK_CONTROL:
+        case VK_SHIFT: break;
+        case VK_CONTROL: break;
      case VK_MENU:
       buffer[bufferSize++]=' '; // lame
       type=NSFlagsChanged;
@@ -1317,8 +1317,12 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
    NSMutableSet *set=(NSMutableSet *)lParam;
 //   NSString     *name=[NSString stringWithCString:logFont->elfFullName];
    NSString     *name=[NSString stringWithCString:logFont->elfLogFont.lfFaceName];
-
-   [set addObject:name];
+    // Font name starting with "@" are rotated versions of the font, for vertical rendering
+    // We don't want them - the are polluting our font list + they have the same PS name
+    // as the normal ones, leading to confusion in our font picking algo
+    if ([name characterAtIndex:0] != '@') {
+        [set addObject:name];
+    }
 
    return 1;
 }

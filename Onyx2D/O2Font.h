@@ -28,6 +28,7 @@ typedef enum {
 @interface O2Font : NSObject {
    O2FontPlatformType _platformType;
    NSString *_name;
+    NSCharacterSet *_coveredCharSet;
    O2DataProviderRef _provider;
    int       _unitsPerEm;
    int       _ascent;
@@ -53,6 +54,8 @@ typedef enum {
 + (NSString *)displayNameForPostscriptName:(NSString *)name;
 + (NSString *)postscriptNameForFontName:(NSString *)name;
 
++ (NSArray *)preferredFontNames;
++(void)setPreferredFontNames:(NSArray *)fontNames;
 
 -initWithFontName:(NSString *)name;
 -initWithDataProvider:(O2DataProviderRef)provider;
@@ -61,6 +64,8 @@ typedef enum {
 
 -(O2Glyph)glyphWithGlyphName:(NSString *)name;
 -(NSString *)copyGlyphNameForGlyph:(O2Glyph)glyph;
+
+-(NSCharacterSet *)coveredCharacterSet;
 
 -(void)fetchAdvances;
 
@@ -82,6 +87,8 @@ int       O2FontGetXHeight(O2FontRef self);
 O2Float   O2FontGetItalicAngle(O2FontRef self);
 O2Float   O2FontGetStemV(O2FontRef self);
 O2Rect    O2FontGetFontBBox(O2FontRef self);
+
+NSCharacterSet *O2FontGetCoveredCharacterSet(O2FontRef self);
 
 size_t    O2FontGetNumberOfGlyphs(O2FontRef self);
 BOOL      O2FontGetGlyphAdvances(O2FontRef self,const O2Glyph *glyphs,size_t count,int *advances);

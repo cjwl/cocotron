@@ -243,6 +243,17 @@ static NSFont **_fontCache=NULL;
    NSUnimplementedMethod();
 }
 
++(NSArray *)preferredFontNames
+{
+    return [O2Font preferredFontNames];
+}
+
++(void)setPreferredFontNames:(NSArray *)fontNames
+{
+    [O2Font setPreferredFontNames:fontNames];
+}
+
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
      [coder encodeObject:[[NSFont nibFontTranslator] translateToNibFontName:_name] forKey:@"NSName"];
@@ -409,8 +420,7 @@ static NSFont **_fontCache=NULL;
 }
 
 -(NSCharacterSet *)coveredCharacterSet {
-   NSUnimplementedMethod();
-   return nil;
+   return O2FontGetCoveredCharacterSet(_cgFont);
 }
 
 -(NSStringEncoding)mostCompatibleStringEncoding {

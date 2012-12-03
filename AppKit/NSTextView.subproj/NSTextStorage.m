@@ -89,8 +89,12 @@ NSString * const NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidPr
 
 -(void)endEditing {
    _beginEditing--;
-   if(_beginEditing==0)
-    [self processEditing];
+    if(_beginEditing==0) {
+        // Prevent any change to trigger more notification
+        _beginEditing++;
+        [self processEditing];
+        _beginEditing--;
+    }
 }
 
 -(NSRange)invalidatedRange {

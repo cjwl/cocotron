@@ -78,6 +78,9 @@ typedef enum {
 +(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size;
 +(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size textTransform:(NSAffineTransform *)transform;
 
++(NSArray *)preferredFontNames;
++(void)setPreferredFontNames:(NSArray *)fontNames;
+
 -(float)pointSize;
 -(NSString *)fontName;
 -(const float *)matrix;
