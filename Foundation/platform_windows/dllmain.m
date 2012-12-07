@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <windows.h>
 #include <stdio.h>
 
+#import <Foundation/NSProcessInfo.h>
+
 int OBJCRegisterDLL(HINSTANCE handle);
 
 int APIENTRY DllMain(HINSTANCE handle,DWORD reason,LPVOID _reserved) {

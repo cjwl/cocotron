@@ -11,6 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_win32.h>
 #import <Foundation/NSUnicodeCaseMapping.h>
 
+// We need to access the context dc to do image format conversion
+#import <AppKit/O2Context_gdi.h>
+
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSBitmapImageRep.h>
 
@@ -306,7 +309,7 @@ static WORD PaletteSize (VOID FAR * pv)
 				CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 4*w, colorspace, kCGBitmapByteOrder32Little|kCGImageAlphaPremultipliedFirst);
 				CGColorSpaceRelease(colorspace);
 				// Contexts created on the Win32 platform are supposed to have a "dc" method
-				HDC dc = (HDC)[(id)ctx dc];
+				HDC dc = (HDC)[(O2Context_gdi *)ctx dc];
 				if (dc) {
 					StretchDIBits(
 								  dc,
