@@ -49,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _firstLineHeadIndent=0;
    _headIndent=0;
    _tailIndent=0;
-   _alignment=NSLeftTextAlignment;
+   _alignment=NSNaturalTextAlignment;
    _lineBreakMode=NSLineBreakByWordWrapping;
    _minimumLineHeight=0;
    _maximumLineHeight=0;

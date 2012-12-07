@@ -19,6 +19,16 @@
 		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8C166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E96166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E97166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E98166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E99166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
 		49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
 		49D5D246165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
 		49D5D247165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
@@ -4502,6 +4512,9 @@
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
+		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
+		49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBidiHelper.h; sourceTree = "<group>"; };
+		49B85E95166FBC9A00507E8C /* UNIDATA */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UNIDATA; sourceTree = "<group>"; };
 		49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUndoTextOperation.h; sourceTree = "<group>"; };
 		49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUndoTextOperation.m; sourceTree = "<group>"; };
 		630DC9D914CE3F2D0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
@@ -5569,13 +5582,6 @@
 				6E2B55050976075300DA0954 /* Resources */,
 				6E2B575A0976075500DA0954 /* External Frameworks and Libraries */,
 				6E2B53230976074C00DA0954 /* Products */,
-				630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */,
-				630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */,
-				630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */,
-				630DC9F614CE459A0009A039 /* NSFontPanel.nib */,
-				630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */,
-				630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */,
-				630DCA1014CE48210009A039 /* NSSpellingViewController.xib */,
 			);
 			name = AppKit;
 			sourceTree = "<group>";
@@ -5921,6 +5927,13 @@
 		6E2B54DE0976075300DA0954 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */,
+				630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */,
+				630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */,
+				630DC9F614CE459A0009A039 /* NSFontPanel.nib */,
+				630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */,
+				630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */,
+				630DCA1014CE48210009A039 /* NSSpellingViewController.xib */,
 				630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */,
 				6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */,
 				6311B16014C74B00007AD8C0 /* NSFontPanel.nib */,
@@ -5977,6 +5990,7 @@
 		6E2B55050976075300DA0954 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49B85E95166FBC9A00507E8C /* UNIDATA */,
 				6311B10814C7396A007AD8C0 /* Localizable.strings */,
 				6E2B55060976075300DA0954 /* NSMenu.plist */,
 			);
@@ -6068,6 +6082,8 @@
 				6E2B55740976075300DA0954 /* NSTypesetter.m */,
 				49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */,
 				49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */,
+				49B85E88166FB2D200507E8C /* NSBidiHelper.m */,
+				49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */,
 			);
 			name = NSTextView;
 			path = NSTextView.subproj;
@@ -9293,6 +9309,7 @@
 				630DCA0414CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E97166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9370,6 +9387,7 @@
 				630DCA0314CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E98166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9459,6 +9477,7 @@
 				FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */,
 				FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */,
 				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
+				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9536,6 +9555,7 @@
 				630DCA0114CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9613,6 +9633,7 @@
 				630DCA0214CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0914CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1414CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E99166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10092,6 +10113,7 @@
 				63138207145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				6313829F145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10497,6 +10519,7 @@
 				63138209145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				631382A1145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10937,6 +10960,7 @@
 				63138203145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				6313829B145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24A165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11344,6 +11368,7 @@
 				63138205145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				6313829D145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11646,6 +11671,7 @@
 				6313820B145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				631382A3145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24D165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8C166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

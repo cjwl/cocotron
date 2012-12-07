@@ -58,12 +58,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 @interface NSTextView()
 -(void)_updateTypingAttributes;
--(void)_replaceCharactersInRange:(NSRange)range 
-					  withString:(id)string 
-			 useTypingAttributes:(BOOL)useTypingAttributes;
+-(void)_replaceCharactersInRange:(NSRange)range
+					  withString:(id)string
+			 useTypingAttributes:(BOOL)useTypingAttributes
+          allowsTypingCoalescing:(BOOL)allowsTypingCoalescing;
+// Same as above, with allowsTypingCoalescing = YES
+-(void)_replaceCharactersInRange:(NSRange)range withString:(id)string useTypingAttributes:(BOOL)useTypingAttributes;
 // Same as above, with useTypingAttributes = YES
-- (void) _replaceCharactersInRange: (NSRange)    range
-                        withString: (id) string;
+-(void)_replaceCharactersInRange:(NSRange)range withString:(id)string;
+-(void)_replaceCharactersInRange:(NSRange)range withString:(id)string allowsTypingCoalescing:(BOOL)allowsTypingCoalescing;
 
 - (BOOL) _delegateChangeTextInRange: (NSRange)    range
                   replacementString: (NSString *) string;
@@ -645,15 +648,21 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 			result=[[self layoutManager] extraLineFragmentRect];
 			if (NSIsEmptyRect(result) && [_textStorage length]) {
 				unsigned    rectCount=0;
-				// Get the rect for the last char of the text storage and we'll be at the right of that - we suppose we're writing left-to-write, but so do other parts of the code...
+				// Get the last used fragment rect
 				range = NSMakeRange([_textStorage length]-1, 1);
-				NSRect * rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
-				
-				if(rectCount==0)
-					NSLog(@"rectCount==0!");
-				
-				result=rectArray[0];
-				result.origin.x = NSMaxX(result);
+                range = [[self layoutManager] glyphRangeForCharacterRange:range actualCharacterRange:NULL];
+                result = [[self layoutManager] lineFragmentUsedRectForGlyphAtIndex:range.location effectiveRange:NULL];
+
+                // Check the direction for that location
+                uint8_t level;
+                [[self layoutManager] getGlyphsInRange:range glyphs:NULL characterIndexes:NULL glyphInscriptions:NULL elasticBits:NULL bidiLevels:&level];
+                if (level & 1) {
+                    // Right to Left fragment
+                    result.origin.x = NSMinX(result);
+                } else {
+                    // Left to right fragment
+                    result.origin.x = NSMaxX(result);
+                }
 			}
 			result.size.width=1;		   
 		} else {
@@ -1092,12 +1101,49 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [self _setAndScrollToRange:range upstream:upstream];
 }
 
+// Returns YES if the location is in a right-to-left paragraph
+-(BOOL)_locationIsLeftToRight:(NSUInteger)location
+{
+    BOOL leftToRight = YES;
+    NSString *string = [self string];
+    NSUInteger length = [string length];
+    if (length > 0) {
+        // We'll check the bidi direction of the start of the paragraph and use that as our "left" direction
+        // That's not great when mixing scripts with different writing directions but that's better than always going
+        // left-to-right...
+        
+        if (location >= length) {
+            location = length - 1;
+        }
+        NSRange paragraphRange = [string paragraphRangeForRange:NSMakeRange(location, 1)];
+        // Check the direction for that location
+        uint8_t level;
+        [[self layoutManager] getGlyphsInRange:NSMakeRange(paragraphRange.location,1) glyphs:NULL characterIndexes:NULL glyphInscriptions:NULL elasticBits:NULL bidiLevels:&level];
+        leftToRight = (level & 1) == 0;
+    }
+    return leftToRight;
+}
+
 -(void)moveLeft:sender {
-   [self moveBackward:sender];
+    // That really should be more complex than that, because we should actually take the glyphs drawing order into account, which
+    // is not just left-to-right or right-to-left
+    NSRange range=[self selectedRange];
+    if ([self _locationIsLeftToRight:range.location]) {
+        [self moveBackward:sender];
+    } else {
+        [self moveForward:sender];
+    }
 }
 
 -(void)moveRight:sender {
-   [self moveForward:sender];
+    // That really should be more complex than that, because we should actually take the glyphs drawing order into account, which
+    // is not just left-to-right or right-to-left
+    NSRange range=[self selectedRange];
+    if ([self _locationIsLeftToRight:range.location]) {
+        [self moveForward:sender];
+    } else {
+        [self moveBackward:sender];
+    }
 }
 
 -(void)moveBackward:sender {

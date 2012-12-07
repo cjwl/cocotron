@@ -30,12 +30,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaiseException.h>
 
 #import "NSRulerMarker+NSTextExtensions.h"
+#import "NSBidiHelper.h"
 
 typedef struct {
    NSRect  rect;
    NSRect  usedRect;
    NSPoint location;
-	NSTextContainer *container;
+   NSTextContainer *container;
+    BOOL leftToRight;
 } NSGlyphFragment;
 
 typedef struct {
@@ -267,15 +269,60 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    [[_textStorage string] getCharacters:buffer range:characterRange];
    [font getGlyphs:glyphs forCharacters:buffer length:characterRange.length];
 
-   return glyphRange.length;
+    return glyphRange.length;
+}
+
+-(unsigned)getOrderedGlyphs:(NSGlyph *)glyphs range:(NSRange)glyphRange baseLevel:(uint8_t)baseLevel order:(NSUInteger *)order
+{
+    uint8_t bidiLevels[glyphRange.length];
+    unsigned result = [self getGlyphsInRange:glyphRange glyphs:NULL characterIndexes:NULL glyphInscriptions:NULL elasticBits:NULL bidiLevels:bidiLevels];
+    BOOL needsOrdering = baseLevel&1;
+    
+    for (int i = 0; i < glyphRange.length && !needsOrdering; i++) {
+        if (bidiLevels[i]&1) {
+            needsOrdering = YES;
+            break;
+        }
+    }
+    if (order) {
+        for (int i = 0; i < glyphRange.length; i++) {
+            order[i] = i;
+        }
+    }
+    if (needsOrdering) {
+        // Reorder the chars & do mirroring, and get the glyphs from that result
+
+        // Get the char for the range
+        NSRange characterRange=[self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
+        unichar buffer[characterRange.length];
+        [[_textStorage string] getCharacters:buffer range:characterRange];
+        
+        // Process them : that will reorder "order", and do mirroring if needed
+        NSBidiHelperProcessLine(baseLevel, order, buffer, bidiLevels, true, characterRange.length);
+        
+        NSFont *font=[self _fontForGlyphRange:glyphRange];
+        result = [font getGlyphs:glyphs forCharacters:buffer length:characterRange.length];
+        // Reorder the glyph
+        NSBidiHelperProcessLine(baseLevel, glyphs, NULL, bidiLevels, false, characterRange.length);
+    } else {
+        result = [self getGlyphs:glyphs range:glyphRange];
+    }
+    return result;
 }
 
 -(unsigned)getGlyphsInRange:(NSRange)range glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)charIndexes glyphInscriptions:(NSGlyphInscription *)inscriptions elasticBits:(BOOL *)elasticBits {
-   return [self getGlyphsInRange:range glyphs:glyphs characterIndexes:charIndexes glyphInscriptions:inscriptions elasticBits:elasticBits bidiLevels:NULL];
+    return [self getGlyphsInRange:range glyphs:glyphs characterIndexes:charIndexes glyphInscriptions:inscriptions elasticBits:elasticBits bidiLevels:NULL];
 }
 
 -(unsigned)getGlyphsInRange:(NSRange)range glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)charIndexes glyphInscriptions:(NSGlyphInscription *)inscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels {
-   return 0;
+    
+    unsigned result  = 0;
+    if (glyphs) {
+        result = [self getGlyphs:glyphs range:range];
+    }
+    // Actually ask to the typesetter for anything else - it's the one knowing all the dirty details
+    [_typesetter getGlyphsInRange:range glyphs:NULL characterIndexes:charIndexes glyphInscriptions:inscriptions elasticBits:elasticBits bidiLevels:bidiLevels];
+    return result;
 }
 
 -(NSTextContainer *)textContainerForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange {
@@ -416,6 +463,10 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 	insert->usedRect=NSZeroRect;
 	insert->location=NSZeroPoint;
 	insert->container=container;
+    // Get the direction for the fragment
+    uint8_t bidiLevel;
+    [_typesetter getGlyphsInRange:NSMakeRange(glyphRange.location, 1) glyphs:NULL characterIndexes:NULL glyphInscriptions:NULL elasticBits:NULL bidiLevels:&bidiLevel];
+    insert->leftToRight = (bidiLevel & 1) == 0;
    NSRangeEntryInsert(_glyphFragments,glyphRange,insert);
 }
 
@@ -430,12 +481,12 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(void)setLocation:(NSPoint)location forStartOfGlyphRange:(NSRange)range {
-   NSGlyphFragment *fragment=fragmentForGlyphRange(self,range);
-
-   if(fragment==NULL)
-    return;
-
-   fragment->location=location;
+    NSGlyphFragment *fragment=fragmentForGlyphRange(self,range);
+    
+    if(fragment==NULL)
+        return;
+    
+    fragment->location=location;
 }
 
 -(void)setExtraLineFragmentRect:(NSRect)fragmentRect usedRect:(NSRect)usedRect textContainer:(NSTextContainer *)container {
@@ -473,6 +524,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
     }
    }
 #endif
+    // We could probably just invalidate paragraphs from the ones covering the charRange to the end of the dc
    _layoutInvalid=YES;
 }
 
@@ -552,7 +604,8 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(unsigned)glyphIndexForPoint:(NSPoint)point inTextContainer:(NSTextContainer *)container fractionOfDistanceThroughGlyph:(float *)fraction {
-   unsigned          endOfFragment=0;
+    unsigned          endOfFragment=0;
+    unsigned          result=NSMaxRange([self glyphRangeForTextContainer:container]);
    NSRange           range;
    NSGlyphFragment  *fragment;
    NSRangeEnumerator state;
@@ -564,7 +617,6 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    state=NSRangeEntryEnumerator(_glyphFragments);
 
    while(NSNextRangeEnumeratorEntry(&state,&range,(void **)&fragment)){
-
     if(point.y<NSMinY(fragment->rect)){
      if(endOfFragment>0){
 // if we're at the end of a line we want to back up before the newline
@@ -574,16 +626,16 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
      }
      return endOfFragment;
     }
-    if(point.y<NSMaxY(fragment->rect)){
-     if(point.x<NSMinX(fragment->rect)){
-      return range.location;
-     }
-     else if(point.x<NSMaxX(fragment->usedRect)){
+
+    if(point.y<NSMaxY(fragment->rect) && point.y>=NSMinY(fragment->rect)){
+     if(point.x>=NSMinX(fragment->rect) && point.x<NSMaxX(fragment->usedRect)){
       NSRect   glyphRect=fragment->usedRect;
       NSGlyph  glyphs[range.length];
+      NSUInteger  order[range.length];
       NSFont  *font=[self _fontForGlyphRange:range];
-      unsigned i,length=[self getGlyphs:glyphs range:range];
-
+      unsigned i,length=[self getOrderedGlyphs:glyphs range:range baseLevel:0 order:order];
+      BOOL ltor = fragment->leftToRight;
+         
       glyphRect.size.width=0;
  
       for(i=0;i<length;i++){
@@ -596,7 +648,11 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 
         if(point.x>=NSMinX(glyphRect) && point.x<=NSMaxX(glyphRect)){
          *fraction=(point.x-glyphRect.origin.x)/glyphRect.size.width;
-         return range.location+i;
+            if (ltor == NO) {
+                // Right-to-left is flipped horizontally
+                *fraction = 1. - *fraction;
+            }
+         return range.location+order[i];
         }
 
         glyphRect.origin.x+=advancement.width;
@@ -604,12 +660,27 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
        }
       }
      }
+        // We're on a line with fragments, but no inside a segment - that's still a candidate
+        
+        // For the cases we hit a line at the left or right of all fragments
+        if (point.x < NSMinX(fragment->rect)) {
+            if (fragment->leftToRight) {
+                result=range.location;
+            } else {
+                result=NSMaxRange(range);
+            }
+        } else if (point.x > NSMaxX(fragment->rect)) {
+            if (fragment->leftToRight) {
+                result=NSMaxRange(range);
+            } else {
+                result=range.location;
+            }
+        }
+        endOfFragment=NSMaxRange(range);
     }
-
-    endOfFragment=NSMaxRange(range);
    }
 
-   return endOfFragment;
+    return result;
 }
 
 /* Apple's documentation claims glyphIndexForPoint:inTextContainer:fractionOfDistanceThroughGlyph: is implemented using these two methods. Verify. The method was split in two for the sake of Java, inefficient to keep it split */
@@ -753,35 +824,65 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 				fill=fragment->usedRect;
 
 				NSGlyph glyphs[range.length],previousGlyph=NSNullGlyph;
-				int     i,length=[self getGlyphs:glyphs range:range];
+                NSUInteger order[range.length];
+				int     i,length=[self getOrderedGlyphs:glyphs range:range baseLevel:0 order:order];
 				NSFont *font=[self _fontForGlyphRange:range];
 				float   advance;
 				BOOL    ignore;
 				
+                BOOL ltor = fragment->leftToRight;
+                
 				// Starts with a 0 width - we'll grow it with the width of the glyphs from our intersect range
 				fill.size.width=0;
-				for(i=0;i<length;i++){
-					NSGlyph glyph=glyphs[i];
-					
-					if(glyph==NSControlGlyph)
-						glyph=NSNullGlyph;
-					
-					advance=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
-					
-					if(range.location+i<=intersect.location) {
-						// Not yet part of intersect - advance the fill rect origin
-						fill.origin.x+=advance;
-					} else if(range.location+i<=NSMaxRange(intersect)) {
-						// Part of intersect - grow the width
-						fill.size.width+=advance;
-					}
-					
-					previousGlyph=glyph;
-				}
-				if(NSMaxRange(range)<=NSMaxRange(remainder)){
-					// We want the full end of fragment, so grow the width to the end of the fragment rect
-					fill.size.width=NSMaxX(fragment->rect)-fill.origin.x;
-				}
+                
+                if (ltor) {
+                    for(i=0;i<length;i++){
+                        NSGlyph glyph=glyphs[i];
+                        
+                        if(glyph==NSControlGlyph)
+                            glyph=NSNullGlyph;
+                        
+                        advance=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
+                        if(range.location+i<=intersect.location) {
+                            // Not yet part of intersect - advance the fill rect origin
+                            fill.origin.x+=advance;
+                        } else if(range.location+i<=NSMaxRange(intersect)) {
+                            // Part of intersect - grow the width
+                            fill.size.width+=advance;
+                        }
+                        previousGlyph=glyph;
+                    }
+                    if(NSMaxRange(range)<=NSMaxRange(remainder)){
+                        // We want the full end of fragment, so grow the width to the end of the fragment rect
+                        fill.size.width=NSMaxX(fragment->rect)-fill.origin.x;
+                    }
+				} else {
+                    // Start from the right
+                    fill.origin.x = NSMaxX(fragment->usedRect);
+                    for(i=0;i<length;i++){
+                        NSGlyph glyph=glyphs[order[i]];
+                        
+                        if(glyph==NSControlGlyph)
+                            glyph=NSNullGlyph;
+                        
+                        advance=[font positionOfGlyph:glyph precededByGlyph:previousGlyph isNominal:&ignore].x;
+                        if(range.location+i<=intersect.location) {
+                            // Not yet part of intersect - advance the fill rect origin to the left
+                            fill.origin.x-=advance;
+                        } else if(range.location+i<=NSMaxRange(intersect)) {
+                            // Part of intersect - grow the width to the left
+                            fill.size.width+=advance;
+                            fill.origin.x-=advance;
+                        }
+                        previousGlyph=glyph;
+                    }
+                    if(NSMaxRange(range)<=NSMaxRange(remainder)){
+                        // We want the full start of fragment, so grow the width to the start of the fragment rect
+                        float max = NSMaxX(fill);
+                        fill.origin.x = fragment->rect.origin.x;
+                        fill.size.width=max-fill.origin.x;
+                    }
+                }
 				
 				range = intersect;
 			}
@@ -836,7 +937,6 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	CGContextRef context=NSCurrentGraphicsPort();
 	CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
 	int          cgGlyphsLength=length/2;
-	
 	CGContextShowGlyphsAtPoint(context,point.x,point.y,cgGlyphs,cgGlyphsLength);
 }
 
@@ -1074,7 +1174,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	return selectedColor;
 }
 	
-- (void)_drawPackedGlyphs: (NSGlyph*)glyphs
+- (void)_drawGlyphs: (NSGlyph*)glyphs
 					length: (unsigned)length
 					 range: (NSRange)range
 				   atPoint: (NSPoint)point
@@ -1082,18 +1182,14 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 			withAttributes: (NSDictionary*)attributes
 					origin: (NSPoint)origin
 {
-	
-	// First draw the packed glyphs
-	
-	char          packedGlyphs[length];
-	
-	int packedGlyphsLength = NSConvertGlyphsToPackedGlyphs(glyphs, length, NSNativeShortGlyphPacking, packedGlyphs);
-
 	NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
 	NSFont       *font=NSFontAttributeInDictionary(attributes);
 	
-	[self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
-	
+    // First draw the packed glyphs
+    char          packedGlyphs[length];
+    int packedGlyphsLength = NSConvertGlyphsToPackedGlyphs(glyphs, length, NSNativeShortGlyphPacking, packedGlyphs);
+    [self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
+
 	NSRange glyphRange = range;
 
 	// Next take a look at the overprinting options
@@ -1185,9 +1281,9 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 		// Load the glyphs for this run
 		NSGlyph       glyphs[range.length];
 		unsigned      glyphsLength;
-		
-		glyphsLength = [self getGlyphs:glyphs range:range];
-		
+		 
+		glyphsLength = [self getOrderedGlyphs:glyphs range:range baseLevel:0 order:NULL];
+
 		// Prepare the font - we're within an attribute run - so this font will be good for
 		// this entire range
 		NSFont *font = NSFontAttributeInDictionary(attributes);
@@ -1195,7 +1291,14 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 		
 		// We intersect with the selection so we apparently need to tread carefully...
 		if (intersectRange.length > 0){
-			
+            BOOL ltor = fragment->leftToRight;
+            
+            if (ltor == NO) {
+                // Mirror the selection since the glyphs order is Right-to-Left
+                unsigned int distanceToEnd = NSMaxRange(characterRange) - NSMaxRange(intersectRange);
+                intersectRange.location = characterRange.location + distanceToEnd;
+            }
+
 			NSGlyph  previousGlyph=NSNullGlyph;
 			float    partWidth = 0;
 			unsigned i = 0;
@@ -1264,7 +1367,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 					// Show the range of glyphs specifed by offset and length
 					NSRange subRange = NSMakeRange(range.location + offset, length);
 					
-					[self _drawPackedGlyphs:glyphs+offset length: length  range: subRange atPoint: point inContainer: container withAttributes: attributes origin: origin];
+					[self _drawGlyphs:glyphs+offset length: length  range: subRange atPoint: point inContainer: container withAttributes: attributes origin: origin];
 					
 					// And make sure we know where we are witin the fragment.
 					point.x+=partWidth;
@@ -1293,7 +1396,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 				previousGlyph = glyph;
 			}
 			
-			[self _drawPackedGlyphs:glyphs length: glyphsLength range: range atPoint: point  inContainer: container withAttributes: attributes origin: origin];
+			[self _drawGlyphs:glyphs length: glyphsLength range: range atPoint: point  inContainer: container withAttributes: attributes origin: origin];
 			point.x += partWidth;
 		}
 	}
