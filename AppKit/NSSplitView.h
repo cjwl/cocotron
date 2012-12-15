@@ -39,6 +39,13 @@ typedef enum {
 -(void)setDividerStyle:(NSSplitViewDividerStyle)style;
 - (NSSplitViewDividerStyle)dividerStyle;
 
+/* Get the minimum or maximum possible position of a divider */
+- (float)minPossiblePositionOfDividerAtIndex:(int)index;
+- (float)maxPossiblePositionOfDividerAtIndex:(int)index;
+
+/** Set the position of a divider */
+- (void)setPosition:(float)position ofDividerAtIndex:(int)index;
+
 @end
 
 // nb. it looks like the API for this is changed in MacOS X, replacing splitView:constrainMix:max:ofSubviewAt
