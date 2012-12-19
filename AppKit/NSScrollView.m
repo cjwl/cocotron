@@ -234,10 +234,8 @@ static Class _rulerViewClass = nil;
     NSRect result=[self insetBounds];
     
     result.size.height = [_horizontalRuler requiredThickness];
-    if ([self rulersVisible] && [self hasVerticalRuler]) {
-        result.origin.x += [_verticalRuler requiredThickness];
-        result.size.width -= [_verticalRuler requiredThickness];
-    }
+
+    // The horizontal ruler spans the entire width of the scrollview
     
     return result;
 }
@@ -247,6 +245,7 @@ static Class _rulerViewClass = nil;
     
     result.size.width = [_verticalRuler requiredThickness];
     if ([self rulersVisible] && [self hasHorizontalRuler]) {
+        // The vertical ruler is positioned below the horizontal ruler
         result.origin.y += [_horizontalRuler requiredThickness];
         result.size.height -= [_horizontalRuler requiredThickness];
     }
