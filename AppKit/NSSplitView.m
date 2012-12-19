@@ -125,7 +125,7 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
      frame.size.width=floor(frame.size.width);
      
      [[_subviews objectAtIndex:i] setFrame:frame];
-  
+        
      frame.origin.x+=frame.size.width;
      frame.origin.x+=[self dividerThickness];
     }
@@ -148,6 +148,7 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
     }
    }
 
+    [self setNeedsDisplay: YES];
    [self _postNoteDidResize];
 }
 
@@ -245,6 +246,7 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
     [view setFrame:frame];
    }
 
+    [self setNeedsDisplay: YES];
    [self _postNoteDidResize];
 }
 
@@ -436,11 +438,18 @@ static float constrainTo(float value,float min,float max){
         //  resize1.size.height=constrainTo(resize1.size.height,0,maxSize);
         resize1.origin.y=(frame1.origin.y+frame1.size.height)-resize1.size.height;
     }
+
+    NSView *subView1 = [[self subviews] objectAtIndex: index];
+    NSView *subView2 = [[self subviews] objectAtIndex: index + 1];
+    [subView1 setFrameOrigin:resize0.origin];
+    [subView1 setFrameSize:resize0.size];
+    // Tell the view to redisplay otherwise there are drawing artifacts
+    [subView1  setNeedsDisplay: YES];
     
-    [[[self subviews] objectAtIndex: index] setFrameOrigin:resize0.origin];
-    [[[self subviews] objectAtIndex: index] setFrameSize:resize0.size];
-    [[[self subviews] objectAtIndex: index + 1] setFrameOrigin:resize1.origin];
-    [[[self subviews] objectAtIndex: index + 1] setFrameSize:resize1.size];
+    [subView2 setFrameOrigin:resize1.origin];
+    [subView2 setFrameSize:resize1.size];
+    // Tell the view to redisplay otherwise there are drawing artifacts
+    [subView2  setNeedsDisplay: YES];
     
     [self setNeedsDisplay:YES];
 }
