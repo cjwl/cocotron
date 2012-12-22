@@ -455,13 +455,13 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
         if (size.width > _maxContentSize.width && _maxContentSize.width > 0)
             size.width = _maxContentSize.width;
         
-        size.height = [self contentSize].height;
+        size.height = _contentSize.height;
     }
     else {
         if (size.height > _maxContentSize.height && _maxContentSize.height > 0)
             size.height = _maxContentSize.height;
         
-        size.width = [self contentSize].width;
+        size.width = _contentSize.width;
     }
     
     [self setContentSize:size];
