@@ -146,14 +146,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObject:object {
-   NSInteger count=[self count];
+	
+	NSInteger count=[self count];
 
+	// Make sure it doesn't disappear on us during this operation
+	[object retain];
+	
    while(--count>=0){
     id check=[self objectAtIndex:count];
 
     if([check isEqual:object])
      [self removeObjectAtIndex:count];
    }
+	
+   [object release];
 }
 
 -(void)removeObject:object inRange:(NSRange)range {
@@ -163,12 +169,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
      NSStringFromRange(range),[self count]);
 
+	// Make sure it doesn't disappear on us during this operation
+	[object retain];
+
    while(--pos>=range.location){
     id check=[self objectAtIndex:pos];
 
     if([check isEqual:object])
      [self removeObjectAtIndex:pos];
    }
+
+	[object release];
 }
 
 -(void)removeObjectIdenticalTo:object {
@@ -188,7 +199,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(pos>[self count])
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
      NSStringFromRange(range),[self count]);
-
 
    while(--pos>=range.location){
     id check=[self objectAtIndex:pos];
