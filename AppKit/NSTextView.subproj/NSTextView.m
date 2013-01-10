@@ -2506,6 +2506,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     }
 }
 
+- (void)keyUp:(NSEvent*)event
+{
+	// Just to eat the event - else it is passed to the nextResponder, and we don't want that
+}
+
 -(void)doCommandBySelector:(SEL)selector {
     if ([_delegate respondsToSelector:@selector(textView:doCommandBySelector:)])
         if ([_delegate textView:self doCommandBySelector:selector] == YES)
