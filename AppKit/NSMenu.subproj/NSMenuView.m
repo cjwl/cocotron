@@ -101,9 +101,9 @@ enum {
 }
 
 #if 0
-#define MENUDEBUG(x, ...) NSLog(x, __VA_ARGS__)
+#define MENUDEBUG(...) NSLog(__VA_ARGS__)
 #else
-#define MENUDEBUG(x, ...)
+#define MENUDEBUG(...)
 #endif
 
 const float kMenuInitialClickThreshold = 0.1f;
@@ -184,7 +184,7 @@ const float kMouseMovementThreshold = .001f;
 				// Which item is the cursor on top of?
 				unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
 
-				MENUDEBUG(@"index: %u", itemIndex);
+				MENUDEBUG(@"found an item index: %u", itemIndex);
 
 				// If it's not the currently selected item
 				if(itemIndex!=[checkView selectedItemIndex]){
@@ -234,8 +234,16 @@ const float kMouseMovementThreshold = .001f;
 		// Let's take a look at what's come in on the event queue
 		event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask|NSAppKitDefinedMask];
 		[event retain];
+		
+		if (keyboardNavigationAction != kNSMenuKeyboardNavigationNone) {
+			// We didn't enter the mouse handling loop that predecrements count - so do it here...
+			count--;
+		}
+		// Reset the keyboard navigation state
+		keyboardNavigationAction = kNSMenuKeyboardNavigationNone;
+		
 		if ([event type] == NSKeyDown) {
-			
+
 			NSString* chars = [event characters];
 			unichar ch = [chars characterAtIndex: 0];
 			switch (ch) {
