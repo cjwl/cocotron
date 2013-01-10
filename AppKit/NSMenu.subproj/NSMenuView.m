@@ -8,7 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSMenuView.h>
 #import <AppKit/NSMenuWindow.h>
+#import <AppKit/NSMainMenuView.h>
 #import <AppKit/NSRaise.h>
+
+enum {
+	kNSMenuKeyboardNavigationNone,
+	kNSMenuKeyboardNavigationUp,
+	kNSMenuKeyboardNavigationDown,
+	kNSMenuKeyboardNavigationLeft,
+	kNSMenuKeyboardNavigationRight
+};
 
 @implementation NSMenuView
 
@@ -132,6 +141,8 @@ const float kMouseMovementThreshold = .001f;
 	
 	[event retain];
 	
+	int keyboardNavigationAction = kNSMenuKeyboardNavigationNone;
+	
 	BOOL cancelled = NO;
 	
 	MENUDEBUG(@"entering outer loop");
@@ -151,6 +162,8 @@ const float kMouseMovementThreshold = .001f;
 			screen=[self _screenForPoint:point];
 		}
 		
+		if (keyboardNavigationAction == kNSMenuKeyboardNavigationNone) {
+			// We're not current dealing with a keyboard event
 		// Take a look at the visible menu stack (we're within a big loop so views can come and
 		// go and the mouse can wander all over) deepest first
 		while(--count>=0){
@@ -214,13 +227,181 @@ const float kMouseMovementThreshold = .001f;
 			MENUDEBUG(@"clearing all selection");
 			[[viewStack lastObject] setSelectedItemIndex:NSNotFound];
 		}
+		}
 		
 		[event release];
 		
 		// Let's take a look at what's come in on the event queue
-		event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSAppKitDefinedMask];
+		event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask|NSAppKitDefinedMask];
 		[event retain];
-		
+		if ([event type] == NSKeyDown) {
+			
+			NSString* chars = [event characters];
+			unichar ch = [chars characterAtIndex: 0];
+			switch (ch) {
+				case NSUpArrowFunctionKey:
+					keyboardNavigationAction = kNSMenuKeyboardNavigationUp;
+					break;
+				case NSDownArrowFunctionKey:
+					keyboardNavigationAction = kNSMenuKeyboardNavigationDown;
+					break;
+				case NSLeftArrowFunctionKey:
+					keyboardNavigationAction = kNSMenuKeyboardNavigationLeft;
+					break;
+				case NSRightArrowFunctionKey:
+					keyboardNavigationAction = kNSMenuKeyboardNavigationRight;
+					break;
+					
+				case '\r': // Return = select the current item and exit the loop
+					MENUDEBUG(@"Selecting current item and exit");
+					state = STATE_EXIT;
+					break;
+				case 27: // Escape = pop unless we're done then it's cancel
+				{
+					if ([viewStack count] > 1) {
+						NSView* view = [viewStack lastObject];
+						MENUDEBUG(@"popping cascading view: %@", view);
+						[[view window] close];
+						[viewStack removeLastObject];
+					}	else {
+						MENUDEBUG(@"Cancelling");
+						cancelled = YES;
+					}
+				}
+					break;
+					
+				default:
+					break;
+			}
+			
+			NSMenuView* activeMenuView = [viewStack lastObject];
+
+			BOOL ignoreEnabledState = NO;
+			if ([viewStack count] == 1 && [activeMenuView isKindOfClass: [NSMainMenuView class]]) {
+				// For some reason main menu items are disabled - even though they work fine...
+				ignoreEnabledState = YES;
+				// we're navigating the top menu which has opposite semantics than a regular menu
+				switch (keyboardNavigationAction) {
+					case kNSMenuKeyboardNavigationDown:
+						keyboardNavigationAction = kNSMenuKeyboardNavigationRight;
+						break;
+					case kNSMenuKeyboardNavigationUp:
+						keyboardNavigationAction = kNSMenuKeyboardNavigationLeft;
+						break;
+					case kNSMenuKeyboardNavigationLeft:
+						keyboardNavigationAction = kNSMenuKeyboardNavigationUp;
+						break;
+					case kNSMenuKeyboardNavigationRight:
+						keyboardNavigationAction = kNSMenuKeyboardNavigationDown;
+						break;
+				}
+			}
+			
+			switch (keyboardNavigationAction) {
+				case kNSMenuKeyboardNavigationUp:
+				{
+					MENUDEBUG(@"Up...");
+					
+					unsigned oldIndex = [activeMenuView selectedItemIndex];
+					NSArray *items = [activeMenuView itemArray];
+					// Look for the next enabled item by search up and wrapping around the bottom
+					unsigned newIndex = 0;
+					if (oldIndex != NSNotFound) {
+						newIndex = oldIndex == 0 ? [items count] - 1 : oldIndex - 1;
+					}
+					MENUDEBUG(@"oldIndex = %u", oldIndex);
+					MENUDEBUG(@"newIndex = %u", newIndex);
+					BOOL found = NO;
+					while (!found && newIndex != oldIndex) {
+						// Make sure we stop eventually
+						if (oldIndex == NSNotFound) {
+							oldIndex = 0;
+						}
+						// Try and find a new item to select
+						NSMenuItem *item = [items objectAtIndex: newIndex];
+						if ([item isSeparatorItem] == NO &&
+							((ignoreEnabledState || [item isEnabled]) || [item hasSubmenu])) {
+							MENUDEBUG(@"selecting item = %@", item);
+							[activeMenuView setSelectedItemIndex: newIndex];
+							found = YES;
+						} else {
+							MENUDEBUG(@"skipping item: %@", item);
+							if (newIndex == 0) {
+								newIndex = [items count] - 1;
+							} else {
+								newIndex --;
+							}
+						}
+					}
+				}
+					break;
+				case kNSMenuKeyboardNavigationDown:
+				{
+					MENUDEBUG(@"Down...");
+					unsigned oldIndex = [activeMenuView selectedItemIndex];
+					NSArray *items = [activeMenuView itemArray];
+					// Look for the next enabled item by search down and wrapping around to the top
+					unsigned newIndex = 0;
+					if (oldIndex != NSNotFound) {
+						newIndex = oldIndex == [items count] -1 ? 0 : oldIndex + 1;
+					}
+					
+					MENUDEBUG(@"oldIndex = %u", oldIndex);
+					MENUDEBUG(@"newIndex = %u", newIndex);
+					BOOL found = NO;
+					while (!found && newIndex != oldIndex) {
+						// Make sure we stop eventually
+						if (oldIndex == NSNotFound) {
+							oldIndex = 0;
+						}
+						// Try and find a new item to select
+						NSMenuItem *item = [items objectAtIndex: newIndex];
+						if ([item isSeparatorItem] == NO &&
+							((ignoreEnabledState || [item isEnabled]) || [item hasSubmenu])) {
+							MENUDEBUG(@"selecting item: %u", item);
+							[activeMenuView setSelectedItemIndex: newIndex];
+							found = YES;
+						} else {
+							MENUDEBUG(@"skipping item: %@", item);
+							if (newIndex == [items count] - 1) {
+								newIndex = 0;
+							} else {
+								newIndex++;
+							}
+						}
+					}
+				}
+					break;
+				case kNSMenuKeyboardNavigationLeft:
+					MENUDEBUG(@"Left...");
+					if ([viewStack count] > 1) {
+						NSView* view = [viewStack lastObject];
+						MENUDEBUG(@"popping cascading view: %@", view);
+						[[view window] close];
+						[viewStack removeLastObject];
+					}	
+					break;
+				case kNSMenuKeyboardNavigationRight:
+					{
+						MENUDEBUG(@"Right...");
+					NSMenuView *branch = nil;
+					// If there's a submenu at the current  selected index
+					if((branch=[activeMenuView viewAtSelectedIndexPositionOnScreen:screen])!=nil) {
+						MENUDEBUG(@"adding a new cascading view: %@", branch);
+						[viewStack addObject:branch];
+					} else {
+						// We'll pop it - they're trying to navigate to the next menu most likely
+						if ([viewStack count] > 1) {
+							NSView* view = [viewStack lastObject];
+							MENUDEBUG(@"popping cascading view: %@", view);
+							[[view window] close];
+							[viewStack removeLastObject];
+						}
+					}
+					}
+					break;
+			}
+		}
 		// We use this special AppKitDefined event to let the menu respond to the app deactivation - it *has*
 		// to be passed through the event system, unfortunately
 		if ([event type] == NSAppKitDefined) {
@@ -230,7 +411,7 @@ const float kMouseMovementThreshold = .001f;
 			}
 		}
 		
-		if (cancelled == NO && [event type] != NSAppKitDefined) {
+		if (cancelled == NO && [event type] != NSAppKitDefined && [event type] != NSKeyDown) {
 			
 			// looks like we can keep rolling
 			

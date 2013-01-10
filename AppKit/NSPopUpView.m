@@ -471,6 +471,8 @@ enum {
 
 	if (searchIndex >= [items count]) {
         _selectedIndex = previous;
+	} else {
+		_selectedIndex = searchIndex;
 	}
 	
     [self setNeedsDisplay:YES];
