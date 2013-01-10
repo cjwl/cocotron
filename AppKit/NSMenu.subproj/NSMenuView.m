@@ -16,7 +16,8 @@ enum {
 	kNSMenuKeyboardNavigationUp,
 	kNSMenuKeyboardNavigationDown,
 	kNSMenuKeyboardNavigationLeft,
-	kNSMenuKeyboardNavigationRight
+	kNSMenuKeyboardNavigationRight,
+	kNSMenuKeyboardNavigationLetter
 };
 
 @implementation NSMenuView
@@ -277,8 +278,8 @@ const float kMouseMovementThreshold = .001f;
 					}
 				}
 					break;
-					
 				default:
+					keyboardNavigationAction = kNSMenuKeyboardNavigationLetter;
 					break;
 			}
 			
@@ -407,6 +408,47 @@ const float kMouseMovementThreshold = .001f;
 						}
 					}
 					}
+					break;
+				case kNSMenuKeyboardNavigationLetter:
+				{
+					MENUDEBUG(@"Letter...");
+					NSString *letterString = [[NSString stringWithCharacters: &ch length: 1] uppercaseString];
+					unsigned oldIndex = [activeMenuView selectedItemIndex];
+					NSArray *items = [activeMenuView itemArray];
+					// Look for the next enabled item by search down and wrapping around to the top
+					unsigned newIndex = 0;
+					if (oldIndex != NSNotFound) {
+						newIndex = oldIndex == [items count] -1 ? 0 : oldIndex + 1;
+					}
+					
+					MENUDEBUG(@"oldIndex = %u", oldIndex);
+					MENUDEBUG(@"newIndex = %u", newIndex);
+					BOOL found = NO;
+					while (!found && newIndex != oldIndex) {
+						// Make sure we stop eventually
+						if (oldIndex == NSNotFound) {
+							oldIndex = 0;
+						}
+						// Try and find a new item to select
+						NSMenuItem *item = [items objectAtIndex: newIndex];
+						if ((ignoreEnabledState || [item isEnabled] == YES) || [item hasSubmenu] == YES) {
+							NSRange range = [[item title] rangeOfString: letterString];
+							if (range.location != NSNotFound) {
+								MENUDEBUG(@"selecting item: %u", item);
+								[activeMenuView setSelectedItemIndex: newIndex];
+								found = YES;
+							}
+						}
+						if (!found) {
+							MENUDEBUG(@"skipping item: %@", item);
+							if (newIndex == [items count] - 1) {
+								newIndex = 0;
+							} else {
+								newIndex++;
+							}
+						}
+					}
+				}
 					break;
 			}
 		}
