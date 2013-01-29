@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringSymbol.h>
 #import <Foundation/NSRaise.h>
 
-NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength){
+NSUInteger _NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength, BOOL zeroTerminate){
     NSUInteger utf8Length=0;
     NSUInteger i;
     
@@ -45,7 +45,9 @@ NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger le
                 }
             }
             else {
-                break;
+                cString[0]='\0';
+                //buffer too small
+                return NSNotFound;
             }
         }
     }
@@ -54,17 +56,31 @@ NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger le
         *location=i;
     }
     
+    if (zeroTerminate && cString) {
+        //check if zero termination has space
+        if (maxLength <= utf8Length) {
+            cString[0]='\0';
+            return NSNotFound;
+        }
+        
+        cString[utf8Length]='\0';
+    }
+
     return utf8Length;
+}
+
+NSUInteger NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength){    
+    return _NSGetUTF8CStringWithMaxLength(characters, length, location, cString, maxLength, YES);
 }
 
 char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,
   BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate){
-  NSUInteger  utf8Length=NSGetUTF8CStringWithMaxLength(characters,length,NULL, NULL, UINT_MAX);
-  char     *utf8=NSZoneMalloc(NULL,(utf8Length+(zeroTerminate?1:0))*sizeof(unsigned char));
+  NSUInteger  utf8Length=_NSGetUTF8CStringWithMaxLength(characters,length,NULL, NULL, UINT_MAX, NO);
+    NSUInteger maxLength = utf8Length+(zeroTerminate?1:0);
+  char     *utf8=NSZoneMalloc(NULL,maxLength*sizeof(unsigned char));
 
-  *resultLength=NSGetUTF8CStringWithMaxLength(characters,length,NULL, utf8, utf8Length);
+  *resultLength=_NSGetUTF8CStringWithMaxLength(characters,length,NULL, utf8, maxLength, zeroTerminate);
   if(zeroTerminate){
-   utf8[*resultLength]='\0';
    (*resultLength)++;
   }
   

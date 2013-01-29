@@ -1665,7 +1665,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     unichar  *unicode = NSZoneMalloc(NULL,maxLength*sizeof(unichar));
     NSUInteger location;
     [self getCharacters:unicode range:range];
-    if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) ==NSNotFound) {
+    if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) == NSNotFound) {
         NSZoneFree(NULL, unicode);
         return NO;
     }
