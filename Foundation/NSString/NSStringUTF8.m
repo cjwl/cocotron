@@ -13,7 +13,7 @@ NSUInteger _NSGetUTF8CStringWithMaxLength(const unichar *characters,NSUInteger l
     NSUInteger utf8Length=0;
     NSUInteger i;
     
-    for(i=0;i<length && utf8Length < maxLength;i++){
+    for(i=0;i<length;i++){
         uint32_t      code32=characters[i];
         uint8_t       tmp[4];
         int           tmpLength=0;
