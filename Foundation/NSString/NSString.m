@@ -62,6 +62,8 @@ extern BOOL NSObjectIsKindOfClass(id object,Class kindOf);
 
 const NSUInteger NSMaximumStringLength=INT_MAX-1;
 
+NSString * const NSCharacterConversionException = @"NSCharacterConversionException";
+
 // only needed for Darwin ppc
 struct objc_class _NSConstantStringClassReference;
 // only needed for Darwin i386
@@ -1652,20 +1654,28 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:buffer];
     char *cstr=NSString_unicodeToAnyCString(encoding, buffer,length,NO,&resultLength,NULL,YES);
-    // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
-    //       that's bad design
-    //NSData *data=
-    NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+
     NSZoneFree(NULL, buffer);
-    return cstr;
+    
+    if (cstr) {
+        // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
+        //       that's bad design
+        //NSData *data=
+        NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+        return cstr;
+    }
+    else {
+        [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+    }
+
 }
 
 -(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
     NSRange range={0,[self length]};    
-    unichar  *unicode = NSZoneMalloc(NULL,maxLength*sizeof(unichar));
+    unichar  *unicode = NSZoneMalloc(NULL,range.length*sizeof(unichar));
     NSUInteger location;
     [self getCharacters:unicode range:range];
-    if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) == NSNotFound) {
+    if (NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength, NO) == NSNotFound) {
         NSZoneFree(NULL, unicode);
         return NO;
     }
@@ -1683,7 +1693,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:unicode range:range];
 
-   NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength+1,YES);
+   if (NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength+1, NO) == NSNotFound) {
+       NSZoneFree(NULL, unicode);
+       
+       [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+   }
+    
    NSZoneFree(NULL, unicode);
 
    if(leftoverRange!=NULL){
@@ -1704,7 +1719,11 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:unicode];
 
-   NSGetCStringWithMaxLength(unicode,length,&location,cString,NSMaximumStringLength+1,YES);
+   if (NSGetCStringWithMaxLength(unicode,length,&location,cString,NSMaximumStringLength+1, NO) == NSNotFound) {
+       NSZoneFree(NULL, unicode);
+       
+       [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+   }
    NSZoneFree(NULL, unicode);
 }
 
@@ -1719,7 +1738,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
 
-   NSZoneFree(NULL,cString);
+    if (cString) {
+        NSZoneFree(NULL,cString);
+    }
+    else {
+        [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+    }
 
    return cStringLength;
 }
@@ -1736,9 +1760,16 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     
     [self getCharacters:buffer];
     char *cstr=NSString_unicodeToAnyCString(defaultEncoding(), buffer,length,YES,&resultLength,NULL,YES);
-    NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
     NSZoneFree(NULL, buffer);
-    return cstr;
+
+    if (cstr) {
+        NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+        return cstr;
+    }
+    else {
+        [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+        return NULL;
+    }
 }
 
 @end
