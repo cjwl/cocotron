@@ -95,11 +95,15 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 		OFN_HIDEREADONLY|
 		OFN_OVERWRITEPROMPT|
 		OFN_ENABLEHOOK|
-      OFN_ENABLESIZING
+        OFN_ENABLESIZING
 		;
 		openFileName.nFileOffset=0;
 		openFileName.nFileExtension=0;
-		openFileName.lpstrDefExt=NULL;
+        if ([_requiredFileType length] > 0) {
+            openFileName.lpstrDefExt = (const unichar *)[_requiredFileType cStringUsingEncoding:NSUnicodeStringEncoding];            
+        } else {
+            openFileName.lpstrDefExt = NULL;
+        }
 		openFileName.lCustData=(LPARAM)_requiredFileType;
 		openFileName.lpfnHook=(void *)saveFileHook;
 		openFileName.lpTemplateName=NULL;
