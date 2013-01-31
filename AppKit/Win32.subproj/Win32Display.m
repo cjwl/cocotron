@@ -952,7 +952,6 @@ The values should be upgraded to something which is more generic to implement, p
 		}
 		
 		NSEvent *event;
-		BOOL     isKeypad;
 		
 		characters=(bufferSize>0)?[NSString stringWithCharacters:buffer length:bufferSize]:@"";
 		charactersIgnoringModifiers=(ignoringBufferSize>0)?[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]:@"";
@@ -963,6 +962,23 @@ The values should be upgraded to something which is more generic to implement, p
 		event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
 		[self postEvent:event atStart:NO];
 		return YES;
+	} else if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
+        // Don't try to wait for a WM_CHAR event for ctrl modified keys - we won't get any and will loose the event
+        if ([_ignoringModifiersString length]) {
+            if (modifierFlags & (NSControlKeyMask|NSCommandKeyMask)) {
+                if(_isKeypad)
+                    modifierFlags|=NSNumericPadKeyMask;
+                
+                NSEvent *event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:_ignoringModifiersString charactersIgnoringModifiers:_ignoringModifiersString isARepeat:isARepeat keyCode:_keyCode];
+                
+                // Reset the saved ignoring modifiers string
+                [_ignoringModifiersString release];
+                _ignoringModifiersString = [NSMutableString new];
+                
+                [self postEvent:event atStart:NO];
+                return YES;
+            }
+        }
 	}
 	return NO;
 }
@@ -1158,7 +1174,13 @@ static HWND findWindowForScrollWheel(POINT point){
     _lastPosition=msg.lParam;
    }
 
-	TranslateMessage(&msg);
+    modifierFlags=[self currentModifierFlags];
+
+    // Don't use TranslateMessage when ctrl modifiers is used - else we're loosing some
+    // shortcuts
+    if ((modifierFlags&(NSControlKeyMask|NSCommandKeyMask)) == 0) {
+        TranslateMessage(&msg);
+    }
 
 	switch(msg.message){
 
@@ -1259,8 +1281,6 @@ static HWND findWindowForScrollWheel(POINT point){
      
     [platformWindow adjustEventLocation:&location];
     
-    modifierFlags=[self currentModifierFlags];
-
     switch(type){
      case NSLeftMouseDown:
      case NSLeftMouseUp:
