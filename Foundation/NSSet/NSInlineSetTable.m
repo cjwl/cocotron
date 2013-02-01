@@ -88,6 +88,8 @@ void NSSetTableRemoveObject(NSSetTable *table,id object){
    NSUInteger     index=[object hash]%table->numBuckets;
    NSSetBucket *current,*last,*bucket=table->buckets[index];
 
+	// Make sure the object lives through the operation
+	[object retain];
    for(current=last=bucket;current!=NULL;last=current,current=current->next)
     if([current->key isEqual:object]){
      if(last==current)
@@ -100,6 +102,7 @@ void NSSetTableRemoveObject(NSSetTable *table,id object){
      NSZoneFree(NSZoneFromPointer(current),current);
      break;
     }
+	[object release];
 }
 
 NSUInteger NSSetTableObjectCount(NSSetTable *table,id object) {

@@ -391,7 +391,7 @@ void NSPlatformLogString(NSString *string) {
     eventLog=RegisterEventSource(NULL,[processName() cString]);
    }
    
-   ReportEvent(eventLog,EVENTLOG_ERROR_TYPE,1,1,NULL,1,0,&cString,NULL);
+   ReportEvent(eventLog,EVENTLOG_INFORMATION_TYPE,1,1,NULL,1,0,&cString,NULL);
  //  CloseEventLog(handle);
 }
 

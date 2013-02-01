@@ -2571,7 +2571,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 - (void)keyUp:(NSEvent*)event
 {
+<<<<<<< local
     // Just to eat the event - else it is passed to the nextResponder, and we don't want that
+=======
+	// Just to eat the event - else it is passed to the nextResponder, and we don't want that
+>>>>>>> other
 }
 
 -(void)doCommandBySelector:(SEL)selector {
