@@ -1061,7 +1061,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	
 	// First draw the packed glyphs
 	
-	char          packedGlyphs[length];
+	char          packedGlyphs[length*2]; // Specs says length*4+1 but needed buffer size is at max length*2 on Cocotron
 	
 	int packedGlyphsLength = NSConvertGlyphsToPackedGlyphs(glyphs, length, NSNativeShortGlyphPacking, packedGlyphs);
 
