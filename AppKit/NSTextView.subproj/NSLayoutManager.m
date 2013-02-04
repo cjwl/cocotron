@@ -1185,10 +1185,10 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
 	NSFont       *font=NSFontAttributeInDictionary(attributes);
 	
-    // First draw the packed glyphs
-    char          packedGlyphs[length];
-    int packedGlyphsLength = NSConvertGlyphsToPackedGlyphs(glyphs, length, NSNativeShortGlyphPacking, packedGlyphs);
-    [self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
+	// First draw the packed glyphs
+	char          packedGlyphs[length*2]; // Specs says length*4+1 but needed buffer size is at max length*2 on Cocotron
+	int packedGlyphsLength = NSConvertGlyphsToPackedGlyphs(glyphs, length, NSNativeShortGlyphPacking, packedGlyphs);
+  [self showPackedGlyphs:packedGlyphs length:packedGlyphsLength glyphRange:range atPoint:point font:font color:color printingAdjustment:NSZeroSize];
 
 	NSRange glyphRange = range;
 

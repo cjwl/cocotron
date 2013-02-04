@@ -82,16 +82,18 @@ static NSUInteger decodeFromData(NSData* data, NSUInteger offset, NSUInteger *va
 			NSData* data = [keyed decodeObjectForKey: @"NSAttributeInfo"];
 			NSArray* attributesArray = attributes;
 			NSUInteger offset =0;
+            NSUInteger location = 0;
 			for (NSUInteger i = 0; i < [attributesArray count]; i++) {
-				NSDictionary* dict = [attributesArray objectAtIndex: i];
 				NSUInteger length = 0;
 				NSUInteger index = 0;
-				NSUInteger location = offset;
 				// See note above on encoding and decoding
 				offset = decodeFromData(data, offset, &length);
 				offset = decodeFromData(data, offset, &index);
+
+                NSDictionary* dict = [attributesArray objectAtIndex: index];
 				NSRange range = NSMakeRange(location, length);
 				[attrStr addAttributes: dict range: range];
+                location += length;
 			}
 			return [self initWithAttributedString: attrStr];
 		}
@@ -116,14 +118,15 @@ static NSUInteger decodeFromData(NSData* data, NSUInteger offset, NSUInteger *va
 			// we've got more than one set of attributes so we have to encode more data
 			NSUInteger count = NSCountRangeEntries(_rangeToAttributes);
 			NSMutableData* data = [NSMutableData dataWithCapacity: count * 4];
-			for (NSUInteger i = 0; i < count; i++) {
-				NSRange range;
-				NSDictionary* attributes = NSRangeEntryAtIndex(_rangeToAttributes, i, &range);
-				[attributesArray addObject: attributes];
+            NSRangeEnumerator enumerator = NSRangeEntryEnumerator(_rangeToAttributes);
+            NSDictionary *attributes = nil;
+            int i = 0;
+            while (NSNextRangeEnumeratorEntry(&enumerator,&range,(void**)&attributes)) {
+ 				[attributesArray addObject: attributes];
 				// See note above on encoding and decoding
 				encodeIntoData(data, range.length);
-				encodeIntoData(data, i);
-			}
+				encodeIntoData(data, i++);
+            }
 			[keyed encodeObject: attributesArray forKey: @"NSAttributes"];
 			[keyed encodeObject: data forKey: @"NSAttributeInfo"];
 		}
