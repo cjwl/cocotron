@@ -1661,13 +1661,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
         // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
         //       that's bad design
         //NSData *data=
-        NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+        NSData *data= [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
         return cstr;
     }
     else {
-        [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+        return NULL;
     }
-
 }
 
 -(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
