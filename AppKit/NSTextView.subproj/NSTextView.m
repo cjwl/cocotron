@@ -2332,7 +2332,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     size.height=[self frame].size.height;
    else {
        
-       NSClipView *clipView=[self superview];
+       NSClipView* clipView = (NSClipView*)[self superview];
        
        if([clipView isKindOfClass:[NSClipView class]]){   
            // if we're in a clip view we should at be at least as big as the clip view
