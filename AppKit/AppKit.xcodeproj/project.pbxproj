@@ -4503,9 +4503,9 @@
 		630DCA0014CE45E60009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSSystemInfoPanel/de.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
 		630DCA0714CE475C0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
 		630DCA1114CE48210009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
-		630DCA1C14CE48790009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		630DCA1D14CE48860009A039 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6311B10914C7396A007AD8C0 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		630DCA1C14CE48790009A039 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		630DCA1D14CE48860009A039 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6311B10914C7396A007AD8C0 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6311B13B14C7430F007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = fr; path = fr.lproj/NSMenu.plist; sourceTree = "<group>"; };
 		6311B15F14C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
 		6311B16114C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
