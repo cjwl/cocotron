@@ -9012,7 +9012,7 @@
 		6E2B57700976075500DA0954 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */;
 			compatibilityVersion = "Xcode 3.2";
