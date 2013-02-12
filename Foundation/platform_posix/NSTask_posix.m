@@ -34,8 +34,8 @@ void waitForTaskChildProcess()
     pid_t pid;
     int status;
     
-    if (_taskFinished == YES) {
-        _taskFinished = NO;
+   // if (_taskFinished == YES) {
+   //     _taskFinished = NO;
         while(YES) {
             pid = wait3(&status, WNOHANG, NULL);
             
@@ -74,8 +74,8 @@ void waitForTaskChildProcess()
                 }
                 
             } 
-        }  
-    }    
+        }
+    //}
 }
 
 void childSignalHandler(int sig) {
