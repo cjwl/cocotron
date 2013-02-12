@@ -443,7 +443,7 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
       [lastFocusedWindow platformWindowDeactivated:window checkForAppDeactivation:NO];
       lastFocusedWindow=nil;  
      }
-     [delegate platformWindowActivated:window];
+     [delegate platformWindowActivated:window displayIfNeeded:YES];
      lastFocusedWindow=delegate;
      break;
      
@@ -594,11 +594,11 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
 
 @implementation NSGraphicsStyle (Overrides) 
 -(void)drawMenuBranchArrowInRect:(NSRect)rect selected:(BOOL)selected {
-   NSImage* arrow=[NSImage imageNamed:@"NSMenuArrow"];
-   // ??? magic numbers
-   rect.origin.y+=5;
-   rect.origin.x-=2;
-   [arrow drawInRect:rect operation:NSCompositeSourceOver];
+    NSImage* arrow=[NSImage imageNamed:@"NSMenuArrow"];
+    // ??? magic numbers
+    rect.origin.y+=5;
+    rect.origin.x-=2;
+    [arrow drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 }
 
 @end
