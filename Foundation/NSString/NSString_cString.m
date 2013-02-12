@@ -184,6 +184,10 @@ NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone
 }
 NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
+    if (cString == NULL || maxLength == 0) {
+        return NSNotFound;
+    }
+    
     switch(encoding) {
         case NSNEXTSTEPStringEncoding:
             return NSGetNEXTSTEPCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
