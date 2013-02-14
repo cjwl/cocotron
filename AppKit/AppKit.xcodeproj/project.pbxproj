@@ -11990,6 +11990,9 @@
 					"-lX11",
 					"-lcairo",
 					"-lfontconfig",
+					"-lXrender",
+					"-lpixman",
+					"-lexpat",
 				);
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -12043,6 +12046,9 @@
 					"-lX11",
 					"-lcairo",
 					"-lfontconfig",
+					"-lXrender",
+					"-lpixman",
+					"-lexpat",
 				);
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Linux/i386;
