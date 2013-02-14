@@ -258,14 +258,6 @@
 			outputFiles = (
 			);
 		};
-		FEA828E0109B754A00C7A732 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
 		FEA82952109B75D600C7A732 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
@@ -890,7 +882,6 @@
 				FEA828DF109B754A00C7A732 /* Frameworks */,
 			);
 			buildRules = (
-				FEA828E0109B754A00C7A732 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -1210,6 +1201,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
+				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
@@ -1230,6 +1222,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;

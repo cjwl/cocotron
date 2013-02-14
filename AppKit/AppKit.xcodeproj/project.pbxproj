@@ -4206,16 +4206,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
-		C88977080EA0BF3100D0A0A2 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
 		FE5A8BDF10C6F50E005E348A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
@@ -8899,7 +8889,6 @@
 				C88977070EA0BF3100D0A0A2 /* Rez */,
 			);
 			buildRules = (
-				C88977080EA0BF3100D0A0A2 /* PBXBuildRule */,
 			);
 			dependencies = (
 				C889770F0EA0C06500D0A0A2 /* PBXTargetDependency */,
@@ -11973,6 +11962,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				HEADER_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Linux/i386/include,
 					/Developer/Cocotron/1.0/Linux/i386/include/freetype2,
@@ -12000,9 +11990,6 @@
 					"-lX11",
 					"-lcairo",
 					"-lfontconfig",
-					"-lpixman",
-					"-lXrender",
-					"-lexpat",
 				);
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -12029,6 +12016,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
+				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				HEADER_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Linux/i386/include,
 					/Developer/Cocotron/1.0/Linux/i386/include/freetype2,
@@ -12055,9 +12043,6 @@
 					"-lX11",
 					"-lcairo",
 					"-lfontconfig",
-					"-lpixman",
-					"-lXrender",
-					"-lexpat",
 				);
 				PRODUCT_NAME = AppKit;
 				SYMROOT = build/Linux/i386;

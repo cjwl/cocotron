@@ -36,14 +36,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
-		0DC472DB15B02B050075BCAB /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
 		C8E0BE870F0E544700677729 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
@@ -299,7 +291,6 @@
 				0DC472DA15B02B050075BCAB /* Frameworks */,
 			);
 			buildRules = (
-				0DC472DB15B02B050075BCAB /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -470,6 +461,7 @@
 				DSTROOT = /;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
