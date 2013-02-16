@@ -106,11 +106,12 @@ static void drawFreeTypeBitmap(O2Context_builtin_FT *self,O2Surface *surface,FT_
 -(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
 // FIXME: use advances if not NULL
 
-   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
+   O2AffineTransform transform=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
    O2GState         *gState=O2ContextCurrentGState(self);
    O2Paint          *paint=paintFromColor(gState->_fillColor);
-   O2AffineTransform Trm=O2AffineTransformConcat(gState->_textTransform,transformToDevice);
-   O2Point           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
+   // FIXME: _textTransform no longer exists--is this line still needed?
+   //transform = O2AffineTransformConcat(gState->_textTransform, transform);
+   O2Point           point=O2PointApplyAffineTransform(NSMakePoint(0,0),transform);
    
    [self establishFontStateInDeviceIfDirty];
 
@@ -160,9 +161,10 @@ static void drawFreeTypeBitmap(O2Context_builtin_FT *self,O2Surface *surface,FT_
     total+=glyphAdvances[i];
     
    total=(total/O2FontGetUnitsPerEm(font))*gState->_pointSize;
-      
-   O2ContextCurrentGState(self)->_textTransform.tx+=total;
-   O2ContextCurrentGState(self)->_textTransform.ty+=0;
+   
+   //FIXME: _textTransform no longer exists--are these lines still needed?
+   //O2ContextCurrentGState(self)->_textTransform.tx+=total;
+   //O2ContextCurrentGState(self)->_textTransform.ty+=0;
 }
 
 @end
