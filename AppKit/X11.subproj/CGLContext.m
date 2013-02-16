@@ -203,9 +203,9 @@ CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj share,CGLC
         
    window = XCreateWindow(display,parent, 0, 0, 1,1, 0, visualInfo->depth, InputOutput, visualInfo->visual, CWBorderPixel | CWColormap | CWEventMask, &xattr);
       
-   // XSetWindowBackgroundPixmap(_display, _window, None);
-   // [X11Window removeDecorationForWindow:_window onDisplay:_display];
-      
+   //XSetWindowBackgroundPixmap(display, window, None);
+   //[X11Window removeDecorationForWindow:window onDisplay:display];
+   
    XMapWindow(display, window);
 
    return CGLCreateContextForWindow(pixelFormat,share,resultp,display,visualInfo,window);
@@ -320,7 +320,7 @@ CGLError CGLSetParameter(CGLContextObj context,CGLContextParameter parameter,con
      break;
      
     default:
-     NSUnimplementedFunction();
+     NSLog(@"CGLSetParameter unimplemented for parameter %i",parameter);
      break;
    }
   
