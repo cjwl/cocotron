@@ -15,6 +15,7 @@
 @class O2Context_cairo, X11Display,CAWindowOpenGLContext;
 
 @interface X11Window : CGWindow {
+   int          _level; //TODO: care about this value
    Display     *_display;
    XVisualInfo *_visualInfo;
    Window       _window;
