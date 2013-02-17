@@ -336,7 +336,7 @@ NSArray *CGSOrderedWindowNumbers() {
     
     for (NSWindow* win in [NSApp windows]) [result addObject:[NSNumber numberWithInteger:[win windowNumber]]];
     
-    NSUnimplementedMethod(); //(Window numbers not even remotely ordered)
+    NSUnimplementedFunction(); //(Window numbers not even remotely ordered)
     
     return result;
 }
