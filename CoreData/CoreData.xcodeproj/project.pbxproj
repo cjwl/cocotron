@@ -665,6 +665,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
+				CONFIGURATION_BUILD_DIR = build/Linux/i386/Debug;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				EFFECTIVE_PLATFORM_NAME = "-linux";
@@ -680,11 +681,13 @@
 				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OBJROOT = build/Linux/i386;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = CoreData;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -692,6 +695,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
+				CONFIGURATION_BUILD_DIR = build/Linux/i386/Release;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				EFFECTIVE_PLATFORM_NAME = "-linux";
@@ -707,11 +711,13 @@
 				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OBJROOT = build/Linux/i386;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = CoreData;
+				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
