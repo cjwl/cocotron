@@ -256,7 +256,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
     [self encodePropertyList:object indent:0];
 
-    [_data appendBytes:"</plist>\n" length:10];
+    [_data appendBytes:"</plist>\n" length:9];
     
     return _data;
 }
