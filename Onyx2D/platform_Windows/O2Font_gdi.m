@@ -105,10 +105,10 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 }
 
 // Add the longFont family to the list of known families
-static int CALLBACK EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p)
+static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p)
 {
 	NSMutableArray *families = (NSMutableArray *)p;
-	NSString *winName = [NSString stringWithFormat:@"%S", longFont->lfFaceName];
+	NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
 	[families addObject:winName];
 	return 1;
 }
@@ -121,7 +121,10 @@ static int CALLBACK EnumFamiliesCallBack(const LOGFONTW* longFont,const TEXTMETR
 	
 	// Get a list of all of the families
 	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
-	EnumFontFamiliesW(dc, (LPCWSTR)NULL, (FONTENUMPROCW)EnumFamiliesCallBack, (LPARAM)families); 
+    LOGFONTW logFont = { 0 };
+    
+    logFont.lfCharSet=DEFAULT_CHARSET;
+	EnumFontFamiliesExW(dc,&logFont,(FONTENUMPROCW)EnumFamiliesCallBackW,(LPARAM)families,0);
 	for (NSString *familyName in families) {
 		// Enum all of the faces for that family
 		LOGFONTW logFont = { 0 };
