@@ -21,8 +21,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSNotificationCenter
 
+static NSNotificationCenter *defaultCenter = nil;
+
 +(NSNotificationCenter *)defaultCenter {
-   return NSThreadSharedInstance(@"NSNotificationCenter");
+	@synchronized(self) {
+		if (defaultCenter == nil) {
+			defaultCenter = [[[self class] alloc] init];
+		}
+	}
+   return defaultCenter;
 }
 
 -init {
@@ -39,6 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)addObserver:anObserver selector:(SEL)selector name:(NSString *)name
    object:object {
+	@synchronized(self) {
    NSNotificationObserver *observer=[[[NSNotificationObserver allocWithZone:[self zone]] 
         initWithObserver:anObserver selector:selector] autorelease];
    NSObjectToObservers *registry;
@@ -56,9 +64,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    [registry addObserver:observer object:object];
+	}
 }
 
 -(void)removeObserver:anObserver {
+	@synchronized(self) {
    NSMutableArray          *removeRegistries=[NSMutableArray array];
    NSEnumerator            *keyEnumerator=[_nameToRegistry keyEnumerator];
    NSString                *key;
@@ -77,9 +87,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    count=[removeRegistries count];
    while(--count>=0)
     [_nameToRegistry removeObjectForKey:[removeRegistries objectAtIndex:count]];
+	}
 }
 
 -(void)removeObserver:anObserver name:(NSString *)name object:object {
+	@synchronized(self) {
    NSMutableArray          *removeRegistries=[NSMutableArray array];
    NSObjectToObservers *registry;
    NSInteger               count;
@@ -117,16 +129,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [_nameToRegistry removeObjectForKey:key];
    }
+	}
 }
 
 static inline void postNotification(NSNotificationCenter *self,NSNotification *note){
    NSAutoreleasePool       *pool=[NSAutoreleasePool new];
+
+	@synchronized(self) {
    NSObjectToObservers *registry=self->_noNameRegistry;
 
    [registry postNotification:note];
    registry=[self->_nameToRegistry objectForKey:[note name]];
    [[registry retain] postNotification:note];
    [registry release];
+	}
 
    [pool release];
 }
