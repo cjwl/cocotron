@@ -784,7 +784,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSText *)setUpFieldEditorAttributes:(NSText *)editor {
    [editor setEditable:[self isEditable]];
    [editor setSelectable:[self isSelectable]];
-	[editor setString:[self stringValue]];
+    NSString* strValue = nil;
+    if (_formatter) {
+        // Prioritize the editing string value over everything else
+        strValue = [_formatter editingStringForObjectValue: [self objectValue]];
+    }
+    if (strValue == nil) {
+        strValue = [self stringValue];
+    }
+	[editor setString: strValue];
    [editor setFont:[self font]];
    [editor setAlignment:[self alignment]];
    if([self respondsToSelector:@selector(drawsBackground)])
