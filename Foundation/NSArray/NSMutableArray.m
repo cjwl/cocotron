@@ -456,7 +456,7 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
    NSInteger i,count=[descriptors count];
 
    for(i=0;i<count;i++){
-    if((result=[[descriptors objectAtIndex:i++] compareObject:A toObject:B])!=NSOrderedSame)
+    if((result=[[descriptors objectAtIndex:i] compareObject:A toObject:B])!=NSOrderedSame)
      break;
    }
 
