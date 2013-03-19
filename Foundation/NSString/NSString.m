@@ -1624,7 +1624,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
     if((code<=0x20) || (code==0x22) || (code==0x23) || (code==0x25) || (code==0x3C) ||
        (code==0x3E) || (code==0x5B) || (code==0x5C) || (code==0x5D) || (code==0x5E) ||
-       (code==0x60) || (code==0x7B) || (code==0x7C) || (code==0x7D)){
+       (code==0x60) || (code==0x7B) || (code==0x7C) || (code==0x7D) || (code&0x80)) {
      result[resultLength++]='%';
      result[resultLength++]=hex[(code>>4)&0xF];
      result[resultLength++]=hex[code&0xF];
