@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2ImageDecoder_JPEG_stb.h"
 #endif
 
+#import "O2EXIFDecoder.h"
+
 #import <assert.h>
 #import <string.h>
 
@@ -75,6 +77,13 @@ NSData *O2DCTDecode(NSData *data) {
 
 -(unsigned)count {
    return 1;
+}
+
+-(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)idx options:(CFDictionaryRef)options {
+    const unsigned char *data = CFDataGetBytePtr(_jpg);
+    unsigned long length = CFDataGetLength(_jpg);
+    O2EXIFDecoder *exif = [[[O2EXIFDecoder alloc] initWithBytes:data length:length] autorelease];
+    return (CFDictionaryRef)[[exif tags] copy];
 }
 
 -(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options {

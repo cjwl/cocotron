@@ -29,6 +29,16 @@
 		49B85E98166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
 		49B85E99166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
 		49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49C12B4E16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B4F16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5016FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5116FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5216FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5516FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5616FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5716FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
 		49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
 		49D5D246165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
 		49D5D247165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
@@ -4515,6 +4525,8 @@
 		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
 		49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBidiHelper.h; sourceTree = "<group>"; };
 		49B85E95166FBC9A00507E8C /* UNIDATA */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UNIDATA; sourceTree = "<group>"; };
+		49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2EXIFDecoder.h; sourceTree = "<group>"; };
+		49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2EXIFDecoder.m; sourceTree = "<group>"; };
 		49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUndoTextOperation.h; sourceTree = "<group>"; };
 		49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUndoTextOperation.m; sourceTree = "<group>"; };
 		630DC9D914CE3F2D0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
@@ -6788,6 +6800,8 @@
 				FE6EE27C0DB91EA8005503A1 /* VGmath.h */,
 				FE6EE2E30DB92B11005503A1 /* VGPath.h */,
 				FE6EE2E40DB92B11005503A1 /* VGPath.m */,
+				49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */,
+				49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */,
 			);
 			name = Onyx2D;
 			path = ../Onyx2D;
@@ -7356,6 +7370,7 @@
 				63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D246165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B4F16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7765,6 +7780,7 @@
 				63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D247165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B5016FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8171,6 +8187,7 @@
 				63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B4E16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8582,6 +8599,7 @@
 				63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D249165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B5216FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8910,6 +8928,7 @@
 				6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D248165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B5116FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10114,6 +10133,7 @@
 				6313829F145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10520,6 +10540,7 @@
 				631382A1145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5516FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10961,6 +10982,7 @@
 				6313829B145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24A165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11369,6 +11391,7 @@
 				6313829D145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5716FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11672,6 +11695,7 @@
 				631382A3145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
 				49D5D24D165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8C166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5616FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

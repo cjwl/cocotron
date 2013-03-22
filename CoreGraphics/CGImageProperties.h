@@ -10,8 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyDPIWidth;
 COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyDPIHeight;
+COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyPixelHeight;
+COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyPixelWidth;
+COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyOrientation;
 
 COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyTIFFDictionary;
+COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyExifDictionary;
 
 COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyTIFFXResolution;
 COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyTIFFYResolution;
+COREGRAPHICS_EXPORT const CFStringRef kCGImagePropertyTIFFOrientation;

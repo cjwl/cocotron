@@ -9,10 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/NSString.h>
 
-const CFStringRef kCGImagePropertyDPIWidth=(CFStringRef)@"kCGImagePropertyDPIWidth";
-const CFStringRef kCGImagePropertyDPIHeight=(CFStringRef)@"kCGImagePropertyDPIHeight";
+const CFStringRef kCGImagePropertyDPIWidth=(CFStringRef)@"DPIWidth";
+const CFStringRef kCGImagePropertyDPIHeight=(CFStringRef)@"DPIHeight";
+const CFStringRef kCGImagePropertyPixelHeight=(CFStringRef)@"PixelHeight";
+const CFStringRef kCGImagePropertyPixelWidth=(CFStringRef)@"PixelWidth";
+const CFStringRef kCGImagePropertyOrientation=(CFStringRef)@"Orientation";
 
-const CFStringRef kCGImagePropertyTIFFDictionary=(CFStringRef)@"kCGImagePropertyTIFFDictionary";
+const CFStringRef kCGImagePropertyTIFFDictionary=(CFStringRef)@"{TIFF}";
+const CFStringRef kCGImagePropertyExifDictionary=(CFStringRef)@"{Exif}";
 
-const CFStringRef kCGImagePropertyTIFFXResolution=(CFStringRef)@"kCGImagePropertyTIFFXResolution";
-const CFStringRef kCGImagePropertyTIFFYResolution=(CFStringRef)@"kCGImagePropertyTIFFYResolution";
+const CFStringRef kCGImagePropertyTIFFXResolution=(CFStringRef)@"XResolution";
+const CFStringRef kCGImagePropertyTIFFYResolution=(CFStringRef)@"YResolution";
+const CFStringRef kCGImagePropertyTIFFOrientation=(CFStringRef)@"Orientation";
