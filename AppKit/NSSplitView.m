@@ -81,7 +81,13 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 }
 
 -(void)setVertical:(BOOL)flag {
+    if (_isVertical == flag) {
+        // Don't do unneccessary work
+        return;
+    }
    _isVertical=flag;
+    
+    // Now get the split axis sorted
    [self adjustSubviews];
 }
 
@@ -90,11 +96,13 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 }
 
 -(BOOL)isSubviewCollapsed:(NSView *)subview {
-    if (_isVertical) {
-        return [subview frame].size.width == 0.0;
-    } else {
-        return [subview frame].size.height == 0.0;
-    }
+    
+    /* From Apple's header comments:
+     * Collapsed subviews are hidden but retained by the split view.
+     * Collapsing of a subview will not change its bounds, but may set its frame
+     * to zero pixels high (in horizontal split views) or zero pixels wide (vertical).
+     */
+    return [subview isHidden];
 }
 
 -(void)setDividerStyle:(NSSplitViewDividerStyle)style {
@@ -107,49 +115,111 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 	return _dividerStyle;
 }
 
--(void)adjustSubviews {
-   NSRect  frame=[self bounds];
-   int     i,count=[_subviews count];
+/** adjust all the non-collapsed subviews so that they are equally spaced horizontally within the splitview */
+- (void)_adjustSubviewWidths
+{
+    // Set all the subview heights to the bounds height of the split view
+    float height = NSHeight([self bounds]);
 
-   [self _postNoteWillResize];
+    int     i,count=[_subviews count];
 
-   if([self isVertical]){
     float totalWidthBefore=0.;
+    
+    // The available width to the subviews
     float totalWidthAfter=[self bounds].size.width-[self dividerThickness]*(count-1);
-
-    for(i=0;i<count;i++)
-     totalWidthBefore+=[[_subviews objectAtIndex:i] frame].size.width;
-
-    for(i=0;i<count;i++){
-     frame.size.width=[[_subviews objectAtIndex:i] frame].size.width*(totalWidthAfter/totalWidthBefore);
-     frame.size.width=floor(frame.size.width);
-     
-     [[_subviews objectAtIndex:i] setFrame:frame];
-        
-     frame.origin.x+=frame.size.width;
-     frame.origin.x+=[self dividerThickness];
+    
+    for(i = 0; i < count; i++) {
+        NSView *subview = [_subviews objectAtIndex: i];
+        if ([self isSubviewCollapsed: subview] == NO) {
+            totalWidthBefore += NSWidth([subview frame]);
+        }
     }
-   }
-   else {
+   
+    float delta = totalWidthAfter / totalWidthBefore;
+    
+    NSRect  frame = [self bounds];
+    for(i = 0; i < count; i++){
+        NSView *subview = [_subviews objectAtIndex: i];
+        if ([self isSubviewCollapsed: subview] == NO) {
+            frame.size.width= NSWidth([subview frame]) * delta;
+            frame.size.width=floor(frame.size.width);
+            frame.size.height = height;
+            
+            NSSize oldSize = [subview frame].size;
+            
+            [subview setFrame:frame];
+            
+            frame.origin.x+= NSWidth(frame);
+            frame.origin.x+= [self dividerThickness];
+        }
+    }
+}
+
+- (void)_adjustSubviewHeights
+{
+    // Set all the subview widths to the bounds width of the split view
+    float width = NSWidth([self bounds]);
+
+    int     i,count=[_subviews count];
+
+    // We've got to figure out how much the delta is between the old and new heights and multiply
+    // all the heights to the new delta to get them to fit (or something like that...) Apple says
+    // They resize proportionally
     float totalHeightBefore=0.;
     float totalHeightAfter=[self bounds].size.height-[self dividerThickness]*(count-1);
-
-    for(i=0;i<count;i++)
-     totalHeightBefore+=[[_subviews objectAtIndex:i] frame].size.height;
-
-    for(i=0;i<count;i++){
-     frame.size.height=[[_subviews objectAtIndex:i] frame].size.height*(totalHeightAfter/totalHeightBefore);
-     frame.size.height=floor(frame.size.height);
-
-     [[_subviews objectAtIndex:i] setFrame:frame];
-
-     frame.origin.y+=frame.size.height;
-     frame.origin.y+=[self dividerThickness];
+    
+    for(i=0;i<count;i++) {
+        NSView *subview = [_subviews objectAtIndex: i];
+        if ([self isSubviewCollapsed: subview] == NO) {
+            NSRect subviewFrame = [subview frame];
+            totalHeightBefore += NSHeight(subviewFrame);
+        }
     }
-   }
 
+    float delta = totalHeightAfter / totalHeightBefore;
+    
+
+    NSRect  frame=[self bounds];
+    for(i=0;i<count;i++){
+        NSView *subview = [_subviews objectAtIndex: i];
+        if ([self isSubviewCollapsed: subview] == NO) {
+            frame.size.height= NSHeight([subview frame]) * delta;
+            frame.size.height=floor(frame.size.height);
+            frame.size.width = width;
+            
+            NSSize oldSize = [subview frame].size;
+            
+            [subview setFrame:frame];
+            
+            frame.origin.y+= NSHeight(frame);
+            frame.origin.y+=[self dividerThickness];
+        }
+    }
+}
+
+/**
+ * Apple says this method sets the frames of the split view's subviews so that they, plus the dividers,
+ * fill the split view. The default implementation of this method resizes all of the subviews
+ * proportionally so that the ratio of heights (in the horizontal split view case) or widths
+ * (in the vertical split view case) doesn't change, even though the absolute sizes of the
+ * subviews do change. This message should be sent to split views from which subviews have been
+ * added or removed, to reestablish the consistency of subview placement.
+ */
+-(void)adjustSubviews {
+
+    if ([_subviews count] < 2) {
+        return;
+    }
+    
+   [self _postNoteWillResize];
+
+   if ([self isVertical]){
+        [self _adjustSubviewWidths];
+    }  else {
+        [self _adjustSubviewHeights];
+    }
     [self setNeedsDisplay: YES];
-   [self _postNoteDidResize];
+    [self _postNoteDidResize];
 }
 
 -(float)dividerThickness {
@@ -209,45 +279,11 @@ NSString * const NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillRe
 
    if([_delegate respondsToSelector:@selector(splitView:resizeSubviewsWithOldSize:)]) {
        [_delegate splitView:self resizeSubviewsWithOldSize:oldSize];
-       return;
+   } else {
+
+       // Apple docs say just call adjustSubviews
+       [self adjustSubviews];
    }
-
-   [self _postNoteWillResize];
-
-   for(i=0;i<count;i++){
-    NSView *view=[_subviews objectAtIndex:i];
-    NSRect  frame=[view frame];
-
-    frame.origin=origin;
-
-    if([self isVertical]){
-     frame.size.height=size.height;
-
-     if(i+1==count)
-      frame.size.width=floor(size.width-frame.origin.x);
-     else
-      frame.size.width=floor(size.width*(frame.size.width/oldSize.width));
-
-     origin.x+=frame.size.width;
-     origin.x+=[self dividerThickness];
-    }
-    else {
-     frame.size.width=size.width;
-
-     if(i+1==count)
-      frame.size.height=floor(size.height-frame.origin.y);
-     else
-      frame.size.height=floor(size.height*(frame.size.height/oldSize.height));
-
-     origin.y+=frame.size.height;
-     origin.y+=[self dividerThickness];
-    }
-
-    [view setFrame:frame];
-   }
-
-    [self setNeedsDisplay: YES];
-   [self _postNoteDidResize];
 }
 
 -(NSRect)dividerRectAtIndex:(unsigned)index {
@@ -371,85 +407,193 @@ static float constrainTo(float value,float min,float max){
     return 0;
 }
 
+/** adjusts the subviews on either side of the divider while
+ * honoring the constraints imposed by the delegate (if any)
+ */
 - (void)setPosition:(float)position ofDividerAtIndex:(int)index
 {
     NSAssert(index >= 0 && index < [[self subviews] count] - 1, @"divider index out of range");
     
-    NSRect   frame0,frame1;
-    frame0=[[[self subviews] objectAtIndex:index] frame];
-    frame1=[[[self subviews] objectAtIndex:index+1] frame];
+    NSView *subview0 = [[self subviews] objectAtIndex: index];
+    NSView *subview1 = [[self subviews] objectAtIndex: index + 1];
 
-    float    maxSize,minSize;
+    BOOL subview0Expanded = [self isSubviewCollapsed: subview0] == NO;
+    BOOL subview1Expanded = [self isSubviewCollapsed: subview1] == NO;
     
-    if([self isVertical]){
-        minSize=frame0.origin.x;
-        maxSize=frame0.size.width+frame1.size.width;
-    }
-    else {
-        minSize=frame0.origin.y;
-        maxSize=frame0.size.height+frame1.size.height;
-    }
+    float    minPosition = 0;
+    float    maxPosition = 0;
     
-    if([_delegate respondsToSelector:@selector(splitView:constrainMinCoordinate:maxCoordinate:ofSubviewAt:)]) {
-        float delegateMin=minSize, delegateMax=maxSize;
-        
-        [_delegate splitView:self constrainMinCoordinate:&delegateMin maxCoordinate:&delegateMax ofSubviewAt: index];
-        
-        if (delegateMin > minSize)
-            minSize = delegateMin;
-        
-        if (delegateMax < maxSize)
-            maxSize = delegateMax;
+    NSRect frame0 = NSZeroRect;
+    NSRect frame1 = NSZeroRect;
+
+    
+    if (subview0Expanded) {
+        frame0 = [subview0 frame];
     }
     
+    if (subview1Expanded) {
+        frame1 = [subview1 frame];
+    }
+    
+    // Determine the minimum position
+    if (subview0Expanded) {
+        if ([self isVertical]) {
+            minPosition = NSMinX(frame0);
+        } else {
+            minPosition = NSMinY(frame0);
+        }
+    } else {
+        NSAssert(subview1Expanded, @"both are collapsed??");
+        if ([self isVertical]) {
+            minPosition = NSMinX(frame1);
+        } else {
+            minPosition = NSMinY(frame1);
+        }
+    }
+    
+    // Determine the maximum position
+    if (subview1Expanded) {
+        if ([self isVertical]) {
+            maxPosition = NSMaxX(frame1);
+        } else {
+            maxPosition = NSMaxY(frame1);
+        }
+    } else {
+        NSAssert(subview0Expanded, @"both are collapsed??");
+        if ([self isVertical]) {
+            maxPosition = NSMaxX(frame0);
+        } else {
+            maxPosition = NSMaxY(frame0);
+        }
+    }
+
+    // Check in with the delegate and see if it wants to tweak the min and max
+    
+    if ([_delegate respondsToSelector: @selector(splitView:constrainMinCoordinate:ofSubviewAt:)] ||
+        [_delegate respondsToSelector: @selector(splitView:constrainMaxCoordinate:ofSubviewAt:)]) {
+        // Use the modern API
+        if ([_delegate respondsToSelector: @selector(splitView:constrainMinCoordinate:ofSubviewAt:)]) {
+            minPosition = [_delegate splitView: self constrainMinCoordinate: minPosition ofSubviewAt: index];
+        }
+        if ([_delegate respondsToSelector: @selector(splitView:constrainMaxCoordinate:ofSubviewAt:)]) {
+            maxPosition = [_delegate splitView: self constrainMaxCoordinate: maxPosition ofSubviewAt: index];
+        }
+    }
+    else if([_delegate respondsToSelector:@selector(splitView:constrainMinCoordinate:maxCoordinate:ofSubviewAt:)]) {
+        // Use the deprecated API
+        
+        [_delegate splitView:self constrainMinCoordinate:&minPosition maxCoordinate:&maxPosition ofSubviewAt: index];
+    }
+    
+    // And if it wants to constrain the divider position
     BOOL delegateWantsTrackConstraining = [_delegate respondsToSelector:@selector(splitView:constrainSplitPosition:ofSubviewAt:)];
 
     if(delegateWantsTrackConstraining) {
         position = [_delegate splitView:self constrainSplitPosition: position ofSubviewAt: index];
     }
     
-    position = constrainTo(position,minSize,maxSize);
 
+    // OK we're ready to figure out where the divider can be positioned
     NSRect  resize0=frame0;
     NSRect  resize1=frame1;
     
+    BOOL subviewsWereCollapsedOrExpanded = NO;
+    BOOL checkWithDelegateAboutCollapsingViews = [_delegate respondsToSelector:@selector(splitView:canCollapseSubview:)];
     if([self isVertical]){
         
-        float currX = NSMaxX(resize0);
-        float delta=floor(position - currX);
+        float lastPosition = NSMaxX(resize0);
         
-        resize0.size.width+=delta;
+        float delta = floor(position - lastPosition);
         
-        resize0.size.width=constrainTo(resize0.size.width,minSize,maxSize);
+        resize0.size.width += delta;
         
-        resize1.size.width-=delta;
-        resize1.size.width=constrainTo(resize1.size.width,0,maxSize);
-        resize1.origin.x=(frame1.origin.x+frame1.size.width)-resize1.size.width;
+        resize1.size.width -= delta;
+        
+        if (checkWithDelegateAboutCollapsingViews) {
+            if (position < minPosition) {
+                if ([_delegate splitView: self canCollapseSubview: subview0]) {
+                    [subview0 setHidden: YES];
+                    subviewsWereCollapsedOrExpanded = YES;
+                }
+            } else if (position > maxPosition) {
+                if ([_delegate splitView: self canCollapseSubview: subview1]) {
+                    [subview1 setHidden: YES];
+                    subviewsWereCollapsedOrExpanded = YES;
+                }
+            }
+        }
+        
+        // But make sure collapsed views can reappear
+        if (position > minPosition && [subview0 isHidden]) {
+            [subview0 setHidden: NO];
+            subviewsWereCollapsedOrExpanded = YES;
+        } else if (position < maxPosition && [subview1 isHidden]) {
+            [subview1 setHidden: NO];
+            subviewsWereCollapsedOrExpanded = YES;
+        }
+
+        // Figure out the adjusted widths
+        resize0.size.width = constrainTo(NSWidth(resize0), minPosition, maxPosition);
+        resize1.size.width = constrainTo(NSWidth(resize1), minPosition, maxPosition);
+        resize1.origin.x = (NSMinX(frame1) + NSWidth(frame1)) - NSWidth(resize1);
     }
     else {
         
-        float currX = NSMaxY(resize0);
-        float delta=floor(position - currX);
+        float lastPosition = NSMaxY(resize0);
+        float delta = floor(position - lastPosition);
         
-        resize0.size.height+=delta;
-        //  resize0.size.height=constrainTo(resize0.size.height,minSize,maxSize);
+        resize0.size.height += delta;
+
+        resize1.size.height -= delta;
         
-        resize1.size.height-=delta;
-        //  resize1.size.height=constrainTo(resize1.size.height,0,maxSize);
-        resize1.origin.y=(frame1.origin.y+frame1.size.height)-resize1.size.height;
+        if (checkWithDelegateAboutCollapsingViews) {
+            if (position < minPosition) {
+                if ([_delegate splitView: self canCollapseSubview: subview0]) {
+                    [subview0 setHidden: YES];
+                    subviewsWereCollapsedOrExpanded = YES;
+                }
+            } else if (position > maxPosition) {
+                if ([_delegate splitView: self canCollapseSubview: subview1]) {
+                    [subview1 setHidden: YES];
+                    subviewsWereCollapsedOrExpanded = YES;
+                }
+            }
+        }
+        
+        // But make sure collapsed views can reappear
+        if (position > minPosition && [subview0 isHidden]) {
+            [subview0 setHidden: NO];
+            subviewsWereCollapsedOrExpanded = YES;
+        } else if (position < maxPosition && [subview1 isHidden]) {
+            [subview1 setHidden: NO];
+            subviewsWereCollapsedOrExpanded = YES;
+        }
+
+        // Figure out the adjusted heights
+        resize0.size.height = constrainTo(NSHeight(resize0), minPosition, maxPosition);
+        resize1.size.height = constrainTo(NSHeight(resize1), minPosition, maxPosition);
+        resize1.origin.y = (NSMinY(frame1) + NSHeight(frame1)) - NSHeight(resize1);
     }
 
-    NSView *subView1 = [[self subviews] objectAtIndex: index];
-    NSView *subView2 = [[self subviews] objectAtIndex: index + 1];
-    [subView1 setFrameOrigin:resize0.origin];
-    [subView1 setFrameSize:resize0.size];
-    // Tell the view to redisplay otherwise there are drawing artifacts
-    [subView1  setNeedsDisplay: YES];
+    if (subviewsWereCollapsedOrExpanded) {
+        // It doesn't really matter what happened with the divider because we need
+        // to get the views re-laid out - so fall back to adjustSubviews and bail
+        [self adjustSubviews];
+        return;
+    }
+
+    // Nothing special happened so just resize the subviews as expected
+    if ([subview0 isHidden] == NO) {
+        [subview0 setFrame: resize0];
+        // Tell the view to redisplay otherwise there are drawing artifacts
+        [subview0  setNeedsDisplay: YES];
+    }
     
-    [subView2 setFrameOrigin:resize1.origin];
-    [subView2 setFrameSize:resize1.size];
-    // Tell the view to redisplay otherwise there are drawing artifacts
-    [subView2  setNeedsDisplay: YES];
+    if ([subview1 isHidden] == NO) {
+        [subview1 setFrame: resize1];
+        // Tell the view to redisplay otherwise there are drawing artifacts
+        [subview1  setNeedsDisplay: YES];
+    }
     
     [self setNeedsDisplay:YES];
 }
