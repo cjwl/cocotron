@@ -6,13 +6,16 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSString.h>
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSNumber.h>
+#import <Foundation/NSScanner.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSAttributedString.h>
 #import <Foundation/NSNumberFormatter.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSError.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSLocale.h>
@@ -45,8 +48,10 @@ static NSNumberFormatterBehavior _defaultFormatterBehavior=NSNumberFormatterBeha
    _behavior=_defaultFormatterBehavior;
    _numberStyle=NSNumberFormatterNoStyle;
 
-   _thousandSeparator = @",";
-   _decimalSeparator = @".";
+    _locale= [[NSLocale currentLocale] retain];
+    
+    _thousandSeparator = [[_locale objectForKey:NSLocaleGroupingSeparator] retain];
+    _decimalSeparator = [[_locale objectForKey:NSLocaleDecimalSeparator] retain];
    _attributedStringForNil=[[NSAttributedString allocWithZone:NULL] initWithString:@"(null)"];
    _attributedStringForNotANumber=[[NSAttributedString allocWithZone:NULL] initWithString:@"NaN"];
    _attributedStringForZero=[[NSAttributedString allocWithZone:NULL] initWithString:@"0.0"];
@@ -340,8 +345,53 @@ static void extractFormat(NSString *format,
 }
 
 -(void)dealloc {
-   [_negativeFormat release];
-   [_positiveFormat release];
+    
+    [_locale release];
+    [_multiplier release];
+    
+    [_minimum release];
+    [_maximum release];
+    
+    [_nilSymbol release];
+    [_notANumberSymbol release];
+    [_zeroSymbol release];
+    [_plusSign release];
+    [_minusSign release];
+    [_negativePrefix release];
+    [_negativeSuffix release];
+    [_positivePrefix release];
+    [_positiveSuffix release];
+    [_negativeInfinitySymbol release];
+    [_positiveInfinitySymbol release];
+    
+    [_decimalSeparator release];
+    [_exponentSymbol release];
+    [_currencyCode release];
+    [_currencySymbol release];
+    [_internationalCurrencySymbol release];
+    [_currencyDecimalSeparator release];
+    [_currencyGroupingSeparator release];
+    [_groupingSeparator release];
+    [_paddingCharacter release];
+    [_percentSymbol release];
+    [_perMillSymbol release];
+    [_roundingIncrement release];
+    [_positiveFormat release];
+    [_negativeFormat release];
+    [_textAttributesForPositiveValues release];
+    [_textAttributesForNegativeValues release];
+    [_textAttributesForNegativeInfinity release];
+    [_textAttributesForNil release];
+    [_textAttributesForNotANumber release];
+    [_textAttributesForPositiveInfinity release];
+    [_textAttributesForZero release];
+    
+    [_attributedStringForNil release];
+    [_attributedStringForNotANumber release];
+    [_attributedStringForZero release];
+    [_roundingBehavior release];
+    [_thousandSeparator release];
+    
    [super dealloc];
 }
 
@@ -1209,9 +1259,53 @@ static BOOL numberIsPositive(NSNumber *number){
     return [self stringFromNumber10_4:number];
 }
 
+-(NSNumber *)_numberFromString:(NSString *)string error:(NSString **)error
+{
+    // simple test of characters...
+    NSMutableCharacterSet *digitsAndSeparators = [[[NSCharacterSet decimalDigitCharacterSet] mutableCopy] autorelease];
+    NSMutableString *mutableString = [[string mutableCopy] autorelease];
+    unichar thousandSeparator = [_thousandSeparator characterAtIndex:0];
+    
+    [digitsAndSeparators addCharactersInString:_decimalSeparator];
+    if (_hasThousandSeparators) {
+        [digitsAndSeparators addCharactersInString:_thousandSeparator];
+    }
+    for (NSUInteger i = 0; i < [mutableString length]; ++i) {
+        if (![digitsAndSeparators characterIsMember:[mutableString characterAtIndex:i]]) {
+            if (error != NULL) {
+                *error = NSLocalizedStringFromTableInBundle(@"Invalid number", nil, [NSBundle bundleForClass: [NSNumberFormatter class]], @"");
+            }
+            return nil;
+        }
+        
+        // take out the thousand separator
+        if (_hasThousandSeparators && [mutableString characterAtIndex:i] == thousandSeparator) {
+            [mutableString deleteCharactersInRange:NSMakeRange(i, 1)];
+        }
+    }
+    NSScanner *scanner = [NSScanner scannerWithString: mutableString];
+    if (_locale) {
+        [scanner setLocale: (id)_locale];
+    } else {
+        [scanner setLocale:[NSLocale currentLocale]];
+    }
+    float value;
+    NSNumber *number = nil;
+    if ([scanner scanFloat:&value] == NO) {
+        if (error != NULL) {
+            *error = NSLocalizedStringFromTableInBundle(@"Invalid number", nil, [NSBundle bundleForClass: [NSNumberFormatter class]], @"");
+        }
+    } else {
+        if ([self multiplier]) {
+            value /= [[self multiplier] floatValue];
+        }
+        number = [NSNumber numberWithFloat:value];
+    }
+    return number;
+}
+
 -(NSNumber *)numberFromString:(NSString *)string {
-   NSUnimplementedMethod();
-   return 0;
+    return [self _numberFromString:string error:NULL];
 }
 
 // BROKEN
@@ -1478,34 +1572,44 @@ static BOOL numberIsPositive(NSNumber *number){
 }
 
 -(BOOL)getObjectValue:(id *)valuep forString:(NSString *)string range:(NSRange *)rangep error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return 0;
+    NSString *errorDescription = nil;
+    BOOL result = [self getObjectValue:valuep forString:string errorDescription:&errorDescription];
+    if (errorp) {
+        if (result) {
+            *errorp = nil;
+        } else {
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errorDescription forKey:NSUnderlyingErrorKey];
+            *errorp = [NSError errorWithDomain:NSCocoaErrorDomain code:2048 userInfo:userInfo];
+        }
+    }
+   return result;
 }
 
 -(BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error {
-   // simple test of characters...
-   NSMutableCharacterSet *digitsAndSeparators = [[[NSCharacterSet decimalDigitCharacterSet] mutableCopy] autorelease];
-   NSMutableString *mutableString = [[string mutableCopy] autorelease];
-   unichar thousandSeparator = [_thousandSeparator characterAtIndex:0];
-   NSUInteger i;
-
-   [digitsAndSeparators addCharactersInString:_decimalSeparator];
-   [digitsAndSeparators addCharactersInString:_thousandSeparator];
-
-   for (i = 0; i < [mutableString length]; ++i) {
-      if (![digitsAndSeparators characterIsMember:[mutableString characterAtIndex:i]]) {
-         if (error != NULL)
-            *error = @"Invalid number";
-         return NO;
-      }
-
-      // take out commas
-      if ([mutableString characterAtIndex:i] == thousandSeparator)
-         [mutableString deleteCharactersInRange:NSMakeRange(i, 1)];
-   }
-
-   *object = [NSNumber numberWithFloat:[mutableString floatValue]];
-   return YES;
+    if (object) {
+        *object = nil;
+    }
+    NSNumber *number = [self _numberFromString:string error:error];
+    if (number) {
+        float value = [number floatValue];
+        if ([self maximum] && value > [[self maximum] floatValue]) {
+            if (error != NULL) {
+                *error = NSLocalizedStringFromTableInBundle(@"Number too big", nil, [NSBundle bundleForClass: [NSNumberFormatter class]], @"");
+            }
+            number = nil;
+        } else if ([self minimum] && value < [[self minimum] floatValue]) {
+            if (error != NULL) {
+                *error = NSLocalizedStringFromTableInBundle(@"Number too smaller", nil, [NSBundle bundleForClass: [NSNumberFormatter class]], @"");
+            }
+            number = nil;
+        } else {
+            if (object) {
+                *object = number;
+            }
+        }
+    }
+    
+   return number != nil;
 }
 
 -(BOOL)isPartialStringValid:(NSString *)partialString

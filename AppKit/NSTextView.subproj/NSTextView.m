@@ -78,7 +78,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 @end
 
 @implementation NSTextView
-
 -(void)configureMenu {
    static NSMenu *menu=nil;
 
@@ -781,8 +780,13 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)_textDidEndWithMovement:(NSInteger)movement {
-   [_insertionPointTimer invalidate];
-   [_insertionPointTimer release];
+    if ([_delegate respondsToSelector:@selector(textShouldEndEditing:)]) {
+        if ([_delegate textShouldEndEditing:self] == NO) {
+            return;
+        }
+    }
+    [_insertionPointTimer invalidate];
+    [_insertionPointTimer release];
    _insertionPointTimer=nil;
 
    NSDictionary *userInfo=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:movement] forKey:@"NSTextMovement"];
@@ -2468,6 +2472,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(BOOL)resignFirstResponder {
+    if ([super resignFirstResponder] == NO) {
+        return NO;
+    }
    if (_isEditable)
      if ([_delegate respondsToSelector:@selector(textShouldEndEditing:)])
        if ([_delegate textShouldEndEditing:self] == NO)

@@ -53,7 +53,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _cellBackgroundColor=[[keyed decodeObjectForKey:@"NSCellBackgroundColor"] retain];
     name=[keyed decodeObjectForKey:@"NSCellClass"];
     if((_cellClass=NSClassFromString(name))==Nil){
-     NSLog(@"Unknown cell class %@ in NSMatrix, using NSCell",name);
+        if (name) {
+            NSLog(@"Unknown cell class '%@' in NSMatrix, using NSCell",name);
+        }
      _cellClass=[NSCell class];
     }
     _prototype=[[keyed decodeObjectForKey:@"NSProtoCell"] retain];
