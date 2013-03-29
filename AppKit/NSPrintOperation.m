@@ -284,6 +284,12 @@ static NSPrintOperation *_currentOperation=nil;
 		return NO;
 	}
 	
+	if (knowsPageRange) {
+		int firstPage = [[[_printInfo dictionary] objectForKey:NSPrintFirstPage] intValue];
+		int lastPage = [[[_printInfo dictionary] objectForKey:NSPrintLastPage] intValue];
+		pageRange.location = firstPage;
+		pageRange.length = lastPage - firstPage + 1;
+	}
    context=[graphicsContext graphicsPort];
    
    [_printInfo setUpPrintOperationDefaultValues];
@@ -298,9 +304,9 @@ static NSPrintOperation *_currentOperation=nil;
     [_view endPage];
    }
    else{
-    if(knowsPageRange)
+	 if(knowsPageRange)
      [self _paginateWithPageRange:pageRange context:context];
-    else
+	   else
      [self _autopaginatePageRange:pageRange actualPageRange:&pageRange context:context];
    }
     

@@ -1470,11 +1470,13 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
     NSRect imageable;
     
     if([context getImageableRect:&imageable])
-     [attributes setObject:[NSValue valueWithRect:imageable] forKey:@"_imageableRect"];
+	   [attributes setObject:[NSValue valueWithRect:imageable] forKey:@"_imageableRect"];
      
-    [attributes setObject:context forKey:@"_KGContext"];
+	   [attributes setObject:context forKey:@"_KGContext"];
     
-    [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];
+	   [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];
+	   [attributes setObject:[NSNumber numberWithInt:printProperties.nFromPage] forKey:NSPrintFirstPage];
+	   [attributes setObject:[NSNumber numberWithInt:printProperties.nToPage] forKey:NSPrintLastPage];
    }
      
    return NSOKButton;
