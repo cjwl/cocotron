@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSOperation,NSCondition,NSThread;
+@class NSArray,NSMutableArray,NSOperation,NSCondition,NSThread;
 
 enum {
 	NSOperationQueueDefaultMaxConcurrentOperationCount = -1
@@ -29,29 +29,46 @@ enum {
 	NSCondition *allWorkDone;
 	BOOL isSuspended;
 	
+	NSMutableArray *_operations;
+	
 	void *queues[NSOperationQueuePriority_Count];
 	NSString *_name;
 }
 
 - (id)init;
 
+#pragma mark Managing Operations in the Queue
+
 - (void)addOperation: (NSOperation *)op;
 
 - (void)addOperations:(NSArray *)ops waitUntilFinished:(BOOL)wait;
 
+- (NSArray *)operations;
+
+- (NSUInteger)operationCount;
+
 - (void)cancelAllOperations;
+
+- (void)waitUntilAllOperationsAreFinished;
+
+#pragma mark Managing the Number of Running Operations
 
 - (NSInteger)maxConcurrentOperationCount;
 - (void)setMaxConcurrentOperationCount:(NSInteger)count;
 
+#pragma mark Managing the Queue Name
+
 - (NSString *)name;
 - (void)setName:(NSString *)newName;
 
-- (NSArray *)operations;
+#pragma mark Suspending Operations
 
 - (BOOL)isSuspended;
 - (void)setSuspended:(BOOL)suspend;
 
-- (void)waitUntilAllOperationsAreFinished;
+#pragma mark Getting Specific Operation Queues
+
++ (id)currentQueue;
++ (id)mainQueue;
 
 @end
