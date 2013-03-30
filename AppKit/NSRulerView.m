@@ -32,6 +32,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define LABEL_TEXT_PRIMARY_OFFSET   3.0
 #define LABEL_TEXT_SECONDARY_OFFSET 3.0
 
+@interface NSRulerView(PrivateMethods)
+- (float)_drawingOrigin;
+- (float)_drawingScale;
+@end
+
 @implementation NSRulerView
 
 + (void)registerUnitWithName:(NSString *)name abbreviation:(NSString *)abbreviation unitToPointsConversionFactor:(float)conversionFactor stepUpCycle:(NSArray *)stepUpCycle stepDownCycle:(NSArray *)stepDownCycle
@@ -60,6 +65,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
     _markers = [[NSMutableArray alloc] init];
     
+    [self invalidateHashMarks];
+
     return self;
 }
 
@@ -73,22 +80,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super dealloc];
 }
 
-- (BOOL)scrollViewNeedsTiling
-{
-    return _scrollViewNeedsTiling;
-}
-
-- (void)setScrollViewNeedsTiling:(BOOL)flag
-{
-    _scrollViewNeedsTiling = flag;
-    [self setNeedsDisplay:YES];
-}
-
 - (NSMeasurementUnit *)measurementUnit
 {
     return _measurementUnit;
 }
-
 
 - (NSScrollView *)scrollView
 {
@@ -150,18 +145,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (float)baselineLocation
 {
-    return _ruleThickness;          // ??? what goes here
+    // That should be something depending of the markers thickness, etc.
+    return _ruleThickness;
 }
 
 - (float)requiredThickness
 {
-    float result = _ruleThickness;
+    float result = [self ruleThickness];
     
     if ([_markers count] > 0)
-        result += _thicknessForMarkers;
+        result += [self reservedThicknessForMarkers];
     
     if (_accessoryView != nil)
-        result += _thicknessForAccessoryView;
+        result += [self reservedThicknessForAccessoryView];
     
     return result;
 }
@@ -170,6 +166,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [_scrollView release];
     _scrollView = [scrollView retain];
+
+    [self invalidateHashMarks];
 }
 
 - (void)setClientView:(NSView *)view
@@ -178,7 +176,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_markers removeAllObjects];
     _clientView = view;
     
-    [self setScrollViewNeedsTiling:YES];
+    [self invalidateHashMarks];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setAccessoryView:(NSView *)view
@@ -186,15 +185,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_accessoryView release];
     _accessoryView = [view retain];
 
-    [self setScrollViewNeedsTiling:YES];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setMarkers:(NSArray *)markers
 {
     [_markers release];
-    _markers = [markers retain];
+    _markers = [markers mutableCopy];
 
-//    [self setScrollViewNeedsTiling:YES];
     [[self enclosingScrollView] tile];
 }
 
@@ -202,39 +200,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [_markers addObject:marker];
     
-//    [self setScrollViewNeedsTiling:YES];
-    [[self enclosingScrollView] tile];
-}
-
-- (void)addMarkersWithImage:(NSImage *)image measurementUnit:(NSMeasurementUnit *)unit
-{
-    float length, markerLength;
-    float last = 0, location = 0;
-    
-    if (image == nil)
-        image = [NSRulerMarker defaultMarkerImage];
-    
-    if (unit == nil)
-        unit = _measurementUnit;
-    
-    if (_orientation == NSHorizontalRuler) {
-        length = _bounds.size.width;
-        markerLength = [image size].width;
-    }
-    else {
-        length = _bounds.size.height;
-        markerLength = [image size].height;
-    }
-
-    while (location < length) {
-        location += [unit pointsPerUnit];
-        if (location > (last + markerLength)) {
-            [self addMarker:[[[NSRulerMarker alloc] initWithRulerView:self markerLocation:location image:image imageOrigin:NSMakePoint(0, 0)] autorelease]];
-            last = location;
-        }
-    }
-
-//    [self setScrollViewNeedsTiling:YES];
     [[self enclosingScrollView] tile];
 }
 
@@ -242,14 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [_markers removeObject:marker];
     
-    [self setScrollViewNeedsTiling:YES];
-}
-
-- (void)removeAllMarkers
-{
-    [_markers removeAllObjects];
-    
-    [self setScrollViewNeedsTiling:YES];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setMeasurementUnits:(NSString *)unitName
@@ -257,7 +215,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_measurementUnit release];
     _measurementUnit = [NSMeasurementUnit measurementUnitNamed:unitName];
 
-    [self setScrollViewNeedsTiling:YES];
+    [self invalidateHashMarks];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setOrientation:(NSRulerOrientation)orientation
@@ -269,35 +228,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     _ruleThickness = value;
     
-    [self setScrollViewNeedsTiling:YES];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setReservedThicknessForMarkers:(float)value
 {
     _thicknessForMarkers = value;
 
-    [self setScrollViewNeedsTiling:YES];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setReservedThicknessForAccessoryView:(float)value
 {
     _thicknessForAccessoryView = value;
 
-    [self setScrollViewNeedsTiling:YES];
+    [[self enclosingScrollView] tile];
 }
 
 - (void)setOriginOffset:(float)value
 {
     _originOffset = value;
+    
+    [self invalidateHashMarks];
 }
 
 - (BOOL)trackMarker:(NSRulerMarker *)marker withMouseEvent:(NSEvent *)event
 {
     NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
     
-    if(NSMouseInRect(point, [self bounds], [self isFlipped])){            
+    if(NSMouseInRect(point, [self bounds], [self isFlipped])){
         [marker trackMouse:event adding:YES];
-        
         [self setNeedsDisplay:YES];
     }        
     
@@ -306,33 +266,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)mouseDown:(NSEvent *)event
 {
+    NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
+    int i, count = [_markers count];
+    float location;
+    
+    for (i = 0; i < count; ++i) {
+        NSRulerMarker *marker = [_markers objectAtIndex:i];
+        
+        if (NSMouseInRect(point, [marker imageRectInRuler], [self isFlipped])) {
+            [marker trackMouse:event adding:NO];
+            [self setNeedsDisplay:YES];
+            return;
+        }
+    }
     if ([_clientView respondsToSelector:@selector(rulerView:handleMouseDown:)]) {
         [_clientView rulerView:self handleMouseDown:event];
-        return;
-    }
-    else {
-        NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
-        int i, count = [_markers count];
-        float location;
-        
-        for (i = 0; i < count; ++i) {
-            NSRulerMarker *marker = [_markers objectAtIndex:i];
-            
-            if (NSMouseInRect(point, [marker imageRectInRuler], [self isFlipped])) {
-                [marker trackMouse:event adding:NO];
-                [self setNeedsDisplay:YES];
-                return;
-            }
-        }
-        
-        // not in a view!
-        // experimental
-        if ((_orientation == NSHorizontalRuler))
-            location = point.x;
-        else
-            location = point.y;
-
-        [self trackMarker:[[[NSRulerMarker alloc] initWithRulerView:self markerLocation:location image:[NSRulerMarker defaultMarkerImage] imageOrigin:NSMakePoint(0, 0)] autorelease] withMouseEvent:event];
     }
 }
 
@@ -346,11 +294,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if ([_rulerlineLocations containsObject:new] == NO)
         [_rulerlineLocations addObject:new];
     
-    [self setScrollViewNeedsTiling:YES];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)invalidateHashMarks
 {
+    [self setNeedsDisplay:YES];
 }
 
 - (NSDictionary *)attributesForLabel
@@ -366,20 +315,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         nil];
 }
 
-- (void)drawHashMarksAndLabelsInRect:(NSRect)originalFrame
+- (void)drawHashMarksAndLabelsInRect:(NSRect)dirtyRect
 {
+    NSRect originalFrame = self.bounds; // The ruler area
+
+    float scale = [self _drawingScale];
+    float offset = [self _drawingOrigin];
+
+    // Adjust originalFrame so it matches the ruler origin 
+    if (_orientation == NSHorizontalRuler) {
+        originalFrame.origin.x += offset;
+        originalFrame.size.width -= offset;
+    } else {
+        originalFrame.origin.y += offset;
+        originalFrame.size.height -= offset;
+    }
+
+    if (self.clientView) {
+        // Adjust the frame size to the clientView
+        NSRect clientFrame = self.clientView.frame;
+        if (_orientation == NSHorizontalRuler) {
+            originalFrame.size.width = clientFrame.size.width * scale;
+        } else {
+            originalFrame.size.height = clientFrame.size.height * scale;
+        }
+        
+    }
+    // No need to draw outside of this area
+    dirtyRect = NSIntersectionRect(dirtyRect, originalFrame);
+
     NSRect frame = originalFrame;
     float pointsPerUnit = [_measurementUnit pointsPerUnit];
     float length = (_orientation == NSHorizontalRuler ? frame.size.width : frame.size.height);
-    int i, count = ceil(length / pointsPerUnit);
+    int i, count = ceil(length / (pointsPerUnit * scale));
     NSMutableArray *cycles = [[[_measurementUnit stepDownCycle] mutableCopy] autorelease];
     float extraThickness = 0;
     BOOL scrollViewHasOtherRuler = (_orientation == NSHorizontalRuler ? [[self enclosingScrollView] hasVerticalRuler] : [[self enclosingScrollView] hasHorizontalRuler]);
 
     if ([_markers count] > 0)
-        extraThickness += _thicknessForMarkers;
+        extraThickness += [self reservedThicknessForMarkers];
     if (_accessoryView != nil)
-        extraThickness += _thicknessForAccessoryView;
+        extraThickness += [self reservedThicknessForAccessoryView];
     
     // Some basic calculations.
     if (_orientation == NSHorizontalRuler) {
@@ -397,14 +373,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     frame = originalFrame;
     [[NSColor controlShadowColor] setStroke];
     for (i = 0; i < count; ++i) {
+        if (_orientation == NSHorizontalRuler) {
+            if (frame.origin.x > NSMaxX(dirtyRect)) {
+                break;
+            }
+        } else {
+            if (frame.origin.y > NSMaxY(dirtyRect)) {
+                break;
+            }
+        }
+
         NSString *label = [NSString stringWithFormat:@"%d", i];
         NSPoint textOrigin = frame.origin;
 
         // A little visual nudge.. I think it looks better.
-        if (i == 0 && scrollViewHasOtherRuler == NO)
-            ;
-        else
+        if (i == 0 && scrollViewHasOtherRuler == NO) {
+            // Nothing to do
+        } else {
             NSFrameRect(frame);
+        }
         
         textOrigin.x += LABEL_TEXT_CORRECTION; // minor correction
         if (_orientation == NSHorizontalRuler) {
@@ -415,13 +402,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             textOrigin.y += LABEL_TEXT_PRIMARY_OFFSET;
             textOrigin.x += LABEL_TEXT_SECONDARY_OFFSET;
         }
-
         [label drawAtPoint:textOrigin withAttributes:[self attributesForLabel]];
 
-        if (_orientation == NSHorizontalRuler)
-            frame.origin.x += pointsPerUnit;
-        else
-            frame.origin.y += pointsPerUnit;        
+        if (_orientation == NSHorizontalRuler) {
+            frame.origin.x += pointsPerUnit*scale;
+        } else {
+            frame.origin.y += pointsPerUnit*scale;
+        }
     }
     
     // Start minor hash mark processing. size.width still contains the width of major marks.
@@ -444,72 +431,77 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 
         frame.size.height = floor(frame.size.height);
         
-        if (HASH_MARK_REQUIRED_WIDTH < pointsPerMark) {
-            count = length / pointsPerMark;
+        if (HASH_MARK_REQUIRED_WIDTH < pointsPerMark*scale) {
+            count = length / (pointsPerMark * scale);
             
             for (i = 0; i < count; ++i) {
-                // A little visual nudge.. I think it looks better.
-                if (i == 0 && scrollViewHasOtherRuler == NO)
-                    ;
-                else
-                    NSFrameRect(frame);
+                if (_orientation == NSHorizontalRuler) {
+                    if (frame.origin.x > NSMaxX(dirtyRect)) {
+                        break;
+                    }
+                } else {
+                    if (frame.origin.y > NSMaxY(dirtyRect)) {
+                        break;
+                    }
+                }
 
-                if (_orientation == NSHorizontalRuler)
-                    frame.origin.x += pointsPerMark;
-                else
-                    frame.origin.y += pointsPerMark;                        
+                // A little visual nudge.. I think it looks better.
+                if (i == 0 && scrollViewHasOtherRuler == NO) {
+                    // Nothing to do
+                } else {
+                    NSFrameRect(frame);
+                }
+
+                if (_orientation == NSHorizontalRuler) {
+                    frame.origin.x += pointsPerMark*scale;
+                } else {
+                    frame.origin.y += pointsPerMark*scale;
+                }
             }
         }
         
-        [cycles removeObjectAtIndex:0];        
+        [cycles removeObjectAtIndex:0];
     } while ([cycles count] > 0);
 }
 
-- (void)drawMarkersInRect:(NSRect)frame
+- (void)drawMarkersInRect:(NSRect)dirtyRect
 {
-    int i, count = [_markers count];
-    
-    if (_orientation == NSHorizontalRuler)
-        frame.size.height = _thicknessForMarkers;
-    else
-        frame.size.width = _thicknessForMarkers;
-
-    // Clear marker area.    
-    [[NSColor windowBackgroundColor] setFill];
-    NSRectFill(frame);
-    for (i = 0; i < count; ++i)
-        [[_markers objectAtIndex:i] drawRect:frame];
+    for (NSRulerMarker *marker in _markers) {
+        [marker drawRect:dirtyRect];
+    }
 }
 
 - (void)drawRulerlineLocationsInRect:(NSRect)rect
 {
     int i, count = [_rulerlineLocations count];
     
+    rect = [self bounds];
+    
     if (_orientation == NSHorizontalRuler)
         rect.size.width = 1;
     else
         rect.size.height = 1;
     
+    float scale = [self _drawingScale];
+    float origin = [self _drawingOrigin];
+    
     [[NSColor controlHighlightColor] setStroke];
     for (i = 0; i < count; ++i) {
         if (_orientation == NSHorizontalRuler)
-            rect.origin.x = [[_rulerlineLocations objectAtIndex:i] floatValue];
+            rect.origin.x = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale;
         else
-            rect.origin.y = [[_rulerlineLocations objectAtIndex:i] floatValue];
-        
+            rect.origin.y = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale;
         NSFrameRect(rect);
     }
 }
 
-- (void)drawRect:(NSRect)frame
+- (void)drawRect:(NSRect)dirtyRect
 {
-    NSRect rect = frame;
+    NSRect rect = self.bounds;
     
-    if (_scrollViewNeedsTiling) {
-        [[self enclosingScrollView] tile];
-        
-        _scrollViewNeedsTiling = NO;
-    }
+    // Clear whole area.
+    [[NSColor windowBackgroundColor] setFill];
+    NSRectFill(dirtyRect);
 
     [[NSColor controlShadowColor] setStroke];
     if (_orientation == NSHorizontalRuler) {
@@ -522,13 +514,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }    
     NSFrameRect(rect);
     
-    [self drawHashMarksAndLabelsInRect:frame];
+    [self drawHashMarksAndLabelsInRect:dirtyRect];
     
     if ([_markers count] > 0)
-        [self drawMarkersInRect:frame];
+        [self drawMarkersInRect:dirtyRect];
     
     if ([_rulerlineLocations count] > 0)
-        [self drawRulerlineLocationsInRect:frame];
+        [self drawRulerlineLocationsInRect:dirtyRect];
 }
 
 - (BOOL)isFlipped
@@ -539,5 +531,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [[_scrollView documentView] isFlipped];
 }
 
-
 @end
+
+@implementation NSRulerView(PrivateMethods)
+// The offset to use in the ruler view for the 0 location
+- (float)_drawingOrigin
+{
+    float origin = 0;
+    NSView *trackedView = self.clientView;
+    if (trackedView == nil) {
+        trackedView = _scrollView.documentView;
+    }
+    NSPoint viewOrigin = [self convertPoint:NSZeroPoint fromView:trackedView];
+    if (self.orientation == NSHorizontalRuler) {
+        origin += viewOrigin.x;
+    } else {
+        origin += viewOrigin.y;
+    }
+    origin += self.originOffset;
+    return origin;
+}
+
+// The scale to use for drawing
+- (float)_drawingScale
+{
+    float scale = 1.;
+    NSView *documentView = [_scrollView documentView];
+    if (documentView) {
+        NSSize curDocFrameSize = documentView.frame.size;
+        NSSize curDocBoundsSize = documentView.bounds.size;
+        
+        if ([self orientation] == NSHorizontalRuler) {
+            scale = curDocFrameSize.width / curDocBoundsSize.width;
+        } else {
+            scale = curDocFrameSize.height / curDocBoundsSize.height;
+        }
+    }
+    return scale;
+}
+@end
+

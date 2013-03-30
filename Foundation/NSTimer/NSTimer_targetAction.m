@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithFireDate:date interval:interval repeats:repeats];
 
    _userInfo=[userInfo retain];
-   _target=target;
+	_target=[target retain]; // Apple docs say it's retained
    _selector=selector;
 
    return self;
@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithTimeInterval:timeInterval repeats:repeats];
 
    _userInfo=[userInfo retain];
-   _target=target;
+   _target=[target retain]; // Apple docs say it's retained
    _selector=selector;
 
    return self;
@@ -38,6 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_userInfo release];
    _userInfo=nil;
+	[_target release];
    _target=nil;
    [super dealloc];
 }
@@ -53,6 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isValid=NO;
    [_userInfo release];
    _userInfo=nil;
+	[_target release];
    _target=nil;
    _selector=NULL;
 }

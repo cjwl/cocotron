@@ -34,12 +34,6 @@ NSColor *NSColorGetCatalogColor(NSString *catalogName,NSString *colorName);
    [super dealloc];
 }
 
--(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeObject:[self colorSpaceName]];
-   [coder encodeObject:_catalogName];
-   [coder encodeObject:_colorName];
-}
-
 -(BOOL)isEqual:otherObject {
    if(self==otherObject)
     return YES;

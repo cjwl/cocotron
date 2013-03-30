@@ -723,15 +723,21 @@ CHANGE_DECLARATION(SEL)
 	sel+=strlen("add");
 	sel[strlen(sel)-strlen("Object:")+1]='\0';
     
-	sel[0]=tolower(sel[0]);
-	NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
+    char *countSelName=__builtin_alloca(strlen(sel)+strlen("countOf")+1);
+    strcpy(countSelName, "countOf");
+    strcat(countSelName, sel);
     
-    [self willChangeValueForKey:key withSetMutation:NSKeyValueUnionSetMutation usingObjects:[NSSet setWithObject:object]];
-	typedef id (*sender)(id obj, SEL selector, id object);
-	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
-	(void)*implementation(self, _cmd, object);
-    [self didChangeValueForKey:key withSetMutation:NSKeyValueUnionSetMutation usingObjects:[NSSet setWithObject:object]];
-	[key release];
+    NSUInteger idx=(NSUInteger)[self performSelector:sel_getUid(countSelName)];
+    
+    sel[0]=tolower(sel[0]);
+    
+    NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
+    [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+    typedef id (*sender)(id obj, SEL selector, id value);
+    sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
+    (void)*implementation(self, _cmd, object);
+    [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+    [key release];
 }
 
 -(void)KVO_notifying_change_addKey:(NSSet*)objects {
@@ -765,15 +771,21 @@ CHANGE_DECLARATION(SEL)
 	sel+=strlen("remove");
 	sel[strlen(sel)-strlen("Object:")+1]='\0';
     
-	sel[0]=tolower(sel[0]);
-	NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
+    char *countSelName=__builtin_alloca(strlen(sel)+strlen("countOf")+1);
+    strcpy(countSelName, "countOf");
+    strcat(countSelName, sel);
     
-    [self willChangeValueForKey:key withSetMutation:NSKeyValueMinusSetMutation usingObjects:[NSSet setWithObject:object]];
-	typedef id (*sender)(id obj, SEL selector, id object);
-	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
-	(void)*implementation(self, _cmd, object);
-    [self didChangeValueForKey:key withSetMutation:NSKeyValueMinusSetMutation usingObjects:[NSSet setWithObject:object]];
-	[key release];
+    NSUInteger idx=(NSUInteger)[self performSelector:sel_getUid(countSelName)];
+    
+    sel[0]=tolower(sel[0]);
+    
+    NSString *key=[[NSString allocWithZone:NULL] initWithCString:sel];
+    [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+    typedef id (*sender)(id obj, SEL selector, id value);
+    sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
+    (void)*implementation(self, _cmd, object);
+    [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+    [key release];
 }
 
 -(void)KVO_notifying_change_removeKey:(NSSet*)objects {
@@ -1089,10 +1101,13 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
                     kvoSelector = @selector(KVO_notifying_change_removeKeyObject:);
                 } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"add" endingWith:@"Object:"]) {
                     kvoSelector = @selector(KVO_notifying_change_addKeyObject:);
+#if 0
+// Disabled - this is wrong - this is expecting any addXXX: removeXXX: methods to play with NSSet
                 } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"remove" endingWith:@":"]) {
                     kvoSelector = @selector(KVO_notifying_change_removeKey:);
                 } else if (numberOfArguments == 3 && [methodName _KVC_isSetterForSelectorNameStartingWith:@"add" endingWith:@":"]) {
                     kvoSelector = @selector(KVO_notifying_change_addKey:);
+#endif
                 }
             }
 

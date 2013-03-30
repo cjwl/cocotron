@@ -125,6 +125,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [curOps autorelease];
 }
 
+- (NSUInteger)operationCount {
+    return [_operations count];
+}
+
 - (BOOL)isSuspended {
 	[suspendedCondition lock];
 	BOOL result = isSuspended;

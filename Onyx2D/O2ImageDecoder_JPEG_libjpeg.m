@@ -1,4 +1,5 @@
 #import "O2ImageDecoder_JPEG_libjpeg.h"
+
 #import "O2Defines_libjpeg.h"
 
 #ifdef LIBJPEG_PRESENT
@@ -24,7 +25,7 @@ static void o2error_exit(j_common_ptr cinfo)
 	longjmp(o2err->jmp, 1);
 }
 
-static unsigned char *stbi_jpeg_load_from_memory(char const *buffer, int len, int *x, int *y)
+static unsigned char *stbi_jpeg_load_from_memory(const uint8_t const *buffer, int len, int *x, int *y)
 {
 	struct jpeg_decompress_struct cinfo;
 	jpeg_create_decompress(&cinfo);
@@ -42,7 +43,7 @@ static unsigned char *stbi_jpeg_load_from_memory(char const *buffer, int len, in
 	}
 	
 	/// Read the data from our memory buffer
-	jpeg_mem_src( &cinfo, (char *)buffer, len );
+	jpeg_mem_src( &cinfo, (unsigned char *)buffer, len );
     
 	// Setup the jpeg header and set the decompress options
 	jpeg_read_header(&cinfo, TRUE);
@@ -92,7 +93,7 @@ static unsigned char *stbi_jpeg_load_from_memory(char const *buffer, int len, in
 		if (cinfo.out_color_space == JCS_CMYK) {
 			// Convert from CMYK to RGBA
 			for (int i = 0; i < cinfo.rec_outbuf_height; ++i) {
-				char *out = outputImage + (currentLine++)*bytesPerRow;
+				unsigned char *out = outputImage + (currentLine++)*bytesPerRow;
 				for (int j = 0; j < cinfo.output_width; ++j) {
 					unsigned char c = out[0];
 					unsigned char m = out[1];
@@ -177,7 +178,7 @@ static unsigned char *stbi_jpeg_load_from_memory(char const *buffer, int len, in
     _colorSpace=O2ColorSpaceCreateDeviceRGB();
     _bitmapInfo=kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast;
     
-    _pixelData=CFDataCreateWithBytesNoCopy(NULL, bitmap, _bytesPerRow*_height, NULL);
+    _pixelData=(CFDataRef)[[NSData alloc] initWithBytesNoCopy:bitmap length:_bytesPerRow*_height freeWhenDone:YES];
     
     return self;
 }

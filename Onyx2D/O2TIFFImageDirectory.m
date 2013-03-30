@@ -192,6 +192,7 @@ static void sTIFFUnmapFileProc(thandle_t userData, tdata_t data, toff_t size)
 	TIFFSetWarningHandler(prevHandler);
 }	
 @end
+
 #endif
 
 @implementation O2TIFFImageDirectory

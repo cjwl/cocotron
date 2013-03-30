@@ -7,6 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <AppKit/NSTextField.h>
 #import <AppKit/NSTextFieldCell.h>
+#import <AppKit/NSTextView.h>
+#import <AppKit/NSTextStorage.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSCursor.h>
@@ -150,8 +152,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if([cell isEditable] || [cell isSelectable]){
     if(_currentEditor==nil){
-     NSText* editor =[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[[cell setUpFieldEditorAttributes: editor] retain];
+        NSText* editor =[[self window] fieldEditor:YES forObject:self];
+        _currentEditor = [[cell setUpFieldEditorAttributes: editor] retain];
     }
 
     [cell selectWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self start:range.location length:range.length];
@@ -159,7 +161,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectText:sender {
-   [self _selectTextWithRange:NSMakeRange(0,[[self stringValue] length])];
+   [self _selectTextWithRange:NSMakeRange(0,[[self stringValue] length])];        
 }
 
 
@@ -180,7 +182,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self nextKeyView];
 }
 
+-(void)validateEditing
+{
+    if (_currentEditor) {
+        NSString *string = [_currentEditor string];
+        BOOL acceptsString = YES;
+        NSFormatter *formatter = [self formatter];
+        if (formatter) {
+            acceptsString = NO;
+
+            id objectValue = nil;
+            NSString *error = nil;
+            if ([formatter getObjectValue: &objectValue
+                                forString: string
+                         errorDescription: &error] == YES) {
+                [[self selectedCell] setObjectValue:objectValue];
+            } else {
+                // Ask the delegate what to do
+                SEL sel = @selector(control:didFailToFormatString:errorDescription:);
+                if ([_delegate respondsToSelector: sel]) {
+                    acceptsString = [_delegate control: self
+                                   didFailToFormatString: string
+                                        errorDescription: error];
+                }
+            }
+        }
+        if (acceptsString) {
+            if ([_currentEditor isRichText]) {
+                if ([_currentEditor isKindOfClass:[NSTextView class]]) {
+                    NSTextView *textview = (NSTextView *)_currentEditor;
+                    NSAttributedString *text = [textview textStorage];
+                    NSAttributedString *string = [[[NSAttributedString alloc] initWithAttributedString:text] autorelease];
+                    [[self selectedCell] setAttributedStringValue:string];
+                } else {
+                    [[self selectedCell] setStringValue:string];
+                }
+            } else {
+                [[self selectedCell] setStringValue:string];
+            }
+        }
+    }
+}
+
 -(void)textDidEndEditing:(NSNotification *)note {
+    
    int movement=[[[note userInfo] objectForKey:@"NSTextMovement"] intValue];
 
    [super textDidEndEditing:note];
@@ -205,18 +250,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
    NSRect  editingFrame=[cell titleRectForBounds:[self bounds]];
    
-   if(!NSMouseInRect(point,editingFrame,[self isFlipped]))
-    [super mouseDown:event];
-   else {
-   if([cell isEditable] || [cell isSelectable]){
-    if(_currentEditor==nil){
-     NSText* editor =[[self window] fieldEditor:YES forObject:self];
-     _currentEditor=[[cell setUpFieldEditorAttributes: editor] retain];
+    if(!NSMouseInRect(point,editingFrame,[self isFlipped])) {
+        [super mouseDown:event];
     }
-
-    [cell editWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self event:event];
-   }
-}
 }
 
 -(BOOL)textShouldBeginEditing:(NSText *)text {
@@ -234,7 +270,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        NSBeep();
        return NO;
      }
-   return YES;
+    
+    NSFormatter *formatter = [[self selectedCell] formatter];
+    BOOL acceptsString = YES;
+    if (formatter) {
+        // Ask the formatter if the string is valid
+        // If it's not, then we'll present an error and refuse the end of the editing
+        
+        NSString *string = [text string];
+        id objectValue;
+        NSError *error = nil;
+        if ([formatter isKindOfClass:[NSNumberFormatter class]]) {
+            NSNumberFormatter *numberFormatter = (NSNumberFormatter *)formatter;
+            acceptsString = [numberFormatter getObjectValue:&objectValue forString:string range:NULL error:&error];
+        } else {
+            NSString *errorString;
+            if ([formatter getObjectValue: &objectValue
+                                forString: string
+                         errorDescription: &errorString] == NO) {
+                
+                acceptsString = NO;
+                NSDictionary *info = nil;
+                if (errorString == nil) {
+                    // Just in case we get no error from the formatter
+                    errorString = NSLocalizedStringFromTableInBundle(@"Invalid number", nil, [NSBundle bundleForClass: [NSTextField class]], @"");
+                }
+                info = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
+                error = [NSError errorWithDomain:NSCocoaErrorDomain code:2048 userInfo:info];
+            }
+       }
+        if (error) {
+            [self presentError:error];
+        }
+    }
+   return acceptsString;
 }
 
 -(void)setEditable:(BOOL)flag {

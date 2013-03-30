@@ -56,14 +56,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)declareTypes:(NSArray *)types owner:(id)owner {
-   Win32TypesAndOwner *typesAndOwner=[Win32TypesAndOwner typesAndOwnerWithTypes:types owner:owner];
+    Win32TypesAndOwner *typesAndOwner=[Win32TypesAndOwner typesAndOwnerWithTypes:types owner:owner];
+    
+    [self incrementChangeCount];
+    [_typesAndOwners removeAllObjects];
+    [_typesAndOwners addObject:typesAndOwner];
+    [_typeToData removeAllObjects];
+    
+    return 0;
+}
 
-   [self incrementChangeCount];
-   [_typesAndOwners removeAllObjects];
-   [_typesAndOwners addObject:typesAndOwner];
-   [_typeToData removeAllObjects];
-
-   return 0;
+-(int)addTypes:(NSArray *)types owner:(id)owner {
+    Win32TypesAndOwner *typesAndOwner=[Win32TypesAndOwner typesAndOwnerWithTypes:types owner:owner];
+    
+    [self incrementChangeCount];
+    // Add the new types to the pasteboard and remove existing data for it
+    [_typesAndOwners addObject:typesAndOwner];
+    [_typeToData removeObjectsForKeys:types];
+    
+    return 0;
 }
 
 -(NSArray *)types {

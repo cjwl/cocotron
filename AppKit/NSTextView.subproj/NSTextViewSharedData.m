@@ -70,7 +70,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isRichText {
-   return (_flags&0x00000004)?YES:NO;
+    return (_flags&0x00000004)?YES:NO;
+}
+
+-(BOOL)allowsUndo {
+    return (_flags&0x00000400)?YES:NO;
 }
 
 @end

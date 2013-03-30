@@ -302,6 +302,9 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 	}
 	if([isa accessInstanceVariablesDirectly])
 	{
+        // Check the _setXXX: method
+        strcpy(check,"_set");strcat(check,uppercaseKeyCString);strcat(check,":");
+        sel = sel_getUid(check);
 
         if ([self respondsToSelector:sel]) {
             return [self _setValue:value withSelector:sel fromKey:key];

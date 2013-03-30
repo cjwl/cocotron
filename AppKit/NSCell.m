@@ -68,6 +68,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isSelectable=(flags&0x00200000)?YES:NO;
     _isScrollable=(flags&0x00100000)?YES:NO;
     _refusesFirstResponder=(flags2&0x2000000)?YES:NO;
+    _hasValidObjectValue = YES;
+
    // _wraps=(flags&0x00100000)?NO:YES; // ! scrollable, use lineBreakMode ?
     _allowsMixedState=(flags2&0x1000000)?YES:NO;
     // 0x00080000 = continuous
@@ -116,6 +118,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isHighlighted=NO;
    _refusesFirstResponder=NO;
    _lineBreakMode=NSLineBreakByWordWrapping;
+    _hasValidObjectValue = YES;
    return self;
 }
 
@@ -134,6 +137,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isHighlighted=NO;
    _refusesFirstResponder=NO;
    _lineBreakMode=NSLineBreakByWordWrapping;
+    _hasValidObjectValue = YES;
    return self;
 }
 
@@ -271,17 +275,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isHighlighted;
 }
 
+-(BOOL)hasValidObjectValue
+{
+    return _hasValidObjectValue;
+}
+
+/*
+ "Returns the receiver's object value, or nil if a valid object has not been associated with the receiver."
+ */
 -objectValue {
-   return _objectValue;
+    if (_hasValidObjectValue) {
+        return _objectValue;
+    } else {
+        return nil;
+    }
 }
 
 -(NSString *)stringValue {
     NSString *formatted;
-    
     if (_formatter != nil)
         if ((formatted = [_formatter stringForObjectValue:_objectValue])!=nil)
           return formatted;
-
     if([_objectValue isKindOfClass:[NSAttributedString class]])
      return [_objectValue string];
     else if([_objectValue isKindOfClass:[NSString class]])
@@ -319,8 +333,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       [[NSScanner localizedScannerWithString:objString] scanFloat:&f];
       return f;
    }
-   else
+   else {
       return [_objectValue floatValue];
+   }
 }
 
 -(double)doubleValue {
@@ -585,10 +600,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setObjectValue:(id <NSCopying>)value {
-   value=[value copyWithZone:NULL];
-   [_objectValue release];
-   _objectValue=value;
-   [(NSControl *)[self controlView] updateCell:self];
+    value=[value copyWithZone:NULL];
+    [_objectValue release];
+    _objectValue=value;
+    _hasValidObjectValue = YES;
+    [(NSControl *)[self controlView] updateCell:self];
 }
 
 -(void)setStringValue:(NSString *)value {
@@ -600,12 +616,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setType:NSTextCellType];
 
    if (_formatter != nil) {
-       id formattedValue;
-
-       if ([_formatter getObjectValue:&formattedValue forString:value errorDescription:NULL])
+       id formattedValue = nil;
+       if ([_formatter getObjectValue:&formattedValue forString:value errorDescription:NULL]) {
            value=formattedValue;
+       } else {
+           // Invalid format
+           _hasValidObjectValue = NO;
+           return;
+       }
    }
-
    [self setObjectValue:value];
 }
 
@@ -784,7 +803,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSText *)setUpFieldEditorAttributes:(NSText *)editor {
    [editor setEditable:[self isEditable]];
    [editor setSelectable:[self isSelectable]];
-	[editor setString:[self stringValue]];
+    NSString* strValue = nil;
+    if (_formatter) {
+        // Prioritize the editing string value over everything else
+        strValue = [_formatter editingStringForObjectValue: [self objectValue]];
+    }
+    if (strValue == nil) {
+        strValue = [self stringValue];
+    }
+	[editor setString: strValue];
    [editor setFont:[self font]];
    [editor setAlignment:[self alignment]];
    if([self respondsToSelector:@selector(drawsBackground)])
@@ -849,7 +876,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return;
 
    [self _setupFieldEditorWithFrame:frame controlView:view editor:editor delegate:delegate];
-   [editor mouseDown:event];
+    [editor mouseDown:event];
 }
 
 -(void)selectWithFrame:(NSRect)frame inView:(NSView *)view editor:(NSText *)editor delegate:(id)delegate start:(int)location length:(int)length {
@@ -860,11 +887,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return;
 
    [self _setupFieldEditorWithFrame:frame controlView:view editor:editor delegate:delegate];
-   [editor setSelectedRange:NSMakeRange(location,length)];
+    NSRange range = NSMakeRange(location, length);
+    NSRange maxRange = NSMakeRange(0, [[editor string] length]);
+   [editor setSelectedRange:NSIntersectionRange(range, maxRange)];
 }
 
 -(void)endEditing:(NSText *)editor {
-   [self setStringValue:[editor string]];
 }
 
 -(void)resetCursorRect:(NSRect)rect inView:(NSView *)view {

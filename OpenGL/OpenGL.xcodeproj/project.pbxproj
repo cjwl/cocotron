@@ -396,11 +396,9 @@
 			baseConfigurationReference = FE7087041431184D00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = OpenGL;
 				WRAPPER_EXTENSION = framework;
-				ZERO_LINK = YES;
 			};
 			name = Release;
 		};

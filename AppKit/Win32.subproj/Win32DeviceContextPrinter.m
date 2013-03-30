@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSSize)pageSize {
-   return NSMakeSize(72*8.5,72*11);
+	return [self paperRect].size;
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)name {
@@ -74,7 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSRect)imageableRect {
    NSSize dpi=[self pixelsPerInch];
-   NSRect result=[self paperRect];
+   NSRect result=NSZeroRect;
    float  offsetx=GetDeviceCaps(_dc,PHYSICALOFFSETX);
    float  offsety=GetDeviceCaps(_dc,PHYSICALOFFSETY);
 
@@ -83,12 +83,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    offsetx*=72;
    offsety*=72;
-   
-   result.origin.x+=offsetx;
-   result.size.width-=offsetx;
-   result.size.height-=offsety;
 
-   return result;
+	float width = GetDeviceCaps(_dc,HORZRES);
+	float height = GetDeviceCaps(_dc,VERTRES);
+
+	width/=dpi.width;
+	height/=dpi.height;
+	
+	width*=72;
+	height*=72;
+
+	result.origin.x=offsetx;
+	result.origin.y=offsety;
+    result.size.width=width;
+    result.size.height=height;
+
+	return result;
 }
 
 #if 0

@@ -837,8 +837,11 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(void)getLineStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
-   NSUInteger start=range.location;
-   NSUInteger end=NSMaxRange(range);
+    NSUInteger start=range.location;
+    NSUInteger end=start;
+    if (range.length) {
+        end += range.length - 1; // -1 : the range might end on a NL - we don't want to expand it in that case, so we'll check this char
+    }
    NSUInteger contentsEnd=end;
    NSUInteger length=[self length];
    unichar  buffer[length];
@@ -1538,110 +1541,103 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
-// FIXME: this ignores the encoding argument
-
-   NSUInteger i,length=[self length],resultLength=0;
-   unichar    buffer[length];
-   unichar    result[length], firstCharacter=0,firstNibble=0;
-   enum {
-    STATE_NORMAL,
-    STATE_PERCENT,
-    STATE_HEX1,
-   } state=STATE_NORMAL;
-
-   [self getCharacters:buffer];
-
-   for(i=0;i<length;i++){
-    unichar check=buffer[i];
-
-    switch(state){
-
-     case STATE_NORMAL:
-      if(check=='%')
-       state=STATE_PERCENT;
-      else
-       result[resultLength++]=check;
-      break;
-
-     case STATE_PERCENT:
-      state=STATE_HEX1;
-      if(check>='0' && check<='9'){
-       firstCharacter=check;
-       firstNibble=(firstCharacter-'0');
-      }
-      else if(check>='a' && check<='f'){
-       firstCharacter=check;
-       firstNibble=(firstCharacter-'a')+10;
-      }
-      else if(check>='A' && check<='F'){
-       firstCharacter=check;
-       firstNibble=(firstCharacter-'A')+10;
-      }
-      else {
-       result[resultLength++]='%';
-       result[resultLength++]=check;
-       state=STATE_NORMAL;
-      }
-      break;
-
-     case STATE_HEX1:
-      if(check>='0' && check<='9')
-       result[resultLength++]=firstNibble*16+check-'0';
-      else if(check>='a' && check<='f')
-       result[resultLength++]=firstNibble*16+(check-'a')+10;
-      else if(check>='A' && check<='F')
-       result[resultLength++]=firstNibble*16+(check-'A')+10;
-      else {
-       result[resultLength++]='%';
-       result[resultLength++]=firstCharacter;
-       result[resultLength++]=check;
-      }
-      state=STATE_NORMAL;
-      break;
-    }
-
-   }
-
-   if(resultLength==length)
-   return self;
-
-   return [NSString stringWithCharacters:result length:resultLength];
+	// Note : this is supposed to return nil if the escaped char don't make a valid string
+	// for the encoding - this is not checked
+	enum {
+		STATE_NORMAL,
+		STATE_PERCENT,
+		STATE_HEX1,
+	} state=STATE_NORMAL;
+	
+    // TODO : this is only really working for 8-bits encoding, but we usually want UTF-8 here
+	NSString *string = nil;
+	NSData  *data = [self dataUsingEncoding: encoding];
+	if (data) {
+		NSUInteger length = [data length], resultLength = 0;
+		const unsigned char* buffer = [data bytes];
+		unsigned char firstCharacter=0,firstNibble=0;
+		unsigned char result[length]; // We can't grow
+        
+		for(NSUInteger i=0;i<length;i++){
+			unsigned char check=buffer[i];
+			switch(state){
+				case STATE_NORMAL:
+					if(check=='%')
+						state=STATE_PERCENT;
+					else
+						result[resultLength++]=check;
+					break;
+					
+				case STATE_PERCENT:
+					state=STATE_HEX1;
+					if(check>='0' && check<='9'){
+						firstCharacter=check;
+						firstNibble=(firstCharacter-'0');
+					}
+					else if(check>='a' && check<='f'){
+						firstCharacter=check;
+						firstNibble=(firstCharacter-'a')+10;
+					}
+					else if(check>='A' && check<='F'){
+						firstCharacter=check;
+						firstNibble=(firstCharacter-'A')+10;
+					}
+					else {
+						result[resultLength++]='%';
+						result[resultLength++]=check;
+						state=STATE_NORMAL;
+					}
+					break;
+					
+				case STATE_HEX1:
+					if(check>='0' && check<='9')
+						result[resultLength++]=firstNibble*16+check-'0';
+					else if(check>='a' && check<='f')
+						result[resultLength++]=firstNibble*16+(check-'a')+10;
+					else if(check>='A' && check<='F')
+						result[resultLength++]=firstNibble*16+(check-'A')+10;
+					else {
+						result[resultLength++]='%';
+						result[resultLength++]=firstCharacter;
+						result[resultLength++]=check;
+					}
+					state=STATE_NORMAL;
+					break;
+			}
+		}
+		string = [[[NSString alloc] initWithBytes:result length:resultLength encoding:encoding] autorelease];
+	}
+	return string;
 }
 
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
-   NSUInteger i,length=[self length],resultLength=0;
-   unichar    *unicode = NSZoneMalloc(NULL,length*sizeof(unichar));
-   unichar    *result = NSZoneMalloc(NULL,length*sizeof(unichar)*3);
-   const char *hex="0123456789ABCDEF";
-
-   [self getCharacters:unicode];
-
-   for(i=0;i<length;i++){
-    unichar code=unicode[i];
-
-    if((code<=0x20) || (code==0x22) || (code==0x23) || (code==0x25) || (code==0x3C) ||
-       (code==0x3E) || (code==0x5B) || (code==0x5C) || (code==0x5D) || (code==0x5E) ||
-       (code==0x60) || (code==0x7B) || (code==0x7C) || (code==0x7D)){
-     result[resultLength++]='%';
-     result[resultLength++]=hex[(code>>4)&0xF];
-     result[resultLength++]=hex[code&0xF];
+    const char *hex="0123456789ABCDEF";
+    
+    // TODO : this is only really working for 8-bits encoding, but we usually want UTF-8 here
+    NSString *string = nil;
+    NSData  *data = [self dataUsingEncoding: encoding];
+    if (data) {
+        NSUInteger length = [data length], resultLength = 0;
+        const unsigned char* buffer = [data bytes];
+        unsigned char result[length*3];
+        
+        for(NSUInteger i=0;i<length;i++){
+            char code=buffer[i];
+            
+            if((code<=0x20) || (code==0x22) || (code==0x23) || (code==0x25) || (code==0x3C) ||
+               (code==0x3E) || (code==0x5B) || (code==0x5C) || (code==0x5D) || (code==0x5E) ||
+               (code==0x60) || (code==0x7B) || (code==0x7C) || (code==0x7D) || (code&0x80)) {
+                result[resultLength++]='%';
+                result[resultLength++]=hex[(code>>4)&0xF];
+                result[resultLength++]=hex[code&0xF];
+            }
+            else {
+                result[resultLength++]=code;
+            }
+        }
+        string = [[[NSString alloc] initWithBytes:result length:resultLength encoding:NSASCIIStringEncoding] autorelease];
     }
-    else {
-     result[resultLength++]=code;
-    }
-   }
-
-   NSZoneFree(NULL, unicode);
-
-    if(length==resultLength) {
-        NSZoneFree(NULL, result);
-        return self;
-    }
-
-    NSString *ret = [NSString stringWithCharacters:result length:resultLength];
-    NSZoneFree(NULL, result);
-
-    return ret;
+    return string;
 }
 
 -(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set {

@@ -14,15 +14,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation Win32GeneralPasteboard
 
 -(int)declareTypes:(NSArray *)types owner:(id)owner {
-   int                     result=[super declareTypes:types owner:owner];
-   Win32IDataObjectServer *dataServer=[[[Win32IDataObjectServer alloc] initWithPasteboard:self] autorelease];
+    int                     result=[super declareTypes:types owner:owner];
+    Win32IDataObjectServer *dataServer=[[[Win32IDataObjectServer alloc] initWithPasteboard:self] autorelease];
+    
+    if(![dataServer setOnClipboard]){
+        NSLog(@"unable to set on clipboard");
+        [dataServer release];
+    }
+    
+    return result;
+}
 
-   if(![dataServer setOnClipboard]){
-    NSLog(@"unable to set on clipboard");
-    [dataServer release];
-   }
-
-   return result;
+-(int)addTypes:(NSArray *)types owner:(id)owner {
+    int                     result=[super addTypes:types owner:owner];
+    Win32IDataObjectServer *dataServer=[[[Win32IDataObjectServer alloc] initWithPasteboard:self] autorelease];
+    
+    if(![dataServer setOnClipboard]){
+        NSLog(@"unable to set on clipboard");
+        [dataServer release];
+    }
+    
+    return result;
 }
 
 -(NSArray *)types {

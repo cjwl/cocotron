@@ -110,6 +110,11 @@ static inline void replaceCharactersInRangeWithAttributedString(NSTextStorage_co
     location=NSMaxRange(effectiveRange);
    }
 
+	if (limit == 0) {
+          // That will just try to merge attributes at the location when possible
+          NSRangeEntryInsert(self->_rangeToAttributes,NSMakeRange(replaced.location,0),nil);
+	}
+	
    [self edited:NSTextStorageEditedAttributes|NSTextStorageEditedCharacters range:replaced changeInLength:delta];
 }
 

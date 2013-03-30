@@ -75,7 +75,12 @@ NSString * const NSRecoveryAttempterErrorKey=@"NSRecoveryAttempterErrorKey";
    if (localizedDescription != nil)
       return localizedDescription;
 
-   return [NSString stringWithFormat:@"%@ (%@ error %d)", NSLocalizedString(@"The operation could not be completed.", @"Default NSError description"), _domain, _code];
+    localizedDescription = [self localizedFailureReason];
+    if (localizedDescription) {
+        return [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"The operation could not be completed.", @"Default NSError description"), localizedDescription];        
+    } else {
+        return [NSString stringWithFormat:@"%@ (%@ error %d)", NSLocalizedString(@"The operation could not be completed.", @"Default NSError description"), _domain, _code];
+    }
 }
 
 -(NSString *)localizedFailureReason {

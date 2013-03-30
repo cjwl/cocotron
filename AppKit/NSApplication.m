@@ -797,8 +797,6 @@ id NSApp=nil;
 }
 
 -(int)runModalSession:(NSModalSession)session {
-    NSMutableArray *savedEvents=[NSMutableArray array];
-    
     while([session stopCode]==NSRunContinuesResponse) {
         NSAutoreleasePool *pool=[NSAutoreleasePool new];
         NSEvent           *event=[self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate date] inMode:NSModalPanelRunLoopMode dequeue:YES];

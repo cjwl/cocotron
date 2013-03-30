@@ -10,6 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2Encoding.h"
 
 @implementation O2Font
+static NSArray *_preferredFontNames = nil;
+
++ (void)initialize
+{
+    if (self == [O2Font class]) {
+        // Set some decent defaut substitution fonts
+        // Override that by a better list in the O2Font concrete subclass
+        [O2Font setPreferredFontNames:[NSArray arrayWithObjects:
+                                       @"Arial",              // Latin/Greek/Cyrillic, Arabic, Hebrew
+                                       @"Meiryo",             // Japanese
+                                       @"FangSong",           // Simplified Chinese
+                                       @"MingLiU",            // Traditional Chinese
+                                       @"Batang",             // Korean
+                                       nil]];
+    }
+ }
 
 -initWithFontName:(NSString *)name {
    _name=[name copy];
@@ -23,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_name release];
+    [_coveredCharSet release];
    if(_advances!=NULL)
     NSZoneFree(NULL,_advances);
    if(_MacRomanEncoding!=NULL)
@@ -47,7 +64,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)fetchAdvances {
-   O2InvalidAbstractInvocation();
+    O2InvalidAbstractInvocation();
+}
+
+-(NSCharacterSet *)coveredCharacterSet {
+    return _coveredCharSet;
 }
 
 // Font name mapping : platform specific font class may override
@@ -72,6 +93,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 + (NSString *)displayNameForPostscriptName:(NSString *)name
 {
 	return name;
+}
+
++ (NSString *)postscriptNameForFontName:(NSString *)name
+{
+	return name;
+}
+
++(NSArray *)preferredFontNames
+{
+    return _preferredFontNames;
+}
+
++(void)setPreferredFontNames:(NSArray *)fontNames
+{
+    fontNames = [fontNames retain];
+    [_preferredFontNames release];
+    _preferredFontNames = fontNames;
 }
 
 NSString *O2MacRomanGlyphNames[256]={
@@ -420,6 +458,10 @@ O2Float   O2FontGetStemV(O2FontRef self) {
 
 O2Rect    O2FontGetFontBBox(O2FontRef self) {
    return self->_bbox;
+}
+
+NSCharacterSet *O2FontGetCoveredCharacterSet(O2FontRef self) {
+    return [self coveredCharacterSet];
 }
 
 size_t    O2FontGetNumberOfGlyphs(O2FontRef self) {

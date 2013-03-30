@@ -219,6 +219,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for (i = 0; i < len; i++)
    {
       c  = [_string characterAtIndex:i + _location];
+      // Just replace any char from the skip set with space - the double parser will then skip them automatically 
+      if ([_skipSet characterIsMember:c]) c = ' ';
       if (c == decimalSeperator) c = '.';
       p[i] = (char)c;
    }

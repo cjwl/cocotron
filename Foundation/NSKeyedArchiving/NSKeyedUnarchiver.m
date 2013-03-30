@@ -83,7 +83,7 @@ static inline int integerFromCFUID(id object){
    NSDictionary *plist=[classReference objectForKey:@"$class"];
    NSDictionary *profile=[_objects objectAtIndex:integerFromCFUID(plist)];
    //unused
-   //NSDictionary *classes=[profile objectForKey:@"$classes"];
+   NSDictionary *classes=[profile objectForKey:@"$classes"];
    NSString     *className=[profile objectForKey:@"$classname"];
 
    // TODO: decode class version
@@ -249,8 +249,8 @@ static inline NSNumber *_numberForKey(NSKeyedUnarchiver *self,NSString *key){
 
    if(number==nil)
     return 0;
-
-   return [number intValue];
+    
+    return [number intValue];
 }
 
 -(NSInteger)decodeIntegerForKey:(NSString *)key {

@@ -3,7 +3,7 @@
 #import <Onyx2D/O2ImageSource.h>
 
 const CFStringRef kCGImageDestinationLossyCompressionQuality=(CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
-const CFStringRef kCGImageDestinationBackgroundColor=(CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
+const CFStringRef kCGImageDestinationBackgroundColor=(CFStringRef)@"kCGImageDestinationBackgroundColor";
 
 CFTypeID CGImageDestinationGetTypeID(void) {
    return O2ImageDestinationGetTypeID();
@@ -18,7 +18,7 @@ CGImageDestinationRef CGImageDestinationCreateWithData(CFMutableDataRef data,CFS
 }
 
 CGImageDestinationRef CGImageDestinationCreateWithDataConsumer(CGDataConsumerRef dataConsumer,CFStringRef type,size_t imageCount,CFDictionaryRef options) {
-   return (CGImageDestinationRef)O2ImageDestinationCreateWithDataConsumer(dataConsumer,type,imageCount,options);
+   return (CGImageDestinationRef)O2ImageDestinationCreateWithDataConsumer((O2DataConsumerRef)dataConsumer,type,imageCount,options);
 }
 
 CGImageDestinationRef CGImageDestinationCreateWithURL(CFURLRef url,CFStringRef type,size_t imageCount,CFDictionaryRef options) {
@@ -30,11 +30,11 @@ void CGImageDestinationSetProperties(CGImageDestinationRef self,CFDictionaryRef 
 }
 
 void CGImageDestinationAddImage(CGImageDestinationRef self,CGImageRef image,CFDictionaryRef properties) {
-   O2ImageDestinationAddImage((O2ImageDestinationRef)self,image,properties);
+   O2ImageDestinationAddImage((O2ImageDestinationRef)self,(O2ImageRef)image,properties);
 }
 
 void CGImageDestinationAddImageFromSource(CGImageDestinationRef self,CGImageSourceRef imageSource,size_t index,CFDictionaryRef properties) {
-   O2ImageDestinationAddImageFromSource((O2ImageDestinationRef)self,imageSource,index,properties);
+   O2ImageDestinationAddImageFromSource((O2ImageDestinationRef)self,(O2ImageSourceRef)imageSource,index,properties);
 }
 
 

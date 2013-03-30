@@ -24,9 +24,9 @@ CFDataRef CFDataCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex len
    return ToCFData([[NSData allocWithZone:NULL] initWithBytes:bytes length:length]);
 }
 
-CFDataRef CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesAllocator){
-   NSUnimplementedFunction();
-   return 0;
+CFDataRef CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesDeallocator){
+    NSUnimplementedFunction();
+    return 0;
 }
 
 CFDataRef CFDataCreateCopy(CFAllocatorRef allocator,CFDataRef self){

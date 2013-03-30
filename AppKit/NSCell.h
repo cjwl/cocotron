@@ -109,6 +109,7 @@ enum {
    BOOL	     _isContinuous;
    BOOL      _allowsMixedState;
    BOOL      _sendsActionOnEndEditing;
+    BOOL    _hasValidObjectValue;
 }
 
 #pragma mark -
@@ -151,6 +152,7 @@ enum {
 -(BOOL)refusesFirstResponder;
 -(BOOL)isHighlighted;
 
+-(BOOL)hasValidObjectValue;
 -objectValue;
 -(NSString *)stringValue;
 -(int)intValue;

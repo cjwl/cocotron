@@ -128,10 +128,16 @@ static NSAppleScrollBarVariant appleScrollBarVariant(NSScroller *self){
     return _controlSize; }
 
 -(void)setFloatValue:(float)zeroToOneValue knobProportion:(float)zeroToOneKnob {
-   _floatValue=zeroToOneValue;
-   if(_floatValue>1)
-    _floatValue=1;
+    if(zeroToOneValue>1)
+        zeroToOneValue=1;
+    if(zeroToOneValue<0)
+        zeroToOneValue=0;
+    if(zeroToOneKnob>1)
+        zeroToOneKnob=1;
+    if(zeroToOneKnob<0)
+        zeroToOneKnob=0;
 
+    _floatValue=zeroToOneValue;
    _knobProportion=zeroToOneKnob;
    if(_knobProportion>1)
     _knobProportion=1;
@@ -144,13 +150,13 @@ static NSAppleScrollBarVariant appleScrollBarVariant(NSScroller *self){
 }
 
 -(void)setDoubleValue:(double)zeroToOneValue {
-   _floatValue=zeroToOneValue;
-   if(_floatValue<=0)
-        _floatValue=0;
-        
-   if(_floatValue>1)
-        _floatValue=1;
-        
+    if(zeroToOneValue>1)
+        zeroToOneValue=1;
+    if(zeroToOneValue<0)
+        zeroToOneValue=0;
+    
+    _floatValue=zeroToOneValue;
+    
    [self setNeedsDisplay:YES];
 }
 

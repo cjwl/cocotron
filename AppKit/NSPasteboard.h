@@ -45,6 +45,7 @@ APPKIT_EXPORT NSString * const NSRulerPboard;
 -propertyListForType:(NSString *)type;
 
 -(int)declareTypes:(NSArray *)types owner:owner;
+-(int)addTypes:(NSArray *)types owner:(id)owner;
 
 -(BOOL)setData:(NSData *)data forType:(NSString *)type;
 -(BOOL)setString:(NSString *)string forType:(NSString *)type;

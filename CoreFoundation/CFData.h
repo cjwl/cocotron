@@ -15,7 +15,7 @@ typedef struct __CFMutableData *CFMutableDataRef;
 COREFOUNDATION_EXPORT CFTypeID       CFDataGetTypeID(void);
 
 COREFOUNDATION_EXPORT CFDataRef      CFDataCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length);
-COREFOUNDATION_EXPORT CFDataRef      CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesAllocator);
+COREFOUNDATION_EXPORT CFDataRef      CFDataCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesDeallocator);
 
 COREFOUNDATION_EXPORT CFDataRef      CFDataCreateCopy(CFAllocatorRef allocator,CFDataRef self);
 

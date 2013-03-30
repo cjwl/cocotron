@@ -7,8 +7,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <AppKit/NSActionCell.h>
 #import <Foundation/NSKeyedArchiver.h>
+#import <AppKit/NSControl.h>
 
 @implementation NSActionCell
+@class NSControl;
 
 -(void)encodeWithCoder:(NSCoder *)coder {
    [super encodeWithCoder:coder];
@@ -60,6 +62,78 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTag:(int)tag {
    _tag=tag;
+}
+
+- (void)_validateEditing
+{
+    if ([_controlView isKindOfClass: [NSControl class]]) {
+        [(NSControl *)_controlView validateEditing];
+    }
+}
+
+// Cocoa is validating the editing everytime the ask is being asked - let's do the same
+// That's what will ensure the values are always properly formatted by the current formatter (if any)
+/**
+ * Retrieve the value of the receiver
+ */
+- (id) objectValue
+{
+    [self _validateEditing];
+    return [super objectValue];
+}
+
+/**
+ * Retrieve the value of the receiver as an NSAttributedString.
+ */
+- (NSAttributedString*) attributedStringValue
+{
+    [self _validateEditing];
+    return [super attributedStringValue];
+}
+
+/**
+ * Retrieve the value of the receiver as an NSString.
+ */
+- (NSString *) stringValue
+{
+    [self _validateEditing];
+    return [super stringValue];
+}
+
+/**
+ * Retrieve the value of the receiver as a double.
+ */
+- (double) doubleValue
+{
+    [self _validateEditing];
+    return [super doubleValue];
+}
+
+/**
+ * Retrieve the value of the receiver as a float.
+ */
+- (float) floatValue
+{
+    [self _validateEditing];
+    return [super floatValue];
+}
+
+/**
+ * Retrieve the value of the receiver as an int.
+ */
+- (int) intValue
+{
+    [self _validateEditing];
+    return [super intValue];
+}
+
+/**
+ * Retrieve the value of the receiver as an NSInteger.
+ */
+- (NSInteger) integerValue
+{
+    [self _validateEditing];
+    return [super integerValue];
 }
 
 @end

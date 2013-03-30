@@ -22,6 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSGlyph            *_glyphCache;
    unichar            *_characterCache;
 
+    
+    NSUInteger          _bidiLevelsCapacity;
+    uint8_t             *_bidiLevels;
+    uint8_t             _currentBidiLevel;
+    uint8_t             _currentParagraphBidiLevel;
+    
 	BOOL				   _paragraphBreak;
 	
    NSTextContainer    *_container;

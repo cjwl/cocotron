@@ -70,7 +70,7 @@ bool      CGFontGetGlyphAdvances(CGFontRef self,const CGGlyph *glyphs,size_t cou
 }
 
 CGGlyph   CGFontGetGlyphWithGlyphName(CGFontRef self,CFStringRef name) {
-   return O2FontGetGlyphWithGlyphName(self,(NSString *)name);
+   return O2FontGetGlyphWithGlyphName(self,name);
 }
 
 CFStringRef CGFontCopyGlyphNameForGlyph(CGFontRef self,CGGlyph glyph) {
