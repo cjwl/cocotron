@@ -1,3 +1,4 @@
 #include "linux"
+EFFECTIVE_PLATFORM_NAME = -linux-ppc
 
 GCC_VERSION = org.cocotron.1.0.linux.ppc.gcc.default

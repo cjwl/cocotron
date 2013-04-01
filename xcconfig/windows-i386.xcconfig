@@ -1,5 +1,7 @@
 #include "windows"
 
+EFFECTIVE_PLATFORM_NAME = -windows-i386
+
 GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 
 ARCHS = i386

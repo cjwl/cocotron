@@ -1,3 +1,4 @@
 #include "solaris"
+EFFECTIVE_PLATFORM_NAME = -solaris-sparc
 
 GCC_VERSION = org.cocotron.1.0.solaris.sparc.gcc.default

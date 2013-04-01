@@ -1,3 +1,4 @@
 #include "freebsd"
+EFFECTIVE_PLATFORM_NAME = -freebsd-i386
 
 GCC_VERSION = org.cocotron.1.0.freebsd.i386.gcc.default
