@@ -11,6 +11,14 @@
 		FE7433A910A89ED7004CDF00 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8492E8119A5EA000E252CC /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8492EA119A5EA000E252CC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		FEC0A3991709356B002A60B7 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3911709356B002A60B7 /* darwin-i386-framework.xcconfig */; };
+		FEC0A39A1709356B002A60B7 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3921709356B002A60B7 /* darwin-ppc-framework.xcconfig */; };
+		FEC0A39B1709356B002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3931709356B002A60B7 /* darwin-x86_64-framework.xcconfig */; };
+		FEC0A39C1709356B002A60B7 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3941709356B002A60B7 /* freebsd-i386-framework.xcconfig */; };
+		FEC0A39D1709356B002A60B7 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3951709356B002A60B7 /* linux-arm-framework.xcconfig */; };
+		FEC0A39E1709356B002A60B7 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3961709356B002A60B7 /* linux-i386-framework.xcconfig */; };
+		FEC0A39F1709356B002A60B7 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3971709356B002A60B7 /* linux-ppc-framework.xcconfig */; };
+		FEC0A3A01709356B002A60B7 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3981709356B002A60B7 /* solaris-sparc-framework.xcconfig */; };
 		FEC32E49115909F00008ECE5 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC32E4B115909F00008ECE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FEC32E5B11590A130008ECE5 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -118,6 +126,14 @@
 		FE708626143117B300B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE7433A810A89ED7004CDF00 /* CoreServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreServices.h; sourceTree = "<group>"; };
 		FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CFNetwork.xcodeproj; path = ../CFNetwork/CFNetwork.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FEC0A3911709356B002A60B7 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3921709356B002A60B7 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3931709356B002A60B7 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3941709356B002A60B7 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3951709356B002A60B7 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3961709356B002A60B7 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3971709356B002A60B7 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3981709356B002A60B7 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FEC32E52115909F00008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEC32E6311590A130008ECE5 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -221,6 +237,14 @@
 		FE06B1BD1430E7AF0071169B /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FEC0A3911709356B002A60B7 /* darwin-i386-framework.xcconfig */,
+				FEC0A3921709356B002A60B7 /* darwin-ppc-framework.xcconfig */,
+				FEC0A3931709356B002A60B7 /* darwin-x86_64-framework.xcconfig */,
+				FEC0A3941709356B002A60B7 /* freebsd-i386-framework.xcconfig */,
+				FEC0A3951709356B002A60B7 /* linux-arm-framework.xcconfig */,
+				FEC0A3961709356B002A60B7 /* linux-i386-framework.xcconfig */,
+				FEC0A3971709356B002A60B7 /* linux-ppc-framework.xcconfig */,
+				FEC0A3981709356B002A60B7 /* solaris-sparc-framework.xcconfig */,
 				FE06B1BE1430E7AF0071169B /* darwin-i386.xcconfig */,
 				FE06B1BF1430E7AF0071169B /* darwin-ppc.xcconfig */,
 				FE06B1C01430E7AF0071169B /* darwin-x86_64.xcconfig */,
@@ -446,6 +470,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+				FEC0A3991709356B002A60B7 /* darwin-i386-framework.xcconfig in Resources */,
+				FEC0A39A1709356B002A60B7 /* darwin-ppc-framework.xcconfig in Resources */,
+				FEC0A39B1709356B002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */,
+				FEC0A39C1709356B002A60B7 /* freebsd-i386-framework.xcconfig in Resources */,
+				FEC0A39D1709356B002A60B7 /* linux-arm-framework.xcconfig in Resources */,
+				FEC0A39E1709356B002A60B7 /* linux-i386-framework.xcconfig in Resources */,
+				FEC0A39F1709356B002A60B7 /* linux-ppc-framework.xcconfig in Resources */,
+				FEC0A3A01709356B002A60B7 /* solaris-sparc-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

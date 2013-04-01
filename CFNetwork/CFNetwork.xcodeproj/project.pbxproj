@@ -72,6 +72,14 @@
 		FE74338510A89A9D004CDF00 /* CFNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFNetwork.h; sourceTree = "<group>"; };
 		FE84930F119AF77F00E252CC /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEA752F3114EB30B00AF634E /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEC0A3A117093576002A60B7 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A217093576002A60B7 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A317093576002A60B7 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A417093576002A60B7 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A517093576002A60B7 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A617093576002A60B7 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A717093576002A60B7 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3A817093576002A60B7 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FEC121A810EFC6C000FD1B47 /* CFSocketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSocketStream.h; sourceTree = "<group>"; };
 		FEC121CC10EFC89500FD1B47 /* CFNetServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFNetServices.h; sourceTree = "<group>"; };
 		FEC121D610EFC92800FD1B47 /* CFHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFHost.h; sourceTree = "<group>"; };
@@ -151,6 +159,14 @@
 		FE1E55BD143030B7000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FEC0A3A117093576002A60B7 /* darwin-i386-framework.xcconfig */,
+				FEC0A3A217093576002A60B7 /* darwin-ppc-framework.xcconfig */,
+				FEC0A3A317093576002A60B7 /* darwin-x86_64-framework.xcconfig */,
+				FEC0A3A417093576002A60B7 /* freebsd-i386-framework.xcconfig */,
+				FEC0A3A517093576002A60B7 /* linux-arm-framework.xcconfig */,
+				FEC0A3A617093576002A60B7 /* linux-i386-framework.xcconfig */,
+				FEC0A3A717093576002A60B7 /* linux-ppc-framework.xcconfig */,
+				FEC0A3A817093576002A60B7 /* solaris-sparc-framework.xcconfig */,
 				FE1E55BE143030B7000D60A1 /* darwin-i386.xcconfig */,
 				FE1E55BF143030B7000D60A1 /* darwin-ppc.xcconfig */,
 				FE1E55C0143030B7000D60A1 /* darwin-x86_64.xcconfig */,
