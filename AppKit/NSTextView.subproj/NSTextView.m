@@ -725,12 +725,15 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSRulerView *ruler = [[self enclosingScrollView] horizontalRulerView];
 
     if(ruler!=nil){
+        [ruler setOriginOffset:[self textContainerOrigin].x];
+
         NSDictionary *typingAttributes = [self typingAttributes];
         NSParagraphStyle  *style=[typingAttributes objectForKey:NSParagraphStyleAttributeName];
         if(style==nil) {
             // This should be the NSTextView defaultParagraphStyle but it's not supported yet in Cocoton
             style=[NSParagraphStyle defaultParagraphStyle];
         }
+        
         NSArray *markers = [[self layoutManager] rulerMarkersForTextView:self paragraphStyle:style ruler:ruler];
         [ruler setMarkers:markers];
     }
