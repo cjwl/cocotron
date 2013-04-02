@@ -80,15 +80,19 @@ NSString * const NSSpellingStateAttributeName=@"NSSpellingStateAttributeName"; /
 -initWithPath:(NSString *)path documentAttributes:(NSDictionary **)attributes {
    NSAttributedString *string=[NSRichTextReader attributedStringWithContentsOfFile:path];
    if(string==nil){
-    [self dealloc];
+    [self release];
     return nil;
    }
    return [self initWithAttributedString:string];
 }
 
 -initWithRTF:(NSData *)rtf documentAttributes:(NSDictionary **)attributes {
-   NSUnimplementedMethod();
-   return nil;
+    NSAttributedString *string=[NSRichTextReader attributedStringWithData:rtf];
+    if(string==nil){
+        [self release];
+        return nil;
+    }
+    return [self initWithAttributedString:string];
 }
 
 -initWithRTFD:(NSData *)rtfd documentAttributes:(NSDictionary **)attributes {
