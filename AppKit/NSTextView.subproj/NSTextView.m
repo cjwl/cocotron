@@ -725,7 +725,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     NSRulerView *ruler = [[self enclosingScrollView] horizontalRulerView];
 
     if(ruler!=nil){
-        [ruler setOriginOffset:[self textContainerOrigin].x];
+        [ruler setOriginOffset:self.textContainerOrigin.x + self.textContainer.lineFragmentPadding];
 
         NSDictionary *typingAttributes = [self typingAttributes];
         NSParagraphStyle  *style=[typingAttributes objectForKey:NSParagraphStyleAttributeName];
@@ -3054,8 +3054,9 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 {
     // Add a new tab stop - PQRulerView style
     NSPoint point = [self convertPoint: event.locationInWindow fromView: nil];
+    float delta = rulerView.originOffset;
     NSRulerMarker *marker = [NSRulerMarker leftTabMarkerWithRulerView:rulerView
-                                                             location:point.x + self.textContainer.lineFragmentPadding];
+                                                             location:point.x + delta];
     NSTextTab *tabstop = [[[NSTextTab alloc] initWithType: NSLeftTabStopType location: point.x] autorelease];
     [marker setRepresentedObject: tabstop];
     [rulerView trackMarker: marker withMouseEvent: event];
@@ -3068,12 +3069,18 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(float)rulerView:(NSRulerView *)rulerView willMoveMarker:(NSRulerMarker *)marker toLocation:(float)location
 {
+   if (location < rulerView.originOffset) {
+        location = rulerView.originOffset;
+    }
+    if (location > self.textContainer.containerSize.width - self.textContainer.lineFragmentPadding) {
+        location = self.textContainer.containerSize.width - self.textContainer.lineFragmentPadding;
+    }
     return location;
 }
 
 -(void)rulerView:(NSRulerView *)rulerView didMoveMarker:(NSRulerMarker *)marker
 {
-    float delta = self.textContainer.lineFragmentPadding;
+    float delta = rulerView.originOffset;
     float location = marker.markerLocation - delta;
     
     id representedObject = marker.representedObject;
@@ -3146,12 +3153,19 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(float)rulerView:(NSRulerView *)rulerView willAddMarker:(NSRulerMarker *)marker atLocation:(float)location
 {
+    if (location < rulerView.originOffset) {
+        location = rulerView.originOffset;
+    }
+    if (location > self.textContainer.containerSize.width - self.textContainer.lineFragmentPadding) {
+        location = self.textContainer.containerSize.width - self.textContainer.lineFragmentPadding;
+    }
     return location;
 }
 
 -(void)rulerView:(NSRulerView *)rulerView didAddMarker:(NSRulerMarker *)marker
 {
-    float delta = self.textContainer.lineFragmentPadding;
+    float delta = rulerView.originOffset;
+
     float location = marker.markerLocation - delta;
     
     id representedObject = marker.representedObject;
@@ -3215,9 +3229,6 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)rulerView:(NSRulerView *)rulerView didRemoveMarker:(NSRulerMarker *)marker
 {
-    float delta = self.textContainer.lineFragmentPadding;
-    float location = marker.markerLocation - delta;
-    
     id representedObject = marker.representedObject;
     if ([representedObject isKindOfClass:[NSTextTab class]]) {
         NSTextTab *textTab = (NSTextTab *)representedObject;

@@ -1744,7 +1744,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 {
     NSMutableArray *markers = [NSMutableArray array];
     
-    float delta = view.textContainer.lineFragmentPadding;
+    float delta = view.textContainer.lineFragmentPadding + view.textContainerOrigin.x;
     
     // Add the margins markers
 #if 0
