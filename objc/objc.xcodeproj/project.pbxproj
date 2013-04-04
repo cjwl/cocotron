@@ -1077,6 +1077,7 @@
 /* Begin XCBuildConfiguration section */
 		15D921E3105E922600171406 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C517093597002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = arm;
 				DEPLOYMENT_LOCATION = YES;
@@ -1100,6 +1101,7 @@
 		};
 		15D921E4105E922600171406 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C517093597002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = arm;
 				DEPLOYMENT_LOCATION = YES;
@@ -1129,6 +1131,7 @@
 		};
 		28D484FB0FE04DDD00DC03EF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C717093597002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
@@ -1152,6 +1155,7 @@
 		};
 		28D484FC0FE04DDD00DC03EF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C717093597002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
@@ -1175,6 +1179,7 @@
 		};
 		7E891EB60D4961EA008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C617093597002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1198,6 +1203,7 @@
 		};
 		7E891EB70D4961EA008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C917093597002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = sparc;
 				DEPLOYMENT_LOCATION = YES;
@@ -1221,6 +1227,7 @@
 		};
 		7E891EB90D4961EA008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C117093597002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1243,6 +1250,7 @@
 		};
 		7E891EBA0D4961EA008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C217093597002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
@@ -1303,6 +1311,7 @@
 		};
 		FE4034580B42E8AF00CEC41A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C617093597002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1326,6 +1335,7 @@
 		};
 		FE4034890B42E94D00CEC41A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C917093597002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = sparc;
 				DEPLOYMENT_LOCATION = YES;
@@ -1349,6 +1359,7 @@
 		};
 		FE5A868810C6EDDC005E348A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C417093597002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1372,6 +1383,7 @@
 		};
 		FE5A868910C6EDDC005E348A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C417093597002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1395,6 +1407,7 @@
 		};
 		FE651A9B0FBC84DD00464BFD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C317093597002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = x86_64;
 				DEPLOYMENT_LOCATION = YES;
@@ -1417,6 +1430,7 @@
 		};
 		FE651A9C0FBC84DD00464BFD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C317093597002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1439,6 +1453,7 @@
 		};
 		FED70AA70C3B3F5E000CBE5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C117093597002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -1461,6 +1476,7 @@
 		};
 		FED70FC70C3C0A17000CBE5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3C217093597002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;

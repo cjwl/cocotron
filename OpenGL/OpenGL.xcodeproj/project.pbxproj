@@ -442,6 +442,7 @@
 		};
 		C8E0BE890F0E544700677729 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3D3170935A2002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -459,6 +460,7 @@
 		};
 		FE5A876210C6F244005E348A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3D6170935A2002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;

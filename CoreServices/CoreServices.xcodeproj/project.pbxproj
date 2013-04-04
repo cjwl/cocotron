@@ -575,7 +575,7 @@
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE06B1CB1430E7AF0071169B /* windows-i386.xcconfig */;
+			baseConfigurationReference = FE708626143117B300B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = Info.plist;
@@ -611,6 +611,7 @@
 		};
 		FE8492EF119A5EA000E252CC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3941709356B002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -651,6 +652,7 @@
 		};
 		FEC32E50115909F00008ECE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE708626143117B300B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -691,6 +693,7 @@
 		};
 		FEC32E6111590A130008ECE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3961709356B002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

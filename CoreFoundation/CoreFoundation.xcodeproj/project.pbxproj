@@ -1195,6 +1195,7 @@
 		};
 		FE5A86C610C6EE28005E348A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B41709358C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1215,6 +1216,7 @@
 		};
 		FE5A86C710C6EE28005E348A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B41709358C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1235,6 +1237,7 @@
 		};
 		FEA828E2109B754A00C7A732 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B61709358C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1255,6 +1258,7 @@
 		};
 		FEA828E3109B754A00C7A732 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B61709358C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1275,6 +1279,7 @@
 		};
 		FEA82954109B75D600C7A732 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B11709358C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1295,6 +1300,7 @@
 		};
 		FEA82955109B75D600C7A732 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B11709358C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1315,6 +1321,7 @@
 		};
 		FEA8298E109B773300C7A732 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B51709358C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1335,6 +1342,7 @@
 		};
 		FEA8298F109B773300C7A732 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B51709358C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1355,6 +1363,7 @@
 		};
 		FEA829CB109B7BFD00C7A732 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B71709358C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1375,6 +1384,7 @@
 		};
 		FEA829CC109B7BFD00C7A732 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3B71709358C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

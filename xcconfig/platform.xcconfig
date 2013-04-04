@@ -1,3 +1,8 @@
+
+DSTROOT = ../system/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+
+INSTALL_PATH = /Frameworks
+
 SYMROOT = ../build
 OBJROOT = build
 

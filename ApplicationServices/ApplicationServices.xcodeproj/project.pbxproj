@@ -821,6 +821,7 @@
 		};
 		C88977380EA0C0CD00D0A0A2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3E8170935BF002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -843,6 +844,7 @@
 		};
 		C8A2E28F0F07E9B70054397C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3E3170935BF002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -880,6 +882,7 @@
 		};
 		FE5A88A310C6F34A005E348A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3E6170935BF002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -924,6 +927,7 @@
 		};
 		FEDE64AC118A725B009C3494 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3E8170935BF002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -946,6 +950,7 @@
 		};
 		FEDE64AD118A725B009C3494 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3E3170935BF002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
@@ -967,6 +972,7 @@
 		};
 		FEDE64AE118A725B009C3494 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3E6170935BF002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
