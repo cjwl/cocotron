@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE43015C11E2531F00EBDD56 /* CVDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE43016711E2534D00EBDD56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE43017C11E253E900EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43017B11E253E900EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE43045911E2769E00EBDD56 /* CVBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045811E2769E00EBDD56 /* CVBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE43045B11E2779700EBDD56 /* CVReturn.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045A11E2779700EBDD56 /* CVReturn.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -145,17 +144,6 @@
 		FE43045A11E2779700EBDD56 /* CVReturn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVReturn.h; sourceTree = "<group>"; };
 		FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		8DC2EF560486A6940098B216 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FE43016711E2534D00EBDD56 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
@@ -298,8 +286,6 @@
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
-				8DC2EF540486A6940098B216 /* Sources */,
-				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -449,16 +435,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXSourcesBuildPhase section */
-		8DC2EF540486A6940098B216 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
 /* Begin PBXTargetDependency section */
 		50ACFD5D1275F6F8008BEDDD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -488,8 +464,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = CoreVideo;
 			};

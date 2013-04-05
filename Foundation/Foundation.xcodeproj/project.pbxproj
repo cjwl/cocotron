@@ -6418,129 +6418,6 @@
 		FEFF23940BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		15D921BB105E918000171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		15D921BC105E918000171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		28D487A40FE04E7100DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		28D487A50FE04E7100DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6E4D93250A2642BD003D335C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6E4D93260A2642BD003D335C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6EA04A7109E57D5F0067589C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6EA04A7209E57D5F0067589C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE30A2FB10C6ED6F00A1BF7F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FED70FB30C3C09C7000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FED70FB40C3C09C7000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		15D921E8105E924500171406 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -12152,8 +12029,6 @@
 				15D921AF105E918000171406 /* Resources */,
 			);
 			buildRules = (
-				15D921BB105E918000171406 /* PBXBuildRule */,
-				15D921BC105E918000171406 /* PBXBuildRule */,
 			);
 			dependencies = (
 				15D921EB105E927F00171406 /* PBXTargetDependency */,
@@ -12175,8 +12050,6 @@
 				28D487990FE04E7100DC03EF /* Resources */,
 			);
 			buildRules = (
-				28D487A40FE04E7100DC03EF /* PBXBuildRule */,
-				28D487A50FE04E7100DC03EF /* PBXBuildRule */,
 			);
 			dependencies = (
 				28D487AF0FE04F3F00DC03EF /* PBXTargetDependency */,
@@ -12198,8 +12071,6 @@
 				6E4D93160A2642BD003D335C /* Resources */,
 			);
 			buildRules = (
-				6E4D93250A2642BD003D335C /* PBXBuildRule */,
-				6E4D93260A2642BD003D335C /* PBXBuildRule */,
 			);
 			dependencies = (
 				1A27C00B1090CC7200C44FD7 /* PBXTargetDependency */,
@@ -12221,8 +12092,6 @@
 				6EA04A6109E57D5F0067589C /* Resources */,
 			);
 			buildRules = (
-				6EA04A7109E57D5F0067589C /* PBXBuildRule */,
-				6EA04A7209E57D5F0067589C /* PBXBuildRule */,
 			);
 			dependencies = (
 				FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */,
@@ -12267,8 +12136,6 @@
 				FE30A2EE10C6ED6F00A1BF7F /* Resources */,
 			);
 			buildRules = (
-				FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */,
-				FE30A2FB10C6ED6F00A1BF7F /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE5A86D210C6EE82005E348A /* PBXTargetDependency */,
@@ -12333,8 +12200,6 @@
 				FED70FA60C3C09C7000CBE5B /* Resources */,
 			);
 			buildRules = (
-				FED70FB30C3C09C7000CBE5B /* PBXBuildRule */,
-				FED70FB40C3C09C7000CBE5B /* PBXBuildRule */,
 			);
 			dependencies = (
 				FED70FCE0C3C0A4F000CBE5B /* PBXTargetDependency */,
@@ -16233,16 +16098,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16263,7 +16124,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
@@ -16271,13 +16131,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16298,7 +16154,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
@@ -16306,11 +16161,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -16333,7 +16184,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};
@@ -16341,11 +16191,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -16366,7 +16212,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -16380,13 +16225,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -16406,8 +16245,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/sparc;
-				VALID_ARCHS = sparc;
 			};
 			name = Release;
 		};
@@ -16415,14 +16252,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -16443,7 +16274,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -16457,7 +16287,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
@@ -16492,12 +16322,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16518,7 +16342,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -16526,13 +16349,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16551,8 +16368,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/sparc;
-				VALID_ARCHS = sparc;
 			};
 			name = Debug;
 		};
@@ -16560,13 +16375,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16583,7 +16394,6 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -16591,10 +16401,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -16610,7 +16417,6 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Debug;
 		};
@@ -16647,7 +16453,7 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
@@ -16681,18 +16487,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16710,7 +16509,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -16718,15 +16516,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16745,7 +16536,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -16753,14 +16543,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
-				DEPLOYMENT_LOCATION = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -16777,7 +16562,6 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Release;
 		};
@@ -16785,13 +16569,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16808,7 +16587,6 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Debug;
 		};
@@ -16816,14 +16594,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16840,7 +16614,6 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -16848,10 +16621,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -16868,7 +16638,6 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Release;
 		};

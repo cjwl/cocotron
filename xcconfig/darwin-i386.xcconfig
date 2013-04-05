@@ -1,5 +1,6 @@
 #include "darwin"
-EFFECTIVE_PLATFORM_NAME = -darwin-i386
+
+EFFECTIVE_PLATFORM_NAME = -darwin
 
 GCC_VERSION = com.apple.compilers.llvm.clang.1_0
 

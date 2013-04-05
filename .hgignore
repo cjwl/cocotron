@@ -4,7 +4,8 @@ syntax: glob
 *.pbxuser
 *.perspectivev3
 *.mode2v3
-build
+build.sym
+build.obj
 
 .svn
 .DS_Store
@@ -16,3 +17,4 @@ build
 
 xcuserdata
 project.xcworkspace
+system

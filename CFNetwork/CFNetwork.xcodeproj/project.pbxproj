@@ -29,25 +29,6 @@
 		FEC32E3B115909B30008ECE5 /* CFNetworkExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1221810EFCB9A00FD1B47 /* CFNetworkExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE84930B119AF77F00E252CC /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FEA752EF114EB30B00AF634E /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -265,7 +246,6 @@
 				FE849305119AF77F00E252CC /* Headers */,
 			);
 			buildRules = (
-				FE84930B119AF77F00E252CC /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -282,7 +262,6 @@
 				FEA752E9114EB30B00AF634E /* Headers */,
 			);
 			buildRules = (
-				FEA752EF114EB30B00AF634E /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -355,11 +334,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7084D21431172900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
 			};
 			name = Debug;
 		};
@@ -367,11 +343,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7084D21431172900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
 			};
 			name = Release;
 		};
@@ -391,19 +364,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3A417093576002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -411,19 +373,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3A417093576002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -431,19 +382,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3A617093576002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -451,19 +391,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3A617093576002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -471,19 +400,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3A117093576002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -491,19 +409,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3A117093576002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
-				SDKROOT = "";
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};

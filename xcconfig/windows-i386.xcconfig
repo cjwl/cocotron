@@ -1,11 +1,10 @@
 #include "windows"
 
-EFFECTIVE_PLATFORM_NAME = -windows-i386
+EFFECTIVE_PLATFORM_NAME = -windows
 
 GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 
 ARCHS = i386
-INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks
 OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type -isystem /Developer/Cocotron/1.0/Windows/i386
 GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 

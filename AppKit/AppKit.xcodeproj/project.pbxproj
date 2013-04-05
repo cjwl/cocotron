@@ -3194,6 +3194,7 @@
 		FE5C69A20D76039F00098551 /* O2DeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */; };
 		FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */; };
 		FE5F4CA912A860BA00F5F334 /* O2Context_gdi+AppKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5F4CA712A860BA00F5F334 /* O2Context_gdi+AppKit.m */; };
+		FE642EF1170E6C3D00DFF7FF /* platform-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE642EF0170E6C3D00DFF7FF /* platform-framework.xcconfig */; };
 		FE669C920F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
 		FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
 		FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
@@ -3558,39 +3559,6 @@
 		FEF9CCC40E1416C4003502ED /* O2Context_builtin_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CCC20E1416C4003502ED /* O2Context_builtin_gdi.m */; };
 		FEFD32061434A4F400C14B08 /* O2Font_freetype.m in Sources */ = {isa = PBXBuildFile; fileRef = FE051BDA1221A2F40097BA92 /* O2Font_freetype.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildRule section */
-		C88977080EA0BF3100D0A0A2 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE01AABE0C5D9BCB00AEA51A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE5A8BDF10C6F50E005E348A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		6E46FEC70A2D2DCF004CD27E /* PBXContainerItemProxy */ = {
@@ -4558,6 +4526,7 @@
 		FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2DeviceContext_gdiDIBSection.m; sourceTree = "<group>"; };
 		FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O2Context_gdi+AppKit.h"; sourceTree = "<group>"; };
 		FE5F4CA712A860BA00F5F334 /* O2Context_gdi+AppKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2Context_gdi+AppKit.m"; sourceTree = "<group>"; };
+		FE642EF0170E6C3D00DFF7FF /* platform-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "platform-framework.xcconfig"; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
 		FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableParagraphStyle.m; sourceTree = "<group>"; };
 		FE64B8A70B81239D007EE513 /* O2ColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2ColorSpace.h; sourceTree = "<group>"; };
@@ -5777,6 +5746,7 @@
 		FE1E54DE1430303F000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FE642EF0170E6C3D00DFF7FF /* platform-framework.xcconfig */,
 				FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */,
 				FE1E54DF1430303F000D60A1 /* darwin-i386.xcconfig */,
 				FE1F65071508165000C24624 /* darwin-ppc-framework.xcconfig */,
@@ -7916,7 +7886,6 @@
 				C88977070EA0BF3100D0A0A2 /* Rez */,
 			);
 			buildRules = (
-				C88977080EA0BF3100D0A0A2 /* PBXBuildRule */,
 			);
 			dependencies = (
 				C889770F0EA0C06500D0A0A2 /* PBXTargetDependency */,
@@ -7964,7 +7933,6 @@
 				FE01AABD0C5D9BCB00AEA51A /* Rez */,
 			);
 			buildRules = (
-				FE01AABE0C5D9BCB00AEA51A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */,
@@ -7989,7 +7957,6 @@
 				FE5A8BDE10C6F50E005E348A /* Rez */,
 			);
 			buildRules = (
-				FE5A8BDF10C6F50E005E348A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE5A8BE610C6F546005E348A /* PBXTargetDependency */,
@@ -8446,6 +8413,7 @@
 				FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */,
 				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
 				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
+				FE642EF1170E6C3D00DFF7FF /* platform-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10516,7 +10484,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Windows/i386/libtiff/lib,
@@ -10560,15 +10528,9 @@
 		};
 		C889770A0EA0BF3100D0A0A2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1F650A1508165000C24624 /* linux-arm-framework.xcconfig */;
+			baseConfigurationReference = FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -10586,8 +10548,6 @@
 					/Developer/Cocotron/1.0/Linux/i386/include,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/lib;
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
@@ -10608,7 +10568,6 @@
 				);
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -10616,13 +10575,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -10639,8 +10593,7 @@
 					/Developer/Cocotron/1.0/Linux/i386/include/fontconfig,
 					/Developer/Cocotron/1.0/Linux/i386/include,
 				);
-				INFOPLIST_FILE = /Users/jobi/Projekte/cocotron/AppKit/Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/lib;
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
@@ -10660,7 +10613,6 @@
 					"-lfontconfig",
 				);
 				PRODUCT_NAME = AppKit;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -10668,11 +10620,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -10681,7 +10628,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					/usr/X11/include/fontconfig,
 					/usr/X11/include/freetype2,
@@ -10689,9 +10635,6 @@
 					/usr/X11/include,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
@@ -10718,7 +10661,6 @@
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -10726,11 +10668,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -10739,7 +10677,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Darwin/i386/include,
 					/Developer/Cocotron/1.0/Darwin/i386/include/X11,
@@ -10748,8 +10685,6 @@
 					/Developer/Cocotron/1.0/Darwin/i386/include/X11/fontconfig,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/lib;
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
@@ -10775,7 +10710,6 @@
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PRODUCT_NAME = AppKit;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -10800,7 +10734,7 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Windows/i386/libtiff/lib,
@@ -10843,14 +10777,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -10867,8 +10793,6 @@
 					/Developer/Cocotron/1.0/FreeBSD/i386/include,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/lib;
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
@@ -10888,7 +10812,6 @@
 				);
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -10896,14 +10819,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -10919,7 +10835,6 @@
 					/Developer/Cocotron/1.0/FreeBSD/i386/include/fontconfig,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/lib;
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
@@ -10938,7 +10853,6 @@
 					"-lfontconfig",
 				);
 				PRODUCT_NAME = AppKit;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};

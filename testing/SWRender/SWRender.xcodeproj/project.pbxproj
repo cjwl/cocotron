@@ -108,17 +108,6 @@
 		FEA47EC2101E44CD005820F3 /* redLZWSquare.tif in Resources */ = {isa = PBXBuildFile; fileRef = FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FEC64D790D92F14E0020233A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_2;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FE5C0E351162E81000065D1C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -485,7 +474,6 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 			);
 			buildRules = (
-				FEC64D790D92F14E0020233A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE5C0E3E1162E81800065D1C /* PBXTargetDependency */,

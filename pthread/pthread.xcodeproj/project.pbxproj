@@ -42,16 +42,6 @@
 		FEC0A3B017093581002A60B7 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		D2AAC0C505546C1D00DB518D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
@@ -125,8 +115,6 @@
 			buildConfigurationList = 1DEB917D08733D990010E9CD /* Build configuration list for PBXNativeTarget "pthread" */;
 			buildPhases = (
 				D2AAC0C305546C1D00DB518D /* Headers */,
-				D2AAC0C405546C1D00DB518D /* Sources */,
-				D2AAC0C505546C1D00DB518D /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -165,26 +153,15 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXSourcesBuildPhase section */
-		D2AAC0C405546C1D00DB518D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
 /* Begin XCBuildConfiguration section */
 		1DEB917E08733D990010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				PRIVATE_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				INSTALL_PATH = /;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
 				PRODUCT_NAME = pthread;
-				PUBLIC_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
 			};
 			name = Debug;
 		};
@@ -192,11 +169,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEPLOYMENT_POSTPROCESSING = NO;
-				PRIVATE_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				INSTALL_PATH = /;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
 				PRODUCT_NAME = pthread;
-				PUBLIC_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
 			};
 			name = Release;
 		};

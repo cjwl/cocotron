@@ -1,5 +1,8 @@
 #include "linux"
-EFFECTIVE_PLATFORM_NAME = -linux-i386
 
-GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.default
+EFFECTIVE_PLATFORM_NAME = -linux
 
+GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1
+
+ARCHS = i386
+VALID_ARCHS = i386

@@ -33,25 +33,6 @@
 		FED0C4A5170BCF700033C8E6 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C49D170BCF700033C8E6 /* solaris-sparc-framework.xcconfig */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE5A873B10C6F1E8005E348A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FECC1DDB108D02C600BD4A91 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		C8724ABF0EC706C200DBDDAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -475,7 +456,6 @@
 				FE5A873810C6F1E8005E348A /* Frameworks */,
 			);
 			buildRules = (
-				FE5A873B10C6F1E8005E348A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FEE044C310C99F84000BCEB8 /* PBXTargetDependency */,
@@ -496,7 +476,6 @@
 				FECC1DD0108D025D00BD4A91 /* Frameworks */,
 			);
 			buildRules = (
-				FECC1DDB108D02C600BD4A91 /* PBXBuildRule */,
 			);
 			dependencies = (
 				FECC1DDA108D027000BD4A91 /* PBXTargetDependency */,
@@ -748,8 +727,6 @@
 			baseConfigurationReference = FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
@@ -763,22 +740,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -786,22 +754,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -810,8 +769,6 @@
 			baseConfigurationReference = FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
@@ -825,38 +782,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = (
-					/Developer/Cocotron/1.0/FreeBSD/i386/include,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include/freetype2,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include/cairo,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include/fontconfig,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include,
-				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/lib;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lX11",
-					"-lcairo",
-					"-lfreetype",
-					"-lfontconfig",
-				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -864,23 +795,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -888,23 +808,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -912,23 +822,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};

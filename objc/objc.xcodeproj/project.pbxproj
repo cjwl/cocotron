@@ -187,15 +187,6 @@
 		FE88A1FA0F891D970081CFC1 /* deprecated.h in Headers */ = {isa = PBXBuildFile; fileRef = FE88A1F50F891D970081CFC1 /* deprecated.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEC0A3CA17093597002A60B7 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C117093597002A60B7 /* darwin-i386-framework.xcconfig */; };
-		FEC0A3CB17093597002A60B7 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C217093597002A60B7 /* darwin-ppc-framework.xcconfig */; };
-		FEC0A3CC17093597002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C317093597002A60B7 /* darwin-x86_64-framework.xcconfig */; };
-		FEC0A3CD17093597002A60B7 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C417093597002A60B7 /* freebsd-i386-framework.xcconfig */; };
-		FEC0A3CE17093597002A60B7 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C517093597002A60B7 /* linux-arm-framework.xcconfig */; };
-		FEC0A3CF17093597002A60B7 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C617093597002A60B7 /* linux-i386-framework.xcconfig */; };
-		FEC0A3D017093597002A60B7 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C717093597002A60B7 /* linux-ppc-framework.xcconfig */; };
-		FEC0A3D117093597002A60B7 /* platform.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C817093597002A60B7 /* platform.xcconfig */; };
-		FEC0A3D217093597002A60B7 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3C917093597002A60B7 /* solaris-sparc-framework.xcconfig */; };
 		FED70AA00C3B3F5E000CBE5B /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70AA10C3B3F5E000CBE5B /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70AA20C3B3F5E000CBE5B /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -215,73 +206,6 @@
 		FEDB75CF0F8A9EFE00AC545D /* Object.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDB75C50F8A9EFE00AC545D /* Object.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEDB75D00F8A9EFE00AC545D /* Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDB75C60F8A9EFE00AC545D /* Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildRule section */
-		15D921E1105E922600171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		28D484F90FE04DDD00DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE4034560B42E8AF00CEC41A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE4034870B42E94D00CEC41A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.4_0_3;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE5A868610C6EDDC005E348A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE651A990FBC84DD00464BFD /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FED70AA50C3B3F5E000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FED70FC50C3C0A17000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
 		15D921E5105E922600171406 /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -810,7 +734,6 @@
 				15D921E0105E922600171406 /* Resources */,
 			);
 			buildRules = (
-				15D921E1105E922600171406 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -828,7 +751,6 @@
 				28D484F80FE04DDD00DC03EF /* Resources */,
 			);
 			buildRules = (
-				28D484F90FE04DDD00DC03EF /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -863,7 +785,6 @@
 				FE4034550B42E8AF00CEC41A /* Resources */,
 			);
 			buildRules = (
-				FE4034560B42E8AF00CEC41A /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -881,7 +802,6 @@
 				FE4034860B42E94D00CEC41A /* Resources */,
 			);
 			buildRules = (
-				FE4034870B42E94D00CEC41A /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -899,7 +819,6 @@
 				FE5A868510C6EDDC005E348A /* Resources */,
 			);
 			buildRules = (
-				FE5A868610C6EDDC005E348A /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -917,7 +836,6 @@
 				FE651A980FBC84DD00464BFD /* Resources */,
 			);
 			buildRules = (
-				FE651A990FBC84DD00464BFD /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -935,7 +853,6 @@
 				FED70AA40C3B3F5E000CBE5B /* Resources */,
 			);
 			buildRules = (
-				FED70AA50C3B3F5E000CBE5B /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -953,7 +870,6 @@
 				FED70FC40C3C0A17000CBE5B /* Resources */,
 			);
 			buildRules = (
-				FED70FC50C3C0A17000CBE5B /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -1018,15 +934,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEC0A3CA17093597002A60B7 /* darwin-i386-framework.xcconfig in Resources */,
-				FEC0A3CB17093597002A60B7 /* darwin-ppc-framework.xcconfig in Resources */,
-				FEC0A3CC17093597002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FEC0A3CD17093597002A60B7 /* freebsd-i386-framework.xcconfig in Resources */,
-				FEC0A3CE17093597002A60B7 /* linux-arm-framework.xcconfig in Resources */,
-				FEC0A3CF17093597002A60B7 /* linux-i386-framework.xcconfig in Resources */,
-				FEC0A3D017093597002A60B7 /* linux-ppc-framework.xcconfig in Resources */,
-				FEC0A3D117093597002A60B7 /* platform.xcconfig in Resources */,
-				FEC0A3D217093597002A60B7 /* solaris-sparc-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1079,23 +986,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C517093597002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = arm;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
@@ -1103,23 +995,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C517093597002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = arm;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
@@ -1133,23 +1010,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C717093597002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__BIG_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};
@@ -1157,23 +1019,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C717093597002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__BIG_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -1181,23 +1028,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C617093597002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
@@ -1205,23 +1037,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C917093597002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__BIG_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Solaris/sparc;
 			};
 			name = Debug;
 		};
@@ -1229,22 +1046,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C117093597002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -1252,22 +1055,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C217093597002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Debug;
 		};
@@ -1275,14 +1064,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-				);
 				PRODUCT_NAME = objc;
 			};
 			name = Debug;
@@ -1297,14 +1079,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7086CF1431182900B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-				);
 				PRODUCT_NAME = objc;
 			};
 			name = Release;
@@ -1313,23 +1088,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C617093597002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -1337,23 +1097,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C917093597002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__BIG_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Solaris/sparc;
 			};
 			name = Release;
 		};
@@ -1361,23 +1106,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C417093597002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
@@ -1385,23 +1115,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C417093597002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
@@ -1409,22 +1124,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C317093597002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Release;
 		};
@@ -1432,22 +1133,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C317093597002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -1455,22 +1142,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C117093597002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/arwin/i386;
 			};
 			name = Release;
 		};
@@ -1478,22 +1151,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3C217093597002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				OTHER_CFLAGS = (
-					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = objc;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Release;
 		};

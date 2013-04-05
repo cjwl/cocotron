@@ -1,4 +1,7 @@
 #include "linux"
-EFFECTIVE_PLATFORM_NAME = -linux-arm
+
+EFFECTIVE_PLATFORM_NAME = -linux
 
 GCC_VERSION = org.cocotron.1.0.linux.arm.gcc.default
+
+ARCHS = arm

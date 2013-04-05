@@ -274,10 +274,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE708774143118B200B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				PREBINDING = NO;
 				PRODUCT_NAME = ScriptingBridge;
 			};
 			name = Release;

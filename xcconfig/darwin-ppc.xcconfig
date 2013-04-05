@@ -1,5 +1,6 @@
 #include "darwin"
-EFFECTIVE_PLATFORM_NAME = -darwin-ppc
+
+EFFECTIVE_PLATFORM_NAME = -darwin
 
 GCC_VERSION = com.apple.compilers.llvmgcc42
 

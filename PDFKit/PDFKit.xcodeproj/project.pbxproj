@@ -52,13 +52,6 @@
 			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
 			remoteInfo = "AppKit-Darwin-i386";
 		};
-		FE386EBF15269311007CC8C7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
-			remoteInfo = "AppKit-MacOS-i386";
-		};
 		FE386EC115269311007CC8C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE386E6C1526930D007CC8C7 /* AppKit.xcodeproj */;
@@ -233,7 +226,6 @@
 				FE386EBA15269311007CC8C7 /* AppKit.framework */,
 				FE386EBC15269311007CC8C7 /* AppKit.framework */,
 				FE386EBE15269311007CC8C7 /* AppKit.framework */,
-				FE386EC015269311007CC8C7 /* AppKit.framework */,
 				FE386EC215269311007CC8C7 /* AppKit.framework */,
 			);
 			name = Products;
@@ -334,13 +326,6 @@
 			remoteRef = FE386EBD15269311007CC8C7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE386EC015269311007CC8C7 /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FE386EBF15269311007CC8C7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FE386EC215269311007CC8C7 /* AppKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -404,19 +389,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7087151431186A00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_VERSION = A;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-D__LITTLE_ENDIAN__",
 					"-DPDFKIT_INSIDE_BUILD=1",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = PDFKit;
-				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
 		};
