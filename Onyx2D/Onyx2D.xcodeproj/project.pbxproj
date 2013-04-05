@@ -16,9 +16,7 @@
 		FE051C6F1221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE051C701221A7440097BA92 /* O2Font_freetype.h in Headers */ = {isa = PBXBuildFile; fileRef = FE051C6C1221A7440097BA92 /* O2Font_freetype.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE06A0131245A9270040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE06A0D41245A9270040F165 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE069F4D1245A9260040F165 /* InfoPlist.strings */; };
 		FE06A0D61245A9270040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE06A1971245A9270040F165 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE069F4D1245A9260040F165 /* InfoPlist.strings */; };
 		FE06A1991245A9270040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE06A25A1245A9280040F165 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE069F4D1245A9260040F165 /* InfoPlist.strings */; };
 		FE06A25C1245A9280040F165 /* O2GlyphStencil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE069F501245A9260040F165 /* O2GlyphStencil.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -385,14 +383,6 @@
 		FE99DB1F12843F74006D789F /* O2Encoder_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE99DB1712843F74006D789F /* O2Encoder_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE9ACF0C155EB85C002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9ACF08155EB85C002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.h */; };
 		FE9ACF0E155EB85C002AFCA9 /* O2ImageDecoder_JPEG_stb.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9ACF0A155EB85C002AFCA9 /* O2ImageDecoder_JPEG_stb.h */; };
-		FEC0A42F170935DE002A60B7 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A427170935DE002A60B7 /* darwin-i386-framework.xcconfig */; };
-		FEC0A430170935DE002A60B7 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A428170935DE002A60B7 /* darwin-ppc-framework.xcconfig */; };
-		FEC0A431170935DE002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A429170935DE002A60B7 /* darwin-x86_64-framework.xcconfig */; };
-		FEC0A432170935DE002A60B7 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A42A170935DE002A60B7 /* freebsd-i386-framework.xcconfig */; };
-		FEC0A433170935DE002A60B7 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A42B170935DE002A60B7 /* linux-arm-framework.xcconfig */; };
-		FEC0A434170935DE002A60B7 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A42C170935DE002A60B7 /* linux-i386-framework.xcconfig */; };
-		FEC0A435170935DE002A60B7 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A42D170935DE002A60B7 /* linux-ppc-framework.xcconfig */; };
-		FEC0A436170935DE002A60B7 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A42E170935DE002A60B7 /* solaris-sparc-framework.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1519,7 +1509,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Onyx2D" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1621,14 +1611,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEC0A42F170935DE002A60B7 /* darwin-i386-framework.xcconfig in Resources */,
-				FEC0A430170935DE002A60B7 /* darwin-ppc-framework.xcconfig in Resources */,
-				FEC0A431170935DE002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FEC0A432170935DE002A60B7 /* freebsd-i386-framework.xcconfig in Resources */,
-				FEC0A433170935DE002A60B7 /* linux-arm-framework.xcconfig in Resources */,
-				FEC0A434170935DE002A60B7 /* linux-i386-framework.xcconfig in Resources */,
-				FEC0A435170935DE002A60B7 /* linux-ppc-framework.xcconfig in Resources */,
-				FEC0A436170935DE002A60B7 /* solaris-sparc-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1637,7 +1619,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0C561162A99A00065D1C /* InfoPlist.strings in Resources */,
-				FE06A0D41245A9270040F165 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1646,7 +1627,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0CF61162A9AB00065D1C /* InfoPlist.strings in Resources */,
-				FE06A1971245A9270040F165 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

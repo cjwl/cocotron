@@ -11,15 +11,6 @@
 		C8A2E2730F07E9B70054397C /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5A889D10C6F34A005E348A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE642EC7170E5E8200DFF7FF /* platform-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE642EC6170E5E8200DFF7FF /* platform-framework.xcconfig */; };
-		FEC0A3EB170935BF002A60B7 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E3170935BF002A60B7 /* darwin-i386-framework.xcconfig */; };
-		FEC0A3EC170935BF002A60B7 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E4170935BF002A60B7 /* darwin-ppc-framework.xcconfig */; };
-		FEC0A3ED170935BF002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E5170935BF002A60B7 /* darwin-x86_64-framework.xcconfig */; };
-		FEC0A3EE170935BF002A60B7 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E6170935BF002A60B7 /* freebsd-i386-framework.xcconfig */; };
-		FEC0A3EF170935BF002A60B7 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E7170935BF002A60B7 /* linux-arm-framework.xcconfig */; };
-		FEC0A3F0170935BF002A60B7 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E8170935BF002A60B7 /* linux-i386-framework.xcconfig */; };
-		FEC0A3F1170935BF002A60B7 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3E9170935BF002A60B7 /* linux-ppc-framework.xcconfig */; };
-		FEC0A3F2170935BF002A60B7 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A3EA170935BF002A60B7 /* solaris-sparc-framework.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -482,7 +473,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "ApplicationServices" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -662,15 +653,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEC0A3EB170935BF002A60B7 /* darwin-i386-framework.xcconfig in Resources */,
-				FEC0A3EC170935BF002A60B7 /* darwin-ppc-framework.xcconfig in Resources */,
-				FEC0A3ED170935BF002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FEC0A3EE170935BF002A60B7 /* freebsd-i386-framework.xcconfig in Resources */,
-				FEC0A3EF170935BF002A60B7 /* linux-arm-framework.xcconfig in Resources */,
-				FEC0A3F0170935BF002A60B7 /* linux-i386-framework.xcconfig in Resources */,
-				FEC0A3F1170935BF002A60B7 /* linux-ppc-framework.xcconfig in Resources */,
-				FEC0A3F2170935BF002A60B7 /* solaris-sparc-framework.xcconfig in Resources */,
-				FE642EC7170E5E8200DFF7FF /* platform-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

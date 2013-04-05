@@ -2137,14 +2137,6 @@
 		FE1708061260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FE1707FC1260A1E000D18E9E /* NSEnterFullScreenTemplate.pdf */; };
 		FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
-		FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65061508164F00C24624 /* darwin-i386-framework.xcconfig */; };
-		FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65071508165000C24624 /* darwin-ppc-framework.xcconfig */; };
-		FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65081508165000C24624 /* darwin-x86_64-framework.xcconfig */; };
-		FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F65091508165000C24624 /* freebsd-i386-framework.xcconfig */; };
-		FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650A1508165000C24624 /* linux-arm-framework.xcconfig */; };
-		FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650B1508165000C24624 /* linux-i386-framework.xcconfig */; };
-		FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650C1508165000C24624 /* linux-ppc-framework.xcconfig */; };
-		FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1F650D1508165100C24624 /* solaris-sparc-framework.xcconfig */; };
 		FE20C20E11892436006F01BA /* CAAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20711892436006F01BA /* CAAnimation.m */; };
 		FE20C20F11892436006F01BA /* CIAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20811892436006F01BA /* CIAffineTransform.m */; };
 		FE20C21011892436006F01BA /* CIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE20C20911892436006F01BA /* CIColor.m */; };
@@ -3194,7 +3186,6 @@
 		FE5C69A20D76039F00098551 /* O2DeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* O2DeviceContext_gdiDIBSection.m */; };
 		FE5F4CA812A860BA00F5F334 /* O2Context_gdi+AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F4CA612A860BA00F5F334 /* O2Context_gdi+AppKit.h */; };
 		FE5F4CA912A860BA00F5F334 /* O2Context_gdi+AppKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5F4CA712A860BA00F5F334 /* O2Context_gdi+AppKit.m */; };
-		FE642EF1170E6C3D00DFF7FF /* platform-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE642EF0170E6C3D00DFF7FF /* platform-framework.xcconfig */; };
 		FE669C920F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
 		FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
 		FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
@@ -7976,7 +7967,7 @@
 		6E2B57700976075500DA0954 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -8404,16 +8395,7 @@
 				630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */,
-				FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */,
-				FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */,
-				FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */,
-				FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */,
-				FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */,
-				FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */,
-				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
 				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
-				FE642EF1170E6C3D00DFF7FF /* platform-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10467,7 +10449,6 @@
 		6E2B57760976075500DA0954 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 			};
 			name = Release;
 		};
@@ -10522,7 +10503,6 @@
 		7E891F4E0D4967B6008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 			};
 			name = Debug;
 		};

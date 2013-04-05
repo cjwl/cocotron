@@ -259,23 +259,6 @@
 		FEF88C37100CC62400B15FD7 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransform3D.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		FE2BFAFA10FB6D7E00D3E136 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE2BFAFE10FB6D9600D3E136 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
@@ -556,9 +539,7 @@
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-FreeBSD-i386" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
-				FE2BFB1310FB6DCE00D3E136 /* Sources */,
 				FE2BFB1410FB6DCE00D3E136 /* Resources */,
-				FE2BFAFA10FB6D7E00D3E136 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -597,9 +578,7 @@
 			buildConfigurationList = FED38C4B10E13E1000A2A651 /* Build configuration list for PBXNativeTarget "QuartzCore-Darwin-i386" */;
 			buildPhases = (
 				FED38C4410E13E1000A2A651 /* Headers */,
-				FE2BFB1510FB6DCE00D3E136 /* Sources */,
 				FE2BFB1610FB6DCE00D3E136 /* Resources */,
-				FE2BFAFE10FB6D9600D3E136 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -618,7 +597,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "QuartzCore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -738,23 +717,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		FE2BFB1310FB6DCE00D3E136 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE2BFB1510FB6DCE00D3E136 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		FE2A2CEE12D2C74E0028C06D /* PBXTargetDependency */ = {
