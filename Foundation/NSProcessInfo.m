@@ -14,7 +14,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSThread-Private.h>
 #import <Foundation/NSPlatform.h>
+#ifdef __WINDOWS__
 #import <Foundation/NSPlatform_win32.h>
+#endif
 #import <objc/runtime.h>
 
 @implementation NSProcessInfo
@@ -73,6 +75,7 @@ const char * const *NSProcessInfoArgv=NULL;
 }
 
 -(NSString *)operatingSystemVersionString {
+#ifdef __WINDOWS__
 	OSVERSIONINFOEX osVersion;
 	int systemVersion;
 	NSString* versionString;
@@ -129,6 +132,10 @@ const char * const *NSProcessInfoArgv=NULL;
 			return [NSString stringWithFormat: @"%d.%d %d %d", osVersion.dwMajorVersion, osVersion.dwMinorVersion, osVersion.wServicePackMajor, osVersion.wServicePackMinor ];
 			break;
 	}
+#else
+    NSUnimplementedMethod();
+    return 0;
+#endif
 }
 
 -(NSString *)hostName {
@@ -208,6 +215,8 @@ void __NSInitializeProcess(int argc,const char *argv[])
     Class cls = objc_lookUpClass("NSConstantString");
     memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
     cls = objc_lookUpClass("NSDarwinString");
+    extern int __CFConstantStringClassReference[1];
+
     memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
     
     // Override the compiler version of the class
