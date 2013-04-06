@@ -159,9 +159,9 @@
 			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				INSTALL_PATH = /;
-				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
+				PRIVATE_HEADERS_FOLDER_PATH = "/i386-mingw32msvc/include";
 				PRODUCT_NAME = pthread;
-				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = "/i386-mingw32msvc/include";
 			};
 			name = Debug;
 		};
@@ -170,9 +170,9 @@
 			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				INSTALL_PATH = /;
-				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
+				PRIVATE_HEADERS_FOLDER_PATH = "/i386-mingw32msvc/include";
 				PRODUCT_NAME = pthread;
-				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = "/i386-mingw32msvc/include";
 			};
 			name = Release;
 		};

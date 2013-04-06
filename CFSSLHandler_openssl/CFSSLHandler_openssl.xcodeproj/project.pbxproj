@@ -364,16 +364,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06AFC41430E6690071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/CoreFoundation.framework/Headers";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
+				INSTALL_PATH = /Frameworks/Foundation.framework/Resources;
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-lssl",
@@ -383,8 +379,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = CFSSLHandler_openssl;
-				SDKROOT = "";
-				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
 		};
@@ -392,14 +386,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06AFC41430E6690071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/CoreFoundation.framework/Headers";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
+				INSTALL_PATH = /Frameworks/Foundation.framework/Resources;
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-lssl",
@@ -409,8 +399,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = CFSSLHandler_openssl;
-				SDKROOT = "";
-				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};

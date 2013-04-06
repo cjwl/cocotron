@@ -4,8 +4,8 @@ syntax: glob
 *.pbxuser
 *.perspectivev3
 *.mode2v3
-build.sym
-build.obj
+build
+build
 
 .svn
 .DS_Store

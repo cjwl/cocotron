@@ -10,15 +10,6 @@
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		FE05C39F140C91D600B85148 /* NSSpellEngine_hunspell.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE05C39E140C91D600B85148 /* NSSpellEngine_hunspell.mm */; };
 		FE081A17141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE081A16141070CF00A3DE85 /* NSSpellEngine_hunspellDictionary.mm */; };
-		FEC0A349170934F0002A60B7 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A340170934EF002A60B7 /* darwin-i386-framework.xcconfig */; };
-		FEC0A34A170934F0002A60B7 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A341170934EF002A60B7 /* darwin-ppc-framework.xcconfig */; };
-		FEC0A34B170934F0002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A342170934F0002A60B7 /* darwin-x86_64-framework.xcconfig */; };
-		FEC0A34C170934F0002A60B7 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A343170934F0002A60B7 /* freebsd-i386-framework.xcconfig */; };
-		FEC0A34D170934F0002A60B7 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A344170934F0002A60B7 /* linux-arm-framework.xcconfig */; };
-		FEC0A34E170934F0002A60B7 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A345170934F0002A60B7 /* linux-i386-framework.xcconfig */; };
-		FEC0A34F170934F0002A60B7 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A346170934F0002A60B7 /* linux-ppc-framework.xcconfig */; };
-		FEC0A350170934F0002A60B7 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A347170934F0002A60B7 /* solaris-sparc-framework.xcconfig */; };
-		FEC0A351170934F0002A60B7 /* windows-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A348170934F0002A60B7 /* windows-i386-framework.xcconfig */; };
 		FEC24A24140DE31100DDAC92 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -224,15 +215,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
-				FEC0A349170934F0002A60B7 /* darwin-i386-framework.xcconfig in Resources */,
-				FEC0A34A170934F0002A60B7 /* darwin-ppc-framework.xcconfig in Resources */,
-				FEC0A34B170934F0002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FEC0A34C170934F0002A60B7 /* freebsd-i386-framework.xcconfig in Resources */,
-				FEC0A34D170934F0002A60B7 /* linux-arm-framework.xcconfig in Resources */,
-				FEC0A34E170934F0002A60B7 /* linux-i386-framework.xcconfig in Resources */,
-				FEC0A34F170934F0002A60B7 /* linux-ppc-framework.xcconfig in Resources */,
-				FEC0A350170934F0002A60B7 /* solaris-sparc-framework.xcconfig in Resources */,
-				FEC0A351170934F0002A60B7 /* windows-i386-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,19 +248,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B3271430E89E0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
-				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/lib";
-				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
+				INSTALL_PATH = /Frameworks/Foundation.framework/Resources;
 				OTHER_LDFLAGS = (
 					"-dynamic",
 					"-lhunspell.1.3.1",
@@ -286,7 +260,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = NSSpellEngine_hunspell;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = spellEngine;
 			};
 			name = Debug;
@@ -295,19 +268,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B3271430E89E0071169B /* windows-i386.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
-				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				HEADER_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/include/";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(INSTALL_PATH)/Foundation.framework/Resources";
-				LIBRARY_SEARCH_PATHS = "/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1/lib";
-				OTHER_CFLAGS = "-D__LITTLE_ENDIAN__";
+				INSTALL_PATH = /Frameworks/Foundation.framework/Resources;
 				OTHER_LDFLAGS = (
 					"-dynamic",
 					"-lhunspell.1.3.1",
@@ -315,7 +280,6 @@
 					"-Wl,--enable-auto-import",
 				);
 				PRODUCT_NAME = NSSpellEngine_hunspell;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = spellEngine;
 			};
 			name = Release;
