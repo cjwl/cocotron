@@ -186,6 +186,9 @@
 /* Begin PBXProject section */
 		FE1FBFF211E7804C00A9A87A /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
 			buildConfigurationList = FE1FBFF511E7804C00A9A87A /* Build configuration list for PBXProject "Cocotron" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

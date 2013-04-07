@@ -11,17 +11,7 @@
 		494DA9A9145C0D290001E307 /* libgdi32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 494DA9A8145C0D290001E307 /* libgdi32.a */; };
 		8D576314048677EA00EA77CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* Foundation.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
-		FE1DDD53171110D9003B3AF8 /* windows-i386-bundle.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FE1DDD52171110D9003B3AF8 /* windows-i386-bundle.xcconfig */; };
 		FE5C8314121D81470063E96F /* O2Context_AntiGrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE5C8313121D81470063E96F /* O2Context_AntiGrain.mm */; };
-		FEC0A35B170934FE002A60B7 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A352170934FE002A60B7 /* darwin-i386-framework.xcconfig */; };
-		FEC0A35C170934FE002A60B7 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A353170934FE002A60B7 /* darwin-ppc-framework.xcconfig */; };
-		FEC0A35D170934FE002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A354170934FE002A60B7 /* darwin-x86_64-framework.xcconfig */; };
-		FEC0A35E170934FE002A60B7 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A355170934FE002A60B7 /* freebsd-i386-framework.xcconfig */; };
-		FEC0A35F170934FE002A60B7 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A356170934FE002A60B7 /* linux-arm-framework.xcconfig */; };
-		FEC0A360170934FE002A60B7 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A357170934FE002A60B7 /* linux-i386-framework.xcconfig */; };
-		FEC0A361170934FE002A60B7 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A358170934FE002A60B7 /* linux-ppc-framework.xcconfig */; };
-		FEC0A362170934FE002A60B7 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A359170934FE002A60B7 /* solaris-sparc-framework.xcconfig */; };
-		FEC0A363170934FE002A60B7 /* windows-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEC0A35A170934FE002A60B7 /* windows-i386-framework.xcconfig */; };
 		FEE163EA137C6DAD00B2F340 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE163E9137C6DAD00B2F340 /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -276,6 +266,9 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
 			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "O2Context_AntiGrain" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -338,16 +331,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */,
-				FEC0A35B170934FE002A60B7 /* darwin-i386-framework.xcconfig in Resources */,
-				FEC0A35C170934FE002A60B7 /* darwin-ppc-framework.xcconfig in Resources */,
-				FEC0A35D170934FE002A60B7 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FEC0A35E170934FE002A60B7 /* freebsd-i386-framework.xcconfig in Resources */,
-				FEC0A35F170934FE002A60B7 /* linux-arm-framework.xcconfig in Resources */,
-				FEC0A360170934FE002A60B7 /* linux-i386-framework.xcconfig in Resources */,
-				FEC0A361170934FE002A60B7 /* linux-ppc-framework.xcconfig in Resources */,
-				FEC0A362170934FE002A60B7 /* solaris-sparc-framework.xcconfig in Resources */,
-				FEC0A363170934FE002A60B7 /* windows-i386-framework.xcconfig in Resources */,
-				FE1DDD53171110D9003B3AF8 /* windows-i386-bundle.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,10 +393,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				GCC_OPTIMIZATION_LEVEL = 1;
-				HEADER_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/agg-2.4/include/";
+				HEADER_SEARCH_PATHS = "$DSTROOT/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Frameworks/AppKit.framework/Resources;
-				LIBRARY_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/agg-2.4";
+				LIBRARY_SEARCH_PATHS = "$DSTROOT/agg-2.4";
 				OTHER_LDFLAGS = (
 					"-static",
 					"-lagg",
@@ -431,10 +414,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				GCC_OPTIMIZATION_LEVEL = 3;
-				HEADER_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/agg-2.4/include/";
+				HEADER_SEARCH_PATHS = "$DSTROOT/agg-2.4/include/";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Frameworks/AppKit.framework/Resources;
-				LIBRARY_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/agg-2.4";
+				LIBRARY_SEARCH_PATHS = "$DSTROOT/agg-2.4";
 				OTHER_LDFLAGS = (
 					"-static",
 					"-lagg",

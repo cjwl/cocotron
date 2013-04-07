@@ -1,6 +1,7 @@
 #include "darwin"
 
 EFFECTIVE_PLATFORM_NAME = -darwin
+TARGET_TRIPLE = i686-apple-darwin
 
 GCC_VERSION = com.apple.compilers.llvm.clang.1_0
 

@@ -1,6 +1,7 @@
 #include "linux"
 
 EFFECTIVE_PLATFORM_NAME = -linux
+TARGET_TRIPLE = i386-pc-linux
 
 GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1
 

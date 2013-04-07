@@ -23,14 +23,6 @@
 		FECC1DCF108D025D00BD4A91 /* Cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */; };
 		FECC1DD1108D025D00BD4A91 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FECC1DD2108D025D00BD4A91 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
-		FED0C49E170BCF700033C8E6 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */; };
-		FED0C49F170BCF700033C8E6 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C497170BCF700033C8E6 /* darwin-ppc-framework.xcconfig */; };
-		FED0C4A0170BCF700033C8E6 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C498170BCF700033C8E6 /* darwin-x86_64-framework.xcconfig */; };
-		FED0C4A1170BCF700033C8E6 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */; };
-		FED0C4A2170BCF700033C8E6 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C49A170BCF700033C8E6 /* linux-arm-framework.xcconfig */; };
-		FED0C4A3170BCF700033C8E6 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */; };
-		FED0C4A4170BCF700033C8E6 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C49C170BCF700033C8E6 /* linux-ppc-framework.xcconfig */; };
-		FED0C4A5170BCF700033C8E6 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FED0C49D170BCF700033C8E6 /* solaris-sparc-framework.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -609,14 +601,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FED0C49E170BCF700033C8E6 /* darwin-i386-framework.xcconfig in Resources */,
-				FED0C49F170BCF700033C8E6 /* darwin-ppc-framework.xcconfig in Resources */,
-				FED0C4A0170BCF700033C8E6 /* darwin-x86_64-framework.xcconfig in Resources */,
-				FED0C4A1170BCF700033C8E6 /* freebsd-i386-framework.xcconfig in Resources */,
-				FED0C4A2170BCF700033C8E6 /* linux-arm-framework.xcconfig in Resources */,
-				FED0C4A3170BCF700033C8E6 /* linux-i386-framework.xcconfig in Resources */,
-				FED0C4A4170BCF700033C8E6 /* linux-ppc-framework.xcconfig in Resources */,
-				FED0C4A5170BCF700033C8E6 /* solaris-sparc-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

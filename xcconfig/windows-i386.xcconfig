@@ -1,12 +1,13 @@
 #include "windows"
 
 EFFECTIVE_PLATFORM_NAME = -windows
+TARGET_TRIPLE = i386-mingw32msvc
 
 GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 
 ARCHS = i386
-OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type -isystem $DSTROOT/i386-mingw32msvc/include
-LIBRARY_SEARCH_PATHS = $DSTROOT/i386-mingw32msvc/lib
+OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type -isystem $DSTROOT/$TARGET_TRIPLE/include
+LIBRARY_SEARCH_PATHS = $DSTROOT/$TARGET_TRIPLE/lib
 
 GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 
