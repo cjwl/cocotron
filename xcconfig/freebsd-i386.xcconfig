@@ -1,7 +1,7 @@
 #include "freebsd"
 
 EFFECTIVE_PLATFORM_NAME = -freebsd
-TARGET_TRIPLE = i386-pc-freebsd
+INSTALL_TARGET_TRIPLE = i386-pc-freebsd
 
 GCC_VERSION = org.cocotron.1.0.freebsd.i386.gcc.default
 
