@@ -368,8 +368,10 @@
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/openssl-0.9.8h-1/include";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Frameworks/Foundation.framework/Resources;
+				LIBRARY_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/openssl-0.9.8h-1/lib";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-lssl",
@@ -388,8 +390,10 @@
 			buildSettings = {
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .1.0.dll;
+				HEADER_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/openssl-0.9.8h-1/include";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Frameworks/Foundation.framework/Resources;
+				LIBRARY_SEARCH_PATHS = "$DSTROOT/i386-mingw32msvc/openssl-0.9.8h-1/lib";
 				OTHER_LDFLAGS = (
 					"-shared",
 					"-lssl",

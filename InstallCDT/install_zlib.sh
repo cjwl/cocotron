@@ -7,7 +7,7 @@ scriptResources=$installResources/scripts
 productFolder=/Developer/Cocotron/1.0
 downloadFolder=$productFolder/Downloads
 
-PREFIX=/Developer/Cocotron/1.0/Windows/i386/
+PREFIX=`pwd`/../system/i386-mingw32msvc/
 
 # We need the headers/libraries, zlib.net only provides a dll or source which is more work
 
