@@ -11,6 +11,11 @@
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSRaiseException.h>
 
+// only needed for Darwin ppc
+struct objc_class _NSConstantStringClassReference;
+// only needed for Darwin i386
+int __CFConstantStringClassReference[1];
+
 @implementation NSDarwinString
 
 -copy {
