@@ -13,8 +13,13 @@
 
 // only needed for Darwin ppc
 struct objc_class _NSConstantStringClassReference;
+
 // only needed for Darwin i386
-int __CFConstantStringClassReference[1];
+#if __LP64__
+int __CFConstantStringClassReference[24] = {0};
+#else
+int __CFConstantStringClassReference[12] = {0};
+#endif
 
 @implementation NSDarwinString
 
