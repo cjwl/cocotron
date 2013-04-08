@@ -983,7 +983,20 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     
     while(location<limit){
      NSRange          effectiveRange;
-     NSDictionary    *attributes=[_textStorage attributesAtIndex:location effectiveRange:&effectiveRange];
+     NSDictionary    *attributes=[_textStorage attributesAtIndex: location effectiveRange: &effectiveRange];
+     NSRange          tmpEffectiveRange;
+     NSDictionary    *tmpAttrs = [self temporaryAttributesAtCharacterIndex: location effectiveRange: &tmpEffectiveRange];
+    if ([tmpAttrs count] > 0) {
+        BOOL checkTemporaryAttributesUsage = [_delegate respondsToSelector:@selector(layoutManager:shouldUseTemporaryAttributes:forDrawingToScreen:atCharacterIndex:effectiveRange:)];
+        if (checkTemporaryAttributesUsage) {
+            tmpAttrs = [_delegate layoutManager: self shouldUseTemporaryAttributes: tmpAttrs forDrawingToScreen: [[NSGraphicsContext currentContext] isDrawingToScreen] atCharacterIndex: location effectiveRange: NULL];
+        }
+        NSMutableDictionary *dict = [[attributes mutableCopy] autorelease];
+        [dict addEntriesFromDictionary: tmpAttrs];
+        attributes = dict;
+        effectiveRange = tmpEffectiveRange;
+    }
+
 	 NSColor         *color=[attributes objectForKey:NSBackgroundColorAttributeName];
 
      effectiveRange=NSIntersectionRange(characterRange,effectiveRange);
