@@ -52,5 +52,5 @@ make -p $BINARY_PATH
 make -p $LIBRARY_PATH
 make -p $INCLUDE_PATH
 
-PATH=$COCOTRON/binutils-2.19/binutils:$PATH make -f win32/Makefile.gcc  CC=$GCC AR=$AR RANLIB=$RANLIB RCFLAGS="-I /Developer/Cocotron/1.0/PlatformInterfaces/i386-mingw32msvc/include -DGCC_WINDRES" BINARY_PATH=$BINARY_PATH INCLUDE_PATH=$INCLUDE_PATH LIBRARY_PATH=$LIBRARY_PATH SHARED_MODE=1 install
+PATH=$COCOTRON/binutils-2.21-20111025/binutils:$PATH make -f win32/Makefile.gcc  CC=$GCC AR=$AR RANLIB=$RANLIB RCFLAGS="-I /Developer/Cocotron/1.0/PlatformInterfaces/i386-mingw32msvc/include -DGCC_WINDRES" BINARY_PATH=$BINARY_PATH INCLUDE_PATH=$INCLUDE_PATH LIBRARY_PATH=$LIBRARY_PATH SHARED_MODE=1 install
 

@@ -26,13 +26,15 @@ fi
 BASEDIR=/Developer/Cocotron/1.0/$targetPlatform/$targetArchitecture
 
 BUILD=/tmp/build_png
+LIBPNGVERSION=libpng16
+VERSION=1.6.1
 
-$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libpng/libpng15/1.5.10/libpng-1.5.10.tar.bz2
+$scriptResources/downloadFilesIfNeeded.sh $downloadFolder ftp://ftp.simplesystems.org/pub/libpng/png/src/${LIBPNGVERSION}/libpng-${VERSION}.tar.gz
 
 mkdir -p $BUILD
 cd $BUILD
-tar -xvjf $downloadFolder/libpng-1.5.10.tar.bz2
-cd libpng-1.5.10
+tar -xvzf $downloadFolder/libpng-${VERSION}.tar.gz
+cd libpng-${VERSION}
 
 pwd 
 
@@ -53,12 +55,14 @@ LIBRARY_PATH=$INSTALL_PREFIX/lib
 export LDFLAGS="-L$BASEDIR/zlib-1.2.5/lib"
 export CFLAGS="-I$BASEDIR/zlib-1.2.5/include"
 
+GCC="$GCC $CFLAGS"
 
 make -p $BINARY_PATH
 make -p $LIBRARY_PATH
 make -p $INCLUDE_PATH
 
-./configure --prefix="$INSTALL_PREFIX" -host $TARGET AR=$AR CC=$GCC RANLIB=$RANLIB AS=$AS 
+echo ./configure --prefix="$INSTALL_PREFIX" -host $TARGET AR=$AR CC=$GCC RANLIB=$RANLIB AS=$AS 
+./configure --prefix="$INSTALL_PREFIX" -host $TARGET -with-zlib-prefix=$BASEDIR/zlib-1.2.5 AR="$AR" CC="$GCC" RANLIB="$RANLIB" AS="$AS"
 
 make && make install
 
