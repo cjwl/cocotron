@@ -8562,7 +8562,7 @@
 				FE1342C91151842200404745 /* CoreServices.framework */,
 				FEC32E56115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6711590A130008ECE5 /* CoreServices.framework */,
-				FE1DDE8E17125CE7003B3AF8 /* CoreServices-Darwin-i386 copy.framework */,
+				FE1DDE8E17125CE7003B3AF8 /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8781,7 +8781,7 @@
 				FEA82994109B775200C7A732 /* CoreFoundation.framework */,
 				FEA829D1109B7C1B00C7A732 /* CoreFoundation.framework */,
 				FE5A86CC10C6EE28005E348A /* CoreFoundation.framework */,
-				FE1DDE7D17125CB9003B3AF8 /* CoreFoundation-Darwin-i386 copy.framework */,
+				FE1DDE7D17125CB9003B3AF8 /* CoreFoundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -12277,17 +12277,17 @@
 			remoteRef = FE1342C81151842200404745 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE1DDE7D17125CB9003B3AF8 /* CoreFoundation-Darwin-i386 copy.framework */ = {
+		FE1DDE7D17125CB9003B3AF8 /* CoreFoundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = "CoreFoundation-Darwin-i386 copy.framework";
+			path = CoreFoundation.framework;
 			remoteRef = FE1DDE7C17125CB9003B3AF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE1DDE8E17125CE7003B3AF8 /* CoreServices-Darwin-i386 copy.framework */ = {
+		FE1DDE8E17125CE7003B3AF8 /* CoreServices.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = "CoreServices-Darwin-i386 copy.framework";
+			path = CoreServices.framework;
 			remoteRef = FE1DDE8D17125CE7003B3AF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -16572,7 +16572,6 @@
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -16596,6 +16595,7 @@
 			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
