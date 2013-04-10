@@ -603,9 +603,13 @@ static int untitled_document_number = 0;
 		saveResult = [savePanel runModalForDirectory:[path stringByDeletingLastPathComponent]
 												file:[path lastPathComponent]];
 	} else {
-		// Suggest saving in some reasonable directory
-		saveResult = [savePanel runModalForDirectory:[[NSDocumentController sharedDocumentController] currentDirectory]
-												file:[self displayName]];
+        NSString *directory = [savePanel directory];
+        if (directory == nil) {
+            // Suggest saving in some reasonable directory
+            directory = [[NSDocumentController sharedDocumentController] currentDirectory];
+        }
+		saveResult = [savePanel runModalForDirectory: directory
+                                                file: [self displayName]];
 	}
 	if(saveResult) {
 		NSString *savePath=[savePanel filename];
