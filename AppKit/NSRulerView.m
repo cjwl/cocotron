@@ -57,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _scrollView = [scrollView retain];
     _orientation = orientation;
         
-    _measurementUnit = [NSMeasurementUnit measurementUnitNamed:@"Inches"];
+    _measurementUnit = [[NSMeasurementUnit measurementUnitNamed:@"Inches"] retain];
         
     [self setRuleThickness:DEFAULT_RULE_THICKNESS];
     [self setReservedThicknessForMarkers:DEFAULT_MARKER_THICKNESS];
@@ -74,6 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [_scrollView release];
     [_accessoryView release];
+    [_measurementUnit release];
     
     [_markers release];
     
@@ -213,7 +214,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)setMeasurementUnits:(NSString *)unitName
 {
     [_measurementUnit release];
-    _measurementUnit = [NSMeasurementUnit measurementUnitNamed:unitName];
+    _measurementUnit = [[NSMeasurementUnit measurementUnitNamed:unitName] retain];
 
     [self invalidateHashMarks];
     [[self enclosingScrollView] tile];
