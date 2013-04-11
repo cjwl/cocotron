@@ -30,6 +30,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSButtonCell
 
+// Margin between an image and the Button interior borders
+static const float kImageMargin = 2.;
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    [super encodeWithCoder:coder];
    [coder encodeObject:_titleOrAttributedTitle forKey:@"NSButtonCell title"];
@@ -955,7 +958,7 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
    NSSize              imageSize=(image==nil)?NSMakeSize(0,0):[[controlView graphicsStyle] sizeOfButtonImage:image enabled:enabled mixed:mixed];
    NSPoint             imageOrigin=frame.origin;
    NSSize              titleSize=[title size];
-   NSRect              titleRect=[self titleRectForBounds:frame];
+    NSRect              titleRect=[self titleRectForBounds:frame];
    BOOL                drawImage=YES,drawTitle=YES;
    NSCellImagePosition imagePosition=[self imagePosition];
 
@@ -985,13 +988,13 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
      break;
 
     case NSImageLeft:
-     imageOrigin.x=frame.origin.x;
+     imageOrigin.x=frame.origin.x+kImageMargin;
      titleRect.origin.x+=imageSize.width+4;
      titleRect.size.width-=imageSize.width+4;
      break;
 
     case NSImageRight:
-     imageOrigin.x=frame.origin.x+(frame.size.width-imageSize.width);
+     imageOrigin.x=frame.origin.x+(frame.size.width-imageSize.width)-kImageMargin;
      titleRect.size.width-=(imageSize.width+4);
      break;
 

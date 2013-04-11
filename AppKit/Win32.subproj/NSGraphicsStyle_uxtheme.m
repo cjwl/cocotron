@@ -492,7 +492,20 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 	Margins margins = [self menuItemTextMargins];
 	
 	result = [title sizeWithAttributes:sNormalMenuTextAttributes];
+    
+	result.height += (margins.top + margins.bottom);
+	result.width += (margins.left + margins.right);
+	
+	return result;
+}
 
+-(NSSize)menuItemAttributedTextSize:(NSAttributedString *)title
+{
+	NSSize result = NSZeroSize;
+	Margins margins = [self menuItemTextMargins];
+	
+	result = [title size];
+	
 	result.height += (margins.top + margins.bottom);
 	result.width += (margins.left + margins.right);
 	

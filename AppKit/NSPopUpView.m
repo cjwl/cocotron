@@ -1,10 +1,10 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSPopUpView.h>
 #import <AppKit/NSStringDrawer.h>
@@ -19,230 +19,380 @@ enum {
     KEYBOARD_CANCEL
 };
 
+// TODO : NSPopUpView should at least inherit from NSMenuView - we have plenty of common code here
+
 #define ITEM_MARGIN 2
 
 @implementation NSPopUpView
 
+static const float kMenuInitialClickThreshold = 0.1f;
+
+#define MIN_TITLE_KEY_GAP 8
+#define WINDOW_BORDER_THICKNESS 3
+#define IMAGE_TITLE_GAP 8
+
 // Note: moved these above init to avoid compiler warnings
 -(NSDictionary *)itemAttributes {
-   return [NSDictionary dictionaryWithObjectsAndKeys:
-    _font,NSFontAttributeName,
-    nil];
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            _font,NSFontAttributeName,
+            nil];
 }
 
--(NSDictionary *)selectedItemAttributes {
-   return [NSDictionary dictionaryWithObjectsAndKeys:
-    _font,NSFontAttributeName,
-    [NSColor selectedTextColor],NSForegroundColorAttributeName,
-    nil];
+-(NSArray *)visibleItemArray
+{
+    NSArray * items = [[self menu] itemArray];
+    
+    NSMutableArray *visibleArray = [[[NSMutableArray init] alloc] autorelease];
+	
+    for(NSMenuItem *item in items) {
+        if( ![item isHidden]) {
+            [visibleArray addObject: item];
+        }
+    }
+    
+    return visibleArray;
 }
 
--(NSDictionary *)disabledItemAttributes {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			_font,NSFontAttributeName,
-			[NSColor grayColor],NSForegroundColorAttributeName,
-			nil];
+-(NSSize)sizeForMenuItemImage:(NSMenuItem *)item {
+	NSSize result=NSZeroSize;
+	
+	if([item image]!=nil)
+		result=[[item image] size];
+	
+	return result;
+}
+
+-(NSSize)sizeForMenuItems:(NSArray *)items {
+	NSSize   result=NSZeroSize;
+	float    maxTitleWidth = 0.0f;
+	BOOL     anItemHasAnImage = NO;
+	float    maxKeyWidth = 0.0f;
+	float    totalHeight = WINDOW_BORDER_THICKNESS; // border. Magic constants that may not be right for Win7 vs XP
+	NSSize   gutterSize = [[self graphicsStyle] menuItemGutterSize];
+	NSSize   rightArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+	unsigned i,count=[items count];
+	NSRect   rects[count];
+    
+    BOOL useCustomFont = _font != nil;
+    if (useCustomFont) {
+        // If we have the default font, then really use the default menu one instead of forcing it
+        if ([_font isEqual:[NSFont fontWithName:@"Arial" size:9.]]) {
+            useCustomFont = NO;
+        }
+    }
+
+	for (i = 0;i<count;i++)
+	{
+		NSMenuItem *item = [items objectAtIndex:i];
+        float height =  0.;
+        float      titleAndIconWidth = self.bounds.size.width;
+		if ([item isSeparatorItem])
+		{
+            height = [[self graphicsStyle] menuItemSeparatorSize].height;
+		}
+		else
+		{
+			NSSize     size = NSZeroSize;
+			
+			size = [self sizeForMenuItemImage:item];
+			height = MAX(height,size.height);
+			if ((titleAndIconWidth = size.width) > 0.0f)
+				anItemHasAnImage = YES;
+            
+            if ([item attributedTitle]) {
+                size = [[self graphicsStyle] menuItemAttributedTextSize:[item attributedTitle]];
+            } else {
+                if (useCustomFont) {
+                    NSDictionary *attributes = [self itemAttributes];
+                    NSAttributedString *attributedTitle = [[[NSAttributedString alloc] initWithString:[item title] attributes:attributes] autorelease];
+                    size = [[self graphicsStyle] menuItemAttributedTextSize:attributedTitle];
+                } else {
+                    size = [[self graphicsStyle] menuItemTextSize:[item title]];
+                }
+            }
+			titleAndIconWidth += size.width;
+			maxTitleWidth = MAX(maxTitleWidth,titleAndIconWidth);
+			height = MAX(height,size.height);
+			
+			if ([[item keyEquivalent] length] != 0)
+			{
+				size = [[self graphicsStyle] menuItemTextSize:[item _keyEquivalentDescription]];
+				maxKeyWidth=MAX(maxKeyWidth,size.width);
+				height = MAX(height,size.height);
+			}
+			height = MAX(height,gutterSize.height);
+			height = MAX(height,rightArrowSize.height);
+		}
+        rects[i] = NSMakeRect(0, totalHeight, titleAndIconWidth, height);
+        totalHeight += height;
+	}
+	
+	result.height = totalHeight;
+	result.width = gutterSize.width;
+	result.width += [[self graphicsStyle] menuItemGutterGap];
+	if (anItemHasAnImage)
+		result.width += IMAGE_TITLE_GAP;
+	result.width += maxTitleWidth;
+	if (maxKeyWidth > 0.0f)
+	{
+		result.width += MIN_TITLE_KEY_GAP;
+		result.width += maxKeyWidth;
+	}
+	result.width += rightArrowSize.width;
+	
+	// Add the left+right and bottom borders
+	result.width += WINDOW_BORDER_THICKNESS*2;
+	result.height += WINDOW_BORDER_THICKNESS;
+	
+    if (_cachedItemRects == nil && [items isEqual:[self visibleItemArray]]) {
+        // Build our cached item rects
+        _cachedItemRects = [[NSMutableArray arrayWithCapacity: count] retain];
+        for (int i = 0; i < count; ++i) {
+            // Normalize the items widths to the menu widths
+            rects[i].size.width = result.width;
+            [_cachedItemRects addObject:[NSValue valueWithRect:rects[i]]];
+        }
+    }
+	return result;
 }
 
 -initWithFrame:(NSRect)frame {
-   [super initWithFrame:frame];
-   _cellSize=frame.size;
-   _font=[[NSFont messageFontOfSize:12] retain];
-   _selectedIndex=-1;
-   _pullsDown=NO;
-
-   NSSize sz = [@"ABCxyzgjX" sizeWithAttributes: [self itemAttributes] ];
-   _cellSize.height = sz.height + ITEM_MARGIN + ITEM_MARGIN;
-   
-   return self;
+    [super initWithFrame:frame];
+    _cellSize=frame.size;
+    _font=[[NSFont messageFontOfSize:12] retain];
+    _selectedIndex=-1;
+    _pullsDown=NO;
+    
+    NSSize sz = [@"ABCxyzgjX" sizeWithAttributes: [self itemAttributes] ];
+    _cellSize.height = sz.height + ITEM_MARGIN + ITEM_MARGIN;
+    
+    return self;
 }
 
 -(void)dealloc {
-	[_cachedOffsets release];
-   [_font release];
-   [super dealloc];
+	[_cachedItemRects release];
+    [_font release];
+    [super dealloc];
 }
 
 -(BOOL)isFlipped {
-   return YES;
+    return YES;
 }
 
 -(void)setFont:(NSFont *)font {
-   [_font autorelease];
-   _font=[font retain];
+    [_font autorelease];
+    _font=[font retain];
 }
 
 -(BOOL)pullsDown {
-   return _pullsDown;
+    return _pullsDown;
 }
 
 -(void)setPullsDown:(BOOL)pullsDown {
-   _pullsDown=pullsDown;
+    _pullsDown=pullsDown;
 }
 
 -(void)selectItemAtIndex:(int)index {
-   _selectedIndex=index;
+    _selectedIndex=index;
+    _initialSelectedIndex=index;
 }
 
 -(NSSize)sizeForContents {
-   NSArray      *items=[_menu itemArray];
-   int           i, count=[items count];
-   NSSize        result=NSMakeSize([self bounds].size.width,4);
-   NSDictionary *attributes = [self itemAttributes];
-
-   for( i = 0; i < count; i++ )
-   {
-      NSMenuItem * item = [items objectAtIndex: i];
-      if( ![item isHidden ] )
-	  {
-		  NSAttributedString* aTitle = [item attributedTitle];
-		  if (aTitle != nil && [aTitle length] > 0) {
-			  // The user is using an attributed title - so respect that when calc-ing the height and width
-			  NSSize size = [aTitle size];
-			  result.height += MAX(_cellSize.height, size.height);
-			  size.width += [item indentationLevel] * 5;
-			  result.width = MAX(result.width, size.width);
-		  } else {
-				result.height += _cellSize.height;
-
-			  NSSize titleSize = [[item title] sizeWithAttributes: attributes ];
-
-			  titleSize.width += [item indentationLevel] * 5;
-
-			 if( result.width < titleSize.width )
-				result.width = titleSize.width;
-		  }
-	  }
-   }
-   
-   return result;
+    return [self sizeForMenuItems:[self visibleItemArray]];
 }
 
-- (void)_buildCachedOffsets
+- (void)_buildCachedItemRects
 {
-	NSRect result=NSMakeRect(2,2,[self bounds].size.width,_cellSize.height);
-	
-	NSArray * items=[_menu itemArray];
-	int i, count = [items count];
-	
-	_cachedOffsets = [[NSMutableArray arrayWithCapacity: count] retain];
-	
-	CGFloat yOffset = 0;
-	
-	// First offset is 0 of course
-	[_cachedOffsets addObject: [NSNumber numberWithFloat: 0]];
-	
-	// Stop one before the end because we're just figuring how far down each one is based on the preceding
-	// entries.
-	for( i = 0; i < count - 1; i++ )
-	{
-		NSMenuItem* item = [items objectAtIndex: i];
-		
-		if( [item isHidden ] ) {
-			continue;
-		}
-		
-		NSAttributedString* aTitle = [item attributedTitle];
-		if (aTitle != nil && [aTitle length] > 0) {
-			NSSize size = [aTitle size];
-			yOffset += MAX(_cellSize.height, size.height);
-		} else {
-			yOffset += _cellSize.height;
-		}
-		[_cachedOffsets addObject: [NSNumber numberWithFloat: yOffset]];
-	}
+    // Force a build of the cached item rects
+    [self sizeForMenuItems:[self visibleItemArray]];
 }
 
-// For attributed strings - precalcing the the offsets makes performance much faster.
-- (NSArray*)_cachedOffsets
+// For attributed strings - precalcing the the item rects makes performance much faster.
+- (NSArray*)_cachedItemRects
 {
-	if (_cachedOffsets == nil) {
-		[self _buildCachedOffsets];
+	if (_cachedItemRects == nil) {
+		[self _buildCachedItemRects];
 	}
-	return _cachedOffsets;
+	return _cachedItemRects;
 }
 
 -(NSRect)rectForItemAtIndex:(NSInteger)index {
-   NSRect result=NSMakeRect(2,2,[self bounds].size.width,_cellSize.height);
-
-   result.size.width-=4;
-
-	result.origin.y = [[[self _cachedOffsets] objectAtIndex: index] floatValue];
-
-	NSArray * items=[_menu itemArray];
-	NSMenuItem* item = [items objectAtIndex: index];
-
-	NSAttributedString* aTitle = [item attributedTitle];
-	// Fix up the cell height if needed
-	if (aTitle != nil && [aTitle length] > 0) {
-		NSSize size = [aTitle size];
-		result.size.height = MAX(_cellSize.height, size.height);
-	}
-	
-   return result;
+	NSRect result = [[[self _cachedItemRects] objectAtIndex: index] rectValue];
+    // Be sure we cover the full view width
+    result.size.width = self.bounds.size.width;
+    return result;
 }
 
 -(NSRect)rectForSelectedItem {
-   if(_pullsDown)
-    return [self rectForItemAtIndex:0];
-   else if(_selectedIndex==-1)
-    return [self rectForItemAtIndex:0];
-   else
-    return [self rectForItemAtIndex:_selectedIndex];
+    if(_pullsDown) {
+        return NSZeroRect;
+    } else if(_selectedIndex==-1) {
+        return [self rectForItemAtIndex:0];
+    } else {
+        return [self rectForItemAtIndex:_selectedIndex];
+    }
 }
 
--(void)drawItemAtIndex:(NSInteger)index {
-   NSMenuItem   *item=[_menu itemAtIndex:index];
-   NSDictionary *attributes;
-   NSRect    itemRect=[self rectForItemAtIndex:index];
-
-   if( [item isHidden] )
-      return;
-
-	[[NSColor controlBackgroundColor] setFill];
-	NSRectFill(itemRect);
-
-   if([item isSeparatorItem]){
-		NSRect r = itemRect;
-		r.origin.y += r.size.height / 2 - 1;
-		r.size.height = 2;
-		[[self graphicsStyle] drawMenuSeparatorInRect:r];
-   }
-   else {
-	   
-	   if(index==_selectedIndex && [item isEnabled]){
-		   [[NSColor selectedTextBackgroundColor] setFill];
-		   NSRectFill(itemRect);
-	   }
-
-	   // Accommodate indentation level
-	   itemRect = NSOffsetRect(itemRect, [item indentationLevel] * 5, 0);
-
-	   // Check for an Attributed title first
-	   NSAttributedString* aTitle = [item attributedTitle];
-	   if (aTitle != nil && [aTitle length] > 0) {
-		   itemRect=NSInsetRect(itemRect,2,2);
-			[aTitle _clipAndDrawInRect: itemRect];
-	   } else {
-		   if(index==_selectedIndex && [item isEnabled]) {
-			   attributes=[self selectedItemAttributes];
-		   } else if ([item isEnabled] == NO) {
-			   attributes = [self disabledItemAttributes];
-		   } else {
-			   attributes=[self itemAttributes];
-		   }
-		   NSString *string=[item title];
-		   NSSize    size=[string sizeWithAttributes:attributes];
-		   
-		   itemRect=NSInsetRect(itemRect,2,2);
-		   itemRect.origin.y+=floor((_cellSize.height-size.height)/2);
-		   itemRect.size.height=size.height;
-		   
-		   [string _clipAndDrawInRect:itemRect withAttributes:attributes];
-	   }
-   }
+static NSRect boundsToTitleAreaRect(NSRect rect){
+    return NSInsetRect(rect, WINDOW_BORDER_THICKNESS, WINDOW_BORDER_THICKNESS);
 }
 
+-(void)drawRect:(NSRect)rect
+{
+	NSRect   bounds = [self bounds];
+	NSRect   itemArea=boundsToTitleAreaRect(bounds);
+	NSArray *items=[self visibleItemArray];
+	unsigned i,count=[items count];
+	NSPoint  origin=itemArea.origin;
+	
+    BOOL useCustomFont = _font != nil;
+    if (useCustomFont) {
+        // If we have the default font, then really use the default menu one instead of forcing it
+        if ([_font isEqual:[NSFont fontWithName:@"Arial" size:9.]]) {
+            useCustomFont = NO;
+        }
+    }
+    
+	[[self graphicsStyle] drawMenuWindowBackgroundInRect:self.bounds];
+	
+	for(i=0;i<count;i++)
+	{
+		NSMenuItem *item=[items objectAtIndex:i];
+		NSRect itemRect = [self rectForItemAtIndex:i];
+        if (NSIntersectsRect(rect, itemRect) == NO) {
+            continue;
+        }
+        itemArea = itemRect;
+        origin = itemRect.origin;
+        
+		if ([item isSeparatorItem])
+		{
+			NSRect separatorRect = NSMakeRect(origin.x,origin.y,NSWidth(itemArea),[[self graphicsStyle] menuItemSeparatorSize].height);
+			
+			[[self graphicsStyle] drawMenuSeparatorInRect:separatorRect];
+			
+			origin.y += NSHeight(separatorRect);
+		}
+		else
+		{
+#define CENTER_PART_RECT_VERTICALLY(partSize)                          \
+{                                                                      \
+NSSize __partSize = (partSize);                                    \
+partRect.origin.y = origin.y + (itemHeight - partSize.height) / 2; \
+partRect.size.height = partSize.height;                            \
+partRect.size.width = partSize.width;                              \
+}
+			NSImage      *image = [item image];
+			BOOL         selected = (i ==_selectedIndex) ? YES : NO;
+			float        itemHeight = itemRect.size.height;
+			NSRect       partRect;
+			NSSize       partSize;
+			BOOL         showsEnabled = ([item isEnabled] || [item hasSubmenu]);
+			
+			partRect = NSMakeRect(origin.x,origin.y,itemArea.size.width,itemHeight);
+            
+			if (selected)
+				[[self graphicsStyle] drawMenuSelectionInRect:partRect enabled:showsEnabled];
+            
+			// Draw the gutter and checkmark (if any)
+			CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemGutterSize]);
+			if ([item state] || _initialSelectedIndex == i)
+			{
+				[[self graphicsStyle] drawMenuGutterInRect:partRect];
+				[[self graphicsStyle] drawMenuCheckmarkInRect:partRect enabled:showsEnabled selected:selected];
+			}
+			
+			partRect.origin.x += [[self graphicsStyle] menuItemGutterGap];
+			
+			// Draw the image
+			if (image)
+			{
+				NSRect imageRect;
+				
+				partRect.origin.x += partRect.size.width;
+				CENTER_PART_RECT_VERTICALLY([image size]);
+				
+                CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
+                CGContextSaveGState(ctx);
+                CGContextTranslateCTM(ctx,partRect.origin.x,partRect.origin.y);
+                if([self isFlipped]) {
+                    CGContextTranslateCTM(ctx,0,partRect.size.height);
+                    CGContextScaleCTM(ctx,1,-1);
+                }
+                NSRect drawingRect = partRect;
+                drawingRect.origin = NSZeroPoint;
+                [[self graphicsStyle] drawButtonImage:image inRect:drawingRect enabled:showsEnabled mixed:NO];
+                CGContextRestoreGState(ctx);
+                
+				partRect.origin.x += IMAGE_TITLE_GAP;
+			}
+			
+			// Draw the title
+			partRect.origin.x += partRect.size.width;
+            
+			NSAttributedString     *atitle = [item attributedTitle];
+			if (atitle != nil && [atitle length] > 0) {
+				CENTER_PART_RECT_VERTICALLY([atitle size]);
+#if WINDOWS
+                // On Windows, when using the AGG graphics context, enabling font smoothing switches to using AGG for text drawing,
+                // instead of the native Win32 API.
+                // In case we're using a lot of different fonts, like for a styled for menu, that's leading to much faster drawing
+                // thanks to fonts caching done by this context.
+                // However, drawing is more smoothed that when traditional Win32 text rendering, leading to a different look than
+                // standard Win32 menus - so we'll do that only if we're just drawing "normal" text, without any special attributes
+                // It would probably be better to add font caching to the regular Win32 drawing context
+                CGContextSetShouldSmoothFonts((CGContextRef)[[NSGraphicsContext currentContext] graphicsPort], YES);
+#endif
+				[[self graphicsStyle] drawAttributedMenuItemText:atitle inRect:partRect enabled:showsEnabled selected:selected];
+			} else {
+#if WINDOWS
+                // On Windows, when using the AGG graphics context, enabling font smoothing switches to using AGG for text drawing,
+                // instead of the native Win32 API.
+                // In case we're using a lot of different fonts, like for a styled for menu, that's leading to much faster drawing
+                // thanks to fonts caching done by this context.
+                // However, drawing is more smoothed that when traditional Win32 text rendering, leading to a different look than
+                // standard Win32 menus - so we'll do that only if we're just drawing "normal" text, without any special attributes
+                // It would probably be better to add font caching to the regular Win32 drawing context
+                CGContextSetShouldSmoothFonts((CGContextRef)[[NSGraphicsContext currentContext] graphicsPort], NO);
+#endif
+                NSString     *title = [item title];
+                if (useCustomFont) {
+                    NSDictionary *attributes = [self itemAttributes];
+                    NSAttributedString *attributedTitle = [[[NSAttributedString alloc] initWithString:title attributes:attributes] autorelease];
+                    CENTER_PART_RECT_VERTICALLY([attributedTitle size]);
+                    [[self graphicsStyle] drawAttributedMenuItemText:attributedTitle inRect:partRect enabled:showsEnabled selected:selected];
+                } else {
+                    CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:title]);
+                    [[self graphicsStyle] drawMenuItemText:title inRect:partRect enabled:showsEnabled selected:selected];
+                }
+			}
+			
+			// Draw the key equivalent
+			if ([[item keyEquivalent] length] != 0)
+			{
+				NSString *keyString = [item _keyEquivalentDescription];
+				NSSize   branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+				NSSize   keyEquivalentSize = [[self graphicsStyle] menuItemTextSize:keyString];
+				
+				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width - keyEquivalentSize.width;
+				CENTER_PART_RECT_VERTICALLY(keyEquivalentSize);
+				[[self graphicsStyle] drawMenuItemText:keyString inRect:partRect enabled:showsEnabled selected:selected];
+			}
+			
+			// Draw the submenu arrow
+			if([item hasSubmenu])
+			{
+				NSSize branchArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
+				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width;
+				partRect.size.width = branchArrowSize.width;
+				CENTER_PART_RECT_VERTICALLY(branchArrowSize);
+				[[self graphicsStyle] drawMenuBranchArrowInRect:partRect enabled:showsEnabled selected:selected];
+			}
+			
+			origin.y += itemHeight;
+		}
+	}
+}
 /*
  * Returns NSNotFound if the point is outside of the menu
  * Returns -1 if the point is inside the menu but on a disabled or separator item
@@ -250,7 +400,7 @@ enum {
  */
 -(NSInteger)itemIndexForPoint:(NSPoint)point {
 	NSInteger result;
-	NSArray * items=[_menu itemArray];
+	NSArray * items=[self visibleItemArray];
 	int i, count = [items count];
 	
 	point.y-=2;
@@ -277,158 +427,178 @@ enum {
 }
 
 
--(void)drawRect:(NSRect)rect {
-   NSArray      *items=[_menu itemArray];
-   int           i,count=[items count];
-
-   [[self graphicsStyle] drawPopUpButtonWindowBackgroundInRect: rect];
-
-   for(i=0;i<count;i++){
-	   NSRect itemRect = [self rectForItemAtIndex: i];
-	   if (NSIntersectsRect(rect, itemRect)) {
-		   [self drawItemAtIndex:i];
-	   }
-   }
-}
-
 -(void)rightMouseDown:(NSEvent *)event {
-   // do nothing
+    // do nothing
 }
 
+- (void)updateSelectedIndex:(int)index
+{
+    if(_selectedIndex!=index){
+        NSInteger previous=_selectedIndex;
+        _selectedIndex=index;
+        if (previous != _selectedIndex) {
+            if (previous != -1) {
+                NSRect itemRect = [self rectForItemAtIndex: previous];
+                [self setNeedsDisplayInRect: itemRect];
+            }
+            if (_selectedIndex != -1) {
+                NSRect itemRect = [self rectForItemAtIndex: _selectedIndex];
+                [self setNeedsDisplayInRect: itemRect];
+            }
+        }
+    }
+}
 /*
  * This method may return NSNotFound when the view positioned outside the initial tracking area due to preferredEdge settings and the user clicks the mouse.
  * The NSPopUpButtonCell code deals with it. It might make sense for this to return the previous value.
  */
 -(int)runTrackingWithEvent:(NSEvent *)event {
 	enum {
-    STATE_FIRSTMOUSEDOWN,
-    STATE_MOUSEDOWN,
-    STATE_MOUSEUP,
-    STATE_EXIT
-   } state=STATE_FIRSTMOUSEDOWN;
-   NSPoint firstLocation,point=[event locationInWindow];
-   NSInteger initialSelectedIndex = _selectedIndex;
-
-   // Make sure we get mouse moved events, too, so we can respond apporpiately to
-   // click-click actions as well as of click-and-drag
-   BOOL oldAcceptsMouseMovedEvents = [[self window] acceptsMouseMovedEvents];
-   [[self window] setAcceptsMouseMovedEvents:YES];
-
-// point comes in on controls window
-   point=[[event window] convertBaseToScreen:point];
-   point=[[self window] convertScreenToBase:point];
-   point=[self convertPoint:point fromView:nil];
-   firstLocation=point;
-
-	// Make sure we know if the user clicks away from the app in the middle of this
-	BOOL cancelled = NO;	
-	
-   do {
-    NSInteger index=[self itemIndexForPoint:point];
-    NSRect   screenVisible;
-
-/*
-  If the popup is activated programmatically with performClick: index may be NSNotFound because the mouse starts out
-  outside the view. We don't change _selectedIndex in this case.   
- */
-    if(index!= NSNotFound && _keyboardUIState == KEYBOARD_INACTIVE){
-     if(_selectedIndex!=index){
-      NSInteger previous=_selectedIndex;
-		 if (previous != -1) {
-			 NSRect itemRect = [self rectForItemAtIndex: previous];
-			 [self setNeedsDisplayInRect: itemRect];
-		 }
-      _selectedIndex=index;
-		 if (_selectedIndex != -1) {
-			 NSRect itemRect = [self rectForItemAtIndex: _selectedIndex];
-			 [self setNeedsDisplayInRect: itemRect];
-		 }
-     }
-    }
+        STATE_FIRSTMOUSEDOWN,
+        STATE_MOUSEDOWN,
+        STATE_MOUSEUP,
+        STATE_EXIT
+    } state=STATE_FIRSTMOUSEDOWN;
+    NSPoint firstLocation,point=[NSEvent mouseLocation];
+    NSInteger initialSelectedIndex = _selectedIndex;
+    firstLocation = point;
     
-    [[self window] flushWindow];
+    // Make sure we get mouse moved events, too, so we can respond apporpiately to
+    // click-click actions as well as of click-and-drag
+    BOOL oldAcceptsMouseMovedEvents = [[self window] acceptsMouseMovedEvents];
+    [[self window] setAcceptsMouseMovedEvents:YES];
+    
+    // point comes in on controls window
+    point=[[event window] convertBaseToScreen:point];
+    point=[[self window] convertScreenToBase:point];
+    point=[self convertPoint:point fromView:nil];
+    
+	// Make sure we know if the user clicks away from the app in the middle of this
+	BOOL cancelled = NO;
+	
+    NSRect   screenVisible = NSInsetRect([[[self window] screen] visibleFrame],0,4);
 
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask|NSAppKitDefinedMask];
-    if ([event type] == NSKeyDown) {
-        [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-        switch (_keyboardUIState) {
-            case KEYBOARD_INACTIVE:
-                _keyboardUIState = KEYBOARD_ACTIVE;
-                continue;
+    [NSEvent startPeriodicEventsAfterDelay:.0 withPeriod:.02];
+    BOOL mouseMoved = NO;
 
-            case KEYBOARD_ACTIVE:
+    NSTimeInterval firstTimestamp = 0.;
+    do {
+        NSInteger index=[self itemIndexForPoint:point];
+        
+        /*
+         If the popup is activated programmatically with performClick: index may be NSNotFound because the mouse starts out
+         outside the view. We don't change _selectedIndex in this case.
+         */
+        if(index!= NSNotFound && _keyboardUIState == KEYBOARD_INACTIVE){
+            [self updateSelectedIndex:index];
+        }
+        
+        event=[[self window] nextEventMatchingMask:NSPeriodicMask|NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask|NSKeyDownMask|NSAppKitDefinedMask];
+        if (firstTimestamp == 0.) {
+            // Note: we don't do that using the first event, because in case the menu takes a long of time to display, the next event
+            // we get will be actually after our "long click" threshold
+            firstTimestamp = [event timestamp];
+        }
+        if ([event type] == NSKeyDown) {
+            [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+            switch (_keyboardUIState) {
+                case KEYBOARD_INACTIVE:
+                    _keyboardUIState = KEYBOARD_ACTIVE;
+                    continue;
+                    
+                case KEYBOARD_ACTIVE:
+                    break;
+                    
+                case KEYBOARD_CANCEL:
+                    _selectedIndex = initialSelectedIndex;
+                case KEYBOARD_OK:
+                    state=STATE_EXIT;
+                    break;
+            }
+        }
+        else
+            _keyboardUIState = KEYBOARD_INACTIVE;
+        
+        if ([event type] == NSAppKitDefined) {
+            if ([event subtype] == NSApplicationDeactivated) {
+                cancelled = YES;
+            }
+        }
+        point=[NSEvent mouseLocation];
+        if (mouseMoved == NO) {
+            mouseMoved = ABS(point.x-firstLocation.x) > 2. || ABS(point.y-firstLocation.y) > 2.;
+        }
+        
+
+        if (NSPointInRect(point,[[self window] frame])) {
+            if (!NSPointInRect(point,screenVisible)){
+                // The point is inside the menu, and on the top or bottom border of the screen - let's autoscroll
+                NSPoint origin=[[self window] frame].origin;
+                BOOL    change=NO;
+                
+                if(point.y<NSMinY(screenVisible)){
+                    origin.y+=_cellSize.height;
+                    change=YES;
+                }
+                
+                if(point.y>NSMaxY(screenVisible)){
+                    origin.y-=_cellSize.height;
+                    change=YES;
+                }
+                
+                if(change)
+                    [[self window] setFrameOrigin:origin];
+            }
+        } else {
+            [self updateSelectedIndex:-1];
+        }
+        // Convert the global point to view coordinates
+        point=[[self window] convertScreenToBase:point];
+        point=[self convertPoint:point fromView:nil];
+
+        if ([event type] == NSPeriodic) {
+            // Periodic events are just there for autoscroll so we're done with this one
+            continue;
+        }
+        
+        switch(state){
+            case STATE_FIRSTMOUSEDOWN:
+                if([event type]==NSLeftMouseUp) {
+                    if(mouseMoved || [event timestamp] - firstTimestamp > kMenuInitialClickThreshold) {
+                        // Long click - accept the selection
+                        state=STATE_EXIT;
+                    } else {
+                        // Short click - let's keep the menu sticky
+                        state=STATE_MOUSEUP;
+                    }
+                } else {
+                    if (mouseMoved) {
+                        state=STATE_MOUSEDOWN;   
+                    }
+                }
                 break;
                 
-            case KEYBOARD_CANCEL:
-                _selectedIndex = initialSelectedIndex;
-            case KEYBOARD_OK:
-                state=STATE_EXIT;
+            default:
+                if([event type]==NSLeftMouseUp) {
+                    // If the user clicked outside of the window - then they want
+                    // to dismiss it without changing anything
+                    NSPoint winPoint=[event locationInWindow];
+                    winPoint=[[event window] convertBaseToScreen:winPoint];
+                    if (NSPointInRect(winPoint,[[self window] frame]) == NO) {
+                        [self updateSelectedIndex:-1];
+                    }
+                    state=STATE_EXIT;
+                }
                 break;
         }
-    }
-    else
-        _keyboardUIState = KEYBOARD_INACTIVE;
- 
-	   if ([event type] == NSAppKitDefined) {
-		   if ([event subtype] == NSApplicationDeactivated) {
-			   cancelled = YES;
-		   }
-	   }
-    point=[event locationInWindow];
-    point=[[event window] convertBaseToScreen:point];
-    screenVisible=NSInsetRect([[[self window] screen] visibleFrame],4,4);
-    if(NSPointInRect(point,[[self window] frame]) && !NSPointInRect(point,screenVisible)){
-     NSPoint origin=[[self window] frame].origin;
-     BOOL    change=NO;
-
-     if(point.y<NSMinY(screenVisible)){
-      origin.y+=_cellSize.height;
-      change=YES;
-     }
-
-     if(point.y>NSMaxY(screenVisible)){
-      origin.y-=_cellSize.height;
-      change=YES;
-     }
-
-     if(change)
-      [[self window] setFrameOrigin:origin];
-    } else {
-		_selectedIndex == -1;
-	}
-
-    point=[self convertPoint:[event locationInWindow] fromView:nil];
-
-    switch(state){
-     case STATE_FIRSTMOUSEDOWN:
-      if(NSEqualPoints(firstLocation,point)){
-       if([event type]==NSLeftMouseUp)
-        state=STATE_MOUSEUP;
-      }
-      else
-       state=STATE_MOUSEDOWN;      
-      break;
-
-     default:
-			if([event type]==NSLeftMouseUp) {
-				// If the user clicked outside of the window - then they want
-				// to dismiss it without changing anything
-				NSPoint winPoint=[event locationInWindow];
-				winPoint=[[event window] convertBaseToScreen:winPoint];
-				if (NSPointInRect(winPoint,[[self window] frame]) == NO) {
-					_selectedIndex = -1;
-				}
-				state=STATE_EXIT;
-			}
-      break;
-    }
-
-   }while(cancelled == NO && state!=STATE_EXIT);
-
-   [[self window] setAcceptsMouseMovedEvents: oldAcceptsMouseMovedEvents];
-
-   _keyboardUIState = KEYBOARD_INACTIVE;
-   
+        
+    }while(cancelled == NO && state!=STATE_EXIT);
+    [NSEvent stopPeriodicEvents];
+    
+    [[self window] setAcceptsMouseMovedEvents: oldAcceptsMouseMovedEvents];
+    
+    _keyboardUIState = KEYBOARD_INACTIVE;
+    
 	return (_selectedIndex == -1) ? NSNotFound : _selectedIndex;
 }
 
@@ -438,21 +608,21 @@ enum {
 
 - (void)moveUp:(id)sender {
     NSInteger previous = _selectedIndex;
-
+    
 	// Find the previous visible item
-	NSArray *items = [_menu itemArray];
+	NSArray *items = [self visibleItemArray];
 	if( _selectedIndex == -1 )
 		_selectedIndex = [items count];
-
+    
 	do
 	{
 		_selectedIndex--;
 	} while( (int)_selectedIndex >= 0 && ( [[items objectAtIndex: _selectedIndex] isHidden] ||
-									  [[items objectAtIndex: _selectedIndex] isSeparatorItem] ) );
+                                          [[items objectAtIndex: _selectedIndex] isSeparatorItem] ) );
 	
     if ((int)_selectedIndex < 0)
         _selectedIndex = previous;
-
+    
     [self setNeedsDisplay:YES];
 }
 
@@ -460,15 +630,15 @@ enum {
     NSInteger previous = _selectedIndex;
     
 	// Find the next visible item
-	NSArray *items = [_menu itemArray];
+	NSArray *items = [self visibleItemArray];
 	NSInteger searchIndex = _selectedIndex;
-		
+    
 	do
 	{
 		searchIndex++;
 	} while( searchIndex < [items count] && ( [[items objectAtIndex: searchIndex] isHidden] ||
-									             [[items objectAtIndex: searchIndex] isSeparatorItem] )  );
-
+                                             [[items objectAtIndex: searchIndex] isSeparatorItem] )  );
+    
 	if (searchIndex >= [items count]) {
         _selectedIndex = previous;
 	} else {
@@ -491,10 +661,10 @@ enum {
 	// We're intercepting insertText: so we can do menu navigation by letter
 	unichar ch = [aString characterAtIndex: 0];
 	NSString *letterString = [[NSString stringWithCharacters: &ch length: 1] uppercaseString];
-
+    
     NSInteger oldIndex = _selectedIndex;
     
-	NSArray *items = [_menu itemArray];
+	NSArray *items = [self visibleItemArray];
 	NSInteger newIndex = _selectedIndex;
 	
 	// Set to the next item in the array or the start if we're at the end or there's no selection

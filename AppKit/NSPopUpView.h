@@ -12,9 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSize  _cellSize;
    NSFont *_font;
    BOOL    _pullsDown;
-   NSInteger _selectedIndex;
+    NSInteger _selectedIndex;
+    NSInteger _initialSelectedIndex;
    int _keyboardUIState;
-	NSMutableArray* _cachedOffsets;
+	NSMutableArray* _cachedItemRects;
 }
 
 -initWithFrame:(NSRect)frame;

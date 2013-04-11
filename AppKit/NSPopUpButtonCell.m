@@ -34,8 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
-
-   if([coder allowsKeyedCoding]){ 
+   if([coder allowsKeyedCoding]){
     _pullsDown=[coder decodeBoolForKey:@"NSPullDown"];
     _menu=[[coder decodeObjectForKey:@"NSMenu"] retain];
     _selectedIndex=[coder decodeIntForKey:@"NSSelectedIndex"];
@@ -295,8 +294,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else {
     item=[itemArray objectAtIndex:_selectedIndex];
    }
-   
-   [super setTitle:[item title]];
+  [super setTitle:[item title]];
 }
 
 
@@ -399,15 +397,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMenuItem *item=[_menu itemWithTitle:title];
    
     if(item==nil)
-     [self addItemWithTitle:title];
+        [self addItemWithTitle:title];
 
     [self selectItemWithTitle:title];
    }
 }
 
+// From Cocoa doc :
+// This method has no effect.
+// The image displayed in a pop up button is taken from the selected menu item (in the case of a pop up menu) or
+// from the first menu item (in the case of a pull-down menu).
+-(void)setImage:(NSImage *)image
+{
+    
+}
 
--(NSCellImagePosition)imagePosition {
-   return NSImageRight;
+-(NSImage *)image
+{
+    NSArray    *itemArray=[_menu itemArray];
+    NSMenuItem *item=nil;
+    if(_selectedIndex<0 || _pullsDown){
+        if([itemArray count]>0)
+            item=[itemArray objectAtIndex:0];
+    }
+    else {
+        item=[itemArray objectAtIndex:_selectedIndex];
+    }
+    return [item image];
+}
+
+
+-(NSCellImagePosition)imagePosition
+{
+    // It seems Cocoa popup buttons never ignore the image - they are drawn at Left position if set to None
+    NSCellImagePosition imagePosition = [super imagePosition];
+    return imagePosition==NSNoImage?NSImageLeft:imagePosition;
 }
 
 -(NSInteger)tag {
@@ -446,14 +470,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		menu = [[_menu copy] autorelease];
 		[menu removeItemAtIndex:0];
 	}
+    [_menu update];
+    
+    // Items with no action have been disabled by the menu update
+    // We need to check if they really should be disabled
+    // That should probably be part of NSMenu update, but that one knows nothing about its owner
+    for (NSMenuItem *item in [_menu itemArray]) {
+        if ([item action] == NULL) {
+            BOOL enabled = NO;
+
+            if ([self action] == NULL) {
+                // Enable any item with no action - they are just there to let us select a value for the popup and have been
+                // disabled by the menu update since they have no one to validate them
+                enabled = YES;
+            } else {
+                // Ask the PopUpButton target to validate the item
+                id target = [NSApp targetForAction:[self action] to:[self target] from:[self controlView]];
+                if ([target respondsToSelector:@selector(validateMenuItem:)]) {
+                    enabled = [target validateMenuItem:item];
+                } else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)]) { // New validation scheme
+                    enabled = [target validateUserInterfaceItem:item];
+                } else {
+                    enabled = YES;
+                }
+            }
+            if (enabled != [item isEnabled]) {
+                [item setEnabled:enabled];
+            }
+        }
+    }
+
 	NSPopUpWindow *window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
 														   cellFrame.size.width,cellFrame.size.height)];
+    [window setPullsDown:_pullsDown];
 	[window setMenu:menu];
    if([self font]!=nil)
     [window setFont:[self font]];
 
    if(_pullsDown)
-    [window selectItemAtIndex:0];
+    [window selectItemAtIndex:-1]; // No initial selection for pullsDown
    else
     [window selectItemAtIndex:_selectedIndex];
 

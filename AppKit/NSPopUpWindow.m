@@ -47,9 +47,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect  selectedRect=[_view rectForSelectedItem];
    NSRect  frame;
 
-   [self orderFront:nil];
-
-// FIX, for some reason setContentSize: doesn't work before show, investigate
    frame=[self frame];
    frame.size=size;
    frame.origin.y-=(size.height-selectedRect.origin.y)-selectedRect.size.height;
@@ -59,7 +56,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_view setFrameOrigin:NSMakePoint(0,0)];
 
 	[_view setNeedsDisplay: YES];
-	
+
+    [self orderFront:nil];
+    
    return [_view runTrackingWithEvent:event];
 }
 

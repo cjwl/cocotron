@@ -155,6 +155,18 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 	return result;
 }
 
+-(NSSize)menuItemAttributedTextSize:(NSAttributedString *)title {
+	NSSize result = NSZeroSize;
+	Margins margins = [self menuItemTextMargins];
+	
+	result = [title size];
+	
+	result.height += (margins.top + margins.bottom);
+	result.width += (margins.left + margins.right);
+	
+	return result;
+}
+
 -(float)menuBarHeight
 {
 	NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:
@@ -237,13 +249,8 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 	
 	if (enabled)
 	{
-		if (selected)
-		{
-			[mutableString addAttributes: [NSDictionary dictionaryWithObject: [NSColor whiteColor] forKey: NSForegroundColorAttributeName] range: range];
-		}
-		else
-		{
-			[mutableString addAttributes: [NSDictionary dictionaryWithObject: [NSColor blackColor] forKey: NSForegroundColorAttributeName] range: range];
+		if (!selected) {
+			[mutableString addAttributes: [NSDictionary dictionaryWithObject: [NSColor menuItemTextColor] forKey: NSForegroundColorAttributeName] range: range];
 		}
 		[mutableString drawInRect:rect];
 	}
