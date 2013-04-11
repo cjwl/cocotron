@@ -658,6 +658,12 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 	if (((_paragraphBreak && _nextGlyphLocation>=_numberOfGlyphs) || _numberOfGlyphs == 0)) {
 		NSRect remainingRect; // Ignored for now
 		_scanRect.size.height=MAX(_scanRect.size.height,_fontDefaultLineHeight);
+        if (_currentParagraphStyle) {
+            if (_currentParagraphStyle.maximumLineHeight != 0) {
+                _scanRect.size.height = MIN(_scanRect.size.height, _currentParagraphStyle.maximumLineHeight);
+            }
+            _scanRect.size.height = MAX(_scanRect.size.height, _currentParagraphStyle.minimumLineHeight);
+        }
 		_scanRect = [_container lineFragmentRectForProposedRect:_scanRect sweepDirection:NSLineSweepRight movementDirection:NSLineMovesDown remainingRect:&remainingRect];
 		NSRect usedRect = _scanRect;
 		usedRect.size.width = 10;
