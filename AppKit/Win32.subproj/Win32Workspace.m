@@ -300,6 +300,9 @@ static NSImageRep *imageRepForImageListAndIndex(HIMAGELIST imageListH, int index
 			DeleteObject(fileInfo.hIcon);
 		}
 	}
+#if 0
+    // 16x16 icons we get this way seems broken, at least on Windows 7 - we're actually getting part of a bigger
+    // icon - so let's just disable it for now
 	if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_SMALLICON)) {
 		if (fileInfo.hIcon) {
 			NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
@@ -308,6 +311,7 @@ static NSImageRep *imageRepForImageListAndIndex(HIMAGELIST imageListH, int index
 			DeleteObject(fileInfo.hIcon);
 		}
 	}
+#endif
 	if([[icon representations] count]==0) {
 		NSLog(@"unable to load icon for file: %@", path);
 		return nil;
