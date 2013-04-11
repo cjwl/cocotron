@@ -38,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self setSubmenu:[keyed decodeObjectForKey:@"NSSubmenu"]];
     _tag=[keyed decodeIntForKey:@"NSTag"];
 	_hidden = [keyed decodeBoolForKey:@"NSIsHidden"];
-     
+    _image = [[coder decodeObjectForKey:@"NSImage"] retain];
     if([keyed decodeBoolForKey:@"NSIsSeparator"]){
      [_title release];
      _title=nil;
