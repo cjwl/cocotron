@@ -484,9 +484,12 @@ static Class _rulerViewClass = nil;
         [_verticalRuler release];
     }
     _verticalRuler = ruler;
-    [_verticalRuler setScrollView:self];
-    [_verticalRuler setOrientation:NSVerticalRuler];
-    [self addSubview:_verticalRuler];
+    if (_verticalRuler) {
+        [_verticalRuler setScrollView:self];
+        [_verticalRuler setOrientation:NSVerticalRuler];
+        [self addSubview:_verticalRuler];
+    }
+    _hasVerticalRuler = _verticalRuler != nil;
     [self tile];
 }
 
@@ -498,9 +501,12 @@ static Class _rulerViewClass = nil;
         [_horizontalRuler release];
     }
     _horizontalRuler = ruler;
-    [_horizontalRuler setScrollView:self];
-    [_horizontalRuler setOrientation:NSHorizontalRuler];
-    [self addSubview:_horizontalRuler];
+    if (_horizontalRuler) {
+        [_horizontalRuler setScrollView:self];
+        [_horizontalRuler setOrientation:NSHorizontalRuler];
+        [self addSubview:_horizontalRuler];
+    }
+    _hasHorizontalRuler = _horizontalRuler != nil;
     [self tile];
 }
 

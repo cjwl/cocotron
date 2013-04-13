@@ -45,9 +45,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [NSMeasurementUnit registerUnit:[NSMeasurementUnit measurementUnitWithName:name abbreviation:abbreviation pointsPerUnit:conversionFactor stepUpCycle:stepUpCycle stepDownCycle:stepDownCycle]];
 }
 
+- (id)initWithFrame:(NSRect)frame
+{
+    // Stack trace inspection on the Mac side indicates this is how a
+    // ruler is created before being added to a scrollview
+    return [self initWithScrollView: nil orientation: NSHorizontalRuler];
+}
+
 - initWithScrollView:(NSScrollView *)scrollView orientation:(NSRulerOrientation)orientation
 {
-    NSRect frame = [scrollView frame];
+    NSRect frame = NSMakeRect(0, 0, 1, 1);
+    if (scrollView) {
+        frame = [scrollView frame];
+    }
     
     if (orientation == NSHorizontalRuler)
         frame.size.height = DEFAULT_RULE_THICKNESS;
@@ -55,15 +65,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         frame.size.width = DEFAULT_RULE_THICKNESS;
     
     [super initWithFrame:frame];
+    
     _scrollView = [scrollView retain];
     _orientation = orientation;
         
     _measurementUnit = [[NSMeasurementUnit measurementUnitNamed:@"Inches"] retain];
-        
-    [self setRuleThickness:DEFAULT_RULE_THICKNESS];
-    [self setReservedThicknessForMarkers:DEFAULT_MARKER_THICKNESS];
-    [self setReservedThicknessForAccessoryView:0.0];
-        
+    
+    // Don't invoke the setters - they trigger tiling which can cause recursion if
+    // the scrollview is creating the ruler
+    _ruleThickness = DEFAULT_RULE_THICKNESS;
+    _thicknessForMarkers = DEFAULT_MARKER_THICKNESS;
+    _thicknessForAccessoryView = 0.f;
+    
     _markers = [[NSMutableArray alloc] init];
     
     _rulerlineLocations = [[NSMutableArray alloc] init];
