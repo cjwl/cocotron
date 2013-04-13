@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMeasurementUnit.h>
 #import <AppKit/NSScrollView.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSBezierPath.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSParagraphStyle.h>
@@ -65,6 +66,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
     _markers = [[NSMutableArray alloc] init];
     
+    _rulerlineLocations = [[NSMutableArray alloc] init];
+    
     [self invalidateHashMarks];
 
     return self;
@@ -77,6 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_measurementUnit release];
     
     [_markers release];
+    [_rulerlineLocations release];
     
     [super dealloc];
 }
@@ -286,7 +290,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (void)moveRulerlineFromLocation:(float)fromLocation toLocation:(float)toLocation
-{
+{    
     NSNumber *old = [NSNumber numberWithFloat:fromLocation];
     NSNumber *new = [NSNumber numberWithFloat:toLocation];
     
@@ -484,15 +488,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         rect.size.height = 1;
     
     float scale = [self _drawingScale];
-    float origin = [self _drawingOrigin];
+    float origin = [self originOffset];
     
-    [[NSColor controlHighlightColor] setStroke];
+    [[NSColor controlShadowColor] setStroke];
     for (i = 0; i < count; ++i) {
-        if (_orientation == NSHorizontalRuler)
-            rect.origin.x = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale;
-        else
-            rect.origin.y = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale;
-        NSFrameRect(rect);
+        if (_orientation == NSHorizontalRuler) {
+            rect.origin.x = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale + 0.5;
+            [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMinX(rect), NSMinY(rect))
+                                      toPoint: NSMakePoint(NSMinX(rect), NSMaxY(rect))];
+        }
+        else {
+            rect.origin.y = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale + 0.5;
+            [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMinX(rect), NSMinY(rect))
+                                      toPoint: NSMakePoint(NSMaxX(rect), NSMinY(rect))];
+        }
     }
 }
 
