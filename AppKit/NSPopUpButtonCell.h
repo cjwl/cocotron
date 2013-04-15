@@ -28,6 +28,7 @@ typedef enum {
 
 -initTextCell:(NSString *)string pullsDown:(BOOL)pullDown;
 
+-(NSPopUpArrowPosition)arrowPosition;
 -(BOOL)pullsDown;
 -(NSMenu *)menu;
 -(BOOL)autoenablesItems;
@@ -50,6 +51,7 @@ typedef enum {
 -(NSString *)titleOfSelectedItem;
 -(NSInteger)indexOfSelectedItem;
 
+-(void)setArrowPosition:(NSPopUpArrowPosition)position;
 -(void)setPullsDown:(BOOL)flag;
 -(void)setMenu:(NSMenu *)menu;
 -(void)setAutoenablesItems:(BOOL)value;

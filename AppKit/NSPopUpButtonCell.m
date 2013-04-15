@@ -89,6 +89,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _autoenablesItems;
 }
 
+-(NSPopUpArrowPosition)arrowPosition {
+    return _arrowPosition;
+}
+
 -(NSRectEdge)preferredEdge {
    return _preferredEdge;
 }
@@ -174,6 +178,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setAutoenablesItems:(BOOL)value {
    _autoenablesItems=value?YES:NO;
+}
+
+-(void)setArrowPosition:(NSPopUpArrowPosition)position {
+    _arrowPosition = position;
 }
 
 -(void)setPreferredEdge:(NSRectEdge)edge {
