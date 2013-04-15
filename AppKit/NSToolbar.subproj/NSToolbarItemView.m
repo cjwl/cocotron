@@ -46,21 +46,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self addSubview:view];
 }
 
--(void)setFrame:(NSRect)frame {
-   [super setFrame:frame];
-
-   NSRect bounds=[self bounds];
-   CGFloat labelHeight=[_toolbarItem _labelSize].height;
-   NSRect viewRect;
-   viewRect.origin.y=bounds.origin.y+labelHeight;
-   viewRect.origin.x=bounds.origin.x;
-			
-   viewRect.size.width = bounds.size.width;
-   viewRect.size.height = bounds.size.height - labelHeight;
-			
-   [[_toolbarItem view] setFrame: viewRect];
+-(NSRect)availableRectForSubview
+{
+    NSRect rect=[self bounds];
+    CGFloat labelHeight=[_toolbarItem _labelSize].height;
+    rect.size.height -= labelHeight;
+    rect.origin.y += labelHeight + 4; // 4 is Cocotron magic padding (see NSToolbarItem drawInRect:
+    return rect;
 }
 
+-(void)setFrame:(NSRect)frame {
+    [super setFrame:frame];
+    if ([_toolbarItem view] != nil) {
+        // Fix up the item viewWe 
+        NSView *view = [_toolbarItem view];
+        // Center the subview within the bounds
+        NSRect availableRect = [self availableRectForSubview];
+        NSRect viewRect = [view frame];
+        
+        // Center the subview within the available bounds
+        viewRect.origin.x=NSMinX(availableRect) + (NSWidth(availableRect) - NSWidth(viewRect)) / 2.f;
+        // Align top
+        viewRect.origin.y=NSMinY(availableRect);
+        [view setFrame: viewRect];
+    }
+}
 -(NSView *)view {
    return [[self subviews] lastObject];
 }
