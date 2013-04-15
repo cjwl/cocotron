@@ -582,6 +582,20 @@ static const float kImageMargin = 2.;
    }
 }
 
+-(NSRect)imageRectForBounds:(NSRect)rect {
+    NSImage *image = [self image];
+
+    NSSize              imageSize= NSMakeSize(0,0);
+    if (image != nil) {
+        BOOL enabled = [self isEnabled] ? YES : ![self imageDimsWhenDisabled];
+        BOOL mixed = [self state] == NSMixedState;
+        imageSize = [[[self controlView] graphicsStyle] sizeOfButtonImage: image
+                                                                  enabled: enabled
+                                                                    mixed: mixed];
+    }
+    return NSMakeRect(rect.origin.x, rect.origin.y, imageSize.width, imageSize.height);
+}
+
 -(BOOL)isVisuallyHighlighted {
    return ((([self highlightsBy]&NSChangeGrayCellMask) && [self isHighlighted]) ||
            (([self showsStateBy]&NSChangeGrayCellMask) && [self state]));
@@ -955,8 +969,9 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
    NSImage            *image=[self imageForHighlight];
    BOOL                enabled=[self isEnabled]?YES:![self imageDimsWhenDisabled];
    BOOL                mixed=([self state]==NSMixedState)?YES:NO;
-   NSSize              imageSize=(image==nil)?NSMakeSize(0,0):[[controlView graphicsStyle] sizeOfButtonImage:image enabled:enabled mixed:mixed];
-   NSPoint             imageOrigin=frame.origin;
+    NSRect             imageRect = [self imageRectForBounds: frame];
+    NSSize              imageSize=imageRect.size;
+   NSPoint             imageOrigin=imageRect.origin;
    NSSize              titleSize=[title size];
     NSRect              titleRect=[self titleRectForBounds:frame];
    BOOL                drawImage=YES,drawTitle=YES;
