@@ -180,6 +180,8 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 	   if([allValues[count -1] isKindOfClass:[NSNumber class]])
 	   {
 		   BOOL ret;
+           // "hidden" property value is a OR of all binders values
+           // Other properties values are a AND of all binders values
 		   if([_binding isEqual:@"hidden"])
 		   {
 			   ret=NO;
@@ -244,13 +246,15 @@ NSString *NSFormatDisplayPattern(NSString *pattern,id *values,NSUInteger valueCo
 		@try {
 			// Not sure it's the right place to do that  - it's probably not - but on Cocoa, BOOL values bound to a nil value are set to NO,
 			// even if setting the same property by code to nil using setValue:forKey: is throwing an exception
-			// That's certainly the case for properties like "enabled" 
+			// That's certainly the case for properties like "enabled"
 			if (value == nil) {
 				@try {
 					[_source setValue:nil forKeyPath:bindingPath];
 				}
 				@catch(id ex) {
-					[_source setValue:[NSNumber numberWithBool:NO] forKeyPath:bindingPath];
+                    if (isValidKeyPath == NO || [currentValue isEqualTo:[NSNumber numberWithBool:NO]] == NO) {
+                        [_source setValue:[NSNumber numberWithBool:NO] forKeyPath:bindingPath];
+                    }
 				}
 			} else {
 				[_source setValue:value forKeyPath:bindingPath];
