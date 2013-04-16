@@ -303,6 +303,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     item=[itemArray objectAtIndex:_selectedIndex];
    }
   [super setTitle:[item title]];
+    // For a redraw of the control
+  [(NSControl *)[self controlView] updateCell:self];
 }
 
 
