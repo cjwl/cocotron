@@ -240,17 +240,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[self window] selectKeyViewPrecedingView:self];
 }
 
-// FIX do we need this? selectText: seems to do the job for us
 -(void)mouseDown:(NSEvent *)event {
    NSTextFieldCell *cell=[self selectedCell];
 
    if(![cell isEnabled])
     return;
 
-   NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
-   NSRect  editingFrame=[cell titleRectForBounds:[self bounds]];
-   
-    if(!NSMouseInRect(point,editingFrame,[self isFlipped])) {
+    if ([[self window] firstResponder] != self) {
+        // This will create our editor if needed
+        [[self window] makeFirstResponder:self];
+    }
+    
+    NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
+    NSRect  editingFrame=[cell titleRectForBounds:[self bounds]];
+    
+    // In case we get the mouse down because we hadn't an editor yet, propagate the mouse event to the editor
+    if(_currentEditor && NSMouseInRect(point,editingFrame,[self isFlipped])) {
+        [_currentEditor mouseDown:event];
+    } else {
         [super mouseDown:event];
     }
 }
