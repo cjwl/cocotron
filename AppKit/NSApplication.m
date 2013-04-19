@@ -909,6 +909,14 @@ id NSApp=nil;
     NSSheetContext *context=[NSSheetContext sheetContextWithSheet:sheet modalDelegate:modalDelegate didEndSelector:didEndSelector contextInfo:contextInfo frame:[sheet frame]];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"NSRunAllSheetsAsModalPanel"]) {
+        // Center the sheet on the window
+        NSPoint windowCenter = NSMakePoint(NSMidX([window frame]), NSMidY([window frame]));
+        NSPoint sheetCenter = NSMakePoint(NSMidX([sheet frame]), NSMidY([sheet frame]));
+        NSPoint origin = [sheet frame].origin;
+        origin.x += windowCenter.x - sheetCenter.x;
+        origin.y += windowCenter.y - sheetCenter.y;
+        [sheet setFrameOrigin:origin];
+        
 		[sheet _setSheetContext: context];
 		[sheet setLevel: NSModalPanelWindowLevel];
 		NSModalSession session = [self beginModalSessionForWindow: sheet];
