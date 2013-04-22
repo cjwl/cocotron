@@ -27,6 +27,11 @@ void CGContextBeginTransparencyLayer(CGContextRef context,CFDictionaryRef unused
    O2ContextBeginTransparencyLayer(context,(NSDictionary *)unused);
 }
 
+void CGContextBeginTransparencyLayerWithRect(CGContextRef context, CGRect  rect, CFDictionaryRef unused) {
+    CGContextClipToRect(context, rect);
+    CGContextBeginTransparencyLayer(context, unused);
+}
+
 void CGContextEndTransparencyLayer(CGContextRef context) {
    O2ContextEndTransparencyLayer(context);
 }
