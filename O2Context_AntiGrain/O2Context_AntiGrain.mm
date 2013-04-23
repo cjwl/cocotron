@@ -1845,10 +1845,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	O2ContextResetClip(self); // Starts with a clean clipping region
 	O2GStateSetBlendMode(O2ContextCurrentGState(self), kO2BlendModeNormal);
 	O2GStateSetAlpha(O2ContextCurrentGState(self), 1.);
-	// We're keeping the shadow for when we render the layer
 	
-	O2ContextSaveGState(self); // Save that clean state - we'll use it to render the layer
-
 	// No shadow from now
 	[O2ContextCurrentGState(self) setShadowOffset:O2SizeZero blur:0. color:nil];
 
@@ -1874,8 +1871,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	O2ContextConcatCTM(self, O2AffineTransformInvert(O2ContextGetCTM(self)));
 	[self drawImage:O2LayerGetSurface(layer) inRect:O2RectMake(0,0,size.width,size.height)];
 	O2ContextRestoreGState(self);
-
-	O2ContextRestoreGState(self); // Restore the pre layer-time context
 
 	O2LayerRelease(layer);
 }
