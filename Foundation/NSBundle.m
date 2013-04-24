@@ -794,7 +794,7 @@ static NSMapTable *pathToObject=NULL;
 	for(i=0;i<count;i++){
      NSString *check=[allFiles objectAtIndex:i];
 
-     if(type==nil || [[check pathExtension] isEqualToString:type])
+     if([type length] == 0 || [[check pathExtension] isEqualToString:type])
       [result addObject:[fullPath stringByAppendingPathComponent:check]];
 	}
 
