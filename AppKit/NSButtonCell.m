@@ -991,8 +991,8 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 
    titleRect.origin.y+=floor((titleRect.size.height-titleSize.height)/2);
    titleRect.size.height=titleSize.height;
-	titleRect.origin.x += 3; // the title is way to tight to the left edge otherwise
-   switch(imagePosition){
+
+    switch(imagePosition){
 
     case NSNoImage:
      drawImage=NO;
@@ -1096,11 +1096,11 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 	else
     imageSize=[image size];
 	
-   if(title==nil)
-    titleSize=NSMakeSize(0,0);
-   else
-    titleSize=[title size];
-		
+    if(title==nil) {
+        titleSize=NSMakeSize(0,0);
+    }else {
+        titleSize=[title size];
+   }
    switch([self imagePosition]){
 
     case NSNoImage:
@@ -1112,20 +1112,12 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
      break;
       
     case NSImageLeft:
-     result.width=imageSize.width+4+titleSize.width;
-     result.height=MAX(imageSize.height,titleSize.height);
-     break;
-      
     case NSImageRight:
      result.width=imageSize.width+4+titleSize.width;
      result.height=MAX(imageSize.height,titleSize.height);
      break;
       
     case NSImageBelow:
-     result.width=MAX(imageSize.width,titleSize.width);
-     result.height=imageSize.height+4+titleSize.height;
-     break;
-      
     case NSImageAbove:
      result.width=MAX(imageSize.width,titleSize.width);
      result.height=imageSize.height+4+titleSize.height;
@@ -1137,7 +1129,9 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
      break;
 	}
 	
-   if( [self isBordered] || [self isBezeled] ){
+    // Add some margin
+    result.width += 4;
+    if( [self isBordered] || [self isBezeled] ){
 		result.width += 4;
 		result.height += 4;
 	}
