@@ -23,16 +23,21 @@
 #define MAX_KEY_LENGTH 255
 #define MAX_VALUE_NAME 16383
 
-typedef struct _TZI
-{
-    int bias;
-    int standardBias;
-    int daylightBias;
-    SYSTEMTIME standardDate;
-    SYSTEMTIME daylightDate;
-} TZI;
+#pragma pack(1)
 
-//   TODO: 
+typedef struct _REG_TZI_FORMAT
+{
+    LONG Bias;
+    LONG StandardBias;
+    LONG DaylightBias;
+    SYSTEMTIME StandardDate;
+    SYSTEMTIME DaylightDate;
+} REG_TZI_FORMAT;
+
+#pragma pack()
+
+
+//   TODO:
 //   Dynamic DST (see SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones\\*\\Dynamic DST in registry)
 
 
@@ -200,12 +205,13 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
 
 -(TIME_ZONE_INFORMATION)_timeZoneInformation {
     TIME_ZONE_INFORMATION timezoneInformation;
+    REG_TZI_FORMAT  *tzi = (REG_TZI_FORMAT *)[self->_data bytes];
     
-    timezoneInformation.Bias          = ((struct _TZI *)[self->_data bytes])->bias;
-    timezoneInformation.StandardDate  = ((struct _TZI *)[self->_data bytes])->standardDate;
-    timezoneInformation.StandardBias  = ((struct _TZI *)[self->_data bytes])->standardBias;
-    timezoneInformation.DaylightDate  = ((struct _TZI *)[self->_data bytes])->daylightDate;
-    timezoneInformation.DaylightBias  = ((struct _TZI *)[self->_data bytes])->daylightBias;
+    timezoneInformation.Bias          = tzi->Bias;
+    timezoneInformation.StandardDate  = tzi->StandardDate;
+    timezoneInformation.StandardBias  = tzi->StandardBias;
+    timezoneInformation.DaylightDate  = tzi->DaylightDate;
+    timezoneInformation.DaylightBias  = tzi->DaylightBias;
     
     return timezoneInformation;
 }
@@ -275,8 +281,10 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
                             daylightnameset = YES;
                         }
                         else if (strcmp(valueName,"TZI") == 0) {
-                            memcpy(tzdata, lpData, dataSize);
-                            dataset = YES;
+                            if (dataSize == 44) {
+                                memcpy(tzdata, lpData, dataSize);
+                                dataset = YES;
+                            }
                         }
                         
                         if (dataset  == YES && nameset == YES && daylightnameset == YES) {
@@ -289,7 +297,7 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
                             }
                             RegCloseKey(hTimeZoneKey);
                             
-                            return [NSData dataWithBytes:tzdata length:dataSize];
+                            return [NSData dataWithBytes:tzdata length:44];
                         }
                     }
                 }
