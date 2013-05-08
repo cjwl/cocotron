@@ -692,7 +692,7 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,NSIn
     NSInteger end = range.location + range.length;
     
     while (i < end) {
-        while (j >= 0 && buffer[i] != patBuffer[j]) {
+        while (j >= 0 && buffer[i] != patbuffer[j]) {
             j = next[j];
         }
         
