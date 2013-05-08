@@ -700,7 +700,7 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,NSIn
         j++;
         
         if (j == patlength) {
-            return NSMakeRange(range.location + i - patlength,patlength);
+            return NSMakeRange(i - 1, patlength);
         }
     }
     
