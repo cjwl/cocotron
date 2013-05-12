@@ -171,7 +171,7 @@ enum {
 
    [_client URLProtocol:self didLoadData:data];
    
-   if(_totalContentReceived>=_expectedContentLength)
+   if(_expectedContentLength > 0 && _totalContentReceived>=_expectedContentLength)
     [self didFinishLoading];
 }
 
