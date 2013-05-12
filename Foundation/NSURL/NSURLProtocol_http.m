@@ -385,9 +385,7 @@ NSLog(@"parse error %d",__LINE__);
       // fallthrough
 
      case STATE_entity_body:;
-      NSInteger pieceLength=_length-_range.location;
-      
-      _totalContentReceived+=pieceLength;
+      NSInteger pieceLength=_length-_range.location;      
       _range.length=pieceLength;
       
       [self didLoadData:[NSData dataWithBytes:_bytes+_range.location length:pieceLength]];
