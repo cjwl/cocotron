@@ -14,9 +14,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32Window(Win32Window_drag)
 
+- (id)receiverWithSession:(Win32DragSession *)session
+{
+    NSWindow *window=[self delegate];
+    id receiver=[window _receiverForDragSession:session];
+    id sessionReceiver=[session receiver];
+    if (receiver!=sessionReceiver && receiver && sessionReceiver) {
+        // If receiver is a subview if [session receiver] and it hasn't registered
+        // for this type of drop, continue using [session receiver] as the target
+        // (as Cocoa on Mac does)
+        if ([receiver isKindOfClass:[NSView class]] &&
+            [sessionReceiver isKindOfClass:[NSView class]]) {
+
+            if ([receiver isDescendantOf:sessionReceiver] &&
+                [session pasteboardTypesIntersectTypes:[sessionReceiver _draggedTypes]] &&
+                ![sessionReceiver pasteboardTypesIntersectTypes:[receiver _draggedTypes]]) {
+
+                receiver = [session receiver];
+            }
+        }
+    }
+    return receiver;
+}
+
 -(void)dragEnter:(Win32DragSession *)session {
-   NSWindow       *window=[self delegate];
-   id              receiver=[window _receiverForDragSession:session];
+   id receiver=[self receiverWithSession:session];
    NSDragOperation operation;
 
    [session setReceiver:receiver];
@@ -25,8 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dragOver:(Win32DragSession *)session {
-   NSWindow       *window=[self delegate];
-   id              receiver=[window _receiverForDragSession:session];
+   id receiver=[self receiverWithSession:session];
    NSDragOperation operation;
 
    if(receiver==[session receiver]){
@@ -46,8 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drop:(Win32DragSession *)session {
-   NSWindow       *window=[self delegate];
-   id              receiver=[window _receiverForDragSession:session];
+   id receiver=[self receiverWithSession:session];
 
    if(receiver!=[session receiver]){
     [[session receiver] draggingExited:session];
