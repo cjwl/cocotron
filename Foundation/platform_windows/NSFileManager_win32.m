@@ -537,16 +537,47 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return nil;
 	}
 	
+    char		pSecurityDescriptor[128];
+    DWORD		lengthNeeded;
+
 	NSMutableDictionary *result = [NSMutableDictionary dictionary];
 	NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
 	[result setObject:date forKey:NSFileModificationDate];
 	
 	NSString *fileType = NSFileTypeRegular;
 	if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) fileType = NSFileTypeDirectory;
+    
+    if (GetFileSecurityW([path fileSystemRepresentationW], OWNER_SECURITY_INFORMATION, (SECURITY_DESCRIPTOR *)pSecurityDescriptor, 128, &lengthNeeded) != 0) {
+        PSID 			sid = NULL;
+        DWORD			lpbOwnerDefaulted;
+        char 			lpName[128];
+        DWORD			len = 128;
+        SID_NAME_USE	nameUse;
+        char			referencedDomainName[128];
+        DWORD			domainLen = 128;
+        
+        if (GetSecurityDescriptorOwner((SECURITY_DESCRIPTOR *)pSecurityDescriptor, &sid, ((LPBOOL)(&lpbOwnerDefaulted))) != 0) {
+            if (LookupAccountSid(NULL, sid, lpName, &len, referencedDomainName, &domainLen, &nameUse) != 0) {
+                NSString    *owner = [[[NSString alloc] initWithCString:lpName] autorelease];
+                
+                if (referencedDomainName != NULL) {
+                    [result setObject:[NSString stringWithFormat:@"%@\\%@", [[[NSString alloc] initWithCString:referencedDomainName] autorelease], owner] forKey:NSFileOwnerAccountName];
+                }
+                else {
+                    [result setObject:owner forKey:NSFileOwnerAccountName];
+                }
+            } else {
+                // TODO: set error
+                return nil;
+            }
+        }
+    } else {
+        // TODO: set error
+		return nil;
+    }
 	
 	[result setObject:fileType forKey:NSFileType];
-	[result setObject:@"USER" forKey:NSFileOwnerAccountName];
-	[result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
+	[result setObject:@"" forKey:NSFileGroupOwnerAccountName];
 	[result setObject:[NSNumber numberWithUnsignedLong:0666] forKey:NSFilePosixPermissions];
 	
 	uint64_t sizeOfFile = fileData.nFileSizeLow;
