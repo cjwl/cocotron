@@ -6410,129 +6410,6 @@
 		FEFF23940BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		15D921BB105E918000171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		15D921BC105E918000171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		28D487A40FE04E7100DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		28D487A50FE04E7100DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6E4D93250A2642BD003D335C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6E4D93260A2642BD003D335C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6EA04A7109E57D5F0067589C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6EA04A7209E57D5F0067589C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE30A2FB10C6ED6F00A1BF7F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FED70FB30C3C09C7000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FED70FB40C3C09C7000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		15D921E8105E924500171406 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6590,6 +6467,41 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CoreServices-Windows-i386";
 		};
+		FE1DDE4617125B01003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE651A8D0FBC84DD00464BFD;
+			remoteInfo = "objc-Darwin-x86_64";
+		};
+		FE1DDE7917125CB9003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE1DDE4917125C98003B3AF8;
+			remoteInfo = "CoreFoundation-Darwin-x86_64";
+		};
+		FE1DDE7C17125CB9003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE1DDE7717125C98003B3AF8;
+			remoteInfo = "CoreFoundation-Darwin-x86_64";
+		};
+		FE1DDE8A17125CE7003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE1DDE7E17125CC4003B3AF8;
+			remoteInfo = "CoreServices-Darwin-x86_64";
+		};
+		FE1DDE8D17125CE7003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE1DDE8817125CC4003B3AF8;
+			remoteInfo = "CoreServices-Darwin-x86_64";
+		};
 		FE5A868D10C6EDDC005E348A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -6617,13 +6529,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FE5A869710C6EE28005E348A;
 			remoteInfo = "CoreFoundation-FreeBSD-i386";
-		};
-		FE6518180FBC844C00464BFD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FED70A9E0C3B3F5E000CBE5B;
-			remoteInfo = "objc-Darwin";
 		};
 		FE651AA00FBC84DD00464BFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -7275,21 +7180,6 @@
 		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwarding.h; sourceTree = "<group>"; };
 		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forwarding.m; sourceTree = "<group>"; };
 		FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegalCharacterSet.bitmap; path = NSCharacterSet/illegalCharacterSet.bitmap; sourceTree = "<group>"; };
-		FE1E546314303009000D60A1 /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E546414303009000D60A1 /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
-		FE1E546514303009000D60A1 /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
-		FE1E546614303009000D60A1 /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
-		FE1E546714303009000D60A1 /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E546814303009000D60A1 /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
-		FE1E546914303009000D60A1 /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
-		FE1E546A14303009000D60A1 /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E546B14303009000D60A1 /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
-		FE1E546C14303009000D60A1 /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
-		FE1E546D14303009000D60A1 /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
-		FE1E546E14303009000D60A1 /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
-		FE1E546F14303009000D60A1 /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
-		FE1E547014303009000D60A1 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E547114303009000D60A1 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE2569E610F2F9C7005CE23E /* CFHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFHost.m; sourceTree = "<group>"; };
 		FE2569E710F2F9C7005CE23E /* CFNetServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFNetServices.m; sourceTree = "<group>"; };
 		FE2569E810F2F9C7005CE23E /* CFSocketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSocketStream.m; sourceTree = "<group>"; };
@@ -7559,6 +7449,14 @@
 		FEBF535B0F925FA3005DC684 /* objc_protocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_protocol.m; sourceTree = "<group>"; };
 		FEBF53670F926025005DC684 /* objc_protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_protocol.h; sourceTree = "<group>"; };
 		FEBF545A0F93AE8A005DC684 /* objc_property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_property.m; sourceTree = "<group>"; };
+		FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationErrors.h; sourceTree = "<group>"; };
 		FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtocol_http.h; sourceTree = "<group>"; };
 		FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtocol_http.m; sourceTree = "<group>"; };
@@ -8664,6 +8562,7 @@
 				FE1342C91151842200404745 /* CoreServices.framework */,
 				FEC32E56115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6711590A130008ECE5 /* CoreServices.framework */,
+				FE1DDE8E17125CE7003B3AF8 /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8694,21 +8593,14 @@
 		FE1E546214303009000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
-				FE1E546314303009000D60A1 /* darwin-i386.xcconfig */,
-				FE1E546414303009000D60A1 /* darwin-ppc.xcconfig */,
-				FE1E546514303009000D60A1 /* darwin-x86_64.xcconfig */,
-				FE1E546614303009000D60A1 /* darwin.xcconfig */,
-				FE1E546714303009000D60A1 /* freebsd-i386.xcconfig */,
-				FE1E546814303009000D60A1 /* freebsd.xcconfig */,
-				FE1E546914303009000D60A1 /* linux-arm.xcconfig */,
-				FE1E546A14303009000D60A1 /* linux-i386.xcconfig */,
-				FE1E546B14303009000D60A1 /* linux-ppc.xcconfig */,
-				FE1E546C14303009000D60A1 /* linux.xcconfig */,
-				FE1E546D14303009000D60A1 /* platform.xcconfig */,
-				FE1E546E14303009000D60A1 /* solaris-sparc.xcconfig */,
-				FE1E546F14303009000D60A1 /* solaris.xcconfig */,
-				FE1E547014303009000D60A1 /* windows-i386.xcconfig */,
-				FE1E547114303009000D60A1 /* windows.xcconfig */,
+				FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */,
+				FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */,
+				FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */,
+				FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */,
+				FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */,
+				FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */,
+				FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */,
+				FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */,
 				FE70869F143117F100B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
@@ -8889,6 +8781,7 @@
 				FEA82994109B775200C7A732 /* CoreFoundation.framework */,
 				FEA829D1109B7C1B00C7A732 /* CoreFoundation.framework */,
 				FE5A86CC10C6EE28005E348A /* CoreFoundation.framework */,
+				FE1DDE7D17125CB9003B3AF8 /* CoreFoundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -12128,8 +12021,6 @@
 				15D921AF105E918000171406 /* Resources */,
 			);
 			buildRules = (
-				15D921BB105E918000171406 /* PBXBuildRule */,
-				15D921BC105E918000171406 /* PBXBuildRule */,
 			);
 			dependencies = (
 				15D921EB105E927F00171406 /* PBXTargetDependency */,
@@ -12151,8 +12042,6 @@
 				28D487990FE04E7100DC03EF /* Resources */,
 			);
 			buildRules = (
-				28D487A40FE04E7100DC03EF /* PBXBuildRule */,
-				28D487A50FE04E7100DC03EF /* PBXBuildRule */,
 			);
 			dependencies = (
 				28D487AF0FE04F3F00DC03EF /* PBXTargetDependency */,
@@ -12174,8 +12063,6 @@
 				6E4D93160A2642BD003D335C /* Resources */,
 			);
 			buildRules = (
-				6E4D93250A2642BD003D335C /* PBXBuildRule */,
-				6E4D93260A2642BD003D335C /* PBXBuildRule */,
 			);
 			dependencies = (
 				1A27C00B1090CC7200C44FD7 /* PBXTargetDependency */,
@@ -12197,8 +12084,6 @@
 				6EA04A6109E57D5F0067589C /* Resources */,
 			);
 			buildRules = (
-				6EA04A7109E57D5F0067589C /* PBXBuildRule */,
-				6EA04A7209E57D5F0067589C /* PBXBuildRule */,
 			);
 			dependencies = (
 				FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */,
@@ -12243,8 +12128,6 @@
 				FE30A2EE10C6ED6F00A1BF7F /* Resources */,
 			);
 			buildRules = (
-				FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */,
-				FE30A2FB10C6ED6F00A1BF7F /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE5A86D210C6EE82005E348A /* PBXTargetDependency */,
@@ -12262,6 +12145,7 @@
 			buildConfigurationList = FE651A840FBC844C00464BFD /* Build configuration list for PBXNativeTarget "Foundation-Darwin-x86_64" */;
 			buildPhases = (
 				FE6518190FBC844C00464BFD /* Headers */,
+				FE1DDE4817125B38003B3AF8 /* ShellScript */,
 				FE6519450FBC844C00464BFD /* Sources */,
 				FE651A780FBC844C00464BFD /* Frameworks */,
 				FE651A790FBC844C00464BFD /* Resources */,
@@ -12269,7 +12153,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				FE6518170FBC844C00464BFD /* PBXTargetDependency */,
+				FE1DDE8B17125CE7003B3AF8 /* PBXTargetDependency */,
+				FE1DDE7A17125CB9003B3AF8 /* PBXTargetDependency */,
+				FE1DDE4717125B01003B3AF8 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Darwin-x86_64";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -12309,8 +12195,6 @@
 				FED70FA60C3C09C7000CBE5B /* Resources */,
 			);
 			buildRules = (
-				FED70FB30C3C09C7000CBE5B /* PBXBuildRule */,
-				FED70FB40C3C09C7000CBE5B /* PBXBuildRule */,
 			);
 			dependencies = (
 				FED70FCE0C3C0A4F000CBE5B /* PBXTargetDependency */,
@@ -12327,7 +12211,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 6E2801B909746B8900EC542B /* Build configuration list for PBXProject "Foundation" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -12391,6 +12275,20 @@
 			fileType = wrapper.framework;
 			path = CoreServices.framework;
 			remoteRef = FE1342C81151842200404745 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE1DDE7D17125CB9003B3AF8 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE1DDE7C17125CB9003B3AF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE1DDE8E17125CE7003B3AF8 /* CoreServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreServices.framework;
+			remoteRef = FE1DDE8D17125CE7003B3AF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE5A868E10C6EDDC005E348A /* objc.framework */ = {
@@ -12674,6 +12572,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE1DDE4817125B38003B3AF8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo hi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		15D92051105E918000171406 /* Sources */ = {
@@ -16100,6 +16014,21 @@
 			name = "CoreServices-Windows-i386";
 			targetProxy = FE1342D41151843C00404745 /* PBXContainerItemProxy */;
 		};
+		FE1DDE4717125B01003B3AF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "objc-Darwin-x86_64";
+			targetProxy = FE1DDE4617125B01003B3AF8 /* PBXContainerItemProxy */;
+		};
+		FE1DDE7A17125CB9003B3AF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Darwin-x86_64";
+			targetProxy = FE1DDE7917125CB9003B3AF8 /* PBXContainerItemProxy */;
+		};
+		FE1DDE8B17125CE7003B3AF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreServices-Darwin-x86_64";
+			targetProxy = FE1DDE8A17125CE7003B3AF8 /* PBXContainerItemProxy */;
+		};
 		FE5A86D210C6EE82005E348A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-FreeBSD-i386";
@@ -16109,11 +16038,6 @@
 			isa = PBXTargetDependency;
 			name = "CoreFoundation-FreeBSD-i386";
 			targetProxy = FE5A86D310C6EE86005E348A /* PBXContainerItemProxy */;
-		};
-		FE6518170FBC844C00464BFD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "objc-Darwin";
-			targetProxy = FE6518180FBC844C00464BFD /* PBXContainerItemProxy */;
 		};
 		FE8492F9119A5EE900E252CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -16199,20 +16123,15 @@
 /* Begin XCBuildConfiguration section */
 		15D921BE105E918000171406 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16232,23 +16151,17 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
 		15D921BF105E918000171406 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16268,25 +16181,19 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
 		28D487A70FE04E7100DC03EF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16304,22 +16211,16 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};
 		28D487A80FE04E7100DC03EF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16338,7 +16239,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -16350,18 +16250,11 @@
 		};
 		6E4D93290A2642BD003D335C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16379,26 +16272,17 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/sparc;
-				VALID_ARCHS = sparc;
 			};
 			name = Release;
 		};
 		6EA04A7509E57D5F0067589C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16417,7 +16301,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -16431,7 +16314,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
@@ -16464,16 +16347,9 @@
 		};
 		7E891F170D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16493,23 +16369,15 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
 		7E891F180D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16527,24 +16395,17 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/sparc;
-				VALID_ARCHS = sparc;
 			};
 			name = Debug;
 		};
 		7E891F190D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16560,22 +16421,17 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
 		7E891F1A0D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16588,7 +16444,6 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Debug;
 		};
@@ -16625,7 +16480,7 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
@@ -16657,19 +16512,13 @@
 		};
 		FE30A2FD10C6ED6F00A1BF7F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16687,22 +16536,15 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
 		FE30A2FE10C6ED6F00A1BF7F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16721,25 +16563,16 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
 		FE651A850FBC844C00464BFD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16754,23 +16587,16 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Release;
 		};
 		FE651A860FBC844C00464BFD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16779,31 +16605,24 @@
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-fPIC",
-					"-march=i686",
 					"-DHAVE_LIBFFI",
 					"-DDARWIN",
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Debug;
 		};
 		FED70A6A0C3B3D2C000CBE5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16819,23 +16638,18 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
 		FED70FB60C3C09C7000CBE5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16848,7 +16662,6 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Release;
 		};

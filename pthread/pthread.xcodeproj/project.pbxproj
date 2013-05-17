@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,19 +12,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FE67837E143385CD0009A0A0 /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
-		FE67837F143385CD0009A0A0 /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
-		FE678380143385CD0009A0A0 /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
-		FE678381143385CD0009A0A0 /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
-		FE678382143385CD0009A0A0 /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
-		FE678383143385CD0009A0A0 /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
-		FE678384143385CD0009A0A0 /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
-		FE678385143385CD0009A0A0 /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
-		FE678386143385CD0009A0A0 /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
-		FE678387143385CD0009A0A0 /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
-		FE678388143385CD0009A0A0 /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
-		FE678389143385CD0009A0A0 /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
-		FE67838A143385CD0009A0A0 /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
 		FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE67838C143385CD0009A0A0 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
 		FE67838D143385CD0009A0A0 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
@@ -33,16 +20,6 @@
 		FE678390143386160009A0A0 /* sched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sched.h; sourceTree = "<group>"; };
 		FE6786871433A2530009A0A0 /* pthread.1.0.dll */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = pthread.1.0.dll; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		D2AAC0C505546C1D00DB518D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
@@ -68,19 +45,6 @@
 		FE67837D143385CD0009A0A0 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
-				FE67837E143385CD0009A0A0 /* darwin-i386.xcconfig */,
-				FE67837F143385CD0009A0A0 /* darwin-ppc.xcconfig */,
-				FE678380143385CD0009A0A0 /* darwin-x86_64.xcconfig */,
-				FE678381143385CD0009A0A0 /* darwin.xcconfig */,
-				FE678382143385CD0009A0A0 /* freebsd-i386.xcconfig */,
-				FE678383143385CD0009A0A0 /* freebsd.xcconfig */,
-				FE678384143385CD0009A0A0 /* linux-arm.xcconfig */,
-				FE678385143385CD0009A0A0 /* linux-i386.xcconfig */,
-				FE678386143385CD0009A0A0 /* linux-ppc.xcconfig */,
-				FE678387143385CD0009A0A0 /* linux.xcconfig */,
-				FE678388143385CD0009A0A0 /* platform.xcconfig */,
-				FE678389143385CD0009A0A0 /* solaris-sparc.xcconfig */,
-				FE67838A143385CD0009A0A0 /* solaris.xcconfig */,
 				FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */,
 				FE67838C143385CD0009A0A0 /* windows-i386.xcconfig */,
 				FE67838D143385CD0009A0A0 /* windows.xcconfig */,
@@ -109,8 +73,6 @@
 			buildConfigurationList = 1DEB917D08733D990010E9CD /* Build configuration list for PBXNativeTarget "pthread" */;
 			buildPhases = (
 				D2AAC0C305546C1D00DB518D /* Headers */,
-				D2AAC0C405546C1D00DB518D /* Sources */,
-				D2AAC0C505546C1D00DB518D /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,10 +89,10 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 1DEB918108733D990010E9CD /* Build configuration list for PBXProject "pthread" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -149,26 +111,15 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXSourcesBuildPhase section */
-		D2AAC0C405546C1D00DB518D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
 /* Begin XCBuildConfiguration section */
 		1DEB917E08733D990010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEPLOYMENT_POSTPROCESSING = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				PRIVATE_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				INSTALL_PATH = /;
+				PRIVATE_HEADERS_FOLDER_PATH = /include;
 				PRODUCT_NAME = pthread;
-				PUBLIC_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = /include;
 			};
 			name = Debug;
 		};
@@ -176,11 +127,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE67838B143385CD0009A0A0 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEPLOYMENT_POSTPROCESSING = NO;
-				PRIVATE_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				INSTALL_PATH = /;
+				PRIVATE_HEADERS_FOLDER_PATH = /include;
 				PRODUCT_NAME = pthread;
-				PUBLIC_HEADERS_FOLDER_PATH = $TARGET_BUILD_DIR/usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = /include;
 			};
 			name = Release;
 		};

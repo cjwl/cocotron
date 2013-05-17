@@ -7,7 +7,7 @@ scriptResources=$installResources/scripts
 productFolder=/Developer/Cocotron/1.0
 downloadFolder=$productFolder/Downloads
 
-PREFIX=/Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5
+PREFIX=`pwd`/../system/i386-mingw32msvc/freetype-2.3.5
 
 $scriptResources/downloadFilesIfNeeded.sh $downloadFolder "http://downloads.sourceforge.net/gnuwin32/freetype-2.3.5-1-bin.zip"
 

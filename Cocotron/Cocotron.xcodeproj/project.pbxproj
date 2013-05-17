@@ -15,9 +15,9 @@
 			dependencies = (
 				FE1FC01611E7807A00A9A87A /* PBXTargetDependency */,
 				FE5C83A0121D89CD0063E96F /* PBXTargetDependency */,
+				FE081AA214107EF900A3DE85 /* PBXTargetDependency */,
 				FE0513EF121E06DF0097BA92 /* PBXTargetDependency */,
 				FE0819131386F95800C06956 /* PBXTargetDependency */,
-				FE081AA214107EF900A3DE85 /* PBXTargetDependency */,
 			);
 			name = "Cocotron-Windows-i386";
 			productName = "Cocotron-Windows-i386";
@@ -186,6 +186,9 @@
 /* Begin PBXProject section */
 		FE1FBFF211E7804C00A9A87A /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
 			buildConfigurationList = FE1FBFF511E7804C00A9A87A /* Build configuration list for PBXProject "Cocotron" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

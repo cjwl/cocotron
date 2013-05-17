@@ -34,7 +34,11 @@
 #endif
 
 #if __APPLE__
+#ifdef __LP64__
+#define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__("_OBJC_CLASS_$_"#className)
+#else
 #define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className) __asm__(".objc_class_name_"#className)
+#endif
 #else
 #define NS_DECLARE_CLASS_SYMBOL(className) extern const struct objc_class NS_CLASS_SYMBOL(className)
 #endif

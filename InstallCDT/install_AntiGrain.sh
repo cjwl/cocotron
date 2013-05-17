@@ -13,7 +13,7 @@ else
 	AGG_VERSION=$1
 fi
 
-PREFIX=/Developer/Cocotron/1.0/Windows/i386/agg-$AGG_VERSION
+PREFIX=`pwd`/../system/i386-mingw32msvc/agg-$AGG_VERSION
 BUILD=/tmp/build_AntiGrain
 
 $scriptResources/downloadFilesIfNeeded.sh $downloadFolder "http://www.antigrain.com/agg-$AGG_VERSION.zip"

@@ -41,17 +41,6 @@
 		FEF2EB7E0C87B959001FC5A8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE4733600C876FDE002B72EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FEF2EAD50C8782A9001FC5A8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -219,7 +208,6 @@
 				FE2D932D0D491258005B7813 /* ShellScript */,
 			);
 			buildRules = (
-				FE4733600C876FDE002B72EF /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -387,7 +375,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Deployment;
 		};
@@ -412,7 +399,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = NSOpenGLView;
-				SDKROOT = "";
 				SYMROOT = build/Windows;
 			};
 			name = Deployment;

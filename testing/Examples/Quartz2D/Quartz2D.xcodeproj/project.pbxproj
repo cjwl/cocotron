@@ -46,17 +46,6 @@
 		FE9F275D12B2E203007FB405 /* DemoSoftMask.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F275B12B2E203007FB405 /* DemoSoftMask.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE0B9A0512B1E42900034CC9 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -247,7 +236,6 @@
 				FE0B9A1412B1E4B500034CC9 /* ShellScript */,
 			);
 			buildRules = (
-				FE0B9A0512B1E42900034CC9 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);

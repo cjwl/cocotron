@@ -9,6 +9,11 @@
 #import "NSSpellEngine_hunspell.h"
 #import "NSSpellEngine_hunspellDictionary.h"
 #import <Foundation/NSOrthography.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSLocale.h>
+#import <Foundation/NSCharacterSet.h>
 
 @implementation NSSpellEngine_hunspell
 

@@ -36,17 +36,6 @@
 		FEFC492B0BB21B1D006628BF /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFC49290BB21B1D006628BF /* GradientView.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FEFC48FC0BB2192F006628BF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
 		FEFC49150BB219B7006628BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -205,7 +194,6 @@
 				FEB8F1280D3DB78C00754380 /* ShellScript */,
 			);
 			buildRules = (
-				FEFC48FC0BB2192F006628BF /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -221,9 +209,15 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "CGShadingCreateAxial" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CGShadingCreateAxial */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* CGShadingCreateAxial-Mac */,
 				FEFC48EE0BB21906006628BF /* CGShadingCreateAxial-Windows */,

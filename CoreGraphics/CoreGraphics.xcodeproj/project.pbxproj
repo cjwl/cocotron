@@ -343,15 +343,6 @@
 		FE8C021C10C59BB300FE4072 /* CGImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020A10C59BB300FE4072 /* CGImageDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8C021E10C59BB300FE4072 /* O2Encoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020C10C59BB300FE4072 /* O2Encoder_TIFF.h */; };
 		FE8C022010C59BB300FE4072 /* O2ImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020E10C59BB300FE4072 /* O2ImageDestination.h */; };
-		FE9ACFEB15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
-		FE9ACFEC15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
-		FE9ACFED15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
-		FE9ACFEF15614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
-		FE9ACFF015614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
-		FE9ACFF115614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
-		FE9ACFF315614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
-		FE9ACFF415614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
-		FE9ACFF515614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
 		FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -465,41 +456,6 @@
 		FEF5A70C11E4E782009B0041 /* CGError.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5A70611E4E782009B0041 /* CGError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF5A70E11E4E782009B0041 /* CGError.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5A70611E4E782009B0041 /* CGError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildRule section */
-		FE5A884110C6F286005E348A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_2;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE5A887710C6F2F0005E348A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE6F7BB00FD554A800C3244F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FE6F7C950FD55FA300C3244F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_2;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		FE14CDD91069660900B0FFAF /* PBXContainerItemProxy */ = {
@@ -779,6 +735,14 @@
 		FEAED71B0FD6C4460043F915 /* CGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFContext.m; sourceTree = "<group>"; };
 		FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O2LZW.h; path = ../Onyx2D/O2LZW.h; sourceTree = "<group>"; };
 		FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = O2LZW.m; path = ../Onyx2D/O2LZW.m; sourceTree = "<group>"; };
+		FEC0A40E170935D3002A60B7 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A40F170935D3002A60B7 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A410170935D3002A60B7 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A411170935D3002A60B7 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A412170935D3002A60B7 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A413170935D3002A60B7 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A414170935D3002A60B7 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A415170935D3002A60B7 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FEC11A380FD4B4D600082282 /* CGAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
 		FEC11A390FD4B4D600082282 /* CGAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGAffineTransform.m; sourceTree = "<group>"; };
 		FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
@@ -955,37 +919,6 @@
 		FEF5A70611E4E782009B0041 /* CGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGError.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		8DC2EF560486A6940098B216 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE5A883F10C6F286005E348A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE6F7BAE0FD554A800C3244F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE6F7C930FD55FA300C3244F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
@@ -1106,6 +1039,14 @@
 		FE06B18C1430E7790071169B /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FEC0A40E170935D3002A60B7 /* darwin-i386-framework.xcconfig */,
+				FEC0A40F170935D3002A60B7 /* darwin-ppc-framework.xcconfig */,
+				FEC0A410170935D3002A60B7 /* darwin-x86_64-framework.xcconfig */,
+				FEC0A411170935D3002A60B7 /* freebsd-i386-framework.xcconfig */,
+				FEC0A412170935D3002A60B7 /* linux-arm-framework.xcconfig */,
+				FEC0A413170935D3002A60B7 /* linux-i386-framework.xcconfig */,
+				FEC0A414170935D3002A60B7 /* linux-ppc-framework.xcconfig */,
+				FEC0A415170935D3002A60B7 /* solaris-sparc-framework.xcconfig */,
 				FE06B18D1430E7790071169B /* darwin-i386.xcconfig */,
 				FE06B18E1430E7790071169B /* darwin-ppc.xcconfig */,
 				FE06B18F1430E7790071169B /* darwin-x86_64.xcconfig */,
@@ -1825,8 +1766,6 @@
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
-				8DC2EF540486A6940098B216 /* Sources */,
-				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1847,12 +1786,8 @@
 			buildPhases = (
 				FE5A877E10C6F286005E348A /* Headers */,
 				FE5A87E110C6F286005E348A /* Resources */,
-				FE5A87E210C6F286005E348A /* Sources */,
-				FE5A883F10C6F286005E348A /* Frameworks */,
 			);
 			buildRules = (
-				FE5A887710C6F2F0005E348A /* PBXBuildRule */,
-				FE5A884110C6F286005E348A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE5A887010C6F2AD005E348A /* PBXTargetDependency */,
@@ -1871,11 +1806,8 @@
 			buildPhases = (
 				FE6F7AF90FD554A800C3244F /* Headers */,
 				FE6F7B560FD554A800C3244F /* Resources */,
-				FE6F7B570FD554A800C3244F /* Sources */,
-				FE6F7BAE0FD554A800C3244F /* Frameworks */,
 			);
 			buildRules = (
-				FE6F7BB00FD554A800C3244F /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE6F7BD90FD5574600C3244F /* PBXTargetDependency */,
@@ -1893,11 +1825,8 @@
 			buildPhases = (
 				FE6F7BDE0FD55FA300C3244F /* Headers */,
 				FE6F7C3B0FD55FA300C3244F /* Resources */,
-				FE6F7C3C0FD55FA300C3244F /* Sources */,
-				FE6F7C930FD55FA300C3244F /* Frameworks */,
 			);
 			buildRules = (
-				FE6F7C950FD55FA300C3244F /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE6F7C9B0FD55FB600C3244F /* PBXTargetDependency */,
@@ -1915,7 +1844,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreGraphics" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -2121,46 +2050,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXSourcesBuildPhase section */
-		8DC2EF540486A6940098B216 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE5A87E210C6F286005E348A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FE9ACFED15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
-				FE9ACFF115614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
-				FE9ACFF515614CE4002AFCA9 /* O2ImageDecoder.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE6F7B570FD554A800C3244F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FE9ACFEB15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
-				FE9ACFEF15614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
-				FE9ACFF315614CE4002AFCA9 /* O2ImageDecoder.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FE6F7C3C0FD55FA300C3244F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FE9ACFEC15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */,
-				FE9ACFF015614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */,
-				FE9ACFF415614CE4002AFCA9 /* O2ImageDecoder.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
 /* Begin PBXTargetDependency section */
 		FE5A887010C6F2AD005E348A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2219,19 +2108,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70860C143117A500B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
 				PRODUCT_NAME = CoreGraphics;
 			};
 			name = Release;
@@ -2244,139 +2121,37 @@
 		};
 		FE5A884310C6F286005E348A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A411170935D3002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-				);
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
 		FE5A884410C6F286005E348A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A411170935D3002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-				);
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
 		FE6F7BB20FD554A800C3244F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A413170935D3002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-				);
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
 		FE6F7C970FD55FA300C3244F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A40E170935D3002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-				);
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
@@ -2390,88 +2165,26 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70860C143117A500B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
 				PRODUCT_NAME = CoreGraphics;
 			};
 			name = Debug;
 		};
 		FECC1D63108CEC9900BD4A91 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A413170935D3002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-				);
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
 		FECC1D64108CEC9900BD4A91 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A40E170935D3002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-DCOREGRAPHICS_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
-					"-Wreturn-type",
-				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-				);
 				PRODUCT_NAME = CoreGraphics;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};

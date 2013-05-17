@@ -1,1 +1,5 @@
 #include "linux-arm"
+#include "platform-framework"
+
+EXECUTABLE_SUFFIX = .so
+EXECUTABLE_PREFIX = lib
