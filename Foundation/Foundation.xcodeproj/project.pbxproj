@@ -1414,6 +1414,11 @@
 		28D487A20FE04E7100DC03EF /* NSTimeZoneRegions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B309747EA400EC542B /* NSTimeZoneRegions.plist */; };
 		28D487A30FE04E7100DC03EF /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
 		28D487D20FE0508900DC03EF /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
+		492B5DAB17468F0C0013F119 /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = 492B5DAA17468F0C0013F119 /* objc_association.m */; };
+		492B5DAC17468F0C0013F119 /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = 492B5DAA17468F0C0013F119 /* objc_association.m */; };
+		492B5DAD17468F0C0013F119 /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = 492B5DAA17468F0C0013F119 /* objc_association.m */; };
+		492B5DAE17468F0C0013F119 /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = 492B5DAA17468F0C0013F119 /* objc_association.m */; };
+		492B5DAF17468F0C0013F119 /* objc_association.m in Sources */ = {isa = PBXBuildFile; fileRef = 492B5DAA17468F0C0013F119 /* objc_association.m */; };
 		6E0084A60A19363F00F78605 /* NSPropertyListReader_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E0084A70A19363F00F78605 /* NSPropertyListReader_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */; };
 		6E0084D10A19371600F78605 /* NSPropertyListReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0084CD0A19371600F78605 /* NSPropertyListReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -6822,6 +6827,7 @@
 		26924AB41157BF7600A96CEB /* NSCondition_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCondition_posix.m; path = platform_posix/NSCondition_posix.m; sourceTree = "<group>"; };
 		26924AB51157BF7600A96CEB /* NSCondition_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCondition_posix.h; path = platform_posix/NSCondition_posix.h; sourceTree = "<group>"; };
 		28D487A90FE04E7100DC03EF /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		492B5DAA17468F0C0013F119 /* objc_association.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_association.m; sourceTree = "<group>"; };
 		6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_xml1.h; sourceTree = "<group>"; };
 		6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_xml1.m; sourceTree = "<group>"; };
 		6E0084CD0A19371600F78605 /* NSPropertyListReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader.h; sourceTree = "<group>"; };
@@ -8377,6 +8383,7 @@
 		6E28034609747A2500EC542B /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				492B5DAA17468F0C0013F119 /* objc_association.m */,
 				FE6CF89E1152743100B6D893 /* objc_malloc.h */,
 				FE6CF89F1152743100B6D893 /* objc_malloc.m */,
 				FE35CAEC0B4AB85800FE7AB3 /* objc.m */,
@@ -13797,6 +13804,7 @@
 				FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C162151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E415590EC600A162B8 /* libmain.m in Sources */,
+				492B5DAD17468F0C0013F119 /* objc_association.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14173,6 +14181,7 @@
 				FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C161151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E015590EAF00A162B8 /* libmain.m in Sources */,
+				492B5DAC17468F0C0013F119 /* objc_association.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14554,6 +14563,7 @@
 				FEB3F2C11404A92400059C8F /* NSSpellEngine.m in Sources */,
 				FEFAA5421429098A00CEE177 /* NSScriptWhoseTests.m in Sources */,
 				FE4C074B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
+				492B5DAB17468F0C0013F119 /* objc_association.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15689,6 +15699,7 @@
 				FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C163151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663DC15590E7B00A162B8 /* libmain.m in Sources */,
+				492B5DAE17468F0C0013F119 /* objc_association.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16069,6 +16080,7 @@
 				FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C164151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E715590FBE00A162B8 /* libmain.m in Sources */,
+				492B5DAF17468F0C0013F119 /* objc_association.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

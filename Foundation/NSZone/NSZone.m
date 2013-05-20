@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #else
 #include <unistd.h>
 #endif
+
 // NSZone functions implemented in platform subproject
 
 typedef unsigned int OSSpinLock;
@@ -237,6 +238,11 @@ void NSDeallocateObject(id object)
     object_cxxDestruct(object, object->isa);
 #endif
 
+#if !defined(APPLE_RUNTIME_4)
+    //delete associations
+    objc_removeAssociatedObjects(object);
+#endif
+    
     if (NSZombieEnabled) {
         NSRegisterZombie(object);
     } else {
