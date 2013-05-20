@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor_CGColor.h>
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSBezierPath.h>
 
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSGraphicsContext.h>
@@ -653,8 +654,19 @@ static void releasePatternInfo(void *info){
 }
 
 -(void)drawSwatchInRect:(NSRect)rect {
-    [self setFill];
+    // Draw some B&W triangle background so we can see the color alpha component
+    [[NSColor whiteColor] setFill];
     NSRectFill(rect);
+    [[NSColor blackColor] setFill];
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    [path moveToPoint:NSMakePoint(NSMinX(rect), NSMaxY(rect))];
+    [path lineToPoint:NSMakePoint(NSMaxX(rect), NSMaxY(rect))];
+    [path lineToPoint:NSMakePoint(NSMinX(rect), NSMinY(rect))];
+    [path closePath];
+    [path fill];
+    
+    [self setFill];
+    NSRectFillUsingOperation(rect, NSCompositeSourceOver);
 }
 
 -(void)writeToPasteboard:(NSPasteboard *)pasteboard {

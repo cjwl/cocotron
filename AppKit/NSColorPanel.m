@@ -181,7 +181,10 @@ static NSUInteger    _pickerMask=0;
 	if ([picker respondsToSelector: @selector(setColor:)]) {
 		[picker setColor: color];
 	}
-	
+    float alpha = [color alphaComponent];
+    [opacitySlider setFloatValue: alpha * 100.f];
+    [opacityTextField setFloatValue: alpha * 100.f];
+    
    [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:NSColorPanelColorDidChangeNotification object:self] postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];  
 }
 
