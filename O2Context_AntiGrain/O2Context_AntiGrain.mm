@@ -235,6 +235,7 @@ class context_renderer
 	protected:
 		bool premultiply;
 	public:
+        virtual ~context_renderer_helper_base() { };
 		void setPremultiply(bool pre) { premultiply = pre; };
 		virtual bool isRGBA() { return false; }
 		virtual bool isBGRA() { return false; }
@@ -1403,7 +1404,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		o2agg::comp_op_exclusion,
 		o2agg::comp_op_src_over, // should be Hue
 		o2agg::comp_op_src_over, // should be Saturation
-		o2agg::comp_op_src_over, // should be Color
+        o2agg::comp_op_color,
 		o2agg::comp_op_src_over, // should be Luminosity
 		o2agg::comp_op_clear,
 		o2agg::comp_op_src,

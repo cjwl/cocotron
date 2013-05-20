@@ -33,7 +33,6 @@
 #include <agg_color_rgba.h>
 #include <agg_rendering_buffer.h>
 
-
 namespace o2agg
 {
 
@@ -1407,11 +1406,11 @@ namespace o2agg
 		typedef typename color_type::value_type value_type;
 		typedef typename color_type::calc_type calc_type;
 		enum base_scale_e
-	    { 
+	    {
 			base_shift = color_type::base_shift,
 			base_mask  = color_type::base_mask
 		};
-	
+        
 		// The docs for NSCompositingMode are wrong for plus darker.
 		// D = S + D -1
 		static AGG_INLINE void blend_pix(value_type* p, unsigned sr, unsigned sg, unsigned sb, 	unsigned sa, unsigned cover)
@@ -1433,7 +1432,152 @@ namespace o2agg
 			p[Order::A] = max(0, (int) sa + (int) da - (int) base_mask);
 		}
 	};
+    
+    static inline void RGBToHSL(float r, float g, float b, float *h, float *s, float *l)
+    {
+        float x, y, z;
+        float fmin = MIN(MIN(r, g), b);    //Min. value of RGB
+        float fmax = MAX(MAX(r, g), b);    //Max. value of RGB
+        float delta = fmax - fmin;         //Delta RGB value
+        
+        z = (fmax + fmin) / 2.0; // Luminance
+        
+        if (delta == 0.0) {
+            //This is a gray, no chroma...
+            x = 0.0;  // Hue
+            y = 0.0;  // Saturation
+        } else {
+            if (s) {
+                //Chromatic data...
+                if (z < 0.5) {
+                    y = delta / (fmax + fmin); // Saturation
+                } else {
+                    y = delta / (2.0 - fmax - fmin); // Saturation
+                }
+            }
+            if (h) {
+                float deltaR = (((fmax - r) / 6.0) + (delta / 2.0)) / delta;
+                float deltaG = (((fmax - g) / 6.0) + (delta / 2.0)) / delta;
+                float deltaB = (((fmax - b) / 6.0) + (delta / 2.0)) / delta;
+                
+                if (r == fmax ) {
+                    x = deltaB - deltaG; // Hue
+                } else if (g == fmax) {
+                    x = (1.0 / 3.0) + deltaR - deltaB; // Hue
+                } else if (b == fmax) {
+                    x = (2.0 / 3.0) + deltaG - deltaR; // Hue
+                }
+                if (x < 0.0) {
+                    x += 1.0; // Hue
+                }
+                else if (x > 1.0) {
+                    x -= 1.0; // Hue
+                }
+            }
+        }
+        if (h) {
+            *h = x;
+        }
+        if (s) {
+            *s = y;
+        }
+        if (l) {
+            *l = z;
+        }
+    }
+    
+    static inline float HueToRGBComponent(float f1, float f2, float hue)
+    {
+        if (hue < 0.0) {
+            hue += 1.0;
+        } else if (hue > 1.0) {
+            hue -= 1.0;
+        }
+        float res;
+        if ((6.0 * hue) < 1.0) {
+            res = f1 + (f2 - f1) * 6.0 * hue;
+        } else if ((2.0 * hue) < 1.0) {
+            res = f2;
+        } else if ((3.0 * hue) < 2.0) {
+            res = f1 + (f2 - f1) * ((2.0 / 3.0) - hue) * 6.0;
+        } else {
+            res = f1;
+        }
+        return res;
+    }
+    
+    static inline void HSLToRGB(float x, float y, float z, float *r, float *g, float *b)
+    {
+        if (y == 0.0) {
+            *r = *g = *b = z; // Luminance
+        } else
+        {
+            float f2;
+            
+            if (z < 0.5) {
+                f2 = z * (1.0 + y);
+            }
+            else {
+                f2 = (z + y) - (y * z);
+            }
+            float f1 = 2.0 * z - f2;
+            
+            *r = HueToRGBComponent(f1, f2, x + (1.0/3.0));
+            *g = HueToRGBComponent(f1, f2, x);
+            *b = HueToRGBComponent(f1, f2, x - (1.0/3.0));
+        }
+    }
 
+    // kCGBlendModeColor
+	template<class ColorT, class Order> struct comp_op_rgba_color
+	{
+		typedef ColorT color_type;
+		typedef Order order_type;
+		typedef typename color_type::value_type value_type;
+		typedef typename color_type::calc_type calc_type;
+		enum base_scale_e
+	    {
+			base_shift = color_type::base_shift,
+			base_mask  = color_type::base_mask
+		};
+        
+        // kCGBlendModeColor :
+		// "Uses the luminance values of the background with the hue and saturation values of the source image".
+		static AGG_INLINE void blend_pix(value_type* p, unsigned sr, unsigned sg, unsigned sb, 	unsigned sa, unsigned cover)
+		{
+			if(cover < 255)
+			{
+				sr = (sr * cover + 255) >> 8;
+				sg = (sg * cover + 255) >> 8;
+				sb = (sb * cover + 255) >> 8;
+				sa = (sa * cover + 255) >> 8;
+			}
+            calc_type da = p[Order::A];
+            calc_type dr = p[Order::R];
+            calc_type dg = p[Order::G];
+            calc_type db = p[Order::B];
+            
+            float factor = float(base_mask);
+            
+            float sh,ss;
+            RGBToHSL(sr/(float)sa, sg/(float)sa, sb/(float)sa, &sh, &ss, NULL);
+            float dl;
+            RGBToHSL(dr/(float)da, dg/(float)da, db/(float)da, NULL, NULL, &dl);
+            float r, g, b, a;
+            HSLToRGB(sh, ss, dl, &r, &g, &b);
+            a = sa;
+            
+            r = roundf(r*a);
+            g = roundf(g*a);
+            b = roundf(b*a);
+
+			p[Order::R] = (value_type)r;
+			p[Order::G] = (value_type)g;
+			p[Order::B] = (value_type)b;
+			p[Order::A] = (value_type)a;
+		}
+	};
+    
 
 
     //======================================================comp_op_table_rgba
@@ -1483,6 +1627,7 @@ namespace o2agg
         comp_op_rgba_invert     <ColorT,Order>::blend_pix,
         comp_op_rgba_invert_rgb <ColorT,Order>::blend_pix,
 		comp_op_rgba_plus_darker<ColorT,Order>::blend_pix,
+		comp_op_rgba_color      <ColorT,Order>::blend_pix,
         0
     };
 
@@ -1518,8 +1663,9 @@ namespace o2agg
         comp_op_contrast,      //----comp_op_contrast
         comp_op_invert,        //----comp_op_invert
         comp_op_invert_rgb,    //----comp_op_invert_rgb
-		comp_op_plus_darker,   // ----comp_op_plus_darker
-
+		comp_op_plus_darker,   //----comp_op_plus_darker
+		comp_op_color,         //----comp_op_color
+        
         end_of_comp_op_e
     };
 
