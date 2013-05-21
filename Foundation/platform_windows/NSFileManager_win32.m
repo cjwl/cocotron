@@ -165,25 +165,47 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return NO;
 	}
 	
-	if([[srcAttributes fileType] isEqual:NSFileTypeRegular] == NO) {
+	if([[srcAttributes fileType] isEqual:NSFileTypeRegular] == NO
+       && [[srcAttributes fileType] isEqual:NSFileTypeDirectory] == NO) {
 		return NO;
 	}
-	
-	NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];
-	
-	if(dstAttributes!=nil){
-		if(error!=NULL){
+    
+    if ([self fileExistsAtPath:toPath] == YES) {
+        if(error!=NULL){
 			NSDictionary *userInfo=[NSDictionary dictionaryWithObject:@"File exists" forKey:NSLocalizedDescriptionKey];
 			
 			*error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
 		}
 		
 		return NO;
-	}
+    }
 	
-	if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES)) {
-		return NO;
-	}
+    if([self _isDirectory:fromPath] == NO){
+        if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES)) {
+            if(error!=nil)
+				*error=NSErrorForGetLastError();
+            return NO;
+        }
+    }
+    else {
+        if (_NSCreateDirectory(toPath, error) == NO) {
+            return NO;
+        }
+        else {
+            NSArray     *contents=[self directoryContentsAtPath:fromPath];
+            NSInteger   i,count=[contents count];
+            
+            for(i=0;i<count;i++){
+                NSString *name=[contents objectAtIndex:i];
+                NSString *fullFromPath=[fromPath stringByAppendingPathComponent:name];
+                NSString *fullToPath =[toPath stringByAppendingPathComponent:name];
+                
+                if ([self copyItemAtPath:fullFromPath toPath:fullToPath error:error] == NO) {
+                    return NO;
+                }
+            }
+        }
+    }
 	
 	return YES;
 }
