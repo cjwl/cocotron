@@ -28,7 +28,7 @@
    used to get the appropriate symbol.
 */
 #ifdef GCC_RUNTIME_3
-#define NS_CLASS_SYMBOL(className) _OBJC_Class_##className
+#define NS_CLASS_SYMBOL(className) _OBJC_CLASS_##className
 #else
 #define NS_CLASS_SYMBOL(className) _OBJC_CLASS_##className
 #endif
