@@ -7,6 +7,7 @@
 
 #import "NSDarwinString.h"
 
+#if __APPLE__
 #import <Foundation/NSException.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSRaiseException.h>
@@ -88,3 +89,4 @@ int __CFConstantStringClassReference[12] = {0};
 
 @end
 
+#endif
