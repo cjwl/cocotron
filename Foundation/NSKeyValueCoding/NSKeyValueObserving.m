@@ -868,15 +868,15 @@ CHANGE_DECLARATION(SEL)
 
 
 -(id)_KVO_className {
-	return [NSString stringWithCString:isa->name+strlen("KVONotifying_")];
+	return [NSString stringWithCString:class_getName(isa)+strlen("KVONotifying_")];
 }
 
 -(Class)_KVO_class {
-   return isa->super_class;
+    return class_getSuperclass(isa);
 }
 
 -(Class)_KVO_classForCoder {
-   return isa->super_class;
+    return class_getSuperclass(isa);
 }
 
 
