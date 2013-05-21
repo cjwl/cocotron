@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_win32.h>
 
 #include <windows.h>
+#include <Sddl.h>
 #include <shlobj.h>
 #include <objbase.h>
 
@@ -589,8 +590,28 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
                     [result setObject:owner forKey:NSFileOwnerAccountName];
                 }
             } else {
-                // TODO: set error
-                return nil;
+                DWORD lastError = GetLastError();
+                //1332 means that the sid is not resolvable (an old one/or on a network drive)
+                if (lastError == 1332) {
+                    /*LPWSTR  str = NULL;
+                    if (ConvertSidToStringSidW(sid, &str) == TRUE) {
+                        NSString    *owner = NSStringFromNullTerminatedUnicode(str);
+                        LocalFree(str);
+                        [result setObject:owner forKey:NSFileOwnerAccountName];
+                    }
+                    else {
+                        if (error != nil) {
+                            *error = NSErrorForGetLastErrorCode(lastError);
+                        }
+                        return nil;
+                    }*/
+                }
+                else {
+                    if (error != nil) {
+                        *error = NSErrorForGetLastErrorCode(lastError);
+                    }
+                    return nil;
+                }
             }
         }
     } else {
