@@ -20,13 +20,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/message.h>
 #import "forwarding.h"
 
+#ifdef GCC_RUNTIME_3
+#import <objc/hooks.h>
+#endif
+
 
 // From Apple docs:
 // Returns a Boolean value that indicates whether the receiver is an instance of given class
 // or an instance of any class that inherits from that class.
 
 BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
-   struct objc_class *class=object->isa;
+   Class class=object_getClass(object);
 
 	while (object_getClass(object_getClass(class)) != class) {
 
@@ -59,6 +63,12 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 +(void)load {
 }
 
+
+#ifdef GCC_RUNTIME_3
+static IMP objc_msg_forward(id rcv, SEL message) {
+    return objc_msgForward;
+}
+#endif
 
 +(void)initialize {
 #ifdef GCC_RUNTIME_3
