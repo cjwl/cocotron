@@ -1124,6 +1124,8 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
     
     bitmap=stbi_jpeg_load_from_memory(&jpeg_decoder,encodedBytes,encodedLength,&width,&height,&comp,STBI_rgb_alpha);
     
+    CFRelease(encodedData);
+
     if(bitmap==NULL){
         [self dealloc];
         return nil;
