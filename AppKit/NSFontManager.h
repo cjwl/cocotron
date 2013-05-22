@@ -59,6 +59,8 @@ enum {
 -(void)setDelegate:delegate;
 -(void)setAction:(SEL)value;
 
+- (NSFontAction)currentFontAction;
+
 -(NSArray *)collectionNames;
 -(BOOL)addCollection:(NSString *)name options:(int)options;
 -(void)addFontDescriptors:(NSArray *)descriptors toCollection:(NSString *)name;

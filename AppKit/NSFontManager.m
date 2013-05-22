@@ -63,6 +63,11 @@ static Class _fontPanelFactory;
    _action=value;
 }
 
+- (NSFontAction)currentFontAction
+{
+    return _currentFontAction;
+}
+
 -(NSArray *)collectionNames {
    NSUnimplementedMethod();
    return nil;
