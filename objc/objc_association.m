@@ -7,7 +7,6 @@
 #include <unistd.h>
 #endif
 
-
 // the cache entry size must be a power of 2
 typedef struct {
     void                    *nextEntry;
@@ -17,7 +16,8 @@ typedef struct {
 } AssociationObjectEntry;
 
 #define AssociationObjectEntrySize    4
-#define AssociationObjectEntryMask    ((AssociationObjectEntrySize-1)*sizeof(AssociationObjectEntry))
+
+#define HASHPTR(p) (((unsigned int)p)>>5)
 
 typedef struct AssociationHashBucket {
     struct AssociationHashBucket    *next;
@@ -49,7 +49,7 @@ AssociationTable *CreateAssociationTable(unsigned int capacity) {
 }
 
 AssociationObjectEntry *AssociationTableGet(AssociationTable *table,id key){
-    unsigned int i=((unsigned int)key>>5)%table->nBuckets;
+    unsigned int i=HASHPTR(key)%table->nBuckets;
     AssociationHashBucket *j;
     
     for(j=table->buckets[i];j!=NULL;j=j->next)
@@ -61,7 +61,7 @@ AssociationObjectEntry *AssociationTableGet(AssociationTable *table,id key){
 
 
 void AssociationTableInsert(AssociationTable *table,id key, AssociationObjectEntry *value){
-    unsigned int        hash=(unsigned int)key>>5;
+    unsigned int        hash=HASHPTR(key);
     unsigned int        i=hash%table->nBuckets;
     AssociationHashBucket *j;
     
@@ -84,7 +84,7 @@ void AssociationTableInsert(AssociationTable *table,id key, AssociationObjectEnt
         
         for(i=0;i<nBuckets;i++)
             for(j=buckets[i];j!=NULL;j=next){
-                unsigned int newi=((unsigned int)j->key>>5)%table->nBuckets;
+                unsigned int newi=HASHPTR(key)%table->nBuckets;
                 
                 next=j->next;
                 j->next=table->buckets[newi];
@@ -135,21 +135,29 @@ static AssociationTable *associationTable = NULL;
 
 
 void AssociationTableRemove(AssociationTable *table,id key){
-    unsigned int i=((unsigned int)key>>5)%table->nBuckets;
-    AssociationHashBucket *j=table->buckets[i],*prev=j;
+    AssociationSpinLockLock(&AssociationLock);
     
-    for(;j!=NULL;j=j->next){
+    unsigned int i=HASHPTR(key)%table->nBuckets;
+    AssociationHashBucket *j=table->buckets[i],*prev=j;
+
+   for(;j!=NULL;j=j->next){
         if(j->key==key){
-            if(prev==j)
+            // array to keep track of the objects to release - that must be done outside of the lock
+            // since the release can trigger more association changes
+            int releaseCount = 0;
+            int releaseTableSize = 0;
+            id *objectsToRelease = NULL;
+            
+           if(prev==j)
                 table->buckets[i]=j->next;
             else
                 prev->next=j->next;
             
             AssociationObjectEntry *entry = j->value;
-            do {
-                for (int i = 0; i < AssociationObjectEntrySize; i++) {
-                    AssociationObjectEntry *e = (void *)entry + i;
-                    
+
+            for (int i = 0; i < AssociationObjectEntrySize; i++) {
+                AssociationObjectEntry *e = (AssociationObjectEntry *)entry + i;
+                while (e) {
                     switch (e->policy) {
                         case OBJC_ASSOCIATION_ASSIGN:
                             break;
@@ -157,19 +165,40 @@ void AssociationTableRemove(AssociationTable *table,id key){
                         case OBJC_ASSOCIATION_RETAIN:
                         case OBJC_ASSOCIATION_COPY_NONATOMIC:
                         case OBJC_ASSOCIATION_COPY:
-                            [e->object release];
+                            if (releaseCount >= releaseTableSize) {
+                                if (releaseTableSize == 0) {
+                                    releaseTableSize = 8;
+                                } else {
+                                    releaseTableSize *= 2;
+                                }
+                                objectsToRelease = realloc(objectsToRelease, sizeof(id)*releaseTableSize);
+                            }
+                            objectsToRelease[releaseCount++] = e->object;
                             break;
                     }
+                    void *prevEntry = e;
+                    e = e->nextEntry;
+                    free(prevEntry);
                 }
-            } while (entry->nextEntry != nil);
-
-            free(j->value);
+            }
+            
+            free(entry);
             free(j);
             table->count--;
+            
+            AssociationSpinLockUnlock(&AssociationLock);
+
+            // Do the cleaning outside of the lock since it might trigger more association playing
+            for (int i = 0; i < releaseCount; ++i) {
+                [objectsToRelease[i] release];
+            }
+            free(objectsToRelease);
+            
             return;
         }
         prev=j;
     }
+    AssociationSpinLockUnlock(&AssociationLock);
 }
 
 void objc_removeAssociatedObjects(id object)
@@ -177,12 +206,8 @@ void objc_removeAssociatedObjects(id object)
     if (associationTable == NULL) {
         return;
     }
-    
-    AssociationSpinLockLock(&AssociationLock);
-        
     AssociationTableRemove(associationTable, object);
     
-    AssociationSpinLockUnlock(&AssociationLock);
 }
 
 void objc_setAssociatedObject(id object, const void *key, id value, objc_AssociationPolicy policy)
@@ -199,9 +224,8 @@ void objc_setAssociatedObject(id object, const void *key, id value, objc_Associa
         AssociationTableInsert(associationTable, object, objectTable);
     }
     
-    uintptr_t               index = (uintptr_t)(key) & AssociationObjectEntryMask;
-    AssociationObjectEntry *entry = ((void *)objectTable) + index;
-    
+    uintptr_t               index = HASHPTR(key) % AssociationObjectEntrySize;
+    AssociationObjectEntry *entry = ((AssociationObjectEntry *)objectTable) + index;
     if (entry->object == nil) {
         entry->policy = policy;
         entry->key = key;
@@ -221,9 +245,10 @@ void objc_setAssociatedObject(id object, const void *key, id value, objc_Associa
     }
     else {
         AssociationObjectEntry *newEntry;
-        
         do {
             if (entry->key == key) {
+                id objectToRelease = nil;
+                
                 switch (entry->policy) {
                     case OBJC_ASSOCIATION_ASSIGN:
                         break;
@@ -231,7 +256,7 @@ void objc_setAssociatedObject(id object, const void *key, id value, objc_Associa
                     case OBJC_ASSOCIATION_RETAIN:
                     case OBJC_ASSOCIATION_COPY_NONATOMIC:
                     case OBJC_ASSOCIATION_COPY:
-                        [entry->object release];
+                        objectToRelease = entry->object;
                         break;
                 }
                 entry->policy = policy;
@@ -248,8 +273,11 @@ void objc_setAssociatedObject(id object, const void *key, id value, objc_Associa
                         entry->object = [value copy];
                         break;
                 }
-                
                 AssociationSpinLockUnlock(&AssociationLock);
+                
+                // Do the cleaning outside of the lock since it might trigger more association playing
+                [objectToRelease release];
+
                 return;
             }
             if (entry->nextEntry != nil) {
@@ -274,6 +302,7 @@ void objc_setAssociatedObject(id object, const void *key, id value, objc_Associa
                 break;
         }
         newEntry->nextEntry = NULL;
+        entry->nextEntry = newEntry;
     }
 
     AssociationSpinLockUnlock(&AssociationLock);
@@ -293,10 +322,19 @@ id objc_getAssociatedObject(id object, const void *key)
         AssociationSpinLockUnlock(&AssociationLock);
         return nil;
     }
-    
-    uintptr_t               index = (uintptr_t)(key) & AssociationObjectEntryMask;
-    AssociationObjectEntry *entry = ((void *)objectTable) + index;
 
+    uintptr_t               index = HASHPTR(key) % AssociationObjectEntrySize;
+    AssociationObjectEntry *entry = ((AssociationObjectEntry *)objectTable) + index;
+    while (entry) {
+        if (entry->key == key) {
+            break;
+        }
+        entry = entry->nextEntry;
+    }
     AssociationSpinLockUnlock(&AssociationLock);
-    return entry->object;
+    if (entry) {
+        return entry->object;        
+    } else {
+        return nil;
+    }
 }
