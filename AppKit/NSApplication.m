@@ -486,11 +486,14 @@ id NSApp=nil;
 
     if([check retainCount]==1){
     
-     if(check==_keyWindow)
-      _keyWindow=nil;
+        // Use the setters here - give a chance to the observer to notice something happened
+        if(check==_keyWindow) {
+            [self _setKeyWindow:nil];
+        }
       
-     if(check==_mainWindow)
-      _mainWindow=nil;
+        if(check==_mainWindow) {
+            [self _setMainWindow:nil];
+        }
       
      [_windows removeObjectAtIndex:count];
    }
