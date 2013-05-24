@@ -215,7 +215,11 @@ void __NSInitializeProcess(int argc,const char *argv[])
     Class cls = objc_lookUpClass("NSConstantString");
     memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
     cls = objc_lookUpClass("NSDarwinString");
-    extern int __CFConstantStringClassReference[1];
+#if __LP64__
+    extern int __CFConstantStringClassReference[24];
+#else
+    extern int __CFConstantStringClassReference[12];
+#endif
 
     memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
     
