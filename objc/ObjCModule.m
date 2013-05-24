@@ -529,17 +529,19 @@ static void OBJCSymbolTableRegisterProtocolsIfNeeded(OBJCSymbolTable *symbolTabl
 }
 
 void OBJCQueueModule(OBJCModule *module) {
-   OBJCArrayAdd(OBJCModuleQueue(),module);
-   OBJCLinkModuleToActiveObjectFile(module);
-   OBJCSymbolTableRegisterSelectors(module->symbolTable);
-   OBJCSymbolTableRegisterClasses(module->symbolTable);
-   OBJCSymbolTableRegisterCategories(module->symbolTable);
+    OBJCArrayAdd(OBJCModuleQueue(),module);
+    OBJCLinkModuleToActiveObjectFile(module);
+    if(module->symbolTable!=NULL){
+        OBJCSymbolTableRegisterSelectors(module->symbolTable);
+        OBJCSymbolTableRegisterClasses(module->symbolTable);
+        OBJCSymbolTableRegisterCategories(module->symbolTable);
 #ifndef __APPLE__
-   OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
-   OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
+        OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
+        OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
 #endif
-
-   OBJCLinkClassTable();
+    }
+    
+    OBJCLinkClassTable();
 }
 
 void OBJCResetModuleQueue(void) {
@@ -561,26 +563,28 @@ void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path){
 }
 
 OBJCObjectFile *OBJCObjectFileFromClass(Class class) {
-   OBJCArray      *array=OBJCObjectFileImageArray();
-   int             count=array->count;
-
-   while(--count>=0){
-    OBJCObjectFile *objectFile=OBJCArrayItemAtIndex(array,count);
-    OBJCModule     *module;
-    unsigned long   moduleIndex = 0;
-	
-    while((module=OBJCArrayEnumerate(objectFile->moduleArray,&moduleIndex))!=NULL) {
-     unsigned classIndex;
-
-     for(classIndex=0;classIndex<module->symbolTable->classCount;classIndex++){
-      if(module->symbolTable->definitions[classIndex]==class){
-       return objectFile;
-	  }
-     }
+    OBJCArray      *array=OBJCObjectFileImageArray();
+    int             count=array->count;
+    
+    while(--count>=0){
+        OBJCObjectFile *objectFile=OBJCArrayItemAtIndex(array,count);
+        OBJCModule     *module;
+        unsigned long   moduleIndex = 0;
+        
+        while((module=OBJCArrayEnumerate(objectFile->moduleArray,&moduleIndex))!=NULL) {
+            unsigned classIndex;
+            
+            if(module->symbolTable!=NULL){
+                for(classIndex=0;classIndex<module->symbolTable->classCount;classIndex++){
+                    if(module->symbolTable->definitions[classIndex]==class){
+                        return objectFile;
+                    }
+                }
+            }
+        }
     }
-   }
-
-   return NULL;
+    
+    return NULL;
 }
 
 const char *class_getImageName(Class cls) {
