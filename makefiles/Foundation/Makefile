@@ -28,7 +28,7 @@ provide_src_files = ${shell (\
 				ln -s ../../../Foundation/NSObject/platform_linux/msgSendv-linux.s .;\
 			);\
 			test `uname -m` = "x86_64" && (\
-				ln -s ../../../Foundation/NSObject/platform_linux/msgSendv-x64.m .;\
+				ln -s ../../../Foundation/NSObject/platform_linux/msgSendv-x64.s .;\
 			);\
 		);\
 		$(call link_files,$(INCLUDE_DIR),h)\
