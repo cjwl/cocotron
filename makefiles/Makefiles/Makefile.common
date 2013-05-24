@@ -30,6 +30,7 @@ LDFLAGS += -lc -lgcc_s -lm -ldl -lpthread
 
 
 GCC = $(GCC_DIR)/bin/gcc
+USE_CLANG=1
 ifdef USE_CLANG
 OCC = /usr/bin/clang
 CFLAGS += -I $(GCC_LIB_DIR)/gcc/$(shell $(GCC) -dumpmachine)/$(shell $(GCC) -dumpversion)/include
