@@ -9,12 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_double.h>
 #import <Foundation/NSStringFormatter.h>
 
-#if __APPLE__
 #import <Foundation/NSNumber_double_const.h>
-#else
-#import <Foundation/NSNumber_double_const_impl.h>
-#endif
-
 
 NSNumber *NSNumber_doubleSpecial(double value)
 {
