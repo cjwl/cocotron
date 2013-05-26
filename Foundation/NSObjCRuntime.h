@@ -11,13 +11,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <stdint.h>
 #include <limits.h>
 
+#ifdef __clang__
+#define FOUNDATION_DLLEXPORT
+#define FOUNDATION_DLLIMPORT
+#else
+#define FOUNDATION_DLLEXPORT __declspec(dllexport)
+#define FOUNDATION_DLLIMPORT __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 
 #if defined(__WIN32__)
 #if defined(FOUNDATION_INSIDE_BUILD)
-#define FOUNDATION_EXPORT extern "C" __declspec(dllexport)
+#define FOUNDATION_EXPORT extern "C" FOUNDATION_DLLEXPORT
 #else
-#define FOUNDATION_EXPORT extern "C" __declspec(dllimport) 
+#define FOUNDATION_EXPORT extern "C" FOUNDATION_DLLIMPORT 
 #endif
 #else
 #define FOUNDATION_EXPORT extern "C"
@@ -27,9 +35,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #if defined(__WIN32__)
 #if defined(FOUNDATION_INSIDE_BUILD)
-#define FOUNDATION_EXPORT __declspec(dllexport) extern
+#define FOUNDATION_EXPORT FOUNDATION_DLLEXPORT extern
 #else
-#define FOUNDATION_EXPORT __declspec(dllimport) extern
+#define FOUNDATION_EXPORT FOUNDATION_DLLIMPORT extern
 #endif
 #else
 #define FOUNDATION_EXPORT extern

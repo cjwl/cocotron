@@ -1,11 +1,19 @@
 
+#ifdef __clang__
+#define CGL_DLLEXPORT
+#define CGL_DLLIMPORT
+#else
+#define CGL_DLLEXPORT __declspec(dllexport)
+#define CGL_DLLIMPORT __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 
 #if defined(__WIN32__)
 #if defined(CGL_INSIDE_BUILD)
-#define CGL_EXPORT extern "C" __declspec(dllexport)
+#define CGL_EXPORT extern "C" CGL_DLLEXPORT
 #else
-#define CGL_EXPORT extern "C" __declspec(dllimport) 
+#define CGL_EXPORT extern "C" CGL_DLLIMPORT 
 #endif
 #else
 #define CGL_EXPORT extern "C"
@@ -15,9 +23,9 @@
 
 #if defined(__WIN32__)
 #if defined(CGL_INSIDE_BUILD)
-#define CGL_EXPORT __declspec(dllexport) extern
+#define CGL_EXPORT CGL_DLLEXPORT extern
 #else
-#define CGL_EXPORT __declspec(dllimport) extern
+#define CGL_EXPORT CGL_DLLIMPORT extern
 #endif
 #else
 #define CGL_EXPORT extern

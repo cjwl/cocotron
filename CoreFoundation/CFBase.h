@@ -21,13 +21,21 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #include <stdint.h>
 #include <time.h>
 
+#ifdef __clang__
+#define COREFOUNDATION_DLLEXPORT
+#define COREFOUNDATION_DLLIMPORT
+#else
+#define COREFOUNDATION_DLLEXPORT __declspec(dllexport)
+#define COREFOUNDATION_DLLIMPORT __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 
 #if defined(__WIN32__)
 #if defined(COREFOUNDATION_INSIDE_BUILD)
-#define COREFOUNDATION_EXPORT extern "C" __declspec(dllexport)
+#define COREFOUNDATION_EXPORT extern "C" COREFOUNDATION_DLLEXPORT
 #else
-#define COREFOUNDATION_EXPORT extern "C" __declspec(dllimport)
+#define COREFOUNDATION_EXPORT extern "C" COREFOUNDATION_DLLIMPORT
 #endif
 #else
 #define COREFOUNDATION_EXPORT extern "C"
@@ -37,9 +45,9 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 #if defined(__WIN32__)
 #if defined(COREFOUNDATION_INSIDE_BUILD)
-#define COREFOUNDATION_EXPORT __declspec(dllexport) extern
+#define COREFOUNDATION_EXPORT COREFOUNDATION_DLLEXPORT extern
 #else
-#define COREFOUNDATION_EXPORT __declspec(dllimport) extern
+#define COREFOUNDATION_EXPORT COREFOUNDATION_DLLIMPORT extern
 #endif
 #else
 #define COREFOUNDATION_EXPORT extern

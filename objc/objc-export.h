@@ -8,13 +8,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <stdlib.h>
 
+#ifdef __clang__
+#define OBJC_DLLEXPORT
+#define OBJC_DLLIMPORT
+#else
+#define OBJC_DLLEXPORT __declspec(dllexport)
+#define OBJC_DLLIMPORT __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 
 #if defined(__WIN32__)
 #if defined(OBJC_INSIDE_BUILD)
-#define OBJC_EXPORT extern "C" __declspec(dllexport)
+#define OBJC_EXPORT extern "C" OBJC_WINDOWS_DLLEXPORT
 #else
-#define OBJC_EXPORT extern "C" __declspec(dllimport) 
+#define OBJC_EXPORT extern "C" OBJC_WINDOWS_DLLIMPORT 
 #endif
 #else
 #define OBJC_EXPORT extern "C"
@@ -24,9 +32,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #if defined(__WIN32__)
 #if defined(OBJC_INSIDE_BUILD)
-#define OBJC_EXPORT __declspec(dllexport) extern
+#define OBJC_EXPORT OBJC_DLLEXPORT extern
 #else
-#define OBJC_EXPORT __declspec(dllimport) extern
+#define OBJC_EXPORT OBJC_DLLIMPORT extern
 #endif
 #else
 #define OBJC_EXPORT extern

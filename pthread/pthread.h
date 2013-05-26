@@ -2,13 +2,21 @@
 #ifndef PTHREAD_H
 #define PTHREAD_H
 
+#ifdef __clang__
+#define PTHREAD_DLLEXPORT
+#define PTHREAD_DLLIMPORT
+#else
+#define PTHREAD_DLLEXPORT __declspec(dllexport)
+#define PTHREAD_DLLIMPORT __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 
 #if defined(__WIN32__)
 #if defined(PTHREAD_INSIDE_BUILD)
-#define PTHREAD_EXPORT extern "C" __declspec(dllexport)
+#define PTHREAD_EXPORT extern "C" PTHREAD_DLLEXPORT
 #else
-#define PTHREAD_EXPORT extern "C" __declspec(dllimport) 
+#define PTHREAD_EXPORT extern "C" PTHREAD_DLLIMPORT 
 #endif
 #else
 #define PTHREAD_EXPORT extern "C"
@@ -18,9 +26,9 @@
 
 #if defined(__WIN32__)
 #if defined(PTHREAD_INSIDE_BUILD)
-#define PTHREAD_EXPORT __declspec(dllexport) extern
+#define PTHREAD_EXPORT PTHREAD_DLLEXPORT extern
 #else
-#define PTHREAD_EXPORT __declspec(dllimport) extern
+#define PTHREAD_EXPORT PTHREAD_DLLIMPORT extern
 #endif
 #else
 #define PTHREAD_EXPORT extern
