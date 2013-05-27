@@ -56,10 +56,6 @@ typedef agg::amask_no_clip_gray8 MaskType;
 @interface O2Context_AntiGrain : O2Context_builtin_gdi {
 	agg::rendering_buffer *renderingBuffer;
 	
-	// Rendering buffer to use for shadow rendering
-	uint8_t *pixelShadowBytes;
-	agg::rendering_buffer *renderingBufferShadow;
-	
 	agg::path_storage     *path;
 	RasterizerType *rasterizer;
 

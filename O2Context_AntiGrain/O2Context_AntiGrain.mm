@@ -261,6 +261,10 @@ class context_renderer
 		renderer_base    *ren_base;
 		pixfmt_type    *pixelFormat;
 		
+        // Rendering buffer to use for shadow rendering
+        uint8_t *pixelShadowBytes;
+        agg::rendering_buffer *renderingBufferShadow;
+        
 		renderer_shadow    *ren_shadow;
 		pixfmt_shadow_type    *pixelFormatShadow;
 		
@@ -271,26 +275,34 @@ class context_renderer
 		float shadowBlurRadius;
 	public:
 		context_renderer *renderer;
-		context_renderer_helper(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingBufferShadow)
+		context_renderer_helper(agg::rendering_buffer &renderingBuffer)
 		{
 			pixelFormat=new pixfmt_type(renderingBuffer);
 			ren_base=new renderer_base(*pixelFormat);
 			
-			pixelFormatShadow=new pixfmt_shadow_type(renderingBufferShadow);
-			ren_shadow=new renderer_shadow(*pixelFormatShadow);
-			
+            pixelShadowBytes = NULL;
+            renderingBufferShadow = NULL;
+            ren_shadow = NULL;
+            pixelFormatShadow = NULL;
+            
 			shadowColor = agg::rgba(0, 0, 0, 0);
 			
 			alpha = 1.;
 		}
 		
+        
 		virtual ~context_renderer_helper()
 		{
 			delete pixelFormat;
 			delete ren_base;
 			
-			delete pixelFormatShadow;
-			delete ren_shadow;
+            if (ren_shadow) {
+                delete ren_shadow;
+                delete pixelFormatShadow;
+                delete renderingBufferShadow;
+                delete[] pixelShadowBytes;
+            }
+            
 		}
 		
 		void setBlendMode(int blendMode)
@@ -318,12 +330,28 @@ class context_renderer
 			shadowOffset = offset;
 		}
 		
+        void setUpShadow()
+        {
+            if (ren_shadow == NULL) {
+                // Use rgba32
+                int height = ren_base->ren().height();
+                int width = ren_base->ren().width();
+                int bytesPerRow = ren_base->ren().stride();
+                pixelShadowBytes = new uint8_t[height*bytesPerRow];
+                renderingBufferShadow = new agg::rendering_buffer(pixelShadowBytes,width,height,bytesPerRow);
+
+                pixelFormatShadow=new pixfmt_shadow_type(*renderingBufferShadow);
+                ren_shadow=new renderer_shadow(*pixelFormatShadow);
+            }
+            ren_shadow->reset_clipping(1);
+			ren_shadow->clip_box(ren_base->xmin(), ren_base->ymin(), ren_base->xmax(), ren_base->ymax());
+
+        }
+        
 		void clipBox(int a, int b, int c, int d)
 		{
 			ren_base->reset_clipping(1);
 			ren_base->clip_box(a, b, c, d);
-			ren_shadow->reset_clipping(1);
-			ren_shadow->clip_box(a, b, c, d);
 		}
 		
 		// Blur the (x1,y1,x2,y2) part of the shadow buffer, and copy it to the main buffer 
@@ -435,6 +463,8 @@ class context_renderer
 		{
 			O2Log("%p:Drawing Image", this);
 			if (shadowColor.a > 0.) {
+                setUpShadow();
+                
 				O2Log("%p:Drawing shadow Image", this);
 				ren_shadow->clear(agg::rgba(0, 0, 0, 0));
 				// Draw using our shadow rendererer using a transformer to transform original colors by the shadow color * original color alpha (and global alpha)
@@ -478,6 +508,8 @@ class context_renderer
 		template<class Ras, class S, class T> void render_scanlines_aa_solid(Ras &rasterizer, S &sl, T &type)	
 		{
 			if (shadowColor.a > 0.) {
+                setUpShadow();
+
 				ren_shadow->clear(agg::rgba(0, 0, 0, 0));
 
 				// Draw using our shadow rendererer using our shadow color (and global alpha)
@@ -537,18 +569,18 @@ public:
 	{
 		delete helper;
 	}
-	template<class Order> void init(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingShadowBuffer)
+	template<class Order> void init(agg::rendering_buffer &renderingBuffer)
 	{
 		typedef o2agg::comp_op_adaptor_rgba<agg::rgba8, Order> blender_type;
 		premultiplied = false;
-		helper = new context_renderer_helper<blender_type>(renderingBuffer, renderingShadowBuffer);
+		helper = new context_renderer_helper<blender_type>(renderingBuffer);
 		helper->setPremultiply(premultiplied);
 	}
-	template<class Order> void init_pre(agg::rendering_buffer &renderingBuffer, agg::rendering_buffer &renderingShadowBuffer)
+	template<class Order> void init_pre(agg::rendering_buffer &renderingBuffer)
 	{
 		typedef o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, Order> blender_type;
 		premultiplied = true;
-		helper = new context_renderer_helper<blender_type>(renderingBuffer, renderingShadowBuffer);
+		helper = new context_renderer_helper<blender_type>(renderingBuffer);
 		helper->setPremultiply(premultiplied);
 	}
 	
@@ -818,7 +850,6 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 			break;
 		default:
 		case kImageInterpolationBilinear: {
-			agg::image_filter_bilinear filter_kernel;			
 			typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
 			span_gen_type sg(ia, interpolator);
 			
@@ -828,10 +859,10 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 		case kImageInterpolationBicubic: {
 			agg::image_filter_bicubic filter_kernel;
 			agg::image_filter_lut filter(filter_kernel, true);
-			
+
 			typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
 			span_gen_type sg(ia, interpolator, filter);
-			
+
 			render_scanlines_aa(self, sa, sg);
 		}
 			break;
@@ -1230,10 +1261,6 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	int bytesPerRow = O2SurfaceGetBytesPerRow(surface);
 	renderingBuffer=new agg::rendering_buffer((unsigned char *)O2SurfaceGetPixelBytes(surface),O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),bytesPerRow);
 	
-	// Use rgba32
-	pixelShadowBytes = new uint8_t[O2SurfaceGetHeight(surface)*bytesPerRow];
-	renderingBufferShadow = new agg::rendering_buffer(pixelShadowBytes,O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),bytesPerRow);
-	
 	rasterizer=new RasterizerType();
 
 	// Use with the right order depending of the bitmap info of the surface - we'll probably want to pass a pixel type here instead of an order to support non 32 bits surfaces and pre/no pre
@@ -1255,45 +1282,45 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		case kO2BitmapByteOrder32Big:
 			switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 				case kO2ImageAlphaPremultipliedLast:
-					renderer->init_pre<agg::order_rgba>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init_pre<agg::order_rgba>(*renderingBuffer);
 					break;
 				case kO2ImageAlphaLast:
-					renderer->init<agg::order_rgba>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init<agg::order_rgba>(*renderingBuffer);
 					break;
 				case kO2ImageAlphaPremultipliedFirst:
-					renderer->init_pre<agg::order_argb>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init_pre<agg::order_argb>(*renderingBuffer);
 					break;
 				case kO2ImageAlphaFirst:
-					renderer->init<agg::order_argb>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init<agg::order_argb>(*renderingBuffer);
 					break;
 				default:
 					O2Log("UNKNOW ALPHA : %d", bitmapInfo & kO2BitmapAlphaInfoMask);
-					renderer->init<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init<agg::order_bgra>(*renderingBuffer);
 			}
 			break;
 		case kO2BitmapByteOrderDefault:
 		case kO2BitmapByteOrder32Little:
 			switch (bitmapInfo & kO2BitmapAlphaInfoMask) {
 				case kO2ImageAlphaPremultipliedLast:
-					renderer->init_pre<agg::order_abgr>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init_pre<agg::order_abgr>(*renderingBuffer);
 					break;
 				case kO2ImageAlphaLast:
-					renderer->init<agg::order_abgr>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init<agg::order_abgr>(*renderingBuffer);
 					break;
 				case kO2ImageAlphaPremultipliedFirst:
-					renderer->init_pre<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init_pre<agg::order_bgra>(*renderingBuffer);
 					break;
 				case kO2ImageAlphaFirst:
-					renderer->init<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init<agg::order_bgra>(*renderingBuffer);
 					break;
 				default:
 					O2Log("UNKNOW ALPHA : %d", bitmapInfo & kO2BitmapAlphaInfoMask);
-					renderer->init<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
+					renderer->init<agg::order_bgra>(*renderingBuffer);
 			}
 			break;
 		default:
 			O2Log("UNKNOW ORDER : %x",bitmapInfo & kO2BitmapByteOrderMask);
-			renderer->init<agg::order_bgra>(*renderingBuffer, *renderingBufferShadow);
+			renderer->init<agg::order_bgra>(*renderingBuffer);
 	}
 
 	path=new agg::path_storage();
@@ -1306,10 +1333,8 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	
 	delete renderer;
 	delete renderingBuffer;
-	delete renderingBufferShadow;
 	delete rasterizer;
 	delete path;
-	delete[] pixelShadowBytes;
 	
 	if (baseRendererAlphaMask[0]) {
 		for (int i = 0; i < 2; ++i) {
@@ -1697,7 +1722,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			{
 				reducedScale = false;
 			}
-			if (fabs(fabs(compoundTransform[i]) - 1.f) > 1e-6f  && fabs(compoundTransform[i]) > 1e-6f)
+			if (fabs(fabs(compoundTransform[i]) - 1.f) > 1e-6f || fabs(compoundTransform[i]) > 1e-6f)
 			{
 				isUnity = false;
 			}
@@ -1735,7 +1760,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 #endif
 		if (noInterpolation) {
 			interpolationType = kImageInterpolationNone;
-		} 
+		}
 		/*
 		 From David Duncan :
 		 
