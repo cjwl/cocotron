@@ -184,6 +184,13 @@ BOOL NSDecrementExtraRefCountWasZero(id object) {
    return result;
 }
 
+static void (*__NSAllocateObjectHook)(id object) = 0;
+
+void NSSetAllocateObjectHook(void (*hook)(id object))
+{
+    __NSAllocateObjectHook = hook;
+}
+
 NSUInteger NSExtraRefCount(id object) {
    NSUInteger      result=1;
    RefCountBucket *refCount;
@@ -224,6 +231,9 @@ id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
     }
 #endif
 
+    if (__NSAllocateObjectHook) {
+        __NSAllocateObjectHook(result);
+    }
     return result;
 }
 
