@@ -1748,16 +1748,11 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 			noInterpolation = YES;
 		}
 		
-#if 1
-        // Note : bicubic is giving nicer looking results while it's slower - maybe we should use either
-        // kImageInterpolationBicubic or kImageInterpolationBilinear depending of the kind of resizing we do
-		ImageInterpolationType interpolationType = kImageInterpolationBicubic;
-        if (interpolationQuality == kO2InterpolationLow) {
-            interpolationType = kImageInterpolationBilinear;
-        }
-#else
 		ImageInterpolationType interpolationType = kImageInterpolationBilinear;
-#endif
+        if (interpolationQuality > kO2InterpolationHigh) {
+            interpolationType = kImageInterpolationBicubic;
+        }
+
 		if (noInterpolation) {
 			interpolationType = kImageInterpolationNone;
 		}
