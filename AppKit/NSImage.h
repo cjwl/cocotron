@@ -50,6 +50,7 @@ typedef enum {
 -initWithData:(NSData *)data;
 -initWithContentsOfFile:(NSString *)path;
 -initWithContentsOfURL:(NSURL *)url;
+-initWithCGImage:(CGImageRef)cgImage size:(NSSize)size;
 
 -initWithPasteboard:(NSPasteboard *)pasteboard;
 -initByReferencingFile:(NSString *)path;
