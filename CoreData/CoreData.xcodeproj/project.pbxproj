@@ -626,7 +626,7 @@
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
+					"$(OTHER_CFLAGS)",
 				);
 				PRODUCT_NAME = CoreData;
 			};
@@ -647,7 +647,7 @@
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOREDATA_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
+					"$(OTHER_CFLAGS)",
 				);
 				PRODUCT_NAME = CoreData;
 			};
