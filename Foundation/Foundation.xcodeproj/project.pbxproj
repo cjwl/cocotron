@@ -6392,6 +6392,7 @@
 		FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
 		FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFDFBF4174F283800CB0EBD /* windows-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */; };
 		FEFF23910BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFF23920BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 		FEFF23930BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7501,6 +7502,7 @@
 		FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString+KVCAdditions.m"; sourceTree = "<group>"; };
 		FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSScriptWhoseTests.h; sourceTree = "<group>"; };
 		FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSScriptWhoseTests.m; sourceTree = "<group>"; };
+		FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
 		FEFF238D0BDCF136005357B8 /* NSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSCalendar.h; path = NSDate/NSCalendar.h; sourceTree = "<group>"; };
 		FEFF238E0BDCF136005357B8 /* NSCalendar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSCalendar.m; path = NSDate/NSCalendar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -8577,6 +8579,7 @@
 		FE1E546214303009000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */,
 				FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */,
 				FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */,
 				FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */,
@@ -12467,6 +12470,7 @@
 				FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 				FE86D408114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 				C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */,
+				FEFDFBF4174F283800CB0EBD /* windows-i386.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16294,7 +16298,6 @@
 					"-DCOREFOUNDATION_INSIDE_BUILD",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
 					"-DDEBUG",
 					"-march=i686",
 					"$(OTHER_CFLAGS)",
@@ -16308,9 +16311,7 @@
 					"-luuid",
 					"-lole32",
 					"-lws2_32",
-					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0xa10000",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -16471,13 +16472,11 @@
 					"-lffi",
 					"-B,dynamic",
 					"-shared",
-					"-lole32",
-					"-luuid",
 					"-lrpcrt4",
+					"-luuid",
+					"-lole32",
 					"-lws2_32",
-					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0xa10000",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
