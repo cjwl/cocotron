@@ -11,6 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #ifdef __clang__
 #define OBJC_DLLEXPORT
 #define OBJC_DLLIMPORT
+
+#ifndef __APPLE__
+#define OBJC_TYPED_SELECTORS 1
+#endif
+
 #else
 #define OBJC_DLLEXPORT __declspec(dllexport)
 #define OBJC_DLLIMPORT __declspec(dllimport)
