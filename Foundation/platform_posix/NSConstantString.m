@@ -20,3 +20,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSConstantString 
 
 @end
+
+#ifdef __clang__
+#ifndef __APPLE__
+@interface NXConstantString : NSConstantString
+
+@end
+
+@implementation NXConstantString
+
+@end
+#endif
+#endif
