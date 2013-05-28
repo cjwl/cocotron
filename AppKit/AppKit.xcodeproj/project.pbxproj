@@ -10483,18 +10483,15 @@
 					"-DCGL_INSIDE_BUILD",
 				);
 				OTHER_LDFLAGS = (
-					"-static",
-					"-shared",
 					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",
 					"-luser32",
 					"-lcomdlg32",
-					"-lopengl32",
 					"-lcomctl32",
+					"-lopengl32",
 					"-lwinmm",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = AppKit;
 			};
@@ -10735,8 +10732,6 @@
 					"-DCGL_INSIDE_BUILD",
 				);
 				OTHER_LDFLAGS = (
-					"-static",
-					"-shared",
 					"-lmsimg32",
 					"-lole32",
 					"-lgdi32",
@@ -10745,9 +10740,7 @@
 					"-lcomctl32",
 					"-lopengl32",
 					"-lwinmm",
-					"-Wl,--enable-auto-import",
-					"-Wl,--export-all-symbols",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = AppKit;
 			};
