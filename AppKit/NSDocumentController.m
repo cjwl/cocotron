@@ -512,7 +512,7 @@ static NSDocumentController *shared=nil;
    while(--count>=0){
     NSMenuItem *check=[[menu itemArray] objectAtIndex:count];
     
-    if([check action]==@selector(_openRecentDocument:)){
+    if(sel_isEqual([check action],@selector(_openRecentDocument:))){
      [menu removeItemAtIndex:count];
     }
    }
@@ -635,15 +635,15 @@ static NSDocumentController *shared=nil;
 }
 
 static BOOL actionIsDocumentController(SEL selector){
-   if(selector==@selector(saveAllDocuments:))
+   if(sel_isEqual(selector,@selector(saveAllDocuments:)))
     return YES;
-   if(selector==@selector(openDocument:))
+   if(sel_isEqual(selector,@selector(openDocument:)))
     return YES;
-   if(selector==@selector(newDocument:))
+   if(sel_isEqual(selector,@selector(newDocument:)))
     return YES;
-   if(selector==@selector(clearRecentDocuments:))
+   if(sel_isEqual(selector,@selector(clearRecentDocuments:)))
     return YES;
-   if(selector==@selector(_openRecentDocument:))
+   if(sel_isEqual(selector,@selector(_openRecentDocument:)))
     return YES;
    
    return NO;
