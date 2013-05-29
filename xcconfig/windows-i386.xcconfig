@@ -6,9 +6,14 @@ INSTALL_TARGET_TRIPLE = i386-mingw32msvc
 GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 
 ARCHS = i386
-OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type -isystem $DSTROOT/include
-LIBRARY_SEARCH_PATHS = $DSTROOT/lib
 
-GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
+//#include "windows-i386-clang"
+
+OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type -isystem $DSTROOT/include $(WINDOWS_i386_COMPILER_ISYSTEM) $(WINDOWS_i386_COMPILER_CFLAGS)
+
+LIBRARY_SEARCH_PATHS = $DSTROOT/lib $(WINDOWS_i386_COMPILER_SYSLIB)
+
+OTHER_LDFLAGS = $(WINDOWS_i386_COMPILER_LDFLAGS)
+
 
 

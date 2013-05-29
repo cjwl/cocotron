@@ -13,14 +13,13 @@
 		8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		FE7CDD490B35D0450079F150 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */; };
-		FE7CDD4A0B35D0460079F150 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
+		FE2021971751B01F002A9EDC /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; };
+		FEBCB9391750326300056F54 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEBCB9381750326300056F54 /* AppKit.framework */; };
+		FEBCB93B1750326E00056F54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEBCB93A1750326E00056F54 /* Foundation.framework */; };
 		FEF2CA110B35153A005449C7 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		FEF2CA120B35153A005449C7 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
 		FEF2CA130B35153A005449C7 /* MyDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */; };
-		FEF2CA160B35153A005449C7 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; settings = {ATTRIBUTES = (); }; };
 		FEF2CA170B35153A005449C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		FEF2CA190B35153A005449C7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +73,8 @@
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* TextEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEB4EF2D15267D2000EC3CA1 /* Cocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cocoa.xcodeproj; path = ../../Cocoa/Cocoa.xcodeproj; sourceTree = "<group>"; };
+		FEBCB9381750326300056F54 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = "../../AppKit/build/sym/Release-i386-mingw32msvc/AppKit.framework"; sourceTree = "<group>"; };
+		FEBCB93A1750326E00056F54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = "../../Foundation/build/sym/Release-i386-pc-linux/Foundation.framework"; sourceTree = "<group>"; };
 		FEF2CA1C0B35153A005449C7 /* TextEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -90,9 +91,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEF2CA190B35153A005449C7 /* Cocoa.framework in Frameworks */,
-				FE7CDD490B35D0450079F150 /* AppKit.framework in Frameworks */,
-				FE7CDD4A0B35D0460079F150 /* Foundation.framework in Frameworks */,
+				FEBCB9391750326300056F54 /* AppKit.framework in Frameworks */,
+				FEBCB93B1750326E00056F54 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +128,8 @@
 		2A37F4AAFDCFA73011CA2CEA /* TextEditor */ = {
 			isa = PBXGroup;
 			children = (
+				FEBCB93A1750326E00056F54 /* Foundation.framework */,
+				FEBCB9381750326300056F54 /* AppKit.framework */,
 				FEB4EF2D15267D2000EC3CA1 /* Cocoa.xcodeproj */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
@@ -342,8 +344,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEF2CA160B35153A005449C7 /* MyDocument.m in Sources */,
 				FEF2CA170B35153A005449C7 /* main.m in Sources */,
+				FE2021971751B01F002A9EDC /* MyDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +407,61 @@
 			};
 			name = Release;
 		};
+		FEBCB9291750249800056F54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		FEBCB92A1750249800056F54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_NAME = TextEditor;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		FEBCB92B1750249800056F54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = build;
+				EFFECTIVE_PLATFORM_NAME = "-windows";
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .exe;
+				FRAMEWORK_SEARCH_PATHS = "../../system/i386-mingw32msvc/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
+				INFOPLIST_FILE = Info.plist;
+				OTHER_CFLAGS = (
+					"$(WINDOWS_i386_COMPILER_CFLAGS)",
+					"-isystem",
+					/Developer/Cocotron/1.0/Windows/i386/sysroot/mingw/include/,
+					"-mwindows",
+					"-mconsole",
+				);
+				OTHER_LDFLAGS = (
+					"-mwindows",
+					"-mconsole",
+					"$(WINDOWS_i386_COMPILER_LDFLAGS)",
+				);
+				PRODUCT_NAME = TextEditor;
+				XWINDOWS_i386_COMPILER_CFLAGS = "-ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc";
+				XWINDOWS_i386_COMPILER_LDFLAGS = "-ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc";
+			};
+			name = Debug;
+		};
 		FEF2CA1B0B35153A005449C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -422,11 +479,21 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
-				OTHER_LDFLAGS = (
-					"-Wl,--enable-auto-import",
+				OTHER_CFLAGS = (
+					"$(WINDOWS_i386_COMPILER_CFLAGS)",
+					"-isystem",
+					/Developer/Cocotron/1.0/Windows/i386/sysroot/mingw/include/,
 					"-mwindows",
+					"-mconsole",
+				);
+				OTHER_LDFLAGS = (
+					"-mwindows",
+					"-mconsole",
+					"$(WINDOWS_i386_COMPILER_LDFLAGS)",
 				);
 				PRODUCT_NAME = TextEditor;
+				XWINDOWS_i386_COMPILER_CFLAGS = "-ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc";
+				XWINDOWS_i386_COMPILER_LDFLAGS = "-ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc";
 			};
 			name = Release;
 		};
@@ -437,6 +504,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C05733C808A9546B00998B17 /* Release */,
+				FEBCB92A1750249800056F54 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -445,6 +513,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C05733CC08A9546B00998B17 /* Release */,
+				FEBCB9291750249800056F54 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -453,6 +522,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FEF2CA1B0B35153A005449C7 /* Release */,
+				FEBCB92B1750249800056F54 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
