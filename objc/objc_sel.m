@@ -15,20 +15,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define INITIAL_SELECTOR_TABLE_SIZE 4096 // Big System has about 3700 selectors
 
 static OBJCHashTable *nameToNumber=NULL;
+static OBJCHashTable *nameToSelector=NULL;
 
-SEL sel_registerNameNoCopy(const char *name){
+const char *sel_registerNameNoCopy(const char *name) {
+    const char *result;
+    
+    if(nameToNumber==NULL)
+        nameToNumber=OBJCCreateHashTable(INITIAL_SELECTOR_TABLE_SIZE);
+    
+    result=OBJCHashValueForKey(nameToNumber,name);
+    
+    if(result==NULL){
+        result=OBJCHashInsertValueForKey(nameToNumber,name,name);
+    }
+    
+    return result;
+}
+
+SEL sel_registerSelectorNoCopyName(const char *name){
+#ifndef OBJC_TYPED_SELECTORS
+    return sel_registerNameNoCopy(name);
+#else
   SEL result;
 
-   if(nameToNumber==NULL)
-    nameToNumber=OBJCCreateHashTable(INITIAL_SELECTOR_TABLE_SIZE);
+   if(nameToSelector==NULL)
+    nameToSelector=OBJCCreateHashTable(INITIAL_SELECTOR_TABLE_SIZE);
 
-   result=(SEL)OBJCHashValueForKey(nameToNumber,name);
+   result=(SEL)OBJCHashValueForKey(nameToSelector,name);
 
    if(result==NULL){
-    result=(SEL)OBJCHashInsertValueForKey(nameToNumber,name, (char*)name);
+       objc_selector_internal *ughp;
+       
+       ughp=objc_malloc(sizeof(objc_selector_internal));
+       ughp->name=sel_registerNameNoCopy(name);
+       
+       result=(SEL)OBJCHashInsertValueForKey(nameToSelector,(char*)name,ughp);
    }
 
    return result;
+#endif
 }
 
 
@@ -38,30 +63,50 @@ const char *sel_getName(SEL selector) {
   
   if(nameToNumber==NULL)
    return NULL;
-   
+    
+    selector=sel_getSelector(selector);
+    
   return (const char*)OBJCHashValueForKey(nameToNumber, selector);
 }
 
 SEL sel_getUid(const char *selectorName) {
-   SEL result;
+    SEL result;
 
-   if(nameToNumber==NULL)
+#ifndef OBJC_TYPED_SELECTORS
+    if(nameToNumber==NULL)
+        result=NULL;
+    else
+        result=(SEL)OBJCHashValueForKey(nameToNumber,selectorName);
+    
+    if(result==NULL){
+        char *copy=objc_malloc(sizeof(char)*(strlen(selectorName)+1));
+        
+        strcpy(copy,selectorName);
+        result=(SEL)sel_registerNameNoCopy(copy);
+    }
+#else
+   if(nameToSelector==NULL)
     result=NULL;
    else
-    result=(SEL)OBJCHashValueForKey(nameToNumber,selectorName);
+    result=(SEL)OBJCHashValueForKey(nameToSelector,selectorName);
 
-   if(result==NULL){
+   if(result==NULL){       
     char *copy=objc_malloc(sizeof(char)*(strlen(selectorName)+1));
 
     strcpy(copy,selectorName);
-    result=(SEL)sel_registerNameNoCopy(copy);
+              
+    result=sel_registerSelectorNoCopyName(copy);
    }
+#endif
 
    return result;
 }
 
 BOOL sel_isEqual(SEL selector,SEL other) {
-   return (selector==other)?YES:NO;
+    selector=sel_getSelector(selector);
+    other=sel_getSelector(other);
+    
+    return (selector==other)?YES:NO;
 }
 
 SEL sel_registerName(const char *cString){

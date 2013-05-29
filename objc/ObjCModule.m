@@ -247,14 +247,14 @@ static OBJCArray *OBJCModuleQueue(){
 
 
 static void OBJCSymbolTableRegisterSelectors(OBJCSymbolTable *symbolTable){
-   SEL *selectorReferences=symbolTable->selectorReferences;
-
-   if(selectorReferences!=NULL){
-    while(*selectorReferences!=NULL){
-     *selectorReferences=(SEL)sel_registerNameNoCopy((const char *)*selectorReferences);
-     selectorReferences++;
+    objc_selector_internal *selectorReferences=symbolTable->selectorReferences;
+    
+    if(selectorReferences!=NULL){
+        while(objc_getSelectorReferenceName(selectorReferences)!=NULL){
+            objc_setSelectorReferenceName(&selectorReferences,sel_registerNameNoCopy(objc_getSelectorReferenceName(selectorReferences)));
+            selectorReferences++;
+        }
     }
-   }
 }
 
 void OBJCAddToUnResolvedClasses(Class class) {
@@ -471,47 +471,47 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
 
 // GNU style for now
 static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable){
-   static OBJCArray        *unlinkedObjects=NULL;
-
-   unsigned long            offset=symbolTable->classCount+symbolTable->categoryCount;
-   OBJCStaticInstanceList **listOfLists=symbolTable->definitions[offset];
-
-   if(unlinkedObjects!=NULL){
-    int count=unlinkedObjects->count;
-   
-    while(--count>=0){
-     OBJCStaticInstanceList *staticInstances=OBJCArrayItemAtIndex(unlinkedObjects,count);
-     Class                   class=objc_lookUpClass(staticInstances->name);
-
-     if(class!=Nil){
-	  unsigned i;
-	  
-      for(i=0;staticInstances->instances[i]!= nil;i++)
-       staticInstances->instances[i]->isa = class;
-	   
-	  OBJCArrayRemoveItemAtIndex(unlinkedObjects,count);
-	 }
-	}
-   }
-
-   if(listOfLists!=NULL){
-    for (;*listOfLists != NULL;listOfLists++) {
-     OBJCStaticInstanceList *staticInstances=*listOfLists;
-     Class                   class=objc_lookUpClass(staticInstances->name);
-	 unsigned                i;
-
-     if(class!=Nil){
-      for(i=0;staticInstances->instances[i]!= nil;i++)
-       staticInstances->instances[i]->isa = class;
-	 }
-	 else {
-	  if(unlinkedObjects==NULL)
-	   unlinkedObjects=OBJCArrayNew();
-	  
-	  OBJCArrayAdd(unlinkedObjects,staticInstances);
-	 }
+    static OBJCArray        *unlinkedObjects=NULL;
+    
+    unsigned long            offset=symbolTable->classCount+symbolTable->categoryCount;
+    OBJCStaticInstanceList **listOfLists=symbolTable->definitions[offset];
+    
+    if(unlinkedObjects!=NULL){
+        int count=unlinkedObjects->count;
+        
+        while(--count>=0){
+            OBJCStaticInstanceList *staticInstances=OBJCArrayItemAtIndex(unlinkedObjects,count);
+            Class                   class=objc_lookUpClass(staticInstances->name);
+            
+            if(class!=Nil) {
+                unsigned i;
+                
+                for(i=0;staticInstances->instances[i]!= nil;i++)
+                    staticInstances->instances[i]->isa = class;
+                
+                OBJCArrayRemoveItemAtIndex(unlinkedObjects,count);
+            }
+        }
     }
-   }
+    
+    if(listOfLists!=NULL){
+        for (;*listOfLists != NULL;listOfLists++) {
+            OBJCStaticInstanceList *staticInstances=*listOfLists;
+            Class                   class=objc_lookUpClass(staticInstances->name);
+            unsigned                i;
+            
+            if(class!=Nil){
+                for(i=0;staticInstances->instances[i]!= nil;i++)
+                    staticInstances->instances[i]->isa = class;
+            }
+            else {
+                if(unlinkedObjects==NULL)
+                    unlinkedObjects=OBJCArrayNew();
+                
+                OBJCArrayAdd(unlinkedObjects,staticInstances);
+            }
+        }
+    }
 }
 
 static void OBJCSymbolTableRegisterProtocolsIfNeeded(OBJCSymbolTable *symbolTable){

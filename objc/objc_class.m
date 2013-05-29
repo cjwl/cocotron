@@ -58,6 +58,10 @@ id objc_lookUpClass(const char *className) {
    return result;
 }
 
+id objc_lookup_class(const char *className) {
+    return objc_lookUpClass(className);
+}
+
 id objc_getClass(const char *name) {
    id result;
    
@@ -240,9 +244,9 @@ Ivar class_getClassVariable(Class cls,const char *name) {
 
 static inline struct objc_method *OBJCLookupUniqueIdInMethodList(struct objc_method_list *list,SEL uniqueId){
    int i;
-
+    
    for(i=0;i<list->method_count;i++){
-    if(((SEL)list->method_list[i].method_name)==uniqueId)
+    if(((SEL)list->method_list[i].method_name)==sel_getSelector(uniqueId))
      return list->method_list+i;
    }
 
@@ -769,7 +773,7 @@ static void OBJCCreateCacheForClass(Class class){
 }
 
 void OBJCRegisterClass(Class class) {
-
+    
    {
       struct objc_class* futureClass=OBJCHashValueForKey(OBJCFutureClassTable(), class->name);
 
@@ -778,7 +782,7 @@ void OBJCRegisterClass(Class class) {
          class=futureClass;
       }
    }
-   
+    
    pthread_mutex_lock(&classTableLock);
    OBJCHashInsertValueForKey(OBJCClassTable(), class->name, class);
    pthread_mutex_unlock(&classTableLock);
@@ -836,18 +840,18 @@ void OBJCRegisterCategoryInClass(Category category,Class class) {
 }
 
 static void OBJCLinkClass(Class class) {
-   if(!(class->info&CLASS_INFO_LINKED)){
-    Class superClass=objc_lookUpClass((const char *)class->super_class);
-    Class metaRoot=objc_lookUpClass((const char *)class->isa->isa);
-	
-    if(superClass!=NULL && metaRoot!= NULL){
-     class->super_class=superClass;
-     class->info|=CLASS_INFO_LINKED;
-     class->isa->super_class=class->super_class->isa;
-     class->isa->info|=CLASS_INFO_LINKED;
-     class->isa->isa=metaRoot->isa;
-	}
-   }
+    if(!(class->info&CLASS_INFO_LINKED)){
+        Class superClass=(class->super_class==NULL)?NULL:objc_lookUpClass((const char *)class->super_class);
+        Class metaRoot=(class->isa->isa==NULL)?NULL:objc_lookUpClass((const char *)class->isa->isa);
+        
+        if(superClass!=NULL){
+            class->super_class=superClass;
+            class->info|=CLASS_INFO_LINKED;
+            class->isa->super_class=class->super_class->isa;
+            class->isa->info|=CLASS_INFO_LINKED;
+            class->isa->isa=(metaRoot==NULL)?NULL:metaRoot->isa;
+        }
+    }
 }
 
 void OBJCLinkClassTable(void) {
@@ -910,10 +914,10 @@ IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL selector){
     Class checkInit=(class->info&CLASS_INFO_META)?(Class)object:class;
     OBJCInitializeClass(checkInit);
    }
-   
-   IMP result=class_getMethodImplementation(class,selector);
-   
-   if(result==NULL){
+
+    IMP result=class_getMethodImplementation(class,selector);
+
+    if(result==NULL){
     result=objc_forwardHandler;
    }
    return result;

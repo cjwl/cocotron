@@ -27,8 +27,8 @@ IMP objc_msg_lookup(id object,SEL selector) {
 
     do{
      struct objc_method *check=checkEntry->method;
-     
-     if(((SEL)check->method_name)==selector)
+        
+     if(((SEL)check->method_name)==sel_getSelector(selector))
       return check->method_imp;
 
      checkEntry=((void *)checkEntry)+checkEntry->offsetToNextEntry;
@@ -45,7 +45,7 @@ IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
    do{
      struct objc_method *check=checkEntry->method;
      
-     if(((SEL)check->method_name)==selector)
+     if(((SEL)check->method_name)==sel_getSelector(selector))
       return check->method_imp;
 
      checkEntry=((void *)checkEntry)+checkEntry->offsetToNextEntry;
