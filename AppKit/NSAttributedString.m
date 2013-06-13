@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSRichTextReader.h>
+#import <AppKit/NSRichTextWriter.h>
 #import <AppKit/NSRaise.h>
 
 NSString * const NSFontAttributeName=@"NSFontAttributeName"; 
@@ -286,13 +287,11 @@ NSString * const NSSpellingStateAttributeName=@"NSSpellingStateAttributeName"; /
 }
 
 -(NSData *)RTFDFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
-   NSUnimplementedMethod();
-   return nil;
+    return [NSRichTextWriter dataWithAttributedString: self range:range];
 }
 
 -(NSData *)RTFFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
-   NSUnimplementedMethod();
-   return nil;
+    return [NSRichTextWriter dataWithAttributedString: self range:range];
 }
 
 
