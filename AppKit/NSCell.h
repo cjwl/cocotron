@@ -99,6 +99,7 @@ enum {
    
    BOOL      _isEnabled;
    BOOL      _isEditable;
+   BOOL      _isRichText;
    BOOL      _isSelectable;
    BOOL      _isScrollable;
    BOOL      _isBordered;
