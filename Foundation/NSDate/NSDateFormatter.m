@@ -205,7 +205,7 @@ NSTimeInterval NSMoveIntervalFromGMTToTimeZone(NSTimeInterval interval, NSTimeZo
 
 // thirty days hath september, april, june, and november.
 // all the rest have thirty-one, except February, which is borked.
-static inline NSInteger numberOfDaysInMonthOfYear(NSInteger month, NSInteger year) {
+NSInteger NSNumberOfDaysInMonthOfYear(NSInteger month, NSInteger year) {
     switch (month) {
         case 2:
             if (((year % 4) == 0 && (year % 100) != 0) || (year % 400) == 0)
@@ -226,7 +226,7 @@ static inline NSInteger numberOfDaysInCommonEraOfDayMonthAndYear(NSInteger day, 
     NSInteger result = 0;
 
     for (month--; month > 0; month--)
-        result += numberOfDaysInMonthOfYear(month, year);
+        result += NSNumberOfDaysInMonthOfYear(month, year);
 
     result += 365 * (year-1);
     result += (year - 1)/4;
@@ -284,7 +284,7 @@ NSInteger NSMonthFromTimeInterval(NSTimeInterval interval){ // 1-12
     NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
     NSInteger month = 1;
 
-    while (days > numberOfDaysInCommonEraOfDayMonthAndYear(numberOfDaysInMonthOfYear(month, year), month, year))
+    while (days > numberOfDaysInCommonEraOfDayMonthAndYear(NSNumberOfDaysInMonthOfYear(month, year), month, year))
         month++;
 
     return month;

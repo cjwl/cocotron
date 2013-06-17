@@ -312,7 +312,7 @@ second, 0);
     
     day+=dayDelta;
     if (day > 28) {
-        int i = numberOfDaysInMonthOfYear(month, year);
+        int i = NSNumberOfDaysInMonthOfYear(month, year);
         while (day > i) {
             day -= i;
             if (month < 12) {
@@ -322,7 +322,7 @@ second, 0);
                 year++;
                 month = 1;
             }
-            i = numberOfDaysInMonthOfYear(month, year);
+            i = NSNumberOfDaysInMonthOfYear(month, year);
         }
     }
     else {
@@ -334,7 +334,7 @@ second, 0);
             else {
                 month--;
             }
-            day += numberOfDaysInMonthOfYear(month, year);
+            day += NSNumberOfDaysInMonthOfYear(month, year);
         }
     }
     
