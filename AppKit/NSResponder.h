@@ -146,6 +146,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)scrollLineUp:sender;
 -(void)scrollLineDown:sender;
 
+- (void)scrollToBeginningOfDocument:(id)sender;
+- (void)scrollToEndOfDocument:(id)sender;
+
 -(void)noop:sender;
 
 -(void)moveToEndOfDocumentAndModifySelection:sender;		// n.b.:
