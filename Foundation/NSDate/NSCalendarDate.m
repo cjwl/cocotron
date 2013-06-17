@@ -327,7 +327,7 @@ second, 0);
             i = numberOfDaysInMonthOfYear(month, year);
         }
     }
-    else
+    else {
         while (day <= 0) {
             if (month == 1) {
                 month=12;
@@ -338,6 +338,7 @@ second, 0);
             }
             day += numberOfDaysInMonthOfYear(month, year);
         }
+    }
     
     month+=monthDelta;
     
