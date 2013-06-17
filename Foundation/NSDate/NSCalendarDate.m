@@ -279,7 +279,6 @@ second, 0);
 // Might be a little off with daylight savings, etc., needs to be verified
 -(NSCalendarDate *)dateByAddingYears:(NSInteger)yearDelta months:(NSInteger)monthDelta
   days:(NSInteger)dayDelta hours:(NSInteger)hourDelta minutes:(NSInteger)minuteDelta seconds:(NSInteger)secondDelta {
-   NSTimeInterval result;
     NSInteger year=NSYearFromTimeInterval(_timeInterval);
     NSInteger month=NSMonthFromTimeInterval(_timeInterval);
     NSInteger day=NSDayOfMonthFromTimeInterval(_timeInterval);
