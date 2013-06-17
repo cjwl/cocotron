@@ -302,7 +302,7 @@ second, 0);
         hour--;
     }
     
-    hour+= hours;
+    hour+= hourDelta;
     day+=hour/24;
     hour%=24;
     if (hour < 0) {
@@ -318,8 +318,7 @@ second, 0);
             if (month < 12) {
                 month++;
             }
-            else
-            {
+            else {
                 year++;
                 month = 1;
             }
