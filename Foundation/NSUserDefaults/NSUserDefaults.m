@@ -130,7 +130,6 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
    return nil;
 }
 
-
 +(NSUserDefaults *)standardUserDefaults {
 	static NSUserDefaults* stdUserDefaults = nil;
 	@synchronized(self) {
@@ -211,8 +210,7 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 }
 
 -(NSArray *)persistentDomainNames {
-   NSUnimplementedMethod();
-   return nil;
+    return [NSArray arrayWithObject:[[NSProcessInfo processInfo] processName]];
 }
 
 -(NSDictionary *)volatileDomainForName:(NSString *)name {
@@ -228,8 +226,10 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
    for(i=0;i<count;i++){
     NSString *key=[allKeys objectAtIndex:i];
-
-    [result setObject:[domain objectForKey: key] forKey:key];
+       id value = [domain objectForKey: key];
+       if (value) {
+           [result setObject:value forKey:key];
+       }
    }
 
    return result;
@@ -358,7 +358,16 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
 -(void)setObject:value forKey:(NSString *)key {
 	@synchronized(self) {
-	   [[self persistantDomain] setObject:value forKey:key];
+        // We'll remove from the persistant domain the values that are equal to the registered one
+        // Cocoa does that - even if the method documentation says nothing about it
+        if ([value isEqual:[[_domains objectForKey:NSRegistrationDomain] objectForKey:key]]) {
+            value = nil;
+        }
+        if (value) {
+            [[self persistantDomain] setObject:value forKey:key];
+        } else {
+            [[self persistantDomain] removeObjectForKey:key];
+        }
 	   [_dictionaryRep autorelease];
 	   _dictionaryRep=nil;
 	   

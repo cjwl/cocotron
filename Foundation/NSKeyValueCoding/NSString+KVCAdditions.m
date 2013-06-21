@@ -42,9 +42,15 @@ NSString *_NSKVOSplitKeyPath(NSString *path,NSString **restOfPath){
    else
     *restOfPath=nil;   
 
+// Disabling this code - see the function comment for why it could be needed
+// It doesn't seem to be the case anymore in recent OS X versions and it's killing
+// the observing of properties that really have an uppercase char (which is quite
+// common if you try to observe NSDefaults properties)
+#if 0
 // we must always lowercase
    buffer[0]=tolower(buffer[0]);
-   
+#endif
+    
    return [NSString stringWithCharacters:buffer length:dot];
 }
 
