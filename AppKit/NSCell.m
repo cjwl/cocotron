@@ -108,7 +108,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        
        // importsGraph  = (flags2 & 0x10000000)
        
-       _textAlignment   = (flags2 & 0x0e000000) >> 25;
+       _textAlignment   = (flags2 & 0x1c000000) >> 26;
 
        // layoutDirRTL  = (flags2 & 0x01000000)
        _writingDirection=NSWritingDirectionNatural;
