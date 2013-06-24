@@ -238,6 +238,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)dealloc {
+    if (_delegate) {
+        // Be sure to remove our delegate as an observer before we die
+        [self setDelegate:nil];
+    }
 	if(_ownsTextStorage) {
 		[_textStorage release];
 	}
@@ -3052,7 +3056,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)rulerView:(NSRulerView *)rulerView handleMouseDown:(NSEvent *)event
 {
-    // Add a new tab stop - PQRulerView style
+    // Add a new tab stop
     NSPoint point = [self convertPoint: event.locationInWindow fromView: nil];
     float delta = rulerView.originOffset;
     NSRulerMarker *marker = [NSRulerMarker leftTabMarkerWithRulerView:rulerView
