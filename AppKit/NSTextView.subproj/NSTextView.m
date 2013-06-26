@@ -2155,7 +2155,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 		NSAttributedString *attrString = nil;
 		// Use the typing attributes for the inserted string
 		if ([string isKindOfClass: [NSAttributedString class]]) {
-            NSAttributedString *attrString = string;
+            attrString = string;
             if (useTypingAttributes) {
                 // We're going to merge the attributes
                 NSMutableAttributedString* mutableAttrString = [[string mutableCopy] autorelease];
