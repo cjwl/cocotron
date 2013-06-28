@@ -19,23 +19,49 @@ static void evaluate(void *info,float const *input,float *output) {
    NSGradient *self=(NSGradient *)info;
    CGFloat   **components=self->_components;
    CGFloat    *locations=self->_locations;
-   NSInteger   startIndex,endIndex;
    
-   for(endIndex=0;endIndex<self->_numberOfColors;endIndex++)
-    if(locations[endIndex]>=input[0])
-     break;
+    // Find where we are within the gradient location range - this will establish
+    // which color pair we are blending between
+    NSInteger colorIndex = 0;
+    for(colorIndex = 0; colorIndex < self->_numberOfColors; colorIndex++) {
+       if(locations[colorIndex]>=input[0]) {
+           // We've found the right side of the color range
+           break;
+       }
+    }
+    
+    NSInteger   startColorIndex = 0, endColorIndex = 0;
+    // it could be right at the limit
+    if (colorIndex >= self->_numberOfColors) {
+        startColorIndex = endColorIndex = self->_numberOfColors - 1;
+    } else {
+        endColorIndex = colorIndex;
+        // Start index must then be the preceding index
+        startColorIndex = colorIndex - 1;
+        if (startColorIndex < 0) {
+            // Make sure we don't go out of range to the left
+            startColorIndex = 0;
+        }
+    }
+    
+    // Now here's the tricky part, we need to find out the ratio between the two colors.
+    // This means figuring out the distance between the two and then figuring out how far along we
+    // are between them
+    float start = locations[startColorIndex];
+    float length = locations[endColorIndex] - locations[startColorIndex];
+    float offset = input[0] - start;
 
-   if(endIndex==0)     
-    startIndex=endIndex;
-   else if(endIndex>=self->_numberOfColors)
-    startIndex=endIndex=self->_numberOfColors-1;
-   else
-    startIndex=endIndex-1;
-   
-   NSInteger i;
-   CGFloat   x=(locations[endIndex]-locations[startIndex])*(input[0]-locations[startIndex]);
-   for(i=0;i<self->_numberOfComponents;i++){
-    output[i]=components[startIndex][i]+x*(components[endIndex][i]-components[startIndex][i]);
+    float ratio = 0;
+    // Make sure we don't divide by 0!
+    if (length > 0) {
+        ratio = offset/length;
+    }
+    
+    // now blend all the components using the ratio
+    NSInteger componentIndex;
+   for(componentIndex = 0; componentIndex < self->_numberOfComponents; componentIndex++){
+    output[componentIndex] = (components[startColorIndex][componentIndex] +
+                 (ratio * (components[endColorIndex][componentIndex] - components[startColorIndex][componentIndex])));
    }
 }
 
@@ -48,12 +74,13 @@ static void evaluate(void *info,float const *input,float *output) {
 }
 
 -initWithColors:(NSArray *)colors {
+    NSAssert([colors count] > 1, @"A gradient needs at least 2 colors!");
    NSInteger count=[colors count];
    CGFloat   locations[count];
    NSInteger i;
    
    for (i = 0; i < count; i++)
-    locations[i]=i/(1.0*(count-1));
+    locations[i]=i/(float)(count-1);
 
    return [self initWithColors:colors atLocations:locations colorSpace:[NSColorSpace deviceRGBColorSpace]];
 }
