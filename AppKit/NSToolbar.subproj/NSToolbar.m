@@ -481,6 +481,17 @@ static BOOL isStandardItemIdentifier(NSString *identifier){
     [[visibleItems objectAtIndex:i] validate];
 }
 
+- (void)didSelectToolbarItem:(NSString*)identifier
+{
+    // Cocoa says the selectedItemIdentifier is updated only if the item is in the selectableItems
+    if([_delegate respondsToSelector:@selector(toolbarSelectableItemIdentifiers:)]) {
+        NSArray *selectableIdentifiers = [_delegate toolbarSelectableItemIdentifiers: self];
+        if ([selectableIdentifiers containsObject: identifier]) {
+            [self setSelectedItemIdentifier: identifier];
+        }
+    }
+}
+
 -(BOOL)customizationPaletteIsRunning {
    return _palette != nil;
 }
