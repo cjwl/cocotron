@@ -340,7 +340,7 @@
 		};
 		C6C629761785B66D009D381C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (

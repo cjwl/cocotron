@@ -12,6 +12,11 @@
 		C67E0338125B230900C10757 /* CFNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121CC10EFC89500FD1B47 /* CFNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C67E0339125B230900C10757 /* CFHost.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121D610EFC92800FD1B47 /* CFHost.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C67E033A125B230900C10757 /* CFNetworkExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1221810EFCB9A00FD1B47 /* CFNetworkExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6893D8C1785BB960093BFB1 /* CFNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74338510A89A9D004CDF00 /* CFNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6893D8D1785BB960093BFB1 /* CFSocketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121A810EFC6C000FD1B47 /* CFSocketStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6893D8E1785BB960093BFB1 /* CFNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121CC10EFC89500FD1B47 /* CFNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6893D8F1785BB960093BFB1 /* CFHost.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121D610EFC92800FD1B47 /* CFHost.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6893D901785BB960093BFB1 /* CFNetworkExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1221810EFCB9A00FD1B47 /* CFNetworkExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE74338610A89A9D004CDF00 /* CFNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74338510A89A9D004CDF00 /* CFNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE849306119AF77F00E252CC /* CFNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74338510A89A9D004CDF00 /* CFNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE849307119AF77F00E252CC /* CFSocketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC121A810EFC6C000FD1B47 /* CFSocketStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,6 +43,14 @@
 		C67E033B125B230900C10757 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		C6893D911785BB960093BFB1 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -74,6 +87,8 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6893D951785BB960093BFB1 /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6893D961785BB960093BFB1 /* CFNetwork-Solaris-sparc copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "CFNetwork-Solaris-sparc copy-Info.plist"; path = "/Users/gga/Developer/Cocotron/development-arts/CFNetwork/CFNetwork-Solaris-sparc copy-Info.plist"; sourceTree = "<absolute>"; };
 		FE1E55BE143030B7000D60A1 /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
 		FE1E55BF143030B7000D60A1 /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
 		FE1E55C0143030B7000D60A1 /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
@@ -108,6 +123,7 @@
 				FEA752F3114EB30B00AF634E /* CFNetwork.framework */,
 				FEC32E40115909B30008ECE5 /* CFNetwork.framework */,
 				FE84930F119AF77F00E252CC /* CFNetwork.framework */,
+				C6893D951785BB960093BFB1 /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,6 +141,7 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				C6893D961785BB960093BFB1 /* CFNetwork-Solaris-sparc copy-Info.plist */,
 			);
 			name = CFNetwork;
 			sourceTree = "<group>";
@@ -220,6 +237,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C6893D8B1785BB960093BFB1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6893D8C1785BB960093BFB1 /* CFNetwork.h in Headers */,
+				C6893D8D1785BB960093BFB1 /* CFSocketStream.h in Headers */,
+				C6893D8E1785BB960093BFB1 /* CFNetServices.h in Headers */,
+				C6893D8F1785BB960093BFB1 /* CFHost.h in Headers */,
+				C6893D901785BB960093BFB1 /* CFNetworkExport.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE849305119AF77F00E252CC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,6 +319,23 @@
 			name = "CFNetwork-Solaris-sparc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CFNetwork;
+			productType = "com.apple.product-type.framework";
+		};
+		C6893D8A1785BB960093BFB1 /* CFNetwork-Solaris-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6893D921785BB960093BFB1 /* Build configuration list for PBXNativeTarget "CFNetwork-Solaris-i386" */;
+			buildPhases = (
+				C6893D8B1785BB960093BFB1 /* Headers */,
+			);
+			buildRules = (
+				C6893D911785BB960093BFB1 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "CFNetwork-Solaris-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CFNetwork;
+			productReference = C6893D951785BB960093BFB1 /* CFNetwork.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FE849304119AF77F00E252CC /* CFNetwork-FreeBSD-i386 */ = {
@@ -370,6 +416,7 @@
 				FEC32E35115909B30008ECE5 /* CFNetwork-Darwin-i386 */,
 				FE849304119AF77F00E252CC /* CFNetwork-FreeBSD-i386 */,
 				C67E0334125B230900C10757 /* CFNetwork-Solaris-sparc */,
+				C6893D8A1785BB960093BFB1 /* CFNetwork-Solaris-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -457,6 +504,44 @@
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Solaris/sparc;
+			};
+			name = Release;
+		};
+		C6893D931785BB960093BFB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
+				PRODUCT_NAME = CFNetwork;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/Solaris/i386;
+			};
+			name = Debug;
+		};
+		C6893D941785BB960093BFB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
+				PRODUCT_NAME = CFNetwork;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/Solaris/i386;
 			};
 			name = Release;
 		};
@@ -600,6 +685,15 @@
 			buildConfigurations = (
 				C67E033D125B230900C10757 /* Debug */,
 				C67E033E125B230900C10757 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C6893D921785BB960093BFB1 /* Build configuration list for PBXNativeTarget "CFNetwork-Solaris-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6893D931785BB960093BFB1 /* Debug */,
+				C6893D941785BB960093BFB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
