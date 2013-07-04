@@ -10,6 +10,8 @@
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		C67E0310125B223000C10757 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C67E0312125B223000C10757 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		C6C6293E1785B63A009D381C /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6C629401785B63A009D381C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE7433A910A89ED7004CDF00 /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8492E8119A5EA000E252CC /* CoreServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7433A810A89ED7004CDF00 /* CoreServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8492EA119A5EA000E252CC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
@@ -23,6 +25,14 @@
 		C67E0315125B223000C10757 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		C6C629431785B63A009D381C /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -56,6 +66,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		C67E0346125B236600C10757 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C67E0334125B230900C10757;
+			remoteInfo = "CFNetwork-Solaris-sparc";
+		};
+		C6C6293C1785B63A009D381C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
 			proxyType = 1;
@@ -125,6 +142,8 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6C629471785B63A009D381C /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6C629481785B63A009D381C /* CoreServices-Solaris-sparc copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "CoreServices-Solaris-sparc copy-Info.plist"; path = "/Users/gga/Developer/Cocotron/development-arts/CoreServices/CoreServices-Solaris-sparc copy-Info.plist"; sourceTree = "<absolute>"; };
 		FE06B1BE1430E7AF0071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
 		FE06B1BF1430E7AF0071169B /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
 		FE06B1C01430E7AF0071169B /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
@@ -162,6 +181,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C6C629421785B63A009D381C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE8492EC119A5EA000E252CC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -192,6 +218,7 @@
 				8DC2EF5B0486A6940098B216 /* CoreServices.framework */,
 				FEC32E52115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6311590A130008ECE5 /* CoreServices.framework */,
+				C6C629471785B63A009D381C /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -206,6 +233,7 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				C6C629481785B63A009D381C /* CoreServices-Solaris-sparc copy-Info.plist */,
 			);
 			name = CoreServices;
 			sourceTree = "<group>";
@@ -304,6 +332,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C6C6293D1785B63A009D381C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6C6293E1785B63A009D381C /* CoreServices.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE8492E7119A5EA000E252CC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -370,6 +406,27 @@
 			name = "CoreServices-Solaris-sparc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreServices;
+			productType = "com.apple.product-type.framework";
+		};
+		C6C6293A1785B63A009D381C /* CoreServices-Solaris-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6C629441785B63A009D381C /* Build configuration list for PBXNativeTarget "CoreServices-Solaris-i386" */;
+			buildPhases = (
+				C6C6293D1785B63A009D381C /* Headers */,
+				C6C6293F1785B63A009D381C /* Resources */,
+				C6C629411785B63A009D381C /* Sources */,
+				C6C629421785B63A009D381C /* Frameworks */,
+			);
+			buildRules = (
+				C6C629431785B63A009D381C /* PBXBuildRule */,
+			);
+			dependencies = (
+				C6C6293B1785B63A009D381C /* PBXTargetDependency */,
+			);
+			name = "CoreServices-Solaris-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreServices;
+			productReference = C6C629471785B63A009D381C /* CoreServices.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		FE8492E4119A5EA000E252CC /* CoreServices-FreeBSD-i386 */ = {
@@ -467,6 +524,7 @@
 				FEC32E5711590A130008ECE5 /* CoreServices-Linux-i386 */,
 				FE8492E4119A5EA000E252CC /* CoreServices-FreeBSD-i386 */,
 				C67E030C125B223000C10757 /* CoreServices-Solaris-sparc */,
+				C6C6293A1785B63A009D381C /* CoreServices-Solaris-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -519,6 +577,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C6C6293F1785B63A009D381C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6C629401785B63A009D381C /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE8492E9119A5EA000E252CC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -560,6 +626,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C6C629411785B63A009D381C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE8492EB119A5EA000E252CC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -588,6 +661,11 @@
 			isa = PBXTargetDependency;
 			name = "CFNetwork-Solaris-sparc";
 			targetProxy = C67E0346125B236600C10757 /* PBXContainerItemProxy */;
+		};
+		C6C6293B1785B63A009D381C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CFNetwork-Solaris-sparc";
+			targetProxy = C6C6293C1785B63A009D381C /* PBXContainerItemProxy */;
 		};
 		FE7433B510A89F63004CDF00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -696,6 +774,46 @@
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = build/Solaris/sparc;
+			};
+			name = Release;
+		};
+		C6C629451785B63A009D381C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.so;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/Solaris/i386;
+			};
+			name = Debug;
+		};
+		C6C629461785B63A009D381C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.so;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
+				PRODUCT_NAME = CoreServices;
+				SDKROOT = "";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/Solaris/i386;
 			};
 			name = Release;
 		};
@@ -845,6 +963,15 @@
 			buildConfigurations = (
 				C67E0317125B223000C10757 /* Debug */,
 				C67E0318125B223000C10757 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C6C629441785B63A009D381C /* Build configuration list for PBXNativeTarget "CoreServices-Solaris-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6C629451785B63A009D381C /* Debug */,
+				C6C629461785B63A009D381C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
