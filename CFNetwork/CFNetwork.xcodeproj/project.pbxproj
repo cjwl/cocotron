@@ -50,7 +50,7 @@
 		};
 		C6893D911785BB960093BFB1 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
+			compilerSpec = org.cocotron.1.0.solaris.i686.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -321,9 +321,9 @@
 			productName = CFNetwork;
 			productType = "com.apple.product-type.framework";
 		};
-		C6893D8A1785BB960093BFB1 /* CFNetwork-Solaris-i386 */ = {
+		C6893D8A1785BB960093BFB1 /* CFNetwork-Solaris-i686 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C6893D921785BB960093BFB1 /* Build configuration list for PBXNativeTarget "CFNetwork-Solaris-i386" */;
+			buildConfigurationList = C6893D921785BB960093BFB1 /* Build configuration list for PBXNativeTarget "CFNetwork-Solaris-i686" */;
 			buildPhases = (
 				C6893D8B1785BB960093BFB1 /* Headers */,
 			);
@@ -332,7 +332,7 @@
 			);
 			dependencies = (
 			);
-			name = "CFNetwork-Solaris-i386";
+			name = "CFNetwork-Solaris-i686";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CFNetwork;
 			productReference = C6893D951785BB960093BFB1 /* CFNetwork.framework */;
@@ -416,7 +416,7 @@
 				FEC32E35115909B30008ECE5 /* CFNetwork-Darwin-i386 */,
 				FE849304119AF77F00E252CC /* CFNetwork-FreeBSD-i386 */,
 				C67E0334125B230900C10757 /* CFNetwork-Solaris-sparc */,
-				C6893D8A1785BB960093BFB1 /* CFNetwork-Solaris-i386 */,
+				C6893D8A1785BB960093BFB1 /* CFNetwork-Solaris-i686 */,
 			);
 		};
 /* End PBXProject section */
@@ -510,38 +510,38 @@
 		C6893D931785BB960093BFB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Solaris/i386;
+				SYMROOT = build/Solaris/i686;
 			};
 			name = Debug;
 		};
 		C6893D941785BB960093BFB1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = "-DCFNETWORK_INSIDE_BUILD";
 				PRODUCT_NAME = CFNetwork;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Solaris/i386;
+				SYMROOT = build/Solaris/i686;
 			};
 			name = Release;
 		};
@@ -689,7 +689,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C6893D921785BB960093BFB1 /* Build configuration list for PBXNativeTarget "CFNetwork-Solaris-i386" */ = {
+		C6893D921785BB960093BFB1 /* Build configuration list for PBXNativeTarget "CFNetwork-Solaris-i686" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C6893D931785BB960093BFB1 /* Debug */,

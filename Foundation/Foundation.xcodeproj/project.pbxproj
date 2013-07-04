@@ -7207,7 +7207,7 @@
 		};
 		C6C629301785B5C1009D381C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
+			compilerSpec = org.cocotron.1.0.solaris.i686.gcc.default;
 			fileType = sourcecode.asm;
 			isEditable = 1;
 			outputFiles = (
@@ -7217,7 +7217,7 @@
 		};
 		C6C629311785B5C1009D381C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
+			compilerSpec = org.cocotron.1.0.solaris.i686.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -13330,9 +13330,9 @@
 			productReference = 6EA04A7709E57D5F0067589C /* Foundation.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C6C626641785B5C1009D381C /* Foundation-Solaris-i386 */ = {
+		C6C626641785B5C1009D381C /* Foundation-Solaris-i686 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C6C629321785B5C1009D381C /* Build configuration list for PBXNativeTarget "Foundation-Solaris-i386" */;
+			buildConfigurationList = C6C629321785B5C1009D381C /* Build configuration list for PBXNativeTarget "Foundation-Solaris-i686" */;
 			buildPhases = (
 				C6C626671785B5C1009D381C /* Headers */,
 				C6C627B01785B5C1009D381C /* Sources */,
@@ -13346,7 +13346,7 @@
 			dependencies = (
 				C6C626651785B5C1009D381C /* PBXTargetDependency */,
 			);
-			name = "Foundation-Solaris-i386";
+			name = "Foundation-Solaris-i686";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = Foundation;
 			productReference = C6C629351785B5C1009D381C /* Foundation.framework */;
@@ -13510,7 +13510,7 @@
 				28D485140FE04E7100DC03EF /* Foundation-Linux-ppc */,
 				15D91F19105E918000171406 /* Foundation-Linux-arm */,
 				FE30A04F10C6ED6F00A1BF7F /* Foundation-FreeBSD-i386 */,
-				C6C626641785B5C1009D381C /* Foundation-Solaris-i386 */,
+				C6C626641785B5C1009D381C /* Foundation-Solaris-i686 */,
 			);
 		};
 /* End PBXProject section */
@@ -18178,7 +18178,7 @@
 		C6C629331785B5C1009D381C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
@@ -18189,7 +18189,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = (
 					"-pthread",
 					"-DCOCOTRON_DISALLOW_FORWARDING",
@@ -18209,15 +18209,15 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/i386;
-				VALID_ARCHS = i386;
+				SYMROOT = build/Solaris/i686;
+				VALID_ARCHS = i686;
 			};
 			name = Release;
 		};
 		C6C629341785B5C1009D381C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
@@ -18227,7 +18227,7 @@
 				GCC_PLATFORM_DEFINES = "-DSOLARIS";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = (
 					"-pthread",
 					"-DCOCOTRON_DISALLOW_FORWARDING",
@@ -18247,8 +18247,8 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/i386;
-				VALID_ARCHS = i386;
+				SYMROOT = build/Solaris/i686;
+				VALID_ARCHS = i686;
 			};
 			name = Debug;
 		};
@@ -18552,7 +18552,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C6C629321785B5C1009D381C /* Build configuration list for PBXNativeTarget "Foundation-Solaris-i386" */ = {
+		C6C629321785B5C1009D381C /* Build configuration list for PBXNativeTarget "Foundation-Solaris-i686" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C6C629331785B5C1009D381C /* Release */,

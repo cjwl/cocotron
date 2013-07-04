@@ -32,7 +32,7 @@
 		};
 		C6C629431785B63A009D381C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
+			compilerSpec = org.cocotron.1.0.solaris.i686.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -65,6 +65,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		C675ECC21785CB8D000C1005 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6893D951785BB960093BFB1;
+			remoteInfo = "CFNetwork-Solaris-i386";
+		};
 		C67E0346125B236600C10757 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
@@ -309,6 +316,7 @@
 				FE1342D31151843000404745 /* CFNetwork.framework */,
 				FEC32E44115909B30008ECE5 /* CFNetwork.framework */,
 				FE849313119AF77F00E252CC /* CFNetwork.framework */,
+				C675ECC31785CB8D000C1005 /* CFNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -408,9 +416,9 @@
 			productName = CoreServices;
 			productType = "com.apple.product-type.framework";
 		};
-		C6C6293A1785B63A009D381C /* CoreServices-Solaris-i386 */ = {
+		C6C6293A1785B63A009D381C /* CoreServices-Solaris-i686 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C6C629441785B63A009D381C /* Build configuration list for PBXNativeTarget "CoreServices-Solaris-i386" */;
+			buildConfigurationList = C6C629441785B63A009D381C /* Build configuration list for PBXNativeTarget "CoreServices-Solaris-i686" */;
 			buildPhases = (
 				C6C6293D1785B63A009D381C /* Headers */,
 				C6C6293F1785B63A009D381C /* Resources */,
@@ -423,7 +431,7 @@
 			dependencies = (
 				C6C6293B1785B63A009D381C /* PBXTargetDependency */,
 			);
-			name = "CoreServices-Solaris-i386";
+			name = "CoreServices-Solaris-i686";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreServices;
 			productReference = C6C629471785B63A009D381C /* CoreServices.framework */;
@@ -524,12 +532,19 @@
 				FEC32E5711590A130008ECE5 /* CoreServices-Linux-i386 */,
 				FE8492E4119A5EA000E252CC /* CoreServices-FreeBSD-i386 */,
 				C67E030C125B223000C10757 /* CoreServices-Solaris-sparc */,
-				C6C6293A1785B63A009D381C /* CoreServices-Solaris-i386 */,
+				C6C6293A1785B63A009D381C /* CoreServices-Solaris-i686 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C675ECC31785CB8D000C1005 /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = C675ECC21785CB8D000C1005 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE1342D31151843000404745 /* CFNetwork.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -780,7 +795,7 @@
 		C6C629451785B63A009D381C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -788,19 +803,19 @@
 				EXECUTABLE_SUFFIX = .1.0.so;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Solaris/i386;
+				SYMROOT = build/Solaris/i686;
 			};
 			name = Debug;
 		};
 		C6C629461785B63A009D381C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -808,12 +823,12 @@
 				EXECUTABLE_SUFFIX = .1.0.so;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = "-DCORESERVICES_INSIDE_BUILD";
 				PRODUCT_NAME = CoreServices;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Solaris/i386;
+				SYMROOT = build/Solaris/i686;
 			};
 			name = Release;
 		};
@@ -967,7 +982,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C6C629441785B63A009D381C /* Build configuration list for PBXNativeTarget "CoreServices-Solaris-i386" */ = {
+		C6C629441785B63A009D381C /* Build configuration list for PBXNativeTarget "CoreServices-Solaris-i686" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C6C629451785B63A009D381C /* Debug */,

@@ -340,7 +340,7 @@
 		};
 		C6C629761785B66D009D381C /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.i386.gcc.default;
+			compilerSpec = org.cocotron.1.0.solaris.i686.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -1094,9 +1094,9 @@
 			productName = CoreFoundation;
 			productType = "com.apple.product-type.framework";
 		};
-		C6C629491785B66D009D381C /* CoreFoundation-Solaris-i386 */ = {
+		C6C629491785B66D009D381C /* CoreFoundation-Solaris-i686 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C6C629771785B66D009D381C /* Build configuration list for PBXNativeTarget "CoreFoundation-Solaris-i386" */;
+			buildConfigurationList = C6C629771785B66D009D381C /* Build configuration list for PBXNativeTarget "CoreFoundation-Solaris-i686" */;
 			buildPhases = (
 				C6C6294A1785B66D009D381C /* Headers */,
 				C6C629721785B66D009D381C /* Resources */,
@@ -1108,7 +1108,7 @@
 			);
 			dependencies = (
 			);
-			name = "CoreFoundation-Solaris-i386";
+			name = "CoreFoundation-Solaris-i686";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreFoundation;
 			productReference = C6C6297A1785B66D009D381C /* CoreFoundation.framework */;
@@ -1250,7 +1250,7 @@
 				FEA8299C109B7BFD00C7A732 /* CoreFoundation-Linux-ppc */,
 				FE5A869710C6EE28005E348A /* CoreFoundation-FreeBSD-i386 */,
 				C67E02C7125B214E00C10757 /* CoreFoundation-Solaris-sparc */,
-				C6C629491785B66D009D381C /* CoreFoundation-Solaris-i386 */,
+				C6C629491785B66D009D381C /* CoreFoundation-Solaris-i686 */,
 			);
 		};
 /* End PBXProject section */
@@ -1490,7 +1490,7 @@
 		C6C629781785B66D009D381C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -1498,19 +1498,19 @@
 				EXECUTABLE_SUFFIX = .1.0.so;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD";
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Solaris/i386;
+				SYMROOT = build/Solaris/i686;
 			};
 			name = Debug;
 		};
 		C6C629791785B66D009D381C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = i686;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -1518,12 +1518,12 @@
 				EXECUTABLE_SUFFIX = .1.0.so;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i386/Frameworks;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD";
 				PRODUCT_NAME = CoreFoundation;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SYMROOT = build/Solaris/i386;
+				SYMROOT = build/Solaris/i686;
 			};
 			name = Release;
 		};
@@ -1757,7 +1757,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C6C629771785B66D009D381C /* Build configuration list for PBXNativeTarget "CoreFoundation-Solaris-i386" */ = {
+		C6C629771785B66D009D381C /* Build configuration list for PBXNativeTarget "CoreFoundation-Solaris-i686" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C6C629781785B66D009D381C /* Debug */,
