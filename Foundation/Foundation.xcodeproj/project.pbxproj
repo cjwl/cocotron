@@ -18191,6 +18191,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = (
+					"-march=i686",
 					"-pthread",
 					"-DCOCOTRON_DISALLOW_FORWARDING",
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -18203,6 +18204,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = (
+					"-march=i686",
 					"-shared",
 					"-lm",
 					"-ldl",
@@ -18229,6 +18231,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/i686/Frameworks;
 				OTHER_CFLAGS = (
+					"-march=i686",
 					"-pthread",
 					"-DCOCOTRON_DISALLOW_FORWARDING",
 					"-DPTHREAD_INSIDE_BUILD=1",
@@ -18241,6 +18244,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = (
+					"-march=i686",
 					"-shared",
 					"-lm",
 					"-ldl",

@@ -1355,6 +1355,7 @@
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
+					"-march=i686",
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
@@ -1378,6 +1379,7 @@
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
+					"-march=i686",
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = "-shared";
