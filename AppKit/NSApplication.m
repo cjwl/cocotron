@@ -284,6 +284,25 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
+-(void)unregisterDelegate {
+    if([_delegate respondsToSelector:@selector(applicationWillFinishLaunching:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name:NSApplicationWillFinishLaunchingNotification object:self];
+    }
+    if([_delegate respondsToSelector:@selector(applicationDidFinishLaunching:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name:NSApplicationDidFinishLaunchingNotification object:self];
+    }
+    if([_delegate respondsToSelector:@selector(applicationDidBecomeActive:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name: NSApplicationDidBecomeActiveNotification object:self];
+    }
+    if([_delegate respondsToSelector:@selector(applicationWillTerminate:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name: NSApplicationWillTerminateNotification object:self];
+    }
+}
+
 -(void)registerDelegate {
     if([_delegate respondsToSelector:@selector(applicationWillFinishLaunching:)]){
      [[NSNotificationCenter defaultCenter] addObserver:_delegate
@@ -309,8 +328,11 @@ id NSApp=nil;
 }
 
 -(void)setDelegate:delegate {
-   _delegate=delegate;
-   [self registerDelegate];
+    if (delegate != _delegate) {
+        [self unregisterDelegate];
+        _delegate=delegate;
+        [self registerDelegate];
+    }
 }
 
 -(void)setMainMenu:(NSMenu *)menu {
