@@ -24,6 +24,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringSymbol.h>
 #import <Foundation/NSRaiseException.h>
 
+#import "NSStringEncoder.h"
+
 #import <Foundation/NSData.h>
 #import <Foundation/NSCoder.h>
 #include <string.h>
@@ -94,11 +96,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             characters = NSUnicodeFromBytesUTF16BigEndian(bytes, length, &resultLength);
             return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, characters, resultLength, YES);
 
-        default:
-            NSRaiseException(NSInvalidArgumentException, nil, _cmd, @"encoding %d not (yet) implemented", encoding);
+        default: {
+            // Let's convert the encoding to unicode and use that
+            unichar *unicodePtr = NSBytesToUnicode(bytes, length, encoding, &resultLength, NULL);
+            if (unicodePtr) {
+                return (NSString_placeholder *)NSString_unicodePtrNewNoCopy(NULL, unicodePtr, resultLength, YES);
+            }
+        }
             break;
     }
 
+    NSRaiseException(NSInvalidArgumentException, nil, _cmd, @"encoding %d not (yet) implemented", encoding);
     return nil;
 }
 
