@@ -9,7 +9,60 @@ struct __CFString {
 #define ToNSString(object) ((NSString *)object)
 #define ToCFString(object) ((CFStringRef)object)
 
-static inline NSStringEncoding convertCFEncodingToNSEncoding(CFStringEncoding encoding){
+CFStringEncoding CFStringConvertWindowsCodepageToEncoding(CFUInteger codepage)
+{
+    CFStringEncoding encoding = kCFStringEncodingInvalidId;
+    switch (codepage) {
+        case 874:
+            encoding = kCFStringEncodingDOSThai;
+            break;
+        case 932:
+            encoding = kCFStringEncodingDOSJapanese;
+            break;
+        case 936:
+            encoding = kCFStringEncodingDOSChineseSimplif;
+            break;
+        case 949:
+            encoding = kCFStringEncodingDOSKorean;
+            break;
+        case 950:
+            encoding = kCFStringEncodingDOSChineseTrad;
+            break;
+        case 1250:
+            encoding = kCFStringEncodingWindowsLatin2;
+            break;
+        case 1251:
+            encoding = kCFStringEncodingWindowsCyrillic;
+            break;
+        case 1252:
+            encoding = kCFStringEncodingWindowsLatin1;
+            break;
+        case 1253:
+            encoding = kCFStringEncodingWindowsGreek;
+            break;
+        case 1254:
+            encoding = kCFStringEncodingWindowsLatin5;
+            break;
+        case 1255:
+            encoding = kCFStringEncodingWindowsHebrew;
+            break;
+        case 1256:
+            encoding = kCFStringEncodingWindowsArabic;
+            break;
+        case 1257:
+            encoding = kCFStringEncodingWindowsBalticRim;
+            break;
+        case 1258:
+            encoding = kCFStringEncodingWindowsVietnamese;
+            break;
+        default:
+            encoding = kCFStringEncodingInvalidId;
+            break;
+    }
+    return encoding;
+}
+
+ NSStringEncoding CFStringConvertEncodingToNSStringEncoding(CFStringEncoding encoding){
    switch(encoding){
     case kCFStringEncodingUTF8:
      return NSUTF8StringEncoding;
@@ -40,7 +93,42 @@ static inline NSStringEncoding convertCFEncodingToNSEncoding(CFStringEncoding en
     case kCFStringEncodingNonLossyASCII:
      return NSNonLossyASCIIStringEncoding;
    }
-   return NSASCIIStringEncoding;
+   // Cocoa is adding this bit for CF encoding that doesn't have an equivalent NS constant defined
+   return encoding | 0x8000000;
+}
+
+CFStringEncoding CFStringConvertNSStringEncodingToEncoding(NSStringEncoding encoding){
+    switch(encoding){
+        case NSUTF8StringEncoding:
+            return kCFStringEncodingUTF8;
+        case NSUnicodeStringEncoding:
+            return kCFStringEncodingUTF16;
+        case NSUTF16BigEndianStringEncoding:
+            return kCFStringEncodingUTF16BE;
+        case NSUTF16LittleEndianStringEncoding:
+            return kCFStringEncodingUTF16LE;
+        case NSUTF32StringEncoding:
+            return kCFStringEncodingUTF32;
+        case NSUTF32BigEndianStringEncoding:
+            return kCFStringEncodingUTF32BE;
+        case NSUTF32LittleEndianStringEncoding:
+            return kCFStringEncodingUTF32LE;
+            
+        case NSMacOSRomanStringEncoding:
+            return kCFStringEncodingMacRoman;
+        case NSWindowsCP1252StringEncoding:
+            return kCFStringEncodingWindowsLatin1;
+        case NSISOLatin1StringEncoding:
+            return kCFStringEncodingISOLatin1;
+        case NSNEXTSTEPStringEncoding:
+            return kCFStringEncodingNextStepLatin;
+        case NSASCIIStringEncoding:
+            return kCFStringEncodingASCII;
+            //    case kCFStringEncodingUnicode: same as kCFStringEncodingUTF16
+        case NSNonLossyASCIIStringEncoding:
+            return kCFStringEncodingNonLossyASCII;
+    }
+    return encoding & ~0x8000000;
 }
 
 void CFStringAppendCharacters(CFMutableStringRef mutableString, const UniChar *chars, CFIndex numChars)
@@ -67,23 +155,23 @@ COREFOUNDATION_EXPORT CFStringRef CFStringCreateMutableCopy(CFAllocatorRef alloc
 }
 
 CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation){
-   NSUnimplementedFunction();
-   return 0;
+    return ToCFString([[NSString allocWithZone:NULL] initWithBytes:bytes length:length encoding:CFStringConvertEncodingToNSStringEncoding(encoding)]);
+
 }
 CFStringRef CFStringCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation,CFAllocatorRef contentsDeallocator){
    NSUnimplementedFunction();
    return 0;
 }
 CFStringRef CFStringCreateWithCharacters(CFAllocatorRef allocator,const UniChar *chars,CFIndex length){
-   NSUnimplementedFunction();
-   return 0;
+    return ToCFString([[NSString alloc] initWithCharacters:chars length:length]);
 }
 CFStringRef CFStringCreateWithCharactersNoCopy(CFAllocatorRef allocator,const UniChar *chars,CFIndex length,CFAllocatorRef contentsDeallocator){
    NSUnimplementedFunction();
    return 0;
 }
 CFStringRef CFStringCreateWithCString(CFAllocatorRef allocator,const char *cString,CFStringEncoding encoding){
-   return ToCFString([[NSString allocWithZone:NULL] initWithCString:cString encoding:convertCFEncodingToNSEncoding(encoding)]);
+    NSInteger length = strlen(cString);
+    return CFStringCreateWithBytes(allocator, (const uint8_t *)cString, length, encoding, NO);
 }
 
 CFStringRef CFStringCreateWithCStringNoCopy(CFAllocatorRef allocator,const char *cString,CFStringEncoding encoding,CFAllocatorRef contentsDeallocator){
@@ -157,11 +245,11 @@ void CFStringGetCharacters(CFStringRef self,CFRange range,UniChar *buffer) {
 }
 
 Boolean CFStringGetCString(CFStringRef self,char *buffer,CFIndex bufferSize,CFStringEncoding encoding) {
-   return [ToNSString(self) getCString:buffer maxLength:bufferSize encoding:convertCFEncodingToNSEncoding(encoding)];
+   return [ToNSString(self) getCString:buffer maxLength:bufferSize encoding:CFStringConvertEncodingToNSStringEncoding(encoding)];
 }
 
 const char *CFStringGetCStringPtr(CFStringRef self,CFStringEncoding encoding) {
-   return [ToNSString(self) cStringUsingEncoding:convertCFEncodingToNSEncoding(encoding)];
+   return [ToNSString(self) cStringUsingEncoding:CFStringConvertEncodingToNSStringEncoding(encoding)];
 }
 
 Boolean CFStringFindCharacterFromSet(CFStringRef self,CFCharacterSetRef set,CFRange range,CFOptionFlags options,CFRange *result){

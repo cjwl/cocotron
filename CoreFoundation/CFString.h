@@ -34,6 +34,8 @@ enum {
    kCFCompareForcedOrdering      = (1<<9),
 };
 
+#define kCFStringEncodingInvalidId (0xffffffffU)
+
 typedef enum  {
    kCFStringEncodingUTF8         = 0x08000100,
    kCFStringEncodingUTF16        = 0x00000100,
@@ -50,6 +52,22 @@ typedef enum  {
    kCFStringEncodingASCII        = 0x0600,
    kCFStringEncodingUnicode      = kCFStringEncodingUTF16,
    kCFStringEncodingNonLossyASCII= 0x0BFF,
+    
+    // A few more supported encoding - at least -[NSString initWithBytes:length:encoding:] can work with them
+    kCFStringEncodingDOSThai = 0x041D,		/* CP874, also for Windows */
+    kCFStringEncodingDOSJapanese = 0x0420,	/* CP932, also for Windows */
+    kCFStringEncodingDOSChineseSimplif = 0x0421, /* CP936, also for Windows */
+    kCFStringEncodingDOSKorean = 0x0422,	/* CP949, also for Windows; Unified Hangul Code */
+    kCFStringEncodingDOSChineseTrad = 0x0423,	/* CP950, also for Windows */
+    kCFStringEncodingWindowsLatin2 = 0x0501,	/* CP1250, Central Europe */
+    kCFStringEncodingWindowsCyrillic = 0x0502,	/* CP1251, Slavic Cyrillic */
+    kCFStringEncodingWindowsGreek = 0x0503,	/* CP1253 */
+    kCFStringEncodingWindowsLatin5 = 0x0504,	/* CP1254, Turkish */
+    kCFStringEncodingWindowsHebrew = 0x0505,	/* CP1255 */
+    kCFStringEncodingWindowsArabic = 0x0506,	/* CP1256 */
+    kCFStringEncodingWindowsBalticRim = 0x0507,	/* CP1257 */
+    kCFStringEncodingWindowsVietnamese = 0x0508, /* CP1258 */
+
 } CFStringBuiltInEncodings;
 
 typedef struct CFStringInlineBuffer {
