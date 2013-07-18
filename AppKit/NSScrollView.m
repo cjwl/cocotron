@@ -824,10 +824,8 @@ static Class _rulerViewClass = nil;
      }
     }
 
-    [_verticalScroller setFrame:[self verticalScrollerFrame]];
-    [_horizontalScroller setFrame:[self horizontalScrollerFrame]];
-    [_clipView setFrame:[self clipViewFrame]];
-
+    // Can't do sublayout in here because it messes with the tile method
+       
     [_horizontalRuler invalidateHashMarks];
     [_verticalRuler invalidateHashMarks];
        
