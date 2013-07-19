@@ -24,7 +24,6 @@
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuItem.h>
 #import <AppKit/NSCursor.h>
-#import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSTextTab.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSRichTextReader.h>
@@ -157,6 +156,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
             [typingAttributes setObject:_textColor forKey: NSForegroundColorAttributeName];
         }
         _typingAttributes = typingAttributes;
+        
+        if ([typingAttributes objectForKey: NSParagraphStyleAttributeName]) {
+            _defaultParagraphStyle = [[typingAttributes objectForKey: NSParagraphStyleAttributeName] copy];
+        } else {
+            _defaultParagraphStyle = [[NSParagraphStyle defaultParagraphStyle] copy];
+        }
     }
     else {
         [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -202,6 +207,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 	}
 	_typingAttributes = typingAttributes;
 	
+    if ([typingAttributes objectForKey: NSParagraphStyleAttributeName]) {
+        _defaultParagraphStyle = [[typingAttributes objectForKey: NSParagraphStyleAttributeName] copy];
+    } else {
+        _defaultParagraphStyle = [[NSParagraphStyle defaultParagraphStyle] copy];
+    }
+
     _rangeForUserCompletion=NSMakeRange(NSNotFound, 0);
     _selectedTextAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
                               [NSColor selectedTextColor],NSForegroundColorAttributeName,
@@ -248,6 +259,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 	[_textContainer setTextView: nil];
     [_textContainer release];
     [_typingAttributes release];
+    [_defaultParagraphStyle release];
     [_backgroundColor release];
     [_font release];
     [_textColor release];
@@ -329,6 +341,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     return _typingAttributes;
 }
 
+-(NSParagraphStyle *)defaultParagraphStyle {
+    return _defaultParagraphStyle;
+}
+
 -(NSDictionary *)selectedTextAttributes {
     return _selectedTextAttributes;
 }
@@ -395,6 +411,12 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _typingAttributes=attributes;
     
     [self updateRuler];
+}
+
+-(void)setDefaultParagraphStyle:(NSParagraphStyle *)paragraphStyle {
+    paragraphStyle = [paragraphStyle copy];
+    [_defaultParagraphStyle release];
+    _defaultParagraphStyle = paragraphStyle;
 }
 
 -(void)setSelectedTextAttributes:(NSDictionary *)attributes {
