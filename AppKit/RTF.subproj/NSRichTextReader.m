@@ -376,7 +376,14 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                 
                 _currentCharset = [[info objectForKey:@"charset"] integerValue];
                 
-                font=[NSFont fontWithName:fontname size:12];
+                // Turns out fontWithName:size: is still returning fonts for font names it doesn't have
+                // For example "Helvetica". This check ensures that we only ask for fonts we have...
+                // Of course this is a general problem... so the full fix is elsewhere...
+                NSArray *availableFonts = [[NSFontManager sharedFontManager] availableFonts];
+                if ([availableFonts containsObject: fontname]) {
+                    font=[NSFont fontWithName: fontname size: 12];
+                }
+
                 if (font == nil) {
                     // Try to get some default font for the given family
                     if([family isEqualToString:@"roman"])
