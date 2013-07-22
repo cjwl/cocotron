@@ -185,6 +185,17 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
    return [_cell itemTitles];
 }
 
+- (void)setTitle:(NSString *)title
+{
+    if ([self pullsDown]) {
+        // The title gets stored in the zero index item in the menu - it made sense to Apple at some point...
+        [[_cell itemAtIndex: 0] setTitle: title];
+        [self synchronizeTitleAndSelectedItem];
+    } else {
+        [super setTitle: title];
+    }
+}
+
 -(void)synchronizeTitleAndSelectedItem {
    [_cell synchronizeTitleAndSelectedItem];
    [self setNeedsDisplay:YES];
