@@ -1593,9 +1593,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
             [self makeFirstResponder:[self initialFirstResponder]];
         else {
             // otherwise calculate one and set the first responder
-            
-            [self recalculateKeyViewLoop];
-            
+            if ([self autorecalculatesKeyViewLoop]) {
+                [self recalculateKeyViewLoop];
+            }
             if([self firstResponder]==self)
                 [self makeFirstResponder:[_contentView nextValidKeyView]];
         }
@@ -1976,7 +1976,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
        [_drawers makeObjectsPerformSelector:@selector(parentWindowDidClose:) withObject:self];
 
    [self postNotificationName:NSWindowWillCloseNotification];
-
+    
    if(_releaseWhenClosed)
     [self autorelease];
 }
