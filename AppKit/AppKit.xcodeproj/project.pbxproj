@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CC17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CD17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CE17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CF17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555DE17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555DF17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555E017A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555E117A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555E217A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
 		49A7975314224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975414224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975514224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
@@ -4525,6 +4535,9 @@
 /* Begin PBXFileReference section */
 		36570F980E818CD5008FE1BE /* NSGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGradient.h; sourceTree = "<group>"; };
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
+		496555CA17A02FAD0015D3B3 /* NSPoof.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NSPoof.png; sourceTree = "<group>"; };
+		496555D717A02FB90015D3B3 /* NSPoofAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPoofAnimation.h; sourceTree = "<group>"; };
+		496555D817A02FB90015D3B3 /* NSPoofAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPoofAnimation.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
 		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
@@ -5630,6 +5643,8 @@
 				FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */,
 				FE463EC8102D0F9C00B265D6 /* NSPathControl.h */,
 				FE463EC9102D0F9D00B265D6 /* NSPathControl.m */,
+				496555D717A02FB90015D3B3 /* NSPoofAnimation.h */,
+				496555D817A02FB90015D3B3 /* NSPoofAnimation.m */,
 				FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */,
 				FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */,
 				FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */,
@@ -5963,6 +5978,7 @@
 		6E2B54E60976075300DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				496555CA17A02FAD0015D3B3 /* NSPoof.png */,
 				631382B3145F734100765AA7 /* NSColorWheel.png */,
 				631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */,
 				631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */,
@@ -9337,6 +9353,7 @@
 				630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E97166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB338F171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CC17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9416,6 +9433,7 @@
 				630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E98166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB3390171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CD17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9507,6 +9525,7 @@
 				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
 				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB338E171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9586,6 +9605,7 @@
 				630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB3392171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CF17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9665,6 +9685,7 @@
 				630DCA1414CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E99166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB3391171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CE17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10146,6 +10167,7 @@
 				49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555DF17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10553,6 +10575,7 @@
 				49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5516FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555E017A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10995,6 +11018,7 @@
 				49D5D24A165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555DE17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11404,6 +11428,7 @@
 				49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5716FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555E217A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11708,6 +11733,7 @@
 				49D5D24D165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8C166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5616FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555E117A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
