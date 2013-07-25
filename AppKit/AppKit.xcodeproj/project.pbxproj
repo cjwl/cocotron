@@ -172,6 +172,9 @@
 		631382B6145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		631382B7145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		631382B8145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		63848FE217A189E70019E4DC /* NSPrintProgressPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63848FE017A189E70019E4DC /* NSPrintProgressPanel.xib */; };
+		63848FEC17A18C050019E4DC /* NSPrintProgressPanelController.h in Headers */ = {isa = PBXBuildFile; fileRef = 63848FEA17A18C050019E4DC /* NSPrintProgressPanelController.h */; };
+		63848FED17A18C050019E4DC /* NSPrintProgressPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63848FEB17A18C050019E4DC /* NSPrintProgressPanelController.m */; };
 		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
 		A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
@@ -4584,6 +4587,9 @@
 		63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColorPickerWheelView.h; sourceTree = "<group>"; };
 		63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorPickerWheelView.m; sourceTree = "<group>"; };
 		631382B3145F734100765AA7 /* NSColorWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorWheel.png; path = NSColorPicker.subproj/NSColorWheel.png; sourceTree = "<group>"; };
+		63848FE117A189E70019E4DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NSPrintProgressPanel.xib; sourceTree = "<group>"; };
+		63848FEA17A18C050019E4DC /* NSPrintProgressPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPrintProgressPanelController.h; sourceTree = "<group>"; };
+		63848FEB17A18C050019E4DC /* NSPrintProgressPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPrintProgressPanelController.m; sourceTree = "<group>"; };
 		6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
 		6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Decoder_TIFF.h; sourceTree = "<group>"; };
@@ -5839,6 +5845,8 @@
 				6E2B53A50976075200DA0954 /* NSPrintOperation.m */,
 				FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */,
 				FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */,
+				63848FEA17A18C050019E4DC /* NSPrintProgressPanelController.h */,
+				63848FEB17A18C050019E4DC /* NSPrintProgressPanelController.m */,
 				6E2B54860976075200DA0954 /* NSProgressIndicator.h */,
 				6E2B53A70976075200DA0954 /* NSProgressIndicator.m */,
 				6E2B54880976075200DA0954 /* NSResponder.h */,
@@ -5971,6 +5979,7 @@
 				6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */,
 				6311B16014C74B00007AD8C0 /* NSFontPanel.nib */,
 				6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */,
+				63848FE017A189E70019E4DC /* NSPrintProgressPanel.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -8211,6 +8220,7 @@
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
 				49C12B4E16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
+				63848FEC17A18C050019E4DC /* NSPrintProgressPanelController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9526,6 +9536,7 @@
 				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB338E171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
 				496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */,
+				63848FE217A189E70019E4DC /* NSPrintProgressPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11019,6 +11030,7 @@
 				49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 				496555DE17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
+				63848FED17A18C050019E4DC /* NSPrintProgressPanelController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11943,6 +11955,14 @@
 				6311B1A214C75168007AD8C0 /* fr */,
 			);
 			name = NSSpellingViewController.xib;
+			sourceTree = "<group>";
+		};
+		63848FE017A189E70019E4DC /* NSPrintProgressPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63848FE117A189E70019E4DC /* en */,
+			);
+			name = NSPrintProgressPanel.xib;
 			sourceTree = "<group>";
 		};
 		6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */ = {

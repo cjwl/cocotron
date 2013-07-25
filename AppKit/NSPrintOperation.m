@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSGraphicsContext.h>
 
+#import "NSPrintProgressPanelController.h"
+
 enum {
    NSPrintOperationPDFInRect,
    NSPrintOperationEPSInRect,
@@ -120,6 +122,13 @@ static NSPrintOperation *_currentOperation=nil;
    return _currentPage;
 }
 
+-(BOOL)showsProgressPanel {
+    return _showsPrintProgressPanel;
+}
+
+-(void)setShowsProgressPanel:(BOOL)flag {
+    _showsPrintProgressPanel = flag;
+}
 
 -(void)_autopaginatePageRange:(NSRange)pageRange actualPageRange:(NSRange *)rangep context:(CGContextRef)context {
    NSRange result=NSMakeRange(1,0);
@@ -184,6 +193,17 @@ static NSPrintOperation *_currentOperation=nil;
 -(void)_paginateWithPageRange:(NSRange)pageRange context:(CGContextRef)context {
    int i;
 
+    NSPrintProgressPanelController *printProgressPanelController = nil;
+
+    if ([self showsProgressPanel]) {
+        printProgressPanelController = [NSPrintProgressPanelController printProgressPanelController];
+        if ([[[self printInfo] jobDisposition] isEqualToString: NSPrintSaveJob]) {
+            [printProgressPanelController setTitle: NSLocalizedString(@"Save", @"Save a print job")];
+        }
+        [printProgressPanelController setMaxPages: pageRange.length];
+        [printProgressPanelController showPanel];
+
+    }
    for(i=0,_currentPage=pageRange.location;i<pageRange.length;i++,_currentPage++){
     NSRect  rect=[_view rectForPage:_currentPage];
     NSPoint location=[_view locationOfPrintRect:rect];
@@ -191,7 +211,9 @@ static NSPrintOperation *_currentOperation=nil;
     [_view beginPageInRect:rect atPlacement:location];
     [_view drawRect:rect];
     [_view endPage];
+       [printProgressPanelController setCurrentPage: i];
    }
+    [printProgressPanelController hidePanel];
 }
 
 -(NSGraphicsContext *)createContext {

@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect             _insideRect;
    NSMutableData     *_mutableData;
    int                _type;
+    BOOL              _showsPrintProgressPanel;
 }
 
 +(NSPrintOperation *)currentOperation;
@@ -40,8 +41,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSPrintInfo *)printInfo;
 -(NSPrintPanel *)printPanel;
 -(BOOL)showsPrintPanel;
-
 -(void)setShowsPrintPanel:(BOOL)flag;
+
+-(BOOL)showsProgressPanel;
+-(void)setShowsProgressPanel:(BOOL)flag;
 
 -(int)currentPage;
 
