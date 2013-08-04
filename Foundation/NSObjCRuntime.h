@@ -47,6 +47,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define NS_INLINE static inline
 
+#ifdef __clang__
+#define NS_ROOT_CLASS __attribute__((objc_root_class))
+#else
+#define NS_ROOT_CLASS
+#endif
+
 @class NSString;
 
 #define NSINTEGER_DEFINED 1

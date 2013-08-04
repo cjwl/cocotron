@@ -109,8 +109,8 @@ Class objc_getFutureClass(const char *name) {
 }
 
 id objc_getMetaClass(const char *name) {
-   Class c=objc_getClass(name);
-   return c->isa;
+    Class c=objc_getClass(name);
+    return object_getClass(c);
 }
 
 id objc_getRequiredClass(const char *name) {
@@ -391,7 +391,7 @@ void objc_logMsgSend(id object,SEL selector){
     
    NSCLogThreadId();
    NSCLogFormat("objc_msgSend %x %s self=%p",selector,sel_getName(selector),object);
-   NSCLogFormat(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogFormat(" isa %x name %s",(object!=nil)?object_getClass(object):Nil,(object!=nil)?object_getClass(object)->name:"");
    NSCLogNewline();
 }
 
@@ -403,7 +403,7 @@ void objc_logMsgSendSuper(struct objc_super *super,SEL selector){
    NSCLogThreadId();
    NSCLogFormat("objc_msgSendSuper %x %s",selector,sel_getName(selector));
    id object=super->receiver;
-   NSCLogFormat("self=%p isa %x name %s",object,(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   NSCLogFormat("self=%p isa %x name %s",object,(object!=nil)?object_getClass(object):Nil,(object!=nil)?object_getClass(object)->name:"");
    NSCLogNewline();
 }
 

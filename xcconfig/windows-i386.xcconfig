@@ -7,7 +7,7 @@ GCC_VERSION = org.cocotron.1.0.windows.i386.gcc.4.3.1
 
 ARCHS = i386
 
-//#include "windows-i386-clang"
+#include "windows-i386-clang"
 
 OTHER_CFLAGS = -D__LITTLE_ENDIAN__ -DWINVER=0x500 -Wno-multichar -Wreturn-type -isystem $DSTROOT/include $(WINDOWS_i386_COMPILER_ISYSTEM) $(WINDOWS_i386_COMPILER_CFLAGS)
 

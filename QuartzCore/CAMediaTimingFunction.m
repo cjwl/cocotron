@@ -10,7 +10,7 @@ NSString * const kCAMediaTimingFunctionDefault=@"kCAMediaTimingFunctionDefault";
 
 @implementation CAMediaTimingFunction
 
--initWithControlPoints:(float)c1x:(float)c1y:(float)c2x:(float)c2y {
+-initWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y {
    _c1x=c1x;
    _c1y=c1y;
    _c2x=c2x;
@@ -18,7 +18,7 @@ NSString * const kCAMediaTimingFunctionDefault=@"kCAMediaTimingFunctionDefault";
    return self;
 }
 
-+functionWithControlPoints:(float)c1x:(float)c1y:(float)c2x:(float)c2y {
++functionWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y {
    return [[[self alloc] initWithControlPoints:c1x:c1y:c2x:c2y] autorelease];
 }
 

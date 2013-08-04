@@ -487,7 +487,7 @@ static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable)
                 unsigned i;
                 
                 for(i=0;staticInstances->instances[i]!= nil;i++)
-                    staticInstances->instances[i]->isa = class;
+                    object_setClass(staticInstances->instances[i],class);
                 
                 OBJCArrayRemoveItemAtIndex(unlinkedObjects,count);
             }
@@ -502,7 +502,7 @@ static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable)
             
             if(class!=Nil){
                 for(i=0;staticInstances->instances[i]!= nil;i++)
-                    staticInstances->instances[i]->isa = class;
+                    object_setClass(staticInstances->instances[i],class);
             }
             else {
                 if(unlinkedObjects==NULL)

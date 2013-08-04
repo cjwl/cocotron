@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSMethodSignature, NSInvocation;
 
-@interface NSProxy <NSObject> {
+NS_ROOT_CLASS @interface NSProxy <NSObject> {
     Class	isa;
 }
 

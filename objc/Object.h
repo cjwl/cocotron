@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef void *marg_list;
 
+#ifdef __clang
+__attribute__((objc_root_class))
+#endif
 @interface Object {
     Class isa;
 }

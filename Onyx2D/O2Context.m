@@ -202,12 +202,12 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
    O2ContextSetGrayStrokeColor(self,gray,alpha);
 }
 
--(void)setRGBStrokeColor:(O2Float)r:(O2Float)g:(O2Float)b {
+-(void)setStrokeColorRed:(O2Float)r green:(O2Float)g blue:(O2Float)b {
    O2Float alpha=O2ColorGetAlpha(O2ContextStrokeColor(self));
    O2ContextSetRGBStrokeColor(self,r,g,b,alpha);
 }
 
--(void)setCMYKStrokeColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k {
+-(void)setStrokeColorC:(O2Float)c m:(O2Float)m y:(O2Float)y k:(O2Float)k {
    O2Float alpha=O2ColorGetAlpha(O2ContextStrokeColor(self));
    O2ContextSetCMYKStrokeColor(self,c,m,y,k,alpha);
 }
@@ -223,12 +223,12 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
    O2ContextSetGrayFillColor(self,gray,alpha);
 }
 
--(void)setRGBFillColor:(O2Float)r:(O2Float)g:(O2Float)b {
+-(void)setFillColorRed:(O2Float)r green:(O2Float)g blue:(O2Float)b {
    O2Float alpha=O2ColorGetAlpha(O2ContextFillColor(self));
    O2ContextSetRGBFillColor(self,r,g,b,alpha);
 }
 
--(void)setCMYKFillColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k {
+-(void)setFillColorC:(O2Float)c m:(O2Float)m y:(O2Float)y k:(O2Float)k {
    O2Float alpha=O2ColorGetAlpha(O2ContextFillColor(self));
    O2ContextSetCMYKFillColor(self,c,m,y,k,alpha);
 }

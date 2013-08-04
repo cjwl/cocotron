@@ -8,8 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSBundle.h>
 
+// clang has these as builtins, guard against that
+#ifndef IBOutlet
 #define IBOutlet
+#endif
+
+#ifndef IBAction
 #define IBAction void
+#endif
 
 @class NSString, NSDictionary;
 

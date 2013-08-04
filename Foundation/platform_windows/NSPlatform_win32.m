@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPipe_win32.h>
 #import <Foundation/NSLock_win32.h>
 #import <Foundation/NSRecursiveLock_win32.h>
+#import <Foundation/NSConditionLock_win32.h>
 #import <Foundation/NSPersistantDomain_win32.h>
 #import <Foundation/NSTimeZone_win32.h>
 #import <Foundation/NSString.h>

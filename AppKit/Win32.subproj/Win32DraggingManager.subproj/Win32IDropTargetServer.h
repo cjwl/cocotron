@@ -21,9 +21,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)invalidate;
 
--(HRESULT)DragEnter:(IDataObject *)pDataObj:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
--(HRESULT)DragOver:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
+-(HRESULT)DragEnter:(IDataObject *)pDataObj :(DWORD)grfKeyState :(POINTL)pt :(DWORD *)pdwEffect;
+-(HRESULT)DragOver:(DWORD)grfKeyState:(POINTL)pt :(DWORD *)pdwEffect;
 -(HRESULT)DragLeave;
--(HRESULT)Drop:(IDataObject *)pDataObj:(DWORD)grfKeyState:(POINTL)pt:(DWORD *)pdwEffect;
+-(HRESULT)Drop:(IDataObject *)pDataObj :(DWORD)grfKeyState:(POINTL)pt :(DWORD *)pdwEffect;
 
 @end

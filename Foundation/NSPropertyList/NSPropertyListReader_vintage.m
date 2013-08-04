@@ -78,7 +78,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
    return nil;
 }
 
--(id)parseError:(int)expect:(int)token info:(NSString *)info {
+-(id)parseError:(int)expect token:(int)token info:(NSString *)info {
    const char *expectStr[]={ "String","=","Object",", or ;","EOF"};
    char tokenStr[2]={token,'\0'};
    int i;
@@ -179,28 +179,28 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
       }
       else if(code=='\"'){
        if(expect!=EXPECT_KEY && expect!=EXPECT_VAL)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        _bufferSize=0;
        state=STATE_STRING;
       }
       else if(code=='<'){
        if(expect!=EXPECT_KEY && expect!=EXPECT_VAL)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        _dataBufferSize=0;
        state=STATE_DATA_HINIBBLE;
       }
       else if(code=='{'){
        if(expect!=EXPECT_VAL)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        pushObject(self,[[NSMutableDictionary allocWithZone:NULL] init]);
        expect=EXPECT_KEY;
       }
       else if(code=='='){
        if(expect!=EXPECT_EQUAL)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
        expect=EXPECT_VAL;
       }
       else if(code==';'){
@@ -208,7 +208,7 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
        NSObject *key,*object;
 
        if(expect!=EXPECT_SEPARATOR)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        object=popObject(self);
        key=popObject(self);
@@ -231,7 +231,7 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
       }
       else if(code=='}'){
        if(expect!=EXPECT_KEY)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        if(![topObject(self) isKindOfClass:_dictionaryClass])
         return [self internalError:_dictionaryClass];
@@ -240,7 +240,7 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
       }
       else if(code=='('){
        if(expect!=EXPECT_VAL)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        pushObject(self,[[NSMutableArray allocWithZone:NULL] init]);
        expect=EXPECT_VAL;
@@ -250,7 +250,7 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
        NSObject       *object;
 
        if(expect!=EXPECT_SEPARATOR)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        object=popObject(self);
 
@@ -269,7 +269,7 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
        NSObject       *object;
 
        if(expect!=EXPECT_VAL && expect!=EXPECT_SEPARATOR)
-        return [self parseError:expect:code info:info];
+        return [self parseError:expect token:code info:info];
 
        if(expect==EXPECT_VAL)
         object=nil;
@@ -290,7 +290,7 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
        expect=(_stackSize==1)?EXPECT_EOF:EXPECT_SEPARATOR;
       }
       else
-       return [self parseError:expect:code info:info];
+       return [self parseError:expect token:code info:info];
       break;
 
      case STATE_COMMENT_SLASH:
@@ -503,17 +503,17 @@ static inline void appendByte(NSPropertyListReader_vintage *self,uint8_t c){
    }
 
    if(state!=STATE_WHITESPACE)
-    return [self parseError:expect:-1 info:info];
+    return [self parseError:expect token:-1 info:info];
 
    switch(expect){
     case EXPECT_EQUAL:
-     return [self parseError:expect:-1 info:info];
+     return [self parseError:expect token:-1 info:info];
 
     case EXPECT_VAL:
-     return [self parseError:expect:-1 info:info];
+     return [self parseError:expect token:-1 info:info];
 
     case EXPECT_SEPARATOR:
-     return [self parseError:expect:-1 info:info];
+     return [self parseError:expect token:-1 info:info];
 
     default:
      break;

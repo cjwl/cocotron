@@ -215,7 +215,7 @@ id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
 #elif defined(APPLE_RUNTIME_4)
     objc_constructInstance(class, result);
 #else
-    result->isa = class;
+    object_setClass(result, class);
 
     if (!object_cxxConstruct(result, result->isa)) {
         NSZoneFree(zone, result);

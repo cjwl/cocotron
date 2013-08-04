@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)encodeWithCoder:(NSCoder *)coder;
 @end
 
-@interface NSObject <NSObject> {
+NS_ROOT_CLASS @interface NSObject <NSObject> {
    Class isa;
 }
 

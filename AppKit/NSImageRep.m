@@ -139,7 +139,7 @@ static NSMutableArray *_registeredClasses=nil;
 			return nil;
 		}
 		
-		if((self==[NSImageRep class])){    
+		if(self==[NSImageRep class]){    
 			class=[self imageRepClassForData:data];
 		}
 		return [class imageRepsWithData:data];
@@ -154,7 +154,7 @@ static NSMutableArray *_registeredClasses=nil;
    if(data==nil)
     return nil;
 
-   if((self==[NSImageRep class])){    
+   if(self==[NSImageRep class]){    
     if((class=[self imageRepClassForData:data])==nil)
      return nil;
    }
@@ -190,7 +190,7 @@ static NSMutableArray *_registeredClasses=nil;
    if(data==nil)
     return nil;
     
-   if((self==[NSImageRep class])){
+   if(self==[NSImageRep class]){
     NSString *type=[path pathExtension];
 
     if((class=[self imageRepClassForFileType:type])==nil)
@@ -207,7 +207,7 @@ static NSMutableArray *_registeredClasses=nil;
    if(data==nil)
     return nil;
 
-   if((self==[NSImageRep class])){    
+   if(self==[NSImageRep class]){    
     if((class=[self imageRepClassForData:data])==nil)
      return nil;
    }

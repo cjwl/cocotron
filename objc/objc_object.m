@@ -16,11 +16,11 @@ Class object_getClass(id object) {
 }
 
 const char *object_getClassName(id object) {
-   return class_getName(object->isa);
+   return class_getName(object_getClass(object));
 }
 
 Ivar object_getInstanceVariable(id object,const char *name,void **ptrToValuep) {
-   Ivar result=class_getInstanceVariable(object->isa,name);
+   Ivar result=class_getInstanceVariable(object_getClass(object),name);
    
    *ptrToValuep=(char *)object+result->ivar_offset;
    
@@ -35,7 +35,7 @@ id object_getIvar(id object,Ivar ivar) {
 }
 
 void *object_getIndexedIvars(id object) {
-   return (char *)object+object->isa->instance_size;
+   return (char *)object+object_getClass(object)->instance_size;
 }
 
 Class object_setClass(id object,Class cls) {
@@ -60,7 +60,7 @@ static void ivarCopy(void *vdst,unsigned offset,void *vsrc,size_t length){
 
 // FIXME: This only works for 'id' ivars
 Ivar object_setInstanceVariable(id object,const char *name,void *value) {
-   Ivar ivar=class_getInstanceVariable(object->isa,name);
+   Ivar ivar=class_getInstanceVariable(object_getClass(object),name);
 
    if(ivar!=NULL)
     ivarCopy(object,ivar->ivar_offset,value,sizeof(id));
