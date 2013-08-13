@@ -125,18 +125,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByAppendingPathExtension:(NSString *)other {
-   NSUInteger selfLength=[self length];
-	if(selfLength && [self characterAtIndex:selfLength-1]==SLASH)
-		selfLength--;
-   NSUInteger otherLength=[other length];
-   NSUInteger totalLength=selfLength+1+otherLength;
-   unichar  characters[totalLength];
-
-   [self getCharacters:characters];
-   characters[selfLength]='.';
-   [other getCharacters:characters+selfLength+1];
-
-   return [NSString stringWithCharacters:characters length:totalLength];
+    if ([other length] > 0) {
+        NSUInteger selfLength=[self length];
+        if(selfLength && [self characterAtIndex:selfLength-1]==SLASH)
+            selfLength--;
+        NSUInteger otherLength=[other length];
+        NSUInteger totalLength=selfLength+1+otherLength;
+        unichar  characters[totalLength];
+        
+        [self getCharacters:characters];
+        characters[selfLength]='.';
+        [other getCharacters:characters+selfLength+1];
+        
+        return [NSString stringWithCharacters:characters length:totalLength];
+    }
+    else {
+        return self;
+    }
 }
 
 -(NSString *)stringByDeletingLastPathComponent {

@@ -62,6 +62,7 @@ typedef enum {
 NSTimeInterval NSMoveIntervalFromTimeZoneToGMT(NSTimeInterval interval, NSTimeZone *timeZone);
 NSTimeInterval NSMoveIntervalFromGMTToTimeZone(NSTimeInterval interval, NSTimeZone *timeZone);
 
+NSInteger NSNumberOfDaysInMonthOfYear(NSInteger month, NSInteger year);
 // interval is not time zone adjusteed
 NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSInteger day, NSInteger hour, NSInteger minute, NSInteger second, NSInteger milliseconds);
 

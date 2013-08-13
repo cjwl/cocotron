@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_win32.h>
 
 #include <windows.h>
+#include <Sddl.h>
 #include <shlobj.h>
 #include <objbase.h>
 
@@ -165,25 +166,47 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return NO;
 	}
 	
-	if([[srcAttributes fileType] isEqual:NSFileTypeRegular] == NO) {
+	if([[srcAttributes fileType] isEqual:NSFileTypeRegular] == NO
+       && [[srcAttributes fileType] isEqual:NSFileTypeDirectory] == NO) {
 		return NO;
 	}
-	
-	NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];
-	
-	if(dstAttributes!=nil){
-		if(error!=NULL){
+    
+    if ([self fileExistsAtPath:toPath] == YES) {
+        if(error!=NULL){
 			NSDictionary *userInfo=[NSDictionary dictionaryWithObject:@"File exists" forKey:NSLocalizedDescriptionKey];
 			
 			*error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
 		}
 		
 		return NO;
-	}
+    }
 	
-	if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES)) {
-		return NO;
-	}
+    if([self _isDirectory:fromPath] == NO){
+        if(!CopyFileW([fromPath fileSystemRepresentationW],[toPath fileSystemRepresentationW],YES)) {
+            if(error!=nil)
+				*error=NSErrorForGetLastError();
+            return NO;
+        }
+    }
+    else {
+        if (_NSCreateDirectory(toPath, error) == NO) {
+            return NO;
+        }
+        else {
+            NSArray     *contents=[self directoryContentsAtPath:fromPath];
+            NSInteger   i,count=[contents count];
+            
+            for(i=0;i<count;i++){
+                NSString *name=[contents objectAtIndex:i];
+                NSString *fullFromPath=[fromPath stringByAppendingPathComponent:name];
+                NSString *fullToPath =[toPath stringByAppendingPathComponent:name];
+                
+                if ([self copyItemAtPath:fullFromPath toPath:fullToPath error:error] == NO) {
+                    return NO;
+                }
+            }
+        }
+    }
 	
 	return YES;
 }
@@ -537,16 +560,67 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return nil;
 	}
 	
+    char		pSecurityDescriptor[128];
+    DWORD		lengthNeeded;
+
 	NSMutableDictionary *result = [NSMutableDictionary dictionary];
 	NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
 	[result setObject:date forKey:NSFileModificationDate];
 	
 	NSString *fileType = NSFileTypeRegular;
 	if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) fileType = NSFileTypeDirectory;
+    
+    if (GetFileSecurityW([path fileSystemRepresentationW], OWNER_SECURITY_INFORMATION, (SECURITY_DESCRIPTOR *)pSecurityDescriptor, 128, &lengthNeeded) != 0) {
+        PSID 			sid = NULL;
+        DWORD			lpbOwnerDefaulted;
+        char 			lpName[128];
+        DWORD			len = 128;
+        SID_NAME_USE	nameUse;
+        char			referencedDomainName[128];
+        DWORD			domainLen = 128;
+        
+        if (GetSecurityDescriptorOwner((SECURITY_DESCRIPTOR *)pSecurityDescriptor, &sid, ((LPBOOL)(&lpbOwnerDefaulted))) != 0) {
+            if (LookupAccountSid(NULL, sid, lpName, &len, referencedDomainName, &domainLen, &nameUse) != 0) {
+                NSString    *owner = [[[NSString alloc] initWithCString:lpName] autorelease];
+                
+                if (referencedDomainName != NULL) {
+                    [result setObject:[NSString stringWithFormat:@"%@\\%@", [[[NSString alloc] initWithCString:referencedDomainName] autorelease], owner] forKey:NSFileOwnerAccountName];
+                }
+                else {
+                    [result setObject:owner forKey:NSFileOwnerAccountName];
+                }
+            } else {
+                DWORD lastError = GetLastError();
+                //1332 means that the sid is not resolvable (an old one/or on a network drive)
+                if (lastError == 1332) {
+                    /*LPWSTR  str = NULL;
+                    if (ConvertSidToStringSidW(sid, &str) == TRUE) {
+                        NSString    *owner = NSStringFromNullTerminatedUnicode(str);
+                        LocalFree(str);
+                        [result setObject:owner forKey:NSFileOwnerAccountName];
+                    }
+                    else {
+                        if (error != nil) {
+                            *error = NSErrorForGetLastErrorCode(lastError);
+                        }
+                        return nil;
+                    }*/
+                }
+                else {
+                    if (error != nil) {
+                        *error = NSErrorForGetLastErrorCode(lastError);
+                    }
+                    return nil;
+                }
+            }
+        }
+    } else {
+        // TODO: set error
+		return nil;
+    }
 	
 	[result setObject:fileType forKey:NSFileType];
-	[result setObject:@"USER" forKey:NSFileOwnerAccountName];
-	[result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
+	[result setObject:@"" forKey:NSFileGroupOwnerAccountName];
 	[result setObject:[NSNumber numberWithUnsignedLong:0666] forKey:NSFilePosixPermissions];
 	
 	uint64_t sizeOfFile = fileData.nFileSizeLow;

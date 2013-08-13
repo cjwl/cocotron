@@ -672,38 +672,38 @@ static inline BOOL isEqualString(NSString *str1,NSString *str2){
 }
 
 // Knuth-Morris-Pratt string search
-
 static inline void computeNext(NSInteger next[],unichar patbuffer[],NSInteger patlength){
-   NSInteger pos=0,i=-1;
-
-   next[0]=-1;
-   while(pos<patlength-1){
-    while(i>-1 && patbuffer[pos]!=patbuffer[i])
-     i=next[i];
-    pos++;
-    i++;
-    if(patbuffer[pos]==patbuffer [i])
-     next[pos]=next[i];
-    else
-     next[pos]=i;
-   }
+    NSInteger i=0,j=-1;
+    
+    next[i]=j;
+    while(i<patlength){
+        while(j>=0 && patbuffer[j]!=patbuffer[i]) {
+            j = next[j];
+        }
+        
+        i++;
+        j++;
+        next[i]=j;
+    }
 }
 
 static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,NSInteger *next,NSUInteger patlength,NSRange range){
-   NSInteger i,pos=0,searchLength=range.location+range.length;
-   NSInteger start=0;
-
-   for(i=range.location;i<searchLength && pos<patlength;i++,pos++){
-    while(pos>-1 && (patbuffer[pos]!=buffer[i]))
-     pos=next[pos];
-
-    if(pos<=0)
-     start=i;
-   }
-
-   if(pos==patlength)
-    return NSMakeRange(start,patlength);
-   else
+    NSInteger i=range.location,j=0;
+    NSInteger end = range.location + range.length;
+    
+    while (i < end) {
+        while (j >= 0 && buffer[i] != patbuffer[j]) {
+            j = next[j];
+        }
+        
+        i++;
+        j++;
+        
+        if (j == patlength) {
+            return NSMakeRange(i - patlength, patlength);
+        }
+    }
+    
     return NSMakeRange(NSNotFound,0);
 }
 
@@ -1443,8 +1443,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return 0;
+   return [[self dataUsingEncoding:encoding] length];
 }
 
 -(NSUInteger)maximumLengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
