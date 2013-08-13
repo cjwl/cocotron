@@ -1114,50 +1114,75 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(double)doubleValue {
-   NSUInteger pos,length=[self length];
-   unichar  unicode[length];
-   double   sign=1,value=0;
-
-   [self getCharacters:unicode];
-
-   for(pos=0;pos<length;pos++)
-    if(unicode[pos]>' ')
-     break;
-
-   if(length==0)
-    return 0.0;
-
-   if(unicode[0]=='-'){
-    sign=-1;
-    pos++;
-   }
-   else if(unicode[0]=='+'){
-    sign=1;
-    pos++;
-   }
-
-   for(;pos<length;pos++){
-    if(unicode[pos]<'0' || unicode[pos]>'9')
-     break;
-
-    value*=10;
-    value+=unicode[pos]-'0';
-   }
-
-   if(pos<length && unicode[pos]=='.'){
-    double multiplier=1;
-
-    pos++;
-    for(;pos<length;pos++){
-     if(unicode[pos]<'0' || unicode[pos]>'9')
-      break;
-
-     multiplier/=10.0;
-     value+=(unicode[pos]-'0')*multiplier;
+    NSUInteger pos,length=[self length];
+    unichar  unicode[length];
+    double   sign=1,value=0;
+    
+    [self getCharacters:unicode];
+    
+    // skip any leading whitespaces
+    for(pos=0;pos<length;pos++)
+        if(unicode[pos]>' ')
+            break;
+    
+    if(length==0)
+        return 0.0;
+    
+    if(unicode[pos]=='-'){
+        sign=-1;
+        pos++;
     }
-   }
-
-   return sign*value;
+    else if(unicode[pos]=='+'){
+        sign=1;
+        pos++;
+    }
+    
+    for(;pos<length;pos++){
+        if(unicode[pos]<'0' || unicode[pos]>'9')
+            break;
+        
+        value*=10;
+        value+=unicode[pos]-'0';
+    }
+    
+    if(pos<length && unicode[pos]=='.'){
+        double multiplier=1;
+        
+        pos++;
+        for(;pos<length;pos++){
+            if(unicode[pos]<'0' || unicode[pos]>'9')
+                break;
+            
+            multiplier/=10.0;
+            value+=(unicode[pos]-'0')*multiplier;
+        }
+    }
+    // Optional exponent part ([eE]{[+-]}nnnn)
+    if (pos<length && (unicode[pos]=='e' || unicode[pos]=='E')) {
+        pos++;
+        
+        double multiplier=1;
+        int exponent = 0;
+        int exponentSign = 1;
+        if (unicode[pos]=='-') {
+            exponentSign=-1;
+            pos++;
+        } else if(unicode[pos]=='+') {
+            exponentSign=1;
+            pos++;
+        }
+        
+        for (;pos<length;pos++){
+            if(unicode[pos]<'0' || unicode[pos]>'9') {
+                break;
+            }
+            exponent *= 10;
+            exponent += (unicode[pos]-'0');
+        }
+        value *= pow(10., exponent*exponentSign);
+    }
+    
+    return sign*value;
 }
 
 -(NSString *)lowercaseString {
