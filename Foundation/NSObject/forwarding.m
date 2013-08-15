@@ -142,6 +142,9 @@ id objc_msgForward(id object, SEL message, ...)
             return nil;
         }
     }
+    else {
+        return nil;
+    }
 }
 
 
