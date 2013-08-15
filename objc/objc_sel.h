@@ -10,4 +10,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc-class.h>
 
 OBJC_EXPORT SEL sel_registerNameNoCopy(const char *name);
+BOOL sel_isMapped(SEL selector);
 

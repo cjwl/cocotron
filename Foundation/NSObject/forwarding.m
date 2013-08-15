@@ -121,25 +121,26 @@ id objc_msgForward(id object, SEL message, ...)
     IMP imp = method->method_imp;
 #endif
     frameLength = imp(object, @selector(_frameLengthForSelector:), message);
-    frame = __builtin_alloca(frameLength);
+    if (frameLength > 0) { // Object (Protocol) returns 0 frameLength
+        frame = __builtin_alloca(frameLength);
+        va_start(arguments, message);
+        frame[0] = object;
+        frame[1] = message;
+        for (i = 2; i < frameLength / sizeof(unsigned); i++) {
+            frame[i] = va_arg(arguments, unsigned);
+        }
 
-    va_start(arguments, message);
-    frame[0] = object;
-    frame[1] = message;
-    for (i = 2; i < frameLength / sizeof(unsigned); i++) {
-        frame[i] = va_arg(arguments, unsigned);
-    }
-
-    if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
+        if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
 #if defined(GCC_RUNTIME_3) || defined(APPLE_RUNTIME_4)
-        imp = method_getImplementation(method);
+            imp = method_getImplementation(method);
 #else
-        imp = method->method_imp;
+            imp = method->method_imp;
 #endif
-        return imp(object, @selector(forwardSelector:arguments:), message, frame);
-    } else {
-        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
-        return nil;
+            return imp(object, @selector(forwardSelector:arguments:), message, frame);
+        } else {
+            OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
+            return nil;
+        }
     }
 }
 

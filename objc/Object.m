@@ -19,5 +19,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(unsigned int)_frameLengthForSelector:(SEL)selector {
+    return 0;
+}
+
 @end
 
