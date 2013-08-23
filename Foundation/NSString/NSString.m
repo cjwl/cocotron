@@ -1308,37 +1308,45 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSArray *)componentsSeparatedByString:(NSString *)pattern {
-   NSMutableArray *result=[NSMutableArray array];
-   NSUInteger        length=[self length];
-   unichar        *buffer;
-   NSUInteger        patlength=[pattern length];
-   unichar         patbuffer[patlength+1];
-   NSInteger             next[patlength+1];
-   NSRange         search=NSMakeRange(0,length),where;
-
-   buffer=NSZoneMalloc(NULL,sizeof(unichar)*length);
-   [self getCharacters:buffer];
-   [pattern getCharacters:patbuffer];
-
-   computeNext(next,patbuffer,patlength);
-
-   do {
-    where=rangeOfPatternNext(buffer,patbuffer,next,patlength,search);
-
-    if(where.length>0){
-     NSString *piece=[self substringWithRange:NSMakeRange(search.location,where.location-search.location)];
-
-     [result addObject:piece];
-     search.location=where.location+where.length;
-     search.length=length-search.location;
+    NSMutableArray *result=[NSMutableArray array];
+    NSUInteger        length=[self length];
+    unichar        *buffer;
+    unichar        *patbuffer;
+    NSUInteger        patlength=[pattern length];
+    NSInteger             next[patlength+1];
+    NSRange         search=NSMakeRange(0,length),where;
+    
+    if (length == 0) {
+        [result addObject:self];
+        return result;
     }
-   }while(where.length>0);
-
-   NSZoneFree(NULL,buffer);
-
-   [result addObject:[self substringWithRange:search]];
-
-   return result;
+    
+    buffer=NSZoneMalloc(NULL,sizeof(unichar)*length);
+    patbuffer=NSZoneMalloc(NULL,sizeof(unichar)*patlength+1);
+    
+    [self getCharacters:buffer];
+    [pattern getCharacters:patbuffer];
+    
+    computeNext(next,patbuffer,patlength);
+    
+    do {
+        where=rangeOfPatternNext(buffer,patbuffer,next,patlength,search);
+        
+        if(where.length>0){
+            NSString *piece=[self substringWithRange:NSMakeRange(search.location,where.location-search.location)];
+            
+            [result addObject:piece];
+            search.location=where.location+where.length;
+            search.length=length-search.location;
+        }
+    }while(where.length>0);
+    
+    NSZoneFree(NULL,buffer);
+    NSZoneFree(NULL,patbuffer);
+    
+    [result addObject:[self substringWithRange:search]];
+    
+    return result;
 }
 
 - (NSArray *) componentsSeparatedByCharactersInSet:(NSCharacterSet *)set
@@ -1807,24 +1815,26 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSUInteger)cStringLength {
-   NSUInteger length=[self length];
-   unichar  unicode[length];
-
-   NSUInteger cStringLength;
-   char    *cString;
-
-   [self getCharacters:unicode];
-
-   cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
-
+    NSUInteger length=[self length];
+    unichar  *unicode = NSZoneMalloc(NULL,length*sizeof(unichar));
+    
+    NSUInteger cStringLength;
+    char    *cString;
+    
+    [self getCharacters:unicode];
+    
+    cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
+    
+    NSZoneFree(NULL, unicode);
+    
     if (cString) {
         NSZoneFree(NULL,cString);
     }
     else {
         [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
     }
-
-   return cStringLength;
+    
+    return cStringLength;
 }
 
 -(const char *)cString {
