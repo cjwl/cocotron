@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSAttributedString.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSGraphicsContext.h>
 
 NSString * const NSToolbarCustomizeToolbarItemIdentifier=@"NSToolbarCustomizeToolbarItem";
 NSString * const NSToolbarFlexibleSpaceItemIdentifier=@"NSToolbarFlexibleSpaceItem";
@@ -367,9 +368,10 @@ extern NSSize _NSToolbarIconSizeSmall;
 }
 
 -(void)setEnabled:(BOOL)enabled {
-   _isEnabled=YES;
+   _isEnabled=enabled;
    if([_view respondsToSelector:@selector(setEnabled:)])
     [(id)_view setEnabled:enabled];
+    [self _didChange];
 }
 
 -(void)setToolTip:(NSString *)tip {
@@ -380,14 +382,21 @@ extern NSSize _NSToolbarIconSizeSmall;
 
 -(void)validate
 {
-	if ([[self target] respondsToSelector: @selector(validateToolbarItem:)]) {
-		BOOL valid =  [[self target] validateToolbarItem: [self action]];
-		[self setEnabled: valid];
-	} else if ([[self target] respondsToSelector:[self action]]) {
-		[self setEnabled:YES];
-	} else {
-		[self setEnabled:NO];
-	}
+    BOOL enabled = NO;
+    id target=[NSApp targetForAction:[self action] to:[self target] from:nil];
+    
+    if ((target == nil) || ![target respondsToSelector:[self action]]) {
+        enabled = NO;
+    } else if ([target respondsToSelector:@selector(validateToolbarItem:)]) {
+        enabled = [target validateToolbarItem:self];
+    } else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)]) { // New validation scheme
+        enabled = [target validateUserInterfaceItem:self];
+    } else {
+        enabled = YES;
+    }
+    if (enabled != [self isEnabled]) {
+        [self setEnabled:enabled];
+    }
 }
 
 -(NSSize)_labelSize {
@@ -527,12 +536,22 @@ extern NSSize _NSToolbarIconSizeSmall;
      else
       imageRect.size=_NSToolbarIconSizeRegular;
           
-     imageRect.origin.y=bounds.origin.y+labelHeight;
-     imageRect.origin.x=bounds.origin.x+floor((bounds.size.width-imageRect.size.width)/2);
-     [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:highlighted?0.5:1.0];
-    }        
+        imageRect.origin.y=bounds.origin.y+labelHeight;
+        imageRect.origin.x=bounds.origin.x+floor((bounds.size.width-imageRect.size.width)/2);
+        CGContextRef ctx = NULL;
+        if ([self isEnabled] == NO) {
+            ctx = [[NSGraphicsContext currentContext] graphicsPort];
+            CGContextClipToRect(ctx, imageRect);
+            CGContextBeginTransparencyLayer(ctx, NULL);
+        }
+        [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:highlighted?0.5:1.0];
+        if ([self isEnabled] == NO) {
+            [[NSColor colorWithCalibratedWhite:0.0 alpha:0.33] set];
+            NSRectFillUsingOperation(imageRect, NSCompositeSourceAtop);
+        }
+        CGContextEndTransparencyLayer(ctx);
+    }
    }
-    
 }
 
 -(NSString *)description {

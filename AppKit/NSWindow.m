@@ -2090,6 +2090,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)sendEvent:(NSEvent *)event {
+    
     if (_sheetContext != nil) {
         NSView *view = [_backgroundView hitTest:[event locationInWindow]];
 
@@ -2123,6 +2124,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         }
     }
 
+    BOOL shouldValidateToolbarItems = YES;
 	// OK let's see if anyone else wants it
    switch([event type]){
 
@@ -2203,9 +2205,15 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      break;
 
     default:
+    shouldValidateToolbarItems = NO;
      NSUnimplementedMethod();
      break;
    }
+    if (shouldValidateToolbarItems && [self toolbar]) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:[self toolbar] selector:@selector(validateVisibleItems) object:nil];
+        [[self toolbar] performSelector:@selector(validateVisibleItems) withObject:nil afterDelay:.5];
+
+    }
 }
 
 -(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart {
@@ -2294,6 +2302,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)update {
+    [[self toolbar] validateVisibleItems];
    [[NSNotificationCenter defaultCenter]
        postNotificationName:NSWindowDidUpdateNotification
                      object:self];
