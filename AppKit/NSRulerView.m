@@ -500,18 +500,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else
         rect.size.height = 1;
     
-    float scale = [self _drawingScale];
-    float origin = [self originOffset];
-    
     [[NSColor controlShadowColor] setStroke];
     for (i = 0; i < count; ++i) {
         if (_orientation == NSHorizontalRuler) {
-            rect.origin.x = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale + 0.5;
+            rect.origin.x = [[_rulerlineLocations objectAtIndex:i] floatValue] + 0.5;
             [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMinX(rect), NSMinY(rect))
                                       toPoint: NSMakePoint(NSMinX(rect), NSMaxY(rect))];
         }
         else {
-            rect.origin.y = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale + 0.5;
+            rect.origin.y = [[_rulerlineLocations objectAtIndex:i] floatValue] + 0.5;
             [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMinX(rect), NSMinY(rect))
                                       toPoint: NSMakePoint(NSMaxX(rect), NSMinY(rect))];
         }
