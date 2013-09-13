@@ -181,7 +181,7 @@ static int untitled_document_number = 0;
 }
 
 -(NSPrintInfo *)printInfo {
-   return _printInfo;
+    return _printInfo?_printInfo:[NSPrintInfo sharedPrintInfo];
 }
 
 -(NSString *)fileType {
