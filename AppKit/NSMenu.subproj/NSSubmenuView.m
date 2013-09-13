@@ -182,9 +182,9 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 #define CENTER_PART_RECT_VERTICALLY(partSize)                          \
 {                                                                      \
 	NSSize __partSize = (partSize);                                    \
-	partRect.origin.y = origin.y + (itemHeight - partSize.height) / 2; \
-	partRect.size.height = partSize.height;                            \
-	partRect.size.width = partSize.width;                              \
+	partRect.origin.y = origin.y + (itemHeight - __partSize.height) / 2; \
+	partRect.size.height = __partSize.height;                            \
+	partRect.size.width = __partSize.width;                              \
 }
 			NSImage      *image = [item image];
 			BOOL         selected = (i ==_selectedItemIndex) ? YES : NO;

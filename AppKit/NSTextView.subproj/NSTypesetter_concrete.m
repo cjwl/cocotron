@@ -88,7 +88,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 	}
 	if (_scanRect.size.height < wantedHeight) {
 		// Too small for our text
-		_scanRect = NSZeroRect;		
+		_scanRect = NSZeroRect;
 	}
 	if (!NSEqualRects(_scanRect, NSZeroRect)) {
 		// Add left/right padding

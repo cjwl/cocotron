@@ -134,8 +134,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         _isFieldEditor=NO;
         _maxSize=[self bounds].size;
         _minSize=NSMakeSize(0,0);
-        _isHorizontallyResizable=NO;
-        _isVerticallyResizable=YES;
+
+        _isHorizontallyResizable = ((flags & 0x01) != 0);
+        _isVerticallyResizable = ((flags & 0x02) != 0);
+
         _selectedRanges=[[NSMutableArray alloc] init];
         [_selectedRanges addObject:[NSValue valueWithRange:NSMakeRange(0,0)]];
         
@@ -2370,14 +2372,14 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 // This should be done in NSTextContainer with notifications
 -(void)_configureTextContainerSize {
-    NSSize containerSize=[[self textContainer] containerSize];
-    
+    NSSize containerSize= [[self textContainer] containerSize];
+
     if([self isHorizontallyResizable] == NO)
         containerSize.width=[self bounds].size.width-_textContainerInset.width*2;
-    
+
     if([self isVerticallyResizable] == NO)
         containerSize.height=[self bounds].size.height-_textContainerInset.height*2;
-    
+
     [[self textContainer] setContainerSize:containerSize];
 }
 

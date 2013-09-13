@@ -278,9 +278,9 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 #define CENTER_PART_RECT_VERTICALLY(partSize)                          \
 {                                                                      \
 NSSize __partSize = (partSize);                                    \
-partRect.origin.y = origin.y + (itemHeight - partSize.height) / 2; \
-partRect.size.height = partSize.height;                            \
-partRect.size.width = partSize.width;                              \
+partRect.origin.y = origin.y + (itemHeight - __partSize.height) / 2; \
+partRect.size.height = __partSize.height;                            \
+partRect.size.width = __partSize.width;                              \
 }
 			NSImage      *image = [item image];
 			BOOL         selected = (i ==_selectedIndex) ? YES : NO;
@@ -332,7 +332,7 @@ partRect.size.width = partSize.width;                              \
             
 			NSAttributedString     *atitle = [item attributedTitle];
 			if (atitle != nil && [atitle length] > 0) {
-				CENTER_PART_RECT_VERTICALLY([atitle size]);
+				CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemAttributedTextSize:atitle]);
 #if WINDOWS
                 // On Windows, when using the AGG graphics context, enabling font smoothing switches to using AGG for text drawing,
                 // instead of the native Win32 API.
@@ -359,7 +359,7 @@ partRect.size.width = partSize.width;                              \
                 if (useCustomFont) {
                     NSDictionary *attributes = [self itemAttributes];
                     NSAttributedString *attributedTitle = [[[NSAttributedString alloc] initWithString:title attributes:attributes] autorelease];
-                    CENTER_PART_RECT_VERTICALLY([attributedTitle size]);
+                    CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemAttributedTextSize:attributedTitle]);
                     [[self graphicsStyle] drawAttributedMenuItemText:attributedTitle inRect:partRect enabled:showsEnabled selected:selected];
                 } else {
                     CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:title]);
@@ -679,7 +679,7 @@ partRect.size.width = partSize.width;                              \
 	BOOL found = NO;
 	while (!found && newIndex != oldIndex) {
 		// Make sure we stop eventually
-		if (oldIndex == NSNotFound) {
+		if (oldIndex == NSNotFound || oldIndex == -1) {
 			oldIndex = 0;
 		}
 		// Try and find a new item to select
