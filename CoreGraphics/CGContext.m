@@ -107,6 +107,11 @@ void CGContextReplacePathWithStrokedPath(CGContextRef context) {
    O2ContextReplacePathWithStrokedPath(context);
 }
 
+CGPathRef CGContextCopyPath(CGContextRef context)
+{
+    return O2ContextCopyPath(context);
+}
+
 void CGContextSaveGState(CGContextRef context){
    O2ContextSaveGState(context);
 }

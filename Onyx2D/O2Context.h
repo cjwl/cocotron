@@ -222,6 +222,7 @@ void O2ContextAddEllipseInRect(O2ContextRef self,O2Rect rect);
 
 void O2ContextAddPath(O2ContextRef self,O2PathRef path);
 
+O2Path* O2ContextCopyPath(O2ContextRef self);
 void O2ContextReplacePathWithStrokedPath(O2ContextRef self);
 
 // gstate

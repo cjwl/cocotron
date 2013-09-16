@@ -512,6 +512,13 @@ void O2ContextReplacePathWithStrokedPath(O2ContextRef self) {
 	[self replacePathWithStrokedPath];
 }
 
+O2Path* O2ContextCopyPath(O2ContextRef self) {
+    if(self==nil)
+        return nil;
+    
+    return [self->_path copy];
+}
+
 // gstate
 
 void O2ContextSaveGState(O2ContextRef self) {

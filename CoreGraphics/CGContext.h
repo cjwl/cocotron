@@ -123,6 +123,7 @@ COREGRAPHICS_EXPORT void CGContextAddEllipseInRect(CGContextRef context,CGRect r
 COREGRAPHICS_EXPORT void CGContextAddPath(CGContextRef context,CGPathRef path);
 
 COREGRAPHICS_EXPORT void CGContextReplacePathWithStrokedPath(CGContextRef context);
+COREGRAPHICS_EXPORT CGPathRef CGContextCopyPath(CGContextRef context);
 
 // gstate
 
