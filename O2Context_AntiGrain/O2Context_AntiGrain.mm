@@ -943,7 +943,7 @@ template <class StrokeType> void O2AGGStrokeToO2Path(O2Context_AntiGrain *self, 
 	int type;
 	O2ContextBeginPath(self);
 	while ((type = stroke.vertex(&x,&y)) != agg::path_cmd_stop) {
-		switch (type) {
+		switch (type & agg::path_cmd_mask) {
 			case agg::path_cmd_move_to: {
 				O2ContextMoveToPoint(self, x, y);
 			}
@@ -968,12 +968,14 @@ template <class StrokeType> void O2AGGStrokeToO2Path(O2Context_AntiGrain *self, 
 				double to_x, to_y;
 				stroke.vertex(&to_x,&to_y);
 				O2ContextAddCurveToPoint(self, x, y, ctrl2_x, ctrl2_y, to_x, to_y);
-				
-			}
+            }
 				break;
 			case agg::path_cmd_end_poly: {
-				O2ContextClosePath(self);
+                if (type & agg::path_flags_close) {
+                    O2ContextClosePath(self);
+                }
 			}
+                break;
 				
 			default:
 				break;
