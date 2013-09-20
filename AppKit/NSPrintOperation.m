@@ -286,19 +286,28 @@ static NSPrintOperation *_currentOperation=nil;
    BOOL               knowsPageRange;
    NSGraphicsContext *graphicsContext;
    CGContextRef      context;
-   
+    NSMutableDictionary *dict = [_printInfo dictionary];
+    
    _currentOperation=self;
    
+    // Set the page range if not set yet
    knowsPageRange=[_view knowsPageRange:&pageRange];
 
-   if(knowsPageRange){
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:pageRange.location] forKey:NSPrintFirstPage];
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:NSMaxRange(pageRange)-1] forKey:NSPrintLastPage];
-   }
-   else {
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintFirstPage];
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintLastPage];
-   }
+    if(knowsPageRange){
+        if ([dict objectForKey:NSPrintFirstPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:pageRange.location] forKey:NSPrintFirstPage];
+        }
+        if ([dict objectForKey:NSPrintLastPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:NSMaxRange(pageRange)-1] forKey:NSPrintLastPage];
+        }
+    } else {
+        if ([dict objectForKey:NSPrintFirstPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:1] forKey:NSPrintFirstPage];
+        }
+        if ([dict objectForKey:NSPrintLastPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:1] forKey:NSPrintLastPage];
+        }
+    }
    
    graphicsContext=[self createContext];
 	if (graphicsContext == nil) {
@@ -307,8 +316,8 @@ static NSPrintOperation *_currentOperation=nil;
 	}
 	
 	if (knowsPageRange) {
-		int firstPage = [[[_printInfo dictionary] objectForKey:NSPrintFirstPage] intValue];
-		int lastPage = [[[_printInfo dictionary] objectForKey:NSPrintLastPage] intValue];
+		int firstPage = [[dict objectForKey:NSPrintFirstPage] intValue];
+		int lastPage = [[dict objectForKey:NSPrintLastPage] intValue];
 		pageRange.location = firstPage;
 		pageRange.length = lastPage - firstPage + 1;
 	}
