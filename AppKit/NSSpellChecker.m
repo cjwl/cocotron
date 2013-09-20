@@ -155,7 +155,7 @@ static NSSpellChecker *shared=nil;
 		
         NSView *view=[vc view];
 		NSRect frame = [view frame];
-        _spellingPanel=[[NSPanel alloc] initWithContentRect: frame styleMask:NSUtilityWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:YES];
+        _spellingPanel=[[NSPanel alloc] initWithContentRect: frame styleMask:NSUtilityWindowMask | NSResizableWindowMask | NSClosableWindowMask backing:NSBackingStoreBuffered defer:YES];
 		
 		[_spellingPanel setTitle: NSLocalizedStringFromTableInBundle(@"Spelling", nil, [NSBundle bundleForClass: [NSSpellChecker class]], @"The title of the spelling dialog")];
 		[view setFrameOrigin: NSMakePoint(0, 10)];
