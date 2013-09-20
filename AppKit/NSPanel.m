@@ -82,6 +82,32 @@ int NSRunAlertPanel(NSString *title, NSString *format, NSString *defaultButton, 
    return result;
 }
 
+int NSRunInformationalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...) {
+
+    // FIXME: should have a different icon
+	va_list          arguments;
+	NSString        *message;
+    
+	va_start(arguments,otherButton);
+	
+	message=[[[NSString alloc] initWithFormat:msgFormat arguments:arguments] autorelease];
+    
+    return NSRunAlertPanel(title, msgFormat, defaultButton, alternateButton, otherButton);
+}
+
+int NSRunCriticalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...) {
+    
+    // FIXME: should have a different icon
+    va_list          arguments;
+    NSString        *message;
+
+    va_start(arguments,otherButton);
+
+    message=[[[NSString alloc] initWithFormat:msgFormat arguments:arguments] autorelease];
+
+    return NSRunAlertPanel(title, msgFormat, defaultButton, alternateButton, otherButton);
+}
+
 void NSBeginAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *window, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *format,...) {
    va_list          arguments;
    NSString        *message;
