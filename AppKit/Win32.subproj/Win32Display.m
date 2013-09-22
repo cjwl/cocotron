@@ -182,10 +182,10 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 	NSRect frame = CGRectFromRECT( info.rcMonitor );
 	NSRect visibleFrame = CGRectFromRECT( info.rcWork );
 
-	CGFloat bottom = GetSystemMetrics( SM_YVIRTUALSCREEN ) + GetSystemMetrics( SM_CYVIRTUALSCREEN );
-	frame.origin.y = bottom - (frame.origin.y + frame.size.height);
-	visibleFrame.origin.y = bottom - (visibleFrame.origin.y + visibleFrame.size.height);
-
+    // According to http://msdn.microsoft.com/en-us/library/windows/desktop/dd145066(v=vs.85).aspx
+    // the rcMonitor and rcWork rects are already in virtual screen coords so there should be
+    // no need for any further massaging.
+    
 	NSScreen *screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:visibleFrame] autorelease];
 
    if (info.dwFlags & MONITORINFOF_PRIMARY) [array insertObject:screen atIndex:0];
