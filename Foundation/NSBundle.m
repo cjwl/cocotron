@@ -711,9 +711,8 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(NSArray *)lookInDirectories {
-   if (_lookInDirectories == nil)
-   {
 
+    if (_lookInDirectories == nil) {
        // Check if there's an override on the language preference.
        NSString *language = nil;
        
@@ -724,16 +723,24 @@ static NSMapTable *pathToObject=NULL;
            language = [[NSUserDefaults standardUserDefaults] objectForKey: @"PreferredLanguage"];
        }
      
-       // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
        if (language == nil || [language isEqualToString: @""]) {
+           // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
            language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
        }
+        NSArray *lookInDirectories = nil;
       if ([language isEqualToString:@"English"])
-         _lookInDirectories = [[NSArray arrayWithObjects:@"English.lproj", @"en.lproj", @"", nil] retain];
+         lookInDirectories = [NSArray arrayWithObjects:@"English.lproj", @"en.lproj", @"", nil];
       else
-         _lookInDirectories = [[NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"en.lproj", @"", nil] retain];
-   }
-   return _lookInDirectories;
+         lookInDirectories = [NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"en.lproj", @"", nil];
+
+        if ([NSUserDefaults standardUserDefaultsAvailable] == YES) {
+            // Now it's safe to cache
+            _lookInDirectories = [lookInDirectories retain];
+        }
+        return lookInDirectories;
+    } else {
+        return _lookInDirectories;
+    }
 }
 
 -(NSString *)pathForResourceFile:(NSString *)file inDirectory:(NSString *)directory {
