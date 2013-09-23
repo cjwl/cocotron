@@ -130,8 +130,9 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
    return nil;
 }
 
+static NSUserDefaults* stdUserDefaults = nil;
+
 +(NSUserDefaults *)standardUserDefaults {
-	static NSUserDefaults* stdUserDefaults = nil;
 	@synchronized(self) {
 		if (nil == stdUserDefaults) {
 			stdUserDefaults = [[NSUserDefaults alloc] init];
@@ -142,6 +143,11 @@ NSString * const NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNo
 
 +(void)resetStandardUserDefaults {
    NSUnimplementedMethod();
+}
+
++ (BOOL)standardUserDefaultsAvailable
+{
+    return stdUserDefaults != nil;
 }
 
 -(void)addSuiteNamed:(NSString *)name {

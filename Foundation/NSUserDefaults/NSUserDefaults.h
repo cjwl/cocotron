@@ -39,6 +39,9 @@ FOUNDATION_EXPORT NSString * const NSUserDefaultsDidChangeNotification;
 +(NSUserDefaults *)standardUserDefaults;
 +(void)resetStandardUserDefaults;
 
+/** returns YES if the standardUserDefaults */
++ (BOOL)standardUserDefaultsAvailable;
+
 -(void)addSuiteNamed:(NSString *)name;
 -(void)removeSuiteNamed:(NSString *)name;
 

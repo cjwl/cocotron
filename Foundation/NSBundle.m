@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/NSUserDefaults.h>
 #import <objc/runtime.h>
 #import <Foundation/NSRaiseException.h>
 
@@ -712,9 +713,21 @@ static NSMapTable *pathToObject=NULL;
 -(NSArray *)lookInDirectories {
    if (_lookInDirectories == nil)
    {
-    // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
 
-      NSString *language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+       // Check if there's an override on the language preference.
+       NSString *language = nil;
+       
+       // NSUserDefaults uses the NSBundle system during initialization so to avoid
+       // a recursion of doom we'll only check the preferred language once the defaults
+       // are available.
+       if ([NSUserDefaults standardUserDefaultsAvailable]) {
+           language = [[NSUserDefaults standardUserDefaults] objectForKey: @"PreferredLanguage"];
+       }
+     
+       // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
+       if (language == nil || [language isEqualToString: @""]) {
+           language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+       }
       if ([language isEqualToString:@"English"])
          _lookInDirectories = [[NSArray arrayWithObjects:@"English.lproj", @"en.lproj", @"", nil] retain];
       else
