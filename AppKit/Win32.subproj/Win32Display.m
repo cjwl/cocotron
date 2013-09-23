@@ -41,6 +41,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontTypeface.h>
 #import <AppKit/NSFontMetric.h>
 
+#ifndef WM_MOUSEHWHEEL
+#define WM_MOUSEHWHEEL                  0x020E
+#endif
+
 @implementation NSDisplay(windows)
 
 +allocWithZone:(NSZone *)zone {
@@ -994,13 +998,20 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postScrollWheelMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
    NSEvent *event;
-   float deltaY=((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
+    
+    float deltaX=0;
+    float deltaY=0;
+    if(msg.message==WM_MOUSEWHEEL) {
+        deltaY = ((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
+        deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
+    } else if(msg.message==WM_MOUSEHWHEEL) {
+        deltaX = ((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
+        deltaX /= 120.f; // deltaX comes in units of 120 (for fractional rotations - when all you have is an int..)
+    }
 
-   deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
-
-   event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaY:deltaY];
-   [self postEvent:event atStart:NO];
-   return YES;
+    event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:0 deltaX:deltaX deltaY:deltaY];
+    [self postEvent:event atStart:NO];
+    return YES;
 }
 
 -(unsigned)currentModifierFlagsWithKeyboardState:(BYTE *)keyboardState {
@@ -1114,7 +1125,7 @@ static HWND findWindowForScrollWheel(POINT point){
    deviceLocation.x=GET_X_LPARAM(msg.lParam);
    deviceLocation.y=GET_Y_LPARAM(msg.lParam);
 
-   if(msg.message==WM_MOUSEWHEEL) {
+  if(msg.message==WM_MOUSEWHEEL || msg.message==WM_MOUSEHWHEEL) {
 // Scroll wheel events go to the window under the mouse regardless of key. Win32 set hwnd to the active window
 // So we look for the window under the mouse and use that for the event.
     POINT pt={GET_X_LPARAM(msg.lParam),GET_Y_LPARAM(msg.lParam)};
@@ -1219,6 +1230,7 @@ static HWND findWindowForScrollWheel(POINT point){
       break;
 
      case WM_MOUSEWHEEL:
+     case WM_MOUSEHWHEEL:
       type=NSScrollWheel;
       break;
 
@@ -1249,7 +1261,7 @@ static HWND findWindowForScrollWheel(POINT point){
 
     BOOL childWindow=NO;
     
-    if(msg.message==WM_MOUSEWHEEL){
+    if(msg.message==WM_MOUSEWHEEL || msg.message==WM_MOUSEHWHEEL) {
             // WM_MOUSEWHEEL coordinates are on screen coordinates, others are in window
             RECT frame={0};
             

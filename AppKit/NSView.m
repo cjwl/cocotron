@@ -2263,13 +2263,18 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
         NSRect visible=[documentView visibleRect];
         float  direction=[documentView isFlipped]?-1:1;
         
+        visible.origin.x+=[event deltaX]*[scrollView horizontalLineScroll]*3;
         visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
         
         // Something equivalent to this should be in scrollRectToVisible:
         if(visible.origin.y<bounds.origin.y)
             visible.origin.y=bounds.origin.y;
+        if(visible.origin.x<bounds.origin.x)
+            visible.origin.x=bounds.origin.x;
         if(NSMaxY(visible)>NSMaxY(bounds))
             visible.origin.y=NSMaxY(bounds)-visible.size.height;
+        if(NSMaxX(visible)>NSMaxX(bounds))
+            visible.origin.x=NSMaxX(bounds)-visible.size.width;
         
         [documentView scrollRectToVisible:visible];
     }
