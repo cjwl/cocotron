@@ -22,13 +22,13 @@ IMP objc_msg_lookup(id object,SEL selector) {
     return (IMP)nil_message;
    else {
     OBJCMethodCache      *cache=object->isa->cache;
-    uintptr_t              index=(uintptr_t)selector&OBJCMethodCacheMask;
+    uintptr_t              index=(uintptr_t)sel_getSelector(selector)&OBJCMethodCacheMask;
     OBJCMethodCacheEntry *checkEntry=((void *)cache->table)+index; 
 
     do{
      struct objc_method *check=checkEntry->method;
-     
-     if(((SEL)check->method_name)==selector)
+        
+     if(((SEL)check->method_name)==sel_getSelector(selector))
       return check->method_imp;
 
      checkEntry=((void *)checkEntry)+checkEntry->offsetToNextEntry;
@@ -39,13 +39,13 @@ IMP objc_msg_lookup(id object,SEL selector) {
 }
 
 IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
-    uintptr_t              index=(uintptr_t)selector&OBJCMethodCacheMask;
+    uintptr_t              index=(uintptr_t)sel_getSelector(selector)&OBJCMethodCacheMask;
     OBJCMethodCacheEntry *checkEntry=((void *)super->super_class->cache->table)+index; 
 
    do{
      struct objc_method *check=checkEntry->method;
      
-     if(((SEL)check->method_name)==selector)
+     if(((SEL)check->method_name)==sel_getSelector(selector))
       return check->method_imp;
 
      checkEntry=((void *)checkEntry)+checkEntry->offsetToNextEntry;

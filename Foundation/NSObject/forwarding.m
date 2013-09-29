@@ -108,7 +108,7 @@ id objc_msgForward(id object, SEL message, ...)
     unsigned *frame;
 
     if ((method = class_getInstanceMethod(class, @selector(_frameLengthForSelector:))) == NULL) {
-        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
+        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class_getName(class) , sel_getName(message), message);
         return nil;
     }
     IMP imp = method_getImplementation(method);
@@ -127,7 +127,7 @@ id objc_msgForward(id object, SEL message, ...)
 
         return imp(object, @selector(forwardSelector:arguments:), message, frame);
     } else {
-        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
+        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class_getName(class), sel_getName(message), message);
         return nil;
     }
 }
@@ -150,7 +150,7 @@ id objc_msgForward(id object, SEL message, ...)
 
         return imp(object, @selector(forwardSelector:arguments:), message, arguments);
     } else {
-        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class->name, sel_getName(message), message);
+        OBJCRaiseException("OBJCDoesNotRecognizeSelector", "%c[%s %s(%d)]", class_isMetaClass(class) ? '+' : '-', class_getName(class), sel_getName(message), message);
         return nil;
     }
 }

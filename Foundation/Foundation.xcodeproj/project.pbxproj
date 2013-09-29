@@ -7,22 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D55206A1583DDFC0014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D55206B1583DE2F0014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D55206C1583DE300014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D55206D1583DE310014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D55206E1583DE420014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D55206F1583DE430014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D5520701583DE430014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D5520711583DE440014D586 /* NSSocketPort_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */; };
-		0D94DD62153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD63153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD64153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD65153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD66153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD67153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD68153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0D94DD69153E859F0048B351 /* NSSocketPort_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0DE1C159151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		0DE1C15A151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */; };
 		0DE1C15B151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */; };
@@ -708,24 +692,13 @@
 		15D921B9105E918000171406 /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
 		15D921BA105E918000171406 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
 		1A27BFF21090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFF31090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27BFF41090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFF51090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27BFF61090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFF71090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27BFF81090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFF91090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27BFFA1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFFB1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27BFFC1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFFD1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27BFFE1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27BFFF1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A27C0001090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27C0011090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1A27C0031090CC0500C44FD7 /* NSNumber_double_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */; };
-		1A27C0041090CC0500C44FD7 /* NSNumber_double_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */; };
-		1A27C0051090CC0500C44FD7 /* NSNumber_double_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */; };
 		1A27C0611090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0601090D1BE00C44FD7 /* NSNumber_BOOL_const.m */; };
 		1A27C0621090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0601090D1BE00C44FD7 /* NSNumber_BOOL_const.m */; };
 		1A27C0631090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A27C0601090D1BE00C44FD7 /* NSNumber_BOOL_const.m */; };
@@ -3258,7 +3231,6 @@
 		FE30A18B10C6ED6F00A1BF7F /* NSNumber_double_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ACAB27C108C5B010057A542 /* NSNumber_double_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A18C10C6ED6F00A1BF7F /* NSConstObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A28B5B2109096950019EFC6 /* NSConstObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A18D10C6ED6F00A1BF7F /* NSNumber_BOOL_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE30A18E10C6ED6F00A1BF7F /* NSNumber_double_const_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A18F10C6ED6F00A1BF7F /* NSCFTypeID.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A8A694E1091EF0200DC5A01 /* NSCFTypeID.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE30A19110C6ED6F00A1BF7F /* NSArray_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280312097478CC00EC542B /* NSArray_concrete.m */; };
 		FE30A19210C6ED6F00A1BF7F /* NSArray_placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E280314097478CC00EC542B /* NSArray_placeholder.m */; };
@@ -6420,114 +6392,12 @@
 		FEFAA54A1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
 		FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFAA54C1429098A00CEE177 /* NSScriptWhoseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */; };
+		FEFDFBF4174F283800CB0EBD /* windows-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */; };
 		FEFF23910BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFF23920BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 		FEFF23930BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEFF23940BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildRule section */
-		15D921BB105E918000171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		15D921BC105E918000171406 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.arm.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		28D487A40FE04E7100DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		28D487A50FE04E7100DC03EF /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.ppc.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6E4D93250A2642BD003D335C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		6E4D93260A2642BD003D335C /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.solaris.sparc.gcc.4_0_3;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FE30A2FB10C6ED6F00A1BF7F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FED70FB30C3C09C7000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.asm;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-		FED70FB40C3C09C7000CBE5B /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-				"",
-			);
-			script = "";
-		};
-/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		15D921E8105E924500171406 /* PBXContainerItemProxy */ = {
@@ -6586,6 +6456,41 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CoreServices-Windows-i386";
 		};
+		FE1DDE4617125B01003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE651A8D0FBC84DD00464BFD;
+			remoteInfo = "objc-Darwin-x86_64";
+		};
+		FE1DDE7917125CB9003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE1DDE4917125C98003B3AF8;
+			remoteInfo = "CoreFoundation-Darwin-x86_64";
+		};
+		FE1DDE7C17125CB9003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE1DDE7717125C98003B3AF8;
+			remoteInfo = "CoreFoundation-Darwin-x86_64";
+		};
+		FE1DDE8A17125CE7003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE1DDE7E17125CC4003B3AF8;
+			remoteInfo = "CoreServices-Darwin-x86_64";
+		};
+		FE1DDE8D17125CE7003B3AF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE1342BD1151842200404745 /* CoreServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE1DDE8817125CC4003B3AF8;
+			remoteInfo = "CoreServices-Darwin-x86_64";
+		};
 		FE5A868D10C6EDDC005E348A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -6613,13 +6518,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FE5A869710C6EE28005E348A;
 			remoteInfo = "CoreFoundation-FreeBSD-i386";
-		};
-		FE6518180FBC844C00464BFD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FED70A9E0C3B3F5E000CBE5B;
-			remoteInfo = "objc-Darwin";
 		};
 		FE651AA00FBC84DD00464BFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6799,16 +6697,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSocketPort_posix.h; path = platform_posix/NSSocketPort_posix.h; sourceTree = "<group>"; };
-		0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSocketPort_posix.m; path = platform_posix/NSSocketPort_posix.m; sourceTree = "<group>"; };
 		0DE1C157151665AB003781E1 /* NSRecursiveLock_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRecursiveLock_posix.h; path = platform_posix/NSRecursiveLock_posix.h; sourceTree = "<group>"; };
 		0DE1C158151665AB003781E1 /* NSRecursiveLock_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRecursiveLock_posix.m; path = platform_posix/NSRecursiveLock_posix.m; sourceTree = "<group>"; };
 		151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc_msg_sendv-Disabled.m"; sourceTree = "<group>"; };
 		151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicCompareAndSwap.h; sourceTree = "<group>"; };
 		15D921C0105E918000171406 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_BOOL_const_impl.h; path = NSNumber/NSNumber_BOOL_const_impl.h; sourceTree = "<group>"; };
-		1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_double_const_impl.h; path = NSNumber/NSNumber_double_const_impl.h; sourceTree = "<group>"; };
-		1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSNumber_double_const.m; path = NSNumber/NSNumber_double_const.m; sourceTree = "<group>"; };
 		1A27C0601090D1BE00C44FD7 /* NSNumber_BOOL_const.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSNumber_BOOL_const.m; path = NSNumber/NSNumber_BOOL_const.m; sourceTree = "<group>"; };
 		1A28B5B2109096950019EFC6 /* NSConstObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConstObject.h; path = NSNumber/NSConstObject.h; sourceTree = "<group>"; };
 		1A8A694E1091EF0200DC5A01 /* NSCFTypeID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCFTypeID.h; sourceTree = SOURCE_ROOT; };
@@ -7273,21 +7167,6 @@
 		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwarding.h; sourceTree = "<group>"; };
 		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forwarding.m; sourceTree = "<group>"; };
 		FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegalCharacterSet.bitmap; path = NSCharacterSet/illegalCharacterSet.bitmap; sourceTree = "<group>"; };
-		FE1E546314303009000D60A1 /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E546414303009000D60A1 /* darwin-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc.xcconfig"; sourceTree = "<group>"; };
-		FE1E546514303009000D60A1 /* darwin-x86_64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64.xcconfig"; sourceTree = "<group>"; };
-		FE1E546614303009000D60A1 /* darwin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = darwin.xcconfig; sourceTree = "<group>"; };
-		FE1E546714303009000D60A1 /* freebsd-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E546814303009000D60A1 /* freebsd.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = freebsd.xcconfig; sourceTree = "<group>"; };
-		FE1E546914303009000D60A1 /* linux-arm.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm.xcconfig"; sourceTree = "<group>"; };
-		FE1E546A14303009000D60A1 /* linux-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E546B14303009000D60A1 /* linux-ppc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc.xcconfig"; sourceTree = "<group>"; };
-		FE1E546C14303009000D60A1 /* linux.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = linux.xcconfig; sourceTree = "<group>"; };
-		FE1E546D14303009000D60A1 /* platform.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = platform.xcconfig; sourceTree = "<group>"; };
-		FE1E546E14303009000D60A1 /* solaris-sparc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc.xcconfig"; sourceTree = "<group>"; };
-		FE1E546F14303009000D60A1 /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
-		FE1E547014303009000D60A1 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
-		FE1E547114303009000D60A1 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
 		FE2569E610F2F9C7005CE23E /* CFHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFHost.m; sourceTree = "<group>"; };
 		FE2569E710F2F9C7005CE23E /* CFNetServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFNetServices.m; sourceTree = "<group>"; };
 		FE2569E810F2F9C7005CE23E /* CFSocketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSocketStream.m; sourceTree = "<group>"; };
@@ -7557,6 +7436,14 @@
 		FEBF535B0F925FA3005DC684 /* objc_protocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_protocol.m; sourceTree = "<group>"; };
 		FEBF53670F926025005DC684 /* objc_protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_protocol.h; sourceTree = "<group>"; };
 		FEBF545A0F93AE8A005DC684 /* objc_property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_property.m; sourceTree = "<group>"; };
+		FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationErrors.h; sourceTree = "<group>"; };
 		FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtocol_http.h; sourceTree = "<group>"; };
 		FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtocol_http.m; sourceTree = "<group>"; };
@@ -7615,6 +7502,7 @@
 		FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString+KVCAdditions.m"; sourceTree = "<group>"; };
 		FEFAA5391429098A00CEE177 /* NSScriptWhoseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSScriptWhoseTests.h; sourceTree = "<group>"; };
 		FEFAA53A1429098A00CEE177 /* NSScriptWhoseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSScriptWhoseTests.m; sourceTree = "<group>"; };
+		FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
 		FEFF238D0BDCF136005357B8 /* NSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSCalendar.h; path = NSDate/NSCalendar.h; sourceTree = "<group>"; };
 		FEFF238E0BDCF136005357B8 /* NSCalendar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSCalendar.m; path = NSDate/NSCalendar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -7802,8 +7690,8 @@
 				6E2803380974795100EC542B /* NSObject */,
 				6E28061B09747D5800EC542B /* NSPipe.h */,
 				6E28061C09747D5800EC542B /* NSPipe.m */,
-				FE1365D70F154B3A000F2657 /* NSOperation */,
 				6E28061D09747D5800EC542B /* NSPlatform.h */,
+				FE1365D70F154B3A000F2657 /* NSOperation */,
 				6E28061E09747D5800EC542B /* NSPlatform.m */,
 				FEB9D6A90B443EA600C239BB /* NSPortNameServer */,
 				FEB9D47D0B4432C400C239BB /* NSPredicate */,
@@ -8063,8 +7951,6 @@
 				6E28040009747BB300EC542B /* NSNumber_double.h */,
 				6E28040109747BB300EC542B /* NSNumber_double.m */,
 				1ACAB27C108C5B010057A542 /* NSNumber_double_const.h */,
-				1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */,
-				1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */,
 				6E28040209747BB300EC542B /* NSNumber_float.h */,
 				6E28040309747BB300EC542B /* NSNumber_float.m */,
 				6E28040409747BB300EC542B /* NSNumber_int.h */,
@@ -8463,8 +8349,6 @@
 				0DE1C158151665AB003781E1 /* NSRecursiveLock_posix.m */,
 				C89B473D0F5C6AB50070120D /* NSCancelInputSource_posix.h */,
 				C89B473E0F5C6AB50070120D /* NSCancelInputSource_posix.m */,
-				0D94DD60153E859E0048B351 /* NSSocketPort_posix.h */,
-				0D94DD61153E859E0048B351 /* NSSocketPort_posix.m */,
 			);
 			name = platform_posix;
 			sourceTree = "<group>";
@@ -8664,6 +8548,7 @@
 				FE1342C91151842200404745 /* CoreServices.framework */,
 				FEC32E56115909F00008ECE5 /* CoreServices.framework */,
 				FEC32E6711590A130008ECE5 /* CoreServices.framework */,
+				FE1DDE8E17125CE7003B3AF8 /* CoreServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8694,21 +8579,15 @@
 		FE1E546214303009000D60A1 /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
-				FE1E546314303009000D60A1 /* darwin-i386.xcconfig */,
-				FE1E546414303009000D60A1 /* darwin-ppc.xcconfig */,
-				FE1E546514303009000D60A1 /* darwin-x86_64.xcconfig */,
-				FE1E546614303009000D60A1 /* darwin.xcconfig */,
-				FE1E546714303009000D60A1 /* freebsd-i386.xcconfig */,
-				FE1E546814303009000D60A1 /* freebsd.xcconfig */,
-				FE1E546914303009000D60A1 /* linux-arm.xcconfig */,
-				FE1E546A14303009000D60A1 /* linux-i386.xcconfig */,
-				FE1E546B14303009000D60A1 /* linux-ppc.xcconfig */,
-				FE1E546C14303009000D60A1 /* linux.xcconfig */,
-				FE1E546D14303009000D60A1 /* platform.xcconfig */,
-				FE1E546E14303009000D60A1 /* solaris-sparc.xcconfig */,
-				FE1E546F14303009000D60A1 /* solaris.xcconfig */,
-				FE1E547014303009000D60A1 /* windows-i386.xcconfig */,
-				FE1E547114303009000D60A1 /* windows.xcconfig */,
+				FEFDFBF3174F283800CB0EBD /* windows-i386.xcconfig */,
+				FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */,
+				FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */,
+				FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */,
+				FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */,
+				FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */,
+				FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */,
+				FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */,
+				FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */,
 				FE70869F143117F100B99A95 /* windows-i386-framework.xcconfig */,
 			);
 			name = xcconfig;
@@ -8889,6 +8768,7 @@
 				FEA82994109B775200C7A732 /* CoreFoundation.framework */,
 				FEA829D1109B7C1B00C7A732 /* CoreFoundation.framework */,
 				FE5A86CC10C6EE28005E348A /* CoreFoundation.framework */,
+				FE1DDE7D17125CB9003B3AF8 /* CoreFoundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -9407,7 +9287,6 @@
 				1ACAB28A108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B9109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFFE1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFFF1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69561091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F47110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1BAA1125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -9425,7 +9304,6 @@
 				FEFAA53B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07581434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15F151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD68153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9743,7 +9621,6 @@
 				1ACAB28C108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5BA109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27C0001090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27C0011090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69551091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F45110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1BA61125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -9761,7 +9638,6 @@
 				FEFAA54B1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07561434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15E151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD67153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10079,7 +9955,6 @@
 				1ACAB284108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B6109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFF81090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFF91090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69521091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F3D110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1B961125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -10097,7 +9972,6 @@
 				FEFAA5471429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C074E1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15A151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD63153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10415,7 +10289,6 @@
 				1ACAB286108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B7109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFFA1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFFB1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69531091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F3B110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1B921125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -10433,7 +10306,6 @@
 				FEFAA53D1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C074C1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C159151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD62153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10756,7 +10628,6 @@
 				1ACAB288108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B8109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFFC1090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFFD1090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69541091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F39110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1B8E1125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -11088,7 +10959,6 @@
 				FE30A18B10C6ED6F00A1BF7F /* NSNumber_double_const.h in Headers */,
 				FE30A18C10C6ED6F00A1BF7F /* NSConstObject.h in Headers */,
 				FE30A18D10C6ED6F00A1BF7F /* NSNumber_BOOL_const_impl.h in Headers */,
-				FE30A18E10C6ED6F00A1BF7F /* NSNumber_double_const_impl.h in Headers */,
 				FE30A18F10C6ED6F00A1BF7F /* NSCFTypeID.h in Headers */,
 				FE5A86DB10C6EF41005E348A /* NSPlatform_bsd.h in Headers */,
 				FE5A86DD10C6EF43005E348A /* NSTask_bsd.h in Headers */,
@@ -11108,7 +10978,6 @@
 				FEFAA5491429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C075A1434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C160151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD69153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11427,7 +11296,6 @@
 				1ACAB282108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B5109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFF61090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFF71090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69511091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F43110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1BA21125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -11445,7 +11313,6 @@
 				FEFAA5431429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07541434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15D151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD66153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11764,7 +11631,6 @@
 				1ACAB27E108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B3109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFF21090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFF31090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A694F1091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F3F110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1B9A1125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -11782,7 +11648,6 @@
 				FEFAA5451429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07501434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15B151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD64153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12101,7 +11966,6 @@
 				1ACAB280108C5B010057A542 /* NSNumber_double_const.h in Headers */,
 				1A28B5B4109096950019EFC6 /* NSConstObject.h in Headers */,
 				1A27BFF41090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h in Headers */,
-				1A27BFF51090CBCD00C44FD7 /* NSNumber_double_const_impl.h in Headers */,
 				1A8A69501091EF0200DC5A01 /* NSCFTypeID.h in Headers */,
 				FE828F41110DFA1C0008AFA2 /* NSKVOInfoPerObject.h in Headers */,
 				FE9C1B9E1125A649002DA20B /* CFSSLHandler.h in Headers */,
@@ -12119,7 +11983,6 @@
 				FEFAA53F1429098A00CEE177 /* NSScriptWhoseTests.h in Headers */,
 				FE4C07521434A0330034EE26 /* NSDecimalNumberPlaceholder.h in Headers */,
 				0DE1C15C151665AB003781E1 /* NSRecursiveLock_posix.h in Headers */,
-				0D94DD65153E859F0048B351 /* NSSocketPort_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12136,8 +11999,6 @@
 				15D921AF105E918000171406 /* Resources */,
 			);
 			buildRules = (
-				15D921BB105E918000171406 /* PBXBuildRule */,
-				15D921BC105E918000171406 /* PBXBuildRule */,
 			);
 			dependencies = (
 				15D921EB105E927F00171406 /* PBXTargetDependency */,
@@ -12159,8 +12020,6 @@
 				28D487990FE04E7100DC03EF /* Resources */,
 			);
 			buildRules = (
-				28D487A40FE04E7100DC03EF /* PBXBuildRule */,
-				28D487A50FE04E7100DC03EF /* PBXBuildRule */,
 			);
 			dependencies = (
 				28D487AF0FE04F3F00DC03EF /* PBXTargetDependency */,
@@ -12182,8 +12041,6 @@
 				6E4D93160A2642BD003D335C /* Resources */,
 			);
 			buildRules = (
-				6E4D93250A2642BD003D335C /* PBXBuildRule */,
-				6E4D93260A2642BD003D335C /* PBXBuildRule */,
 			);
 			dependencies = (
 				1A27C00B1090CC7200C44FD7 /* PBXTargetDependency */,
@@ -12249,8 +12106,6 @@
 				FE30A2EE10C6ED6F00A1BF7F /* Resources */,
 			);
 			buildRules = (
-				FE30A2FA10C6ED6F00A1BF7F /* PBXBuildRule */,
-				FE30A2FB10C6ED6F00A1BF7F /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE5A86D210C6EE82005E348A /* PBXTargetDependency */,
@@ -12268,6 +12123,7 @@
 			buildConfigurationList = FE651A840FBC844C00464BFD /* Build configuration list for PBXNativeTarget "Foundation-Darwin-x86_64" */;
 			buildPhases = (
 				FE6518190FBC844C00464BFD /* Headers */,
+				FE1DDE4817125B38003B3AF8 /* ShellScript */,
 				FE6519450FBC844C00464BFD /* Sources */,
 				FE651A780FBC844C00464BFD /* Frameworks */,
 				FE651A790FBC844C00464BFD /* Resources */,
@@ -12275,7 +12131,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				FE6518170FBC844C00464BFD /* PBXTargetDependency */,
+				FE1DDE8B17125CE7003B3AF8 /* PBXTargetDependency */,
+				FE1DDE7A17125CB9003B3AF8 /* PBXTargetDependency */,
+				FE1DDE4717125B01003B3AF8 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Darwin-x86_64";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -12315,8 +12173,6 @@
 				FED70FA60C3C09C7000CBE5B /* Resources */,
 			);
 			buildRules = (
-				FED70FB30C3C09C7000CBE5B /* PBXBuildRule */,
-				FED70FB40C3C09C7000CBE5B /* PBXBuildRule */,
 			);
 			dependencies = (
 				FED70FCE0C3C0A4F000CBE5B /* PBXTargetDependency */,
@@ -12333,7 +12189,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 6E2801B909746B8900EC542B /* Build configuration list for PBXProject "Foundation" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -12397,6 +12253,20 @@
 			fileType = wrapper.framework;
 			path = CoreServices.framework;
 			remoteRef = FE1342C81151842200404745 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE1DDE7D17125CB9003B3AF8 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE1DDE7C17125CB9003B3AF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE1DDE8E17125CE7003B3AF8 /* CoreServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreServices.framework;
+			remoteRef = FE1DDE8D17125CE7003B3AF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE5A868E10C6EDDC005E348A /* objc.framework */ = {
@@ -12600,6 +12470,7 @@
 				FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 				FE86D408114743AC0010FE05 /* NSStringEncodingNames.plist in Resources */,
 				C6BC3CC61162308E00DFC16C /* NSTimeZoneWindowsZones.plist in Resources */,
+				FEFDFBF4174F283800CB0EBD /* windows-i386.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12680,6 +12551,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE1DDE4817125B38003B3AF8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo hi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		15D92051105E918000171406 /* Sources */ = {
@@ -13054,7 +12941,6 @@
 				FE4C07591434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C167151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E215590EAF00A162B8 /* libmain.m in Sources */,
-				0D55206D1583DE310014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13429,7 +13315,6 @@
 				FE4C07571434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C166151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E115590EAF00A162B8 /* libmain.m in Sources */,
-				0D55206C1583DE300014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13805,7 +13690,6 @@
 				FE4C074F1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C162151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E415590EC600A162B8 /* libmain.m in Sources */,
-				0D55206B1583DE2F0014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14182,7 +14066,6 @@
 				FE4C074D1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C161151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E015590EAF00A162B8 /* libmain.m in Sources */,
-				0D55206A1583DDFC0014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14940,7 +14823,6 @@
 				FE4C075B1434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C168151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663DE15590E9400A162B8 /* libmain.m in Sources */,
-				0D5520711583DE440014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15294,7 +15176,6 @@
 				FE463E6D102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E6F102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014281042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
-				1A27C0051090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0631090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
 				FE2569F910F2F9C7005CE23E /* CFNetServices.m in Sources */,
 				FE2569FA10F2F9C7005CE23E /* CFSocketStream.m in Sources */,
@@ -15320,7 +15201,6 @@
 				FE4C07551434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C165151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E815590FBE00A162B8 /* libmain.m in Sources */,
-				0D5520701583DE430014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15675,7 +15555,6 @@
 				FE463E65102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E67102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014261042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
-				1A27C0031090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0611090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
 				FE2569F310F2F9C7005CE23E /* CFNetServices.m in Sources */,
 				FE2569F410F2F9C7005CE23E /* CFSocketStream.m in Sources */,
@@ -15701,7 +15580,6 @@
 				FE4C07511434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C163151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663DC15590E7B00A162B8 /* libmain.m in Sources */,
-				0D55206E1583DE420014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16056,7 +15934,6 @@
 				FE463E69102CD5C700B265D6 /* NSPointerArray.m in Sources */,
 				FE463E6B102CD5C700B265D6 /* NSPointerFunctions.m in Sources */,
 				FE6014271042FD5A008A7357 /* NSString_defaultEncoding_darwin.m in Sources */,
-				1A27C0041090CC0500C44FD7 /* NSNumber_double_const.m in Sources */,
 				1A27C0621090D1BE00C44FD7 /* NSNumber_BOOL_const.m in Sources */,
 				FE2569F610F2F9C7005CE23E /* CFNetServices.m in Sources */,
 				FE2569F710F2F9C7005CE23E /* CFSocketStream.m in Sources */,
@@ -16082,7 +15959,6 @@
 				FE4C07531434A0330034EE26 /* NSDecimalNumberPlaceholder.m in Sources */,
 				0DE1C164151665AB003781E1 /* NSRecursiveLock_posix.m in Sources */,
 				C64663E715590FBE00A162B8 /* libmain.m in Sources */,
-				0D55206F1583DE430014D586 /* NSSocketPort_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16114,6 +15990,21 @@
 			name = "CoreServices-Windows-i386";
 			targetProxy = FE1342D41151843C00404745 /* PBXContainerItemProxy */;
 		};
+		FE1DDE4717125B01003B3AF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "objc-Darwin-x86_64";
+			targetProxy = FE1DDE4617125B01003B3AF8 /* PBXContainerItemProxy */;
+		};
+		FE1DDE7A17125CB9003B3AF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Darwin-x86_64";
+			targetProxy = FE1DDE7917125CB9003B3AF8 /* PBXContainerItemProxy */;
+		};
+		FE1DDE8B17125CE7003B3AF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreServices-Darwin-x86_64";
+			targetProxy = FE1DDE8A17125CE7003B3AF8 /* PBXContainerItemProxy */;
+		};
 		FE5A86D210C6EE82005E348A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-FreeBSD-i386";
@@ -16123,11 +16014,6 @@
 			isa = PBXTargetDependency;
 			name = "CoreFoundation-FreeBSD-i386";
 			targetProxy = FE5A86D310C6EE86005E348A /* PBXContainerItemProxy */;
-		};
-		FE6518170FBC844C00464BFD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "objc-Darwin";
-			targetProxy = FE6518180FBC844C00464BFD /* PBXContainerItemProxy */;
 		};
 		FE8492F9119A5EE900E252CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -16213,20 +16099,15 @@
 /* Begin XCBuildConfiguration section */
 		15D921BE105E918000171406 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16246,23 +16127,17 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Release;
 		};
 		15D921BF105E918000171406 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3841709355C002A60B7 /* linux-arm-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16282,25 +16157,19 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/arm;
 			};
 			name = Debug;
 		};
 		28D487A70FE04E7100DC03EF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16318,22 +16187,16 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Release;
 		};
 		28D487A80FE04E7100DC03EF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3861709355C002A60B7 /* linux-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16352,7 +16215,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/ppc;
 			};
 			name = Debug;
 		};
@@ -16364,18 +16226,11 @@
 		};
 		6E4D93290A2642BD003D335C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16393,27 +16248,17 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/sparc;
-				VALID_ARCHS = sparc;
 			};
 			name = Release;
 		};
 		6EA04A7509E57D5F0067589C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16432,7 +16277,6 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
@@ -16446,7 +16290,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
@@ -16454,7 +16298,6 @@
 					"-DCOREFOUNDATION_INSIDE_BUILD",
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
 					"-DDEBUG",
 					"-march=i686",
 					"$(OTHER_CFLAGS)",
@@ -16468,9 +16311,7 @@
 					"-luuid",
 					"-lole32",
 					"-lws2_32",
-					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0xa10000",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -16479,17 +16320,9 @@
 		};
 		7E891F170D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16509,23 +16342,15 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};
 		7E891F180D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3871709355C002A60B7 /* solaris-sparc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = sparc;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16543,24 +16368,19 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Solaris/sparc;
-				VALID_ARCHS = sparc;
 			};
 			name = Debug;
 		};
 		7E891F190D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				LD_DYLIB_INSTALL_NAME = "$(DSTROOT)/$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16574,24 +16394,19 @@
 					"-DDARWIN",
 					"$(OTHER_CFLAGS)",
 				);
-				OTHER_LDFLAGS = "-lffi";
+				OTHER_LDFLAGS = "-lSystem";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
 		7E891F1A0D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16604,7 +16419,6 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Debug;
 		};
@@ -16641,7 +16455,7 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
+				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD",
@@ -16658,13 +16472,11 @@
 					"-lffi",
 					"-B,dynamic",
 					"-shared",
-					"-lole32",
-					"-luuid",
 					"-lrpcrt4",
+					"-luuid",
+					"-lole32",
 					"-lws2_32",
-					"-Wl,--export-all-symbols",
-					"-Wl,--image-base=0xa10000",
-					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
+					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = Foundation;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -16673,19 +16485,13 @@
 		};
 		FE30A2FD10C6ED6F00A1BF7F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16703,22 +16509,15 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
 		FE30A2FE10C6ED6F00A1BF7F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3831709355C002A60B7 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16737,25 +16536,17 @@
 					"-lpthread",
 				);
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
 		FE651A850FBC844C00464BFD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
+				LD_DYLIB_INSTALL_NAME = "$(DSTROOT)/$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16770,23 +16561,17 @@
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Release;
 		};
 		FE651A860FBC844C00464BFD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3821709355C002A60B7 /* darwin-x86_64-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_VERSION = 4.2;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				LD_DYLIB_INSTALL_NAME = "$(DSTROOT)/$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16795,31 +16580,26 @@
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-fPIC",
-					"-march=i686",
 					"-DHAVE_LIBFFI",
 					"-DDARWIN",
 					"$(OTHER_CFLAGS)",
 				);
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/x86_64;
 			};
 			name = Debug;
 		};
 		FED70A6A0C3B3D2C000CBE5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3801709355C002A60B7 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				LD_DYLIB_INSTALL_NAME = "$(DSTROOT)/$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16833,25 +16613,20 @@
 					"-DDARWIN",
 					"$(OTHER_CFLAGS)",
 				);
-				OTHER_LDFLAGS = "-lffi";
+				OTHER_LDFLAGS = "-lSystem";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
 		FED70FB60C3C09C7000CBE5B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC0A3811709355C002A60B7 /* darwin-ppc-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = ppc;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
 					"-DCFNETWORK_INSIDE_BUILD=1",
@@ -16864,7 +16639,6 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Foundation;
-				SYMROOT = build/Darwin/ppc;
 			};
 			name = Release;
 		};

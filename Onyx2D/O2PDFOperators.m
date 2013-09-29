@@ -742,7 +742,7 @@ void O2PDF_render_K(O2PDFScanner *scanner,void *info) {
     return;
    }
     
-   [context setCMYKStrokeColor:c:m:y:k];
+   [context setStrokeColorC:c m:m y:y k:k];
 }
 
 // setcmykcolor, Set CMYK color for nonstroking operations
@@ -767,7 +767,7 @@ void O2PDF_render_k(O2PDFScanner *scanner,void *info) {
     return;
    }
    
-   [context setCMYKFillColor:c:m:y:k];
+   [context setFillColorC:c m:m y:y k:k];
 }
 
 // lineto, Append straight line segment to path
@@ -876,7 +876,7 @@ void O2PDF_render_RG(O2PDFScanner *scanner,void *info) {
    if(!O2PDFScannerPopNumber(scanner,&r))
     return;
    
-   [context setRGBStrokeColor:r:g:b];
+   [context setStrokeColorRed:r green:g blue:b];
 }
 
 // setrgbcolor, Set RGB color for nonstroking operations
@@ -893,7 +893,7 @@ void O2PDF_render_rg(O2PDFScanner *scanner,void *info) {
    if(!O2PDFScannerPopNumber(scanner,&r))
     return;
    
-   [context setRGBFillColor:r:g:b];
+   [context setFillColorRed:r green:g blue:b];
 }
 
 // name ri, Set color rendering intent

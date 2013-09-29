@@ -14,9 +14,9 @@ CA_EXPORT NSString * const kCAMediaTimingFunctionDefault;
    float _c2y;
 }
 
--initWithControlPoints:(float)c1x:(float)c1y:(float)c2x:(float)c2y;
+-(id)initWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y;
 
-+functionWithControlPoints:(float)c1x:(float)c1y:(float)c2x:(float)c2y;
++functionWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y;
 
 +functionWithName:(NSString *)name;
 

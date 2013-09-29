@@ -1,0 +1,20 @@
+
+// -ccc-gcc-name requires that the properly named gcc is on PATH, e.g. $PATH://Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin
+
+// Sadly, I have not figured out a way to add to PATH for the compile/link phases in Xcode short of some dumb wrapper or
+// putting binaries in system locations.
+//
+// So, for now, you can do:
+// cd /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+// ln -s /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc .
+
+GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+
+// -fno-builtin is required to disable internal ObjC runtime prototypes which may not match ours.
+// It also has other side effects like not actually using builtins like memset/memcpy for optimization
+// So, we really don't want to -fno-builtin eventually.
+WINDOWS_i386_COMPILER_CFLAGS = -ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc -DWINDOWS=1 -D__WIN32__=1 -fno-builtin
+WINDOWS_i386_COMPILER_LDFLAGS = -ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc
+
+WINDOWS_i386_COMPILER_ISYSTEM = -isystem /Developer/Cocotron/1.0/Windows/i386/sysroot/mingw/include/
+WINDOWS_i386_COMPILER_SYSLIB = /Developer/Cocotron/1.0/Windows/i386/sysroot/mingw/lib/

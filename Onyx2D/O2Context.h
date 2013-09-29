@@ -150,13 +150,13 @@ O2ColorRef O2ContextFillColor(O2ContextRef self);
    
 -(void)setStrokeAlpha:(O2Float)alpha;
 -(void)setGrayStrokeColor:(O2Float)gray;
--(void)setRGBStrokeColor:(O2Float)r:(O2Float)g:(O2Float)b;
--(void)setCMYKStrokeColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k;
+-(void)setStrokeColorRed:(O2Float)r green:(O2Float)g blue:(O2Float)b;
+-(void)setStrokeColorC:(O2Float)c m:(O2Float)m y:(O2Float)y k:(O2Float)k;
 
 -(void)setFillAlpha:(O2Float)alpha;
 -(void)setGrayFillColor:(O2Float)gray;
--(void)setRGBFillColor:(O2Float)r:(O2Float)g:(O2Float)b;
--(void)setCMYKFillColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k;
+-(void)setFillColorRed:(O2Float)r green:(O2Float)g blue:(O2Float)b;
+-(void)setFillColorC:(O2Float)c m:(O2Float)m y:(O2Float)y k:(O2Float)k;
 
 -(void)drawPath:(O2PathDrawingMode)pathMode;
 

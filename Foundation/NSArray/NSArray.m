@@ -309,17 +309,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(NSUInteger)indexOfObject:object inRange:(NSRange)range {
-	NSInteger i,count=[self count];
-
-   if(NSMaxRange(range)>count)
-    NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
-     NSStringFromRange(range),[self count]);
-
-   for(i=range.location;i<range.length;i++)
-    if([[self objectAtIndex:i] isEqual:object])
-     return i;
-
-   return NSNotFound;
+	NSInteger i,count=[self count],loc=range.location;
+    
+    if(NSMaxRange(range)>count)
+        NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",NSStringFromRange(range),[self count]);
+    
+    for(i=0;i<range.length;i++)
+        if([[self objectAtIndex:loc+i] isEqual:object])
+            return loc+i;
+    
+    return NSNotFound;
 }
 
 
@@ -335,17 +334,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(NSUInteger)indexOfObjectIdenticalTo:object inRange:(NSRange)range {
-   NSInteger i,count=[self count],loc=range.location;
-
-   if(NSMaxRange(range)>count)
-    NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
-     NSStringFromRange(range),[self count]);
-
-   for(i=0;i<range.length;i++)
-    if([self objectAtIndex:loc+i]==object)
-     return i;
-
-   return NSNotFound;
+    NSInteger i,count=[self count],loc=range.location;
+    
+    if(NSMaxRange(range)>count)
+        NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",NSStringFromRange(range),[self count]);
+    
+    for(i=0;i<range.length;i++)
+        if([self objectAtIndex:loc+i]==object)
+            return loc+i;
+    
+    return NSNotFound;
 }
 
 -(NSEnumerator *)objectEnumerator {

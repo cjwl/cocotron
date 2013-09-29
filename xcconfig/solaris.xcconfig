@@ -1,2 +1,2 @@
 #include "platform"
-EFFECTIVE_PLATFORM_NAME = -solaris
+

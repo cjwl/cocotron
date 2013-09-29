@@ -5,6 +5,7 @@ syntax: glob
 *.perspectivev3
 *.mode2v3
 build
+build
 
 .svn
 .DS_Store
@@ -16,3 +17,4 @@ build
 
 xcuserdata
 project.xcworkspace
+system

@@ -121,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)noResponderFor:(SEL)action {
-   if(action==@selector(keyDown:))
+   if(sel_isEqual(action,@selector(keyDown:)))
     NSBeep();
 }
 

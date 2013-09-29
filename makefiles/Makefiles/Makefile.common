@@ -1,0 +1,105 @@
+ifndef NAME
+$(error NAME undefined)
+endif
+ifndef TYPE
+$(error TYPE undefined)
+endif
+
+INCLUDE_DIR := include
+BUILD_DIR := build
+SRC_DIR := src
+RESOURCES_DIR := rsc
+TARGET_DIR := $(BUILD_DIR)/$(NAME).$(TYPE)
+
+GCC_DIR = /usr/
+ifeq ($(shell uname -m),x86_64)
+GCC_LIB_DIR = /usr/local/lib
+else
+GCC_LIB_DIR = /usr/local/lib
+endif
+
+CFLAGS = -I $(INCLUDE_DIR)
+CFLAGS += -fobjc-exceptions -fconstant-string-class=NSConstantString -fgnu-runtime -fPIC
+CFLAGS += -g -O2 -Wall -std=gnu99
+CFLAGS += -Wno-unknown-pragmas
+CFLAGS += -DOBJC_EXPORT=
+CFLAGS += -DLINUX -D_GNU_SOURCE -D__LITTLE_ENDIAN__ -DGCC_RUNTIME_3 -D_FORTIFY_SOURCE=1
+
+LDFLAGS += -Wl,--no-undefined -fPIC
+LDFLAGS += -lc -lgcc_s -lm -ldl -lpthread
+
+
+GCC = $(GCC_DIR)/bin/gcc
+USE_CLANG=1
+ifdef USE_CLANG
+OCC = /usr/bin/clang
+CFLAGS += -I $(GCC_LIB_DIR)/gcc/$(shell $(GCC) -dumpmachine)/$(shell $(GCC) -dumpversion)/include
+# make sure your clang works with '#include <unistd.h>' and blocks
+# see http://sources.redhat.com/bugzilla/show_bug.cgi?id=11157
+CFLAGS += -fblocks
+# make sure you have the BlocksRuntime
+# (http://stackoverflow.com/questions/2297765/which-libraries-do-you-need-to-link-against-for-a-clang-program-using-blocks)
+# If your clang does not need it, comment it out.
+LDFLAGS += -lBlocksRuntime
+else
+OCC = $(GCC)
+endif
+
+
+ESC := `echo -en '\033'`
+GRAY := $(ESC)[1;30m
+RED := $(ESC)[1;31m
+GREEN := $(ESC)[1;32m
+YELLOW := $(ESC)[1;33m
+BLUE := $(ESC)[1;34m
+PURPLE := $(ESC)[1;35m
+CYAN := $(ESC)[1;36m
+WHITE := $(ESC)[1;37m
+NORMAL := $(ESC)`echo -en '[m\017'`
+RIGHT := `echo -en '\015'`$(ESC)[500C$(ESC)[6D
+
+
+
+compute_build_files = $(patsubst $(SRC_DIR)/%,$(BUILD_DIR)/%,$(patsubst %.$(1),%.$(2),$(wildcard $(SRC_DIR)/*.$(1))))
+
+link = echo "$(CYAN)[LN]$(NORMAL) $(2)"; ln -sf $(1) $(2);
+copy = echo "$(CYAN)[CP]$(NORMAL) $(2)"; cp $(1) $(2);
+
+
+O_FILES := $(call provide_src_files)$(call compute_build_files,m,o)
+ASM_O_FILES := $(call compute_build_files,s,s.o)
+DEP_FILES := $(patsubst %.o,%.dep,$(O_FILES))
+
+
+.PHONY: all
+all: _all
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.m $(BUILD_DIR)/%.dep
+	@echo "$(BLUE)[CC]$(NORMAL)" $@
+	@mkdir -p $(dir $@)
+	@#$(OCC) -E $(CFLAGS) -o $@.ccc $<
+	@$(OCC) -c $(CFLAGS) -o $@ $<
+
+$(BUILD_DIR)/%.s.o: $(SRC_DIR)/%.s
+	@echo "$(BLUE)[AS]$(NORMAL)" $@
+	@mkdir -p $(dir $@)
+	@$(OCC) -c -o $@ $<
+
+$(BUILD_DIR)/%.dep: $(SRC_DIR)/%.m
+	@echo "$(RED)[MM]$($NORMAL)$(NORMAL)" $@
+	@mkdir -p $(dir $@)
+	@$(OCC) -MM -o $@ -MT $(patsubst %.dep,%.o,$@) $(CFLAGS) $<
+
+
+
+.PHONY: clean
+clean:
+	rm -rf $(BUILD_DIR)
+
+.PHONY: _all
+_all: $(TARGET_DIR)
+
+
+ifneq (clean,$(MAKECMDGOALS))
+-include $(DEP_FILES)
+endif

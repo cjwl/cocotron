@@ -25,34 +25,29 @@
 		FECC1DD2108D025D00BD4A91 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		FE5A873B10C6F1E8005E348A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-		FECC1DDB108D02C600BD4A91 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
-			fileType = sourcecode.c;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXContainerItemProxy section */
-		0DC7217816CF20EF00E0FF99 /* PBXContainerItemProxy */ = {
+		0D94CD0217F8E14500729FC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C889771C0EA0C0CD00D0A0A2;
+			remoteInfo = "ApplicationServices-Linux-i386";
+		};
+		0D94CD0517F8E14500729FC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
+			remoteInfo = "AppKit-MacOS-i386";
+		};
+		0D9BD54E17F8DE0F00693B17 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE78D0FF126F4CF500CC39CF /* CoreData.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 0DC7212E16CF1F5700E0FF99;
 			remoteInfo = "CoreData-Linux-i386";
 		};
-		0DC7217B16CF20EF00E0FF99 /* PBXContainerItemProxy */ = {
+		0D9BD55317F8DE0F00693B17 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE78D0FF126F4CF500CC39CF /* CoreData.xcodeproj */;
 			proxyType = 2;
@@ -114,13 +109,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = FE01AAED0C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
-		};
-		FE1362630FE7167F00DE15FA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
-			remoteInfo = "AppKit-MacOS-i386";
 		};
 		FE5A88AC10C6F369005E348A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -206,7 +194,16 @@
 		FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		FE7135460B36427F006C9493 /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE78D0FF126F4CF500CC39CF /* CoreData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreData.xcodeproj; path = ../CoreData/CoreData.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FEAC294B17AE072400EF2B9D /* windows-i386-clang.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-clang.xcconfig"; sourceTree = "<group>"; };
 		FECC1DD6108D025D00BD4A91 /* Cocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C497170BCF700033C8E6 /* darwin-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C498170BCF700033C8E6 /* darwin-x86_64-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-x86_64-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "freebsd-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C49A170BCF700033C8E6 /* linux-arm-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-arm-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-i386-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C49C170BCF700033C8E6 /* linux-ppc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "linux-ppc-framework.xcconfig"; sourceTree = "<group>"; };
+		FED0C49D170BCF700033C8E6 /* solaris-sparc-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "solaris-sparc-framework.xcconfig"; sourceTree = "<group>"; };
 		FEF3B23A0B35C74700A76FD1 /* Cocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cocoa.h; sourceTree = "<group>"; };
 		FEF3B2780B35CB9D00A76FD1 /* Cocoa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cocoa.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -330,6 +327,15 @@
 		FE06B0361430E6B30071169B /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				FEAC294B17AE072400EF2B9D /* windows-i386-clang.xcconfig */,
+				FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */,
+				FED0C497170BCF700033C8E6 /* darwin-ppc-framework.xcconfig */,
+				FED0C498170BCF700033C8E6 /* darwin-x86_64-framework.xcconfig */,
+				FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */,
+				FED0C49A170BCF700033C8E6 /* linux-arm-framework.xcconfig */,
+				FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */,
+				FED0C49C170BCF700033C8E6 /* linux-ppc-framework.xcconfig */,
+				FED0C49D170BCF700033C8E6 /* solaris-sparc-framework.xcconfig */,
 				FE06B0371430E6B30071169B /* darwin-i386.xcconfig */,
 				FE06B0381430E6B30071169B /* darwin-ppc.xcconfig */,
 				FE06B0391430E6B30071169B /* darwin-x86_64.xcconfig */,
@@ -368,7 +374,7 @@
 				FE01AB250C5D9C3500AEA51A /* AppKit.framework */,
 				C8724AC00EC706C200DBDDAD /* AppKit.framework */,
 				C8E0BF930F0E6AF300677729 /* AppKit.framework */,
-				FE1362640FE7167F00DE15FA /* AppKit.framework */,
+				0D94CD0617F8E14500729FC3 /* AppKit.framework */,
 				FE5A8CB810C828A5005E348A /* AppKit.framework */,
 			);
 			name = Products;
@@ -378,7 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				FE78D108126F4CF500CC39CF /* CoreData.framework */,
-				0DC7217C16CF20EF00E0FF99 /* CoreData.framework */,
+				0D9BD55417F8DE0F00693B17 /* CoreData.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -474,7 +480,6 @@
 				FE5A873810C6F1E8005E348A /* Frameworks */,
 			);
 			buildRules = (
-				FE5A873B10C6F1E8005E348A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FEE044C310C99F84000BCEB8 /* PBXTargetDependency */,
@@ -495,11 +500,11 @@
 				FECC1DD0108D025D00BD4A91 /* Frameworks */,
 			);
 			buildRules = (
-				FECC1DDB108D02C600BD4A91 /* PBXBuildRule */,
 			);
 			dependencies = (
-				0DC7217916CF20EF00E0FF99 /* PBXTargetDependency */,
 				FECC1DDA108D027000BD4A91 /* PBXTargetDependency */,
+				0D94CD0317F8E14500729FC3 /* PBXTargetDependency */,
+				0D9BD54F17F8DE0F00693B17 /* PBXTargetDependency */,
 			);
 			name = "Cocoa-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -553,11 +558,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		0DC7217C16CF20EF00E0FF99 /* CoreData.framework */ = {
+		0D94CD0617F8E14500729FC3 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = 0D94CD0517F8E14500729FC3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0D9BD55417F8DE0F00693B17 /* CoreData.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CoreData.framework;
-			remoteRef = 0DC7217B16CF20EF00E0FF99 /* PBXContainerItemProxy */;
+			remoteRef = 0D9BD55317F8DE0F00693B17 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C8724AC00EC706C200DBDDAD /* AppKit.framework */ = {
@@ -600,13 +612,6 @@
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = FE01AB270C5D9C3500AEA51A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE1362640FE7167F00DE15FA /* AppKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FE1362630FE7167F00DE15FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE5A88AD10C6F369005E348A /* ApplicationServices.framework */ = {
@@ -699,10 +704,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0DC7217916CF20EF00E0FF99 /* PBXTargetDependency */ = {
+		0D94CD0317F8E14500729FC3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ApplicationServices-Linux-i386";
+			targetProxy = 0D94CD0217F8E14500729FC3 /* PBXContainerItemProxy */;
+		};
+		0D9BD54F17F8DE0F00693B17 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreData-Linux-i386";
-			targetProxy = 0DC7217816CF20EF00E0FF99 /* PBXContainerItemProxy */;
+			targetProxy = 0D9BD54E17F8DE0F00693B17 /* PBXContainerItemProxy */;
 		};
 		C8E0BFB00F0E6B6600677729 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -759,12 +769,10 @@
 			baseConfigurationReference = FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
+					"$(OTHER_CFLAGS)",
 				);
 				PRODUCT_NAME = Cocoa;
 			};
@@ -772,45 +780,29 @@
 		};
 		C8E0BFA80F0E6B0E00677729 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Release;
 		};
 		C8E0BFA90F0E6B0E00677729 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FED0C496170BCF700033C8E6 /* darwin-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_MODE_FLAG = "og-w,a+rX";
-				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Darwin/i386;
 			};
 			name = Debug;
 		};
@@ -819,12 +811,10 @@
 			baseConfigurationReference = FE7085281431174600B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
-					"-D__LITTLE_ENDIAN__",
+					"$(OTHER_CFLAGS)",
 				);
 				PRODUCT_NAME = Cocoa;
 			};
@@ -832,130 +822,55 @@
 		};
 		FE5A873D10C6F1E8005E348A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = (
-					/Developer/Cocotron/1.0/FreeBSD/i386/include,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include/freetype2,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include/cairo,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include/fontconfig,
-					/Developer/Cocotron/1.0/FreeBSD/i386/include,
-				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/lib;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lX11",
-					"-lcairo",
-					"-lfreetype",
-					"-lfontconfig",
-				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Release;
 		};
 		FE5A873E10C6F1E8005E348A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FED0C499170BCF700033C8E6 /* freebsd-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/FreeBSD/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/FreeBSD/i386;
 			};
 			name = Debug;
 		};
 		FECC1DD4108D025D00BD4A91 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/lib;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-					"-freetype",
-					"-lX11",
-					"-lfontconfig",
-					"-lXrender",
-					"-lpixman",
-					"-lexpat",
-				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Release;
 		};
 		FECC1DD5108D025D00BD4A91 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FED0C49B170BCF700033C8E6 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/lib;
 				OTHER_CFLAGS = (
 					"-DCOCOA_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-lm",
-					"-freetype",
-					"-lX11",
-					"-lfontconfig",
-					"-lXrender",
-					"-lpixman",
-					"-lexpat",
-				);
 				PRODUCT_NAME = Cocoa;
-				SYMROOT = build/Linux/i386;
 			};
 			name = Debug;
 		};

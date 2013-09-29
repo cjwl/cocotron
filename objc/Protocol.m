@@ -59,7 +59,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
 
    if(instanceMethods!=NULL)
     for(i=0;i<instanceMethods->count;i++)
-     if(instanceMethods->list[i].name==selector)
+     if(instanceMethods->list[i].name==sel_getSelector(selector))
       return &instanceMethods->list[i];
     
    list=childProtocols;
@@ -70,7 +70,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
      unsigned k;
 
      for(k=0;k<list->list[j]->instanceMethods->count;k++)
-      if(list->list[j]->instanceMethods->list[k].name==selector)
+      if(list->list[j]->instanceMethods->list[k].name==sel_getSelector(selector))
        return &list->list[j]->instanceMethods->list[k];
     }
     list=list->next;
@@ -85,7 +85,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
 
    if(classMethods!=NULL)
     for(i=0;i<classMethods->count;i++)
-     if(classMethods->list[i].name==selector)
+     if(classMethods->list[i].name==sel_getSelector(selector))
       return &classMethods->list[i];
 
    list=childProtocols;
@@ -96,7 +96,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
      unsigned k;
 
      for (k=0;k<list->list[j]->classMethods->count;k++)
-      if(list->list[j]->classMethods->list[k].name==selector)
+      if(list->list[j]->classMethods->list[k].name==sel_getSelector(selector))
        return &list->list[j]->classMethods->list[k];
     }
     list=list->next;

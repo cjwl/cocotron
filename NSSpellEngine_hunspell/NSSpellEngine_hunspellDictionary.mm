@@ -8,6 +8,8 @@
 
 #import "NSSpellEngine_hunspellDictionary.h"
 #import <Foundation/NSTextCheckingResult.h>
+#import <Foundation/NSPathUtilities.h>
+#import <string.h>
 
 /* hunspelldll.h is a rough C cover over the C++ library, if more functionality is needed use the C++
    library directly.

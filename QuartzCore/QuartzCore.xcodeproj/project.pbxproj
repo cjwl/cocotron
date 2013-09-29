@@ -162,18 +162,18 @@
 			remoteGlobalIDString = FE6F7AF80FD554A800C3244F;
 			remoteInfo = "CoreGraphics-Linux-i386";
 		};
-		0DCD878115B0366D006F9320 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 0DCD876015B03618006F9320;
-			remoteInfo = "CoreVideo-Linux-i386";
-		};
 		0DCD878415B0366D006F9320 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0DCD877115B03618006F9320;
+			remoteInfo = "CoreVideo-Linux-i386";
+		};
+		0DF0B30017F8E5A400365393 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DF0B2E217F8E56300365393;
 			remoteInfo = "CoreVideo-Linux-i386";
 		};
 		FE293C5D10D984D10031C1DC /* PBXContainerItemProxy */ = {
@@ -704,7 +704,7 @@
 			);
 			dependencies = (
 				0DCD875E15B02E45006F9320 /* PBXTargetDependency */,
-				0DCD878215B0366D006F9320 /* PBXTargetDependency */,
+				0DF0B30117F8E5A400365393 /* PBXTargetDependency */,
 				0DCD875C15B02E3C006F9320 /* PBXTargetDependency */,
 			);
 			name = "QuartzCore-Linux-i386";
@@ -969,10 +969,10 @@
 			name = "CoreGraphics-Linux-i386";
 			targetProxy = 0DCD875D15B02E45006F9320 /* PBXContainerItemProxy */;
 		};
-		0DCD878215B0366D006F9320 /* PBXTargetDependency */ = {
+		0DF0B30117F8E5A400365393 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreVideo-Linux-i386";
-			targetProxy = 0DCD878115B0366D006F9320 /* PBXContainerItemProxy */;
+			targetProxy = 0DF0B30017F8E5A400365393 /* PBXContainerItemProxy */;
 		};
 		FE2A2CEE12D2C74E0028C06D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

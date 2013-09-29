@@ -256,8 +256,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085A21431175E00B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DCOMMONCRYPTO_INSIDE_BUILD=1",
@@ -269,7 +267,6 @@
 					"-lcrypto",
 					"-lgdi32",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CommonCrypto;
 			};
 			name = Release;

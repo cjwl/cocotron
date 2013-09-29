@@ -5,7 +5,7 @@ scriptResources=$installResources/scripts
 productFolder=/Developer/Cocotron/1.0
 downloadFolder=$productFolder/Downloads
 
-PREFIX=/Developer/Cocotron/1.0/Windows/i386/hunspell-1.3.1
+PREFIX=`pwd`/../system/i386-mingw32msvc/hunspell-1.3.1
 BUILD=/tmp/build_hunspell
 
 $scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://downloads.sourceforge.net/hunspell/hunspell-1.3.1.tar.gz

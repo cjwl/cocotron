@@ -274,7 +274,7 @@ static Class _fontPanelFactory;
 
     if([item hasSubmenu])
      [self _configureMenu:[item submenu] forFont:font];
-    else if([item action]==@selector(addFontTrait:) && [item target]==self){
+    else if(sel_isEqual([item action],@selector(addFontTrait:)) && [item target]==self){
      unsigned        tag=[item tag];
      NSFontTraitMask traits=[self traitsOfFont:font];
 

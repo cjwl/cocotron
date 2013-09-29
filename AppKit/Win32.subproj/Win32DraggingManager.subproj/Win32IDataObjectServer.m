@@ -305,7 +305,7 @@ static void flipRowsAndSwapColors(long width, long height, long bytesPerRow, con
    return S_OK;
 }
 
--(HRESULT)GetDataHere:(FORMATETC *)format:(STGMEDIUM *)storageMedium {
+-(HRESULT)GetDataHere:(FORMATETC *)format :(STGMEDIUM *)storageMedium {
    NSUnimplementedMethod();
    return DV_E_FORMATETC;
 }
@@ -314,17 +314,17 @@ static void flipRowsAndSwapColors(long width, long height, long bytesPerRow, con
    return [self formatIsValid:format];
 }
 
--(HRESULT)GetCanonicalFormatEtc:(FORMATETC *)format:(FORMATETC *)pformatetcOut {
+-(HRESULT)GetCanonicalFormatEtc:(FORMATETC *)format :(FORMATETC *)pformatetcOut {
    NSUnimplementedMethod();
    return S_OK;
 }
 
--(HRESULT)SetData:(FORMATETC *)format:(STGMEDIUM *)pmedium:(BOOL)fRelease {
+-(HRESULT)SetData:(FORMATETC *)format :(STGMEDIUM *)pmedium :(BOOL)fRelease {
    NSUnimplementedMethod();
    return S_OK;
 }
 
--(HRESULT)EnumFormatEtc:(DWORD)dwDirection:(IEnumFORMATETC  **)ppenumFormatEtc {
+-(HRESULT)EnumFormatEtc:(DWORD)dwDirection :(IEnumFORMATETC  **)ppenumFormatEtc {
    Win32IEnumFORMATETCServer *server=[[Win32IEnumFORMATETCServer alloc] initAsIEnumFORMATETC];
 
    [server setFormatEtcs:[self formatEtcs]];
@@ -334,7 +334,7 @@ static void flipRowsAndSwapColors(long width, long height, long bytesPerRow, con
    return S_OK;
 }
 
--(HRESULT)DAdvise:(FORMATETC *)pformatetc:(DWORD)advf:(IAdviseSink *)pAdvSink:(DWORD *)pdwConnection {
+-(HRESULT)DAdvise:(FORMATETC *)pformatetc :(DWORD)advf :(IAdviseSink *)pAdvSink :(DWORD *)pdwConnection {
    NSUnimplementedMethod();
    return E_NOTIMPL;
 }

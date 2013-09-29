@@ -1,0 +1,37 @@
+TYPE := framework
+
+include $(dir $(lastword $(MAKEFILE_LIST)))/Makefile.common
+
+VERSIONS_DIR := $(TARGET_DIR)/Versions
+ACTUAL_VERSION_DIR := $(VERSIONS_DIR)/A
+CURRENT_VERSION_DIR := $(VERSIONS_DIR)/Current
+TARGET := $(ACTUAL_VERSION_DIR)/lib$(NAME).so
+TARGET_WRAPPER := $(ACTUAL_VERSION_DIR)/$(NAME)
+TARGET_SHORTCUT := $(TARGET_DIR)/$(NAME)
+RESOURCES := $(TARGET_DIR)/Resources
+
+
+
+$(TARGET): $(O_FILES) $(ASM_O_FILES)
+	@echo "$(GREEN)[LD]$(NORMAL)" $@
+	@mkdir -p $(@D)
+	@$(OCC) -rdynamic -shared -o $@ $^ $(STATIC_LIBS) $(LDFLAGS)
+
+$(TARGET_WRAPPER): $(TARGET)
+	@$(call link,$(notdir $<),$@)
+
+$(ACTUAL_VERSION_DIR): $(TARGET_WRAPPER)
+
+$(CURRENT_VERSION_DIR): $(ACTUAL_VERSION_DIR)
+	@$(call link,$(notdir $<),$@)
+
+$(TARGET_SHORTCUT): $(CURRENT_VERSION_DIR)
+	@$(call link,Versions/Current/$(NAME),$@)
+
+$(RESOURCES)/%: $(RESOURCES_DIR)/%
+	@mkdir -p $(dir $@)
+	@$(call copy,$<,$@)
+
+$(RESOURCES): $(addprefix $(RESOURCES)/,$(notdir $(wildcard $(RESOURCES_DIR)/*)))
+
+$(TARGET_DIR): $(TARGET_SHORTCUT) $(RESOURCES)

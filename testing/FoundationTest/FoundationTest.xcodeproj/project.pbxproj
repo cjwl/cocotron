@@ -1,0 +1,417 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FE62CBC3174F0A4200D54835 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FE62CBC2174F0A4200D54835 /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FE62CBDE174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE62CBE0174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
+			remoteInfo = "Foundation-Linux-i386";
+		};
+		FE62CBE2174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
+			remoteInfo = "Foundation-Solaris-sparc";
+		};
+		FE62CBE4174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+		FE62CBE6174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
+			remoteInfo = "Foundation-Darwin-ppc";
+		};
+		FE62CBE8174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE651A870FBC844C00464BFD;
+			remoteInfo = "Foundation-Darwin-x86_64";
+		};
+		FE62CBEA174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
+			remoteInfo = "Foundation-Linux-ppc";
+		};
+		FE62CBEC174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15D921C0105E918000171406;
+			remoteInfo = "Foundation-Linux-arm";
+		};
+		FE62CBEE174F0A7A00D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F;
+			remoteInfo = "Foundation-FreeBSD-i386";
+		};
+		FE62CBF6174F112500D54835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FE62CBBA174F0A4200D54835 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FE62CBBC174F0A4200D54835 /* FoundationTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FoundationTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE62CBBF174F0A4200D54835 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FE62CBC2174F0A4200D54835 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../../Foundation/Foundation.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FE62CBB9174F0A4200D54835 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FE62CBB3174F0A4200D54835 = {
+			isa = PBXGroup;
+			children = (
+				FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */,
+				FE62CBC1174F0A4200D54835 /* FoundationTest */,
+				FE62CBBE174F0A4200D54835 /* Frameworks */,
+				FE62CBBD174F0A4200D54835 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FE62CBBD174F0A4200D54835 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE62CBBC174F0A4200D54835 /* FoundationTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE62CBBE174F0A4200D54835 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE62CBBF174F0A4200D54835 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE62CBC1174F0A4200D54835 /* FoundationTest */ = {
+			isa = PBXGroup;
+			children = (
+				FE62CBC2174F0A4200D54835 /* main.m */,
+			);
+			path = FoundationTest;
+			sourceTree = "<group>";
+		};
+		FE62CBCE174F0A7700D54835 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE62CBDF174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBE1174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBE3174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBE5174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBE7174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBE9174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBEB174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBED174F0A7A00D54835 /* Foundation.framework */,
+				FE62CBEF174F0A7A00D54835 /* Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FE62CBBB174F0A4200D54835 /* FoundationTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE62CBCA174F0A4200D54835 /* Build configuration list for PBXNativeTarget "FoundationTest" */;
+			buildPhases = (
+				FE62CBB8174F0A4200D54835 /* Sources */,
+				FE62CBB9174F0A4200D54835 /* Frameworks */,
+				FE62CBBA174F0A4200D54835 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FE62CBF7174F112500D54835 /* PBXTargetDependency */,
+			);
+			name = FoundationTest;
+			productName = FoundationTest;
+			productReference = FE62CBBC174F0A4200D54835 /* FoundationTest */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FE62CBB4174F0A4200D54835 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = cocotron;
+			};
+			buildConfigurationList = FE62CBB7174F0A4200D54835 /* Build configuration list for PBXProject "FoundationTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FE62CBB3174F0A4200D54835;
+			productRefGroup = FE62CBBD174F0A4200D54835 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE62CBCE174F0A7700D54835 /* Products */;
+					ProjectRef = FE62CBCD174F0A7700D54835 /* Foundation.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				FE62CBBB174F0A4200D54835 /* FoundationTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE62CBDF174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBDE174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBE1174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBE0174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBE3174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBE2174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBE5174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBE4174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBE7174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBE6174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBE9174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBE8174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBEB174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBEA174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBED174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBEC174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE62CBEF174F0A7A00D54835 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE62CBEE174F0A7A00D54835 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE62CBB8174F0A4200D54835 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE62CBC3174F0A4200D54835 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE62CBF7174F112500D54835 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Darwin-i386";
+			targetProxy = FE62CBF6174F112500D54835 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		FE62CBC8174F0A4200D54835 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FE62CBC9174F0A4200D54835 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FE62CBCB174F0A4200D54835 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				FRAMEWORK_SEARCH_PATHS = "../../system/i386-apple-darwin/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-lSystem",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FE62CBCC174F0A4200D54835 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				FRAMEWORK_SEARCH_PATHS = "../../system/i386-apple-darwin/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-lSystem",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FE62CBB7174F0A4200D54835 /* Build configuration list for PBXProject "FoundationTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE62CBC8174F0A4200D54835 /* Debug */,
+				FE62CBC9174F0A4200D54835 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE62CBCA174F0A4200D54835 /* Build configuration list for PBXNativeTarget "FoundationTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE62CBCB174F0A4200D54835 /* Debug */,
+				FE62CBCC174F0A4200D54835 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FE62CBB4174F0A4200D54835 /* Project object */;
+}

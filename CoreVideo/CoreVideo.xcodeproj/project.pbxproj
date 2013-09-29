@@ -7,40 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0DCD876615B03618006F9320 /* CVDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0DCD876715B03618006F9320 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43017B11E253E900EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0DCD876815B03618006F9320 /* CVBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045811E2769E00EBDD56 /* CVBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0DCD876915B03618006F9320 /* CVReturn.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045A11E2779700EBDD56 /* CVReturn.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0DCD876B15B03618006F9320 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
-		0DCD876E15B03618006F9320 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		0DF0B2E817F8E56300365393 /* CVDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DF0B2E917F8E56300365393 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43017B11E253E900EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DF0B2EA17F8E56300365393 /* CVBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045811E2769E00EBDD56 /* CVBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DF0B2EB17F8E56300365393 /* CVReturn.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045A11E2779700EBDD56 /* CVReturn.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DF0B2ED17F8E56300365393 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE43015C11E2531F00EBDD56 /* CVDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE43016711E2534D00EBDD56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE43017C11E253E900EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43017B11E253E900EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE43045911E2769E00EBDD56 /* CVBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045811E2769E00EBDD56 /* CVBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE43045B11E2779700EBDD56 /* CVReturn.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045A11E2779700EBDD56 /* CVReturn.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0D77690115B0B90B00308826 /* PBXContainerItemProxy */ = {
+		0DF0B2FD17F8E56300365393 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 0DC472D015B02B050075BCAB;
+			proxyType = 2;
+			remoteGlobalIDString = 0DC472DE15B02B050075BCAB;
 			remoteInfo = "OpenGL-Linux-i386";
 		};
-		0D77690315B0B90F00308826 /* PBXContainerItemProxy */ = {
+		0DF0B30217F8E6E700365393 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 6EA048CA09E57D5F0067589C;
 			remoteInfo = "Foundation-Linux-i386";
 		};
-		0DCD877D15B03618006F9320 /* PBXContainerItemProxy */ = {
+		0DF0B30417F8E6EF00365393 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE2A2D0012D2C7760028C06D /* OpenGL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0DC472DE15B02B050075BCAB;
+			proxyType = 1;
+			remoteGlobalIDString = 0DC472D015B02B050075BCAB;
 			remoteInfo = "OpenGL-Linux-i386";
 		};
 		50ACFD4A1275F6F3008BEDDD /* PBXContainerItemProxy */ = {
@@ -146,7 +144,7 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0DCD877115B03618006F9320 /* CoreVideo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreVideo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DF0B2F017F8E56300365393 /* CoreVideo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreVideo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ACFD3D1275F6F3008BEDDD /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreVideo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreVideo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,31 +172,12 @@
 		FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		0DCD876D15B03618006F9320 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0DCD876E15B03618006F9320 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8DC2EF560486A6940098B216 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FE43016711E2534D00EBDD56 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* CoreVideo.framework */,
-				0DCD877115B03618006F9320 /* CoreVideo.framework */,
+				0DF0B2F017F8E56300365393 /* CoreVideo.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,7 +287,7 @@
 				FE2A2D0712D2C7760028C06D /* OpenGL.framework */,
 				FE2A2D0912D2C7760028C06D /* OpenGL.framework */,
 				FE2A2D0B12D2C7760028C06D /* OpenGL.framework */,
-				0DCD877E15B03618006F9320 /* OpenGL.framework */,
+				0DF0B2FE17F8E56300365393 /* OpenGL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -316,14 +295,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		0DCD876515B03618006F9320 /* Headers */ = {
+		0DF0B2E717F8E56300365393 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DCD876615B03618006F9320 /* CVDisplayLink.h in Headers */,
-				0DCD876715B03618006F9320 /* CoreVideo.h in Headers */,
-				0DCD876815B03618006F9320 /* CVBase.h in Headers */,
-				0DCD876915B03618006F9320 /* CVReturn.h in Headers */,
+				0DF0B2E817F8E56300365393 /* CVDisplayLink.h in Headers */,
+				0DF0B2E917F8E56300365393 /* CoreVideo.h in Headers */,
+				0DF0B2EA17F8E56300365393 /* CVBase.h in Headers */,
+				0DF0B2EB17F8E56300365393 /* CVReturn.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,25 +320,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0DCD876015B03618006F9320 /* CoreVideo-Linux-i386 */ = {
+		0DF0B2E217F8E56300365393 /* CoreVideo-Linux-i386 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0DCD876F15B03618006F9320 /* Build configuration list for PBXNativeTarget "CoreVideo-Linux-i386" */;
+			buildConfigurationList = 0DF0B2EE17F8E56300365393 /* Build configuration list for PBXNativeTarget "CoreVideo-Linux-i386" */;
 			buildPhases = (
-				0DCD876515B03618006F9320 /* Headers */,
-				0DCD876A15B03618006F9320 /* Resources */,
-				0DCD876C15B03618006F9320 /* Sources */,
-				0DCD876D15B03618006F9320 /* Frameworks */,
+				0DF0B2E717F8E56300365393 /* Headers */,
+				0DF0B2EC17F8E56300365393 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0D77690415B0B90F00308826 /* PBXTargetDependency */,
-				0D77690215B0B90B00308826 /* PBXTargetDependency */,
+				0DF0B30317F8E6E700365393 /* PBXTargetDependency */,
+				0DF0B30517F8E6EF00365393 /* PBXTargetDependency */,
 			);
 			name = "CoreVideo-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreVideo;
-			productReference = 0DCD877115B03618006F9320 /* CoreVideo.framework */;
+			productReference = 0DF0B2F017F8E56300365393 /* CoreVideo.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		8DC2EF4F0486A6940098B216 /* CoreVideo-Windows-i386 */ = {
@@ -368,8 +345,6 @@
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
-				8DC2EF540486A6940098B216 /* Sources */,
-				8DC2EF560486A6940098B216 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -389,7 +364,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreVideo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -417,17 +392,17 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* CoreVideo-Windows-i386 */,
-				0DCD876015B03618006F9320 /* CoreVideo-Linux-i386 */,
+				0DF0B2E217F8E56300365393 /* CoreVideo-Linux-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		0DCD877E15B03618006F9320 /* OpenGL.framework */ = {
+		0DF0B2FE17F8E56300365393 /* OpenGL.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = OpenGL.framework;
-			remoteRef = 0DCD877D15B03618006F9320 /* PBXContainerItemProxy */;
+			remoteRef = 0DF0B2FD17F8E56300365393 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		50ACFD4B1275F6F3008BEDDD /* Foundation.framework */ = {
@@ -517,11 +492,11 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0DCD876A15B03618006F9320 /* Resources */ = {
+		0DF0B2EC17F8E56300365393 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DCD876B15B03618006F9320 /* InfoPlist.strings in Resources */,
+				0DF0B2ED17F8E56300365393 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,33 +510,16 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXSourcesBuildPhase section */
-		0DCD876C15B03618006F9320 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8DC2EF540486A6940098B216 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
 /* Begin PBXTargetDependency section */
-		0D77690215B0B90B00308826 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "OpenGL-Linux-i386";
-			targetProxy = 0D77690115B0B90B00308826 /* PBXContainerItemProxy */;
-		};
-		0D77690415B0B90F00308826 /* PBXTargetDependency */ = {
+		0DF0B30317F8E6E700365393 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Foundation-Linux-i386";
-			targetProxy = 0D77690315B0B90F00308826 /* PBXContainerItemProxy */;
+			targetProxy = 0DF0B30217F8E6E700365393 /* PBXContainerItemProxy */;
+		};
+		0DF0B30517F8E6EF00365393 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-Linux-i386";
+			targetProxy = 0DF0B30417F8E6EF00365393 /* PBXContainerItemProxy */;
 		};
 		50ACFD5D1275F6F8008BEDDD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -587,24 +545,15 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		0DCD877015B03618006F9320 /* Release */ = {
+		0DF0B2EF17F8E56300365393 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				EFFECTIVE_PLATFORM_NAME = "-linux";
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				EXECUTABLE_SUFFIX = .so;
 				GCC_VERSION = org.cocotron.1.0.linux.i386.gcc.4.3.1;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
-				OTHER_CFLAGS = (
-					"-D__LITTLE_ENDIAN__",
-					"-DWINVER=0x500",
-					"-Wno-multichar",
-					"-Wreturn-type",
-					"-isystem",
-					/Developer/Cocotron/1.0/Linux/i386,
-				);
+				INSTALL_TARGET_TRIPLE = "i386-pc-linux";
 				PRODUCT_NAME = CoreVideo;
 			};
 			name = Release;
@@ -613,8 +562,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE708682143117D400B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = CoreVideo;
 			};
@@ -629,10 +576,10 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0DCD876F15B03618006F9320 /* Build configuration list for PBXNativeTarget "CoreVideo-Linux-i386" */ = {
+		0DF0B2EE17F8E56300365393 /* Build configuration list for PBXNativeTarget "CoreVideo-Linux-i386" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0DCD877015B03618006F9320 /* Release */,
+				0DF0B2EF17F8E56300365393 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

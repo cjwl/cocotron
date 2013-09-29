@@ -1,1 +1,6 @@
 #include "solaris-sparc"
+#include "platform-framework"
+
+EXECUTABLE_SUFFIX = .so
+EXECUTABLE_PREFIX = lib
+

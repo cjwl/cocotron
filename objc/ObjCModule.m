@@ -247,14 +247,14 @@ static OBJCArray *OBJCModuleQueue(){
 
 
 static void OBJCSymbolTableRegisterSelectors(OBJCSymbolTable *symbolTable){
-   SEL *selectorReferences=symbolTable->selectorReferences;
-
-   if(selectorReferences!=NULL){
-    while(*selectorReferences!=NULL){
-     *selectorReferences=(SEL)sel_registerNameNoCopy((const char *)*selectorReferences);
-     selectorReferences++;
+    objc_selector_internal *selectorReferences=symbolTable->selectorReferences;
+    
+    if(selectorReferences!=NULL){
+        while(objc_getSelectorReferenceName(selectorReferences)!=NULL){
+            objc_setSelectorReferenceName(&selectorReferences,sel_registerNameNoCopy(objc_getSelectorReferenceName(selectorReferences)));
+            selectorReferences++;
+        }
     }
-   }
 }
 
 void OBJCAddToUnResolvedClasses(Class class) {
@@ -471,47 +471,47 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
 
 // GNU style for now
 static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable){
-   static OBJCArray        *unlinkedObjects=NULL;
-
-   unsigned long            offset=symbolTable->classCount+symbolTable->categoryCount;
-   OBJCStaticInstanceList **listOfLists=symbolTable->definitions[offset];
-
-   if(unlinkedObjects!=NULL){
-    int count=unlinkedObjects->count;
-   
-    while(--count>=0){
-     OBJCStaticInstanceList *staticInstances=OBJCArrayItemAtIndex(unlinkedObjects,count);
-     Class                   class=objc_lookUpClass(staticInstances->name);
-
-     if(class!=Nil){
-	  unsigned i;
-	  
-      for(i=0;staticInstances->instances[i]!= nil;i++)
-       staticInstances->instances[i]->isa = class;
-	   
-	  OBJCArrayRemoveItemAtIndex(unlinkedObjects,count);
-	 }
-	}
-   }
-
-   if(listOfLists!=NULL){
-    for (;*listOfLists != NULL;listOfLists++) {
-     OBJCStaticInstanceList *staticInstances=*listOfLists;
-     Class                   class=objc_lookUpClass(staticInstances->name);
-	 unsigned                i;
-
-     if(class!=Nil){
-      for(i=0;staticInstances->instances[i]!= nil;i++)
-       staticInstances->instances[i]->isa = class;
-	 }
-	 else {
-	  if(unlinkedObjects==NULL)
-	   unlinkedObjects=OBJCArrayNew();
-	  
-	  OBJCArrayAdd(unlinkedObjects,staticInstances);
-	 }
+    static OBJCArray        *unlinkedObjects=NULL;
+    
+    unsigned long            offset=symbolTable->classCount+symbolTable->categoryCount;
+    OBJCStaticInstanceList **listOfLists=symbolTable->definitions[offset];
+    
+    if(unlinkedObjects!=NULL){
+        int count=unlinkedObjects->count;
+        
+        while(--count>=0){
+            OBJCStaticInstanceList *staticInstances=OBJCArrayItemAtIndex(unlinkedObjects,count);
+            Class                   class=objc_lookUpClass(staticInstances->name);
+            
+            if(class!=Nil) {
+                unsigned i;
+                
+                for(i=0;staticInstances->instances[i]!= nil;i++)
+                    object_setClass(staticInstances->instances[i],class);
+                
+                OBJCArrayRemoveItemAtIndex(unlinkedObjects,count);
+            }
+        }
     }
-   }
+    
+    if(listOfLists!=NULL){
+        for (;*listOfLists != NULL;listOfLists++) {
+            OBJCStaticInstanceList *staticInstances=*listOfLists;
+            Class                   class=objc_lookUpClass(staticInstances->name);
+            unsigned                i;
+            
+            if(class!=Nil){
+                for(i=0;staticInstances->instances[i]!= nil;i++)
+                    object_setClass(staticInstances->instances[i],class);
+            }
+            else {
+                if(unlinkedObjects==NULL)
+                    unlinkedObjects=OBJCArrayNew();
+                
+                OBJCArrayAdd(unlinkedObjects,staticInstances);
+            }
+        }
+    }
 }
 
 static void OBJCSymbolTableRegisterProtocolsIfNeeded(OBJCSymbolTable *symbolTable){
@@ -529,17 +529,19 @@ static void OBJCSymbolTableRegisterProtocolsIfNeeded(OBJCSymbolTable *symbolTabl
 }
 
 void OBJCQueueModule(OBJCModule *module) {
-   OBJCArrayAdd(OBJCModuleQueue(),module);
-   OBJCLinkModuleToActiveObjectFile(module);
-   OBJCSymbolTableRegisterSelectors(module->symbolTable);
-   OBJCSymbolTableRegisterClasses(module->symbolTable);
-   OBJCSymbolTableRegisterCategories(module->symbolTable);
+    OBJCArrayAdd(OBJCModuleQueue(),module);
+    OBJCLinkModuleToActiveObjectFile(module);
+    if(module->symbolTable!=NULL){
+        OBJCSymbolTableRegisterSelectors(module->symbolTable);
+        OBJCSymbolTableRegisterClasses(module->symbolTable);
+        OBJCSymbolTableRegisterCategories(module->symbolTable);
 #ifndef __APPLE__
-   OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
-   OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
+        OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
+        OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
 #endif
-
-   OBJCLinkClassTable();
+    }
+    
+    OBJCLinkClassTable();
 }
 
 void OBJCResetModuleQueue(void) {
@@ -561,26 +563,28 @@ void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path){
 }
 
 OBJCObjectFile *OBJCObjectFileFromClass(Class class) {
-   OBJCArray      *array=OBJCObjectFileImageArray();
-   int             count=array->count;
-
-   while(--count>=0){
-    OBJCObjectFile *objectFile=OBJCArrayItemAtIndex(array,count);
-    OBJCModule     *module;
-    unsigned long   moduleIndex = 0;
-	
-    while((module=OBJCArrayEnumerate(objectFile->moduleArray,&moduleIndex))!=NULL) {
-     unsigned classIndex;
-
-     for(classIndex=0;classIndex<module->symbolTable->classCount;classIndex++){
-      if(module->symbolTable->definitions[classIndex]==class){
-       return objectFile;
-	  }
-     }
+    OBJCArray      *array=OBJCObjectFileImageArray();
+    int             count=array->count;
+    
+    while(--count>=0){
+        OBJCObjectFile *objectFile=OBJCArrayItemAtIndex(array,count);
+        OBJCModule     *module;
+        unsigned long   moduleIndex = 0;
+        
+        while((module=OBJCArrayEnumerate(objectFile->moduleArray,&moduleIndex))!=NULL) {
+            unsigned classIndex;
+            
+            if(module->symbolTable!=NULL){
+                for(classIndex=0;classIndex<module->symbolTable->classCount;classIndex++){
+                    if(module->symbolTable->definitions[classIndex]==class){
+                        return objectFile;
+                    }
+                }
+            }
+        }
     }
-   }
-
-   return NULL;
+    
+    return NULL;
 }
 
 const char *class_getImageName(Class cls) {

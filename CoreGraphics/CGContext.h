@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 #import <CoreGraphics/CoreGraphicsExport.h>
 
-typedef struct O2Context *CGContextRef;
+typedef void *CGContextRef;
 
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGAffineTransform.h>

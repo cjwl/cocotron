@@ -9,5 +9,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc.h>
 #import <objc/objc-class.h>
 
-OBJC_EXPORT SEL sel_registerNameNoCopy(const char *name);
+OBJC_EXPORT const char *sel_registerNameNoCopy(const char *name);
 
+OBJC_EXPORT SEL sel_registerSelectorNoCopyName(const char *name);
+
+#ifdef OBJC_TYPED_SELECTORS
+
+typedef struct {
+    const char *name;
+    const char *types;
+} objc_selector_internal;
+
+static inline const char *objc_getSelectorReferenceName(objc_selector_internal *ref) {
+    return ref->name;
+}
+
+static inline void objc_setSelectorReferenceName(objc_selector_internal **ref,const char *name) {
+    (*ref)->name=name;
+}
+
+static inline SEL sel_getSelector(SEL selector) {
+    if(selector==NULL)
+        return selector;
+        
+    struct {
+        SEL selector;
+    } *typed=(void *)selector;
+    
+    return typed->selector;
+}
+
+#else
+
+typedef SEL objc_selector_internal;
+
+static inline const char *objc_getSelectorReferenceName(objc_selector_internal *ref) {
+    return *ref;
+}
+
+static inline void objc_setSelectorReferenceName(objc_selector_internal **ref,const char *name) {
+    **ref=name;
+}
+
+static inline SEL sel_getSelector(SEL selector) {
+    return selector;
+}
+
+#endif

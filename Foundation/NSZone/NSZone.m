@@ -208,14 +208,14 @@ id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
         zone = NSDefaultMallocZone();
     }
 
-    result = NSZoneCalloc(zone, 1, class->instance_size + extraBytes);
+    result = NSZoneCalloc(zone, 1, class_getInstanceSize(class) + extraBytes);
 #if defined(GCC_RUNTIME_3)
     object_setClass(result, class);
     // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ constructor calling.
 #elif defined(APPLE_RUNTIME_4)
     objc_constructInstance(class, result);
 #else
-    result->isa = class;
+    object_setClass(result, class);
 
     if (!object_cxxConstruct(result, result->isa)) {
         NSZoneFree(zone, result);

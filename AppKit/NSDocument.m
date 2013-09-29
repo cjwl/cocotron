@@ -913,9 +913,9 @@ forSaveOperation:(NSSaveOperationType)operation
 }
 
 -(BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item {
-   if([item action]==@selector(revertDocumentToSaved:))
+   if(sel_isEqual([item action],@selector(revertDocumentToSaved:)))
     return (_fileURL!=nil)?YES:NO;
-   if([item action]==@selector(saveDocument:))
+   if(sel_isEqual([item action],@selector(saveDocument:)))
     return YES;
    if([self respondsToSelector:[item action]]) 
     return YES; 
@@ -942,9 +942,9 @@ forSaveOperation:(NSSaveOperationType)operation
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item {
-   if([item action]==@selector(revertDocumentToSaved:))
+   if(sel_isEqual([item action],@selector(revertDocumentToSaved:)))
     return (_fileURL!=nil)?YES:NO;
-   if([item action]==@selector(saveDocument:))
+   if(sel_isEqual([item action],@selector(saveDocument:)))
     return YES;
    if([self respondsToSelector:[item action]]) 
     return YES; 

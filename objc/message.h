@@ -7,7 +7,7 @@ struct objc_super {
 
 
 OBJC_EXPORT id     objc_msgSend(id self,SEL selector,...);
-OBJC_EXPORT id     objc_msgSendSuper(struct objc_super *super,SEL selector,...);
+OBJC_EXPORT id objc_msgSendSuper(struct objc_super *super, SEL op, ...);
 
 OBJC_EXPORT void   objc_msgSend_stret(id self, SEL selector,  ...);
 OBJC_EXPORT void   objc_msgSendSuper_stret(struct objc_super *super,SEL selector,...);
