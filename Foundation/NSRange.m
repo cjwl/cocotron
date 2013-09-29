@@ -24,7 +24,7 @@ NSUInteger NSMaxRange(NSRange range){
 }
 
 NSString *NSStringFromRange(NSRange range){
-   return NSStringWithFormat(@"{location = %u; length = %u}",range.location,range.length);
+   return NSStringWithFormat(@"{%u, %u}",range.location,range.length);
 }
 
 NSRange NSRangeFromString(NSString * s) 

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/NSFont.h>
 
-@class NSTextStorage,NSGlyphGenerator,NSTypesetter,NSTextContainer,NSTextView;
+@class NSTextStorage,NSGlyphGenerator,NSTypesetter,NSTextContainer,NSTextView,NSRulerView;
 @class NSWindow,NSColor,NSCell;
 
 typedef enum {
@@ -31,6 +31,8 @@ typedef enum {
 
    struct NSRangeEntries *_glyphFragments;
    struct NSRangeEntries *_invalidFragments;
+
+   struct NSRangeEntries  *_rangeToTemporaryAttributes;
 
    BOOL             _layoutInvalid;
 
@@ -104,6 +106,7 @@ typedef enum {
 -(void)textStorage:(NSTextStorage *)storage edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)changeInLength invalidatedRange:(NSRange)invalidateRange;
 
 -(void)textContainerChangedGeometry:(NSTextContainer *)container;
+-(void)ensureLayoutForTextContainer:(NSTextContainer *)container;
 
 -(unsigned)glyphIndexForPoint:(NSPoint)point inTextContainer:(NSTextContainer *)container fractionOfDistanceThroughGlyph:(float *)fraction;
 -(unsigned)glyphIndexForPoint:(NSPoint)point inTextContainer:(NSTextContainer *)container;
@@ -139,10 +142,23 @@ typedef enum {
 
 -(float)defaultLineHeightForFont:(NSFont *)font;
 
+- (NSDictionary *)temporaryAttributesAtCharacterIndex:(NSUInteger)charIndex effectiveRange:(NSRangePointer)effectiveCharRange;
+- (void)setTemporaryAttributes:(NSDictionary *)attrs forCharacterRange:(NSRange)charRange;
+- (void)addTemporaryAttributes:(NSDictionary *)attrs forCharacterRange:(NSRange)charRange;
+- (void)removeTemporaryAttribute:(NSString *)attrName forCharacterRange:(NSRange)charRange;
+
+- (id)temporaryAttribute:(NSString *)attrName atCharacterIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range;
+- (id)temporaryAttribute:(NSString *)attrName atCharacterIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit;
+- (NSDictionary *)temporaryAttributesAtCharacterIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit;
+- (void)addTemporaryAttribute:(NSString *)attrName value:(id)value forCharacterRange:(NSRange)charRange;
+
+- (NSArray *)rulerMarkersForTextView:(NSTextView *)view paragraphStyle:(NSParagraphStyle *)style ruler:(NSRulerView *)ruler;
+- (NSView *)rulerAccessoryViewForTextView:(NSTextView *)view paragraphStyle:(NSParagraphStyle *)style ruler:(NSRulerView *)ruler enabled:(BOOL)isEnabled;
 @end
 
 @protocol NSLayoutManagerDelegate <NSObject>
 @optional
 - (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag;
+- (NSDictionary *)layoutManager:(NSLayoutManager *)layoutManager shouldUseTemporaryAttributes:(NSDictionary *)attrs forDrawingToScreen:(BOOL)toScreen atCharacterIndex:(NSUInteger)charIndex effectiveRange:(NSRangePointer)effectiveCharRange;
 @end
 

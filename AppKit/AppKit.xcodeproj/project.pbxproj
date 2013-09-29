@@ -22,6 +22,36 @@
 		49A7975A14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975B14224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975C14224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
+		49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8C166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B85E88166FB2D200507E8C /* NSBidiHelper.m */; };
+		49B85E96166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E97166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E98166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E99166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */ = {isa = PBXBuildFile; fileRef = 49B85E95166FBC9A00507E8C /* UNIDATA */; };
+		49C12B4E16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B4F16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5016FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5116FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5216FCAF270018CB21 /* O2EXIFDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5516FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5616FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49C12B5716FCAF270018CB21 /* O2EXIFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */; };
+		49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
+		49D5D246165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
+		49D5D247165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
+		49D5D248165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
+		49D5D249165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */; };
+		49D5D24A165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
+		49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
+		49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
+		49D5D24D165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
+		49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
 		630DC9DA14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DB14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DC14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
@@ -4206,6 +4236,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		C88977080EA0BF3100D0A0A2 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+				"",
+			);
+			script = "";
+		};
+		FE01AABE0C5D9BCB00AEA51A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+				"",
+			);
+			script = "";
+		};
 		FE5A8BDF10C6F50E005E348A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.freebsd.i386.gcc.default;
@@ -4492,6 +4542,13 @@
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
+		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
+		49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBidiHelper.h; sourceTree = "<group>"; };
+		49B85E95166FBC9A00507E8C /* UNIDATA */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UNIDATA; sourceTree = "<group>"; };
+		49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2EXIFDecoder.h; sourceTree = "<group>"; };
+		49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2EXIFDecoder.m; sourceTree = "<group>"; };
+		49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUndoTextOperation.h; sourceTree = "<group>"; };
+		49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUndoTextOperation.m; sourceTree = "<group>"; };
 		630DC9D914CE3F2D0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
 		630DC9E014CE3F6A0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
 		630DC9E714CE40B80009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
@@ -5557,13 +5614,6 @@
 				6E2B55050976075300DA0954 /* Resources */,
 				6E2B575A0976075500DA0954 /* External Frameworks and Libraries */,
 				6E2B53230976074C00DA0954 /* Products */,
-				630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */,
-				630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */,
-				630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */,
-				630DC9F614CE459A0009A039 /* NSFontPanel.nib */,
-				630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */,
-				630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */,
-				630DCA1014CE48210009A039 /* NSSpellingViewController.xib */,
 			);
 			name = AppKit;
 			sourceTree = "<group>";
@@ -5909,6 +5959,13 @@
 		6E2B54DE0976075300DA0954 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */,
+				630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */,
+				630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */,
+				630DC9F614CE459A0009A039 /* NSFontPanel.nib */,
+				630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */,
+				630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */,
+				630DCA1014CE48210009A039 /* NSSpellingViewController.xib */,
 				630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */,
 				6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */,
 				6311B16014C74B00007AD8C0 /* NSFontPanel.nib */,
@@ -5965,6 +6022,7 @@
 		6E2B55050976075300DA0954 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49B85E95166FBC9A00507E8C /* UNIDATA */,
 				6311B10814C7396A007AD8C0 /* Localizable.strings */,
 				6E2B55060976075300DA0954 /* NSMenu.plist */,
 			);
@@ -6054,6 +6112,10 @@
 				6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */,
 				6E2B55890976075300DA0954 /* NSTypesetter.h */,
 				6E2B55740976075300DA0954 /* NSTypesetter.m */,
+				49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */,
+				49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */,
+				49B85E88166FB2D200507E8C /* NSBidiHelper.m */,
+				49B85E8E166FB2FC00507E8C /* NSBidiHelper.h */,
 			);
 			name = NSTextView;
 			path = NSTextView.subproj;
@@ -6761,6 +6823,8 @@
 				FE6EE27C0DB91EA8005503A1 /* VGmath.h */,
 				FE6EE2E30DB92B11005503A1 /* VGPath.h */,
 				FE6EE2E40DB92B11005503A1 /* VGPath.m */,
+				49C12B4C16FCAF270018CB21 /* O2EXIFDecoder.h */,
+				49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */,
 			);
 			name = Onyx2D;
 			path = ../Onyx2D;
@@ -7328,6 +7392,8 @@
 				FEB3F1ED14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				49D5D246165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B4F16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 				0DCD875F15B0354F006F9320 /* O2Font_FT.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7737,6 +7803,8 @@
 				FEB3F1E914049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				49D5D247165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B5016FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8142,6 +8210,8 @@
 				FEB3F1EB14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138202145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B4E16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8552,6 +8622,8 @@
 				FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				49D5D249165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B5216FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8879,6 +8951,8 @@
 				FEB3F1F114049CC400059C8F /* NSSpellCheckerTagData.h in Headers */,
 				6313820A145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */,
 				631382A2145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
+				49D5D248165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
+				49C12B5116FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8946,6 +9020,7 @@
 				FE01AABD0C5D9BCB00AEA51A /* Rez */,
 			);
 			buildRules = (
+				FE01AABE0C5D9BCB00AEA51A /* PBXBuildRule */,
 			);
 			dependencies = (
 				FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */,
@@ -9300,6 +9375,7 @@
 				630DCA0414CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E97166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9377,6 +9453,7 @@
 				630DCA0314CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E98166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9450,6 +9527,23 @@
 				6311B18114C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
 				6311B19514C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
 				6311B19D14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
+				630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
+				630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
+				630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
+				630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
+				630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */,
+				630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
+				630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
+				630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				FE1F650E1508165100C24624 /* darwin-i386-framework.xcconfig in Resources */,
+				FE1F650F1508165100C24624 /* darwin-ppc-framework.xcconfig in Resources */,
+				FE1F65101508165100C24624 /* darwin-x86_64-framework.xcconfig in Resources */,
+				FE1F65111508165100C24624 /* freebsd-i386-framework.xcconfig in Resources */,
+				FE1F65121508165100C24624 /* linux-arm-framework.xcconfig in Resources */,
+				FE1F65131508165100C24624 /* linux-i386-framework.xcconfig in Resources */,
+				FE1F65141508165100C24624 /* linux-ppc-framework.xcconfig in Resources */,
+				FE1F65151508165100C24624 /* solaris-sparc-framework.xcconfig in Resources */,
+				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9527,6 +9621,7 @@
 				630DCA0114CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9604,6 +9699,7 @@
 				630DCA0214CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
 				630DCA0914CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1414CE48210009A039 /* NSSpellingViewController.xib in Resources */,
+				49B85E99166FBC9A00507E8C /* UNIDATA in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9690,7 +9786,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nmkdir -p \"$DERIVED_FILE_DIR\"\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_FreeType.h\"\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_FreeType.h\"\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch \"$DERIVED_FILE_DIR/libfreetype.c\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc \"$DERIVED_FILE_DIR/libfreetype.c\" -c -o \"$DERIVED_FILE_DIR/libfreetype.o\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr \"$DERIVED_FILE_DIR/libfreetype.a\" \"$DERIVED_FILE_DIR/libfreetype.o\"\nfi\n\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_libjpeg.h\"\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_libjpeg.h\"\nelse\n# Create empty libjpeg for link phase\n echo \"libjpeg not found\"\n touch \"$DERIVED_FILE_DIR/libjpeg.c\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc \"$DERIVED_FILE_DIR/libjpeg.c\" -c -o \"$DERIVED_FILE_DIR/libjpeg.o\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr \"$DERIVED_FILE_DIR/libjpeg.a\" \"$DERIVED_FILE_DIR/libjpeg.o\"\nfi\n\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_zlib.h\"\nif [ -d /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5 ]; then\n\techo \"zlib present.\"\n\techo \"#define ZLIB_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_zlib.h\"\nelse\n# Create empty zlib for link phase\n echo \"zlib not found\"\n touch \"$DERIVED_FILE_DIR/zlib.c\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc \"$DERIVED_FILE_DIR/zlib.c\" -c -o \"$DERIVED_FILE_DIR/zlib.o\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr \"$DERIVED_FILE_DIR/libz.a\" \"$DERIVED_FILE_DIR/zlib.o\"\nfi\n\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_libpng.h\"\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libpng ]; then\n\techo \"libpng present.\"\n\techo \"#define LIBPNG_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_libpng.h\"\nelse\n# Create empty libpng for link phase\n echo \"libpng not found\"\n touch \"$DERIVED_FILE_DIR/libpng.c\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc \"$DERIVED_FILE_DIR/libpng.c\" -c -o \"$DERIVED_FILE_DIR/libpng.o\"\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr \"$DERIVED_FILE_DIR/libpng.a\" \"$DERIVED_FILE_DIR/libpng.o\"\nfi\n\n";
+			shellScript = "#!/bin/sh\nmkdir -p $DERIVED_FILE_DIR\necho \"\" > $DERIVED_FILE_DIR/O2Defines_FreeType.h\n\nif [ -d /Developer/Cocotron/1.0/Windows/i386/freetype-2.3.5 ]; then\n\techo \"FreeType 2.3.5 present.\"\n\techo \"#define FREETYPE_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_FreeType.h\nelse\n# Create empty libfreetype for link phase\n echo \"FreeType 2.3.5 not found\"\n touch $DERIVED_FILE_DIR/libfreetype.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libfreetype.c -c -o $DERIVED_FILE_DIR/libfreetype.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libfreetype.a $DERIVED_FILE_DIR/libfreetype.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libjpeg ]; then\n\techo \"libjpeg present.\"\n\techo \"#define LIBJPEG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libjpeg.h\nelse\n# Create empty libjpeg for link phase\n echo \"libjpeg not found\"\n touch $DERIVED_FILE_DIR/libjpeg.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libjpeg.c -c -o $DERIVED_FILE_DIR/libjpeg.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libjpeg.a $DERIVED_FILE_DIR/libjpeg.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_zlib.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5 ]; then\n\techo \"zlib present.\"\n\techo \"#define ZLIB_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_zlib.h\nelse\n# Create empty zlib for link phase\n echo \"zlib not found\"\n touch $DERIVED_FILE_DIR/zlib.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/zlib.c -c -o $DERIVED_FILE_DIR/zlib.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libz.a $DERIVED_FILE_DIR/zlib.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libtiff.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libtiff ]; then\n\techo \"libitff present.\"\n\techo \"#define LIBTIFF_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libtiff.h\nelse\n# Create empty libtiff for link phase\n echo \"libtiff not found\"\n touch $DERIVED_FILE_DIR/libtiff.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libtiff.c -c -o $DERIVED_FILE_DIR/libtiff.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libtiff.a $DERIVED_FILE_DIR/libtiff.o\nfi\n\necho \"\" > $DERIVED_FILE_DIR/O2Defines_libpng.h\nif [ -d /Developer/Cocotron/1.0/Windows/i386/libpng ]; then\n\techo \"libpng present.\"\n\techo \"#define LIBPNG_PRESENT 1\" >> $DERIVED_FILE_DIR/O2Defines_libpng.h\nelse\n# Create empty libpng for link phase\n echo \"libpng not found\"\n touch $DERIVED_FILE_DIR/libpng.c\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-gcc $DERIVED_FILE_DIR/libpng.c -c -o $DERIVED_FILE_DIR/libpng.o\n /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/bin/i386-mingw32msvc-ar cr $DERIVED_FILE_DIR/libpng.a $DERIVED_FILE_DIR/libpng.o\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -10095,6 +10191,9 @@
 				FEB3F1EE14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 				63138207145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				6313829F145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
+				49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 				0D7768F315B0AEF700308826 /* O2ImageDecoder.m in Sources */,
 				0D7768F415B0AF3000308826 /* O2Font_FT.m in Sources */,
 			);
@@ -10501,6 +10600,9 @@
 				FEB3F1EA14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 				63138209145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				631382A1145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
+				49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5516FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10940,6 +11042,9 @@
 				FEFD32061434A4F400C14B08 /* O2Font_freetype.m in Sources */,
 				63138203145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				6313829B145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
+				49D5D24A165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11346,6 +11451,9 @@
 				FEB3F1F014049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 				63138205145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				6313829D145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
+				49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5716FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11647,6 +11755,9 @@
 				FEB3F1F214049CC400059C8F /* NSSpellCheckerTagData.m in Sources */,
 				6313820B145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */,
 				631382A3145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */,
+				49D5D24D165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
+				49B85E8C166FB2D300507E8C /* NSBidiHelper.m in Sources */,
+				49C12B5616FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11909,7 +12020,6 @@
 			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -11921,6 +12031,7 @@
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/Windows/i386/libtiff/lib,
 					/Developer/Cocotron/1.0/Windows/i386/libpng/lib,
 					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -11928,6 +12039,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib";
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
+					"-DQUARTZCORE_INSIDE_BUILD",
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
@@ -12187,7 +12299,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE70846E1431168800B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = stabs;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -12208,6 +12319,7 @@
 				HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/include";
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/Windows/i386/libtiff/lib,
 					/Developer/Cocotron/1.0/Windows/i386/libpng/lib,
 					"/Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib",
 					/Developer/Cocotron/1.0/Windows/i386/libjpeg/lib,

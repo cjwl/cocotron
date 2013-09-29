@@ -599,19 +599,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor {
    NSMutableArray *bitmaps=[NSMutableArray array];
    
-   for(NSImageRep *check in _representations){
-    if([check isKindOfClass:[NSBitmapImageRep class]])
-     [bitmaps addObject:check];
-    else {
-     NSSize size=[check size];
-     NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
-     
-     [self lockFocusOnRepresentation:image];
+	for(NSImageRep *check in _representations){
+		if([check isKindOfClass:[NSBitmapImageRep class]]) {
+			[bitmaps addObject:check];
+		} else if([check isKindOfClass:[NSCachedImageRep class]]) {
+			// We don't use the general case else we get flipped results for flipped images since lockFocusOnRepresention is flipping and the Cache content
+			// is already flipped
+			NSRect r = { .origin = NSZeroPoint, .size = check.size };
+			[self lockFocus];
+			NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithFocusedViewRect: r];
+			[self unlockFocus];
+
+			[bitmaps addObject:image];
+			[image release];
+		} else {
+			NSSize size=[check size];
+			NSBitmapImageRep *image=[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:32];
+			
+			[self lockFocusOnRepresentation:image];
      // we should probably use -draw here but not all reps implement it, or not?
-     [check drawInRect:NSMakeRect(0,0,size.width,size.height)];
-     [self unlockFocus];
-     
-     [bitmaps addObject:image];
+			[check draw];
+			[self unlockFocus];
+			
+			[bitmaps addObject:image];
+			[image release];
     }
     
    }
@@ -756,10 +767,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImageRep        *any=[[[self _bestUncachedFallbackCachedRepresentationForDevice:nil size:rect.size] retain] autorelease];
    NSImageRep        *cachedRep=nil;
    CGContextRef       context;
-      
-	if(NSIsEmptyRect(source) && !_isFlipped) {
-		// If we're drawing a subset of the image and the image isn't flipped then
-		// we can just draw from a cached rep or a bitmap rep(assuming we have one)
+	NSRect fullRect = { .origin = NSZeroPoint, .size = self.size };
+	BOOL drawFullImage = (NSIsEmptyRect(source) || NSEqualRects(source, fullRect));
+	BOOL canCache = drawFullImage && !_isFlipped;
+	
+	if (canCache) {
+		// If we're drawing the full image unflipped then we can just draw from a cached rep or a bitmap rep (assuming we have one)
 		if([any isKindOfClass:[NSCachedImageRep class]] ||
 		   [any isKindOfClass:[NSBitmapImageRep class]]) {
 			cachedRep=any;
@@ -794,8 +807,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		[self unlockFocus];
     
-		// And add it
-		[self addRepresentation: cached];
+		// And keep it if it makes sense
+		if (canCache) {
+			[self addRepresentation: cached];
+		}
 		
 		cachedRep=cached;
 	}

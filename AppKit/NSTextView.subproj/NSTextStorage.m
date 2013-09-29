@@ -89,8 +89,12 @@ NSString * const NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidPr
 
 -(void)endEditing {
    _beginEditing--;
-   if(_beginEditing==0)
-    [self processEditing];
+    if(_beginEditing==0) {
+        // Prevent any change to trigger more notification
+        _beginEditing++;
+        [self processEditing];
+        _beginEditing--;
+    }
 }
 
 -(NSRange)invalidatedRange {
@@ -100,10 +104,20 @@ NSString * const NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidPr
 -(void)processEditing {
    int i,count;
 
+	if ([_delegate respondsToSelector: @selector(textStorageWillProcessEditing:)]) {
+		NSNotification* note = [NSNotification notificationWithName: NSTextStorageWillProcessEditingNotification object: self userInfo: nil];
+		[_delegate textStorageWillProcessEditing: note];
+	}
+	
    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextStorageWillProcessEditingNotification object:self];
 
    [self fixAttributesInRange:_editedRange];
 
+	if ([_delegate respondsToSelector: @selector(textStorageDidProcessEditing:)]) {
+		NSNotification* note = [NSNotification notificationWithName: NSTextStorageDidProcessEditingNotification object: self userInfo: nil];
+		[_delegate textStorageDidProcessEditing: note];
+	}
+	
    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextStorageDidProcessEditingNotification object:self];
 
    count=[_layoutManagers count];

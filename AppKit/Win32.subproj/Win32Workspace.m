@@ -151,9 +151,11 @@ static BOOL openFileWithHelpViewer(const char *helpFilePath)
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir])
 	{
+		NSString  *win32Path = NSStringFromNullTerminatedUnicode([path fileSystemRepresentationW]);
+
 		NSMutableData *args=[NSMutableData data];
 		[args appendBytes:L"/select," length:16];
-		[args appendData:NSTaskArgumentDataFromStringW(path)];
+		[args appendData: NSTaskArgumentDataFromStringW(win32Path)];
 		[args appendBytes:L"\0" length:2];
 
 		return ((int)ShellExecuteW(GetDesktopWindow(),L"open",L"explorer",[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;

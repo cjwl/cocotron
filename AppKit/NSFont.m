@@ -243,6 +243,17 @@ static NSFont **_fontCache=NULL;
    NSUnimplementedMethod();
 }
 
++(NSArray *)preferredFontNames
+{
+    return [O2Font preferredFontNames];
+}
+
++(void)setPreferredFontNames:(NSArray *)fontNames
+{
+    [O2Font setPreferredFontNames:fontNames];
+}
+
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
      [coder encodeObject:[[NSFont nibFontTranslator] translateToNibFontName:_name] forKey:@"NSName"];
@@ -311,6 +322,9 @@ static NSFont **_fontCache=NULL;
 
    if(name==nil)
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] name==nil",self,sel_getName(_cmd)];
+
+	// Name can be PS name or a display name - internally we want a PS name - that's what Cocoa is doing
+	name = [O2Font postscriptNameForFontName:name];
 
    result=[self cachedFontWithName:name size:size];
 
@@ -406,8 +420,7 @@ static NSFont **_fontCache=NULL;
 }
 
 -(NSCharacterSet *)coveredCharacterSet {
-   NSUnimplementedMethod();
-   return nil;
+   return O2FontGetCoveredCharacterSet(_cgFont);
 }
 
 -(NSStringEncoding)mostCompatibleStringEncoding {

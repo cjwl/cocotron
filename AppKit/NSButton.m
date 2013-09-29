@@ -242,7 +242,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)keyDown:(NSEvent *)event {
-    [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+	// " " is a key equivalent to clicking
+	if ([[event charactersIgnoringModifiers] isEqualToString:@" "]) {
+		[self performClick:nil];
+	} else {
+		[self interpretKeyEvents:[NSArray arrayWithObject:event]];
+	}
 }
 
 @end

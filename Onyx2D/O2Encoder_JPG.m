@@ -49,6 +49,7 @@ void O2JPGEncoderWriteImage(O2JPGEncoderRef self,O2ImageRef image,CFDictionaryRe
 	
 	jpeg_set_defaults(&cinfo);
 	NSNumber *compression = [properties objectForKey:(NSString *)kO2ImageDestinationLossyCompressionQuality];
+    NSLog(@"Opetions : %@ %@", properties, compression);
 	if (compression) {
 		jpeg_set_quality(&cinfo, 100*[compression floatValue], TRUE);
 	}

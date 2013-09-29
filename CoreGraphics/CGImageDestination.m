@@ -3,7 +3,7 @@
 #import <Onyx2D/O2ImageSource.h>
 
 const CFStringRef kCGImageDestinationLossyCompressionQuality=(CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
-const CFStringRef kCGImageDestinationBackgroundColor=(CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
+const CFStringRef kCGImageDestinationBackgroundColor=(CFStringRef)@"kCGImageDestinationBackgroundColor";
 
 CFTypeID CGImageDestinationGetTypeID(void) {
    return O2ImageDestinationGetTypeID();

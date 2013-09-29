@@ -1,8 +1,11 @@
 #import <AppKit/NSTypesetter.h>
 #import <AppKit/NSTextTab.h>
 #import <AppKit/NSParagraphStyle.h>
+#import <AppKit/NSAttributedString.h>
 #import "NSTypesetter_concrete.h"
 #import <AppKit/NSRaise.h>
+
+@class NSAttributedString;
 
 @implementation NSTypesetter
 
@@ -86,7 +89,8 @@
 }
 
 -(unsigned)getGlyphsInRange:(NSRange)glyphRange glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)characterIndexes glyphInscriptions:(NSGlyphInscription *)glyphInscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels {
-   return [_layoutManager getGlyphsInRange:glyphRange glyphs:glyphs characterIndexes:characterIndexes glyphInscriptions:glyphInscriptions elasticBits:elasticBits bidiLevels:bidiLevels];
+    NSInvalidAbstractInvocation();
+    return 0;
 }
 
 -(void)getLineFragmentRect:(NSRect *)fragmentRect usedRect:(NSRect *)usedRect remainingRect:(NSRect *)remainingRect forStartingGlyphAtIndex:(unsigned)startingGlyphIndex proposedRect:(NSRect)proposedRect lineSpacing:(float)lineSpacing paragraphSpacingBefore:(float)paragraphSpacingBefore paragraphSpacingAfter:(float)paragraphSpacingAfter {
@@ -132,6 +136,7 @@
 }
 
 -(void)setBidiLevels:(const unsigned char *)bidiLevels forGlyphRange:(NSRange)glyphRange {
+    
    // do nothing
 }
 
@@ -321,4 +326,19 @@
    NSInvalidAbstractInvocation();
 }
 
+#pragma mark NSGlyphStorage Protocol
+-(unsigned)layoutOptions
+{
+    return 0;
+}
+
+-(void)insertGlyphs:(const NSGlyph *)glyphs length:(unsigned)length forStartingGlyphAtIndex:(unsigned)glyphIndex characterIndex:(unsigned int)characterIndex
+{
+    NSInvalidAbstractInvocation();
+}
+
+-(void)setIntAttribute:(int)intAttribute value:(int)value forGlyphAtIndex:(unsigned)glyphIndex;
+{
+    NSInvalidAbstractInvocation();    
+}
 @end

@@ -17,7 +17,6 @@
 	"shift,0x0009" = "insertBacktab:";
 	"0x000A" = "insertNewline:";
 	"0x000D" = "insertNewline:";
-	"0x0020" = "performClick:";			/* for NSButton in switch mode.. */
 
 	"keypad,0xF700" = "moveUp:";			/* NSUpArrowFunctionKey */
 	"keypad,0xF701" = "moveDown:";			/* NSDownArrowFunctionKey */

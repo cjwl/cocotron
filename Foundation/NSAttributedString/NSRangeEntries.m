@@ -70,6 +70,17 @@ void NSFreeRangeEntries(NSRangeEntries *self)
    return self->count;
 }
 
+static inline void removeEntryAtIndex(NSRangeEntries *self,NSUInteger index){
+	if(self->objects)
+		[(id)self->entries[index].value release];
+	else
+		NSZoneFree(NULL,self->entries[index].value);
+	
+	self->count--;
+	for(;index<self->count;index++)
+		self->entries[index]=self->entries[index+1];
+}
+
 static inline void insertEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRange range,void *value){
    NSInteger i;
 
@@ -89,7 +100,7 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRa
    self->entries[index].value=value;
 }
 
- void NSRangeEntryInsert(NSRangeEntries *self,NSRange range,void *value) {
+void NSRangeEntryInsert(NSRangeEntries *self,NSRange range,void *value) {
    NSInteger count=self->count;
    NSInteger bottom=0,top=count;
    NSInteger insertAt=0;
@@ -119,26 +130,52 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRa
      }
     }
    }
-
-   if(self->objects){
-    if(insertAt>0){
-		// Check if we can just merge the new entry with the previous one
-     if([(id)(self->entries[insertAt-1].value) isEqual:value]){
-      self->entries[insertAt-1].range=NSUnionRange(self->entries[insertAt-1].range,range);
-      return;
-     }
-    }
-    if(insertAt<self->count){
-		// Check if we can just merge the new entry with the next one
-     if([(id)(self->entries[insertAt].value) isEqual:value]){
-      self->entries[insertAt].range=NSUnionRange(self->entries[insertAt].range,range);
-      return;
-     }
-    }
-   }
-
-   insertEntryAtIndex(self,insertAt,range,value);
-}
+	BOOL merged = NO;
+	if (range.length == 0) {
+		// We'll just try to merge entries around the location
+		if(self->objects && insertAt>0 && insertAt<self->count){
+			id prev = self->entries[insertAt-1].value;
+			id next = self->entries[insertAt].value;
+			if ([prev isEqual:next]) {
+				range = NSUnionRange(self->entries[insertAt].range,self->entries[insertAt-1].range);
+				self->entries[insertAt-1].range=range;
+				removeEntryAtIndex(self, insertAt);
+			}
+		}
+		// We don't really want to insert a 0 length entry
+		return;
+	} else {
+		if(self->objects){
+			if(insertAt>0){
+				// Check if we can just merge the new entry with the previous one
+				if(range.length == 0 || [(id)(self->entries[insertAt-1].value) isEqual:value]){
+					range = NSUnionRange(self->entries[insertAt-1].range,range);
+					self->entries[insertAt-1].range=range;
+					merged = YES;
+				}
+			}
+			if(insertAt<self->count){
+				// Check if we can just merge the new entry with the next one
+				if(range.length == 0 || [(id)(self->entries[insertAt].value) isEqual:value]){
+					range = NSUnionRange(self->entries[insertAt].range,range);
+					if (merged) {
+						// We merged with both the previous entry and the next one - the next one isn't needed anymore
+						// so just merge it with the previous one
+						self->entries[insertAt-1].range=range;
+						removeEntryAtIndex(self, insertAt);
+					} else {
+						self->entries[insertAt].range=range;
+					}
+					merged = YES;;
+				}
+			}
+		}
+	}
+	if (merged == NO) {
+		insertEntryAtIndex(self,insertAt,range,value);
+	}
+	
+ }
 
  void *NSRangeEntryAtIndex(NSRangeEntries *self,NSUInteger location,NSRange *effectiveRangep) {
    NSInteger     count=self->count;
@@ -243,17 +280,6 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRa
    state->index++;
 
    return YES;
-}
-
-static inline void removeEntryAtIndex(NSRangeEntries *self,NSUInteger index){
-   if(self->objects)
-    [(id)self->entries[index].value release];
-   else
-    NSZoneFree(NULL,self->entries[index].value);
-
-   self->count--;
-   for(;index<self->count;index++)
-    self->entries[index]=self->entries[index+1];
 }
 
 void NSRangeEntriesRemoveEntryAtIndex(NSRangeEntries *self,NSUInteger index)

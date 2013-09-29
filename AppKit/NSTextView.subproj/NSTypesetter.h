@@ -1,6 +1,7 @@
 #import <AppKit/NSText.h>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSLayoutManager.h>
+#import <AppKit/NSGlyphGenerator.h>
 
 @class NSLayoutManager,NSParagraphStyle,NSTextTab;
 
@@ -17,7 +18,7 @@ typedef enum {
    NSTypesetterContainerBreakAction,
 } NSTypesetterControlCharacterAction;
 
-@interface NSTypesetter : NSObject {
+@interface NSTypesetter : NSObject<NSGlyphStorage> {
    NSTypesetterBehavior _behavior;
    float                _hyphenationFactor;
    float                _lineFragmentPadding;
@@ -84,8 +85,6 @@ typedef enum {
 -(unichar)hyphenCharacterForGlyphAtIndex:(unsigned)glyphIndex;
 
 -(NSRect)boundingBoxForControlGlyphAtIndex:(unsigned)glyphIndex forTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(NSRect)proposedRect glyphPosition:(NSPoint)glyphPosition characterIndex:(unsigned)characterIndex;
-
-
 //--
 
 -(NSAttributedString *)attributedString;

@@ -471,6 +471,8 @@ enum {
 
 	if (searchIndex >= [items count]) {
         _selectedIndex = previous;
+	} else {
+		_selectedIndex = searchIndex;
 	}
 	
     [self setNeedsDisplay:YES];
@@ -484,4 +486,51 @@ enum {
     _keyboardUIState = KEYBOARD_OK;
 }
 
+- (void)insertText:(id)aString {
+	
+	// We're intercepting insertText: so we can do menu navigation by letter
+	unichar ch = [aString characterAtIndex: 0];
+	NSString *letterString = [[NSString stringWithCharacters: &ch length: 1] uppercaseString];
+
+    NSInteger oldIndex = _selectedIndex;
+    
+	NSArray *items = [_menu itemArray];
+	NSInteger newIndex = _selectedIndex;
+	
+	// Set to the next item in the array or the start if we're at the end or there's no selection
+	if (oldIndex == NSNotFound || oldIndex == [items count] - 1) {
+		newIndex = 0;
+	} else {
+		newIndex = oldIndex + 1;
+	}
+	
+	// Find the next visible item that has a title with an uppercase letter matching what the user
+	// entered (who knows what this means in Japan...)
+	BOOL found = NO;
+	while (!found && newIndex != oldIndex) {
+		// Make sure we stop eventually
+		if (oldIndex == NSNotFound) {
+			oldIndex = 0;
+		}
+		// Try and find a new item to select
+		NSMenuItem *item = [items objectAtIndex: newIndex];
+		if ([item isEnabled] == YES && [item isSeparatorItem] == NO) {
+			NSRange range = [[item title] rangeOfString: letterString];
+			if (range.location != NSNotFound) {
+				_selectedIndex =  newIndex;
+				found = YES;
+			}
+		}
+		if (!found) {
+			if (newIndex == [items count] - 1) {
+				newIndex = 0;
+			} else {
+				newIndex++;
+			}
+		}
+	}
+	if (newIndex != oldIndex) {
+		[self setNeedsDisplay:YES];
+	}
+}
 @end

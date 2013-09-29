@@ -243,18 +243,29 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
 
     [groupingSeparator getCharacters:groupingBuffer];
 
-    if (value != 0.0)
+   if (value != 0.0)
     {
        value=fabs(value);
        if (!gFormat)
          power=pow(10.0,precision);
        else 
          power=pow(10.0,precision-1-floor(log10(value)));
-       value=roundDouble(value*power)/power;
-    }
 
-    fractional=modf(value,&integral);
-    BOOL intZero=integral<1.0; 
+		// Using modf to get the integral part is giving us some precision problems for the fractional part 
+		// leading to 1.2 being printed as 1.1999999..
+		// So let's do it our own way
+		integral = trunc(value);
+		fractional = roundDouble(power * (value - integral)) / power;;
+		if (fractional >= 1.) {
+			// Rounding to next integral
+			integral++;
+			fractional = 0;
+		}
+	} else {
+		integral = fractional = 0.;
+	}
+	   
+	   BOOL intZero=integral<1.0; 
 
     while(integral>=1.0){
      numberOfIntegralDigits++;
@@ -297,7 +308,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
      characters[length++]=decimalSeperator;
      for(i=0,j=0;i<precision;i++,j++,length++){
       fractional*=10.0;
-      if((characters[length]=(unichar)fmod(fractional,10.0)+'0')!='0')
+	  if((characters[length]=(unichar)fmod(fractional,10.0)+'0')!='0')
        fractZero=NO;
       else if (gFormat && intZero && fractZero && (j - i) < 5)
          i--;

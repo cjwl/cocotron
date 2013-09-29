@@ -18,9 +18,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSTextTab.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSRaise.h>
+
+#import "NSBidiHelper.h"
 
 @interface NSLayoutManager(private)
 - (void)_rollbackLatestFragment;
+@end
+
+@interface NSTypesetter_concrete(forward)
+- (void)_updateBidiLevelsForRange:(NSRange)range;
 @end
 
 @implementation NSTypesetter_concrete
@@ -39,7 +46,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    NSZoneFree([self zone],_glyphCache);
-   NSZoneFree([self zone],_characterCache);
+    NSZoneFree([self zone],_characterCache);
+    NSZoneFree([self zone],_bidiLevels);
    [_container release];
 
    [_glyphRangesInLine release];
@@ -108,7 +116,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			_scanRect.size.height = MAX(proposedRect.size.height, fragmentHeight);
 		}
 	}
-	
+
 	for(;(glyphIndex=NSMaxRange(fragmentRange))<NSMaxRange(_attributesGlyphRange);){
 		NSGlyph  glyph;
 		unichar  character;
@@ -124,6 +132,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		
 		glyph=_glyphCache[glyphIndex-_glyphCacheRange.location];
 		character=_characterCache[glyphIndex-_glyphCacheRange.location];
+        // TODO: there must be other chars to check for word wrapping
 		if(character==' '){
 			// We can word wrap from here if needed
 			wordWrapRange=fragmentRange;
@@ -147,7 +156,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			glyphMaxWidth=size.width;
 			_previousGlyph=NSNullGlyph;
 		} else {
-			if(glyph==NSControlGlyph){
+            if(glyph==NSControlGlyph){
 				fragmentWidth+=_positionOfGlyph(_font,NULL,NSNullGlyph,_previousGlyph,&isNominal).x;
 				_previousGlyph=NSNullGlyph;
 				
@@ -356,6 +365,42 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		int   i,count=[_glyphRangesInLine count];
 		float alignmentDelta=0;
 		
+        // First, we need to reorder the fragments according to the bidi algo
+        if (_bidiLevels && count > 1) {
+            uint8_t levels[count];
+            unsigned int indexes[count];
+            for (int i = 0; i < count; ++i) {
+                NSRange range=[_glyphRangesInLine rangeAtIndex:i];
+                levels[i] = _bidiLevels[range.location];
+                indexes[i] = i;
+            }
+            int baseLevel = _currentParagraphBidiLevel;
+            NSBidiHelperProcessLine(baseLevel, indexes, NULL, levels, NO, count);
+
+            NSRange range=[_glyphRangesInLine rangeAtIndex:0];
+            NSPoint currentLocation =[_layoutManager locationForGlyphAtIndex:range.location];
+            for (int i = 0; i < count; ++i) {
+                int idx = indexes[i];
+                NSRange range=[_glyphRangesInLine rangeAtIndex:idx];
+                NSPoint location=[_layoutManager locationForGlyphAtIndex:range.location];
+                NSRect  usedRect=[_layoutManager lineFragmentUsedRectForGlyphAtIndex:range.location effectiveRange:NULL];
+                NSRect  rect=[_layoutManager lineFragmentRectForGlyphAtIndex:range.location effectiveRange:NULL];
+                usedRect.origin = currentLocation;
+                rect.origin = currentLocation;
+                [_layoutManager setLineFragmentRect:rect forGlyphRange:range usedRect:usedRect];
+                [_layoutManager setLocation:currentLocation forStartOfGlyphRange:range];
+                currentLocation.x += usedRect.size.width;
+            }
+            // Reorder the ranges LtoR
+            for (int i = 0; i < count; ++i) {
+                int idx = indexes[i];
+                [_glyphRangesInLine addRange:[_glyphRangesInLine rangeAtIndex:idx]];
+            }
+            for (int i = 0; i < count; ++i) {
+                [_glyphRangesInLine removeRangeAtIndex:0];
+            }
+        }
+
 		if(_alignment!=NSLeftTextAlignment){
 			// Find the total line width so we can adjust the rect x origin according to the alignment
 			float totalWidth=NSMaxX(_fullLineRect);
@@ -369,7 +414,6 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			
 			// Calc the delta to apply to the origins so the alignment is respected
 			switch(_alignment){
-					
 				case NSRightTextAlignment:
 					alignmentDelta=totalWidth-totalUsedWidth;
 					break;
@@ -489,8 +533,38 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    unichar  space=' ';
 
    _attributes=[_attributedString attributesAtIndex:characterIndex effectiveRange:&_attributesRange];
+    _currentBidiLevel = 0;
 
-   _attributesGlyphRange=_attributesRange; // FIX
+    if (_bidiLevels) {
+        // Let's process the line - that's mostly resolving blanks and check if we have a direction switch
+        NSRange lineRange = [_string lineRangeForRange:_lineRange];
+        NSRange range;
+        range.location = _lineRange.location;
+        range.length = NSMaxRange(lineRange) - range.location;
+        
+        unichar text[range.length];
+        uint8_t levels[range.length];
+        for (int i = 0; i < range.length; ++i) {
+            levels[i] = _bidiLevels[range.location + i];
+        }
+        [_string getCharacters:text range:range];
+        
+        // Resolve the bidi level for the whitespace in this line [we should save the current bidi level at the start of the line and use it]
+        NSBidiHelperProcessLine(_currentParagraphBidiLevel, NULL, text, levels, NO, range.length);
+        
+        // We'll create a new fragment everytime the bidi level switches direction
+        _currentBidiLevel = levels[characterIndex - range.location];
+
+        int max = MIN(NSMaxRange(range), NSMaxRange(_attributesRange));
+        
+        for (int i = characterIndex + 1; i < max; ++i) {
+            if ((levels[i - range.location]&1) != (_currentBidiLevel&1)) {
+                _attributesRange.length = i - _attributesRange.location;
+                break;
+            }
+        }
+    }
+    _attributesGlyphRange=_attributesRange; // FIX
 
    nextFont=NSFontAttributeInDictionary(_attributes);
    if(_font!=nextFont){
@@ -507,6 +581,17 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    if((_currentParagraphStyle=[_attributes objectForKey:NSParagraphStyleAttributeName])==nil)
     _currentParagraphStyle=[NSParagraphStyle defaultParagraphStyle];
    _alignment=[_currentParagraphStyle alignment];
+    _currentParagraphBidiLevel = 0;
+    if (_bidiLevels) {
+        NSRange paragraphRange = [_string paragraphRangeForRange:NSMakeRange(characterIndex, 0)];
+        _currentParagraphBidiLevel = _bidiLevels[paragraphRange.location];
+    }
+    if (_alignment == NSNaturalTextAlignment) {
+        _alignment = NSLeftTextAlignment;
+        if (_currentParagraphBidiLevel & 1) {
+            _alignment = NSRightTextAlignment;
+        }
+    }
    _lineBreakMode=[_currentParagraphStyle lineBreakMode];
 }
 
@@ -522,6 +607,11 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    
    [self setAttributedString:[layoutManager textStorage]];
    
+    NSUInteger length = [_attributedString length];
+    _currentBidiLevel = 0;
+    _currentParagraphBidiLevel = 0;
+    [self _updateBidiLevelsForRange: NSMakeRange(0, length)];
+    
    _nextGlyphLocation=0;
    _numberOfGlyphs=[_string length];
    _glyphCacheRange=NSMakeRange(0,0);
@@ -587,4 +677,111 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    _layoutManager=nil;
 }
 
+-(void)insertGlyphs:(const NSGlyph *)glyphs length:(unsigned)length forStartingGlyphAtIndex:(unsigned)glyphIndex characterIndex:(unsigned int)characterIndex
+{
+    NSUnimplementedMethod();
+}
+
+-(void)setIntAttribute:(int)intAttribute value:(int)value forGlyphAtIndex:(unsigned)glyphIndex;
+{
+    NSUnimplementedMethod();
+}
+
+-(unsigned)getGlyphsInRange:(NSRange)glyphRange glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)characterIndexes glyphInscriptions:(NSGlyphInscription *)glyphInscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels
+{
+    unsigned result  = 0;
+    if (glyphs) {
+        result = [_layoutManager getGlyphs:glyphs range:glyphRange];
+    }
+    if (characterIndexes) {
+        for (int i = 0; i < glyphRange.length; ++i) {
+            characterIndexes[i] = glyphRange.location + i;
+        }
+    }
+    if (glyphInscriptions) {
+        // Not supported for now
+        for (int i = 0; i < glyphRange.length; ++i) {
+            glyphInscriptions[i] = 0;
+        }
+    }
+    if (elasticBits) {
+        // Not supported for now
+        for (int i = 0; i < glyphRange.length; ++i) {
+            elasticBits[i] = NO;
+        }
+    }
+    if (bidiLevels) {
+        for (int i = 0; i < glyphRange.length; ++i) {
+            if (_bidiLevels) {
+                bidiLevels[i] = _bidiLevels[glyphRange.location + i];
+            } else {
+                bidiLevels[i] = 0;
+            }
+        }
+    }
+    return result;
+}
+
+
+-(void)setBidiLevels:(const unsigned char *)bidiLevels forGlyphRange:(NSRange)glyphRange {
+    // Check if we're all left-to-right - if so, we don't have to use any bidi level
+    BOOL ltor = YES;
+    if (_bidiLevels) {
+        for (unsigned int i = 0; ltor && i < _bidiLevelsCapacity; ++i) {
+            if (!NSLocationInRange(i, glyphRange)) {
+                ltor = _bidiLevels[i] == 0;
+            }
+        }
+    }
+    if (ltor) {
+        for (unsigned int i = 0; ltor && i < glyphRange.length; ++i) {
+            ltor = bidiLevels[i] == 0;
+        }
+        if (ltor) {
+            // Both the old data and the new one are Left-to-Right only - we don't need any bidilevel
+            if (_bidiLevels) {
+                NSZoneFree([self zone], _bidiLevels);
+                _bidiLevels = NULL;
+            }
+            return;
+        }
+    }
+    // Both ltor & ltor
+    if (_bidiLevels == NULL) {
+        _bidiLevelsCapacity = MAX([_attributedString length], 32);
+        _bidiLevels = (uint8_t *)NSZoneMalloc([self zone], _bidiLevelsCapacity * sizeof(uint8_t));
+        // Anything new is left-to-right by default
+        bzero(_bidiLevels, _bidiLevelsCapacity);
+    }
+    if (_bidiLevelsCapacity < NSMaxRange(glyphRange)) {
+        int newBidiLevelsCapacity = MAX(_bidiLevelsCapacity*2, NSMaxRange(glyphRange));
+        _bidiLevels = (uint8_t *)NSZoneRealloc([self zone], _bidiLevels, newBidiLevelsCapacity * sizeof(uint8_t));
+        // Anything new is left-to-right by default
+        bzero(_bidiLevels + _bidiLevelsCapacity, newBidiLevelsCapacity - _bidiLevelsCapacity);
+        _bidiLevelsCapacity = newBidiLevelsCapacity;
+    }
+    memcpy(_bidiLevels+glyphRange.location, bidiLevels, glyphRange.length * sizeof(uint8_t));
+}
+
+-(void)_updateBidiLevelsForRange:(NSRange)range
+{
+    if (NSBidiHelperBidiInfoAvailable()) {
+        NSString *string = [[self attributedString] string];
+        range = [string paragraphRangeForRange:range];
+        if (range.length == 0) {
+            return;
+        }
+        uint8_t *bidiLevels = malloc(range.length * sizeof(uint8_t));
+        unichar *buffer = malloc(range.length * sizeof(unichar));
+        [string getCharacters:buffer range:range];
+        
+        int level = -1;
+        NSBidiHelperParagraph(&level, buffer, bidiLevels, range.length);
+        free(buffer);
+        
+        [self setBidiLevels:bidiLevels forGlyphRange:range];   
+
+        free(bidiLevels);
+    }
+}
 @end

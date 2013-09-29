@@ -1883,6 +1883,16 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 #ifdef O2AGG_GLYPH_SUPPORT
 -(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count
 {
+    // Use Win text rendering if the context shouldSmoothFonts isn't set (default value)
+    // Note that Win text rendering currently doesn't support some advanced features like
+    // non-rect clipping, shadows...
+    // There are also some issues when the context is scaled
+    // But rendering is faster
+    O2GState    *gState=O2ContextCurrentGState(self);
+    if (gState->_shouldSmoothFonts == NO) {
+        [super showGlyphs:glyphs advances:advances count:count];
+        return;
+    }
 	renderer->premultiplied = YES;
 	[self updateMask];
 	[self updateBlendMode];

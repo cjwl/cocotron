@@ -5,6 +5,10 @@
 #import <Onyx2D/O2Encoder_PNG.h>
 #import <Onyx2D/O2Encoder_JPG.h>
 
+// Using the same value as CoreGraphics - that's removing the needs for conversion
+const CFStringRef kO2ImageDestinationLossyCompressionQuality = (const CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
+const CFStringRef kO2ImageDestinationBackgroundColor = (const CFStringRef)@"kO2ImageDestinationBackgroundColor";
+
 @interface _O2ImageDestination : O2ImageDestination
 @end
 

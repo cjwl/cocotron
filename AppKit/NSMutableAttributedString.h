@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontManager.h>
 
 @interface NSMutableAttributedString(NSMutableString_AppKit)
+-(void)fixFontAttributeInRange:(NSRange)range;
+-(void)fixParagraphStyleAttributeInRange:(NSRange)range;
 -(void)fixAttributesInRange:(NSRange)range;
 -(void)applyFontTraits:(NSFontTraitMask)traits range:(NSRange)range;
 @end

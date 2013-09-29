@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSClipView.h>
+#import <AppKit/NSTextView.h>
+#import <AppKit/NSTextStorage.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSObject+BindingSupport.h>
@@ -255,60 +257,81 @@ static NSMutableDictionary *cellClassDictionary = nil;
 }
 
 -(void)setObjectValue:(id <NSCopying>)object {
-// FIX protocol does not implement isEqual
-   if(![(id)object isEqual:[[self selectedCell] objectValue]]){
     [self abortEditing];
     [(NSCell *)[self selectedCell] setObjectValue:object];
     [self setNeedsDisplay:YES];
-   }
 }
 
 -(void)setStringValue:(NSString *)value {
-   [self setObjectValue:value];
+    [self abortEditing];
+    [[self selectedCell] setStringValue:value];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)setIntValue:(int)value {
-   [self setObjectValue:[NSNumber numberWithInt:value]];
+    [self abortEditing];
+    [[self selectedCell] setIntValue:value];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)setFloatValue:(float)value {
-   [self setObjectValue:[NSNumber numberWithFloat:value]];
+    [self abortEditing];
+    [[self selectedCell] setFloatValue:value];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)setDoubleValue:(double)value {
-   [self setObjectValue:[NSNumber numberWithDouble:value]];
+    [self abortEditing];
+    [[self selectedCell] setDoubleValue:value];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)setIntegerValue:(NSInteger)value {
-   [self setObjectValue:[NSNumber numberWithInteger:value]];
+    [self abortEditing];
+    [[self selectedCell] setIntegerValue:value];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)setAttributedStringValue:(NSAttributedString *)value {
-   [self setObjectValue:value];
+    [self abortEditing];
+    [[self selectedCell] setAttributedStringValue:value];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)takeObjectValueFrom:sender {
-   [self setObjectValue:[sender objectValue]];
+    [self abortEditing];
+    [[self selectedCell] takeObjectValueFrom:sender];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)takeStringValueFrom:sender {
-   [self setStringValue:[sender stringValue]];
+    [self abortEditing];
+    [[self selectedCell] takeStringValueFrom:sender];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)takeIntValueFrom:sender {
-   [self setIntValue:[sender intValue]];
+    [self abortEditing];
+    [[self selectedCell] takeIntValueFrom:sender];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)takeFloatValueFrom:sender {
-   [self setFloatValue:[sender floatValue]];
+    [self abortEditing];
+    [[self selectedCell] takeFloatValueFrom:sender];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)takeDoubleValueFrom:sender {
-   [self setDoubleValue:[sender doubleValue]];
+    [self abortEditing];
+    [[self selectedCell] takeDoubleValueFrom:sender];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)takeIntegerValueFrom:sender {
-   [self setIntegerValue:[sender integerValue]];
+    [self abortEditing];
+    [[self selectedCell] takeIntegerValueFrom:sender];
+    [self setNeedsDisplay:YES];
 }
 
 -(void)selectCell:(NSCell *)cell {
@@ -358,8 +381,38 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return _currentEditor;
 }
 
--(void)validateEditing {
-   NSUnimplementedMethod();
+-(void)validateEditing
+{
+    if (_currentEditor) {
+        NSString *string = [_currentEditor string];
+        BOOL acceptsString = YES;
+        NSFormatter *formatter = [self formatter];
+        if (formatter) {
+            acceptsString = NO;
+            
+            id objectValue = nil;
+            NSString *error = nil;
+            if ([formatter getObjectValue: &objectValue
+                                forString: string
+                         errorDescription: &error] == YES) {
+                [[self selectedCell] setObjectValue:objectValue];
+            }
+        }
+        if (acceptsString) {
+            if ([_currentEditor isRichText]) {
+                if ([_currentEditor isKindOfClass:[NSTextView class]]) {
+                    NSTextView *textview = (NSTextView *)_currentEditor;
+                    NSAttributedString *text = [textview textStorage];
+                    NSAttributedString *string = [[[NSAttributedString alloc] initWithAttributedString:text] autorelease];
+                    [[self selectedCell] setAttributedStringValue:string];
+                } else {
+                    [[self selectedCell] setStringValue:string];                    
+                }
+            } else {
+                [[self selectedCell] setStringValue:string];
+            }
+        }
+    }
 }
 
 -(BOOL)abortEditing {
@@ -397,6 +450,13 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(BOOL)acceptsFirstResponder {
    return ![self refusesFirstResponder];
+}
+
+-(BOOL)resignFirstResponder {
+    if (_currentEditor) {
+        return [[self selectedCell] hasValidObjectValue];
+    }
+    return YES;
 }
 
 -(void)lockFocus {
@@ -437,8 +497,8 @@ static NSMutableDictionary *cellClassDictionary = nil;
 	if([note object]!=_currentEditor)
     return;
 
-   [[self selectedCell] endEditing:_currentEditor];
-   [self abortEditing];
+    [self validateEditing];
+    [self abortEditing];
 
    [[NSNotificationCenter defaultCenter] postNotificationName:NSControlTextDidEndEditingNotification
      object:self userInfo:[NSDictionary dictionaryWithObject:[note object] forKey:@"NSFieldEditor"]];

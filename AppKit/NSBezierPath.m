@@ -494,8 +494,6 @@ static int numberOfPointsForOperator(int op){
 
 -(BOOL)containsPoint:(NSPoint)point 
 {   
-	// TODO: handle winding rule
-	
 	if ([self isEmpty]) {
 		return NO;
 	}
@@ -504,7 +502,10 @@ static int numberOfPointsForOperator(int op){
 	if (NSPointInRect(point, [self bounds]) == NO) {
 		return NO;
 	}
-	
+
+	// This algorithm implements the NSEvenOddWindingRule
+	// TODO: port the NSNonZeroWindingRule implementation from O2Path
+
 	int  cn = 0;    // the crossing number counter
 	
 	int count = [self elementCount];

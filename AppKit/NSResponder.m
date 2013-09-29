@@ -88,7 +88,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       unsigned j,length=[string length];
       unichar  buffer[length];
-
+		
       [string getCharacters:buffer];
       for(j=0;j<length;j++){
        unichar check=buffer[j];

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -187,7 +187,7 @@
 		FE1FBFF211E7804C00A9A87A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = FE1FBFF511E7804C00A9A87A /* Build configuration list for PBXProject "Cocotron" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (

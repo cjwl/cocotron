@@ -61,7 +61,7 @@ typedef enum {
 
 COREFOUNDATION_EXPORT const CFInteger kCFStreamErrorDomainNetDB;
 COREFOUNDATION_EXPORT const CFInteger kCFStreamErrorDomainNetServices;
-COREFOUNDATION_EXPORT const CFInteger kCFstreamErrorDomainMach;
+COREFOUNDATION_EXPORT const CFInteger kCFStreamErrorDomainMach;
 COREFOUNDATION_EXPORT const CFInteger kCFStreamErrorDomainFTP;
 COREFOUNDATION_EXPORT const CFInteger kCFStreamErrorDomainHTTP;
 COREFOUNDATION_EXPORT const CFInteger kCFStreamErrorDomainSOCKS;

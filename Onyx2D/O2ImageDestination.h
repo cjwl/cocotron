@@ -9,8 +9,8 @@
 
 typedef O2ImageDestination *O2ImageDestinationRef;
 
-const CFStringRef kO2ImageDestinationLossyCompressionQuality;
-const CFStringRef kO2ImageDestinationBackgroundColor;
+extern const CFStringRef kO2ImageDestinationLossyCompressionQuality;
+extern const CFStringRef kO2ImageDestinationBackgroundColor;
 
 @interface O2ImageDestination : NSObject {
 @public
