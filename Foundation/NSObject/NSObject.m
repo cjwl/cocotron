@@ -152,6 +152,10 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    return NSStringFromClass(self);
 }
 
++(NSString *)debugDescription {
+    return [self description];
+}
+
 +alloc {
    return [self allocWithZone:NULL];
 }
@@ -395,6 +399,10 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 -(NSString *)description {
    return [NSString stringWithFormat:@"<%@ 0x%08x>",[self class],self];
+}
+
+-(NSString *)debugDescription {
+    return [self description];
 }
 
 @end
