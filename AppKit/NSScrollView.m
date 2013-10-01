@@ -203,11 +203,11 @@ static Class _rulerViewClass = nil;
 
 -(NSRect)headerClipViewFrame {
     NSView *headerView=[self _headerView];
-    NSRect  result=[self insetBounds];
 
     if (headerView == nil)
         return NSZeroRect;
 
+    NSRect  result=[self insetBounds];
     result.size.height=[headerView bounds].size.height;
     result.size.width-=[NSScroller scrollerWidth];
 
@@ -216,12 +216,12 @@ static Class _rulerViewClass = nil;
 
 -(NSRect)cornerViewFrame {
     NSView *headerView = [self _headerView];
-    NSRect bounds = [self insetBounds];
-    NSRect frame;
 
     if (headerView == nil)
         return NSZeroRect;
 
+    NSRect bounds = [self insetBounds];
+    NSRect frame;
     frame.origin.x = bounds.origin.x+bounds.size.width-[NSScroller scrollerWidth];
     frame.origin.y = bounds.origin.y;
     frame.size.width = [NSScroller scrollerWidth];
@@ -293,10 +293,10 @@ static Class _rulerViewClass = nil;
    result.origin.y=bounds.origin.y;
    result.size.width=[NSScroller scrollerWidth];
    result.size.height=bounds.size.height;
-   if([self hasHorizontalScroller])
-    result.size.height-=[NSScroller scrollerWidth];
+    if([self hasHorizontalScroller] && ![_horizontalScroller isHidden])
+        result.size.height-=[NSScroller scrollerWidth];
 
-   if ([self _headerView] != nil) {
+    if ([self _headerView] != nil) {
        result.origin.y+=[self headerClipViewFrame].size.height;
        result.size.height-=[self headerClipViewFrame].size.height;
    }
@@ -315,7 +315,7 @@ static Class _rulerViewClass = nil;
    result.origin.x=bounds.origin.x;
    result.origin.y=(bounds.origin.y+bounds.size.height)-[NSScroller scrollerWidth];
    result.size.width=bounds.size.width;
-   if([self hasVerticalScroller])
+   if([self hasVerticalScroller] && ![_verticalScroller isHidden])
     result.size.width-=[NSScroller scrollerWidth];
 
    result.size.height=[NSScroller scrollerWidth];
