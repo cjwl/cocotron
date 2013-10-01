@@ -219,13 +219,21 @@ NSString * const NSPlatformLoadableObjectFileExtension=@"dll";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"";
 
 -(NSArray *)arguments {
-   NSMutableArray *result=[NSMutableArray array];
-   int             i;
-
-   for(i=0;i<__argc;i++)
-    [result addObject:[NSString stringWithCString:__argv[i]]];
-
-   return result;
+    NSMutableArray *result=[NSMutableArray array];
+    int             i;
+ 	
+    // Parse the program arguments as unicode
+    LPWSTR cmd = GetCommandLineW();
+    int argc = 0;
+    LPWSTR *argv = CommandLineToArgvW(cmd, &argc);
+    if (argv) {
+        for(i=0;i<argc;i++) {
+            [result addObject:[NSString stringWithCharacters:(unichar *)argv[i] length:wcslen(argv[i])]];
+        }
+        LocalFree(argv);
+    }
+ 	
+    return result;
 }
 
 -(NSDictionary *)environment {
