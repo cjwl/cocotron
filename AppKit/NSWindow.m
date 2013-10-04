@@ -2091,6 +2091,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)sendEvent:(NSEvent *)event {
     
+    // Some events can cause our window to be destroyed
+    // So make sure self lives at least through this current run loop...
+    [[self retain] autorelease];
+
     if (_sheetContext != nil) {
         NSView *view = [_backgroundView hitTest:[event locationInWindow]];
 
