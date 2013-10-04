@@ -44,3 +44,6 @@
 }
 
 @end
+
+NSString *const NSPrintPanelAccessorySummaryItemNameKey = @"NSPrintPanelAccessorySummaryItemName";
+NSString *const NSPrintPanelAccessorySummaryItemDescriptionKey = @"NSPrintPanelAccessorySummaryItemDescription";

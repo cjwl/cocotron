@@ -1,4 +1,5 @@
 #import <Foundation/NSObject.h>
+#import <AppKit/AppKitExport.h>
 
 @class NSMutableDictionary;
 
@@ -32,3 +33,6 @@ typedef NSInteger NSPrintPanelOptions;
 -(void)finalWritePrintInfo;
 
 @end
+
+APPKIT_EXPORT NSString *const NSPrintPanelAccessorySummaryItemNameKey;
+APPKIT_EXPORT NSString *const NSPrintPanelAccessorySummaryItemDescriptionKey;
