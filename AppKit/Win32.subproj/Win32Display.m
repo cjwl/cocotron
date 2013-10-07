@@ -805,25 +805,30 @@ The values should be upgraded to something which is more generic to implement, p
    BOOL           isARepeat=NO;
    int            bufferSize=0,ignoringBufferSize=0;
    BYTE    *keyState=keyboardState;
- //   GetKeyboardState(keyState);
 
 	// !!!! This code is able to get proper char events even for chars built using dead-keys, but we're loosing contents of KeyUp events.
 	//      No idea why, but we are more in need for proper chars (especially for international users) than for proper KeyUp messages contents
 	//!!!!!!!!!!!!!!!!!!!!!
-	if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
-		// wParam is our unicode char
-		*buffer = msg.wParam;
-		bufferSize = 1;
-	} else {
-		// No idea why but not calling that one (when we don't need it) leads to WM_CHAR translated messages not being received
-		ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
-		
-		if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
-			bufferSize = 0;
-		} else {
-			bufferSize = ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
-		}
-	}
+    
+    // Control key is down (but not with the alt one - ctrl-alt can be used to enter some chars on some keyboards)
+    BOOL controlIsDown = (modifierFlags&(NSCommandKeyMask|NSAlternateKeyMask)) == NSCommandKeyMask;
+
+    if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
+        // We'll ignore events when the command char is pressed - they are handled separetely
+        if (controlIsDown == NO) {
+            // wParam is our unicode char
+            *buffer = msg.wParam;
+            bufferSize = 1;
+        }
+    } else if ((msg.message != WM_KEYDOWN && msg.message != WM_SYSKEYDOWN) || controlIsDown == NO) {
+       bufferSize = ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
+        
+        if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
+            // We'll actually process the event at WM_CHAR time
+            bufferSize = 0;
+        }
+    }
+    // Let's kill the modifiers so we can get the "ignoring modifiers" string
    keyState[VK_CONTROL]=0x00;
    keyState[VK_LCONTROL]=0x00;
    keyState[VK_RCONTROL]=0x00;
@@ -833,19 +838,26 @@ The values should be upgraded to something which is more generic to implement, p
    keyState[VK_LMENU]=0x00;
    keyState[VK_RMENU]=0x00;
 	if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
-		// Let's save that for later
-		ignoringBufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,ignoringBuffer,256,0);
-		if (ignoringBufferSize > 0) {
-			[_ignoringModifiersString appendString:[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]];
-		}
-		ignoringBufferSize = 0;
+        if (controlIsDown == NO) {
+            // Let's save that for later
+            ignoringBufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,ignoringBuffer,256,0);
+            if (ignoringBufferSize > 0) {
+                [_ignoringModifiersString appendString:[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]];
+            }
+            ignoringBufferSize = 0;
+        } else {
+            // Ctrl key is pushed - we'll just send the unmodified key + modifiers to the app
+            bufferSize = ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
+        }
 	} else if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
-		// Let's get what we previously saved from our keydown events
-		[_ignoringModifiersString getCharacters:ignoringBuffer];
-		ignoringBufferSize = [_ignoringModifiersString length];
-		// Reset the saved ignoring modifiers string
-		[_ignoringModifiersString release];
-		_ignoringModifiersString = [NSMutableString new];
+        if (controlIsDown == NO) {
+            // Let's get what we previously saved from our keydown events
+            [_ignoringModifiersString getCharacters:ignoringBuffer];
+            ignoringBufferSize = [_ignoringModifiersString length];
+            // Reset the saved ignoring modifiers string
+            [_ignoringModifiersString release];
+            _ignoringModifiersString = [NSMutableString new];
+        }
 	}
 	
 	if (msg.message != WM_CHAR && msg.message != WM_SYSCHAR) {
@@ -948,15 +960,21 @@ The values should be upgraded to something which is more generic to implement, p
      case VK_PA1: break;
      case VK_OEM_CLEAR: break;
     }
+        if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
+            // Actually ignore the WM_CHAR event if control is down
+            if (controlIsDown == YES) {
+                bufferSize = 0;
+            }
+        }
    }
 	// Don't send events on empty WM_KEYDOWN messages - we'll send a message when we get the WM_CHAR
-	if ((msg.message != WM_KEYDOWN && msg.message != WM_SYSKEYDOWN) || bufferSize > 0) {
+    if ((msg.message != WM_KEYDOWN && msg.message != WM_SYSKEYDOWN) || bufferSize > 0) {
 		if(ignoringBufferSize<=0 && bufferSize > 0) {
 			for(ignoringBufferSize=0;ignoringBufferSize<bufferSize;ignoringBufferSize++) {
 				ignoringBuffer[ignoringBufferSize]=buffer[ignoringBufferSize];
 			}
 		}
-		
+    
 		NSEvent *event;
 		BOOL     isKeypad;
 		
@@ -968,6 +986,9 @@ The values should be upgraded to something which is more generic to implement, p
 
 		event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
 		[self postEvent:event atStart:NO];
+
+        ignoringBufferSize = 0;
+        bufferSize = 0;
 		return YES;
 	}
 	return NO;
