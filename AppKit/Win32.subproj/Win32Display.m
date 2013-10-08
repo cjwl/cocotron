@@ -148,6 +148,10 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 	[self loadPrivateFontPaths: allPaths];
 }
 
+-(void)forceLoadOfFontsAtPaths:(NSArray *)paths {
+    [self loadPrivateFontPaths: paths];
+}
+
 -(id)init {
    self=[super init];
    if (self!=nil){
