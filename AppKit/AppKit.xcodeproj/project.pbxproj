@@ -3941,6 +3941,8 @@
 		FEB07FA10FF9B37C00C27509 /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */; };
 		FEB07FA20FF9B37C00C27509 /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */; };
 		FEB07FA30FF9B37C00C27509 /* O2Font+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */; };
+		FEBE636D17D44C5E00EFA1F2 /* NSSound_DirectShow.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBE636B17D44C5E00EFA1F2 /* NSSound_DirectShow.h */; };
+		FEBE636E17D44C5E00EFA1F2 /* NSSound_DirectShow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBE636C17D44C5E00EFA1F2 /* NSSound_DirectShow.m */; };
 		FEBF55E50DCA112900CE5A1C /* O2ImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF55E20DCA112900CE5A1C /* O2ImageSource_JPEG.h */; };
 		FEBF55E60DCA112900CE5A1C /* O2Paint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF55E30DCA112900CE5A1C /* O2Paint.h */; };
 		FEBF55E70DCA112900CE5A1C /* O2Paint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55E40DCA112900CE5A1C /* O2Paint.m */; };
@@ -5193,6 +5195,8 @@
 		FEAED7A40FD6C9820043F915 /* CGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFContext.m; sourceTree = "<group>"; };
 		FEAEFF7911E4D1B600CA0912 /* glweak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = glweak.m; sourceTree = "<group>"; };
 		FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2Font+PDF.m"; sourceTree = "<group>"; };
+		FEBE636B17D44C5E00EFA1F2 /* NSSound_DirectShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSound_DirectShow.h; sourceTree = "<group>"; };
+		FEBE636C17D44C5E00EFA1F2 /* NSSound_DirectShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSound_DirectShow.m; sourceTree = "<group>"; };
 		FEBF55E20DCA112900CE5A1C /* O2ImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ImageSource_JPEG.h; sourceTree = "<group>"; };
 		FEBF55E30DCA112900CE5A1C /* O2Paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Paint.h; sourceTree = "<group>"; };
 		FEBF55E40DCA112900CE5A1C /* O2Paint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Paint.m; sourceTree = "<group>"; };
@@ -5940,6 +5944,8 @@
 				6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */,
 				6E2B565B0976075400DA0954 /* NSSavePanel-Win32.h */,
 				6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */,
+				FEBE636B17D44C5E00EFA1F2 /* NSSound_DirectShow.h */,
+				FEBE636C17D44C5E00EFA1F2 /* NSSound_DirectShow.m */,
 				FEA25F960EECCE4D008750D0 /* NSSound_win32.h */,
 				FEA25F970EECCE4D008750D0 /* NSSound_win32.m */,
 				FE1CEA6B0C8F12F800184630 /* opengl_dll.h */,
@@ -7848,6 +7854,7 @@
 				FE74968812BB1D4F008DBFCB /* NSViewBackingLayer.h in Headers */,
 				FEDEA8B312C112EE008E5A59 /* CATransactionGroup.h in Headers */,
 				FEE4B2FA133BB8770095E656 /* NSWindowScripting.h in Headers */,
+				FEBE636D17D44C5E00EFA1F2 /* NSSound_DirectShow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10486,6 +10493,7 @@
 				FEDEAA9912C2639B008E5A59 /* CAValueFunction.m in Sources */,
 				FEDEABAE12C98F4C008E5A59 /* CALayerContext.m in Sources */,
 				FEE4B2FB133BB8770095E656 /* NSWindowScripting.m in Sources */,
+				FEBE636E17D44C5E00EFA1F2 /* NSSound_DirectShow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
