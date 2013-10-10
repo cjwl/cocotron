@@ -6,6 +6,7 @@
 #define LPDDPIXELFORMAT int
 #include <strmif.h>
 #include <control.h>
+#include <oaidl.h>
 
 DECLARE_ENUMERATOR_(IEnumFilters,IBaseFilter*);
 
@@ -25,12 +26,14 @@ DECLARE_INTERFACE_(IPin,IUnknown)
 };
 #undef INTERFACE
 
-#define INTERFACE IFilterGraph
-DECLARE_INTERFACE_(IFilterGraph,IUnknown)
+#define INTERFACE IGraphBuilder
+DECLARE_INTERFACE_(IGraphBuilder,IUnknown)
 {
+    // IUnknown
     STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
     STDMETHOD_(ULONG,AddRef)(THIS) PURE;
     STDMETHOD_(ULONG,Release)(THIS) PURE;
+    // IFilterGraph
     STDMETHOD(AddFilter)(THIS_ IBaseFilter*,LPCWSTR) PURE;
     STDMETHOD(RemoveFilter)(THIS_ IBaseFilter*) PURE;
     STDMETHOD(EnumFilters)(THIS_ IEnumFilters**) PURE;
@@ -39,15 +42,7 @@ DECLARE_INTERFACE_(IFilterGraph,IUnknown)
     STDMETHOD(Reconnect)(THIS_ IPin*) PURE;
     STDMETHOD(Disconnect)(THIS_ IPin*) PURE;
     STDMETHOD(SetDefaultSyncSource)(THIS) PURE;
-};
-#undef INTERFACE
 
-#define INTERFACE IGraphBuilder
-DECLARE_INTERFACE_(IGraphBuilder,IFilterGraph)
-{
-    STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
     STDMETHOD(Connect)(THIS_ IPin*,IPin*) PURE;
     STDMETHOD(Render)(THIS_ IPin*) PURE;
     STDMETHOD(RenderFile)(THIS_ LPCWSTR,LPCWSTR) PURE;
@@ -62,10 +57,16 @@ typedef long OAFilterState;
 
 #define INTERFACE IMediaControl
 DECLARE_INTERFACE_(IMediaControl,IDispatch)
-{
+{    
     STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+    
+	STDMETHOD(GetTypeInfoCount)(THIS_ UINT*) PURE;
+	STDMETHOD(GetTypeInfo)(THIS_ UINT,LCID,LPTYPEINFO*) PURE;
+	STDMETHOD(GetIDsOfNames)(THIS_ REFIID,LPOLESTR*,UINT,LCID,DISPID*) PURE;
+	STDMETHOD(Invoke)(THIS_ DISPID,REFIID,LCID,WORD,DISPPARAMS*,VARIANT*,EXCEPINFO*,UINT*) PURE;
+
     STDMETHOD(Run)(THIS) PURE;
     STDMETHOD(Pause)(THIS) PURE;
     STDMETHOD(Stop)(THIS) PURE;
