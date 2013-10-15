@@ -24,11 +24,11 @@
 #endif
 
 typedef enum {
-	kImageInterpolationNone,
-	kImageInterpolationBilinear,
-	kImageInterpolationBicubic,
-	kImageInterpolationLanczos,
-	kImageInterpolationRepeat,
+ kImageInterpolationNone,
+ kImageInterpolationBilinear,
+ kImageInterpolationBicubic,
+ kImageInterpolationLanczos,
+ kImageInterpolationRepeat,
 } ImageInterpolationType;
 
 //#define DEBUG
@@ -831,6 +831,14 @@ template<class gradient_func_type> void O2AGGContextDrawShading(O2Context_AntiGr
 
 template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, agg::rendering_buffer &imageBuffer, const agg::trans_affine &transform, ImageInterpolationType interpolationType)
 {
+    BOOL resample = NO;
+    if (interpolationType != kImageInterpolationNone) {
+        // Enable resampling if we have some big rescaling
+        double x, y;
+        transform.scaling_abs(&x, &y);
+        resample = x > 1.125 ||  y > 1.125;
+    }
+    
 	agg::span_allocator<typename pixfmt::color_type> sa;
 	pixfmt          img_pixf(imageBuffer);
 	typedef agg::image_accessor_clone<pixfmt> img_accessor_type;
@@ -838,59 +846,114 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
 	
 	typedef agg::span_interpolator_linear<agg::trans_affine> interpolator_type;
 	interpolator_type interpolator(transform);
-
-	// Use a filter according to the wanted interpolation quality
-	switch (interpolationType) {
-		case kImageInterpolationNone: {
-			typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
-			span_gen_type sg(ia, interpolator);
-			
-			render_scanlines_aa(self, sa, sg);
-		}
-			break;
-		default:
-		case kImageInterpolationBilinear: {
-			typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
-			span_gen_type sg(ia, interpolator);
-			
-			render_scanlines_aa(self, sa, sg);
-		}
-			break;
-		case kImageInterpolationBicubic: {
-			agg::image_filter_bicubic filter_kernel;
-			agg::image_filter_lut filter(filter_kernel, true);
-
-			typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
-			span_gen_type sg(ia, interpolator, filter);
-
-			render_scanlines_aa(self, sa, sg);
-		}
-			break;
-		case kImageInterpolationLanczos: {
-			agg::image_filter_lanczos filter_kernel(2.f);
-			agg::image_filter_lut filter(filter_kernel, true);
-			
-			typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
-			span_gen_type sg(ia, interpolator, filter);
-			
-			render_scanlines_aa(self, sa, sg);
-		}
-			break;
-		case kImageInterpolationRepeat: {
-			typedef agg::image_accessor_wrap<pixfmt, agg::wrap_mode_repeat, agg::wrap_mode_repeat> img_accessor_type;
-			img_accessor_type ia(img_pixf);
-			
-			agg::image_filter_bilinear filter_kernel;			
-			typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
-			span_gen_type sg(ia, interpolator);
-			
-			render_scanlines_aa(self, sa, sg);
-		}
-			break;
-	}
+    
+    if (resample == NO) {
+        // Use a filter according to the wanted interpolation quality - no resampling needed
+        switch (interpolationType) {
+            case kImageInterpolationNone: {
+                typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
+                span_gen_type sg(ia, interpolator);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            default:
+            case kImageInterpolationBilinear: {
+                typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
+                span_gen_type sg(ia, interpolator);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            case kImageInterpolationBicubic: {
+                agg::image_filter_bicubic filter_kernel;
+                agg::image_filter_lut filter(filter_kernel, true);
+                
+                typedef agg::span_image_filter_rgba_2x2<img_accessor_type, interpolator_type> span_gen_type;
+                span_gen_type sg(ia, interpolator, filter);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            case kImageInterpolationLanczos: {
+                agg::image_filter_lanczos filter_kernel(2.f);
+                agg::image_filter_lut filter(filter_kernel, true);
+                
+                typedef agg::span_image_filter_rgba<img_accessor_type, interpolator_type> span_gen_type;
+                span_gen_type sg(ia, interpolator, filter);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            case kImageInterpolationRepeat: {
+                typedef agg::image_accessor_wrap<pixfmt, agg::wrap_mode_repeat, agg::wrap_mode_repeat> img_accessor_type;
+                img_accessor_type ia(img_pixf);
+                
+                agg::image_filter_bilinear filter_kernel;
+                typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
+                span_gen_type sg(ia, interpolator);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+        }
+    } else {
+        // Use a filter according to the wanted interpolation quality - use resampling
+        switch (interpolationType) {
+            case kImageInterpolationNone: {
+                typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
+                span_gen_type sg(ia, interpolator);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            default:
+            case kImageInterpolationBilinear: {
+                agg::image_filter_bilinear filter_kernel;
+                agg::image_filter_lut filter(filter_kernel, true);
+                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                span_gen_type sg(ia, interpolator, filter);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            case kImageInterpolationBicubic: {
+                agg::image_filter_bicubic filter_kernel;
+                agg::image_filter_lut filter(filter_kernel, true);
+                
+                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                span_gen_type sg(ia, interpolator, filter);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            case kImageInterpolationLanczos: {
+                agg::image_filter_lanczos filter_kernel(2.f);
+                agg::image_filter_lut filter(filter_kernel, true);
+                
+                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                span_gen_type sg(ia, interpolator, filter);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+            case kImageInterpolationRepeat: {
+                typedef agg::image_accessor_wrap<pixfmt, agg::wrap_mode_repeat, agg::wrap_mode_repeat> img_accessor_type;
+                img_accessor_type ia(img_pixf);
+                
+                agg::image_filter_bilinear filter_kernel;
+                agg::image_filter_lut filter(filter_kernel, true);
+                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                span_gen_type sg(ia, interpolator, filter);
+                
+                render_scanlines_aa(self, sa, sg);
+            }
+                break;
+        }
+    }
 }
 
-template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self, StrokeType &stroke, const agg::trans_affine &deviceMatrix) 
+template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self, StrokeType &stroke, const agg::trans_affine &deviceMatrix)
 {
 	O2GState *gState=O2ContextCurrentGState(self);
 	
