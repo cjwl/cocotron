@@ -45,7 +45,8 @@ enum {
    
    NSFont      *_selectedFont;
    BOOL         _isMultiple;
-   NSFontAction _currentFontAction;
+    NSFontAction _currentFontAction;
+    int _currentTrait;
 }
 
 +(NSFontManager *)sharedFontManager;

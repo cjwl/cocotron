@@ -2434,51 +2434,111 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)changeFont:sender {
-    NSFont *font=[[NSFontManager sharedFontManager] convertFont:[self font]];
-    if(![self isRichText])
+    if(![self isRichText]) {
+        NSFont *font=[sender convertFont:[self font]];
         [self setFont:font];
-    else {
-        [self _addAttribute:NSFontAttributeName value:font range:[self selectedRange]];
+    } else {
+        NSRange range = [self rangeForUserCharacterAttributeChange];
+        
+        if (range.location == NSNotFound) {
+            // Nothing to do
+            return;
+        }
+        
+        if (![self shouldChangeTextInRange: range  replacementString:nil]) {
+            return;
+        }
+        
+        int nextCharIndex = range.location;
+        int maxCharIndex = NSMaxRange(range);
+        
+        // Get each block of font attribute and switch to the font using the one converted by the
+        // sender
+        [_textStorage beginEditing];
+        
+        while (nextCharIndex <= maxCharIndex) {
+            NSRange effectiveRange = NSMakeRange(0, 0);
+            
+            NSFont *font = [_textStorage attribute: NSFontAttributeName atIndex: nextCharIndex effectiveRange: &effectiveRange];
+            font = [sender convertFont:font];
+            if (font) {
+                NSRange changeRange = NSIntersectionRange(effectiveRange, range);
+                [_textStorage addAttribute: NSFontAttributeName value: font range: changeRange];
+            }
+            if (effectiveRange.location != NSNotFound && effectiveRange.length > 0) {
+                nextCharIndex = NSMaxRange(effectiveRange);
+            } else {
+                nextCharIndex++;
+            }
+        }
+        [_textStorage endEditing];
+        
+        [self didChangeText];
     }
-	
-	NSMutableDictionary *attributes = [[[self typingAttributes] mutableCopy] autorelease];
-	[attributes setObject:font forKey:NSFontAttributeName];
-	[self setTypingAttributes:attributes];
+    NSFont *font = [[self typingAttributes] objectForKey: NSFontAttributeName];
+    if (font) {
+        font = [sender convertFont:font];
+        if (font) {
+            NSMutableDictionary *attributes = [[[self typingAttributes] mutableCopy] autorelease];
+            [attributes setObject:font forKey:NSFontAttributeName];
+            [self setTypingAttributes:attributes];
+        }
+    }
 }
 
 // making changes to textstorage attributes seems to wipe out the selection in this codebase,
 // the setSelectedRange calls shouldn't be neccessary
 - (void)alignCenter:sender {
-    NSRange range=[self selectedRange];
+    NSRange range=[self rangeForUserParagraphAttributeChange];
+    if (range.location == NSNotFound) {
+        return;
+    }
     [self _setAlignment:NSCenterTextAlignment range:[self _rangeForSelectedParagraph]];
     [self setSelectedRange:range];
 }
 
 - (void)alignLeft:sender {
-    NSRange range=[self selectedRange];
+    NSRange range=[self rangeForUserParagraphAttributeChange];
+    if (range.location == NSNotFound) {
+        return;
+    }
     [self _setAlignment:NSLeftTextAlignment range:[self _rangeForSelectedParagraph]];
     [self setSelectedRange:range];
 }
 
 - (void)alignRight:sender {
-    NSRange range=[self selectedRange];
+    NSRange range=[self rangeForUserParagraphAttributeChange];
+    if (range.location == NSNotFound) {
+        return;
+    }
     [self _setAlignment:NSRightTextAlignment range:[self _rangeForSelectedParagraph]];
     [self setSelectedRange:range];
 }
 
 - (void)alignJustified:sender {
-    NSRange range=[self selectedRange];
+    NSRange range=[self rangeForUserParagraphAttributeChange];
+    if (range.location == NSNotFound) {
+        return;
+    }
     [self _setAlignment:NSJustifiedTextAlignment range:[self _rangeForSelectedParagraph]];
     [self setSelectedRange:range];
 }
 
 - (void)underline:sender {
-    NSRange range = [self selectedRange];
-    
-    [self _addAttribute:NSUnderlineStyleAttributeName
-                  value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
-                  range:range];
-    
+    NSRange range = [self rangeForUserCharacterAttributeChange];
+
+    if (range.location == NSNotFound) {
+        return;
+    }
+    id underline = [_textStorage attribute:NSUnderlineStyleAttributeName atIndex:range.location effectiveRange:NULL];
+    if (underline) {
+        [self _removeAttribute:NSUnderlineStyleAttributeName
+                      range:range];        
+    } else {
+        [self _addAttribute:NSUnderlineStyleAttributeName
+                      value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
+                      range:range];
+    }
     [self setSelectedRange:range];
 	
 	NSMutableDictionary *attributes = [[[self typingAttributes] mutableCopy] autorelease];

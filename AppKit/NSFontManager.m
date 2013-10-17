@@ -317,12 +317,49 @@ static Class _fontPanelFactory;
 }
 
 -(NSFont *)convertFont:(NSFont *)font {
-   
-   if(_panel==nil)
-    return _selectedFont;
-
-   return [_panel panelConvertFont:font];
+    
+    switch(_currentFontAction){
+            
+        case NSNoFontChangeAction:
+            break;
+            
+        case NSViaPanelFontAction:
+            font=[_panel panelConvertFont:font];
+            break;
+            
+        case NSAddTraitFontAction:
+            font=[self convertFont:font toHaveTrait:_currentTrait];
+            break;
+            
+        case NSSizeUpFontAction:
+            font=[self convertFont:font toSize:[font pointSize]+1];
+            break;
+            
+        case NSSizeDownFontAction:{
+            float ps=[font pointSize];
+            if(ps>1) {
+                ps-=1;
+            }
+            font=[self convertFont:font toSize:ps];
+        }
+            break;
+            
+        case NSHeavierFontAction:
+            font=[self convertWeight:YES ofFont:font];
+            break;
+            
+        case NSLighterFontAction:
+            font=[self convertWeight:NO ofFont:font];
+            break;
+            
+        case NSRemoveTraitFontAction:
+            font=[self convertFont:font toNotHaveTrait:_currentTrait];
+            break;
+    }
+    
+    return font;
 }
+
 
 -(NSFont *)convertFont:(NSFont *)font toSize:(float)size {
    if(size==[font pointSize])
@@ -421,71 +458,29 @@ static Class _fontPanelFactory;
 }
 
 -(void)addFontTrait:sender {
-   NSFont *font=[self convertFont:[self selectedFont] toHaveTrait:[sender tag]];
+    _currentTrait = [sender tag];
+    _currentFontAction = NSAddTraitFontAction;
 
-   [self setSelectedFont:font isMultiple:NO];
-   [self sendAction];
+    [self sendAction];
 }
 
 -(void)modifyFont:sender {
-   NSFont *font=[self selectedFont];
+    _currentFontAction=[sender tag];
    
-   _currentFontAction=[sender tag];
-   
-   switch(_currentFontAction){
-   
-    case NSNoFontChangeAction:
-     break;
-     
-    case NSViaPanelFontAction:
-     font=[_panel panelConvertFont:font];
-     break;
-     
-    case NSAddTraitFontAction:
-     NSUnimplementedMethod();
-     font=[self convertFont:font toHaveTrait:0];
-     break;
-     
-    case NSSizeUpFontAction:
-     font=[self convertFont:font toSize:[font pointSize]+1];
-     break;
-     
-    case NSSizeDownFontAction:{
-     float ps=[font pointSize];
-     
-     if(ps>1)
-      ps-=1;
-      
-     font=[self convertFont:font toSize:ps];
-     }
-     break;
-     
-    case NSHeavierFontAction:
-     font=[self convertWeight:YES ofFont:font];
-     break;
-     
-    case NSLighterFontAction:
-     font=[self convertWeight:NO ofFont:font];
-     break;
-     
-    case NSRemoveTraitFontAction:
-     NSUnimplementedMethod();
-//     font=[self convertFont:font toNotHaveTrait:];
-     break;
-   }
-   
-   NSUnimplementedMethod();
+    [self sendAction];
 }
 
 -(void)modifyFontViaPanel:sender {
-   NSUnimplementedMethod();
+    _currentFontAction = NSViaPanelFontAction;
+    
+    [self sendAction];
 }
 
 -(void)removeFontTrait:sender {
-   NSFont *font=[self convertFont:[self selectedFont] toNotHaveTrait:[sender tag]];
-
-   [self setSelectedFont:font isMultiple:NO];
-   [self sendAction];
+    _currentTrait = [sender tag];
+    _currentFontAction = NSRemoveTraitFontAction;
+    
+    [self sendAction];
 }
 
 -(void)orderFrontFontPanel:sender {
