@@ -2798,12 +2798,13 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item {
-    return YES;
     if ([item action] == @selector(undo:))
         return _allowsUndo ? [[self undoManager] canUndo] : NO;
-    if ([item action] == @selector(redo:))
+    else if ([item action] == @selector(redo:))
         return _allowsUndo ? [[self undoManager] canRedo] : NO;
-    
+    else if ([item action] == @selector(toggleContinuousSpellChecking:)) {
+        [item setState: [self isContinuousSpellCheckingEnabled]];
+    }
     return YES;
 }
 
