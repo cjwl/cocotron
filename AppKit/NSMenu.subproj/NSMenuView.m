@@ -243,7 +243,9 @@ const float kMouseMovementThreshold = .001f;
 		// Reset the keyboard navigation state
 		keyboardNavigationAction = kNSMenuKeyboardNavigationNone;
 		
-		if ([event type] == NSKeyDown) {
+        // Sometimes we can get key events with no characters (if the user
+        // has invoked an accelerator while the menu is open for example)
+		if ([event type] == NSKeyDown && [[event characters] length] > 0) {
 
 			NSString* chars = [event characters];
 			unichar ch = [chars characterAtIndex: 0];
