@@ -528,8 +528,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			// remember that thing we did with the first menu item?
 			itemIndex++;
 		}
-		[(NSPopUpButton*)controlView selectItemAtIndex:itemIndex];
+        // We can be embedded in controls other than a PopUpButton - so don't
+        // assume selectItemAtIndex: is available
+        if ([controlView respondsToSelector: @selector(selectItemAtIndex:)]) {
+            [(id)controlView selectItemAtIndex:itemIndex];
+        }
 	}
+    _selectedIndex = (itemIndex == NSNotFound) ? -1 : itemIndex;
    [window close]; // release when closed=YES
 //	[[_menu delegate] menuDidClose: _menu];
 
