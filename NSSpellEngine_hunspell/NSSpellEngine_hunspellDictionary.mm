@@ -42,6 +42,9 @@
 }
 
 -(char *)createHunspellStringForString:(NSString *)string {
+    if (string == nil) {
+        return NULL;
+    }
     NSStringEncoding stringEncoding = (NSStringEncoding)0;
     char *encoding=hunspell_get_dic_encoding((Hunspell *)_hunspell);
     
@@ -55,9 +58,11 @@
         NSLog(@"Unhandled hunspell dictionary encoding %s",encoding);
         return NULL;
     }
+    char *result = NULL;
     const char *cstr = [string cStringUsingEncoding:stringEncoding];
-    char *result = (char *)malloc(strlen(cstr)+1);
-    strcpy(result, cstr);
+    if (cstr) {
+        result = strdup(cstr);
+    }
     return result;
 }
 
