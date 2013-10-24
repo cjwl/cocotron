@@ -985,15 +985,19 @@ The values should be upgraded to something which is more generic to implement, p
 		characters=(bufferSize>0)?[NSString stringWithCharacters:buffer length:bufferSize]:@"";
 		charactersIgnoringModifiers=(ignoringBufferSize>0)?[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]:@"";
 		
-		if(_isKeypad)
-			modifierFlags|=NSNumericPadKeyMask;
-
-		event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
-		[self postEvent:event atStart:NO];
-
-        ignoringBufferSize = 0;
-        bufferSize = 0;
-		return YES;
+        // Only send the event if we have something to send
+        if (characters.length > 0 || charactersIgnoringModifiers.length > 0) {
+            
+            if(_isKeypad)
+                modifierFlags|=NSNumericPadKeyMask;
+            
+            event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
+            [self postEvent:event atStart:NO];
+            
+            ignoringBufferSize = 0;
+            bufferSize = 0;
+            return YES;
+        }
 	}
 	return NO;
 }

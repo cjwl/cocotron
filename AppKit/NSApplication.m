@@ -581,12 +581,14 @@ id NSApp=nil;
 }
 
 -(BOOL)_performKeyEquivalent:(NSEvent *)event {
-   if([[self mainMenu] performKeyEquivalent:event])
-    return YES;
-   if([[self keyWindow] performKeyEquivalent:event])
-    return YES;
-   if([[self mainWindow] performKeyEquivalent:event])
-    return YES;
+    if (event.characters.length > 0) {
+        if([[self mainMenu] performKeyEquivalent:event])
+            return YES;
+        if([[self keyWindow] performKeyEquivalent:event])
+            return YES;
+        if([[self mainWindow] performKeyEquivalent:event])
+            return YES;
+    }
 // documentation says to send it to all windows
    return NO;
 }
