@@ -257,18 +257,21 @@ static int untitled_document_number = 0;
     
     _undoManager = [undoManager retain];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_undoManagerDidUndoChange:)
-                                                 name:NSUndoManagerDidUndoChangeNotification
-                                               object:_undoManager];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_undoManagerDidRedoChange:)
-                                                 name:NSUndoManagerDidRedoChangeNotification
-                                               object:_undoManager];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_undoManagerDidCloseGroup:)
-                                                 name:NSUndoManagerWillCloseUndoGroupNotification
-                                               object:_undoManager];
+    if (undoManager) {
+        // Only add observers if we have an undoManager we're concerned about
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_undoManagerDidUndoChange:)
+                                                     name:NSUndoManagerDidUndoChangeNotification
+                                                   object:_undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_undoManagerDidRedoChange:)
+                                                     name:NSUndoManagerDidRedoChangeNotification
+                                                   object:_undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_undoManagerDidCloseGroup:)
+                                                     name:NSUndoManagerWillCloseUndoGroupNotification
+                                                   object:_undoManager];
+    }
 }
 
 -(NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window {
