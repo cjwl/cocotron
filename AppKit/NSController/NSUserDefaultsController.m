@@ -37,6 +37,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-init
+{
+    return [self initWithDefaults:nil initialValues:nil];
+}
+
 -(void)dealloc {
    [_valueProxy release];
    [_defaults release];
@@ -82,6 +87,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          // Be sure to retain the shared object - the caller must be able to call 
          // release on it when done
          self=[[NSUserDefaultsController sharedUserDefaultsController] retain];
+      } else {
+          self=[self init];
       }
    }
    return self;
