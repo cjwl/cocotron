@@ -1355,9 +1355,15 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     NSRect      vRect=[self visibleRect];
     NSPoint     sPoint;
 
+    // If the rect is already visible then there's no need to scroll
     if(NSPointInRect(rect.origin,vRect) && NSPointInRect(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),vRect))
      return NO;
 
+    // If we're already showing as much of rect as we can then there's no need to scroll
+    if (NSContainsRect(rect, vRect))
+        return NO;
+    
+    // If the rects don't overlap at all then we'll have to scroll
     if(!NSIntersectsRect(rect,vRect)){
      if(rect.size.height<vRect.size.height){
       float delta=vRect.size.height-rect.size.height;
