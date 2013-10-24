@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSFontManager.h>
 
 @implementation NSCustomObject
 
@@ -41,6 +42,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    if([_className isEqualToString:@"NSApplication"]) {
       ret=[[NSApplication sharedApplication] retain];
+
+   } else if ([_className isEqualToString: @"NSFontManager"]) {
+       ret = [[NSFontManager sharedFontManager] retain];
+
+   // Make sure we don't create some other object that should be shared already (for
+   // example the NSColorPanel).
+   // This is a bit fragile because if it's not created yet then this will still create
+   // a duplicate. The only alternative is to specifically handle the shared objects here
+   // like NSApplication and NSFontManager above... Perhaps that's more explicit and it
+   // prevents the race condition - but seems quite high maintenance
+   } else if (NSThreadSharedInstanceDoNotCreate(_className) != nil) {
+       ret = [NSThreadSharedInstanceDoNotCreate(_className) retain];
    }
    else {
       ret=[[class alloc] init];  
