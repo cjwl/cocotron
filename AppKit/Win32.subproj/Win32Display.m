@@ -189,10 +189,14 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 	
 	NSRect frame = CGRectFromRECT( info.rcMonitor );
 	NSRect visibleFrame = CGRectFromRECT( info.rcWork );
-
+    
     // According to http://msdn.microsoft.com/en-us/library/windows/desktop/dd145066(v=vs.85).aspx
     // the rcMonitor and rcWork rects are already in virtual screen coords so there should be
     // no need for any further massaging.
+    
+    // But apparently it's not true and the visibleFrame.origin.y needs to be offset - i.e. guess
+    // there's some coordinate system origin mismatch?
+    visibleFrame.origin.y = NSHeight(frame)-NSHeight(visibleFrame);
     
 	NSScreen *screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:visibleFrame] autorelease];
 
