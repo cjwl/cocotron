@@ -940,6 +940,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)endEditing:(NSText *)editor {
+    [self setStringValue: [editor string]];
 }
 
 -(void)resetCursorRect:(NSRect)rect inView:(NSView *)view {
