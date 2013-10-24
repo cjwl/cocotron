@@ -501,6 +501,9 @@ static const unichar *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShad
 	// first and then the secondary window in order to reset the focus. This makes it all
 	// happen as expected.
 	SetForegroundWindow(_handle);
+    // That's also needed to be sure we get scrollevents - else they are lost after the current
+    // focused window is closed
+    SetFocus(_handle);
 }
 
 -(void)makeMain {
