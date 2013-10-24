@@ -316,6 +316,16 @@ static Class _fontPanelFactory;
    [self _configureMenu:[NSApp mainMenu] forFont:font];
 }
 
+- (void)_udpdateSelectedFont
+{
+    if (_selectedFont) {
+        NSFont *font = [self convertFont:_selectedFont];
+        if (font && font != _selectedFont) {
+            [self setSelectedFont:font isMultiple:_isMultiple];
+        }
+    }
+}
+
 -(NSFont *)convertFont:(NSFont *)font {
     
     switch(_currentFontAction){
@@ -462,18 +472,24 @@ static Class _fontPanelFactory;
     _currentFontAction = NSAddTraitFontAction;
 
     [self sendAction];
+    
+    [self _udpdateSelectedFont];
 }
 
 -(void)modifyFont:sender {
     _currentFontAction=[sender tag];
    
     [self sendAction];
+    
+    [self _udpdateSelectedFont];
 }
 
 -(void)modifyFontViaPanel:sender {
     _currentFontAction = NSViaPanelFontAction;
     
     [self sendAction];
+    
+    [self _udpdateSelectedFont];
 }
 
 -(void)removeFontTrait:sender {
@@ -481,6 +497,8 @@ static Class _fontPanelFactory;
     _currentFontAction = NSRemoveTraitFontAction;
     
     [self sendAction];
+    
+    [self _udpdateSelectedFont];
 }
 
 -(void)orderFrontFontPanel:sender {
