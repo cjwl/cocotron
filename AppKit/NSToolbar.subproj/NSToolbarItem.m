@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenuItem.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
+#import <AppKit/NSDocument.h>
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSApplication.h>
@@ -383,9 +384,14 @@ extern NSSize _NSToolbarIconSizeSmall;
 -(void)validate
 {
     BOOL enabled = NO;
+    
     id target=[NSApp targetForAction:[self action] to:[self target] from:nil];
     
-    if ((target == nil) || ![target respondsToSelector:[self action]]) {
+    if ([self action] == nil && [self view] != nil) {
+        // Views can be arbitrarily complex - so let's not try to figure out what they
+        // want. Apple docs say use a subclass to do more sophisticated validation in this case.
+        enabled = YES;
+    } else if ((target == nil) || ![target respondsToSelector:[self action]]) {
         enabled = NO;
     } else if ([target respondsToSelector:@selector(validateToolbarItem:)]) {
         enabled = [target validateToolbarItem:self];
