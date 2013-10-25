@@ -480,12 +480,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		menu = [[_menu copy] autorelease];
 		[menu removeItemAtIndex:0];
 	}
-    [_menu update];
+    [menu update];
     
     // Items with no action have been disabled by the menu update
     // We need to check if they really should be disabled
     // That should probably be part of NSMenu update, but that one knows nothing about its owner
-    for (NSMenuItem *item in [_menu itemArray]) {
+    for (NSMenuItem *item in [menu itemArray]) {
         if ([item action] == NULL) {
             BOOL enabled = NO;
 
