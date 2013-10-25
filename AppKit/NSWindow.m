@@ -2208,8 +2208,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      [[_backgroundView hitTest:[event locationInWindow]] scrollWheel:event];
      break;
 
+    case NSAppKitDefined:
+     // Nothing special to do
+     break;
+           
     default:
-    shouldValidateToolbarItems = NO;
+     shouldValidateToolbarItems = NO;
      NSUnimplementedMethod();
      break;
    }
