@@ -538,7 +538,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [window close]; // release when closed=YES
 //	[[_menu delegate] menuDidClose: _menu];
 
-   return YES;
+   return itemIndex!=NSNotFound;
 }
 
 -(void)moveUp:sender {
