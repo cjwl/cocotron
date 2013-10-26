@@ -10,6 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSRaise.h>
 
+NSString *const NSPasteboardTypeString = @"NSStringPboardType";
+NSString *const NSPasteboardTypePDF = @"NSPDFPboardType";
+NSString *const NSPasteboardTypeTIFF = @"NSTIFFPboardType";
+NSString *const NSPasteboardTypeRTF = @"NSRTFPboardType";
+NSString *const NSPasteboardTypeRTFD = @"NSRTFDPboardType";
+NSString *const NSPasteboardTypeHTML = @"NSPasteboardTypeHTML";
+NSString *const NSPasteboardTypeTabularText = @"NSTabularTextPboardType";
+NSString *const NSPasteboardTypeFont = @"NSFontPboardType";
+NSString *const NSPasteboardTypeRuler = @"NSRulerPboardType";
+NSString *const NSPasteboardTypeColor = @"NSColorPboardType";
+
 NSString * const NSColorPboardType=@"NSColorPboardType";
 NSString * const NSFileContentsPboardType=@"NSFileContentsPboardType";
 NSString * const NSFilenamesPboardType=@"NSFilenamesPboardType";
