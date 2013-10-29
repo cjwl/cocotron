@@ -107,7 +107,14 @@ enum {
 #define MENUDEBUG(...)
 #endif
 
-const float kMenuInitialClickThreshold = 0.1f;
+// This threshold is not really applicable with regular
+// menus - but in the event that the popup and regular menu
+// logic is merged the behaviour as been replicated here.
+// If a user clicks and releases on a menu it should remain
+// visible. If a user clicks and holds for a period and then releases
+// the current item should be reselected. This threshold is the dividing
+line between those two behaviours.
+const float kMenuInitialClickThreshold = .3f;
 const float kMouseMovementThreshold = .001f;
 
 -(NSMenuItem *)trackForEvent:(NSEvent *)event {

@@ -25,7 +25,11 @@ enum {
 
 @implementation NSPopUpView
 
-static const float kMenuInitialClickThreshold = 0.1f;
+// If the user clicks and holds on a popup menu and then releases
+// the app should just dismiss the popup and reselect the current value.
+// If the user clicks and immediately releases the popup menu should remain
+// on screen. This threshold is the dividing line between those two behaviours.
+static const float kMenuInitialClickThreshold = .3f;
 
 #define MIN_TITLE_KEY_GAP 8
 #define WINDOW_BORDER_THICKNESS 3
