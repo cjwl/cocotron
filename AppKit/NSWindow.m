@@ -222,7 +222,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _styleMask=styleMask;
 
     _frame=[self frameRectForContentRect:contentRect];
-   
+    _frame=[self constrainFrameRect: _frame toScreen: [NSScreen mainScreen]];
    backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
    contentViewFrame=[self contentRectForFrameRect:backgroundFrame];
