@@ -583,7 +583,8 @@ static const float kImageMargin = 2.;
 }
 
 -(NSRect)imageRectForBounds:(NSRect)rect {
-    NSImage *image = [self image];
+    // Make sure we use the same image as will be drawn!
+    NSImage *image = [self imageForHighlight];
 
     NSSize              imageSize= NSMakeSize(0,0);
     if (image != nil) {
