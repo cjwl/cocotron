@@ -3045,27 +3045,32 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     
     NSPoint point=[self convertPoint:[event locationInWindow] fromView:nil];
     float fraction;
-    
-    NSRange range = [_textStorage doubleClickAtIndex: [self glyphIndexForPoint:point fractionOfDistanceThroughGlyph:&fraction]];
-    
-    [self setSelectedRange:range];
-    
-    NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
-    NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:[[NSLocale currentLocale] localeIdentifier] inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
-    
+
     NSMenu *menu=[[[NSMenu alloc] initWithTitle:@""] autorelease];
-    
-    if([guesses count]==0) {
-        NSMenuItem *item=[menu addItemWithTitle:NSLocalizedStringFromTableInBundle(@"No Guesses Found", nil, [NSBundle bundleForClass: [NSTextView class]], @"Spell checker guesses") action:@selector(cut:) keyEquivalent:@""];
-        [item setEnabled:NO];
-    }
-    else {
-        for(NSString *guess in guesses){
-            [menu addItemWithTitle:guess action:@selector(_changeSpellingFromMenuItem:) keyEquivalent:@""];
+
+    @try {
+        NSRange range = [_textStorage doubleClickAtIndex: [self glyphIndexForPoint:point fractionOfDistanceThroughGlyph:&fraction]];
+        
+        [self setSelectedRange:range];
+        
+        NSSpellChecker *checker=[NSSpellChecker sharedSpellChecker];
+        NSArray *guesses = [checker guessesForWordRange:range inString:[self string] language:[[NSLocale currentLocale] localeIdentifier] inSpellDocumentWithTag:[self spellCheckerDocumentTag]];
+        
+        
+        if([guesses count]==0) {
+            NSMenuItem *item=[menu addItemWithTitle:NSLocalizedStringFromTableInBundle(@"No Guesses Found", nil, [NSBundle bundleForClass: [NSTextView class]], @"Spell checker guesses") action:@selector(cut:) keyEquivalent:@""];
+            [item setEnabled:NO];
         }
+        else {
+            for(NSString *guess in guesses){
+                [menu addItemWithTitle:guess action:@selector(_changeSpellingFromMenuItem:) keyEquivalent:@""];
+            }
+        }
+        [menu addItem:[NSMenuItem separatorItem]];
     }
-    [menu addItem:[NSMenuItem separatorItem]];
-    
+    @catch (NSException *e) {
+        // Ignore - doubleClickAtIndex: can throw a range exception - which means there's nothing to spellcheck
+    }
     [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Cut", nil, [NSBundle bundleForClass: [NSTextView class]], @"Cut the selection") action:@selector(cut:) keyEquivalent:@""];
     [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Copy", nil, [NSBundle bundleForClass: [NSTextView class]], @"Copy the selection") action:@selector(copy:) keyEquivalent:@""];
     [menu addItemWithTitle: NSLocalizedStringFromTableInBundle(@"Paste", nil, [NSBundle bundleForClass: [NSTextView class]], @"Paste the selection") action:@selector(paste:) keyEquivalent:@""];
