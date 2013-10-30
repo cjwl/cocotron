@@ -331,18 +331,21 @@ namespace o2agg
                                          unsigned sr, unsigned sg, unsigned sb, 
                                          unsigned sa, unsigned cover)
         {
-            if(cover < 255)
-            {
-                sr = (sr * cover + 255) >> 8;
-                sg = (sg * cover + 255) >> 8;
-                sb = (sb * cover + 255) >> 8;
-                sa = (sa * cover + 255) >> 8;
+            // Nothing to do if the source is fully transparent
+            if (sa) {
+                if(cover < 255)
+                {
+                    sr = (sr * cover + 255) >> 8;
+                    sg = (sg * cover + 255) >> 8;
+                    sb = (sb * cover + 255) >> 8;
+                    sa = (sa * cover + 255) >> 8;
+                }
+                calc_type s1a = base_mask - sa;
+                p[Order::R] = (value_type)(sr + ((p[Order::R] * s1a + base_mask) >> base_shift));
+                p[Order::G] = (value_type)(sg + ((p[Order::G] * s1a + base_mask) >> base_shift));
+                p[Order::B] = (value_type)(sb + ((p[Order::B] * s1a + base_mask) >> base_shift));
+                p[Order::A] = (value_type)(sa + p[Order::A] - ((sa * p[Order::A] + base_mask) >> base_shift));
             }
-            calc_type s1a = base_mask - sa;
-            p[Order::R] = (value_type)(sr + ((p[Order::R] * s1a + base_mask) >> base_shift));
-            p[Order::G] = (value_type)(sg + ((p[Order::G] * s1a + base_mask) >> base_shift));
-            p[Order::B] = (value_type)(sb + ((p[Order::B] * s1a + base_mask) >> base_shift));
-            p[Order::A] = (value_type)(sa + p[Order::A] - ((sa * p[Order::A] + base_mask) >> base_shift));
         }
     };
 
@@ -1545,37 +1548,40 @@ namespace o2agg
 		// "Uses the luminance values of the background with the hue and saturation values of the source image".
 		static AGG_INLINE void blend_pix(value_type* p, unsigned sr, unsigned sg, unsigned sb, 	unsigned sa, unsigned cover)
 		{
-			if(cover < 255)
-			{
-				sr = (sr * cover + 255) >> 8;
-				sg = (sg * cover + 255) >> 8;
-				sb = (sb * cover + 255) >> 8;
-				sa = (sa * cover + 255) >> 8;
-			}
-            calc_type da = p[Order::A];
-            calc_type dr = p[Order::R];
-            calc_type dg = p[Order::G];
-            calc_type db = p[Order::B];
-            
-            float factor = float(base_mask);
-            
-            float sh,ss;
-            RGBToHSL(sr/(float)sa, sg/(float)sa, sb/(float)sa, &sh, &ss, NULL);
-            float dl;
-            RGBToHSL(dr/(float)da, dg/(float)da, db/(float)da, NULL, NULL, &dl);
-            float r, g, b, a;
-            HSLToRGB(sh, ss, dl, &r, &g, &b);
-            a = sa;
-            
-            r = roundf(r*a);
-            g = roundf(g*a);
-            b = roundf(b*a);
-
-            calc_type s1a = base_mask - sa;
-            p[Order::R] = (value_type)(r + ((p[Order::R] * s1a + base_mask) >> base_shift));
-            p[Order::G] = (value_type)(g + ((p[Order::G] * s1a + base_mask) >> base_shift));
-            p[Order::B] = (value_type)(b + ((p[Order::B] * s1a + base_mask) >> base_shift));
-            p[Order::A] = (value_type)(a + p[Order::A] - ((sa * p[Order::A] + base_mask) >> base_shift));
+            // Nothing to do if the source is fully transparent
+            if (sa) {
+                if(cover < 255)
+                {
+                    sr = (sr * cover + 255) >> 8;
+                    sg = (sg * cover + 255) >> 8;
+                    sb = (sb * cover + 255) >> 8;
+                    sa = (sa * cover + 255) >> 8;
+                }
+                calc_type da = p[Order::A];
+                calc_type dr = p[Order::R];
+                calc_type dg = p[Order::G];
+                calc_type db = p[Order::B];
+                
+                // Nothing to blend to if the destination is fully transparent
+                if (da) {
+                    float sh,ss;
+                    RGBToHSL(sr/(float)sa, sg/(float)sa, sb/(float)sa, &sh, &ss, NULL);
+                    float dl;
+                    RGBToHSL(dr/(float)da, dg/(float)da, db/(float)da, NULL, NULL, &dl);
+                    float r, g, b, a;
+                    HSLToRGB(sh, ss, dl, &r, &g, &b);
+                    a = sa;
+                    sr = roundf(r*a);
+                    sg = roundf(g*a);
+                    sb = roundf(b*a);
+                }
+                // Add (src_over) the colored pixel to the destination
+                calc_type s1a = base_mask - sa;
+                p[Order::R] = (value_type)(sr + ((dr * s1a + base_mask) >> base_shift));
+                p[Order::G] = (value_type)(sg + ((dg * s1a + base_mask) >> base_shift));
+                p[Order::B] = (value_type)(sb + ((db * s1a + base_mask) >> base_shift));
+                p[Order::A] = (value_type)(sa + da - ((sa * da + base_mask) >> base_shift));
+            }
 		}
 	};
     
