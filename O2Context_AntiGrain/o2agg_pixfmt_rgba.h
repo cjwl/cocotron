@@ -1571,10 +1571,11 @@ namespace o2agg
             g = roundf(g*a);
             b = roundf(b*a);
 
-			p[Order::R] = (value_type)r;
-			p[Order::G] = (value_type)g;
-			p[Order::B] = (value_type)b;
-			p[Order::A] = (value_type)a;
+            calc_type s1a = base_mask - sa;
+            p[Order::R] = (value_type)(r + ((p[Order::R] * s1a + base_mask) >> base_shift));
+            p[Order::G] = (value_type)(g + ((p[Order::G] * s1a + base_mask) >> base_shift));
+            p[Order::B] = (value_type)(b + ((p[Order::B] * s1a + base_mask) >> base_shift));
+            p[Order::A] = (value_type)(a + p[Order::A] - ((sa * p[Order::A] + base_mask) >> base_shift));
 		}
 	};
     
