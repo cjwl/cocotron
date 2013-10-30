@@ -247,6 +247,11 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 	return NO;
 }
 
+-(BOOL)isBitmapContext
+{
+    return YES;
+}
+
 -(void)drawPath:(O2PathDrawingMode)pathMode {
    O2InvalidAbstractInvocation();
 // reset path in subclass
@@ -1456,5 +1461,10 @@ void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
 bool O2ContextSupportsGlobalAlpha(O2ContextRef self)
 {
 	return [self supportsGlobalAlpha];
+}
+
+bool O2ContextIsBitmapContext(O2ContextRef self)
+{
+	return [self isBitmapContext];
 }
 @end

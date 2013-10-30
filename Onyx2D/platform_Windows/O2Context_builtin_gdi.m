@@ -421,7 +421,6 @@ static inline void purgeGlyphCache(O2Context_builtin_gdi *self){
         erase[c]=0x44;
        erase+=self->_scratchWidth;
       }
-      
       ExtTextOutW(self->_scratchDC,0,0,ETO_GLYPH_INDEX,NULL,(void *)glyphs+i,1,NULL);
 
       stencil=O2GlyphStencilCreate(extent.cx,extent.cy,self->_scratchBitmap,self->_scratchWidth,0,extent.cy-_gdiDescent);

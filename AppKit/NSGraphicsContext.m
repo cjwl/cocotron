@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithGraphicsPort:(CGContextRef)context flipped:(BOOL)flipped {
    _graphicsPort=CGContextRetain(context);
    _focusStack=[NSMutableArray new];
-   _isDrawingToScreen=NO;
+    _isDrawingToScreen=CGContextIsBitmapContext(context);
    _isFlipped=flipped;
    _deviceDescription=[[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:NSDeviceIsScreen] copy];
    _shouldAntialias=YES;

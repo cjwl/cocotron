@@ -113,6 +113,11 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 	return _length;
 }
 
+-(BOOL)isBitmapContext
+{
+    return NO;
+}
+
 -(void)appendBytes:(const void *)ptr length:(unsigned)length {
 	_length += length;
 	O2DataConsumerPutBytes(_dataConsumer, ptr, length);

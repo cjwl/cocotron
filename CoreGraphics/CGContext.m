@@ -47,6 +47,10 @@ bool CGContextSupportsGlobalAlpha(CGContextRef context) {
 	return O2ContextSupportsGlobalAlpha(context);
 }
 
+bool CGContextIsBitmapContext(CGContextRef context) {
+	return O2ContextIsBitmapContext(context);
+}
+
 bool CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode) {
 	return O2ContextPathContainsPoint(context,point,pathMode);
 }

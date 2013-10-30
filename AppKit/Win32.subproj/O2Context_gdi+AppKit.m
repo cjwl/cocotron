@@ -37,6 +37,11 @@
    return self;
 }
 
+- (BOOL)isBitmapContext
+{
+    return [[self deviceContext] isKindOfClass:[Win32DeviceContextPrinter class]] == NO;
+}
+
 -initWithSize:(NSSize)size window:(CGWindow *)window {
    O2GState        *gState=[[[O2GState alloc] initFlippedWithDeviceHeight:size.height] autorelease];
    HWND                    handle=[(Win32Window *)window windowHandle];
