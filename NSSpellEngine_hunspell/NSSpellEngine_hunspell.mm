@@ -97,7 +97,15 @@
    NSUInteger wordCapacity=10,wordLength=0;
    unichar   *wordBuffer=(unichar *)NSZoneMalloc(NULL,sizeof(unichar)*wordCapacity);
    
-   NSCharacterSet *letters=[NSCharacterSet letterCharacterSet];
+    NSCharacterSet *letters=[NSCharacterSet letterCharacterSet];
+
+    // The letterCharacterSet seems to be missing some marks. Most glaringly the apostrophe
+    // So we'll create another character set where we can add marks that cause spellcheck to
+    // fail. There seems to be no easy way to update the binary charset representations.
+    static NSCharacterSet *marks= nil;
+    if (marks == nil) {
+        marks = [[NSCharacterSet characterSetWithCharactersInString: @"'"] retain];
+    }
    
    enum {
     STATE_WHITESPACE,
@@ -127,7 +135,7 @@
     switch(state){
     
      case STATE_WHITESPACE:
-      if(![letters characterIsMember:code])
+      if(!([letters characterIsMember:code] || [marks characterIsMember: code]))
        break;
       else {
        state=STATE_WORD;
@@ -136,7 +144,7 @@
       break;
     
      case STATE_WORD:
-      if(![letters characterIsMember:code]){
+      if(!([letters characterIsMember:code] || [marks characterIsMember: code])) {
        state=STATE_WHITESPACE;
        checkWord=YES;
       }
