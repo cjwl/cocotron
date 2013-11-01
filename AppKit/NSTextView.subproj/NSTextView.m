@@ -340,7 +340,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(NSDictionary *)typingAttributes {
-    return _typingAttributes;
+    return [[_typingAttributes retain] autorelease];
 }
 
 -(NSParagraphStyle *)defaultParagraphStyle {
@@ -2196,8 +2196,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 		}
 		[_textStorage replaceCharactersInRange:range withAttributedString:attrString];
 	} else {
-		// Just replace the string
-		[_textStorage replaceCharactersInRange:range withString:string];
+        // Even though we're not rich text we have to set the typing attributes if we want the layout
+        // manager to honor the font settings of this text view. If the layout manager doesn't find a font in the attributed
+        // string it'll substitute 12 pt Arial causing layout trouble for mini text fields and other woe.
+        NSAttributedString *attrString = [[[NSAttributedString alloc] initWithString:string attributes:[self typingAttributes]] autorelease];
+		[_textStorage replaceCharactersInRange:range withAttributedString:attrString];
 	}
     
 	// TODO: this needs to be optimized to check the changed range expanded (probably to paragraphs)
