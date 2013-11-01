@@ -71,12 +71,6 @@ NSString * const NSApplicationDidChangeScreenParametersNotification=@"NSApplicat
 
 id NSApp=nil;
 
-+(void)initialize {
-   if(self==[NSApplication class]){
-    [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
-   }
-}
-
 +(NSApplication *)sharedApplication {
 
    if(NSApp==nil){
@@ -408,6 +402,40 @@ id NSApp=nil;
 #endif
 }
 
+-(BOOL)openFiles
+{
+   BOOL opened = NO;
+   if(_delegate) {
+      id nsOpen = [[NSUserDefaults standardUserDefaults] objectForKey:@"NSOpen"];
+      NSArray *openFiles = nil;
+      if ([nsOpen isKindOfClass:[NSString class]] && [nsOpen length]) {
+         openFiles = [NSArray arrayWithObject:nsOpen];
+      } else if ([nsOpen isKindOfClass:[NSArray class]]) {
+         openFiles = nsOpen;
+      }
+      if ([openFiles count] > 0) {
+         if ([openFiles count] == 1 && [_delegate respondsToSelector: @selector(application:openFile:)]) {
+
+            if([_delegate application: self openFile: [openFiles lastObject]]) {
+               opened = YES;
+            }
+         } else {
+            if ([_delegate respondsToSelector: @selector(application:openFiles:)]) {
+               [_delegate application: self openFiles: openFiles];
+               opened = YES;
+
+            } else if ([_delegate respondsToSelector: @selector(application:openFile:)]) {
+               for (NSString *aFile in openFiles) {
+                  opened |= [_delegate application: self openFile: aFile];
+               }
+            }
+         }
+      }
+      [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NSOpen"];
+   }
+   return opened;
+}
+
 -(void)finishLaunching {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    BOOL               needsUntitled=YES;
@@ -440,15 +468,9 @@ id NSApp=nil;
 		objectForKey:@"CFBundleDocumentTypes"];
    if([types count] > 0)
        controller = [NSDocumentController sharedDocumentController];
-   
-   if(_delegate && [_delegate respondsToSelector: @selector(application:openFile:)]) {
-       NSString *openFile = [[NSUserDefaults standardUserDefaults]
-				stringForKey:@"NSOpen"];
 
-       if([openFile length] > 0) {
-	   if([_delegate application: self openFile: openFile])
-	       needsUntitled = NO;
-       }
+   if ([self openFiles]) {
+      needsUntitled = NO;
    }
 
    if(needsUntitled && _delegate &&
@@ -1267,26 +1289,67 @@ standardAboutPanel] retain];
 
 int NSApplicationMain(int argc, const char *argv[]) {
    NSInitializeProcess(argc,(const char **)argv);
-   {
-    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    NSBundle *bundle=[NSBundle mainBundle];
-    Class     class=[bundle principalClass];
-    NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
 
-    if(class==Nil)
-     class=[NSApplication class];
+   NSAutoreleasePool *pool=[NSAutoreleasePool new];
+   NSBundle *bundle=[NSBundle mainBundle];
+   Class     class=[bundle principalClass];
+   NSString *nibFile=[[bundle infoDictionary] objectForKey:@"NSMainNibFile"];
 
-    [class sharedApplication];
-
-    nibFile=[nibFile stringByDeletingPathExtension];
-
-    if(![NSBundle loadNibNamed:nibFile owner:NSApp])
-     NSLog(@"Unable to load main nib file %@",nibFile);
-
-    [pool release];
-
-    [NSApp run];
+   if (argc > 1) {
+      BOOL noMoreArgs = NO;
+      BOOL skip = NO;
+      NSMutableArray *theArguments = [NSMutableArray array];
+      for (int ii = 1; ii < argc; ii++) {
+         if (skip) {
+            skip = NO;
+            continue;
+         }
+         const char *arg = argv[ii];
+         if (noMoreArgs || arg[0] != '-') {
+            NSString *anArg = [NSString stringWithCString:arg encoding:NSUTF8StringEncoding];
+            if ([anArg length]) {
+               [theArguments addObject:anArg];
+               continue;
+            }
+         }
+         if (!noMoreArgs) {
+            if (arg[0] == '-') {
+               if (arg[1] == '-' && arg[2] == '\0') {
+                  noMoreArgs = YES;
+               } else if (strcmp(arg, "-NSOpen") != 0) {
+                  skip = YES;
+               }
+            }
+         }
+      }
+      if ([theArguments count] > 0) {
+         id nsOpen;
+         if ([theArguments count] == 1) {
+            nsOpen = [theArguments lastObject];
+         } else {
+            nsOpen = theArguments;
+         }
+         [[NSUserDefaults standardUserDefaults] setObject:nsOpen forKey:@"NSOpen"];
+      }
    }
+
+   [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
+
+   if(class==Nil) {
+      class=[NSApplication class];
+   }
+
+   [class sharedApplication];
+
+   nibFile=[nibFile stringByDeletingPathExtension];
+
+   if(![NSBundle loadNibNamed:nibFile owner:NSApp]) {
+      NSLog(@"Unable to load main nib file %@",nibFile);
+   }
+
+   [pool release];
+
+   [NSApp run];
    return 0;
 }
 
