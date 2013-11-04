@@ -22050,3 +22050,5 @@ static uint16_t cp936[] = {
     ,0xFE4F ,0xFA29	//CJK COMPATIBILITY IDEOGRAPH
     ,-1,-1
 };
+
+NSEncodingRegistration(cp936, kCFStringEncodingDOSChineseSimplif);

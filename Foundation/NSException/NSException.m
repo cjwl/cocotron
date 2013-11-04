@@ -55,7 +55,7 @@ void __NSPopExceptionFrame(NSExceptionFrame *frame) {
 }
 
 static void defaultHandler(NSException *exception){
-   fprintf(stderr,"*** Uncaught exception <%s> *** %s\n",[[exception name] cString],[[exception reason] cString]);
+   fprintf(stderr,"*** Uncaught exception <%s> *** %s\n",[[exception name] UTF8String],[[exception reason] UTF8String]);
 }
 
 void _NSRaiseException(NSException *exception) {
@@ -129,7 +129,7 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 
 -(void)raise {
    if(NSDebugEnabled){
-    NSCLog("RAISE %s",[[self description] cString]);
+    NSCLog("RAISE %s",[[self description] UTF8String]);
     return;
    }
    [_callStack release];

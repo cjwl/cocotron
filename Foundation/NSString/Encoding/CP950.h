@@ -13761,3 +13761,5 @@ static uint16_t cp950[] = {
     ,0xF9FE ,0x2593	//DARK SHADE
     ,-1, -1
 };
+
+NSEncodingRegistration(cp950, kCFStringEncodingDOSChineseTrad);

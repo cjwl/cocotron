@@ -255,3 +255,5 @@ static uint16_t cp1250[] = {
     ,0xFF ,0x02D9	//DOT ABOVE
     ,-1,-1
 };
+
+NSEncodingRegistration(cp1250, kCFStringEncodingWindowsLatin2);

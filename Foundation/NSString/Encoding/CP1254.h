@@ -253,3 +253,5 @@ static uint16_t cp1254[] = {
     ,0xFF ,0x00FF	//LATIN SMALL LETTER Y WITH DIAERESIS
     ,-1,-1
 };
+
+NSEncodingRegistration(cp1254, kCFStringEncodingWindowsLatin5);

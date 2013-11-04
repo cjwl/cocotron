@@ -221,7 +221,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
         return value;
     }
 
-    const char *keyCString = [key cString];
+    const char *keyCString = [key UTF8String];
     SEL sel = sel_getUid(keyCString);
 
     // FIXME: getKey, _getKey, isKey, _isKey are missing

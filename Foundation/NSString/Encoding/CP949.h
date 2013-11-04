@@ -17306,3 +17306,5 @@ static uint16_t cp949[] = {
     ,0xFDFE ,0x8A70	//CJK UNIFIED IDEOGRAPH
     ,-1,-1
 };
+
+NSEncodingRegistration(cp949, kCFStringEncodingDOSKorean);

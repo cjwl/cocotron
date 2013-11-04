@@ -237,3 +237,5 @@ static uint16_t cp1255[] = {
     ,0xFE ,0x200F	//RIGHT-TO-LEFT MARK
     ,-1,-1
 };
+
+NSEncodingRegistration(cp1255, kCFStringEncodingWindowsHebrew);

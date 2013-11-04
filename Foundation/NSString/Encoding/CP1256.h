@@ -260,3 +260,5 @@ static uint16_t cp1256[] = {
     ,0xFF ,0x06D2	//ARABIC LETTER YEH BARREE
     ,-1,-1
 };
+
+NSEncodingRegistration(cp1256, kCFStringEncodingWindowsArabic);

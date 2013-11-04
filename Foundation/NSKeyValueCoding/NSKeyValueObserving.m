@@ -1000,7 +1000,7 @@ static BOOL methodIsAutoNotifyingSetter(Class class,const char *methodCString){
 - (Class)_KVO_swizzledClass
 {
     // find swizzled class
-    const char *swizzledName = [[NSString stringWithFormat:@"KVONotifying_%@", [self className]] cString];
+    const char *swizzledName = [[NSString stringWithFormat:@"KVONotifying_%@", [self className]] UTF8String];
     Class swizzledClass = objc_lookUpClass(swizzledName);
 
     if (swizzledClass) {

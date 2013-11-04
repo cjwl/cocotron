@@ -259,3 +259,5 @@ static uint16_t cp1251[] = {
     ,0xFF ,0x044F	//CYRILLIC SMALL LETTER YA
     ,-1,-1
 };
+
+NSEncodingRegistration(cp1251, kCFStringEncodingWindowsCyrillic);

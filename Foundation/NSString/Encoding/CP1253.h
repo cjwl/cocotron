@@ -243,3 +243,5 @@ static uint16_t cp1253[] = {
     ,0xFE ,0x03CE	//GREEK SMALL LETTER OMEGA WITH TONOS
     ,-1,-1
 };
+
+NSEncodingRegistration(cp1253, kCFStringEncodingWindowsGreek);

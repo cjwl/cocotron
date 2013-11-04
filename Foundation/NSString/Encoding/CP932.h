@@ -7979,3 +7979,5 @@ static uint16_t cp932[] = {
     ,0xFC4B ,0x9ED1	//CJK UNIFIED IDEOGRAPH
     ,-1,-1
 };
+
+NSEncodingRegistration(cp932, kCFStringEncodingDOSJapanese);

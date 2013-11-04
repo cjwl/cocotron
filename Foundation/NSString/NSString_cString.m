@@ -19,7 +19,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSRaiseException.h>
 
+#import "NSStringEncoder.h"
 
+#include <string.h>
+
+// Note: we are falling back to NeXTSTEP encoding for unsupported ones, and log a message only once
+//       And before supporting non ASCII based ones, we should probably first clean any use of NSString<->C string conversion
+//       with no explicit encoding because some place probably really expect some kind of ASCII
+
+// Only the first messages about unsupported encoding are logged so we don't spend our time and fill the disk logging these errors
+// (just logging the first one seem not enough - the first messages seem lost in space)
+#define logEncodingError(encoding)\
+{\
+    if(encoding != defaultEncoding()) {\
+        static int unsupportedEncodingLogged = 0;\
+        if (unsupportedEncodingLogged < 10) {\
+            unsupportedEncodingLogged++;\
+            NSCLog("Use of unknown encoding %d",encoding);\
+        }\
+    } else {\
+        static int unsupportedDefaultEncodingLogged = 0;\
+        if (unsupportedDefaultEncodingLogged < 10) {\
+            unsupportedDefaultEncodingLogged++;\
+            NSCLog("Unsupported default encoding %d",encoding);\
+            NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);\
+        }\
+    }\
+}
 
 unichar *NSCharactersFromCString(const char *cString,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone) {
@@ -59,30 +85,29 @@ NSString *NSString_cStringNewWithCapacity(NSZone *zone,NSUInteger capacity,char 
 }
 
 NSString *NSString_cStringWithBytesAndZero(NSZone *zone,const char *bytes) {
-   return NSAutorelease(NSString_cStringNewWithBytesAndZero(zone,bytes));
+    return NSAutorelease(NSString_cStringNewWithBytesAndZero(zone,bytes));
 }
-
 unichar *NSString_anyCStringToUnicode(NSStringEncoding encoding, const char *cString,NSUInteger length, NSUInteger *resultLength,NSZone *zone)
 {
     switch(encoding) {
         case NSNEXTSTEPStringEncoding:
             return NSNEXTSTEPToUnicode(cString,length,resultLength,zone);
+        case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSISOLatin1ToUnicode(cString,length,resultLength,zone);
         case NSWindowsCP1252StringEncoding:
             return NSWin1252ToUnicode(cString,length,resultLength,zone);
         case NSMacOSRomanStringEncoding:
             return NSMacOSRomanToUnicode(cString,length,resultLength,zone);
-        default:
-            if(encoding != defaultEncoding()) {
-                NSUnimplementedFunction();
+        default: {
+            unichar *chars = NSBytesToUnicode(cString, length, encoding, resultLength, zone);
+            if (chars) {
+                return chars;
             }
-            else {
-                //we cannot use the macro :-(, because we will get into an infinite loop
-                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);                
-            }            
-            //assuming NextSTEP
+            logEncodingError(encoding);
+            // we're using an unsupported default encoding - assuming NextSTEP
             return NSNEXTSTEPToUnicode(cString,length,resultLength,zone);
+        }
     }
 }
 
@@ -104,18 +129,15 @@ char *NSString_unicodeToAnyCString(NSStringEncoding encoding, const unichar *cha
             return NSUnicodeToSymbol(characters,length,lossy,resultLength,zone, zeroTerminate);
         case NSUnicodeStringEncoding:
             return NSUnicodeToUnicode(characters,length,resultLength,zone, zeroTerminate);
-        default:
-        NSCLog("encoding=%d",encoding);
-            if(encoding != defaultEncoding()) {
-                NSUnimplementedFunction();
+        default: {
+            unsigned char *bytes = NSBytesFromUnicode(characters, length, encoding, lossy, resultLength, zone);
+            if (bytes) {
+                return bytes;
             }
-            else {
-                //we cannot use the macro :-(, because we will get into an infinite loop
-                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);
-            }
-            
-            //assuming NextSTEP
+            logEncodingError(encoding);
+            // we're using an unsupported default encoding - assuming NextSTEP
             return NSUnicodeToNEXTSTEP(characters,length,lossy,resultLength,zone, zeroTerminate);
+        }
     }
 }
 
@@ -126,24 +148,29 @@ NSString *NSString_anyCStringNewWithBytes(NSStringEncoding encoding, NSZone *zon
             return NSNEXTSTEPCStringNewWithBytes(zone,bytes,length);
         case NSMacOSRomanStringEncoding:
             return NSString_macOSRomanNewWithBytes(zone,bytes,length);
+        case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSString_isoLatin1NewWithBytes(zone,bytes,length);
         case NSWindowsCP1252StringEncoding:
             return NSString_win1252NewWithBytes(zone,bytes,length);
-        default:
-            if(encoding != defaultEncoding()) {
-                NSUnimplementedFunction();
+        default: {
+            NSUInteger decodedLength = 0;
+            unichar *chars = NSBytesToUnicode(bytes, length, encoding, &decodedLength, zone);
+            if (chars) {
+                NSString *result = [[NSString allocWithZone:zone] initWithCharacters:chars length:decodedLength];
+                NSZoneFree(zone, chars);
+                return result;
             }
-            else {
-                //we cannot use the macro :-(, because we will get into an infinite loop
-                NSCLog("encoding %d",encoding);
-                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);
-            
-            }
-            //assuming NextSTEP
+
+            logEncodingError(encoding);
+            // we're using an unsupported default encoding - assuming NextSTEP
             return NSNEXTSTEPCStringNewWithBytes(zone,bytes,length);
+        }
     }
 }
+
+// Not sure what's the goal of the method and why we wouldn't just return a NSString made from the unichar
+// It seems unused anyway
 NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone *zone, const unichar *characters,NSUInteger length,BOOL lossy)
 {
     switch(encoding) {
@@ -153,22 +180,15 @@ NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone
             return NSWin1252CStringNewWithCharacters(zone,characters,length, lossy);
         case NSMacOSRomanStringEncoding:
             return NSMacOSRomanCStringNewWithCharacters(zone,characters,length, lossy);
+        case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSISOLatin1CStringNewWithCharacters(zone,characters,length, lossy);
         default:
-            if(encoding != defaultEncoding()) {
-                NSUnimplementedFunction();
-            }
-            else {
-                //we cannot use the macro :-(, because we will get into an infinite loop
-                NSCLog("encoding %d",encoding);
-                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);
-            }
-            
-            //assuming NextSTEP
-            return NSNEXTSTEPCStringNewWithCharacters(zone,characters,length, lossy);
+            return [[NSString allocWithZone:zone] initWithCharacters:characters length:length];
     }
+    return nil;
 }
+
 NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
     switch(encoding) {
@@ -185,17 +205,21 @@ NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar
             return NSGetWin1252CStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
         case NSUTF8StringEncoding:
             return NSGetUTF8CStringWithMaxLength(characters,length, location, cString, maxLength);
-        default:
-            if(encoding != defaultEncoding()) {
-                NSUnimplementedFunction();
+        default: {
+            NSUInteger decodedLength = 0;
+            unsigned char *bytes = NSBytesFromUnicode(characters, length, encoding, lossy, &decodedLength, nil);
+            if (bytes == NULL) {
+                logEncodingError(encoding);
+                // we're using an unsupported default encoding - assuming NextSTEP
+                return NSGetNEXTSTEPCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
+            } else {
+                NSUInteger len = MIN(decodedLength,maxLength);
+                memcpy(cString, bytes, len);
+                *location = len;
+                NSZoneFree(nil, bytes);
+                return len;
             }
-            else {
-                //we cannot use the macro :-(, because we will get into an infinite loop
-                NSCLog("encoding %d",encoding);
-                NSCLog("%s() unimplemented in %s at %d",__PRETTY_FUNCTION__,__FILE__,__LINE__);                
-            }         
-            //assuming NextSTEP
-            return NSGetNEXTSTEPCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
+        }
     }
 }
 

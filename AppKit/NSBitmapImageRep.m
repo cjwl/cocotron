@@ -211,6 +211,7 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
    return self;
 }
 
+
 -initWithData:(NSData *)data {
    CGImageSourceRef imageSource=CGImageSourceCreateWithData((CFDataRef)data,nil);
    

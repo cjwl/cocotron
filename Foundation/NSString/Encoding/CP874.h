@@ -229,3 +229,5 @@ static uint16_t cp874[] = {
     ,0xFB ,0x0E5B	//THAI CHARACTER KHOMUT
     ,-1,-1
 };
+
+NSEncodingRegistration(cp874,kCFStringEncodingDOSThai);

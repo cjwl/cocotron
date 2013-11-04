@@ -201,8 +201,7 @@ static inline void appendCString(NSStringBuffer *buffer,const char *cString,
    if(cString==NULL)
     cString="(null pointer)";
 
-   characters=NSCharactersFromCString(cString,strlen(cString),&length,NULL);
-
+   characters=NSString_anyCStringToUnicode(NSASCIIStringEncoding,cString,strlen(cString),&length,NULL);
    appendCharacters(buffer,characters,length,fillChar,leftAdj,fieldWidth);
 
    NSZoneFree(NULL,characters);

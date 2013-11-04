@@ -17,13 +17,12 @@
 NSStringEncoding defaultEncoding()
 {
     //don't use objc calls because they call often defaultCStringEncoding
-    
     UINT codepage = GetACP();
+
     CFStringEncoding encoding = CFStringConvertWindowsCodepageToEncoding(codepage);
     if (encoding != kCFStringEncodingInvalidId) {
         return CFStringConvertEncodingToNSStringEncoding(encoding);
     }
-
 	switch(codepage)
 	{
 		case 1250:
@@ -90,8 +89,13 @@ NSStringEncoding defaultEncoding()
             return NSWindowsCP1252StringEncoding;
 			return NSISOLatin2StringEncoding;
 			
-		default:
-            NSCLog("Unknown codepage=%d",codepage); 
+		default: {
+            static BOOL codePageErrorLogged = NO;
+            if (codePageErrorLogged == NO) {
+                codePageErrorLogged = YES;
+                NSCLog("Unknown codepage=%d",codepage);
+            }
+        }
 // FIXME: use until the right encoding is implemented
             return NSWindowsCP1252StringEncoding;
 	}
