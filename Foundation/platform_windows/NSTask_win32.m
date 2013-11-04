@@ -145,11 +145,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NULL,NULL,TRUE,CREATE_NO_WINDOW,cenv,
     [currentDirectoryPath fileSystemRepresentation],
     &startupInfo,&_processInfo)){
+    DWORD   lastError=GetLastError();
+
     if(cenv) {
         NSZoneFree(NULL, cenv);
     }
     [NSException raise:NSInvalidArgumentException
-                format:@"CreateProcess(%@,%@,%@) failed", launchPath,[arguments componentsJoinedByString:@" "], currentDirectoryPath];
+                format:@"CreateProcess(%@,%@,%@) failed [%ld]", launchPath,[arguments componentsJoinedByString:@" "], currentDirectoryPath, lastError];
     return;
    }
     if(cenv) {
