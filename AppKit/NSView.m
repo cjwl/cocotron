@@ -1353,70 +1353,49 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(BOOL)scrollRectToVisible:(NSRect)rect {
     NSClipView *clipView=[self _enclosingClipView];
     NSRect      vRect=[self visibleRect];
-    NSPoint     sPoint;
 
-    // If the rect is already visible then there's no need to scroll
-    if(NSPointInRect(rect.origin,vRect) && NSPointInRect(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),vRect))
-     return NO;
-
-    // If we're already showing as much of rect as we can then there's no need to scroll
-    if (NSContainsRect(rect, vRect))
-        return NO;
+    // Do the minimal amount of scrolling to show the rect
     
-    // If the rects don't overlap at all then we'll have to scroll
-    if(!NSIntersectsRect(rect,vRect)){
-     if(rect.size.height<vRect.size.height){
-      float delta=vRect.size.height-rect.size.height;
- 
-      rect.origin.y-=delta/2;
-      rect.size.height+=delta;     
-     }
-     else {
-      float delta=rect.size.height-vRect.size.height;
+    // Missing amount on the four directions
+    float missingLeft = NSMinX(vRect) - NSMinX(rect);
+    float missingRight = NSMaxX(rect) - NSMaxX(vRect);
 
-      rect.origin.y+=delta/2;
-      rect.size.height-=delta;
-     }
-
-#if 0 // this doesn't work well for NSOutlineView, probably a bug in NSOutlineView
-     if(rect.size.width<vRect.size.width){
-      float delta=vRect.size.width-rect.size.width;
-
-      rect.origin.x-=delta/2;
-      rect.size.width+=delta;
-     }
-     else {
-      float delta=rect.size.width-vRect.size.width;
-
-      rect.origin.x+=delta/2;
-      rect.size.width-=delta;
-     }
-#endif
+    float missingTop = NSMinY(vRect) - NSMinY(rect);
+    float missingBottom = NSMaxY(rect) - NSMaxY(vRect);
+    
+    float dx = 0.;
+    float dy = 0.;
+    
+    if (missingLeft * missingRight < 0) {
+        // We need to scroll in one direction - no need to scroll if we're missing bits both ways or
+        // if everything is visible
+        
+        // Let's do the minimal amount of scrolling
+        if (fabs(missingLeft) < fabs(missingRight)) {
+            dx = -missingLeft;
+        } else {
+            dx = missingRight;
+        }
     }
 
-    rect=NSIntersectionRect(rect,[self bounds]); // necessary
-
-    if(clipView!=nil && !NSIsEmptyRect(vRect)) {
-     if(NSMinX(rect)<=NSMinX(vRect))
-      sPoint.x=NSMinX(rect);
-     else if(NSMaxX(rect)>NSMaxX(vRect))
-      sPoint.x=NSMinX(vRect)+(NSMaxX(rect)-NSMaxX(vRect));
-     else
-      sPoint.x=NSMinX(vRect);
-
-     if(NSMinY(rect)<=NSMinY(vRect))
-      sPoint.y=NSMinY(rect);
-     else if(NSMaxY(rect)>NSMaxY(vRect))
-      sPoint.y=NSMinY(vRect)+(NSMaxY(rect)-NSMaxY(vRect));
-     else
-      sPoint.y=NSMinY(vRect);
-
-     if(sPoint.x!=NSMinX(vRect) || sPoint.y!=NSMinY(vRect)){
-      [clipView scrollToPoint:[self convertPoint:sPoint toView:clipView]];
-      return YES;
-     }
+    if (missingTop * missingBottom < 0) {
+        // We need to scroll in one direction - no need to scroll if we're missing bits both ways or
+        // if everything is visible
+        
+        // Let's do the minimal amount of scrolling
+        if (fabs(missingTop) < fabs(missingBottom)) {
+            dy = -missingTop;
+        } else {
+            dy = missingBottom;
+        }
     }
-    
+    if (dx != 0 || dy != 0) {
+        NSPoint pt = vRect.origin;
+        pt.x += dx;
+        pt.y += dy;
+        [clipView scrollToPoint:[self convertPoint:pt toView:clipView]];
+        return YES;
+    }
     return NO;
 }
 
