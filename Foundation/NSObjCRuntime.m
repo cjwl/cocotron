@@ -67,7 +67,6 @@ static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOO
 }
 
 void NSLogv(NSString *format,va_list arguments) {
-    return;
    NSString *string=NSStringNewWithFormat(format,nil,arguments,NULL);
 
    NSUInteger length=[string length],byteLength;

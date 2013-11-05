@@ -218,7 +218,7 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime_priv(LPTIME_ZONE_INFORMAT
     NSString * regPath = [NSString stringWithFormat:@"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones\\%@", registryname];
     
     if (RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-                     TEXT([regPath UTF8String]),
+                     TEXT([regPath cString]),
                      0,
                      KEY_READ,
                      &hTimeZoneKey) == ERROR_SUCCESS) {
