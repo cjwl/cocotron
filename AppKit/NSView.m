@@ -1351,9 +1351,13 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)scrollRectToVisible:(NSRect)rect {
-    NSClipView *clipView=[self _enclosingClipView];
-    NSRect      vRect=[self visibleRect];
-
+    NSClipView *clipView = [self _enclosingClipView];
+    NSView *documentView = [clipView documentView];
+    // Current the document view visible rect in document view space
+    NSRect vRect = [clipView documentVisibleRect];
+    // Convert what we want in the document view space 
+    rect = [documentView convertRect:rect fromView:self];
+    
     // Do the minimal amount of scrolling to show the rect
     
     // Missing amount on the four directions
@@ -1393,7 +1397,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
         NSPoint pt = vRect.origin;
         pt.x += dx;
         pt.y += dy;
-        [clipView scrollToPoint:[self convertPoint:pt toView:clipView]];
+        pt = [documentView convertPoint:pt toView:clipView];
+        [clipView scrollToPoint:pt];
         return YES;
     }
     return NO;
