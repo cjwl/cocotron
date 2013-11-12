@@ -109,9 +109,9 @@ NSString * const NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidPr
 		[_delegate textStorageWillProcessEditing: note];
 	}
 	
-   [[NSNotificationCenter defaultCenter] postNotificationName: NSTextStorageWillProcessEditingNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextStorageWillProcessEditingNotification object:self];
 
-   [self fixAttributesInRange:_editedRange];
+    [self fixAttributesInRange:_editedRange];
 
 	if ([_delegate respondsToSelector: @selector(textStorageDidProcessEditing:)]) {
 		NSNotification* note = [NSNotification notificationWithName: NSTextStorageDidProcessEditingNotification object: self userInfo: nil];
@@ -138,7 +138,10 @@ NSString * const NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidPr
     range.length+=delta;
     _editedRange=range;
 
-    [self processEditing];
+       // Prevent any change to trigger more notification
+       _beginEditing++;
+       [self processEditing];
+       _beginEditing--;
    }
    else {
     _editedMask|=editedMask;
