@@ -31,12 +31,12 @@ BUILD=/tmp/build_libjepgturbo
 mkdir -p $PREFIX
 
 
-$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libjpeg-turbo/1.2.0/libjpeg-turbo-1.2.0.tar.gz
+$scriptResources/downloadFilesIfNeeded.sh $downloadFolder http://freefr.dl.sourceforge.net/project/libjpeg-turbo/1.3.0/libjpeg-turbo-1.3.0.tar.gz
 
 mkdir -p $BUILD
 cd $BUILD
-tar -xvzf $downloadFolder/libjpeg-turbo-1.2.0.tar.gz
-cd libjpeg-turbo*
+tar -xvzf $downloadFolder/libjpeg-turbo-1.3.0.tar.gz
+cd libjpeg-turbo-1.3.0
 
 pwd 
 
@@ -45,6 +45,7 @@ AS=$(echo $BASEDIR/gcc-$gccVersion/bin/*as)
 AR=$(echo $BASEDIR/gcc-$gccVersion/bin/*ar)
 RANLIB=$(echo $BASEDIR/gcc-$gccVersion/bin/*ranlib)
 TARGET=$($GCC -dumpmachine)
+export MAKE="$(which make)"
 
 
 ./configure --prefix="$PREFIX" -host $TARGET AR=$AR AS=$AS CC=$GCC RANLIB=$RANLIB --with-jpeg8 
