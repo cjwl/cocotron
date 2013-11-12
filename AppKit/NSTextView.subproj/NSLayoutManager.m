@@ -1623,7 +1623,9 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 {	
 	NSUInteger location = charRange.location;
 	NSUInteger limit = NSMaxRange(charRange);
-	
+    // clip the limit - Cocoa doesn't seem to complain when we exceed the text storage range
+	limit = MIN(limit, [_textStorage length]);
+    
 	while (location < limit) {
 		NSRange       effectiveRange;
 		NSMutableDictionary *modify = [[[self temporaryAttributesAtCharacterIndex: location effectiveRange: &effectiveRange] mutableCopy] autorelease];
