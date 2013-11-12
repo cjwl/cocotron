@@ -581,7 +581,7 @@ id NSApp=nil;
 }
 
 -(BOOL)_performKeyEquivalent:(NSEvent *)event {
-    if (event.characters.length > 0) {
+    if (event.charactersIgnoringModifiers.length > 0) {
         if([[self mainMenu] performKeyEquivalent:event])
             return YES;
         if([[self keyWindow] performKeyEquivalent:event])
