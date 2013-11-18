@@ -794,9 +794,11 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     id string = nil;
     
     NSPasteboard *pboard = [NSPasteboard generalPasteboard];
-    NSData *data = [pboard dataForType:NSRTFPboardType];
-    if (data && data.length > 0) {
-        string = [[[NSAttributedString alloc] initWithRTF:data documentAttributes:nil] autorelease];
+    if (_isRichText) {
+        NSData *data = [pboard dataForType:NSRTFPboardType];
+        if (data && data.length > 0) {
+            string = [[[NSAttributedString alloc] initWithRTF:data documentAttributes:nil] autorelease];
+        }
     }
     if (string == nil) {
         string = [pboard stringForType: NSStringPboardType];
@@ -2199,6 +2201,10 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         // Even though we're not rich text we have to set the typing attributes if we want the layout
         // manager to honor the font settings of this text view. If the layout manager doesn't find a font in the attributed
         // string it'll substitute 12 pt Arial causing layout trouble for mini text fields and other woe.
+        if ([string isKindOfClass:[NSAttributedString class]]) {
+            NSAttributedString *str = (NSAttributedString *)string;
+            string = [str string];
+        }
         NSAttributedString *attrString = [[[NSAttributedString alloc] initWithString:string attributes:[self typingAttributes]] autorelease];
 		[_textStorage replaceCharactersInRange:range withAttributedString:attrString];
 	}
