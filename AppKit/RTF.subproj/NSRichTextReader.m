@@ -304,8 +304,21 @@ static inline void flushPreviousString(NSRichTextReader *self) {
     NSRange save=_range;
     flushPreviousString(self);
     _range=_letterRange;
-    
-    if([self isEqualToString:@"ul"]){
+
+    if([self isEqualToString:@"stylesheet"]){
+        // We don't support stylesheets
+        [self setCurrentDestination:DESTINATION_IGNORE];
+    } else if([self isEqualToString:@"header"] ||
+              [self isEqualToString:@"footer"] ||
+              [self isEqualToString:@"headerl"] ||
+              [self isEqualToString:@"headerr"] ||
+              [self isEqualToString:@"headerf"] ||
+              [self isEqualToString:@"footerl"] ||
+              [self isEqualToString:@"footerr"] ||
+              [self isEqualToString:@"footerf"]) {
+        // We don't support headers & footers
+        [self setCurrentDestination:DESTINATION_IGNORE];
+    } else if([self isEqualToString:@"ul"]){
         [_currentAttributes setObject:[NSNumber numberWithInteger:NSUnderlineStyleSingle] forKey:NSUnderlineStyleAttributeName];
     } else if([self isEqualToString:@"ulnone"]){
         [_currentAttributes removeObjectForKey:NSUnderlineStyleAttributeName];
@@ -330,10 +343,14 @@ static inline void flushPreviousString(NSRichTextReader *self) {
             [_currentAttributes setObject:font forKey:NSFontAttributeName];
         }
         else if([self isEqualToString:@"par"]){
-            [self appendStringWithCurrentAttributes:@"\n"];
+            if ([self currentDestination] == DESTINATION_STRING) {
+                [self appendStringWithCurrentAttributes:@"\n"];
+            }
         }
         else if([self isEqualToString:@"tab"]){
-            [self appendStringWithCurrentAttributes:@"\t"];
+            if ([self currentDestination] == DESTINATION_STRING) {
+                [self appendStringWithCurrentAttributes:@"\t"];
+            }
         }
         else if([self isEqualToString:@"fs"]){
             NSFont *font=[_currentAttributes objectForKey:NSFontAttributeName];
@@ -497,11 +514,6 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                     flushPreviousString(self);
                     _state=STATE_SKIPLAST;
                     [self pushState];
-                    // We'll ignore unknown sub-blocks contents (known blocks like colortbl and fonttbl will
-                    // set a proper destination when the corresponding keyword is found)
-                    if ([self currentDestination] == DESTINATION_STRING && [_states count] > 1) {
-                        [self setCurrentDestination:DESTINATION_IGNORE];
-                    }
                 }
                 else if(code=='}'){
                     if([self activeFontInfo]) {
@@ -517,6 +529,7 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                     [self popState];
                 }
                 else if(code=='\r' || code=='\n'){
+                    /* "You must include the backslash; otherwise, RTF ignores the control word" */
                     flushPreviousString(self);
                     _state=STATE_SKIPLAST;
                 }
@@ -547,6 +560,8 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                     break;
                 }
                 else if(code=='*'){
+                    // "This control symbol identifies destinations whose ￼related text should be ignored if the RTF reader does not recognize the destination"
+                    [self setCurrentDestination:DESTINATION_IGNORE];
                     flushPreviousString(self);
                     _state=STATE_SKIPLAST;
                     break;
@@ -587,9 +602,12 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                     break;
                 }
                 else if(code=='\r' || code=='\n'){
+                    /* "A carriage return (character value 13) or linefeed (character value 10) will be treated as a \par control if the character is preceded by a backslash" */
                     flushPreviousString(self);
                     _state=STATE_SKIPLAST;
-                    [self appendStringWithCurrentAttributes:@"\n"];
+                    if ([self currentDestination] == DESTINATION_STRING) {
+                        [self appendStringWithCurrentAttributes:@"\n"];
+                    }
                     break;
                 }
                 else if(code=='U'){
@@ -681,16 +699,19 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                 }
                 if(_state==STATE_UNICODE_XXXX) {
                     flushPreviousString(self);
-                    [self appendStringWithCurrentAttributes:[NSString stringWithCharacters:&_univalue length:1]];
-                    
+                    if ([self currentDestination] == DESTINATION_STRING) {
+                        [self appendStringWithCurrentAttributes:[NSString stringWithCharacters:&_univalue length:1]];
+                    }
                     _state=STATE_SKIPLAST;
                 }
                 if(_state==STATE_CHAR8_XX) {
-                    if (_bufferIn == nil) {
-                        _bufferIn = [[NSMutableData alloc] init];
+                    if ([self currentDestination] == DESTINATION_STRING) {
+                        if (_bufferIn == nil) {
+                            _bufferIn = [[NSMutableData alloc] init];
+                        }
+                        unsigned char c = _univalue;
+                        [_bufferIn appendBytes:&c length:1];
                     }
-                    unsigned char c = _univalue;
-                    [_bufferIn appendBytes:&c length:1];
                     _state=STATE_SKIPLAST;
                 }
                 break;
