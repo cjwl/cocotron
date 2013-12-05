@@ -13,6 +13,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSString *kO2ImagePropertyDPIWidth=@"kCGImagePropertyDPIWidth";
 NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
+NSString *kO2ImagePropertyPixelHeight=@"PixelHeight";
+NSString *kO2ImagePropertyPixelWidth=@"PixelWidth";
+NSString *kO2ImagePropertyOrientation=@"Orientation";
+
+NSString *kO2ImagePropertyTIFFDictionary=@"{TIFF}";
+NSString *kO2ImagePropertyExifDictionary=@"{Exif}";
+
+NSString *kO2ImagePropertyTIFFXResolution=@"XResolution";
+NSString *kO2ImagePropertyTIFFYResolution=@"YResolution";
+NSString *kO2ImagePropertyTIFFOrientation=@"Orientation";
 
 @interface _O2ImageSource : O2ImageSource
 @end
