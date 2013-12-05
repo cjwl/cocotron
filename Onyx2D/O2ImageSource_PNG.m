@@ -137,7 +137,12 @@ bool load_png_image(const unsigned char *buffer, int length, int *outWidth, int 
 		row_bytes += width; // Add some room for the alpha
 	}
     *outData = (unsigned char*) malloc(row_bytes * height);
-	
+    if (*outData == NULL) {
+        NSLog(@"Can't allocate %d bytes for %dx%d bitmap", row_bytes*height, width, height);
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        return false;
+    }
+
     png_bytepp row_pointers = png_get_rows(png_ptr, info_ptr);
 	
     for (int i = 0; i < height; i++) {
