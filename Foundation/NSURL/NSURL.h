@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSURLHandle,NSNumber,NSData;
+@class NSURLHandle,NSNumber,NSData,NSArray;
 
 FOUNDATION_EXPORT NSString * const NSURLFileScheme;
 
@@ -66,3 +66,19 @@ FOUNDATION_EXPORT NSString * const NSURLFileScheme;
 
 @end
 
+@interface NSURL (NSURLPathUtilities)
+
++ (NSURL *)fileURLWithPathComponents:(NSArray *)components;
+- (NSArray *)pathComponents;
+- (NSString *)lastPathComponent;
+- (NSString *)pathExtension;
+- (NSURL *)URLByAppendingPathComponent:(NSString *)pathComponent;
+- (NSURL *)URLByAppendingPathComponent:(NSString *)pathComponent isDirectory:(BOOL)isDirectory;
+- (NSURL *)URLByDeletingLastPathComponent;
+- (NSURL *)URLByAppendingPathExtension:(NSString *)pathExtension;
+- (NSURL *)URLByDeletingPathExtension;
+
+- (NSURL *)URLByStandardizingPath;
+- (NSURL *)URLByResolvingSymlinksInPath;
+
+@end

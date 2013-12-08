@@ -865,3 +865,56 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
 
 
 @end
+
+@implementation NSURL (NSURLPathUtilities)
+
++ (NSURL *)fileURLWithPathComponents:(NSArray *)components {
+    return [NSURL fileURLWithPath:[NSString pathWithComponents:components]];
+}
+
+- (NSArray *)pathComponents {
+    return [[self path] pathComponents];
+}
+
+- (NSString *)lastPathComponent {
+    return [[self path] lastPathComponent];
+}
+
+- (NSString *)pathExtension {
+    return [[self path] pathExtension];
+}
+
+- (NSURL *)URLByAppendingPathComponent:(NSString *)pathComponent {
+    NSUnimplementedMethod();
+    return nil;
+}
+
+- (NSURL *)URLByAppendingPathComponent:(NSString *)pathComponent isDirectory:(BOOL)isDirectory {
+    NSUnimplementedMethod();
+    return nil;
+}
+
+- (NSURL *)URLByDeletingLastPathComponent {
+    NSUnimplementedMethod();
+    return nil;
+}
+
+- (NSURL *)URLByAppendingPathExtension:(NSString *)pathExtension {
+    NSUnimplementedMethod();
+    return nil;
+}
+
+- (NSURL *)URLByDeletingPathExtension {
+    NSUnimplementedMethod();
+    return nil;
+}
+
+- (NSURL *)URLByStandardizingPath {
+    return [NSURL fileURLWithPath:[[self path] stringByStandardizingPath]];
+}
+
+- (NSURL *)URLByResolvingSymlinksInPath {
+    return [NSURL fileURLWithPath:[[self path] stringByResolvingSymlinksInPath]];
+}
+
+@end
