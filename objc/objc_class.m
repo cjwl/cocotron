@@ -654,7 +654,7 @@ BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
 	struct objc_method_list *methodList = calloc(sizeof(struct objc_method_list)+sizeof(struct objc_method), 1);
         char *typescopy = (char *)malloc(strlen(types)+1);
 	
-	newMethod->method_name = name;
+	newMethod->method_name = sel_getSelector(name);
         strcpy(typescopy,(char *)types);
 	newMethod->method_types = typescopy;
 	newMethod->method_imp = imp;
