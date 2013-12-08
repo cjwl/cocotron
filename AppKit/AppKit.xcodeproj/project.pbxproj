@@ -10465,7 +10465,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = NO;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				HEADER_SEARCH_PATHS = (
+					"$(DSTROOT)/usr/include",
+					/Developer/Cocotron/1.0/Windows/i386,
+				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Windows/i386/libtiff/lib,
@@ -10491,6 +10494,10 @@
 					"-lcomctl32",
 					"-lopengl32",
 					"-lwinmm",
+					"-ltiff",
+					"-lpng14.dll",
+					"-ljpeg",
+					"-lz",
 					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = AppKit;
@@ -10711,7 +10718,10 @@
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				HEADER_SEARCH_PATHS = "$(DSTROOT)/usr/include";
+				HEADER_SEARCH_PATHS = (
+					"$(DSTROOT)/usr/include",
+					/Developer/Cocotron/1.0/Windows/i386,
+				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Windows/i386/libtiff/lib,
@@ -10740,6 +10750,10 @@
 					"-lcomctl32",
 					"-lopengl32",
 					"-lwinmm",
+					"-ltiff",
+					"-lpng14.dll",
+					"-ljpeg",
+					"-lz",
 					"$(OTHER_LDFLAGS)",
 				);
 				PRODUCT_NAME = AppKit;
