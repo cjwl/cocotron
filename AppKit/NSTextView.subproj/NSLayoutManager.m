@@ -937,7 +937,14 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	CGContextRef context=NSCurrentGraphicsPort();
 	CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
 	int          cgGlyphsLength=length/2;
-	CGContextShowGlyphsAtPoint(context,point.x,point.y,cgGlyphs,cgGlyphsLength);
+    CGSize advances[cgGlyphsLength];
+    NSGlyph nsglyphs[cgGlyphsLength];
+    for (int i = 0; i < cgGlyphsLength; ++i) {
+        nsglyphs[i] = cgGlyphs[i];
+    }
+    [font getAdvancements:advances forGlyphs:nsglyphs count:cgGlyphsLength];
+    CGContextSetTextPosition(context, point.x, point.y);
+    CGContextShowGlyphsWithAdvances(context, cgGlyphs, advances, cgGlyphsLength);
 }
 
 -(void)drawSelectionAtPoint:(NSPoint)origin {

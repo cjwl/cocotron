@@ -343,7 +343,6 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
      if(ttMetrics->otmEMSquare!=_unitsPerEm){
       // if our first try didn't have the typical em square, recreate using the em square 
       LOGFONT logFont;
-      
       GetObject(font,sizeof(logFont),&logFont);
       logFont.lfHeight=-ttMetrics->otmEMSquare;
       logFont.lfWidth=0;
@@ -463,11 +462,11 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     for(i=max;--i>=0;){
      O2Glyph glyph=glyphs[i];
      
-     if(glyph<_numberOfGlyphs)
-      _advances[glyph]=abc[i].abcfA+abc[i].abcfB+abc[i].abcfC;
+        if(glyph<_numberOfGlyphs) {
+            _advances[glyph]=abc[i].abcfA+abc[i].abcfB+abc[i].abcfC;
+        }
     }
    }
-   
    DeleteObject(font);
    ReleaseDC(NULL,dc);
 }
@@ -510,20 +509,26 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     return _coveredCharSet;
 }
 
+-(float)nativeSizeForSize:(float)size
+{
+    if(_useMacMetrics){
+        if (size <= 10.0)
+            size=size;
+        else if (size < 20.0)
+            size=size/(1.0 + 0.2*sqrtf(0.0390625*(size - 10.0)));
+        else
+            size=size/1.125;
+    }
+    return size;
+}
+
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize {
 	return [self createGDIFontSelectedInDC:dc pointSize:pointSize angle:0.];
 }
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
-   if(_useMacMetrics){
-    if (pointSize <= 10.0)
-       pointSize=pointSize;
-    else if (pointSize < 20.0)
-       pointSize=pointSize/(1.0 + 0.2*sqrtf(0.0390625*(pointSize - 10.0)));
-    else
-       pointSize=pointSize/1.125;
-   }
-   int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
+    pointSize = [self nativeSizeForSize:pointSize];
+    int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
 	Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES angle: angle];
    
    SelectObject(dc,[result fontHandle]);

@@ -490,7 +490,6 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 -(NSSize)menuItemTextSize:(NSString *)title {
 	NSSize result = NSZeroSize;
 	Margins margins = [self menuItemTextMargins];
-	
 	result = [title sizeWithAttributes:sNormalMenuTextAttributes];
     
 	result.height += (margins.top + margins.bottom);
@@ -503,7 +502,7 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 {
 	NSSize result = NSZeroSize;
 	Margins margins = [self menuItemTextMargins];
-	
+    
 	result = [title size];
 	
 	result.height += (margins.top + margins.bottom);
@@ -585,8 +584,9 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 			[string drawInRect:rect withAttributes:sDimmedMenuTextAttributes];
 		}
 	}
-	else
+	else {
 		[super drawMenuItemText:string inRect:rect enabled:enabled selected:selected];
+    }
 }
 
 -(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {

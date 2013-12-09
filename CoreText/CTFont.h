@@ -17,8 +17,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef KTFont *CTFontRef;
 
 typedef enum {
-   kCTFontMenuTitleFontType,
-   kCTFontMenuItemFontType,
+    kCTFontSystemFontType = 2,
+    kCTFontEmphasizedSystemFontType = 3,
+    kCTFontSmallSystemFontType = 4,
+    kCTFontSmallEmphasizedSystemFontType = 5,
+    kCTFontMiniSystemFontType = 6,
+    kCTFontMiniEmphasizedSystemFontType = 7,
+    kCTFontViewsFontType = 8,
+    kCTFontApplicationFontType = 9,
+    kCTFontLabelFontType = 10,
+    kCTFontMenuTitleFontType = 11,
+    kCTFontMenuItemFontType = 12,
+    kCTFontMenuItemMarkFontType = 13,
+    kCTFontMenuItemCmdKeyFontType = 14,
+    kCTFontWindowTitleFontType = 15,
+    kCTFontPushButtonFontType = 16,
+    kCTFontUtilityWindowTitleFontType = 17,
+    kCTFontAlertHeaderFontType = 18,
+    kCTFontSystemDetailFontType = 19,
+    kCTFontEmphasizedSystemDetailFontType = 20,
+    kCTFontToolbarFontType = 21,
+    kCTFontSmallToolbarFontType = 22,
+    kCTFontMessageFontType = 23,
+    kCTFontPaletteFontType = 24,
+    kCTFontToolTipFontType = 25,
+    kCTFontControlContentFontType = 26
 } CTFontUIFontType;
 
 CORETEXT_EXPORT CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont,CGFloat size,CGAffineTransform *xform,id attributes);

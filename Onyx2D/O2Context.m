@@ -1421,11 +1421,10 @@ void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size 
    
    O2FontGetGlyphAdvances(font,glyphs,count,intAdvances);
     
-   for(i=0;i<count;i++){
-    advances[i].width=intAdvances[i];
+    float scale = [font nativeSizeForSize:pointSize]/unitsPerEm;
+    for(i=0;i<count;i++){
+    advances[i].width=intAdvances[i]*scale;
     advances[i].height=0;
-    
-    advances[i].width=(advances[i].width/unitsPerEm)/pointSize;
    }
 }
 

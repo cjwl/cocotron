@@ -167,52 +167,52 @@ static NSFont **_fontCache=NULL;
    }
 }
 
++(NSFont *)_uiFontOfType:(CTFontUIFontType)type size:(float)size fallbackName:(NSString *)fallbackName
+{
+    NSFont *result = nil;
+    CTFontRef ctFont=CTFontCreateUIFontForLanguage(type,size,nil);
+    if (ctFont) {
+        NSString *name=(NSString *)CTFontCopyFullName(ctFont);
+        
+        size=CTFontGetSize(ctFont);
+        
+        result=[NSFont fontWithName:name size:size];
+        
+        [ctFont release];
+        [name release];
+    } else {
+        result = [NSFont fontWithName:[O2Font postscriptNameForDisplayName:fallbackName] size:size];
+    }
+    return result;
+}
+
 +(NSFont *)boldSystemFontOfSize:(float)size {
-   return [NSFont fontWithName:[O2Font postscriptNameForDisplayName:@"Arial Bold"] size:(size==0)?[self systemFontSize]:size];
+    NSFont *font = [self systemFontOfSize:size];
+    return [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSBoldFontMask];
 }
 
 +(NSFont *)controlContentFontOfSize:(float)size {
-   return [NSFont fontWithName:[O2Font postscriptNameForDisplayName:@"Arial"] size:(size==0)?12.0:size];
+    return [self _uiFontOfType:kCTFontControlContentFontType size:(size==0)?12.0:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)labelFontOfSize:(float)size {
-   return [NSFont fontWithName:[O2Font postscriptNameForDisplayName:@"Arial"] size:(size==0)?[self labelFontSize]:size];
+    return [self _uiFontOfType:kCTFontLabelFontType size:(size==0)?12.0:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)menuFontOfSize:(float)size {
-   CTFontRef ctFont=CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType,size,nil);
-   NSString *name=(NSString *)CTFontCopyFullName(ctFont);
-   
-   size=CTFontGetSize(ctFont);
-   
-   NSFont *result=[NSFont fontWithName:name size:size];
-   
-   [ctFont release];
-   [name release];
-   
-   return result;
+    return [self _uiFontOfType:kCTFontMenuItemFontType size:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)menuBarFontOfSize:(float)size {
-   CTFontRef ctFont=CTFontCreateUIFontForLanguage(kCTFontMenuTitleFontType,size,nil);
-   NSString *name=(NSString *)CTFontCopyFullName(ctFont);
-   
-   size=CTFontGetSize(ctFont);
-   
-   NSFont *result=[NSFont fontWithName:name size:size];
-   
-   [ctFont release];
-   [name release];
-   
-   return result;
+    return [self _uiFontOfType:kCTFontMenuTitleFontType size:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)messageFontOfSize:(float)size {
-   return [NSFont fontWithName:[O2Font postscriptNameForDisplayName:@"Arial"] size:(size==0)?12.0:size];
+    return [self _uiFontOfType:kCTFontSystemFontType size:(size==0)?12.0:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)paletteFontOfSize:(float)size {
-   return [NSFont fontWithName:[O2Font postscriptNameForDisplayName:@"Arial"] size:(size==0)?12.0:size];
+    return [self _uiFontOfType:kCTFontPaletteFontType size:(size==0)?12.0:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)systemFontOfSize:(float)size {
@@ -220,11 +220,11 @@ static NSFont **_fontCache=NULL;
 }
 
 +(NSFont *)titleBarFontOfSize:(float)size {
-   return [NSFont fontWithName:[O2Font postscriptNameForDisplayName:@"Arial"] size:(size==0)?12.0:size];
+    return [self boldSystemFontOfSize:size];
 }
 
 +(NSFont *)toolTipsFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Tahoma" size:(size==0)?10.0:size];
+    return [self _uiFontOfType:kCTFontToolTipFontType size:(size==0)?10.:size fallbackName:@"Arial"];
 }
 
 +(NSFont *)userFontOfSize:(float)size {
@@ -571,8 +571,9 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    return CTFontGetAscent(_ctFont);
 }
 
+// CT & NS descender value have opposite value on Cocoa
 -(float)descender {
-   return CTFontGetDescent(_ctFont);
+   return -CTFontGetDescent(_ctFont);
 }
 
 -(float)leading {
@@ -580,7 +581,9 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(float)defaultLineHeightForFont {
-   return CTFontGetAscent(_ctFont)-CTFontGetDescent(_ctFont)+CTFontGetLeading(_ctFont);;
+    // Cocoa seems to do something like that 
+   float height = roundf(CTFontGetAscent(_ctFont))+roundf(CTFontGetDescent(_ctFont))+roundf(CTFontGetLeading(_ctFont));
+    return height;
 }
 
 -(BOOL)isFixedPitch {
