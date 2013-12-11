@@ -104,14 +104,18 @@ static NSFont **_fontCache=NULL;
     if(check!=nil && [[check fontName] isEqualToString:name] && [check pointSize]==size)
      return i;
    }
-
+    
    return NSNotFound;
 }
 
 +(NSFont *)cachedFontWithName:(NSString *)name size:(float)size {
-   unsigned i=[self _cacheIndexOfFontWithName:name size:size];
-
-   return (i==NSNotFound)?(NSFont *)nil:_fontCache[i];
+    NSFont *font = nil;
+    @synchronized(_fontCache) {
+        unsigned i=[self _cacheIndexOfFontWithName:name size:size];
+        
+        font = (i==NSNotFound)?(NSFont *)nil:_fontCache[i];
+    }
+    return font;
 }
 
 +(void)addFontToCache:(NSFont *)font {
@@ -120,25 +124,29 @@ static NSFont **_fontCache=NULL;
 	}
    unsigned i;
 
-   for(i=0;i<_fontCacheSize;i++){
-    if(_fontCache[i]==nil){
-     _fontCache[i]=font;
-     return;
-    }
-   }
+    @synchronized(_fontCache) {
+       for(i=0;i<_fontCacheSize;i++){
+        if(_fontCache[i]==nil){
+         _fontCache[i]=font;
+         return;
+        }
+       }
 
-   if(_fontCacheSize>=_fontCacheCapacity){
-    _fontCacheCapacity*=2;
-    _fontCache=NSZoneRealloc([self zone],_fontCache,sizeof(NSFont *)*_fontCacheCapacity);
-   }
-   _fontCache[_fontCacheSize++]=font;
+       if(_fontCacheSize>=_fontCacheCapacity){
+        _fontCacheCapacity*=2;
+        _fontCache=NSZoneRealloc([self zone],_fontCache,sizeof(NSFont *)*_fontCacheCapacity);
+       }
+       _fontCache[_fontCacheSize++]=font;
+    }
 }
 
 +(void)removeFontFromCache:(NSFont *)font {
-   unsigned i=[self _cacheIndexOfFontWithName:[font fontName] size:[font pointSize]];
+    @synchronized(_fontCache) {
+       unsigned i=[self _cacheIndexOfFontWithName:[font fontName] size:[font pointSize]];
 
-   if(i!=NSNotFound)
-    _fontCache[i]=nil;
+       if(i!=NSNotFound)
+        _fontCache[i]=nil;
+    }
 }
 
 +(float)systemFontSize {
