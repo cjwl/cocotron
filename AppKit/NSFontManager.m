@@ -432,7 +432,7 @@ static Class _fontPanelFactory;
 	NSFontFamily   *family=[NSFontFamily fontFamilyWithName: [font familyName]];
 	NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
 	NSFontTraitMask traits=[typeface traits];
-	traits ^= trait; // remove the traits
+	traits &= ~trait; // remove the traits
 	NSFontTypeface *newface;
 		
 	newface=[family typefaceWithTraits:traits];
