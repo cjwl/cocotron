@@ -70,13 +70,9 @@ static inline void addObject(NSAutoreleasePool *self,id object){
    [_childPool release];
 
    for(i=0;i<_nextSlot;i++){
-    NS_DURING
      id object=_pages[i/PAGESIZE][i%PAGESIZE];
 
      [object release];
-    NS_HANDLER
-     NSLog(@"Exception while autoreleasing %@",localException);
-    NS_ENDHANDLER
    }
 
    for(i=0;i<_pageCount;i++)

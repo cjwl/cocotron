@@ -531,6 +531,7 @@ static void OBJCSymbolTableRegisterProtocolsIfNeeded(OBJCSymbolTable *symbolTabl
 }
 
 void OBJCQueueModule(OBJCModule *module) {
+    if (module->symbolTable != NULL) {
    OBJCArrayAdd(OBJCModuleQueue(),module);
    OBJCLinkModuleToActiveObjectFile(module);
    OBJCSymbolTableRegisterSelectors(module->symbolTable);
@@ -546,6 +547,7 @@ void OBJCQueueModule(OBJCModule *module) {
 
    OBJCSendLoadMessages();
 #endif
+    }
 }
 
 void OBJCResetModuleQueue(void) {

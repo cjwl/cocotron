@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSZone.h>
 #import <Foundation/NSEnumerator_dictionaryKeys.h>
 
 @implementation NSMapTable
@@ -177,7 +178,7 @@ void NSFreeMapTable(NSMapTable *table){
    NSZoneFree(zone,table->buckets);
    NSZoneFree(zone,table->keyCallBacks);
    NSZoneFree(zone,table->valueCallBacks);
-   NSZoneFree(zone,table);
+   NSDeallocateObject(table);
 }
 
 void NSResetMapTable(NSMapTable *table){
