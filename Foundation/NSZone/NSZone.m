@@ -25,12 +25,12 @@ typedef unsigned int OSSpinLock;
 
 #import <Foundation/NSAtomicCompareAndSwap.h>
 
-inline BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
+BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
 {
    return __sync_bool_compare_and_swap(__lock, 0, 1);
 }
 
-inline void OSSpinLockLock( volatile OSSpinLock *__lock )
+void OSSpinLockLock( volatile OSSpinLock *__lock )
 {
    while(!__sync_bool_compare_and_swap(__lock, 0, 1))
    {
@@ -42,7 +42,7 @@ inline void OSSpinLockLock( volatile OSSpinLock *__lock )
    }
 }
 
-inline void OSSpinLockUnlock( volatile OSSpinLock *__lock )
+void OSSpinLockUnlock( volatile OSSpinLock *__lock )
 {
    __sync_bool_compare_and_swap(__lock, 1, 0);
 }

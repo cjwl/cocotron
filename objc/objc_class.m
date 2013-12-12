@@ -36,26 +36,11 @@ typedef unsigned int OSSpinLock;
 
 #import <Foundation/NSAtomicCompareAndSwap.h>
 
-inline void OSSpinLockLock( volatile OSSpinLock *__lock )
-{
-    while(!__sync_bool_compare_and_swap(__lock, 0, 1))
-    {
-#ifdef WIN32
-        Sleep(0);
-#else
-        usleep(1);
-#endif
-    }
-}
-
-inline void OSSpinLockUnlock( volatile OSSpinLock *__lock )
-{
-    __sync_bool_compare_and_swap(__lock, 1, 0);
-}
-
 static OSSpinLock classTableLock=0;
 
-
+extern BOOL OSSpinLockTry( volatile OSSpinLock *__lock );
+extern void OSSpinLockLock( volatile OSSpinLock *__lock );
+extern void OSSpinLockUnlock( volatile OSSpinLock *__lock );
 
 #define INITIAL_CLASS_HASHTABLE_SIZE	256
 
