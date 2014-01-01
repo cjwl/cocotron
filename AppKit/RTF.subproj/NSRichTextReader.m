@@ -37,6 +37,10 @@ enum {
     DESTINATION_IGNORE,
 };
 
+// Some keys for the states dictionary
+static const NSString *kStateDestinationKey = @"destination";
+static const NSString *kStateCharacterBytesCountKey = @"characterBytesCount";
+
 @implementation NSRichTextReader
 
 -initWithData:(NSData *)data {
@@ -205,14 +209,29 @@ static NSInteger codePageFromCharset(NSInteger charset)
 
 -(int)currentDestination
 {
-    return [[[self currentState] objectForKey:@"destination"] intValue];
+    return [[[self currentState] objectForKey:kStateDestinationKey] intValue];
 }
 
 -(void)setCurrentDestination:(int)destination
 {
-    [[self currentState] setObject:[NSNumber numberWithInt:destination] forKey:@"destination"];
+    [[self currentState] setObject:[NSNumber numberWithInt:kStateDestinationKey] forKey:kStateDestinationKey];
 }
 
+-(int)currentUnicodeCharacterBytesCount
+{
+    // Default value is 1
+    int bytesCount = 1;
+    NSNumber *n = [[self currentState] objectForKey:kStateCharacterBytesCountKey];
+    if (n) {
+        bytesCount = [n intValue];
+    }
+    return bytesCount;
+}
+
+-(void)setCurrentUnicodeCharacterBytesCount:(int)count
+{
+    [[self currentState] setObject:[NSNumber numberWithInt:count] forKey:kStateCharacterBytesCountKey];
+}
 
 static inline void flushPreviousString(NSRichTextReader *self) {
     self->_range.length--;
@@ -329,6 +348,17 @@ static inline void flushPreviousString(NSRichTextReader *self) {
         [_currentAttributes setObject:[NSNumber numberWithInteger:NSUnderlineStyleDouble] forKey:NSUnderlineStyleAttributeName];
     } else if([self isEqualToString:@"ulth"]){
         [_currentAttributes setObject:[NSNumber numberWithInteger:NSUnderlineStyleThick] forKey:NSUnderlineStyleAttributeName];
+    } else if([self isEqualToString:@"uc"]){
+        [self setCurrentUnicodeCharacterBytesCount:argument];
+    } else if([self isEqualToString:@"u"]){
+        if ([self currentDestination] == DESTINATION_STRING) {
+            unichar c = argument;
+            NSString *string = [NSString stringWithCharacters:&c length:1];
+            [self appendStringWithCurrentAttributes:string];
+            // Skip the next substitution chars if needed
+            save.location = NSMaxRange(save);
+            save.length = [self currentUnicodeCharacterBytesCount];
+        }
     } else
         if([self isEqualToString:@"b"]){
             NSFont *font=[_currentAttributes objectForKey:NSFontAttributeName];
@@ -652,6 +682,7 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                     _letterRange=_range;
                     _state=STATE_SCANNING;
                     [self processControlWithArgValue:1];
+                    NSUInteger position=NSMaxRange(_range);
                     _range.location=position;
                     _range.length=0;
                 }
@@ -671,6 +702,7 @@ static inline void flushPreviousString(NSRichTextReader *self) {
                     _range.length--;
                     _state=STATE_SCANNING;
                     [self processControlWithArgValue:_argSign*_argValue];
+                    NSUInteger position=NSMaxRange(_range);
                     _range.location=position;
                     _range.length=0;
                 }

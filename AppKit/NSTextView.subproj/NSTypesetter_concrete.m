@@ -326,7 +326,7 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				loadGlyphAndCharacterCacheForLocation(self,_nextGlyphLocation);
 			
 			int nextChar=_characterCache[glyphIndex-_glyphCacheRange.location];
-			if (nextChar == '\n') {
+            if ([[NSCharacterSet newlineCharacterSet] characterIsMember:nextChar]) {
 				endOfLine=YES;
 			}
 		}

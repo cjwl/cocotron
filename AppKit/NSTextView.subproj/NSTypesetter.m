@@ -213,20 +213,23 @@
 }
 
 -(NSTypesetterControlCharacterAction)actionForControlCharacterAtIndex:(unsigned)characterIndex {
-   switch([[_attributedString string] characterAtIndex:characterIndex]){
-   
-    case '\n':
-     return NSTypesetterParagraphBreakAction;
-     
-    case '\t':
-     return NSTypesetterHorizontalTabAction;
-    
-    case 0x200B:
-     return NSTypesetterZeroAdvancementAction;
-     
-    default:
-     return NSTypesetterWhitespaceAction;
-   }
+    unichar c = [[_attributedString string] characterAtIndex:characterIndex];
+    if ([[NSCharacterSet newlineCharacterSet] characterIsMember:c]) {
+        return NSTypesetterParagraphBreakAction;
+    }
+    switch(c){
+        case '\n':
+            return NSTypesetterParagraphBreakAction;
+            
+        case '\t':
+            return NSTypesetterHorizontalTabAction;
+            
+        case 0x200B:
+            return NSTypesetterZeroAdvancementAction;
+            
+        default:
+            return NSTypesetterWhitespaceAction;
+    }
 }
 
 -(NSFont *)substituteFontForFont:(NSFont *)font {

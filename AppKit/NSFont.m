@@ -688,7 +688,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    for(i=0;i<length;i++){
     unichar check=characters[i];
 
-    if(check<' ' || (check>=0x7F && check<=0x9F) || check==0x200B)
+    if(check<' ' || (check>=0x7F && check<=0x9F) || check==0x200B || check==0x2028 || check==0x2029)
      glyphs[i]=NSControlGlyph;
     else
      glyphs[i]=cgGlyphs[i];

@@ -56,7 +56,7 @@
         if(buffer[i]=='\n' || buffer[i]=='\\')
             ansiLength+=2;
         else if(buffer[i]>127)
-            ansiLength+=6;
+            ansiLength+=9; // unicode is encoded as '\uXXXXXX?'
     }
     
     ansi=alloca(sizeof(unsigned char)*ansiLength);
@@ -73,7 +73,9 @@
             ansi[ansiLength++]='\\';
         }
         else if(code>127){
-            int len = sprintf((char*)ansi+ansiLength, "\\u%d", code);
+            // "= \u<code>?" where "?" is a substitution char for readers not supporting
+            
+            int len = sprintf((char*)ansi+ansiLength, "\\u%d?", code);
             ansiLength += len;
         }
         else {
@@ -120,7 +122,6 @@
             if ([colors containsObject:whiteColor] == NO) {
                 [colors addObject:whiteColor];
             }
-            
         }
         if (underlineColor && [colors containsObject:underlineColor] == NO) {
             [colors addObject:underlineColor];
