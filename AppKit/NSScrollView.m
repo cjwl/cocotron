@@ -409,10 +409,12 @@ static Class _rulerViewClass = nil;
 
     if([self _cornerView]==nil){
         [_cornerView removeFromSuperview];
+        [_cornerView release];
         _cornerView = nil;
     }
     else if ([self _cornerView] != nil && _cornerView == nil) {
-        _cornerView = [self _cornerView];
+        // Use the document corner view - and it's a retained property
+        _cornerView = [[self _cornerView] retain];
         [self addSubview:_cornerView];
     }
 }    
@@ -673,22 +675,28 @@ static Class _rulerViewClass = nil;
 
 -(void)setHasVerticalRuler:(BOOL)flag
 {
-    _hasVerticalRuler = flag;
-    [self tile];
-    [_verticalRuler setNeedsDisplay:flag];
+    if (_hasVerticalRuler != flag) {
+        _hasVerticalRuler = flag;
+        [self tile];
+        [_verticalRuler setNeedsDisplay:flag];
+    }
 }
 
 -(void)setHasHorizontalRuler:(BOOL)flag
 {
-    _hasHorizontalRuler = flag;
-    [self tile];
-    [_horizontalRuler setNeedsDisplay:flag];
+    if (_hasHorizontalRuler != flag) {
+        _hasHorizontalRuler = flag;
+        [self tile];
+        [_horizontalRuler setNeedsDisplay:flag];
+    }
 }
 
 -(void)setRulersVisible:(BOOL)flag
 {
-    _rulersVisible = flag;
-    [self tile];
+    if (_rulersVisible != flag) {
+        _rulersVisible = flag;
+        [self tile];
+    }
 }
 
 -(void)setVerticalLineScroll:(float)value {
