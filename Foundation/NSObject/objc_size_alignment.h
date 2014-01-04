@@ -14,24 +14,3 @@
 size_t objc_ext_sizeof_type (const char *type);
 size_t objc_ext_alignof_type (const char *type);
 const char *objc_ext_skip_type_specifier (const char *type,BOOL skipDigits);
-
-
-#ifndef GCC_RUNTIME_3
-// For compatibility
-inline size_t objc_sizeof_type(const char *type)
-{
-    return objc_ext_sizeof_type(type);
-}
-
-
-inline size_t objc_alignof_type(const char *type)
-{
-    return objc_ext_alignof_type(type);
-}
-
-
-inline const char *objc_skip_type_specifier(const char *type, BOOL skipDigits)
-{
-    return objc_ext_skip_type_specifier(type, skipDigits);
-}
-#endif
