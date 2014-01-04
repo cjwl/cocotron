@@ -2117,7 +2117,7 @@
 		6EA04A7B09E57EA10067589C /* NSFileHandle_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28057609747CEE00EC542B /* NSFileHandle_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA04A7C09E57EA10067589C /* NSFileHandle_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057709747CEE00EC542B /* NSFileHandle_posix.m */; };
 		6EA04A7D09E57EA10067589C /* NSFileManager_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28057809747CEE00EC542B /* NSFileManager_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA04A7E09E57EA10067589C /* NSFileManager_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057909747CEE00EC542B /* NSFileManager_posix.m */; };
+		6EA04A7E09E57EA10067589C /* NSFileManager_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057909747CEE00EC542B /* NSFileManager_posix.m */; settings = {COMPILER_FLAGS = "-std=gnu89"; }; };
 		6EA04A7F09E57EA10067589C /* NSLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28057A09747CEE00EC542B /* NSLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA04A8009E57EA10067589C /* NSLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057B09747CEE00EC542B /* NSLock_posix.m */; };
 		6EA04A8109E57EA10067589C /* NSMemoryFunctions_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057C09747CEE00EC542B /* NSMemoryFunctions_posix.m */; };
@@ -2126,7 +2126,7 @@
 		6EA04A8409E57EA10067589C /* NSPipe_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28057F09747CEE00EC542B /* NSPipe_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA04A8509E57EA10067589C /* NSPipe_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058009747CEE00EC542B /* NSPipe_posix.m */; };
 		6EA04A8609E57EA10067589C /* NSPlatform_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28058109747CEE00EC542B /* NSPlatform_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA04A8709E57EA10067589C /* NSPlatform_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058209747CEE00EC542B /* NSPlatform_posix.m */; };
+		6EA04A8709E57EA10067589C /* NSPlatform_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058209747CEE00EC542B /* NSPlatform_posix.m */; settings = {COMPILER_FLAGS = "-std=gnu89"; }; };
 		6EA04A8809E57EA10067589C /* NSTask_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28058309747CEE00EC542B /* NSTask_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA04A8909E57EA10067589C /* NSTask_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058409747CEE00EC542B /* NSTask_posix.m */; };
 		6EAD77330AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -16255,6 +16255,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -16322,6 +16323,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEC0A3851709355C002A60B7 /* linux-i386-framework.xcconfig */;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DPTHREAD_INSIDE_BUILD=1",
