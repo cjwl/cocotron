@@ -214,7 +214,7 @@ static NSInteger codePageFromCharset(NSInteger charset)
 
 -(void)setCurrentDestination:(int)destination
 {
-    [[self currentState] setObject:[NSNumber numberWithInt:kStateDestinationKey] forKey:kStateDestinationKey];
+    [[self currentState] setObject:[NSNumber numberWithInt:destination] forKey:kStateDestinationKey];
 }
 
 -(int)currentUnicodeCharacterBytesCount
