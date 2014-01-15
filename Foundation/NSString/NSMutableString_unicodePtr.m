@@ -37,10 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getCharacters:(unichar *)buffer {
-   NSInteger i;
-
-   for(i=0;i<_length;i++)
-    buffer[i]=_unicode[i];
+    memcpy(buffer, _unicode, _length*sizeof(unichar));
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
@@ -51,8 +48,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSStringFromRange(range),[self length]);
    }
 
-   for(i=0;i<range.length;i++)
-    buffer[i]=_unicode[loc+i];
+    memcpy(buffer, _unicode+loc, range.length*sizeof(unichar));
+
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
@@ -239,11 +236,17 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 - initWithString:(NSString *)string
 {
     NSUInteger length = [string length];
-    unichar  unicode[length];
-
-    [string getCharacters:unicode];
-
-    return NSMutableString_unicodePtrInit(self, unicode, length, NSZoneFromPointer(self));
+    unichar *unicode = NSZoneMalloc(NULL, sizeof(unichar)*length);
+    if (unicode) {
+        [string getCharacters:unicode];
+        
+        self = NSMutableString_unicodePtrInit(self, unicode, length, NSZoneFromPointer(self));
+        free(unicode);
+    } else {
+        [self release];
+        self = nil;
+    }
+    return self;
 }
 
 

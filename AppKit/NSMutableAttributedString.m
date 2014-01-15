@@ -80,22 +80,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (font) {
             NSCharacterSet      *fontCharSet = nil;
             NSRange testRange = NSIntersectionRange(range, effectiveRange);
-            unichar chars[testRange.length];
-            [string getCharacters:chars range:testRange];
-            for (int i = 0; i < testRange.length; ++i) {
-                unichar charToTest = chars[i];
-                // No need to process blanks
-                if ([blankChars characterIsMember:charToTest] == NO && [controlChars characterIsMember:charToTest] == NO) {
-                    if (fontCharSet == nil) {
-                        fontCharSet = [font coveredCharacterSet];
-                    }
-                    if ([fontCharSet characterIsMember:charToTest] == NO) {
-                        NSFont *substitute = [self _bestFontForCharacter:charToTest userFont:font];
-                        if (substitute) {
-                            [self addAttribute:NSFontAttributeName value:substitute range:NSMakeRange(i+testRange.location, 1)];
+            unichar *chars = malloc(sizeof(unichar)*testRange.length);
+            if (chars) {
+                [string getCharacters:chars range:testRange];
+                for (int i = 0; i < testRange.length; ++i) {
+                    unichar charToTest = chars[i];
+                    // No need to process blanks
+                    if ([blankChars characterIsMember:charToTest] == NO && [controlChars characterIsMember:charToTest] == NO) {
+                        if (fontCharSet == nil) {
+                            fontCharSet = [font coveredCharacterSet];
+                        }
+                        if ([fontCharSet characterIsMember:charToTest] == NO) {
+                            NSFont *substitute = [self _bestFontForCharacter:charToTest userFont:font];
+                            if (substitute) {
+                                [self addAttribute:NSFontAttributeName value:substitute range:NSMakeRange(i+testRange.location, 1)];
+                            }
                         }
                     }
                 }
+                free(chars);
             }
         }
         location=NSMaxRange(effectiveRange);

@@ -433,14 +433,16 @@ int __CFConstantStringClassReference[1];
     [keyed encodeObject:[NSString stringWithString:self] forKey:@"NS.string"];
    }
    else {
-    NSUInteger length=[self length],utf8Length;
-    unichar  buffer[length];
-    char    *utf8;
-
-    [self getCharacters:buffer];
-    utf8=NSUnicodeToUTF8(buffer,length,NO,&utf8Length,NULL,NO);
-    [coder encodeBytes:utf8 length:utf8Length];
-    NSZoneFree(NSZoneFromPointer(utf8),utf8);
+       NSUInteger length=[self length],utf8Length;
+       unichar  *buffer = NSZoneMalloc(NULL,sizeof(unichar)*length);
+       char    *utf8;
+       
+       [self getCharacters:buffer];
+       utf8=NSUnicodeToUTF8(buffer,length,NO,&utf8Length,NULL,NO);
+       [coder encodeBytes:utf8 length:utf8Length];
+       NSZoneFree(NSZoneFromPointer(utf8),utf8);
+       
+       NSZoneFree(NULL,buffer);
    }
 }
 
@@ -726,9 +728,7 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
 -(NSRange)rangeOfString:(NSString *)pattern options:(NSStringCompareOptions)options range:(NSRange)range {
    NSUInteger length=[self length];
-   unichar  buffer[length];
    NSUInteger patlength=[pattern length];
-   unichar  patbuffer[patlength+1];
    NSInteger      next[patlength+1];
 
    if([pattern length]==0)
@@ -737,6 +737,8 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
    if(range.location+range.length>[self length])
     [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,sel_getName(_cmd),range.location,range.length,[self length]];
 
+    unichar  *buffer = NSZoneMalloc(NULL,sizeof(unichar)*length);
+    unichar  *patbuffer = NSZoneMalloc(NULL,sizeof(unichar)*(patlength+1));
    [self getCharacters:buffer];
    [pattern getCharacters:patbuffer];
 
@@ -757,6 +759,9 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
    computeNext(next,patbuffer,patlength);
 
    NSRange foundRange = rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
+   NSZoneFree(NULL,patbuffer);
+   NSZoneFree(NULL,buffer);
+    
    if(options & NSAnchoredSearch && foundRange.location != 0)
     return NSMakeRange(NSNotFound,0);
 
@@ -783,7 +788,6 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
    if (range.length < 1)
        return result;
 
-   unichar  buffer[range.length];
    NSUInteger i;
 
     //unused
@@ -795,33 +799,34 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
     if(options != 0)
         NSUnimplementedMethod();
 
-    [self getCharacters:buffer range:range];
-
-    // Cocoa documentation suggests that the returned range's length is always expected to be 1?
-    // The backwards search uses this assumption.
-
-    if (isBackwards) {
-        for(i = range.length; i > 0; i--) {
-            if([set characterIsMember:buffer[i-1]]) {
-                return NSMakeRange(range.location + (i-1), 1);
+        // Cocoa documentation suggests that the returned range's length is always expected to be 1?
+        // The backwards search uses this assumption.
+        
+        if (isBackwards) {
+            for(i = range.length; i > 0; i--) {
+                unichar c = [self characterAtIndex:range.location + i-1];
+                if([set characterIsMember:c]) {
+                    return NSMakeRange(range.location + (i-1), 1);
+                }
             }
         }
-    }
-    else {
-       for(i=0;i<range.length;i++){
-        if([set characterIsMember:buffer[i]]){
-         result.location=i;
-
-         for(;i<range.length;i++)
-          if(![set characterIsMember:buffer[i]])
-           break;
-
-         result.length=i-result.location;
-         result.location+=range.location;
-         return result;
+        else {
+            for(i=0;i<range.length;i++){
+                unichar c = [self characterAtIndex:range.location+i];
+                if([set characterIsMember:c]){
+                    result.location=i;
+                    
+                    for(;i<range.length;i++) {
+                        unichar c = [self characterAtIndex:range.location+i];
+                        if(![set characterIsMember:c])
+                            break;
+                    }
+                    result.length=i-result.location;
+                    result.location+=range.location;
+                    return result;
+                }
+            }
         }
-       }
-    }
 
    return NSMakeRange(NSNotFound,0);
 }
@@ -842,63 +847,61 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
     if (range.length) {
         end += range.length - 1; // -1 : the range might end on a NL - we don't want to expand it in that case, so we'll check this char
     }
-   NSUInteger contentsEnd=end;
-   NSUInteger length=[self length];
-   unichar  buffer[length];
-   enum {
-    scanning,gotR,done
-   } state=scanning;
+    NSUInteger contentsEnd=end;
+    NSUInteger length=[self length];
 
-   [self getCharacters:buffer];
-
-/*
-U+000D (\r or CR), U+2028 (Unicode line separator), U+000A (\n or LF)
-U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
- */
-
-   for(;start!=0;start--) {
-    unichar check=buffer[start-1];
-
-    if(check==0x2028 || check==0x000A || check==0x2029)
-     break;
-
-    if(check==0x000D && buffer[start]!=0x000A)
-      break;
-   }
-
-   for(;end<length && state!=done;end++){
-    unichar check=buffer[end];
-
-    if(state==scanning){
-     if(check==0x000D){
-      contentsEnd=end;
-      state=gotR;
-     }
-     // 0x0085 is undocumented, unicode next line
-     else if(check==0x2028 || check==0x000A || check==0x2029 || check==0x0085){
-      contentsEnd=end;
-      state=done;
-     }
-    }
-    else if(state==gotR){
-     if(check!=0x000A){
-      end--;
-     }
-     state=done;
-    }
-   }
-
-        if((end >= length) && (state!=done))
-                {
-                contentsEnd = end;
+    enum {
+            scanning,gotR,done
+        } state=scanning;
+                
+        /*
+         U+000D (\r or CR), U+2028 (Unicode line separator), U+000A (\n or LF)
+         U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
+         */
+        unichar prevChar = [self characterAtIndex:start];
+        for(;start!=0;start--) {
+            unichar check=[self characterAtIndex:start-1];
+            
+            if(check==0x2028 || check==0x000A || check==0x2029)
+                break;
+            
+            if(check==0x000D && prevChar!=0x000A)
+                break;
+            prevChar = check;
+        }
+        
+        for(;end<length && state!=done;end++){
+            unichar check=[self characterAtIndex:end];
+            if(state==scanning){
+                if(check==0x000D){
+                    contentsEnd=end;
+                    state=gotR;
                 }
-
-   if(startp!=NULL)
-    *startp=start;
-   if(endp!=NULL)
-    *endp=end;
-   if(contentsEndp!=NULL)
-    *contentsEndp=contentsEnd;
+                // 0x0085 is undocumented, unicode next line
+                else if(check==0x2028 || check==0x000A || check==0x2029 || check==0x0085){
+                    contentsEnd=end;
+                    state=done;
+                }
+            }
+            else if(state==gotR){
+                if(check!=0x000A){
+                    end--;
+                }
+                state=done;
+            }
+        }
+        
+        if((end >= length) && (state!=done))
+        {
+            contentsEnd = end;
+        }
+        
+    if(startp!=NULL)
+        *startp=start;
+    if(endp!=NULL)
+        *endp=end;
+    if(contentsEndp!=NULL)
+        *contentsEndp=contentsEnd;
 }
 
 -(NSRange)lineRangeForRange:(NSRange)range {
@@ -921,49 +924,54 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUInteger end=NSMaxRange(range);
    NSUInteger contentsEnd=end;
    NSUInteger length=[self length];
-   unichar  buffer[length];
    enum {
     scanning,gotR,done
    } state=scanning;
 
-   [self getCharacters:buffer];
-
-   for(;start!=0;start--) {
-    unichar check=buffer[start-1];
-
-    if(check==0x2028 || check==0x000A || check==0x2029)
-     break;
-
-    if(check==0x000D && buffer[start]!=0x000A)
-      break;
-   }
-
-   for(;end<length && state!=done;end++){
-    unichar check=buffer[end];
-
-    if(state==scanning){
-     if(check==0x000D){
-      contentsEnd=end;
-      state=gotR;
-     }
-     else if(check==0x000A || check==0x2029){
-      contentsEnd=end;
-      state=done;
-     }
-    }
-    else if(state==gotR){
-     if(check!=0x000A){
-      end--;
-     }
-     state=done;
-    }
-   }
-
-        if((end >= length) && (state!=done))
-                {
-                contentsEnd = end;
+    unichar  *buffer = NSZoneMalloc(NULL,sizeof(unichar)*length);
+    if (buffer) {
+        [self getCharacters:buffer];
+        
+        for(;start!=0;start--) {
+            unichar check=buffer[start-1];
+            
+            if(check==0x2028 || check==0x000A || check==0x2029)
+                break;
+            
+            if(check==0x000D && buffer[start]!=0x000A)
+                break;
+        }
+        
+        for(;end<length && state!=done;end++){
+            unichar check=buffer[end];
+            
+            if(state==scanning){
+                if(check==0x000D){
+                    contentsEnd=end;
+                    state=gotR;
                 }
-
+                else if(check==0x000A || check==0x2029){
+                    contentsEnd=end;
+                    state=done;
+                }
+            }
+            else if(state==gotR){
+                if(check!=0x000A){
+                    end--;
+                }
+                state=done;
+            }
+        }
+        
+        if((end >= length) && (state!=done))
+        {
+            contentsEnd = end;
+        }
+        
+        NSZoneFree(NULL,buffer);
+    } else {
+        NSLog(@"%@ : can't allocate buffer of length %d", NSStringFromSelector(_cmd), self.length);
+    }
    if(startp!=NULL)
     *startp=start;
    if(endp!=NULL)
@@ -1556,56 +1564,61 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 		NSUInteger length = [data length], resultLength = 0;
 		const unsigned char* buffer = [data bytes];
 		unsigned char firstCharacter=0,firstNibble=0;
-		unsigned char result[length]; // We can't grow
-        
-		for(NSUInteger i=0;i<length;i++){
-			unsigned char check=buffer[i];
-			switch(state){
-				case STATE_NORMAL:
-					if(check=='%')
-						state=STATE_PERCENT;
-					else
-						result[resultLength++]=check;
-					break;
-					
-				case STATE_PERCENT:
-					state=STATE_HEX1;
-					if(check>='0' && check<='9'){
-						firstCharacter=check;
-						firstNibble=(firstCharacter-'0');
-					}
-					else if(check>='a' && check<='f'){
-						firstCharacter=check;
-						firstNibble=(firstCharacter-'a')+10;
-					}
-					else if(check>='A' && check<='F'){
-						firstCharacter=check;
-						firstNibble=(firstCharacter-'A')+10;
-					}
-					else {
-						result[resultLength++]='%';
-						result[resultLength++]=check;
-						state=STATE_NORMAL;
-					}
-					break;
-					
-				case STATE_HEX1:
-					if(check>='0' && check<='9')
-						result[resultLength++]=firstNibble*16+check-'0';
-					else if(check>='a' && check<='f')
-						result[resultLength++]=firstNibble*16+(check-'a')+10;
-					else if(check>='A' && check<='F')
-						result[resultLength++]=firstNibble*16+(check-'A')+10;
-					else {
-						result[resultLength++]='%';
-						result[resultLength++]=firstCharacter;
-						result[resultLength++]=check;
-					}
-					state=STATE_NORMAL;
-					break;
-			}
-		}
-		string = [[[NSString alloc] initWithBytes:result length:resultLength encoding:encoding] autorelease];
+		unsigned char *result = NSZoneMalloc(NULL,sizeof(unsigned char)*length); // We can't grow
+        if (result == NULL) {
+            NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
+        } else {
+            
+            for(NSUInteger i=0;i<length;i++){
+                unsigned char check=buffer[i];
+                switch(state){
+                    case STATE_NORMAL:
+                        if(check=='%')
+                            state=STATE_PERCENT;
+                        else
+                            result[resultLength++]=check;
+                        break;
+                        
+                    case STATE_PERCENT:
+                        state=STATE_HEX1;
+                        if(check>='0' && check<='9'){
+                            firstCharacter=check;
+                            firstNibble=(firstCharacter-'0');
+                        }
+                        else if(check>='a' && check<='f'){
+                            firstCharacter=check;
+                            firstNibble=(firstCharacter-'a')+10;
+                        }
+                        else if(check>='A' && check<='F'){
+                            firstCharacter=check;
+                            firstNibble=(firstCharacter-'A')+10;
+                        }
+                        else {
+                            result[resultLength++]='%';
+                            result[resultLength++]=check;
+                            state=STATE_NORMAL;
+                        }
+                        break;
+                        
+                    case STATE_HEX1:
+                        if(check>='0' && check<='9')
+                            result[resultLength++]=firstNibble*16+check-'0';
+                        else if(check>='a' && check<='f')
+                            result[resultLength++]=firstNibble*16+(check-'a')+10;
+                        else if(check>='A' && check<='F')
+                            result[resultLength++]=firstNibble*16+(check-'A')+10;
+                        else {
+                            result[resultLength++]='%';
+                            result[resultLength++]=firstCharacter;
+                            result[resultLength++]=check;
+                        }
+                        state=STATE_NORMAL;
+                        break;
+                }
+            }
+            string = [[[NSString alloc] initWithBytes:result length:resultLength encoding:encoding] autorelease];
+            NSZoneFree(NULL,result);
+        }
 	}
 	return string;
 }
@@ -1728,18 +1741,19 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSUInteger)cStringLength {
-   NSUInteger length=[self length];
-   unichar  unicode[length];
-
-   NSUInteger cStringLength;
-   char    *cString;
-
-   [self getCharacters:unicode];
-
-   cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
-
-   NSZoneFree(NULL,cString);
-
+    NSUInteger length=[self length];
+    unichar  *unicode = NSZoneMalloc(NULL,sizeof(unichar)*length);
+    NSUInteger cStringLength = 0;
+    if (unicode == NULL) {
+        NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
+    } else {
+        [self getCharacters:unicode];
+        
+        char    *cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
+        NSZoneFree(NULL,cString);
+        
+        NSZoneFree(NULL,unicode);
+    }
    return cStringLength;
 }
 

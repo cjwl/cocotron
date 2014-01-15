@@ -68,10 +68,7 @@ char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger 
 }
 
 -(void)getCharacters:(unichar *)buffer {
-   NSInteger i;
-
-   for(i=0;i<_length;i++)
-    buffer[i]=_unicode[i];
+    memcpy(buffer, _unicode, _length*sizeof(unichar));
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
@@ -82,8 +79,7 @@ char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger 
      NSStringFromRange(range),[self length]);
    }
 
-   for(i=0;i<len;i++)
-    buffer[i]=_unicode[loc+i];
+    memcpy(buffer, _unicode+loc, len*sizeof(unichar));
 }
 
 -(NSUInteger)hash {

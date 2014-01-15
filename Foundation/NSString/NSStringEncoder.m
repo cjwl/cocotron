@@ -159,7 +159,7 @@ unichar *NSBytesToUnicode(const unsigned char *bytes,NSUInteger length,NSStringE
     NSDictionary *dict = dictionaryForEncoding(encoding);
     if (dict) {
         NSUInteger unicodeLength = 0;
-        unichar unibuffer[length];
+        unichar *unibuffer = malloc(sizeof(unichar)*length);
         unichar current = 0;
         for (NSUInteger i = 0; i < length; ++i) {
             // mask the byte with any pending one (for 2-bytes char translation)
@@ -185,6 +185,7 @@ unichar *NSBytesToUnicode(const unsigned char *bytes,NSUInteger length,NSStringE
             *resultLength = unicodeLength;
         }
         bcopy(unibuffer, data, sizeof(unichar) * unicodeLength);
+        free(unibuffer);
     } else {
         static int unknownEncodingLogged = 0;
         if (unknownEncodingLogged < 5) {
@@ -201,7 +202,11 @@ unsigned char *NSBytesFromUnicode(const unichar *characters,NSUInteger length,NS
     NSDictionary *dict = dictionaryForDecoding(encoding);
     if (dict) {
         NSUInteger charLength = 0;
-        unsigned char buffer[length*2];
+        unsigned char *buffer = NSZoneMalloc(NULL, sizeof(unsigned char)*(length*2));
+        if (buffer == NULL) {
+            NSCLog("NSBytesFromUnicode: can't allocate buffer of size %d", length*2);
+            return NULL;
+        }
         for (NSUInteger i = 0; i < length; ++i) {
             // mask the byte with any pending one (for 2-bytes char translation)
             NSNumber *n = [dict objectForKey:[NSNumber numberWithUnsignedShort:characters[i]]];
@@ -218,6 +223,7 @@ unsigned char *NSBytesFromUnicode(const unichar *characters,NSUInteger length,NS
                 if (lossy) {
                     // Just ignore the unknown unicode char
                 } else {
+                    free(buffer);
                     return NULL;
                 }
             }
@@ -228,6 +234,7 @@ unsigned char *NSBytesFromUnicode(const unichar *characters,NSUInteger length,NS
             *resultLength = charLength;
         }
         bcopy(buffer, data, sizeof(unsigned char) * charLength);
+        NSZoneFree(NULL, buffer);
     } else {
         static int unknownEncodingLogged = 0;
         if (unknownEncodingLogged < 5) {
