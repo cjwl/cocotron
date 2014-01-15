@@ -24,7 +24,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32EventInputSource.h"
 
 #import "opengl_dll.h"
-#define WM_MSG_DEBUGGING 0
 
 @interface Win32Window(ForwardRefs)
 -(void)setupPixelFormat;
@@ -370,6 +369,11 @@ static const unichar *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShad
 }
 
 -(void)setFrame:(CGRect)frame {
+
+#if WM_MSG_DEBUGGING
+    NSLog(@"Win32Window setFrame: %@", NSStringFromRect(frame));
+#endif
+    
    [self invalidateContextsWithNewSize:frame.size];
 
     // _frame must be set before the MoveWindow as MoveWindow generates WM_SIZE and WM_MOVE messages
@@ -1200,6 +1204,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
 #if WM_MSG_DEBUGGING
 	NSLog(@"WM_WINDOWPOSCHANGED_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_WINDOWPOSCHANGED_DEBUGGING 0
 #endif
 	
 	WINDOWPOS* pWP = (WINDOWPOS*)lParam;
@@ -1209,6 +1214,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 		CGRect frame=_frame;
 		frame.origin = CGPointMake(pWP->x, pWP->y);
 		frame = convertFrameFromWin32ScreenCoordinates(frame);
+#if WM_WINDOWPOSCHANGED_DEBUGGING
+        NSLog(@"    Moving frame changed from: %@ to: %@", NSStringFromRect(_frame), NSStringFromRect(frame));
+#endif
 		[_delegate platformWindow:self frameChanged:frame didSize:NO];
 		[_delegate platformWindowDidMove:self];
     }
@@ -1218,6 +1226,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 		frame.origin = CGPointMake(pWP->x, pWP->y);
 		frame.size = CGSizeMake(pWP->cx, pWP->cy);
 		frame = convertFrameFromWin32ScreenCoordinates(frame);
+#if WM_WINDOWPOSCHANGED_DEBUGGING
+        NSLog(@"    Resizing frame changed from: %@ to: %@", NSStringFromRect(_frame), NSStringFromRect(frame));
+#endif
 		[self invalidateContextsWithNewSize: frame.size];
 		[_delegate platformWindow:self frameChanged:frame didSize:YES];
         
@@ -1308,7 +1319,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 	BOOL activated = LOWORD(wParam) != 0;
 	
 #if WM_ACTIVATE_DEBUGGING
-	NSLog(@"isMinimized: %@, activated: %@", isMinimized ? @"YES" : @"NO", activated ? @"YES" : @"NO");
+	NSLog(@"    isMinimized: %@, activated: %@", isMinimized ? @"YES" : @"NO", activated ? @"YES" : @"NO");
 #endif
 	
 	if (isMinimized) {
