@@ -282,6 +282,7 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 #define CENTER_PART_RECT_VERTICALLY(partSize)                          \
 {                                                                      \
 NSSize __partSize = (partSize);                                    \
+__partSize.width = ceilf(__partSize.width); \
 partRect.origin.y = origin.y + (itemHeight - __partSize.height) / 2; \
 partRect.size.height = __partSize.height;                            \
 partRect.size.width = __partSize.width;                              \
