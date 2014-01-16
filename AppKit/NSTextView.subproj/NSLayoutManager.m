@@ -947,7 +947,15 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     CGContextShowGlyphsWithAdvances(context, cgGlyphs, advances, cgGlyphsLength);
 }
 
+#define DEBUG_LM_DRAWING 0
+
 -(void)drawSelectionAtPoint:(NSPoint)origin {
+    
+#if DEBUG_LM_DRAWING
+    NSLog(@"drawSelectionAtPoint: %@", NSStringFromPoint(origin));
+#define DEBUG_LM_DRAWSELECTIONATPOINT 0
+#endif
+    
    NSTextView *textView=[self textViewForBeginningOfSelection];
    NSColor    *selectedColor=[[textView selectedTextAttributes] objectForKey:NSBackgroundColorAttributeName];
    NSRange     range;
@@ -963,6 +971,10 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
    rectArray=[self rectArrayForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:[textView textContainer] rectCount:&rectCount];
 
+#if DEBUG_LM_DRAWSELECTIONATPOINT
+    NSLog(@"    rectArray: %@", rectArray);
+#endif
+    
    if(selectedColor==nil)
     selectedColor=[NSColor selectedTextBackgroundColor];
 
@@ -976,7 +988,13 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 }
 
 -(void)drawBackgroundForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin {
-   glyphRange=[self validateGlyphsAndLayoutForGlyphRange:glyphRange];
+
+#if DEBUG_LM_DRAWING
+    NSLog(@"drawBackgroundForGlyphRange: %@ atPoint: %@", NSStringFromRange(glyphRange), NSStringFromPoint(origin));
+#define DEBUG_LM_DRAWBACKGROUNDFORGLYPHRANGE 0
+#endif
+
+    glyphRange=[self validateGlyphsAndLayoutForGlyphRange:glyphRange];
    {
     NSTextContainer *container=[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:&glyphRange];
 	   if (container == nil) {
@@ -1035,6 +1053,17 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 - (void)drawUnderlineForGlyphRange:(NSRange)glyphRange underlineType:(NSInteger)underlineVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
 {
+#if DEBUG_LM_DRAWING
+    NSLog(@"drawUnderlineForGlyphRange: %@ underlineType: %@ baselineOffset: %f lineFragmentRect: %@ lineFragmentGlyphRange: %@ containerOrigin: %@",
+                                        NSStringFromRange(glyphRange),
+                                        underlineVal,
+                                        baselineOffset,
+                                        NSStringFromRect(lineRect),
+                                        NSStringFromRange(lineGlyphRange),
+                                        NSStringFromPoint(containerOrigin));
+#define DEBUG_LM_DRAWUNDERLINEFORGLYPHRANGE 0
+#endif
+
     unsigned i,rectCount;
 	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
     BOOL             isFlipped = [[NSGraphicsContext currentContext] isFlipped];
@@ -1105,6 +1134,17 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 - (void)drawStrikethroughForGlyphRange:(NSRange)glyphRange strikethroughType:(NSInteger)strikethroughVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(NSRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(NSPoint)containerOrigin
 {
+#if DEBUG_LM_DRAWING
+    NSLog(@"drawStrikethroughForGlyphRange: %@ strikethroughType: %@ baselineOffset: %f lineFragmentRect: %@ lineFragmentGlyphRange: %@ containerOrigin: %@",
+          NSStringFromRange(glyphRange),
+          strikethroughVal,
+          baselineOffset,
+          NSStringFromRect(lineRect),
+          NSStringFromRange(lineGlyphRange),
+          NSStringFromPoint(containerOrigin));
+#define DEBUG_LM_DRAWSTRIKETHROUGHFORGLYPHRANGE 0
+#endif
+
     unsigned i,rectCount;
 	NSRange characterRange = [self characterRangeForGlyphRange: glyphRange actualGlyphRange:NULL];
     BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
@@ -1151,6 +1191,14 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 }
 
 -(void)drawSpellingState:(NSNumber *)spellingState glyphRange:(NSRange)glyphRange container:(NSTextContainer *)container origin:(NSPoint)origin {
+#if DEBUG_LM_DRAWING
+    NSLog(@"drawSpellingState: %@ glyphRange: %@ container: %p origin: %@",
+          spellingState,
+          NSStringFromRange(glyphRange),
+          container,
+          NSStringFromPoint(origin));
+#define DEBUG_LM_DRAWSPELLINGSTATE 0
+#endif
 	if ([container textView] == nil) {
 		// Don't draw anything if we aren't editing
 		return;
@@ -1202,6 +1250,18 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 			withAttributes: (NSDictionary*)attributes
 					origin: (NSPoint)origin
 {
+#if DEBUG_LM_DRAWING
+    NSLog(@"_drawGlyphs: %p length: %d range: %@ atPoint: %@ inContainer: %p withAttributes: %@ origin: %@",
+          glyphs,
+          length,
+          NSStringFromRange(range),
+          NSStringFromPoint(point),
+          container,
+          attributes,
+          NSStringFromPoint(origin));
+#define DEBUG_LM_DRAWGLYPHS 0
+#endif
+
 	NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
 	NSFont       *font=NSFontAttributeInDictionary(attributes);
 	
@@ -1242,6 +1302,13 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 - (void)_drawAttachment:(NSTextAttachment*)attachment atCharacterIndex:(unsigned)index atPoint:(NSPoint)point
 {
+#if DEBUG_LM_DRAWING
+    NSLog(@"_drawAttachment: %@ atCharacterIndex: %d atPoint: %@",
+          attachment,
+          index,
+          NSStringFromPoint(point));
+#define DEBUG_LM_DRAWATTACHMENT 0
+#endif
 	id <NSTextAttachmentCell> cell=[attachment attachmentCell];
 	NSRect frame;
 	
@@ -1261,6 +1328,17 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 					 withAttributes: (NSDictionary*)attributes
 						 usedHeight: (float)usedHeight
 {
+#if DEBUG_LM_DRAWING
+    NSLog(@"_drawGlyphsForSubGlyphRange: %@ forFragment: atPoint: %@ subRangeXOffset: %f inContainer: %P withAttributes: %P usedHeight: %f",
+          NSStringFromRange(range),
+//          fragment, // Trying to log fragment results in seg-fault.
+          NSStringFromPoint(origin),
+          xOffset,
+          container,
+          attributes,
+          usedHeight);
+#define DEBUG_LM_DRAWGLYPHSFORSUBGLYPHRANGE 0
+#endif
 
 	NSTextView *textView = [self textViewForBeginningOfSelection];
 
@@ -1427,6 +1505,14 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 - (void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin
 {
+    
+#if DEBUG_LM_DRAWING
+    NSLog(@"drawGlyphsForGlyphRange: %@ atPoint: %@",
+          NSStringFromRange(glyphRange),
+          NSStringFromPoint(origin));
+#define DEBUG_LM_DRAWGLYPHSFORGLYPHRANGE 0
+#endif
+
 	NSTextView *textView = [self textViewForBeginningOfSelection];
 	NSRange selectedRange = (textView == nil) ? NSMakeRange(0,0) : [textView selectedRange];
 	
@@ -1450,6 +1536,9 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 	// Iterate over the glyph fragments (which identify runs of common attributes)
 	while (NSNextRangeEnumeratorEntry(&state,&range,(void **)&fragment)) {
 
+#if DEBUG_LM_DRAWGLYPHSFORGLYPHRANGE
+        NSLog(@"    looking at range: %@", NSStringFromRange(range));
+#endif
 		// Reset the offset for this fragment
 		float glyphXOffset = 0;
 
@@ -1463,17 +1552,39 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 			NSRange characterRange = [self characterRangeForGlyphRange: intersect actualGlyphRange: NULL];
 			
 			NSDictionary *attributes = [_textStorage attributesAtIndex: characterRange.location effectiveRange: NULL];
-			
+
+#if DEBUG_LM_DRAWGLYPHSFORGLYPHRANGE
+            NSLog(@"    characterRange: %@", NSStringFromRange(characterRange));
+            NSLog(@"    attributes: %@", attributes);
+#endif
+
 			BOOL tempAttributesInRange = NO;
+            NSUInteger tempAttributesIndex = NSNotFound;
+            
 			if (NSCountRangeEntries(_rangeToTemporaryAttributes) > 0) {
 				// But we do have to worry about the temporary attributes so let's do a quick check with the character range and find out
 				// if we have any temp attributes to be concerned about
-				NSRange tempRange;
-                NSDictionary *tmpAttrs = [self temporaryAttributesAtCharacterIndex:characterRange.location effectiveRange:&tempRange];
-				if (tmpAttrs.count > 0 && NSIntersectionRange(characterRange, tempRange).length > 0) {
-                    tempAttributesInRange = YES;
-				}
+                NSUInteger index = characterRange.location;
+				NSRange tempRange = NSMakeRange(0, 0);
+                while (tempAttributesInRange == NO && index < NSMaxRange(characterRange)) {
+                    if (NSRangeEntryAtIndex(_rangeToTemporaryAttributes, index, &tempRange) != nil) {
+                        tempAttributesInRange = YES;
+                        tempAttributesIndex = index;
+                    } else {
+                        index++;
+                    }
+                }
 			}
+
+#if DEBUG_LM_DRAWGLYPHSFORGLYPHRANGE
+            NSLog(@"    temporaryAttributesInRange: %@", tempAttributesInRange ? @"YES" : @"NO");
+            if (tempAttributesInRange) {
+                NSRange tempRange;
+                NSDictionary *tmpAttrs = [self temporaryAttributesAtCharacterIndex:tempAttributesIndex effectiveRange:&tempRange];
+                NSLog(@"     temporaryAttributes: %@", tmpAttrs);
+            }
+#endif
+            
 			if (tempAttributesInRange) {
 				
 				// Ok - so we've got to proceed with caution - there are temp attributes
