@@ -92,7 +92,7 @@ NSDate* NSDateFromPlistString(NSString* string)
         NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
         return nil;
     }
-   unichar       *result = NSZoneMalloc(NULL, sizeof(uint8_t)*length);
+   uint8_t       *result = NSZoneMalloc(NULL, sizeof(uint8_t)*length);
     if (result == NULL) {
         NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
         NSZoneFree(NULL, buffer);

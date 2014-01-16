@@ -858,16 +858,16 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
          U+000D (\r or CR), U+2028 (Unicode line separator), U+000A (\n or LF)
          U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
          */
-        unichar prevChar = [self characterAtIndex:start];
+        unichar nextChar = start<length?[self characterAtIndex:start]:0;
         for(;start!=0;start--) {
             unichar check=[self characterAtIndex:start-1];
             
             if(check==0x2028 || check==0x000A || check==0x2029)
                 break;
             
-            if(check==0x000D && prevChar!=0x000A)
+            if(check==0x000D && nextChar!=0x000A)
                 break;
-            prevChar = check;
+            nextChar = check;
         }
         
         for(;end<length && state!=done;end++){
