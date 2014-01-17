@@ -273,6 +273,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    _buttonPressed=YES;
    [controlView setNeedsDisplay:YES];
+    [window makeKeyAndOrderFront:self];
    selectedIndex=[window runTrackingWithEvent:event];
    [window close]; // release when closed=YES
    _buttonPressed=NO;
@@ -294,9 +295,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSRect)titleRectForBounds:(NSRect)rect {
+   // Keep some room for the button
+   NSRect buttonFrame = [self buttonRectForBounds:rect];
+   rect.size.width = NSMinX(buttonFrame) - rect.origin.x;
    rect=[super titleRectForBounds:rect];
-
-   rect.size.width-=rect.size.height;
 
    return rect;
 }
