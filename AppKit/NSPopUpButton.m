@@ -282,23 +282,11 @@ static NSString * const NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBi
 @implementation NSPopUpButton (BindingSupport)
 
 -(void)_setItemValues:(NSArray *)values forKey:(NSString *)key {
-// We access items through the menu becuase NSPopUpButtonCell item editing has undesireable behavior 
-   NSMenu   *menu=[self menu];
-   NSInteger i,count=[values count],numberOfItems=[menu numberOfItems];
 
-   for(i=0;i<count;i++){
-    if(i>=numberOfItems){
-     [menu addItemWithTitle:@"" action:NULL keyEquivalent:nil];
-     numberOfItems++;
-    }
+    [_cell removeAllItems];
+    [_cell addItemsWithTitles:values];
     
-    [[menu itemAtIndex:i] setValue:[values objectAtIndex:i] forKey:key];
-   }
-	// Remove any additional unwanted item
-	while (numberOfItems > count) {
-		[menu removeItemAtIndex:--numberOfItems];
-	}
-	if ([self indexOfSelectedItem] >= count) {
+	if ([self indexOfSelectedItem] >= values.count) {
 		[self selectItem:nil];
 	}
 	[self synchronizeTitleAndSelectedItem];

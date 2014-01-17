@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _arrowPosition = [coder decodeIntForKey: @"NSArrowPosition"];
     _preferredEdge = [coder decodeIntForKey: @"NSPreferredEdge"];
     _usesItemFromMenu=[coder decodeBoolForKey:@"NSUsesItemFromMenu"];
-    
+
     [self synchronizeTitleAndSelectedItem];
    }
    else {
@@ -189,13 +189,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_addItemWithTitle:(NSString *)title {
-   NSMenuItem *check=[_menu itemWithTitle:title];
-   
-   if(check!=nil)
-    [_menu removeItem:check];
-   
-   [_menu addItemWithTitle:title action:NULL keyEquivalent:nil];
-
+   [_menu addItemWithTitle:title action:@selector(_popUpItemAction:) keyEquivalent:nil];
+    NSMenuItem *item=[[_menu itemArray] lastObject];
+    [item setTarget: self];
+    
    if(_selectedIndex<0)
     _selectedIndex=0;
 }
@@ -236,7 +233,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)insertItemWithTitle:(NSString *)title atIndex:(NSInteger)index {
-   [_menu insertItemWithTitle:title action:NULL keyEquivalent:nil atIndex:index];
+   [_menu insertItemWithTitle:title action:@selector(_popUpItemAction:) keyEquivalent:nil atIndex:index];
+    NSMenuItem *check=[_menu itemAtIndex:index];
+    [check setTarget: self];
+
    [self synchronizeTitleAndSelectedItem];
 }
 
@@ -482,34 +482,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
     [menu update];
     
-    // Items with no action have been disabled by the menu update
-    // We need to check if they really should be disabled
-    // That should probably be part of NSMenu update, but that one knows nothing about its owner
-    for (NSMenuItem *item in [menu itemArray]) {
-        if ([item action] == NULL) {
-            BOOL enabled = NO;
-
-            if ([self action] == NULL) {
-                // Enable any item with no action - they are just there to let us select a value for the popup and have been
-                // disabled by the menu update since they have no one to validate them
-                enabled = YES;
-            } else {
-                // Ask the PopUpButton target to validate the item
-                id target = [NSApp targetForAction:[self action] to:[self target] from:[self controlView]];
-                if ([target respondsToSelector:@selector(validateMenuItem:)]) {
-                    enabled = [target validateMenuItem:item];
-                } else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)]) { // New validation scheme
-                    enabled = [target validateUserInterfaceItem:item];
-                } else {
-                    enabled = YES;
-                }
-            }
-            if (enabled != [item isEnabled]) {
-                [item setEnabled:enabled];
-            }
-        }
-    }
-
 	NSPopUpWindow *window=[[NSPopUpWindow alloc] initWithFrame:NSMakeRect(origin.x,origin.y,
 														   cellFrame.size.width,cellFrame.size.height)];
     [window setPullsDown:_pullsDown];
@@ -555,4 +527,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self selectItemAtIndex:index+1];
 }
 
+
+/* That's the action the menu items are connected to in nibs */
+- (void)_popUpItemAction:(id)sender
+{
+    NSUInteger itemIndex = [_menu indexOfItem: sender];
+    if (itemIndex != NSNotFound) {
+        [self selectItemAtIndex: itemIndex];
+    }
+    [NSApp sendAction: [self action] to: [self target] from: _controlView];
+}
 @end

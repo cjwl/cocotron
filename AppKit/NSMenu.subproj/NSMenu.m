@@ -274,6 +274,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)update {
+    if ([_delegate respondsToSelector:@selector(menuNeedsUpdate:)]) {
+        [_delegate menuNeedsUpdate:self];
+    }
    int i,count=[_itemArray count];
 
    for(i=0;i<count;i++){
