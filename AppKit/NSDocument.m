@@ -155,6 +155,8 @@ static int untitled_document_number = 0;
 
 -(void)dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
   [_windowControllers release];
   [_fileURL release];
   [_fileType release];
