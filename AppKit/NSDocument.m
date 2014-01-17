@@ -593,9 +593,12 @@ static int untitled_document_number = 0;
 	NSSavePanel * savePanel = [NSSavePanel savePanel];
 	[savePanel setRequiredFileType:extension];
 
+#if 0
+    // setAllowedFileTypes: is unimplemented - so don't call it.
 	NSArray* writableTypes = [self writableTypesForSaveOperation: operation];
 	[savePanel setAllowedFileTypes: writableTypes];
-	
+#endif
+    
 	if([self prepareSavePanel:savePanel] == NO) { 
 		// subclass was unable to prepare the save panel successfully
 		// so bail
