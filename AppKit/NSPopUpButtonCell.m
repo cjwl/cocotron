@@ -189,6 +189,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_addItemWithTitle:(NSString *)title {
+    
+    NSMenuItem *duplicate=[_menu itemWithTitle: title];
+    if (duplicate != nil) {
+        // don't allow items with duplicate titles by default
+        [_menu removeItem: duplicate];
+    }
+    
    [_menu addItemWithTitle:title action:@selector(_popUpItemAction:) keyEquivalent:nil];
     NSMenuItem *item=[[_menu itemArray] lastObject];
     [item setTarget: self];
