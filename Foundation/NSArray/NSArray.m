@@ -396,8 +396,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
-
-
 -lastObject {
    NSInteger count=[self count];
 
@@ -405,6 +403,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
 
    return [self objectAtIndex:count-1];
+}
+
+-firstObject {
+    NSInteger count=[self count];
+    
+    if(count==0)
+        return nil;
+    
+    return [self objectAtIndex:0];
 }
 
 -(NSArray *)sortedArrayUsingSelector:(SEL)selector {
