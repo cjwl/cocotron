@@ -53,7 +53,17 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+   	if ([coder allowsKeyedCoding]) {
+		NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+		CFSwappedFloat32 *words = alloca(sizeof(CFSwappedFloat32) * 6);
+		words[0] = CFConvertFloat32HostToSwapped(_matrix.m11);
+		words[1] = CFConvertFloat32HostToSwapped(_matrix.m12);
+		words[2] = CFConvertFloat32HostToSwapped(_matrix.m21);
+		words[3] = CFConvertFloat32HostToSwapped(_matrix.m22);
+		words[4] = CFConvertFloat32HostToSwapped(_matrix.tX);
+		words[5] = CFConvertFloat32HostToSwapped(_matrix.tY);
+		[keyed encodeBytes:(void*)words length:(sizeof(CFSwappedFloat32) * 6) forKey:@"NSTransformStruct"];
+	}
 }
 
 -initWithCoder:(NSCoder *)coder {
