@@ -89,6 +89,14 @@ typedef NSInteger NSComparisonResult;
 #warning ABS is already defined, ABS(a) may not behave as expected.
 #endif
 
+#ifndef NS_ENUM
+#define NS_ENUM(_type, _name) _type _name; enum
+#endif
+
+#ifndef NS_OPTIONS
+#define NS_OPTIONS(_type, _name) _type _name; enum
+#endif
+
 FOUNDATION_EXPORT void NSLog(NSString *format,...);
 FOUNDATION_EXPORT void NSLogv(NSString *format,va_list args);
 
