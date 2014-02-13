@@ -337,6 +337,9 @@ static inline void flushPreviousString(NSRichTextReader *self) {
               [self isEqualToString:@"footerf"]) {
         // We don't support headers & footers
         [self setCurrentDestination:DESTINATION_IGNORE];
+    } else if([self isEqualToString:@"comment"]) {
+        // We don't support comments
+        [self setCurrentDestination:DESTINATION_IGNORE];
     } else if([self isEqualToString:@"ul"]){
         [_currentAttributes setObject:[NSNumber numberWithInteger:NSUnderlineStyleSingle] forKey:NSUnderlineStyleAttributeName];
     } else if([self isEqualToString:@"ulnone"]){
