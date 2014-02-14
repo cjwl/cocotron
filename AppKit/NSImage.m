@@ -80,8 +80,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSArray *)_checkBundles {
    return [NSArray arrayWithObjects:
-    [NSBundle bundleForClass:self],
-    [NSBundle mainBundle],
+           [NSBundle mainBundle], // Check the main bundle first according to the doc
+           [NSBundle bundleForClass:self],
     nil];
 }
 
@@ -107,8 +107,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSString *path=[bundle pathForImageResource:name];
 
      if(path!=nil){
-      image=[[[NSImage alloc] initWithContentsOfFile:path] autorelease];
-      [image setName:name];
+         image=[[[NSImage alloc] initWithContentsOfFile:path] autorelease];
+         [image setName:name];
+         if (image) {
+             break;
+         }
      }
     }
    }
@@ -866,6 +869,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSBundle(NSImage)
 
 -(NSString *)pathForImageResource:(NSString *)name {
+    NSString *extension = [name pathExtension];
+    if (extension && extension.length) {
+        NSString *baseName=[name stringByDeletingPathExtension];
+        return [self pathForResource:baseName ofType:extension];
+    }
    NSArray *types=[NSImage imageFileTypes];
    int      i,count=[types count];
 

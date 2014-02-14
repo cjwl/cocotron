@@ -713,31 +713,44 @@ static NSMapTable *pathToObject=NULL;
 -(NSArray *)lookInDirectories {
 
     if (_lookInDirectories == nil) {
-       // Check if there's an override on the language preference.
-       NSString *language = nil;
-       
-       // NSUserDefaults uses the NSBundle system during initialization so to avoid
-       // a recursion of doom we'll only check the preferred language once the defaults
-       // are available.
-       if ([NSUserDefaults standardUserDefaultsAvailable]) {
-           language = [[NSUserDefaults standardUserDefaults] objectForKey: @"PreferredLanguage"];
-       }
-     
-       if (language == nil || [language isEqualToString: @""]) {
-           // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
-           language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
-       }
-        NSArray *lookInDirectories = nil;
-      if ([language isEqualToString:@"English"])
-         lookInDirectories = [NSArray arrayWithObjects:@"English.lproj", @"en.lproj", @"", nil];
-      else
-         lookInDirectories = [NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"en.lproj", @"", nil];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSMutableArray *validDirectories = [NSMutableArray array];
 
-        if ([NSUserDefaults standardUserDefaultsAvailable] == YES) {
-            // Now it's safe to cache
-            _lookInDirectories = [lookInDirectories retain];
+        BOOL isDirectory = NO;
+        if (_resourcePath && [fm fileExistsAtPath:_resourcePath isDirectory:&isDirectory] && isDirectory) {
+            // Check if there's an override on the language preference.
+            NSString *language = nil;
+            
+            // NSUserDefaults uses the NSBundle system during initialization so to avoid
+            // a recursion of doom we'll only check the preferred language once the defaults
+            // are available.
+            if ([NSUserDefaults standardUserDefaultsAvailable]) {
+                language = [[NSUserDefaults standardUserDefaults] objectForKey: @"PreferredLanguage"];
+            }
+            
+            if (language == nil || [language isEqualToString: @""]) {
+                // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
+                language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+            }
+            NSArray *lookInDirectories = nil;
+            if ([language isEqualToString:@"English"])
+                lookInDirectories = [NSArray arrayWithObjects:@"en.lproj", @"English.lproj", @"", nil];
+            else
+                lookInDirectories = [NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"en.lproj", @"English.lproj", @"", nil];
+            
+            for (NSString *proj in lookInDirectories) {
+                NSString *path = [_resourcePath stringByAppendingPathComponent:proj];
+                BOOL isDirectory = NO;
+                if ([fm fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory) {
+                    [validDirectories addObject:proj];
+                }
+            }
+            if ([NSUserDefaults standardUserDefaultsAvailable] == YES) {
+                // Now it's safe to cache
+                _lookInDirectories = [validDirectories retain];
+            }
         }
-        return lookInDirectories;
+        return validDirectories;
     } else {
         return _lookInDirectories;
     }
@@ -771,7 +784,8 @@ static NSMapTable *pathToObject=NULL;
 		// Kill the type form the extension part if it's already there
 		name = [name stringByDeletingPathExtension];
 	}
-
+    
+#if 0 // Disabled - we don't use that and it's increasing the number of files to check for the resource
 	if(type && [type length]!=0)
     file=[[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix] stringByAppendingPathExtension:type];
    else
@@ -779,6 +793,7 @@ static NSMapTable *pathToObject=NULL;
 
    if((path=[self pathForResourceFile:file inDirectory:directory])!=nil)
     return path;
+#endif
 
    if(type && [type length]!=0)
     file=[name stringByAppendingPathExtension:type];

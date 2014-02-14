@@ -236,7 +236,7 @@ void *NSMapGet(NSMapTable *table,const void *key){
    NSMapNode *j;
 
    for(j=table->buckets[i];j!=NULL;j=j->next)
-    if(table->keyCallBacks->isEqual(table,j->key,key))
+    if(j->key == key || table->keyCallBacks->isEqual(table,j->key,key))
      return j->value;
 
    return NULL;

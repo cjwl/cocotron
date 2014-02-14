@@ -125,7 +125,7 @@ static CFStringRef defaultCopyDescription(const void *value) {
    NSDictNode *j;
 
    for(j=_buckets[i];j!=NULL;j=j->next)
-    if(_keyCallBacks.equal(j->key,key))
+    if(j->key == key || _keyCallBacks.equal(j->key,key))
      return j->value;
 
    return NULL;

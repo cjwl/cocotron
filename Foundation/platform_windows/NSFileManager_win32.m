@@ -688,9 +688,7 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
     return NO;
    }
 
-#if 0
-
-   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
+    DWORD attributes=GetFileAttributesW([self fileSystemRepresentationWithPathW:path]);
 
    if(attributes==0xFFFFFFFF)
     return NO;
@@ -699,19 +697,6 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
     *isDirectory=(attributes&FILE_ATTRIBUTE_DIRECTORY)?YES:NO;
 
    return YES;
-#else
-   struct _stat buf;
-
-   *isDirectory=NO;
-
-   if(_wstat([path fileSystemRepresentationW],&buf)<0)
-    return NO;
-
-   if((buf.st_mode&S_IFMT)==S_IFDIR)
-    *isDirectory=YES;
-
-   return YES;
-#endif
 }
 
 
