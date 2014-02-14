@@ -44,8 +44,11 @@ void O2PNGEncoderWriteImage(O2PNGEncoderRef self,O2ImageRef image,CFDictionaryRe
 	
 	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	png_infop info_ptr = png_create_info_struct(png_ptr);
-
-	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
+    
+    // Default options for png compression are quite slow.
+    // These settings speed it up a lot without sacrificing a lot of disk space
+    png_set_filter(png_ptr, PNG_FILTER_TYPE_BASE, PNG_FILTER_SUB);
+	png_set_compression_level(png_ptr, 3); // range is 0 (NONE) to 9 (BEST) - 3 is a reasonable compromise
 
 	if (setjmp(png_jmpbuf(png_ptr))) {
 		NSLog(@"Error initializing png encoder");
