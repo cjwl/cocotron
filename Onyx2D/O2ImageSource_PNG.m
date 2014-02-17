@@ -675,6 +675,11 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    [super dealloc];
 }
 
+- (CFStringRef)type
+{
+    return (CFStringRef)@"public.png";
+}
+
 -(unsigned)count {
    return 1;
 }

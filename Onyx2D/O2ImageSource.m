@@ -84,6 +84,12 @@ NSString *kO2ImagePropertyTIFFOrientation=@"Orientation";
 	[super dealloc];
 }
 
+- (CFStringRef)type
+{
+    O2InvalidAbstractInvocation();
+    return nil;
+}
+
 -(unsigned)count {
    O2InvalidAbstractInvocation();
    return 0;

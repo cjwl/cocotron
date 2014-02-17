@@ -23,3 +23,9 @@ CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,CF
 CFDictionaryRef CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,CFDictionaryRef options) {
    return (CFDictionaryRef)[self copyPropertiesAtIndex:index options:options];
 }
+
+CFStringRef CGImageSourceGetType(CGImageSourceRef self)
+{
+    return [self type];
+}
+

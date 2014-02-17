@@ -74,6 +74,11 @@ NSData *O2DCTDecode(NSData *data) {
    [super dealloc];
 }
 
+- (CFStringRef)type
+{
+    return (CFStringRef)@"public.jpeg";
+}
+
 -(unsigned)count {
    return 1;
 }

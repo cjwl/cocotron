@@ -593,6 +593,12 @@ static uint32_t nextUnsigned32(O2ImageSource_ICNS *self) {
    }
 }
 
+- (CFStringRef)type
+{
+    return (CFStringRef)@"com.apple.icns";
+}
+
+
 -(unsigned)count {
    [self parseIfNeeded];
    return [_images count];
