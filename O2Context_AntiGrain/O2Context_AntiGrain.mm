@@ -869,7 +869,7 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 agg::image_filter_bicubic filter_kernel;
                 agg::image_filter_lut filter(filter_kernel, true);
                 
-                typedef agg::span_image_filter_rgba_2x2<img_accessor_type, interpolator_type> span_gen_type;
+                typedef agg::span_image_filter_rgba<img_accessor_type, interpolator_type> span_gen_type;
                 span_gen_type sg(ia, interpolator, filter);
                 
                 render_scanlines_aa(self, sa, sg);
@@ -1541,7 +1541,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		typedef agg::conv_transform<conv_crv_type> transStroke;
 		
 		[self rasterizer]->reset();
-		[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight); 
+		[self rasterizer]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
 		
 		O2GState *gState=O2ContextCurrentGState(self);
 		O2AffineTransform deviceTransform=gState->_deviceSpaceTransform;
@@ -1564,11 +1564,13 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 							if (baseRendererAlphaMask[0] == NULL) {
 								[self createMaskRenderer];
 							}
+                            baseRendererAlphaMask[currentMask]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
 							baseRendererAlphaMask[0]->clear(agg::gray8(255, 255));
 						}
 						// Switch masks
 						currentMask = !currentMask;
 						// Clear the new mask
+                        baseRendererAlphaMask[currentMask]->clip_box(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
 						baseRendererAlphaMask[currentMask]->clear(agg::gray8(0));
 						
 						buildAGGPathFromO2PathAndTransform(&aggPath,maskPath,O2AffineTransformIdentity);
@@ -1599,6 +1601,45 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	maskValid = YES;
 }
 
+// Clip the viewport with the path bounds
+static void O2ContextClipViewportToPath(O2Context_builtin *self,O2Path *path) {
+    O2Rect viewport=O2RectMake(self->_vpx,self->_vpy,self->_vpwidth,self->_vpheight);
+    O2Rect rect=O2PathGetBoundingBox(path);
+    
+    rect=O2RectIntegral(rect);
+    
+    viewport=O2RectIntersection(viewport,rect);
+    
+    self->_vpx=viewport.origin.x;
+    self->_vpy=viewport.origin.y;
+    self->_vpwidth=viewport.size.width;
+    self->_vpheight=viewport.size.height;
+}
+
+// Note : this is basically what [O2Context_builtin clipToState:] is doing
+-(void)base_clipToState:(O2ClipState *)clipState {
+    O2GState *gState=O2ContextCurrentGState(self);
+    NSArray *phases=[O2GStateClipState(gState) clipPhases];
+    
+    
+    O2ContextDeviceClipReset_builtin(self);
+    for(O2ClipPhase *phase in phases) {
+        O2Path       *path;
+        switch(O2ClipPhasePhaseType(phase)){
+                
+            case O2ClipPhaseNonZeroPath:
+            case O2ClipPhaseEOPath:
+                path=O2ClipPhaseObject(phase);
+                O2ContextClipViewportToPath(self,path);
+                break;
+                
+            case O2ClipPhaseMask:
+                break;
+        }
+        
+    }
+}
+
 -(void)clipToState:(O2ClipState *)clipState {
 	// No need to change the clipping if the clip phases are the same as before
 	NSArray *clipPhases = [clipState clipPhases];
@@ -1612,7 +1653,16 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	 The builtin Onyx2D renderer only supports viewport clipping (one integer rect), so once the superclass has clipped
 	 the viewport is what we want to clip to also. The base AGG renderer also does viewport clipping, so we just set it.
 	 */
-	[super clipToState:clipState];
+#ifdef O2AGG_GLYPH_SUPPORT
+    O2GState    *gState=O2ContextCurrentGState(self);
+    if (gState->_shouldSmoothFonts == YES) {
+        // We don't call the super method because we don't care about expensive GDI clipping when we use no GDI for the drawing
+        [self base_clipToState:clipState];
+    } else
+#endif
+    {
+        [super clipToState:clipState];
+    }
 	renderer->clipBox(self->_vpx,self->_vpy,self->_vpx+self->_vpwidth,self->_vpy+self->_vpheight);
 	
 	// That will force a rebuild of the mask next time we need to draw something - no need to build it now as it might

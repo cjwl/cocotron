@@ -280,6 +280,9 @@ namespace o2agg
                                          unsigned sr, unsigned sg, unsigned sb, 
                                          unsigned sa, unsigned cover)
         {
+            if (cover == 0) {
+                return;
+            }
             if(cover < 255)
             {
                 unsigned alpha = 255 - cover;
