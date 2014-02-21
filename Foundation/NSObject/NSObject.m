@@ -90,7 +90,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 	check=[check superclass];
 
-   }while(check != [NSObject class] &&
+   }while(check && check != [NSObject class] &&
 		  check != [NSProxy class]);
    
    return NO;
