@@ -132,6 +132,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super dealloc];
 }
 
+static NSString *NSStringFromQueuePriority(NSOperationQueuePriority priority) {
+    switch (priority) {
+        case NSOperationQueuePriorityVeryLow:
+            return @"very low";
+        case NSOperationQueuePriorityLow:
+            return @"low";
+        case NSOperationQueuePriorityNormal:
+            return @"normal";
+        case NSOperationQueuePriorityHigh:
+            return @"high";
+        case NSOperationQueuePriorityVeryHigh:
+            return @"very high";
+        default:
+            return [NSString stringWithFormat: @"%d", priority];
+    }
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat: @"%@, priority: %@", [super description], NSStringFromQueuePriority(priority)];
+}
+
 @end
 
 NSString * const NSInvocationOperationVoidResultException = @"NSInvocationOperationVoidResultException";
@@ -186,6 +207,12 @@ NSString * const NSInvocationOperationCancelledException = @"NSInvocationOperati
 
 -(void)main {
    [_invocation invoke];
+}
+
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat: @"%@, selector: %@", [super description], NSStringFromSelector([_invocation selector])];
 }
 
 @end
