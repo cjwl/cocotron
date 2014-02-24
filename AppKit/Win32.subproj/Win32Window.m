@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_win32.h>
 
 #import <AppKit/NSWindow.h>
+#import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSDrawerWindow.h>
 #import <QuartzCore/CAWindowOpenGLContext.h>
@@ -1093,6 +1094,15 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
 }
 
+-(void)dirtyRect:(CGRect)rect
+{
+    if (_dirtyRect.size.width == 0) {
+        _dirtyRect = rect;
+    } else {
+        _dirtyRect = CGRectUnion(rect, _dirtyRect);
+    }
+}
+
 -(void)bitBltWindow {
     switch(_backingType){
 
@@ -1114,7 +1124,35 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
             if(deviceContext!=nil){
                 O2SurfaceLock(surface);
-                BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+
+//#define BENCHBLIT 1 // Uncommnent this line for refresh rate debug info
+#if BENCHBLIT
+                static NSTimeInterval lastTime = 0.;
+                static int cptr = 0;
+                cptr++;
+#endif
+                NSRect r = CGRectIntegral(_dirtyRect);
+                if (CGRectIsEmpty(r) == NO) {
+                    // Blit the dirty area
+                    int x = r.origin.x;
+                    int y = height - (r.origin.y + r.size.height); // Life would be boring without flipping
+                    int w = r.size.width;
+                    int h = r.size.height;
+                    BitBlt([_cgContext dc],x-left,y-top,w,h,[deviceContext dc],x,y,SRCCOPY);
+                } else {
+                    // Blit the whole content
+                    BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+                }
+                // We're clean now
+                _dirtyRect = CGRectZero;
+#if BENCHBLIT
+                NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
+                if (currentTime - lastTime > 2.) {
+                    NSLog(@"%f fps", (double)cptr/(currentTime - lastTime));
+                    cptr = 0;
+                    lastTime = currentTime;
+                }
+#endif
                 O2SurfaceUnlock(surface);
             }
             break;

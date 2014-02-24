@@ -1850,7 +1850,20 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 	return needsToDrawRect;
 }
 
+// We don't build the  list here - it will be build during the display process
+// If we're being asked outside of the normal drawing process, then we'll return
+// the whole view area
 -(void)getRectsBeingDrawn:(const NSRect **)rects count:(NSInteger *)count {
+    if (_invalidRects == 0 || _rectsBeingRedrawn == NULL) {
+        *rects = &_visibleRect;
+        *count = 1;
+        return;
+    }
+    *rects = _rectsBeingRedrawn;
+	*count = _rectsBeingRedrawnCount;
+}
+
+-(void)buildRectsBeingDrawn:(const NSRect **)rects count:(NSInteger *)count {
 	// This method returns all the rects being drawn concerning the view
 	// That's all of the dirty rects from the view, but also all the ones
 	// from the superview that might have caused the redraw.
@@ -1869,7 +1882,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 		if (opaqueAncestor != self) {
 			// Ask our opaque ancestor what to draw
 			const NSRect *ancestorRects;
-			[opaqueAncestor getRectsBeingDrawn:&ancestorRects count:&_rectsBeingRedrawnCount];
+			[opaqueAncestor buildRectsBeingDrawn:&ancestorRects count:&_rectsBeingRedrawnCount];
 			if (_rectsBeingRedrawnCount) {
 				_rectsBeingRedrawn = NSZoneCalloc(NULL, _rectsBeingRedrawnCount, sizeof(NSRect));
 				int rectsCount = 0;
@@ -1889,7 +1902,7 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 				NSView *opaqueAncestor = [view opaqueAncestor];
 				const NSRect *ancestorRects;
 				NSUInteger ancestorRectsCount;
-				[opaqueAncestor getRectsBeingDrawn:&ancestorRects count:&ancestorRectsCount];
+				[opaqueAncestor buildRectsBeingDrawn:&ancestorRects count:&ancestorRectsCount];
 				if (ancestorRectsCount + _invalidRectCount > 0) {
 					_rectsBeingRedrawn = NSZoneCalloc(NULL, _invalidRectCount + ancestorRectsCount, sizeof(NSRect));
 					int rectsCount = 0;
@@ -1944,73 +1957,113 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
 	return [_subviews objectEnumerator];
 }
 
--(void)_displayIfNeededWithoutViewWillDraw {
-   if([self needsDisplay]){
-       [self displayRect:unionOfInvalidRects(self)];
-   }
-    NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+-(void)_displayRectIgnoringOpacity:(NSRect)rect {
+    NSRect visibleRect=[self visibleRect];
     
-    NSView* subView = nil;
-    while ((subView = [viewEnumerator nextObject])) {
-        [subView _displayIfNeededWithoutViewWillDraw];
+    clearRectsBeingRedrawn(self);
+    
+    rect=NSIntersectionRect(rect,visibleRect);
+    
+    if(NSIsEmptyRect(rect))
+        return;
+    
+    
+    if([self canDraw]){
+        
+        const NSRect *rects;
+        NSUInteger rectsCount;
+        [self buildRectsBeingDrawn:&rects count:&rectsCount];
+        if (rectsCount > 0) {
+            // This view must be locked/unlocked prior to drawing subviews otherwise gState changes may affect
+            // subviews.
+            [self lockFocus];
+            NSGraphicsContext *context=[NSGraphicsContext currentContext];
+            CGContextRef       graphicsPort=[context graphicsPort];
+            NSRect r = rect;
+            if (rectsCount > 1) {
+                CGContextClipToRects(graphicsPort, rects, rectsCount);
+            } else {
+                r = NSIntersectionRect(r, rects[0]);
+                CGContextClipToRect(graphicsPort, r);
+            }
+            [_window dirtyRect:[self convertRect:r toView:nil]];
+            if ([NSGraphicsContext inQuartzDebugMode]) {
+                [[NSColor yellowColor] set];
+                NSRectFill(r);
+            } else {
+                [self drawRect:r];
+            }
+            [self unlockFocus];
+        }
+        NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+        NSView* child = nil;
+        while ((child = [viewEnumerator nextObject])) {
+            NSRect  check=[self convertRect:rect toView:child];
+            check=NSIntersectionRect(check,[child bounds]);
+            
+            if(!NSIsEmptyRect(check)){
+                [child _displayRectIgnoringOpacity:check];
+            }
+        }
     }
-
-    clearNeedsDisplay(self);
+    
+    [_layerContext render];
+    
+	// Don't do anything to interfere with what will be drawn in non-debug mode
+	if ([NSGraphicsContext inQuartzDebugMode] == NO) {
+		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
+        
+		// Rects being drawn are only valid while we redraw
+		clearRectsBeingRedrawn(self);
+        
+        clearNeedsDisplay(self);
+	}
+    
+    /*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
+    [[self window] flushWindow];
 }
 
 -(void)displayIfNeeded {
-   [self viewWillDraw];
-   [self _displayIfNeededWithoutViewWillDraw];
+    if ([self isOpaque] == NO) {
+        id opaqueAncestor = [self opaqueAncestor];
+        [opaqueAncestor displayIfNeeded];
+        return;
+    }
+    [self displayIfNeededIgnoringOpacity];
 }
 
 -(void)displayIfNeededInRect:(NSRect)rect {
-   
-   rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
-
-   if([self needsDisplay])
-    [self displayRect:rect];
-
-	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
-	
-	NSView* child = nil;
-	while ((child = [viewEnumerator nextObject])) {
-		NSRect converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);   
-		if(!NSIsEmptyRect(converted)) {
-		 [child displayIfNeededInRect:converted];
-		}
-	}
+    if ([self isOpaque] == NO) {
+        id opaqueAncestor = [self opaqueAncestor];
+        rect = [self convertRect:rect toView:opaqueAncestor];
+        [opaqueAncestor displayIfNeededInRect:rect];
+        return;
+    }
+    [self displayIfNeededInRectIgnoringOpacity:rect];
 }
 
--(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {
-   
-   rect=NSIntersectionRect(unionOfInvalidRects(self), rect);
-
-   if([self needsDisplay])
-    [self displayRectIgnoringOpacity:rect];
-
-	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
-	
-	NSView* child = nil;
-	while ((child = [viewEnumerator nextObject])) {
-		NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
-   
-		if(!NSIsEmptyRect(converted)) {
-			[child displayIfNeededInRectIgnoringOpacity:converted];
-		}
-   }
+-(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {    
+    if([self needsDisplay]) {
+        [self displayRectIgnoringOpacity:rect];
+    } else {
+        NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+        for (NSView* subView in viewEnumerator) {
+            NSRect r = [self convertRect:rect toView:subView];
+            [subView displayIfNeededInRectIgnoringOpacity:r];
+        }
+    }
 }
 
 -(void)displayIfNeededIgnoringOpacity {
 
-   if([self needsDisplay])
-    [self displayRectIgnoringOpacity:unionOfInvalidRects(self)];
-
-	NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
-	
-	NSView* child = nil;
-	while ((child = [viewEnumerator nextObject])) {
-		[child displayIfNeededIgnoringOpacity];
-	}
+    if([self needsDisplay]) {
+        [self displayRectIgnoringOpacity:[self bounds]];
+    } else {
+        NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
+        for (NSView* subView in viewEnumerator) {
+            [subView displayIfNeededIgnoringOpacity];
+        }
+    }
 }
 
 -(void)displayRect:(NSRect)rect {
@@ -2021,70 +2074,11 @@ static NSGraphicsContext *graphicsContextForView(NSView *view){
    [opaque displayRectIgnoringOpacity:rect];
 }
 
--(void)displayRectIgnoringOpacity:(NSRect)rect {   
-   NSRect visibleRect=[self visibleRect];
-
-    clearRectsBeingRedrawn(self);
-
-    rect=NSIntersectionRect(rect,visibleRect);
-
-   if(NSIsEmptyRect(rect))
-    return;
-    
-
-   if([self canDraw]){
-
-       const NSRect *rects;
-	   NSUInteger rectsCount;
-	   [self getRectsBeingDrawn:&rects count:&rectsCount];
-       if (rectsCount > 0) {
-           // This view must be locked/unlocked prior to drawing subviews otherwise gState changes may affect
-           // subviews.
-           [self lockFocus];
-           NSGraphicsContext *context=[NSGraphicsContext currentContext];
-           CGContextRef       graphicsPort=[context graphicsPort];
-           
-           if (rectsCount > 1) {
-               CGContextClipToRect(graphicsPort,rect);
-               CGContextClipToRects(graphicsPort, rects, rectsCount);
-           } else {
-               rect = NSIntersectionRect(rect, rects[0]);
-               CGContextClipToRect(graphicsPort, rect);
-           }
-           if ([NSGraphicsContext inQuartzDebugMode]) {
-               [[NSColor yellowColor] set];
-               NSRectFill(rect);
-           } else {
-               [self drawRect:rect];
-           }
-           [self unlockFocus];
-       }
-	   
-	   NSEnumerator* viewEnumerator = [self _subviewsInDisplayOrderEnumerator];
-	   NSView* child = nil;
-	   while ((child = [viewEnumerator nextObject])) {
-		   NSRect  check=[self convertRect:rect toView:child];
-
-		   check=NSIntersectionRect(check,[child bounds]);
-		   
-		   if(!NSIsEmptyRect(check)){
-			   [child displayRectIgnoringOpacity:check];
-		   }
-	   }
-   }
-
-   [_layerContext render];
-   
-	// Don't do anything to interfere with what will be drawn in non-debug mode
-	if ([NSGraphicsContext inQuartzDebugMode] == NO) {
-		removeRectFromInvalidInVisibleRect(self,rect,visibleRect);
-
-		// Rects being drawn are only valid while we redraw
-		clearRectsBeingRedrawn(self);
-	}
-
-/*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
-   [[self window] flushWindow];
+// All of the of display methods end there
+-(void)displayRectIgnoringOpacity:(NSRect)rect
+{
+    [self viewWillDraw];
+    [self _displayRectIgnoringOpacity:rect];
 }
 
 -(void)displayRectIgnoringOpacity:(NSRect)rect inContext:(NSGraphicsContext *)context {   

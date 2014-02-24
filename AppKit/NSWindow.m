@@ -1791,8 +1791,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      doFlush=NO;
      }
     
-    if(doFlush)
-     [[self platformWindow] flushBuffer];
+       if(doFlush) {
+           [[self platformWindow] flushBuffer];
+       }
    }
 }
 
@@ -3136,5 +3137,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     return _backgroundView;
 }
 
+-(void)dirtyRect:(NSRect)rect
+{
+    [[self platformWindow] dirtyRect:rect];
+}
 @end
 
