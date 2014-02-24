@@ -54,6 +54,7 @@ typedef agg::rasterizer_scanline_aa<> RasterizerType; // We use an anti-aliased 
 typedef agg::amask_no_clip_gray8 MaskType;
 
 @interface O2Context_AntiGrain : O2Context_builtin_gdi {
+@public
 	agg::rendering_buffer *renderingBuffer;
 	
 	agg::path_storage     *path;
@@ -61,6 +62,9 @@ typedef agg::amask_no_clip_gray8 MaskType;
 
 	context_renderer *renderer;
 	
+    agg::scanline_u8 *scanline_u8; // used for mixed opaque/transparent rendering (stroking,text...)
+    agg::scanline_p8 *scanline_p8; // used for mostly opaque rendering (filling, images...)
+
 	// Rendering buffer to use for alpha masking (bezier path clipping)
 	agg::rendering_buffer*												rBufAlphaMask[2];
 	MaskType*															alphaMask[2];
