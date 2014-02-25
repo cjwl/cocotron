@@ -567,7 +567,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)scanUpToString:(NSString *)string intoString:(NSString **)stringp {
     NSInteger length=[_string length];
-    unichar result[length];
+    unichar *result = NSZoneMalloc(NULL, sizeof(unichar) * length);
     int resultLength = 0;
     BOOL scanStarted = NO;
     NSStringCompareOptions compareOption = 0;
@@ -584,23 +584,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         if([subStr length] < [string length]) {
             _location = oldLocation;
+            NSZoneFree(NULL, result);
             return NO;
         }
         if ([subStr compare:string options:compareOption range:range] == NSOrderedSame) {
             if (scanStarted) {
-                if (stringp != NULL)
+                if (stringp != NULL) {
                     *stringp = [NSString stringWithCharacters:result length:resultLength];
+                }
 
+                NSZoneFree(NULL, result);
                 return YES;
             } else {
                 if ([_skipSet characterIsMember:unicode] == YES) {
                     continue;
                 }
                 else {
-                    if (stringp != NULL)
+                    if (stringp != NULL) {
                         *stringp = [NSString stringWithCharacters:result length:resultLength];
-                    
-                    return YES;                    
+                    }
+                    NSZoneFree(NULL, result);
+                    return YES;
                 }
             }
         }
@@ -613,13 +617,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     if (resultLength > 0) {
-        if (stringp != NULL)
+        if (stringp != NULL) {
             *stringp = [NSString stringWithCharacters:result length:resultLength];
+        }
 
+        NSZoneFree(NULL, result);
         return YES;
     }
     else {
         _location = oldLocation;
+        NSZoneFree(NULL, result);
         return NO;
     }
 }
@@ -627,7 +634,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)scanCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp
 {
     NSInteger length=[_string length];
-    unichar result[length];
+    unichar *result = NSZoneMalloc(NULL, sizeof(unichar) * length);
     int resultLength = 0;
     BOOL scanStarted = NO;
 
@@ -660,12 +667,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			*stringp = [NSString stringWithCharacters:result length:resultLength];
 			}
 		}
+    
+    NSZoneFree(NULL, result);
 	return scanStarted;
 }
 
 -(BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp {
     NSInteger length=[_string length];
-    unichar result[length];
+    unichar *result = NSZoneMalloc(NULL, sizeof(unichar) * length);
     int resultLength = 0;
     BOOL scanStarted = NO;
     NSInteger oldLocation =_location;
@@ -684,14 +693,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     if (resultLength > 0) {
-        if (stringp != NULL)
+        if (stringp != NULL) {
             *stringp = [NSString stringWithCharacters:result length:resultLength];
-
+        }
+        NSZoneFree(NULL, result);
         return YES;
     }
     else {
         _location = oldLocation;
-
+        NSZoneFree(NULL, result);
         return NO;
     }
 }
