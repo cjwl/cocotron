@@ -21,8 +21,6 @@ FOUNDATION_EXPORT NSString * const NSTaskDidTerminateNotification;
   id standardInput;
   id standardOutput;
   id standardError;
-
-  BOOL isRunning;
 }  
 
 +(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;

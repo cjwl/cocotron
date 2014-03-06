@@ -100,7 +100,7 @@ void childSignalHandler(int sig) {
 }
 
 -(void)launch {
-    if (isRunning) {
+    if ([self isRunning]) {
         [NSException raise:NSInvalidArgumentException
                     format:@"NSTask already launched"];   
     }
@@ -206,9 +206,6 @@ void childSignalHandler(int sig) {
         exit(-1);
     }
     else if (_processID != -1) {
-        
-        isRunning = YES;
-        
         @synchronized(_liveTasks) {
             [_liveTasks addObject:self];
         }
@@ -226,6 +223,21 @@ void childSignalHandler(int sig) {
                     format:@"fork() failed: %s", strerror(errno)];
 }
 
+-(BOOL)isRunning
+{
+    if (_processID != 0) {
+        if (kill(_processID, 0) == 0) {
+            return YES;
+        }
+        else {
+            return NO;
+        }
+    }
+    else {
+        return  NO;
+    }
+}
+
 -(void)terminate {
    kill(_processID, SIGTERM);
     @synchronized(_liveTasks) {
@@ -237,7 +249,6 @@ void childSignalHandler(int sig) {
 -(void)setTerminationStatus:(int)terminationStatus { _terminationStatus = terminationStatus; }
 
 -(void)taskFinished {    
-   isRunning = NO;
     @synchronized(_liveTasks) {
         [_liveTasks removeObject:self];
     }

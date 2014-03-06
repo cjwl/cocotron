@@ -16,6 +16,7 @@ void waitForTaskChildProcess();
 }
 
 -(void)launch;
+-(BOOL)isRunning;
 -(void)terminate;
 
 -(void)setTerminationStatus:(int)terminationStatus;

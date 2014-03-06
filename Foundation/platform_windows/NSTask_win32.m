@@ -29,8 +29,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // private
 -(void)finalizeProcess{
 
-   isRunning=NO;
-
    if(_monitor!=nil){
     [[NSRunLoop currentRunLoop] removeInputSource:_monitor forMode: NSDefaultRunLoopMode];
     [_monitor setDelegate:nil];
@@ -40,6 +38,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     CloseHandle(_processInfo.hProcess);
     CloseHandle(_processInfo.hThread);
    }
+}
+
+-init {
+    self = [super init];
+    
+    return self;
 }
 
 -(void)dealloc{
@@ -72,6 +76,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)launch {
+    if ([self isRunning]) {
+        [NSException raise:NSInvalidArgumentException
+                    format:@"NSTask already launched"];
+    }
    STARTUPINFO   startupInfo;
 
    if(launchPath==nil)
@@ -108,9 +116,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     startupInfo.hStdError=[standardError fileHandle];
     
     SetHandleInformation([(NSFileHandle_win32 *)[standardError fileHandleForReading] fileHandle], HANDLE_FLAG_INHERIT, 0);
-
-
-   ZeroMemory(& _processInfo,sizeof(_processInfo));
     
     char    *cenv = NULL, *cenvp = NULL;
     if(environment != nil) {
@@ -165,10 +170,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([standardError isKindOfClass:[NSPipe class]])
     [[standardError fileHandleForWriting] closeFile];
 
-   isRunning=YES;
    _monitor=[[NSHandleMonitor_win32 allocWithZone:NULL] initWithHandle:_processInfo.hProcess];
    [_monitor setDelegate:self];
    [[NSRunLoop currentRunLoop] addInputSource:_monitor forMode: NSDefaultRunLoopMode];
+}
+
+-(BOOL)isRunning
+{
+    if ( _processInfo.hProcess != NULL) {
+        GetExitCodeProcess(_processInfo.hProcess, &_exitCode);
+        if (_exitCode == STILL_ACTIVE) {
+            return YES;
+        }
+        else {
+            return NO;
+        }
+    }
+    else {
+        return NO;
+    }
 }
 
 -(void)terminate {

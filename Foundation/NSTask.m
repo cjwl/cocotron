@@ -41,8 +41,7 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
     standardInput=nil;
     standardOutput=nil;
     standardError=nil;
-    isRunning=NO;
-   } 
+   }
    return self;
 }
 
@@ -125,7 +124,8 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
 }
 
 -(BOOL)isRunning {
-   return isRunning;
+    NSInvalidAbstractInvocation();
+    return NO;
 }
 
 -(void)interrupt {
@@ -152,10 +152,10 @@ NSString * const NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification
 }
 
 -(void)waitUntilExit {
-    while(isRunning) {
-     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode 
-                              beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
-}
+    while([self isRunning]) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
+    }
 }
 
 -(int)processIdentifier {
