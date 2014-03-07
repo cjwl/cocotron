@@ -40,12 +40,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--init {
-    self = [super init];
-    
-    return self;
-}
-
 -(void)dealloc{
    [self finalizeProcess];
    [super dealloc];
@@ -116,6 +110,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     startupInfo.hStdError=[standardError fileHandle];
     
     SetHandleInformation([(NSFileHandle_win32 *)[standardError fileHandleForReading] fileHandle], HANDLE_FLAG_INHERIT, 0);
+    
+    ZeroMemory(& _processInfo,sizeof(_processInfo));
     
     char    *cenv = NULL, *cenvp = NULL;
     if(environment != nil) {
