@@ -964,6 +964,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _sendsActionOnEndEditing;
 }
 
+static NSString *NSStringFromCellType(NSCellType type) {
+    switch (type) {
+        case NSNullCellType:
+            return @"NSNullCellType";
+        case NSImageCellType:
+            return @"NSImageCellType";
+        case NSTextCellType:
+            return @"NSTextCellType";
+        default:
+            break;
+    }
+    return [NSString stringWithFormat: @"Unknown: %d", type];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat: @"%@\n\ttype: %@\n\tfont: %@\n\tobjectValue: %@",
+            [super description],
+            NSStringFromCellType(_cellType),
+            _font,
+            _objectValue];
+}
 @end
 
 void NSDrawThreePartImage(NSRect frame,NSImage *startCap,NSImage *centerFill,NSImage *endCap,BOOL vertical,NSCompositingOperation operation,CGFloat alpha,BOOL flipped) {

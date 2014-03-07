@@ -118,6 +118,7 @@ static NSLock *_cacheLock=nil;
 }
 
 +(NSFont *)cachedFontWithName:(NSString *)name size:(float)size {
+    
     NSFont *font = nil;
     [_cacheLock lock];
     unsigned i=[self _cacheIndexOfFontWithName:name size:size];
@@ -128,6 +129,7 @@ static NSLock *_cacheLock=nil;
 }
 
 +(void)addFontToCache:(NSFont *)font {
+    
 	if (font == nil) {
 		return;
 	}
@@ -201,6 +203,7 @@ static NSLock *_cacheLock=nil;
     } else {
         result = [NSFont fontWithName:[O2Font postscriptNameForDisplayName:fallbackName] size:size];
     }
+    O2FontLog(@"asked for type: %d got font: %@", type, result);
     return result;
 }
 
@@ -285,13 +288,16 @@ static NSLock *_cacheLock=nil;
 -initWithCoder:(NSCoder *)coder {
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
-    NSString          *name=[[NSFont nibFontTranslator] translateFromNibFontName:[keyed decodeObjectForKey:@"NSName"]];
+       NSString *fontName = [keyed decodeObjectForKey:@"NSName"];
+    NSString          *name=[[NSFont nibFontTranslator] translateFromNibFontName: fontName];
     float              size=[keyed decodeFloatForKey:@"NSSize"];
     // int                flags=[keyed decodeIntForKey:@"NSfFlags"]; // ?
     
     [self dealloc];
     
-    return [[NSFont fontWithName:name size:size] retain];
+    NSFont *realFont = [[NSFont fontWithName:name size:size] retain];
+       O2FontLog(@"coded font name: %@ translated font name: %@ rendered font: %@", fontName, name, realFont);
+       return realFont;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -319,6 +325,7 @@ static NSLock *_cacheLock=nil;
 	if (_cgFont) {
 		_ctFont=CTFontCreateWithGraphicsFont(_cgFont,_pointSize,NULL,NULL);
 		[isa addFontToCache:self];
+        O2FontLog(@"name: %@ _cgFont: %@ _ctFont: %@", name, _cgFont, _ctFont);
 	} else {
 		[self release];
 		self = nil;
@@ -346,8 +353,9 @@ static NSLock *_cacheLock=nil;
 
    result=[self cachedFontWithName:name size:size];
 
-   if(result==nil)
-    result=[[[NSFont alloc] initWithName:name size:size] autorelease];
+    if(result==nil) {
+        result=[[[NSFont alloc] initWithName:name size:size] autorelease];
+    }
 
    return result;
 }

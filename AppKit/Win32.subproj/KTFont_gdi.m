@@ -990,4 +990,8 @@ static void ConvertTTPolygonToPath(LPTTPOLYGONHEADER lpHeader, DWORD size, O2Mut
    return result;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat: @"%@ name: %@", [super description], _name];
+}
 @end

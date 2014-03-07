@@ -191,6 +191,8 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 		EnumFontFamiliesExW(dc, &logFont, (FONTENUMPROCW)EnumFontFromFamilyCallBack, (LPARAM)dc, 0); 
 	}
 	ReleaseDC(NULL,dc);
+    O2FontLog(@"Postcript to Win32 Table: %@", sPSToWin32Table);
+    O2FontLog(@"\n\nsWin32 to Postscript Table: %@", sWin32ToPSTable);
 }
 
 
@@ -204,6 +206,7 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 		}
 		name = [sPSToWin32Table objectForKey:psName];
 		if (name == nil) {
+            O2FontLog(@"failed to find native font for postscript name: %@", psName);
 			name = psName;
 		}
 	}
@@ -272,18 +275,24 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 
 static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    const unichar *wideName=(const unichar *)[name cStringUsingEncoding:NSUnicodeStringEncoding];
-   return CreateFontW(-unitsPerEm,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,wideName);
+    O2FontLog(@"Creating font with name: %@ unitsPerEm: %d", name, unitsPerEm);
+   HFONT result = CreateFontW(-unitsPerEm,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,wideName);
+    if (result == NULL) {
+        O2FontLog(@"CreateFontW failed");
+    }
+    return result;
 }
 
--initWithFontName:(NSString *)name {
+-initWithFontName:(NSString *) name {
    if(name==nil){
     [self release];
     return nil;
    }
 	
-	name = [O2Font nativeFontNameForPostscriptName:name];
-	_name=[name copy];
+	NSString *nativeName = [O2Font nativeFontNameForPostscriptName:name];
+	_name=[nativeName copy];
 	
+    O2FontLog(@"name: %@ mapped to: %@", name, _name);
    _platformType=O2FontPlatformTypeGDI;
 
    HDC dc=GetDC(NULL);
@@ -297,7 +306,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 // 2048 is a common TrueType em square, so we try that first, and if the font is not TrueType, maybe we'll get some decent metrics with a big size.
    _unitsPerEm=2048;
    
-   HFONT           font=Win32FontHandleWithName(name,_unitsPerEm);
+   HFONT           font=Win32FontHandleWithName(_name,_unitsPerEm);
    TEXTMETRIC      gdiMetrics;
 
    if(font==NULL){
@@ -311,8 +320,9 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 	unichar wideName[128];
 	GetTextFaceW(dc, 128, wideName);
 	NSString *textFace = [NSString stringWithFormat:@"%S", wideName];
-	if (![textFace isEqualToString:name]) {
+	if (![textFace isEqualToString:_name]) {
 		// That's not the expected font - let's fail
+        O2FontLog(@"textFace: %@ doesn't match name: %@", textFace, _name);
 		DeleteObject(font);
 		ReleaseDC(NULL,dc);
 		[self release];
@@ -360,7 +370,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
       _unitsPerEm=ttMetrics->otmEMSquare;
       
 	  // Don't use the magic pointSize scaling formula on these font (UI fonts) 
-      if([name isEqualToString:@"Marlett"] || [name isEqualToString:@"Segoe UI"] || [name isEqualToString:@"Tahoma"]){
+      if([_name isEqualToString:@"Marlett"] || [_name isEqualToString:@"Segoe UI"] || [_name isEqualToString:@"Tahoma"]){
        _useMacMetrics=NO;
        _ascent=ttMetrics->otmAscent;
        _descent=ttMetrics->otmDescent;
@@ -658,6 +668,11 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    }
    
    return nil;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat: @"%@ name: %@", [super description], _name];
 }
 
 @end
