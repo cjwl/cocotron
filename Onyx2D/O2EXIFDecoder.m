@@ -451,8 +451,12 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
 
 
 
-- (size_t)_readIFD:(const uint8_t *)data base:(size_t)base offset:(size_t)offset bigendian:(BOOL)bigendian mode:(int)mode
+#define CHECK_AVAILABLE_BYTES(offset,s) if(offset+s>size) { return 0; }
+
+- (size_t)_readIFD:(const uint8_t *)data offset:(size_t)offset bigendian:(BOOL)bigendian mode:(int)mode
+              size:(size_t)size
 {
+    CHECK_AVAILABLE_BYTES(offset,2);
     short numEntries = _getShort(data, offset, bigendian);
     offset += 2;
     // Reading the data :
@@ -462,10 +466,13 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         const unsigned char* rawValue;
         id val  = nil;
         
+        CHECK_AVAILABLE_BYTES(offset,2);
         unsigned short tag = _getShort(data, offset,  bigendian);
         offset += 2;
+        CHECK_AVAILABLE_BYTES(offset,2);
         unsigned short type = _getShort(data, offset,  bigendian);
         offset += 2;
+        CHECK_AVAILABLE_BYTES(offset,4);
         long count = _getLong(data, offset, bigendian);
         offset += 4;
         
@@ -478,12 +485,15 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         
         if (dataLength > 4) {
             // The 4 bytes data is just an offset to the real data
+            CHECK_AVAILABLE_BYTES(offset,4);
             long dataOffset = _getLong(data, offset, bigendian);
-            rawValue = data + base + dataOffset;
+            rawValue = data + dataOffset;
+            CHECK_AVAILABLE_BYTES(dataOffset,dataLength);
         }
         else {
             // The 4 bytes data is the real data
-            rawValue = data + base + offset;;
+            rawValue = data + offset;
+            CHECK_AVAILABLE_BYTES(offset,dataLength);
         }
         offset += 4;
         
@@ -607,19 +617,22 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         }
         
         if ((mode == kIFD0) && (tag == kImage_ExifIFDOffset)) {  // ExifIFDOffset
-            [self _readIFD:data base:base offset:value bigendian:bigendian mode:kEXIF];
+            [self _readIFD:data offset:value bigendian:bigendian mode:kEXIF size:size];
         }
         else if ((mode == kIFD0) && (tag == kImage_GPSIFDOffset)) {  // GPSIFDOffset
-            [self _readIFD:data base:base offset:value bigendian:bigendian mode:kGPS];
+            [self _readIFD:data offset:value bigendian:bigendian mode:kGPS size:size];
         }
         else if ((mode == kEXIF) && (tag == kEXIF_InteropIFDOffset)) {  // InteropIFDOffset
-            [self _readIFD:data base:base offset:value bigendian:bigendian mode:kInterop];
+            [self _readIFD:data offset:value bigendian:bigendian mode:kInterop size:size];
         }
+        
         if (val) {
             [self setTagForType:mode number:tag value:val];
         }
     }
-    return _getLong(data, base+offset, bigendian);
+    // Returns the offset for the next bloc
+    CHECK_AVAILABLE_BYTES(offset,4);
+    return _getLong(data, offset, bigendian);
 }
 
 - (void)_decodeJFIF:(const uint8_t *)bytes length:(int)length
@@ -691,14 +704,10 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
     
     long offsetIFD0 = _getLong(bytes, 4, bigendian);
     
-    long offset = 0;
     if (offsetIFD0 && offsetIFD0 != -1) {
-        offset = [self _readIFD:bytes base:0 offset:offsetIFD0 bigendian:bigendian mode:0];
+        size_t offset = [self _readIFD:bytes offset:offsetIFD0 bigendian:bigendian mode:0 size:length];
         if (offset && offset != -1) {
-            long offset2 = [self _readIFD:bytes base:0 offset:offset bigendian:bigendian mode:1];
-            if (offset2) {
-                offset = offset2;
-            }
+            [self _readIFD:bytes offset:offset bigendian:bigendian mode:1 size:length];
         }
     }
 }
