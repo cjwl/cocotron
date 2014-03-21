@@ -54,7 +54,10 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
             return 1;
         }
         
-		SelectObject(dc, font);
+		if (SelectObject(dc, font) == HGDI_ERROR) {
+            NSLog(@"Error selecting %@", winName);
+            return 1;
+        }
 
 		// Get the PS name for the font...
 		DWORD bufferSize = GetFontData(dc, CFSwapInt32HostToBig('name'), 0, NULL, 0);
@@ -126,7 +129,13 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 									// Win PS name - unicode encoding
 									NSString *name = [[[NSString alloc] initWithBytes:strings + offset length:length encoding:NSUnicodeStringEncoding] autorelease];
 									if ([name length]) {
-										[sPSToWin32Table setObject:winName forKey:name];
+                                        // It seems some users have some corrupted font table - NEVER replace Arial fonts with something
+                                        // which isn't some kind of arial
+                                        if (!([name hasPrefix:@"Arial"] && [winName rangeOfString:@"Arial"].location == NSNotFound)) {
+                                            [sPSToWin32Table setObject:winName forKey:name];
+                                        } else {
+                                            NSLog(@"Skipping matching %@ with %@", name, winName);
+                                        }
 										[sWin32ToPSTable setObject:name forKey:winName];
                                         if (fontNameUS) {
                                             // Add the US font name -> PS mapping
@@ -138,7 +147,13 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 									// Mac PS name - ASCII
 									NSString *name = [NSString stringWithCString:strings + offset length:length];
 									if ([name length]) {
-										[sPSToWin32Table setObject:winName forKey:name];
+                                        // It seems some users have some corrupted font table - NEVER replace Arial fonts with something
+                                        // which isn't some kind of arial
+                                        if (!([name hasPrefix:@"Arial"] && [winName rangeOfString:@"Arial"].location == NSNotFound)) {
+                                            [sPSToWin32Table setObject:winName forKey:name];
+                                        } else {
+                                            NSLog(@"Skipping matching %@ with %@", name, winName);
+                                        }
 										[sWin32ToPSTable setObject:name forKey:winName];
                                         if (fontNameUS) {
                                             // Add the US font name -> PS mapping
@@ -191,6 +206,17 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 		EnumFontFamiliesExW(dc, &logFont, (FONTENUMPROCW)EnumFontFromFamilyCallBack, (LPARAM)dc, 0); 
 	}
 	ReleaseDC(NULL,dc);
+    
+    // Ensure we have some Arial mapping
+    if ([sPSToWin32Table objectForKey:@"ArialMT"] == nil) {
+        NSLog(@"Forcing ArialMT -> Arial mapping");
+        [sPSToWin32Table setObject:@"Arial" forKey:@"ArialMT"];
+    }
+    if ([sWin32ToPSTable objectForKey:@"Arial"] == nil) {
+        NSLog(@"Forcing Arial -> ArialMT mapping");
+        [sWin32ToPSTable setObject:@"ArialMT" forKey:@"Arial"];
+    }
+    
     O2FontLog(@"Postcript to Win32 Table: %@", sPSToWin32Table);
     O2FontLog(@"\n\nsWin32 to Postscript Table: %@", sWin32ToPSTable);
 }
