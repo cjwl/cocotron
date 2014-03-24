@@ -275,6 +275,7 @@ static struct NSSelectSetBackgroundInfo *asyncThreadInfo(){
     result->eventMonitorModes=[NSMutableArray new];
 
     result->pingWrite=[[NSSocket alloc] initConnectedToSocket:&result->pingRead];
+
     [result->pingRead retain];
     result->pingWriteHandle=[result->pingWrite socketHandle];
     result->pingReadHandle=[result->pingRead socketHandle];
@@ -282,7 +283,9 @@ static struct NSSelectSetBackgroundInfo *asyncThreadInfo(){
     result->lock=NSZoneMalloc(NULL,sizeof(CRITICAL_SECTION));
     InitializeCriticalSection(result->lock);
    
-    result->shutdown=NO;
+    // We sometimes get some error from NSSocket leading to pingRead/pingWrite being nil
+    // No idea why but just ask to shutdown on that case
+    result->shutdown=result->pingRead == nil || result->pingWrite == nil;;
     
     result->inputRead=native_set_new();
     result->inputWrite=native_set_new();
@@ -354,6 +357,9 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
 +(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
    NSSelectSet_windows *outputSet=[[[NSSelectSet alloc] init] autorelease];
    NSSelectSetBackgroundInfo *async=asyncThreadInfo();
+    if (async->shutdown) {
+        return;
+    }
 
    EnterCriticalSection(async->lock);
    transferNativeToSet(async->outputRead,outputSet->_readSet);
@@ -371,7 +377,10 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
     return;
 
    NSSelectSetBackgroundInfo *async=asyncThreadInfo();
-
+    if (async->shutdown) {
+        return;
+    }
+    
    if(![async->eventMonitorModes containsObject:mode]){
     [async->eventMonitorModes addObject:mode];
     [[NSRunLoop currentRunLoop] addInputSource:async->eventMonitor forMode:mode];

@@ -117,6 +117,8 @@ static inline void byteZero(void *vsrc,size_t size){
    struct sockaddr_in address;
    int                namelen;
 
+   *otherX = nil;
+    
    if([self initUDPStream]==nil)
     return nil;
     
