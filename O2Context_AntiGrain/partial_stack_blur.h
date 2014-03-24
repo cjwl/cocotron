@@ -37,6 +37,8 @@ namespace agg
         typedef typename Img::color_type color_type;
         typedef typename Img::order_type order_type;
         typedef typename Img::value_type value_type;
+        typedef typename Img::calc_type calc_type;
+
         enum order_e
         { 
             R = order_type::R, 
@@ -70,12 +72,21 @@ namespace agg
 		
         if(radius > 0)
         {
+            const color_type fillColor = color_type(color_type::base_mask*r, color_type::base_mask*g, color_type::base_mask*b, color_type::base_mask*globalalpha).premultiply();
+            const color_type clearColor(0, 0, 0, 0);
+            
+            calc_type sr = fillColor.r;
+            calc_type sg = fillColor.g;
+            calc_type sb = fillColor.b;
+            calc_type sa = fillColor.a;
+            
             if(radius > 254) radius = 254;
-            div = radius * 2 + 1;
+            div = radius * 2 + 1; // center pixels + radius blur on both side
             mul_sum = stack_blur_tables<int>::g_stack_blur8_mul[radius];
             shr_sum = stack_blur_tables<int>::g_stack_blur8_shr[radius];
             stack.allocate(div);
 			
+            // Horizontal bluring
             for(y = startY; y < endY; y++)
             {
                 sum_a = 
@@ -86,17 +97,19 @@ namespace agg
                 for(i = 0; i <= radius; i++)
                 {
                     stack_pix_ptr    = &stack[i];
-                    *stack_pix_ptr = src_pix_ptr[A];
-                    sum_a           += src_pix_ptr[A] * (i + 1);
-                    sum_out_a       += src_pix_ptr[A];
+                    value_type a = src_pix_ptr[A];
+                    *stack_pix_ptr = a;
+                    sum_out_a       += a;
+                    sum_a           += a * (i + 1);
                 }
                 for(i = 1; i <= radius; i++)
                 {
                     if(i <= wm) src_pix_ptr += Img::pix_width; 
                     stack_pix_ptr = &stack[i + radius];
-                    *stack_pix_ptr = src_pix_ptr[A];
-                    sum_a           += src_pix_ptr[A] * (radius + 1 - i);
-                    sum_in_a        += src_pix_ptr[A];
+                    value_type a = src_pix_ptr[A];
+                    *stack_pix_ptr = a;
+                    sum_in_a        += a;
+                    sum_a           += a * (radius + 1 - i);
                 }
 				
                 stack_ptr = radius;
@@ -106,9 +119,23 @@ namespace agg
                 dst_pix_ptr = img.pix_ptr(startX, y);
                 for(x = startX; x < endX; x++)
                 {
+                    value_type alpha = (sum_a * mul_sum) >> shr_sum;
+
+                    // If we are going to push more A with the same currently blurred value, we won't change
+                    // anything - just go to the next one
+                    if (alpha == src_pix_ptr[A]) {
+                        if (xp >= wm) {
+                            break;
+                        }
+                        if ((src_pix_ptr + Img::pix_width)[A] == alpha) {
+                            src_pix_ptr += Img::pix_width;
+                            dst_pix_ptr += Img::pix_width;
+                            ++xp;
+                            continue;
+                        }
+                    }
                     // We just need to store the alpha blured horizontally
                     // The final vertical bluring will store the final value
-                    value_type alpha = (sum_a * mul_sum) >> shr_sum;
                     dst_pix_ptr[A] = alpha;
 
                     dst_pix_ptr += Img::pix_width;
@@ -146,6 +173,7 @@ namespace agg
             
             int stride = img.stride();
             
+            // Vertical bluring
             for(x = startX; x < w; x++)
             {
                 sum_a = 
@@ -177,12 +205,32 @@ namespace agg
                 for(y = startY; y < h; y++)
                 {
                     // Store the final color
-                    value_type alpha = ((sum_a * mul_sum) >> shr_sum)*globalalpha;
-                    dst_pix_ptr[R] = r*alpha;
-                    dst_pix_ptr[G] = g*alpha;
-                    dst_pix_ptr[B] = b*alpha;
-                    dst_pix_ptr[A] = alpha;
-                                
+                    calc_type alpha = ((sum_a * mul_sum) >> shr_sum);
+                    if (alpha == color_type::base_mask) {
+                        *(color_type *)dst_pix_ptr = fillColor;
+                    } else  if (alpha == 0) {
+                        *(color_type *)dst_pix_ptr = clearColor;
+                    } else {
+                        dst_pix_ptr[R] = (sr * alpha + color_type::base_mask) >> color_type::base_shift;
+                        dst_pix_ptr[G] = (sg * alpha + color_type::base_mask) >> color_type::base_shift;
+                        dst_pix_ptr[B] = (sb * alpha + color_type::base_mask) >> color_type::base_shift;
+                        dst_pix_ptr[A] = (sa * alpha + color_type::base_mask) >> color_type::base_shift;
+                    }
+                    // If we are going to push more A with the same currently blurred value, we won't change
+                    // anything - just go to the next one
+                    if (alpha == src_pix_ptr[A]) {
+                        if (yp >= hm) {
+                            dst_pix_ptr += stride;
+                            continue;
+                        }
+                        if ((src_pix_ptr + stride)[A] == alpha) {
+                            src_pix_ptr += stride;
+                            ++yp;
+                            dst_pix_ptr += stride;
+                            continue;
+                        }
+                    }
+
                     dst_pix_ptr += stride;
 					
                     sum_a -= sum_out_a;

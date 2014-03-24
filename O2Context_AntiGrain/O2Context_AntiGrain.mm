@@ -21,7 +21,34 @@
 #include "partial_stack_blur.h"
 #ifdef WINDOWS
 #include <AppKit/KTFont.h>
+
+static inline void getcpuid(int info_type, int info[4]) {
+    asm volatile (
+                  "pushl %%ebx      \n\t"
+                  "cpuid            \n\t"
+                  "movl %%ebx, %1   \n\t"
+                  "popl %%ebx       \n\t"
+                  : "=a"(info[0]), "=r"(info[1]), "=c"(info[2]), "=d"(info[3])
+                  : "a"(info_type)
+                  );
+}
+
+static inline bool cpuHasSSE2()
+{
+    int cpu_info[4] = { 0 };
+    getcpuid(1, cpu_info);
+    return (cpu_info[3] & (1<<26)) != 0;
+}
+#else
+static inline bool cpuHasSSE2
+{
+    return false;
+}
 #endif
+
+#include <agg_pixfmt_rgba.h>
+
+#include "o2agg_span_image_filter_rgba.h"
 
 typedef enum {
     kImageInterpolationNone,
@@ -72,7 +99,7 @@ class BaseRenderer, class ColorT>
 void render_scanlines_aa_solid_translate(Rasterizer& ras, Scanline& sl,
                                          BaseRenderer& ren, const ColorT& color, int dx, int dy)
 {
-	if(ras.rewind_scanlines())
+    if(ras.rewind_scanlines())
 	{
 		// Explicitly convert "color" to the BaseRenderer color type.
 		// For example, it can be called with color type "rgba", while
@@ -194,17 +221,17 @@ private:
 class span_color_converter
 {
 public:
-	span_color_converter(agg::rgba8 &color, bool premultiply) : m_color(color), m_premultiply(premultiply) {};
+	span_color_converter(o2agg::rgba8 &color, bool premultiply) : m_color(color), m_premultiply(premultiply) {};
 	
 	void prepare() {}
 	
-	inline void generate(agg::rgba8* span, int x, int y, unsigned len)
+	inline void generate(o2agg::rgba8* span, int x, int y, unsigned len)
 	{
 		if (m_premultiply) {
 			do {
 				// Replace the span color, with m_color * span opacity
 				if (span->opacity() > 0) {
-					agg::rgba8 color = m_color;
+					o2agg::rgba8 color = m_color;
 					color.opacity(color.opacity()*span->opacity());
 					color.premultiply();
 					*span = color;
@@ -215,7 +242,7 @@ public:
 			do {
 				// Replace the span color, with m_color * span opacity
 				if (span->opacity() > 0) {
-					agg::rgba8 color = m_color;
+					o2agg::rgba8 color = m_color;
 					color.opacity(color.opacity()*span->opacity());
 					*span = color;
 				}
@@ -225,7 +252,7 @@ public:
 	}
 private:
 	bool m_premultiply;
-	agg::rgba8 m_color;
+	o2agg::rgba8 m_color;
 };
 
 class context_renderer
@@ -243,7 +270,7 @@ class context_renderer
 		virtual bool isABGR() { return false; }
 		virtual void setBlendMode(int blendMode) = 0;
 		virtual void setAlpha(float alpha) = 0;
-		virtual void setShadowColor(agg::rgba color) = 0;
+		virtual void setShadowColor(o2agg::rgba color) = 0;
 		virtual void setShadowBlurRadius(float radius) = 0;
 		virtual void setShadowOffset(O2Size offset) = 0;
 		virtual void clipBox(int a, int b, int c, int d) = 0;
@@ -253,7 +280,7 @@ class context_renderer
 	{
 		typedef o2agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> pixfmt_type;
 		
-		typedef o2agg::pixfmt_rgba32 pixfmt_shadow_type;
+		typedef o2agg::pixfmt_bgra32_pre pixfmt_shadow_type;
 		
 		typedef agg::renderer_base<pixfmt_type> renderer_base;
 		typedef agg::renderer_base<pixfmt_shadow_type> renderer_shadow;
@@ -270,7 +297,7 @@ class context_renderer
 		
 		float			alpha;
 		
-		agg::rgba shadowColor;
+		o2agg::rgba shadowColor;
 		O2Size shadowOffset;
 		float shadowBlurRadius;
 	public:
@@ -285,7 +312,7 @@ class context_renderer
             ren_shadow = NULL;
             pixelFormatShadow = NULL;
             
-			shadowColor = agg::rgba(0, 0, 0, 0);
+			shadowColor = o2agg::rgba(0, 0, 0, 0);
 			
 			alpha = 1.;
 		}
@@ -315,7 +342,7 @@ class context_renderer
 			alpha = a;
 		}
 		
-		void setShadowColor(agg::rgba color)
+		void setShadowColor(o2agg::rgba color)
 		{
 			shadowColor = color;
 		}
@@ -470,12 +497,19 @@ class context_renderer
                 
 				O2Log("%p:Drawing shadow Image", this);
                 // Clear the shadow buffer
-				ren_shadow->clear(agg::rgba(0, 0, 0, 0));
-                
+                int x = ren_base->xmin();
+                int y = ren_base->ymin();
+                int xmax = ren_base->xmax();
+                int ymax = ren_base->ymax();
+
+                ren_shadow->reset_clipping(true);
+                ren_shadow->copy_bar(x-shadowBlurRadius, y-shadowBlurRadius, xmax+shadowBlurRadius, ymax+shadowBlurRadius, o2agg::rgba::no_color());
+                ren_shadow->clip_box(ren_base->xmin(), ren_base->ymin(), ren_base->xmax(), ren_base->ymax());
+
 				// Draw to our shadow buffer
                 if (shadowBlurRadius == 0) {
                     // All colors are being transformed to the shadow one since we can skip the blur pass which is also applying the color
-                   agg::rgba8 color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * alpha);
+                   o2agg::rgba8 color = o2agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * alpha);
                     span_color_converter color_converter(color, premultiply);
                     agg::span_converter<T, span_color_converter > converter(type, color_converter);
                     
@@ -511,8 +545,8 @@ class context_renderer
 				// No need for an alpha converter
 				agg::render_scanlines_aa(rasterizer, sl, *ren_base, span_allocator, type);
 			} else {
-				span_alpha_converter<agg::rgba8> alpha_converter(alpha, premultiply);
-				agg::span_converter<T, span_alpha_converter<agg::rgba8> > converter(type, alpha_converter);
+				span_alpha_converter<o2agg::rgba8> alpha_converter(alpha, premultiply);
+				agg::span_converter<T, span_alpha_converter<o2agg::rgba8> > converter(type, alpha_converter);
 				agg::render_scanlines_aa(rasterizer, sl, *ren_base, span_allocator, converter);
 			}
 			O2Log("%p:Done Drawing Image", this);
@@ -524,12 +558,20 @@ class context_renderer
 			if (shadowColor.a > 0.) {
                 setUpShadow();
                 
-				ren_shadow->clear(agg::rgba(0, 0, 0, 0));
+                int x = ren_base->xmin();
+                int y = ren_base->ymin();
+                int xmax = ren_base->xmax();
+                int ymax = ren_base->ymax();
+                
+                ren_shadow->reset_clipping(true);
+                ren_shadow->copy_bar(x-shadowBlurRadius, y-shadowBlurRadius, xmax+shadowBlurRadius, ymax+shadowBlurRadius, o2agg::rgba::no_color());
+                ren_shadow->clip_box(ren_base->xmin(), ren_base->ymin(), ren_base->xmax(), ren_base->ymax());
+
                 // TODO : render to our scratch mask buffer, then blur should just draw a shadow colored (* alpha) rect using that mask
                 ///////////////////
 
 				// Draw using our shadow rendererer using our shadow color (and global alpha)
-				T color = agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * type.opacity());
+				T color = o2agg::rgba(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a * type.opacity());
 				color.premultiply();
 				
 				// Render to the shadow location (rounded - we are working with pixels here) so we're sure we can properly blur the shadow
@@ -570,14 +612,14 @@ class context_renderer
 	
 	
 	context_renderer_helper_base* helper;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_rgba> > rgba_helper;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_bgra> > bgra_helper;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_argb> > argb_helper;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<agg::rgba8, agg::order_abgr> > abgr_helper;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_rgba> > rgba_helper_pre;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_bgra> > bgra_helper_pre;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_argb> > argb_helper_pre;
-	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, agg::order_abgr> > abgr_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<o2agg::rgba8, agg::order_rgba> > rgba_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<o2agg::rgba8, agg::order_bgra> > bgra_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<o2agg::rgba8, agg::order_argb> > argb_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba<o2agg::rgba8, agg::order_abgr> > abgr_helper;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<o2agg::rgba8, agg::order_rgba> > rgba_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<o2agg::rgba8, agg::order_bgra> > bgra_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<o2agg::rgba8, agg::order_argb> > argb_helper_pre;
+	typedef class context_renderer_helper<o2agg::comp_op_adaptor_rgba_pre<o2agg::rgba8, agg::order_abgr> > abgr_helper_pre;
 	
 public:
 	bool premultiplied;
@@ -588,14 +630,14 @@ public:
 	}
 	template<class Order> void init(agg::rendering_buffer &renderingBuffer)
 	{
-		typedef o2agg::comp_op_adaptor_rgba<agg::rgba8, Order> blender_type;
+		typedef o2agg::comp_op_adaptor_rgba<o2agg::rgba8, Order> blender_type;
 		premultiplied = false;
 		helper = new context_renderer_helper<blender_type>(renderingBuffer);
 		helper->setPremultiply(premultiplied);
 	}
 	template<class Order> void init_pre(agg::rendering_buffer &renderingBuffer)
 	{
-		typedef o2agg::comp_op_adaptor_rgba_pre<agg::rgba8, Order> blender_type;
+		typedef o2agg::comp_op_adaptor_rgba_pre<o2agg::rgba8, Order> blender_type;
 		premultiplied = true;
 		helper = new context_renderer_helper<blender_type>(renderingBuffer);
 		helper->setPremultiply(premultiplied);
@@ -682,7 +724,7 @@ public:
 		helper->setBlendMode(blendMode);
 	}
 	
-	void setShadowColor(agg::rgba color)
+	void setShadowColor(o2agg::rgba color)
 	{
 		helper->setShadowColor(color);
 	}
@@ -725,12 +767,12 @@ public:
 	gradient_evaluator(O2FunctionRef function, bool premultiply = true, unsigned size = 4096) :
 	m_size(size) {
 		// Precalculate our colors
-		m_colors_lut = new agg::rgba[size];
+		m_colors_lut = new o2agg::rgba[size];
 		float invSize = 1./size;
 		for (int i = 0; i < size; ++i) {
 			O2Float result[4] = { 1 };
 			O2FunctionEvaluate(function, i*invSize, result);
-			agg::rgba color;
+			o2agg::rgba color;
 			color.r = result[0];
 			color.g = result[1];
 			color.b = result[2];
@@ -742,12 +784,12 @@ public:
 	}
 	~gradient_evaluator() { delete[] m_colors_lut; };
 	inline int size() const { return m_size; }
-	inline agg::rgba operator [] (unsigned v) const
+	inline o2agg::rgba operator [] (unsigned v) const
 	{
 		return m_colors_lut[v];
 	}
 private:
-	agg::rgba *m_colors_lut;
+	o2agg::rgba *m_colors_lut;
 	int m_size;
 };
 
@@ -893,6 +935,8 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 render_scanlines_aa(self, sa, sg);
             }
                 break;
+#if 0
+                //unused
             case kImageInterpolationLanczos: {
                 agg::image_filter_lanczos filter_kernel(2.f);
                 agg::image_filter_lut filter(filter_kernel, true);
@@ -913,23 +957,18 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 
                 render_scanlines_aa(self, sa, sg);
             }
+#endif
                 break;
         }
     } else {
         // Use a filter according to the wanted interpolation quality - use resampling
         switch (interpolationType) {
-            case kImageInterpolationNone: {
-                typedef agg::span_image_filter_rgba_nn<img_accessor_type, interpolator_type> span_gen_type;
-                span_gen_type sg(ia, interpolator);
-                
-                render_scanlines_aa(self, sa, sg);
-            }
-                break;
             default:
             case kImageInterpolationBilinear: {
                 agg::image_filter_bilinear filter_kernel;
                 agg::image_filter_lut filter(filter_kernel, true);
-                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                
+                typedef o2agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
                 span_gen_type sg(ia, interpolator, filter);
 
                 render_scanlines_aa(self, sa, sg);
@@ -939,17 +978,19 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 agg::image_filter_bicubic filter_kernel;
                 agg::image_filter_lut filter(filter_kernel, true);
                 
-                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                typedef o2agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
                 span_gen_type sg(ia, interpolator, filter);
                 
                 render_scanlines_aa(self, sa, sg);
             }
                 break;
+#if 0
+                //unused
             case kImageInterpolationLanczos: {
                 agg::image_filter_lanczos filter_kernel(2.f);
                 agg::image_filter_lut filter(filter_kernel, true);
                 
-                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                typedef o2agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
                 span_gen_type sg(ia, interpolator, filter);
                 
                 render_scanlines_aa(self, sa, sg);
@@ -961,11 +1002,12 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 
                 agg::image_filter_bilinear filter_kernel;
                 agg::image_filter_lut filter(filter_kernel, true);
-                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                typedef o2agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
                 span_gen_type sg(ia, interpolator, filter);
                 
                 render_scanlines_aa(self, sa, sg);
             }
+#endif
                 break;
         }
     }
@@ -1009,7 +1051,7 @@ template <class StrokeType> void O2AGGContextSetStroke(O2Context_AntiGrain *self
 	stroke.width(gState->_lineWidth);
 }
 
-template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *self, StrokeType &stroke, agg::rgba color, const agg::trans_affine &deviceMatrix)
+template <class StrokeType> void O2AGGContextStrokePath(O2Context_AntiGrain *self, StrokeType &stroke, o2agg::rgba color, const agg::trans_affine &deviceMatrix)
 {
 	agg::conv_transform<StrokeType, agg::trans_affine> trans(stroke, deviceMatrix);
 	self->rasterizer->add_path(trans);
@@ -1078,7 +1120,7 @@ template <class StrokeType> void O2AGGStrokeToO2Path(O2Context_AntiGrain *self, 
 #ifdef ANTIGRAIN_PRESENT
 // If AntiGrain is not present it will just be a non-overriding subclass of the builtin context, so no problems
 
-static void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,agg::rgba color, const agg::trans_affine &deviceMatrix,agg::filling_rule_e fillingRule) {
+static void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,o2agg::rgba color, const agg::trans_affine &deviceMatrix,agg::filling_rule_e fillingRule) {
 	agg::conv_curve<agg::path_storage> curve(*(self->path));
 	agg::conv_transform<agg::conv_curve<agg::path_storage>, agg::trans_affine> trans(curve, deviceMatrix);
 	
@@ -1091,7 +1133,7 @@ static void O2AGGContextFillPathWithRule(O2Context_AntiGrain *self,agg::rgba col
 	render_scanlines_aa_solid(self,color,YES);
 }
 
-static void O2AGGContextStrokePath(O2Context_AntiGrain *self,agg::rgba color, const agg::trans_affine &deviceMatrix) {
+static void O2AGGContextStrokePath(O2Context_AntiGrain *self,o2agg::rgba color, const agg::trans_affine &deviceMatrix) {
 	agg::conv_curve<agg::path_storage> curve(*(self->path));
 	curve.approximation_scale(deviceMatrix.scale());
 	
@@ -1272,7 +1314,7 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 		
 		O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
 		const float *fillComps=O2ColorGetComponents(fillColor);
-		agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
+		o2agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
 		O2ColorRelease(fillColor);
 		
 		self->rasterizer->filling_rule(agg::fill_non_zero);
@@ -1342,6 +1384,11 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 -initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
 	[super initWithSurface:surface flipped:flipped];
 	
+    if (o2agg::SSE2checked == false) {
+        o2agg::SSE2checked = true;
+        o2agg::hasSSE2 = cpuHasSSE2();
+    }
+    
 	int bytesPerRow = O2SurfaceGetBytesPerRow(surface);
 	renderingBuffer=new agg::rendering_buffer((unsigned char *)O2SurfaceGetPixelBytes(surface),O2SurfaceGetWidth(surface),O2SurfaceGetHeight(surface),bytesPerRow);
 	
@@ -1541,12 +1588,12 @@ unsigned O2AGGContextShowGlyphs(O2Context_AntiGrain *self, const O2Glyph *glyphs
 	if (shadowColor) {
 		shadowColor = O2ColorConvertToDeviceRGB(shadowColor);
 		const O2Float *components = O2ColorGetComponents(shadowColor);
-		renderer->setShadowColor(agg::rgba(components[0], components[1], components[2], components[3]));
+		renderer->setShadowColor(o2agg::rgba(components[0], components[1], components[2], components[3]));
 		renderer->setShadowBlurRadius(gState->_shadowBlur);
 		renderer->setShadowOffset(gState->_shadowOffset);
 		O2ColorRelease(shadowColor);
 	} else {
-		renderer->setShadowColor(agg::rgba(0, 0, 0, 0));
+		renderer->setShadowColor(o2agg::rgba(0, 0, 0, 0));
 	}
 }
 
@@ -1785,7 +1832,7 @@ static void O2ContextClipViewportToState(O2Context_builtin *self, O2ClipState *c
 		} else {
 			O2ColorRef   fillColor=O2ColorConvertToDeviceRGB(gState->_fillColor);
 			const float *fillComps=O2ColorGetComponents(fillColor);
-			agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
+			o2agg::rgba aggFillColor(fillComps[0],fillComps[1],fillComps[2],fillComps[3]);
 			if (doFill) {
 				O2AGGContextFillPathWithRule(self,aggFillColor,aggDeviceMatrix,agg::fill_non_zero);
 			} else {
@@ -1799,7 +1846,7 @@ static void O2ContextClipViewportToState(O2Context_builtin *self, O2ClipState *c
 		// Note: pattern stroking not supported for now
 		O2ColorRef   strokeColor=O2ColorConvertToDeviceRGB(gState->_strokeColor);
 		const float *strokeComps=O2ColorGetComponents(strokeColor);
-		agg::rgba aggStrokeColor(strokeComps[0],strokeComps[1],strokeComps[2],strokeComps[3]);
+		o2agg::rgba aggStrokeColor(strokeComps[0],strokeComps[1],strokeComps[2],strokeComps[3]);
 		O2AGGContextStrokePath(self,aggStrokeColor,aggDeviceMatrix);
 		O2ColorRelease(strokeColor);
 	}
@@ -1821,13 +1868,14 @@ static void O2ContextClipViewportToState(O2Context_builtin *self, O2ClipState *c
 
 -(void)drawImage:(O2Image *)image inRect:(O2Rect)rect
 {
-	int width = O2ImageGetWidth(image);
-	int height = O2ImageGetHeight(image);
-	int bytesPerRow = O2ImageGetBytesPerRow(image);
-	int bpp = O2ImageGetBitsPerPixel(image);
-	int bitmapInfo = O2ImageGetBitmapInfo(image);
+    int bpp = O2ImageGetBitsPerPixel(image);
 
 	if (bpp == 32) { // We don't support other modes for now
+        int width = O2ImageGetWidth(image);
+        int height = O2ImageGetHeight(image);
+        int bytesPerRow = O2ImageGetBytesPerRow(image);
+        int bitmapInfo = O2ImageGetBitmapInfo(image);
+        
 		[self updateMask];
 		[self updateBlendMode];
         
@@ -1860,33 +1908,32 @@ static void O2ContextClipViewportToState(O2Context_builtin *self, O2ClipState *c
 		// Remember we don't even think about doing this for images that need to expand; those should always use the bicubic filter; however,
 		//    that is user-selectable.
 		
-		double compoundTransform[6];
-		globalTransform.store_to(compoundTransform);
-		
 		bool reducedScale = true;
 		bool isUnity = true;
-		for (int i = 0; i < 4; ++i)
-		{
-			if (fabsf((float) compoundTransform[i]) >= (1.f + 1e-06f))
-			{
-				reducedScale = false;
-			}
-			if (fabs(fabs(compoundTransform[i]) - 1.f) > 1e-6f || fabs(compoundTransform[i]) > 1e-6f)
-			{
-				isUnity = false;
-			}
-		}
+		globalTransform.invert();
+
+        double scaleX;
+        double scaleY;
+        globalTransform.scaling_abs(&scaleX, &scaleY);
+        if (scaleX > .995 || scaleY > .995)
+        {
+            reducedScale = false;
+        }
+        if (fabs(scaleX - 1.) > .0001 || fabs(scaleY - 1.) > .0001)
+        {
+            //            printf(">>>> %lf -- %lf\n",scaleX, scaleY);
+            isUnity = false;
+        }
+        
+
 		// Round the physical screen coordinate to an integer boundary so filtering works better.  This seems to make images that are 1x1 rasterize
 		//    exactly.  Changing the pixel coordinates on smaller scaled images introuduces unpleasant artifacts.
 		if (isUnity)
 		{
-			compoundTransform[4] = roundf(compoundTransform[4]);
-			compoundTransform[5] = roundf(compoundTransform[5]);
+			globalTransform.tx = round(globalTransform.tx);
+			globalTransform.ty = round(globalTransform.ty);
 		}
-		globalTransform.load_from(compoundTransform);
-		
-		globalTransform.invert();
-		
+
 		uint8_t *imgBytes = (uint8_t *)[image directBytes];
 		agg::rendering_buffer imageBuffer(imgBytes, width, height, bytesPerRow);
 		
