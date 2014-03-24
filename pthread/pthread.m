@@ -316,7 +316,12 @@ typedef struct pthread_start_routine_args_win32 {
     void *arg;
 } pthread_start_routine_args;
 
+#ifdef WINDOWS
+// Be sure the stack is aligned in case the thread wants to do exotic things like SSE2
+unsigned __attribute__((force_align_arg_pointer)) __stdcall startroutine_thunk_for_win32_beginthreadex(void *arg)
+#else
 unsigned __stdcall startroutine_thunk_for_win32_beginthreadex(void *arg)
+#endif
 {
     pthread_start_routine_args *threadArgs = (pthread_start_routine_args *)arg;
     

@@ -1660,7 +1660,8 @@ const int kWindowMaxDim = 10000;
    return DefWindowProcW(_handle,message,wParam,lParam);
 }
 
-static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
+// Be sure the stack is aligned in case someone wants to do exotic things like SSE2
+static LRESULT __attribute__((force_align_arg_pointer))  CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    Win32Window       *self=GetProp(handle,"Win32Window");
    LRESULT            result;
