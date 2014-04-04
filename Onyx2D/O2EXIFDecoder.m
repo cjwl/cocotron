@@ -512,7 +512,7 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
                 break;
             case tAscii:
                 // Kill the \0 marker if there is one
-                if (rawValue[count-1] == 0) {
+                if (count > 0 && rawValue[count-1] == 0) {
                     count--;
                 }
                 val = [[[NSString alloc] initWithBytes:rawValue length:count encoding:NSUTF8StringEncoding] autorelease];
