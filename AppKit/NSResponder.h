@@ -87,6 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)complete:sender;
 -(void)yank:sender;
 
+-(void)cancelOperation:(id)sender;
 -(void)uppercaseWord:sender;
 -(void)lowercaseWord:sender;
 -(void)capitalizeWord:sender;
