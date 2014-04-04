@@ -54,6 +54,9 @@ NSString * const NSWindowWillAnimateNotification=@"NSWindowWillAnimateNotificati
 NSString * const NSWindowAnimatingNotification=@"NSWindowAnimatingNotification";
 NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
+@interface CGWindow(private)
+- (void)dirtyRect:(CGRect)rect;
+@end
 
 @interface NSToolbar (NSToolbar_privateForWindow)
 - (void)_setWindow:(NSWindow *)window;
