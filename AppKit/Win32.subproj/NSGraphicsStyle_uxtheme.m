@@ -566,6 +566,9 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 
 	if ([[deviceContext windowDeviceContext] theme:uxthMENU])
 	{
+        // plasq: 5350
+        NSLog(@"in device context");
+
 		Margins margins=[self menuItemTextMargins];
 		
 		rect.origin.x += margins.left;
@@ -575,6 +578,9 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 		
 		rect.origin.y += (rect.size.height - [string sizeWithAttributes:sNormalMenuTextAttributes].height) / 2;
 		
+        // plasq: 5350
+        NSLog(@"draw in adjusted rect: %@", NSStringFromRect(rect));
+
 		if (enabled)
 		{
 			[string drawInRect:rect withAttributes:sNormalMenuTextAttributes];

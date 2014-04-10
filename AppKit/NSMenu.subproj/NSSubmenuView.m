@@ -71,12 +71,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSSize   rightArrowSize = [[self graphicsStyle] menuItemBranchArrowSize];
 	unsigned i,count=[items count];
 	
+    // plasq: 5350
+    NSLog(@"calc'ing menu height for items: %@", items);
+
 	for (i = 0;i<count;i++)
 	{
 		NSMenuItem *item = [items objectAtIndex:i];
 		if ([item isSeparatorItem])
 		{
 			totalHeight += [[self graphicsStyle] menuItemSeparatorSize].height;
+            // plasq: 5350
+            NSLog(@"separator");
+            NSLog(@"total height: %f", totalHeight);
 		}
 		else
 		{
@@ -93,7 +99,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			titleAndIconWidth += size.width;
 			maxTitleWidth = MAX(maxTitleWidth,titleAndIconWidth);
 			height = MAX(height,size.height);
-			
+            
 			if ([[item keyEquivalent] length] != 0)
 			{
 				size = [[self graphicsStyle] menuItemTextSize:[item _keyEquivalentDescription]];
@@ -104,6 +110,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			height = MAX(height,rightArrowSize.height);
 			
 			totalHeight += height;
+            
+            // plasq: 5350
+            NSLog(@"item: %@ height: %f", [item title], height);
+            NSLog(@"total height: %f", totalHeight);
 		}
 	}
 	
@@ -163,6 +173,9 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 	unsigned i,count=[items count];
 	NSPoint  origin=itemArea.origin;
 	
+    // plasq: 5350
+    NSLog(@"menu items: %@", items);
+
 	[[self graphicsStyle] drawMenuWindowBackgroundInRect:rect];
 	
 	for(i=0;i<count;i++)
@@ -172,7 +185,10 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 		if ([item isSeparatorItem])
 		{
 			NSRect separatorRect = NSMakeRect(origin.x,origin.y,NSWidth(itemArea),[[self graphicsStyle] menuItemSeparatorSize].height);
-			
+
+            // plasq: 5350
+            NSLog(@"drawing separator in rect: %@", NSStringFromRect(separatorRect));
+
 			[[self graphicsStyle] drawMenuSeparatorInRect:separatorRect];
 			
 			origin.y += NSHeight(separatorRect);
@@ -237,10 +253,14 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 			NSAttributedString     *atitle = [item attributedTitle];
 			if (atitle != nil && [atitle length] > 0) {
 				CENTER_PART_RECT_VERTICALLY([atitle size]);
+                // plasq: 5350
+                NSLog(@"drawing attributed title: %@ in rect: %@", atitle, NSStringFromRect(partRect));
 				[[self graphicsStyle] drawAttributedMenuItemText:atitle inRect:partRect enabled:showsEnabled selected:selected];
 			} else {
 				NSString     *title = [item title];
 				CENTER_PART_RECT_VERTICALLY([[self graphicsStyle] menuItemTextSize:title]);
+                // plasq: 5350
+                NSLog(@"drawing title: %@ in rect: %@", title, NSStringFromRect(partRect));
 				[[self graphicsStyle] drawMenuItemText:title inRect:partRect enabled:showsEnabled selected:selected];
 			}
 			
@@ -253,6 +273,8 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 				
 				partRect.origin.x = origin.x + NSWidth(itemArea) - branchArrowSize.width - keyEquivalentSize.width;
 				CENTER_PART_RECT_VERTICALLY(keyEquivalentSize);
+                // plasq: 5350
+                NSLog(@"drawing keyEquivalent: %@ in rect: %@", keyString, NSStringFromRect(partRect));
 				[[self graphicsStyle] drawMenuItemText:keyString inRect:partRect enabled:showsEnabled selected:selected];
 			}
 			

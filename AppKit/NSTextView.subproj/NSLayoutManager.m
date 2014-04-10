@@ -933,7 +933,15 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    *glyphIndex=[self firstUnlaidGlyphIndex];
 }
 
+#define DEBUG_LM_DRAWING 1
+
 -(void)showPackedGlyphs:(char *)glyphs length:(unsigned)length glyphRange:(NSRange)glyphRange atPoint:(NSPoint)point font:(NSFont *)font color:(NSColor *)color printingAdjustment:(NSSize)printingAdjustment {
+
+#if DEBUG_LM_DRAWING
+    NSLog(@"showPackedGlyphs: %P length: %d glyphRange: %@ atPoint: %@ font: %@ color: %@ printingAdjustment: %@", glyphs, length, NSStringFromRange(glyphRange), NSStringFromPoint(point), font, color, NSStringFromSize(printingAdjustment));
+#define DEBUG_LM_SHOWPACKEDGLYPHS 1
+#endif
+    
 	CGContextRef context=NSCurrentGraphicsPort();
 	CGGlyph     *cgGlyphs=(CGGlyph *)glyphs;
 	int          cgGlyphsLength=length/2;
@@ -943,11 +951,16 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
         nsglyphs[i] = cgGlyphs[i];
     }
     [font getAdvancements:advances forGlyphs:nsglyphs count:cgGlyphsLength];
+    
+#if DEBUG_LM_SHOWPACKEDGLYPHS
+    for (int i = 0; i < cgGlyphsLength; i++) {
+        NSLog(@"glyph: %d advancement: %@", nsglyphs[i], NSStringFromSize(advances[i]));
+    }
+#endif
+    
     CGContextSetTextPosition(context, point.x, point.y);
     CGContextShowGlyphsWithAdvances(context, cgGlyphs, advances, cgGlyphsLength);
 }
-
-#define DEBUG_LM_DRAWING 0
 
 -(void)drawSelectionAtPoint:(NSPoint)origin {
     

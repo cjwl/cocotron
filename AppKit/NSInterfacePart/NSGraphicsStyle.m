@@ -210,6 +210,9 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 	rect.size.width -= (margins.left + margins.right);
 	rect.size.height -= (margins.top + margins.bottom);
 	
+    // plasq: 5350
+    NSLog(@"draw in adjusted rect: %@", NSStringFromRect(rect));
+
 	if (enabled)
 	{
 		if (selected)

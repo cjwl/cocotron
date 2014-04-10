@@ -167,6 +167,9 @@ static void drawSunkenBorder(NSRect rect){
 	BOOL          overflow=NO;
 	NSPoint       mouseLoc = [[NSApp currentEvent] locationInWindow];
 	
+    // plasq: 5350
+    NSLog(@"menu items: %@", items);
+    
 	mouseLoc = [self convertPoint:mouseLoc fromView:nil];
 	
 	[[self graphicsStyle] drawMenuBarBackgroundInRect:bounds];
@@ -181,6 +184,10 @@ static void drawSunkenBorder(NSRect rect){
 		
 		titleRect.origin.x = borderRect.origin.x + (NSWidth(borderRect) - NSWidth(titleRect)) / 2;
 		titleRect.origin.y = borderRect.origin.y + (NSHeight(borderRect) - NSHeight(titleRect)) / 2;
+
+        // plasq: 5350
+        NSLog(@"drawMenuItemText: %@ inRect: %@", title, NSStringFromRect(titleRect));
+
 		[[self graphicsStyle] drawMenuItemText:title inRect:titleRect enabled:YES selected:(i==_selectedItemIndex)];
 		
 		previousBorderRect=borderRect;
