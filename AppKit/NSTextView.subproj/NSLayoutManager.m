@@ -938,7 +938,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 -(void)showPackedGlyphs:(char *)glyphs length:(unsigned)length glyphRange:(NSRange)glyphRange atPoint:(NSPoint)point font:(NSFont *)font color:(NSColor *)color printingAdjustment:(NSSize)printingAdjustment {
 
 #if DEBUG_LM_DRAWING
-    NSLog(@"showPackedGlyphs: %P length: %d glyphRange: %@ atPoint: %@ font: %@ color: %@ printingAdjustment: %@", glyphs, length, NSStringFromRange(glyphRange), NSStringFromPoint(point), font, color, NSStringFromSize(printingAdjustment));
+    NSLog(@"showPackedGlyphs: %p length: %d glyphRange: %@ atPoint: %@ font: %@ color: %@ printingAdjustment: %@", glyphs, length, NSStringFromRange(glyphRange), NSStringFromPoint(point), font, color, NSStringFromSize(printingAdjustment));
 #define DEBUG_LM_SHOWPACKEDGLYPHS 1
 #endif
     
