@@ -378,7 +378,7 @@ void NSRangeEntriesDivideAndConquer(NSRangeEntries *self,NSRange range) {
 
 NSLog(@"DUMP BEGIN");
    for(i=0;i<self->count;i++)
-    NSLog(@"**** %d %d %@",self->entries[i].range.location, self->entries[i].range.length,self->entries[i].value);
+    NSLog(@"**** %d %d %p",self->entries[i].range.location, self->entries[i].range.length,self->entries[i].value);
 NSLog(@"DUMP END");
 }
 
