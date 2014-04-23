@@ -705,9 +705,18 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
     long offsetIFD0 = _getLong(bytes, 4, bigendian);
     
     if (offsetIFD0 && offsetIFD0 != -1) {
-        size_t offset = [self _readIFD:bytes offset:offsetIFD0 bigendian:bigendian mode:0 size:length];
+        size_t offset = [self _readIFD:bytes offset:offsetIFD0 bigendian:bigendian mode:kIFD0 size:length];
+        
+        // I don't think the following block is ever needed - and it seems we can have several blocks of TIFF data
+        // At least when using Windows Explorer rotate function on an already rotated image - you have some
+        // TIFF data with the new orientation then at the end you still have the old one
+        // So let's try at least to avoid that
         if (offset && offset != -1) {
-            [self _readIFD:bytes offset:offset bigendian:bigendian mode:1 size:length];
+            id typeKey = [self keyForType:kIFD1];
+            if ([_tags objectForKey:typeKey] == nil) {
+                // No tiff data yet - let's try to decode this block
+                [self _readIFD:bytes offset:offset bigendian:bigendian mode:kIFD1 size:length];
+            }
         }
     }
 }
