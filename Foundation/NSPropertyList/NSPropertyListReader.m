@@ -13,22 +13,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyListReader_vintage.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSArray.h>
 
 @implementation NSPropertyListReader
 
 +propertyListFromData:(NSData *)data {
-   id result;
+   id result = nil;
      
    if(data==nil)
     return nil;
 
-   result=[NSPropertyListReader_binary1 propertyListFromData:data];
-   if(result==nil)
-    result=[NSPropertyListReader_xml1 propertyListFromData:data];
-   if(result==nil)
-    result=[NSPropertyListReader_vintage propertyListFromData:data];
-    
+    @try {
+        result=[NSPropertyListReader_binary1 propertyListFromData:data];
+        if(result==nil)
+            result=[NSPropertyListReader_xml1 propertyListFromData:data];
+        if(result==nil)
+            result=[NSPropertyListReader_vintage propertyListFromData:data];
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"propertyListFromData: error while decoding plist content : %@", exception);
+        result = nil;
+    }
+    @finally {
+    }
    return result;
 }
 
