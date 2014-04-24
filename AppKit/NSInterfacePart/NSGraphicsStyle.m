@@ -203,6 +203,9 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 
 -(void)drawMenuItemText:(NSString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected
 {
+    // Ensure we have enough width - fractional widths give float comparison trouble
+    rect.size.width = ceilf(rect.size.width);
+    
 	Margins margins=[self menuItemTextMargins];
 	
 	rect.origin.x += margins.left;
@@ -210,9 +213,6 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 	rect.size.width -= (margins.left + margins.right);
 	rect.size.height -= (margins.top + margins.bottom);
 	
-    // plasq: 5350
-    NSLog(@"draw in adjusted rect: %@", NSStringFromRect(rect));
-
 	if (enabled)
 	{
 		if (selected)
@@ -239,6 +239,9 @@ static NSDictionary *sDimmedMenuTextShadowAttributes = nil;
 
 -(void)drawAttributedMenuItemText:(NSAttributedString *)string inRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected
 {
+    // Ensure we have enough width - fractional widths give float comparison trouble
+    rect.size.width = ceilf(rect.size.width);
+
 	NSMutableAttributedString* mutableString = [string mutableCopy];
 	
 	Margins margins=[self menuItemTextMargins];
