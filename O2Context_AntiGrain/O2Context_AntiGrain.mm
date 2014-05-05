@@ -947,17 +947,16 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 render_scanlines_aa(self, sa, sg);
             }
                 break;
+#endif
             case kImageInterpolationRepeat: {
                 typedef agg::image_accessor_wrap<pixfmt, agg::wrap_mode_repeat, agg::wrap_mode_repeat> img_accessor_type;
                 img_accessor_type ia(img_pixf);
                 
-                agg::image_filter_bilinear filter_kernel;
                 typedef agg::span_image_filter_rgba_bilinear<img_accessor_type, interpolator_type> span_gen_type;
                 span_gen_type sg(ia, interpolator);
                 
                 render_scanlines_aa(self, sa, sg);
             }
-#endif
                 break;
         }
     } else {
@@ -996,6 +995,7 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 render_scanlines_aa(self, sa, sg);
             }
                 break;
+#endif
             case kImageInterpolationRepeat: {
                 typedef agg::image_accessor_wrap<pixfmt, agg::wrap_mode_repeat, agg::wrap_mode_repeat> img_accessor_type;
                 img_accessor_type ia(img_pixf);
@@ -1007,7 +1007,6 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 
                 render_scanlines_aa(self, sa, sg);
             }
-#endif
                 break;
         }
     }
