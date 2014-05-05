@@ -2140,8 +2140,10 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         NSView *view=[_backgroundView hitTest:[event locationInWindow]];
         
         if([view acceptsFirstResponder]){
-            if([view needsPanelToBecomeKey])
-             [self makeFirstResponder:view];
+            if([view needsPanelToBecomeKey]) {
+                [self becomeKeyWindow];
+            }
+            [self makeFirstResponder:view];
         }
         
         // Event goes to view, not first responder
