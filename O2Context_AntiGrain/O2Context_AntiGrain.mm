@@ -1002,7 +1002,9 @@ template <class pixfmt> void O2AGGContextDrawImage(O2Context_AntiGrain *self, ag
                 
                 agg::image_filter_bilinear filter_kernel;
                 agg::image_filter_lut filter(filter_kernel, true);
-                typedef o2agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
+                // !!! don't use the o2agg version with a "repeat" accessor - it seems some y wrapping is missing in the optimized
+                // resampling code - so use the slower plain AGG version for now
+                typedef agg::span_image_resample_rgba_affine<img_accessor_type> span_gen_type;
                 span_gen_type sg(ia, interpolator, filter);
                 
                 render_scanlines_aa(self, sa, sg);
