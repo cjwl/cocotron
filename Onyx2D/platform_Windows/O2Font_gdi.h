@@ -3,6 +3,18 @@
 
 @class Win32Font;
 
+// Enable that to scale the fonts according the system DPI setting
+// You probably don't want that because most text will probably won't fit the UI controls anymore
+//#define SUPPORT_FONT_DPI_SCALING
+
+#ifdef SUPPORT_FONT_DPI_SCALING
+#define  FONT_DPI(dc) (GetDeviceCaps(dc, LOGPIXELSY))
+#else
+#define  FONT_DPI(dc) (96.)
+#endif
+
+
+
 @interface O2Font_gdi : O2Font {
    BOOL     _useMacMetrics;
    unichar *_glyphsToCharacters;

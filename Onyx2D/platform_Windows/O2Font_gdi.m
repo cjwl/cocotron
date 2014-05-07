@@ -398,17 +398,22 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 	  // Don't use the magic pointSize scaling formula on these font (UI fonts) 
       if([_name isEqualToString:@"Marlett"] || [_name isEqualToString:@"Segoe UI"] || [_name isEqualToString:@"Tahoma"]){
        _useMacMetrics=NO;
-       _ascent=ttMetrics->otmAscent;
-       _descent=ttMetrics->otmDescent;
-       _leading=ttMetrics->otmLineGap;
       }
       else {
        _useMacMetrics=YES;
-       _ascent=ttMetrics->otmMacAscent;
-       _descent=ttMetrics->otmMacDescent;
-       _leading=ttMetrics->otmMacLineGap;
       }
-      
+
+         if (_useMacMetrics) {
+             _ascent=ttMetrics->otmMacAscent;
+             _descent=ttMetrics->otmMacDescent;
+             _leading=ttMetrics->otmMacLineGap;
+         } else {
+             _ascent=ttMetrics->otmAscent;
+             _descent=ttMetrics->otmDescent;
+             _leading=ttMetrics->otmLineGap;
+         }
+
+
       _capHeight=ttMetrics->otmsCapEmHeight;
       _xHeight=ttMetrics->otmsXHeight;
       _italicAngle=ttMetrics->otmItalicAngle;
@@ -564,7 +569,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
     pointSize = [self nativeSizeForSize:pointSize];
-    int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
+    int        height=(pointSize*FONT_DPI(dc))/72.0;
 	Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES angle: angle];
    
    SelectObject(dc,[result fontHandle]);
