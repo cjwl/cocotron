@@ -248,18 +248,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectItem:(NSMenuItem *)item {
-   [self willChangeValueForKey:@"selectedItem"];
 
+    NSInteger selectedIndex = _selectedIndex;
    if(item==nil)
-    _selectedIndex=-1;
+    selectedIndex=-1;
    else {
     NSInteger check=[[_menu itemArray] indexOfObjectIdenticalTo:item];
     
-    _selectedIndex=(check==NSNotFound)?-1:check;
+    selectedIndex=(check==NSNotFound)?-1:check;
    }
-      
-   [self didChangeValueForKey:@"selectedItem"];
 
+    if (selectedIndex != _selectedIndex) {
+        [self willChangeValueForKey:@"selectedItem"];
+        _selectedIndex = selectedIndex;
+        [self didChangeValueForKey:@"selectedItem"];
+    }
    [self synchronizeTitleAndSelectedItem];
 }
 

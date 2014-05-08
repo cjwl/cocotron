@@ -647,9 +647,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setObjectValue:(id <NSCopying>)value {
     value=[value copyWithZone:NULL];
+    
+    [[self controlView] willChangeValueForKey:@"objectValue"];
     [_objectValue release];
     _objectValue=value;
     _hasValidObjectValue = YES;
+    [[self controlView] didChangeValueForKey:@"objectValue"];
+
     [(NSControl *)[self controlView] updateCell:self];
 }
 
