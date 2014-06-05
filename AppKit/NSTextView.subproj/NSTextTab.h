@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
+#import <AppKit/NSText.h>
+
 typedef enum {
    NSLeftTabStopType=0,
    NSRightTabStopType,
@@ -15,10 +17,14 @@ typedef enum {
    NSDecimalTabStopType
 } NSTextTabType;
 
+APPKIT_EXPORT NSString *NSTabColumnTerminatorsAttributeName;
+
 @interface NSTextTab : NSObject <NSCoding, NSCopying> {
    NSTextTabType _type;
    float         _location;
 }
+
+- (id)initWithTextAlignment:(NSTextAlignment)alignment location:(CGFloat)location options:(NSDictionary *)options;
 
 -initWithType:(NSTextTabType)type location:(float)location;
 
