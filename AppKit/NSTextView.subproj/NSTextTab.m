@@ -100,6 +100,10 @@ NSString *NSTabColumnTerminatorsAttributeName = @"NSTabColumnTerminatorsAttribut
     return alignment;
 }
 
+-(NSDictionary *)options {
+    return [NSDictionary dictionary];
+}
+
 -(NSTextTabType)tabStopType {
    return _type;
 }

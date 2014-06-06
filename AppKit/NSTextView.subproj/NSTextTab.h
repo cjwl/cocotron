@@ -28,6 +28,10 @@ APPKIT_EXPORT NSString *NSTabColumnTerminatorsAttributeName;
 
 -initWithType:(NSTextTabType)type location:(float)location;
 
+-(NSTextAlignment)alignment;
+
+-(NSDictionary *)options;
+
 -(NSTextTabType)tabStopType;
 
 -(float)location;
