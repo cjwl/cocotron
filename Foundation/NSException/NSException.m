@@ -78,13 +78,29 @@ void _NSRaiseException(NSException *exception) {
    }
 }
 
+// Enable that to put back original Cocotron behaviour, where every thread has its own default
+// uncaught handler
+//#define PER_THREAD_UNHANDLED_EXCEPTION_HANDLER
+
+#ifdef PER_THREAD_UNHANDLED_EXCEPTION_HANDLER
 NSUncaughtExceptionHandler *NSGetUncaughtExceptionHandler(void) {
-   return NSThreadUncaughtExceptionHandler();
+    return NSThreadUncaughtExceptionHandler();
 }
 
 void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
-   NSThreadSetUncaughtExceptionHandler(proc);
+    NSThreadSetUncaughtExceptionHandler(proc);
 }
+#else
+static NSUncaughtExceptionHandler *uncaughtExceptionHandler = NULL;
+
+NSUncaughtExceptionHandler *NSGetUncaughtExceptionHandler(void) {
+    return uncaughtExceptionHandler;
+}
+
+void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
+    uncaughtExceptionHandler = proc;
+}
+#endif
 
 -initWithName:(NSString *)name reason:(NSString *)reason
   userInfo:(NSDictionary *)userInfo {
