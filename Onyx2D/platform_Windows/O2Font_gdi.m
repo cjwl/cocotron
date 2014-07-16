@@ -40,13 +40,31 @@ typedef struct name_records_t {
 	uint16_t	offset;
 } name_records_t;
 
-// Fill the name mapping dictionaries with the longFont face info
-static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
+// Fill the name mapping dictionaries with the logFont face info
+static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
 {
-	HFONT font = CreateFontIndirectW(&longFont->elfLogFont);
+	HFONT font = CreateFontIndirectW(&logFont->elfLogFont);
 	if (font) {
+        // Ignore fonts for which we can't get a full name
+        if (logFont->elfFullName == NULL) {
+            if (logFont->elfLogFont.lfFaceName) {
+                NSLog(@"NULL full name for face name %S", logFont->elfLogFont.lfFaceName);
+            } else {
+                NSLog(@"NULL full name");
+            }
+        }
+        
 		// Get the full face name - on Win8, this is a localized name
-		NSString *winName = [NSString stringWithFormat:@"%S", longFont->elfFullName];
+		NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfFullName];
+        if (winName.length == 0) {
+            if (logFont->elfLogFont.lfFaceName) {
+                NSLog(@"Empty full name for face name %S", logFont->elfLogFont.lfFaceName);
+            } else {
+                NSLog(@"Empty full name");
+            }
+            return 1;
+        }
+        
         // Font name starting with "@" are rotated versions of the font, for vertical rendering
         // We don't want them - the are polluting our font list + they have the same PS name
         // as the normal ones, leading to confusion in our font picking algo
@@ -173,7 +191,7 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 	return 1;
 }
 
-// Add the longFont family to the list of known families
+// Add the logFont family to the list of known families
 static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p) {
 	NSMutableArray *families = (NSMutableArray *)p;
 	NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];

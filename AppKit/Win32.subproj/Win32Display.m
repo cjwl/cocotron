@@ -1320,14 +1320,15 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
 //   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
    NSMutableSet *set=(NSMutableSet *)lParam;
 //   NSString     *name=[NSString stringWithCString:logFont->elfFullName];
-   NSString     *name=[NSString stringWithCString:logFont->elfLogFont.lfFaceName];
-    // Font name starting with "@" are rotated versions of the font, for vertical rendering
-    // We don't want them - the are polluting our font list + they have the same PS name
-    // as the normal ones, leading to confusion in our font picking algo
-    if ([name characterAtIndex:0] != '@') {
-        [set addObject:name];
+    if (logFont && logFont->elfLogFont.lfFaceName) {
+        NSString     *name=[NSString stringWithCString:logFont->elfLogFont.lfFaceName];
+        // Font name starting with "@" are rotated versions of the font, for vertical rendering
+        // We don't want them - the are polluting our font list + they have the same PS name
+        // as the normal ones, leading to confusion in our font picking algo
+        if (name.length >= 1 && [name characterAtIndex:0] != '@') {
+            [set addObject:name];
+        }
     }
-
    return 1;
 }
 
