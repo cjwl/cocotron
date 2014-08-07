@@ -7,6 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
+#include <stdio.h>
+
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPropertyListReader_xml1.h>
 #import "NSPropertyListReader_binary1.h"
@@ -20,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +propertyListFromData:(NSData *)data {
    id result = nil;
-     
+    
    if(data==nil)
     return nil;
 
@@ -33,7 +35,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
     }
     @catch (NSException *exception) {
-        NSLog(@"propertyListFromData: error while decoding plist content : %@", exception);
+        // Don't use NSLog here as we might be called from some early NSLog, when formating the timestamp...
+        fprintf(stderr, "propertyListFromData: error while decoding plist content : %s\n", [[exception description] UTF8String]);
         result = nil;
     }
     @finally {
@@ -44,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +propertyListFromString:(NSString *)string {
 // FIX
    NSData *data=[string dataUsingEncoding:NSNEXTSTEPStringEncoding];
-   
+
    return [self propertyListFromData:data];
 }
 
