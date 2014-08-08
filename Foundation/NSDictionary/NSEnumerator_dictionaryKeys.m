@@ -24,8 +24,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSEnumerator *NSEnumerator_dictionaryKeysNew(NSMapTable *table){
    NSEnumerator_dictionaryKeys *self=NSAllocateObject([NSEnumerator_dictionaryKeys class],0,NULL);
-
-   self->state=NSEnumerateMapTable(table);
+    if (self) {
+        self->state=NSEnumerateMapTable(table);
+    }
 
    return self;
 }

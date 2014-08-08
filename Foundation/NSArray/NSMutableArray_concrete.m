@@ -45,14 +45,18 @@ NSMutableArray_concrete *NSMutableArray_concreteInitWithCapacity(NSMutableArray_
 
 NSArray *NSMutableArray_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
    NSMutableArray_concrete *self=NSAllocateObject([NSMutableArray_concrete class],0,zone);
-
-   return NSMutableArray_concreteInit(self,objects,count,zone);
+    if (self) {
+        self = NSMutableArray_concreteInit(self,objects,count,zone);
+    }
+   return self;
 }
 
 NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity) {
    NSMutableArray_concrete *self=NSAllocateObject([NSMutableArray_concrete class],0,zone);
-
-   return NSMutableArray_concreteInitWithCapacity(self,capacity,zone);
+    if (self) {
+        self = NSMutableArray_concreteInitWithCapacity(self,capacity,zone);
+    }
+    return self;
 }
 
 -init {

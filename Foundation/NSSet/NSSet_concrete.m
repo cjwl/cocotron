@@ -15,13 +15,14 @@ NSSet *NSSet_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
    NSUInteger       i,capacity=NSSetTableRoundCount(count);
    NSSet_concrete *self=NSAllocateObject([NSSet_concrete class],
      sizeof(NSSetBucket *)*capacity,zone);
+    if (self) {
+       self->_table.count=0;
+       self->_table.numBuckets=capacity;
+       self->_table.buckets=self->_buckets;
 
-   self->_table.count=0;
-   self->_table.numBuckets=capacity;
-   self->_table.buckets=self->_buckets;
-
-   for(i=0;i<count;i++)
-    NSSetTableAddObjectNoGrow(&(self->_table),objects[i]);
+       for(i=0;i<count;i++)
+        NSSetTableAddObjectNoGrow(&(self->_table),objects[i]);
+    }
 
    return self;
 }

@@ -147,15 +147,19 @@ NSMutableString_unicodePtr *NSMutableString_unicodePtrInitWithCapacity(NSMutable
 NSString *NSMutableString_unicodePtrNewWithCString(NSZone *zone,
  const char *cString,NSUInteger length) {
    NSMutableString_unicodePtr *self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
-
-   return NSMutableString_unicodePtrInitWithCString(self,cString,length,zone);
+    if (self) {
+        self = NSMutableString_unicodePtrInitWithCString(self,cString,length,zone);
+    }
+    return self;
 }
 
 NSString *NSMutableString_unicodePtrNew(NSZone *zone,
  const unichar *unicode,NSUInteger length) {
    NSMutableString_unicodePtr *self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
-
-   return NSMutableString_unicodePtrInit(self,unicode,length,zone);
+    if (self) {
+        self = NSMutableString_unicodePtrInit(self,unicode,length,zone);
+    }
+    return self;
 }
 
 NSString *NSMutableString_unicodePtrNewNoCopy(NSZone *zone,
@@ -163,8 +167,10 @@ NSString *NSMutableString_unicodePtrNewNoCopy(NSZone *zone,
    NSMutableString_unicodePtr *self;
 
    self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
-
-   return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,zone);
+    if (self) {
+        self = NSMutableString_unicodePtrInitNoCopy(self,unicode,length,zone);
+    }
+    return self;
 }
 
 NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
@@ -172,8 +178,10 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
    NSMutableString_unicodePtr *self;
 
    self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
-
-   return NSMutableString_unicodePtrInitWithCapacity(self,capacity,zone);
+    if (self) {
+       self = NSMutableString_unicodePtrInitWithCapacity(self,capacity,zone);
+    }
+    return self;
 }
 
 -(void)dealloc {

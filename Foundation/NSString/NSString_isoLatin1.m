@@ -100,17 +100,16 @@ NSString *NSISOLatin1CStringNewWithCharacters(NSZone *zone,
 
 NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
  const char *bytes,NSUInteger length) {
-   NSString_isoLatin1 *string;
-   int                i;
-
-   string=NSAllocateObject([NSString_isoLatin1 class],length*sizeof(char),zone);
-
-   string->_length=length;
-   for(i=0;i<length;i++)
-    string->_bytes[i]=((uint8_t *)bytes)[i];
-   string->_bytes[i]='\0';
-
-   return string;
+    
+   NSString_isoLatin1 *self=NSAllocateObject([NSString_isoLatin1 class],length*sizeof(char),zone);
+    if (self) {
+       self->_length=length;
+        int i;
+       for(i=0;i<length;i++)
+        self->_bytes[i]=((uint8_t *)bytes)[i];
+       self->_bytes[i]='\0';
+    }
+   return self;
 }
 
 -(NSUInteger)length {
