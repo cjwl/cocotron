@@ -98,7 +98,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 }
 
 -(void)loadPrivateFontPaths:(NSArray *)paths {
-    
+
 #ifndef FR_PRIVATE
 #define FR_PRIVATE 0x10
 #endif
@@ -109,7 +109,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
         NSLog(@"GetProcAddress(\"GDI32\",\"AddFontResourceExW\") failed");
         return;
     }
-    
+
     for(NSString *path in paths){
         const uint16_t *rep=[path fileSystemRepresentationW];
         if(function(rep,FR_PRIVATE,0)==0){
@@ -119,18 +119,22 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 }
 
 -(void)loadPrivateFonts {
-	// A special info plist key can specify a resource dir containing the bundled application fonts - returns nil if
-	// the path is not specified so the original code path is followed
-	NSString* fontsDir = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"ATSApplicationFontsPath"];
-
-	NSArray*  ttfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory: fontsDir];
-	NSArray*  TTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"TTF" inDirectory: fontsDir];
-
-	NSMutableArray* allPaths = [NSMutableArray arrayWithCapacity: 100];
-	[allPaths addObjectsFromArray: ttfPaths];
-	[allPaths addObjectsFromArray: TTFPaths];
-	
-	[self loadPrivateFontPaths: allPaths];
+    // A special info plist key can specify a resource dir containing the bundled application fonts - returns nil if
+    // the path is not specified so the original code path is followed
+    NSString* fontsDir = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"ATSApplicationFontsPath"];
+    
+    NSArray*  ttfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory: fontsDir];
+    NSArray*  TTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"TTF" inDirectory: fontsDir];
+    NSArray*  otfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"otf" inDirectory: fontsDir];
+    NSArray*  OTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"OTF" inDirectory: fontsDir];
+    
+    NSMutableArray* allPaths = [NSMutableArray arrayWithCapacity: 100];
+    [allPaths addObjectsFromArray: ttfPaths];
+    [allPaths addObjectsFromArray: TTFPaths];
+    [allPaths addObjectsFromArray: otfPaths];
+    [allPaths addObjectsFromArray: OTFPaths];
+    
+    [self loadPrivateFontPaths: allPaths];
 }
 
 -(void)forceLoadOfFontsAtPaths:(NSArray *)paths {
