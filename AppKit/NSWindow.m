@@ -2141,9 +2141,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         
         if([view acceptsFirstResponder]){
             if([view needsPanelToBecomeKey]) {
-                [self becomeKeyWindow];
+                [self makeFirstResponder:view];
             }
-            [self makeFirstResponder:view];
         }
         
         // Event goes to view, not first responder

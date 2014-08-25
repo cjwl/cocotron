@@ -135,6 +135,11 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return [_cell isContinuous];
 }
 
+-(BOOL)needsPanelToBecomeKey {
+    // The Apple way
+    return [_cell isSelectable];
+}
+
 -(BOOL)refusesFirstResponder {
    return [_cell refusesFirstResponder];
 }

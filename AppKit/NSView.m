@@ -516,8 +516,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return [self acceptsFirstResponder] && ![self isHiddenOrHasHiddenAncestor];
 }
 
+// Cocoa does that for views, despite the "The default implementation returns NO" from the documentation
 -(BOOL)needsPanelToBecomeKey {
-   return NO;
+    return [self acceptsFirstResponder];
 }
 
 -(NSView *)nextKeyView {
