@@ -328,6 +328,9 @@ static Class _fontPanelFactory;
 
 -(NSFont *)convertFont:(NSFont *)font {
     
+    if (font == nil) {
+        return nil;
+    }
     switch(_currentFontAction){
             
         case NSNoFontChangeAction:
@@ -405,6 +408,10 @@ static Class _fontPanelFactory;
 }
 
 -(NSFont *)convertFont:(NSFont *)font toHaveTrait:(NSFontTraitMask)addTraits {
+    if (font == nil) {
+        return nil;
+    }
+
    NSFontFamily   *family=[NSFontFamily fontFamilyWithTypefaceName:[font fontName]];
    NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
    NSFontTraitMask traits=[typeface traits];
@@ -429,6 +436,10 @@ static Class _fontPanelFactory;
 }
 
 -(NSFont *)convertFont:(NSFont *)font toNotHaveTrait:(NSFontTraitMask)trait {
+    if (font == nil) {
+        return nil;
+    }
+
 	NSFontFamily   *family=[NSFontFamily fontFamilyWithName: [font familyName]];
 	NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
 	NSFontTraitMask traits=[typeface traits];
@@ -445,10 +456,17 @@ static Class _fontPanelFactory;
 }
 
 -(NSFont *)convertFont:(NSFont *)font toFace:(NSString *)typeface {
+    if (font == nil) {
+        return nil;
+    }
+
 	return [NSFont fontWithName: typeface size: [font pointSize]];
 }
 
 -(NSFont *)convertFont:(NSFont *)font toFamily:(NSString *)family {
+    if (font == nil) {
+        return nil;
+    }
 
 	// Get the current traits so we try and match them...
 	NSFontFamily   *fontFamily=[NSFontFamily fontFamilyWithName: [font familyName]];
@@ -458,6 +476,10 @@ static Class _fontPanelFactory;
 }
 
 -(NSFont *)convertWeight:(BOOL)heavierNotLighter ofFont:(NSFont *)font {
+    if (font == nil) {
+        return nil;
+    }
+
 	NSLog(@"convertWeight: %d ofFont: %@ ignored", heavierNotLighter, font);
 	return font;
 }
