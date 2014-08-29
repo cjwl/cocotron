@@ -1395,17 +1395,50 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     while(location<limit){
      NSRange          effectiveRange;
      NSDictionary    *attributes=[_textStorage attributesAtIndex: location effectiveRange: &effectiveRange];
-     NSRange          tmpEffectiveRange;
-     NSDictionary    *tmpAttrs = [self temporaryAttributesAtCharacterIndex: location effectiveRange: &tmpEffectiveRange];
-    if ([tmpAttrs count] > 0) {
+     // Make sure the effectiveRange doesn't take us backwards!
+     int reduction = location - effectiveRange.location;
+     effectiveRange.location = location;
+     effectiveRange.length -= reduction;
+
+    BOOL continueSearch = YES;
+    // We've got to look carefully because we need to chop the effectiveRange so that the temporary attributes get added at the right places
+    for (int tempOffset = effectiveRange.location; continueSearch && tempOffset < NSMaxRange(effectiveRange); tempOffset++) {
+        NSRange          tempEffectiveRange = NSMakeRange(0, 0);
+        NSDictionary    *tempAttrs = [self temporaryAttributesAtCharacterIndex: tempOffset effectiveRange: &tempEffectiveRange];
+        if (NSEqualRanges(effectiveRange, tempEffectiveRange)) {
+            // Things are lined up nicely - we can just use the effectiveRange as is
+            continueSearch = NO;
+        } else {
+            if ([tempAttrs count] > 0) {
+                // We've got some real attributes to worry about
+                if (tempOffset > effectiveRange.location) {
+                    // The temporary attributes start further along so cut effectiveRange down
+                    // so it ends at the start of the temp range
+                    effectiveRange.length = tempOffset - effectiveRange.location;
+                    continueSearch = NO;
+                }
+                else if (tempEffectiveRange.length < effectiveRange.length) {
+                    // The temp range starts at the same point as the effective range - but it's shorter
+                    // so cut the effectiveRange length down to match.
+                    effectiveRange.length = tempEffectiveRange.length;
+                    continueSearch = NO;
+                }
+            }
+        }
+
+    }
+        
+    NSRange          tempEffectiveRange = NSMakeRange(0, 0);
+    NSDictionary    *tempAttrs = [self temporaryAttributesAtCharacterIndex: location effectiveRange: &tempEffectiveRange];
+    if ([tempAttrs count] > 0) {
+        // Merge in the temporary attributes
         BOOL checkTemporaryAttributesUsage = [_delegate respondsToSelector:@selector(layoutManager:shouldUseTemporaryAttributes:forDrawingToScreen:atCharacterIndex:effectiveRange:)];
         if (checkTemporaryAttributesUsage) {
-            tmpAttrs = [_delegate layoutManager: self shouldUseTemporaryAttributes: tmpAttrs forDrawingToScreen: [[NSGraphicsContext currentContext] isDrawingToScreen] atCharacterIndex: location effectiveRange: NULL];
+            tempAttrs = [_delegate layoutManager: self shouldUseTemporaryAttributes: tempAttrs forDrawingToScreen: [[NSGraphicsContext currentContext] isDrawingToScreen] atCharacterIndex: location effectiveRange: NULL];
         }
         NSMutableDictionary *dict = [[attributes mutableCopy] autorelease];
-        [dict addEntriesFromDictionary: tmpAttrs];
+        [dict addEntriesFromDictionary: tempAttrs];
         attributes = dict;
-        effectiveRange = tmpEffectiveRange;
     }
 
 	 NSColor         *color=[attributes objectForKey:NSBackgroundColorAttributeName];
@@ -1650,7 +1683,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
 	NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);
 	NSFont       *font=NSFontAttributeInDictionary(attributes);
-	
+
 	// First draw the packed glyphs
 	char          packedGlyphs[length*2]; // Specs says length*4+1 but needed buffer size is at max length*2 on Cocotron
 	int packedGlyphsLength = NSConvertGlyphsToPackedGlyphs(glyphs, length, NSNativeShortGlyphPacking, packedGlyphs);
