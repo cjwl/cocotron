@@ -1318,14 +1318,13 @@ static HWND findWindowForScrollWheel(POINT point){
    MessageBeep(MB_OK);
 }
 
-static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
-   const TEXTMETRICA *textMetric_old,DWORD fontType,LPARAM lParam){
-   LPENUMLOGFONTEX  logFont=(LPENUMLOGFONTEX)lofFont_old;
-//   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
+static int CALLBACK buildFamily(const const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics,DWORD fontType,LPARAM lParam){
+
+    //   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
    NSMutableSet *set=(NSMutableSet *)lParam;
 //   NSString     *name=[NSString stringWithCString:logFont->elfFullName];
     if (logFont && logFont->elfLogFont.lfFaceName) {
-        NSString     *name=[NSString stringWithCString:logFont->elfLogFont.lfFaceName];
+        NSString    *name = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
         // Font name starting with "@" are rotated versions of the font, for vertical rendering
         // We don't want them - the are polluting our font list + they have the same PS name
         // as the normal ones, leading to confusion in our font picking algo
@@ -1339,15 +1338,13 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
 -(NSSet *)allFontFamilyNames {
    NSMutableSet *result=[[[NSMutableSet alloc] init] autorelease];
    HDC           dc=GetDC(NULL);
-   LOGFONT       logFont;
-
+   LOGFONTW logFont = { 0 };
+	
    logFont.lfCharSet=DEFAULT_CHARSET;
-   strcpy(logFont.lfFaceName,"");
-   logFont.lfPitchAndFamily=0;
-
-   if(!EnumFontFamiliesExA(dc,&logFont,buildFamily,(LPARAM)result,0))
-    NSLog(@"EnumFontFamiliesExA failed %d",__LINE__);
-
+    
+   if(!EnumFontFamiliesExW(dc,&logFont,buildFamily,(LPARAM)result,0))
+        NSLog(@"EnumFontFamiliesExW failed %d",__LINE__);
+    
    ReleaseDC(NULL,dc);
    return result;
 }

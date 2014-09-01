@@ -43,7 +43,22 @@ typedef struct name_records_t {
 // Fill the name mapping dictionaries with the logFont face info
 static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
 {
-	HFONT font = CreateFontIndirectW(&logFont->elfLogFont);
+    // Create a HFONT from the logFont so we can get the font tables we need to parse to get the PS name of the font
+    // Use CreateFontW, not CreateFontIndirectW with the received logFont
+    // For some mysterious reason, CreateFontIndirectW is returning the wrong font for some faces like "Minya Nouvelle Italic"
+    // (the Regular version is returned instead)
+    HFONT font = CreateFontW(0,0,0,0,
+                             FW_NORMAL,
+                             FALSE,
+                             FALSE,
+                             FALSE,
+                             DEFAULT_CHARSET,
+                             OUT_DEFAULT_PRECIS,
+                             CLIP_DEFAULT_PRECIS,
+                             DEFAULT_QUALITY,
+                             DEFAULT_PITCH|FF_DONTCARE,
+                             logFont->elfFullName);
+
 	if (font) {
         // Ignore fonts for which we can't get a full name
         if (logFont->elfFullName == NULL) {
@@ -72,7 +87,8 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const 
             return 1;
         }
         
-		if (SelectObject(dc, font) == HGDI_ERROR) {
+        HGDIOBJ selectedObject = SelectObject(dc, font);
+		if (selectedObject == HGDI_ERROR) {
             NSLog(@"Error selecting %@", winName);
             return 1;
         }
@@ -81,8 +97,9 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const 
 		DWORD bufferSize = GetFontData(dc, CFSwapInt32HostToBig('name'), 0, NULL, 0);
 		if (bufferSize >= 6 && bufferSize != GDI_ERROR) {
 			uint8_t buffer[bufferSize];
+            bzero(buffer, 6);
 			if (GetFontData(dc, CFSwapInt32HostToBig('name'), 0, buffer, bufferSize) != GDI_ERROR) {
-				name_table_header_t *header = (name_table_header_t *)buffer;
+                name_table_header_t *header = (name_table_header_t *)buffer;
 				uint16_t count = CFSwapInt16BigToHost(header->count);
 				uint16_t stringsOffset = CFSwapInt16BigToHost(header->stringOffset);
 				if (bufferSize > stringsOffset) {
@@ -178,7 +195,7 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const 
                                             [sWin32ToPSTable setObject:name forKey:fontNameUS];
                                         }
 									}
-                                    break;
+                                   break;
 								}
 							}
 						}
@@ -186,6 +203,7 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const 
 				}
 			}
 		}
+        SelectObject(dc, selectedObject);
 		DeleteObject(font);
 	}
 	return 1;
@@ -193,7 +211,7 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const 
 
 // Add the logFont family to the list of known families
 static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p) {
-	NSMutableArray *families = (NSMutableArray *)p;
+	NSMutableSet *families = (NSMutableSet *)p;
 	NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
 
 	[families addObject:winName];
@@ -207,7 +225,7 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 	sWin32ToPSTable = [[NSMutableDictionary alloc] initWithCapacity:100];
     
 	// Get a list of all of the families
-	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
+	NSMutableSet *families = [NSMutableSet setWithCapacity:100];
 	LOGFONTW logFont = { 0 };
 	
 	logFont.lfCharSet=DEFAULT_CHARSET;
