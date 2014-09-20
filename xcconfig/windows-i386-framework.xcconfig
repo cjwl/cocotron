@@ -1,0 +1,7 @@
+#include "windows-i386"
+#include "platform-framework"
+
+EXECUTABLE_SUFFIX = .1.0.dll
+
+OTHER_LDFLAGS = -shared -Wl,--export-all-symbols -Wl,--enable-auto-import -Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a $(WINDOWS_i386_COMPILER_LDFLAGS)
+

@@ -1,0 +1,7 @@
+#include "windows-i386"
+
+EXECUTABLE_SUFFIX = .1.0.dll
+
+OTHER_LDFLAGS = -shared -Wl,--enable-auto-import 
+
+GCC_DYNAMIC_NO_PIC = NO

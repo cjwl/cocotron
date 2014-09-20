@@ -1,0 +1,8 @@
+#include "darwin"
+
+EFFECTIVE_PLATFORM_NAME = -darwin
+INSTALL_TARGET_TRIPLE = i386-apple-darwin
+
+GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+
+ARCHS = i386

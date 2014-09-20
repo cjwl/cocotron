@@ -1,0 +1,8 @@
+#include "darwin"
+
+EFFECTIVE_PLATFORM_NAME = -darwin
+INSTALL_TARGET_TRIPLE = ppc-apple-darwin
+
+GCC_VERSION = com.apple.compilers.llvmgcc42
+
+ARCHS = ppc
