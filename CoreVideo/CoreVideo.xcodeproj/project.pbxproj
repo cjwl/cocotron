@@ -32,7 +32,6 @@
 		CF18754219CCFF670058C869 /* solaris.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752619CCFF670058C869 /* solaris.xcconfig */; };
 		CF18754319CCFF670058C869 /* windows-i386-bundle.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752719CCFF670058C869 /* windows-i386-bundle.xcconfig */; };
 		CF18754419CCFF670058C869 /* windows-i386-clang.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752819CCFF670058C869 /* windows-i386-clang.xcconfig */; };
-		CF18754519CCFF670058C869 /* windows-i386-clang.xcconfig.orig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752919CCFF670058C869 /* windows-i386-clang.xcconfig.orig */; };
 		CF18754619CCFF670058C869 /* windows-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752A19CCFF670058C869 /* windows-i386-framework.xcconfig */; };
 		CF18754719CCFF670058C869 /* windows-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752B19CCFF670058C869 /* windows-i386.xcconfig */; };
 		CF18754819CCFF670058C869 /* windows.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752C19CCFF670058C869 /* windows.xcconfig */; };
@@ -186,7 +185,6 @@
 		CF18752619CCFF670058C869 /* solaris.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = solaris.xcconfig; sourceTree = "<group>"; };
 		CF18752719CCFF670058C869 /* windows-i386-bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-bundle.xcconfig"; sourceTree = "<group>"; };
 		CF18752819CCFF670058C869 /* windows-i386-clang.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-clang.xcconfig"; sourceTree = "<group>"; };
-		CF18752919CCFF670058C869 /* windows-i386-clang.xcconfig.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "windows-i386-clang.xcconfig.orig"; sourceTree = "<group>"; };
 		CF18752A19CCFF670058C869 /* windows-i386-framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386-framework.xcconfig"; sourceTree = "<group>"; };
 		CF18752B19CCFF670058C869 /* windows-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "windows-i386.xcconfig"; sourceTree = "<group>"; };
 		CF18752C19CCFF670058C869 /* windows.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = windows.xcconfig; sourceTree = "<group>"; };
@@ -320,7 +318,6 @@
 				CF18752619CCFF670058C869 /* solaris.xcconfig */,
 				CF18752719CCFF670058C869 /* windows-i386-bundle.xcconfig */,
 				CF18752819CCFF670058C869 /* windows-i386-clang.xcconfig */,
-				CF18752919CCFF670058C869 /* windows-i386-clang.xcconfig.orig */,
 				CF18752A19CCFF670058C869 /* windows-i386-framework.xcconfig */,
 				CF18752B19CCFF670058C869 /* windows-i386.xcconfig */,
 				CF18752C19CCFF670058C869 /* windows.xcconfig */,
@@ -525,7 +522,6 @@
 				CF18753319CCFF670058C869 /* darwin.xcconfig in Resources */,
 				CF18753619CCFF670058C869 /* freebsd.xcconfig in Resources */,
 				CF18753E19CCFF670058C869 /* platform-framework.xcconfig in Resources */,
-				CF18754519CCFF670058C869 /* windows-i386-clang.xcconfig.orig in Resources */,
 				CF18754219CCFF670058C869 /* solaris.xcconfig in Resources */,
 				CF18754719CCFF670058C869 /* windows-i386.xcconfig in Resources */,
 				CF18752E19CCFF670058C869 /* darwin-i386.xcconfig in Resources */,
