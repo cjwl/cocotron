@@ -595,13 +595,19 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
      return nil;
    }
 
+    int dpi = 72;
+    if (_size.width > 0) {
+        dpi = ceilf(72 * _pixelsWide / _size.width);
+    }
    NSMutableData        *result=[NSMutableData data];
 	// Convert the NS options to CG options - just NSImageCompressionFactor for now
-	NSDictionary *CGProperties = nil;
+	NSDictionary *CGProperties = [NSMutableDictionary dictionary];
+
+    [CGProperties setValue: [NSNumber numberWithInt: dpi] forKey: (id)kCGImageDestinationDPI];
+    
 	if ([properties count]) {
 		id compressionFactor = [properties valueForKey:NSImageCompressionFactor];
 		if (compressionFactor) {
-			CGProperties = [NSMutableDictionary dictionary];
 			[CGProperties setValue:compressionFactor forKey:(id)kCGImageDestinationLossyCompressionQuality];
 		}
 	}

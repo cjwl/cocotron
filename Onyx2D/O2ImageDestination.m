@@ -7,7 +7,8 @@
 
 // Using the same value as CoreGraphics - that's removing the needs for conversion
 const CFStringRef kO2ImageDestinationLossyCompressionQuality = (const CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
-const CFStringRef kO2ImageDestinationBackgroundColor = (const CFStringRef)@"kO2ImageDestinationBackgroundColor";
+const CFStringRef kO2ImageDestinationBackgroundColor = (const CFStringRef)@"kCGImageDestinationBackgroundColor";
+const CFStringRef kO2ImageDestinationDPI = (const CFStringRef)@"kCGImageDestinationDPI";
 
 @interface _O2ImageDestination : O2ImageDestination
 @end
