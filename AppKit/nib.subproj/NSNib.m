@@ -24,6 +24,9 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 @implementation NSNib
 
 -initWithContentsOfFile:(NSString *)path {
+
+    NIBDEBUG(@"initWithContentsOfFile: %@", path);
+    
    NSString *keyedobjects=path;
    BOOL      isDirectory=NO;
 
@@ -44,7 +47,10 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -initWithContentsOfURL:(NSURL *)url {
-   if(![url isFileURL]){
+
+    NIBDEBUG(@"initWithContentsOfURL: %@", url);
+
+    if(![url isFileURL]){
     [self release];
     return nil;
    }
@@ -53,7 +59,10 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -initWithNibNamed:(NSString *)name bundle:(NSBundle *)bundle {
-   if(bundle==nil)
+
+    NIBDEBUG(@"initWithNibNamed: %@ bundle: %@", name, bundle);
+
+    if(bundle==nil)
     bundle = [NSBundle mainBundle];
     
    NSString *path=[bundle pathForResource:name ofType:@"nib"];
@@ -91,6 +100,9 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -(BOOL)instantiateNibWithExternalNameTable:(NSDictionary *)nameTable {
+    
+    NIBDEBUG(@"instantiateNibWithExternalNameTable: %@", nameTable);
+    
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    _nameTable=[nameTable retain];
     NSKeyedUnarchiver *unarchiver=[[[NSKeyedUnarchiver alloc] initForReadingWithData:_data] autorelease];
@@ -164,7 +176,10 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -(BOOL)instantiateNibWithOwner:owner topLevelObjects:(NSArray **)objects {
-   NSMutableArray   *topLevelObjects = (objects != NULL ? [[NSMutableArray alloc] init] : nil);
+
+    NIBDEBUG(@"instantiateNibWithOwner: %@ topLevelObjects: ", owner);
+
+    NSMutableArray   *topLevelObjects = (objects != NULL ? [[NSMutableArray alloc] init] : nil);
    NSDictionary     *nameTable=[NSDictionary dictionaryWithObjectsAndKeys:owner, NSNibOwner, topLevelObjects, NSNibTopLevelObjects, nil];
    BOOL             result = [self instantiateNibWithExternalNameTable:nameTable];
    
