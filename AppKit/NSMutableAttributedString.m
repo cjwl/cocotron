@@ -77,6 +77,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     while(location<limit){
         NSRange              effectiveRange;
         NSFont              *font=[self attribute:NSFontAttributeName atIndex:location effectiveRange:&effectiveRange];
+        if (font == nil) {
+            // We really need a font for doing font substitution
+            // Use the default attribute value
+            // Note that if no substitution is needed, then we'll keep the no font info
+            font = NSFontAttributeInDictionary(nil);
+        }
         if (font) {
             NSCharacterSet      *fontCharSet = nil;
             NSRange testRange = NSIntersectionRange(range, effectiveRange);
