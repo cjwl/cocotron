@@ -66,6 +66,11 @@ FOUNDATION_EXPORT NSString * const NSFileSystemFreeSize;
 -(BOOL)moveItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error;
 -(BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error;
 
+- (BOOL)copyItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL error:(NSError **)error;
+- (BOOL)moveItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL error:(NSError **)error;
+- (BOOL)linkItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL error:(NSError **)error;
+- (BOOL)removeItemAtURL:(NSURL *)URL error:(NSError **)error;
+
 -(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error;
 
 -(NSString *)stringWithFileSystemRepresentation:(const char *)string length:(NSUInteger)length;
@@ -82,6 +87,8 @@ FOUNDATION_EXPORT NSString * const NSFileSystemFreeSize;
 
 -(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes;
 -(BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)intermediates attributes:(NSDictionary *)attributes error:(NSError **)error;
+
+-(BOOL)createDirectoryAtURL:(NSURL *)url withIntermediateDirectories:(BOOL)intermediates attributes:(NSDictionary *)attributes error:(NSError **)error;
 
 -(BOOL)createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)destination;
 -(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)toPath error:(NSError **)error;
