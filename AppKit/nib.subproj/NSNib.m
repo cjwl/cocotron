@@ -107,7 +107,6 @@ NSString * const NSNibTopLevelObjects=@"NSNibTopLevelObjects";
    _nameTable=[nameTable retain];
     NSKeyedUnarchiver *unarchiver=[[[NSKeyedUnarchiver alloc] initForReadingWithData:_data] autorelease];
     NSIBObjectData    *objectData;
-    NSArray           *allObjects;
     int                i,count;
     NSMenu            *menu;
     NSArray           *topLevelObjects;
