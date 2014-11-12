@@ -56,6 +56,13 @@ FOUNDATION_EXPORT NSString * const NSURLFileScheme;
 -(NSURL *)absoluteURL;
 -(NSURL *)baseURL;
 
+- (NSURL *)URLByAppendingPathComponent:(NSString *)pathComponent;
+- (NSURL *)URLByAppendingPathExtension:(NSString *)pathExtension;
+- (NSURL *)URLByDeletingLastPathComponent;
+- (NSURL *)URLByDeletingPathExtension;
+- (NSString *)lastPathComponent;
+- (NSString *)pathExtension;
+
 -(BOOL)setProperty:property forKey:(NSString *)key;
 
 -(BOOL)setResourceData:(NSData *)data;

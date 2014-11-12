@@ -864,4 +864,38 @@ static NSMutableString *AssembleResourceSpecifier( NSMutableString *result, NSSt
 }
 
 
+- (NSURL *)URLByAppendingPathComponent:(NSString *)pathComponent
+{
+    NSString *url = [[self absoluteString] stringByAppendingPathComponent:pathComponent];
+    return [NSURL URLWithString:url];
+}
+
+- (NSURL *)URLByAppendingPathExtension:(NSString *)pathExtension
+{
+    NSString *url = [[self absoluteString] stringByAppendingPathExtension:pathExtension];
+    return [NSURL URLWithString:url];
+}
+
+- (NSURL *)URLByDeletingLastPathComponent
+{
+    NSString *url = [[self absoluteString] stringByDeletingLastPathComponent];
+    return [NSURL URLWithString:url];
+}
+
+- (NSURL *)URLByDeletingPathExtension
+{
+    NSString *url = [[self absoluteString] stringByDeletingPathExtension];
+    return [NSURL URLWithString:url];
+}
+
+- (NSString *)lastPathComponent
+{
+    return [[self absoluteString] lastPathComponent];
+}
+
+- (NSString *)pathExtension
+{
+    return [[self absoluteString] pathExtension];
+}
+
 @end
