@@ -113,4 +113,21 @@ id NSAutorelease(id object){
    return nil;
 }
 
+- (void)dump {
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    int i;
+    NSLog(@"Current autorelease pool contains {\n");
+    for(i=0;i<_nextSlot;i++){
+        NS_DURING
+        id object=_pages[i/PAGESIZE][i%PAGESIZE];
+        
+        NSLog(@"\t %@: %@", NSStringFromClass([object class]), [object description]);
+        NS_HANDLER
+        NSLog(@"Exception while dumping %@",localException);
+        NS_ENDHANDLER
+    }
+    NSLog(@"}");
+    [pool drain];
+}
+
 @end
