@@ -460,7 +460,13 @@ static Class _fontPanelFactory;
         return nil;
     }
 
-	return [NSFont fontWithName: typeface size: [font pointSize]];
+	NSFont *convertedFont = [NSFont fontWithName: typeface size: [font pointSize]];
+    if (convertedFont) {
+        return convertedFont;
+    }
+    
+    // Return the original font if the conversion fails - same as Apple
+    return font;
 }
 
 -(NSFont *)convertFont:(NSFont *)font toFamily:(NSString *)family {
