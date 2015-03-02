@@ -1420,12 +1420,13 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 #define THOUSANDS2PTS(x) ((x / 1000.f) * 72.f)
 
 -(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
-   PAGESETUPDLG setup;
 
-   setup.lStructSize=sizeof(PAGESETUPDLG);
-   setup.hwndOwner=[(Win32Window *)[[NSApp mainWindow] platformWindow] windowHandle];
-   setup.hDevMode=NULL;
-   setup.hDevNames=NULL;
+    PAGESETUPDLG setup;
+
+    setup.lStructSize=sizeof(PAGESETUPDLG);
+    setup.hwndOwner=[(Win32Window *)[[NSApp mainWindow] platformWindow] windowHandle];
+    setup.hDevMode=NULL;
+    setup.hDevNames=NULL;
    setup.Flags=PSD_INTHOUSANDTHSOFINCHES;
    setup.ptPaperSize.x = PTS2THOUSANDS([printInfo paperSize].width);
    setup.ptPaperSize.y = PTS2THOUSANDS([printInfo paperSize].height);
@@ -1449,6 +1450,17 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 		[printInfo setLeftMargin: THOUSANDS2PTS(setup.rtMargin.left)];
 		[printInfo setRightMargin: THOUSANDS2PTS(setup.rtMargin.right)];
 		[printInfo setBottomMargin: THOUSANDS2PTS(setup.rtMargin.bottom)];
+        
+        HANDLE devMode = setup.hDevMode;
+        LPDEVMODE lpDevMode = (LPDEVMODE) GlobalLock(devMode);
+        if (lpDevMode && lpDevMode->dmFields & DM_ORIENTATION) {
+            if (lpDevMode->dmOrientation == DMORIENT_PORTRAIT) {
+                [printInfo setOrientation:NSPortraitOrientation];
+            } else {
+                [printInfo setOrientation:NSLandscapeOrientation];
+            }
+        }
+        GlobalUnlock(devMode);
 	}
 	return NSOKButton;
 }
@@ -1458,9 +1470,32 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    PRINTDLG            printProperties;
    int                 check;
 
+    PAGESETUPDLG setup;
+    bzero(&setup, sizeof(setup));
+    
+    setup.lStructSize=sizeof(PAGESETUPDLG);
+    
+    // Get the printer defaults
+    setup.Flags = PSD_RETURNDEFAULT;
+    PageSetupDlg(&setup);
+    
+    // See http://support.microsoft.com/kb/193103/fr
+    HANDLE devMode = setup.hDevMode;
+    
+    LPDEVMODE lpDevMode = (LPDEVMODE) GlobalLock(devMode);
+    // Force the orientation if the printer supports it.
+    if (lpDevMode->dmFields & DM_ORIENTATION) {
+        if ([[attributes objectForKey:NSPrintOrientation] boolValue] == NSPortraitOrientation) {
+            lpDevMode->dmOrientation = DMORIENT_PORTRAIT;
+        } else {
+            lpDevMode->dmOrientation = DMORIENT_LANDSCAPE;
+        }
+        lpDevMode->dmFields = DM_ORIENTATION;
+    }
+
    printProperties.lStructSize=sizeof(PRINTDLG);
    printProperties.hwndOwner=[(Win32Window *)[[view window] platformWindow] windowHandle];
-   printProperties.hDevMode=NULL;
+   printProperties.hDevMode = devMode;
    printProperties.hDevNames=NULL;
    printProperties.hDC=NULL;
    printProperties.Flags=PD_RETURNDC|PD_COLLATE;
@@ -1482,6 +1517,8 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    [self stopWaitCursor];
    check=PrintDlg(&printProperties);
    [self startWaitCursor];
+
+    GlobalUnlock(devMode);
 
    if(check==0)
     return NSCancelButton;
