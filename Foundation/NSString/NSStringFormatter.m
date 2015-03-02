@@ -473,6 +473,8 @@ unichar *NSCharactersNewWithFormatAndGrouping(NSString *format,NSDictionary *loc
       switch(unicode){
 
        case 'h': case 'l': case 'q':
+        // New Cocoa special modes for NSInteger and NSUInteger
+        case 'z': case 't':
         dwModify=unicode;
         break;
 
@@ -495,6 +497,8 @@ unichar *NSCharactersNewWithFormatAndGrouping(NSString *format,NSDictionary *loc
           value=va_arg(arguments,long);
          else if(dwModify=='q')
           value=va_arg(arguments,long long);
+         else if(dwModify=='z')
+          value=va_arg(arguments, NSInteger);
          else
           value=va_arg(arguments,int);
 
@@ -527,6 +531,8 @@ unichar *NSCharactersNewWithFormatAndGrouping(NSString *format,NSDictionary *loc
           value=va_arg(arguments,unsigned long);
          else if(dwModify=='q')
           value=va_arg(arguments,unsigned long long);
+         else if(dwModify=='t')
+          value=va_arg(arguments, NSUInteger);
          else
           value=va_arg(arguments,unsigned int);
 
@@ -543,6 +549,8 @@ unichar *NSCharactersNewWithFormatAndGrouping(NSString *format,NSDictionary *loc
           value=va_arg(arguments,unsigned long);
          else if(dwModify=='q')
           value=va_arg(arguments,unsigned long long);
+         else if(dwModify=='t')
+          value=va_arg(arguments, NSUInteger);
          else
           value=va_arg(arguments,unsigned int);
 
@@ -559,6 +567,8 @@ unichar *NSCharactersNewWithFormatAndGrouping(NSString *format,NSDictionary *loc
           value=va_arg(arguments,unsigned long);
          else if(dwModify=='q')
           value=va_arg(arguments,unsigned long long);
+         else if(dwModify=='t')
+          value=va_arg(arguments, NSUInteger);
          else
           value=va_arg(arguments,unsigned int);
 
