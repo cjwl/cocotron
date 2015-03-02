@@ -2930,12 +2930,15 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 			   } else {
 				   tooltip = [owner description];
 			   }
-			   [toolTipWindow setToolTip:tooltip];
-			   
-			   // This gives us some protection when ToolTip areas overlap:
-			   [toolTipWindow _setTrackingArea:area];
-			   
-			   raiseToolTipWindow=YES;
+               
+               if (tooltip) {
+                   [toolTipWindow setToolTip:tooltip];
+                   
+                   // This gives us some protection when ToolTip areas overlap:
+                   [toolTipWindow _setTrackingArea:area];
+                   
+                   raiseToolTipWindow=YES;
+               }
 		   }
 	   }
 	   else{ // not ToolTip
