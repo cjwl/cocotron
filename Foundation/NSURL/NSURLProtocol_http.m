@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCachedURLResponse.h>
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSTimer.h>
+#import <Foundation/NSPathUtilities.h>
 #import <CFNetwork/CFNetwork.h>
 
 #include <string.h>
@@ -400,15 +401,26 @@ NSLog(@"parse error %d",__LINE__);
    [string appendFormat:@"%@ %@ HTTP/1.1\015\012",[_request HTTPMethod],path];
    [string appendFormat:@"Host: %@\015\012",host];
    [string appendFormat:@"Accept: */*\015\012"];
-   
+
    NSMutableDictionary *headers=[[[_request allHTTPHeaderFields] mutableCopy] autorelease];
    NSEnumerator *state=[headers keyEnumerator];
    NSString     *key;
-       
+
+    BOOL contentLengthHeaderSetExplicitly = NO;
+    
    while((key=[state nextObject])!=nil){     
     NSString *value=[headers objectForKey:key];
     [string appendFormat:@"%@: %@\015\012",key,value];
-}
+       if ([key isEqualToString: @"Content-Length"]) {
+           contentLengthHeaderSetExplicitly = YES;
+       }
+   }
+
+    if (contentLengthHeaderSetExplicitly == NO && [[_request HTTPBody] length] > 0) {
+        // Many web-servers need to know the Content-Length before they're prepared to accept a POST.
+        [string appendFormat:@"Content-Length: %d\015\012", [[_request HTTPBody] length]];
+    }
+    
 
    if(_cachedResponse!=nil){
     NSHTTPURLResponse *response=(NSHTTPURLResponse *)[_cachedResponse response];
@@ -440,7 +452,6 @@ NSLog(@"parse error %d",__LINE__);
 #endif
 }
    NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
-
    [_outputQueue addObject:data];
    if([[_request HTTPBody] length]){
     [_outputQueue addObject:[_request HTTPBody]];
@@ -527,8 +538,14 @@ NSLog(@"parse error %d",__LINE__);
        [_outputQueue removeObjectAtIndex:0];
        _outputNextOffset=0;
 	}
-	
+
       [stream write:buffer maxLength:length];
+#ifdef DEBUG
+         length = MIN(length, 256);
+         NSData *dump = [NSData dataWithBytes: buffer length: length];
+         NSString *str = [[[NSString alloc] initWithData: dump encoding: NSUTF8StringEncoding] autorelease];
+         NSLog(@"sent: %@ ...", str);
+#endif
 }
 	}
 

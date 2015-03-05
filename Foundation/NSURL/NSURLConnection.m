@@ -64,7 +64,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSData *result= nil; 
 
 	if([state error]) {
-		*errorp=[state error];
+        if (errorp) {
+            *errorp=[state error];
+        } else {
+            NSLog(@"error occurred during request: %@", [state error]);
+        }
 	} else {
 		// Looks good - give them the data
 		result = [[connection->_mutableData retain] autorelease];
@@ -174,7 +178,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data {
 
 #if DEBUG
-	NSLog(@"didLoadData: %@", data);
+    NSString *str = [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+	NSLog(@"didLoadData: %@", str);
 #endif
 	
    if(_mutableData==nil)

@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/CFSSLHandler.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSRaiseException.h>
 
 #undef WINVER
 #define WINVER 0x501
@@ -56,11 +57,17 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -initWithSocketHandle:(SOCKET)handle {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -initWithSocketHandle:");
+#endif
    _handle=handle;
    return self;
 }
 
 +socketWithSocketHandle:(SOCKET)handle {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows +socketWithSocketHandle:");
+#endif
    return [[[self alloc] initWithSocketHandle:handle] autorelease];
 }
 
@@ -72,6 +79,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -initTCPStream {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -initTCPStream");
+#endif
    NSError *error=[self errorForReturnValue:_handle=socket(PF_INET,SOCK_STREAM,IPPROTO_TCP)];
    if(error!=nil){
     [self dealloc];
@@ -81,6 +91,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -initUDPStream {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -initUDPStream");
+#endif
    NSError *error=[self errorForReturnValue:_handle=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP)];
    if(error!=nil){
     [self dealloc];
@@ -90,6 +103,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -initWithFileDescriptor:(int)descriptor {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -initWithFileDescriptor:");
+#endif
    SOCKET handle=(SOCKET)descriptor;
    u_long arg;
    
@@ -102,16 +118,25 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(void)dealloc {
+#ifdef DEBUG
+    NSCLog("dealloc");
+#endif
    [_sslHandler release];
    [super dealloc];
 }
 
 -(void)closeAndDealloc {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -closeAndDealloc");
+#endif
    [self close];
    [self dealloc];
 }
 
 -initConnectedToSocket:(NSSocket **)otherX {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -initConnectedToSocket:");
+#endif
    NSSocket_windows  *other;
    NSError           *error;
    struct sockaddr_in address;
@@ -163,6 +188,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(void)setSocketHandle:(SOCKET)handle {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -setSocketHandle:");
+#endif
    _handle=handle;
 }
 
@@ -178,6 +206,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(NSError *)close {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -close");
+#endif
    return [self errorForReturnValue:closesocket(_handle)];
 }
 
@@ -192,6 +223,9 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(NSError *)connectToHost:(NSHost *)host port:(NSInteger)portNumber immediate:(BOOL *)immediate {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows -connectToHost: %s port: %d immediate:", [[host name] cStringUsingEncoding: NSASCIIStringEncoding], (int)portNumber);
+#endif
    BOOL     block=NO;
    NSArray *addresses=[host addresses];
    int      i,count=[addresses count];
@@ -256,38 +290,56 @@ static inline void byteZero(void *vsrc,size_t size){
     fd_set s;
     FD_ZERO(&s);
     FD_SET(_handle, &s);
-
-    return (select(0, &s, NULL, NULL, &t) == 1) ? YES : NO;
+    BOOL bytesAvailable = (select(0, &s, NULL, NULL, &t) == 1) ? YES : NO;
+#ifdef DEBUG
+    NSCLog("NSSocket_windows - hasBytesAvailable: %s", bytesAvailable ? "YES" : "NO");
+#endif
+    return bytesAvailable;
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
+#ifdef DEBUG
+    NSCLog("read: <buffer> maxLength: %d",length);
+#endif
    NSInteger result;
    
-  //NSCLog("recv(%d) ... ",length);
    result=recv(_handle,(void *)buffer,length,0);
-  // NSCLog("recv Done = %d",result);
+#ifdef DEBUG
+   NSCLog("recv() result: %d",result);
+#endif
    return result;
 }
 
 -(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows - write: maxLength: %d", length);
+#endif
    NSInteger result;
    
-   //NSCLog("send(%d) ... ",length);
    result=send(_handle,(void *)buffer,length,0);
-   //NSCLog("send Done = %d",result);
+#ifdef DEBUG
+    NSCLog("send() result: %d",result);
+#endif
+    
    return result;
 }
 
 -(NSSocket *)acceptWithError:(NSError **)errorp {
+#ifdef DEBUG
+    NSCLog("NSSocket_windows - acceptWithError:");
+#endif
    struct sockaddr addr;
    int             addrlen=sizeof(struct sockaddr);
    SOCKET          newSocket; 
    NSError        *error;
    
    error=[self errorForReturnValue:newSocket=accept(_handle,&addr,&addrlen)];
-   if(*errorp!=nil)
+    if(errorp!=nil) {
     *errorp=error;
-    
+#ifdef DEBUG
+        NSCLog("accept() error: %zd",  [error code]);
+#endif
+    }
    return (error!=nil)?nil:[[[NSSocket_windows alloc] initWithSocketHandle:newSocket] autorelease];
 }
 
