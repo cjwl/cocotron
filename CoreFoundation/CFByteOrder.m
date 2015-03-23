@@ -1,5 +1,19 @@
 #import <CoreFoundation/CFByteOrder.h>
 
+CFSwappedFloat32 CFConvertFloat32HostToSwapped(Float32 value) {
+    union {
+        CFSwappedFloat32 w;
+        Float32  f;
+    } swap;
+    swap.f=value;
+    
+#ifdef __LITTLE_ENDIAN__
+    swap.w.v=CFSwapInt32(swap.w.v);
+#endif
+    
+    return swap.w;
+}
+
 Float32 CFConvertFloat32SwappedToHost(CFSwappedFloat32 value) {
    union {
     CFSwappedFloat32 w;
