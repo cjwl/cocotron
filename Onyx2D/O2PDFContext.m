@@ -113,6 +113,11 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 	return _length;
 }
 
+-(BOOL)isBitmapContext
+{
+    return NO;
+}
+
 -(void)appendBytes:(const void *)ptr length:(unsigned)length {
 	_length += length;
 	O2DataConsumerPutBytes(_dataConsumer, ptr, length);
@@ -284,7 +289,7 @@ const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
    next=[NSNumber numberWithInt:(next==nil)?0:[next intValue]+1];
    [_categoryToNext setObject:next forKey:key];
    
-   const char *objectName=[[NSString stringWithFormat:@"%s%d",categoryName,[next intValue]] cString];
+   const char *objectName=[[NSString stringWithFormat:@"%s%d",categoryName,[next intValue]] UTF8String];
    [category setObjectForKey:objectName value:pdfObject];
 
 	return [O2PDFObject_Name pdfObjectWithCString:objectName];

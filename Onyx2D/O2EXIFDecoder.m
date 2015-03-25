@@ -7,6 +7,7 @@
 //
 
 #import "O2EXIFDecoder.h"
+#import "O2ImageSource.h"
 
 @implementation O2EXIFDecoder
 
@@ -18,6 +19,7 @@ enum {
     kEXIF,
     kInterop,
     kGPS,
+    kJFIF,
     kModes
 };
 
@@ -374,6 +376,9 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         case kEXIF:
             typeKey = @"{Exif}";
             break;
+        case kJFIF:
+            typeKey = @"{JFIF}";
+            break;
         default:
             typeKey = [NSString stringWithFormat:@"{%d}", type];
             break;
@@ -393,7 +398,8 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         info++;
     }
     if (numberKey == nil) {
-        numberKey = [NSString stringWithFormat:@"<%d>", tagNumber];
+        // We'll ignore unexpected tags - but we could add them anyway
+        // numberKey = [NSString stringWithFormat:@"<%d>", tagNumber];
     }
     return numberKey;
 }
@@ -405,6 +411,17 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
     if (type && numberKey) {
         return [[_tags objectForKey:typeKey] objectForKey:numberKey];
     } else {
+        return nil;
+    }
+}
+
+- (id)tagForTypeKey:(id)typeKey numberKey:(id)numberKey
+{
+    if (typeKey && numberKey) {
+        return [[_tags objectForKey:typeKey] objectForKey:numberKey];
+    } else if (numberKey) {
+        return [_tags objectForKey:numberKey];
+    } else  {
         return nil;
     }
 }
@@ -434,8 +451,12 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
 
 
 
-- (size_t)_readIFD:(const uint8_t *)data base:(size_t)base offset:(size_t)offset bigendian:(BOOL)bigendian mode:(int)mode
+#define CHECK_AVAILABLE_BYTES(offset,s) if(offset+s>size) { return 0; }
+
+- (size_t)_readIFD:(const uint8_t *)data offset:(size_t)offset bigendian:(BOOL)bigendian mode:(int)mode
+              size:(size_t)size
 {
+    CHECK_AVAILABLE_BYTES(offset,2);
     short numEntries = _getShort(data, offset, bigendian);
     offset += 2;
     // Reading the data :
@@ -445,10 +466,13 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         const unsigned char* rawValue;
         id val  = nil;
         
+        CHECK_AVAILABLE_BYTES(offset,2);
         unsigned short tag = _getShort(data, offset,  bigendian);
         offset += 2;
+        CHECK_AVAILABLE_BYTES(offset,2);
         unsigned short type = _getShort(data, offset,  bigendian);
         offset += 2;
+        CHECK_AVAILABLE_BYTES(offset,4);
         long count = _getLong(data, offset, bigendian);
         offset += 4;
         
@@ -461,12 +485,15 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         
         if (dataLength > 4) {
             // The 4 bytes data is just an offset to the real data
+            CHECK_AVAILABLE_BYTES(offset,4);
             long dataOffset = _getLong(data, offset, bigendian);
-            rawValue = data + base + dataOffset;
+            rawValue = data + dataOffset;
+            CHECK_AVAILABLE_BYTES(dataOffset,dataLength);
         }
         else {
             // The 4 bytes data is the real data
-            rawValue = data + base + offset;;
+            rawValue = data + offset;
+            CHECK_AVAILABLE_BYTES(offset,dataLength);
         }
         offset += 4;
         
@@ -485,7 +512,7 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
                 break;
             case tAscii:
                 // Kill the \0 marker if there is one
-                if (rawValue[count-1] == 0) {
+                if (count > 0 && rawValue[count-1] == 0) {
                     count--;
                 }
                 val = [[[NSString alloc] initWithBytes:rawValue length:count encoding:NSUTF8StringEncoding] autorelease];
@@ -497,9 +524,9 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
                 }
                 else {
                     val = [NSMutableArray arrayWithCapacity:count];
-                   for (int i = 0; i < count; ++i) {
+                    for (int i = 0; i < count; ++i) {
                         value = _getShort(rawValue, i*2, bigendian);
-                       [val addObject:[NSNumber numberWithShort:value]];
+                        [val addObject:[NSNumber numberWithShort:value]];
                     }
                 }
                 break;
@@ -590,21 +617,109 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         }
         
         if ((mode == kIFD0) && (tag == kImage_ExifIFDOffset)) {  // ExifIFDOffset
-            [self _readIFD:data base:base offset:value bigendian:bigendian mode:kEXIF];
+            [self _readIFD:data offset:value bigendian:bigendian mode:kEXIF size:size];
         }
         else if ((mode == kIFD0) && (tag == kImage_GPSIFDOffset)) {  // GPSIFDOffset
-            [self _readIFD:data base:base offset:value bigendian:bigendian mode:kGPS];
+            [self _readIFD:data offset:value bigendian:bigendian mode:kGPS size:size];
         }
         else if ((mode == kEXIF) && (tag == kEXIF_InteropIFDOffset)) {  // InteropIFDOffset
-            [self _readIFD:data base:base offset:value bigendian:bigendian mode:kInterop];
+            [self _readIFD:data offset:value bigendian:bigendian mode:kInterop size:size];
         }
+        
         if (val) {
             [self setTagForType:mode number:tag value:val];
         }
     }
-    return _getLong(data, base+offset, bigendian);
+    // Returns the offset for the next bloc
+    CHECK_AVAILABLE_BYTES(offset,4);
+    return _getLong(data, offset, bigendian);
 }
 
+- (void)_decodeJFIF:(const uint8_t *)bytes length:(int)length
+{
+    if (length < 12) {
+        return;
+    }
+    if (bcmp(bytes, "JFIF\0", 5)) {
+        return;
+    }
+    BOOL bigendian = YES;
+    size_t offset = 5;
+    uint8_t versionH = _getByte(bytes, offset,  bigendian);
+    offset += 1;
+    uint8_t versionL = _getByte(bytes, offset,  bigendian);
+    offset += 1;
+    uint8_t  density = _getByte(bytes, offset, bigendian);
+    offset += 1;
+    uint16_t xResolution = _getShort(bytes, offset,  bigendian);
+    offset += 2;
+    uint16_t yResolution = _getShort(bytes, offset,  bigendian);
+    offset += 2;
+    
+    id typekey = [self keyForType:kJFIF];
+    [self setTagForTypeKey:typekey numberKey:@"DensityUnit" value:[NSNumber numberWithInt:density]];
+    [self setTagForTypeKey:typekey numberKey:@"XDensity" value:[NSNumber numberWithInt:xResolution]];
+    [self setTagForTypeKey:typekey numberKey:@"YDensity" value:[NSNumber numberWithInt:yResolution]];
+    [self setTagForTypeKey:typekey numberKey:@"JFIFVersion" value:[NSArray arrayWithObjects:
+                                                                   [NSNumber numberWithInt:versionH],
+                                                                   [NSNumber numberWithInt:versionL],
+                                                                   nil]];
+    float DPIWidth = 0;
+    float DPIHeight = 0;
+    if (density == 1 || density == 2) {
+        DPIWidth = xResolution;
+        DPIHeight = yResolution;
+        if (density == 2) {
+            // pixels/cm
+            DPIWidth /= 2.54;
+            DPIHeight /= 2.54;
+        }
+    }
+    // Set the global DPI settings to the one from the JFIF
+    if (DPIWidth > 0) {
+        [self setTagForTypeKey:nil numberKey:kO2ImagePropertyDPIWidth value:[NSNumber numberWithFloat:DPIWidth]];
+    }
+    if (DPIHeight > 0) {
+        [self setTagForTypeKey:nil numberKey:kO2ImagePropertyDPIHeight value:[NSNumber numberWithFloat:DPIHeight]];
+    }
+}
+
+- (void)_decodeEXIF:(const uint8_t *)bytes length:(int)length
+{
+    if (length < 6) {
+        return;
+    }
+    if (bcmp(bytes, "Exif\0\0", 6)) {
+        return;
+    }
+    bytes += 6;
+    length -= 6;
+    short endianness = _getShort(bytes, 0, true);
+    BOOL bigendian = (endianness == 0x4d4d);
+    
+    short align = _getShort(bytes, 2, bigendian);
+    if (align != 0x2a) {
+        return;
+    }
+    
+    long offsetIFD0 = _getLong(bytes, 4, bigendian);
+    
+    if (offsetIFD0 && offsetIFD0 != -1) {
+        size_t offset = [self _readIFD:bytes offset:offsetIFD0 bigendian:bigendian mode:kIFD0 size:length];
+        
+        // I don't think the following block is ever needed - and it seems we can have several blocks of TIFF data
+        // At least when using Windows Explorer rotate function on an already rotated image - you have some
+        // TIFF data with the new orientation then at the end you still have the old one
+        // So let's try at least to avoid that
+        if (offset && offset != -1) {
+            id typeKey = [self keyForType:kIFD1];
+            if ([_tags objectForKey:typeKey] == nil) {
+                // No tiff data yet - let's try to decode this block
+                [self _readIFD:bytes offset:offset bigendian:bigendian mode:kIFD1 size:length];
+            }
+        }
+    }
+}
 
 - (void)_analyze:(const uint8_t *)data length:(size_t)length
 {
@@ -617,10 +732,8 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
         return;  // ERROR: File is not a JPEG
     }
 	
-    // Scan for the EXIF block
-    bool done = false;
-	
-    while (!done) {
+    // Scan for the EXIF & JFIF blocks
+    while (1) {
         int marker;
 		
         // First, skip any non 0xFF bytes
@@ -657,60 +770,74 @@ static unsigned long _getLong(const unsigned char*data, size_t offset, bool bige
             break;
         }
 		if (marker == 0xE1) {
-            done = true;
-            break;
+            [self _decodeEXIF:data+index length:length];
 		}
+        
+        if (marker == 0xE0) {
+            [self _decodeJFIF:data+index length:length];
+		}
+        
 		index += len;
 	}
     
-    if (done) {
-        const uint8_t* bytes = data+index;
-        if (length < 6) {
-            return;
-        }
-        if (bcmp(bytes, "Exif\0\0", 6)) {
-            return;
-        }
-        bytes += 6;
-        length -= 6;
-        short endianness = _getShort(bytes, 0, true);
-        BOOL bigendian = (endianness == 0x4d4d);
-
-        short align = _getShort(bytes, 2, bigendian);
-        if (align != 0x2a) {
-            return;
-        }
-        
-        long offsetIFD0 = _getLong(bytes, 4, bigendian);
-
-        
-        if (offsetIFD0 && offsetIFD0 != -1) {
-            long offset = [self _readIFD:bytes base:0 offset:offsetIFD0 bigendian:bigendian mode:0];
-            if (offset && offset != -1) {
-                offset = [self _readIFD:bytes base:0 offset:offset bigendian:bigendian mode:1];
+    
+    // promote some TIFF & EXIF keys to the main level (orientation, dpi, pixel size...)
+    id value = [self tagForKey:kTIFF number:kTIFF_TIFFOrientation];
+    if (value) {
+        [self setTagForTypeKey:nil numberKey:@"Orientation" value:value];
+    }
+    
+    // Try to use the EXIF one if none is set by the JFIF block - else, update the EXIF one so
+    // everything is consistent - that's what Quartz is doing
+    value = [self tagForKey:kTIFF number:kTIFF_TIFFXResolution];
+    if (value) {
+        id currentValue = [self tagForTypeKey:nil numberKey:kO2ImagePropertyDPIWidth];
+        if (currentValue == nil) {
+            int unit = [[self tagForKey:kTIFF number:kTIFF_TIFFResolutionUnit] intValue];
+            if (unit == 2 ||  unit == 3) {
+                float dpi = [value floatValue];
+                if (unit == 3) {
+                    // pixels/cm
+                    dpi /= 2.54;
+                }
+                [self setTagForTypeKey:nil numberKey:kO2ImagePropertyDPIWidth value:[NSNumber numberWithFloat:dpi]];
             }
+        } else {
+            // Update the TIFF info
+            [self setTagForType:kTIFF number:kTIFF_TIFFXResolution value:currentValue];
+            // Set the resolution unit to inch
+            [self setTagForType:kTIFF number:kTIFF_TIFFResolutionUnit value:[NSNumber numberWithInt:2]];
         }
-        // promote some TIFF & EXIF keys to the main level (orientation, dpi, pixel size...)
-        id value = [self tagForKey:kTIFF number:kTIFF_TIFFOrientation];
-        if (value) {
-            [self setTagForTypeKey:nil numberKey:@"Orientation" value:value];
+    }
+    
+    value = [self tagForKey:kTIFF number:kTIFF_TIFFYResolution];
+    if (value) {
+        id currentValue = [self tagForTypeKey:0 numberKey:kO2ImagePropertyDPIHeight];
+        if (currentValue == nil) {
+            int unit = [[self tagForKey:kTIFF number:kTIFF_TIFFResolutionUnit] intValue];
+            if (unit == 2 ||  unit == 3) {
+                float dpi = [value floatValue];
+                if (unit == 3) {
+                    // pixels/cm
+                    dpi /= 2.54;
+                }
+                [self setTagForTypeKey:nil numberKey:kO2ImagePropertyDPIHeight value:[NSNumber numberWithFloat:dpi]];
+            }
+        } else {
+            // Update the TIFF info
+            [self setTagForType:kTIFF number:kTIFF_TIFFYResolution value:currentValue];
+            // Set the resolution unit to inch
+            [self setTagForType:kTIFF number:kTIFF_TIFFResolutionUnit value:[NSNumber numberWithInt:2]];
         }
-        value = [self tagForKey:kTIFF number:kTIFF_TIFFXResolution];
-        if (value) {
-            [self setTagForTypeKey:nil numberKey:@"DPIWidth" value:value];
-        }
-        value = [self tagForKey:kTIFF number:kTIFF_TIFFYResolution];
-        if (value) {
-            [self setTagForTypeKey:nil numberKey:@"DPIHeight" value:value];
-        }
-        value = [self tagForKey:kEXIF number:kEXIF_PixelXDimension];
-        if (value) {
-            [self setTagForTypeKey:nil numberKey:@"PixelWidth" value:value];
-        }
-        value = [self tagForKey:kEXIF number:kEXIF_PixelYDimension];
-        if (value) {
-            [self setTagForTypeKey:nil numberKey:@"PixelHeight" value:value];
-        }
+    }
+    
+    value = [self tagForKey:kEXIF number:kEXIF_PixelXDimension];
+    if (value) {
+        [self setTagForTypeKey:nil numberKey:kO2ImagePropertyPixelWidth value:value];
+    }
+    value = [self tagForKey:kEXIF number:kEXIF_PixelYDimension];
+    if (value) {
+        [self setTagForTypeKey:nil numberKey:kO2ImagePropertyPixelHeight value:value];
     }
 }
 

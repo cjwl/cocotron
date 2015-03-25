@@ -21,7 +21,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // - there is no zone support
 
 void *NSAllocateMemoryPages(NSUInteger byteCount) {
-   return malloc(byteCount);
+    void *buffer = malloc(byteCount);
+    if (buffer == NULL) {
+        fprintf(stderr, "NSAllocateMemoryPages(%u) failed. Error: %s\n", byteCount, strerror(errno));
+    }
+    return buffer;
 }
 
 void NSDeallocateMemoryPages(void *pointer,NSUInteger byteCount) {
@@ -61,7 +65,11 @@ NSZone *NSZoneFromPointer(void *pointer){
 }
 
 void *NSZoneCalloc(NSZone *zone,NSUInteger numElems,NSUInteger numBytes){
-   return calloc(numElems,numBytes);
+    void *buffer = calloc(numElems,numBytes);
+    if (buffer == NULL) {
+        fprintf(stderr, "NSZoneCalloc(zone, %u, %u) failed. Error: %s\n", numElems, numBytes, strerror(errno));
+    }
+    return buffer;
 }
 
 void NSZoneFree(NSZone *zone,void *pointer){
@@ -69,11 +77,19 @@ void NSZoneFree(NSZone *zone,void *pointer){
 }
 
 void *NSZoneMalloc(NSZone *zone,NSUInteger size){
-   return malloc(size);
+   void *buffer = malloc(size);
+    if (buffer == NULL) {
+        fprintf(stderr, "NSZoneMalloc(zone, %u) failed. Error: %s\n", size, strerror(errno));
+    }
+    return buffer;
 }
 
 void *NSZoneRealloc(NSZone *zone,void *pointer,NSUInteger size){
-   return realloc(pointer, size);
+    void *buffer = realloc(pointer, size);
+    if (buffer == NULL && size > 0) {
+        fprintf(stderr, "NSZoneRealloc(zone, %p, %u) failed. Error: %s\n", pointer, size, strerror(errno));
+    }
+    return buffer;
 }
 
 static pthread_key_t _NSThreadInstanceKey() {
@@ -110,6 +126,8 @@ NSThread *NSPlatformCurrentThread() {
 
 NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg) {
 	pthread_t thread;
-	pthread_create(&thread, NULL, func, arg);
+	if (pthread_create(&thread, NULL, func, arg) != 0) {
+        perror("pthread_create failed");
+    }
 	return (NSUInteger)thread;
 }

@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMeasurementUnit.h>
 #import <AppKit/NSScrollView.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSBezierPath.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSParagraphStyle.h>
@@ -44,9 +45,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [NSMeasurementUnit registerUnit:[NSMeasurementUnit measurementUnitWithName:name abbreviation:abbreviation pointsPerUnit:conversionFactor stepUpCycle:stepUpCycle stepDownCycle:stepDownCycle]];
 }
 
+- (id)initWithFrame:(NSRect)frame
+{
+    // Stack trace inspection on the Mac side indicates this is how a
+    // ruler is created before being added to a scrollview
+    return [self initWithScrollView: nil orientation: NSHorizontalRuler];
+}
+
 - initWithScrollView:(NSScrollView *)scrollView orientation:(NSRulerOrientation)orientation
 {
-    NSRect frame = [scrollView frame];
+    NSRect frame = NSMakeRect(0, 0, 1, 1);
+    if (scrollView) {
+        frame = [scrollView frame];
+    }
     
     if (orientation == NSHorizontalRuler)
         frame.size.height = DEFAULT_RULE_THICKNESS;
@@ -54,16 +65,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         frame.size.width = DEFAULT_RULE_THICKNESS;
     
     [super initWithFrame:frame];
+    
     _scrollView = [scrollView retain];
     _orientation = orientation;
         
-    _measurementUnit = [NSMeasurementUnit measurementUnitNamed:@"Inches"];
-        
-    [self setRuleThickness:DEFAULT_RULE_THICKNESS];
-    [self setReservedThicknessForMarkers:DEFAULT_MARKER_THICKNESS];
-    [self setReservedThicknessForAccessoryView:0.0];
-        
+    _measurementUnit = [[NSMeasurementUnit measurementUnitNamed:@"Inches"] retain];
+    
+    // Don't invoke the setters - they trigger tiling which can cause recursion if
+    // the scrollview is creating the ruler
+    _ruleThickness = DEFAULT_RULE_THICKNESS;
+    _thicknessForMarkers = DEFAULT_MARKER_THICKNESS;
+    _thicknessForAccessoryView = 0.f;
+    
     _markers = [[NSMutableArray alloc] init];
+    
+    _rulerlineLocations = [[NSMutableArray alloc] init];
     
     [self invalidateHashMarks];
 
@@ -74,8 +90,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [_scrollView release];
     [_accessoryView release];
+    [_measurementUnit release];
     
     [_markers release];
+    [_rulerlineLocations release];
     
     [super dealloc];
 }
@@ -213,7 +231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)setMeasurementUnits:(NSString *)unitName
 {
     [_measurementUnit release];
-    _measurementUnit = [NSMeasurementUnit measurementUnitNamed:unitName];
+    _measurementUnit = [[NSMeasurementUnit measurementUnitNamed:unitName] retain];
 
     [self invalidateHashMarks];
     [[self enclosingScrollView] tile];
@@ -285,7 +303,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (void)moveRulerlineFromLocation:(float)fromLocation toLocation:(float)toLocation
-{
+{    
     NSNumber *old = [NSNumber numberWithFloat:fromLocation];
     NSNumber *new = [NSNumber numberWithFloat:toLocation];
     
@@ -482,16 +500,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else
         rect.size.height = 1;
     
-    float scale = [self _drawingScale];
-    float origin = [self _drawingOrigin];
-    
-    [[NSColor controlHighlightColor] setStroke];
+    [[NSColor controlShadowColor] setStroke];
     for (i = 0; i < count; ++i) {
-        if (_orientation == NSHorizontalRuler)
-            rect.origin.x = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale;
-        else
-            rect.origin.y = origin + [[_rulerlineLocations objectAtIndex:i] floatValue] * scale;
-        NSFrameRect(rect);
+        if (_orientation == NSHorizontalRuler) {
+            rect.origin.x = [[_rulerlineLocations objectAtIndex:i] floatValue] + 0.5;
+            [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMinX(rect), NSMinY(rect))
+                                      toPoint: NSMakePoint(NSMinX(rect), NSMaxY(rect))];
+        }
+        else {
+            rect.origin.y = [[_rulerlineLocations objectAtIndex:i] floatValue] + 0.5;
+            [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMinX(rect), NSMinY(rect))
+                                      toPoint: NSMakePoint(NSMaxX(rect), NSMinY(rect))];
+        }
     }
 }
 

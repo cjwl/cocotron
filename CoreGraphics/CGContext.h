@@ -123,6 +123,7 @@ COREGRAPHICS_EXPORT void CGContextAddEllipseInRect(CGContextRef context,CGRect r
 COREGRAPHICS_EXPORT void CGContextAddPath(CGContextRef context,CGPathRef path);
 
 COREGRAPHICS_EXPORT void CGContextReplacePathWithStrokedPath(CGContextRef context);
+COREGRAPHICS_EXPORT CGPathRef CGContextCopyPath(CGContextRef context);
 
 // gstate
 
@@ -257,3 +258,4 @@ COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
 COREGRAPHICS_EXPORT CFDataRef CGContextCaptureBitmap(CGContextRef context,CGRect rect);
 COREGRAPHICS_EXPORT void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState);
 COREGRAPHICS_EXPORT bool CGContextSupportsGlobalAlpha(CGContextRef context);
+COREGRAPHICS_EXPORT bool CGContextIsBitmapContext(CGContextRef context);

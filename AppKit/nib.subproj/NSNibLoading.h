@@ -10,6 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // clang has these as builtins, guard against that
 #ifndef IBOutlet
+#if 0
+#define NIBDEBUG(desc, ...) do { NSString *location = [NSString stringWithFormat: @"%s %ld", __FILE__, (long)__LINE__]; NSString *msg = [NSString stringWithFormat: desc, ##__VA_ARGS__]; NSLog(@"%@: %@", location, msg); } while(0)
+#else
+#define NIBDEBUG(desc, ...)
+#endif
 #define IBOutlet
 #endif
 

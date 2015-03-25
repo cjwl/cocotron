@@ -15,16 +15,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSEnumerator_set *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table) {
    NSEnumerator_set *self=NSAllocateObject([NSEnumerator_set class],0,zone);
+    if (self) {
+       self->_set=[set retain];
+       self->_table=table;
+       self->_index=0;
+       self->_bucket=NULL;
 
-   self->_set=[set retain];
-   self->_table=table;
-   self->_index=0;
-   self->_bucket=NULL;
-
-   for(;self->_index<self->_table->numBuckets;self->_index++)
-    if((self->_bucket=self->_table->buckets[self->_index])!=NULL)
-     break;
-
+       for(;self->_index<self->_table->numBuckets;self->_index++)
+        if((self->_bucket=self->_table->buckets[self->_index])!=NULL)
+         break;
+    }
    return self;
 }
 

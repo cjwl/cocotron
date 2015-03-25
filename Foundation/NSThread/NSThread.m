@@ -71,7 +71,8 @@ static NSThread* mainThread = nil;
 }
 
 #ifdef WINDOWS
-static  unsigned __stdcall nsThreadStartThread(void* t)
+// Be sure the stack is aligned in case the thread wants to do exotic things like SSE2
+static  __attribute__((force_align_arg_pointer)) unsigned __stdcall nsThreadStartThread(void* t)
 #else
 static void *nsThreadStartThread(void* t)
 #endif

@@ -134,7 +134,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (NSArray *)sortDescriptors
 {
-	return _sortDescriptors;
+	return [[_sortDescriptors retain] autorelease];
 }
 
 #pragma mark -
@@ -163,7 +163,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)arrangedObjects
 {
-	return _arrangedObjects;
+	return [[_arrangedObjects retain] autorelease];
 }
 
 -(void)rearrangeObjects
@@ -171,7 +171,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[self _selectionWillChange];
 	
 	// We may need to restore selection
-	NSArray* selectedObjects = [[self selectedObjects] retain];
+	NSArray* selectedObjects = [self selectedObjects];
 
 	// Arrange the content
 	NSArray* arrangedObjects = [self arrangeObjects:[self _contentArray]];
@@ -339,7 +339,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (NSIndexSet *)selectionIndexes
 {
-    return _selectionIndexes;
+    return [[_selectionIndexes retain] autorelease];
 }
 
 - (BOOL)addSelectionIndexes:(NSIndexSet *)indices
@@ -656,7 +656,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (NSPredicate *)filterPredicate
 {
-   return _filterPredicate;
+   return [[_filterPredicate retain] autorelease];
 }
 
 - (void)setFilterPredicate:(NSPredicate *)value

@@ -14,10 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSEnumerator *NSEnumerator_arrayNew(NSArray *array) {
    NSEnumerator_array *self=NSAllocateObject([NSEnumerator_array class],0,NULL);
-
-   self->_index=0;
-   self->_array=[array retain];
-
+    if (self) {
+       self->_index=0;
+       self->_array=[array retain];
+    }
    return self;
 }
 

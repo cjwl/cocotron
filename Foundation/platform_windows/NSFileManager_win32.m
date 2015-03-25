@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_win32.h>
 #import <Foundation/NSString_win32.h>
 
+#include <sys/stat.h>
 #include <windows.h>
 #include <shlobj.h>
 #include <objbase.h>
@@ -686,8 +687,8 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
    if(path == nil) {
     return NO;
    }
-   
-   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
+
+    DWORD attributes=GetFileAttributesW([self fileSystemRepresentationWithPathW:path]);
 
    if(attributes==0xFFFFFFFF)
     return NO;
@@ -696,19 +697,6 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
     *isDirectory=(attributes&FILE_ATTRIBUTE_DIRECTORY)?YES:NO;
 
    return YES;
-#if 0
-   struct stat buf;
-
-   *isDirectory=NO;
-
-   if(stat([path fileSystemRepresentationW],&buf)<0)
-    return NO;
-
-   if((buf.st_mode&S_IFMT)==S_IFDIR)
-    *isDirectory=YES;
-
-   return YES;
-#endif
 }
 
 

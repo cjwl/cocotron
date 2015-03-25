@@ -40,13 +40,46 @@ typedef struct name_records_t {
 	uint16_t	offset;
 } name_records_t;
 
-// Fill the name mapping dictionaries with the longFont face info
-static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
+// Fill the name mapping dictionaries with the logFont face info
+static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, HDC dc)
 {
-	HFONT font = CreateFontIndirectW(&longFont->elfLogFont);
+    // Create a HFONT from the logFont so we can get the font tables we need to parse to get the PS name of the font
+    // Use CreateFontW, not CreateFontIndirectW with the received logFont
+    // For some mysterious reason, CreateFontIndirectW is returning the wrong font for some faces like "Minya Nouvelle Italic"
+    // (the Regular version is returned instead)
+    HFONT font = CreateFontW(0,0,0,0,
+                             FW_NORMAL,
+                             FALSE,
+                             FALSE,
+                             FALSE,
+                             DEFAULT_CHARSET,
+                             OUT_DEFAULT_PRECIS,
+                             CLIP_DEFAULT_PRECIS,
+                             DEFAULT_QUALITY,
+                             DEFAULT_PITCH|FF_DONTCARE,
+                             logFont->elfFullName);
+
 	if (font) {
+        // Ignore fonts for which we can't get a full name
+        if (logFont->elfFullName == NULL) {
+            if (logFont->elfLogFont.lfFaceName) {
+                NSLog(@"NULL full name for face name %S", logFont->elfLogFont.lfFaceName);
+            } else {
+                NSLog(@"NULL full name");
+            }
+        }
+        
 		// Get the full face name - on Win8, this is a localized name
-		NSString *winName = [NSString stringWithFormat:@"%S", longFont->elfFullName];
+		NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfFullName];
+        if (winName.length == 0) {
+            if (logFont->elfLogFont.lfFaceName) {
+                NSLog(@"Empty full name for face name %S", logFont->elfLogFont.lfFaceName);
+            } else {
+                NSLog(@"Empty full name");
+            }
+            return 1;
+        }
+        
         // Font name starting with "@" are rotated versions of the font, for vertical rendering
         // We don't want them - the are polluting our font list + they have the same PS name
         // as the normal ones, leading to confusion in our font picking algo
@@ -54,14 +87,19 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
             return 1;
         }
         
-		SelectObject(dc, font);
+        HGDIOBJ selectedObject = SelectObject(dc, font);
+		if (selectedObject == HGDI_ERROR) {
+            NSLog(@"Error selecting %@", winName);
+            return 1;
+        }
 
 		// Get the PS name for the font...
 		DWORD bufferSize = GetFontData(dc, CFSwapInt32HostToBig('name'), 0, NULL, 0);
 		if (bufferSize >= 6 && bufferSize != GDI_ERROR) {
 			uint8_t buffer[bufferSize];
+            bzero(buffer, 6);
 			if (GetFontData(dc, CFSwapInt32HostToBig('name'), 0, buffer, bufferSize) != GDI_ERROR) {
-				name_table_header_t *header = (name_table_header_t *)buffer;
+                name_table_header_t *header = (name_table_header_t *)buffer;
 				uint16_t count = CFSwapInt16BigToHost(header->count);
 				uint16_t stringsOffset = CFSwapInt16BigToHost(header->stringOffset);
 				if (bufferSize > stringsOffset) {
@@ -126,7 +164,13 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 									// Win PS name - unicode encoding
 									NSString *name = [[[NSString alloc] initWithBytes:strings + offset length:length encoding:NSUnicodeStringEncoding] autorelease];
 									if ([name length]) {
-										[sPSToWin32Table setObject:winName forKey:name];
+                                        // It seems some users have some corrupted font table - NEVER replace Arial fonts with something
+                                        // which isn't some kind of arial
+                                        if (!([name hasPrefix:@"Arial"] && [winName rangeOfString:@"Arial"].location == NSNotFound)) {
+                                            [sPSToWin32Table setObject:winName forKey:name];
+                                        } else {
+                                            NSLog(@"Skipping matching %@ with %@", name, winName);
+                                        }
 										[sWin32ToPSTable setObject:name forKey:winName];
                                         if (fontNameUS) {
                                             // Add the US font name -> PS mapping
@@ -138,14 +182,20 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 									// Mac PS name - ASCII
 									NSString *name = [NSString stringWithCString:strings + offset length:length];
 									if ([name length]) {
-										[sPSToWin32Table setObject:winName forKey:name];
+                                        // It seems some users have some corrupted font table - NEVER replace Arial fonts with something
+                                        // which isn't some kind of arial
+                                        if (!([name hasPrefix:@"Arial"] && [winName rangeOfString:@"Arial"].location == NSNotFound)) {
+                                            [sPSToWin32Table setObject:winName forKey:name];
+                                        } else {
+                                            NSLog(@"Skipping matching %@ with %@", name, winName);
+                                        }
 										[sWin32ToPSTable setObject:name forKey:winName];
                                         if (fontNameUS) {
                                             // Add the US font name -> PS mapping
                                             [sWin32ToPSTable setObject:name forKey:fontNameUS];
                                         }
 									}
-                                    break;
+                                   break;
 								}
 							}
 						}
@@ -153,14 +203,15 @@ static int CALLBACK EnumFontFromFamilyCallBack(const EXTLOGFONTW* longFont,const
 				}
 			}
 		}
+        SelectObject(dc, selectedObject);
 		DeleteObject(font);
 	}
 	return 1;
 }
 
-// Add the longFont family to the list of known families
+// Add the logFont family to the list of known families
 static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics, DWORD ignored, LPARAM p) {
-	NSMutableArray *families = (NSMutableArray *)p;
+	NSMutableSet *families = (NSMutableSet *)p;
 	NSString *winName = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
 
 	[families addObject:winName];
@@ -174,10 +225,10 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 	sWin32ToPSTable = [[NSMutableDictionary alloc] initWithCapacity:100];
     
 	// Get a list of all of the families
-	NSMutableArray *families = [NSMutableArray arrayWithCapacity:100];
-    LOGFONTW logFont = { 0 };
-    
-    logFont.lfCharSet=DEFAULT_CHARSET;
+	NSMutableSet *families = [NSMutableSet setWithCapacity:100];
+	LOGFONTW logFont = { 0 };
+	
+	logFont.lfCharSet=DEFAULT_CHARSET;
 	EnumFontFamiliesExW(dc,&logFont,(FONTENUMPROCW)EnumFamiliesCallBackW,(LPARAM)families,0);
 	for (NSString *familyName in families) {
 		// Enum all of the faces for that family
@@ -191,6 +242,19 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 		EnumFontFamiliesExW(dc, &logFont, (FONTENUMPROCW)EnumFontFromFamilyCallBack, (LPARAM)dc, 0); 
 	}
 	ReleaseDC(NULL,dc);
+    
+    // Ensure we have some Arial mapping
+    if ([sPSToWin32Table objectForKey:@"ArialMT"] == nil) {
+        NSLog(@"Forcing ArialMT -> Arial mapping");
+        [sPSToWin32Table setObject:@"Arial" forKey:@"ArialMT"];
+    }
+    if ([sWin32ToPSTable objectForKey:@"Arial"] == nil) {
+        NSLog(@"Forcing Arial -> ArialMT mapping");
+        [sWin32ToPSTable setObject:@"ArialMT" forKey:@"Arial"];
+    }
+    
+    O2FontLog(@"Postcript to Win32 Table: %@", sPSToWin32Table);
+    O2FontLog(@"\n\nsWin32 to Postscript Table: %@", sWin32ToPSTable);
 }
 
 
@@ -204,6 +268,7 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 		}
 		name = [sPSToWin32Table objectForKey:psName];
 		if (name == nil) {
+            O2FontLog(@"failed to find native font for postscript name: %@", psName);
 			name = psName;
 		}
 	}
@@ -272,18 +337,24 @@ static int CALLBACK EnumFamiliesCallBackW(const EXTLOGFONTW* logFont,const TEXTM
 
 static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    const unichar *wideName=(const unichar *)[name cStringUsingEncoding:NSUnicodeStringEncoding];
-   return CreateFontW(-unitsPerEm,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,wideName);
+    O2FontLog(@"Creating font with name: %@ unitsPerEm: %d", name, unitsPerEm);
+   HFONT result = CreateFontW(-unitsPerEm,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,wideName);
+    if (result == NULL) {
+        O2FontLog(@"CreateFontW failed");
+    }
+    return result;
 }
 
--initWithFontName:(NSString *)name {
+-initWithFontName:(NSString *) name {
    if(name==nil){
     [self release];
     return nil;
    }
 	
-	name = [O2Font nativeFontNameForPostscriptName:name];
-	_name=[name copy];
+	NSString *nativeName = [O2Font nativeFontNameForPostscriptName:name];
+	_name=[nativeName copy];
 	
+    O2FontLog(@"name: %@ mapped to: %@", name, _name);
    _platformType=O2FontPlatformTypeGDI;
 
    HDC dc=GetDC(NULL);
@@ -297,7 +368,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 // 2048 is a common TrueType em square, so we try that first, and if the font is not TrueType, maybe we'll get some decent metrics with a big size.
    _unitsPerEm=2048;
    
-   HFONT           font=Win32FontHandleWithName(name,_unitsPerEm);
+   HFONT           font=Win32FontHandleWithName(_name,_unitsPerEm);
    TEXTMETRIC      gdiMetrics;
 
    if(font==NULL){
@@ -311,8 +382,9 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
 	unichar wideName[128];
 	GetTextFaceW(dc, 128, wideName);
 	NSString *textFace = [NSString stringWithFormat:@"%S", wideName];
-	if (![textFace isEqualToString:name]) {
+	if (![textFace isEqualToString:_name]) {
 		// That's not the expected font - let's fail
+        O2FontLog(@"textFace: %@ doesn't match name: %@", textFace, _name);
 		DeleteObject(font);
 		ReleaseDC(NULL,dc);
 		[self release];
@@ -343,7 +415,6 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
      if(ttMetrics->otmEMSquare!=_unitsPerEm){
       // if our first try didn't have the typical em square, recreate using the em square 
       LOGFONT logFont;
-      
       GetObject(font,sizeof(logFont),&logFont);
       logFont.lfHeight=-ttMetrics->otmEMSquare;
       logFont.lfWidth=0;
@@ -361,19 +432,24 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
       _unitsPerEm=ttMetrics->otmEMSquare;
       
 	  // Don't use the magic pointSize scaling formula on these font (UI fonts) 
-      if([name isEqualToString:@"Marlett"] || [name isEqualToString:@"Segoe UI"] || [name isEqualToString:@"Tahoma"]){
+      if([_name isEqualToString:@"Marlett"] || [_name isEqualToString:@"Segoe UI"] || [_name isEqualToString:@"Tahoma"]){
        _useMacMetrics=NO;
-       _ascent=ttMetrics->otmAscent;
-       _descent=ttMetrics->otmDescent;
-       _leading=ttMetrics->otmLineGap;
       }
       else {
        _useMacMetrics=YES;
-       _ascent=ttMetrics->otmMacAscent;
-       _descent=ttMetrics->otmMacDescent;
-       _leading=ttMetrics->otmMacLineGap;
       }
-      
+
+         if (_useMacMetrics) {
+             _ascent=ttMetrics->otmMacAscent;
+             _descent=ttMetrics->otmMacDescent;
+             _leading=ttMetrics->otmMacLineGap;
+         } else {
+             _ascent=ttMetrics->otmAscent;
+             _descent=ttMetrics->otmDescent;
+             _leading=ttMetrics->otmLineGap;
+         }
+
+
       _capHeight=ttMetrics->otmsCapEmHeight;
       _xHeight=ttMetrics->otmsXHeight;
       _italicAngle=ttMetrics->otmItalicAngle;
@@ -463,11 +539,11 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     for(i=max;--i>=0;){
      O2Glyph glyph=glyphs[i];
      
-     if(glyph<_numberOfGlyphs)
-      _advances[glyph]=abc[i].abcfA+abc[i].abcfB+abc[i].abcfC;
+        if(glyph<_numberOfGlyphs) {
+            _advances[glyph]=abc[i].abcfA+abc[i].abcfB+abc[i].abcfC;
+        }
     }
    }
-   
    DeleteObject(font);
    ReleaseDC(NULL,dc);
 }
@@ -510,20 +586,26 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     return _coveredCharSet;
 }
 
+-(float)nativeSizeForSize:(float)size
+{
+    if(_useMacMetrics){
+        if (size <= 10.0)
+            size=size;
+        else if (size < 20.0)
+            size=size/(1.0 + 0.2*sqrtf(0.0390625*(size - 10.0)));
+        else
+            size=size/1.125;
+    }
+    return size;
+}
+
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize {
 	return [self createGDIFontSelectedInDC:dc pointSize:pointSize angle:0.];
 }
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize angle:(CGFloat)angle {
-   if(_useMacMetrics){
-    if (pointSize <= 10.0)
-		pointSize=pointSize;
-    else if (pointSize < 20.0)
-       pointSize=pointSize/(1.0 + 0.2*sqrtf(0.0390625*(pointSize - 10.0)));
-    else
-       pointSize=pointSize/1.125;
-   }
-   int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
+    pointSize = [self nativeSizeForSize:pointSize];
+    int        height=(pointSize*FONT_DPI(dc))/72.0;
 	Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:YES angle: angle];
    
    SelectObject(dc,[result fontHandle]);
@@ -653,6 +735,11 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    }
    
    return nil;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat: @"%@ name: %@", [super description], _name];
 }
 
 @end

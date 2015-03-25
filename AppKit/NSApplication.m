@@ -284,6 +284,25 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
+-(void)unregisterDelegate {
+    if([_delegate respondsToSelector:@selector(applicationWillFinishLaunching:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name:NSApplicationWillFinishLaunchingNotification object:self];
+    }
+    if([_delegate respondsToSelector:@selector(applicationDidFinishLaunching:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name:NSApplicationDidFinishLaunchingNotification object:self];
+    }
+    if([_delegate respondsToSelector:@selector(applicationDidBecomeActive:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name: NSApplicationDidBecomeActiveNotification object:self];
+    }
+    if([_delegate respondsToSelector:@selector(applicationWillTerminate:)]){
+        [[NSNotificationCenter defaultCenter] removeObserver:_delegate
+                                                     name: NSApplicationWillTerminateNotification object:self];
+    }
+}
+
 -(void)registerDelegate {
     if([_delegate respondsToSelector:@selector(applicationWillFinishLaunching:)]){
      [[NSNotificationCenter defaultCenter] addObserver:_delegate
@@ -309,8 +328,11 @@ id NSApp=nil;
 }
 
 -(void)setDelegate:delegate {
-   _delegate=delegate;
-   [self registerDelegate];
+    if (delegate != _delegate) {
+        [self unregisterDelegate];
+        _delegate=delegate;
+        [self registerDelegate];
+    }
 }
 
 -(void)setMainMenu:(NSMenu *)menu {
@@ -486,11 +508,14 @@ id NSApp=nil;
 
     if([check retainCount]==1){
     
-     if(check==_keyWindow)
-      _keyWindow=nil;
+        // Use the setters here - give a chance to the observer to notice something happened
+        if(check==_keyWindow) {
+            [self _setKeyWindow:nil];
+        }
       
-     if(check==_mainWindow)
-      _mainWindow=nil;
+        if(check==_mainWindow) {
+            [self _setMainWindow:nil];
+        }
       
      [_windows removeObjectAtIndex:count];
    }
@@ -556,12 +581,14 @@ id NSApp=nil;
 }
 
 -(BOOL)_performKeyEquivalent:(NSEvent *)event {
-   if([[self mainMenu] performKeyEquivalent:event])
-    return YES;
-   if([[self keyWindow] performKeyEquivalent:event])
-    return YES;
-   if([[self mainWindow] performKeyEquivalent:event])
-    return YES;
+    if (event.charactersIgnoringModifiers.length > 0) {
+        if([[self mainMenu] performKeyEquivalent:event])
+            return YES;
+        if([[self keyWindow] performKeyEquivalent:event])
+            return YES;
+        if([[self mainWindow] performKeyEquivalent:event])
+            return YES;
+    }
 // documentation says to send it to all windows
    return NO;
 }
@@ -909,6 +936,14 @@ id NSApp=nil;
     NSSheetContext *context=[NSSheetContext sheetContextWithSheet:sheet modalDelegate:modalDelegate didEndSelector:didEndSelector contextInfo:contextInfo frame:[sheet frame]];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"NSRunAllSheetsAsModalPanel"]) {
+        // Center the sheet on the window
+        NSPoint windowCenter = NSMakePoint(NSMidX([window frame]), NSMidY([window frame]));
+        NSPoint sheetCenter = NSMakePoint(NSMidX([sheet frame]), NSMidY([sheet frame]));
+        NSPoint origin = [sheet frame].origin;
+        origin.x += windowCenter.x - sheetCenter.x;
+        origin.y += windowCenter.y - sheetCenter.y;
+        [sheet setFrameOrigin:origin];
+        
 		[sheet _setSheetContext: context];
 		[sheet setLevel: NSModalPanelWindowLevel];
 		NSModalSession session = [self beginModalSessionForWindow: sheet];

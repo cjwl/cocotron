@@ -45,6 +45,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSDraggingManager *)draggingManager;
 
+/** Some Win32 fonts are not playing nice when auto-detected - Arial in particular */
+-(void)forceLoadOfFontsAtPaths:(NSArray *)paths;
+
 -(void)invalidateSystemColors;
 -(NSColor *)colorWithName:(NSString *)colorName;
 

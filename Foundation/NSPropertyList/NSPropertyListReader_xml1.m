@@ -87,8 +87,17 @@ NSDate* NSDateFromPlistString(NSString* string)
 
 +(NSData *)dataFromBase64String:(NSString *)string {
    NSUInteger      i,length=[string length],resultLength=0;
-   unichar       buffer[length];
-   uint8_t result[length];
+    unichar       *buffer = NSZoneMalloc(NULL, sizeof(unichar)*length);
+    if (buffer == NULL) {
+        NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
+        return nil;
+    }
+   uint8_t       *result = NSZoneMalloc(NULL, sizeof(uint8_t)*length);
+    if (result == NULL) {
+        NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
+        NSZoneFree(NULL, buffer);
+        return nil;        
+    }
    uint8_t partial=0;
    enum { load6High, load2Low, load4Low, load6Low } state=load6High;
 
@@ -142,9 +151,8 @@ NSDate* NSDateFromPlistString(NSString* string)
       break;
     }
    }
-
-
-   return [NSData dataWithBytes:result length:resultLength];
+    NSZoneFree(NULL, buffer);
+   return [NSData dataWithBytesNoCopy:result length:resultLength freeWhenDone:YES];
 }
 
 +(NSData *)dataFromElement:(NSOldXMLElement *)element {

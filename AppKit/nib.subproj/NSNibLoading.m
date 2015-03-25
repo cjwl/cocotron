@@ -25,6 +25,8 @@
 
 +(BOOL)loadNibFile:(NSString *)path externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone {
 	
+    NIBDEBUG(@"+ loadNibFile: '%@' externalNameTable: withZone:", path);
+    
 	NSAutoreleasePool *pool=[NSAutoreleasePool new];
 	NSNib *nib=[[[NSNib allocWithZone:zone] initWithContentsOfFile:path] autorelease];
 
@@ -36,6 +38,8 @@
 
 +(BOOL)loadNibNamed:(NSString *)name owner:owner 
 {
+    NIBDEBUG(@"+ loadNibNamed: '%@'", name);
+    
 	NSDictionary *nameTable=[NSDictionary dictionaryWithObject:owner forKey:NSNibOwner];
 	NSBundle     *bundle=[NSBundle bundleForClass:[owner class]];
 	return [bundle loadNibFile:name externalNameTable:nameTable withZone: NSDefaultMallocZone()];
@@ -44,6 +48,8 @@
 -(BOOL)loadNibFile:(NSString *)fileName externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone {
 	NSAutoreleasePool *pool=[NSAutoreleasePool new];
 	
+    NIBDEBUG(@"- loadNibNamed: '%@' externalNameTable: withZone:", fileName);
+    
 	NSString* path = nil;
 	// Build a full path if it's not yet
 	if ([[fileName stringByDeletingLastPathComponent] length] == 0) {

@@ -8,6 +8,7 @@ typedef struct O2ImageDestination *CGImageDestinationRef;
 
 COREGRAPHICS_EXPORT const CFStringRef kCGImageDestinationLossyCompressionQuality;
 COREGRAPHICS_EXPORT const CFStringRef kCGImageDestinationBackgroundColor;
+COREGRAPHICS_EXPORT const CFStringRef kCGImageDestinationDPI;
 
 COREGRAPHICS_EXPORT CFTypeID CGImageDestinationGetTypeID(void);
 

@@ -15,12 +15,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/NSAutoreleasePool-private.h>
 
 #import <objc/runtime.h>
 #import <Foundation/objc_size_alignment.h>
 #import <objc/objc.h>
 #include <ctype.h>
 #include <assert.h>
+#include <string.h>
 
 typedef void (*NSLogCStringFunc)(const char *string, unsigned length, BOOL withSyslogBanner);
 
@@ -123,7 +125,7 @@ SEL NSSelectorFromString(NSString *selectorName) {
    NSUInteger length=[selectorName length];
    char     cString[length+1];
 
-   [selectorName getCString:cString maxLength:length];
+   [selectorName getCString:cString maxLength:length+1 encoding:NSASCIIStringEncoding];
 
    return sel_getUid(cString);
 }
@@ -132,7 +134,8 @@ NSString *NSStringFromSelector(SEL selector) {
    if(selector==NULL)
     return @"";
 
-   return NSString_cStringWithBytesAndZero(NULL,sel_getName(selector));
+    const char *name = sel_getName(selector);
+    return NSAutorelease(NSString_anyCStringNewWithBytes(NSASCIIStringEncoding, NULL,name, strlen(name)));
 }
 
 Class NSClassFromString(NSString *className) {
@@ -140,7 +143,7 @@ Class NSClassFromString(NSString *className) {
     NSUInteger length=[className length];
     char     cString[length+1];
 
-    [className getCString:cString maxLength:length];
+    [className getCString:cString maxLength:length+1 encoding:NSASCIIStringEncoding];
 
     return objc_lookUpClass(cString);
    }
@@ -152,6 +155,7 @@ NSString *NSStringFromClass(Class class) {
    if(class==Nil)
     return nil;
 
-   return NSString_cStringWithBytesAndZero(NULL,class_getName(class));
+    const char *name = class_getName(class);
+    return NSAutorelease(NSString_anyCStringNewWithBytes(NSASCIIStringEncoding, NULL,name, strlen(name)));
 }
 

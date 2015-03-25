@@ -13,11 +13,13 @@
 #include <agg_blur.h>
 
 // Adapted from stack_blur_rgba32 to allow partial blurring - blame the original for the lack of comments
+// Actually just use the alpha value since this function is used to cast shadows
+// So we blur the alpha channel of the image, and applied the blured alpha to the "r,g,b,a" color parameter
 namespace agg
 {
 	//======================================================= partial_stack_blur_rgba32
-    template<class Img> 
-    void partial_stack_blur_rgba32(Img& img, unsigned rx, unsigned ry, unsigned startX, unsigned endX, unsigned startY, unsigned endY)
+    template<class Img>
+    void partial_stack_blur_rgba32(Img& img, unsigned radius, unsigned startX, unsigned endX, unsigned startY, unsigned endY, float r, float g, float b, float globalalpha)
     {
 		if (startX >= endX || startY >= endY) {
 			// Nothing to do
@@ -34,7 +36,10 @@ namespace agg
 
         typedef typename Img::color_type color_type;
         typedef typename Img::order_type order_type;
-        enum order_e 
+        typedef typename Img::value_type value_type;
+        typedef typename Img::calc_type calc_type;
+
+        enum order_e
         { 
             R = order_type::R, 
             G = order_type::G, 
@@ -48,19 +53,10 @@ namespace agg
 		
         const int8u* src_pix_ptr;
 		int8u* dst_pix_ptr;
-        color_type*  stack_pix_ptr;
+        value_type*  stack_pix_ptr;
 		
-        unsigned sum_r;
-        unsigned sum_g;
-        unsigned sum_b;
         unsigned sum_a;
-        unsigned sum_in_r;
-        unsigned sum_in_g;
-        unsigned sum_in_b;
         unsigned sum_in_a;
-        unsigned sum_out_r;
-        unsigned sum_out_g;
-        unsigned sum_out_b;
         unsigned sum_out_a;
 		
         unsigned w   = endX;
@@ -72,92 +68,85 @@ namespace agg
         unsigned mul_sum;
         unsigned shr_sum;
 		
-        pod_vector<color_type> stack;
+        pod_vector<value_type> stack;
 		
-        if(rx > 0)
+        if(radius > 0)
         {
-            if(rx > 254) rx = 254;
-            div = rx * 2 + 1;
-            mul_sum = stack_blur_tables<int>::g_stack_blur8_mul[rx];
-            shr_sum = stack_blur_tables<int>::g_stack_blur8_shr[rx];
+            const color_type fillColor = color_type(color_type::base_mask*r, color_type::base_mask*g, color_type::base_mask*b, color_type::base_mask*globalalpha).premultiply();
+            const color_type clearColor(0, 0, 0, 0);
+            
+            calc_type sr = fillColor.r;
+            calc_type sg = fillColor.g;
+            calc_type sb = fillColor.b;
+            calc_type sa = fillColor.a;
+            
+            if(radius > 254) radius = 254;
+            div = radius * 2 + 1; // center pixels + radius blur on both side
+            mul_sum = stack_blur_tables<int>::g_stack_blur8_mul[radius];
+            shr_sum = stack_blur_tables<int>::g_stack_blur8_shr[radius];
             stack.allocate(div);
 			
+            // Horizontal bluring
             for(y = startY; y < endY; y++)
             {
-                sum_r = 
-                sum_g = 
-                sum_b = 
                 sum_a = 
-                sum_in_r = 
-                sum_in_g = 
-                sum_in_b = 
                 sum_in_a = 
-                sum_out_r = 
-                sum_out_g = 
-                sum_out_b = 
                 sum_out_a = 0;
 				
                 src_pix_ptr = img.pix_ptr(startX, y);
-                for(i = 0; i <= rx; i++)
+                for(i = 0; i <= radius; i++)
                 {
                     stack_pix_ptr    = &stack[i];
-                    stack_pix_ptr->r = src_pix_ptr[R];
-                    stack_pix_ptr->g = src_pix_ptr[G];
-                    stack_pix_ptr->b = src_pix_ptr[B];
-                    stack_pix_ptr->a = src_pix_ptr[A];
-                    sum_r           += src_pix_ptr[R] * (i + 1);
-                    sum_g           += src_pix_ptr[G] * (i + 1);
-                    sum_b           += src_pix_ptr[B] * (i + 1);
-                    sum_a           += src_pix_ptr[A] * (i + 1);
-                    sum_out_r       += src_pix_ptr[R];
-                    sum_out_g       += src_pix_ptr[G];
-                    sum_out_b       += src_pix_ptr[B];
-                    sum_out_a       += src_pix_ptr[A];
+                    value_type a = src_pix_ptr[A];
+                    *stack_pix_ptr = a;
+                    sum_out_a       += a;
+                    sum_a           += a * (i + 1);
                 }
-                for(i = 1; i <= rx; i++)
+                for(i = 1; i <= radius; i++)
                 {
                     if(i <= wm) src_pix_ptr += Img::pix_width; 
-                    stack_pix_ptr = &stack[i + rx];
-                    stack_pix_ptr->r = src_pix_ptr[R];
-                    stack_pix_ptr->g = src_pix_ptr[G];
-                    stack_pix_ptr->b = src_pix_ptr[B];
-                    stack_pix_ptr->a = src_pix_ptr[A];
-                    sum_r           += src_pix_ptr[R] * (rx + 1 - i);
-                    sum_g           += src_pix_ptr[G] * (rx + 1 - i);
-                    sum_b           += src_pix_ptr[B] * (rx + 1 - i);
-                    sum_a           += src_pix_ptr[A] * (rx + 1 - i);
-                    sum_in_r        += src_pix_ptr[R];
-                    sum_in_g        += src_pix_ptr[G];
-                    sum_in_b        += src_pix_ptr[B];
-                    sum_in_a        += src_pix_ptr[A];
+                    stack_pix_ptr = &stack[i + radius];
+                    value_type a = src_pix_ptr[A];
+                    *stack_pix_ptr = a;
+                    sum_in_a        += a;
+                    sum_a           += a * (radius + 1 - i);
                 }
 				
-                stack_ptr = rx;
-                xp = rx + startX;
+                stack_ptr = radius;
+                xp = radius + startX;
                 if(xp > wm) xp = wm;
                 src_pix_ptr = img.pix_ptr(xp, y);
                 dst_pix_ptr = img.pix_ptr(startX, y);
                 for(x = startX; x < endX; x++)
                 {
-                    dst_pix_ptr[R] = (sum_r * mul_sum) >> shr_sum;
-                    dst_pix_ptr[G] = (sum_g * mul_sum) >> shr_sum;
-                    dst_pix_ptr[B] = (sum_b * mul_sum) >> shr_sum;
-                    dst_pix_ptr[A] = (sum_a * mul_sum) >> shr_sum;
+                    value_type alpha = (sum_a * mul_sum) >> shr_sum;
+
+                    // If we are going to push more A with the same currently blurred value, we won't change
+                    // anything - just go to the next one
+                    if (alpha == src_pix_ptr[A]) {
+                        if (xp >= wm) {
+                            break;
+                        }
+                        if ((src_pix_ptr + Img::pix_width)[A] == alpha) {
+                            src_pix_ptr += Img::pix_width;
+                            dst_pix_ptr += Img::pix_width;
+                            ++xp;
+                            continue;
+                        }
+                    }
+                    // We just need to store the alpha blured horizontally
+                    // The final vertical bluring will store the final value
+                    dst_pix_ptr[A] = alpha;
+
                     dst_pix_ptr += Img::pix_width;
 					
-                    sum_r -= sum_out_r;
-                    sum_g -= sum_out_g;
-                    sum_b -= sum_out_b;
                     sum_a -= sum_out_a;
 					
-                    stack_start = stack_ptr + div - rx;
+                    stack_start = stack_ptr + div - radius;
                     if(stack_start >= div) stack_start -= div;
                     stack_pix_ptr = &stack[stack_start];
 					
-                    sum_out_r -= stack_pix_ptr->r;
-                    sum_out_g -= stack_pix_ptr->g;
-                    sum_out_b -= stack_pix_ptr->b;
-                    sum_out_a -= stack_pix_ptr->a;
+                    sum_out_a -= *stack_pix_ptr;
 					
                     if(xp < wm) 
                     {
@@ -165,121 +154,92 @@ namespace agg
                         ++xp;
                     }
 					
-                    stack_pix_ptr->r = src_pix_ptr[R];
-                    stack_pix_ptr->g = src_pix_ptr[G];
-                    stack_pix_ptr->b = src_pix_ptr[B];
-                    stack_pix_ptr->a = src_pix_ptr[A];
+                    value_type a = src_pix_ptr[A];
+
+                    *stack_pix_ptr = a;
 					
-                    sum_in_r += src_pix_ptr[R];
-                    sum_in_g += src_pix_ptr[G];
-                    sum_in_b += src_pix_ptr[B];
-                    sum_in_a += src_pix_ptr[A];
-                    sum_r    += sum_in_r;
-                    sum_g    += sum_in_g;
-                    sum_b    += sum_in_b;
+                    sum_in_a += a;
                     sum_a    += sum_in_a;
 					
                     ++stack_ptr;
                     if(stack_ptr >= div) stack_ptr = 0;
                     stack_pix_ptr = &stack[stack_ptr];
 					
-                    sum_out_r += stack_pix_ptr->r;
-                    sum_out_g += stack_pix_ptr->g;
-                    sum_out_b += stack_pix_ptr->b;
-                    sum_out_a += stack_pix_ptr->a;
-                    sum_in_r  -= stack_pix_ptr->r;
-                    sum_in_g  -= stack_pix_ptr->g;
-                    sum_in_b  -= stack_pix_ptr->b;
-                    sum_in_a  -= stack_pix_ptr->a;
+                    a = *stack_pix_ptr;
+                    sum_out_a += a;
+                    sum_in_a  -= a;
                 }
             }
-        }
-		
-        if(ry > 0)
-        {
-            if(ry > 254) ry = 254;
-            div = ry * 2 + 1;
-            mul_sum = stack_blur_tables<int>::g_stack_blur8_mul[ry];
-            shr_sum = stack_blur_tables<int>::g_stack_blur8_shr[ry];
-            stack.allocate(div);
-			
+            
             int stride = img.stride();
+            
+            // Vertical bluring
             for(x = startX; x < w; x++)
             {
-                sum_r = 
-                sum_g = 
-                sum_b = 
                 sum_a = 
-                sum_in_r = 
-                sum_in_g = 
-                sum_in_b = 
                 sum_in_a = 
-                sum_out_r = 
-                sum_out_g = 
-                sum_out_b = 
                 sum_out_a = 0;
 				
                 src_pix_ptr = img.pix_ptr(x, startY);
-                for(i = 0; i <= ry; i++)
+                for(i = 0; i <= radius; i++)
                 {
                     stack_pix_ptr    = &stack[i];
-                    stack_pix_ptr->r = src_pix_ptr[R];
-                    stack_pix_ptr->g = src_pix_ptr[G];
-                    stack_pix_ptr->b = src_pix_ptr[B];
-                    stack_pix_ptr->a = src_pix_ptr[A];
-                    sum_r           += src_pix_ptr[R] * (i + 1);
-                    sum_g           += src_pix_ptr[G] * (i + 1);
-                    sum_b           += src_pix_ptr[B] * (i + 1);
+                    *stack_pix_ptr = src_pix_ptr[A];
                     sum_a           += src_pix_ptr[A] * (i + 1);
-                    sum_out_r       += src_pix_ptr[R];
-                    sum_out_g       += src_pix_ptr[G];
-                    sum_out_b       += src_pix_ptr[B];
                     sum_out_a       += src_pix_ptr[A];
                 }
-                for(i = 1; i <= ry; i++)
+                for(i = 1; i <= radius; i++)
                 {
                     if(i <= hm) src_pix_ptr += stride; 
-                    stack_pix_ptr = &stack[i + ry];
-                    stack_pix_ptr->r = src_pix_ptr[R];
-                    stack_pix_ptr->g = src_pix_ptr[G];
-                    stack_pix_ptr->b = src_pix_ptr[B];
-                    stack_pix_ptr->a = src_pix_ptr[A];
-                    sum_r           += src_pix_ptr[R] * (ry + 1 - i);
-                    sum_g           += src_pix_ptr[G] * (ry + 1 - i);
-                    sum_b           += src_pix_ptr[B] * (ry + 1 - i);
-                    sum_a           += src_pix_ptr[A] * (ry + 1 - i);
-                    sum_in_r        += src_pix_ptr[R];
-                    sum_in_g        += src_pix_ptr[G];
-                    sum_in_b        += src_pix_ptr[B];
+                    stack_pix_ptr = &stack[i + radius];
+                    *stack_pix_ptr = src_pix_ptr[A];
+                    sum_a           += src_pix_ptr[A] * (radius + 1 - i);
                     sum_in_a        += src_pix_ptr[A];
                 }
 				
-                stack_ptr = ry;
-                yp = startY + ry;
+                stack_ptr = radius;
+                yp = startY + radius;
                 if(yp > hm) yp = hm;
                 src_pix_ptr = img.pix_ptr(x, yp);
                 dst_pix_ptr = img.pix_ptr(x, startY);
                 for(y = startY; y < h; y++)
                 {
-                    dst_pix_ptr[R] = (sum_r * mul_sum) >> shr_sum;
-                    dst_pix_ptr[G] = (sum_g * mul_sum) >> shr_sum;
-                    dst_pix_ptr[B] = (sum_b * mul_sum) >> shr_sum;
-                    dst_pix_ptr[A] = (sum_a * mul_sum) >> shr_sum;
+                    // Store the final color
+                    calc_type alpha = ((sum_a * mul_sum) >> shr_sum);
+                    if (alpha == color_type::base_mask) {
+                        *(color_type *)dst_pix_ptr = fillColor;
+                    } else  if (alpha == 0) {
+                        *(color_type *)dst_pix_ptr = clearColor;
+                    } else {
+                        dst_pix_ptr[R] = (sr * alpha + color_type::base_mask) >> color_type::base_shift;
+                        dst_pix_ptr[G] = (sg * alpha + color_type::base_mask) >> color_type::base_shift;
+                        dst_pix_ptr[B] = (sb * alpha + color_type::base_mask) >> color_type::base_shift;
+                        dst_pix_ptr[A] = (sa * alpha + color_type::base_mask) >> color_type::base_shift;
+                    }
+                    // If we are going to push more A with the same currently blurred value, we won't change
+                    // anything - just go to the next one
+                    if (alpha == src_pix_ptr[A]) {
+                        if (yp >= hm) {
+                            dst_pix_ptr += stride;
+                            continue;
+                        }
+                        if ((src_pix_ptr + stride)[A] == alpha) {
+                            src_pix_ptr += stride;
+                            ++yp;
+                            dst_pix_ptr += stride;
+                            continue;
+                        }
+                    }
+
                     dst_pix_ptr += stride;
 					
-                    sum_r -= sum_out_r;
-                    sum_g -= sum_out_g;
-                    sum_b -= sum_out_b;
                     sum_a -= sum_out_a;
 					
-                    stack_start = stack_ptr + div - ry;
+                    stack_start = stack_ptr + div - radius;
                     if(stack_start >= div) stack_start -= div;
 					
                     stack_pix_ptr = &stack[stack_start];
-                    sum_out_r -= stack_pix_ptr->r;
-                    sum_out_g -= stack_pix_ptr->g;
-                    sum_out_b -= stack_pix_ptr->b;
-                    sum_out_a -= stack_pix_ptr->a;
+                    sum_out_a -= *stack_pix_ptr;
 					
                     if(yp < hm) 
                     {
@@ -287,32 +247,19 @@ namespace agg
                         ++yp;
                     }
 					
-                    stack_pix_ptr->r = src_pix_ptr[R];
-                    stack_pix_ptr->g = src_pix_ptr[G];
-                    stack_pix_ptr->b = src_pix_ptr[B];
-                    stack_pix_ptr->a = src_pix_ptr[A];
+                    value_type a = src_pix_ptr[A];
+                    *stack_pix_ptr = a;
 					
-                    sum_in_r += src_pix_ptr[R];
-                    sum_in_g += src_pix_ptr[G];
-                    sum_in_b += src_pix_ptr[B];
-                    sum_in_a += src_pix_ptr[A];
-                    sum_r    += sum_in_r;
-                    sum_g    += sum_in_g;
-                    sum_b    += sum_in_b;
+                    sum_in_a += a;
                     sum_a    += sum_in_a;
 					
                     ++stack_ptr;
                     if(stack_ptr >= div) stack_ptr = 0;
                     stack_pix_ptr = &stack[stack_ptr];
 					
-                    sum_out_r += stack_pix_ptr->r;
-                    sum_out_g += stack_pix_ptr->g;
-                    sum_out_b += stack_pix_ptr->b;
-                    sum_out_a += stack_pix_ptr->a;
-                    sum_in_r  -= stack_pix_ptr->r;
-                    sum_in_g  -= stack_pix_ptr->g;
-                    sum_in_b  -= stack_pix_ptr->b;
-                    sum_in_a  -= stack_pix_ptr->a;
+                    a = *stack_pix_ptr;
+                    sum_out_a += a;
+                    sum_in_a  -= a;
                 }
             }
         }

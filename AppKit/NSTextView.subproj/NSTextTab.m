@@ -9,10 +9,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSKeyedArchiver.h>
 
+#import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSRaise.h>
 #import <AppKit/NSTextTab.h>
 
+NSString *NSTabColumnTerminatorsAttributeName = @"NSTabColumnTerminatorsAttributeName";
+
 @implementation NSTextTab
+
+- (id)initWithTextAlignment:(NSTextAlignment)alignment location:(CGFloat)location options:(NSDictionary *)options
+{
+    NSTextTabType type = NSLeftTabStopType;
+    switch (alignment) {
+        case NSLeftTextAlignment:
+        case NSJustifiedTextAlignment:
+            type = NSLeftTabStopType;
+            break;
+        
+        case NSRightTextAlignment:
+            type = NSRightTabStopType;
+            break;
+            
+        case NSCenterTextAlignment:
+            type = NSCenterTabStopType;
+            break;
+    
+        case NSNaturalTextAlignment:
+            if ([[NSParagraphStyle defaultParagraphStyle] baseWritingDirection] == NSWritingDirectionRightToLeft) {
+                type = NSRightTabStopType;
+            }
+            break;
+    }
+    return [self initWithType: type location: location];
+}
 
 -initWithType:(NSTextTabType)type location:(float)location {
    _type=type;
@@ -47,6 +76,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -copyWithZone:(NSZone *)zone {
    return [self retain];
+}
+
+- (NSTextAlignment)alignment {
+    
+    NSTextAlignment alignment = NSLeftTextAlignment;
+
+    switch (_type) {
+        case NSLeftTabStopType:
+            alignment = NSLeftTextAlignment;
+            break;
+        case NSRightTabStopType:
+            alignment = NSRightTextAlignment;
+            break;
+        case NSCenterTabStopType:
+            alignment = NSCenterTextAlignment;
+            break;
+        case NSDecimalTabStopType:
+            alignment = NSRightTextAlignment;
+            break;
+    }
+    
+    return alignment;
+}
+
+-(NSDictionary *)options {
+    return [NSDictionary dictionary];
 }
 
 -(NSTextTabType)tabStopType {

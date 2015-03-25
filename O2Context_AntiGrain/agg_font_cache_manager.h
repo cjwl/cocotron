@@ -172,7 +172,7 @@ namespace agg
                 if(m_num_fonts >= m_max_fonts)
                 {
                     obj_allocator<font_cache>::deallocate(m_fonts[0]);
-                    memcpy(m_fonts, 
+                    memmove(m_fonts, 
                            m_fonts + 1, 
                            (m_max_fonts - 1) * sizeof(font_cache*));
                     m_num_fonts = m_max_fonts - 1;

@@ -7,7 +7,8 @@
 
 // Using the same value as CoreGraphics - that's removing the needs for conversion
 const CFStringRef kO2ImageDestinationLossyCompressionQuality = (const CFStringRef)@"kCGImageDestinationLossyCompressionQuality";
-const CFStringRef kO2ImageDestinationBackgroundColor = (const CFStringRef)@"kO2ImageDestinationBackgroundColor";
+const CFStringRef kO2ImageDestinationBackgroundColor = (const CFStringRef)@"kCGImageDestinationBackgroundColor";
+const CFStringRef kO2ImageDestinationDPI = (const CFStringRef)@"kCGImageDestinationDPI";
 
 @interface _O2ImageDestination : O2ImageDestination
 @end
@@ -66,42 +67,45 @@ O2ImageDestinationRef O2ImageDestinationCreateWithData(CFMutableDataRef data,CFS
 
 O2ImageDestinationRef O2ImageDestinationCreateWithDataConsumer(O2DataConsumerRef dataConsumer,CFStringRef type,size_t imageCount,CFDictionaryRef options) {
    O2ImageDestinationRef self=NSAllocateObject([O2ImageDestination class],0,NULL);
-   self->_consumer=O2DataConsumerRetain(dataConsumer);
-   self->_type=fileTypeForUTI(type);
-   self->_imageCount=imageCount;
-   self->_options=(options==NULL)?NULL:CFRetain(options);
-   
-   switch(self->_type){
-   
-    case O2ImageFileUnknown:
-     break;
-     
-    case O2ImageFileTIFF:
-     self->_encoder=O2TIFFEncoderCreate(self->_consumer);
-     O2TIFFEncoderBegin(self->_encoder);
-     break;
 
-    case O2ImageFileBMP:
-     break;
+    if (self) {
+        
+       self->_consumer=O2DataConsumerRetain(dataConsumer);
+       self->_type=fileTypeForUTI(type);
+       self->_imageCount=imageCount;
+       self->_options=(options==NULL)?NULL:CFRetain(options);
+       
+       switch(self->_type){
+       
+        case O2ImageFileUnknown:
+         break;
+         
+        case O2ImageFileTIFF:
+         self->_encoder=O2TIFFEncoderCreate(self->_consumer);
+         O2TIFFEncoderBegin(self->_encoder);
+         break;
 
-    case O2ImageFileGIF:
-     break;
+        case O2ImageFileBMP:
+         break;
 
-    case O2ImageFileJPEG:
-#ifdef LIBJPEG_PRESENT
-	 self->_encoder=O2JPGEncoderCreate(self->_consumer);
-#endif
-     break;
+        case O2ImageFileGIF:
+         break;
 
-    case O2ImageFilePNG:
-     self->_encoder=O2PNGEncoderCreate(self->_consumer);
-     break;
+        case O2ImageFileJPEG:
+    #ifdef LIBJPEG_PRESENT
+         self->_encoder=O2JPGEncoderCreate(self->_consumer);
+    #endif
+         break;
 
-    case O2ImageFileJPEG2000:
-     break;
-   }
-   
-   
+        case O2ImageFilePNG:
+         self->_encoder=O2PNGEncoderCreate(self->_consumer);
+         break;
+
+        case O2ImageFileJPEG2000:
+         break;
+       }
+    }
+    
    return self;
 }
 

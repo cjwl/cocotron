@@ -63,34 +63,58 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    [self->_layoutManager getGlyphs:self->_glyphCache range:self->_glyphCacheRange];
 }
 
+#define DEBUG_TYPESETTER 0
+
+/**
+ * Calculates line fragment rectangle, line fragment used rectangle, and remaining rectangle for a line fragment.
+ */
 - (void)getLineFragmentRect:(NSRectPointer)lineFragmentRect usedRect:(NSRectPointer)lineFragmentUsedRect remainingRect:(NSRectPointer)remainingRect forStartingGlyphAtIndex:(unsigned)startingGlyphIndex proposedRect:(NSRect)proposedRect lineSpacing:(float)lineSpacing paragraphSpacingBefore:(float)paragraphSpacingBefore paragraphSpacingAfter:(float)paragraphSpacingAfter
 {
-	unsigned glyphIndex;
-	NSRange  fragmentRange=NSMakeRange(_nextGlyphLocation,0);
-	float    fragmentWidth=0;
-	float    fragmentHeight=_fontDefaultLineHeight;
-	NSRange  wordWrapRange=NSMakeRange(_nextGlyphLocation,0);
-	float    wordWrapWidth=0;
-	NSGlyph  wordWrapPreviousGlyph=NSNullGlyph;
-	NSRect   fragmentRect;
-	BOOL     isNominal,advanceScanRect=NO,endOfString=NO,endOfLine=NO;
-
+#if DEBUG_TYPESETTER
+    NSLog(@"getLineFragmentRect: %p usedRect: %p remainingRect: %p forStartingGlyphAtIndex: %u proposedRect: %@ lineSpacing: %f paragraphSpacingBefore: %f paragraphSpacingAfter: %f",
+          lineFragmentRect,
+          lineFragmentUsedRect,
+          remainingRect,
+          startingGlyphIndex,
+          NSStringFromRect(proposedRect),
+          lineSpacing,
+          paragraphSpacingBefore,
+          paragraphSpacingAfter);
+    
+#define DEBUG_GETLINEFRAGMENTRECT 0
+#endif
+    
 	_scanRect = proposedRect;
 	
+    float    fragmentHeight=_fontDefaultLineHeight;
+
 	float wantedHeight = MAX(proposedRect.size.height, fragmentHeight);
 	_scanRect.size.height = wantedHeight;
 
+    // 1. Check with the container that we have space available for a rect with the wanted height
+    
 	_scanRect = [_container lineFragmentRectForProposedRect:_scanRect sweepDirection:NSLineSweepRight movementDirection:NSLineMovesDown remainingRect:remainingRect];
+
 	if ([_glyphRangesInLine count] != 0 && _scanRect.origin.y > proposedRect.origin.y) {
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"don't move the rects down");
+#endif
 		// We don't want the rects to move down, if it's not the first one of the line
 		// We could use NSLineNoMove with lineFragmentRectForProposedRect but Cocoa doesn't do that
 		_scanRect = NSZeroRect;
 	}
 	if (_scanRect.size.height < wantedHeight) {
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"height: %f is too small", _scanRect.size.height);
+#endif
 		// Too small for our text
-		_scanRect = NSZeroRect;		
+		_scanRect = NSZeroRect;
 	}
-	if (!NSEqualRects(_scanRect, NSZeroRect)) {
+	if (NSEqualRects(_scanRect, NSZeroRect) == NO) {
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"applying padding: %f", _container.lineFragmentPadding);
+#endif
+        // We have some room available in the container
 		// Add left/right padding
 		_scanRect.size.width -= _container.lineFragmentPadding;
 		if ([_glyphRangesInLine count] == 0) {
@@ -98,13 +122,24 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			_scanRect.size.width -= _container.lineFragmentPadding;
 			_scanRect.origin.x += _container.lineFragmentPadding;
 			_fullLineRect = _scanRect;
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"_fullLineRect.size.width: %f", _fullLineRect.size.width);
+#endif
 		}
+        
+        // If adding the padding caused us to use up all the available width then we're done.
 		if (_scanRect.size.width <= 0.) {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"which made _scanRect width too small");
+#endif
 			_scanRect = NSZeroRect;
 		}
 	}
 	if (NSEqualRects(_scanRect, NSZeroRect)) {
 		if ([_glyphRangesInLine count] == 0) {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"no more room for another line - bailing");
+#endif
 			// No more room for another line
 			return;
 		} else {
@@ -114,26 +149,62 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			_scanRect.origin.y = NSMinY(proposedRect);
 			_scanRect.size.width = 0;
 			_scanRect.size.height = MAX(proposedRect.size.height, fragmentHeight);
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"No more room on that line - we will try next one. _scanRect now: %@", NSStringFromRect(_scanRect));
+#endif
 		}
 	}
 
+	unsigned glyphIndex = 0;
+    NSRange  fragmentRange=NSMakeRange(_nextGlyphLocation,0);
+	float    fragmentWidth=0;
+
+    NSRange  wordWrapRange=NSMakeRange(_nextGlyphLocation,0);
+	float    wordWrapWidth=0;
+	NSGlyph  wordWrapPreviousGlyph=NSNullGlyph;
+	NSRect   fragmentRect = NSZeroRect;
+	BOOL     isNominal = YES, advanceScanRect=NO, endOfString=NO, endOfLine=NO;
+    
+    // 2. So we have our rect - now find out how many glyphs can fit - use the fragmentRange and fragmentWidth to keep track
+
 	for(;(glyphIndex=NSMaxRange(fragmentRange))<NSMaxRange(_attributesGlyphRange);){
-		NSGlyph  glyph;
-		unichar  character;
-		float    glyphAdvance,glyphMaxWidth;
+        
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"Examining glyph index: %u", glyphIndex);
+#endif
+
+		NSGlyph  glyph = NSNullGlyph;
+		unichar  character = 0;
+		float    glyphAdvance = 0,glyphMaxWidth = 0;
 		BOOL     fragmentExit=NO;
 		
 		_paragraphBreak=NO;
 		fragmentRange.length++;
 		_lineRange.length++;
-		
-		if(!NSLocationInRange(glyphIndex,_glyphCacheRange))
+
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"   fragmentRange: %@", NSStringFromRange(fragmentRange));
+        NSLog(@"   _lineRange: %@", NSStringFromRange(_lineRange));
+#endif
+        
+		if(!NSLocationInRange(glyphIndex,_glyphCacheRange)) {
+
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"loading glyph and character cache");
+#endif
+            
 			loadGlyphAndCharacterCacheForLocation(self,glyphIndex);
-		
+		}
+        
 		glyph=_glyphCache[glyphIndex-_glyphCacheRange.location];
 		character=_characterCache[glyphIndex-_glyphCacheRange.location];
         // TODO: there must be other chars to check for word wrapping
 		if(character==' '){
+
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"found a space char");
+#endif
+            
 			// We can word wrap from here if needed
 			wordWrapRange=fragmentRange;
 			wordWrapWidth=fragmentWidth;
@@ -147,6 +218,11 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		}
 		
 		if(character==NSAttachmentCharacter){
+            
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"found an attachment char");
+#endif
+            
 			NSTextAttachment         *attachment=[_attributes objectForKey:NSAttachmentAttributeName];
 			id <NSTextAttachmentCell> cell=[attachment attachmentCell];
 			NSSize                    size=[cell cellSize];
@@ -157,20 +233,32 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			_previousGlyph=NSNullGlyph;
 		} else {
             if(glyph==NSControlGlyph){
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"found a control glyph");
+#endif
 				fragmentWidth+=_positionOfGlyph(_font,NULL,NSNullGlyph,_previousGlyph,&isNominal).x;
 				_previousGlyph=NSNullGlyph;
 				
 				switch([self actionForControlCharacterAtIndex:glyphIndex]){
 						
 					case NSTypesetterZeroAdvancementAction:
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"action: NSTypesetterZeroAdvancementAction");
+#endif
 						// do nothing
 						break;
 						
 					case NSTypesetterWhitespaceAction:
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"action: NSTypesetterWhitespaceAction");
+#endif
 						fragmentWidth+=_whitespaceAdvancement;
 						break;
 						
 					case NSTypesetterHorizontalTabAction:{
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"action: NSTypesetterHorizontalTabAction");
+#endif
 						float      x=_scanRect.origin.x+fragmentWidth;
 						NSTextTab *tab=[self textTabForGlyphLocation:x writingDirection:[_currentParagraphStyle baseWritingDirection] maxLocation:NSMaxX(_scanRect)];
 						float      nextx;
@@ -191,13 +279,22 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 						break;
 						
 					case NSTypesetterParagraphBreakAction:
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"action: NSTypesetterParagraphBreakAction");
+#endif
 						_paragraphBreak=YES;
 						advanceScanRect=YES;
 						break;
 					case NSTypesetterLineBreakAction:
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"action: NSTypesetterLineBreakAction");
+#endif
 						advanceScanRect=YES;
 						break;
 					case NSTypesetterContainerBreakAction:
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"action: NSTypesetterContainerBreakAction");
+#endif
 						advanceScanRect=YES;
 						break;
 				}
@@ -205,8 +302,12 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				break;
 			}
 			
+            
 			glyphAdvance=_positionOfGlyph(_font,NULL,glyph,_previousGlyph,&isNominal).x;
 			if(!isNominal && fragmentRange.length>1){
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"found special kerning pair");
+#endif
 				_lineRange.length--;
 				fragmentRange.length--;
 				fragmentWidth+=glyphAdvance;
@@ -214,14 +315,21 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				fragmentExit=YES;
 				break;
 			}
+            // Get the width of the glyph
 			glyphMaxWidth=_positionOfGlyph(_font,NULL,NSNullGlyph,glyph,&isNominal).x;
 		}
 		
 		switch(_lineBreakMode){
 				
 			case NSLineBreakByWordWrapping:
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"_lineBreakMode: NSLineBreakByWordWrapping");
+#endif
 				if(_lineRange.length>1){
-					if(fragmentWidth+glyphAdvance+glyphMaxWidth>_scanRect.size.width){
+					if(fragmentWidth+glyphAdvance+glyphMaxWidth >_scanRect.size.width){
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"cumulative width is too large: %f > %f", fragmentWidth+glyphAdvance+glyphMaxWidth, _scanRect.size.width);
+#endif
 						if(wordWrapWidth>0){
 							// Break the line at previously found wrap location
 							_lineRange.length=NSMaxRange(wordWrapRange)-_lineRange.location;
@@ -275,6 +383,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				break;
 				
 			case NSLineBreakByCharWrapping:
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"_lineBreakMode: NSLineBreakByCharWrapping");
+#endif
 				if(_lineRange.length>1){
 					if(fragmentWidth+glyphAdvance+glyphMaxWidth>_scanRect.size.width){
 						// Break the line at current glyph
@@ -287,20 +398,32 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 				break;
 				
 			case NSLineBreakByClipping:
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"_lineBreakMode: NSLineBreakByClipping");
+#endif
 				// Nothing special to do
 				break;
 				
 			case NSLineBreakByTruncatingHead:
 			case NSLineBreakByTruncatingTail:
 			case NSLineBreakByTruncatingMiddle:
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"_lineBreakMode: %d", _lineBreakMode);
+#endif
 				// TODO: implement these styles
 				break;
 			default:
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"_lineBreakMode: %d", _lineBreakMode);
+#endif
 				break;
 		}
 		
 		if (fragmentExit == NO && _alignment == NSJustifiedTextAlignment) {
 			if (character == ' ') {
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"making a new fragment after a space because of justified alignment");
+#endif
 				// Make a new fragment after a ' ' so we can insert some white spaces to justify the line
 				_previousGlyph=glyph;
 				fragmentWidth+=glyphAdvance;
@@ -308,6 +431,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			}
 		}
 		if(fragmentExit){
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"exiting fragment");
+#endif
 			_previousGlyph=NSNullGlyph;
 			fragmentWidth+=glyphAdvance;
 			break;
@@ -316,23 +442,47 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		fragmentWidth+=glyphAdvance;
 	}
 	
+#if DEBUG_GETLINEFRAGMENTRECT
+    NSLog(@"---- looking at the fragment -----");
+    NSLog(@"     fragmentRange: %@", NSStringFromRange(fragmentRange));
+    NSLog(@"     fragmentWidth: %f", fragmentWidth);
+    NSLog(@"     _lineRange: %@", NSStringFromRange(_lineRange));
+#endif
+    
 	if(fragmentRange.length>0){
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"have a fragment...");
+#endif
 		_nextGlyphLocation=NSMaxRange(fragmentRange);
 		
 		if(_nextGlyphLocation>=_numberOfGlyphs) {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"and at the end of the string...");
+#endif
 			endOfString=YES;
 		} else {
 			if(!NSLocationInRange(_nextGlyphLocation,_glyphCacheRange))
 				loadGlyphAndCharacterCacheForLocation(self,_nextGlyphLocation);
 			
 			int nextChar=_characterCache[glyphIndex-_glyphCacheRange.location];
-			if (nextChar == '\n') {
+            if ([[NSCharacterSet newlineCharacterSet] characterIsMember:nextChar]) {
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"and at the end of the line...");
+#endif
 				endOfLine=YES;
 			}
 		}
 		
 		if(!advanceScanRect){
-			fragmentWidth+=_positionOfGlyph(_font,NULL,NSNullGlyph,_previousGlyph,&isNominal).x;
+            float glyphAdvance = _positionOfGlyph(_font,NULL,NSNullGlyph,_previousGlyph,&isNominal).x;
+
+			fragmentWidth+= glyphAdvance;
+
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"   added on glyphAdvance: %f", glyphAdvance);
+            NSLog(@"   fragmentWidth now: %f", fragmentWidth);
+#endif
+            
 			// This should be done only when switching font or something?
 			if (glyphIndex==NSMaxRange(_attributesGlyphRange)) {
 				_previousGlyph=NSNullGlyph;
@@ -342,11 +492,17 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		}
 		float height = MAX(_scanRect.size.height,fragmentHeight);
 		if (_scanRect.size.height != height) {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"_scanRect height changed");
+#endif
 			// Check we still fit if something changed our height
 			_scanRect.size.height=height;
 			_scanRect = [_container lineFragmentRectForProposedRect:_scanRect sweepDirection:NSLineSweepRight movementDirection:NSLineMovesDown remainingRect:remainingRect];
 		}
 		if (!NSEqualRects(_scanRect, NSZeroRect)) {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"setting the fragment");
+#endif            
 			[_glyphRangesInLine addRange:fragmentRange];
 			_maxAscender=MAX(_maxAscender,_fontAscender);
 			[_layoutManager setTextContainer:_container forGlyphRange:fragmentRange];
@@ -355,18 +511,27 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			[_layoutManager setLineFragmentRect:_scanRect forGlyphRange:fragmentRange usedRect:fragmentRect];
 			[_layoutManager setLocation:_scanRect.origin forStartOfGlyphRange:fragmentRange];
 		} else {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"no more room for text - bailing");
+#endif
 			// Can't fit any more text
 			return;
 		}
 	}
 		
 	if(advanceScanRect || endOfString){
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"done with a line");
+#endif
 		// We're done with a line - fix the fragment rects for its
 		int   i,count=[_glyphRangesInLine count];
 		float alignmentDelta=0;
 		
         // First, we need to reorder the fragments according to the bidi algo
         if (_bidiLevels && count > 1) {
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"reordering fragments for bidi");
+#endif
             uint8_t levels[count];
             unsigned int indexes[count];
             for (int i = 0; i < count; ++i) {
@@ -382,6 +547,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
             for (int i = 0; i < count; ++i) {
                 int idx = indexes[i];
                 NSRange range=[_glyphRangesInLine rangeAtIndex:idx];
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"reordering fragment range: %@", NSStringFromRange(range));
+#endif
                 NSPoint location=[_layoutManager locationForGlyphAtIndex:range.location];
                 NSRect  usedRect=[_layoutManager lineFragmentUsedRectForGlyphAtIndex:range.location effectiveRange:NULL];
                 NSRect  rect=[_layoutManager lineFragmentRectForGlyphAtIndex:range.location effectiveRange:NULL];
@@ -402,6 +570,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
         }
 
 		if(_alignment!=NSLeftTextAlignment){
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"adjusting for non-left alignment");
+#endif
 			// Find the total line width so we can adjust the rect x origin according to the alignment
 			float totalWidth=NSMaxX(_fullLineRect);
 			
@@ -415,14 +586,23 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			// Calc the delta to apply to the origins so the alignment is respected
 			switch(_alignment){
 				case NSRightTextAlignment:
+#if DEBUG_GETLINEFRAGMENTRECT
+                    NSLog(@"NSRightTextAlignment");
+#endif
 					alignmentDelta=totalWidth-totalUsedWidth;
 					break;
 					
 				case NSCenterTextAlignment:
+#if DEBUG_GETLINEFRAGMENTRECT
+                    NSLog(@"NSCenterTextAlignment");
+#endif
 					alignmentDelta=(totalWidth-totalUsedWidth)/2;
 					break;
 					
 				case NSJustifiedTextAlignment: 
+#if DEBUG_GETLINEFRAGMENTRECT
+                    NSLog(@"NSJustifiedTextAlignment");
+#endif
 					if (!endOfString && !endOfLine) {
 						int blankCount = 0;
 						// Find the number of fragments ending with a ' '
@@ -449,14 +629,29 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		
 		int blankCount = 0;
 		for(i=0;i<count;i++){
+
 			NSRange range=[_glyphRangesInLine rangeAtIndex:i];
+            
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"adjusting glyph range: %@", NSStringFromRange(range));
+#endif
+            
 			NSRect  backRect=[_layoutManager lineFragmentRectForGlyphAtIndex:range.location effectiveRange:NULL];
 			NSRect  usedRect=[_layoutManager lineFragmentUsedRectForGlyphAtIndex:range.location effectiveRange:NULL];
 			NSPoint location=[_layoutManager locationForGlyphAtIndex:range.location];
-			
+
+#if DEBUG_GETLINEFRAGMENTRECT
+            NSLog(@"   backRect: %@", NSStringFromRect(backRect));
+            NSLog(@"   usedRect: %@", NSStringFromRect(usedRect));
+            NSLog(@"   location: %@", NSStringFromPoint(location));
+#endif
+
 			usedRect.size.height=backRect.size.height=_scanRect.size.height;
 			location.y+=_maxAscender;
 			if (_alignment == NSJustifiedTextAlignment) {
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"    NSJustifiedTextAlignment");
+#endif
 				if (i > 0) {
 					if(!NSLocationInRange(range.location,_glyphCacheRange))
 						loadGlyphAndCharacterCacheForLocation(self,range.location-1);
@@ -466,10 +661,16 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 						// Add some more pixels from here
 						blankCount++;
 					}
+#if DEBUG_GETLINEFRAGMENTRECT
+                    NSLog(@"    adjusting usedRect origin by delta: %f", alignmentDelta*blankCount);
+#endif
 					usedRect.origin.x+=alignmentDelta*blankCount;
 					location.x+=alignmentDelta*blankCount;
 					if(i+1==count) {
 						// Adjust the last rect
+#if DEBUG_GETLINEFRAGMENTRECT
+                        NSLog(@"    adjusting last backRect by delta: %f", alignmentDelta*blankCount);
+#endif
 						backRect.origin.x+=alignmentDelta*blankCount;
 						backRect.size.width-=alignmentDelta*blankCount;
 					}
@@ -477,20 +678,32 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 			} else {
 				if(i==0) {
 					// Grow the first rect to it contains the white space added for justification
+#if DEBUG_GETLINEFRAGMENTRECT
+                    NSLog(@"    growing first rect to contain white space: %f", alignmentDelta);
+#endif
 					backRect.size.width+=alignmentDelta;
 				}
 				usedRect.origin.x+=alignmentDelta;
 				location.x+=alignmentDelta;
 				if(i+1==count) {
 					// Adjust the last rect
+#if DEBUG_GETLINEFRAGMENTRECT
+                    NSLog(@"    adjusting last rect by delta: %f", alignmentDelta);
+#endif
 					backRect.origin.x+=alignmentDelta;
 					backRect.size.width-=alignmentDelta;
 				}
 			}
 			if(i+1<count || !advanceScanRect || endOfString) {
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"setting fragment rect");
+#endif
 				[_layoutManager setLineFragmentRect:usedRect forGlyphRange:range usedRect:usedRect];
 			} else {
 				// Last rect
+#if DEBUG_GETLINEFRAGMENTRECT
+                NSLog(@"setting last fragment rect");
+#endif
 				[_layoutManager setLineFragmentRect:backRect forGlyphRange:range usedRect:usedRect];
 			}
 			[_layoutManager setLocation:location forStartOfGlyphRange:range];
@@ -509,14 +722,25 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 		_scanRect.size.width=1e7; // That's what Cocoa is sending
 		_scanRect.size.height=0;
 		_maxAscender=0;
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"advanced to next line, set _scanRect to: %@", NSStringFromRect(_scanRect));
+#endif
 	} else {
 		_scanRect.origin.x+=fragmentWidth;
 		_scanRect.size.width=NSMaxX(_fullLineRect)-_scanRect.origin.x;
+#if DEBUG_GETLINEFRAGMENTRECT
+        NSLog(@"moved _scanRect to the end of the last fragment: %@", NSStringFromRect(_scanRect));
+#endif
 	}
 }
 
 
 -(void)layoutNextFragment {
+    
+#if DEBUG_TYPESETTER
+    NSLog(@"layoutNextFragment");
+#endif
+    
 	NSRect lineFragmentUsedRect;
 	NSRect remainingRect;
 	NSRect proposedRect = _scanRect;
@@ -527,12 +751,23 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 }
 
 -(void)fetchAttributes {
+
+#if DEBUG_TYPESETTER
+    NSLog(@"fetchAttributes");
+#define DEBUG_FETCHATTRIBUTES 0
+#endif
+    
    NSFont  *nextFont;
    unsigned characterIndex=_nextGlyphLocation; // FIX
    NSGlyph  spaceGlyph;
    unichar  space=' ';
 
    _attributes=[_attributedString attributesAtIndex:characterIndex effectiveRange:&_attributesRange];
+
+#if DEBUG_FETCHATTRIBUTES
+    NSLog(@"using attributes: %@ at characterIndex: %u effectiveRange: %@", _attributes, characterIndex, NSStringFromRange(_attributesRange));
+#endif
+    
     _currentBidiLevel = 0;
 
     if (_bidiLevels) {
@@ -568,6 +803,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 
    nextFont=NSFontAttributeInDictionary(_attributes);
    if(_font!=nextFont){
+#if DEBUG_FETCHATTRIBUTES
+       NSLog(@"switching font to %@", nextFont);
+#endif
     _previousGlyph=NSNullGlyph;
     _font=nextFont;
     _fontAscender=ceilf([_font ascender]);
@@ -579,6 +817,10 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    }
 
    if((_currentParagraphStyle=[_attributes objectForKey:NSParagraphStyleAttributeName])==nil)
+#if DEBUG_FETCHATTRIBUTES
+       NSLog(@"using default paragraph style");
+#endif
+
     _currentParagraphStyle=[NSParagraphStyle defaultParagraphStyle];
    _alignment=[_currentParagraphStyle alignment];
     _currentParagraphBidiLevel = 0;
@@ -589,6 +831,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
     if (_alignment == NSNaturalTextAlignment) {
         _alignment = NSLeftTextAlignment;
         if (_currentParagraphBidiLevel & 1) {
+#if DEBUG_FETCHATTRIBUTES
+            NSLog(@"switching to right text alignment for bidi");
+#endif
             _alignment = NSRightTextAlignment;
         }
     }
@@ -599,6 +844,16 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
        startingAtGlyphIndex:(unsigned)glyphIndex
    maxNumberOfLineFragments:(unsigned)maxNumLines
              nextGlyphIndex:(unsigned *)nextGlyph {
+
+#if DEBUG_TYPESETTER
+                 NSLog(@"layoutGlyphsInLayoutManager: %@ startingAtGlyphIndex: %u maxNumberOfLineFragments: %u nextGlyphIndex: %p",
+                       layoutManager,
+                       glyphIndex,
+                       maxNumLines,
+                       nextGlyph);
+#define DEBUG_LAYOUTGLYPHSINLAYOUTMANAGER 0
+#endif
+                 
 
 	[layoutManager retain];
    [_layoutManager release];
@@ -639,17 +894,29 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 	_wordWrapWidth=0;
   while(_nextGlyphLocation<_numberOfGlyphs){
 
+#if DEBUG_LAYOUTGLYPHSINLAYOUTMANAGER
+      NSLog(@"checking glyph location: %d", _nextGlyphLocation);
+#endif
+      
     if(!NSLocationInRange(_nextGlyphLocation,_attributesRange))
      [self fetchAttributes];
 
     _layoutNextFragment(self,NULL);
 	   if (NSEqualRects(_scanRect, NSZeroRect)) {
+#if DEBUGLAYOUTGLYPHSINLAYOUTMANAGER
+           NSLog(@"_scanRect is zero - bailing...");
+#endif
 		   break;
 	   }
    }
 
    if(_font==nil){
     _font=NSFontAttributeInDictionary(nil);
+       
+#if DEBUGLAYOUTGLYPHSINLAYOUTMANAGER
+       NSLog(@"_font is nil - defaulting to font: %@", _font);
+#endif
+       
     _fontAscender=ceilf([_font ascender]);
     _fontDefaultLineHeight=ceilf([_font defaultLineHeightForFont]);
     _positionOfGlyph=(void *)[_font methodForSelector:@selector(positionOfGlyph:precededByGlyph:isNominal:)];
@@ -658,6 +925,12 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 	if (((_paragraphBreak && _nextGlyphLocation>=_numberOfGlyphs) || _numberOfGlyphs == 0)) {
 		NSRect remainingRect; // Ignored for now
 		_scanRect.size.height=MAX(_scanRect.size.height,_fontDefaultLineHeight);
+        if (_currentParagraphStyle) {
+            if (_currentParagraphStyle.maximumLineHeight != 0) {
+                _scanRect.size.height = MIN(_scanRect.size.height, _currentParagraphStyle.maximumLineHeight);
+            }
+            _scanRect.size.height = MAX(_scanRect.size.height, _currentParagraphStyle.minimumLineHeight);
+        }
 		_scanRect = [_container lineFragmentRectForProposedRect:_scanRect sweepDirection:NSLineSweepRight movementDirection:NSLineMovesDown remainingRect:&remainingRect];
 		NSRect usedRect = _scanRect;
 		usedRect.size.width = 10;
@@ -689,6 +962,17 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 
 -(unsigned)getGlyphsInRange:(NSRange)glyphRange glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)characterIndexes glyphInscriptions:(NSGlyphInscription *)glyphInscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels
 {
+#if DEBUG_TYPESETTER
+    NSLog(@"getGlyphsInRange: %@ glyphs: %p characterIndexes: %p glyphInscriptions: %p elasticBits: %p bidiLevels: %p",
+          NSStringFromRange(glyphRange),
+          glyphs,
+          characterIndexes,
+          glyphInscriptions,
+          elasticBits,
+          bidiLevels);
+#define DEBUG_GETGLYPHSINRANGE 0
+#endif
+    
     unsigned result  = 0;
     if (glyphs) {
         result = [_layoutManager getGlyphs:glyphs range:glyphRange];
@@ -724,6 +1008,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 
 
 -(void)setBidiLevels:(const unsigned char *)bidiLevels forGlyphRange:(NSRange)glyphRange {
+#if DEBUG_TYPESETTER
+    NSLog(@"setBidiLevels: %p forGlyphRange: %@", bidiLevels, NSStringFromRange(glyphRange));
+#endif
     // Check if we're all left-to-right - if so, we don't have to use any bidi level
     BOOL ltor = YES;
     if (_bidiLevels) {
@@ -765,6 +1052,9 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 
 -(void)_updateBidiLevelsForRange:(NSRange)range
 {
+#if DEBUG_TYPESETTER
+    NSLog(@"_updateBidiLevelsForRange: %@", NSStringFromRange(range));
+#endif
     if (NSBidiHelperBidiInfoAvailable()) {
         NSString *string = [[self attributedString] string];
         range = [string paragraphRangeForRange:range];

@@ -9,6 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
+// New Pasteboard Types (added in 10.6) and interchangeable with the old pasteboard types in Cocotron
+APPKIT_EXPORT NSString *const NSPasteboardTypeString;
+APPKIT_EXPORT NSString *const NSPasteboardTypePDF;
+APPKIT_EXPORT NSString *const NSPasteboardTypeTIFF;
+APPKIT_EXPORT NSString *const NSPasteboardTypeRTF;
+APPKIT_EXPORT NSString *const NSPasteboardTypeRTFD;
+APPKIT_EXPORT NSString *const NSPasteboardTypeHTML;
+APPKIT_EXPORT NSString *const NSPasteboardTypeTabularText;
+APPKIT_EXPORT NSString *const NSPasteboardTypeFont;
+APPKIT_EXPORT NSString *const NSPasteboardTypeRuler;
+APPKIT_EXPORT NSString *const NSPasteboardTypeColor;
+
+// Old Pasteboard Types
 APPKIT_EXPORT NSString * const NSColorPboardType;
 APPKIT_EXPORT NSString * const NSFileContentsPboardType;
 APPKIT_EXPORT NSString * const NSFilenamesPboardType;

@@ -242,7 +242,7 @@ enum {
     }
     [[self window] flushWindow];
 
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask|NSKeyDownMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseDownMask|NSLeftMouseUpMask|NSLeftMouseDraggedMask|NSKeyDownMask];
     if ([event type] == NSKeyDown) {
         [self interpretKeyEvents:[NSArray arrayWithObject:event]];
         switch (_keyboardUIState) {

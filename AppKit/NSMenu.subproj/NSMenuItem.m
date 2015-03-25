@@ -25,6 +25,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [coder encodeInt:_keyEquivalentModifierMask forKey:@"NSMenuItem keyEquivalentModifierMask"];
    [coder encodeObject:_submenu forKey:@"NSMenuItem submenu"];
    [coder encodeInt:_tag forKey:@"NSMenuItem tag"];
+   [coder encodeObject: NSStringFromSelector(_action) forKey: @"NSAction"];
+   [coder encodeObject: _target forKey: @"NSTarget"];
+
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -33,13 +36,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString          *title=[keyed decodeObjectForKey:@"NSTitle"];
     NSString          *keyEquivalent=[keyed decodeObjectForKey:@"NSKeyEquiv"];
     
-    [self initWithTitle:title action:NULL keyEquivalent:keyEquivalent];
+    SEL action = NULL;
+    NSString *actionString = [coder decodeObjectForKey: @"NSAction"];
+    if (actionString) {
+        action = NSSelectorFromString(actionString);
+    }
+    [self initWithTitle:title action:action keyEquivalent:keyEquivalent];
+    id target = [coder decodeObjectForKey: @"NSTarget"];
+    [self setTarget: target];
+
     [self setKeyEquivalentModifierMask:[keyed decodeIntForKey:@"NSKeyEquivModMask"]];
     [self setSubmenu:[keyed decodeObjectForKey:@"NSSubmenu"]];
     _tag=[keyed decodeIntForKey:@"NSTag"];
 	_hidden = [keyed decodeBoolForKey:@"NSIsHidden"];
-     
-    if([keyed decodeBoolForKey:@"NSIsSeparator"]){
+    _image = [[coder decodeObjectForKey:@"NSImage"] retain];
+   if([keyed decodeBoolForKey:@"NSIsSeparator"]){
      [_title release];
      _title=nil;
     }

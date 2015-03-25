@@ -93,7 +93,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			titleAndIconWidth += size.width;
 			maxTitleWidth = MAX(maxTitleWidth,titleAndIconWidth);
 			height = MAX(height,size.height);
-			
+            
 			if ([[item keyEquivalent] length] != 0)
 			{
 				size = [[self graphicsStyle] menuItemTextSize:[item _keyEquivalentDescription]];
@@ -104,7 +104,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			height = MAX(height,rightArrowSize.height);
 			
 			totalHeight += height;
-		}
+        }
 	}
 	
 	result.height = totalHeight;
@@ -172,7 +172,7 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 		if ([item isSeparatorItem])
 		{
 			NSRect separatorRect = NSMakeRect(origin.x,origin.y,NSWidth(itemArea),[[self graphicsStyle] menuItemSeparatorSize].height);
-			
+
 			[[self graphicsStyle] drawMenuSeparatorInRect:separatorRect];
 			
 			origin.y += NSHeight(separatorRect);
@@ -182,9 +182,9 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 #define CENTER_PART_RECT_VERTICALLY(partSize)                          \
 {                                                                      \
 	NSSize __partSize = (partSize);                                    \
-	partRect.origin.y = origin.y + (itemHeight - partSize.height) / 2; \
-	partRect.size.height = partSize.height;                            \
-	partRect.size.width = partSize.width;                              \
+	partRect.origin.y = origin.y + (itemHeight - __partSize.height) / 2; \
+	partRect.size.height = __partSize.height;                            \
+	partRect.size.width = __partSize.width;                              \
 }
 			NSImage      *image = [item image];
 			BOOL         selected = (i ==_selectedItemIndex) ? YES : NO;
@@ -216,7 +216,18 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 				partRect.origin.x += partRect.size.width;
 				CENTER_PART_RECT_VERTICALLY([image size]);
 				
-				[image drawInRect:partRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:showsEnabled ? 1.0f : 0.5f];
+                CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
+                CGContextSaveGState(ctx);
+                CGContextTranslateCTM(ctx,partRect.origin.x,partRect.origin.y);
+                if([self isFlipped]){
+                    CGContextTranslateCTM(ctx,0,partRect.size.height);
+                    CGContextScaleCTM(ctx,1,-1);
+                }
+                NSRect drawingRect = partRect;
+                drawingRect.origin = NSZeroPoint;
+                [[self graphicsStyle] drawButtonImage:image inRect:drawingRect enabled:showsEnabled mixed:NO];
+                CGContextRestoreGState(ctx);
+
 				partRect.origin.x += IMAGE_TITLE_GAP;
 			}
 			

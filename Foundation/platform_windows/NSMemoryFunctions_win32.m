@@ -25,7 +25,12 @@ NSUInteger NSPageSize(void) {
 }
 
 void *NSAllocateMemoryPages(NSUInteger byteCount) {
-   return VirtualAlloc(NULL,byteCount,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+   void *buffer = VirtualAlloc(NULL,byteCount,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+    if (buffer == NULL) {
+        DWORD   lastError=GetLastError();
+        fprintf(stderr, "NSAllocateMemoryPages(%d) failed: WinErr: %d\n", byteCount, lastError);
+    }
+    return buffer;
 }
 
 void NSDeallocateMemoryPages(void *pointer,NSUInteger byteCount) {
@@ -33,12 +38,14 @@ void NSDeallocateMemoryPages(void *pointer,NSUInteger byteCount) {
 }
 
 void NSCopyMemoryPages(const void *src,void *dst,NSUInteger byteCount) {
-   const uint8_t *srcb=src;
-   uint8_t       *dstb=dst;
-   NSUInteger     i;
+    if (src && dst) {
+       const uint8_t *srcb=src;
+       uint8_t       *dstb=dst;
+       NSUInteger     i;
 
-   for(i=0;i<byteCount;i++)
-    dstb[i]=srcb[i];
+       for(i=0;i<byteCount;i++)
+        dstb[i]=srcb[i];
+    }
 }
 
 NSUInteger NSRealMemoryAvailable(void) {
@@ -87,7 +94,11 @@ NSZone *NSZoneFromPointer(void *pointer){
 }
 
 void *NSZoneCalloc(NSZone *zone,NSUInteger numElems,NSUInteger numBytes){
-   return calloc(numElems,numBytes);
+   void *buffer = calloc(numElems,numBytes);
+    if (buffer == NULL) {
+        fprintf(stderr, "NSZoneCalloc(zone, %u, %u) failed. Error: %s\n", numElems, numBytes, strerror(errno));
+    }
+    return buffer;
 }
 
 void NSZoneFree(NSZone *zone,void *pointer){
@@ -95,16 +106,26 @@ void NSZoneFree(NSZone *zone,void *pointer){
 }
 
 void *NSZoneMalloc(NSZone *zone,NSUInteger size){
-   return malloc(size);
+    void *buffer = malloc(size);
+    if (buffer == NULL) {
+        fprintf(stderr, "NSZoneMalloc(zone, %u) failed. Error: %s\n", size, strerror(errno));
+    }
+    return buffer;
 }
 
 void *NSZoneRealloc(NSZone *zone,void *pointer,NSUInteger size){
-   if(pointer==NULL)
-    return malloc(size);
-   else
-    return realloc(pointer,size);
+    void *buffer = NULL;
+    if(pointer==NULL) {
+        buffer = malloc(size);
+    }
+    else {
+        buffer = realloc(pointer, size);
+    }
+    if (buffer == NULL && size > 0) {
+        fprintf(stderr, "NSZoneRealloc(zone, %p, %u) failed. Error: %s\n", pointer, size, strerror(errno));
+    }
+    return buffer;
 }
-
 
 void NSPlatformSetCurrentThread(NSThread *thread) {
 	TlsSetValue(Win32ThreadStorageIndex(),thread);

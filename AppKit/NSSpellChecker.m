@@ -30,6 +30,8 @@ NSString * const NSTextCheckingDocumentURLKey=@"NSTextCheckingDocumentURLKey";
 NSString * const NSTextCheckingDocumentTitleKey=@"NSTextCheckingDocumentTitleKey";
 NSString * const NSTextCheckingDocumentAuthorKey=@"NSTextCheckingDocumentAuthorKey";
 
+#define SPELLCHECK_DEBUG 0
+
 @implementation NSSpellChecker
 
 -init
@@ -155,7 +157,7 @@ static NSSpellChecker *shared=nil;
 		
         NSView *view=[vc view];
 		NSRect frame = [view frame];
-        _spellingPanel=[[NSPanel alloc] initWithContentRect: frame styleMask:NSUtilityWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:YES];
+        _spellingPanel=[[NSPanel alloc] initWithContentRect: frame styleMask:NSUtilityWindowMask | NSResizableWindowMask | NSClosableWindowMask backing:NSBackingStoreBuffered defer:YES];
 		
 		[_spellingPanel setTitle: NSLocalizedStringFromTableInBundle(@"Spelling", nil, [NSBundle bundleForClass: [NSSpellChecker class]], @"The title of the spelling dialog")];
 		[view setFrameOrigin: NSMakePoint(0, 10)];
@@ -212,6 +214,7 @@ static NSSpellChecker *shared=nil;
 }
 
 -(NSRange)checkSpellingOfString:(NSString *)string startingAt:(NSInteger)offset language:(NSString *)language wrap:(BOOL)wrap inSpellDocumentWithTag:(NSInteger)tag wordCount:(NSInteger *)wordCount {
+    
 	NSMutableDictionary *options=[NSMutableDictionary dictionary];
 	
 	if(language==nil){
@@ -224,9 +227,9 @@ static NSSpellChecker *shared=nil;
 		
 		[options setObject:orthography forKey:NSTextCheckingOrthographyKey];
 	}
-	
+
 	NSArray *checking=[self checkString:string range:NSMakeRange(offset,[string length]-offset) types:NSTextCheckingTypeSpelling options:options inSpellDocumentWithTag:tag orthography:NULL wordCount:wordCount];
-	
+    
 	if([checking count]==0)
 		return NSMakeRange(0,0);
     
@@ -246,10 +249,25 @@ static NSSpellChecker *shared=nil;
 	/* NSSpellChecker and NSSpellServer have inconsistent API, we accept a range but the server only takes an offset. */
 	/* NSSpellChecker returns by ref an orthography, yet NSSpellServer accepts one as argument. */
 	/* I guess this isn't one to one and there is some extra work being done in NSSpellChecker. */
-	
+
+#if SPELLCHECK_DEBUG
+    NSLog(@"checkString: %@ range: %@ types: %d options: %@", string, NSStringFromRange(range), types, options);
+#define DEBUG_CHECKSTRING 0
+#endif
+    
 	NSString *substring=[string substringToIndex:NSMaxRange(range)];
-	
-	return [spellEngine checkString:substring offset:range.location types:types options:options orthography:[options objectForKey:NSTextCheckingOrthographyKey] wordCount:wordCount];
+
+	NSArray *results = [spellEngine checkString:substring offset:range.location types:types options:options orthography:[options objectForKey:NSTextCheckingOrthographyKey] wordCount:wordCount];
+
+#if DEBUG_CHECKSTRING
+    NSLog(@"    substring: %@", substring);
+    NSLog(@"    results: %@", results);
+    if (wordCount) {
+        NSLog(@"    wordCount: %d", *wordCount);
+    }
+#endif
+    
+    return results;
 }
 
 #ifdef NS_BLOCKS

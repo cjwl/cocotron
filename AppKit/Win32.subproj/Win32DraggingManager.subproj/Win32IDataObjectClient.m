@@ -179,6 +179,9 @@ static WORD PaletteSize (VOID FAR * pv)
 
       if((length=GetClipboardFormatName(format.cfFormat,name,2048))>0)
        type=[NSString stringWithCString:name length:length];
+        if ([type isEqualToString:@"Rich Text Format"]) {
+            type = NSRTFPboardType;
+        }
      }
      break;
     }
@@ -244,7 +247,11 @@ static WORD PaletteSize (VOID FAR * pv)
 		// TIFF data can actually arrive as DIB data (from a paste for example), so we'll have to convert it.
 		// But in the eventuality that it's not (from a drag within our app), we'll go back to trying TIFF to in a moment.
 		formatEtc.cfFormat=CF_DIBV5;
-	} else { 
+	} else {
+        if ([type isEqualToString:NSRTFPboardType]) {
+            type = @"Rich Text Format";
+        }
+
 		if((formatEtc.cfFormat=RegisterClipboardFormat([type cString]))==0){
 #if DEBUG
 			NSLog(@"RegisterClipboardFormat failed for type: %@", type);

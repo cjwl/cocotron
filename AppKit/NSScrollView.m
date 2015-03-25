@@ -203,11 +203,11 @@ static Class _rulerViewClass = nil;
 
 -(NSRect)headerClipViewFrame {
     NSView *headerView=[self _headerView];
-    NSRect  result=[self insetBounds];
 
     if (headerView == nil)
         return NSZeroRect;
 
+    NSRect  result=[self insetBounds];
     result.size.height=[headerView bounds].size.height;
     result.size.width-=[NSScroller scrollerWidth];
 
@@ -216,12 +216,12 @@ static Class _rulerViewClass = nil;
 
 -(NSRect)cornerViewFrame {
     NSView *headerView = [self _headerView];
-    NSRect bounds = [self insetBounds];
-    NSRect frame;
 
     if (headerView == nil)
         return NSZeroRect;
 
+    NSRect bounds = [self insetBounds];
+    NSRect frame;
     frame.origin.x = bounds.origin.x+bounds.size.width-[NSScroller scrollerWidth];
     frame.origin.y = bounds.origin.y;
     frame.size.width = [NSScroller scrollerWidth];
@@ -293,10 +293,10 @@ static Class _rulerViewClass = nil;
    result.origin.y=bounds.origin.y;
    result.size.width=[NSScroller scrollerWidth];
    result.size.height=bounds.size.height;
-   if([self hasHorizontalScroller])
-    result.size.height-=[NSScroller scrollerWidth];
+    if([self hasHorizontalScroller] && ![_horizontalScroller isHidden])
+        result.size.height-=[NSScroller scrollerWidth];
 
-   if ([self _headerView] != nil) {
+    if ([self _headerView] != nil) {
        result.origin.y+=[self headerClipViewFrame].size.height;
        result.size.height-=[self headerClipViewFrame].size.height;
    }
@@ -315,7 +315,7 @@ static Class _rulerViewClass = nil;
    result.origin.x=bounds.origin.x;
    result.origin.y=(bounds.origin.y+bounds.size.height)-[NSScroller scrollerWidth];
    result.size.width=bounds.size.width;
-   if([self hasVerticalScroller])
+   if([self hasVerticalScroller] && ![_verticalScroller isHidden])
     result.size.width-=[NSScroller scrollerWidth];
 
    result.size.height=[NSScroller scrollerWidth];
@@ -409,10 +409,12 @@ static Class _rulerViewClass = nil;
 
     if([self _cornerView]==nil){
         [_cornerView removeFromSuperview];
+        [_cornerView release];
         _cornerView = nil;
     }
     else if ([self _cornerView] != nil && _cornerView == nil) {
-        _cornerView = [self _cornerView];
+        // Use the document corner view - and it's a retained property
+        _cornerView = [[self _cornerView] retain];
         [self addSubview:_cornerView];
     }
 }    
@@ -484,9 +486,12 @@ static Class _rulerViewClass = nil;
         [_verticalRuler release];
     }
     _verticalRuler = ruler;
-    [_verticalRuler setScrollView:self];
-    [_verticalRuler setOrientation:NSVerticalRuler];
-    [self addSubview:_verticalRuler];
+    if (_verticalRuler) {
+        [_verticalRuler setScrollView:self];
+        [_verticalRuler setOrientation:NSVerticalRuler];
+        [self addSubview:_verticalRuler];
+    }
+    _hasVerticalRuler = _verticalRuler != nil;
     [self tile];
 }
 
@@ -498,9 +503,12 @@ static Class _rulerViewClass = nil;
         [_horizontalRuler release];
     }
     _horizontalRuler = ruler;
-    [_horizontalRuler setScrollView:self];
-    [_horizontalRuler setOrientation:NSHorizontalRuler];
-    [self addSubview:_horizontalRuler];
+    if (_horizontalRuler) {
+        [_horizontalRuler setScrollView:self];
+        [_horizontalRuler setOrientation:NSHorizontalRuler];
+        [self addSubview:_horizontalRuler];
+    }
+    _hasHorizontalRuler = _horizontalRuler != nil;
     [self tile];
 }
 
@@ -667,22 +675,28 @@ static Class _rulerViewClass = nil;
 
 -(void)setHasVerticalRuler:(BOOL)flag
 {
-    _hasVerticalRuler = flag;
-    [self tile];
-    [_verticalRuler setNeedsDisplay:flag];
+    if (_hasVerticalRuler != flag) {
+        _hasVerticalRuler = flag;
+        [self tile];
+        [_verticalRuler setNeedsDisplay:flag];
+    }
 }
 
 -(void)setHasHorizontalRuler:(BOOL)flag
 {
-    _hasHorizontalRuler = flag;
-    [self tile];
-    [_horizontalRuler setNeedsDisplay:flag];
+    if (_hasHorizontalRuler != flag) {
+        _hasHorizontalRuler = flag;
+        [self tile];
+        [_horizontalRuler setNeedsDisplay:flag];
+    }
 }
 
 -(void)setRulersVisible:(BOOL)flag
 {
-    _rulersVisible = flag;
-    [self tile];
+    if (_rulersVisible != flag) {
+        _rulersVisible = flag;
+        [self tile];
+    }
 }
 
 -(void)setVerticalLineScroll:(float)value {
@@ -818,10 +832,8 @@ static Class _rulerViewClass = nil;
      }
     }
 
-    [_verticalScroller setFrame:[self verticalScrollerFrame]];
-    [_horizontalScroller setFrame:[self horizontalScrollerFrame]];
-    [_clipView setFrame:[self clipViewFrame]];
-
+    // Can't do sublayout in here because it messes with the tile method
+       
     [_horizontalRuler invalidateHashMarks];
     [_verticalRuler invalidateHashMarks];
        

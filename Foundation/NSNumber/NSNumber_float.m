@@ -16,8 +16,10 @@ NSNumber *NSNumber_floatNew(NSZone *zone,float value) {
    if (result==nil)
    {
       NSNumber_float *self=NSAllocateObject([NSNumber_float class],0,zone);
-      self->_type=kCFNumberFloatType;
-      self->_value=value;
+       if (self) {
+          self->_type=kCFNumberFloatType;
+          self->_value=value;
+       }
       result=self;
    }
    return result;

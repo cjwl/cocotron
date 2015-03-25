@@ -33,18 +33,53 @@
 #include <agg_color_rgba.h>
 #include <agg_rendering_buffer.h>
 
+#ifdef __SSE2__
+#include <emmintrin.h>
+#endif
+
+static inline void copy_color_sse(int count, uint32_t* dst, uint32_t color)
+{
+    // the compiler seems to do better at that simple loop that any other attempt
+    while (count--) {
+        *dst++ = color;
+    }
+}
+
+static inline void memmove_sse(int count, uint8_t* dst, const uint8_t* src)
+{
+    // memmove seems superfast - at least the Mac & the mingw versions - just use that
+    // memcpy is very slow in gcc 4.3.1/mingw - it's inlined to "REP MOVSB" which is terribly slow on some CPU
+    // which is totally stupid as memmove is supposed to be less safe than memcpy so has no reason to
+    // be slower
+    memmove(dst,src,count);
+}
 
 namespace o2agg
 {
 
 	using namespace agg;
 
+    static bool SSE2checked = false;
+    static bool hasSSE2 = false;
+    
+    // Supported byte orders for RGB and RGBA pixel formats
+    //=======================================================================
+    struct order_rgb  { enum rgb_e  { R=0, G=1, B=2, rgb_tag }; };       //----order_rgb
+    struct order_bgr  { enum bgr_e  { B=0, G=1, R=2, rgb_tag }; };       //----order_bgr
+    struct order_rgba { enum rgba_e { R=0, G=1, B=2, A=3, rgba_tag }; }; //----order_rgba
+    struct order_argb { enum argb_e { A=0, R=1, G=2, B=3, rgba_tag }; }; //----order_argb
+    struct order_abgr { enum abgr_e { A=0, B=1, G=2, R=3, rgba_tag }; }; //----order_abgr
+    struct order_bgra { enum bgra_e { B=0, G=1, R=2, A=3, rgba_tag }; }; //----order_bgra
+
+    typedef agg::rgba rgba;
+    typedef agg::rgba8 rgba8;
+
     //=========================================================multiplier_rgba
     template<class ColorT, class Order> struct multiplier_rgba
     {
         typedef typename ColorT::value_type value_type;
         typedef typename ColorT::calc_type calc_type;
-
+        
         //--------------------------------------------------------------------
         static AGG_INLINE void premultiply(value_type* p)
         {
@@ -61,8 +96,8 @@ namespace o2agg
                 p[Order::B] = value_type((p[Order::B] * a + ColorT::base_mask) >> ColorT::base_shift);
             }
         }
-
-
+        
+        
         //--------------------------------------------------------------------
         static AGG_INLINE void demultiply(value_type* p)
         {
@@ -83,53 +118,44 @@ namespace o2agg
             }
         }
     };
-
+    
     //=====================================================apply_gamma_dir_rgba
     template<class ColorT, class Order, class GammaLut> class apply_gamma_dir_rgba
     {
     public:
         typedef typename ColorT::value_type value_type;
-
+        
         apply_gamma_dir_rgba(const GammaLut& gamma) : m_gamma(gamma) {}
-
+        
         AGG_INLINE void operator () (value_type* p)
         {
             p[Order::R] = m_gamma.dir(p[Order::R]);
             p[Order::G] = m_gamma.dir(p[Order::G]);
             p[Order::B] = m_gamma.dir(p[Order::B]);
         }
-
+        
     private:
         const GammaLut& m_gamma;
     };
-
+    
     //=====================================================apply_gamma_inv_rgba
     template<class ColorT, class Order, class GammaLut> class apply_gamma_inv_rgba
     {
     public:
         typedef typename ColorT::value_type value_type;
-
+        
         apply_gamma_inv_rgba(const GammaLut& gamma) : m_gamma(gamma) {}
-
+        
         AGG_INLINE void operator () (value_type* p)
         {
             p[Order::R] = m_gamma.inv(p[Order::R]);
             p[Order::G] = m_gamma.inv(p[Order::G]);
             p[Order::B] = m_gamma.inv(p[Order::B]);
         }
-
+        
     private:
         const GammaLut& m_gamma;
     };
-
-
-    
-
-
-
-
-
-
 
     //=============================================================blender_rgba
     template<class ColorT, class Order> struct blender_rgba
@@ -281,6 +307,9 @@ namespace o2agg
                                          unsigned sr, unsigned sg, unsigned sb, 
                                          unsigned sa, unsigned cover)
         {
+            if (cover == 0) {
+                return;
+            }
             if(cover < 255)
             {
                 unsigned alpha = 255 - cover;
@@ -328,22 +357,33 @@ namespace o2agg
 
         //   Dca' = Sca + Dca.(1 - Sa)
         //   Da'  = Sa + Da - Sa.Da 
-        static AGG_INLINE void blend_pix(value_type* p, 
+        static AGG_INLINE void blend_pix(value_type* p,
                                          unsigned sr, unsigned sg, unsigned sb, 
                                          unsigned sa, unsigned cover)
         {
-            if(cover < 255)
-            {
-                sr = (sr * cover + 255) >> 8;
-                sg = (sg * cover + 255) >> 8;
-                sb = (sb * cover + 255) >> 8;
-                sa = (sa * cover + 255) >> 8;
+            // Nothing to do if the source is fully transparent
+            if (sa) {
+                if(cover < 255)
+                {
+                    sr = (sr * cover + 255) >> 8;
+                    sg = (sg * cover + 255) >> 8;
+                    sb = (sb * cover + 255) >> 8;
+                    sa = (sa * cover + 255) >> 8;
+                }
+                if(sa == base_mask) {
+                    // Just copy the pixel if the source is fully opaque
+                    p[Order::R] = sr;
+                    p[Order::G] = sg;
+                    p[Order::B] = sb;
+                    p[Order::A] = sa;
+               } else {
+                    calc_type s1a = base_mask - sa;
+                    p[Order::R] = (value_type)(sr + ((p[Order::R] * s1a + base_mask) >> base_shift));
+                    p[Order::G] = (value_type)(sg + ((p[Order::G] * s1a + base_mask) >> base_shift));
+                    p[Order::B] = (value_type)(sb + ((p[Order::B] * s1a + base_mask) >> base_shift));
+                    p[Order::A] = (value_type)(sa + p[Order::A] - ((sa * p[Order::A] + base_mask) >> base_shift));
+                }
             }
-            calc_type s1a = base_mask - sa;
-            p[Order::R] = (value_type)(sr + ((p[Order::R] * s1a + base_mask) >> base_shift));
-            p[Order::G] = (value_type)(sg + ((p[Order::G] * s1a + base_mask) >> base_shift));
-            p[Order::B] = (value_type)(sb + ((p[Order::B] * s1a + base_mask) >> base_shift));
-            p[Order::A] = (value_type)(sa + p[Order::A] - ((sa * p[Order::A] + base_mask) >> base_shift));
         }
     };
 
@@ -1407,11 +1447,11 @@ namespace o2agg
 		typedef typename color_type::value_type value_type;
 		typedef typename color_type::calc_type calc_type;
 		enum base_scale_e
-	    { 
+	    {
 			base_shift = color_type::base_shift,
 			base_mask  = color_type::base_mask
 		};
-	
+        
 		// The docs for NSCompositingMode are wrong for plus darker.
 		// D = S + D -1
 		static AGG_INLINE void blend_pix(value_type* p, unsigned sr, unsigned sg, unsigned sb, 	unsigned sa, unsigned cover)
@@ -1433,7 +1473,156 @@ namespace o2agg
 			p[Order::A] = max(0, (int) sa + (int) da - (int) base_mask);
 		}
 	};
+    
+    static inline void RGBToHSL(float r, float g, float b, float *h, float *s, float *l)
+    {
+        float x, y, z;
+        float fmin = MIN(MIN(r, g), b);    //Min. value of RGB
+        float fmax = MAX(MAX(r, g), b);    //Max. value of RGB
+        float delta = fmax - fmin;         //Delta RGB value
+        
+        z = (fmax + fmin) / 2.0; // Luminance
+        
+        if (delta == 0.0) {
+            //This is a gray, no chroma...
+            x = 0.0;  // Hue
+            y = 0.0;  // Saturation
+        } else {
+            if (s) {
+                //Chromatic data...
+                if (z < 0.5) {
+                    y = delta / (fmax + fmin); // Saturation
+                } else {
+                    y = delta / (2.0 - fmax - fmin); // Saturation
+                }
+            }
+            if (h) {
+                float deltaR = (((fmax - r) / 6.0) + (delta / 2.0)) / delta;
+                float deltaG = (((fmax - g) / 6.0) + (delta / 2.0)) / delta;
+                float deltaB = (((fmax - b) / 6.0) + (delta / 2.0)) / delta;
+                
+                if (r == fmax ) {
+                    x = deltaB - deltaG; // Hue
+                } else if (g == fmax) {
+                    x = (1.0 / 3.0) + deltaR - deltaB; // Hue
+                } else if (b == fmax) {
+                    x = (2.0 / 3.0) + deltaG - deltaR; // Hue
+                }
+                if (x < 0.0) {
+                    x += 1.0; // Hue
+                }
+                else if (x > 1.0) {
+                    x -= 1.0; // Hue
+                }
+            }
+        }
+        if (h) {
+            *h = x;
+        }
+        if (s) {
+            *s = y;
+        }
+        if (l) {
+            *l = z;
+        }
+    }
+    
+    static inline float HueToRGBComponent(float f1, float f2, float hue)
+    {
+        if (hue < 0.0) {
+            hue += 1.0;
+        } else if (hue > 1.0) {
+            hue -= 1.0;
+        }
+        float res;
+        if ((6.0 * hue) < 1.0) {
+            res = f1 + (f2 - f1) * 6.0 * hue;
+        } else if ((2.0 * hue) < 1.0) {
+            res = f2;
+        } else if ((3.0 * hue) < 2.0) {
+            res = f1 + (f2 - f1) * ((2.0 / 3.0) - hue) * 6.0;
+        } else {
+            res = f1;
+        }
+        return res;
+    }
+    
+    static inline void HSLToRGB(float x, float y, float z, float *r, float *g, float *b)
+    {
+        if (y == 0.0) {
+            *r = *g = *b = z; // Luminance
+        } else
+        {
+            float f2;
+            
+            if (z < 0.5) {
+                f2 = z * (1.0 + y);
+            }
+            else {
+                f2 = (z + y) - (y * z);
+            }
+            float f1 = 2.0 * z - f2;
+            
+            *r = HueToRGBComponent(f1, f2, x + (1.0/3.0));
+            *g = HueToRGBComponent(f1, f2, x);
+            *b = HueToRGBComponent(f1, f2, x - (1.0/3.0));
+        }
+    }
 
+    // kCGBlendModeColor
+	template<class ColorT, class Order> struct comp_op_rgba_color
+	{
+		typedef ColorT color_type;
+		typedef Order order_type;
+		typedef typename color_type::value_type value_type;
+		typedef typename color_type::calc_type calc_type;
+		enum base_scale_e
+	    {
+			base_shift = color_type::base_shift,
+			base_mask  = color_type::base_mask
+		};
+        
+        // kCGBlendModeColor :
+		// "Uses the luminance values of the background with the hue and saturation values of the source image".
+		static AGG_INLINE void blend_pix(value_type* p, unsigned sr, unsigned sg, unsigned sb, 	unsigned sa, unsigned cover)
+		{
+            // Nothing to do if the source is fully transparent
+            if (sa) {
+                if(cover < 255)
+                {
+                    sr = (sr * cover + 255) >> 8;
+                    sg = (sg * cover + 255) >> 8;
+                    sb = (sb * cover + 255) >> 8;
+                    sa = (sa * cover + 255) >> 8;
+                }
+                calc_type da = p[Order::A];
+                calc_type dr = p[Order::R];
+                calc_type dg = p[Order::G];
+                calc_type db = p[Order::B];
+                
+                // Nothing to blend to if the destination is fully transparent
+                if (da) {
+                    float sh,ss;
+                    RGBToHSL(sr/(float)sa, sg/(float)sa, sb/(float)sa, &sh, &ss, NULL);
+                    float dl;
+                    RGBToHSL(dr/(float)da, dg/(float)da, db/(float)da, NULL, NULL, &dl);
+                    float r, g, b, a;
+                    HSLToRGB(sh, ss, dl, &r, &g, &b);
+                    a = sa;
+                    sr = roundf(r*a);
+                    sg = roundf(g*a);
+                    sb = roundf(b*a);
+                }
+                // Add (src_over) the colored pixel to the destination
+                calc_type s1a = base_mask - sa;
+                p[Order::R] = (value_type)(sr + ((dr * s1a + base_mask) >> base_shift));
+                p[Order::G] = (value_type)(sg + ((dg * s1a + base_mask) >> base_shift));
+                p[Order::B] = (value_type)(sb + ((db * s1a + base_mask) >> base_shift));
+                p[Order::A] = (value_type)(sa + da - ((sa * da + base_mask) >> base_shift));
+            }
+		}
+	};
+    
 
 
     //======================================================comp_op_table_rgba
@@ -1483,6 +1672,7 @@ namespace o2agg
         comp_op_rgba_invert     <ColorT,Order>::blend_pix,
         comp_op_rgba_invert_rgb <ColorT,Order>::blend_pix,
 		comp_op_rgba_plus_darker<ColorT,Order>::blend_pix,
+		comp_op_rgba_color      <ColorT,Order>::blend_pix,
         0
     };
 
@@ -1518,8 +1708,9 @@ namespace o2agg
         comp_op_contrast,      //----comp_op_contrast
         comp_op_invert,        //----comp_op_invert
         comp_op_invert_rgb,    //----comp_op_invert_rgb
-		comp_op_plus_darker,   // ----comp_op_plus_darker
-
+		comp_op_plus_darker,   //----comp_op_plus_darker
+		comp_op_color,         //----comp_op_color
+        
         end_of_comp_op_e
     };
 
@@ -1911,12 +2102,16 @@ namespace o2agg
             ((value_type*)&v)[order_type::G] = c.g;
             ((value_type*)&v)[order_type::B] = c.b;
             ((value_type*)&v)[order_type::A] = c.a;
-            do
-            {
-                *(pixel_type*)p = v;
-                p += 4;
+            if (!hasSSE2 || sizeof(pixel_type) != 4) {
+                do
+                {
+                    *(pixel_type*)p = v;
+                    p += 4;
+                }
+                while(--len);
+            } else {
+                copy_color_sse(len, (uint32_t *)p, v);
             }
-            while(--len);
         }
 
 
@@ -1956,21 +2151,24 @@ namespace o2agg
                     ((value_type*)&v)[order_type::G] = c.g;
                     ((value_type*)&v)[order_type::B] = c.b;
                     ((value_type*)&v)[order_type::A] = c.a;
-
-                    int chunks = len >> 2;
-                    int rem = len & 3;
-                    while (chunks--)
-                    {
-						*(pixel_type*)p = v;
-						*(pixel_type*)(p+4) = v;
-						*(pixel_type*)(p+8) = v;
-						*(pixel_type*)(p+12) = v;
-						p += 16;
-                    }
-                    while (rem--)
-                    {
-						*(pixel_type*)p = v;
-						p += 4;
+                    if (!hasSSE2 || sizeof(pixel_type) != 4) {
+                        int chunks = len >> 2;
+                        int rem = len & 3;
+                        while (chunks--)
+                        {
+                            *(pixel_type*)p = v;
+                            *(pixel_type*)(p+4) = v;
+                            *(pixel_type*)(p+8) = v;
+                            *(pixel_type*)(p+12) = v;
+                            p += 16;
+                        }
+                        while (rem--)
+                        {
+                            *(pixel_type*)p = v;
+                            p += 4;
+                        }
+                    } else {
+                        copy_color_sse(len, (uint32_t *)p, v);
                     }
                 }
                 else
@@ -2592,6 +2790,47 @@ namespace o2agg
         void blend_hline(int x, int y, unsigned len, 
                          const color_type& c, int8u cover)
         {
+            if(m_comp_op == comp_op_src_over && c.a == 0) {
+                return;
+            }
+            if(m_comp_op == comp_op_src_over || m_comp_op == comp_op_src) {
+                if (cover == 255)
+                {
+                    // Fast path for opaque drawing
+                    value_type* p = (value_type*)m_rbuf->row_ptr(x, y, len) + (x << 2);
+                    bool use_fast_copy = true;
+                    if (use_fast_copy && (m_comp_op == comp_op_src_over)) {
+                        use_fast_copy = c.a == base_mask;
+                    }
+                    if (use_fast_copy) {
+                        color_type v;
+                        ((value_type*)&v)[order_type::R] = c.r;
+                        ((value_type*)&v)[order_type::G] = c.g;
+                        ((value_type*)&v)[order_type::B] = c.b;
+                        ((value_type*)&v)[order_type::A] = c.a;
+                        if (!hasSSE2 || sizeof(color_type) != 4) {
+                            int chunks = len >> 2;
+                            int rem = len & 3;
+                            while (chunks--)
+                            {
+                                *(color_type*)p = v;
+                                *(color_type*)(p+4) = v;
+                                *(color_type*)(p+8) = v;
+                                *(color_type*)(p+12) = v;
+                                p += 16;
+                            }
+                            while (rem--)
+                            {
+                                *(color_type*)p = v;
+                                p += 4;
+                            }
+                        } else {
+                            copy_color_sse(len, (uint32_t *)p, *(uint32_t *)&v);
+                        }
+                        return;
+                    }
+                }
+            }
 
             value_type* p = (value_type*)m_rbuf->row_ptr(x, y, len) + (x << 2);
             do
@@ -2622,7 +2861,76 @@ namespace o2agg
         void blend_solid_hspan(int x, int y, unsigned len, 
                                const color_type& c, const int8u* covers)
         {
+            if (c.a == 0) {
+                return;
+            }
+            // optimize for full opaque, full transparent & full covers
             value_type* p = (value_type*)m_rbuf->row_ptr(x, y, len) + (x << 2);
+            if((m_comp_op == comp_op_src_over && c.a == base_mask) || m_comp_op == comp_op_src) {
+                // Optimize full opaque or transparent src_over transfers - that's what we're mostly doing
+                
+                // Ensure we have a color var using the same color order as the destination
+                color_type v;
+                ((value_type*)&v)[order_type::R] = c.r;
+                ((value_type*)&v)[order_type::G] = c.g;
+                ((value_type*)&v)[order_type::B] = c.b;
+                ((value_type*)&v)[order_type::A] = c.a;
+
+                do
+                {
+                    // skip transparent pixels and group fully opaque ones
+                    if (*covers != 0) {
+                        int i = 0;
+                        for (; i < len; ++i) {
+                            if (covers[i] != 255) {
+                                break;
+                            }
+                        }
+                        if (i > 0) {
+                            // Copy the opaque block
+                            if (!hasSSE2 || len < 16 || sizeof(color_type) != 4) {
+                                int chunks = i >> 2;
+                                int rem = i & 3;
+                                while (chunks--)
+                                {
+                                    *(color_type*)p = v;
+                                    *(color_type*)(p+4) = v;
+                                    *(color_type*)(p+8) = v;
+                                    *(color_type*)(p+12) = v;
+                                    p += 16;
+                                }
+                                while (rem--)
+                                {
+                                    *(color_type*)p = v;
+                                    p += 4;
+                                }
+                            } else {
+                                copy_color_sse(i, (uint32_t *)p, *(uint32_t *)&v);
+                                p += i*sizeof(color_type);
+                            }
+                            len -= i;
+                            if (len == 0) {
+                                return;
+                            }
+                            covers += i;
+                        }
+                        if (*covers != 0) {
+                            comp_op_rgba_src_over<color_type,order_type>::blend_pix(
+                                                                                    p,
+                                                                                    c.r,
+                                                                                    c.g,
+                                                                                    c.b,
+                                                                                    c.a,
+                                                                                    *covers);
+                        }
+                    }
+                    p += 4;
+                    ++covers;
+                }
+                while(--len);
+                return;
+            }
+
             do 
             {
                 blender_type::blend_pix(m_comp_op, 
@@ -2686,12 +2994,87 @@ namespace o2agg
 
         //--------------------------------------------------------------------
         void blend_color_hspan(int x, int y, unsigned len, 
-                               const color_type* colors, 
+                               const color_type* colors,
                                const int8u* covers,
                                int8u cover)
         {
             value_type* p = (value_type*)m_rbuf->row_ptr(x, y, len) + (x << 2);
-            do 
+            if(m_comp_op == comp_op_src_over && (covers || cover == 255)) {
+                // Optimize full opaque or transparent src_over transfers - that's what we're mostly doing
+                do
+                {
+                    // skip transparent pixels and group fully opaque ones
+                    if (colors->a != 0 && (covers == NULL || *covers != 0)) {
+                        int i = 0;
+                        for (; i < len; ++i) {
+                            if (colors[i].a != base_mask || (covers != NULL && covers[i] != 255)) {
+                                break;
+                            }
+                        }
+                        if (i > 0) {
+                            // Copy the opaque block
+                            bool sameOrder = sizeof(value_type)*(order_type::R) == offsetof(color_type, r) && sizeof(value_type)*(order_type::G) == offsetof(color_type, g) && sizeof(value_type)*(order_type::B) == offsetof(color_type, b) && sizeof(value_type)*(order_type::A) == offsetof(color_type, a);
+
+                            if (sameOrder) {
+                                if (!hasSSE2) {
+                                    int chunks = i >> 2;
+                                    int rem = i & 3;
+                                    while (chunks--)
+                                    {
+                                        *(color_type*)p = colors[0];
+                                        *(color_type*)(p+4) = colors[1];
+                                        *(color_type*)(p+8) = colors[2];
+                                        *(color_type*)(p+12) = colors[3];
+                                        p += 16;
+                                        colors += 4;
+                                    }
+                                    while (rem--)
+                                    {
+                                        *(color_type*)p = *colors++;
+                                        p += 4;
+                                    }
+                                } else {
+                                    memmove_sse(i*sizeof(color_type), (uint8_t *)p, (const uint8_t *)colors);
+                                    p += i*sizeof(color_type);
+                                    colors += i;
+                                }
+                            } else {
+                                int rem = i;
+                                while (rem--)
+                                {
+                                    p[order_type::R] = colors->r;
+                                    p[order_type::G] = colors->g;
+                                    p[order_type::B] = colors->b;
+                                    p[order_type::A] = base_mask;
+
+                                    colors++;
+                                    p += 4;
+                                }
+                            }
+                            len -= i;
+                            if (len == 0) {
+                                return;
+                            }
+                            if (covers) covers += i;
+                        }
+                        if (colors->a != 0 && (covers == NULL || *covers != 0)) {
+                            comp_op_rgba_src_over<color_type,order_type>::blend_pix(
+                                                                                    p,
+                                                                                    colors->r,
+                                                                                    colors->g,
+                                                                                    colors->b,
+                                                                                    colors->a,
+                                                                                    covers ? *covers : cover);
+                        }
+                    }
+                    p += 4;
+                    if (covers) ++covers;
+                    ++colors;
+                }
+                while(--len);
+                return;
+            }
+            do
             {
                 blender_type::blend_pix(m_comp_op, 
                                         p, 

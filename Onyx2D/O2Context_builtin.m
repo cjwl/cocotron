@@ -202,11 +202,11 @@ void O2ContextDeviceClipReset_builtin(O2Context_builtin *self){
 ONYX2D_STATIC void O2ContextClipViewportToPath(O2Context_builtin *self,O2Path *path) {
    O2Rect viewport=O2RectMake(self->_vpx,self->_vpy,self->_vpwidth,self->_vpheight);
    O2Rect rect=O2PathGetBoundingBox(path);
-   
+    
+   rect=O2RectIntegral(rect);
+    
    viewport=O2RectIntersection(viewport,rect);
-   
-   viewport=O2RectIntegral(viewport);
-   
+
    self->_vpx=viewport.origin.x;
    self->_vpy=viewport.origin.y;
    self->_vpwidth=viewport.size.width;

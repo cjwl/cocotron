@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_win32.h>
 
 #import <AppKit/NSWindow.h>
+#import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSDrawerWindow.h>
 #import <QuartzCore/CAWindowOpenGLContext.h>
@@ -24,7 +25,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32EventInputSource.h"
 
 #import "opengl_dll.h"
-#define WM_MSG_DEBUGGING 0
 
 @interface Win32Window(ForwardRefs)
 -(void)setupPixelFormat;
@@ -370,6 +370,11 @@ static const unichar *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShad
 }
 
 -(void)setFrame:(CGRect)frame {
+
+#if WM_MSG_DEBUGGING
+    NSLog(@"Win32Window setFrame: %@", NSStringFromRect(frame));
+#endif
+    
    [self invalidateContextsWithNewSize:frame.size];
 
     // _frame must be set before the MoveWindow as MoveWindow generates WM_SIZE and WM_MOVE messages
@@ -501,6 +506,9 @@ static const unichar *Win32ClassNameForStyleMask(unsigned styleMask,bool hasShad
 	// first and then the secondary window in order to reset the focus. This makes it all
 	// happen as expected.
 	SetForegroundWindow(_handle);
+    // That's also needed to be sure we get scrollevents - else they are lost after the current
+    // focused window is closed
+    SetFocus(_handle);
 }
 
 -(void)makeMain {
@@ -1086,6 +1094,15 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     UpdateLayeredWindow(_handle, NULL, NULL, &sizeWnd, [deviceContext dc], &ptSrc, 0, &blend, flags);
 }
 
+-(void)dirtyRect:(CGRect)rect
+{
+    if (_dirtyRect.size.width == 0) {
+        _dirtyRect = rect;
+    } else {
+        _dirtyRect = CGRectUnion(rect, _dirtyRect);
+    }
+}
+
 -(void)bitBltWindow {
     switch(_backingType){
 
@@ -1107,7 +1124,35 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
             if(deviceContext!=nil){
                 O2SurfaceLock(surface);
-                BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+
+//#define BENCHBLIT 1 // Uncommnent this line for refresh rate debug info
+#if BENCHBLIT
+                static NSTimeInterval lastTime = 0.;
+                static int cptr = 0;
+                cptr++;
+#endif
+                NSRect r = CGRectIntegral(_dirtyRect);
+                if (CGRectIsEmpty(r) == NO) {
+                    // Blit the dirty area
+                    int x = r.origin.x;
+                    int y = height - (r.origin.y + r.size.height); // Life would be boring without flipping
+                    int w = r.size.width;
+                    int h = r.size.height;
+                    BitBlt([_cgContext dc],x-left,y-top,w,h,[deviceContext dc],x,y,SRCCOPY);
+                } else {
+                    // Blit the whole content
+                    BitBlt([_cgContext dc],0,0,width,height,[deviceContext dc],left,top,SRCCOPY);
+                }
+                // We're clean now
+                _dirtyRect = CGRectZero;
+#if BENCHBLIT
+                NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
+                if (currentTime - lastTime > 2.) {
+                    NSLog(@"%f fps", (double)cptr/(currentTime - lastTime));
+                    cptr = 0;
+                    lastTime = currentTime;
+                }
+#endif
                 O2SurfaceUnlock(surface);
             }
             break;
@@ -1197,6 +1242,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
     
 #if WM_MSG_DEBUGGING
 	NSLog(@"WM_WINDOWPOSCHANGED_wParam: %d, lParam: %ld", wParam, lParam);
+#define WM_WINDOWPOSCHANGED_DEBUGGING 0
 #endif
 	
 	WINDOWPOS* pWP = (WINDOWPOS*)lParam;
@@ -1206,6 +1252,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 		CGRect frame=_frame;
 		frame.origin = CGPointMake(pWP->x, pWP->y);
 		frame = convertFrameFromWin32ScreenCoordinates(frame);
+#if WM_WINDOWPOSCHANGED_DEBUGGING
+        NSLog(@"    Moving frame changed from: %@ to: %@", NSStringFromRect(_frame), NSStringFromRect(frame));
+#endif
 		[_delegate platformWindow:self frameChanged:frame didSize:NO];
 		[_delegate platformWindowDidMove:self];
     }
@@ -1215,6 +1264,9 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 		frame.origin = CGPointMake(pWP->x, pWP->y);
 		frame.size = CGSizeMake(pWP->cx, pWP->cy);
 		frame = convertFrameFromWin32ScreenCoordinates(frame);
+#if WM_WINDOWPOSCHANGED_DEBUGGING
+        NSLog(@"    Resizing frame changed from: %@ to: %@", NSStringFromRect(_frame), NSStringFromRect(frame));
+#endif
 		[self invalidateContextsWithNewSize: frame.size];
 		[_delegate platformWindow:self frameChanged:frame didSize:YES];
         
@@ -1305,7 +1357,7 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 	BOOL activated = LOWORD(wParam) != 0;
 	
 #if WM_ACTIVATE_DEBUGGING
-	NSLog(@"isMinimized: %@, activated: %@", isMinimized ? @"YES" : @"NO", activated ? @"YES" : @"NO");
+	NSLog(@"    isMinimized: %@, activated: %@", isMinimized ? @"YES" : @"NO", activated ? @"YES" : @"NO");
 #endif
 	
 	if (isMinimized) {
@@ -1608,7 +1660,8 @@ const int kWindowMaxDim = 10000;
    return DefWindowProcW(_handle,message,wParam,lParam);
 }
 
-static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
+// Be sure the stack is aligned in case someone wants to do exotic things like SSE2
+static LRESULT __attribute__((force_align_arg_pointer))  CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    Win32Window       *self=GetProp(handle,"Win32Window");
    LRESULT            result;

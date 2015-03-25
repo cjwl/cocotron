@@ -46,10 +46,18 @@ void O2JPGEncoderWriteImage(O2JPGEncoderRef self,O2ImageRef image,CFDictionaryRe
 	cinfo.image_height = height;
 	cinfo.input_components = 3;
 	cinfo.in_color_space = JCS_RGB;
-	
+
 	jpeg_set_defaults(&cinfo);
+
+    NSNumber *dpi = [properties objectForKey:(NSString *)kO2ImageDestinationDPI];
+	if (dpi) {
+        int dpiValue = [dpi intValue];
+        cinfo.density_unit = 1;		/* DPI */
+        cinfo.X_density = dpiValue;		/* Horizontal pixel density */
+        cinfo.Y_density = dpiValue;		/* Vertical pixel density */
+	}
+
 	NSNumber *compression = [properties objectForKey:(NSString *)kO2ImageDestinationLossyCompressionQuality];
-    NSLog(@"Opetions : %@ %@", properties, compression);
 	if (compression) {
 		jpeg_set_quality(&cinfo, 100*[compression floatValue], TRUE);
 	}

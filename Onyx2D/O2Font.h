@@ -18,6 +18,14 @@ typedef uint16_t O2Glyph;
 #import <Onyx2D/O2DataProvider.h>
 //#import <Onyx2D/O2Image.h>
 
+#define O2FONTLOGGINGENABLED 0
+
+#if O2FONTLOGGINGENABLED
+#define O2FontLog(format, args...) NSLog(@"%s line: %d | %@", __PRETTY_FUNCTION__, __LINE__, [NSString stringWithFormat: format, ## args])
+#else
+#define O2FontLog(format, args...)
+#endif
+
 @class NSData;
 
 typedef enum {
@@ -66,6 +74,8 @@ typedef enum {
 -(NSString *)copyGlyphNameForGlyph:(O2Glyph)glyph;
 
 -(NSCharacterSet *)coveredCharacterSet;
+
+-(float)nativeSizeForSize:(float)size;
 
 -(void)fetchAdvances;
 

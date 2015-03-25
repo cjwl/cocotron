@@ -139,8 +139,9 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
     static NSString *setName = @"newlineCharacterSet";
     id set;
     if ( !(set = NSMapGet(nameToSet,setName))) {
-        unichar chars[5] = { 0x0A, 0x0B, 0x0C, 0x0D,  0x85 };
-        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:5]];
+        unichar chars[] = { 0x0A, 0x0B, 0x0C, 0x0D,  0x85, 0x2028, 0x2029 };
+        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
+                                                                  sizeof(chars)/sizeof(unichar)]];
         NSMapInsert(nameToSet,setName,set);
     }
     return set;   
@@ -151,8 +152,9 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
     id set;
     if ( !(set = NSMapGet(nameToSet,setName))) {
     // Doc.s do not mention 0xA0 but it is implemented as a member
-        unichar chars[8] = { 0x20, 0x09,  0x0A, 0x0B, 0x0C, 0x0D,  0x85, 0xA0 };
-        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:8]];
+        unichar chars[] = { 0x20, 0x09,  0x0A, 0x0B, 0x0C, 0x0D,  0x85, 0xA0, 0x2028, 0x2029 };
+        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
+                                                                  sizeof(chars)/sizeof(unichar)]];
         NSMapInsert(nameToSet,setName,set);
     }
     return set;

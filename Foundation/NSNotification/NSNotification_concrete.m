@@ -18,13 +18,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSNotification_concrete *NSNotification_concreteNew(NSZone *zone,
   NSString *name,id object,NSDictionary *userInfo) {
-   NSNotification_concrete *note=NSAllocateObject([NSNotification_concrete class],0,zone);
-
-   note->_name=[name copyWithZone:zone];
-   note->_object=[object retain];
-   note->_userInfo=[userInfo retain];
-
-   return note;  
+   NSNotification_concrete *self=NSAllocateObject([NSNotification_concrete class],0,zone);
+    if (self) {
+       self->_name=[name copyWithZone:zone];
+       self->_object=[object retain];
+       self->_userInfo=[userInfo retain];
+    }
+   return self;  
 }
 
 -initWithName:(NSString *)name object:object userInfo:(NSDictionary *)userInfo {

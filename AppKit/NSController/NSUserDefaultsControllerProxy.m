@@ -41,8 +41,8 @@
       value=[[_controller defaults] objectForKey:key];
       if(!value)
          value=[[_controller initialValues] objectForKey:key];
-      
-      if(value)
+
+       if(value)
          [_cachedValues setObject:value forKey:key];
    }
    return value;
@@ -51,11 +51,11 @@
 
 -(void)setValue:(id)value forKey:(NSString*)key
 {
-   [self willChangeValueForKey:key];
+    [self willChangeValueForKey:key];
    [_cachedValues setObject:value forKey:key];
    if([_controller appliesImmediately])
       [[_controller defaults] setObject:value forKey:key];
-   [self didChangeValueForKey:key];
+    [self didChangeValueForKey:key];
 }
 
 -(void)revert
@@ -95,17 +95,22 @@
 
 -(void)userDefaultsDidChange:(id)notification
 {
+    // It would be much easier if we have the key in the notification...
    id defaults=[_controller defaults];
-   for(NSString *key in [_cachedValues allKeys])
-   {
+    
+    NSArray *allKeys = [[defaults dictionaryRepresentation] allKeys];
+    for(NSString *key in allKeys) {
       id val=[_cachedValues objectForKey:key];
       id newVal=[defaults objectForKey:key];
       if(![val isEqual:newVal])
       {
          [self willChangeValueForKey:key];
-         
-         [_cachedValues setObject:newVal forKey:key];
 
+          if (newVal) {
+              [_cachedValues setObject:newVal forKey:key];
+          } else {
+              [_cachedValues removeObjectForKey:key];
+          }
          [self didChangeValueForKey:key];
       }      
    }

@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CC17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CD17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CE17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555CF17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
+		496555DE17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555DF17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555E017A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555E117A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
+		496555E217A02FB90015D3B3 /* NSPoofAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 496555D817A02FB90015D3B3 /* NSPoofAnimation.m */; };
 		49A7975314224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
 		49A7975414224021001CE4C2 /* O2Encoder_JPG.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7975214224021001CE4C2 /* O2Encoder_JPG.m */; };
 		49A7975514224021001CE4C2 /* O2Encoder_JPG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A7975114224021001CE4C2 /* O2Encoder_JPG.h */; };
@@ -41,6 +51,11 @@
 		49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
 		49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
 		49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */; };
+		49EB338E171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */; };
+		49EB338F171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */; };
+		49EB3390171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */; };
+		49EB3391171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */; };
+		49EB3392171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */; };
 		630DC9DA14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DC14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
@@ -128,6 +143,10 @@
 		631382B5145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		631382B6145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
 		631382B7145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		631382B8145F734100765AA7 /* NSColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 631382B3145F734100765AA7 /* NSColorWheel.png */; };
+		63848FE217A189E70019E4DC /* NSPrintProgressPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63848FE017A189E70019E4DC /* NSPrintProgressPanel.xib */; };
+		63848FEC17A18C050019E4DC /* NSPrintProgressPanelController.h in Headers */ = {isa = PBXBuildFile; fileRef = 63848FEA17A18C050019E4DC /* NSPrintProgressPanelController.h */; };
+		63848FED17A18C050019E4DC /* NSPrintProgressPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63848FEB17A18C050019E4DC /* NSPrintProgressPanelController.m */; };
 		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
 		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
 		A1CC701D100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
@@ -3788,6 +3807,9 @@
 /* Begin PBXFileReference section */
 		36570F980E818CD5008FE1BE /* NSGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGradient.h; sourceTree = "<group>"; };
 		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
+		496555CA17A02FAD0015D3B3 /* NSPoof.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NSPoof.png; sourceTree = "<group>"; };
+		496555D717A02FB90015D3B3 /* NSPoofAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPoofAnimation.h; sourceTree = "<group>"; };
+		496555D817A02FB90015D3B3 /* NSPoofAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPoofAnimation.m; sourceTree = "<group>"; };
 		49A7975114224021001CE4C2 /* O2Encoder_JPG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Encoder_JPG.h; sourceTree = "<group>"; };
 		49A7975214224021001CE4C2 /* O2Encoder_JPG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Encoder_JPG.m; sourceTree = "<group>"; };
 		49B85E88166FB2D200507E8C /* NSBidiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBidiHelper.m; sourceTree = "<group>"; };
@@ -3797,6 +3819,7 @@
 		49C12B4D16FCAF270018CB21 /* O2EXIFDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2EXIFDecoder.m; sourceTree = "<group>"; };
 		49D5D243165F9D0000D6A8EE /* NSUndoTextOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUndoTextOperation.h; sourceTree = "<group>"; };
 		49D5D244165F9D0000D6A8EE /* NSUndoTextOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUndoTextOperation.m; sourceTree = "<group>"; };
+		49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSToolbarOverflowArrow.tiff; sourceTree = "<group>"; };
 		630DC9D914CE3F2D0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
 		630DC9E014CE3F6A0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerColorList.nib; sourceTree = "<group>"; };
 		630DC9E714CE40B80009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSColorPicker.subproj/de.lproj/NSColorPickerSliders.nib; sourceTree = "<group>"; };
@@ -3833,6 +3856,9 @@
 		63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColorPickerWheelView.h; sourceTree = "<group>"; };
 		63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorPickerWheelView.m; sourceTree = "<group>"; };
 		631382B3145F734100765AA7 /* NSColorWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSColorWheel.png; path = NSColorPicker.subproj/NSColorWheel.png; sourceTree = "<group>"; };
+		63848FE117A189E70019E4DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NSPrintProgressPanel.xib; sourceTree = "<group>"; };
+		63848FEA17A18C050019E4DC /* NSPrintProgressPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPrintProgressPanelController.h; sourceTree = "<group>"; };
+		63848FEB17A18C050019E4DC /* NSPrintProgressPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPrintProgressPanelController.m; sourceTree = "<group>"; };
 		6E14EC6509A3C40F009C8693 /* O2TIFFImageDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2TIFFImageDirectory.h; sourceTree = "<group>"; };
 		6E14EC6609A3C40F009C8693 /* O2TIFFImageDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2TIFFImageDirectory.m; sourceTree = "<group>"; };
 		6E14EC6709A3C40F009C8693 /* O2Decoder_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Decoder_TIFF.h; sourceTree = "<group>"; };
@@ -4883,6 +4909,8 @@
 				FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */,
 				FE463EC8102D0F9C00B265D6 /* NSPathControl.h */,
 				FE463EC9102D0F9D00B265D6 /* NSPathControl.m */,
+				496555D717A02FB90015D3B3 /* NSPoofAnimation.h */,
+				496555D817A02FB90015D3B3 /* NSPoofAnimation.m */,
 				FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */,
 				FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */,
 				FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */,
@@ -5077,6 +5105,8 @@
 				6E2B53A50976075200DA0954 /* NSPrintOperation.m */,
 				FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */,
 				FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */,
+				63848FEA17A18C050019E4DC /* NSPrintProgressPanelController.h */,
+				63848FEB17A18C050019E4DC /* NSPrintProgressPanelController.m */,
 				6E2B54860976075200DA0954 /* NSProgressIndicator.h */,
 				6E2B53A70976075200DA0954 /* NSProgressIndicator.m */,
 				6E2B54880976075200DA0954 /* NSResponder.h */,
@@ -5209,6 +5239,7 @@
 				6311B15E14C74B00007AD8C0 /* NSColorPanel.nib */,
 				6311B16014C74B00007AD8C0 /* NSFontPanel.nib */,
 				6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */,
+				63848FE017A189E70019E4DC /* NSPrintProgressPanel.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -5216,6 +5247,7 @@
 		6E2B54E60976075300DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				496555CA17A02FAD0015D3B3 /* NSPoof.png */,
 				631382B3145F734100765AA7 /* NSColorWheel.png */,
 				631381D0145F2FFA00765AA7 /* NSColorPickerListIcon.png */,
 				631381D1145F2FFA00765AA7 /* NSColorPickerSlidersIcon.png */,
@@ -5651,6 +5683,7 @@
 		6E2B57390976075500DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */,
 				FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */,
 				6E2B573A0976075500DA0954 /* NSToolbarShowFontsItem.tiff */,
 				6E2B573C0976075500DA0954 /* NSToolbarCustomizeToolbarItem.tiff */,
@@ -7448,6 +7481,7 @@
 				6313829A145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */,
 				49D5D245165F9D0000D6A8EE /* NSUndoTextOperation.h in Headers */,
 				49C12B4E16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
+				63848FEC17A18C050019E4DC /* NSPrintProgressPanelController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8236,6 +8270,8 @@
 				630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E97166FBC9A00507E8C /* UNIDATA in Resources */,
+				49EB338F171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CC17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8314,6 +8350,8 @@
 				630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E98166FBC9A00507E8C /* UNIDATA in Resources */,
+				49EB3390171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CD17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8396,6 +8434,9 @@
 				630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
+				49EB338E171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */,
+				63848FE217A189E70019E4DC /* NSPrintProgressPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8474,6 +8515,8 @@
 				630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
 				630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E9A166FBC9A00507E8C /* UNIDATA in Resources */,
+				49EB3392171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
+				496555CF17A02FAD0015D3B3 /* NSPoof.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8948,6 +8991,7 @@
 				49D5D24B165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555DF17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9355,6 +9399,7 @@
 				49D5D24C165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8B166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5516FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555E017A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9797,6 +9842,8 @@
 				49D5D24A165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E89166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555DE17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
+				63848FED17A18C050019E4DC /* NSPrintProgressPanelController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10206,6 +10253,7 @@
 				49D5D24E165F9D0000D6A8EE /* NSUndoTextOperation.m in Sources */,
 				49B85E8D166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5716FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
+				496555E217A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10415,6 +10463,14 @@
 				6311B1A214C75168007AD8C0 /* fr */,
 			);
 			name = NSSpellingViewController.xib;
+			sourceTree = "<group>";
+		};
+		63848FE017A189E70019E4DC /* NSPrintProgressPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63848FE117A189E70019E4DC /* en */,
+			);
+			name = NSPrintProgressPanel.xib;
 			sourceTree = "<group>";
 		};
 		6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */ = {

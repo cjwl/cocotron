@@ -195,7 +195,7 @@ const int NSTableViewDefaultRowHeight=16.;
 }
 
 -(NSView *)cornerView {
-    return _cornerView;
+    return [[_cornerView retain] autorelease];
 }
 
 -(float)rowHeight {
@@ -741,8 +741,10 @@ _dataSource);
       [_editingCell setBackgroundColor:_backgroundColor];
       
       NSText *oldEditor = _currentEditor;
+       [_currentEditor setDelegate:nil];
       NSText* editor =[[self window] fieldEditor:YES forObject:self];
       _currentEditor=[[_editingCell setUpFieldEditorAttributes: editor] retain];
+       [_currentEditor setDelegate:self];
       [oldEditor release];
       
       if (select == YES)
@@ -1128,8 +1130,13 @@ _dataSource);
    NSCell *dataCell = [column dataCellForRow:row];
 
    [dataCell setControlView:self];
-   [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
-   
+    id value = [self dataSourceObjectValueForTableColumn:column row:row];
+    if ([dataCell isKindOfClass: [NSPopUpButtonCell class]]) {
+        [(NSPopUpButtonCell *)dataCell selectItemAtIndex: [value intValue]];
+    } else {
+        [dataCell setObjectValue: value];
+    }
+    
    if ([dataCell respondsToSelector:@selector(setTextColor:)]) {
       if ([self isRowSelected:row] || [self isColumnSelected:columnNumber]){
        [(NSTextFieldCell *)dataCell setDrawsBackground:NO]; // so the selection shows properly, dont just set the color so custom background works
@@ -1332,6 +1339,8 @@ _dataSource);
     _editingFrame = NSMakeRect(-1,-1,-1,-1);
     _editedRow=-1;
     _editedColumn=-1;
+    [_currentEditor setDelegate:nil];
+    [_currentEditor release];
     return NO;
 }
 
@@ -1531,7 +1540,13 @@ _dataSource);
      
      if([clickedCell trackMouse:event inRect:[self frameOfCellAtColumn:_clickedColumn row:_clickedRow] ofView:self untilMouseUp:YES]){
        [clickedCell setNextState];
-       [self dataSourceSetObjectValue:[NSNumber numberWithInt:[clickedCell state]] forTableColumn:clickedColumnObject row:_clickedRow];
+         NSNumber *value = nil;
+         if ([clickedCell isKindOfClass: [NSPopUpButtonCell class]]) {
+             value = [NSNumber numberWithInt: [(NSPopUpButtonCell *)clickedCell indexOfSelectedItem]];
+         } else {
+             value = [NSNumber numberWithInt:[clickedCell state]];
+         }
+         [self dataSourceSetObjectValue: value forTableColumn:clickedColumnObject row:_clickedRow];
       [self sendAction:[clickedCell action] to:[clickedCell target]];
      }
 

@@ -41,6 +41,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontTypeface.h>
 #import <AppKit/NSFontMetric.h>
 
+#ifndef WM_MOUSEHWHEEL
+#define WM_MOUSEHWHEEL                  0x020E
+#endif
+
 @implementation NSDisplay(windows)
 
 +allocWithZone:(NSZone *)zone {
@@ -94,54 +98,47 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 }
 
 -(void)loadPrivateFontPaths:(NSArray *)paths {
-   for(NSString *path in paths){
-    const uint16_t *rep=[path fileSystemRepresentationW];
-#if 0
-    typedef WINGDIAPI int WINAPI (*ftype)(LPCWSTR);
 
-    HANDLE library=LoadLibrary("GDI32");
-    
-    ftype  function=(ftype)GetProcAddress(library,"AddFontResourceW");
-    if(function==NULL)
-     NSLog(@"GetProcAddress(\"GDI32\",\"AddFontResourceW\") failed");
-    else {
-     if(function(rep)==0){
-      NSLog(@"AddFontResourceW failed for %@",path);
-     }
-    }
-#else
 #ifndef FR_PRIVATE
 #define FR_PRIVATE 0x10
 #endif
-    typedef WINGDIAPI int WINAPI (*ftype)(LPCWSTR,DWORD,PVOID);
-
     HANDLE library=LoadLibrary("GDI32");
-    
+    typedef WINGDIAPI int WINAPI (*ftype)(LPCWSTR,DWORD,PVOID);
     ftype  function=(ftype)GetProcAddress(library,"AddFontResourceExW");
-    if(function==NULL)
-     NSLog(@"GetProcAddress(\"GDI32\",\"AddFontResourceExW\") failed");
-    else {
-     if(function(rep,FR_PRIVATE,0)==0){
-      NSLog(@"AddFontResourceExW failed for %@",path);
-     }
+    if(function==NULL) {
+        NSLog(@"GetProcAddress(\"GDI32\",\"AddFontResourceExW\") failed");
+        return;
     }
-#endif
-   }
+
+    for(NSString *path in paths){
+        const uint16_t *rep=[path fileSystemRepresentationW];
+        if(function(rep,FR_PRIVATE,0)==0){
+            NSLog(@"AddFontResourceExW failed for %@",path);
+        }
+    }
 }
 
 -(void)loadPrivateFonts {
-	// A special info plist key can specify a resource dir containing the bundled application fonts - returns nil if
-	// the path is not specified so the original code path is followed
-	NSString* fontsDir = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"ATSApplicationFontsPath"];
+    // A special info plist key can specify a resource dir containing the bundled application fonts - returns nil if
+    // the path is not specified so the original code path is followed
+    NSString* fontsDir = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"ATSApplicationFontsPath"];
+    
+    NSArray*  ttfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory: fontsDir];
+    NSArray*  TTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"TTF" inDirectory: fontsDir];
+    NSArray*  otfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"otf" inDirectory: fontsDir];
+    NSArray*  OTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"OTF" inDirectory: fontsDir];
+    
+    NSMutableArray* allPaths = [NSMutableArray arrayWithCapacity: 100];
+    [allPaths addObjectsFromArray: ttfPaths];
+    [allPaths addObjectsFromArray: TTFPaths];
+    [allPaths addObjectsFromArray: otfPaths];
+    [allPaths addObjectsFromArray: OTFPaths];
+    
+    [self loadPrivateFontPaths: allPaths];
+}
 
-	NSArray*  ttfPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"ttf" inDirectory: fontsDir];
-	NSArray*  TTFPaths=[[NSBundle mainBundle] pathsForResourcesOfType:@"TTF" inDirectory: fontsDir];
-
-	NSMutableArray* allPaths = [NSMutableArray arrayWithCapacity: 100];
-	[allPaths addObjectsFromArray: ttfPaths];
-	[allPaths addObjectsFromArray: TTFPaths];
-	
-	[self loadPrivateFontPaths: allPaths];
+-(void)forceLoadOfFontsAtPaths:(NSArray *)paths {
+    [self loadPrivateFontPaths: paths];
 }
 
 -(id)init {
@@ -181,11 +178,15 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
 	
 	NSRect frame = CGRectFromRECT( info.rcMonitor );
 	NSRect visibleFrame = CGRectFromRECT( info.rcWork );
-
-	CGFloat bottom = GetSystemMetrics( SM_YVIRTUALSCREEN ) + GetSystemMetrics( SM_CYVIRTUALSCREEN );
-	frame.origin.y = bottom - (frame.origin.y + frame.size.height);
-	visibleFrame.origin.y = bottom - (visibleFrame.origin.y + visibleFrame.size.height);
-
+    
+    // According to http://msdn.microsoft.com/en-us/library/windows/desktop/dd145066(v=vs.85).aspx
+    // the rcMonitor and rcWork rects are already in virtual screen coords so there should be
+    // no need for any further massaging.
+    
+    // But apparently it's not true and the visibleFrame.origin.y needs to be offset - i.e. guess
+    // there's some coordinate system origin mismatch?
+    visibleFrame.origin.y = NSHeight(frame)-NSHeight(visibleFrame);
+    
 	NSScreen *screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:visibleFrame] autorelease];
 
    if (info.dwFlags & MONITORINFOF_PRIMARY) [array insertObject:screen atIndex:0];
@@ -795,178 +796,183 @@ The values should be upgraded to something which is more generic to implement, p
 }
 
 -(BOOL)postKeyboardMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window keyboardState:(BYTE *)keyboardState {
-   unichar        buffer[256],ignoringBuffer[256];
-   NSString      *characters;
-   NSString      *charactersIgnoringModifiers;
-   BOOL           isARepeat=NO;
-   int            bufferSize=0,ignoringBufferSize=0;
-   BYTE    *keyState=keyboardState;
- //   GetKeyboardState(keyState);
-
-	// !!!! This code is able to get proper char events even for chars built using dead-keys, but we're loosing contents of KeyUp events.
-	//      No idea why, but we are more in need for proper chars (especially for international users) than for proper KeyUp messages contents
-	//!!!!!!!!!!!!!!!!!!!!!
-	if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
-		// wParam is our unicode char
-		*buffer = msg.wParam;
-		bufferSize = 1;
-	} else {
-		// No idea why but not calling that one (when we don't need it) leads to WM_CHAR translated messages not being received
-		ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
-		
-		if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
-			bufferSize = 0;
-		} else {
-			bufferSize = ToUnicode(msg.wParam,msg.lParam>>16,keyState,buffer,256,0);
-		}
-	}
-   keyState[VK_CONTROL]=0x00;
-   keyState[VK_LCONTROL]=0x00;
-   keyState[VK_RCONTROL]=0x00;
-   keyState[VK_CAPITAL]=0x00;
-
-   keyState[VK_MENU]=0x00;
-   keyState[VK_LMENU]=0x00;
-   keyState[VK_RMENU]=0x00;
-	if (msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) {
-		// Let's save that for later
-		ignoringBufferSize=ToUnicode(msg.wParam,msg.lParam>>16,keyState,ignoringBuffer,256,0);
-		if (ignoringBufferSize > 0) {
-			[_ignoringModifiersString appendString:[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]];
-		}
-		ignoringBufferSize = 0;
-	} else if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
-		// Let's get what we previously saved from our keydown events
-		[_ignoringModifiersString getCharacters:ignoringBuffer];
-		ignoringBufferSize = [_ignoringModifiersString length];
-		// Reset the saved ignoring modifiers string
-		[_ignoringModifiersString release];
-		_ignoringModifiersString = [NSMutableString new];
-	}
-	
-	if (msg.message != WM_CHAR && msg.message != WM_SYSCHAR) {
-		// Let's save the current keyCode
-		_keyCode=appleKeyCodeForWindowsKeyCode(msg.wParam,msg.lParam,&_isKeypad);
-	}
-
+    unichar        buffer[256],ignoringBuffer[256];
+    BOOL           isARepeat=NO;
+    int            bufferSize=0,ignoringBufferSize=0;
+    BYTE           *keyState=keyboardState;
+    
+    // The recommended way to properly handle unicode is to handle WM_CHAR events, generated by using TranslateMessage
+    // But to built the chars ignoring the modifiers, we need to use ToUnicode.
+    // Unfortunately, ToUnicode is modifying the character layout internal state machine, used to deal with dead keys
+    // So, for things that looks like shortcuts (ctrl is down, but not the alt key, used to compose some chars), we do all
+    // the processing at WM_KEYDOWN events, using ToUnicode to get both the "normal" chars, and the unmodified ones
+    // For other events, we call TranslateMessage, which is needed for proper IME support.
+    // (that means shortcuts without a "ctrl" modifier are probably not properly handled, as well as the
+    // charactersIgnoringModifiers property of NSEvent for non-shortcuts)
+    if (msg.message == WM_CHAR || msg.message == WM_SYSCHAR) {
+        *buffer = msg.wParam;
+        bufferSize = 1;
+    } else {
+        BOOL isCtrlAlt = (modifierFlags & (NSCommandKeyMask | NSAlternateKeyMask)) == (NSCommandKeyMask | NSAlternateKeyMask);
+        BOOL isCtrl = (modifierFlags & NSCommandKeyMask) == NSCommandKeyMask;
+        if (isCtrl == NO || isCtrlAlt == YES) {
+            // Not a shortcut - use the normal char composing path
+            TranslateMessage(&msg);
+        } else {
+            // Get the char corresponding to the key down
+            bufferSize = ToUnicode(msg.wParam,msg.lParam>>16,keyboardState,buffer,10,0);
+            
+            // Get the char without the modifiers
+            BYTE kstate[256];
+            memcpy(kstate, keyboardState, 256);
+            kstate[VK_CONTROL]=0x00;
+            kstate[VK_LCONTROL]=0x00;
+            kstate[VK_RCONTROL]=0x00;
+            kstate[VK_CAPITAL]=0x00;
+            
+            kstate[VK_MENU]=0x00;
+            kstate[VK_LMENU]=0x00;
+            kstate[VK_RMENU]=0x00;
+            ignoringBufferSize = ToUnicode(msg.wParam,msg.lParam>>16,kstate,ignoringBuffer,10,0);
+            // Empty the keyboard state machine until we eat all of the dead keys
+            while(ignoringBufferSize < 0) {
+                ignoringBufferSize = ToUnicode(msg.wParam,msg.lParam>>16,kstate,ignoringBuffer,10,0);
+            }
+            if (ignoringBufferSize > 0) {
+                NSString *str = [[[NSString alloc] initWithCharacters:ignoringBuffer length:ignoringBufferSize] autorelease];
+                [_ignoringModifiersString appendString:str];
+            }
+            
+            // Calling to ToUnicode is changing the current logic state about dealing with dead keys so we need to put things
+            // back to the state it was
+            // see http://blogs.msdn.com/b/michkap/archive/2005/01/19/355870.aspx
+            ToUnicode(msg.wParam,msg.lParam>>16,keyboardState,ignoringBuffer,10,0);
+        }
+    }
+    
+    // Let's save the current keyCode
+    _keyCode=appleKeyCodeForWindowsKeyCode(msg.wParam,msg.lParam,&_isKeypad);
+    
 	if(bufferSize==0){
 		// Handle the special keys - we won't receive any char message from them
-    switch(msg.wParam){
-     case VK_LBUTTON: break;
-     case VK_RBUTTON: break;
-     case VK_CANCEL:  break;
-     case VK_MBUTTON: break;
-
-     case VK_BACK:    break;
-
-     case VK_CLEAR:   buffer[bufferSize++]=NSClearDisplayFunctionKey;break;
-     case VK_RETURN:  break;
-
-        case VK_SHIFT: break;
-        case VK_CONTROL: break;
-     case VK_MENU:
-      buffer[bufferSize++]=' '; // lame
-      type=NSFlagsChanged;
-      break;
-
-     case VK_PAUSE:    buffer[bufferSize++]=NSPauseFunctionKey;       break;
-     case VK_CAPITAL:  break;
-
-     case VK_PRIOR:    buffer[bufferSize++]=NSPageUpFunctionKey;      break;
-     case VK_NEXT:     buffer[bufferSize++]=NSPageDownFunctionKey;    break;
-     case VK_END:      buffer[bufferSize++]=NSEndFunctionKey;         break;
-     case VK_HOME:     buffer[bufferSize++]=NSHomeFunctionKey;        break;
-     case VK_LEFT:     buffer[bufferSize++]=NSLeftArrowFunctionKey;   break;
-     case VK_UP:       buffer[bufferSize++]=NSUpArrowFunctionKey;     break;
-     case VK_RIGHT:    buffer[bufferSize++]=NSRightArrowFunctionKey;  break;
-     case VK_DOWN:     buffer[bufferSize++]=NSDownArrowFunctionKey;   break;
-     case VK_SELECT:   buffer[bufferSize++]=NSSelectFunctionKey;      break;
-     case VK_PRINT:    buffer[bufferSize++]=NSPrintFunctionKey;       break;
-     case VK_EXECUTE:  buffer[bufferSize++]=NSExecuteFunctionKey;     break;
-     case VK_SNAPSHOT: buffer[bufferSize++]=NSPrintScreenFunctionKey; break;
-     case VK_INSERT:   buffer[bufferSize++]=NSInsertFunctionKey;      break;
-     case VK_DELETE:   buffer[bufferSize++]=NSDeleteFunctionKey;      break;
-     case VK_HELP:     buffer[bufferSize++]=NSHelpFunctionKey;        break;
-
-     case VK_LWIN:     break;
-     case VK_RWIN:     break;
-     case VK_APPS:     break;
-
-     case VK_SEPARATOR:break;
-     case VK_SUBTRACT: break;
-     case VK_DECIMAL:  break;
-     case VK_DIVIDE:   break;
-
-     case VK_F1:       buffer[bufferSize++]=NSF1FunctionKey; break;
-     case VK_F2:       buffer[bufferSize++]=NSF2FunctionKey; break;
-     case VK_F3:       buffer[bufferSize++]=NSF3FunctionKey; break;
-     case VK_F4:       buffer[bufferSize++]=NSF4FunctionKey; break;
-     case VK_F5:       buffer[bufferSize++]=NSF5FunctionKey; break;
-     case VK_F6:       buffer[bufferSize++]=NSF6FunctionKey; break;
-     case VK_F7:       buffer[bufferSize++]=NSF7FunctionKey; break;
-     case VK_F8:       buffer[bufferSize++]=NSF8FunctionKey; break;
-     case VK_F9:       buffer[bufferSize++]=NSF9FunctionKey; break;
-     case VK_F10:      buffer[bufferSize++]=NSF10FunctionKey; break;
-     case VK_F11:      buffer[bufferSize++]=NSF11FunctionKey; break;
-     case VK_F12:      buffer[bufferSize++]=NSF12FunctionKey; break;
-     case VK_F13:      buffer[bufferSize++]=NSF13FunctionKey; break;
-     case VK_F14:      buffer[bufferSize++]=NSF14FunctionKey; break;
-     case VK_F15:      buffer[bufferSize++]=NSF15FunctionKey; break;
-     case VK_F16:      buffer[bufferSize++]=NSF16FunctionKey; break;
-     case VK_F17:      buffer[bufferSize++]=NSF17FunctionKey; break;
-     case VK_F18:      buffer[bufferSize++]=NSF18FunctionKey; break;
-     case VK_F19:      buffer[bufferSize++]=NSF19FunctionKey; break;
-     case VK_F20:      buffer[bufferSize++]=NSF20FunctionKey; break;
-     case VK_F21:      buffer[bufferSize++]=NSF21FunctionKey; break;
-     case VK_F22:      buffer[bufferSize++]=NSF22FunctionKey; break;
-     case VK_F23:      buffer[bufferSize++]=NSF23FunctionKey; break;
-     case VK_F24:      buffer[bufferSize++]=NSF24FunctionKey; break;
-
-     case VK_NUMLOCK:  break;
-     case VK_SCROLL:   buffer[bufferSize++]=NSScrollLockFunctionKey; break;
-
-/* these constants are only useful with GetKeyboardState 
-     case VK_LSHIFT:   NSLog(@"VK_LSHIFT"); break;
-     case VK_RSHIFT:   NSLog(@"VK_RSHIFT"); break;
-     case VK_LCONTROL: NSLog(@"VK_LCONTROL"); break;
-     case VK_RCONTROL: NSLog(@"VK_RCONTROL"); break;
-     case VK_LMENU:    NSLog(@"VK_LMENU"); break;
-     case VK_RMENU:    NSLog(@"VK_RMENU"); break;
- */
-
-     case VK_ATTN: break;
-     case VK_CRSEL: break;
-     case VK_EXSEL: break;
-     case VK_EREOF: break;
-     case VK_PLAY: break;
-     case VK_ZOOM: break;
-     case VK_NONAME: break;
-     case VK_PA1: break;
-     case VK_OEM_CLEAR: break;
+        switch(msg.wParam){
+            case VK_LBUTTON: break;
+            case VK_RBUTTON: break;
+            case VK_CANCEL:  break;
+            case VK_MBUTTON: break;
+                
+            case VK_BACK:    break;
+                
+            case VK_CLEAR:   buffer[bufferSize++]=NSClearDisplayFunctionKey;break;
+            case VK_RETURN:  break;
+                
+            case VK_SHIFT: break;
+            case VK_CONTROL: break;
+            case VK_MENU:
+                buffer[bufferSize++]=' '; // lame
+                type=NSFlagsChanged;
+                break;
+                
+            case VK_PAUSE:    buffer[bufferSize++]=NSPauseFunctionKey;       break;
+            case VK_CAPITAL:  break;
+                
+            case VK_PRIOR:    buffer[bufferSize++]=NSPageUpFunctionKey;      break;
+            case VK_NEXT:     buffer[bufferSize++]=NSPageDownFunctionKey;    break;
+            case VK_END:      buffer[bufferSize++]=NSEndFunctionKey;         break;
+            case VK_HOME:     buffer[bufferSize++]=NSHomeFunctionKey;        break;
+            case VK_LEFT:     buffer[bufferSize++]=NSLeftArrowFunctionKey;   break;
+            case VK_UP:       buffer[bufferSize++]=NSUpArrowFunctionKey;     break;
+            case VK_RIGHT:    buffer[bufferSize++]=NSRightArrowFunctionKey;  break;
+            case VK_DOWN:     buffer[bufferSize++]=NSDownArrowFunctionKey;   break;
+            case VK_SELECT:   buffer[bufferSize++]=NSSelectFunctionKey;      break;
+            case VK_PRINT:    buffer[bufferSize++]=NSPrintFunctionKey;       break;
+            case VK_EXECUTE:  buffer[bufferSize++]=NSExecuteFunctionKey;     break;
+            case VK_SNAPSHOT: buffer[bufferSize++]=NSPrintScreenFunctionKey; break;
+            case VK_INSERT:   buffer[bufferSize++]=NSInsertFunctionKey;      break;
+            case VK_DELETE:   buffer[bufferSize++]=NSDeleteFunctionKey;      break;
+            case VK_HELP:     buffer[bufferSize++]=NSHelpFunctionKey;        break;
+                
+            case VK_LWIN:     break;
+            case VK_RWIN:     break;
+            case VK_APPS:     break;
+                
+            case VK_SEPARATOR:break;
+            case VK_SUBTRACT: break;
+            case VK_DECIMAL:  break;
+            case VK_DIVIDE:   break;
+                
+            case VK_F1:       buffer[bufferSize++]=NSF1FunctionKey; break;
+            case VK_F2:       buffer[bufferSize++]=NSF2FunctionKey; break;
+            case VK_F3:       buffer[bufferSize++]=NSF3FunctionKey; break;
+            case VK_F4:       buffer[bufferSize++]=NSF4FunctionKey; break;
+            case VK_F5:       buffer[bufferSize++]=NSF5FunctionKey; break;
+            case VK_F6:       buffer[bufferSize++]=NSF6FunctionKey; break;
+            case VK_F7:       buffer[bufferSize++]=NSF7FunctionKey; break;
+            case VK_F8:       buffer[bufferSize++]=NSF8FunctionKey; break;
+            case VK_F9:       buffer[bufferSize++]=NSF9FunctionKey; break;
+            case VK_F10:      buffer[bufferSize++]=NSF10FunctionKey; break;
+            case VK_F11:      buffer[bufferSize++]=NSF11FunctionKey; break;
+            case VK_F12:      buffer[bufferSize++]=NSF12FunctionKey; break;
+            case VK_F13:      buffer[bufferSize++]=NSF13FunctionKey; break;
+            case VK_F14:      buffer[bufferSize++]=NSF14FunctionKey; break;
+            case VK_F15:      buffer[bufferSize++]=NSF15FunctionKey; break;
+            case VK_F16:      buffer[bufferSize++]=NSF16FunctionKey; break;
+            case VK_F17:      buffer[bufferSize++]=NSF17FunctionKey; break;
+            case VK_F18:      buffer[bufferSize++]=NSF18FunctionKey; break;
+            case VK_F19:      buffer[bufferSize++]=NSF19FunctionKey; break;
+            case VK_F20:      buffer[bufferSize++]=NSF20FunctionKey; break;
+            case VK_F21:      buffer[bufferSize++]=NSF21FunctionKey; break;
+            case VK_F22:      buffer[bufferSize++]=NSF22FunctionKey; break;
+            case VK_F23:      buffer[bufferSize++]=NSF23FunctionKey; break;
+            case VK_F24:      buffer[bufferSize++]=NSF24FunctionKey; break;
+                
+            case VK_NUMLOCK:  break;
+            case VK_SCROLL:   buffer[bufferSize++]=NSScrollLockFunctionKey; break;
+                
+                /* these constants are only useful with GetKeyboardState
+                 case VK_LSHIFT:   NSLog(@"VK_LSHIFT"); break;
+                 case VK_RSHIFT:   NSLog(@"VK_RSHIFT"); break;
+                 case VK_LCONTROL: NSLog(@"VK_LCONTROL"); break;
+                 case VK_RCONTROL: NSLog(@"VK_RCONTROL"); break;
+                 case VK_LMENU:    NSLog(@"VK_LMENU"); break;
+                 case VK_RMENU:    NSLog(@"VK_RMENU"); break;
+                 */
+                
+            case VK_ATTN: break;
+            case VK_CRSEL: break;
+            case VK_EXSEL: break;
+            case VK_EREOF: break;
+            case VK_PLAY: break;
+            case VK_ZOOM: break;
+            case VK_NONAME: break;
+            case VK_PA1: break;
+            case VK_OEM_CLEAR: break;
+        }
     }
-   }
-	// Don't send events on empty WM_KEYDOWN messages - we'll send a message when we get the WM_CHAR
-	if ((msg.message != WM_KEYDOWN && msg.message != WM_SYSKEYDOWN) || bufferSize > 0) {
-		if(ignoringBufferSize<=0 && bufferSize > 0) {
-			for(ignoringBufferSize=0;ignoringBufferSize<bufferSize;ignoringBufferSize++) {
-				ignoringBuffer[ignoringBufferSize]=buffer[ignoringBufferSize];
-			}
-		}
-		
-		NSEvent *event;
-		BOOL     isKeypad;
-		
-		characters=(bufferSize>0)?[NSString stringWithCharacters:buffer length:bufferSize]:@"";
-		charactersIgnoringModifiers=(ignoringBufferSize>0)?[NSString stringWithCharacters:ignoringBuffer length:ignoringBufferSize]:@"";
-		
-		if(_isKeypad)
-			modifierFlags|=NSNumericPadKeyMask;
+    if (bufferSize > 0 || [_ignoringModifiersString length] > 0) {
+        NSEvent *event;
+        BOOL     isKeypad;
+        
+        NSString *characters=(bufferSize>0)?[NSString stringWithCharacters:buffer length:bufferSize]:@"";
+        NSString *charactersIgnoringModifiers=_ignoringModifiersString;
+        // Only send the event if we have something to send
+        if (characters.length > 0 || charactersIgnoringModifiers.length > 0) {
+            if (_ignoringModifiersString.length == 0) {
+                charactersIgnoringModifiers = characters;
+            }
+            if(_isKeypad) {
+                modifierFlags|=NSNumericPadKeyMask;
+            }
+            event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
+            [self postEvent:event atStart:NO];
 
-		event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:[window windowNumber] context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:_keyCode];
-		[self postEvent:event atStart:NO];
-		return YES;
-	}
-	return NO;
+            [_ignoringModifiersString release];
+            _ignoringModifiersString = [[NSMutableString alloc] init];
+
+            return YES;
+        }
+    }
+    return NO;
 }
 
 -(BOOL)postMouseMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
@@ -994,13 +1000,20 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postScrollWheelMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
    NSEvent *event;
-   float deltaY=((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
+    
+    float deltaX=0;
+    float deltaY=0;
+    if(msg.message==WM_MOUSEWHEEL) {
+        deltaY = ((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
+        deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
+    } else if(msg.message==WM_MOUSEHWHEEL) {
+        deltaX = ((float)GET_WHEEL_DELTA_WPARAM(msg.wParam));
+        deltaX /= 120.f; // deltaX comes in units of 120 (for fractional rotations - when all you have is an int..)
+    }
 
-   deltaY /= 120.f; // deltaY comes in units of 120 (for fractional rotations - when all you have is an int..)
-
-   event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaY:deltaY];
-   [self postEvent:event atStart:NO];
-   return YES;
+    event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window clickCount:0 deltaX:deltaX deltaY:deltaY];
+    [self postEvent:event atStart:NO];
+    return YES;
 }
 
 -(unsigned)currentModifierFlagsWithKeyboardState:(BYTE *)keyboardState {
@@ -1114,7 +1127,7 @@ static HWND findWindowForScrollWheel(POINT point){
    deviceLocation.x=GET_X_LPARAM(msg.lParam);
    deviceLocation.y=GET_Y_LPARAM(msg.lParam);
 
-   if(msg.message==WM_MOUSEWHEEL) {
+  if(msg.message==WM_MOUSEWHEEL || msg.message==WM_MOUSEHWHEEL) {
 // Scroll wheel events go to the window under the mouse regardless of key. Win32 set hwnd to the active window
 // So we look for the window under the mouse and use that for the event.
     POINT pt={GET_X_LPARAM(msg.lParam),GET_Y_LPARAM(msg.lParam)};
@@ -1160,11 +1173,10 @@ static HWND findWindowForScrollWheel(POINT point){
     _lastTickCount=tickCount;
     _lastPosition=msg.lParam;
    }
+    switch(msg.message){
 
-   TranslateMessage(&msg);
-    
-   switch(msg.message){
-
+     case WM_CHAR:
+     case WM_SYSCHAR:
      case WM_KEYDOWN:
      case WM_SYSKEYDOWN:
       type=NSKeyDown;
@@ -1173,11 +1185,6 @@ static HWND findWindowForScrollWheel(POINT point){
      case WM_KEYUP:
      case WM_SYSKEYUP:
       type=NSKeyUp;
-      break;
-
-     case WM_CHAR:
-     case WM_SYSCHAR:
-      type=NSKeyDown;
       break;
 
      case WM_MOUSEMOVE:
@@ -1219,6 +1226,7 @@ static HWND findWindowForScrollWheel(POINT point){
       break;
 
      case WM_MOUSEWHEEL:
+     case WM_MOUSEHWHEEL:
       type=NSScrollWheel;
       break;
 
@@ -1249,7 +1257,7 @@ static HWND findWindowForScrollWheel(POINT point){
 
     BOOL childWindow=NO;
     
-    if(msg.message==WM_MOUSEWHEEL){
+    if(msg.message==WM_MOUSEWHEEL || msg.message==WM_MOUSEHWHEEL) {
             // WM_MOUSEWHEEL coordinates are on screen coordinates, others are in window
             RECT frame={0};
             
@@ -1310,35 +1318,33 @@ static HWND findWindowForScrollWheel(POINT point){
    MessageBeep(MB_OK);
 }
 
-static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
-   const TEXTMETRICA *textMetric_old,DWORD fontType,LPARAM lParam){
-   LPENUMLOGFONTEX  logFont=(LPENUMLOGFONTEX)lofFont_old;
-//   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
+static int CALLBACK buildFamily(const const EXTLOGFONTW* logFont,const TEXTMETRICW* metrics,DWORD fontType,LPARAM lParam){
+
+    //   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
    NSMutableSet *set=(NSMutableSet *)lParam;
 //   NSString     *name=[NSString stringWithCString:logFont->elfFullName];
-   NSString     *name=[NSString stringWithCString:logFont->elfLogFont.lfFaceName];
-    // Font name starting with "@" are rotated versions of the font, for vertical rendering
-    // We don't want them - the are polluting our font list + they have the same PS name
-    // as the normal ones, leading to confusion in our font picking algo
-    if ([name characterAtIndex:0] != '@') {
-        [set addObject:name];
+    if (logFont && logFont->elfLogFont.lfFaceName) {
+        NSString    *name = [NSString stringWithFormat:@"%S", logFont->elfLogFont.lfFaceName];
+        // Font name starting with "@" are rotated versions of the font, for vertical rendering
+        // We don't want them - the are polluting our font list + they have the same PS name
+        // as the normal ones, leading to confusion in our font picking algo
+        if (name.length >= 1 && [name characterAtIndex:0] != '@') {
+            [set addObject:name];
+        }
     }
-
    return 1;
 }
 
 -(NSSet *)allFontFamilyNames {
    NSMutableSet *result=[[[NSMutableSet alloc] init] autorelease];
    HDC           dc=GetDC(NULL);
-   LOGFONT       logFont;
-
+   LOGFONTW logFont = { 0 };
+	
    logFont.lfCharSet=DEFAULT_CHARSET;
-   strcpy(logFont.lfFaceName,"");
-   logFont.lfPitchAndFamily=0;
-
-   if(!EnumFontFamiliesExA(dc,&logFont,buildFamily,(LPARAM)result,0))
-    NSLog(@"EnumFontFamiliesExA failed %d",__LINE__);
-
+    
+   if(!EnumFontFamiliesExW(dc,&logFont,buildFamily,(LPARAM)result,0))
+        NSLog(@"EnumFontFamiliesExW failed %d",__LINE__);
+    
    ReleaseDC(NULL,dc);
    return result;
 }
@@ -1414,12 +1420,13 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 #define THOUSANDS2PTS(x) ((x / 1000.f) * 72.f)
 
 -(int)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
-   PAGESETUPDLG setup;
 
-   setup.lStructSize=sizeof(PAGESETUPDLG);
-   setup.hwndOwner=[(Win32Window *)[[NSApp mainWindow] platformWindow] windowHandle];
-   setup.hDevMode=NULL;
-   setup.hDevNames=NULL;
+    PAGESETUPDLG setup;
+
+    setup.lStructSize=sizeof(PAGESETUPDLG);
+    setup.hwndOwner=[(Win32Window *)[[NSApp mainWindow] platformWindow] windowHandle];
+    setup.hDevMode=NULL;
+    setup.hDevNames=NULL;
    setup.Flags=PSD_INTHOUSANDTHSOFINCHES;
    setup.ptPaperSize.x = PTS2THOUSANDS([printInfo paperSize].width);
    setup.ptPaperSize.y = PTS2THOUSANDS([printInfo paperSize].height);
@@ -1443,6 +1450,17 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 		[printInfo setLeftMargin: THOUSANDS2PTS(setup.rtMargin.left)];
 		[printInfo setRightMargin: THOUSANDS2PTS(setup.rtMargin.right)];
 		[printInfo setBottomMargin: THOUSANDS2PTS(setup.rtMargin.bottom)];
+        
+        HANDLE devMode = setup.hDevMode;
+        LPDEVMODE lpDevMode = (LPDEVMODE) GlobalLock(devMode);
+        if (lpDevMode && lpDevMode->dmFields & DM_ORIENTATION) {
+            if (lpDevMode->dmOrientation == DMORIENT_PORTRAIT) {
+                [printInfo setOrientation:NSPortraitOrientation];
+            } else {
+                [printInfo setOrientation:NSLandscapeOrientation];
+            }
+        }
+        GlobalUnlock(devMode);
 	}
 	return NSOKButton;
 }
@@ -1452,9 +1470,32 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    PRINTDLG            printProperties;
    int                 check;
 
+    PAGESETUPDLG setup;
+    bzero(&setup, sizeof(setup));
+    
+    setup.lStructSize=sizeof(PAGESETUPDLG);
+    
+    // Get the printer defaults
+    setup.Flags = PSD_RETURNDEFAULT;
+    PageSetupDlg(&setup);
+    
+    // See http://support.microsoft.com/kb/193103/fr
+    HANDLE devMode = setup.hDevMode;
+    
+    LPDEVMODE lpDevMode = (LPDEVMODE) GlobalLock(devMode);
+    // Force the orientation if the printer supports it.
+    if (lpDevMode->dmFields & DM_ORIENTATION) {
+        if ([[attributes objectForKey:NSPrintOrientation] boolValue] == NSPortraitOrientation) {
+            lpDevMode->dmOrientation = DMORIENT_PORTRAIT;
+        } else {
+            lpDevMode->dmOrientation = DMORIENT_LANDSCAPE;
+        }
+        lpDevMode->dmFields = DM_ORIENTATION;
+    }
+
    printProperties.lStructSize=sizeof(PRINTDLG);
    printProperties.hwndOwner=[(Win32Window *)[[view window] platformWindow] windowHandle];
-   printProperties.hDevMode=NULL;
+   printProperties.hDevMode = devMode;
    printProperties.hDevNames=NULL;
    printProperties.hDC=NULL;
    printProperties.Flags=PD_RETURNDC|PD_COLLATE;
@@ -1476,6 +1517,8 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    [self stopWaitCursor];
    check=PrintDlg(&printProperties);
    [self startWaitCursor];
+
+    GlobalUnlock(devMode);
 
    if(check==0)
     return NSCancelButton;

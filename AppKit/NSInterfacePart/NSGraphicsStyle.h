@@ -33,6 +33,7 @@ Margins;
 -(NSSize)menuItemCheckMarkSize;
 -(NSSize)menuItemGutterSize;
 -(NSSize)menuItemTextSize:(NSString *)title;
+-(NSSize)menuItemAttributedTextSize:(NSAttributedString *)title;
 -(float)menuBarHeight;
 -(float)menuItemGutterGap;
 

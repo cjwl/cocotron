@@ -14,11 +14,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSColor.h>
+#import <AppKit/NSGradient.h>
 #import <AppKit/NSGraphicsContext.h>
 
 @interface NSToolbarItem(private)
 -(void)drawInRect:(NSRect)bounds highlighted:(BOOL)highlighted;
 -(NSSize)_labelSize;
+@end
+
+@interface NSToolbar (private)
+- (void)didSelectToolbarItem:(NSString*)identifier;
 @end
 
 @implementation NSToolbarItemView
@@ -46,21 +51,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self addSubview:view];
 }
 
--(void)setFrame:(NSRect)frame {
-   [super setFrame:frame];
-
-   NSRect bounds=[self bounds];
-   CGFloat labelHeight=[_toolbarItem _labelSize].height;
-   NSRect viewRect;
-   viewRect.origin.y=bounds.origin.y+labelHeight;
-   viewRect.origin.x=bounds.origin.x;
-			
-   viewRect.size.width = bounds.size.width;
-   viewRect.size.height = bounds.size.height - labelHeight;
-			
-   [[_toolbarItem view] setFrame: viewRect];
+-(NSRect)availableRectForSubview
+{
+    NSRect rect=[self bounds];
+    CGFloat labelHeight=[_toolbarItem _labelSize].height;
+    rect.size.height -= labelHeight;
+    rect.origin.y += labelHeight + 4; // 4 is Cocotron magic padding (see NSToolbarItem drawInRect:
+    return rect;
 }
 
+-(void)setFrame:(NSRect)frame {
+    [super setFrame:frame];
+    if ([_toolbarItem view] != nil) {
+        // Fix up the item viewWe 
+        NSView *view = [_toolbarItem view];
+        // Center the subview within the bounds
+        NSRect availableRect = [self availableRectForSubview];
+        NSRect viewRect = [view frame];
+        
+        // Center the subview within the available bounds
+        viewRect.origin.x=NSMinX(availableRect) + (NSWidth(availableRect) - NSWidth(viewRect)) / 2.f;
+        // Align top
+        viewRect.origin.y=NSMinY(availableRect);
+        [view setFrame: viewRect];
+    }
+}
 -(NSView *)view {
    return [[self subviews] lastObject];
 }
@@ -79,36 +94,32 @@ static void evaluate(void *info,const float *in, float *output) {
      output[i]=colors->_C0[i]+x*(colors->_C1[i]-colors->_C0[i]);
 }
 
+const float kFillGrayLevel = 0.75;
+const float kEdgeGrayLevel = 0.5;
+const float kEdgeThickness = 2.f;
+
 -(void)drawRect:(NSRect)rect {
    if([[_toolbarItem itemIdentifier] isEqual:[[_toolbarItem toolbar] selectedItemIdentifier]]){
-    CGContextRef  cgContext=[[NSGraphicsContext currentContext] graphicsPort];
-    float         domain[2]={0,1};
-    float         range[8]={0,1,0,1,0,1,0,1};
-    CGFunctionCallbacks callbacks={0,evaluate,NULL};
-    gradientColors colors;
-    NSColor *startColor=[NSColor blackColor];
-    NSColor *endColor=[NSColor lightGrayColor];
-    
-    colors._C0[0]=0.5;
-    colors._C0[1]=0.5;
-    colors._C0[2]=0.5;
-    colors._C0[3]=0.5;
-    colors._C1[0]=0.8;
-    colors._C1[1]=0.8;
-    colors._C1[2]=0.8;
-    colors._C1[3]=0;
-    
-    CGFunctionRef function=CGFunctionCreate(&colors,1,domain,4,range,&callbacks);
-    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
-    CGShadingRef  shading;
-    CGRect bounds=[self bounds];
-        
-    shading=CGShadingCreateAxial(colorSpace,bounds.origin,CGPointMake(bounds.origin.x,bounds.origin.y+NSHeight(bounds)/2),function,NO,NO);
-    CGContextDrawShading(cgContext,shading);
-    CGShadingRelease(shading);
-    
-    CGFunctionRelease(function);
-    CGColorSpaceRelease(colorSpace);
+
+       NSArray *colors = [NSArray arrayWithObjects: [NSColor colorWithCalibratedWhite: kFillGrayLevel alpha: 0],
+                          [NSColor colorWithCalibratedWhite: kFillGrayLevel alpha: 0.5],
+                          [NSColor colorWithCalibratedWhite: kFillGrayLevel alpha: 1],
+                          [NSColor colorWithCalibratedWhite: kFillGrayLevel alpha: 0.0],
+                          nil];
+       NSGradient *gradient = [[[NSGradient alloc] initWithColors: colors] autorelease];
+       [gradient drawInRect: [self bounds] angle: 270];
+       
+       // fill the edges
+       colors = [NSArray arrayWithObjects: [NSColor colorWithCalibratedWhite: kEdgeGrayLevel alpha: 0],
+                          [NSColor colorWithCalibratedWhite: kEdgeGrayLevel alpha: 1],
+                          [NSColor colorWithCalibratedWhite: kEdgeGrayLevel alpha: 0.0],
+                          nil];
+       gradient = [[[NSGradient alloc] initWithColors: colors] autorelease];
+       NSRect edgeRect = [self bounds];
+       edgeRect.size.width = kEdgeThickness;
+       [gradient drawInRect: edgeRect angle: 270];
+       edgeRect.origin.x = NSMaxX([self bounds]) - kEdgeThickness;
+       [gradient drawInRect: edgeRect angle: 270];
    }
    [_toolbarItem drawInRect:[self bounds] highlighted:_isHighlighted];  
 }
@@ -130,6 +141,7 @@ static void evaluate(void *info,const float *in, float *output) {
 
    if(_isHighlighted){
     _isHighlighted=NO;
+       [[_toolbarItem toolbar] didSelectToolbarItem: [_toolbarItem itemIdentifier]];
     [NSApp sendAction:[_toolbarItem action] to:[_toolbarItem target] from:_toolbarItem];
     [self setNeedsDisplay:YES];
    }

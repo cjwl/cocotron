@@ -59,6 +59,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+- (CFStringRef)type
+{
+    return (CFStringRef)@"public.tiff";
+}
+
 -(unsigned)count {
    return [[_reader imageFileDirectory] count];
 }
@@ -92,6 +97,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSData        *bitmap;
    
    bytes=NSZoneMalloc([self zone],bytesPerRow*height);
+   if (bytes == NULL) {
+        NSLog(@"Can't allocate %d bytes for %dx%d bitmap for provider %@", bytesPerRow*height, width, height, _provider);
+         return nil;
+    }
+
    if(![directory getRGBAImageBytes:bytes data:[_reader data]]){
     NSZoneFree([self zone],bytes);
     return nil;

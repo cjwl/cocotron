@@ -247,6 +247,11 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
 	return NO;
 }
 
+-(BOOL)isBitmapContext
+{
+    return YES;
+}
+
 -(void)drawPath:(O2PathDrawingMode)pathMode {
    O2InvalidAbstractInvocation();
 // reset path in subclass
@@ -510,6 +515,13 @@ void O2ContextReplacePathWithStrokedPath(O2ContextRef self) {
     return;
 
 	[self replacePathWithStrokedPath];
+}
+
+O2Path* O2ContextCopyPath(O2ContextRef self) {
+    if(self==nil)
+        return nil;
+    
+    return [self->_path copy];
 }
 
 // gstate
@@ -1409,11 +1421,10 @@ void O2ContextGetDefaultAdvances(O2ContextRef self,const O2Glyph *glyphs,O2Size 
    
    O2FontGetGlyphAdvances(font,glyphs,count,intAdvances);
     
-   for(i=0;i<count;i++){
-    advances[i].width=intAdvances[i];
+    float scale = [font nativeSizeForSize:pointSize]/unitsPerEm;
+    for(i=0;i<count;i++){
+    advances[i].width=intAdvances[i]*scale;
     advances[i].height=0;
-    
-    advances[i].width=(advances[i].width/unitsPerEm)/pointSize;
    }
 }
 
@@ -1449,5 +1460,10 @@ void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
 bool O2ContextSupportsGlobalAlpha(O2ContextRef self)
 {
 	return [self supportsGlobalAlpha];
+}
+
+bool O2ContextIsBitmapContext(O2ContextRef self)
+{
+	return [self isBitmapContext];
 }
 @end

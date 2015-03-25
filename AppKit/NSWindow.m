@@ -54,6 +54,9 @@ NSString * const NSWindowWillAnimateNotification=@"NSWindowWillAnimateNotificati
 NSString * const NSWindowAnimatingNotification=@"NSWindowAnimatingNotification";
 NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
+@interface CGWindow(private)
+- (void)dirtyRect:(CGRect)rect;
+@end
 
 @interface NSToolbar (NSToolbar_privateForWindow)
 - (void)_setWindow:(NSWindow *)window;
@@ -222,7 +225,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _styleMask=styleMask;
 
     _frame=[self frameRectForContentRect:contentRect];
-   
+    _frame=[self constrainFrameRect: _frame toScreen: [NSScreen mainScreen]];
    backgroundFrame.origin=NSMakePoint(0,0);
    backgroundFrame.size=_frame.size;
    contentViewFrame=[self contentRectForFrameRect:backgroundFrame];
@@ -1593,9 +1596,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
             [self makeFirstResponder:[self initialFirstResponder]];
         else {
             // otherwise calculate one and set the first responder
-            
-            [self recalculateKeyViewLoop];
-            
+            if ([self autorecalculatesKeyViewLoop]) {
+                [self recalculateKeyViewLoop];
+            }
             if([self firstResponder]==self)
                 [self makeFirstResponder:[_contentView nextValidKeyView]];
         }
@@ -1791,8 +1794,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      doFlush=NO;
      }
     
-    if(doFlush)
-     [[self platformWindow] flushBuffer];
+       if(doFlush) {
+           [[self platformWindow] flushBuffer];
+       }
    }
 }
 
@@ -1976,7 +1980,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
        [_drawers makeObjectsPerformSelector:@selector(parentWindowDidClose:) withObject:self];
 
    [self postNotificationName:NSWindowWillCloseNotification];
-
+    
    if(_releaseWhenClosed)
     [self autorelease];
 }
@@ -2090,6 +2094,11 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)sendEvent:(NSEvent *)event {
+    
+    // Some events can cause our window to be destroyed
+    // So make sure self lives at least through this current run loop...
+    [[self retain] autorelease];
+
     if (_sheetContext != nil) {
         NSView *view = [_backgroundView hitTest:[event locationInWindow]];
 
@@ -2123,6 +2132,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         }
     }
 
+    BOOL shouldValidateToolbarItems = YES;
 	// OK let's see if anyone else wants it
    switch([event type]){
 
@@ -2130,8 +2140,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         NSView *view=[_backgroundView hitTest:[event locationInWindow]];
         
         if([view acceptsFirstResponder]){
-            if([view needsPanelToBecomeKey])
-             [self makeFirstResponder:view];
+            if([view needsPanelToBecomeKey]) {
+                [self makeFirstResponder:view];
+            }
         }
         
         // Event goes to view, not first responder
@@ -2202,10 +2213,20 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      [[_backgroundView hitTest:[event locationInWindow]] scrollWheel:event];
      break;
 
+    case NSAppKitDefined:
+     // Nothing special to do
+     break;
+           
     default:
+     shouldValidateToolbarItems = NO;
      NSUnimplementedMethod();
      break;
    }
+    if (shouldValidateToolbarItems && [self toolbar]) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:[self toolbar] selector:@selector(validateVisibleItems) object:nil];
+        [[self toolbar] performSelector:@selector(validateVisibleItems) withObject:nil afterDelay:.5];
+
+    }
 }
 
 -(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart {
@@ -2294,6 +2315,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)update {
+    [[self toolbar] validateVisibleItems];
    [[NSNotificationCenter defaultCenter]
        postNotificationName:NSWindowDidUpdateNotification
                      object:self];
@@ -2908,12 +2930,15 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 			   } else {
 				   tooltip = [owner description];
 			   }
-			   [toolTipWindow setToolTip:tooltip];
-			   
-			   // This gives us some protection when ToolTip areas overlap:
-			   [toolTipWindow _setTrackingArea:area];
-			   
-			   raiseToolTipWindow=YES;
+               
+               if (tooltip) {
+                   [toolTipWindow setToolTip:tooltip];
+                   
+                   // This gives us some protection when ToolTip areas overlap:
+                   [toolTipWindow _setTrackingArea:area];
+                   
+                   raiseToolTipWindow=YES;
+               }
 		   }
 	   }
 	   else{ // not ToolTip
@@ -3119,5 +3144,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     return _backgroundView;
 }
 
+-(void)dirtyRect:(NSRect)rect
+{
+    [[self platformWindow] dirtyRect:rect];
+}
 @end
 

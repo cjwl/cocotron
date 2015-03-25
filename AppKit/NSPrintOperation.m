@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSGraphicsContext.h>
 
+#import "NSPrintProgressPanelController.h"
+
 enum {
    NSPrintOperationPDFInRect,
    NSPrintOperationEPSInRect,
@@ -120,6 +122,13 @@ static NSPrintOperation *_currentOperation=nil;
    return _currentPage;
 }
 
+-(BOOL)showsProgressPanel {
+    return _showsPrintProgressPanel;
+}
+
+-(void)setShowsProgressPanel:(BOOL)flag {
+    _showsPrintProgressPanel = flag;
+}
 
 -(void)_autopaginatePageRange:(NSRange)pageRange actualPageRange:(NSRange *)rangep context:(CGContextRef)context {
    NSRange result=NSMakeRange(1,0);
@@ -184,6 +193,17 @@ static NSPrintOperation *_currentOperation=nil;
 -(void)_paginateWithPageRange:(NSRange)pageRange context:(CGContextRef)context {
    int i;
 
+    NSPrintProgressPanelController *printProgressPanelController = nil;
+
+    if ([self showsProgressPanel]) {
+        printProgressPanelController = [NSPrintProgressPanelController printProgressPanelController];
+        if ([[[self printInfo] jobDisposition] isEqualToString: NSPrintSaveJob]) {
+            [printProgressPanelController setTitle: NSLocalizedString(@"Save", @"Save a print job")];
+        }
+        [printProgressPanelController setMaxPages: pageRange.length];
+        [printProgressPanelController showPanel];
+
+    }
    for(i=0,_currentPage=pageRange.location;i<pageRange.length;i++,_currentPage++){
     NSRect  rect=[_view rectForPage:_currentPage];
     NSPoint location=[_view locationOfPrintRect:rect];
@@ -191,7 +211,9 @@ static NSPrintOperation *_currentOperation=nil;
     [_view beginPageInRect:rect atPlacement:location];
     [_view drawRect:rect];
     [_view endPage];
+       [printProgressPanelController setCurrentPage: i];
    }
+    [printProgressPanelController hidePanel];
 }
 
 -(NSGraphicsContext *)createContext {
@@ -264,19 +286,28 @@ static NSPrintOperation *_currentOperation=nil;
    BOOL               knowsPageRange;
    NSGraphicsContext *graphicsContext;
    CGContextRef      context;
-   
+    NSMutableDictionary *dict = [_printInfo dictionary];
+    
    _currentOperation=self;
    
+    // Set the page range if not set yet
    knowsPageRange=[_view knowsPageRange:&pageRange];
 
-   if(knowsPageRange){
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:pageRange.location] forKey:NSPrintFirstPage];
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:NSMaxRange(pageRange)-1] forKey:NSPrintLastPage];
-   }
-   else {
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintFirstPage];
-    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintLastPage];
-   }
+    if(knowsPageRange){
+        if ([dict objectForKey:NSPrintFirstPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:pageRange.location] forKey:NSPrintFirstPage];
+        }
+        if ([dict objectForKey:NSPrintLastPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:NSMaxRange(pageRange)-1] forKey:NSPrintLastPage];
+        }
+    } else {
+        if ([dict objectForKey:NSPrintFirstPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:1] forKey:NSPrintFirstPage];
+        }
+        if ([dict objectForKey:NSPrintLastPage] == nil) {
+            [dict setObject:[NSNumber numberWithInt:1] forKey:NSPrintLastPage];
+        }
+    }
    
    graphicsContext=[self createContext];
 	if (graphicsContext == nil) {
@@ -285,8 +316,8 @@ static NSPrintOperation *_currentOperation=nil;
 	}
 	
 	if (knowsPageRange) {
-		int firstPage = [[[_printInfo dictionary] objectForKey:NSPrintFirstPage] intValue];
-		int lastPage = [[[_printInfo dictionary] objectForKey:NSPrintLastPage] intValue];
+		int firstPage = [[dict objectForKey:NSPrintFirstPage] intValue];
+		int lastPage = [[dict objectForKey:NSPrintLastPage] intValue];
 		pageRange.location = firstPage;
 		pageRange.length = lastPage - firstPage + 1;
 	}

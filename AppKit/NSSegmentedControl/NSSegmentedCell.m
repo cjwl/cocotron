@@ -215,6 +215,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self _recomputeSegmentWidths];
 }
 
+-(NSButtonCell *)_cellForSegment:(NSInteger)idx
+{
+    NSSegmentItem *segment=[_segments objectAtIndex:idx];
+    NSButtonCell *cell=[[NSButtonCell new] autorelease];
+    NSString *label=[segment label];
+    [cell setTitle:label];
+    [cell setFont:[self font]];
+    [cell setControlSize:[self controlSize]];
+    
+    [cell setHighlighted:[segment isSelected]];
+	
+	// The control is enabled/disabled as a whole
+    [cell setEnabled:[self isEnabled]];
+    
+    NSImage *image=[segment image];
+    if(image)
+    {
+        [cell setImage:image];
+        // a button cell is created as a text cell - so we need to say that we want
+        // image dimming
+        [cell setImageDimsWhenDisabled: YES];
+        
+        if([label length])
+        {
+            [cell setImagePosition:NSImageLeft];
+        }
+        else
+        {
+            // center if no label
+            [cell setImagePosition:NSImageOnly];
+        }
+        [cell setImageScaling:[segment imageScaling]];
+    } else {
+        [cell setImagePosition:NSNoImage];
+    }
+    
+    [cell setLineBreakMode:NSLineBreakByTruncatingTail];
+    
+    return cell;
+}
+
+
 -(void)_recomputeSegmentWidths {
    if ( !_segmentComputedWidths)
     _segmentComputedWidths = [[NSMutableArray arrayWithCapacity:5] retain];
@@ -229,64 +271,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSSegmentItem *segment = [_segments objectAtIndex:i];
     double w = [segment width];
     if (w <= 0.0) {
-     if ( !textAttrs) {
-      textAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [self font], NSFontAttributeName,
-                                        nil];
-     }
-     NSString *label = [segment label];
-     if ([label length] > 0) {
-      NSSize textSize = [label sizeWithAttributes:textAttrs];
-      w = ceil(textSize.width + 12);
-     } else if ([segment image]) {
-      w = ceil([[segment image] size].width + 12);
-     } else {
-      w  = 5;  // truly empty segment, but still needs to be drawn at some size
-     }
+        NSCell *cell = [self _cellForSegment:i];
+        w = [cell cellSize].width;
     }
     [_segmentComputedWidths addObject:[NSNumber numberWithDouble:w]];
    }
 }
 
 -(void)drawSegment:(NSInteger)idx inFrame:(NSRect)frame withView:(NSView *)view {
-   NSSegmentItem *segment=[_segments objectAtIndex:idx];
-   NSButtonCell *cell=[NSButtonCell new];
-   NSString *label=[segment label];
-   [cell setTitle:label];
-   
-   [cell setHighlighted:[segment isSelected]];
-	
-	// The control is enabled/disabled as a whole
-   [cell setEnabled:[self isEnabled]];
-   
-   NSImage *image=[segment image];
-   if(image)
-   {
-      [cell setImage:image];
-	   // a button cell is created as a text cell - so we need to say that we want
-	   // image dimming
-	   [cell setImageDimsWhenDisabled: YES];
-	   
-      if([label length])
-      {
-         [cell setImagePosition:NSImageLeft];
-      }
-      else
-      {
-         // center if no label
-         [cell setImagePosition:NSImageOnly];
-      }
-      // TODO: image scaling is unimplemented for NSButtonCell
-      // [cell setImageScaling:[segment imageScaling]];
-   }
-
-   // TODO: implement setLineBreakMode on NSCell
-   //[cell setLineBreakMode:NSLineBreakByTruncatingTail];
-   
+   NSButtonCell *cell=[self _cellForSegment:idx];
+    
    [cell setControlView:view];
    [cell drawWithFrame:frame inView:view];
-   
-   [cell release];
 }
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
@@ -310,6 +306,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    _lastDrawRect=cellFrame;
 }
+
+-(NSSize)cellSize
+{
+    NSSize cellSize = NSMakeSize(0., 0.);
+    for (int i = 0; i < [self segmentCount]; ++i) {
+        NSCell *cell = [self _cellForSegment:i];
+        NSSize size = [cell cellSize];
+        cellSize.width += size.width;
+        cellSize.height = MAX(size.height, cellSize.height);
+    }
+    return cellSize;
+}
+
 
 // updating this value in -drawWithFrame is not enough, because a subclass might have replaced it entirely.
 // hence NSSegmentedControl will call this private method as well.

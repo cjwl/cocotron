@@ -261,6 +261,8 @@ static void* NSBinderChangeContext;
 	return [_binding compare:[other binding]];
 }
 
+
+// Returns all of the source binders sharing the same binding (or fake binding - like enabled, enabled2...)
 -(NSArray *)peerBinders {
     NSArray *allUsedBinders=[_source _allUsedBinders];
     
@@ -269,38 +271,44 @@ static void* NSBinderChangeContext;
      return allUsedBinders;
     
 	// FIXME: total hack. assume only one digit at end, 1-9
-	NSRange numberAtEnd=NSMakeRange([_binding length]-1, 1);
-	if([[_binding substringWithRange:numberAtEnd] intValue]==0)
-		return nil;
-	
-	if(numberAtEnd.location==NSNotFound)
-		return nil;
-   
-	// Check if the path is a valid path or some "fake" property like "enabled2", which then should be part of the "enabled"
-	// peers
-	BOOL isValidKeyPath = YES;
-	@try {
-		[_source valueForKeyPath: _bindingPath];
-	}
-	@catch (id e) {
-		// "XXXX[digit] is not a real property - could be something like "enable2" - it will be part of the peers for XXXX
-		isValidKeyPath = NO;
-	}
-	
-	if (isValidKeyPath == YES) {
-		// That's a real source property - won't be part of the peers
-		return nil;
-	}
-	
-	NSString       *baseName=[_binding substringToIndex:numberAtEnd.location];
-	NSMutableArray *result=[NSMutableArray array];
 
-   for(_NSBinder *check in allUsedBinders){
-    if([[check binding] hasPrefix:baseName])
-     [result addObject:check];
-   }
+    NSString *baseName = _binding;
+    NSRange numberAtEnd=NSMakeRange([_binding length]-1, 1);
+	if([[_binding substringWithRange:numberAtEnd] intValue]!=0) {
+        // Check if the path is a valid path or some "fake" property like "enabled2", which then should be part of the "enabled"
+        // peers
+        @try {
+            [_source valueForKeyPath: _bindingPath];
+            // No exception - it is a valid path - that will be our base name
+        }
+        @catch (id e) {
+            // "XXXX[digit] is not a real property - could be something like "enable2" - it will be part of the peers for XXXX
+            baseName = [_binding substringToIndex:numberAtEnd.location];
+        }
+    }
 
-   return result;
+    // Find all of the binders having the base name as their binding or something like <base name>[1..9]
+	NSMutableArray *result=[NSMutableArray arrayWithObject:self];
+    for(_NSBinder *check in allUsedBinders){
+        if (check != self) {
+            NSString *checkBinding = [check binding];
+            if([checkBinding hasPrefix:baseName] && [checkBinding length] <= [baseName length] + 1) {
+                BOOL peer = YES;
+                if ([checkBinding length] == [baseName length] + 1) {
+                    // Only keep the binder if it has a 1..9 at the end
+                    NSRange numberAtEnd=NSMakeRange([checkBinding length]-1, 1);
+                    if([[checkBinding substringWithRange:numberAtEnd] intValue]==0) {
+                        peer = NO;
+                    }
+                }
+                if (peer) {
+                    [result addObject:check];
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 -(NSString *)description {

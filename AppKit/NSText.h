@@ -122,6 +122,7 @@ APPKIT_EXPORT NSString * const NSTextDidChangeNotification;
 
 -(void)scrollRangeToVisible:(NSRange)range;
 
+-(void)changeFont:(id)sender;
 -(void)alignCenter:sender;
 -(void)alignLeft:sender;
 -(void)alignRight:sender;

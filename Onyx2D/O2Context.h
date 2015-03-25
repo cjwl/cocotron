@@ -222,6 +222,7 @@ void O2ContextAddEllipseInRect(O2ContextRef self,O2Rect rect);
 
 void O2ContextAddPath(O2ContextRef self,O2PathRef path);
 
+O2Path* O2ContextCopyPath(O2ContextRef self);
 void O2ContextReplacePathWithStrokedPath(O2ContextRef self);
 
 // gstate
@@ -372,6 +373,7 @@ O2GState *O2ContextCurrentGState(O2ContextRef self);
 
 void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState);
 bool O2ContextSupportsGlobalAlpha(O2ContextRef self);
+bool O2ContextIsBitmapContext(O2ContextRef self);
 
 @end
 

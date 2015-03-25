@@ -133,17 +133,17 @@ NSUInteger NSGetNEXTSTEPCStringWithMaxLength(const unichar *characters,NSUIntege
 
 NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
  const char *bytes,NSUInteger length) {
-   NSString_nextstep *string;
-   NSInteger               i;
 
-   string=NSAllocateObject([NSString_nextstep class],length*sizeof(char),zone);
+    NSString_nextstep *self=NSAllocateObject([NSString_nextstep class],length*sizeof(char),zone);
 
-   string->_length=length;
-   for(i=0;i<length;i++)
-    string->_bytes[i]=bytes[i];
-   string->_bytes[i]='\0';
-
-   return string;
+    if (self) {
+       self->_length=length;
+        NSInteger i;
+       for(i=0;i<length;i++)
+        self->_bytes[i]=bytes[i];
+       self->_bytes[i]='\0';
+    }
+   return self;
 }
 
 -(NSUInteger)length {

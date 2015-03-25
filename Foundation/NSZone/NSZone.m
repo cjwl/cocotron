@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #else
 #include <unistd.h>
 #endif
+
 // NSZone functions implemented in platform subproject
 
 typedef unsigned int OSSpinLock;
@@ -183,6 +184,13 @@ BOOL NSDecrementExtraRefCountWasZero(id object) {
    return result;
 }
 
+static void (*__NSAllocateObjectHook)(id object) = 0;
+
+void NSSetAllocateObjectHook(void (*hook)(id object))
+{
+    __NSAllocateObjectHook = hook;
+}
+
 NSUInteger NSExtraRefCount(id object) {
    NSUInteger      result=1;
    RefCountBucket *refCount;
@@ -209,20 +217,27 @@ id NSAllocateObject(Class class, NSUInteger extraBytes, NSZone *zone)
     }
 
     result = NSZoneCalloc(zone, 1, class_getInstanceSize(class) + extraBytes);
+
+    if (result) {
 #if defined(GCC_RUNTIME_3)
-    object_setClass(result, class);
-    // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ constructor calling.
+        object_setClass(result, class);
+        // TODO As of gcc 4.6.2 the GCC runtime does not have support for C++ constructor calling.
 #elif defined(APPLE_RUNTIME_4)
-    objc_constructInstance(class, result);
+        objc_constructInstance(class, result);
 #else
     object_setClass(result, class);
 
-    if (!object_cxxConstruct(result, result->isa)) {
-        NSZoneFree(zone, result);
-        result = nil;
-    }
+        if (!object_cxxConstruct(result, result->isa)) {
+            NSZoneFree(zone, result);
+            result = nil;
+        }
 #endif
 
+        if (__NSAllocateObjectHook) {
+            __NSAllocateObjectHook(result);
+        }
+    }
+    
     return result;
 }
 
@@ -237,6 +252,11 @@ void NSDeallocateObject(id object)
     object_cxxDestruct(object, object->isa);
 #endif
 
+#if !defined(APPLE_RUNTIME_4)
+    //delete associations
+    objc_removeAssociatedObjects(object);
+#endif
+    
     if (NSZombieEnabled) {
         NSRegisterZombie(object);
     } else {
@@ -263,7 +283,9 @@ id NSCopyObject(id object, NSUInteger extraBytes, NSZone *zone)
 
     id result = NSAllocateObject(object_getClass(object), extraBytes, zone);
 
-    memcpy(result, object, class_getInstanceSize(object_getClass(object)) + extraBytes);
-
+    if (result) {
+        memcpy(result, object, class_getInstanceSize(object_getClass(object)) + extraBytes);
+    }
+    
     return result;
 }

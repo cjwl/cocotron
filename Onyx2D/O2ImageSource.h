@@ -15,8 +15,19 @@ typedef O2ImageSource *O2ImageSourceRef;
 
 @class NSData,NSDictionary,NSURL,O2Image,O2DataProvider;
 
+// The O2 & CG constants must have the same values
 extern NSString *kO2ImagePropertyDPIWidth;
 extern NSString *kO2ImagePropertyDPIHeight;
+extern NSString *kO2ImagePropertyPixelHeight;
+extern NSString *kO2ImagePropertyPixelWidth;
+extern NSString *kO2ImagePropertyOrientation;
+
+extern NSString *kO2ImagePropertyTIFFDictionary;
+extern NSString *kO2ImagePropertyExifDictionary;
+
+extern NSString *kO2ImagePropertyTIFFXResolution;
+extern NSString *kO2ImagePropertyTIFFYResolution;
+extern NSString *kO2ImagePropertyTIFFOrientation;
 
 @interface O2ImageSource : NSObject {
    O2DataProvider *_provider;
@@ -32,6 +43,7 @@ extern NSString *kO2ImagePropertyDPIHeight;
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options;
 
 -(unsigned)count;
+- (CFStringRef)type;
 
 -(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)index options:(CFDictionaryRef)options;
 -(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options;

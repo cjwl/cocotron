@@ -66,13 +66,17 @@ NSData *O2DCTDecode(NSData *data) {
 
 -initWithDataProvider:(O2DataProviderRef)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
-   _jpg=O2DataProviderCopyData(provider);
    return self;
 }
 
 -(void)dealloc {
-    CFRelease(_jpg);
+   if (_jpg) CFRelease(_jpg);
    [super dealloc];
+}
+
+- (CFStringRef)type
+{
+    return (CFStringRef)@"public.jpeg";
 }
 
 -(unsigned)count {
@@ -80,6 +84,9 @@ NSData *O2DCTDecode(NSData *data) {
 }
 
 -(CFDictionaryRef)copyPropertiesAtIndex:(unsigned)idx options:(CFDictionaryRef)options {
+    if (_jpg == NULL) {
+        _jpg=O2DataProviderCopyData(_provider);
+    }
     const unsigned char *data = CFDataGetBytePtr(_jpg);
     unsigned long length = CFDataGetLength(_jpg);
     O2EXIFDecoder *exif = [[[O2EXIFDecoder alloc] initWithBytes:data length:length] autorelease];
@@ -87,8 +94,7 @@ NSData *O2DCTDecode(NSData *data) {
 }
 
 -(O2ImageRef)createImageAtIndex:(unsigned)index options:(CFDictionaryRef)options {
-    O2DataProviderRef encodedProvider=O2DataProviderCreateWithCFData(_jpg);
-    O2ImageDecoderRef decoder=createImageDecoderWithDataProvider(encodedProvider);
+    O2ImageDecoderRef decoder=createImageDecoderWithDataProvider(_provider);
     O2DataProviderRef provider=O2ImageDecoderCreatePixelDataProvider(decoder);
         
     O2Image        *image=[[O2Image alloc] initWithWidth:O2ImageDecoderGetWidth(decoder)
@@ -106,7 +112,6 @@ NSData *O2DCTDecode(NSData *data) {
     
     O2DataProviderRelease(provider);
     [decoder release];
-    O2DataProviderRelease(encodedProvider);
     
     return image;
 }

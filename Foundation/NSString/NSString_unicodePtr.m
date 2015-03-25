@@ -13,15 +13,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSString_unicodePtr
 
 NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,const unichar *unicode,NSUInteger length,BOOL freeWhenDone) {
-   NSString_unicodePtr *string;
+   NSString_unicodePtr *self=NSAllocateObject([NSString_unicodePtr class],0,zone);
 
-   string=NSAllocateObject([NSString_unicodePtr class],0,zone);
-
-   string->_length=length;
-   string->_freeWhenDone=freeWhenDone;
-   string->_unicode=unicode;
-
-   return string;
+    if (self) {
+       self->_length=length;
+       self->_freeWhenDone=freeWhenDone;
+       self->_unicode=unicode;
+    }
+   return self;
 }
 
 NSString *NSString_unicodePtrNew(NSZone *zone,const unichar *unicode,NSUInteger length) {

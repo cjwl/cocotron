@@ -16,15 +16,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSString *NSString_unicodeNew(NSZone *zone,
  const unichar *unicode,NSUInteger length) {
-   NSString_unicode *self;
-   NSInteger              i;
+   NSString_unicode *self=NSAllocateObject([NSString_unicode class],length*sizeof(unichar),zone);
 
-   self=NSAllocateObject([NSString_unicode class],length*sizeof(unichar),zone);
-
-   self->_length=length;
-   for(i=0;i<length;i++)
-    self->_unicode[i]=unicode[i];
-
+    if (self) {
+        self->_length=length;
+        NSInteger i;
+       for(i=0;i<length;i++)
+        self->_unicode[i]=unicode[i];
+    }
    return self;
 }
 
@@ -68,10 +67,7 @@ char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger 
 }
 
 -(void)getCharacters:(unichar *)buffer {
-   NSInteger i;
-
-   for(i=0;i<_length;i++)
-    buffer[i]=_unicode[i];
+    memcpy(buffer, _unicode, _length*sizeof(unichar));
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
@@ -82,8 +78,7 @@ char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger 
      NSStringFromRange(range),[self length]);
    }
 
-   for(i=0;i<len;i++)
-    buffer[i]=_unicode[loc+i];
+    memcpy(buffer, _unicode+loc, len*sizeof(unichar));
 }
 
 -(NSUInteger)hash {

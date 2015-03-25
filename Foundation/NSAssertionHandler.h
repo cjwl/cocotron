@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  * Asserts to use in Objective-C methods:
  */
 
-#define NSAssert(condition, desc, ...)                           _NSAssertBody((condition), (desc), #condition, ##__VA_ARGS__)
+#define NSAssert(condition, desc, ...)                           _NSAssertBody((condition), (desc), ##__VA_ARGS__)
 #define NSAssert1(condition, desc, val1)                          NSAssert(condition, desc, val1)
 #define NSAssert2(condition, desc, val1, val2)                    NSAssert(condition, desc, val1, val2)
 #define NSAssert3(condition, desc, val1, val2, val3)              NSAssert(condition, desc, val1, val2, val3)
@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  * Asserts to use in C function calls:
  */
 
-#define NSCAssert(condition, desc, ...)                           _NSCAssertBody((condition), (desc), #condition, ##__VA_ARGS__)
+#define NSCAssert(condition, desc, ...)                           _NSCAssertBody((condition), (desc), ##__VA_ARGS__)
 #define NSCAssert1(condition, desc, val1)                          NSCAssert(condition, desc, val1)
 #define NSCAssert2(condition, desc, val1, val2)                    NSCAssert(condition, desc, val1, val2)
 #define NSCAssert3(condition, desc, val1, val2, val3)              NSCAssert(condition, desc, val1, val2, val3)

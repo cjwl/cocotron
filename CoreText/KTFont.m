@@ -51,10 +51,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return (ascent/_unitsPerEm)*_size;
 }
 
+// CT descenter is the opposite of the CG one on Cocoa
 -(CGFloat)descender {
    CGFloat descent=CGFontGetDescent(_font);
-
-   return (descent/_unitsPerEm)*_size;
+   return -(descent/_unitsPerEm)*_size;
 }
 
 -(CGFloat)leading {
@@ -121,11 +121,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   unsigned i;
    int advances[count];
    
    CGFontGetGlyphAdvances(_font,glyphs,count,advances);
-   for(i=0;i<count;i++){
+   for(int i=0;i<count;i++){
     advancements[i].width=((CGFloat)advances[i]/(CGFloat)_unitsPerEm)*_size;
     advancements[i].height=0;
    }

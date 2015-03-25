@@ -20,9 +20,10 @@ NSValue *NSValue_concreteNew(NSZone *zone,const void *value,const char *type) {
    NSGetSizeAndAlignment(type,&size,&alignment);
 
    self=NSAllocateObject([NSValue_concrete class],typelen+1+size,zone);
-   NSByteCopy(type,self->_bytes,typelen+1);
-   NSByteCopy(value,self->_bytes+typelen+1,size);
-
+    if (self) {
+       NSByteCopy(type,self->_bytes,typelen+1);
+       NSByteCopy(value,self->_bytes+typelen+1,size);
+    }
    return self;
 }
 

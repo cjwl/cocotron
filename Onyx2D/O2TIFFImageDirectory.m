@@ -128,9 +128,6 @@ static void sTIFFUnmapFileProc(thandle_t userData, tdata_t data, toff_t size)
 	if (_currentOffset > [_data length]) {
 		_currentOffset = -1;
 	}
-	if (_currentOffset < 0) {
-		_currentOffset = -1;
-	}
 
 	return _currentOffset; 
 }
@@ -657,6 +654,12 @@ void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height
 -(NSDictionary *)properties {
    NSMutableDictionary *result=[NSMutableDictionary new];
 
+    if (_imageLength) {
+        [result setObject:[NSNumber numberWithUnsignedInt:_imageLength] forKey:kO2ImagePropertyPixelHeight];
+    }
+    if (_imageWidth) {
+        [result setObject:[NSNumber numberWithUnsignedInt:_imageWidth] forKey:kO2ImagePropertyPixelWidth];
+    }
    [result setObject:[NSNumber numberWithDouble:_xResolution] forKey:kO2ImagePropertyDPIWidth];
    [result setObject:[NSNumber numberWithDouble:_yResolution] forKey:kO2ImagePropertyDPIHeight];
 

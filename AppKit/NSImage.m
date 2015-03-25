@@ -80,8 +80,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSArray *)_checkBundles {
    return [NSArray arrayWithObjects:
-    [NSBundle bundleForClass:self],
-    [NSBundle mainBundle],
+           [NSBundle mainBundle], // Check the main bundle first according to the doc
+           [NSBundle bundleForClass:self],
     nil];
 }
 
@@ -107,8 +107,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSString *path=[bundle pathForImageResource:name];
 
      if(path!=nil){
-      image=[[[NSImage alloc] initWithContentsOfFile:path] autorelease];
-      [image setName:name];
+         image=[[[NSImage alloc] initWithContentsOfFile:path] autorelease];
+         [image setName:name];
+         if (image) {
+             break;
+         }
      }
     }
    }
@@ -191,7 +194,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithContentsOfFile:(NSString *)path {
    NSArray *reps=[NSImageRep imageRepsWithContentsOfFile:path];
-
+    
    if([reps count]==0){
        [self release];
     return nil;
@@ -215,6 +218,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
    return [self initWithData:data];
+}
+
+-initWithCGImage:(CGImageRef)cgImage size:(NSSize)size;
+{
+    if (self = [self initWithSize:size]) {
+        NSBitmapImageRep *rep = [[[NSBitmapImageRep alloc] initWithCGImage:cgImage] autorelease];
+        [_representations addObject:rep];
+    }
+    return self;
 }
 
 -initWithPasteboard:(NSPasteboard *)pasteboard {
@@ -558,7 +570,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
     NSCachedImageRep *cached=[self _cachedImageRepCreateIfNeeded];
     
-    if(!_cacheIsValid){ 
+    if(!_cacheIsValid){
      [self lockFocusOnRepresentation:cached];
      NSRect rect;
      rect.origin.x=0;
@@ -603,7 +615,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		if([check isKindOfClass:[NSBitmapImageRep class]]) {
 			[bitmaps addObject:check];
 		} else if([check isKindOfClass:[NSCachedImageRep class]]) {
-			// We don't use the general case else we get flipped results for flipped images since lockFocusOnRepresention is flipping and the Cache content
+			// We don't use the general case else we get flipped results for flipped images since lockFocusOnRepresentation is flipping and the Cache content
 			// is already flipped
 			NSRect r = { .origin = NSZeroPoint, .size = check.size };
 			[self lockFocus];
@@ -857,6 +869,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSBundle(NSImage)
 
 -(NSString *)pathForImageResource:(NSString *)name {
+    NSString *extension = [name pathExtension];
+    if (extension && extension.length) {
+        NSString *baseName=[name stringByDeletingPathExtension];
+        return [self pathForResource:baseName ofType:extension];
+    }
    NSArray *types=[NSImage imageFileTypes];
    int      i,count=[types count];
 

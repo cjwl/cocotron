@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSText.h>
 #import <AppKit/NSTextInput.h>
 #import <AppKit/NSDragging.h>
+#import <AppKit/NSParagraphStyle.h>
 #import <Foundation/NSTextCheckingResult.h>
 
 @class NSTextStorage, NSLayoutManager, NSTextContainer, NSUndoManager;
@@ -88,7 +89,8 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
    NSSelectionAffinity    _selectionAffinity;
    NSSelectionGranularity _selectionGranularity;
    NSDictionary          *_selectedTextAttributes;
-
+    NSParagraphStyle      *_defaultParagraphStyle;
+    
    BOOL                   _didSendTextDidEndNotification;
    unsigned               _selectionOrigin;		// for keyboard selection sanity.
    id                     _killBuffer;			// NSString for Emacs-style, NSMutableString for additive
@@ -132,6 +134,7 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
 -(NSDictionary *)typingAttributes;
 -(NSDictionary *)selectedTextAttributes;
 -(NSArray *)selectedRanges;
+-(NSParagraphStyle *)defaultParagraphStyle;
 
 -(void)setTextContainer:(NSTextContainer *)container;
 -(void)setTextContainerInset:(NSSize)size;
@@ -142,6 +145,7 @@ APPKIT_EXPORT NSString * const NSOldSelectedCharacterRange;
 -(void)setInsertionPointColor:(NSColor *)color;
 -(void)setTypingAttributes:(NSDictionary *)attributes;
 -(void)setSelectedTextAttributes:(NSDictionary *)attributes;
+-(void)setDefaultParagraphStyle:(NSParagraphStyle *)paragraphStyle;
 
 -(NSRange)selectionRangeForProposedRange:(NSRange)range granularity:(NSSelectionGranularity)granularity;
 

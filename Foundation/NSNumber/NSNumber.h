@@ -61,7 +61,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)boolValue;
 -(NSDecimal)decimalValue;
 -(NSInteger)integerValue;
-
 -(unsigned char)unsignedCharValue;
 -(unsigned short)unsignedShortValue;
 -(unsigned int)unsignedIntValue;

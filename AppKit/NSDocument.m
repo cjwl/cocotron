@@ -155,6 +155,8 @@ static int untitled_document_number = 0;
 
 -(void)dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
   [_windowControllers release];
   [_fileURL release];
   [_fileType release];
@@ -181,7 +183,7 @@ static int untitled_document_number = 0;
 }
 
 -(NSPrintInfo *)printInfo {
-   return _printInfo;
+    return _printInfo?_printInfo:[NSPrintInfo sharedPrintInfo];
 }
 
 -(NSString *)fileType {
@@ -257,18 +259,21 @@ static int untitled_document_number = 0;
     
     _undoManager = [undoManager retain];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_undoManagerDidUndoChange:)
-                                                 name:NSUndoManagerDidUndoChangeNotification
-                                               object:_undoManager];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_undoManagerDidRedoChange:)
-                                                 name:NSUndoManagerDidRedoChangeNotification
-                                               object:_undoManager];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_undoManagerDidCloseGroup:)
-                                                 name:NSUndoManagerWillCloseUndoGroupNotification
-                                               object:_undoManager];
+    if (undoManager) {
+        // Only add observers if we have an undoManager we're concerned about
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_undoManagerDidUndoChange:)
+                                                     name:NSUndoManagerDidUndoChangeNotification
+                                                   object:_undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_undoManagerDidRedoChange:)
+                                                     name:NSUndoManagerDidRedoChangeNotification
+                                                   object:_undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_undoManagerDidCloseGroup:)
+                                                     name:NSUndoManagerWillCloseUndoGroupNotification
+                                                   object:_undoManager];
+    }
 }
 
 -(NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window {
@@ -588,9 +593,12 @@ static int untitled_document_number = 0;
 	NSSavePanel * savePanel = [NSSavePanel savePanel];
 	[savePanel setRequiredFileType:extension];
 
+#if 0
+    // setAllowedFileTypes: is unimplemented - so don't call it.
 	NSArray* writableTypes = [self writableTypesForSaveOperation: operation];
 	[savePanel setAllowedFileTypes: writableTypes];
-	
+#endif
+    
 	if([self prepareSavePanel:savePanel] == NO) { 
 		// subclass was unable to prepare the save panel successfully
 		// so bail
@@ -603,9 +611,13 @@ static int untitled_document_number = 0;
 		saveResult = [savePanel runModalForDirectory:[path stringByDeletingLastPathComponent]
 												file:[path lastPathComponent]];
 	} else {
-		// Suggest saving in some reasonable directory
-		saveResult = [savePanel runModalForDirectory:[[NSDocumentController sharedDocumentController] currentDirectory]
-												file:[self displayName]];
+        NSString *directory = [savePanel directory];
+        if (directory == nil) {
+            // Suggest saving in some reasonable directory
+            directory = [[NSDocumentController sharedDocumentController] currentDirectory];
+        }
+		saveResult = [savePanel runModalForDirectory: directory
+                                                file: [self displayName]];
 	}
 	if(saveResult) {
 		NSString *savePath=[savePanel filename];

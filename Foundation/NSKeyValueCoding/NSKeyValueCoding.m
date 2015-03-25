@@ -221,7 +221,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
         return value;
     }
 
-    const char *keyCString = [key cString];
+    const char *keyCString = [key UTF8String];
     SEL sel = sel_getUid(keyCString);
 
     // FIXME: getKey, _getKey, isKey, _isKey are missing
@@ -375,16 +375,16 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 }
 
 -valueForUndefinedKey:(NSString *)key {
-   [NSException raise:NSUndefinedKeyException format:@"%@: trying to get undefined key %@", [self className], key];
+   [NSException raise:NSUndefinedKeyException format:@"%@: trying to get undefined key '%@'", [self className], key];
    return nil;
 }
 
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key {
-   [NSException raise:NSUndefinedKeyException format:@"%@: trying to set undefined key %@", [self className], key];
+   [NSException raise:NSUndefinedKeyException format:@"%@: trying to set undefined key '%@'", [self className], key];
 }
 
 -(void)setNilValueForKey:key {
-   [NSException raise:@"NSInvalidArgumentException"  format:@"%@: trying to set nil value for key %@", [self className], key];
+   [NSException raise:@"NSInvalidArgumentException"  format:@"%@: trying to set nil value for key '%@'", [self className], key];
 }
 
 - (id)valueForKeyPath:(NSString*)keyPath {

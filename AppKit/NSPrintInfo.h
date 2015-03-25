@@ -50,6 +50,8 @@ APPKIT_EXPORT NSString * const NSPrintRightMargin;
 APPKIT_EXPORT NSString * const NSPrintHorizontallyCentered; 
 APPKIT_EXPORT NSString * const NSPrintVerticallyCentered; 
 
+APPKIT_EXPORT NSString *const NSPrintHeaderAndFooter;
+
 @interface NSPrintInfo : NSObject <NSCopying> {
    NSMutableDictionary *_attributes;
 }

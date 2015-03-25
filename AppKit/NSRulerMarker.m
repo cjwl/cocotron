@@ -147,13 +147,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         location = [_ruler convertPoint:location fromView:[[_ruler enclosingScrollView] documentView]];
     }
 
-    float offset = [_ruler originOffset];
     if ([_ruler orientation] == NSHorizontalRuler) {
         rect.origin.x += location.x;
-        rect.origin.x += offset;
     } else {
         rect.origin.y += location.y;       // how does a flipped system affect this? hm
-        rect.origin.y += offset;
     }
     rect.origin.x -= _imageOrigin.x;
     rect.origin.y -= _imageOrigin.y;
@@ -184,22 +181,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (float)_markerLocationFromLocation:(NSPoint)point
 {
-    if ([_ruler orientation] == NSHorizontalRuler) {
-        point.x -= [_ruler originOffset];
-    } else {
-        point.y -= [_ruler originOffset];
-    }
     NSView *trackedView = _ruler.clientView;
     if (trackedView == nil) {
         trackedView = _ruler.enclosingScrollView.documentView;
     }
     point = [_ruler convertPoint:point toView:trackedView];
     float newLocation = [_ruler orientation] == NSHorizontalRuler ? point.x : point.y;
-
-    if ([[_ruler clientView] respondsToSelector:@selector(rulerView:willAddMarker:atLocation:)])
-        newLocation = [[_ruler clientView] rulerView:_ruler willAddMarker:self atLocation:newLocation];
-    else
-        newLocation = newLocation;
 
     return newLocation;
 }
@@ -227,7 +214,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
         
         _markerLocation = [self _markerLocationFromLocation:point];
-        
+        if ([[_ruler clientView] respondsToSelector:@selector(rulerView:willAddMarker:atLocation:)]) {
+            _markerLocation = [[_ruler clientView] rulerView:_ruler willAddMarker:self atLocation:_markerLocation];
+        }
+
         // Draw the ruler + the new marker
         [_ruler lockFocus];
         [_ruler drawRect:[_ruler bounds]];
@@ -275,6 +265,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 }
             }
             _markerLocation = [self _markerLocationFromLocation:point];
+            if ([[_ruler clientView] respondsToSelector:@selector(rulerView:willMoveMarker:toLocation:)]) {
+                _markerLocation = [[_ruler clientView] rulerView:_ruler willMoveMarker:self toLocation:_markerLocation];
+            }
             [_ruler setNeedsDisplay:YES];
         }
         event = [[_ruler window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];

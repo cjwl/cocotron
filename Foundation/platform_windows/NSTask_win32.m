@@ -51,8 +51,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableData *data=[NSMutableData data];
    NSInteger            i,count=[arguments count];
 
-   [data appendData:NSTaskArgumentDataFromString(launchPath)];
-   [data appendBytes:" " length:1];
+    if (launchPath != nil) {
+        [data appendData:NSTaskArgumentDataFromString(launchPath)];
+        [data appendBytes:" " length:1];
+    }
 
    for(i=0;i<count;i++){
     NSString *argument=[arguments objectAtIndex:i];
@@ -74,10 +76,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)launch {
    STARTUPINFO   startupInfo;
 
-   if(launchPath==nil)
-    [NSException raise:NSInvalidArgumentException
-                format:@"NSTask launchPath is nil"];
-
+    // For CreateProcess it's not actually an error for the launchPath to be nil
+    // From the MS documentation: The lpApplicationName parameter can be NULL. In that case, the module name must be the first white spaceÐdelimited token in the lpCommandLine string.
+    // See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
+    
    ZeroMemory(&startupInfo,sizeof(startupInfo));
    startupInfo.cb=sizeof(startupInfo);
    startupInfo.dwFlags|=STARTF_USESTDHANDLES;
@@ -145,11 +147,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NULL,NULL,TRUE,CREATE_NO_WINDOW,cenv,
     [currentDirectoryPath fileSystemRepresentation],
     &startupInfo,&_processInfo)){
+       DWORD dwError = GetLastError();
     if(cenv) {
         NSZoneFree(NULL, cenv);
     }
+    char *launchPathStr = "<nil>";
+    if ([launchPath length] > 0) {
+       launchPathStr = (char *)[launchPath fileSystemRepresentation];
+    }
     [NSException raise:NSInvalidArgumentException
-                format:@"CreateProcess(%@,%@,%@) failed", launchPath,[arguments componentsJoinedByString:@" "], currentDirectoryPath];
+                format:@"CreateProcess(\"%s\", \"%s\", \"%s\") failed with error: %d", launchPathStr, [[self _argumentsData] bytes], [currentDirectoryPath fileSystemRepresentation], dwError];
     return;
    }
     if(cenv) {

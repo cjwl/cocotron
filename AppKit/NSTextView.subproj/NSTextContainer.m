@@ -20,13 +20,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
     _size.width=[keyed decodeFloatForKey:@"NSWidth"];
-    _size.height=0;
+    _size.height=1e7;
     _textView=[keyed decodeObjectForKey:@"NSTextView"];
     _layoutManager=[keyed decodeObjectForKey:@"NSLayoutManager"];
-    _size.height=[_textView frame].size.height;
     _lineFragmentPadding=0;
-    _widthTracksTextView=YES;
-    _heightTracksTextView=YES;
+
+       int flags = [coder decodeIntForKey: @"NSTCFlags"];
+       _widthTracksTextView = (flags & 1) != 0;
+       _heightTracksTextView = (flags & 2) != 0;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -81,14 +82,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setTextView:(NSTextView *)textView {
+    if (_heightTracksTextView || _widthTracksTextView) {
+        if (_textView) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewFrameDidChangeNotification object:_textView];
+        }
+    }
     _textView = textView;
     [_textView setTextContainer:self];
+    if (_heightTracksTextView || _widthTracksTextView) {
+        if (_textView) {
+            [_textView setPostsFrameChangedNotifications:YES];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_textViewFrameDidChange:) name:NSViewFrameDidChangeNotification object:_textView];
+        }
+    }
 }
 
 -(void)_textViewFrameDidChange:(NSNotification *)notification
 {
 	if ([notification object] == _textView) {
-		NSSize newSize = [_textView frame].size;
+		NSSize newSize = _size;
+        NSSize textViewSize = [_textView frame].size;
+        if (_widthTracksTextView) {
+            newSize.width = textViewSize.width;
+        }
+        if (_heightTracksTextView) {
+            newSize.height = textViewSize.height;
+        }
 		[self setContainerSize:newSize];
 	}
 }
@@ -171,7 +190,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSRect)lineFragmentRectForProposedRect:(NSRect)proposed sweepDirection:(NSLineSweepDirection)sweep movementDirection:(NSLineMovementDirection)movement remainingRect:(NSRectPointer)remaining {
-   NSRect result=proposed;
+    NSRect r = {
+        .origin = NSZeroPoint,
+        .size = _size
+    };
+    NSRect result=proposed;
+    
+    // We don't want to render outside of our rect
+    r.origin.x += _lineFragmentPadding;
+    r.size.width -= _lineFragmentPadding;
+    result=NSIntersectionRect(r, result);
 
    if(sweep!=NSLineSweepRight || movement!=NSLineMovesDown)
     NSUnimplementedMethod();
@@ -179,10 +207,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(result.origin.x+result.size.width>_size.width)
     result.size.width=_size.width-result.origin.x;
 
-   if(result.size.width<=0)
-    result=NSZeroRect;
+    if(result.size.width<=0)
+        result=NSZeroRect;
+    
+    if(result.size.height<=0)
+        result=NSZeroRect;
 
-   *remaining=NSZeroRect;
+    *remaining=NSZeroRect;
 
    return result;
 }

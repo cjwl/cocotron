@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return;
     }
 
-   object_setInstanceVariable(_source,[_label cString],&_destination);
+   object_setInstanceVariable(_source,[_label UTF8String],&_destination);
 }
 
 @end

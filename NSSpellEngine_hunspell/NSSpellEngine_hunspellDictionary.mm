@@ -10,6 +10,7 @@
 #import <Foundation/NSTextCheckingResult.h>
 #import <Foundation/NSPathUtilities.h>
 #import <string.h>
+#import <Foundation/NSString.h>
 
 /* hunspelldll.h is a rough C cover over the C++ library, if more functionality is needed use the C++
    library directly.
@@ -42,41 +43,34 @@
 
 }
 
--(char *)createHunspellStringForCharacters:(unichar *)characters length:(NSUInteger)length {
-   char *encoding=hunspell_get_dic_encoding((Hunspell *)_hunspell);
-   char *result=NULL;
-   
-   if(encoding==NULL || strcmp(encoding,"ISO8859-1")==0 || strcmp(encoding,"UTF-8")==0){
-    NSUInteger i;
-    
-    result=(char *)malloc(length+1);
-   
-    for(i=0;i<length;i++){
-     if(characters[i]<256)
-      result[i]=characters[i];
-     else {
-      free(result);
-      return NULL;
-     }
-     
+-(char *)createHunspellStringForString:(NSString *)string {
+    if (string == nil) {
+        return NULL;
     }
-    result[i]='\0';
-   }
-   else {
-    NSLog(@"Unhandled hunspell dictionary encoding %s",encoding);
-    result=NULL;
-   }
-   
-   return result;
+    NSStringEncoding stringEncoding = (NSStringEncoding)0;
+    char *encoding=hunspell_get_dic_encoding((Hunspell *)_hunspell);
+    
+    if(strcmp(encoding,"ISO8859-1")==0 || strcmp(encoding,"ISO8859-15")==0){
+        stringEncoding = NSISOLatin1StringEncoding;
+    } else if (encoding==NULL || strcmp(encoding,"UTF-8")==0){
+        stringEncoding = NSUTF8StringEncoding;
+    }
+    
+    if (stringEncoding == 0) {
+        NSLog(@"Unhandled hunspell dictionary encoding %s",encoding);
+        return NULL;
+    }
+    char *result = NULL;
+    const char *cstr = [string cStringUsingEncoding:stringEncoding];
+    if (cstr) {
+        result = strdup(cstr);
+    }
+    return result;
 }
 
--(char *)createHunspellStringForString:(NSString *)string {
-   NSUInteger length=[string length];
-   unichar buffer[length];
-   
-   [string getCharacters:buffer];
-   
-   return [self createHunspellStringForCharacters:buffer length:length];
+-(char *)createHunspellStringForCharacters:(unichar *)characters length:(NSUInteger)length {
+    NSString *string = [NSString stringWithCharacters:characters length:length];
+    return [self createHunspellStringForString:string];
 }
 
 -(NSArray *)textCheckingResultWithRange:(NSRange)range forCharacters:(unichar *)characters length:(NSUInteger)length {

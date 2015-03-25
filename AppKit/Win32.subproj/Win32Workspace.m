@@ -225,90 +225,125 @@ static NSImageRep *imageRepForImageListAndIndex(HIMAGELIST imageListH, int index
 				}
 			}
 			CGContextRelease(ctx);
-		}
-	}
+        }
+    }
 	return imageRep;
 }
 
 -(NSImage *)iconForFile:(NSString *)path {
+    // This code seems very sensitive to some memory corruption happening (stack trashing it seems)
+    // Just moving some of the local var or some code  order seems to trigger that either in Debug or
+    // Release mode.
+    // So maybe there must be something wrong with the use of these API
+    
 	// Some pointers to some needed SHELL32 functions
-	static HRESULT  (*SHGetImageListPtr)(
+	 static HRESULT  (*SHGetImageListPtr)(
 								  int iImageList,
 								  REFIID riid,
 								  HIMAGELIST *imageList
 								  ) = NULL;
-	static HRESULT  (*FileIconInitPtr)(BOOL restoreCache) = NULL; 
+	 static HRESULT  (*FileIconInitPtr)(BOOL restoreCache) = NULL;
 			
-	OSVERSIONINFOEX osVersion;
-	osVersion.dwOSVersionInfoSize=sizeof(osVersion);
-	GetVersionEx((OSVERSIONINFO *)&osVersion);
-	BOOL isRunningVistaOrBetter = osVersion.dwMajorVersion >= 6;
-	
 	if (FileIconInitPtr == NULL) {
-		HANDLE library = LoadLibrary("SHELL32");
-		FileIconInitPtr = (void*)GetProcAddress(library,(char *)660); // 660 is the magic number for it
-		if (FileIconInitPtr) {
-			// Call the init function the first time we get called - MS says it should be done before using
-			// SHGetImageList
-			FileIconInitPtr(YES);
-		}
-		FreeLibrary(library);
-	}	
-	if (SHGetImageListPtr == NULL) {
-		HANDLE library = LoadLibrary("SHELL32");
-		SHGetImageListPtr = (void*)GetProcAddress(library,"SHGetImageList");
-		FreeLibrary(library);
+        HANDLE library = LoadLibrary("SHELL32");
+        FileIconInitPtr = (void*)GetProcAddress(library,(char *)660); // 660 is the magic number for it
+        if (FileIconInitPtr) {
+            // Call the init function the first time we get called - MS says it should be done before using
+            // SHGetImageList
+            FileIconInitPtr(YES);
+        }
+        if (SHGetImageListPtr == NULL) {
+            SHGetImageListPtr = (void*)GetProcAddress(library,"SHGetImageList");
+            if (SHGetImageListPtr == NULL) {
+                SHGetImageListPtr = (void*)GetProcAddress(library,(char *)727);
+            }
+        }
 	}
-	
+
 	const unichar *pathCString=[path fileSystemRepresentationW];
-	SHFILEINFOW fileInfo;
+	SHFILEINFOW fileInfo = { 0 };
 	
 	NSImage *icon=[[[NSImage alloc] init] autorelease];
-	
 	if (SHGetImageListPtr) {
 		if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_SYSICONINDEX)) {
-			HIMAGELIST imageList = NULL;
+            HIMAGELIST imageList;
+
+#ifndef SHIL_SMALL
+#define SHIL_SMALL          0x1
+#endif
+#ifndef SHIL_LARGE
+#define SHIL_LARGE          0x0
+#endif
 #ifndef SHIL_EXTRALARGE
 #define SHIL_EXTRALARGE		0x2
 #endif
 #ifndef SHIL_JUMBO
 #define SHIL_JUMBO			0x4
 #endif
+
+            OSVERSIONINFOEX osVersion = { 0 };
+            osVersion.dwOSVersionInfoSize=sizeof(osVersion);
+            GetVersionEx((OSVERSIONINFO *)&osVersion);
+            BOOL isRunningVistaOrBetter = osVersion.dwMajorVersion >= 6;
+
+            int imageIndex = fileInfo.iIcon;
+
 			static const IID IID_IImageList = {0x46EB5926L,0x582E,0x4017, {0x9F,0xDF,0xE8,0x99,0x8D,0xAA,0x09,0x50} };
 			if (isRunningVistaOrBetter) {
 				if (SHGetImageListPtr(SHIL_JUMBO, &IID_IImageList, &imageList) == S_OK) {
-					NSImageRep* rep = imageRepForImageListAndIndex(imageList, fileInfo.iIcon);
-					if (rep)
-						[icon addRepresentation: rep];
+					NSImageRep* rep = imageRepForImageListAndIndex(imageList, imageIndex);
+					if (rep) {
+                        [icon addRepresentation: rep];
+                   }
 				}
 			}
 			if (SHGetImageListPtr(SHIL_EXTRALARGE, &IID_IImageList, &imageList) == S_OK) {
-				NSImageRep* rep = imageRepForImageListAndIndex(imageList, fileInfo.iIcon);
-				if (rep)
-					[icon addRepresentation: rep];
+				NSImageRep* rep = imageRepForImageListAndIndex(imageList, imageIndex);
+                if (rep) {
+                    [icon addRepresentation: rep];
+                }
 			}
-			// Note: we should be able to get the other sizes icons the same way but that's failing if we also
-			// try to get the big one - no idea why...
-		}
-	}
-	// Try to add the regular size (32 and 16) icons
-	if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_LARGEICON)) {
-		if (fileInfo.hIcon) {
-			NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
-			if (rep)
-				[icon addRepresentation: rep];
-			DeleteObject(fileInfo.hIcon);
-		}
-	}
-	if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_SMALLICON)) {
-		if (fileInfo.hIcon) {
-			NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
-			if (rep)
-				[icon addRepresentation: rep];
-			DeleteObject(fileInfo.hIcon);
+            if (SHGetImageListPtr(SHIL_LARGE, &IID_IImageList, &imageList) == S_OK) {
+				NSImageRep* rep = imageRepForImageListAndIndex(imageList, imageIndex);
+                if (rep) {
+                    [icon addRepresentation: rep];
+                }
+			}
+            if (SHGetImageListPtr(SHIL_SMALL, &IID_IImageList, &imageList) == S_OK) {
+				NSImageRep* rep = imageRepForImageListAndIndex(imageList, imageIndex);
+                if (rep) {
+                    [icon addRepresentation: rep];
+                }
+			}
+
 		}
 	}
 	if([[icon representations] count]==0) {
+        // Do it the old way
+        
+        // Try to add the regular size (32 and 16) icons
+        if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_LARGEICON)) {
+            if (fileInfo.hIcon) {
+                NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
+                if (rep) {
+                    [icon addRepresentation: rep];
+                }
+                DeleteObject(fileInfo.hIcon);
+            }
+        }
+
+        if(SHGetFileInfoW(pathCString, 0, &fileInfo, sizeof(SHFILEINFOW), SHGFI_ICON|SHGFI_SMALLICON)) {
+            if (fileInfo.hIcon) {
+                NSImageRep* rep = imageRepForIcon(fileInfo.hIcon);
+                if (rep) {
+                    [icon addRepresentation: rep];
+                }
+                DeleteObject(fileInfo.hIcon);
+            }
+        }
+    }
+
+    if([[icon representations] count]==0) {
 		NSLog(@"unable to load icon for file: %@", path);
 		return nil;
 	}

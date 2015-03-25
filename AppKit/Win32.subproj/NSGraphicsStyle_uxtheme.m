@@ -490,9 +490,21 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 -(NSSize)menuItemTextSize:(NSString *)title {
 	NSSize result = NSZeroSize;
 	Margins margins = [self menuItemTextMargins];
-	
 	result = [title sizeWithAttributes:sNormalMenuTextAttributes];
+    
+	result.height += (margins.top + margins.bottom);
+	result.width += (margins.left + margins.right);
+	
+	return result;
+}
 
+-(NSSize)menuItemAttributedTextSize:(NSAttributedString *)title
+{
+	NSSize result = NSZeroSize;
+	Margins margins = [self menuItemTextMargins];
+    
+	result = [title size];
+	
 	result.height += (margins.top + margins.bottom);
 	result.width += (margins.left + margins.right);
 	
@@ -552,8 +564,12 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 	if(deviceContext==nil)
 		return;
 
+    // Ensure we have enough width - fractional widths give float comparison trouble
+    rect.size.width = ceilf(rect.size.width);
+
 	if ([[deviceContext windowDeviceContext] theme:uxthMENU])
 	{
+
 		Margins margins=[self menuItemTextMargins];
 		
 		rect.origin.x += margins.left;
@@ -572,8 +588,9 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 			[string drawInRect:rect withAttributes:sDimmedMenuTextAttributes];
 		}
 	}
-	else
+	else {
 		[super drawMenuItemText:string inRect:rect enabled:enabled selected:selected];
+    }
 }
 
 -(void)drawMenuBranchArrowInRect:(NSRect)rect enabled:(BOOL)enabled selected:(BOOL)selected {

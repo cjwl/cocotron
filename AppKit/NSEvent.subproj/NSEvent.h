@@ -201,6 +201,7 @@ enum {
 -(NSInteger)data1;
 -(NSInteger)data2;
 -(NSInteger)trackingNumber;
+-(NSTrackingArea *)trackingArea;
 -(void *)userData;
 
 @end

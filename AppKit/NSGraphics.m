@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <ApplicationServices/ApplicationServices.h>
 
+#import "NSPoofAnimation.h"
+
 const float NSBlack=0;
 const float NSDarkGray=0.333;
 const float NSLightGray=0.667;
@@ -502,6 +504,6 @@ void NSDisableScreenUpdates(void) {
 }
 
 void NSShowAnimationEffect(NSAnimationEffect effect,NSPoint center,NSSize size,id delegate,SEL didEndSelector,void *context) {
-   NSUnimplementedFunction();
+    [NSPoofAnimation poofAtLocation:center size:size animationDelegate:delegate didEndSelector:didEndSelector contextInfo:context];
 }
 

@@ -135,6 +135,11 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return [_cell isContinuous];
 }
 
+-(BOOL)needsPanelToBecomeKey {
+    // The Apple way
+    return [_cell isSelectable];
+}
+
 -(BOOL)refusesFirstResponder {
    return [_cell refusesFirstResponder];
 }
@@ -356,9 +361,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 -(void)updateCell:(NSCell *)cell {
     if (_cell == cell)
 	{
-		[self willChangeValueForKey:@"objectValue"];
-		[self didChangeValueForKey:@"objectValue"];
-        [self setNeedsDisplay:YES];
+            [self setNeedsDisplay:YES];
 	}
 }
 

@@ -73,75 +73,75 @@ static unsigned char *stbi_jpeg_load_from_memory(const uint8_t const *buffer, in
 	
 	// Buffer for the final decompressed data
 	unsigned char *outputImage = (unsigned char*)malloc(bytesPerRow*cinfo.output_height);
-	
+	if (outputImage) {
 #ifdef JCS_ALPHA_EXTENSIONS
-	// Scanline buffers pointers - they'll point directly to the final image buffer
-	JSAMPROW scanlineBuffer[cinfo.rec_outbuf_height];
-#else 
-	// Scanline buffers
-	JSAMPARRAY scanlineBuffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, bytesPerRow, cinfo.rec_outbuf_height);
-#endif
-	
-	while(cinfo.output_scanline < cinfo.image_height) {
-		int currentLine = cinfo.output_scanline;
-#ifdef JCS_ALPHA_EXTENSIONS
-		// We'll decode directly into the final buffer
-		for (int i = 0; i < cinfo.rec_outbuf_height; ++i) {
-			scanlineBuffer[i] = outputImage + (currentLine + i)*bytesPerRow;
-		}
-		jpeg_read_scanlines(&cinfo, scanlineBuffer, cinfo.rec_outbuf_height);
-		if (cinfo.out_color_space == JCS_CMYK) {
-			// Convert from CMYK to RGBA
-			for (int i = 0; i < cinfo.rec_outbuf_height; ++i) {
-				unsigned char *out = outputImage + (currentLine++)*bytesPerRow;
-				for (int j = 0; j < cinfo.output_width; ++j) {
-					unsigned char c = out[0];
-					unsigned char m = out[1];
-					unsigned char y = out[2];
-					unsigned char k = out[3];
-					int r = (c*k)/255;
-					int g = (m*k)/255;
-					int b = (y*k)/255;
-                    
-					*out++ = r;
-					*out++ = g;
-					*out++ = b;
-					*out++ = 0xff; // add the alpha component
-				}					
-			}				
-		}
+        // Scanline buffers pointers - they'll point directly to the final image buffer
+        JSAMPROW scanlineBuffer[cinfo.rec_outbuf_height];
 #else
-		int count = jpeg_read_scanlines(&cinfo, scanlineBuffer, cinfo.rec_outbuf_height);
-		for (int i = 0; i < count; ++i) {
-			char *out = outputImage + (currentLine++)*bytesPerRow;
-			const char *scanline = scanlineBuffer[i];
-			for (int j = 0; j < cinfo.output_width; ++j) {
-				if (cinfo.out_color_space == JCS_CMYK) {
-					// Convert from CMYK to RGBA
-					unsigned char c = *scanline++;
-					unsigned char m = *scanline++;
-					unsigned char y = *scanline++;
-					unsigned char k = *scanline++;
-					int r = (c*k)/255;
-					int g = (m*k)/255;
-					int b = (y*k)/255;
-					
-					*out++ = r;
-					*out++ = g;
-					*out++ = b;
-					*out++ = 0xff; // add the alpha component
-				} else {
-					// Convert from RGB to RGBA
-					*out++ = *scanline++;
-					*out++ = *scanline++;
-					*out++ = *scanline++;
-					*out++ = 0xff; // add the alpha component
-				}
-			}
-		}
+        // Scanline buffers
+        JSAMPARRAY scanlineBuffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, bytesPerRow, cinfo.rec_outbuf_height);
 #endif
+        
+        while(cinfo.output_scanline < cinfo.image_height) {
+            int currentLine = cinfo.output_scanline;
+#ifdef JCS_ALPHA_EXTENSIONS
+            // We'll decode directly into the final buffer
+            for (int i = 0; i < cinfo.rec_outbuf_height; ++i) {
+                scanlineBuffer[i] = outputImage + (currentLine + i)*bytesPerRow;
+            }
+            jpeg_read_scanlines(&cinfo, scanlineBuffer, cinfo.rec_outbuf_height);
+            if (cinfo.out_color_space == JCS_CMYK) {
+                // Convert from CMYK to RGBA
+                for (int i = 0; i < cinfo.rec_outbuf_height; ++i) {
+                    unsigned char *out = outputImage + (currentLine++)*bytesPerRow;
+                    for (int j = 0; j < cinfo.output_width; ++j) {
+                        unsigned char c = out[0];
+                        unsigned char m = out[1];
+                        unsigned char y = out[2];
+                        unsigned char k = out[3];
+                        int r = (c*k)/255;
+                        int g = (m*k)/255;
+                        int b = (y*k)/255;
+                        
+                        *out++ = r;
+                        *out++ = g;
+                        *out++ = b;
+                        *out++ = 0xff; // add the alpha component
+                    }
+                }
+            }
+#else
+            int count = jpeg_read_scanlines(&cinfo, scanlineBuffer, cinfo.rec_outbuf_height);
+            for (int i = 0; i < count; ++i) {
+                char *out = outputImage + (currentLine++)*bytesPerRow;
+                const char *scanline = scanlineBuffer[i];
+                for (int j = 0; j < cinfo.output_width; ++j) {
+                    if (cinfo.out_color_space == JCS_CMYK) {
+                        // Convert from CMYK to RGBA
+                        unsigned char c = *scanline++;
+                        unsigned char m = *scanline++;
+                        unsigned char y = *scanline++;
+                        unsigned char k = *scanline++;
+                        int r = (c*k)/255;
+                        int g = (m*k)/255;
+                        int b = (y*k)/255;
+                        
+                        *out++ = r;
+                        *out++ = g;
+                        *out++ = b;
+                        *out++ = 0xff; // add the alpha component
+                    } else {
+                        // Convert from RGB to RGBA
+                        *out++ = *scanline++;
+                        *out++ = *scanline++;
+                        *out++ = *scanline++;
+                        *out++ = 0xff; // add the alpha component
+                    }
+                }
+            }
+#endif
+        }
 	}
-	
 	// We're done - do some cleanup
 	jpeg_finish_decompress( &cinfo );
 	jpeg_destroy_decompress( &cinfo );
@@ -164,6 +164,8 @@ static unsigned char *stbi_jpeg_load_from_memory(const uint8_t const *buffer, in
     int width,height;
     
     bitmap=stbi_jpeg_load_from_memory(encodedBytes,encodedLength,&width,&height);
+    
+    CFRelease(encodedData);
     
     if(bitmap==NULL){
         [self dealloc];

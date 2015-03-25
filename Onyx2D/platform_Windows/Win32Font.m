@@ -6,6 +6,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+#import <Onyx2D/O2Font.h>
+
 #import <Onyx2D/Win32Font.h>
 
 #ifndef CLEARTYPE_QUALITY
@@ -27,11 +29,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	long quality = antialias?CLEARTYPE_QUALITY:DEFAULT_QUALITY;
 	
+    O2FontLog(@"selecting font: %@ height: %d for drawing", name, height);
 	angle = 180.*angle/M_PI*10; // Tenth of degrees
 	_handle=CreateFontW(height,0,angle,angle,FW_NORMAL,
 						FALSE,FALSE,FALSE,
 						DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
 						quality,DEFAULT_PITCH|FF_DONTCARE,buffer);
+    
+    if (_handle == NULL) {
+        O2FontLog(@"CreateFontW for name: %@ failed", name);
+    }
 
 	return self;
 }

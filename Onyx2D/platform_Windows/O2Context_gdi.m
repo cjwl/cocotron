@@ -300,22 +300,33 @@ static RECT NSRectToRECT(NSRect rect) {
 
    SetTextColor(_dc,COLORREFFromColor(O2ContextFillColor(self)));
 
-   ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 
    O2Font *font=O2GStateFont(gState);
    
    O2Size  defaultAdvances[count];
    
-   O2ContextGetDefaultAdvances(self,glyphs,defaultAdvances,count);
-   
-   const O2Size *useAdvances;
+   const O2Size *usedAdvances;
     
-   if(advances!=NULL)
-    useAdvances=advances;
-   else
-    useAdvances=defaultAdvances;
-      
-   O2ContextConcatAdvancesToTextMatrix(self,useAdvances,count);
+    if(advances!=NULL) {
+        usedAdvances=advances;
+    }else {
+        O2ContextGetDefaultAdvances(self,glyphs,defaultAdvances,count);
+        usedAdvances=defaultAdvances;
+    }
+
+    // ExtTextOutW wants int advances
+    INT dx[count];
+    float total = point.x;
+    float previousEnd = lroundf(point.x);
+    for (int i = 0; i < count; i++) {
+        float delta = O2SizeApplyAffineTransform(usedAdvances[i],Trm).width + gState->_characterSpacing;
+        total += delta;
+        dx[i] = roundf(total - previousEnd);
+        previousEnd += dx[i];
+    }
+    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,dx);
+
+    O2ContextConcatAdvancesToTextMatrix(self,usedAdvances,count);
 }
 
 

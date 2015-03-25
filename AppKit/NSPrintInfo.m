@@ -44,6 +44,8 @@ NSString * const NSPrintRightMargin=@"NSPrintRightMargin";
 NSString * const NSPrintHorizontallyCentered=@"NSPrintHorizontallyCentered"; 
 NSString * const NSPrintVerticallyCentered=@"NSPrintVerticallyCentered"; 
 
+NSString * const NSPrintHeaderAndFooter=@"NSPrintHeaderAndFooter";
+
 @implementation NSPrintInfo
 
 +(NSPrintInfo *)sharedPrintInfo {

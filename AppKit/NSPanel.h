@@ -42,6 +42,8 @@ enum {
 };
 
 APPKIT_EXPORT int NSRunAlertPanel(NSString *title,NSString *message,NSString *defaultButton,NSString *alternateButton,NSString *otherButton, ...);
+APPKIT_EXPORT int NSRunInformationalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...);
+APPKIT_EXPORT int NSRunCriticalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...);
 APPKIT_EXPORT void NSBeginAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *documentWindow, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *message,...);
 APPKIT_EXPORT void NSBeginCriticalAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *documentWindow, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *message,...);
 APPKIT_EXPORT void NSBeginInformationalAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *documentWindow, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *message,...);

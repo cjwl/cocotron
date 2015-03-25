@@ -233,7 +233,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSRect)rectForItemLabelAtIndex:(unsigned)index {
    int            i,count=[_items count];
-   NSPoint        base=NSMakePoint(0,[self bounds].size.height-22);
+    NSPoint        base=NSMakePoint(0,[self bounds].size.height-22);
    NSSize         size;
 
     base.x+=6;

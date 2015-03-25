@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		498E49E21828005C00716340 /* CFStringEncodingExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 498E49E11828005C00716340 /* CFStringEncodingExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		498E49E31828005C00716340 /* CFStringEncodingExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 498E49E11828005C00716340 /* CFStringEncodingExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		498E49E41828005C00716340 /* CFStringEncodingExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 498E49E11828005C00716340 /* CFStringEncodingExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		498E49E51828005C00716340 /* CFStringEncodingExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 498E49E11828005C00716340 /* CFStringEncodingExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		498E49E61828005C00716340 /* CFStringEncodingExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 498E49E11828005C00716340 /* CFStringEncodingExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		498E49E71828005C00716340 /* CFStringEncodingExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 498E49E11828005C00716340 /* CFStringEncodingExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE1DDE4B17125C98003B3AF8 /* CFBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C60DC962D600598037 /* CFBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE1DDE4C17125C98003B3AF8 /* CFLocale.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE0F9C70DC962D600598037 /* CFLocale.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -308,6 +314,7 @@
 
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		498E49E11828005C00716340 /* CFStringEncodingExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFStringEncodingExt.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1DDE7717125C98003B3AF8 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -418,6 +425,7 @@
 				FEED226B0EFB669D004E378B /* CFSocket.h */,
 				FEED226C0EFB669D004E378B /* CFStream.h */,
 				FEE0F9CB0DC962D600598037 /* CFString.h */,
+				498E49E11828005C00716340 /* CFStringEncodingExt.h */,
 				FEED226D0EFB669D004E378B /* CFStringTokenizer.h */,
 				FEED226E0EFB669D004E378B /* CFTimeZone.h */,
 				FEED226F0EFB669D004E378B /* CFTree.h */,
@@ -546,6 +554,7 @@
 				FEED22940EFB669D004E378B /* CFUUID.h in Headers */,
 				FEED22950EFB669D004E378B /* CFXMLNode.h in Headers */,
 				FEED22960EFB669D004E378B /* CFXMLParser.h in Headers */,
+				498E49E21828005C00716340 /* CFStringEncodingExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +647,7 @@
 				FE5A86BD10C6EE28005E348A /* CFUUID.h in Headers */,
 				FE5A86BE10C6EE28005E348A /* CFXMLNode.h in Headers */,
 				FE5A86BF10C6EE28005E348A /* CFXMLParser.h in Headers */,
+				498E49E71828005C00716340 /* CFStringEncodingExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -684,6 +694,7 @@
 				FEA828D9109B754A00C7A732 /* CFUUID.h in Headers */,
 				FEA828DA109B754A00C7A732 /* CFXMLNode.h in Headers */,
 				FEA828DB109B754A00C7A732 /* CFXMLParser.h in Headers */,
+				498E49E31828005C00716340 /* CFStringEncodingExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +741,7 @@
 				FEA8294B109B75D600C7A732 /* CFUUID.h in Headers */,
 				FEA8294C109B75D600C7A732 /* CFXMLNode.h in Headers */,
 				FEA8294D109B75D600C7A732 /* CFXMLParser.h in Headers */,
+				498E49E41828005C00716340 /* CFStringEncodingExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,6 +788,7 @@
 				FEA82985109B773300C7A732 /* CFUUID.h in Headers */,
 				FEA82986109B773300C7A732 /* CFXMLNode.h in Headers */,
 				FEA82987109B773300C7A732 /* CFXMLParser.h in Headers */,
+				498E49E51828005C00716340 /* CFStringEncodingExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +835,7 @@
 				FEA829C2109B7BFD00C7A732 /* CFUUID.h in Headers */,
 				FEA829C3109B7BFD00C7A732 /* CFXMLNode.h in Headers */,
 				FEA829C4109B7BFD00C7A732 /* CFXMLParser.h in Headers */,
+				498E49E61828005C00716340 /* CFStringEncodingExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,6 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <wctype.h>
 
 @implementation NSScanner_concrete
 
@@ -73,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isAtEnd {
     NSUInteger length = [_string length];
     NSUInteger currentLocation = _location;
-
+    
     for(;currentLocation < length;currentLocation++){
         if([_skipSet characterIsMember:[_string characterAtIndex:currentLocation]] == YES) {
             continue;
@@ -202,36 +204,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // "...returns HUGE_VAL or -HUGE_VAL on overflow, 0.0 on underflow." hmm...
 -(BOOL)scanDouble:(double *)valuep {
-	double value;
-   NSString *seperatorString;
-   unichar   decimalSeperator;
-   if(_locale)
-      seperatorString = [_locale objectForKey:NSLocaleDecimalSeparator];
-   else
-      seperatorString = [[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator];
-   decimalSeperator = ([seperatorString length] > 0 ) ? [seperatorString characterAtIndex:0] : '.';
+    double value;
+    
+    // This algo assumes we can freely convert from unichar to char for chars needed to parse a double
+    // This is problably wrong for some locale
 
-   NSInteger     i;
-   NSInteger     len = [_string length] - _location;
-   char    p[len + 1], *q;
-   unichar c;
-
-   for (i = 0; i < len; i++)
-   {
-      c  = [_string characterAtIndex:i + _location];
-      // Just replace any char from the skip set with space - the double parser will then skip them automatically 
-      if ([_skipSet characterIsMember:c]) c = ' ';
-      if (c == decimalSeperator) c = '.';
-      p[i] = (char)c;
-   }
-   p[i] = '\0';
-
-	value = strtod(p, &q);
+    unichar   decimalSeperator = '.';
+    if(_locale) {
+        NSString *separatorString = [_locale objectForKey:NSLocaleDecimalSeparator];
+        if ([separatorString length] > 0) {
+            decimalSeperator = [separatorString characterAtIndex:0];
+        }
+    }
+    
+    NSInteger     len = [_string length] - _location;
+    char    p[len + 1], *q;
+    
+    NSInteger i = 0;
+    // First skip anything from the skip set and space
+    for (i = 0; i < len; i++) {
+        unichar c  = [_string characterAtIndex:i + _location];
+        if (iswspace(c)) {
+            continue;
+        }
+        if ([_skipSet characterIsMember:c] == NO) {
+            // We've reached something useful
+            break;
+        }
+    }
+    // Copy potentially useful chars, replacing NSScanner decimal separator with a "."
+    NSInteger firstUsedIndex = i;
+    for (; i < len; i++) {
+        unichar c  = [_string characterAtIndex:i + _location];
+        if (c == decimalSeperator) {
+            c = '.';
+        } else {
+            if (!isdigit(c) && c != '+' && c != '-' && c != 'e' && c != 'E') {
+                // Not something that can be part of a "double" anymore
+                // So we can stop here
+                break;                
+            }
+        }
+        p[i] = (char)c;
+    }
+    p[i] = '\0';
+	value = strtod(p+firstUsedIndex, &q);
 	if (NULL != valuep)
 		*valuep = value;
-   _location += (q - p);
-   return (q > p);
-
+    _location += (q - p);
+    return (q > p);
 /*
     enum {
         STATE_SPACE,
@@ -650,7 +671,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		{
 		unichar unicode=[_string characterAtIndex:_location];
 
-		if ([_skipSet characterIsMember:unicode] && (scanStarted == NO))
+		if ((scanStarted == NO) && [_skipSet characterIsMember:unicode])
 			{
 			// do nothing
 			}
@@ -688,7 +709,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     for(;_location<length;_location++) {
         unichar unicode=[_string characterAtIndex:_location];
 
-        if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
+        if (scanStarted == NO && [_skipSet characterIsMember:unicode])
             continue;
         else if ([charset characterIsMember:unicode])
             break;

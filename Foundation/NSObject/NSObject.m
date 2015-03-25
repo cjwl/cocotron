@@ -100,7 +100,7 @@ static IMP objc_msg_forward(id rcv, SEL message) {
 
 	check=[check superclass];
 
-   }while(check != [NSObject class] &&
+   }while(check && check != [NSObject class] &&
 		  check != [NSProxy class]);
    
    return NO;

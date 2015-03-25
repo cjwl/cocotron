@@ -47,6 +47,10 @@ bool CGContextSupportsGlobalAlpha(CGContextRef context) {
 	return O2ContextSupportsGlobalAlpha(context);
 }
 
+bool CGContextIsBitmapContext(CGContextRef context) {
+	return O2ContextIsBitmapContext(context);
+}
+
 bool CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode) {
 	return O2ContextPathContainsPoint(context,point,pathMode);
 }
@@ -105,6 +109,11 @@ void CGContextAddPath(CGContextRef context,CGPathRef path) {
 
 void CGContextReplacePathWithStrokedPath(CGContextRef context) {
    O2ContextReplacePathWithStrokedPath(context);
+}
+
+CGPathRef CGContextCopyPath(CGContextRef context)
+{
+    return O2ContextCopyPath(context);
 }
 
 void CGContextSaveGState(CGContextRef context){
