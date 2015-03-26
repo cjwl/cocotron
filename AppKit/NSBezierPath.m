@@ -826,8 +826,8 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 }
 
 -(void)appendBezierPathWithGlyphs:(NSGlyph *)glyphs count:(unsigned)count inFont:(NSFont *)font {
-	int i = 0;
-	for (i = 0; i < count; ++i) {
+	int i;
+   for (i = 0; i < count; ++i) {
 		[self appendBezierPathWithGlyph:glyphs[i] inFont:font];
 	}
 }
