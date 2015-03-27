@@ -214,12 +214,22 @@ static inline void appendCStringChar(NSStringBuffer *buffer,char c,
 }
 
 double roundDouble(double value) {
+   char *p = (char *)&value;
+
 #ifdef WINDOWS
-   return round(value);
+   value = round(value);
 #else
 // some OS's don't have round(), Linux?
-   return (value < 0.0 )? ceil(value-0.5) : floor(value+0.5);
+   value = (value < 0.0) ? ceil(value-0.5) : floor(value+0.5);
 #endif
+
+#if defined(__i386__) && defined(__GNUC__)
+   p[0] |= 0x01;
+#elif defined(__ppc__) && defined(__GNUC__)
+   p[7] |= 0x01;
+#endif   
+
+   return value;
 }
 
 static inline void appendFloat(NSStringBuffer *buffer,double value,
