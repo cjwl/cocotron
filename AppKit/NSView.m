@@ -1152,7 +1152,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)registerForDraggedTypes:(NSArray *)types {
-   _draggedTypes=[types copy];
+   types=[types copy];
+   [_draggedTypes release];
+   _draggedTypes=types;
 }
 
 -(void)unregisterDraggedTypes {
