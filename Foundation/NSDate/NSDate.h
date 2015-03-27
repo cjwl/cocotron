@@ -61,3 +61,7 @@ FOUNDATION_EXPORT const NSTimeInterval NSTimeIntervalSince1970;
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSCalendarDate.h>
 
+@interface NSDate(NSCalendarDateExtras)
++ (id)dateWithNaturalLanguageString:(NSString *)string;
+@end
+

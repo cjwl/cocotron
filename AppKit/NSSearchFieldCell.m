@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSTextField.h>
 #import <AppKit/NSControl.h>
 #import <AppKit/NSTextField.h>
 #import <AppKit/NSRaise.h>
@@ -156,7 +157,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)frame ofView:(NSView *)view untilMouseUp:(BOOL)untilMouseUp {
    if([_cancelButtonCell trackMouse:event inRect:[self cancelButtonRectForBounds:frame] ofView:view untilMouseUp:YES]){
     [(NSControl *)view setStringValue:@""];
-    [(NSTextField *)view selectText:nil];
+
+    if ([view respondsToSelector:@selector(selectText:)])
+      [(NSTextField *)view selectText:nil];
     return YES;
    }
 

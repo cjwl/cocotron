@@ -7,7 +7,9 @@
 #import <Onyx2D/O2Surface.h>
 
 @interface CALayer(private)
+-(void)_setContext:(CALayerContext *)context;
 -(NSNumber *)_textureId;
+-(void)_setTextureId:(NSNumber *)value;
 @end
 
 @implementation CARenderer
