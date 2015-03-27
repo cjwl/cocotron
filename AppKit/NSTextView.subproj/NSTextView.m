@@ -2656,8 +2656,7 @@ NSString * const NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 #endif
     if (_rangeForUserCompletion.location != NSNotFound) {
         [self endUserCompletion];
-    }
-    
+    }    
 	// object can be either a string or an attributed string
 	// Both will be inserted using the current typing attributes
 	NSString *replacementString = object;
