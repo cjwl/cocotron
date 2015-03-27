@@ -94,6 +94,11 @@ static void flipRowsAndSwapColors(long width, long height, long bytesPerRow, con
      format.cfFormat=RegisterClipboardFormat("Rich Text Format");
      [result addObject:[Win32FORMATETC formatEtcWithFORMATETC:format]];
     }
+    else if([type isEqualToString:NSPDFPboardType])
+    {
+     format.cfFormat=RegisterClipboardFormat("Portable Document Format");
+     [result addObject:[Win32FORMATETC formatEtcWithFORMATETC:format]];
+    }
     else if([type isEqualToString:NSFilenamesPboardType]){
 		format.cfFormat=CF_HDROP;
 		[result addObject:[Win32FORMATETC formatEtcWithFORMATETC:format]];
