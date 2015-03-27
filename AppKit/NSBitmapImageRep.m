@@ -211,13 +211,9 @@ NSString* NSImageCompressionFactor = @"NSImageCompressionFactor";
    if(graphicsPort==NULL){
     [self dealloc];
     return nil;
-}
+   }
 
-   CGImageRef image=CGBitmapContextCreateImage(graphicsPort);
-   
-   self=[self initWithCGImage:image];
-   
-   CGImageRelease(image);
+   [self initWithData:(NSData *)CGContextCaptureBitmap(graphicsPort,rect)];
    
    return self;
 }

@@ -319,6 +319,11 @@ O2ColorRef O2ContextFillColor(O2ContextRef self) {
    O2InvalidAbstractInvocation();
 }
 
+-(NSData *)captureBitmapInRect:(NSRect)rect {
+   O2InvalidAbstractInvocation();
+   return nil;
+}
+
 /*
   Notes: OSX generates a clip mask at fill time using the current aliasing setting. Once the fill is complete the clip mask persists with the next clip/fill. This means you can turn off AA, create a clip path, fill, turn on AA, create another clip path, fill, and edges from the first path will be aliased, and ones from the second will not. PDF does not dictate aliasing behavior, so while this is not really expected behavior, it is not a bug. 
     
@@ -1460,6 +1465,10 @@ void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState) {
 bool O2ContextSupportsGlobalAlpha(O2ContextRef self)
 {
 	return [self supportsGlobalAlpha];
+}
+
+NSData *O2ContextCaptureBitmap(O2ContextRef self,O2Rect rect) {
+   return [self captureBitmapInRect:rect];
 }
 
 bool O2ContextIsBitmapContext(O2ContextRef self)
