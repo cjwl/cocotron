@@ -2,6 +2,7 @@
 #import <AppKit/NSGraphicsContext.h>
 #import <Onyx2D/O2Context.h>
 #import <Onyx2D/O2Surface.h>
+#import <AppKit/NSTableHeaderView.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
@@ -882,8 +883,9 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 @implementation NSGraphicsStyle_uxtheme (NSTextField)
 
 -(void)drawTextFieldBorderInRect:(NSRect)rect bezeledNotLine:(BOOL)bezeledNotLine {
-   if(![self drawPartId:EP_EDITTEXT stateId:ETS_NORMAL uxthClassId:uxthEDIT inRect:rect])
-    [super drawTextFieldBorderInRect:rect bezeledNotLine:bezeledNotLine];
+   if (![_view isKindOfClass:[NSTableHeaderView class]])
+    if(![self drawPartId:EP_EDITTEXT stateId:ETS_NORMAL uxthClassId:uxthEDIT inRect:rect])
+     [super drawTextFieldBorderInRect:rect bezeledNotLine:bezeledNotLine];
 }
 
 -(void)drawBoxWithBezelInRect:(NSRect)rect clipRect:(NSRect)clipRect {
