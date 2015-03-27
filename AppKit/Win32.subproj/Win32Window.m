@@ -1326,13 +1326,14 @@ static int reportGLErrorIfNeeded(const char *function,int line){
 }
 
 -(int)WM_CLOSE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
-
 #if WM_MSG_DEBUGGING
 	NSLog(@"WM_CLOSE_wParam: %d, lParam: %ld", wParam, lParam);
 #endif
 	
-    if(_styleMask&NSClosableWindowMask)
-        [_delegate platformWindowWillClose:self];
+    if(_styleMask&NSClosableWindowMask) {
+      [_delegate platformWindowWillClose:self];
+    }
+
    return 0;
 }
 
