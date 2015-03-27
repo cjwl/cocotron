@@ -39,13 +39,13 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 	drawerFrame = [NSWindow frameRectForContentRect:NSMakeRect(0, 0, contentSize.width, contentSize.height) styleMask:NSDrawerWindowMask];
     
     if (edge == NSMinXEdge || edge == NSMaxXEdge) {
-		drawerFrame.origin.x = parentFrame.origin.x;
-        drawerFrame.origin.y = parentContentRect.origin.y + trailingOffset;
+        drawerFrame.origin.x = parentFrame.origin.x - 12.0;
+        drawerFrame.origin.y = parentContentRect.origin.y + trailingOffset - 12.0;
         drawerFrame.size.height = parentContentRect.size.height - (leadingOffset + trailingOffset);
     }
     else {
-        drawerFrame.origin.x = parentContentRect.origin.x + leadingOffset;
-		drawerFrame.origin.y = parentContentRect.origin.y;
+        drawerFrame.origin.x = parentContentRect.origin.x + leadingOffset - 12.0;
+        drawerFrame.origin.y = parentContentRect.origin.y - 12.0;
         drawerFrame.size.width = parentContentRect.size.width - (leadingOffset + trailingOffset);
     }
     
@@ -164,12 +164,20 @@ NSString * const NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
          _delegate = nil;
 
       if([keyed containsValueForKey:@"NSMinContentSize"])
+      {
          [self setMinContentSize:[keyed decodeSizeForKey:@"NSMinContentSize"]];
+         _minContentSize.width += 12.0;
+         _minContentSize.height += 12.0;
+      }
       else
          _minContentSize = NSZeroSize;
 
       if([keyed containsValueForKey:@"NSMaxContentSize"])
+      {
          [self setMaxContentSize:[keyed decodeSizeForKey:@"NSMaxContentSize"]];
+         _maxContentSize.width += 12.0;
+         _maxContentSize.height += 12.0;
+      }
       else
          _maxContentSize = NSZeroSize;
    }
