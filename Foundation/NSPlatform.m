@@ -42,6 +42,11 @@ extern NSString *NSPlatformClassName;
    return Nil;
 }
 
+-(Class)socketPortClass {
+    NSInvalidAbstractInvocation();
+    return Nil;
+}
+
 -(Class)pipeClass {
    NSInvalidAbstractInvocation();
    return Nil;

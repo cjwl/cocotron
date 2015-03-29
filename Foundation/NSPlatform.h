@@ -25,6 +25,7 @@ FOUNDATION_EXPORT NSString * const NSPlatformResourceNameSuffix;
 
 -(Class)taskClass;
 -(Class)socketClass;
+-(Class)socketPortClass;
 -(Class)pipeClass;
 -(Class)lockClass;
 -(Class)recursiveLockClass;
