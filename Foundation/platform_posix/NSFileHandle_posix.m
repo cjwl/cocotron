@@ -20,6 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_posix.h>
 #import <Foundation/NSRaiseException.h>
 #import "NSSocket_bsd.h"
+#import <Foundation/NSThread.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 #include <unistd.h>
 #import <sys/socket.h>
@@ -30,6 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
+#import <netinet/in.h>
 
 @implementation NSFileHandle(ImplementedInSubclass)
 
@@ -349,6 +352,26 @@ CONFORMING TO
 
    for(i = 0; i < count; ++i)
     [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:[modes objectAtIndex:i]];
+}
+
+-(void)_acceptConnectionInBackgroundAndNotifyForModes:(NSArray *)modes {
+    NSAutoreleasePool* pool=[NSAutoreleasePool new];
+    
+    struct sockaddr_in addr;
+    socklen_t len = sizeof(addr);
+    getsockname(_fileDescriptor, (struct sockaddr *)&addr, &len);
+    
+    listen(_fileDescriptor, 1);
+    accept(_fileDescriptor, (struct sockaddr *)&addr, &len);
+    
+    NSNotification *note=[NSNotification notificationWithName:NSFileHandleConnectionAcceptedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:note];
+    
+    [pool drain];
+}
+
+-(void)acceptConnectionInBackgroundAndNotifyForModes:(NSArray *)modes {
+    [NSThread detachNewThreadSelector:@selector(_acceptConnectionInBackgroundAndNotifyForModes:) toTarget:self withObject:modes];
 }
 
 -(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
