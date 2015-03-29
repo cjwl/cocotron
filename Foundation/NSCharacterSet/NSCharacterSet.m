@@ -153,7 +153,7 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
     if ( !(set = NSMapGet(nameToSet,setName)) || self != [NSCharacterSet class]) {
     // Doc.s do not mention 0xA0 but it is implemented as a member
         unichar chars[] = { 0x20, 0x09,  0x0A, 0x0B, 0x0C, 0x0D,  0x85, 0xA0, 0x2028, 0x2029 };
-        set = [NSCharacte self rSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
+        set = [self characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
                                                                   sizeof(chars)/sizeof(unichar)]];
         if (self == [NSCharacterSet class]) NSMapInsert(nameToSet,setName,set);
     }
