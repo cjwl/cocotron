@@ -33,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _dateFormat = [format copy];
     _allowsNaturalLanguage = flag;
     _locale = [locale retain];
+    _tz = [[NSTimeZone defaultTimeZone] retain];
 
     return self;
 }
@@ -45,6 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_dateFormat10_0 release];
     [_dateFormat release];
     [_locale release];
+    [_tz release];
 
     [super dealloc];
 }
@@ -61,6 +63,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _timeStyle=[[attributes objectForKey:@"timeStyle"] intValue];
     _dateFormat=[[coder decodeObjectForKey:@"NS.format"] retain];
     _allowsNaturalLanguage=[coder decodeBoolForKey:@"NS.natural"];
+    _tz = [[coder decodeObjectForKey:@"timeZone"] retain];
+
    }
 
    return self;
@@ -92,21 +96,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _dateFormat = format;
 }
 
-NSTimeZone *getTimeZoneFromDate(NSDate *date) {
-	NSTimeZone *tz;
-	if ([date respondsToSelector:@selector(timeZone)]) {
-		tz = [date performSelector:@selector(timeZone)];
-	}
-	else {
-		tz = [[NSCalendar currentCalendar] timeZone];
-	}
-	return tz;
+-(void)setTimeZone:(NSTimeZone*)tz {
+    NSParameterAssert(tz);
+    [_tz autorelease];
+    _tz = [tz retain];
+}
+
+-(NSTimeZone*)timeZone {
+    return _tz;
 }
 
 - (NSString *)stringFromDate:(NSDate *)date {
-	NSTimeZone *tz = getTimeZoneFromDate(date);
-	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self
-dateFormat], nil, tz);
+	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self dateFormat], nil, _tz);
+}
+
+- (NSDate*)dateFromString:(NSString*)string {
+    return NSDateWithStringDateFormatLocale(string, [self dateFormat], nil, _tz);
 }
 
 - (NSArray *)shortStandaloneWeekdaySymbols {
@@ -129,8 +134,8 @@ NSWeekDayNameArray];
 -(NSString *)stringForObjectValue:(id)object {
 
    if([object isKindOfClass:[NSDate class]])
-    return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [NSTimeZone defaultTimeZone]);
-   if([object isKindOfClass:[NSCalendarDate class]])
+    return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, _tz);
+   if([object isKindOfClass:[NSCalendarDate class]]) 
     return NSStringWithDateFormatLocale([object timeIntervalSinceReferenceDate], _dateFormat10_0, _locale, [object timeZone]);
 
    return nil;
@@ -146,7 +151,7 @@ NSWeekDayNameArray];
 }
 
 -(BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error {
-    *object = NSCalendarDateWithStringDateFormatLocale(string, _dateFormat10_0, _locale);
+    *object = NSDateWithStringDateFormatLocale(string, _dateFormat10_0, _locale, _tz);
     if (*object == nil) {
 // FIX localization
        if(error!=NULL)
@@ -604,18 +609,18 @@ NSInteger NSReadIntegerInString(NSString *aString, NSCharacterSet *characterSet,
 // might as well use the same code since they're the exact same formatting specifiers
 // ok. we need at minimum the year. everything else is optional.
 // weekday information is useless.
-NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale)
-{
-    NSUInteger pos, fmtLength = [format length];
-    unichar fmtBuffer[fmtLength], unicode;
-    NSInteger years = NSNotFound, months = NSNotFound, days = NSNotFound, hours = NSNotFound, minutes = NSNotFound, seconds = NSNotFound, milliseconds = NSNotFound;
-    NSInteger AMPMMultiplier = 0;
-    NSTimeInterval adjustment = 0;
-    NSArray *monthNames, *shortMonthNames, *AMPMDesignations;
-    NSTimeZone *timeZone = nil;
-    NSTimeInterval timeInterval;
-    NSCalendarDate *calendarDate;
-    NSUInteger currentPostion = 0;
+NSDate *NSDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale, NSTimeZone *timeZone) {
+    NSScanner       *scanner = [NSScanner scannerWithString:string];
+    NSUInteger         pos,fmtLength=[format length];
+    unichar          fmtBuffer[fmtLength],unicode;
+    NSInteger		     years = NSNotFound, months = NSNotFound, days = NSNotFound, hours = NSNotFound, minutes = NSNotFound, seconds = NSNotFound, milliseconds = NSNotFound;
+    NSInteger		     AMPMMultiplier = 0;
+    NSTimeInterval   adjustment = 0;
+    NSArray	    *monthNames, *shortMonthNames, *AMPMDesignations;
+    NSTimeInterval   timeInterval;
+    NSDate  *date;
+    
+    [scanner setCharactersToBeSkipped:nil];
 
     enum {
         STATE_SCANNING,
@@ -734,7 +739,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                     }
 
                     case 'c':
-                        return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeDateFormatString], locale);
+                        return NSDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeDateFormatString], locale, timeZone);
 
                     case 'd':
                         days = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
@@ -795,10 +800,10 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                     }
 
                     case 'x':
-                        return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSDateFormatString], locale);
+                        return NSDateWithStringDateFormatLocale(string,[locale objectForKey:NSDateFormatString],locale, timeZone);
 
                     case 'X':
-                        return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeFormatString], locale);
+                        return NSDateWithStringDateFormatLocale(string,[locale objectForKey:NSTimeFormatString],locale, timeZone);
 
                     case 'y':
                         years = NSReadIntegerInString(string, [NSCharacterSet decimalDigitCharacterSet], currentPostion, 2, &currentPostion);
@@ -877,8 +882,6 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
 
     timeInterval = timeInterval - [timeZone secondsFromGMTForDate:[NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval]];
 
-    calendarDate = [[[NSCalendarDate allocWithZone:NULL] initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
-    [calendarDate setTimeZone:timeZone];
-
-    return calendarDate;
+    date = [[[NSDate allocWithZone:NULL] initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
+    return date;
 }
