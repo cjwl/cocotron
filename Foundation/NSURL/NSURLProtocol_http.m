@@ -96,6 +96,31 @@ enum {
 	}
 }
 
+- (NSString *)normalizedHeaderWithName:(NSString *)theName
+{
+    // Normalize headers like Cocoa does: Make the first
+    // character and any character after '-' uppercase
+    // and the rest, lowercase.
+    if ([theName length]) {
+        char *name = strdup([theName UTF8String]);
+        int length = strlen(name);
+        int ii;
+        name[0] &= ~(1 << 5);
+        char c = name[0];
+        for(ii = 1; ii < length; c = name[ii++]) {
+            if (c == '-') {
+                name[ii] &= ~(1 << 5);
+            } else {
+                name[ii] |= 1 << 5;
+            }
+        }
+        return [[[NSString alloc] initWithBytesNoCopy:name length:length
+                                            encoding:NSUTF8StringEncoding
+                                        freeWhenDone:YES] autorelease];
+    }
+    return theName;
+}
+
 -(void)_headerKey {
    [_currentKey autorelease];
    _currentKey=[[NSString alloc] initWithCString:(char*)_bytes+_range.location length:_range.length];
@@ -104,30 +129,31 @@ enum {
 -(void)_headerValue {
    NSString *value=[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1];
    NSString *oldValue;
-
-   if((oldValue=[_headers objectForKey:[_currentKey lowercaseString]])!=nil)
+   NSString *normalized = [self normalizedHeaderWithName:_currentKey];
+   if((oldValue=[_headers objectForKey:normalized])!=nil)
     value=[[oldValue stringByAppendingString:@" "] stringByAppendingString:value];
 
    [_rawHeaders setObject:value forKey:_currentKey];
-   [_headers setObject:value forKey:[_currentKey lowercaseString]];
+   [_headers setObject:value forKey:normalized];
 }
 
 -(void)_continuation {
    NSString *value=[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1];
-   NSString *oldValue=[_headers objectForKey:[_currentKey lowercaseString]];
+   NSString *normalized = [self normalizedHeaderWithName:_currentKey];
+   NSString *oldValue=[_headers objectForKey:normalized];
 
    value=[[oldValue stringByAppendingString:@" "] stringByAppendingString:value];
 
    [_rawHeaders setObject:value forKey:_currentKey];
-   [_headers setObject:value forKey:[_currentKey lowercaseString]];
+   [_headers setObject:value forKey:normalized];
 }
 
 -(BOOL)contentIsChunked {
-   return [[_headers objectForKey:@"transfer-encoding"] isEqual:@"chunked"];
+   return [[_headers objectForKey:@"Transfer-Encoding"] isEqual:@"chunked"];
 }
 	
 -(NSInteger)contentLength {
-   return [[_headers objectForKey:@"content-length"] integerValue];
+   return [[_headers objectForKey:@"Content-Length"] integerValue];
 }
 
 -(void)didFinishLoading {
