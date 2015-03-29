@@ -10,7 +10,7 @@ downloadFolder=$productFolder/Downloads
 
 PREFIX=/Developer/Cocotron/1.0/Windows/i386/
 
-$scriptResources/downloadFilesIfNeeded.sh $downloadFolder "ftp://ftp.zlatkovic.com/libxml/libxml2-2.7.7.win32.zip ftp://ftp.zlatkovic.com/libxml/iconv-1.9.2.win32.zip"
+$scriptResources/downloadFilesIfNeeded.sh $downloadFolder "https://cocotron.googlecode.com/files/libxml2-2.7.7.win32.zip ftp://ftp.zlatkovic.com/libxml/iconv-1.9.2.win32.zip"
 
 mkdir -p $PREFIX
 cd $PREFIX
