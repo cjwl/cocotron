@@ -92,6 +92,17 @@ static inline NSUInteger lengthInUnicode(NSConstantString *self){
    return lengthInUnicode(self);
 }
 
+-(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
+    switch (encoding) {
+        case NSUTF8StringEncoding:
+        case NSASCIIStringEncoding:
+            return lengthOfBytes(self);
+        default:
+            NSUnimplementedMethod();
+            return 0;
+    }
+}
+
 -(unichar)characterAtIndex:(NSUInteger)location {
    NSUInteger length=lengthInUnicode(self);
 
