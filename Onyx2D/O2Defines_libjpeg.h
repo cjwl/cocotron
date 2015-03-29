@@ -1,1 +1,1 @@
-#define LIBJPEG_PRESENT 1
+//#define LIBJPEG_PRESENT 1
