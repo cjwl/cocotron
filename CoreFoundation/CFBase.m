@@ -246,5 +246,3 @@ long random(void) {
 }
 
 #endif
-
-
