@@ -32,6 +32,7 @@
 -(void)dealloc {
    pthread_mutex_destroy(&_mutex);
    pthread_cond_destroy(&_cond);
+   [_name release]; _name = nil;
    [super dealloc];
 }
 
@@ -187,6 +188,14 @@
 
     _lockingThread=NSCurrentThread();
     return YES;
+}
+
+- (NSString *)name {
+    return _name; }
+
+- (void)setName:(NSString *)name {
+    [_name release];
+    _name = [name copy];
 }
 
 @end
