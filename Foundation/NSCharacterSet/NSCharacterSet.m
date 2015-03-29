@@ -138,11 +138,11 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
 +newlineCharacterSet {
     static NSString *setName = @"newlineCharacterSet";
     id set;
-    if ( !(set = NSMapGet(nameToSet,setName))) {
+    if ( !(set = NSMapGet(nameToSet,setName)) || self != [NSCharacterSet class]) {
         unichar chars[] = { 0x0A, 0x0B, 0x0C, 0x0D,  0x85, 0x2028, 0x2029 };
-        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
+        set = [self characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
                                                                   sizeof(chars)/sizeof(unichar)]];
-        NSMapInsert(nameToSet,setName,set);
+        if (self == [NSCharacterSet class]) NSMapInsert(nameToSet,setName,set);
     }
     return set;   
 }
@@ -150,12 +150,12 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
 +whitespaceAndNewlineCharacterSet {
     static NSString *setName = @"whitespaceAndNewlineCharacterSet";
     id set;
-    if ( !(set = NSMapGet(nameToSet,setName))) {
+    if ( !(set = NSMapGet(nameToSet,setName)) || self != [NSCharacterSet class]) {
     // Doc.s do not mention 0xA0 but it is implemented as a member
         unichar chars[] = { 0x20, 0x09,  0x0A, 0x0B, 0x0C, 0x0D,  0x85, 0xA0, 0x2028, 0x2029 };
-        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
+        set = [NSCharacte self rSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:
                                                                   sizeof(chars)/sizeof(unichar)]];
-        NSMapInsert(nameToSet,setName,set);
+        if (self == [NSCharacterSet class]) NSMapInsert(nameToSet,setName,set);
     }
     return set;
 }
@@ -163,11 +163,11 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
 +whitespaceCharacterSet {
     static NSString *setName = @"whitespaceCharacterSet";
     id set;
-    if ( !(set = NSMapGet(nameToSet,setName))) {
+    if ( !(set = NSMapGet(nameToSet,setName)) || self != [NSCharacterSet class]) {
     // Doc.s do not mention 0xA0 but it is implemented as a member
         unichar chars[3] = { 0x20, 0x09, 0xA0 };
-        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:3]];
-        NSMapInsert(nameToSet,setName,set);
+        set = [self characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:3]];
+        if (self == [NSCharacterSet class]) NSMapInsert(nameToSet,setName,set);
     }
     return set;
 }
