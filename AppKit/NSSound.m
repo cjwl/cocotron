@@ -54,9 +54,13 @@ static NSMutableDictionary* sSounds = nil;
 	}
 	return sound;
 }
+-(id)initWithContentsOfURL:(NSURL *)url byReference:(BOOL)byReference {
+    self = [super init];
+    return self;
+}
 
--initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
-
+- (id)initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
+    self = [super init];
    return self;
 }
 
