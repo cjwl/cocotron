@@ -855,6 +855,12 @@ static NSMapTable *pathToObject=NULL;
    return result;
 }
 
+- (NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)extension {
+	NSString *path = [self pathForResource:name ofType:extension inDirectory:nil];
+    
+	return [NSURL fileURLWithPath:path];
+}
+
 -(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
    NSUnimplementedMethod();
    return 0;
