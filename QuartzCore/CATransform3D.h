@@ -8,5 +8,5 @@ typedef struct {
    CGFloat m41,m42,m43,m44;
 } CATransform3D;
 
-const CATransform3D CATransform3DIdentity;
+CA_EXPORT const CATransform3D CATransform3DIdentity;
 
