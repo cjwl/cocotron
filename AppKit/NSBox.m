@@ -407,4 +407,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_customData setObject:value forKey:@"NSFillColor2"];
 }
 
+-(void)updateCell:(NSCell *)cell
+{
+}
+
 @end
