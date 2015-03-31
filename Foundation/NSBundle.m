@@ -759,8 +759,10 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)ext
 {
-    NSString *path = [self pathForResource: name ofType: ext];
-    return [NSURL fileURLWithPath: path];
+    NSString *path = [self pathForResource: name ofType: ext inDirectory:nil];
+    
+    // attention: fileURLWithPath returns a non-nil object for nil input, we don't want that
+    return path ? [NSURL fileURLWithPath:path] : nil;
 }
 
 -(NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)ext subdirectory:(NSString *)subpath
@@ -853,13 +855,6 @@ static NSMapTable *pathToObject=NULL;
 	}
 
    return result;
-}
-
-- (NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)extension {
-	NSString *path = [self pathForResource:name ofType:extension inDirectory:nil];
-    
-	// attention: fileURLWithPath returns a non-nil object for nil input, we don't want that
-	return path ? [NSURL fileURLWithPath:path] : nil;
 }
 
 -(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
