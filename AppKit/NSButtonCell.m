@@ -1019,13 +1019,15 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
     case NSImageBelow:
      imageOrigin.y=frame.origin.y;
      titleRect.origin.y+=imageSize.height;
+     imageOrigin.y = MAX(frame.origin.y, imageOrigin.y);
+     titleRect.origin.y = MIN(frame.origin.y + frame.size.height - titleRect.size.height, titleRect.origin.y);
      break;
 
     case NSImageAbove:
      imageOrigin.y=frame.origin.y+(frame.size.height-imageSize.height);
      titleRect.origin.y-=imageSize.height;
-     if(titleRect.origin.y<frame.origin.y)
-      titleRect.origin.y=frame.origin.y;
+     imageOrigin.y = MIN(frame.origin.y + frame.size.height - imageSize.height, imageOrigin.y);
+     titleRect.origin.y = MAX(frame.origin.y, titleRect.origin.y);
      break;
 
     case NSImageOverlaps:
