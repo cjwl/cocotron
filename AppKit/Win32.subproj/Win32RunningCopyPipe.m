@@ -23,37 +23,42 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
    _readOverlap.hEvent=_event;
 
    if(_state==STATE_CONNECTING){
-    if(!ConnectNamedPipe(_pipe,&_readOverlap)){
-     if(GetLastError()!=ERROR_IO_PENDING)
-      NSLog(@"ConnectNamedPipe failed");
-     }
-   }
-   else {
-    if(!ReadFile(_pipe,_readBuffer,65536,&_readCount,&_readOverlap)){
-     if(GetLastError()!=ERROR_IO_PENDING)
-      NSLog(@"ReadFile failed");
-    }
+      if(!ConnectNamedPipe(_pipe, &_readOverlap)){
+         if(GetLastError()!=ERROR_IO_PENDING) {
+            NSLog(@"ConnectNamedPipe failed");
+         }
+      }
+   } else {
+      if(!ReadFile(_pipe,_readBuffer, sizeof(_readBuffer), &_readCount ,&_readOverlap)){
+         if(GetLastError()!=ERROR_IO_PENDING) {
+            NSLog(@"ReadFile failed");
+         }
+      }
    }
 }
 
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
-   if(!GetOverlappedResult(_pipe,&_readOverlap,&_readCount,TRUE))
-    NSLog(@"GetOverlappedResult failed %d", GetLastError());
+   if(!GetOverlappedResult(_pipe,&_readOverlap,&_readCount,TRUE)) {
+      NSLog(@"GetOverlappedResult failed %d", GetLastError());
+   }
 
-   if(_state==STATE_CONNECTING)
-    _state=STATE_READING;
-   else {
-    NSString *path=[NSString stringWithCharacters:_readBuffer length:_readCount/2];
+   if(_state==STATE_CONNECTING) {
+      _state=STATE_READING;
 
-    if(!DisconnectNamedPipe(_pipe))
-     NSLog(@"DisconnectNamedPipe failed");
-    _state=STATE_CONNECTING;
-	   
-	   if([path isEqual:@"@reopen"]) [NSApp _reopen];
-		else
-    if([[NSApp delegate] respondsToSelector:@selector(application:openFile:)]){
-     [[NSApp delegate] application:NSApp openFile:path];
-    }
+   } else {
+      NSData *data = [NSData dataWithBytesNoCopy:_readBuffer length:_readCount freeWhenDone:NO];
+      NSArray *nsOpen = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+      if(!DisconnectNamedPipe(_pipe)) {
+         NSLog(@"DisconnectNamedPipe failed");
+      }
+      _state=STATE_CONNECTING;
+	   if([nsOpen count] == 1 && [[nsOpen lastObject] isEqual:@"@reopen"]) {
+         [NSApp _reopen];
+      } else {
+         [[NSUserDefaults standardUserDefaults] setObject:nsOpen forKey:@"NSOpen"];
+         [NSApp performSelector:@selector(openFiles)];
+      }
    }
 
    [self startReading];
@@ -106,40 +111,38 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
 }
 
 +(void)_startRunningCopyPipe {
-   if(![self createRunningCopyPipe]){
-    NSString *path;
+   if(![self createRunningCopyPipe]) {
+      NSArray *paths;
 
-    if([[NSUserDefaults standardUserDefaults] stringForKey:@"NSUseRunningCopy"]!=nil){
-     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"NSUseRunningCopy"])
-      return;
-    }
+      if([[NSUserDefaults standardUserDefaults] stringForKey:@"NSUseRunningCopy"]!=nil &&
+         ![[NSUserDefaults standardUserDefaults] boolForKey:@"NSUseRunningCopy"]) {
 
-    path=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSOpen"];
-	   
-	if([path length]==0) path=@"@reopen";
-	   
-	  
-
-    //if([path length]>0)
-	{
-     HANDLE pipe=CreateFile([[self pipeName] cString],GENERIC_WRITE,FILE_SHARE_WRITE,NULL,OPEN_EXISTING,0,NULL);
-
-     if(pipe==INVALID_HANDLE_VALUE)
-      return;
-     else {
-      unsigned  length=[path length];
-      unichar   buffer[length];
-      DWORD     wrote;
-
-      [path getCharacters:buffer];
-
-      if(!WriteFile(pipe,buffer,length*2,&wrote,NULL)){
-       NSLog(@"WriteFile failed");
-       return;
+         return;
       }
-     }
-    }
-    exit(0);
+
+      id nsOpen = [[NSUserDefaults standardUserDefaults] objectForKey:@"NSOpen"];
+
+      if ([nsOpen isKindOfClass:[NSString class]] && [nsOpen length]) {
+         paths = [NSArray arrayWithObject:nsOpen];
+      } else if ([nsOpen isKindOfClass:[NSArray class]] && [nsOpen count]) {
+         paths = nsOpen;
+      } else {
+         paths = [NSArray arrayWithObject:@"@reopen"];
+      }
+
+      HANDLE pipe=CreateFile([[self pipeName] cString],GENERIC_WRITE,FILE_SHARE_WRITE,NULL,OPEN_EXISTING,0,NULL);
+
+      if(pipe==INVALID_HANDLE_VALUE) {
+         return;
+      }
+
+      NSData *data = [NSKeyedArchiver archivedDataWithRootObject:paths];
+      DWORD written = 0;
+
+      if(!WriteFile(pipe, [data bytes], [data length], &written,NULL) || written != [data length]) {
+         NSLog(@"WriteFile failed");
+      }
+      exit(0);
    }
 }
 

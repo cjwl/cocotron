@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    } _state;
    OVERLAPPED          _readOverlap;
    DWORD               _readCount;
-   unichar             _readBuffer[65536];
+   char                _readBuffer[65536];
 }
 
 +(void)invalidateRunningCopyPipe;
