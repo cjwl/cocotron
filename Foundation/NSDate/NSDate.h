@@ -26,6 +26,7 @@ FOUNDATION_EXPORT const NSTimeInterval NSTimeIntervalSince1970;
 -initWithString:(NSString *)string;
 -initWithTimeIntervalSinceReferenceDate:(NSTimeInterval)seconds;
 -initWithTimeIntervalSinceNow:(NSTimeInterval)seconds;
+-initWithTimeIntervalSince1970:(NSTimeInterval)seconds;
 -initWithTimeInterval:(NSTimeInterval)seconds sinceDate:(NSDate *)date;
 
 +date;

@@ -16,5 +16,5 @@ GCC_VERSION = com.apple.compilers.llvm.clang.1_0
 WINDOWS_i386_COMPILER_CFLAGS = -ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc -DWINDOWS=1 -D__WIN32__=1 -fno-builtin
 WINDOWS_i386_COMPILER_LDFLAGS = -ccc-host-triple i386-pc-mingw32msvc -ccc-gcc-name i386-mingw32msvc-gcc
 
-WINDOWS_i386_COMPILER_ISYSTEM = -isystem /Developer/Cocotron/1.0/Windows/i386/sysroot/mingw/include/
-WINDOWS_i386_COMPILER_SYSLIB = /Developer/Cocotron/1.0/Windows/i386/sysroot/mingw/lib/
+WINDOWS_i386_COMPILER_ISYSTEM = -isystem /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/include/
+WINDOWS_i386_COMPILER_SYSLIB = /Developer/Cocotron/1.0/Windows/i386/gcc-4.3.1/i386-mingw32msvc/lib
