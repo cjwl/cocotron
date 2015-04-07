@@ -1640,23 +1640,13 @@ const int kWindowMaxDim = 10000;
     case WM_ENTERSIZEMOVE:		return [self WM_ENTERSIZEMOVE_wParam:wParam lParam:lParam];
     case WM_EXITSIZEMOVE:		return [self WM_EXITSIZEMOVE_wParam:wParam lParam:lParam];
     case WM_SYSCOMMAND:    return [self WM_SYSCOMMAND_wParam:wParam lParam:lParam];
-<<<<<<< HEAD
 	case WM_SYSCOLORCHANGE:		return [self WM_SYSCOLORCHANGE_wParam: wParam lParam: lParam];
 	case WM_ERASEBKGND:			return [self WM_ERASEBKGND_wParam: wParam lParam: lParam];
-=======
-    case WM_SYSCOLORCHANGE:
-     [[Win32Display currentDisplay] invalidateSystemColors];
-     [_delegate platformWindowStyleChanged:self];
-     return 0;
-    
-    // This can avoid OpenGL flickering
-    case WM_ERASEBKGND: return 1;
            
    case WM_COMMAND:
            [[NSNotificationCenter defaultCenter] postNotificationName:@"WIN32_WM_COMMAND" object:[NSValue valueWithPoint:CGPointMake(lParam, wParam)]];
            return 1;
        break;
->>>>>>> d5a4eff
 
 #if 0
 // doesn't seem to work
