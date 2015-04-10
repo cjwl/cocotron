@@ -117,7 +117,7 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
 
 -(NSRect)_scaledAndAlignedImageFrame:(NSRect)frame {
     NSSize imageSize=scaledImageSizeInFrameSize([[self _imageValue] size],frame.size,_imageScaling);
-        
+            
     switch (_imageAlignment) {
         default:
         case NSImageAlignCenter:
@@ -164,29 +164,29 @@ static NSSize scaledImageSizeInFrameSize(NSSize imageSize,NSSize frameSize,NSIma
    return frame;
 }
 
--(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
+-(void)drawInteriorWithFrame:(NSRect)controlFrame inView:(NSView *)control {
     if([self _imageValue]!=nil) {
 		
 		CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
 		CGContextSaveGState(ctx);
-		CGContextClipToRect(ctx,frame);
+		CGContextClipToRect(ctx,controlFrame);
         
-        frame=[self _scaledAndAlignedImageFrame:frame];
+        NSRect drawInRect=[self _scaledAndAlignedImageFrame:controlFrame];
         
         if([control isFlipped]){
-         CGContextTranslateCTM(ctx, 0, NSMaxY(frame));
-         CGContextScaleCTM(ctx, 1, -1);
-         frame.origin.y = 0;
+            CGAffineTransform flip={1,0,0,-1,0,controlFrame.size.height};
+            
+            CGContextConcatCTM(ctx,flip);
         }
         
-        [[self _imageValue] drawInRect:frame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+        [[self _imageValue] drawInRect:drawInRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
         
 		CGContextRestoreGState(ctx);
     }
 }
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
- 
+    
    switch(_frameStyle){
    
     case NSImageFrameNone:

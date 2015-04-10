@@ -652,7 +652,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)preservesContentDuringLiveResize {
-   return _preservesContentDuringLiveResize;
+   return NO;
 }
 
 -(NSToolbar *)toolbar {
@@ -868,9 +868,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    _makeSureIsOnAScreen=YES;
 
    [_backgroundView setFrameSize:_frame.size];
-
+    
     [[self platformWindow] setFrame:_frame];
-
+    
    if(didSize)
     [self resetCursorRects];
     
@@ -1184,7 +1184,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(void)setPreservesContentDuringLiveResize:(BOOL)value {
-   _preservesContentDuringLiveResize=value;
+  // _preservesContentDuringLiveResize=value;
 }
 
 -(void)setRepresentedFilename:(NSString *)value {
@@ -1431,8 +1431,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(BOOL)inLiveResize {
-   NSUnimplementedMethod();
-   return NO;
+   return _inLiveResize;
 }
 
 -(BOOL)canBecomeKeyWindow {
@@ -2851,11 +2850,13 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(void)platformWindowWillBeginSizing:(CGWindow *)window {
    [self postNotificationName:NSWindowWillStartLiveResizeNotification];
+    _inLiveResize=YES;
    [_backgroundView viewWillStartLiveResize];
 }
 
 -(void)platformWindowDidEndSizing:(CGWindow *)window {
-	[_backgroundView viewDidEndLiveResize];
+    _inLiveResize=NO;
+   [_backgroundView viewDidEndLiveResize];
    [self postNotificationName:NSWindowDidEndLiveResizeNotification];
 }
 

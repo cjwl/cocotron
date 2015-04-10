@@ -55,34 +55,26 @@
 		49EB3392171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 49EB338D171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff */; };
 		630DC9DA14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DC14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
-		630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9DE14CE3F2D0009A039 /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9D814CE3F2D0009A039 /* NSColorPanel.nib */; };
 		630DC9E114CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E214CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E414CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
-		630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9DF14CE3F6A0009A039 /* NSColorPickerColorList.nib */; };
 		630DC9E914CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9EA14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
-		630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9EC14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9E614CE40B80009A039 /* NSColorPickerSliders.nib */; };
 		630DC9EF14CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
-		630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F214CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F314CE41290009A039 /* NSColorPickerWheel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9ED14CE41290009A039 /* NSColorPickerWheel.nib */; };
 		630DC9F814CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DC9FA14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
-		630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DC9FC14CE459A0009A039 /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9F614CE459A0009A039 /* NSFontPanel.nib */; };
 		630DCA0114CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0314CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0414CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
-		630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9FF14CE45E60009A039 /* NSSystemInfoPanel.nib */; };
 		630DCA0814CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA0A14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
-		630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA0C14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA0614CE475C0009A039 /* NSToolbarCustomizationPalette.nib */; };
 		630DCA1214CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
-		630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
 		630DCA1514CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
 		630DCA1614CE48210009A039 /* NSSpellingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DCA1014CE48210009A039 /* NSSpellingViewController.xib */; };
 		6311B10A14C7396A007AD8C0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6311B10814C7396A007AD8C0 /* Localizable.strings */; };
@@ -3442,6 +3434,8 @@
 		FEB3F1EE14049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
 		FEB3F1EF14049CC400059C8F /* NSSpellCheckerTagData.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */; };
 		FEB3F1F014049CC400059C8F /* NSSpellCheckerTagData.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */; };
+		FEBE636D17D44C5E00EFA1F2 /* NSSound_DirectShow.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBE636B17D44C5E00EFA1F2 /* NSSound_DirectShow.h */; };
+		FEBE636E17D44C5E00EFA1F2 /* NSSound_DirectShow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBE636C17D44C5E00EFA1F2 /* NSSound_DirectShow.m */; };
 		FEBF55E50DCA112900CE5A1C /* O2ImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF55E20DCA112900CE5A1C /* O2ImageSource_JPEG.h */; };
 		FEBF55E60DCA112900CE5A1C /* O2Paint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF55E30DCA112900CE5A1C /* O2Paint.h */; };
 		FEBF55E70DCA112900CE5A1C /* O2Paint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55E40DCA112900CE5A1C /* O2Paint.m */; };
@@ -4724,6 +4718,8 @@
 		FEB07F9F0FF9B37C00C27509 /* O2Font+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2Font+PDF.m"; sourceTree = "<group>"; };
 		FEB3F1E714049CC400059C8F /* NSSpellCheckerTagData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellCheckerTagData.h; sourceTree = "<group>"; };
 		FEB3F1E814049CC400059C8F /* NSSpellCheckerTagData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSpellCheckerTagData.m; sourceTree = "<group>"; };
+		FEBE636B17D44C5E00EFA1F2 /* NSSound_DirectShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSound_DirectShow.h; sourceTree = "<group>"; };
+		FEBE636C17D44C5E00EFA1F2 /* NSSound_DirectShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSound_DirectShow.m; sourceTree = "<group>"; };
 		FEBF55E20DCA112900CE5A1C /* O2ImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ImageSource_JPEG.h; sourceTree = "<group>"; };
 		FEBF55E30DCA112900CE5A1C /* O2Paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Paint.h; sourceTree = "<group>"; };
 		FEBF55E40DCA112900CE5A1C /* O2Paint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Paint.m; sourceTree = "<group>"; };
@@ -5516,6 +5512,8 @@
 				6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */,
 				6E2B565B0976075400DA0954 /* NSSavePanel-Win32.h */,
 				6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */,
+				FEBE636B17D44C5E00EFA1F2 /* NSSound_DirectShow.h */,
+				FEBE636C17D44C5E00EFA1F2 /* NSSound_DirectShow.m */,
 				FEA25F960EECCE4D008750D0 /* NSSound_win32.h */,
 				FEA25F970EECCE4D008750D0 /* NSSound_win32.m */,
 				FE1CEA6B0C8F12F800184630 /* opengl_dll.h */,
@@ -7496,6 +7494,7 @@
 				63848FEC17A18C050019E4DC /* NSPrintProgressPanelController.h in Headers */,
 				9824ACBB14EDE5A100245AEF /* NSStatusBar_(Private).h in Headers */,
 				98214B8F14EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
+				FEBE636D17D44C5E00EFA1F2 /* NSSound_DirectShow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8441,14 +8440,6 @@
 				6311B18114C74EED007AD8C0 /* NSColorPickerWheel.nib in Resources */,
 				6311B19514C750BE007AD8C0 /* NSSystemInfoPanel.nib in Resources */,
 				6311B19D14C7515B007AD8C0 /* NSSpellingViewController.xib in Resources */,
-				630DC9DD14CE3F2D0009A039 /* NSColorPanel.nib in Resources */,
-				630DC9E514CE3F6A0009A039 /* NSColorPickerColorList.nib in Resources */,
-				630DC9EB14CE40B80009A039 /* NSColorPickerSliders.nib in Resources */,
-				630DC9F114CE41290009A039 /* NSColorPickerWheel.nib in Resources */,
-				630DC9FB14CE459A0009A039 /* NSFontPanel.nib in Resources */,
-				630DCA0514CE45E60009A039 /* NSSystemInfoPanel.nib in Resources */,
-				630DCA0B14CE475C0009A039 /* NSToolbarCustomizationPalette.nib in Resources */,
-				630DCA1314CE48210009A039 /* NSSpellingViewController.xib in Resources */,
 				49B85E96166FBC9A00507E8C /* UNIDATA in Resources */,
 				49EB338E171C8A8F00BD2535 /* NSToolbarOverflowArrow.tiff in Resources */,
 				496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */,
@@ -9860,6 +9851,7 @@
 				49C12B5316FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 				496555DE17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
 				63848FED17A18C050019E4DC /* NSPrintProgressPanelController.m in Sources */,
+				FEBE636E17D44C5E00EFA1F2 /* NSSound_DirectShow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

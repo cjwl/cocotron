@@ -49,18 +49,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
-   NSMutableAttributedString *astring=[[self attributedStringValue] mutableCopy];
-   NSUInteger                 i,length=[astring length];
-   unichar                   *buffer=NSZoneMalloc(NULL,length*sizeof(unichar));
-   
-   for(i=0;i<length;i++)
-    buffer[i]=_echosBullets?0x2022:' '; // unicode bullet
+    NSRect titleRect=[self titleRectForBounds:frame];
+    NSMutableAttributedString *astring=[[self attributedStringValue] mutableCopy];
+    NSUInteger                 i,length=[astring length];
+    unichar                   *buffer=NSZoneMalloc(NULL,length*sizeof(unichar));
     
-   NSString *string=[[NSString alloc] initWithCharactersNoCopy:buffer length:length freeWhenDone:YES];
-   [astring replaceCharactersInRange:NSMakeRange(0,length) withString:string]; 
-   [astring _clipAndDrawInRect:frame];
-   [astring release];
-   [string release];
+    for(i=0;i<length;i++)
+        buffer[i]=_echosBullets?0x2022:' '; // unicode bullet
+    
+    NSString *string=[[NSString alloc] initWithCharactersNoCopy:buffer length:length freeWhenDone:YES];
+    [astring replaceCharactersInRange:NSMakeRange(0,length) withString:string];
+    
+    [astring _clipAndDrawInRect:titleRect];
+    
+    [astring release];
+    [string release];
 }
 
 @end

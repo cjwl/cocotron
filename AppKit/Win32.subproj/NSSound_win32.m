@@ -25,6 +25,10 @@ static unsigned int uniquenum = 1;
 @implementation NSSound(win32)
 
 +allocWithZone:(NSZone *)zone {
+    Class directShow=NSClassFromString(@"NSSound_DirectShow");
+    if(directShow!=Nil)
+        return NSAllocateObject(directShow,0,NULL);
+    
    return NSAllocateObject([NSSound_win32 class],0,NULL);
 }
 

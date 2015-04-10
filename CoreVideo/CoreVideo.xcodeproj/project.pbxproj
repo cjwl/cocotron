@@ -8,6 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		CF18752D19CCFF670058C869 /* darwin-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751119CCFF670058C869 /* darwin-i386-framework.xcconfig */; };
+		CF18752E19CCFF670058C869 /* darwin-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751219CCFF670058C869 /* darwin-i386.xcconfig */; };
+		CF18752F19CCFF670058C869 /* darwin-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751319CCFF670058C869 /* darwin-ppc-framework.xcconfig */; };
+		CF18753019CCFF670058C869 /* darwin-ppc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751419CCFF670058C869 /* darwin-ppc.xcconfig */; };
+		CF18753119CCFF670058C869 /* darwin-x86_64-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751519CCFF670058C869 /* darwin-x86_64-framework.xcconfig */; };
+		CF18753219CCFF670058C869 /* darwin-x86_64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751619CCFF670058C869 /* darwin-x86_64.xcconfig */; };
+		CF18753319CCFF670058C869 /* darwin.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751719CCFF670058C869 /* darwin.xcconfig */; };
+		CF18753419CCFF670058C869 /* freebsd-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751819CCFF670058C869 /* freebsd-i386-framework.xcconfig */; };
+		CF18753519CCFF670058C869 /* freebsd-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751919CCFF670058C869 /* freebsd-i386.xcconfig */; };
+		CF18753619CCFF670058C869 /* freebsd.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751A19CCFF670058C869 /* freebsd.xcconfig */; };
+		CF18753719CCFF670058C869 /* linux-arm-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751B19CCFF670058C869 /* linux-arm-framework.xcconfig */; };
+		CF18753819CCFF670058C869 /* linux-arm.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751C19CCFF670058C869 /* linux-arm.xcconfig */; };
+		CF18753919CCFF670058C869 /* linux-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751D19CCFF670058C869 /* linux-i386-framework.xcconfig */; };
+		CF18753A19CCFF670058C869 /* linux-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751E19CCFF670058C869 /* linux-i386.xcconfig */; };
+		CF18753B19CCFF670058C869 /* linux-ppc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18751F19CCFF670058C869 /* linux-ppc-framework.xcconfig */; };
+		CF18753C19CCFF670058C869 /* linux-ppc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752019CCFF670058C869 /* linux-ppc.xcconfig */; };
+		CF18753D19CCFF670058C869 /* linux.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752119CCFF670058C869 /* linux.xcconfig */; };
+		CF18753E19CCFF670058C869 /* platform-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752219CCFF670058C869 /* platform-framework.xcconfig */; };
+		CF18753F19CCFF670058C869 /* platform.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752319CCFF670058C869 /* platform.xcconfig */; };
+		CF18754019CCFF670058C869 /* solaris-sparc-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752419CCFF670058C869 /* solaris-sparc-framework.xcconfig */; };
+		CF18754119CCFF670058C869 /* solaris-sparc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752519CCFF670058C869 /* solaris-sparc.xcconfig */; };
+		CF18754219CCFF670058C869 /* solaris.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752619CCFF670058C869 /* solaris.xcconfig */; };
+		CF18754319CCFF670058C869 /* windows-i386-bundle.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752719CCFF670058C869 /* windows-i386-bundle.xcconfig */; };
+		CF18754419CCFF670058C869 /* windows-i386-clang.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752819CCFF670058C869 /* windows-i386-clang.xcconfig */; };
+		CF18754619CCFF670058C869 /* windows-i386-framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752A19CCFF670058C869 /* windows-i386-framework.xcconfig */; };
+		CF18754719CCFF670058C869 /* windows-i386.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752B19CCFF670058C869 /* windows-i386.xcconfig */; };
+		CF18754819CCFF670058C869 /* windows.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CF18752C19CCFF670058C869 /* windows.xcconfig */; };
 		FE43015C11E2531F00EBDD56 /* CVDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43015A11E2531F00EBDD56 /* CVDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE43017C11E253E900EBDD56 /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43017B11E253E900EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE43045911E2769E00EBDD56 /* CVBase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE43045811E2769E00EBDD56 /* CVBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -429,7 +456,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF18754019CCFF670058C869 /* solaris-sparc-framework.xcconfig in Resources */,
+				CF18753819CCFF670058C869 /* linux-arm.xcconfig in Resources */,
+				CF18754819CCFF670058C869 /* windows.xcconfig in Resources */,
+				CF18753019CCFF670058C869 /* darwin-ppc.xcconfig in Resources */,
+				CF18753219CCFF670058C869 /* darwin-x86_64.xcconfig in Resources */,
+				CF18754319CCFF670058C869 /* windows-i386-bundle.xcconfig in Resources */,
+				CF18753419CCFF670058C869 /* freebsd-i386-framework.xcconfig in Resources */,
+				CF18753719CCFF670058C869 /* linux-arm-framework.xcconfig in Resources */,
+				CF18753D19CCFF670058C869 /* linux.xcconfig in Resources */,
+				CF18752F19CCFF670058C869 /* darwin-ppc-framework.xcconfig in Resources */,
+				CF18753B19CCFF670058C869 /* linux-ppc-framework.xcconfig in Resources */,
+				CF18753919CCFF670058C869 /* linux-i386-framework.xcconfig in Resources */,
+				CF18753F19CCFF670058C869 /* platform.xcconfig in Resources */,
+				CF18753C19CCFF670058C869 /* linux-ppc.xcconfig in Resources */,
+				CF18753319CCFF670058C869 /* darwin.xcconfig in Resources */,
+				CF18753619CCFF670058C869 /* freebsd.xcconfig in Resources */,
+				CF18753E19CCFF670058C869 /* platform-framework.xcconfig in Resources */,
+				CF18754219CCFF670058C869 /* solaris.xcconfig in Resources */,
+				CF18754719CCFF670058C869 /* windows-i386.xcconfig in Resources */,
+				CF18752E19CCFF670058C869 /* darwin-i386.xcconfig in Resources */,
+				CF18753A19CCFF670058C869 /* linux-i386.xcconfig in Resources */,
+				CF18752D19CCFF670058C869 /* darwin-i386-framework.xcconfig in Resources */,
+				CF18754119CCFF670058C869 /* solaris-sparc.xcconfig in Resources */,
+				CF18754419CCFF670058C869 /* windows-i386-clang.xcconfig in Resources */,
+				CF18753119CCFF670058C869 /* darwin-x86_64-framework.xcconfig in Resources */,
+				CF18753519CCFF670058C869 /* freebsd-i386.xcconfig in Resources */,
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+				CF18754619CCFF670058C869 /* windows-i386-framework.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1236,6 +1236,70 @@ static int reportGLErrorIfNeeded(const char *function,int line){
    FlashWindow(_handle,TRUE);
 }
 
+-(CGRect)queryFrame {
+   RECT rect;
+   
+   if(GetWindowRect(_handle,&rect)==0){
+    NSLog(@"GetWindowRect failed, handle=%p, %s %d",_handle,__FILE__,__LINE__);
+    
+    return CGRectMake(0,0,0,0);
+   }
+   
+   return convertFrameFromWin32ScreenCoordinates(CGRectFromRECT(rect));
+}
+
+-(void)_GetWindowRectDidSize:(BOOL)didSize {
+    CGRect frame=[self queryFrame];
+    
+    if(frame.size.width>0 && frame.size.height>0){
+        if(![self isMiniaturized])
+            _frame=frame;
+        
+        [_delegate platformWindow:self frameChanged:frame didSize:didSize];
+    }
+}
+
+-(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+   CGSize contentSize={LOWORD(lParam),HIWORD(lParam)};
+
+   if(contentSize.width>0 && contentSize.height>0){
+       NSSize checkSize=[self queryFrame].size;
+       
+       if(NSEqualSizes(checkSize,_frame.size))
+           return 0;
+       
+    [self invalidateContextsWithNewSize:checkSize];
+
+    [self _GetWindowRectDidSize:YES];
+
+    switch(_backingType){
+
+     case CGSBackingStoreRetained:
+     case CGSBackingStoreNonretained:
+      break;
+
+     case CGSBackingStoreBuffered:
+      [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
+      break;
+    }
+   }
+
+   return 0;
+}
+
+-(int)WM_MOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
+   NSPoint checkOrigin=[self queryFrame].origin;
+    
+   if(NSEqualPoints(checkOrigin,_frame.origin))
+    return 0;
+
+    [_delegate platformWindowWillMove:self];
+   [self _GetWindowRectDidSize:NO];
+   [_delegate platformWindowDidMove:self];
+
+   return 0;
+}
+
 // According the Microsoft Docs and general web opinion handling window size and move operations
 // via WM_WINDOWPOSCHANGED is much more efficient than WM_SIZE and WM_MOVE. Implementing a WM_WINDOWPOSCHANGED
 // handler means that WM_SIZE and WM_MOVE are no longer delivered.
@@ -1626,19 +1690,26 @@ const int kWindowMaxDim = 10000;
 
    switch(message){
 
-	case WM_SETFOCUS:			return [self WM_SETFOCUS_wParam:wParam lParam:lParam];
-    case WM_ACTIVATE:			return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
-    case WM_MOUSEACTIVATE:		return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
+       case WM_SETFOCUS:			return [self WM_SETFOCUS_wParam:wParam lParam:lParam];
+       case WM_ACTIVATE:			return [self WM_ACTIVATE_wParam:wParam lParam:lParam];
+       case WM_MOUSEACTIVATE: return [self WM_MOUSEACTIVATE_wParam:wParam lParam:lParam];
+#define NEW_SIZING_BEHAVIOR 1
+#ifdef NEW_SIZING_BEHAVIOR
     case WM_WINDOWPOSCHANGED:	return [self WM_WINDOWPOSCHANGED_wParam: wParam lParam: lParam];
    // case WM_SIZE: // these are now covered by WM_WINDOWPOSCHANGED
    // case WM_MOVE:
-    case WM_PAINT:				return [self WM_PAINT_wParam:wParam lParam:lParam];
-    case WM_CLOSE:				return [self WM_CLOSE_wParam:wParam lParam:lParam];
-    case WM_SETCURSOR:			return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
-    case WM_SIZING:				return [self WM_SIZING_wParam:wParam lParam:lParam];
-    case WM_GETMINMAXINFO:		return [self WM_GETMINMAXINFO_wParam:wParam lParam:lParam];
-    case WM_ENTERSIZEMOVE:		return [self WM_ENTERSIZEMOVE_wParam:wParam lParam:lParam];
-    case WM_EXITSIZEMOVE:		return [self WM_EXITSIZEMOVE_wParam:wParam lParam:lParam];
+#else
+//    case WM_WINDOWPOSCHANGED:	return [self WM_WINDOWPOSCHANGED_wParam: wParam lParam: lParam];
+    case WM_SIZE:          return [self WM_SIZE_wParam:wParam lParam:lParam];
+    case WM_MOVE:          return [self WM_MOVE_wParam:wParam lParam:lParam];
+#endif
+       case WM_PAINT:         return [self WM_PAINT_wParam:wParam lParam:lParam];
+       case WM_CLOSE:         return [self WM_CLOSE_wParam:wParam lParam:lParam];
+       case WM_SETCURSOR:     return [self WM_SETCURSOR_wParam:wParam lParam:lParam];
+       case WM_SIZING:        return [self WM_SIZING_wParam:wParam lParam:lParam];
+       case WM_GETMINMAXINFO: return [self WM_GETMINMAXINFO_wParam:wParam lParam:lParam];
+       case WM_ENTERSIZEMOVE: return [self WM_ENTERSIZEMOVE_wParam:wParam lParam:lParam];
+       case WM_EXITSIZEMOVE:  return [self WM_EXITSIZEMOVE_wParam:wParam lParam:lParam];
     case WM_SYSCOMMAND:    return [self WM_SYSCOMMAND_wParam:wParam lParam:lParam];
 	case WM_SYSCOLORCHANGE:		return [self WM_SYSCOLORCHANGE_wParam: wParam lParam: lParam];
 	case WM_ERASEBKGND:			return [self WM_ERASEBKGND_wParam: wParam lParam: lParam];

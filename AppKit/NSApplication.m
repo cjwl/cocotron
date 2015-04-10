@@ -604,11 +604,13 @@ id NSApp=nil;
 
 -(BOOL)_performKeyEquivalent:(NSEvent *)event {
     if (event.charactersIgnoringModifiers.length > 0) {
-        if([[self mainMenu] performKeyEquivalent:event])
-            return YES;
+    /* order is important here, views may want to handle the event before menu*/
+
         if([[self keyWindow] performKeyEquivalent:event])
             return YES;
         if([[self mainWindow] performKeyEquivalent:event])
+            return YES;
+        if([[self mainMenu] performKeyEquivalent:event])
             return YES;
     }
 // documentation says to send it to all windows
