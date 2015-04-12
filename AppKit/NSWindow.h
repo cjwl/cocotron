@@ -522,6 +522,7 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
 -(void)windowDidUpdate:(NSNotification *)note;
 -(BOOL)windowShouldClose:sender;
 -(void)windowWillClose:(NSNotification *)note;
+
 @end
 
 //private
