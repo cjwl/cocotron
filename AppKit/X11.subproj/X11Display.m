@@ -143,8 +143,6 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
    if([colorName isEqual:@"selectedControlTextColor"])
       return [NSColor blackColor];
    
-   NSLog(@"%@", colorName);
-   
    return [NSColor redColor];
    
 }
@@ -331,6 +329,16 @@ static int errorHandler(Display *display,XErrorEvent *errorEvent) {
       ret|=NSCommandKeyMask;
    // TODO: alt doesn't work; might want to track key presses/releases instead
    return ret;
+}
+
+NSArray *CGSOrderedWindowNumbers() {
+    NSMutableArray *result = [NSMutableArray array];
+    
+    for (NSWindow* win in [NSApp windows]) [result addObject:[NSNumber numberWithInteger:[win windowNumber]]];
+    
+    NSUnimplementedFunction(); //(Window numbers not even remotely ordered)
+    
+    return result;
 }
 
 -(void)postXEvent:(XEvent *)ev {

@@ -1444,8 +1444,7 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return 0;
+    return [[self dataUsingEncoding:encoding] length];
 }
 
 -(NSUInteger)maximumLengthOfBytesUsingEncoding:(NSStringEncoding)encoding {

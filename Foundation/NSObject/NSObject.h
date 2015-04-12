@@ -39,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isProxy;
 
 -(NSString *)description;
+-(NSString *)debugDescription;
 
 @end
 
@@ -84,6 +85,7 @@ NS_ROOT_CLASS @interface NSObject <NSObject> {
 + (void)poseAsClass:(Class)aClass;
 
 +(NSString *)description;
++(NSString *)debugDescription;
 
 +alloc;
 +allocWithZone:(NSZone *)zone;

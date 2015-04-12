@@ -54,6 +54,7 @@ void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *
 
 
 -initWithFrame:(O2Rect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType {
+   _level=kCGNormalWindowLevel;
    _backingType=backingType;
    _deviceDictionary=[NSMutableDictionary new];
    _display=[(X11Display*)[NSDisplay currentDisplay] display];
@@ -232,6 +233,10 @@ void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *
    [self invalidateContextsWithNewSize:frame.size];
 }
 
+-(void)setLevel:(int)value {
+    _level=value;
+}
+
 -(void)showWindowForAppActivation:(O2Rect)frame {
    NSUnimplementedMethod();
 }
@@ -274,6 +279,9 @@ void CGNativeBorderFrameWidthsForStyle(unsigned styleMask,CGFloat *top,CGFloat *
 -(void)makeKey {
    [self ensureMapped];
    XRaiseWindow(_display, _window);
+}
+
+-(void)makeMain {
 }
 
 -(void)captureEvents {

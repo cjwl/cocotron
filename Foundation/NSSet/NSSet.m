@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSet_placeholder.h>
 #import <Foundation/NSSet_concrete.h>
 #import <Foundation/NSAutoreleasePool-private.h>
+#import <Foundation/NSPredicate.h>
 
 
 @interface NSKeyedArchiver (PrivateToContainers)
@@ -349,6 +350,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
    return nil;
+}
+
+-(NSSet *)filteredSetUsingPredicate:(NSPredicate *)predicate {
+    NSMutableSet *result=[NSMutableSet setWithCapacity:[self count]];
+    
+    for (id obj in self)
+    {
+        if ([predicate evaluateWithObject:obj])
+            [result addObject:obj];
+    }
+    
+    return result;
 }
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;

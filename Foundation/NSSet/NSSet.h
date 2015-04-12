@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSEnumerator.h>
 
-@class NSArray,NSDictionary,NSString;
+@class NSArray,NSDictionary,NSString,NSPredicate;
 
 @interface NSSet : NSObject <NSCoding,NSCopying,NSMutableCopying,NSFastEnumeration>
 
@@ -49,6 +49,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -anyObject;
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale;
+
+-(NSSet *)filteredSetUsingPredicate:(NSPredicate *)predicate;
 
 @end
 
