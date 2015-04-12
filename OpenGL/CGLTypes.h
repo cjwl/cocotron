@@ -104,9 +104,10 @@ typedef enum {
     kCGLCPSurfaceOpacity=236,
     kCGLCPSurfaceBackingSize=304,
 
-// internal, do not use   
+// internal, do not use
+    kCGLCPSurfaceFrame=499,
     kCGLCPSurfaceIsChildWindow=500,
-
+    kCGLCPWindowNumber=501,
     kCGLCPOverlayPointer=502,
     
     kCGLCPSurfaceBackingOrigin=503,

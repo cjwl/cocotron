@@ -12,6 +12,8 @@
 #import <Onyx2D/O2Color.h>
 #import <Foundation/NSException.h>
 #import <Onyx2D/O2GraphicsState.h>
+#import <Onyx2D/O2ClipState.h>
+#import <Onyx2D/O2ClipPhase.h>
 #import <AppKit/KTFont_FT.h>
 #import <Onyx2D/O2ColorSpace.h>
 #import <Onyx2D/O2Surface.h>
@@ -130,8 +132,8 @@
 
 -(void)synchronizeFontCTM
 {
-	O2AffineTransform ctm=[O2ContextCurrentGState(self) textMatrix];
-    O2Float size=O2GStatePointSize(O2ContextCurrentGState(self));
+	O2AffineTransform ctm = O2ContextGetTextMatrix(self);
+    O2Float size = O2GStatePointSize(O2ContextCurrentGState(self));
 
 	ctm = O2AffineTransformScale(ctm, size, -size);
 	
@@ -228,7 +230,7 @@
 }
 
 -(void)clipToState:(O2ClipState *)clipState {
-   NSArray *phases=[O2GStateClipState(gState) clipPhases];
+   NSArray *phases=[O2GStateClipState(O2ContextCurrentGState(self)) clipPhases];
    int      i,count=[phases count];
    
    cairo_reset_clip(_context);  
@@ -362,7 +364,7 @@
     int i;
     
     for(i=0; i<height; i++) {
-     image->_read_lRGBA8888_PRE(image, 0, i, (O2argb8u *)(data+i*bytesPerRow), width);
+     image->_read_argb8u(image, 0, i, (O2argb8u *)(data+i*bytesPerRow), width);
     }
    }
    
@@ -399,8 +401,8 @@
 }
 
 
--(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advances count:(unsigned)count {
-// FIXME: use advances if not NULL
+-(void)showGlyphs:(const O2Glyph *)glyphs advances:(const O2Size *)advancesIn count:(unsigned)count {
+// FIXME: use advancesIn if not NULL
 
    [self establishFontStateInDeviceIfDirty];
    

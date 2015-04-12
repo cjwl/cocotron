@@ -3860,9 +3860,9 @@
 		630DCA0014CE45E60009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = NSSystemInfoPanel/de.lproj/NSSystemInfoPanel.nib; sourceTree = "<group>"; };
 		630DCA0714CE475C0009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/NSToolbarCustomizationPalette.nib; sourceTree = "<group>"; };
 		630DCA1114CE48210009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/NSSpellingViewController.xib; sourceTree = "<group>"; };
-		630DCA1C14CE48790009A039 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		630DCA1D14CE48860009A039 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6311B10914C7396A007AD8C0 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		630DCA1C14CE48790009A039 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		630DCA1D14CE48860009A039 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6311B10914C7396A007AD8C0 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6311B13B14C7430F007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = fr; path = fr.lproj/NSMenu.plist; sourceTree = "<group>"; };
 		6311B15F14C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSColorPanel.nib; sourceTree = "<group>"; };
 		6311B16114C74B00007AD8C0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/NSFontPanel.nib; sourceTree = "<group>"; };
@@ -7956,6 +7956,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C88977090EA0BF3100D0A0A2 /* Build configuration list for PBXNativeTarget "AppKit-Linux-i386" */;
 			buildPhases = (
+				0DAFBFC816C992380061AA7C /* Detect Libraries */,
 				C88974230EA0BF3100D0A0A2 /* Headers */,
 				C889757D0EA0BF3100D0A0A2 /* Sources */,
 				C88976DC0EA0BF3100D0A0A2 /* Resources */,
@@ -8614,6 +8615,21 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0DAFBFC816C992380061AA7C /* Detect Libraries */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Detect Libraries";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/O2Defines_FreeType.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nmkdir -p \"$DERIVED_FILE_DIR\"\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_FreeType.h\"\n\nif [ -d /Developer/Cocotron/1.0/Linux/i386/freetype-2.3.5 ]; then\necho \"FreeType 2.3.5 present.\"\necho \"#define FREETYPE_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_FreeType.h\"\nelse\n# Create empty libfreetype for link phase\necho \"FreeType 2.3.5 not found\"\ntouch \"$DERIVED_FILE_DIR/libfreetype.c\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-gcc \"$DERIVED_FILE_DIR/libfreetype.c\" -c -o \"$DERIVED_FILE_DIR/libfreetype.o\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-ar cr \"$DERIVED_FILE_DIR/libfreetype.a\" \"$DERIVED_FILE_DIR/libfreetype.o\"\nfi\n\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_libjpeg.h\"\nif [ -d /Developer/Cocotron/1.0/Linux/i386/libjpeg ]; then\necho \"libjpeg present.\"\necho \"#define LIBJPEG_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_libjpeg.h\"\nelse\n# Create empty libjpeg for link phase\necho \"libjpeg not found\"\ntouch \"$DERIVED_FILE_DIR/libjpeg.c\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-gcc \"$DERIVED_FILE_DIR/libjpeg.c\" -c -o \"$DERIVED_FILE_DIR/libjpeg.o\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-ar cr \"$DERIVED_FILE_DIR/libjpeg.a\" \"$DERIVED_FILE_DIR/libjpeg.o\"\nfi\n\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_zlib.h\"\nif [ -d /Developer/Cocotron/1.0/Linux/i386/zlib-1.2.5 ]; then\necho \"zlib present.\"\necho \"#define ZLIB_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_zlib.h\"\nelse\n# Create empty zlib for link phase\necho \"zlib not found\"\ntouch \"$DERIVED_FILE_DIR/zlib.c\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-gcc \"$DERIVED_FILE_DIR/zlib.c\" -c -o \"$DERIVED_FILE_DIR/zlib.o\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-ar cr \"$DERIVED_FILE_DIR/libz.a\" \"$DERIVED_FILE_DIR/zlib.o\"\nfi\n\necho \"\" > \"$DERIVED_FILE_DIR/O2Defines_libpng.h\"\nif [ -d /Developer/Cocotron/1.0/Linux/i386/libpng ]; then\necho \"libpng present.\"\necho \"#define LIBPNG_PRESENT 1\" >> \"$DERIVED_FILE_DIR/O2Defines_libpng.h\"\nelse\n# Create empty libpng for link phase\necho \"libpng not found\"\ntouch \"$DERIVED_FILE_DIR/libpng.c\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-gcc \"$DERIVED_FILE_DIR/libpng.c\" -c -o \"$DERIVED_FILE_DIR/libpng.o\"\n/Developer/Cocotron/1.0/Linux/i386/gcc-4.3.1/bin/i386-ubuntu-linux-ar cr \"$DERIVED_FILE_DIR/libpng.a\" \"$DERIVED_FILE_DIR/libpng.o\"\nfi\n\n";
+		};
 		6311B0C214C6583E007AD8C0 /* Generate Strings */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

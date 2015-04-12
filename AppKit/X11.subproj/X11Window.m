@@ -342,7 +342,7 @@ CGL_EXPORT CGLError CGLCreateContextForWindow(CGLPixelFormatObj pixelFormat,CGLC
        if(1)
         [self openGLFlushBuffer];
        else {
-        [_context drawBackingContext:_backingContext size:_frame.size];
+        //[_context drawBackingContext:_backingContext size:_frame.size];
         O2ContextFlush(_context);
        }
       }
