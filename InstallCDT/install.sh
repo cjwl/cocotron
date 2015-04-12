@@ -118,8 +118,8 @@ else
 fi
 
 
-scriptResources=$installResources/scripts
-toolResources=$installResources/tools
+scriptResources="$installResources/scripts"
+toolResources="$installResources/tools"
 
 
 
@@ -135,15 +135,15 @@ toolFolder=$productFolder/bin
 PATH="$resultFolder/bin:$PATH"
 
 downloadCompilerIfNeeded(){
-	$scriptResources/downloadFilesIfNeeded.sh $downloadFolder "http://cocotron-tools-gpl3.googlecode.com/files/gcc-$gccVersion$gccVersionDate.tar.bz2 http://ftp.sunet.se/pub/gnu/gmp/gmp-$gmpVersion.tar.bz2 http://cocotron-binutils-2-21.googlecode.com/files/binutils-$binutilsVersion.tar.gz http://cocotron-tools-gpl3.googlecode.com/files/mpfr-$mpfrVersion.tar.bz2"
+	"$scriptResources/downloadFilesIfNeeded.sh" $downloadFolder "http://cocotron-tools-gpl3.googlecode.com/files/gcc-$gccVersion$gccVersionDate.tar.bz2 http://ftp.sunet.se/pub/gnu/gmp/gmp-$gmpVersion.tar.bz2 http://cocotron-binutils-2-21.googlecode.com/files/binutils-$binutilsVersion.tar.gz http://cocotron-tools-gpl3.googlecode.com/files/mpfr-$mpfrVersion.tar.bz2"
 
-	$scriptResources/unarchiveFiles.sh $downloadFolder $sourceFolder "gcc-$gccVersion$gccVersionDate binutils-$binutilsVersion gmp-$gmpVersion mpfr-$mpfrVersion"
+	"$scriptResources/unarchiveFiles.sh" $downloadFolder $sourceFolder "gcc-$gccVersion$gccVersionDate binutils-$binutilsVersion gmp-$gmpVersion mpfr-$mpfrVersion"
 }
 
 createWindowsInterfaceIfNeeded(){
-	$scriptResources/downloadFilesIfNeeded.sh $downloadFolder "http://cocotron-tools-gpl3.googlecode.com/files/mingwrt-$mingwRuntimeVersion-mingw32-dev.tar.gz http://cocotron-tools-gpl3.googlecode.com/files/w32api-$mingwAPIVersion-mingw32-dev.tar.gz"
+	"$scriptResources/downloadFilesIfNeeded.sh" $downloadFolder "http://cocotron-tools-gpl3.googlecode.com/files/mingwrt-$mingwRuntimeVersion-mingw32-dev.tar.gz http://cocotron-tools-gpl3.googlecode.com/files/w32api-$mingwAPIVersion-mingw32-dev.tar.gz"
 
-	$scriptResources/unarchiveFiles.sh $downloadFolder $interfaceFolder "mingwrt-$mingwRuntimeVersion-mingw32-dev w32api-$mingwAPIVersion-mingw32-dev"
+	"$scriptResources/unarchiveFiles.sh" $downloadFolder $interfaceFolder "mingwrt-$mingwRuntimeVersion-mingw32-dev w32api-$mingwAPIVersion-mingw32-dev"
 }
 
 createLinuxInterfaceIfNeeded(){
@@ -249,12 +249,12 @@ configureAndInstall_gcc
 stripBinaries
 
 /bin/echo -n "Creating specifications ..."
-$scriptResources/createSpecifications.sh $targetPlatform $targetArchitecture $productName $productVersion $compilerTarget $installResources/Specifications $gccVersion
+"$scriptResources/createSpecifications.sh" $targetPlatform $targetArchitecture $productName $productVersion $compilerTarget "$installResources/Specifications" $gccVersion
 /bin/echo "done."
 
 /bin/echo "Building tools ..."
 mkdir -p $toolFolder
-cc $toolResources/retargetBundle.m -framework Foundation -o $toolFolder/retargetBundle
+cc "$toolResources/retargetBundle.m" -framework Foundation -o $toolFolder/retargetBundle
 /bin/echo "done."
 
 (cd $resultFolder/..;ln -fs gcc-$gccVersion g++-$gccVersion)
