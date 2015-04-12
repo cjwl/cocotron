@@ -106,6 +106,7 @@ static void drawCocotron(){
     glRotatef(_angleX,0,1,0);
     drawCocotron();
     glFlush();
+    [[self openGLContext] flushBuffer];
 }
 
 -(void)prepareOpenGL {
