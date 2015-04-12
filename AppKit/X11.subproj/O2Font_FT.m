@@ -8,6 +8,19 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "O2Font_FT.h"
 
+O2FontRef O2FontCreateWithFontName_platform(NSString *name) {
+    return [[O2Font_FT alloc] initWithFontName:name];
+}
+
+O2FontRef O2FontCreateWithDataProvider_platform(O2DataProviderRef provider) {
+#ifdef FREETYPE_PRESENT
+    return [[O2Font_freetype alloc] initWithDataProvider:provider];
+#else
+    return nil;
+#endif
+    
+}
+
 @implementation O2Font(FreeType)
 
 +allocWithZone:(NSZone *)zone {

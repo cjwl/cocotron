@@ -428,3 +428,29 @@ static int ignoreBadWindow(Display* display,
 
 
 @end
+
+CGRect CGInsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask){
+    CGFloat top,left,bottom,right;
+    
+    CGNativeBorderFrameWidthsForStyle(styleMask,&top,&left,&bottom,&right);
+    
+    frame.origin.x+=left;
+    frame.origin.y+=bottom;
+    frame.size.width-=left+right;
+    frame.size.height-=top+bottom;
+    
+    return frame;
+}
+
+CGRect CGOutsetRectForNativeWindowBorder(CGRect frame,unsigned styleMask){
+    CGFloat top,left,bottom,right;
+    
+    CGNativeBorderFrameWidthsForStyle(styleMask,&top,&left,&bottom,&right);
+    
+    frame.origin.x-=left;
+    frame.origin.y-=bottom;
+    frame.size.width+=left+right;
+    frame.size.height+=top+bottom;
+    
+    return frame;
+}
