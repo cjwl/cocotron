@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE2752DC12301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE2752DE12301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; };
+		FE2752DE12301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE2752E012301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; };
 		FE2752E212301F4500BD6643 /* CGLPixelSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2752DA12301F4500BD6643 /* CGLPixelSurface.h */; };
 		FE39C40E120357EA00A80A71 /* O2ClipState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C40C120357EA00A80A71 /* O2ClipState.h */; };
@@ -343,6 +343,12 @@
 		FE8C021C10C59BB300FE4072 /* CGImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020A10C59BB300FE4072 /* CGImageDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8C021E10C59BB300FE4072 /* O2Encoder_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020C10C59BB300FE4072 /* O2Encoder_TIFF.h */; };
 		FE8C022010C59BB300FE4072 /* O2ImageDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C020E10C59BB300FE4072 /* O2ImageDestination.h */; };
+		FE9ACFEC15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
+		FE9ACFED15614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE715614CE4002AFCA9 /* O2ImageDecoder_JPEG_libjpeg.m */; };
+		FE9ACFF015614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
+		FE9ACFF115614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE815614CE4002AFCA9 /* O2ImageDecoder_JPEG_stb.m */; };
+		FE9ACFF415614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
+		FE9ACFF515614CE4002AFCA9 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACFE915614CE4002AFCA9 /* O2ImageDecoder.m */; };
 		FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -458,6 +464,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0DC472C215B024BE0075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE5C0BE711629FD900065D1C /* Onyx2D.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE5C0C081162A99A00065D1C;
+			remoteInfo = "Onyx2D-Linux-i386";
+		};
 		FE14CDD91069660900B0FFAF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
@@ -1812,6 +1825,7 @@
 			dependencies = (
 				FE6F7BD90FD5574600C3244F /* PBXTargetDependency */,
 				FE74351010A8BEA0004CDF00 /* PBXTargetDependency */,
+				0DC472C315B024BE0075BCAB /* PBXTargetDependency */,
 			);
 			name = "CoreGraphics-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -2051,6 +2065,11 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0DC472C315B024BE0075BCAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Onyx2D-Linux-i386";
+			targetProxy = 0DC472C215B024BE0075BCAB /* PBXContainerItemProxy */;
+		};
 		FE5A887010C6F2AD005E348A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreFoundation-FreeBSD-i386";

@@ -7,6 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DC472EC15B02BE10075BCAB /* CAAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2B100CC45B00B15FD7 /* CAAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472ED15B02BE10075BCAB /* CALayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2C100CC45B00B15FD7 /* CALayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472EE15B02BE10075BCAB /* CATransform3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF88C2D100CC45B00B15FD7 /* CATransform3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472EF15B02BE10075BCAB /* QuartzCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4477BF1039EECB00ECD6A6 /* QuartzCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F015B02BE10075BCAB /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F115B02BE10075BCAB /* CARenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38BEA10E12BAB00A2A651 /* CARenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F215B02BE10075BCAB /* CABase.h in Headers */ = {isa = PBXBuildFile; fileRef = FED38C8D10E13FCC00A2A651 /* CABase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F315B02BE10075BCAB /* CAWindowOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7AA0EC10F97A6700FEDD9C /* CAWindowOpenGLContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		0DC472F415B02BE10075BCAB /* CIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B010F9815300EBA597 /* CIColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F515B02BE10075BCAB /* CIContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B210F9815300EBA597 /* CIContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F615B02BE10075BCAB /* CIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B410F9815300EBA597 /* CIFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F715B02BE10075BCAB /* CIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B610F9815300EBA597 /* CIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F815B02BE10075BCAB /* CIVector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B810F9815300EBA597 /* CIVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472F915B02BE10075BCAB /* CIAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA3F2121133089500690AA2 /* CIAffineTransform.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		0DC472FA15B02BE10075BCAB /* CoreVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4301AB11E255A500EBDD56 /* CoreVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472FB15B02BE10075BCAB /* CAAnimationGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E011E3AAD000CA0912 /* CAAnimationGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472FC15B02BE10075BCAB /* CABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E211E3AAD000CA0912 /* CABasicAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472FD15B02BE10075BCAB /* CAPropertyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E411E3AAD000CA0912 /* CAPropertyAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472FE15B02BE10075BCAB /* CATransition.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF7E611E3AAD000CA0912 /* CATransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC472FF15B02BE10075BCAB /* CoreAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF82211E3AB6A00CA0912 /* CoreAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC4730015B02BE10075BCAB /* CAMediaTiming.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF85D11E3AFEF00CA0912 /* CAMediaTiming.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC4730115B02BE10075BCAB /* CAMediaTimingFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAEF8C111E3B3FF00CA0912 /* CAMediaTimingFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC4730215B02BE10075BCAB /* CATransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE41B88812BEA2EE00ED6C10 /* CATransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC4730315B02BE10075BCAB /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DC4730415B02BE10075BCAB /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		0DC4730515B02BE10075BCAB /* CAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEB73F12D2378C008E5A59 /* CAAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE0FB9AD10F9814400EBA597 /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE0FB9AE10F9814400EBA597 /* CoreImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE255FEF10F10397005CE23E /* CoreImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE0FB9BA10F9815300EBA597 /* CIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0FB9B010F9815300EBA597 /* CIColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -76,7 +102,7 @@
 		FEDEAA6812C2608F008E5A59 /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEDEAA6A12C2608F008E5A59 /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEDEAA6C12C2608F008E5A59 /* CAValueFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEAA6612C2608F008E5A59 /* CAValueFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEDEABC112C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; };
+		FEDEABC112C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDEABC212C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; };
 		FEDEABC312C98F59008E5A59 /* CALayerContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEABC012C98F59008E5A59 /* CALayerContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDEB74012D2378C008E5A59 /* CAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDEB73F12D2378C008E5A59 /* CAAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,6 +114,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0DC4731015B02BE20075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0DC472DE15B02B050075BCAB;
+			remoteInfo = "OpenGL-Linux-i386";
+		};
+		0DCD875B15B02E3C006F9320 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE2A2CDE12D2C7410028C06D /* OpenGL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DC472D015B02B050075BCAB;
+			remoteInfo = "OpenGL-Linux-i386";
+		};
+		0DCD875D15B02E45006F9320 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE6F7AF80FD554A800C3244F;
+			remoteInfo = "CoreGraphics-Linux-i386";
+		};
+		0DCD878115B0366D006F9320 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DCD876015B03618006F9320;
+			remoteInfo = "CoreVideo-Linux-i386";
+		};
+		0DCD878415B0366D006F9320 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE43019D11E2556B00EBDD56 /* CoreVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0DCD877115B03618006F9320;
+			remoteInfo = "CoreVideo-Linux-i386";
+		};
 		FE293C5D10D984D10031C1DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEF88C1D100CC41C00B15FD7 /* CoreGraphics.xcodeproj */;
@@ -191,6 +252,7 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0DC4730C15B02BE10075BCAB /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* QuartzCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuartzCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE06B4F31430E9A30071169B /* darwin-i386.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "darwin-i386.xcconfig"; sourceTree = "<group>"; };
@@ -259,6 +321,37 @@
 		FEF88C37100CC62400B15FD7 /* CATransform3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransform3D.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		0DC4730815B02BE10075BCAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFAEE10FB6D5300D3E136 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFAFA10FB6D7E00D3E136 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFAFE10FB6D9600D3E136 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
@@ -266,6 +359,7 @@
 				8DC2EF5B0486A6940098B216 /* QuartzCore.framework */,
 				FED38C4D10E13E1000A2A651 /* QuartzCore.framework */,
 				FECA81A110EBB231003472F1 /* QuartzCore.framework */,
+				0DC4730C15B02BE10075BCAB /* QuartzCore.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -406,6 +500,7 @@
 				FE2A2CE512D2C7410028C06D /* OpenGL.framework */,
 				FE2A2CE712D2C7410028C06D /* OpenGL.framework */,
 				FE2A2CE912D2C7410028C06D /* OpenGL.framework */,
+				0DC4731115B02BE20075BCAB /* OpenGL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -414,6 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				FE4301A211E2556B00EBDD56 /* CoreVideo.framework */,
+				0DCD878515B0366D006F9320 /* CoreVideo.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -432,6 +528,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0DC472EB15B02BE10075BCAB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DC472EC15B02BE10075BCAB /* CAAnimation.h in Headers */,
+				0DC472ED15B02BE10075BCAB /* CALayer.h in Headers */,
+				0DC472EE15B02BE10075BCAB /* CATransform3D.h in Headers */,
+				0DC472EF15B02BE10075BCAB /* QuartzCore.h in Headers */,
+				0DC472F015B02BE10075BCAB /* CoreImage.h in Headers */,
+				0DC472F115B02BE10075BCAB /* CARenderer.h in Headers */,
+				0DC472F215B02BE10075BCAB /* CABase.h in Headers */,
+				0DC472F315B02BE10075BCAB /* CAWindowOpenGLContext.h in Headers */,
+				0DC472F415B02BE10075BCAB /* CIColor.h in Headers */,
+				0DC472F515B02BE10075BCAB /* CIContext.h in Headers */,
+				0DC472F615B02BE10075BCAB /* CIFilter.h in Headers */,
+				0DC472F715B02BE10075BCAB /* CIImage.h in Headers */,
+				0DC472F815B02BE10075BCAB /* CIVector.h in Headers */,
+				0DC472F915B02BE10075BCAB /* CIAffineTransform.h in Headers */,
+				0DC472FA15B02BE10075BCAB /* CoreVideo.h in Headers */,
+				0DC472FB15B02BE10075BCAB /* CAAnimationGroup.h in Headers */,
+				0DC472FC15B02BE10075BCAB /* CABasicAnimation.h in Headers */,
+				0DC472FD15B02BE10075BCAB /* CAPropertyAnimation.h in Headers */,
+				0DC472FE15B02BE10075BCAB /* CATransition.h in Headers */,
+				0DC472FF15B02BE10075BCAB /* CoreAnimation.h in Headers */,
+				0DC4730015B02BE10075BCAB /* CAMediaTiming.h in Headers */,
+				0DC4730115B02BE10075BCAB /* CAMediaTimingFunction.h in Headers */,
+				0DC4730215B02BE10075BCAB /* CATransaction.h in Headers */,
+				0DC4730315B02BE10075BCAB /* CAValueFunction.h in Headers */,
+				0DC4730415B02BE10075BCAB /* CALayerContext.h in Headers */,
+				0DC4730515B02BE10075BCAB /* CAAction.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF500486A6940098B216 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -534,6 +663,29 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0DC472E615B02BE10075BCAB /* QuartzCore-Linux-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0DC4730A15B02BE10075BCAB /* Build configuration list for PBXNativeTarget "QuartzCore-Linux-i386" */;
+			buildPhases = (
+				0DC472EB15B02BE10075BCAB /* Headers */,
+				0DC4730615B02BE10075BCAB /* Sources */,
+				0DC4730715B02BE10075BCAB /* Resources */,
+				0DC4730815B02BE10075BCAB /* Frameworks */,
+			);
+			buildRules = (
+				0DC4730915B02BE10075BCAB /* PBXBuildRule */,
+			);
+			dependencies = (
+				0DCD875E15B02E45006F9320 /* PBXTargetDependency */,
+				0DCD878215B0366D006F9320 /* PBXTargetDependency */,
+				0DCD875C15B02E3C006F9320 /* PBXTargetDependency */,
+			);
+			name = "QuartzCore-Linux-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = QuartzCore;
+			productReference = 0DC4730C15B02BE10075BCAB /* QuartzCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8DC2EF4F0486A6940098B216 /* QuartzCore-FreeBSD-i386 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-FreeBSD-i386" */;
@@ -631,11 +783,26 @@
 				FECA819410EBB231003472F1 /* QuartzCore-Windows-i386 */,
 				8DC2EF4F0486A6940098B216 /* QuartzCore-FreeBSD-i386 */,
 				FED38C4310E13E1000A2A651 /* QuartzCore-Darwin-i386 */,
+				0DC472E615B02BE10075BCAB /* QuartzCore-Linux-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0DC4731115B02BE20075BCAB /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = 0DC4731015B02BE20075BCAB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0DCD878515B0366D006F9320 /* CoreVideo.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreVideo.framework;
+			remoteRef = 0DCD878415B0366D006F9320 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE293C5E10D984D10031C1DC /* CoreGraphics.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -695,6 +862,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0DC4730715B02BE10075BCAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE2BFB1410FB6DCE00D3E136 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -718,7 +892,53 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXSourcesBuildPhase section */
+		0DC4730615B02BE10075BCAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1310FB6DCE00D3E136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1510FB6DCE00D3E136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE2BFB1710FB6DCE00D3E136 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
 /* Begin PBXTargetDependency section */
+		0DCD875C15B02E3C006F9320 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-Linux-i386";
+			targetProxy = 0DCD875B15B02E3C006F9320 /* PBXContainerItemProxy */;
+		};
+		0DCD875E15B02E45006F9320 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-Linux-i386";
+			targetProxy = 0DCD875D15B02E45006F9320 /* PBXContainerItemProxy */;
+		};
+		0DCD878215B0366D006F9320 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreVideo-Linux-i386";
+			targetProxy = 0DCD878115B0366D006F9320 /* PBXContainerItemProxy */;
+		};
 		FE2A2CEE12D2C74E0028C06D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "OpenGL-Windows-i386";
@@ -763,6 +983,36 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0DC4730B15B02BE10075BCAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DQUARTZCORE_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = QuartzCore;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = build/Linux/i386;
+			};
+			name = Release;
+		};
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE06B4F71430E9A30071169B /* freebsd-i386.xcconfig */;
@@ -799,6 +1049,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0DC4730A15B02BE10075BCAB /* Build configuration list for PBXNativeTarget "QuartzCore-Linux-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0DC4730B15B02BE10075BCAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "QuartzCore-FreeBSD-i386" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

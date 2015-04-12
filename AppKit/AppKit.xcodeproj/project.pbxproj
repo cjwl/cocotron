@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D7768F315B0AEF700308826 /* O2ImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9ACF12155EF59D002AFCA9 /* O2ImageDecoder.m */; };
+		0D7768F415B0AF3000308826 /* O2Font_FT.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34054910CAB38F00A989F0 /* O2Font_FT.m */; };
+		0DCD875F15B0354F006F9320 /* O2Font_FT.h in Headers */ = {isa = PBXBuildFile; fileRef = FE34054810CAB38F00A989F0 /* O2Font_FT.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		496555CB17A02FAD0015D3B3 /* NSPoof.png in Resources */ = {isa = PBXBuildFile; fileRef = 496555CA17A02FAD0015D3B3 /* NSPoof.png */; };
@@ -116,7 +119,7 @@
 		63138203145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
 		63138204145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
 		63138205145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
-		63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
+		63138206145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		63138207145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
 		63138208145F3A5F00765AA7 /* NSColorPickerWheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138200145F3A5F00765AA7 /* NSColorPickerWheel.h */; };
 		63138209145F3A5F00765AA7 /* NSColorPickerWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138201145F3A5F00765AA7 /* NSColorPickerWheel.m */; };
@@ -124,7 +127,7 @@
 		6313829B145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
 		6313829C145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
 		6313829D145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
-		6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
+		6313829E145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6313829F145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
 		631382A0145F6ED300765AA7 /* NSColorPickerWheelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 63138298145F6ED300765AA7 /* NSColorPickerWheelView.h */; };
 		631382A1145F6ED300765AA7 /* NSColorPickerWheelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63138299145F6ED300765AA7 /* NSColorPickerWheelView.m */; };
@@ -489,7 +492,7 @@
 		C889756D0EA0BF3100D0A0A2 /* O2Paint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5A090DCD450700CE5A1C /* O2Paint_radialGradient.h */; };
 		C889756E0EA0BF3100D0A0A2 /* O2Paint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5A0B0DCD450700CE5A1C /* O2Paint_ramp.h */; };
 		C889756F0EA0BF3100D0A0A2 /* NSColor_CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE08C3210DDF299800B3169A /* NSColor_CGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88975700EA0BF3100D0A0A2 /* O2Surface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */; };
+		C88975700EA0BF3100D0A0A2 /* O2Surface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* O2Surface_DIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975710EA0BF3100D0A0A2 /* O2ColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB780E13EB8E003502ED /* O2ColorSpace+PDF.h */; };
 		C88975730EA0BF3100D0A0A2 /* O2Function+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB990E13EB8E003502ED /* O2Function+PDF.h */; };
 		C88975740EA0BF3100D0A0A2 /* O2Image+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* O2Image+PDF.h */; };
@@ -2266,9 +2269,12 @@
 		FE39C69C1203D72000A80A71 /* _NSManagedProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C6981203D72000A80A71 /* _NSManagedProxy.h */; };
 		FE39C69E1203D72000A80A71 /* NSPersistentDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C69A1203D72000A80A71 /* NSPersistentDocument.h */; };
 		FE39C6A01203D72000A80A71 /* _NSManagedProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C6981203D72000A80A71 /* _NSManagedProxy.h */; };
-		FE39C6A11203D72000A80A71 /* _NSManagedProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C6991203D72000A80A71 /* _NSManagedProxy.m */; };
 		FE39C6A21203D72000A80A71 /* NSPersistentDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C69A1203D72000A80A71 /* NSPersistentDocument.h */; };
 		FE39C6A31203D72000A80A71 /* NSPersistentDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C69B1203D72000A80A71 /* NSPersistentDocument.m */; };
+		FE39C6A41203D72000A80A71 /* _NSManagedProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C6981203D72000A80A71 /* _NSManagedProxy.h */; };
+		FE39C6A51203D72000A80A71 /* _NSManagedProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C6991203D72000A80A71 /* _NSManagedProxy.m */; };
+		FE39C6A61203D72000A80A71 /* NSPersistentDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C69A1203D72000A80A71 /* NSPersistentDocument.h */; };
+		FE39C6A71203D72000A80A71 /* NSPersistentDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C69B1203D72000A80A71 /* NSPersistentDocument.m */; };
 		FE39C6A81203D72000A80A71 /* _NSManagedProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C6981203D72000A80A71 /* _NSManagedProxy.h */; };
 		FE39C6A91203D72000A80A71 /* _NSManagedProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FE39C6991203D72000A80A71 /* _NSManagedProxy.m */; };
 		FE39C6AA1203D72000A80A71 /* NSPersistentDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE39C69A1203D72000A80A71 /* NSPersistentDocument.h */; };
@@ -2385,11 +2391,11 @@
 		FE463EE7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */; };
 		FE463EE8102D0F9D00B265D6 /* NSPathControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC8102D0F9C00B265D6 /* NSPathControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EE9102D0F9D00B265D6 /* NSPathControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC9102D0F9D00B265D6 /* NSPathControl.m */; };
-		FE463EEA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */; };
+		FE463EEA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EEB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */; };
-		FE463EEC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; };
+		FE463EEC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EED102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */; };
-		FE463EEE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; };
+		FE463EEE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463EEF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
 		FE463EF0102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
 		FE463EF1102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
@@ -3569,6 +3575,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0DC472E115B02B7D0075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DC472D015B02B050075BCAB;
+			remoteInfo = "OpenGL-Linux-i386";
+		};
+		0DC472E415B02B7D0075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0DC472DE15B02B050075BCAB;
+			remoteInfo = "OpenGL-Linux-i386";
+		};
+		0DC4731415B02C1D0075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DC472E615B02BE10075BCAB;
+			remoteInfo = "QuartzCore-Linux-i386";
+		};
+		0DC4731715B02C1D0075BCAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED38C3B10E13DDF00A2A651 /* QuartzCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0DC4730C15B02BE10075BCAB;
+			remoteInfo = "QuartzCore-Linux-i386";
+		};
 		6E46FEC70A2D2DCF004CD27E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
@@ -5769,6 +5803,7 @@
 				FE0C4EC11041CF2100D8C100 /* OpenGL.framework */,
 				FE0C4EC31041CF2100D8C100 /* OpenGL.framework */,
 				FE5A876710C6F244005E348A /* OpenGL.framework */,
+				0DC472E515B02B7D0075BCAB /* OpenGL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5882,6 +5917,7 @@
 				FE41B87A12BEA2D900ED6C10 /* QuartzCore.framework */,
 				FE41B87612BEA2D900ED6C10 /* QuartzCore.framework */,
 				FE41B87812BEA2D900ED6C10 /* QuartzCore.framework */,
+				0DC4731815B02C1D0075BCAB /* QuartzCore.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6672,6 +6708,7 @@
 				49C12B4F16FCAF270018CB21 /* O2EXIFDecoder.h in Headers */,
 				9824ACBD14EDE63D00245AEF /* NSStatusBar_(Private).h in Headers */,
 				98214B9014EE566B006DB3BD /* NSStatusItem+Private.h in Headers */,
+				0DCD875F15B0354F006F9320 /* O2Font_FT.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7930,6 +7967,8 @@
 			dependencies = (
 				C889770F0EA0C06500D0A0A2 /* PBXTargetDependency */,
 				C88977440EA0C11C00D0A0A2 /* PBXTargetDependency */,
+				0DC472E215B02B7D0075BCAB /* PBXTargetDependency */,
+				0DC4731515B02C1D0075BCAB /* PBXTargetDependency */,
 			);
 			name = "AppKit-Linux-i386";
 			productInstallPath = /Library/Frameworks;
@@ -8067,6 +8106,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0DC472E515B02B7D0075BCAB /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = 0DC472E415B02B7D0075BCAB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0DC4731815B02C1D0075BCAB /* QuartzCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = QuartzCore.framework;
+			remoteRef = 0DC4731715B02C1D0075BCAB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		6E46FEC80A2D2DCF004CD27E /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -8969,8 +9022,6 @@
 				FE71F3C811FD40B800E6F801 /* O2TTFDecoder.m in Sources */,
 				FE43BE2411FFBAAD00119833 /* O2PDFBlock.m in Sources */,
 				FE39C32B1203304700A80A71 /* O2ClipState.m in Sources */,
-				FE39C6A11203D72000A80A71 /* _NSManagedProxy.m in Sources */,
-				FE39C6A31203D72000A80A71 /* NSPersistentDocument.m in Sources */,
 				FE7EF28E1211095500B2B398 /* NSTokenAttachmentCell.m in Sources */,
 				FE4A25BE1222C4D8009058C1 /* _NSRuleEditorViewSliceHolder.m in Sources */,
 				FE4A25CE1222C4E9009058C1 /* NSRuleEditorButtonCell.m in Sources */,
@@ -8999,6 +9050,8 @@
 				49B85E8A166FB2D300507E8C /* NSBidiHelper.m in Sources */,
 				49C12B5416FCAF270018CB21 /* O2EXIFDecoder.m in Sources */,
 				496555DF17A02FB90015D3B3 /* NSPoofAnimation.m in Sources */,
+				0D7768F315B0AEF700308826 /* O2ImageDecoder.m in Sources */,
+				0D7768F415B0AF3000308826 /* O2Font_FT.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10268,6 +10321,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0DC472E215B02B7D0075BCAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-Linux-i386";
+			targetProxy = 0DC472E115B02B7D0075BCAB /* PBXContainerItemProxy */;
+		};
+		0DC4731515B02C1D0075BCAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "QuartzCore-Linux-i386";
+			targetProxy = 0DC4731415B02C1D0075BCAB /* PBXContainerItemProxy */;
+		};
 		C889770F0EA0C06500D0A0A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Foundation-Linux-i386";
@@ -10602,10 +10665,13 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
+					"-lfreetype",
 					"-lX11",
 					"-lcairo",
-					"-lfreetype",
 					"-lfontconfig",
+					"-lpixman",
+					"-lXrender",
+					"-lexpat",
 				);
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -10648,10 +10714,13 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
+					"-lfreetype",
 					"-lX11",
 					"-lcairo",
-					"-lfreetype",
 					"-lfontconfig",
+					"-lpixman",
+					"-lXrender",
+					"-lexpat",
 				);
 				PRODUCT_NAME = AppKit;
 			};
