@@ -41,9 +41,15 @@ typedef struct {
    struct _NSMapNode  **buckets;
 }
 
-+mapTableWithWeakToWeakObjects;
-+mapTableWithWeakToStrongObjects;
 +mapTableWithStrongToStrongObjects;
++mapTableWithStrongToWeakObjects;
++mapTableWithWeakToStrongObjects;
++mapTableWithWeakToWeakObjects;
+
++strongToStrongObjectsMapTable;
++strongToWeakObjectsMapTable;
++weakToStrongObjectsMapTable;
++weakToWeakObjectsMapTable;
 
 -objectForKey:key;
 -(void)removeObjectForKey:key;
