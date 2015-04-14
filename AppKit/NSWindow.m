@@ -266,7 +266,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
    _delegate=nil;
    _firstResponder=self;
-   _fieldEditor=nil;
+   _sharedFieldEditor=nil;
+   _currentFieldEditor=nil;
    _draggedTypes=nil;
 
    _trackingAreas=nil;
@@ -330,7 +331,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_menuView release];
    [_contentView release];
    [_backgroundColor release];
-   [_fieldEditor release];
+   [_sharedFieldEditor release];
    [_draggedTypes release];
    [_trackingAreas release];
    [_autosaveFrameName release];
@@ -798,9 +799,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
      frame.origin.y=virtual.origin.y-frame.size.height;
     }
 
-    if(changed){
+    if(changed)
      [self setFrame:frame display:YES];
-    }
+
     _makeSureIsOnAScreen=NO;
    }
 #endif
@@ -874,14 +875,12 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    if(didSize)
     [self resetCursorRects];
     
-   if(didSize){
+   if(didSize)
     [self postNotificationName:NSWindowDidResizeNotification];
-   }
     
-   if(didMove){
+   if(didMove)
     [self postNotificationName:NSWindowDidMoveNotification];
-   }
-    
+
 // If you setFrame:display:YES before rearranging views with only setFrame: calls (which do not mark the view for display)
 // Cocoa will properly redisplay the views
 // So, doing a hard display right here is not the right thing to do, delay it 
@@ -1077,7 +1076,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [toolbarView setFrameOrigin:toolbarOrigin];
 
    [[self contentView] setAutoresizingMask:NSViewNotSizable];
-
    [self setFrame:frame display:NO animate:NO];
    
    [[self contentView] setAutoresizingMask:mask];
@@ -1569,7 +1567,8 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 
 -(BOOL)makeFirstResponder:(NSResponder *)responder {
 
-   if(_firstResponder==responder)
+   if(_firstResponder==responder || 
+      ([responder isKindOfClass:[NSControl class]] && _firstResponder==[(NSControl *)responder currentEditor]))
     return YES;
 
    if(![_firstResponder resignFirstResponder])
@@ -1731,26 +1730,39 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
 }
 
 -(NSText *)fieldEditor:(BOOL)create forObject:object {
-   if(create && _fieldEditor==nil){
-    _fieldEditor=[[NSTextView alloc] init];
+   NSTextView *newFieldEditor = nil;
+   if([_delegate respondsToSelector:@selector(windowWillReturnFieldEditor:toObject:)])
+      newFieldEditor = [_delegate windowWillReturnFieldEditor:self toObject:object];
+   
+   if(create && newFieldEditor == nil && _sharedFieldEditor == nil)
+      newFieldEditor = _sharedFieldEditor = [[NSTextView alloc] init];
+   
+   if (newFieldEditor)
+      _currentFieldEditor = newFieldEditor;   
+   else
+      _currentFieldEditor = _sharedFieldEditor;
+   
+   if (_currentFieldEditor) {
+      [_currentFieldEditor setHorizontallyResizable:NO];
+      [_currentFieldEditor setVerticallyResizable:NO];
+      [_currentFieldEditor setFieldEditor:YES];
+      [_currentFieldEditor setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    }
-
-   [_fieldEditor setHorizontallyResizable:NO];
-   [_fieldEditor setVerticallyResizable:NO];
-   [_fieldEditor setFieldEditor:YES];
-   [_fieldEditor setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-
-   return _fieldEditor;
+   
+   return _currentFieldEditor;
 }
 
 -(void)endEditingFor:object {
-   if((NSResponder *)_fieldEditor==_firstResponder){
-    _firstResponder=self;
-    [_fieldEditor resignFirstResponder];
+   if (_currentFieldEditor) {
+      if ((NSResponder *)_currentFieldEditor == _firstResponder) {
+         _firstResponder = object;
+         [_currentFieldEditor resignFirstResponder];
+      }
+      [_currentFieldEditor setDelegate:nil];
+      [_currentFieldEditor removeFromSuperview];
+      [_currentFieldEditor setString:@""];
+      _currentFieldEditor = nil;
    }
-   [_fieldEditor setDelegate:nil];
-   [_fieldEditor removeFromSuperview];
-   [_fieldEditor setString:@""];
 }
 
 -(void)disableScreenUpdatesUntilFlush {
@@ -2149,8 +2161,7 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
         
         // Event goes to view, not first responder
         [view mouseDown:event];
-
-      _mouseDownLocationInWindow=[event locationInWindow];
+        _mouseDownLocationInWindow=[event locationInWindow];
      }
      break;
 
@@ -2282,11 +2293,9 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    else
       topLeftPoint.y = frame.origin.y + frame.size.height;
    
-   if (reposition){
+   if (reposition)
       [self setFrame:frame display:YES];
 
-   }
-    
    return topLeftPoint;
 }
 
@@ -2551,7 +2560,6 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
     frame=[self frame];
     frame.size.height+=(newSize.height-oldSize.height);
     // no display because setMenu: is called before awakeFromNib
-
     [self setFrame:frame display:NO];
     // do we even need this?
     [_backgroundView setNeedsDisplay:YES]; 
@@ -2803,21 +2811,17 @@ NSString * const NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification
    [_childWindows makeObjectsPerformSelector:@selector(_parentWindowDidChangeFrame:) withObject:self];
    [_drawers makeObjectsPerformSelector:@selector(parentWindowDidChangeFrame:) withObject:self];
 
-	if (didSize) {
-		// Don't redraw everything unless we really have to
-		[_backgroundView setFrameSize:_frame.size];
-		[_backgroundView setNeedsDisplay:YES];
-		
-		// And make sure the cursor rect align with the new size
-		[self resetCursorRects];
-	}
-
-   [self saveFrameUsingName:_autosaveFrameName];
-   
-   if(didSize){
+   if (didSize) {
+    // Don't redraw everything unless we really have to
+    [_backgroundView setFrameSize:_frame.size];
+    [_backgroundView setNeedsDisplay:YES];
+    [self resetCursorRects];
+    [self saveFrameUsingName:_autosaveFrameName];
     [self postNotificationName:NSWindowDidResizeNotification];
    }
-   else{
+   else
+   {
+    [self saveFrameUsingName:_autosaveFrameName];
     [self postNotificationName:NSWindowDidMoveNotification];
    }
 }

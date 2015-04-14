@@ -892,7 +892,6 @@ id NSApp=nil;
         [pool release];
     }
     
-
     
     return [session stopCode];
 }

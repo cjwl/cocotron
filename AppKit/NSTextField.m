@@ -154,6 +154,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(_currentEditor==nil){
         NSText* editor =[[self window] fieldEditor:YES forObject:self];
         _currentEditor = [[cell setUpFieldEditorAttributes: editor] retain];
+     [_currentEditor setDelegate:self];
+     [_currentEditor registerForDraggedTypes:[self _draggedTypes]];
+     [_currentEditor becomeFirstResponder];
     }
 
     [cell selectWithFrame:[self bounds] inView:self editor:_currentEditor delegate:self start:range.location length:range.length];

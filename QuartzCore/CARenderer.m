@@ -8,8 +8,8 @@
 
 @interface CALayer(private)
 -(void)_setContext:(CALayerContext *)context;
--(NSNumber *)_textureId;
 -(void)_setTextureId:(NSNumber *)value;
+-(NSNumber *)_textureId;
 @end
 
 @implementation CARenderer
