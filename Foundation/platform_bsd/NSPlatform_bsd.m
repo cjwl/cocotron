@@ -28,7 +28,6 @@
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSPlatform_bsd.h>
-#import <Foundation/NSTask_bsd.h>
 
 #include <sys/param.h>
 #include <time.h>
@@ -68,20 +67,6 @@ NSString * const NSPlatformExecutableFileExtension=@"";
 NSString * const NSPlatformLoadableObjectFileExtension=@"so";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"lib";
 
-- (Class)taskClass
-{
-    static Class NSTaskClass = Nil;
-    
-    @synchronized(self)
-	{
-        if (NSTaskClass == Nil) {
-            NSTaskClass = [NSTask_bsd class];
-            [NSTaskClass registerNotification];
-        }
-    }
-    
-    return NSTaskClass;
-}
 
 @end
 

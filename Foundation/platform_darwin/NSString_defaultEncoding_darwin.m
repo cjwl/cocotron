@@ -21,16 +21,15 @@ NSStringEncoding defaultEncoding()
     static int defaultEncoding = -1;
     
 	if (defaultEncoding == -1) {
-		
-		static struct passwd    *pwent = NULL;
-		char                    *filename;
+        static struct passwd    *pwent = NULL;
+        char                    filename[255] = {0};
         FILE                    *fhandle;
-		
-		if (pwent == NULL) {
-			pwent = getpwuid(getuid());
-		}
-		
-		filename = strcat(pwent->pw_dir, "/.CFUserTextEncoding");
+        if (pwent == NULL) {
+            pwent = getpwuid(getuid());
+        }
+        strcpy(filename, pwent->pw_dir);
+        strcat(filename, "/.CFUserTextEncoding");
+
 		fhandle = fopen(filename, "r");
 		if(fhandle != NULL)
         {

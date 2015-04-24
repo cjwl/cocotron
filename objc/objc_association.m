@@ -151,7 +151,7 @@ void AssociationTableRemove(AssociationTable *table,id key){
     unsigned int i=HASHPTR(key)%table->nBuckets;
     AssociationHashBucket *j=table->buckets[i],*prev=j;
 
-   for(;j!=NULL;j=j->next){
+    for(;j!=NULL;j=j->next){
         if(j->key==key){
             // array to keep track of the objects to release - that must be done outside of the lock
             // since the release can trigger more association changes
@@ -159,7 +159,7 @@ void AssociationTableRemove(AssociationTable *table,id key){
             int releaseTableSize = 0;
             id *objectsToRelease = NULL;
             
-           if(prev==j)
+            if(prev==j)
                 table->buckets[i]=j->next;
             else
                 prev->next=j->next;
@@ -330,6 +330,7 @@ id objc_getAssociatedObject(id object, const void *key)
     }
 
     AssociationSpinLockLock(&AssociationLock);
+
 
     AssociationObjectEntry   *objectTable = AssociationTableGet(associationTable, object);
     if (objectTable == NULL) {

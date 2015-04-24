@@ -196,22 +196,37 @@ CONFORMING TO
 // POSIX programmer's guide p. 272
 - (BOOL)isNonBlocking {
     int flags = fcntl(_fileDescriptor, F_GETFL);
+    if (flags == -1) {
+        NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                         @"isNonBlocking: %s", strerror(errno));
+    }
+    
     return (flags & O_NONBLOCK)?YES:NO;
 }
 
 - (void)setNonBlocking:(BOOL)flag {
     int flags = fcntl(_fileDescriptor, F_GETFL);
+    if (flags == -1) {
+        NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                         @"setNonBlocking(GETFL)(%d): %s", flag, strerror(errno));
+    }
+
     if (flag)
         flags |= O_NONBLOCK;
     else
         flags &= ~O_NONBLOCK;
 
-    fcntl(_fileDescriptor, F_SETFL, flags);
+    if (fcntl(_fileDescriptor, F_SETFL, flags) == -1) {
+        NSRaiseException(NSFileHandleOperationException, self, _cmd,
+                         @"setNonBlocking(SETFL)(%d): %s", flag, strerror(errno));
+    }
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)length {
     NSMutableData *mutableData = [NSMutableData dataWithLength:length];
     ssize_t count, total = 0;
+
+    [self setNonBlocking:NO];
 
     do {
         count = read(_fileDescriptor, [mutableData mutableBytes]+total, length-total);
@@ -235,6 +250,8 @@ CONFORMING TO
 - (NSData *)readDataToEndOfFile {
     NSMutableData *mutableData = [NSMutableData dataWithLength:4096];
     ssize_t count, total = 0;
+
+    [self setNonBlocking:NO];
 
     do {
         count = read(_fileDescriptor, [mutableData mutableBytes]+total, 4096);
@@ -268,14 +285,15 @@ CONFORMING TO
         [self setNonBlocking:YES];
         count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 4096);
         err = errno; // preserved so that the next fcntl doesn't clobber it
+        
         [self setNonBlocking:NO];
 
         if (count <= 0) {
-            if (err == EAGAIN || err == EINTR) {
-                [self setNonBlocking: NO];
+            while (err == EAGAIN || err == EINTR) {
+                [self setNonBlocking:NO];
                 count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length], 1);
                 err = errno; // preserved so that the next fcntl doesn't clobber it
-                [self setNonBlocking: YES];
+                [self setNonBlocking:YES];
                 if (count > 0) {
                     count = read(_fileDescriptor, &((char*)[mutableData mutableBytes])[length + 1], 4096-1);
                     if (count > 0) {
@@ -284,6 +302,11 @@ CONFORMING TO
                     else {
                         count = 1;
                     }
+                    break;
+                }
+                else if (count == 0) {
+                    //no more data available
+                    break;
                 }
             }
         }

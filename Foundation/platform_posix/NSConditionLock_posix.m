@@ -126,9 +126,14 @@
     int rc;
     gettimeofday(&tv,NULL);
     NSTimeInterval d=[date timeIntervalSinceNow];
-    t.tv_sec= tv.tv_sec + (unsigned int)d + 1;
+    t.tv_sec= tv.tv_sec + (unsigned int)d;
     t.tv_nsec=tv.tv_usec*1000 + fmod(d, 1.0)*1000000.0;
     
+    if (t.tv_nsec >= 1000000000) {
+        t.tv_sec++;
+        t.tv_nsec -= 1000000000;
+    }
+
     if((rc = pthread_mutex_lock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
     }
@@ -159,8 +164,13 @@
     int rc;
     gettimeofday(&tv,NULL);
     NSTimeInterval d=[date timeIntervalSinceNow];
-    t.tv_sec= tv.tv_sec + (unsigned int)d + 1;
+    t.tv_sec= tv.tv_sec + (unsigned int)d;
     t.tv_nsec=tv.tv_usec*1000 + fmod(d, 1.0)*1000000.0;
+
+    if (t.tv_nsec >= 1000000000) {
+        t.tv_sec++;
+        t.tv_nsec -= 1000000000;
+    }
 
     if((rc = pthread_mutex_lock(&_mutex)) != 0) {
         [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];

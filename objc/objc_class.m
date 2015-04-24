@@ -24,9 +24,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdarg.h>
 #endif
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #import <pthread.h>
 
-static pthread_mutex_t classTableLock=PTHREAD_MUTEX_INITIALIZER;
+//static pthread_mutex_t classTableLock=PTHREAD_MUTEX_INITIALIZER;
+
+typedef unsigned int OSSpinLock;
+
+#import <Foundation/NSAtomicCompareAndSwap.h>
+
+static OSSpinLock classTableLock=0;
+
+extern BOOL OSSpinLockTry( volatile OSSpinLock *__lock );
+extern void OSSpinLockLock( volatile OSSpinLock *__lock );
+extern void OSSpinLockUnlock( volatile OSSpinLock *__lock );
 
 #define INITIAL_CLASS_HASHTABLE_SIZE	256
 
@@ -51,9 +65,9 @@ static inline OBJCHashTable *OBJCFutureClassTable(void) {
 id objc_lookUpClass(const char *className) {
    id result;
    
-   pthread_mutex_lock(&classTableLock);
+   OSSpinLockLock(&classTableLock);
    result=OBJCHashValueForKey(OBJCClassTable(),className);
-   pthread_mutex_unlock(&classTableLock);
+   OSSpinLockUnlock(&classTableLock);
    
    return result;
 }
@@ -66,15 +80,15 @@ id objc_getClass(const char *name) {
    id result;
    
    // technically, this should call a class lookup callback if class not found (unlike objc_lookUpClass)
-   pthread_mutex_lock(&classTableLock);
+   OSSpinLockLock(&classTableLock);
    result=OBJCHashValueForKey(OBJCClassTable(),name);
-   pthread_mutex_unlock(&classTableLock);
+   OSSpinLockUnlock(&classTableLock);
    
    return result;
 }
 
 int objc_getClassList(Class *buffer,int bufferLen) {
-   pthread_mutex_lock(&classTableLock);
+   OSSpinLockLock(&classTableLock);
    OBJCHashEnumerator classes=OBJCEnumerateHashTable(OBJCClassTable());
    int i=0;
     
@@ -87,7 +101,7 @@ int objc_getClassList(Class *buffer,int bufferLen) {
    
    for(;OBJCNextHashEnumeratorValue(&classes)!=0; i++)
     ;
-   pthread_mutex_unlock(&classTableLock);
+   OSSpinLockUnlock(&classTableLock);
    return i;
 }
 
@@ -673,12 +687,18 @@ BOOL class_addProtocol(Class cls,Protocol *protocol) {
 	protocolList->next = 0;
 	protocolList->list[0] = protocol;
     protocolList->count = 1;
-	struct objc_protocol_list *protoList = cls->protocols;
-	struct objc_protocol_list *lastList = protoList;
-	while((protoList=protoList->next) != NULL) {
-		lastList = protoList;
-	}
-	lastList->next = protocolList;
+    if (cls->protocols != NULL) {
+        struct objc_protocol_list *protoList = cls->protocols;
+        struct objc_protocol_list *lastList = protoList;
+        while((protoList=protoList->next) != NULL) {
+            lastList = protoList;
+        }
+        lastList->next = protocolList;
+    }
+    else {
+        cls->protocols = protocolList;
+    }
+
 	return YES;
 }
 
@@ -782,10 +802,10 @@ void OBJCRegisterClass(Class class) {
          class=futureClass;
       }
    }
-    
-   pthread_mutex_lock(&classTableLock);
+
+   OSSpinLockLock(&classTableLock);
    OBJCHashInsertValueForKey(OBJCClassTable(), class->name, class);
-   pthread_mutex_unlock(&classTableLock);
+   OSSpinLockUnlock(&classTableLock);
    
    OBJCRegisterSelectorsInClass(class);
    OBJCRegisterSelectorsInClass(class->isa);

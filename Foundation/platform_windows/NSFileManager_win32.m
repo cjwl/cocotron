@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <sys/stat.h>
 #include <windows.h>
+#include <Sddl.h>
 #include <shlobj.h>
 #include <objbase.h>
 
@@ -182,10 +183,13 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 
 -(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler
 {
-    if(src == nil || dest == nil) {
+    NSError *error = nil;
+    if ([self moveItemAtPath:src toPath:dest error:&error] == NO && handler != nil) {
+        //[self _errorHandler:handler src:src dest:dest operation:[error description]];
         return NO;
     }
-	return MoveFileW([src fileSystemRepresentationW],[dest fileSystemRepresentationW])?YES:NO;
+    
+    return YES;
 }
 
 #pragma mark -
@@ -199,16 +203,19 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return NO;
 	}
 	
-	NSDictionary *dstAttributes=[self attributesOfItemAtPath:toPath error:error];
-	
-	if(dstAttributes!=nil){
-		if(error!=NULL){
+	if([[srcAttributes fileType] isEqual:NSFileTypeRegular] == NO
+       && [[srcAttributes fileType] isEqual:NSFileTypeDirectory] == NO) {
+		return NO;
+	}
+    
+    if ([self fileExistsAtPath:toPath] == YES) {
+        if(error!=NULL){
 			NSDictionary *userInfo=[NSDictionary dictionaryWithObject:@"File exists" forKey:NSLocalizedDescriptionKey];
 			
 			*error=[NSError errorWithDomain:NSPOSIXErrorDomain code:17 userInfo:userInfo];
 		}
 		return NO;
-	}
+    }
 	
 	BOOL isDirectory = NO;
 	if ([self fileExistsAtPath:fromPath isDirectory:&isDirectory] && isDirectory) {
@@ -237,37 +244,13 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 
 -(BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:handler
 {
-	BOOL isDirectory;
-	if(src == nil || dest == nil) {
-		return NO;
-	}
+    NSError *error = nil;
+    if ([self copyItemAtPath:src toPath:dest error:&error] == NO && handler != nil) {
+        //[self _errorHandler:handler src:src dest:dest operation:[error description]];
+        return NO;
+    }
     
-	if(![self fileExistsAtPath:src isDirectory:&isDirectory])
-		return NO;
-	
-	if(!isDirectory){
-		if(!CopyFileW([src fileSystemRepresentationW],[dest fileSystemRepresentationW],YES))
-			return NO;
-	}
-	else {
-		NSArray *files=[self directoryContentsAtPath:src];
-		NSInteger      i,count=[files count];
-		
-		if(!CreateDirectoryW([dest fileSystemRepresentationW],NULL))
-			return NO;
-		
-		for(i=0;i<count;i++){
-			NSString *name=[files objectAtIndex:i];
-			NSString *subsrc=[src stringByAppendingPathComponent:name];
-			NSString *subdst=[dest stringByAppendingPathComponent:name];
-			
-			if(![self copyPath:subsrc toPath:subdst handler:handler])
-				return NO;
-		}
-		
-	}
-	
-	return YES;
+    return YES;
 }
 
 #pragma mark -
@@ -347,43 +330,13 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 
 -(BOOL)removeFileAtPath:(NSString *)path handler:handler
 {
-	if(path == nil) {
-		return NO;
-	}
+    NSError *error = nil;
+    if ([self removeItemAtPath:path error:&error] == NO && handler != nil) {
+        //[self _errorHandler:handler src:src dest:dest operation:[error description]];
+        return NO;
+    }
     
-	const unichar *fsrep=[path fileSystemRepresentationW];
-	DWORD       attribute=GetFileAttributesW(fsrep);
-	
-	if([path isEqualToString:@"."] || [path isEqualToString:@".."])
-		[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] path should not be . or ..",isa,sel_getName(_cmd)];
-	
-	if(attribute==0xFFFFFFFF)
-		return NO;
-	
-	if(attribute&FILE_ATTRIBUTE_READONLY){
-		attribute&=~FILE_ATTRIBUTE_READONLY;
-		if(!SetFileAttributesW(fsrep,attribute))
-			return NO;
-	}
-	
-	if(![self _isDirectory:path]){
-		if(!DeleteFileW(fsrep))
-			return NO;
-	}
-	else {
-		NSArray *contents=[self directoryContentsAtPath:path];
-		NSInteger      i,count=[contents count];
-		
-		for(i=0;i<count;i++){
-			NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
-			if(![self removeFileAtPath:fullPath handler:handler])
-				return NO;
-		}
-		
-		if(!RemoveDirectoryW(fsrep))
-			return NO;
-	}
-	return YES;
+    return YES;
 }
 
 #pragma mark -
@@ -637,16 +590,67 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		return nil;
 	}
 	
+    char		pSecurityDescriptor[128];
+    DWORD		lengthNeeded;
+
 	NSMutableDictionary *result = [NSMutableDictionary dictionary];
 	NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
 	[result setObject:date forKey:NSFileModificationDate];
 	
 	NSString *fileType = NSFileTypeRegular;
 	if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) fileType = NSFileTypeDirectory;
+    
+    if (GetFileSecurityW([path fileSystemRepresentationW], OWNER_SECURITY_INFORMATION, (SECURITY_DESCRIPTOR *)pSecurityDescriptor, 128, &lengthNeeded) != 0) {
+        PSID 			sid = NULL;
+        DWORD			lpbOwnerDefaulted;
+        char 			lpName[128];
+        DWORD			len = 128;
+        SID_NAME_USE	nameUse;
+        char			referencedDomainName[128];
+        DWORD			domainLen = 128;
+        
+        if (GetSecurityDescriptorOwner((SECURITY_DESCRIPTOR *)pSecurityDescriptor, &sid, ((LPBOOL)(&lpbOwnerDefaulted))) != 0) {
+            if (LookupAccountSid(NULL, sid, lpName, &len, referencedDomainName, &domainLen, &nameUse) != 0) {
+                NSString    *owner = [[[NSString alloc] initWithCString:lpName] autorelease];
+                
+                if (referencedDomainName != NULL) {
+                    [result setObject:[NSString stringWithFormat:@"%@\\%@", [[[NSString alloc] initWithCString:referencedDomainName] autorelease], owner] forKey:NSFileOwnerAccountName];
+                }
+                else {
+                    [result setObject:owner forKey:NSFileOwnerAccountName];
+                }
+            } else {
+                DWORD lastError = GetLastError();
+                //1332 means that the sid is not resolvable (an old one/or on a network drive)
+                if (lastError == 1332) {
+                    /*LPWSTR  str = NULL;
+                    if (ConvertSidToStringSidW(sid, &str) == TRUE) {
+                        NSString    *owner = NSStringFromNullTerminatedUnicode(str);
+                        LocalFree(str);
+                        [result setObject:owner forKey:NSFileOwnerAccountName];
+                    }
+                    else {
+                        if (error != nil) {
+                            *error = NSErrorForGetLastErrorCode(lastError);
+                        }
+                        return nil;
+                    }*/
+                }
+                else {
+                    if (error != nil) {
+                        *error = NSErrorForGetLastErrorCode(lastError);
+                    }
+                    return nil;
+                }
+            }
+        }
+    } else {
+        // TODO: set error
+		return nil;
+    }
 	
 	[result setObject:fileType forKey:NSFileType];
-	[result setObject:@"USER" forKey:NSFileOwnerAccountName];
-	[result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
+	[result setObject:@"" forKey:NSFileGroupOwnerAccountName];
 	[result setObject:[NSNumber numberWithUnsignedLong:0666] forKey:NSFilePosixPermissions];
 	
 	uint64_t sizeOfFile = fileData.nFileSizeLow;
@@ -658,9 +662,12 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 	return result;
 }
 
--(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path
+-(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error
 {
-	NSUnimplementedMethod();
+    if (error != NULL) {
+        //TODO set error
+    }
+    
 	return NO;
 #if 0
 	NSDate *date=[attributes objectForKey:NSFileModificationDate];
@@ -670,8 +677,10 @@ static BOOL _NSCreateDirectory(NSString *path,NSError **errorp)
 		if(utime((unichar *)[path fileSystemRepresentationW],timep)<0)
 			return NO;
 	}
+    
 	return YES;
 #endif
+
 }
 
 -(NSDictionary *)fileAttributesAtPath:(NSString *)path traverseLink:(BOOL)traverse

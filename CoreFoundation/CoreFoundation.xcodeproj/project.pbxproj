@@ -604,6 +604,98 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C67E02C8125B214E00C10757 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C67E02C9125B214E00C10757 /* CFBase.h in Headers */,
+				C67E02CA125B214E00C10757 /* CFLocale.h in Headers */,
+				C67E02CB125B214E00C10757 /* CFNumber.h in Headers */,
+				C67E02CC125B214E00C10757 /* CFNumberFormatter.h in Headers */,
+				C67E02CD125B214E00C10757 /* CFString.h in Headers */,
+				C67E02CE125B214E00C10757 /* CoreFoundation.h in Headers */,
+				C67E02CF125B214E00C10757 /* CFArray.h in Headers */,
+				C67E02D0125B214E00C10757 /* CFAttributedString.h in Headers */,
+				C67E02D1125B214E00C10757 /* CFBag.h in Headers */,
+				C67E02D2125B214E00C10757 /* CFBinaryHeap.h in Headers */,
+				C67E02D3125B214E00C10757 /* CFBitVector.h in Headers */,
+				C67E02D4125B214E00C10757 /* CFBundle.h in Headers */,
+				C67E02D5125B214E00C10757 /* CFByteOrder.h in Headers */,
+				C67E02D6125B214E00C10757 /* CFCalendar.h in Headers */,
+				C67E02D7125B214E00C10757 /* CFCharacterSet.h in Headers */,
+				C67E02D8125B214E00C10757 /* CFData.h in Headers */,
+				C67E02D9125B214E00C10757 /* CFDate.h in Headers */,
+				C67E02DA125B214E00C10757 /* CFDateFormatter.h in Headers */,
+				C67E02DB125B214E00C10757 /* CFDictionary.h in Headers */,
+				C67E02DC125B214E00C10757 /* CFError.h in Headers */,
+				C67E02DD125B214E00C10757 /* CFFileDescriptor.h in Headers */,
+				C67E02DE125B214E00C10757 /* CFMachPort.h in Headers */,
+				C67E02DF125B214E00C10757 /* CFMessagePort.h in Headers */,
+				C67E02E0125B214E00C10757 /* CFNotificationCenter.h in Headers */,
+				C67E02E1125B214E00C10757 /* CFPlugIn.h in Headers */,
+				C67E02E2125B214E00C10757 /* CFPreferences.h in Headers */,
+				C67E02E3125B214E00C10757 /* CFPropertyList.h in Headers */,
+				C67E02E4125B214E00C10757 /* CFRunLoop.h in Headers */,
+				C67E02E5125B214E00C10757 /* CFSet.h in Headers */,
+				C67E02E6125B214E00C10757 /* CFSocket.h in Headers */,
+				C67E02E7125B214E00C10757 /* CFStream.h in Headers */,
+				C67E02E8125B214E00C10757 /* CFStringTokenizer.h in Headers */,
+				C67E02E9125B214E00C10757 /* CFTimeZone.h in Headers */,
+				C67E02EA125B214E00C10757 /* CFTree.h in Headers */,
+				C67E02EB125B214E00C10757 /* CFURL.h in Headers */,
+				C67E02EC125B214E00C10757 /* CFUserNotification.h in Headers */,
+				C67E02ED125B214E00C10757 /* CFUUID.h in Headers */,
+				C67E02EE125B214E00C10757 /* CFXMLNode.h in Headers */,
+				C67E02EF125B214E00C10757 /* CFXMLParser.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6C6294A1785B66D009D381C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6C6294B1785B66D009D381C /* CFBase.h in Headers */,
+				C6C6294C1785B66D009D381C /* CFLocale.h in Headers */,
+				C6C6294D1785B66D009D381C /* CFNumber.h in Headers */,
+				C6C6294E1785B66D009D381C /* CFNumberFormatter.h in Headers */,
+				C6C6294F1785B66D009D381C /* CFString.h in Headers */,
+				C6C629501785B66D009D381C /* CoreFoundation.h in Headers */,
+				C6C629511785B66D009D381C /* CFArray.h in Headers */,
+				C6C629521785B66D009D381C /* CFAttributedString.h in Headers */,
+				C6C629531785B66D009D381C /* CFBag.h in Headers */,
+				C6C629541785B66D009D381C /* CFBinaryHeap.h in Headers */,
+				C6C629551785B66D009D381C /* CFBitVector.h in Headers */,
+				C6C629561785B66D009D381C /* CFBundle.h in Headers */,
+				C6C629571785B66D009D381C /* CFByteOrder.h in Headers */,
+				C6C629581785B66D009D381C /* CFCalendar.h in Headers */,
+				C6C629591785B66D009D381C /* CFCharacterSet.h in Headers */,
+				C6C6295A1785B66D009D381C /* CFData.h in Headers */,
+				C6C6295B1785B66D009D381C /* CFDate.h in Headers */,
+				C6C6295C1785B66D009D381C /* CFDateFormatter.h in Headers */,
+				C6C6295D1785B66D009D381C /* CFDictionary.h in Headers */,
+				C6C6295E1785B66D009D381C /* CFError.h in Headers */,
+				C6C6295F1785B66D009D381C /* CFFileDescriptor.h in Headers */,
+				C6C629601785B66D009D381C /* CFMachPort.h in Headers */,
+				C6C629611785B66D009D381C /* CFMessagePort.h in Headers */,
+				C6C629621785B66D009D381C /* CFNotificationCenter.h in Headers */,
+				C6C629631785B66D009D381C /* CFPlugIn.h in Headers */,
+				C6C629641785B66D009D381C /* CFPreferences.h in Headers */,
+				C6C629651785B66D009D381C /* CFPropertyList.h in Headers */,
+				C6C629661785B66D009D381C /* CFRunLoop.h in Headers */,
+				C6C629671785B66D009D381C /* CFSet.h in Headers */,
+				C6C629681785B66D009D381C /* CFSocket.h in Headers */,
+				C6C629691785B66D009D381C /* CFStream.h in Headers */,
+				C6C6296A1785B66D009D381C /* CFStringTokenizer.h in Headers */,
+				C6C6296B1785B66D009D381C /* CFTimeZone.h in Headers */,
+				C6C6296C1785B66D009D381C /* CFTree.h in Headers */,
+				C6C6296D1785B66D009D381C /* CFURL.h in Headers */,
+				C6C6296E1785B66D009D381C /* CFUserNotification.h in Headers */,
+				C6C6296F1785B66D009D381C /* CFUUID.h in Headers */,
+				C6C629701785B66D009D381C /* CFXMLNode.h in Headers */,
+				C6C629711785B66D009D381C /* CFXMLParser.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE5A869810C6EE28005E348A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;

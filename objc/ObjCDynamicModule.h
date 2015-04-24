@@ -10,7 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef void *NSModuleHandle;
 
-OBJC_EXPORT NSModuleHandle NSLoadModule(const char *path);
+@class NSError;
+
+OBJC_EXPORT NSModuleHandle NSLoadModule(const char *path, NSError **error);
 OBJC_EXPORT BOOL NSUnloadModule(NSModuleHandle handle);
 OBJC_EXPORT const char *NSLastModuleError(void);
 OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);

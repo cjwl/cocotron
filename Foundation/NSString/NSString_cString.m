@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_win1252.h>
 #import <Foundation/NSStringSymbol.h>
 #import <Foundation/NSString_isoLatin1.h>
+#import <Foundation/NSString_isoLatin2.h>
 #import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSRaise.h>
@@ -95,10 +96,14 @@ unichar *NSString_anyCStringToUnicode(NSStringEncoding encoding, const char *cSt
         case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSISOLatin1ToUnicode(cString,length,resultLength,zone);
+        case NSISOLatin2StringEncoding:
+            return NSISOLatin2ToUnicode(cString,length,resultLength,zone);
         case NSWindowsCP1252StringEncoding:
             return NSWin1252ToUnicode(cString,length,resultLength,zone);
         case NSMacOSRomanStringEncoding:
             return NSMacOSRomanToUnicode(cString,length,resultLength,zone);
+        case NSUTF8StringEncoding:
+            return NSUTF8ToUnicode(cString,length,resultLength,zone);
         default: {
             unichar *chars = NSBytesToUnicode(cString, length, encoding, resultLength, zone);
             if (chars) {
@@ -123,6 +128,8 @@ char *NSString_unicodeToAnyCString(NSStringEncoding encoding, const unichar *cha
         case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSUnicodeToISOLatin1(characters,length,lossy,resultLength,zone, zeroTerminate);
+        case NSISOLatin2StringEncoding:
+            return NSUnicodeToISOLatin2(characters,length,lossy,resultLength,zone, zeroTerminate);
         case NSWindowsCP1252StringEncoding:
             return NSUnicodeToWin1252(characters,length,lossy,resultLength,zone, zeroTerminate);
         case NSSymbolStringEncoding:
@@ -151,6 +158,8 @@ NSString *NSString_anyCStringNewWithBytes(NSStringEncoding encoding, NSZone *zon
         case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSString_isoLatin1NewWithBytes(zone,bytes,length);
+        case NSISOLatin2StringEncoding:
+            return NSString_isoLatin2NewWithBytes(zone,bytes,length);
         case NSWindowsCP1252StringEncoding:
             return NSString_win1252NewWithBytes(zone,bytes,length);
         default: {
@@ -183,6 +192,8 @@ NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone
         case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSISOLatin1CStringNewWithCharacters(zone,characters,length, lossy);
+        case NSISOLatin2StringEncoding:
+            return NSISOLatin2CStringNewWithCharacters(zone,characters,length, lossy);
         default:
             return [[NSString allocWithZone:zone] initWithCharacters:characters length:length];
     }
@@ -191,6 +202,10 @@ NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone
 
 NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
 {
+    if (cString == NULL || maxLength == 0) {
+        return NSNotFound;
+    }
+    
     switch(encoding) {
         case NSNEXTSTEPStringEncoding:
             return NSGetNEXTSTEPCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
@@ -199,6 +214,8 @@ NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar
         case NSISOLatin1StringEncoding:
         case NSASCIIStringEncoding:
             return NSGetISOLatin1CStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
+        case NSISOLatin2StringEncoding:
+            return NSGetISOLatin2CStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
         case NSMacOSRomanStringEncoding:
             return NSGetMacOSRomanCStringWithMaxLength(characters,length, location, cString, maxLength, lossy);
         case NSWindowsCP1252StringEncoding:

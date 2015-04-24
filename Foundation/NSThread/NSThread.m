@@ -24,6 +24,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSelectSet.h>
 #include <pthread.h>
 
+#if defined(LINUX) ||  defined(__APPLE__) ||  defined(FREEBSD)
+#include <execinfo.h>
+#include <sys/resource.h>
+#endif
+
+
 NSString * const NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString * const NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
 NSString * const NSThreadWillExitNotification=@"NSThreadWillExitNotification";
@@ -81,9 +87,15 @@ static void *nsThreadStartThread(void* t)
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
     NSCooperativeThreadWaiting();
-   [thread main];
+	@try {
+		[thread main];
+	}
+	@catch (NSException * e) {
+        NSLog(@"Exception occured : %@", [e description]);
+	}
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
+
     NSSelectSetShutdownForCurrentThread();
 	
 	// We need a pool here in case release triggers some autoreleased object allocations
@@ -107,9 +119,30 @@ static void *nsThreadStartThread(void* t)
 }
 
 +(NSArray *)callStackReturnAddresses {
-extern id _NSStackTrace();
+    NSMutableArray *ret=[NSMutableArray array];
 
-   return _NSStackTrace();
+    void* callstack[128];
+    int i, frameCount = backtrace(callstack, 128);
+    //ignore current frame
+    for (i = 1; i < frameCount; i++) {
+        [ret addObject:[NSValue valueWithPointer:callstack[i]]];
+    }
+    
+    return ret;
+}
+
++(NSArray *)callStackSymbols {
+    NSMutableArray *ret=[NSMutableArray array];
+    void* callstack[128];
+    int i, frameCount = backtrace(callstack, 128);
+    char** symbols = backtrace_symbols(callstack, frameCount);
+    //ignore current frame
+    for (i = 1; i < frameCount; ++i) {
+        [ret addObject:[NSString stringWithCString:callstack[i] encoding:NSISOLatin1StringEncoding]];
+    }
+    free(symbols);
+    
+    return ret;
 }
 
 +(double)threadPriority {
@@ -194,12 +227,12 @@ extern id _NSStackTrace();
    // if we were init'ed before didBecomeMultithreaded, we won't have a lock either
    if(!_sharedObjectLock)
       _sharedObjectLock=[NSLock new];
-
-	if (NSPlatformDetachThread( &nsThreadStartThread, self) == 0) {
+    NSError *error = nil;
+	if (NSPlatformDetachThread( &nsThreadStartThread, self, &error) == 0) {
 		// No thread has been created. Don't leak:
 		[self release];
 		[NSException raise: @"NSThreadCreationFailedException"
-					format: @"Creation of Objective-C thread failed."];
+					format: @"Creation of Objective-C thread failed [%@].", error];
 	}
 }
 

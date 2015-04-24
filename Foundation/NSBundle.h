@@ -63,9 +63,9 @@ FOUNDATION_EXPORT NSString * const NSLoadedClasses;
 
 -(BOOL)isLoaded;
 -(BOOL)preflightAndReturnError:(NSError **)error;
--(BOOL)loadAndReturnError:(NSError **)error;
 
 -(BOOL)load;
+-(BOOL)loadAndReturnError:(NSError **)error;
 -(BOOL)unload;
 
 -(NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)ext;

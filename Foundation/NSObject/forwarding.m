@@ -98,10 +98,11 @@ void NSObjCForward_stret(void *returnValue,id object,SEL selector,...){
 
 
 // both of these suck, we should be using NSMethodSignature types to extract the frame and create the NSInvocation here
-#ifdef SOLARIS
+#ifdef __sparc__
 id objc_msgForward(id object, SEL message, ...)
 {
     Class class = object_getClass(object);
+
     struct objc_method *method;
     va_list arguments;
     unsigned i, frameLength, limit;
@@ -113,13 +114,12 @@ id objc_msgForward(id object, SEL message, ...)
     }
     IMP imp = method_getImplementation(method);
     frameLength = imp(object, @selector(_frameLengthForSelector:), message);
-    frame = __builtin_alloca(frameLength);
-
+    frame = __builtin_alloca(2 * sizeof(unsigned) + frameLength);
     va_start(arguments, message);
     frame[0] = object;
     frame[1] = message;
-    for (i = 2; i < frameLength / sizeof(unsigned); i++) {
-        frame[i] = va_arg(arguments, unsigned);
+    for (i = 0; i < frameLength / sizeof(unsigned); i++) {
+        frame[i+2] = va_arg(arguments, unsigned);
     }
 
     if ((method = class_getInstanceMethod(class, @selector(forwardSelector:arguments:))) != NULL) {
@@ -131,7 +131,6 @@ id objc_msgForward(id object, SEL message, ...)
         return nil;
     }
 }
-
 
 void objc_msgForward_stret(void *result, id object, SEL message, ...)
 {

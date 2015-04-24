@@ -2,6 +2,7 @@
 #import <Foundation/NSSelectInputSourceSet.h>
 #import <Foundation/NSArray.h>
 #import"NSCancelInputSource_posix.h"
+#import"NSTask_posix.h"
 
 @implementation NSRunLoopState(posix)
 
@@ -20,6 +21,11 @@
    _cancelSource=[[NSCancelInputSource_posix alloc] init];
    [self addInputSource:_cancelSource];
    return self;
+}
+
+-(BOOL)waitForSingleInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
+    waitForTaskChildProcess();
+    return [super waitForSingleInputForMode:mode beforeDate:date];
 }
 
 @end

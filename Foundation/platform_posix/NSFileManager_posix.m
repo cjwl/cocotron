@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <fcntl.h>
 #include <pwd.h>
 #include <grp.h>
+#include <time.h>
 #include <dirent.h>
 #include <errno.h>
 
@@ -134,133 +135,206 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
--(BOOL)removeFileAtPath:(NSString *)path handler:handler {
+- (BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error {
     if([path isEqualToString:@"."] || [path isEqualToString:@".."])
         NSRaiseException(NSInvalidArgumentException, self, _cmd, @"%@: invalid path", path);
 
-    if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
-        [handler fileManager:self willProcessPath:path];
-
     if(![self _isDirectory:path]){
-        if(remove([path fileSystemRepresentation]) == -1)
-            return [self _errorHandler:handler src:path dest:@"" operation:@"removeFile: remove()"];
+        if(remove([path fileSystemRepresentation]) == -1) {
+            if(error!=NULL)
+				*error=nil; //TODO set error
+            return NO;
+        }
     }
     else{
         NSArray *contents=[self directoryContentsAtPath:path];
         NSInteger i,count=[contents count];
-
+        
         for(i=0;i<count;i++){
             NSString *name = [contents objectAtIndex:i];
             NSString *fullPath;
-
+            
             if([name isEqualToString:@"."] || [name isEqualToString:@".."])
                 continue;
-
+            
             fullPath=[path stringByAppendingPathComponent:name];
-            if(![self removeFileAtPath:fullPath handler:handler])
+            if(![self removeItemAtPath:fullPath error:error]) {
+                if(error!=NULL)
+                    *error=nil; //TODO set error
                 return NO;
+            }
         }
-
-        if(rmdir([path fileSystemRepresentation]) == -1)
-            return [self _errorHandler:handler src:path dest:@"" operation:@"removeFile: rmdir()"];
+        
+        if(rmdir([path fileSystemRepresentation]) == -1) {
+            if(error!=NULL)
+				*error=nil; //TODO set error
+            return NO;
+        }
     }
+    return YES;
+}
+
+-(BOOL)removeFileAtPath:(NSString *)path handler:handler {
+    NSError *error = nil;
+    
+    if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
+        [handler fileManager:self willProcessPath:path];
+
+    if ([self removeItemAtPath:path error:&error] == NO && handler != nil) {
+        [self _errorHandler:handler src:path dest:@"" operation:[error description]];
+        return NO;
+    }
+    
     return YES;
 }
 
 
 -(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler {
-/*
-    It's not this easy...
-    return rename([src fileSystemRepresentation],[dest fileSystemRepresentation])?NO:YES;
- */
-
-    BOOL isDirectory;
-
+    NSError *error = nil;
+    
     if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
         [handler fileManager:self willProcessPath:src];
 
-    if ([self fileExistsAtPath:src isDirectory:&isDirectory] == NO)
-        return NO;
-    if ([self fileExistsAtPath:dest isDirectory:&isDirectory] == YES)
-        return NO;
-
-    if ([self copyPath:src toPath:dest handler:handler] == NO) {
-        [self removeFileAtPath:dest handler:handler];
+    if ([self moveItemAtPath:src toPath:dest error:&error] == NO && handler != nil) {
+        [self _errorHandler:handler src:src dest:dest operation:[error description]];
         return NO;
     }
+    
+    return YES;
+}
 
+- (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error
+{
+    
+    /*
+     It's not this easy...
+     return rename([src fileSystemRepresentation],[dest fileSystemRepresentation])?NO:YES;
+     */
+
+    BOOL isDirectory;
+    
+//TODO fill error
+    
+    if ([self fileExistsAtPath:srcPath isDirectory:&isDirectory] == NO)
+        return NO;
+    if ([self fileExistsAtPath:dstPath isDirectory:&isDirectory] == YES)
+        return NO;
+    
+    if ([self copyPath:srcPath toPath:dstPath handler:nil] == NO) {
+        [self removeFileAtPath:dstPath handler:nil];
+        return NO;
+    }
+    
     // not much we can do if this fails
-    [self removeFileAtPath:src handler:handler];
-
+    [self removeFileAtPath:srcPath handler:nil];
+    
     return YES;
 }
 
 -(BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:handler {
+    NSError *error = nil;
+    if ([self copyItemAtPath:src toPath:dest error:&error] == NO && handler != nil) {
+        [self _errorHandler:handler src:src dest:dest operation:[error description]];
+        return NO;
+    }
+    
+    return YES;
+}
+
+-(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error
+{
     BOOL isDirectory;
-
-    if(![self fileExistsAtPath:src isDirectory:&isDirectory])
-        return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: fileExistsAtPath:"];
-
-    if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
-        [handler fileManager:self willProcessPath:src];
-
+    
+    if(![self fileExistsAtPath:fromPath isDirectory:&isDirectory]) {
+        if (error != NULL) {
+            //TODO set error
+        }
+        return NO;
+    }    
+    
     if (!isDirectory){
         int r, w;
         char buf[4096];
         size_t count;
+        
+        if ((w = open([toPath fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE)) == -1) {
+            if (error != NULL) {
+                //TODO set error
+            }
+            return NO;
+        }
+        if ((r = open([fromPath fileSystemRepresentation], O_RDONLY)) == -1) {
+            if (error != NULL) {
+                //TODO set error
+            }
+            close(w);
+            return NO;
 
-        if ((w = open([dest fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE)) == -1)
-            return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: open() for writing"];
-        if ((r = open([src fileSystemRepresentation], O_RDONLY)) == -1)
-            return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: open() for reading"];
-
+        }
+        
         while ((count = read(r, &buf, sizeof(buf))) > 0) {
+            if (count == -1) 
+                break;
+            
             if (write(w, &buf, count) != count) {
                 count = -1;
                 break;
             }
         }
-
+        
         close(w);
         close(r);
-
-        if (count == -1)
-            return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: read()/write()"];
+        
+        if (count == -1) {
+            if (error != NULL) {
+                //TODO set error
+            }
+            return NO;
+        }
         else
             return YES;
     }
     else {
         NSArray *files;
         NSInteger      i,count;
-
-        if (mkdir([dest fileSystemRepresentation], FOUNDATION_DIR_MODE) != 0)
-            return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: mkdir(subdir)"];
-
+        
+        if (mkdir([toPath fileSystemRepresentation], FOUNDATION_DIR_MODE) != 0) {
+            if (error != NULL) {
+                //TODO set error
+            }
+            return NO;
+        }
+        
         //if (chdir([dest fileSystemRepresentation]) != 0)
         //    return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: chdir(subdir)"];
-
-        files = [self directoryContentsAtPath:src];
+        
+        files = [self directoryContentsAtPath:fromPath];
         count = [files count];
-
+        
         for(i=0;i<count;i++){
             NSString *name=[files objectAtIndex:i];
             NSString *subsrc, *subdst;
-
+            
             if ([name isEqualToString:@"."] || [name isEqualToString:@".."])
-                 continue;
-
-            subsrc=[src stringByAppendingPathComponent:name];
-            subdst=[dest stringByAppendingPathComponent:name];
-
-            if([self copyPath:subsrc toPath:subdst handler:handler] == NO)
+                continue;
+            
+            subsrc=[fromPath stringByAppendingPathComponent:name];
+            subdst=[toPath stringByAppendingPathComponent:name];
+            
+            if([self copyItemAtPath:subsrc toPath:subdst error:error] == NO) {
+                if (error != NULL) {
+                    //TODO set error
+                }
                 return NO;
+            }
         }
-
+        
         //if (chdir("..") != 0)
         //    return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: chdir(..)"];
     }
-
+    
     return YES;
+
 }
 -(NSString *)currentDirectoryPath {
     char  path[MAXPATHLEN+1];
@@ -362,8 +436,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return (symlink([otherPath fileSystemRepresentation], [path fileSystemRepresentation]) == 0);
 }
 
--(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path {
-    NSUnimplementedMethod();
+-(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error
+{
+    if (error != NULL) {
+        //TODO set error
+    }
+    
     return NO;
 }
 

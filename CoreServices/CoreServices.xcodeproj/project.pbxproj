@@ -20,6 +20,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C675ECC21785CB8D000C1005 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6893D951785BB960093BFB1;
+			remoteInfo = "CFNetwork-Solaris-i386";
+		};
+		C67E0346125B236600C10757 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C67E0334125B230900C10757;
+			remoteInfo = "CFNetwork-Solaris-sparc";
+		};
+		C6C6293C1785B63A009D381C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C67E0334125B230900C10757;
+			remoteInfo = "CFNetwork-Solaris-sparc";
+		};
 		FE1342D21151843000404745 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7433AE10A89F5D004CDF00 /* CFNetwork.xcodeproj */;
@@ -384,6 +405,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C675ECC31785CB8D000C1005 /* CFNetwork.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CFNetwork.framework;
+			remoteRef = C675ECC21785CB8D000C1005 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE1342D31151843000404745 /* CFNetwork.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;

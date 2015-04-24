@@ -8,11 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSPlatform_solaris.h>
-#import <Foundation/NSTask_solaris.h>
 
 #import <rpc/types.h>
 #include <time.h>
 #include <netdb.h>
+#include <unistd.h>
 
 NSString *NSPlatformClassName=@"NSPlatform_solaris";
 
@@ -58,20 +58,6 @@ NSString * const NSPlatformResourceNameSuffix=@"solaris";
 NSString * const NSPlatformExecutableFileExtension=@"";
 NSString * const NSPlatformLoadableObjectFileExtension=@"so";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"lib";
-
--(Class)taskClass {
-    static Class NSTaskClass = Nil;
-    
-    @synchronized(self)
-	{
-        if (NSTaskClass == Nil) {
-            NSTaskClass = [NSTask_solaris class];
-            [NSTaskClass registerNotification];
-        }
-    }
-    
-    return NSTaskClass;
-}
 
 @end
 

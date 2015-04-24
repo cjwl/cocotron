@@ -155,7 +155,7 @@ static struct addrinfo *blockingRequest(CFHostRequest *request){
    return result;
 }
 
-static unsigned addressResolverThread(void *arg){
+static __stdcall unsigned addressResolverThread(void *arg){
    CFAddressResolverThreadInfo *info=(CFAddressResolverThreadInfo *)arg;
 
    while(YES){
@@ -287,7 +287,6 @@ static CFAddressResolverThreadInfo *startResolverThreadIfNeeded(){
    asyncInfo->queue=NSZoneMalloc(NULL,sizeof(CFHostRequest *)*asyncInfo->queueCapacity);
 
    unsigned threadAddr;
-
    _beginthreadex(NULL,0,addressResolverThread,asyncInfo,0,&threadAddr);
   }
   pthread_mutex_unlock(&asyncCreationLock);

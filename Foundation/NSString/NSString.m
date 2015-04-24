@@ -62,6 +62,12 @@ extern BOOL NSObjectIsKindOfClass(id object,Class kindOf);
 
 const NSUInteger NSMaximumStringLength=INT_MAX-1;
 
+NSString * const NSCharacterConversionException = @"NSCharacterConversionException";
+
+// only needed for Darwin ppc
+struct objc_class _NSConstantStringClassReference;
+// only needed for Darwin i386
+int __CFConstantStringClassReference[1];
 
 @implementation NSString
 
@@ -636,74 +642,95 @@ static inline BOOL isEqualString(NSString *str1,NSString *str2){
 }
 
 -(BOOL)hasPrefix:(NSString *)prefix {
-   NSUInteger i,selfLength=[self length], prefixLength=[prefix length];
-   unichar  selfBuf[selfLength],prefixBuf[prefixLength];
-
-   if(prefixLength>selfLength)
-    return NO;
-
-   [self getCharacters:selfBuf];
-   [prefix getCharacters:prefixBuf];
-
-   for(i=0;i<prefixLength;i++)
-    if(selfBuf[i]!=prefixBuf[i])
-     return NO;
-
-   return YES;
+    NSUInteger i,selfLength=[self length], prefixLength=[prefix length];
+    unichar  *selfBuf = NSZoneMalloc(NULL, sizeof(unichar) * selfLength);
+    unichar  *prefixBuf = NSZoneMalloc(NULL, sizeof(unichar) * prefixLength);
+    
+    if(prefixLength>selfLength) {
+        NSZoneFree(NULL, selfBuf);
+        NSZoneFree(NULL, prefixBuf);
+        return NO;
+    }
+    
+    [self getCharacters:selfBuf];
+    [prefix getCharacters:prefixBuf];
+    
+    for(i=0;i<prefixLength;i++) {
+        if(selfBuf[i]!=prefixBuf[i]) {
+            NSZoneFree(NULL, selfBuf);
+            NSZoneFree(NULL, prefixBuf);
+            
+            return NO;
+        }
+    }
+    NSZoneFree(NULL, selfBuf);
+    NSZoneFree(NULL, prefixBuf);
+    return YES;
 }
 
 
 -(BOOL)hasSuffix:(NSString *)suffix {
-   NSUInteger i,selfLength=[self length],suffixLength=[suffix length];
-   NSUInteger offset=selfLength-suffixLength;
-   unichar  selfBuf[selfLength],suffixBuf[suffixLength];
-
-   [self getCharacters:selfBuf];
-   [suffix getCharacters:suffixBuf];
-
-   if(suffixLength>selfLength)
-    return NO;
-
-   for(i=0;i<suffixLength;i++)
-    if(selfBuf[offset+i]!=suffixBuf[i])
-     return NO;
-
-   return YES;
+    NSUInteger i,selfLength=[self length],suffixLength=[suffix length];
+    NSUInteger offset=selfLength-suffixLength;
+    unichar  *selfBuf = NSZoneMalloc(NULL, sizeof(unichar) * selfLength);
+    unichar  *suffixBuf = NSZoneMalloc(NULL, sizeof(unichar) * suffixLength);
+    
+    
+    [self getCharacters:selfBuf];
+    [suffix getCharacters:suffixBuf];
+    
+    if(suffixLength>selfLength) {
+        NSZoneFree(NULL, selfBuf);
+        NSZoneFree(NULL, suffixBuf);
+        return NO;
+    }
+    
+    for(i=0;i<suffixLength;i++) {
+        if(selfBuf[offset+i]!=suffixBuf[i]) {
+            NSZoneFree(NULL, selfBuf);
+            NSZoneFree(NULL, suffixBuf);
+            return NO;
+        }
+    }
+    
+    NSZoneFree(NULL, selfBuf);
+    NSZoneFree(NULL, suffixBuf);
+    return YES;
 }
 
 // Knuth-Morris-Pratt string search
-
 static inline void computeNext(NSInteger next[],unichar patbuffer[],NSInteger patlength){
-   NSInteger pos=0,i=-1;
-
-   next[0]=-1;
-   while(pos<patlength-1){
-    while(i>-1 && patbuffer[pos]!=patbuffer[i])
-     i=next[i];
-    pos++;
-    i++;
-    if(patbuffer[pos]==patbuffer [i])
-     next[pos]=next[i];
-    else
-     next[pos]=i;
-   }
+    NSInteger i=0,j=-1;
+    
+    next[i]=j;
+    while(i<patlength){
+        while(j>=0 && patbuffer[j]!=patbuffer[i]) {
+            j = next[j];
+        }
+        
+        i++;
+        j++;
+        next[i]=j;
+    }
 }
 
 static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,NSInteger *next,NSUInteger patlength,NSRange range){
-   NSInteger i,pos=0,searchLength=range.location+range.length;
-   NSInteger start=0;
-
-   for(i=range.location;i<searchLength && pos<patlength;i++,pos++){
-    while(pos>-1 && (patbuffer[pos]!=buffer[i]))
-     pos=next[pos];
-
-    if(pos<=0)
-     start=i;
-   }
-
-   if(pos==patlength)
-    return NSMakeRange(start,patlength);
-   else
+    NSInteger i=range.location,j=0;
+    NSInteger end = range.location + range.length;
+    
+    while (i < end) {
+        while (j >= 0 && buffer[i] != patbuffer[j]) {
+            j = next[j];
+        }
+        
+        i++;
+        j++;
+        
+        if (j == patlength) {
+            return NSMakeRange(i - patlength, patlength);
+        }
+    }
+    
     return NSMakeRange(NSNotFound,0);
 }
 
@@ -723,48 +750,53 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(NSRange)rangeOfString:(NSString *)pattern options:(NSStringCompareOptions)options range:(NSRange)range {
-   NSUInteger length=[self length];
-   NSUInteger patlength=[pattern length];
-   NSInteger      next[patlength+1];
+    NSUInteger length=[self length];
+    NSUInteger patlength=[pattern length];
+    NSInteger      next[patlength+1];
+    
+    if(patlength==0) {
+        return NSMakeRange(NSNotFound,0);
+    }
+    
+    if(range.location+range.length>[self length]) {
+        [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,sel_getName(_cmd),range.location,range.length,[self length]];
+    }
+    
+    unichar  *buffer = NSZoneMalloc(NULL, sizeof(unichar) * length);
+    unichar  *patbuffer = NSZoneMalloc(NULL, sizeof(unichar) * patlength+1);
 
-   if([pattern length]==0)
-    return NSMakeRange(NSNotFound,0);
-
-   if(range.location+range.length>[self length])
-    [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,sel_getName(_cmd),range.location,range.length,[self length]];
-
-    unichar  *buffer = NSZoneMalloc(NULL,sizeof(unichar)*length);
-    unichar  *patbuffer = NSZoneMalloc(NULL,sizeof(unichar)*(patlength+1));
-   [self getCharacters:buffer];
-   [pattern getCharacters:patbuffer];
-
+    [self getCharacters:buffer];
+    [pattern getCharacters:patbuffer];
+    
     // it seems that this search is always literal anyway, so the NSLiteralSearch option can be ignored...?
     options &= ~((unsigned)NSLiteralSearch);
-
-   if(options & NSCaseInsensitiveSearch) {
-    NSUnicodeToUppercase(buffer,length);
-    NSUnicodeToUppercase(patbuffer,patlength);
-   }
-
-   if(options & NSBackwardsSearch) {
-    reverseString(buffer, length);
-    reverseString(patbuffer, patlength);
-    range.location = length - (range.location + range.length);
-   }
-
-   computeNext(next,patbuffer,patlength);
-
-   NSRange foundRange = rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
-   NSZoneFree(NULL,patbuffer);
-   NSZoneFree(NULL,buffer);
     
-   if(options & NSAnchoredSearch && foundRange.location != 0)
-    return NSMakeRange(NSNotFound,0);
-
-   if((options & NSBackwardsSearch) && foundRange.location != NSNotFound) {
-    foundRange.location = length - foundRange.location - foundRange.length;
-   }
-   return foundRange;
+    if(options & NSCaseInsensitiveSearch) {
+        NSUnicodeToUppercase(buffer,length);
+        NSUnicodeToUppercase(patbuffer,patlength);
+    }
+    
+    if(options & NSBackwardsSearch) {
+        reverseString(buffer, length);
+        reverseString(patbuffer, patlength);
+        range.location = length - (range.location + range.length);
+    }
+    
+    computeNext(next,patbuffer,patlength);
+    
+    NSRange foundRange = rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
+    if(options & NSAnchoredSearch && foundRange.location != 0) {
+        NSZoneFree(NULL, buffer);
+        NSZoneFree(NULL, patbuffer);
+        return NSMakeRange(NSNotFound,0);
+    }
+    
+    if((options & NSBackwardsSearch) && foundRange.location != NSNotFound) {
+        foundRange.location = length - foundRange.location - foundRange.length;
+    }
+    NSZoneFree(NULL, buffer);
+    NSZoneFree(NULL, patbuffer);
+    return foundRange;
 }
 
 -(NSRange)rangeOfString:(NSString *)string options:(NSStringCompareOptions)options {
@@ -778,53 +810,58 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set
-   options:(NSStringCompareOptions)options range:(NSRange)range {
-   NSRange  result=NSMakeRange(NSNotFound,0);
-
-   if (range.length < 1)
-       return result;
-
-   NSUInteger i;
-
+                          options:(NSStringCompareOptions)options range:(NSRange)range {
+    NSRange  result=NSMakeRange(NSNotFound,0);
+    
+    if (range.length < 1)
+        return result;
+    
+    unichar  *buffer = NSZoneMalloc(NULL, sizeof(unichar) * range.length);
+    
+    NSUInteger i;
+    
     //unused
     //const BOOL isLiteral = (options & NSLiteralSearch) ? YES : NO;
     const BOOL isBackwards = (options & NSBackwardsSearch) ? YES : NO;
     options &= ~((unsigned)NSLiteralSearch);
     options &= ~((unsigned)NSBackwardsSearch);
-
+    
     if(options != 0)
         NSUnimplementedMethod();
-
-        // Cocoa documentation suggests that the returned range's length is always expected to be 1?
-        // The backwards search uses this assumption.
-        
-        if (isBackwards) {
-            for(i = range.length; i > 0; i--) {
-                unichar c = [self characterAtIndex:range.location + i-1];
-                if([set characterIsMember:c]) {
-                    return NSMakeRange(range.location + (i-1), 1);
-                }
+    
+    [self getCharacters:buffer range:range];
+    
+    // Cocoa documentation suggests that the returned range's length is always expected to be 1?
+    // The backwards search uses this assumption.
+    
+    if (isBackwards) {
+        for(i = range.length; i > 0; i--) {
+            if([set characterIsMember:buffer[i-1]]) {
+                NSZoneFree(NULL, buffer);
+                return NSMakeRange(range.location + (i-1), 1);
             }
         }
-        else {
-            for(i=0;i<range.length;i++){
-                unichar c = [self characterAtIndex:range.location+i];
-                if([set characterIsMember:c]){
-                    result.location=i;
-                    
-                    for(;i<range.length;i++) {
-                        unichar c = [self characterAtIndex:range.location+i];
-                        if(![set characterIsMember:c])
-                            break;
-                    }
-                    result.length=i-result.location;
-                    result.location+=range.location;
-                    return result;
-                }
+    }
+    else {
+        for(i=0;i<range.length;i++){
+            if([set characterIsMember:buffer[i]]){
+                result.location=i;
+                
+                for(;i<range.length;i++)
+                    if(![set characterIsMember:buffer[i]])
+                        break;
+                
+                result.length=i-result.location;
+                result.location+=range.location;
+                NSZoneFree(NULL, buffer);
+                
+                return result;
             }
         }
-
-   return NSMakeRange(NSNotFound,0);
+    }
+    
+    NSZoneFree(NULL, buffer);
+    return NSMakeRange(NSNotFound,0);
 }
 
 // FIX
@@ -839,65 +876,71 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
 -(void)getLineStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
     NSUInteger start=range.location;
-    NSUInteger end=start;
-    if (range.length) {
-        end += range.length - 1; // -1 : the range might end on a NL - we don't want to expand it in that case, so we'll check this char
+    NSUInteger maxRange = NSMaxRange(range);
+    if (maxRange == 0) {
+        maxRange = 1;
     }
+    NSUInteger end=maxRange - 1;
     NSUInteger contentsEnd=end;
     NSUInteger length=[self length];
-
+    unichar  *buffer = NSZoneMalloc(NULL, sizeof(unichar) * length);
+    
     enum {
-            scanning,gotR,done
-        } state=scanning;
-                
-        /*
-         U+000D (\r or CR), U+2028 (Unicode line separator), U+000A (\n or LF)
-         U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
-         */
-        unichar nextChar = start<length?[self characterAtIndex:start]:0;
-        for(;start!=0;start--) {
-            unichar check=[self characterAtIndex:start-1];
-            
-            if(check==0x2028 || check==0x000A || check==0x2029)
-                break;
-            
-            if(check==0x000D && nextChar!=0x000A)
-                break;
-            nextChar = check;
-        }
+        scanning,gotR,done
+    } state=scanning;
+    
+    [self getCharacters:buffer];
+    
+    /*
+     U+000D (\r or CR), U+2028 (Unicode line separator), U+000A (\n or LF)
+     U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
+     */
+    
+    for(;start!=0;start--) {
+        unichar check=buffer[start-1];
         
-        for(;end<length && state!=done;end++){
-            unichar check=[self characterAtIndex:end];
-            if(state==scanning){
-                if(check==0x000D){
-                    contentsEnd=end;
-                    state=gotR;
-                }
-                // 0x0085 is undocumented, unicode next line
-                else if(check==0x2028 || check==0x000A || check==0x2029 || check==0x0085){
-                    contentsEnd=end;
-                    state=done;
-                }
+        if(check==0x2028 || check==0x000A || check==0x2029)
+            break;
+        
+        if(check==0x000D && buffer[start]!=0x000A)
+            break;
+    }
+    
+    for(;end<length && state!=done;end++){
+        unichar check=buffer[end];
+        
+        if(state==scanning){
+            if(check==0x000D){
+                contentsEnd=end;
+                state=gotR;
             }
-            else if(state==gotR){
-                if(check!=0x000A){
-                    end--;
-                }
+            // 0x0085 is undocumented, unicode next line
+            else if(check==0x2028 || check==0x000A || check==0x2029 || check==0x0085){
+                contentsEnd=end;
                 state=done;
             }
         }
-        
-        if((end >= length) && (state!=done))
-        {
-            contentsEnd = end;
+        else if(state==gotR){
+            if(check!=0x000A){
+                end--;
+            }
+            state=done;
         }
-        
+    }
+    
+    if((end >= length) && (state!=done))
+    {
+        contentsEnd = end;
+    }
+    
     if(startp!=NULL)
         *startp=start;
     if(endp!=NULL)
         *endp=end;
     if(contentsEndp!=NULL)
         *contentsEndp=contentsEnd;
+    
+    NSZoneFree(NULL, buffer);
 }
 
 -(NSRange)lineRangeForRange:(NSRange)range {
@@ -916,64 +959,66 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
  Documentation does not specify exact getParagraphStart: behavior, only mentioning it is similar to getLineStart:
  The difference is that getParagraphStart: does not delimit on line terminators 0x0085 and 0x2028
  */
-   NSUInteger start=range.location;
-   NSUInteger end=NSMaxRange(range);
-   NSUInteger contentsEnd=end;
-   NSUInteger length=[self length];
-   enum {
-    scanning,gotR,done
-   } state=scanning;
-
-    unichar  *buffer = NSZoneMalloc(NULL,sizeof(unichar)*length);
-    if (buffer) {
-        [self getCharacters:buffer];
+    NSUInteger start=range.location;
+    NSUInteger maxRange = NSMaxRange(range);
+    if (maxRange == 0) {
+        maxRange = 1;
+    }
+    NSUInteger end=maxRange - 1;
+    NSUInteger contentsEnd=end;
+    NSUInteger length=[self length];
+    unichar  *buffer = NSZoneMalloc(NULL, sizeof(unichar) * length);
+    
+    enum {
+        scanning,gotR,done
+    } state=scanning;
+    
+    [self getCharacters:buffer];
+    
+    for(;start!=0;start--) {
+        unichar check=buffer[start-1];
         
-        for(;start!=0;start--) {
-            unichar check=buffer[start-1];
-            
-            if(check==0x2028 || check==0x000A || check==0x2029)
-                break;
-            
-            if(check==0x000D && buffer[start]!=0x000A)
-                break;
-        }
+        if(check==0x2028 || check==0x000A || check==0x2029)
+            break;
         
-        for(;end<length && state!=done;end++){
-            unichar check=buffer[end];
-            
-            if(state==scanning){
-                if(check==0x000D){
-                    contentsEnd=end;
-                    state=gotR;
-                }
-                else if(check==0x000A || check==0x2029){
-                    contentsEnd=end;
-                    state=done;
-                }
+        if(check==0x000D && buffer[start]!=0x000A)
+            break;
+    }
+    
+    for(;end<length && state!=done;end++){
+        unichar check=buffer[end];
+        
+        if(state==scanning){
+            if(check==0x000D){
+                contentsEnd=end;
+                state=gotR;
             }
-            else if(state==gotR){
-                if(check!=0x000A){
-                    end--;
-                }
+            else if(check==0x000A || check==0x2029){
+                contentsEnd=end;
                 state=done;
             }
         }
-        
-        if((end >= length) && (state!=done))
-        {
-            contentsEnd = end;
+        else if(state==gotR){
+            if(check!=0x000A){
+                end--;
+            }
+            state=done;
         }
-        
-        NSZoneFree(NULL,buffer);
-    } else {
-        NSLog(@"%@ : can't allocate buffer of length %d", NSStringFromSelector(_cmd), self.length);
     }
-   if(startp!=NULL)
-    *startp=start;
-   if(endp!=NULL)
-    *endp=end;
-   if(contentsEndp!=NULL)
-    *contentsEndp=contentsEnd;
+    
+    if((end >= length) && (state!=done))
+    {
+        contentsEnd = end;
+    }
+    
+    if(startp!=NULL)
+        *startp=start;
+    if(endp!=NULL)
+        *endp=end;
+    if(contentsEndp!=NULL)
+        *contentsEndp=contentsEnd;
+    
+    NSZoneFree(NULL, buffer);
 }
 
 -(NSRange)paragraphRangeForRange:(NSRange)range {
@@ -1025,39 +1070,49 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(BOOL)boolValue {
-   NSUInteger i,length=[self length];
-   unichar buffer[length];
-
-   if(length==0)
+    NSUInteger i,length=[self length];
+    
+    if(length==0) {
+        return NO;
+    }
+    unichar  *buffer = NSZoneMalloc(NULL, sizeof(unichar) * length);
+    
+    [self getCharacters:buffer];
+    NSCharacterSet *set=[NSCharacterSet whitespaceCharacterSet];
+    
+    for(i=0;i<length;i++)
+        if(![set characterIsMember:buffer[i]])
+            break;
+    
+    if(i==length) {
+        NSZoneFree(NULL, buffer);
+        return NO;
+    }
+    
+    if(buffer[i]=='Y' || buffer[i]=='y' || buffer[i]=='T' || buffer[i]=='t') {
+        NSZoneFree(NULL, buffer);
+        return YES;
+    }
+    
+    if(buffer[i]=='-' || buffer[i]=='+')
+        i++;
+    
+    for(;i<length;i++)
+        if(buffer[i]!='0')
+            break;
+    
+    if(i==length) {
+        NSZoneFree(NULL, buffer);
+        return NO;
+    }
+    
+    if(buffer[i]>='1' && buffer[i]<='9') {
+        NSZoneFree(NULL, buffer);
+        return YES;
+    }
+    
+    NSZoneFree(NULL, buffer);
     return NO;
-
-   [self getCharacters:buffer];
-   NSCharacterSet *set=[NSCharacterSet whitespaceCharacterSet];
-
-   for(i=0;i<length;i++)
-    if(![set characterIsMember:buffer[i]])
-     break;
-
-   if(i==length)
-    return NO;
-
-   if(buffer[i]=='Y' || buffer[i]=='y' || buffer[i]=='T' || buffer[i]=='t')
-    return YES;
-
-   if(buffer[i]=='-' || buffer[i]=='+')
-    i++;
-
-   for(;i<length;i++)
-    if(buffer[i]!='0')
-     break;
-
-   if(i==length)
-    return NO;
-
-   if(buffer[i]>='1' && buffer[i]<='9')
-    return YES;
-
-   return NO;
 }
 
 -(int)intValue {
@@ -1076,114 +1131,120 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(long long)longLongValue {
-   NSUInteger pos,length=[self length];
-   unichar    unicode[length];
-   int        sign=1;
-   long long  value=0;
-
-   [self getCharacters:unicode];
-
-   for(pos=0;pos<length;pos++)
-    if(unicode[pos]>' ')
-     break;
-
-   if(length==0)
-    return 0;
-
-   if(unicode[0]=='-'){
-    sign=-1;
-    pos++;
-   }
-   else if(unicode[0]=='+'){
-    sign=1;
-    pos++;
-   }
-
-   for(;pos<length;pos++){
-    if(unicode[pos]<'0' || unicode[pos]>'9')
-     break;
-
-    value*=10;
-    value+=unicode[pos]-'0';
-   }
-
-   return sign*value;
+    NSUInteger pos,length=[self length];
+    int        sign=1;
+    long long  value=0;
+    
+    if(length==0)
+        return 0;
+    
+    unichar  *unicode = NSZoneMalloc(NULL, sizeof(unichar) * length);
+    [self getCharacters:unicode];
+    
+    for(pos=0;pos<length;pos++)
+        if(unicode[pos]>' ')
+            break;
+    
+    
+    if(unicode[0]=='-'){
+        sign=-1;
+        pos++;
+    }
+    else if(unicode[0]=='+'){
+        sign=1;
+        pos++;
+    }
+    
+    for(;pos<length;pos++){
+        if(unicode[pos]<'0' || unicode[pos]>'9')
+            break;
+        
+        value*=10;
+        value+=unicode[pos]-'0';
+    }
+    
+    NSZoneFree(NULL, unicode);
+    return sign*value;
 }
 
 -(float)floatValue {
-   return (float)[self doubleValue];
+    return (float)[self doubleValue];
 }
 
 -(double)doubleValue {
-   NSUInteger pos,length=[self length];
-   unichar  unicode[length];
-   double   sign=1,value=0;
-
-   [self getCharacters:unicode];
-
-	// skip any leading whitespaces
-   for(pos=0;pos<length;pos++)
-    if(unicode[pos]>' ')
-     break;
-
-   if(length==0)
-    return 0.0;
-
-   if(unicode[pos]=='-'){
-    sign=-1;
-    pos++;
-   }
-   else if(unicode[pos]=='+'){
-    sign=1;
-    pos++;
-   }
-
-   for(;pos<length;pos++){
-    if(unicode[pos]<'0' || unicode[pos]>'9')
-     break;
-
-    value*=10;
-    value+=unicode[pos]-'0';
-   }
-
-   if(pos<length && unicode[pos]=='.'){
-    double multiplier=1;
-
-    pos++;
-    for(;pos<length;pos++){
-     if(unicode[pos]<'0' || unicode[pos]>'9')
-      break;
-
-     multiplier/=10.0;
-     value+=(unicode[pos]-'0')*multiplier;
+    NSUInteger pos,length=[self length];
+    double   sign=1,value=0;
+    
+    if(length==0)
+        return 0.0;
+    
+    unichar  *unicode = NSZoneMalloc(NULL, sizeof(unichar) * length);
+    
+    [self getCharacters:unicode];
+    
+    // skip any leading whitespaces
+    for(pos=0;pos<length;pos++)
+        if(unicode[pos]>' ')
+            break;
+    
+    
+    if(unicode[pos]=='-'){
+        sign=-1;
+        pos++;
     }
-   }
-	// Optional exponent part ([eE]{[+-]}nnnn)
-	if (pos<length && (unicode[pos]=='e' || unicode[pos]=='E')) {
-		pos++;
-
-		double multiplier=1;
-		int exponent = 0;
-		int exponentSign = 1;
-		if (unicode[pos]=='-') {
-			exponentSign=-1;
-			pos++;
-		} else if(unicode[pos]=='+') {
-			exponentSign=1;
-			pos++;
-		}
-		
-		for (;pos<length;pos++){
-			if(unicode[pos]<'0' || unicode[pos]>'9') {
-				break;
-			}
-			exponent *= 10;
-			exponent += (unicode[pos]-'0');
-		}
-		value *= pow(10., exponent*exponentSign);
-	}
-	
-   return sign*value;
+    else if(unicode[pos]=='+'){
+        sign=1;
+        pos++;
+    }
+    
+    for(;pos<length;pos++){
+        if(unicode[pos]<'0' || unicode[pos]>'9')
+            break;
+        
+        value*=10;
+        value+=unicode[pos]-'0';
+    }
+    
+    if(pos<length && unicode[pos]=='.'){
+        double multiplier=1;
+        
+        pos++;
+        for(;pos<length;pos++){
+            if(unicode[pos]<'0' || unicode[pos]>'9')
+                break;
+            
+            multiplier/=10.0;
+            value+=(unicode[pos]-'0')*multiplier;
+        }
+    }
+    // Optional exponent part ([eE]{[+-]}nnnn)
+    if (pos<length && (unicode[pos]=='e' || unicode[pos]=='E')) {
+        pos++;
+        
+        double multiplier=1;
+        int exponent = 0;
+        int exponentSign = 1;
+        if (unicode[pos]=='-') {
+            exponentSign=-1;
+            pos++;
+        } else if(unicode[pos]=='+') {
+            exponentSign=1;
+            pos++;
+        }
+        
+        for (;pos<length;pos++){
+            if(unicode[pos]<'0' || unicode[pos]>'9') {
+                break;
+            }
+            exponent *= 10;
+            exponent += (unicode[pos]-'0');
+        }
+        value *= pow(10., exponent*exponentSign);
+    }
+    
+    NSZoneFree(NULL, unicode);
+    
+    return sign*value;
 }
 
 -(NSString *)lowercaseString {
@@ -1253,37 +1314,45 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 }
 
 -(NSArray *)componentsSeparatedByString:(NSString *)pattern {
-   NSMutableArray *result=[NSMutableArray array];
-   NSUInteger        length=[self length];
-   unichar        *buffer;
-   NSUInteger        patlength=[pattern length];
-   unichar         patbuffer[patlength+1];
-   NSInteger             next[patlength+1];
-   NSRange         search=NSMakeRange(0,length),where;
-
-   buffer=NSZoneMalloc(NULL,sizeof(unichar)*length);
-   [self getCharacters:buffer];
-   [pattern getCharacters:patbuffer];
-
-   computeNext(next,patbuffer,patlength);
-
-   do {
-    where=rangeOfPatternNext(buffer,patbuffer,next,patlength,search);
-
-    if(where.length>0){
-     NSString *piece=[self substringWithRange:NSMakeRange(search.location,where.location-search.location)];
-
-     [result addObject:piece];
-     search.location=where.location+where.length;
-     search.length=length-search.location;
+    NSMutableArray *result=[NSMutableArray array];
+    NSUInteger        length=[self length];
+    unichar        *buffer;
+    unichar        *patbuffer;
+    NSUInteger        patlength=[pattern length];
+    NSInteger             next[patlength+1];
+    NSRange         search=NSMakeRange(0,length),where;
+    
+    if (length == 0) {
+        [result addObject:self];
+        return result;
     }
-   }while(where.length>0);
-
-   NSZoneFree(NULL,buffer);
-
-   [result addObject:[self substringWithRange:search]];
-
-   return result;
+    
+    buffer=NSZoneMalloc(NULL,sizeof(unichar)*length);
+    patbuffer=NSZoneMalloc(NULL,sizeof(unichar)*patlength+1);
+    
+    [self getCharacters:buffer];
+    [pattern getCharacters:patbuffer];
+    
+    computeNext(next,patbuffer,patlength);
+    
+    do {
+        where=rangeOfPatternNext(buffer,patbuffer,next,patlength,search);
+        
+        if(where.length>0){
+            NSString *piece=[self substringWithRange:NSMakeRange(search.location,where.location-search.location)];
+            
+            [result addObject:piece];
+            search.location=where.location+where.length;
+            search.length=length-search.location;
+        }
+    }while(where.length>0);
+    
+    NSZoneFree(NULL,buffer);
+    NSZoneFree(NULL,patbuffer);
+    
+    [result addObject:[self substringWithRange:search]];
+    
+    return result;
 }
 
 - (NSArray *) componentsSeparatedByCharactersInSet:(NSCharacterSet *)set
@@ -1542,7 +1611,6 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
     return [result bytes];
 }
 
-
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
 	// Note : this is supposed to return nil if the escaped char don't make a valid string
 	// for the encoding - this is not checked
@@ -1678,20 +1746,27 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
     [self getCharacters:buffer];
     char *cstr = NSString_unicodeToAnyCString(encoding, buffer, length, NO, &resultLength, NULL, YES);
-    // FIXME obviously the char* shall be handled by the autorelease pool or garbage collector
-    //       that's bad design
-    [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+
     NSZoneFree(NULL, buffer);
-    return cstr;
+    
+    if (cstr) {
+        // FIXME obviously the char* should be handled by the autorelease pool or garbage collector
+        //       that's bad design
+        //NSData *data=
+        NSData *data= [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+        return cstr;
+    }
+    else {
+        return NULL;
+    }
 }
 
-
-- (BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding
-{
-    NSRange range = {0, [self length]};
-    unichar *unicode = NSZoneMalloc(NULL, maxLength * sizeof(unichar));
+-(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
+    NSRange range={0,[self length]};    
+    unichar  *unicode = NSZoneMalloc(NULL,range.length*sizeof(unichar));
+    NSUInteger location;
     [self getCharacters:unicode range:range];
-    if (NSGetAnyCStringWithMaxLength(encoding, unicode, range.length, &range.location, cString, maxLength, YES) == NSNotFound) {
+    if (NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength, NO) == NSNotFound) {
         NSZoneFree(NULL, unicode);
         return NO;
     }
@@ -1710,7 +1785,12 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
    [self getCharacters:unicode range:range];
 
-   NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength+1,YES);
+   if (NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength+1, NO) == NSNotFound) {
+       NSZoneFree(NULL, unicode);
+       
+       [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+   }
+    
    NSZoneFree(NULL, unicode);
 
    if(leftoverRange!=NULL){
@@ -1731,25 +1811,39 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
 
    [self getCharacters:unicode];
 
-   NSGetCStringWithMaxLength(unicode,length,&location,cString,NSMaximumStringLength+1,YES);
+   if (NSGetCStringWithMaxLength(unicode,length,&location,cString,NSMaximumStringLength+1, NO) == NSNotFound) {
+       NSZoneFree(NULL, unicode);
+       
+       [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+   }
    NSZoneFree(NULL, unicode);
 }
 
 -(NSUInteger)cStringLength {
     NSUInteger length=[self length];
-    unichar  *unicode = NSZoneMalloc(NULL,sizeof(unichar)*length);
-    NSUInteger cStringLength = 0;
+    unichar  *unicode = NSZoneMalloc(NULL,length*sizeof(unichar));
     if (unicode == NULL) {
         NSLog(@"%@: failed to allocate buffer of size %d", NSStringFromSelector(_cmd), length);
-    } else {
-        [self getCharacters:unicode];
-        
-        char    *cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
+        return 0;
+     }
+
+    NSUInteger cStringLength;
+    char    *cString;
+    
+    [self getCharacters:unicode];
+    
+    cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
+    
+    NSZoneFree(NULL, unicode);
+    
+    if (cString) {
         NSZoneFree(NULL,cString);
-        
-        NSZoneFree(NULL,unicode);
     }
-   return cStringLength;
+    else {
+        [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+    }
+    
+    return cStringLength;
 }
 
 -(const char *)cString {
@@ -1764,12 +1858,17 @@ static inline void reverseString(unichar *buf, NSUInteger len) {
     NSUInteger resultLength;
 
     [self getCharacters:buffer];
-    char *cstr = NSString_unicodeToAnyCString(defaultEncoding(), buffer, length, YES, &resultLength, NULL, YES);
-    // FIXME obviously the char* shall be handled by the autorelease pool or garbage collector
-    //       that's bad design
-    [NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    char *cstr=NSString_unicodeToAnyCString(defaultEncoding(), buffer,length,YES,&resultLength,NULL,YES);
     NSZoneFree(NULL, buffer);
-    return cstr;
+
+    if (cstr) {
+        NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+        return cstr;
+    }
+    else {
+        [NSException raise:NSCharacterConversionException format:@"Can't get cString from Unicode string"];
+        return NULL;
+    }
 }
 
 

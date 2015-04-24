@@ -274,38 +274,85 @@ second, 0);
     }
 }
 
+
+
 // Might be a little off with daylight savings, etc., needs to be verified
 -(NSCalendarDate *)dateByAddingYears:(NSInteger)yearDelta months:(NSInteger)monthDelta
   days:(NSInteger)dayDelta hours:(NSInteger)hourDelta minutes:(NSInteger)minuteDelta seconds:(NSInteger)secondDelta {
-   NSTimeInterval result;
-   NSInteger            years=NSYearFromTimeInterval(_timeInterval);
-   NSInteger            months=NSMonthFromTimeInterval(_timeInterval);
-   NSInteger            days=NSDayOfMonthFromTimeInterval(_timeInterval);
-   NSInteger            hours=NS24HourFromTimeInterval(_timeInterval);
-   NSInteger            minutes=NSMinuteFromTimeInterval(_timeInterval);
-   NSInteger            seconds=NSSecondFromTimeInterval(_timeInterval);
-
-   years+=yearDelta;
-   years+=monthDelta/12;
-   monthDelta%=12;
-   months+=monthDelta;
-   if(months>12){
-    years++;
-    months-=12;
-   }
-   else if(months<0){
-    years--;
-    months+=12;
-   }
-
-   result=NSTimeIntervalWithComponents(years,months,days,hours,minutes,seconds,0);
-
-   result+=dayDelta*86400.0;
-   result+=hourDelta*3600.0;
-   result+=minuteDelta*60.0;
-   result+=secondDelta;
-
-   NSCalendarDate   *resultDate = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:result];
+    NSInteger year=NSYearFromTimeInterval(_timeInterval);
+    NSInteger month=NSMonthFromTimeInterval(_timeInterval);
+    NSInteger day=NSDayOfMonthFromTimeInterval(_timeInterval);
+    NSInteger hour=NS24HourFromTimeInterval(_timeInterval);
+    NSInteger minute=NSMinuteFromTimeInterval(_timeInterval);
+    NSInteger second=NSSecondFromTimeInterval(_timeInterval);
+    
+    second+=secondDelta;
+    minute+=second/60;
+    second %= 60;
+    if (second < 0) {
+        second+=60;
+        minute--;
+    }
+    
+    minute+=minuteDelta;
+    hour+=minute/60;
+    minute %= 60;
+    if (minute < 0) {
+        minute+=60;
+        hour--;
+    }
+    
+    hour+= hourDelta;
+    day+=hour/24;
+    hour%=24;
+    if (hour < 0) {
+        day--;
+        hour+=24;
+    }
+    
+    day+=dayDelta;
+    if (day > 28) {
+        int i = NSNumberOfDaysInMonthOfYear(month, year);
+        while (day > i) {
+            day -= i;
+            if (month < 12) {
+                month++;
+            }
+            else {
+                year++;
+                month = 1;
+            }
+            i = NSNumberOfDaysInMonthOfYear(month, year);
+        }
+    }
+    else {
+        while (day <= 0) {
+            if (month == 1) {
+                month=12;
+                year--;
+            }
+            else {
+                month--;
+            }
+            day += NSNumberOfDaysInMonthOfYear(month, year);
+        }
+    }
+    
+    month+=monthDelta;
+    
+    while (month > 12) {
+        month-=12;
+        year++;
+    }
+    
+    while (month < 1) {
+        month+=12;
+        year--;
+    }
+    
+    year += yearDelta;
+    
+    NSCalendarDate *resultDate = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:NSTimeIntervalWithComponents(year,month,day,hour,minute,second,0)];
     
     [resultDate setTimeZone:_timeZone];
     

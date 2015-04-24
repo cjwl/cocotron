@@ -12,6 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "ObjCException.h"
 #import "objc_malloc.h"
 #import "objc_protocol.h"
+#ifdef __APPLE__
+#import "OBJCRegisterModule_Darwin.h"
+#endif
  
 #import <string.h>
 
@@ -192,10 +195,9 @@ int _NSGetExecutablePath(char *path,uint32_t *capacity) {
 
 void OBJCInitializeProcess() {
 #ifdef __APPLE__
-extern void OBJCInitializeProcess_Darwin(void);
-
-   OBJCInitializeProcess_Darwin();
+   OBJCRegisterModule_Darwin(NULL);
 #endif
+	
 }
 
 OBJCObjectFile *OBJCMainObjectFile(){
@@ -529,19 +531,23 @@ static void OBJCSymbolTableRegisterProtocolsIfNeeded(OBJCSymbolTable *symbolTabl
 }
 
 void OBJCQueueModule(OBJCModule *module) {
-    OBJCArrayAdd(OBJCModuleQueue(),module);
-    OBJCLinkModuleToActiveObjectFile(module);
-    if(module->symbolTable!=NULL){
-        OBJCSymbolTableRegisterSelectors(module->symbolTable);
-        OBJCSymbolTableRegisterClasses(module->symbolTable);
-        OBJCSymbolTableRegisterCategories(module->symbolTable);
+    if (module->symbolTable != NULL) {
+   OBJCArrayAdd(OBJCModuleQueue(),module);
+   OBJCLinkModuleToActiveObjectFile(module);
+   OBJCSymbolTableRegisterSelectors(module->symbolTable);
+   OBJCSymbolTableRegisterClasses(module->symbolTable);
+   OBJCSymbolTableRegisterCategories(module->symbolTable);
 #ifndef __APPLE__
         OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
         OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
 #endif
+
+   OBJCLinkClassTable();
+#ifndef __APPLE__
+
+   OBJCSendLoadMessages();
+#endif
     }
-    
-    OBJCLinkClassTable();
 }
 
 void OBJCResetModuleQueue(void) {

@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSPlatform_darwin.h>
-#import <Foundation/NSTask_darwin.h>
 
 #import <rpc/types.h>
 #include <time.h>
@@ -80,22 +79,8 @@ NSString * const NSPlatformExecutableDirectory=@"Darwin";
 NSString * const NSPlatformResourceNameSuffix=@"darwin";
 
 NSString * const NSPlatformExecutableFileExtension=@"";
-NSString * const NSPlatformLoadableObjectFileExtension=@"";
+NSString * const NSPlatformLoadableObjectFileExtension=@"dylib";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"";
-
--(Class)taskClass {
-    static Class NSTaskClass = Nil;
-    
-    @synchronized(self)
-	{
-        if (NSTaskClass == Nil) {
-            NSTaskClass = [NSTask_darwin class];
-            [NSTaskClass registerNotification];
-        }
-    }
-    
-    return NSTaskClass;
-}
 
 - (NSUInteger)processorCount
 {

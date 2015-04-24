@@ -15,7 +15,7 @@
 	0x0000000E = "Windows CP1254";
 	0x0000000F = "Windows CP1250";
 	0x00000015 = "ISO 2022 JP";
-	0x0000001B = "Mac Roman";
+	0x0000001E = "Mac Roman";
 	0x00010000 = Proprietary;
 	0x90000100 = "UTF-16 BE";
 	0x94000100 = "UTF-16 LE";

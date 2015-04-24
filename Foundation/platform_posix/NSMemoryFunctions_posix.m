@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSError.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,6 +117,17 @@ NSThread *NSPlatformCurrentThread() {
 		// maybe NSThread is not +initialize'd
 		[NSThread class];
 		thread=pthread_getspecific(_NSThreadInstanceKey());
+        if(!thread) {
+            thread = [NSThread alloc];
+            if(thread) {
+                NSPlatformSetCurrentThread(thread);
+                {
+                    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+                    [thread init];
+                    [pool release];
+                }
+            }
+        }        
 		if(!thread)
 		{
 			[NSException raise:NSInternalInconsistencyException format:@"No current thread"];
@@ -124,10 +137,12 @@ NSThread *NSPlatformCurrentThread() {
 	return thread;
 }
 
-NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg) {
+NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg, NSError **errorp) {
 	pthread_t thread;
-	if (pthread_create(&thread, NULL, func, arg) != 0) {
-        perror("pthread_create failed");
+    int err;
+	if ((err = pthread_create(&thread, NULL, func, arg)) != 0) {
+        if (errorp) *errorp = [NSError errorWithDomain:NSPOSIXErrorDomain code:err userInfo:nil];
+        return 0;
     }
 	return (NSUInteger)thread;
 }

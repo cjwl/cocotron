@@ -9,8 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
-#import <Foundation/NSPlatform_linux.h>
-#import <Foundation/NSTask_linux.h>
+#import "NSPlatform_linux.h"
 
 #import <rpc/types.h>		// for MAXHOSTNAMELEN, why is that there?
 #include <unistd.h>
@@ -63,20 +62,6 @@ NSString * const NSPlatformResourceNameSuffix=@"linux";
 NSString * const NSPlatformExecutableFileExtension=@"";
 NSString * const NSPlatformLoadableObjectFileExtension=@"so";
 NSString * const NSPlatformLoadableObjectFilePrefix=@"lib";
-
--(Class)taskClass {
-    static Class NSTaskClass = Nil;
-    
-    @synchronized(self)
-	{
-        if (NSTaskClass == Nil) {
-            NSTaskClass = [NSTask_linux class];
-            [NSTaskClass registerNotification];
-        }
-    }
-    
-    return NSTaskClass;
-}
 
 @end
 

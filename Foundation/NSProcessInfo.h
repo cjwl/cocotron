@@ -51,6 +51,4 @@ enum {
 
 @end
 
-FOUNDATION_EXPORT void NSInitializeProcess(int argc,const char *argv[]); //deprecated
 void __NSInitializeProcess(int argc,const char *argv[]);
-

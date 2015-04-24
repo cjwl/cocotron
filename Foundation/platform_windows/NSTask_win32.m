@@ -29,8 +29,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // private
 -(void)finalizeProcess{
 
-   isRunning=NO;
-
    if(_monitor!=nil){
     [[NSRunLoop currentRunLoop] removeInputSource:_monitor forMode: NSDefaultRunLoopMode];
     [_monitor setDelegate:nil];
@@ -74,6 +72,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)launch {
+    if ([self isRunning]) {
+        [NSException raise:NSInvalidArgumentException
+                    format:@"NSTask already launched"];
+    }
    STARTUPINFO   startupInfo;
 
     // For CreateProcess it's not actually an error for the launchPath to be nil
@@ -110,9 +112,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     startupInfo.hStdError=[standardError fileHandle];
     
     SetHandleInformation([(NSFileHandle_win32 *)[standardError fileHandleForReading] fileHandle], HANDLE_FLAG_INHERIT, 0);
-
-
-   ZeroMemory(& _processInfo,sizeof(_processInfo));
+    
+    ZeroMemory(& _processInfo,sizeof(_processInfo));
     
     char    *cenv = NULL, *cenvp = NULL;
     if(environment != nil) {
@@ -147,7 +148,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NULL,NULL,TRUE,CREATE_NO_WINDOW,cenv,
     [currentDirectoryPath fileSystemRepresentation],
     &startupInfo,&_processInfo)){
-       DWORD dwError = GetLastError();
+
+    DWORD   lastError=GetLastError();
+
     if(cenv) {
         NSZoneFree(NULL, cenv);
     }
@@ -156,7 +159,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        launchPathStr = (char *)[launchPath fileSystemRepresentation];
     }
     [NSException raise:NSInvalidArgumentException
-                format:@"CreateProcess(\"%s\", \"%s\", \"%s\") failed with error: %d", launchPathStr, [[self _argumentsData] bytes], [currentDirectoryPath fileSystemRepresentation], dwError];
+                format:@"CreateProcess(\"%s\", \"%s\", \"%s\") failed with error: %d", launchPathStr, [[self _argumentsData] bytes], [currentDirectoryPath fileSystemRepresentation], lastError];
     return;
    }
     if(cenv) {
@@ -170,10 +173,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([standardError isKindOfClass:[NSPipe class]])
     [[standardError fileHandleForWriting] closeFile];
 
-   isRunning=YES;
    _monitor=[[NSHandleMonitor_win32 allocWithZone:NULL] initWithHandle:_processInfo.hProcess];
    [_monitor setDelegate:self];
    [[NSRunLoop currentRunLoop] addInputSource:_monitor forMode: NSDefaultRunLoopMode];
+}
+
+-(BOOL)isRunning
+{
+    if ( _processInfo.hProcess != NULL) {
+        GetExitCodeProcess(_processInfo.hProcess, &_exitCode);
+        if (_exitCode == STILL_ACTIVE) {
+            return YES;
+        }
+        else {
+            return NO;
+        }
+    }
+    else {
+        return NO;
+    }
 }
 
 -(void)terminate {

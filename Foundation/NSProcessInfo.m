@@ -196,15 +196,9 @@ const char * const *NSProcessInfoArgv=NULL;
 
 @end
 
-FOUNDATION_EXPORT void NSInitializeProcess(int argc,const char *argv[])
-{
-    //no more used
-}
-
-void __NSInitializeProcess(int argc,const char *argv[])
-{
-    NSProcessInfoArgc=argc;
-    NSProcessInfoArgv=argv;
+FOUNDATION_EXPORT void __NSInitializeProcess(int argc,const char *argv[]) {
+   NSProcessInfoArgc=argc;
+   NSProcessInfoArgv=argv;
 #if !defined(GCC_RUNTIME_3)
 #if !defined(APPLE_RUNTIME_4)
     OBJCInitializeProcess();
@@ -215,6 +209,7 @@ void __NSInitializeProcess(int argc,const char *argv[])
     Class cls = objc_lookUpClass("NSConstantString");
     memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
     cls = objc_lookUpClass("NSDarwinString");
+
 #if __LP64__
     extern int __CFConstantStringClassReference[24];
 #else
