@@ -175,7 +175,8 @@ APPKIT_EXPORT NSString * const NSWindowDidEndLiveResizeNotification;
    BOOL      _autorecalculatesKeyViewLoop;
    BOOL      _hasBeenOnScreen;
    
-   BOOL      _inLiveResize;
+   BOOL      _isInLiveResize;
+   BOOL      _preservesContentDuringLiveResize;
    NSSize    _resizeIncrements;
    NSSize    _contentResizeIncrements;
    

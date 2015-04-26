@@ -929,9 +929,14 @@ _dataSource);
 // Deprecated in Mac OS X 10.3.
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
 
-   if (extend)
-    [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange([self selectedRow], row)] byExtendingSelection:NO];
-   else
+   if (extend) {
+    NSUInteger startRow=[self selectedRow], endRow=row;
+    if (startRow>endRow) {
+     endRow=startRow;
+     startRow=row;
+    }
+    [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(startRow, endRow-startRow+1)] byExtendingSelection:NO];
+   } else
     [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 }
 
@@ -1580,7 +1585,7 @@ _dataSource);
                     startRow = _clickedRow;
                 }
 
-                [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(startRow, endRow)] byExtendingSelection:NO];
+                [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(startRow, endRow-startRow+1)] byExtendingSelection:NO];
             }
             else
                 [self selectRowIndexes:[NSIndexSet indexSetWithIndex:_clickedRow] byExtendingSelection:NO];
