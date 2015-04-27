@@ -46,6 +46,21 @@ else
 	gccVersionDate="-"$4
 fi
 
+if [ $targetArchitecture = "x86_64" ];then
+	wordSize="64"
+else
+	wordSize="32"
+fi
+
+/bin/echo "Welcome to The Cocotron's InstallCDT script"
+
+if [ -w /Library/Application\ Support/Developer/Shared/Xcode/Specifications ];then
+	/bin/echo "Permissions properly set up, continuing install."
+else
+	/bin/echo "For this script to complete successfully, the directory /Library/Application Support/Develper/Shared/Xcode/Specifications must be writeable by you, and we've detected that it isn't.  "
+	exit 1
+fi
+
 set -eu
 
 cd "`dirname \"$0\"`"
@@ -100,6 +115,10 @@ elif [ $targetPlatform = "FreeBSD" ];then
 	if [ $targetArchitecture = "i386" ];then
 		compilerTarget=i386-pc-freebsd7
 		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
+	elif [ $targetArchitecture = "x86_64" ];then
+		compilerTarget=x86_64-pc-freebsd7
+		compilerConfigureFlags="--enable-version-specific-runtime-libs --enable-shared --enable-threads=posix --disable-checking --disable-libunwind-exceptions --with-system-zlib --enable-__cxa_atexit"
+		binutilsConfigureFlags="--enable-64-bit-bfd"
 	else
 		/bin/echo "Unsupported architecture $targetArchitecture on $targetPlatform"
 		exit 1
@@ -176,7 +195,7 @@ configureAndInstall_binutils() {
 	rm -rf $buildFolder/binutils-$binutilsVersion
 	mkdir -p $buildFolder/binutils-$binutilsVersion
 	pushd $buildFolder/binutils-$binutilsVersion
-	CFLAGS="-m32 -Wformat=0 -Wno-error=deprecated-declarations" $sourceFolder/binutils-$binutilsVersion/configure --prefix="$resultFolder" --target=$compilerTarget $binutilsConfigureFlags
+	CFLAGS="-m${wordSize} -Wformat=0 -Wno-error=deprecated-declarations" $sourceFolder/binutils-$binutilsVersion/configure --prefix="$resultFolder" --target=$compilerTarget $binutilsConfigureFlags
 	make
 	make install
 	popd
@@ -187,7 +206,7 @@ configureAndInstall_gmpAndMpfr() {
 	rm -rf $buildFolder/gmp-$gmpVersion
 	mkdir -p $buildFolder/gmp-$gmpVersion
 	pushd $buildFolder/gmp-$gmpVersion
-	ABI=32 $sourceFolder/gmp-$gmpVersion/configure --prefix="$resultFolder"
+	ABI=${wordSize} $sourceFolder/gmp-$gmpVersion/configure --prefix="$resultFolder"
 	make
 	make install
 	popd
@@ -207,7 +226,7 @@ configureAndInstall_gcc() {
 	rm -rf $buildFolder/gcc-$gccVersion
 	mkdir -p $buildFolder/gcc-$gccVersion
 	pushd $buildFolder/gcc-$gccVersion
-	CFLAGS="-m32" $sourceFolder/gcc-$gccVersion/configure -v --prefix="$resultFolder" --target=$compilerTarget \
+	CFLAGS="-m${wordSize}" $sourceFolder/gcc-$gccVersion/configure -v --prefix="$resultFolder" --target=$compilerTarget \
 		--with-gnu-as --with-gnu-ld --with-headers=$resultFolder/$compilerTarget/include \
 		--without-newlib --disable-multilib --disable-libssp --disable-nls --enable-languages="$enableLanguages" \
 		--with-gmp=$buildFolder/gmp-$gmpVersion --enable-decimal-float --with-mpfr=$resultFolder --enable-checking=release \
@@ -237,8 +256,10 @@ stripBinaries() {
 
 "create"$targetPlatform"InterfaceIfNeeded"
 downloadCompilerIfNeeded
- 
+       
+/bin/echo -n "Copying the platform interface.  This could take a while.."
 copyPlatformInterface
+/bin/echo -n "done."
 
 configureAndInstall_binutils
 

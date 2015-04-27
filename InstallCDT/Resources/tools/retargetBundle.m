@@ -272,7 +272,7 @@ int main(int argc,char **argv){
       NSString *path=resolveFrameworkWithPath(fileManager,name,searchPath);
       
       if(path==nil){
-       NSLog(@"Unable to find -framework %@",name);
+       NSLog(@"Unable to find -framework %@ on path %@",name,path);
        exit(-1);
       }
       

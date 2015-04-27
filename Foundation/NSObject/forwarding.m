@@ -8,6 +8,9 @@
 #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
 #define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret")
 #endif
+// 64-bit freebsd, FIX
+// #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend@PLT")
+// #define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret@PLT");
 
 #if !COCOTRON_DISALLOW_FORWARDING
 @interface NSObject(fastforwarding)
