@@ -597,7 +597,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSStringCompareOptions compareOption = 0;
     NSRange range = {0,[string length]};
     NSInteger oldLocation =_location;
-
+    
     if(!_isCaseSensitive) {
         compareOption = NSCaseInsensitiveSearch;
     }
@@ -605,7 +605,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     for(;_location<length;_location++) {
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         NSString    *subStr = [_string substringFromIndex:_location];
-
+        
         if([subStr length] < [string length]) {
             _location = oldLocation;
             [pool drain];
