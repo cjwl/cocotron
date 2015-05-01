@@ -25,40 +25,42 @@ productName=$3
 productVersion=$4
 compilerTarget=$5
 specificationTemplates=$6
-gccVersion=$7
+compiler=$7
+compilerVersion=$8
+
 
 destinationDirectory="/Library/Application Support/Developer/Shared/Xcode/Specifications"
 mkdir -p "$destinationDirectory"
 
+hostTriple=
 uppercaseProductName=`echo $productName | tr "[:lower:]" "[:upper:]"`
 uppercasePlatform=`echo $targetPlatform | tr "[:lower:]" "[:upper:]"`
 lowercasePlatform=`echo $targetPlatform | tr "[:upper:]" "[:lower:]"`
 
-
-outputSpecification="$destinationDirectory/$productName-$productVersion-$targetPlatform-$targetArchitecture-gcc"
-versionSpecification="$outputSpecification-$gccVersion.pbcompspec"
+outputSpecification="$destinationDirectory/$productName-$productVersion-$targetPlatform-$targetArchitecture-$compiler"
+versionSpecification="$outputSpecification-$compilerVersion.pbcompspec"
 defaultSpecification="$outputSpecification-default.pbcompspec"
 
-sed -e 's/%REPLACE%Platform%REPLACE%/'$targetPlatform'/g' < $specificationTemplates/gcc-$gccVersion.pbcompspec | \
+sed -e 's/%REPLACE%Platform%REPLACE%/'$targetPlatform'/g' < $specificationTemplates/$compiler-$compilerVersion.pbcompspec | \
 sed -e 's/%REPLACE%platform%REPLACE%/'$lowercasePlatform'/g'  | \
 sed -e 's/%REPLACE%PLATFORM%REPLACE%/'$uppercasePlatform'/g'  | \
 sed -e 's/%REPLACE%architecture%REPLACE%/'$targetArchitecture'/g' | \
 sed -e 's/%REPLACE%ProductName%REPLACE%/'$productName'/g' | \
 sed -e 's/%REPLACE%PRODUCTNAME%REPLACE%/'$uppercaseProductName'/g' | \
 sed -e 's/%REPLACE%ProductVersion%REPLACE%/'$productVersion'/g' | \
-sed -e 's/%REPLACE%gccVersion%REPLACE%/'$gccVersion'/g' | \
+sed -e 's/%REPLACE%compilerVersion%REPLACE%/'$compilerVersion'/g' | \
 sed -e 's/%REPLACE%TARGET%REPLACE%/'$compilerTarget'/g' > "$versionSpecification"
 
-sed -e 's/%REPLACE%Platform%REPLACE%/'$targetPlatform'/g' < $specificationTemplates/gcc-default.pbcompspec | \
+sed -e 's/%REPLACE%Platform%REPLACE%/'$targetPlatform'/g' < $specificationTemplates/$compiler-default.pbcompspec | \
 sed -e 's/%REPLACE%platform%REPLACE%/'$lowercasePlatform'/g'  | \
 sed -e 's/%REPLACE%PLATFORM%REPLACE%/'$uppercasePlatform'/g'  | \
 sed -e 's/%REPLACE%architecture%REPLACE%/'$targetArchitecture'/g' | \
 sed -e 's/%REPLACE%ProductName%REPLACE%/'$productName'/g' | \
 sed -e 's/%REPLACE%PRODUCTNAME%REPLACE%/'$uppercaseProductName'/g' | \
 sed -e 's/%REPLACE%ProductVersion%REPLACE%/'$productVersion'/g' | \
-sed -e 's/%REPLACE%gccVersion%REPLACE%/'$gccVersion'/g' | \
+sed -e 's/%REPLACE%compilerVersion%REPLACE%/'$compilerVersion'/g' | \
 sed -e 's/%REPLACE%TARGET%REPLACE%/'$compilerTarget'/g' > "$defaultSpecification"
 
 if [ $targetPlatform = "Windows" ];then
- cp "$specificationTemplates/Windows.pbfilespec" "$destinationDirectory/$productName-$productVersion-Windows.pbfilespec"
+ cp $specificationTemplates/Windows.pbfilespec "$destinationDirectory/$productName-$productVersion-Windows.pbfilespec"
 fi

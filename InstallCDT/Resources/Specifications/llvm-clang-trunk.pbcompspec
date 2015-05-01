@@ -1,0 +1,53 @@
+(
+	{
+		Identifier = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.llvm.clang.%REPLACE%compilerVersion%REPLACE%;
+		BasedOn    = com.apple.compilers.llvm.clang.1_0;
+		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% llvm-clang %REPLACE%compilerVersion%REPLACE%";
+		Version    = "org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.clang.%REPLACE%compilerVersion%REPLACE%";
+		Vendor     = "cocotron.org";
+		ExecPath   = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/llvm-clang-%REPLACE%compilerVersion%REPLACE%/bin/%REPLACE%TARGET%REPLACE%-llvm-clang";
+		Architectures = (i386);
+
+		SupportsZeroLink              = No;
+		SupportsPredictiveCompilation = No;
+    	SupportsHeadermaps            = No;
+    	DashIFlagAcceptsHeadermaps    = No;
+
+        Options = (
+        {   Name = SDKROOT;
+            Type = Path;
+            CommandLineArgs = ();
+        },
+	{
+		Name=%REPLACE%PRODUCTNAME%REPLACE%_FRAMEWORK_SEARCH_PATH;
+		Type = string;
+		DefaultValue = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/Frameworks";
+		CommandLineArgs = ( "-F$(value)" );
+	},
+	{
+		Name=%REPLACE%PRODUCTNAME%REPLACE%_DEFINE;
+		Type = bool;
+		DefaultValue = YES;
+		CommandLineArgs = { YES = (-D__%REPLACE%PRODUCTNAME%REPLACE%__); NO = (); };
+	},
+        /* overrides */
+        {   Name = arch;
+            CommandLineArgs = ( );
+/* despite overriding arch here, the link command still generates it, so we have to implement it in the compiler too */
+        },
+        {   Name = USE_HEADERMAP;
+            Type = bool;
+            DefaultValue = NO;
+        },
+        {   Name = PREBINDING; /* this override doesn't work */
+            Type = bool;
+            DefaultValue = NO;
+        },
+        {   Name = WARNING_CFLAGS;
+            CommandLineArgs = ( );
+        },
+
+		);
+
+	}
+)

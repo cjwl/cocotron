@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "ObjCException.h"
 #import "objc_malloc.h"
 #import "objc_protocol.h"
-#ifdef __APPLE__
+#if defined(__APPLE__)
 #import "OBJCRegisterModule_Darwin.h"
 #endif
  
@@ -194,7 +194,7 @@ int _NSGetExecutablePath(char *path,uint32_t *capacity) {
 #endif
 
 void OBJCInitializeProcess() {
-#ifdef __APPLE__
+#if defined(__APPLE__)
    OBJCRegisterModule_Darwin(NULL);
 #endif
 	
@@ -354,7 +354,6 @@ void OBJCSendLoadMessage(Class class) {
 		sentLoadMessageClasses[i] = class;
 	}
     
-       
     Method m = class_getClassMethod(class, @selector(load));
     if(m) {
         IMP imp = method_getImplementation(m);
@@ -537,14 +536,13 @@ void OBJCQueueModule(OBJCModule *module) {
    OBJCSymbolTableRegisterSelectors(module->symbolTable);
    OBJCSymbolTableRegisterClasses(module->symbolTable);
    OBJCSymbolTableRegisterCategories(module->symbolTable);
-#ifndef __APPLE__
-        OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
-        OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
+#if !defined(__APPLE__)
+   OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
+   OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
 #endif
-
    OBJCLinkClassTable();
-#ifndef __APPLE__
-
+        
+#if !defined(__APPLE__)
    OBJCSendLoadMessages();
 #endif
     }

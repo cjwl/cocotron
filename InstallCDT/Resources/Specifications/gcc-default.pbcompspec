@@ -1,7 +1,7 @@
 (
 	{
 		Identifier = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.default;
-		BasedOn    = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%gccVersion%REPLACE%;
-		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% gcc default (%REPLACE%gccVersion%REPLACE%)";
+		BasedOn    = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%compilerVersion%REPLACE%;
+		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% gcc default (%REPLACE%compilerVersion%REPLACE%)";
 	}
 )

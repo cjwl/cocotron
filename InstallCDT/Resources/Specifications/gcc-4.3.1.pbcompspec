@@ -1,11 +1,11 @@
 (
 	{
-		Identifier = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%gccVersion%REPLACE%;
+		Identifier = org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%compilerVersion%REPLACE%;
 		BasedOn    = com.apple.compilers.llvmgcc42;
-		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% gcc %REPLACE%gccVersion%REPLACE%";
-		Version    = "org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%gccVersion%REPLACE%";
+		Name       = "%REPLACE%ProductName%REPLACE% %REPLACE%ProductVersion%REPLACE% %REPLACE%Platform%REPLACE% %REPLACE%architecture%REPLACE% gcc %REPLACE%compilerVersion%REPLACE%";
+		Version    = "org.cocotron.%REPLACE%ProductVersion%REPLACE%.%REPLACE%platform%REPLACE%.%REPLACE%architecture%REPLACE%.gcc.%REPLACE%compilerVersion%REPLACE%";
 		Vendor     = "cocotron.org";
-		ExecPath   = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/gcc-%REPLACE%gccVersion%REPLACE%/bin/%REPLACE%TARGET%REPLACE%-gcc";
+		ExecPath   = "/Developer/%REPLACE%ProductName%REPLACE%/%REPLACE%ProductVersion%REPLACE%/%REPLACE%Platform%REPLACE%/%REPLACE%architecture%REPLACE%/gcc-%REPLACE%compilerVersion%REPLACE%/bin/%REPLACE%TARGET%REPLACE%-gcc";
 		Architectures = (%REPLACE%architecture%REPLACE%);
 
 		SupportsZeroLink              = No;
