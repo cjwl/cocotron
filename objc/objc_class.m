@@ -726,10 +726,14 @@ BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
    return NO;
 }
 
-id class_createInstance(Class cls,size_t extraBytes) {
-   // UNIMPLEMENTED
-   return NULL;
+id class_createInstance(Class cls, size_t extraBytes)
+{
+	if (Nil == cls)	{ return nil; }
+	id obj = malloc(cls->instance_size+extraBytes);
+	obj->isa = cls;
+	return obj;
 }
+
 
 IMP class_replaceMethod(Class cls,SEL selector,IMP imp,const char *types) {
    // UNIMPLEMENTED
@@ -904,8 +908,14 @@ void OBJCInitializeClass(Class class) {
    }
 }
 
-void *objc_forwardHandler=NULL;
-void *objc_forwardHandler_stret=NULL;
+void default_handler()
+{
+	printf("OBJC default handler");
+	exit(1);
+}
+
+void *objc_forwardHandler=default_handler;
+void *objc_forwardHandler_stret=default_handler;
 
 void objc_setForwardHandler(void *handler,void *handler_stret){
    objc_forwardHandler=handler;
