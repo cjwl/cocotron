@@ -16,7 +16,6 @@
    pthread_mutex_t _mutex;
    NSInteger _value;
    NSThread *_lockingThread;
-   NSString* _name;
 }
 
 @end

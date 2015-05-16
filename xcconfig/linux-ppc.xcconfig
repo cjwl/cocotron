@@ -3,7 +3,7 @@
 EFFECTIVE_PLATFORM_NAME = -linux
 INSTALL_TARGET_TRIPLE = ppc-pc-linux
 
-GCC_VERSION = org.cocotron.1.0.linux.ppc.gcc.default
+GCC_VERSION = org.cocotron.1.0.linux.ppc.gcc.4.3.1
 
 ARCHS = ppc
 VALID_ARCHS = ppc

@@ -207,7 +207,7 @@ FOUNDATION_EXPORT void __NSInitializeProcess(int argc,const char *argv[]) {
     // init NSConstantString reference-tag (see http://lists.apple.com/archives/objc-language/2006/Jan/msg00013.html)
     // only Darwin ppc!?
     Class cls = objc_lookUpClass("NSConstantString");
-    memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
+//    memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
     cls = objc_lookUpClass("NSDarwinString");
 
 #if __LP64__
@@ -216,7 +216,7 @@ FOUNDATION_EXPORT void __NSInitializeProcess(int argc,const char *argv[]) {
     extern int __CFConstantStringClassReference[12];
 #endif
 
-    memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
+    memcpy(&__CFConstantStringClassReference, cls, sizeof(__CFConstantStringClassReference));
     
     // Override the compiler version of the class
     //objc_addClass(&_NSConstantStringClassReference);

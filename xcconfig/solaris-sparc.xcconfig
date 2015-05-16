@@ -3,7 +3,7 @@
 EFFECTIVE_PLATFORM_NAME = -solaris
 INSTALL_TARGET_TRIPLE = sparc-sun-solaris
 
-GCC_VERSION = org.cocotron.1.0.solaris.sparc.gcc.default
+GCC_VERSION = org.cocotron.1.0.solaris.sparc.gcc.4.3.1
 
 ARCHS = sparc
 VALID_ARCHS = sparc

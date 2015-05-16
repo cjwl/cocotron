@@ -12,6 +12,19 @@
 // #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend@PLT")
 // #define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret@PLT");
 
+static void OBJCRaiseException(const char *name,const char *format,...) {
+    va_list arguments;
+    
+    va_start(arguments,format);
+    
+    fprintf(stderr,"ObjC:%s:",name);
+    vfprintf(stderr,format,arguments);
+    fprintf(stderr,"\n");
+    fflush(stderr);
+    va_end(arguments);
+}
+
+
 #if !COCOTRON_DISALLOW_FORWARDING
 @interface NSObject(fastforwarding)
 -forwardingTargetForSelector:(SEL)selector;
@@ -20,18 +33,6 @@
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
-
-static void OBJCRaiseException(const char *name,const char *format,...) {
-   va_list arguments;
-
-   va_start(arguments,format);
-
-   fprintf(stderr,"ObjC:%s:",name);
-   vfprintf(stderr,format,arguments);
-   fprintf(stderr,"\n");
-   fflush(stderr);
-   va_end(arguments);
-}
 
 #ifndef GCC_RUNTIME_3
 id NSObjCGetFastForwardTarget(id object,SEL selector){

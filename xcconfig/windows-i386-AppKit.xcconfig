@@ -1,0 +1,11 @@
+#include "windows-i386-framework"
+
+
+OTHER_CFLAGS = -DQUARTZCORE_INSIDE_BUILD -DAPPKIT_INSIDE_BUILD -DCORETEXT_INSIDE_BUILD -DCOREGRAPHICS_INSIDE_BUILD -DCGL_INSIDE_BUILD -DDEBUG -march=i686 $(WINDOWS_i386_CFLAGS)
+
+OTHER_LDFLAGS = -lmsimg32 -lole32 -lgdi32 -luser32 -lcomdlg32 -lcomctl32 -lopengl32 -lwinmm $(WINDOWS_i386_FRAMEWORK_LDFLAGS)
+
+LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/libtiff/lib /Developer/Cocotron/1.0/Windows/i386/libpng/lib  /Developer/Cocotron/1.0/Windows/i386/libjpeg/lib /Developer/Cocotron/1.0/Windows/i386/zlib-1.2.5/lib $(WINDOWS_i386_LIBRARY_SEARCH_PATHS)
+
+HEADER_SEARCH_PATHS = $(DSTROOT)/usr/include
+

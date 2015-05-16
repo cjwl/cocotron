@@ -1,3 +1,4 @@
+#ifdef WINDOWS
 
 .globl _objc_msgSend
 	.def	_objc_msgSend;	.scl	2;	.type	32;	.endef
@@ -134,3 +135,5 @@ _objc_msgSend_fpret:
 	mov  %ebp, %esp
 	pop  %ebp
 	jmp		*%eax
+
+#endif

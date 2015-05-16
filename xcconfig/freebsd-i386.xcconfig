@@ -3,7 +3,7 @@
 EFFECTIVE_PLATFORM_NAME = -freebsd
 INSTALL_TARGET_TRIPLE = i386-pc-freebsd
 
-GCC_VERSION = org.cocotron.1.0.freebsd.i386.gcc.default
+GCC_VERSION = org.cocotron.1.0.freebsd.i386.gcc.4.3.1
 
 ARCHS = i386
 VALID_ARCHS = i386

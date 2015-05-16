@@ -1,4 +1,4 @@
-
+#ifdef COCOTRON_DISALLOW_FORWARDING
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <objc/message.h>
@@ -9,3 +9,4 @@ id objc_msgSendv(id self, SEL selector, unsigned arg_size, void *arg_frame)
 	return nil;
 }
 
+#endif

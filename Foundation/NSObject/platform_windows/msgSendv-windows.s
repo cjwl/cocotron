@@ -1,3 +1,4 @@
+#ifdef WINDOWS
 # Original - Christopher Lloyd <cjwl@objc.net>
 .globl _objc_msgSendv
 _objc_msgSendv:
@@ -47,3 +48,5 @@ done_stret:
     .section .drectve
     .ascii " -export:objc_msgSendv"
     .ascii " -export:objc_msgSendv_stret"
+#endif
+

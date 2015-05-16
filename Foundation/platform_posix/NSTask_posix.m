@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
+#ifdef PLATFORM_IS_POSIX
 #import <Foundation/NSTask_posix.h>
 #import <Foundation/NSRunLoop-InputSource.h>
 #import <Foundation/NSPlatform_posix.h>
@@ -82,19 +82,6 @@ void childSignalHandler(int sig) {
     if (sig == SIGCHLD) {
         _taskFinished = YES;
     }
-}
-
-+(void)registerNotification {
-    NSFileHandle *forReading;
-    forReading=[_taskPipe fileHandleForReading];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(signalPipeReadNotification:)
-                                                 name:NSFileHandleReadCompletionNotification object:forReading];
-    [forReading readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
-
-}
-
-+(void)signalPipeReadNotification:(NSNotification *)note {
-   [[_taskPipe fileHandleForReading] readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
 }
 
 +(void)initialize {
@@ -273,3 +260,5 @@ void childSignalHandler(int sig) {
 }
 
 @end
+#endif
+

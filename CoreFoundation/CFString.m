@@ -111,7 +111,7 @@ CFStringEncoding CFStringConvertWindowsCodepageToEncoding(CFUInteger codepage)
     return encoding;
 }
 
- NSStringEncoding CFStringConvertEncodingToNSStringEncoding(CFStringEncoding encoding){
+ CFUInteger CFStringConvertEncodingToNSStringEncoding(CFStringEncoding encoding){
      switch(encoding){
          case kCFStringEncodingUTF8:
              return NSUTF8StringEncoding;
@@ -148,7 +148,7 @@ CFStringEncoding CFStringConvertWindowsCodepageToEncoding(CFUInteger codepage)
    return encoding | 0x8000000;
 }
 
-CFStringEncoding CFStringConvertNSStringEncodingToEncoding(NSStringEncoding encoding){
+CFStringEncoding CFStringConvertNSStringEncodingToEncoding(CFUInteger encoding){
     switch(encoding){
         case NSUTF8StringEncoding:
             return kCFStringEncodingUTF8;

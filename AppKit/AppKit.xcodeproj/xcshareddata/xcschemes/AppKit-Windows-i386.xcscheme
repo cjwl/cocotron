@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FE01A8070C5D9BCB00AEA51A"
                BuildableName = "AppKit.framework"
-               BlueprintName = "AppKit-Windows-i386"
+               BlueprintName = "AppKit"
                ReferencedContainer = "container:AppKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,7 +26,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      buildConfiguration = "Windows-i386">
       <Testables>
       </Testables>
    </TestAction>
@@ -35,7 +35,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
+      buildConfiguration = "Windows-i386"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
@@ -44,7 +44,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FE01A8070C5D9BCB00AEA51A"
             BuildableName = "AppKit.framework"
-            BlueprintName = "AppKit-Windows-i386"
+            BlueprintName = "AppKit"
             ReferencedContainer = "container:AppKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,23 +55,23 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
+      buildConfiguration = "Windows-i386"
       debugDocumentVersioning = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FE01A8070C5D9BCB00AEA51A"
             BuildableName = "AppKit.framework"
-            BlueprintName = "AppKit-Windows-i386"
+            BlueprintName = "AppKit"
             ReferencedContainer = "container:AppKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Linux-i386">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Windows-i386"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

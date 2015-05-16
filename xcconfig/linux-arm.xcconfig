@@ -3,6 +3,6 @@
 EFFECTIVE_PLATFORM_NAME = -linux
 INSTALL_TARGET_TRIPLE = arm-pc-linux
 
-GCC_VERSION = org.cocotron.1.0.linux.arm.gcc.default
+GCC_VERSION = org.cocotron.1.0.linux.arm.gcc.4.3.1
 
 ARCHS = arm

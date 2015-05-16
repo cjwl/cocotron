@@ -1,3 +1,4 @@
+#ifdef PLATFORM_IS_POSIX
 #import "NSRunLoopState_posix.h"
 #import <Foundation/NSSelectInputSourceSet.h>
 #import <Foundation/NSArray.h>
@@ -29,3 +30,4 @@
 }
 
 @end
+#endif

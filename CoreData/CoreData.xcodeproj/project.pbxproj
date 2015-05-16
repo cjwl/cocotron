@@ -67,68 +67,12 @@
 			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
 			remoteInfo = "Foundation-Windows-i386";
 		};
-		FE43FC5611DE832600EBDD56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE651A870FBC844C00464BFD;
-			remoteInfo = "Foundation-Darwin-x86_64";
-		};
-		FE43FC5811DE832600EBDD56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
-			remoteInfo = "Foundation-Linux-ppc";
-		};
-		FE43FC5A11DE832600EBDD56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 15D921C0105E918000171406;
-			remoteInfo = "Foundation-Linux-arm";
-		};
-		FE43FC5C11DE832600EBDD56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE30A2FF10C6ED6F00A1BF7F;
-			remoteInfo = "Foundation-FreeBSD-i386";
-		};
 		FE59F30F0D54301D00D54A25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
 			remoteInfo = "Foundation-Windows-i386";
-		};
-		FE59F3110D54301D00D54A25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
-			remoteInfo = "Foundation-Linux-i386";
-		};
-		FE59F3130D54301D00D54A25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
-			remoteInfo = "Foundation-Solaris-sparc";
-		};
-		FE59F3150D54301D00D54A25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
-			remoteInfo = "Foundation-Darwin-i386";
-		};
-		FE59F3170D54301D00D54A25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
-			remoteInfo = "Foundation-Darwin-ppc";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -377,14 +321,6 @@
 			isa = PBXGroup;
 			children = (
 				FE59F3100D54301D00D54A25 /* Foundation.framework */,
-				FE59F3120D54301D00D54A25 /* Foundation.framework */,
-				FE59F3140D54301D00D54A25 /* Foundation.framework */,
-				FE59F3160D54301D00D54A25 /* Foundation.framework */,
-				FE59F3180D54301D00D54A25 /* Foundation.framework */,
-				FE43FC5711DE832600EBDD56 /* Foundation.framework */,
-				FE43FC5911DE832600EBDD56 /* Foundation.framework */,
-				FE43FC5B11DE832600EBDD56 /* Foundation.framework */,
-				FE43FC5D11DE832600EBDD56 /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -429,9 +365,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8DC2EF4F0486A6940098B216 /* CoreData-Windows-i386 */ = {
+		8DC2EF4F0486A6940098B216 /* CoreData */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CoreData-Windows-i386" */;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CoreData" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
@@ -443,7 +379,7 @@
 			dependencies = (
 				FE39C6851203D5F800A80A71 /* PBXTargetDependency */,
 			);
-			name = "CoreData-Windows-i386";
+			name = CoreData;
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CoreData;
 			productReference = 8DC2EF5B0486A6940098B216 /* CoreData.framework */;
@@ -478,73 +414,17 @@
 			);
 			projectRoot = "";
 			targets = (
-				8DC2EF4F0486A6940098B216 /* CoreData-Windows-i386 */,
+				8DC2EF4F0486A6940098B216 /* CoreData */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FE43FC5711DE832600EBDD56 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE43FC5611DE832600EBDD56 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE43FC5911DE832600EBDD56 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE43FC5811DE832600EBDD56 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE43FC5B11DE832600EBDD56 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE43FC5A11DE832600EBDD56 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE43FC5D11DE832600EBDD56 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE43FC5C11DE832600EBDD56 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FE59F3100D54301D00D54A25 /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE59F30F0D54301D00D54A25 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE59F3120D54301D00D54A25 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE59F3110D54301D00D54A25 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE59F3140D54301D00D54A25 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE59F3130D54301D00D54A25 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE59F3160D54301D00D54A25 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE59F3150D54301D00D54A25 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FE59F3180D54301D00D54A25 /* Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Foundation.framework;
-			remoteRef = FE59F3170D54301D00D54A25 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -611,7 +491,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB91AE08733DA50010E9CD /* Debug */ = {
+		1DEB91AE08733DA50010E9CD /* Windows-i386 */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */;
 			buildSettings = {
@@ -630,61 +510,32 @@
 				);
 				PRODUCT_NAME = CoreData;
 			};
-			name = Debug;
+			name = "Windows-i386";
 		};
-		1DEB91AF08733DA50010E9CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE7085CF1431178000B99A95 /* windows-i386-framework.xcconfig */;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = stabs;
-				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_UNROLL_LOOPS = NO;
-				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = (
-					"-DCOREDATA_INSIDE_BUILD",
-					"$(OTHER_CFLAGS)",
-				);
-				PRODUCT_NAME = CoreData;
-			};
-			name = Release;
-		};
-		1DEB91B208733DA50010E9CD /* Debug */ = {
+		1DEB91B208733DA50010E9CD /* Windows-i386 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
-			name = Debug;
-		};
-		1DEB91B308733DA50010E9CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
+			name = "Windows-i386";
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CoreData-Windows-i386" */ = {
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CoreData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB91AE08733DA50010E9CD /* Debug */,
-				1DEB91AF08733DA50010E9CD /* Release */,
+				1DEB91AE08733DA50010E9CD /* Windows-i386 */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Windows-i386";
 		};
 		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB91B208733DA50010E9CD /* Debug */,
-				1DEB91B308733DA50010E9CD /* Release */,
+				1DEB91B208733DA50010E9CD /* Windows-i386 */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Windows-i386";
 		};
 /* End XCConfigurationList section */
 	};
