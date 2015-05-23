@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2Defines_libpng.h"
 #import <assert.h>
 
-
+// clang-format off
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef   signed short  int16;
@@ -645,6 +645,8 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    return do_png(x,y,comp,req_comp);
 }
 #endif
+
+// clang-format on
 
 @implementation O2ImageSource_PNG
 
