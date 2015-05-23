@@ -1,3 +1,5 @@
+// clang-format off
+// clang-format off
 // cp932 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -7979,5 +7981,6 @@ static uint16_t cp932[] = {
     ,0xFC4B ,0x9ED1	//CJK UNIFIED IDEOGRAPH
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp932, kCFStringEncodingDOSJapanese);

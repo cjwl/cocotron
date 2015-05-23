@@ -1,3 +1,4 @@
+// clang-format off
 // cp949 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -17306,5 +17307,6 @@ static uint16_t cp949[] = {
     ,0xFDFE ,0x8A70	//CJK UNIFIED IDEOGRAPH
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp949, kCFStringEncodingDOSKorean);

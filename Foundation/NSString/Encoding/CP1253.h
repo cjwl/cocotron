@@ -1,3 +1,4 @@
+// clang-format off
 // cp1253 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -243,5 +244,6 @@ static uint16_t cp1253[] = {
     ,0xFE ,0x03CE	//GREEK SMALL LETTER OMEGA WITH TONOS
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp1253, kCFStringEncodingWindowsGreek);

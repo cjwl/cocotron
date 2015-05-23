@@ -1,3 +1,4 @@
+// clang-format off
 // cp1250 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -255,5 +256,6 @@ static uint16_t cp1250[] = {
     ,0xFF ,0x02D9	//DOT ABOVE
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp1250, kCFStringEncodingWindowsLatin2);

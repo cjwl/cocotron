@@ -546,7 +546,7 @@ unsigned appleKeyCodeForWindowsKeyCode(unsigned wParam,unsigned lParam,BOOL *isK
    unsigned scanCode=(lParam>>16)&0xFF;
 
    *isKeypad=NO;
-
+// clang-format off
    if(lParam&0x01000000){
     *isKeypad=YES;
 
@@ -752,7 +752,8 @@ unsigned appleKeyCodeForWindowsKeyCode(unsigned wParam,unsigned lParam,BOOL *isK
     case VK_PA1: return kVK_UNMAPPED;
     case VK_OEM_CLEAR: return kVK_UNMAPPED;
    }
-   
+// clang-format on
+    
    return kVK_UNMAPPED;
 }
 
@@ -766,7 +767,7 @@ The values should be upgraded to something which is more generic to implement, p
    unsigned keyCode=(lParam>>16)&0xFF;
 
    *isKeypad=NO;
-
+// clang-format off
    if(lParam&0x01000000){
     *isKeypad=YES;
 
@@ -791,7 +792,8 @@ The values should be upgraded to something which is more generic to implement, p
      case 0x1D: keyCode=0x60; break; // Right Control
     }
    }
-
+// clang-format on
+    
    return keyCode;
 }
 
@@ -854,6 +856,7 @@ The values should be upgraded to something which is more generic to implement, p
     _keyCode=appleKeyCodeForWindowsKeyCode(msg.wParam,msg.lParam,&_isKeypad);
     
 	if(bufferSize==0){
+        // clang-format off
 		// Handle the special keys - we won't receive any char message from them
         switch(msg.wParam){
             case VK_LBUTTON: break;
@@ -948,6 +951,7 @@ The values should be upgraded to something which is more generic to implement, p
             case VK_PA1: break;
             case VK_OEM_CLEAR: break;
         }
+        // clang-format on
     }
     if (bufferSize > 0 || [_ignoringModifiersString length] > 0) {
         NSEvent *event;

@@ -1,3 +1,4 @@
+// clang-format off
 // cp1255 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -237,5 +238,6 @@ static uint16_t cp1255[] = {
     ,0xFE ,0x200F	//RIGHT-TO-LEFT MARK
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp1255, kCFStringEncodingWindowsHebrew);

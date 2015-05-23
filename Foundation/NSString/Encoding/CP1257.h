@@ -1,3 +1,4 @@
+// clang-format off
 // cp1257 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -248,5 +249,6 @@ static uint16_t cp1257[] = {
     ,0xFF ,0x02D9	//DOT ABOVE
     ,-1, -1
 };
+// clang-format on
 
 NSEncodingRegistration(cp1257, kCFStringEncodingWindowsBalticRim);

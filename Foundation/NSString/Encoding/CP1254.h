@@ -1,3 +1,4 @@
+// clang-format off
 // cp1254 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -253,5 +254,6 @@ static uint16_t cp1254[] = {
     ,0xFF ,0x00FF	//LATIN SMALL LETTER Y WITH DIAERESIS
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp1254, kCFStringEncodingWindowsLatin5);

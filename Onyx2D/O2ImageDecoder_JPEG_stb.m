@@ -1,7 +1,7 @@
 #import "O2ImageDecoder_JPEG_stb.h"
 
 /*  JPEG decode is based on the public domain implementation by Sean Barrett  http://www.nothings.org/stb_image.c  V 1.14 */
-
+// clang-format off
 #define STBI_NO_STDIO
 
 typedef unsigned char uint8;
@@ -1106,6 +1106,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
     start_mem(&(j->s), buffer,len);
     return load_jpeg_image(j, x,y,comp,req_comp);
 }
+// clang-format on
 
 -initWithDataProvider:(O2DataProviderRef)dataProvider {
     

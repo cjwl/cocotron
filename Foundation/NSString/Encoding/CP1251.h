@@ -1,3 +1,4 @@
+// clang-format off
 // cp1251 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -259,5 +260,6 @@ static uint16_t cp1251[] = {
     ,0xFF ,0x044F	//CYRILLIC SMALL LETTER YA
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp1251, kCFStringEncodingWindowsCyrillic);

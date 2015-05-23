@@ -1,3 +1,4 @@
+// clang-format off
 // cp874 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -229,5 +230,6 @@ static uint16_t cp874[] = {
     ,0xFB ,0x0E5B	//THAI CHARACTER KHOMUT
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp874,kCFStringEncodingDOSThai);

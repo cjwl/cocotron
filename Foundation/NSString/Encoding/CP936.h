@@ -1,3 +1,4 @@
+// clang-format off
 // cp936 to Unicode table
 // Derived from the tables available at unicode.org
 
@@ -22050,5 +22051,6 @@ static uint16_t cp936[] = {
     ,0xFE4F ,0xFA29	//CJK COMPATIBILITY IDEOGRAPH
     ,-1,-1
 };
+// clang-format on
 
 NSEncodingRegistration(cp936, kCFStringEncodingDOSChineseSimplif);
